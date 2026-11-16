@@ -1,0 +1,2930 @@
+{
+ "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+ "at": "2026-11-16T10:04:45Z",
+ "checklist": [
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "tree.json"
+   ],
+   "id": "biome_cast",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_native_cast",
+     "what": "own wildlife roster with natural population"
+    },
+    {
+     "ok": true,
+     "scene": "sc_native_cast",
+     "what": "ordinary plant/animal products and lifecycles"
+    },
+    {
+     "ok": true,
+     "scene": "sc_native_cast",
+     "what": "optional franchise rows are conditional additions (base-only composition)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "own ground cover and scrub flora generate naturally on a Scrub map"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "weather_calendar",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "sc_wind_plain",
+     "what": "ordinary weather defs maintain wind"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Stall is calm"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Gale is strong wind"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "windy twins replace stock overcast, gray pall and dry thunderstorm in the biome weather table"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "wind_sound",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_wind_audio",
+     "what": "steady wind carries vanilla wind and jungle insect beds"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "fog carries the same beds"
+    },
+    {
+     "ok": true,
+     "scene": "sc_wind_audio",
+     "what": "Stall quiet and transitions, human sound pass"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "lean_heading",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "heading derived from tile-to-substellar geometry"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Scrub maps share a heading (more than one map/tile)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_wind_plain",
+     "what": "heading recomputed, not serialized: same after reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "plant_lean",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_wind_plain",
+     "what": "listed ground-cover plants face the shared direction instead of random mirroring"
+    },
+    {
+     "ok": true,
+     "scene": "sc_wind_plain",
+     "what": "texture-specific orientation data across all effective variants"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "gale_dust",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gale_drawing",
+     "what": "owned A/B overlay textures load and pan with the Lean"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "absent owned art falls back to vanilla fog material"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "stall_freeze",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_stall_wait",
+     "what": "eligible small wild animals wait in Stall instead of wandering"
+    },
+    {
+     "ok": true,
+     "scene": "sc_stall_wait",
+     "what": "higher-priority feeding/fleeing jobs attributed separately; large animals unaffected"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "gale_exposure",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gale_exposure",
+     "what": "unroofed living non-mechanoids gain RM_GaleDeafened hearing/speech penalty"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gale_exposure",
+     "what": "roofed and mechanoid pawns excluded; recovery after Gale"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "gale_turbines",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_working_wind",
+     "what": "Gale multiplies positive turbine output"
+    },
+    {
+     "ok": true,
+     "scene": "sc_working_wind",
+     "what": "Gale rolls breakdowns for eligible working player turbines"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "gale_raid_weight",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_raid_weight",
+     "what": "enemy raid weight multiplied only in enabled Gale"
+    },
+    {
+     "ok": true,
+     "scene": "sc_raid_weight",
+     "what": "no guaranteed or extra incident"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "upwind_scent",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_scent",
+     "what": "eligible wild non-predators flee an upwind humanlike within configured range"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "downwind_fire",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fire_bias",
+     "what": "fire spread attempts biased downwind on leaning maps"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "ripple",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_concealment",
+     "what": "small wild animals on marked cover invisible with shimmer"
+    },
+    {
+     "ok": true,
+     "scene": "sc_concealment",
+     "what": "Gale expands size band; moving in Stall reveals"
+    },
+    {
+     "ok": true,
+     "scene": "sc_concealment",
+     "what": "mental-state animals excluded"
+    },
+    {
+     "ok": true,
+     "scene": "sc_surrik",
+     "what": "active crust swimmers not double-hidden"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "windbreak_lee",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_lee_reveal",
+     "what": "wind-blocking impassable buildings create a local lee that reveals moving animals"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "stall_hunter",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_stall_predation",
+     "what": "idle wild stall hunter selects visible eligible reachable prey in Stall and starts PredatorHunt"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "vine_islands",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_island_land",
+     "what": "tall venomvine islands with rarer forms as rooms"
+    },
+    {
+     "ok": true,
+     "scene": "sc_island_land",
+     "what": "target share"
+    },
+    {
+     "ok": true,
+     "scene": "sc_island_land",
+     "what": "start clearance/traversability"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "vine_creep",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_creep",
+     "what": "mature unsmothered forms emit safe young runners, downwind bias, map cap"
+    },
+    {
+     "ok": true,
+     "scene": "sc_creep",
+     "what": "natural-ground filter rejects roofs, buildings, zones, floors, protected plants"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "vine_growth_exemption",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_creep",
+     "what": "no-soak and no-everyday-band ExplosiveGrowth exemptions"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "vine_hazard",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_vine_contact",
+     "what": "strict greater-than body-size boundary"
+    },
+    {
+     "ok": true,
+     "scene": "sc_vine_contact",
+     "what": "Scrub passability gate and young-runner minimum growth 0.5"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "contact venom and size barrier on every form that carries them (only Thicket/Weeper/Hollow/Walking lanes staged)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "dripping_harvest",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_dripping",
+     "what": "yields raw venom and resets growth when regrowing harvest enabled"
+    },
+    {
+     "ok": true,
+     "scene": "sc_dripping",
+     "what": "Apply runs on settings write"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Apply runs at startup (saved setting honoured after a game start)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "twitcher",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_twitcher",
+     "what": "strikes once, saves recovery tick"
+    },
+    {
+     "ok": true,
+     "scene": "sc_twitcher",
+     "what": "poised/spent on inspect and visible spent pose"
+    },
+    {
+     "ok": true,
+     "scene": "sc_twitcher",
+     "what": "no repeat while spent; recovered positive strikes"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "hollow_passage",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_hollow",
+     "what": "wider free-pass band"
+    },
+    {
+     "ok": true,
+     "scene": "sc_hollow",
+     "what": "no contact-venom comp; huge body blocked"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "crown_mob",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_crown",
+     "what": "Stall crown attracts idle wild dustflutters"
+    },
+    {
+     "ok": true,
+     "scene": "sc_crown",
+     "what": "residents plus in-transit counted against cap"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "rearing",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_rearing",
+     "what": "pushed mature stand sets saved reared state"
+    },
+    {
+     "ok": true,
+     "scene": "sc_rearing",
+     "what": "reveals intruders, conditionally alerts; Gale masks alert"
+    },
+    {
+     "ok": true,
+     "scene": "sc_rearing",
+     "what": "state tied to pose, not random variant"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "walking",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_walking",
+     "what": "Gale onset advances stands downwind"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walking",
+     "what": "dead-cane tail"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walking",
+     "what": "connected smothering stops its stand"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walking",
+     "what": "map-wide cap and developed exclusions"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "hoard",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_hoard",
+     "what": "stores eligible goods and corpse apparel/equipment with saved ownership/clocks"
+    },
+    {
+     "ok": true,
+     "scene": "sc_hoard",
+     "what": "drops on despawn; corpse stays outside"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "quench",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_quench",
+     "what": "ready quench extinguishes nearby fire with foam burst"
+    },
+    {
+     "ok": true,
+     "scene": "sc_quench",
+     "what": "saved recharge clock; readable spent/ready"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "sworn",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_sworn",
+     "what": "sap-marked pawn spared regardless of faction"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sworn",
+     "what": "mark expiry re-exposes"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "real research of the hedge (start asserts 'Researched')"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "real sowing of the hedge (action never sows)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sworn",
+     "what": "sap recipe/use"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "shedding",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shedding",
+     "what": "Gale onset places downwind thorn litter fan"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shedding",
+     "what": "litter scratch under shared damage controls"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "strangler",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_strangler",
+     "what": "wraps adjacent wall/tree and damages it"
+    },
+    {
+     "ok": true,
+     "scene": "sc_strangler",
+     "what": "self-designates for cutting near player structures"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "weeper",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_weeper",
+     "what": "pools and bounded cumulative pollution"
+    },
+    {
+     "ok": true,
+     "scene": "floor_payload",
+     "what": "safe-passage text reconciled with contact/barrier"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "sleeper",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_sleeper",
+     "what": "large grounded traffic wakes dormant sleeper into awakened def"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sleeper",
+     "what": "wake-area hit under shared controls; no re-wake after reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "lure",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_lure",
+     "what": "emits fruit up to nearby supply cap"
+    },
+    {
+     "ok": true,
+     "scene": "sc_lure",
+     "what": "hungry animals approach and eat"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "sheet.md"
+   ],
+   "id": "smother_craft",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_smother_claim",
+     "what": "tailoring recipe from fuzz fiber and sweetline felt"
+    },
+    {
+     "ok": true,
+     "scene": "sc_smother_claim",
+     "what": "ordered use consumes one blanket, banks serialized timed claim"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cane_fuel",
+     "what": "maturation swaps plant for dead cane"
+    },
+    {
+     "ok": true,
+     "scene": "sc_smother_claim",
+     "what": "feature off blocks new jobs and holds due claims"
+    },
+    {
+     "ok": false,
+     "scene": "sc_smother_claim",
+     "what": "legacy import matrix (saved 30-day/custom overrides, old start-only claims) requires save-migration code against the 2026-11-08 no-migration ruling"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "dead_cane_fuel",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cane_fuel",
+     "what": "wood-filter CompRefuelable consumers accept dead cane"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "sweetline_landmark",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_landmark",
+     "what": "rare map step places mature ancient landmark"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tree_landmark",
+     "what": "generated name, saved history, History gizmo"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "sweetline_canopy",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_landmark",
+     "what": "BiomesShell canopy with separate trunk/canopy pools at viewing scales"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "sweetline_shed",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_shed",
+     "what": "once-mature tree keeps timed free shed after harvest; everMature saved"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "sweetline_scratching",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_scratch",
+     "what": "ready shearable animal chooses reachable tree, rubs coat off, banks felt"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tree_scratch",
+     "what": "rope and allowed-area gates; pen containment investigated only"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "sweetline_felt_bank",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_bank",
+     "what": "tree pays accumulated felt once through harvest and debits store"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "felt_comfort",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_felt_comfort",
+     "what": "felt stuff adds furniture comfort"
+    },
+    {
+     "ok": true,
+     "scene": "sc_felt_comfort",
+     "what": "single apparel thought independent of garment count"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "sweetline_visits",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_traces",
+     "what": "timed home-map visits leave ash/token and history, no visitor pawns"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "runway_bloom",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_bloom",
+     "what": "scatter/flee"
+    },
+    {
+     "ok": true,
+     "scene": "sc_bloom",
+     "what": "sway/hold"
+    },
+    {
+     "ok": true,
+     "scene": "sc_bloom",
+     "what": "force-surface/exit hole"
+    },
+    {
+     "ok": true,
+     "scene": "sc_bloom",
+     "what": "shed item"
+    },
+    {
+     "ok": true,
+     "scene": "sc_bloom",
+     "what": "erupt/flight (owner attended)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_bloom",
+     "what": "mental-state animals retain behaviour"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "vissler_arm_food",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_arm_food",
+     "what": "shed arms are ingestible rotting meat behind a settings gate"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "thornhold_quills",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_thornhold_quill",
+     "what": "quill-lash melee uses venom damage wiring distinct from ordinary hunting"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "thornhold_den_stand",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_thornhold_den",
+     "what": "chooses reachable vine den and tethers"
+    },
+    {
+     "ok": true,
+     "scene": "sc_thornhold_den",
+     "what": "external attacker near den triggers scoped stand; passing does not"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "surrik_crustswim",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_surrik",
+     "what": "sand-swim on named crust terrain and surfacing strike"
+    },
+    {
+     "ok": true,
+     "scene": "sc_surrik",
+     "what": "bloom forces it up; ripple avoids double-hiding"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "ribbonwhip_wind_concealment",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_concealment",
+     "what": "ribbonwhip in ripple concealment"
+    },
+    {
+     "ok": true,
+     "scene": "sc_ribbon_route",
+     "what": "ribbonwhip bloom sway preserved"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "shirrel_glide",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shirrel_flight",
+     "what": "real downwind Gale glide from eligible tree, owner present"
+    },
+    {
+     "ok": true,
+     "scene": "sc_shirrel_flight",
+     "what": "HomeTether bind to sweetline; launchFromAnyTree"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "shirrel_flight_art",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shirrel_flight",
+     "what": "directional flying flip-book frames play in flight"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "rollbug_carrion",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_rollbug",
+     "what": "collects corpse to larder incl. colony dead by default"
+    },
+    {
+     "ok": true,
+     "scene": "sc_rollbug",
+     "what": "strips gear, bites progressively, drops on interruption"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "ruin_injections",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ruins",
+     "what": "dead farmstead, mid-cycle smother field, hedge homestead on new home maps"
+    },
+    {
+     "ok": true,
+     "scene": "sc_ruins",
+     "what": "spacing and start clearance"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "wind_vaporator",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_vaporator",
+     "what": "farmstead techprint to research to build"
+    },
+    {
+     "ok": true,
+     "scene": "sc_vaporator",
+     "what": "powered fog-water spawner, no drying scar"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "scavenger_camps",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_camps",
+     "what": "camp defends at peace, assaults when hostile, returns on peace"
+    },
+    {
+     "ok": true,
+     "scene": "sc_camps",
+     "what": "empty base list; campaign patch populates"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fire_stamping",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_stamping",
+     "what": "marked wild giants converge and stamp open fire"
+    },
+    {
+     "ok": true,
+     "scene": "sc_stamping",
+     "what": "roofed/enclosed and fueled-building overlays excluded"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "calling_pyre",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_pyre_beliefs",
+     "what": "forbidden, last-rite, venerated beliefs and meme eligibility"
+    },
+    {
+     "ok": true,
+     "scene": "sc_pyre_ritual",
+     "what": "ritual outcome, field fires, marked herd with rage/aftermath"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "save_aliases",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_save_aliases",
+     "what": "absorbed fauna/products/eggs and old SWB names resolve via aliases"
+    },
+    {
+     "ok": true,
+     "scene": "sc_save_aliases",
+     "what": "objects, gear and jobs preserved, no duplicates or live-name shadowing"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "acoustic_payload",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_acoustic_payload",
+     "what": "buried creatures, sweetline, hollow vine, hidden cave readings"
+    },
+    {
+     "ok": true,
+     "scene": "sc_acoustic_payload",
+     "what": "scanner-absent composition clean"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "proximity_hatch",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_proximity_hatch",
+     "what": "near-pawn trigger hatch with integration"
+    },
+    {
+     "ok": true,
+     "scene": "sc_proximity_hatch",
+     "what": "vanilla timer hatch without integration; egg consumed once"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "tree.json",
+    "scenes.json",
+    "floor.json",
+    "sheet.md"
+   ],
+   "id": "settings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "per-feature switches/tuning saved with groups and now/new-map scope"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "settings write reapplies dripping harvest"
+    },
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "complete census including shirrelGlideEnabled; every setting changes its effect and persists"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "all features off together degrade gracefully without losing stored ownership"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "dependable_home_routes",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_home_routes",
+     "what": "home and maintained routes dependable at recorded labour cost"
+    },
+    {
+     "ok": true,
+     "scene": "ix_route_growth",
+     "what": "creep and Walking share developed-ground protection"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "ordered_crossing_policy",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ordered_travel",
+     "what": "routine hauling uses clear detour or waits"
+    },
+    {
+     "ok": true,
+     "scene": "sc_ordered_travel",
+     "what": "crossing only by explicit order, not reusable after cancel/finish/reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fire_maker_witness_trail",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_maker",
+     "what": "maker identified by witness or fresh trail, never nearest innocent"
+    },
+    {
+     "ok": true,
+     "scene": "sc_maker",
+     "what": "loss of contact, ages/IDs persist and expire"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "shared storage reused by ownership/property without changing its humanlike reporting"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "premium_dead_cane",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cane_fuel",
+     "what": "longer burn and 1.25 heat rate versus matched wood (agent tuning)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "shokka_ambush",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shokka",
+     "what": "flat-hold ambush at fuzz-edge crossing"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "fuzzviper_ambush",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fuzzviper",
+     "what": "run-wall ambush"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "ribbonwhip_canopy_route",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ribbon_route",
+     "what": "canopy-only travel refusing bare gaps"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "pillowmoss_wet_spot",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_pillowmoss",
+     "what": "fog condensation into bounded wet ground"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "tanglefuzz_den_ecology",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tanglefuzz",
+     "what": "den-anchor residence and reassignment"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "cruststar_grazing_ecology",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cruststar",
+     "what": "crustweevil grazing with resource debit/recovery"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "vissler_finite_arm_regrowth",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_arm_regrowth",
+     "what": "finite arm loss per shed and 15-day regrowth"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "bark_wardens_removed",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "scoped out and impl absent, so not a coverage unit; absence check kept"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "farmer_camps_removed",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "scoped out and impl absent, so not a coverage unit; absence check kept"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "route_observer",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_route_observer",
+     "what": "offline instrument: reconstructs trips, rejects corrupted traces"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "witness_observer",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_witness_observer",
+     "what": "offline instrument: witnessed/trailed/guessed/lost, no injected knowledge"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "economy_observer",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_economy_observer",
+     "what": "offline instrument: count/identity/time accounting rejects mismatches"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "sheet.md"
+   ],
+   "id": "wind_plain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_wind_plain",
+     "what": "ground cover faces one consistent heading across reload"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "heading matches the tile's substellar geometry"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "ordinary days retain wind (measured)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_wind_plain",
+     "what": "trees/vines outside the roster; reads as fuzz and scrub"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "gale_drawing",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gale_drawing",
+     "what": "dust/fuzz travels with heading, ground readable"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gale_drawing",
+     "what": "normal weather removes overlay"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "fallback to vanilla fog with owned art absent"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "wind_audio",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_wind_audio",
+     "what": "ordinary wind/insect beds, Stall quiet, return without stuck loops"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "fog weather bed"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "working_wind",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_working_wind",
+     "what": "Gale output ratio on a real load, breakdown and repair attributed"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "raid_weight",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_raid_weight",
+     "what": "raid weight multiplied only in enabled Gale, no incident"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "scent",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_scent",
+     "what": "attributed scent flee for upwind in-range person"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "fire_bias",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fire_bias",
+     "what": "64 fixed-seed opportunities show directional bias"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "stall_wait",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_stall_wait",
+     "what": "small wanderers wait, large and higher-priority remain, wandering returns"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "concealment",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_concealment",
+     "what": "shimmer agrees with target selection"
+    },
+    {
+     "ok": true,
+     "scene": "sc_concealment",
+     "what": "Stall movement reveals, Gale extends size"
+    },
+    {
+     "ok": true,
+     "scene": "sc_concealment",
+     "what": "crust swimmers/mental-state not double-hidden"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "lee_reveal",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_lee_reveal",
+     "what": "local lee loss of concealment and return beyond"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "stall_predation",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_stall_predation",
+     "what": "selects visible reachable prey, completes attack, avoids hidden/blocked"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "island_land",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_island_land",
+     "what": "abundant tall islands and rarer rooms on three seeds"
+    },
+    {
+     "ok": true,
+     "scene": "sc_island_land",
+     "what": "share within tolerance, real start exits passable"
+    },
+    {
+     "ok": true,
+     "scene": "sc_island_land",
+     "what": "Sworn not a wild room"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "creep",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_creep",
+     "what": "safe runners, downwind preference, cap, protected cells"
+    },
+    {
+     "ok": true,
+     "scene": "sc_creep",
+     "what": "half-growth arming; both ExplosiveGrowth paths"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "home_routes",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_home_routes",
+     "what": "maintained routes carry work at recorded labour; wilderness can spread"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "ordered_travel",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ordered_travel",
+     "what": "routine work safe or waits; order permits only its trip; reload grants nothing"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "vine_contact",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_vine_contact",
+     "what": "strict >1.5 blocking"
+    },
+    {
+     "ok": true,
+     "scene": "sc_vine_contact",
+     "what": "Hollow wider free band, runners safe until armed"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "per-form free/thread/blocked bands for every form (only 4 lanes)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_vine_contact",
+     "what": "shared controls govern scratches"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "dripping",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_dripping",
+     "what": "venom delivered, same stand regrows for second harvest across reload"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "startup Apply of saved regrowth setting"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "hollow",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_hollow",
+     "what": "galleries, wider band, no venom, huge-body block"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "crown",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_crown",
+     "what": "attributed arrivals within cap, busy jobs intact, owner for flight"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "record.json",
+    "sheet.md"
+   ],
+   "id": "smother_claim",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_smother_claim",
+     "what": "one job, one blanket, one saved countdown; 120-day default, 120-600 range, frozen per claim"
+    },
+    {
+     "ok": true,
+     "scene": "sc_smother_claim",
+     "what": "off/hold/re-enable pays once"
+    },
+    {
+     "ok": false,
+     "scene": "sc_smother_claim",
+     "what": "legacy import/migration arms (old 30-day and start-only claims) demand banned save-migration code"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "cane_fuel",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cane_fuel",
+     "what": "two wood-equivalent units and 1.25 heat rate, mixed credit conserved across reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "tree_landmark",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_landmark",
+     "what": "rare named ancient landmark, trunk/canopy match, history after reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "tree_shed",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_shed",
+     "what": "shed persists after harvest via everMature"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "tree_scratch",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_scratch",
+     "what": "coat growth, autonomous rub, product plus felt share, rope/area refused"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "tree_bank",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_bank",
+     "what": "bank paid once on real harvest, failed harvest keeps balance"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "tree_traces",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tree_traces",
+     "what": "ash/token plus history, no visitor pawn"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "native_cast",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_native_cast",
+     "what": "distinct native animals, natural population vs spawning"
+    },
+    {
+     "ok": true,
+     "scene": "sc_native_cast",
+     "what": "base refs resolve without franchise mods"
+    },
+    {
+     "ok": true,
+     "scene": "sc_native_cast",
+     "what": "every lifecycle mechanism produces products/offspring"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "native ground cover/scrub flora present (the 'fuzz plain' it claims)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "bloom",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_bloom",
+     "what": "scatter, sway, submerged exit, finite shed, attended eruption from real movement"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "arm_regrowth",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_arm_regrowth",
+     "what": "one arm per shed, no infinite bait, 15-day regrowth after reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "arm_food",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_arm_food",
+     "what": "actual ingestion, nutrition and rot"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "thornhold_quill",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_thornhold_quill",
+     "what": "attributed quill venom distinct from ordinary damage"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "thornhold_den",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_thornhold_den",
+     "what": "den binding, scoped stand, bounded recovery, passing harmless"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "surrik",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_surrik",
+     "what": "crust travel, surface strike, exit hole only when under"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "shokka",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shokka",
+     "what": "motionless edge ambush on crossing traffic"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "fuzzviper",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fuzzviper",
+     "what": "run-wall hold and attack"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "ribbon_route",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ribbon_route",
+     "what": "canopy-only routes, readable inability, concealment/sway preserved"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "pillowmoss",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_pillowmoss",
+     "what": "bounded wet ground under moss in fog versus dry plot"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "tanglefuzz",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tanglefuzz",
+     "what": "stable root-hollow residence, reassignment on anchor removal"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "cruststar",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cruststar",
+     "what": "chosen grazing with nutrition and resource debit/recovery"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "shirrel_flight",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shirrel_flight",
+     "what": "owner-attended bounded downwind flight, flip-book, landing, sweetline return"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "rollbug",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_rollbug",
+     "what": "carry to den, gear conserved, progressive eating, safe drop, colony-dead setting"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "ruins",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ruins",
+     "what": "spaced legible ruins with honest claim age"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "vaporator",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_vaporator",
+     "what": "plans to research to build to powered RM_FogWater, no scar"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "camps",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_camps",
+     "what": "defend/assault/return with campaign faction; base empty list gives none"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "stamping",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_stamping",
+     "what": "base franchise-free convergence and stamp; campaign binding separate"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "maker",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_maker",
+     "what": "witness/fresh trail only, never innocent B, escape on lost contact, persistence/expiry"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "shared storage supports property without changing its humanlike reporting policy"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "pyre_beliefs",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_pyre_beliefs",
+     "what": "three beliefs have distinct consequences; meme eligibility"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "pyre_ritual",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_pyre_ritual",
+     "what": "completed ritual fire/herd/rage, history, thin-fire message"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "cuts",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "no guardians, farmer camps or drying scar; no text promising them"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "CombHolds loadable tombstone only; tree systems still work"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "colony_walk",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_colony_walk",
+     "what": "real journey, mid-way save reload, both action orders, pay once"
+    }
+   ]
+  }
+ ],
+ "contract": {
+  "advisory": true,
+  "alarms": [
+   {
+    "family": "coverage_judge",
+    "first_at": "2026-11-15T09:32:09Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-16T10:14:36Z",
+    "open": true,
+    "subject": "family:coverage_judge",
+    "told_at": "2026-11-15T09:32:09Z",
+    "trips": 7,
+    "why": "refused all of its last 8 verdicts across 4 items"
+   }
+  ],
+  "cached": [],
+  "calibration": "UNTESTED",
+  "counted": true,
+  "may_judge": true,
+  "ok": true,
+  "repair_due": []
+ },
+ "contract_reasked": [
+  "passed: 'settings_leaf_note' is not in the criterion set"
+ ],
+ "criteria_suspect": [
+  "rest"
+ ],
+ "gaps": [
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each built inventory part needs an acceptance scene, and plant generation is a separate mechanism from animal spawning.",
+   "evidence": [
+    "record.json:392",
+    "tree.json:1039",
+    "scenes.json:1379"
+   ],
+   "gid": "g1",
+   "ids": [
+    "biome_cast",
+    "native_cast"
+   ],
+   "new_since": "first",
+   "observed": "biome_cast says 'The composed biome provides its own ground cover, scrub, wildlife and ordinary plant/animal products', but sc_native_cast only censuses animals ('view all native races/life-stages/facings') and lifecycles; no scene measures the wild-plant roster or its density on a fresh map. sc_wind_plain looks only at the appearance of the seven leanPlants.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a flora census arm to sc_native_cast and a 'native ground cover and scrub generate naturally' clause to the native_cast leaf"
+   },
+   "what": "The biome's own ground cover and scrub flora (the 'fuzz plain') is never asserted to generate naturally",
+   "where": "scenes.json sc_native_cast (line 1379); tree.json native_cast (line 1039)",
+   "would_pass": "sc_native_cast (or a new acceptance scene) lists the effective wildPlants roster in start, measures per-species natural plant counts/density on its three fresh Scrub maps, and has a control (a roster entry disabled on the same seed) that shows zero natural count for that entry"
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The capability names specific behaviour that a script can read and control directly.",
+   "evidence": [
+    "record.json:419",
+    "scenes.json:22",
+    "tree.json:102",
+    "sheet.md:10"
+   ],
+   "gid": "g2",
+   "ids": [
+    "weather_calendar",
+    "wind_plain"
+   ],
+   "new_since": "first",
+   "observed": "weather_calendar says 'Stall is calm; Gale is strong wind. Windy twins replace stock overcast, gray pall and dry thunderstorm in the biome table.' sc_wind_plain only views the twins ('three windy twins') and its control is leanPlantsEnabled off. No scene reads wind speed in ordinary weather, Stall or Gale, or checks that the stock weathers can no longer be chosen.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add wind-speed and weather-table assertions plus the non-Scrub table control to sc_wind_plain (or a new sc_weather_calendar in coverage_rest)"
+   },
+   "what": "The weather calendar's wind values and the windy-twin replacement in the biome weather table are not asserted or controlled",
+   "where": "scenes.json sc_wind_plain (line 22); tree.json wind_plain (line 102)",
+   "would_pass": "An acceptance scene reads the live map wind speed in ordinary weather, each twin, Stall and Gale against configured values (Stall below and Gale above an ordinary-weather baseline), and reads the effective biome weather commonality table: the three stock defs at weight 0 with their twins present. A control on a non-Scrub biome shows the stock defs still selectable."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Direct Sun and the Lean are ruled pure functions of geometry, so correctness against geometry is the property, not consistency.",
+   "evidence": [
+    "record.json:456",
+    "scenes.json:22",
+    "tree.json:102"
+   ],
+   "gid": "g3",
+   "ids": [
+    "lean_heading",
+    "wind_plain"
+   ],
+   "new_since": "first",
+   "observed": "lean_heading says 'heading derived from tile-to-substellar geometry'; sc_wind_plain uses one 'Real Scrub tile, sun-derived heading' and expects 'one consistent heading across reload'. A heading that is constant or wrong but stable would pass, and the only control turns plant lean off.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a second tile with a different bearing and an independent geometry comparison to sc_wind_plain's start/expect"
+   },
+   "what": "The claim that the lean heading derives from tile-to-substellar geometry and is shared across Scrub maps is untested; the scene checks only consistency",
+   "where": "scenes.json sc_wind_plain (line 22)",
+   "would_pass": "The scene measures plant facing on two Scrub tiles with different substellar bearings and asserts each equals a heading computed independently from that tile's position (within a stated tolerance), and that both maps of the same tile agree"
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each weather that ships an ambient bed is a separate part a human sound pass can confirm.",
+   "evidence": [
+    "record.json:440",
+    "scenes.json:98",
+    "tree.json:150"
+   ],
+   "gid": "g4",
+   "ids": [
+    "wind_sound",
+    "wind_audio"
+   ],
+   "new_since": "first",
+   "observed": "wind_sound says 'Steady wind and fog carry vanilla wind and jungle insect ambient beds'; sc_wind_audio's action is 'Listen across ordinary day/night wind, Stall, Gale and return', with no fog arm.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a fog arm to sc_wind_audio's action and expect"
+   },
+   "what": "The fog ambient bed is not part of the audio scene",
+   "where": "scenes.json sc_wind_audio (line 98)",
+   "would_pass": "sc_wind_audio's action includes the fog weather, and its expect asserts the wind/insect beds are audible in fog"
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A built fallback path is a shipped behaviour that can fail silently.",
+   "evidence": [
+    "record.json:495",
+    "scenes.json:63",
+    "tree.json:126"
+   ],
+   "gid": "g5",
+   "ids": [
+    "gale_dust",
+    "gale_drawing"
+   ],
+   "new_since": "first",
+   "observed": "gale_dust says 'absent art falls back to vanilla fog material'. sc_gale_drawing starts with 'both effective owned overlay textures', and its control turns the overlay off; no arm runs with the textures missing.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a missing-texture fixture arm to sc_gale_drawing (an offline fixture is enough)"
+   },
+   "what": "The Gale overlay's fallback to vanilla fog material when owned art is absent is untested",
+   "where": "scenes.json sc_gale_drawing (line 63)",
+   "would_pass": "An offline or live arm loads the overlay with RM_GaleDust_A/B unresolved and asserts the vanilla fog material is used with no error logged; the positive arm asserts the owned textures"
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Startup Apply is a separate code path from the write hook, and a player relies on it every session.",
+   "evidence": [
+    "record.json:750",
+    "scenes.json:616",
+    "tree.json:511"
+   ],
+   "gid": "g6",
+   "ids": [
+    "dripping_harvest",
+    "dripping"
+   ],
+   "new_since": "first",
+   "observed": "dripping_harvest says 'Apply runs at startup and settings writes.' sc_dripping uses the 'real WriteSettings Apply path' and a save/reload, but a save reload does not re-run startup. No arm starts the game with regrowth saved off (or on) and checks the harvest behaviour.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a startup-Apply arm to sc_dripping, or to floor_runtime's authorized cold load"
+   },
+   "what": "Dripping's Apply at game startup is untested; only Apply on settings write is exercised",
+   "where": "scenes.json sc_dripping (line 616)",
+   "would_pass": "An arm saves regrowth off, cold-starts (the minimal list is enough), and asserts a Dripping harvest follows the vanilla path without changing the setting in that session; it is repeated with regrowth on"
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The leaf's own wording promises every form; the scene must either test that or the wording must shrink.",
+   "evidence": [
+    "tree.json:487",
+    "scenes.json:580",
+    "record.json:729",
+    "sheet.md:25"
+   ],
+   "gid": "g7",
+   "ids": [
+    "vine_hazard",
+    "vine_contact"
+   ],
+   "new_since": "first",
+   "observed": "The leaf says 'The observer sees per-form free/thread/blocked bands', but sc_vine_contact stages only 'Thicket/Weeper/Hollow/Walking lanes'. The other forms that carry the shared contact/barrier comps (Dripping, Twitcher, Crown, Rearing, Hoard, Quench, Sworn, Shedding, Strangler, Sleeper, Lure) get no band check.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Extend the lane list in sc_vine_contact, or narrow the leaf wording and add an offline per-form parameter check"
+   },
+   "what": "The 'per-form' free/thread/blocked bands are staged for only four of the vine forms",
+   "where": "scenes.json sc_vine_contact (line 580); tree.json vine_contact (line 487)",
+   "would_pass": "Either sc_vine_contact's lane matrix covers every form whose def carries the barrier/contact comps (bodies 0.79/0.8/1.0/1.5/1.51 per form), or the leaf and sheet name exactly the four forms tested and a defs check proves the rest share those parameters"
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The leaf names research and sowing as tested parts; a pre-researched fixture cannot show them.",
+   "evidence": [
+    "tree.json:703",
+    "scenes.json:887",
+    "record.json"
+   ],
+   "gid": "g8",
+   "ids": [
+    "sworn"
+   ],
+   "new_since": "first",
+   "observed": "The leaf says 'real research/sowing/recipe/use are included', but sc_sworn's start is 'Researched sowable hedge' and its action is 'Craft/use sap, authorize crossings, expire mark and repeat'. Research is pre-completed and no hedge is sown.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Change sc_sworn's start and action to include real research and sowing, with an unresearched-sowing control"
+   },
+   "what": "The sworn scene never performs the research or sowing that its leaf says are included",
+   "where": "scenes.json sc_sworn (line 887); tree.json sworn (line 703)",
+   "would_pass": "sc_sworn starts with the sworn research unfinished, a colonist completes it, then sows and grows the hedge through real jobs before the sap arms; a control shows sowing refused before the research"
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "An expect clause with no staged action is an untested claim, and this one is his stated purpose.",
+   "evidence": [
+    "record.json:1569",
+    "scenes.json:2060",
+    "tree.json:1495",
+    "sheet.md:6"
+   ],
+   "gid": "g9",
+   "ids": [
+    "fire_maker_witness_trail",
+    "maker"
+   ],
+   "new_since": "first",
+   "observed": "His words: 'We will need this later for the ownership mod anyway. So worth investing on a robust witness violator relationship tracking system.' sc_maker's expect claims 'Shared storage supports property without changing its humanlike reporting policy', but its start and action stage only fire makers and giants. No RimProperty consumer, query or control appears.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a property-reuse arm (an offline fixture is acceptable) to sc_maker's start, action and control"
+   },
+   "what": "Reuse of the witness/violator store by ownership, the reason he asked for it, has no staged arm",
+   "where": "scenes.json sc_maker (line 2060)",
+   "would_pass": "sc_maker (or an offline arm) writes a taking event through the property path into the shared store and reads it back with the same identity/age semantics; RimProperty's humanlike-only reporting still excludes an animal witness, and a fire-maker record is not misread as a taking"
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The project's Mod Settings rule requires all-off graceful degradation, and per-feature toggles do not prove the combined state.",
+   "evidence": [
+    "tree.json:1567",
+    "scenes.json:2169",
+    "floor.json",
+    "sheet.md:70"
+   ],
+   "gid": "g10",
+   "ids": [
+    "settings"
+   ],
+   "new_since": "first",
+   "observed": "The leaf says 'all-off degrades gracefully without losing stored ownership', but the action is 'every feature on/off/on', one at a time. No arm disables every switch at once and plays the map.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add an all-off-together arm and its expect to sc_settings"
+   },
+   "what": "The settings scene never turns all features off together, so 'all-off degrades gracefully' is untested",
+   "where": "scenes.json sc_settings (line 2169); tree.json settings (line 1567)",
+   "would_pass": "sc_settings has an arm with every feature switch off together that loads the map, ticks a bounded window with zero errors, and finds stored claims/banks/hoards intact; turning everything back on restores the effects"
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A scene whose pass needs work a standing ruling forbids cannot be built as written.",
+   "evidence": [
+    "scenes.json:1092",
+    "record.json:244",
+    "sheet.md:101",
+    "tree.json:847"
+   ],
+   "gid": "g11",
+   "ids": [
+    "smother_craft",
+    "smother_claim"
+   ],
+   "new_since": "first",
+   "observed": "The sc_smother_claim start carries an 'Import matrix: ... saved 30/custom retain labelled legacy override; missing old field=>30-day old-claim fallback ... old start-only due frozen on import', and its control tests 'legacy 30 and custom 7/90/120 days ... imports'. The sheet says 'imported old due dates preserved'. Owner ruling 2026-11-08 (no save-migration code before release): 'don't maintain code that converts previous debug versions. There are no official savegames yet.' The acceptance can only pass by building banned migration code.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Remove the import matrix from sc_smother_claim's start and control, the 'imported old due dates' clause from sheet.md:101, and the migration text from the record decision"
+   },
+   "what": "The smother scene requires legacy save-migration code, which a standing owner ruling bans",
+   "where": "scenes.json sc_smother_claim (line 1092); record.json decision stage3_finite_smother_migration (line 244)",
+   "would_pass": "sc_smother_claim and the sheet drop the legacy-import arms; the remaining arms test the new schema only (120-day default, 120-600 range, per-claim frozen duration, tuning changes apply to new claims, off/hold/re-enable), and stage3_finite_smother_migration is rewritten to match"
+  },
+  {
+   "criterion_verdict": "flawed",
+   "criterion_why": "The contract's 'speaker owner' clause conflicts with later standing rulings that let the Conductor's delegated pick replace an ask, so it is ambiguous which governs.",
+   "evidence": [
+    "scenes.json:2746",
+    "scenes.json:2763",
+    "record.json:229",
+    "sheet.md:99"
+   ],
+   "gid": "g12",
+   "ids": [],
+   "new_since": "first",
+   "observed": "The showcase's source is 'CONDUCTOR:1794794271528276351', and its decision has speaker 'conductor', delegated 'evidence-for-ask'. The contract says showcase 1's decision is 'speaker owner' and its source shares that decision's 'OWNER:<tsn>'. The later Evidence-for-Ask ruling (2026-11-15) and the Conductor-authority ruling make a delegated Conductor pick valid authority. The contract text predates both and does not say whether it may stand in.",
+   "return_to": 2,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "A neutral fixer reconciles the contract's showcase-1 clause with the Evidence-for-Ask and Conductor-authority rulings; no concept edit if the delegated pick is accepted"
+   },
+   "what": "Flagship showcase 1 is bound to a Conductor decision, not to the owner-speaker decision the contract's text names",
+   "where": "scenes.json showcases[0] home_routes_expedition (line 2746); record.json stage2_flagship_home_routes (line 229)",
+   "would_pass": "Either designer_scene_contract.md states that a Conductor decision delegated under evidence-for-ask may bind showcase 1 (and designer_stage.py showcases accepts it), or record.json holds an owner-speaker flagship decision with an OWNER:<tsn> that the showcase cites"
+  }
+ ],
+ "hashes": {
+  "dec:grounding_boundaries": "0e6c3912bf223ded",
+  "dec:proof_freshness_policy": "80f2fca432f895a2",
+  "dec:stage1_root_delegation": "749de6d20e3af18d",
+  "dec:stage2_existing_description_promises": "ce4d69057925edbb",
+  "dec:stage2_flagship_home_routes": "7345c8b34e3e85e8",
+  "dec:stage2_home_and_ordered_routes": "764c5e1fa697f351",
+  "dec:stage2_proof_boundaries": "ea33f7767157c881",
+  "dec:stage2_shared_witness_and_base_binding": "d63e8995006d9dc3",
+  "dec:stage2_sweetline_ecology_and_technology": "422efa77bb3d9b12",
+  "dec:stage2_vine_hazards_and_signs": "85a35cf74856a130",
+  "dec:stage2_years_and_material_payoff": "ad982a28b5d84a37",
+  "dec:stage3_canonical_root_observations": "13eacfc6f737b39a",
+  "dec:stage3_finite_smother_migration": "7750cc4d28dcd6b2",
+  "dec:stage3_proof_catalog_and_floor": "7f508fa71d8111e2",
+  "dec:stage3_retry_root_references": "4a38568fd64a6d01",
+  "dec:stage3_useful_fuel_and_ecology_tuning": "230d0d85fd4ce4ce",
+  "dec:stage4_cold_reader_exam": "874a8ed1add92a9c",
+  "dec:stage4_helper_budget_overrun": "510247bb1f5eae49",
+  "exam": "23ecc3ba6cdb0b88",
+  "floor": "9f9394af68fba687",
+  "inv:acoustic_payload": "c61574fec8326dcd",
+  "inv:bark_wardens_removed": "d9a9d3c9c90007f7",
+  "inv:biome_cast": "c4d37e7ec08d0985",
+  "inv:calling_pyre": "0c2ff89c6e28eb5b",
+  "inv:crown_mob": "1b455a5da052d642",
+  "inv:cruststar_grazing_ecology": "218053f485bbd50f",
+  "inv:dead_cane_fuel": "460601666c4bac84",
+  "inv:dependable_home_routes": "34108fb5e39386c3",
+  "inv:downwind_fire": "a37857076c011e47",
+  "inv:dripping_harvest": "d1ec04d01dad2aaf",
+  "inv:farmer_camps_removed": "8af7362ef73d87d8",
+  "inv:felt_comfort": "16d45f8e810e8f2c",
+  "inv:fire_maker_witness_trail": "e751400752f0bba1",
+  "inv:fire_stamping": "bd9b68c7716d9df9",
+  "inv:fuzzviper_ambush": "989f75e3a89759f0",
+  "inv:gale_dust": "ced68c888ff8c54f",
+  "inv:gale_exposure": "e198f3fdae681074",
+  "inv:gale_raid_weight": "7b3e401db59f8da9",
+  "inv:gale_turbines": "597abba7b7b1845e",
+  "inv:hoard": "e9cec5e46bbddeea",
+  "inv:hollow_passage": "5dff8f9e293efc50",
+  "inv:lean_heading": "2e3cb4510516b19e",
+  "inv:lure": "2f74c28188959507",
+  "inv:ordered_crossing_policy": "0ad8a537d334d36f",
+  "inv:pillowmoss_wet_spot": "b35c711649991039",
+  "inv:plant_lean": "46908c07871b7a02",
+  "inv:premium_dead_cane": "cbcb89899c546686",
+  "inv:proximity_hatch": "a6a7800486203b49",
+  "inv:quench": "84e55bd4044b7201",
+  "inv:rearing": "c63d5f66545730bb",
+  "inv:ribbonwhip_canopy_route": "46bc3ee3e9250d99",
+  "inv:ribbonwhip_wind_concealment": "55355d99095332c2",
+  "inv:ripple": "a81799addd206a96",
+  "inv:rollbug_carrion": "b7b8cc2709eb7f26",
+  "inv:ruin_injections": "29c5fb993aceefe2",
+  "inv:runway_bloom": "6e1f424a034a01de",
+  "inv:save_aliases": "68d2b1a2b0cc9b8d",
+  "inv:scavenger_camps": "0c31c4844f325197",
+  "inv:settings": "f31337e3a0533953",
+  "inv:shedding": "1c2b1aa025729bab",
+  "inv:shirrel_flight_art": "19034e9e38837ffd",
+  "inv:shirrel_glide": "42fa1048f661d9f0",
+  "inv:shokka_ambush": "f013714035817912",
+  "inv:sleeper": "3bbe0df58b4265c6",
+  "inv:smother_craft": "db978bdc7113606e",
+  "inv:stall_freeze": "0ae95497e6da3441",
+  "inv:stall_hunter": "52866400dca45e45",
+  "inv:strangler": "6f3434c630095e98",
+  "inv:surrik_crustswim": "fb7f692b2fed1997",
+  "inv:sweetline_canopy": "b54ccd3a4e8a4866",
+  "inv:sweetline_felt_bank": "a732dd33b18edd66",
+  "inv:sweetline_landmark": "3ba0114c52fe54af",
+  "inv:sweetline_scratching": "9901f4677f1d168f",
+  "inv:sweetline_shed": "a5f91db5c6ab2d04",
+  "inv:sweetline_visits": "326568a1f1b587e7",
+  "inv:sworn": "8e6349cccd2a1e70",
+  "inv:tanglefuzz_den_ecology": "33a1cde57edaabd3",
+  "inv:thornhold_den_stand": "a9e8796df13211e6",
+  "inv:thornhold_quills": "e155811fdc4c3209",
+  "inv:twitcher": "47c77774bbf55bcf",
+  "inv:upwind_scent": "5528aecddd558ef3",
+  "inv:vine_creep": "ecb8a6e46b4fec15",
+  "inv:vine_growth_exemption": "3cf70abcffadef79",
+  "inv:vine_hazard": "c5380066303b8566",
+  "inv:vine_islands": "9ae117ba0293b90e",
+  "inv:vissler_arm_food": "e05ed625a1a94915",
+  "inv:vissler_finite_arm_regrowth": "5c395b9b16ee119e",
+  "inv:walking": "d5dcc3e519ca361c",
+  "inv:weather_calendar": "8b545e01965b83dd",
+  "inv:weeper": "164539ce492efbe2",
+  "inv:wind_sound": "dd2ce2f146b31313",
+  "inv:wind_vaporator": "731058a3e6ca7b64",
+  "inv:windbreak_lee": "92d1c85de712d5ae",
+  "leaf:acoustic_payload": "9205b114e26d9db1",
+  "leaf:arm_food": "cd50f152bac71e1a",
+  "leaf:arm_regrowth": "ce4f4d0ab5cf5fee",
+  "leaf:bloom": "723e69c51e229a85",
+  "leaf:camps": "7bbdc9930b4ff454",
+  "leaf:cane_fuel": "44aeca2287ae9c98",
+  "leaf:colony_walk": "1df11343026be7be",
+  "leaf:concealment": "bf8486a868ddddcf",
+  "leaf:creep": "2807723a4e9004bd",
+  "leaf:crown": "aeda4a7faaf4e210",
+  "leaf:cruststar": "239b88cc5d958f2d",
+  "leaf:cuts": "72fcde6e98541242",
+  "leaf:dripping": "4d770a6589996fac",
+  "leaf:economy_observer": "38f831664ef15a04",
+  "leaf:felt_comfort": "a8806a731761bf7e",
+  "leaf:fire_bias": "eb25db4322aced78",
+  "leaf:fuzzviper": "5b558a72a93724bb",
+  "leaf:gale_drawing": "001a0eea54b9c414",
+  "leaf:gale_exposure": "4da2dba4523e915f",
+  "leaf:hoard": "966e366f5b6cd648",
+  "leaf:hollow": "8951c86955b13da7",
+  "leaf:home_routes": "1f2ec97c3f57610d",
+  "leaf:island_land": "f462bb302b5eb4c3",
+  "leaf:lee_reveal": "4b29e4286e257869",
+  "leaf:lure": "0c29aa10a3f464db",
+  "leaf:maker": "10594075bdf26f72",
+  "leaf:native_cast": "3d0adeee32c08bff",
+  "leaf:ordered_travel": "9f8df3f006c5c004",
+  "leaf:pillowmoss": "08701b338fd564a8",
+  "leaf:proximity_hatch": "a3590de48f522658",
+  "leaf:pyre_beliefs": "6034a3ddc79b52e8",
+  "leaf:pyre_ritual": "e881caa4a8175789",
+  "leaf:quench": "4828587e60728c95",
+  "leaf:raid_weight": "bbc35d1a89aa386a",
+  "leaf:rearing": "23b9cfc47c5235e3",
+  "leaf:ribbon_route": "0403e41b8b2bb1bc",
+  "leaf:rollbug": "071cc522da7eaa27",
+  "leaf:route_observer": "291c8af659028aaf",
+  "leaf:ruins": "52648937995460cd",
+  "leaf:save_aliases": "b4dec7a099f1bf3d",
+  "leaf:scent": "aea55d1f19552bc1",
+  "leaf:settings": "38e3be7d77f56406",
+  "leaf:shedding": "74bfefa9f277cb7c",
+  "leaf:shirrel_flight": "fa67526de3582566",
+  "leaf:shokka": "7f6823a4c8a49236",
+  "leaf:sleeper": "8c9a2dd7bc205891",
+  "leaf:smother_claim": "8ae9a1541801a2e7",
+  "leaf:stall_predation": "8e199313544a4a66",
+  "leaf:stall_wait": "e16078557fbde062",
+  "leaf:stamping": "689690e24bcf568f",
+  "leaf:strangler": "15f238ed2689cb0b",
+  "leaf:surrik": "1b5e47123171166d",
+  "leaf:sworn": "0f202f5f9d9fe553",
+  "leaf:tanglefuzz": "e3b657a3fa5bafd2",
+  "leaf:thornhold_den": "7778dffb2c34fb4b",
+  "leaf:thornhold_quill": "0cdd1f9a6a9b4c02",
+  "leaf:tree_bank": "273e47f62810eab1",
+  "leaf:tree_landmark": "01dce3f8345006f4",
+  "leaf:tree_scratch": "8673b7c7c5b78d26",
+  "leaf:tree_shed": "57287c2396e31789",
+  "leaf:tree_traces": "07b377e401503745",
+  "leaf:twitcher": "62c61a69b7f24a10",
+  "leaf:vaporator": "08109b794b47715d",
+  "leaf:vine_contact": "960d6fe89fb18314",
+  "leaf:walking": "1cab1f51cc8c1732",
+  "leaf:weeper": "1f4668db4de9f3b7",
+  "leaf:wind_audio": "7a9100ec12b29570",
+  "leaf:wind_plain": "b08f23693f093910",
+  "leaf:witness_observer": "7b572e05dde65497",
+  "leaf:working_wind": "25b55357623097d6",
+  "record:scope": "60dfb7e136f226a0",
+  "rest:acoustic_payload": "0f556a075ef51475",
+  "rest:biome_cast": "8ce3cbbeeca110d0",
+  "rest:gale_raid_weight": "e7709fec97f90d45",
+  "rest:proximity_hatch": "61cdee23000e2b47",
+  "rest:save_aliases": "7bd2aac4f040cb36",
+  "rest:settings": "4b9cf1e6d106f4d7",
+  "rest:vine_growth_exemption": "15ded87962061344",
+  "scene:floor_payload": "c060c578ef986f2b",
+  "scene:floor_persistence": "3dbe95e3c109e070",
+  "scene:floor_recovery": "2255c42dd00e1adf",
+  "scene:floor_runtime": "bd0bdd529f17116f",
+  "scene:floor_visual": "5d16c1f4271ded5f",
+  "scene:ix_conceal_hunt": "5c78fff98edabe82",
+  "scene:ix_ecology_places": "e15eb58f09baaa1b",
+  "scene:ix_fire_accountability": "0bc8b30039a29945",
+  "scene:ix_materials": "9b838be26359c756",
+  "scene:ix_route_growth": "97e0da42f46f80bc",
+  "scene:look_existing_home": "86c85e3ecabae7f2",
+  "scene:sc_acoustic_payload": "777349675ebeb5b5",
+  "scene:sc_arm_food": "5458282469ed29e3",
+  "scene:sc_arm_regrowth": "fec48078c13f0c75",
+  "scene:sc_bloom": "9d763b616baba893",
+  "scene:sc_camps": "eec94e06a20ef2e8",
+  "scene:sc_cane_fuel": "0bd87af1d2184ca3",
+  "scene:sc_colony_walk": "c89ad86f87446906",
+  "scene:sc_concealment": "266ce990f4b1d841",
+  "scene:sc_creep": "899769027960f5bf",
+  "scene:sc_crown": "ad1ec334158a03fb",
+  "scene:sc_cruststar": "386188ae85b8df85",
+  "scene:sc_cuts": "ad01db0ed6a8ed78",
+  "scene:sc_dripping": "87ed6853631afe98",
+  "scene:sc_economy_observer": "8c862e9f5ea84212",
+  "scene:sc_felt_comfort": "a465114d786b6a57",
+  "scene:sc_fire_bias": "d21e4bdc7643ec74",
+  "scene:sc_fuzzviper": "1bb4f0069adfbc35",
+  "scene:sc_gale_drawing": "80dfc83d053e1353",
+  "scene:sc_gale_exposure": "090993a7bb2fedec",
+  "scene:sc_hoard": "d08acee8944695ad",
+  "scene:sc_hollow": "caab169c27e5ee24",
+  "scene:sc_home_routes": "7bf146472d69ab34",
+  "scene:sc_island_land": "daa44bda310bccb1",
+  "scene:sc_lee_reveal": "70a1515bda0a6215",
+  "scene:sc_lure": "fe704f364ed305ec",
+  "scene:sc_maker": "da2acf8cfff83055",
+  "scene:sc_native_cast": "0c79426fa4a1e690",
+  "scene:sc_ordered_travel": "9c459f89012cd8ad",
+  "scene:sc_pillowmoss": "5b254a0f9cd48f29",
+  "scene:sc_proximity_hatch": "7a2152a80ae64074",
+  "scene:sc_pyre_beliefs": "fdf1b93da047821c",
+  "scene:sc_pyre_ritual": "be8fcec8d48a6fcd",
+  "scene:sc_quench": "1c3ce4824aebf006",
+  "scene:sc_raid_weight": "1480854fddc92b3f",
+  "scene:sc_rearing": "c31adf912ea84292",
+  "scene:sc_ribbon_route": "655754f0b9cc980a",
+  "scene:sc_rollbug": "40ee2c62180eb51a",
+  "scene:sc_route_observer": "4330e9518cb03ec9",
+  "scene:sc_ruins": "33cd8bde908fc37b",
+  "scene:sc_save_aliases": "2f052487cddb10c8",
+  "scene:sc_scent": "10849e69b17eec77",
+  "scene:sc_settings": "a16b29041d468aa2",
+  "scene:sc_shedding": "022d9b60eca1511c",
+  "scene:sc_shirrel_flight": "e9b6ee06dd98f90c",
+  "scene:sc_shokka": "a67bfc9c111503bf",
+  "scene:sc_sleeper": "f8ece3afdb6eba54",
+  "scene:sc_smother_claim": "db338e8ef753e52c",
+  "scene:sc_stall_predation": "9a0e2098f38f330b",
+  "scene:sc_stall_wait": "9f275093a1c112f7",
+  "scene:sc_stamping": "680ea1c529b39255",
+  "scene:sc_strangler": "da8b5082bc22d223",
+  "scene:sc_surrik": "116d54b6129eb998",
+  "scene:sc_sworn": "3ec31e0b1f219a61",
+  "scene:sc_tanglefuzz": "0753ccfe8d1b3c38",
+  "scene:sc_thornhold_den": "ce7afa89c7991bd5",
+  "scene:sc_thornhold_quill": "01c9893cd218b17e",
+  "scene:sc_tree_bank": "53799dbb14ec452e",
+  "scene:sc_tree_landmark": "9e85895e520f0fab",
+  "scene:sc_tree_scratch": "f73806c16ac32e45",
+  "scene:sc_tree_shed": "9a0eab36d5a36074",
+  "scene:sc_tree_traces": "43185277a971610e",
+  "scene:sc_twitcher": "838c03303addb34f",
+  "scene:sc_vaporator": "ec96dc83751f34cd",
+  "scene:sc_vine_contact": "d210610a17ed1cc6",
+  "scene:sc_walking": "85238328f789f6b8",
+  "scene:sc_weeper": "4ba900c2e3c694bb",
+  "scene:sc_wind_audio": "007b15ad95b2efa6",
+  "scene:sc_wind_plain": "d5d24fb114827709",
+  "scene:sc_witness_observer": "ae8a43d89fac7409",
+  "scene:sc_working_wind": "eca45b513c70c4c8",
+  "sheet:": "82d6f1cb3a33ac64",
+  "sheet:delegated": "fe2a6bf0c0a72184",
+  "sheet:does": "82065d562370680f",
+  "sheet:does not": "a8f20aed7da39a31",
+  "sheet:his words": "6b4563e7fb9ffa1b",
+  "sheet:open": "3ac9061b98022fde",
+  "sheet:pruning": "bba6020f53b829fa",
+  "sheet:waived": "dc9df4091e056fd1",
+  "showcase:farmstead_learning": "f8cdd0f7f94635ea",
+  "showcase:fire_and_belief": "24320dc21048b373",
+  "showcase:home_routes_expedition": "b5472d5cb66a2d5e",
+  "showcase:runway_ecology": "ebfdddb75ca3772e",
+  "showcase:sweetline_economy": "9631a0cc60622918",
+  "showcase:vine_rooms": "6dd73345028b7752",
+  "showcase:weather_plain": "52a97ec020d945bf",
+  "tree:rest": "e9d307a6f7babbab"
+ },
+ "inputs": {
+  "exam.json": "54b7ea2102d1a07359e2e062361ad8893c44af4e1466e84518eb5e872101db1b",
+  "floor.json": "96e493e971174222b68dda98d2fbb2e4c613be69f09a988555c82954346dd4c9",
+  "record.json": "a801be0d451b6825eb93691e81a58078305c36cf18591ead1fcfe8cf86876c48",
+  "scenes.json": "11dc78601a1b9fe2b36e9f65e40597de324cf5dfc485c2b2d6fadfaa61cbe02b",
+  "sheet.md": "7a8a610c267422e5717865415cb926c660b3cf6432f69dadeeea3c6fdb7f6ed6"
+ },
+ "judge": "rm-coverage-judge-1794823485",
+ "mode": "full",
+ "prompt_chars": 5413,
+ "reasons": "Not covered: 12 gaps. Structure is sound: all 71 coverage units appear in a showcase or in coverage_rest, every leaf has a script-staged acceptance scene with start, control and restore, no leaf is accepted only by the exploration scene, and the overlap and greedy order of the 7 showcases hold. The gaps are parts of a capability or leaf that no scene stages: (1) native flora generation; (2) wind values and the windy-twin weather-table replacement; (3) lean heading checked against geometry; (4) the fog ambient bed; (5) the Gale overlay's fallback with owned art missing; (6) Dripping's Apply at startup; (7) 'per-form' vine bands staged for only 4 forms; (8) sworn research and sowing; (9) ownership reuse of the witness store, his stated purpose; (10) an all-off-together settings arm; (11) the smother legacy-import arms, which demand migration code the owner banned on 2026-11-08 (the scene and sheet should drop them). The Designer can fix all of these as stage 3 edits. (12) Showcase 1 is bound to a Conductor decision rather than an owner one. That is a flawed-criterion conflict between the contract text and the later Evidence-for-Ask ruling, for a neutral fixer rather than the Designer. The ids that are both an inventory capability and a leaf (gale_exposure, twitcher, rearing, walking, hoard, quench, sworn, shedding, strangler, weeper, sleeper, lure, felt_comfort, settings, save_aliases, acoustic_payload, proximity_hatch) are judged once each, in a single row covering both texts. Outside coverage, for the lock stage: tree.json root_state is DRAFT and root_hash is null, so packet step 1 applies.",
+ "sheet": "7a8a610c267422e5717865415cb926c660b3cf6432f69dadeeea3c6fdb7f6ed6",
+ "signed": false,
+ "tokens": 1056412,
+ "tree": "e3e3f2aa7fb4feba4babd1c994112a067021f10756936e842ca95164dccf6de8",
+ "verdict": "not_covered"
+}

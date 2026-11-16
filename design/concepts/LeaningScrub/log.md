@@ -49,3 +49,13 @@ OWNER:1792856115688559019 already authorizes migrating invented ShrublandGiant t
 ### Live walk and certification
 
 The existing attended walk remains proposed, not run. First-touch certification remains reserved at Lock. No owner-dependent step or sent ask is left at Stage 2.
+
+## Stage 2 return — rm-role-designercodex-1794831790
+
+### Sent a_root_validation_2
+
+Should the eight observations in Leaning Scrub’s canonical north-star checklist (turn_03.md) become the binding acceptance bar, or which observation needs correction?
+
+`turn_03.md` shows all eight canonical observations verbatim and offers the existing live walk before further design. This validates obligations only; no implementation, coverage or first-touch pass follows. The root sentence and flagship remain approved by their existing delegated sources. The walk is DRAFT and tree root_hash null; Lock step1 reserves checklist validation for the owner. No later owner validation event located.
+
+Fresh reviewer `/root/review_root_validation` PASS, conservative usage30000 weighted tokens charged; exact telemetry unavailable. No ask struck in this run. No reply received or fabricated. Owner presence reports away, so this ends waiting_owner and must park until his own word on the item. All12 advisory findings retained, unchecked=[], g12 remains neutral criteria-fixer work. No game action.

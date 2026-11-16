@@ -1,0 +1,377 @@
+{
+  "run": "rm-role-designercodex-1794828804",
+  "stage": 5,
+  "disposition": "return to stage 2 for root validation, per designer_lock.md step 1",
+  "root": {
+    "walk": "design/validation_walks/RimMandrake/LeaningScrub.md:114",
+    "state": "DRAFT",
+    "tree_root_state": "DRAFT",
+    "tree_root_hash": null,
+    "authority": "Delegated root sentence approval does not supply owner-only first-touch validation. Do not validate, stamp or rewrite here."
+  },
+  "gate": {
+    "passed": false,
+    "errors": [
+      "root is not VALIDATED: state: is DRAFT, not VALIDATED",
+      "no coverage signature"
+    ]
+  },
+  "showcases": {
+    "passed": true,
+    "count": 7,
+    "note": "Structural acceptance only; no coverage signature, live play or root certification inferred."
+  },
+  "coverage": {
+    "judge": "rm-coverage-judge-1794823485",
+    "verdict": "not_covered",
+    "signed": false,
+    "contract": {
+      "advisory": true,
+      "alarms": [
+        {
+          "family": "coverage_judge",
+          "first_at": "2026-11-15T09:32:09Z",
+          "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+          "last_at": "2026-11-16T10:14:36Z",
+          "open": true,
+          "subject": "family:coverage_judge",
+          "told_at": "2026-11-15T09:32:09Z",
+          "trips": 7,
+          "why": "refused all of its last 8 verdicts across 4 items"
+        }
+      ],
+      "cached": [],
+      "calibration": "UNTESTED",
+      "counted": true,
+      "may_judge": true,
+      "ok": true,
+      "repair_due": []
+    },
+    "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+    "unchecked": [],
+    "gaps": [
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "Each built inventory part needs an acceptance scene, and plant generation is a separate mechanism from animal spawning.",
+        "evidence": [
+          "record.json:392",
+          "tree.json:1039",
+          "scenes.json:1379"
+        ],
+        "gid": "g1",
+        "ids": [
+          "biome_cast",
+          "native_cast"
+        ],
+        "new_since": "first",
+        "observed": "biome_cast says 'The composed biome provides its own ground cover, scrub, wildlife and ordinary plant/animal products', but sc_native_cast only censuses animals ('view all native races/life-stages/facings') and lifecycles; no scene measures the wild-plant roster or its density on a fresh map. sc_wind_plain looks only at the appearance of the seven leanPlants.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Add a flora census arm to sc_native_cast and a 'native ground cover and scrub generate naturally' clause to the native_cast leaf"
+        },
+        "what": "The biome's own ground cover and scrub flora (the 'fuzz plain') is never asserted to generate naturally",
+        "where": "scenes.json sc_native_cast (line 1379); tree.json native_cast (line 1039)",
+        "would_pass": "sc_native_cast (or a new acceptance scene) lists the effective wildPlants roster in start, measures per-species natural plant counts/density on its three fresh Scrub maps, and has a control (a roster entry disabled on the same seed) that shows zero natural count for that entry"
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "The capability names specific behaviour that a script can read and control directly.",
+        "evidence": [
+          "record.json:419",
+          "scenes.json:22",
+          "tree.json:102",
+          "sheet.md:10"
+        ],
+        "gid": "g2",
+        "ids": [
+          "weather_calendar",
+          "wind_plain"
+        ],
+        "new_since": "first",
+        "observed": "weather_calendar says 'Stall is calm; Gale is strong wind. Windy twins replace stock overcast, gray pall and dry thunderstorm in the biome table.' sc_wind_plain only views the twins ('three windy twins') and its control is leanPlantsEnabled off. No scene reads wind speed in ordinary weather, Stall or Gale, or checks that the stock weathers can no longer be chosen.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Add wind-speed and weather-table assertions plus the non-Scrub table control to sc_wind_plain (or a new sc_weather_calendar in coverage_rest)"
+        },
+        "what": "The weather calendar's wind values and the windy-twin replacement in the biome weather table are not asserted or controlled",
+        "where": "scenes.json sc_wind_plain (line 22); tree.json wind_plain (line 102)",
+        "would_pass": "An acceptance scene reads the live map wind speed in ordinary weather, each twin, Stall and Gale against configured values (Stall below and Gale above an ordinary-weather baseline), and reads the effective biome weather commonality table: the three stock defs at weight 0 with their twins present. A control on a non-Scrub biome shows the stock defs still selectable."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "Direct Sun and the Lean are ruled pure functions of geometry, so correctness against geometry is the property, not consistency.",
+        "evidence": [
+          "record.json:456",
+          "scenes.json:22",
+          "tree.json:102"
+        ],
+        "gid": "g3",
+        "ids": [
+          "lean_heading",
+          "wind_plain"
+        ],
+        "new_since": "first",
+        "observed": "lean_heading says 'heading derived from tile-to-substellar geometry'; sc_wind_plain uses one 'Real Scrub tile, sun-derived heading' and expects 'one consistent heading across reload'. A heading that is constant or wrong but stable would pass, and the only control turns plant lean off.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Add a second tile with a different bearing and an independent geometry comparison to sc_wind_plain's start/expect"
+        },
+        "what": "The claim that the lean heading derives from tile-to-substellar geometry and is shared across Scrub maps is untested; the scene checks only consistency",
+        "where": "scenes.json sc_wind_plain (line 22)",
+        "would_pass": "The scene measures plant facing on two Scrub tiles with different substellar bearings and asserts each equals a heading computed independently from that tile's position (within a stated tolerance), and that both maps of the same tile agree"
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "Each weather that ships an ambient bed is a separate part a human sound pass can confirm.",
+        "evidence": [
+          "record.json:440",
+          "scenes.json:98",
+          "tree.json:150"
+        ],
+        "gid": "g4",
+        "ids": [
+          "wind_sound",
+          "wind_audio"
+        ],
+        "new_since": "first",
+        "observed": "wind_sound says 'Steady wind and fog carry vanilla wind and jungle insect ambient beds'; sc_wind_audio's action is 'Listen across ordinary day/night wind, Stall, Gale and return', with no fog arm.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Add a fog arm to sc_wind_audio's action and expect"
+        },
+        "what": "The fog ambient bed is not part of the audio scene",
+        "where": "scenes.json sc_wind_audio (line 98)",
+        "would_pass": "sc_wind_audio's action includes the fog weather, and its expect asserts the wind/insect beds are audible in fog"
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "A built fallback path is a shipped behaviour that can fail silently.",
+        "evidence": [
+          "record.json:495",
+          "scenes.json:63",
+          "tree.json:126"
+        ],
+        "gid": "g5",
+        "ids": [
+          "gale_dust",
+          "gale_drawing"
+        ],
+        "new_since": "first",
+        "observed": "gale_dust says 'absent art falls back to vanilla fog material'. sc_gale_drawing starts with 'both effective owned overlay textures', and its control turns the overlay off; no arm runs with the textures missing.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Add a missing-texture fixture arm to sc_gale_drawing (an offline fixture is enough)"
+        },
+        "what": "The Gale overlay's fallback to vanilla fog material when owned art is absent is untested",
+        "where": "scenes.json sc_gale_drawing (line 63)",
+        "would_pass": "An offline or live arm loads the overlay with RM_GaleDust_A/B unresolved and asserts the vanilla fog material is used with no error logged; the positive arm asserts the owned textures"
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "Startup Apply is a separate code path from the write hook, and a player relies on it every session.",
+        "evidence": [
+          "record.json:750",
+          "scenes.json:616",
+          "tree.json:511"
+        ],
+        "gid": "g6",
+        "ids": [
+          "dripping_harvest",
+          "dripping"
+        ],
+        "new_since": "first",
+        "observed": "dripping_harvest says 'Apply runs at startup and settings writes.' sc_dripping uses the 'real WriteSettings Apply path' and a save/reload, but a save reload does not re-run startup. No arm starts the game with regrowth saved off (or on) and checks the harvest behaviour.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Add a startup-Apply arm to sc_dripping, or to floor_runtime's authorized cold load"
+        },
+        "what": "Dripping's Apply at game startup is untested; only Apply on settings write is exercised",
+        "where": "scenes.json sc_dripping (line 616)",
+        "would_pass": "An arm saves regrowth off, cold-starts (the minimal list is enough), and asserts a Dripping harvest follows the vanilla path without changing the setting in that session; it is repeated with regrowth on"
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "The leaf's own wording promises every form; the scene must either test that or the wording must shrink.",
+        "evidence": [
+          "tree.json:487",
+          "scenes.json:580",
+          "record.json:729",
+          "sheet.md:25"
+        ],
+        "gid": "g7",
+        "ids": [
+          "vine_hazard",
+          "vine_contact"
+        ],
+        "new_since": "first",
+        "observed": "The leaf says 'The observer sees per-form free/thread/blocked bands', but sc_vine_contact stages only 'Thicket/Weeper/Hollow/Walking lanes'. The other forms that carry the shared contact/barrier comps (Dripping, Twitcher, Crown, Rearing, Hoard, Quench, Sworn, Shedding, Strangler, Sleeper, Lure) get no band check.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Extend the lane list in sc_vine_contact, or narrow the leaf wording and add an offline per-form parameter check"
+        },
+        "what": "The 'per-form' free/thread/blocked bands are staged for only four of the vine forms",
+        "where": "scenes.json sc_vine_contact (line 580); tree.json vine_contact (line 487)",
+        "would_pass": "Either sc_vine_contact's lane matrix covers every form whose def carries the barrier/contact comps (bodies 0.79/0.8/1.0/1.5/1.51 per form), or the leaf and sheet name exactly the four forms tested and a defs check proves the rest share those parameters"
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "The leaf names research and sowing as tested parts; a pre-researched fixture cannot show them.",
+        "evidence": [
+          "tree.json:703",
+          "scenes.json:887",
+          "record.json"
+        ],
+        "gid": "g8",
+        "ids": [
+          "sworn"
+        ],
+        "new_since": "first",
+        "observed": "The leaf says 'real research/sowing/recipe/use are included', but sc_sworn's start is 'Researched sowable hedge' and its action is 'Craft/use sap, authorize crossings, expire mark and repeat'. Research is pre-completed and no hedge is sown.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Change sc_sworn's start and action to include real research and sowing, with an unresearched-sowing control"
+        },
+        "what": "The sworn scene never performs the research or sowing that its leaf says are included",
+        "where": "scenes.json sc_sworn (line 887); tree.json sworn (line 703)",
+        "would_pass": "sc_sworn starts with the sworn research unfinished, a colonist completes it, then sows and grows the hedge through real jobs before the sap arms; a control shows sowing refused before the research"
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "An expect clause with no staged action is an untested claim, and this one is his stated purpose.",
+        "evidence": [
+          "record.json:1569",
+          "scenes.json:2060",
+          "tree.json:1495",
+          "sheet.md:6"
+        ],
+        "gid": "g9",
+        "ids": [
+          "fire_maker_witness_trail",
+          "maker"
+        ],
+        "new_since": "first",
+        "observed": "His words: 'We will need this later for the ownership mod anyway. So worth investing on a robust witness violator relationship tracking system.' sc_maker's expect claims 'Shared storage supports property without changing its humanlike reporting policy', but its start and action stage only fire makers and giants. No RimProperty consumer, query or control appears.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Add a property-reuse arm (an offline fixture is acceptable) to sc_maker's start, action and control"
+        },
+        "what": "Reuse of the witness/violator store by ownership, the reason he asked for it, has no staged arm",
+        "where": "scenes.json sc_maker (line 2060)",
+        "would_pass": "sc_maker (or an offline arm) writes a taking event through the property path into the shared store and reads it back with the same identity/age semantics; RimProperty's humanlike-only reporting still excludes an animal witness, and a fire-maker record is not misread as a taking"
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "The project's Mod Settings rule requires all-off graceful degradation, and per-feature toggles do not prove the combined state.",
+        "evidence": [
+          "tree.json:1567",
+          "scenes.json:2169",
+          "floor.json",
+          "sheet.md:70"
+        ],
+        "gid": "g10",
+        "ids": [
+          "settings"
+        ],
+        "new_since": "first",
+        "observed": "The leaf says 'all-off degrades gracefully without losing stored ownership', but the action is 'every feature on/off/on', one at a time. No arm disables every switch at once and plays the map.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Add an all-off-together arm and its expect to sc_settings"
+        },
+        "what": "The settings scene never turns all features off together, so 'all-off degrades gracefully' is untested",
+        "where": "scenes.json sc_settings (line 2169); tree.json settings (line 1567)",
+        "would_pass": "sc_settings has an arm with every feature switch off together that loads the map, ticks a bounded window with zero errors, and finds stored claims/banks/hoards intact; turning everything back on restores the effects"
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "A scene whose pass needs work a standing ruling forbids cannot be built as written.",
+        "evidence": [
+          "scenes.json:1092",
+          "record.json:244",
+          "sheet.md:101",
+          "tree.json:847"
+        ],
+        "gid": "g11",
+        "ids": [
+          "smother_craft",
+          "smother_claim"
+        ],
+        "new_since": "first",
+        "observed": "The sc_smother_claim start carries an 'Import matrix: ... saved 30/custom retain labelled legacy override; missing old field=>30-day old-claim fallback ... old start-only due frozen on import', and its control tests 'legacy 30 and custom 7/90/120 days ... imports'. The sheet says 'imported old due dates preserved'. Owner ruling 2026-11-08 (no save-migration code before release): 'don't maintain code that converts previous debug versions. There are no official savegames yet.' The acceptance can only pass by building banned migration code.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Remove the import matrix from sc_smother_claim's start and control, the 'imported old due dates' clause from sheet.md:101, and the migration text from the record decision"
+        },
+        "what": "The smother scene requires legacy save-migration code, which a standing owner ruling bans",
+        "where": "scenes.json sc_smother_claim (line 1092); record.json decision stage3_finite_smother_migration (line 244)",
+        "would_pass": "sc_smother_claim and the sheet drop the legacy-import arms; the remaining arms test the new schema only (120-day default, 120-600 range, per-claim frozen duration, tuning changes apply to new claims, off/hold/re-enable), and stage3_finite_smother_migration is rewritten to match"
+      },
+      {
+        "criterion_verdict": "flawed",
+        "criterion_why": "The contract's 'speaker owner' clause conflicts with later standing rulings that let the Conductor's delegated pick replace an ask, so it is ambiguous which governs.",
+        "evidence": [
+          "scenes.json:2746",
+          "scenes.json:2763",
+          "record.json:229",
+          "sheet.md:99"
+        ],
+        "gid": "g12",
+        "ids": [],
+        "new_since": "first",
+        "observed": "The showcase's source is 'CONDUCTOR:1794794271528276351', and its decision has speaker 'conductor', delegated 'evidence-for-ask'. The contract says showcase 1's decision is 'speaker owner' and its source shares that decision's 'OWNER:<tsn>'. The later Evidence-for-Ask ruling (2026-11-15) and the Conductor-authority ruling make a delegated Conductor pick valid authority. The contract text predates both and does not say whether it may stand in.",
+        "return_to": 2,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "A neutral fixer reconciles the contract's showcase-1 clause with the Evidence-for-Ask and Conductor-authority rulings; no concept edit if the delegated pick is accepted"
+        },
+        "what": "Flagship showcase 1 is bound to a Conductor decision, not to the owner-speaker decision the contract's text names",
+        "where": "scenes.json showcases[0] home_routes_expedition (line 2746); record.json stage2_flagship_home_routes (line 229)",
+        "would_pass": "Either designer_scene_contract.md states that a Conductor decision delegated under evidence-for-ask may bind showcase 1 (and designer_stage.py showcases accepts it), or record.json holds an owner-speaker flagship decision with an OWNER:<tsn> that the showcase cites"
+      }
+    ],
+    "routing": "g1-g11 are retained as advisory Stage 3 candidate corrections. g12 is a flawed-criterion conflict for a neutral criteria fixer, not a new owner flagship question. The uncalibrated refusal itself does not send the concept back."
+  },
+  "frozen_file_hashes": {
+    "sheet.md": "7a8a610c267422e5717865415cb926c660b3cf6432f69dadeeea3c6fdb7f6ed6",
+    "scenes.json": "11dc78601a1b9fe2b36e9f65e40597de324cf5dfc485c2b2d6fadfaa61cbe02b",
+    "floor.json": "96e493e971174222b68dda98d2fbb2e4c613be69f09a988555c82954346dd4c9",
+    "exam.json": "54b7ea2102d1a07359e2e062361ad8893c44af4e1466e84518eb5e872101db1b"
+  },
+  "recovery": [],
+  "previous_rejection": {
+    "at": "2026-11-16T10:16:42Z",
+    "outcome": "rejected",
+    "run": "rm-role-designercodex-1794823475",
+    "stage": 5,
+    "why": [
+      "no result.json (a closing message is not a result)",
+      "Codex transport failed: no Codex transport result"
+    ]
+  },
+  "retry_response": "Write result.json for this exact run, validate with designer_stage.py check, and finish this Codex turn normally. Transport success is recorded by the launcher; no transport receipt is fabricated.",
+  "system_item": "RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK",
+  "boundaries": "No tree, sheet, scene, floor, exam, canonical walk or stage mutation; no sign, certify, mod handoff, game, bridge, restart or deploy."
+}

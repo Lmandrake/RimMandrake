@@ -308,6 +308,37 @@
       "speaker": "agent",
       "source": "design/concepts/LeaningScrub/exam.json",
       "text": "The five independent helper processes consumed 580949 weighted tokens, exceeding this run allowance500000 by80949. All actual helper usage was charged exactly with designer_stage.py charge --kind helper. Remaining task cap is available. No exemption or reset inferred."
+    },
+    {
+      "id": "stage5_lock_return_root_validation",
+      "speaker": "agent",
+      "text": "Lock audit: canonical north star remains DRAFT and root_hash null, so return to Stage 2 for root validation under Lock step 1. Structural showcase checks pass, but gate refuses root and absent signature. Judge rm-coverage-judge-1794823485 not_covered is explicitly advisory (UNTESTED brief); preserve all12 gaps and unchecked=[] without treating it as a binding refusal. g12 needs neutral criteria repair, not a repeated owner flagship ask. Frozen artifacts and prior proof boundaries preserved. No live action or certification.",
+      "source": [
+        "design/concepts/LeaningScrub/lock_review_05.json",
+        "src/RimMandrake/rimflow/roles/designer_lock.md",
+        "design/concepts/LeaningScrub/coverage_verdict.json"
+      ]
+    },
+    {
+      "id": "stage2_root_validation_wait",
+      "speaker": "agent",
+      "text": "Preserve delegated root sentence and flagship approvals. Await owner-only validation of the eight canonical DRAFT observations; no matching later owner approval located. Root/bar and examined artifacts remain unchanged. All12 advisory coverage gaps and unchecked=[] retained, g12 remains neutral criteria-fixer work. Fresh review passes focused ask; live look offered, not run.",
+      "source": [
+        "design/concepts/LeaningScrub/turn_03.md",
+        "design/concepts/LeaningScrub/review_root_validation_02.md",
+        "src/RimMandrake/rimflow/roles/designer_lock.md:5",
+        "design/concepts/LeaningScrub/lock_review_05.json"
+      ]
+    },
+    {
+      "id": "stage2_park_renderer_repair",
+      "speaker": "agent",
+      "text": "Filed and fixed park_summary advisory/criterion routing defect tests first, isolated from pre-existing BENCH pipeline changes. Published ae8b1f356bca89b2c3fe8535c77833dbcf2f5a41; four focused regressions, existing park/quick-look suites, fresh review, 14tree and35pipeline checks pass. No concept obligation, criterion or gate changed.",
+      "source": [
+        "ITEM:RIMMANDRAKE_SHOW_ADVISORY_COVERAGE_WITHOUT_OWNER_FORK",
+        "design/concepts/LeaningScrub/pipeline_park_repair_02.md",
+        "src/RimMandrake/rimflow/selftest_designer_park_advisory.py"
+      ]
     }
   ],
   "asks": [
@@ -385,6 +416,48 @@
         "source": "design/concepts/LeaningScrub/review_02.md"
       },
       "disposition": "No owner ask or invented reply. Preserve frozen years scope; exact finite tuning and save treatment are agent Stage 3 work."
+    },
+    {
+      "id": "a_root_validation_2",
+      "text": "Should the eight observations in Leaning Scrub’s canonical north-star checklist (turn_03.md) become the binding acceptance bar, or which observation needs correction?",
+      "decision": "root_validation: owner-only validation of the eight canonical north-star observations, distinct from the already approved delegated root sentence.",
+      "about": [
+        "weather_calendar",
+        "dependable_home_routes",
+        "ordered_crossing_policy",
+        "vine_islands",
+        "smother_craft",
+        "sweetline_landmark",
+        "biome_cast",
+        "wind_vaporator",
+        "fire_maker_witness_trail",
+        "calling_pyre",
+        "settings"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "rm-role-designercodex-1794831790",
+      "status": "sent",
+      "evidence_against": "The detailed canonical checklist was authored after sentence approval; it remains DRAFT with empty validated-hash and tree root_hash null. designer_lock.md step 1 explicitly reserves this validation for the owner’s own words. Delegated approval of the root sentence supplies no approval of these eight later observations. This authority constraint, not opposition to the adopted sentence, requires waiting. No later owner validation event found.",
+      "source": [
+        "design/concepts/LeaningScrub/turn_03.md",
+        "design/validation_walks/RimMandrake/LeaningScrub.md:113",
+        "src/RimMandrake/rimflow/roles/designer_lock.md:5"
+      ],
+      "review": {
+        "by": "/root/review_root_validation",
+        "verdict": "pass",
+        "why": "Checklist validation is distinct from the existing delegated sentence approval and is expressly reserved for the owner by Lock step 1. Offer the look first without making attendance mandatory. Binding obligations may include unfinished behavior; no implementation acceptance or first-touch certification follows. Parent independently confirmed no later matching owner validation event.",
+        "source": "design/concepts/LeaningScrub/review_root_validation_02.md"
+      },
+      "quick_look": {
+        "offer": true,
+        "settles": [
+          "a_root_validation_2",
+          "root_validation"
+        ],
+        "scene": "At the next attended sitting, the bridge owner first confirms the registered RM_TestSite_leaningscrub_v3 recipe exists and matches the composed build. Show existing ordinary wind/Stall/Gale, tall vine islands and clear routes, then a routine haul with a clear detour beside a mature-vine shortcut and an explicitly ordered expedition. Compare existing behavior with the eight draft observations, naming missing or unproved behavior. The operator records recovery before mutation and restores or explicitly holds afterward. Flight observation only with the owner present. This offer is not a scene execution or a prerequisite to approving the written bar."
+      }
     }
   ],
   "inventory": [
@@ -2051,6 +2124,17 @@
       ],
       "remaining_work": "player_text_open",
       "product_resolved": false
+    },
+    {
+      "id": "root_validation",
+      "core": true,
+      "resolved": false,
+      "text": "Canonical north star is still DRAFT and tree root_hash null. Existing delegated sentence approval does not validate the later eight-observation acceptance bar; owner words required under Lock step1. Await a_root_validation_2.",
+      "source": [
+        "design/validation_walks/RimMandrake/LeaningScrub.md:113",
+        "src/RimMandrake/rimflow/roles/designer_lock.md:5",
+        "design/concepts/LeaningScrub/turn_03.md"
+      ]
     }
   ],
   "failure_modes": [
@@ -4237,5 +4321,34 @@
     "helper_weighted_tokens": 580949,
     "helper_allowance_overrun": 80949,
     "validator_repair_item": "RIMMANDRAKE_ACCEPT_EXAM_SESSIONS_UUIDS_ARE_IDENTITIES"
+  },
+  "stage_2_root_validation": {
+    "run": "rm-role-designercodex-1794831790",
+    "pending": "a_root_validation_2",
+    "owner_presence": "away: owner_away() reports no sitting, 45+ min since measured deliberate interaction; no live scene run.",
+    "root_sentence_preserved": true,
+    "canonical_walk_sha256": "c7ac46a9fb070f4f45694d42aaff0d6893ead8488c336260f8635ced4bcc273d",
+    "quick_look": {
+      "offer": true,
+      "settles": [
+        "a_root_validation_2",
+        "root_validation"
+      ],
+      "scene": "At the next attended sitting, the bridge owner first confirms the registered RM_TestSite_leaningscrub_v3 recipe exists and matches the composed build. Show existing ordinary wind/Stall/Gale, tall vine islands and clear routes, then a routine haul with a clear detour beside a mature-vine shortcut and an explicitly ordered expedition. Compare existing behavior with the eight draft observations, naming missing or unproved behavior. The operator records recovery before mutation and restores or explicitly holds afterward. Flight observation only with the owner present. This offer is not a scene execution or a prerequisite to approving the written bar."
+    },
+    "coverage": "All12 retained in lock_review_05.json; unchecked=[]; UNTESTED/advisory. g1-g11 correction candidates for Stage3; g12 neutral fixer.",
+    "review": {
+      "by": "/root/review_root_validation",
+      "verdict": "pass",
+      "why": "Checklist validation is distinct from the existing delegated sentence approval and is expressly reserved for the owner by Lock step 1. Offer the look first without making attendance mandatory. Binding obligations may include unfinished behavior; no implementation acceptance or first-touch certification follows. Parent independently confirmed no later matching owner validation event.",
+      "source": "design/concepts/LeaningScrub/review_root_validation_02.md"
+    },
+    "bounds": "No tree/sheet/scenes/floor/exam/canonical walk edits; no stage advance, validation, sign, certify, version lock, mod code/art, bridge, restart, deploy or handoff.",
+    "park_summary": "design/concepts/LeaningScrub/park_summary.md",
+    "review_usage": {
+      "weighted_tokens_estimated": 50000,
+      "exact_telemetry": "unavailable",
+      "charged": true
+    }
   }
 }
