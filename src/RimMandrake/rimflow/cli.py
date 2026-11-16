@@ -1920,15 +1920,74 @@ def _prooflint_say(iid, it=None, when="filed"):
         bad = prooflint(iid, it)
     except Exception as e:      # noqa: BLE001  a lint that cannot read is said, and the verb's own work stands
         print("proof-line lint could not run (%s: %s)" % (type(e).__name__, e))
-        return
+        return None
     if bad:
         print("⚠️  %s, but the live lane would refuse these proof lines as they stand "
               "(infrastructure/state/live_proofs/%s.txt):\n  - %s" % (when, iid, "\n  - ".join(bad)))
+    return bad
+
+
+class _NoShadow(object):
+    """The stand-in when ticket_preflight cannot even be imported: every gate runs exactly as before."""
+
+    def __init__(self, why):
+        self.why = why
+
+    def run(self, **kw):
+        return self
+
+    def gate(self, gid, fn, *a, **kw):
+        kw.pop("judge", None)
+        return fn(*a, **kw)
+
+    def fields(self):
+        return {}
+
+    def finish(self):
+        return "preflight did not run (%s); the door carries on" % self.why
+
+
+def _preflight(door, iid, seat):
+    """The door's ticket preflight IN SHADOW (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS, spec
+    design/specs/2026-11-12-ticket-preflight-before-any-token.md section 7 ticket 3): it prints and records, and refuses
+    nothing; existing gates are observed through `.gate`, their authority unchanged. Enforcement is ticket 4."""
+    try:
+        import ticket_preflight
+        return ticket_preflight.Shadow(door, iid, seat)
+    except Exception as e:      # noqa: BLE001  a preflight that cannot load never shuts a door
+        return _NoShadow("%s: %s" % (type(e).__name__, e))
+
+
+def _pf_items(w):
+    try:
+        import ticket_preflight
+        return ticket_preflight.items_of(w)
+    except Exception:           # noqa: BLE001  B10 then reads the ledger itself, or says UNMEASURED
+        return None
+
+
+def _judge_list(what):
+    return lambda got: ("FAIL", "%s: %s" % (what, ", ".join(got))) if got else ("PASS", "")
+
+
+def _say_shadow(pf):
+    try:
+        print(pf.finish())
+    except Exception as e:      # noqa: BLE001
+        print("preflight did not run (%s: %s); the door carries on" % (type(e).__name__, e))
 
 
 def cmd_file(args, seat):
     _, w = load()
-    _mint_or_die(args.id, w)
+    pf = _preflight("file", args.id, seat)
+    try:
+        return _file(args, seat, w, pf)
+    finally:            # every attempt is a line, a refused one too; the lines print after the door's own output
+        _say_shadow(pf)
+
+
+def _file(args, seat, w, pf):
+    pf.gate("A1", _mint_or_die, args.id, w)
     args.for_ = _unretire(args.for_)
     _reader_or_die(args.for_)
     ev = {"seat": seat, "event": "file", "id": args.id, "title": args.title,
@@ -1940,12 +1999,15 @@ def cmd_file(args, seat):
               % (fw, args.id, fw, args.for_))
         args.for_ = fw
     ev["for"] = args.for_
+    pf.run(kind=args.kind or "task", needs=args.needs or "offline", items=_pf_items(w))
+    ev.update(pf.fields())
     _emit(ev, w, quiet=True)
     print("%s filed for %s, state proposed." % (args.id, args.for_))
-    _prooflint_say(args.id, None, "filed")
+    pf.gate("F3", _prooflint_say, args.id, None, "filed",
+            judge=lambda bad: ("UNMEASURED", "the lint could not run") if bad is None else _judge_list("proof lines the lane refuses")(bad))
     _replaces(args, seat, w)
     have = {n.lower() for n, _ in read_prose(args.id)}
-    miss = [s for s in ("spec", "verify", "criteria") if s not in have]
+    miss = pf.gate("E1", lambda: [s for s in ("spec", "verify", "criteria") if s not in have], judge=_judge_list("missing ##"))
     if miss:
         print("items/%s.md has no %s yet — worth adding, but it IS offered and can be "
               "claimed and started exactly as it stands."
@@ -2074,14 +2136,36 @@ def cmd_claim(args, seat):
     `start` still works on its own for scripts; a bare `start` takes no lease.
     Items in any other state (built, validated) keep the old single `claim` event.
     """
+    pf = _preflight("claim", args.id, seat)
+    try:
+        return _claim(args, seat, pf)
+    finally:
+        _say_shadow(pf)
+
+
+def _pickup_gates(pf, w, it, seat, now, cap):
+    """The existing gates a pickup door already applies, observed in place (spec 6.3): E1 thin item (a warning, owner
+    2026-08-21), G1 a live block (claimed anyway, said), I2 the focus cap (refuses, in `_claim_cap_check`)."""
+    pf.run(kind=(it.kind if it else None) or "task", needs=(it.needs if it else None) or "offline", items=_pf_items(w))
+    pf.gate("E1", lambda: model._missing(it) if it is not None else ["the item is not in the ledger"],
+            judge=_judge_list("missing ##"))
+    pf.gate("G1", lambda: it is not None and it.blocked,
+            judge=lambda b: ("FAIL", "blocked: " + priority.block_line(it)) if b else ("PASS", ""))
+    if cap:
+        pf.gate("I2", _claim_cap_check, w, it, seat, now, judge=lambda _r: ("PASS", "under the focus cap, or no cap"))
+    else:
+        pf.gate("I2", lambda: None, judge=lambda _r: ("PASS", "does not apply: this claim takes no focus place"))
+
+
+def _claim(args, seat, pf):
     tok = getattr(args, "token", None)
     held = None
     with lease.dispatch_lock():
         w = _replay_now()
         it = w.items.get(args.id)
         now = model.epoch_now()
-        if it is not None and it.state in ("proposed", "ready", "doing"):
-            _claim_cap_check(w, it, seat, now)
+        _pickup_gates(pf, w, it, seat, now, it is not None and it.state in ("proposed", "ready", "doing"))
+        pfx = pf.fields()
         rel = priority.release_reason(w, it, now) if it is not None else None
         if rel:     # the block ended by its own rule: the claim writes that down, so the books stop calling it blocked
             _write_one({"seat": seat, "event": "unblock", "id": args.id, "reason": "auto: " + rel})
@@ -2095,10 +2179,10 @@ def cmd_claim(args, seat):
             else:
                 held = _take_lease(it, seat, now)
             if it.state != "doing":
-                _write_one({"seat": seat, "event": "claim", "id": args.id})
-                _write_one({"seat": seat, "event": "start", "id": args.id})
+                _write_one(dict({"seat": seat, "event": "claim", "id": args.id}, **pfx))
+                _write_one(dict({"seat": seat, "event": "start", "id": args.id}, **pfx))
         else:
-            _write_one({"seat": seat, "event": "claim", "id": args.id})
+            _write_one(dict({"seat": seat, "event": "claim", "id": args.id}, **pfx))
         _rerender_queue_views()
     _trigger_health_rebuild()
     it = _replay_now().items.get(args.id)
@@ -2350,28 +2434,41 @@ def cmd_supersede(args, seat):
 
 def _simple(verb, extra=()):
     def run(args, seat):
-        _, w = load()
-        if verb == "reassign":
-            args.to = _unretire(args.to)
-        ev = {"seat": seat, "event": verb, "id": args.id}
-        for field, attr in extra:
-            ev[field] = getattr(args, attr, None)
-        _emit(ev, w, quiet=True)
-        it = _replay_now().items.get(args.id)
-        print("%s %s -> %s" % (verb, args.id, it.state if it else "?"))
-        if seat == "OWNER" and any(getattr(args, f, None) for f in ("owner_said", "by_card", "per_ruling")):
-            # owner card 2026-10-11: an owner flag makes the event his; say so at the write, not only in --help
-            print("landed as seat OWNER in infrastructure/state/ledger/events/OWNER.jsonl (an owner flag): publish that "
-                  "shard; a helper's own %s takes --why alone." % verb)
-        # `drop` and `supersede` end an item just as `close` does, and anything waiting on
-        # it is just as stranded — more so, since a dropped blocker will never deliver.
-        if verb in ("drop", "supersede"):
-            _announce_unblocks(args.id)
-            moved = _move_prose_to_closed(args.id)
-            if moved:
-                print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
-        return 0
+        if verb != "start":
+            return _simple_run(verb, extra, args, seat, None)
+        pf = _preflight("start", args.id, seat)
+        try:
+            return _simple_run(verb, extra, args, seat, pf)
+        finally:
+            _say_shadow(pf)
     return run
+
+
+def _simple_run(verb, extra, args, seat, pf):
+    _, w = load()
+    if verb == "reassign":
+        args.to = _unretire(args.to)
+    ev = {"seat": seat, "event": verb, "id": args.id}
+    for field, attr in extra:
+        ev[field] = getattr(args, attr, None)
+    if pf is not None:      # a bare `start` takes no focus place: I2 does not apply (cmd_claim holds the cap)
+        _pickup_gates(pf, w, w.items.get(args.id), seat, model.epoch_now(), False)
+        ev.update(pf.fields())
+    _emit(ev, w, quiet=True)
+    it = _replay_now().items.get(args.id)
+    print("%s %s -> %s" % (verb, args.id, it.state if it else "?"))
+    if seat == "OWNER" and any(getattr(args, f, None) for f in ("owner_said", "by_card", "per_ruling")):
+        # owner card 2026-10-11: an owner flag makes the event his; say so at the write, not only in --help
+        print("landed as seat OWNER in infrastructure/state/ledger/events/OWNER.jsonl (an owner flag): publish that "
+              "shard; a helper's own %s takes --why alone." % verb)
+    # `drop` and `supersede` end an item just as `close` does, and anything waiting on
+    # it is just as stranded — more so, since a dropped blocker will never deliver.
+    if verb in ("drop", "supersede"):
+        _announce_unblocks(args.id)
+        moved = _move_prose_to_closed(args.id)
+        if moved:
+            print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+    return 0
 
 
 def _announce_unblocks(target):

@@ -2,6 +2,7 @@
 """Selftest for ticket_preflight (spine): each check has one planted bad input it must FAIL and one good it must PASS,
 a cut-off and a failed instrument read UNMEASURED, prose is never read. python3 src/RimMandrake/rimflow/selftest_ticket_preflight.py"""
 import os
+import re
 import sys
 import tempfile
 import time
@@ -59,5 +60,45 @@ check(a and a[0]["origin"] == "auto", "an (auto) line carries origin auto")
 check([c["status"] for c in TP.run_text("## spec\nx\n", kind="build", **KW)["checks"] if c["id"] == "E12"] == ["FAIL"], "E12 bad: a build ticket with no refs")
 check([c["status"] for c in TP.run_text("## refs\nnone: names nothing\n", kind="fix", **KW)["checks"] if c["id"] == "E12"] == ["PASS"], "E12 good: none: <why>")
 check([c["status"] for c in TP.run_text("## refs\ntier: full\n", **KW)["checks"] if c["id"] == "C4"] == ["FAIL"], "C4 bad: Full with no reason")
+# the tier a repair proposes must be one C1 accepts, and `tier: full`, as C4 asks for it, is not "no tier"
+# (RIMMANDRAKE_FIX_PREFLIGHT_TIER_FULL_ITS_OWN_REPAIR_FAILS: there is no small, wide or full tier in modset_builder)
+check(st("tier: full", "C1", "full")[0] == ["PASS"], "C1 good: `tier: full` names the Full list, not an unknown tier")
+check(st("tier: Full\nfull-why: performance: only at scale", "C4", None)[0] == ["PASS"], "C4 good: Full with a reason")
+real = TP._real_tiers()
+c4 = [c for c in TP.run_text("## refs\ntier: full\n", **KW)["checks"] if c["id"] == "C4"][0]["fix"]
+named = [t for fx in (TP.E12_FIX, c4) for m in re.findall(r"tier: (<[^>]*>|[a-z_0-9|]+)", fx)
+         if " " not in m for t in m.strip("<>").split("|")]        # a `<a tier from ...>` placeholder names none
+check(all(t == "full" or real.get(t) is not None for t in named), "a repair proposes only real tiers (%s)" % ", ".join(named))
+
+# the doors in shadow (ticket 3): never raise, record every attempt, refuse nothing
+import io  # noqa: E402
+import json  # noqa: E402
+import contextlib  # noqa: E402
+SRUNS = os.path.join(os.path.dirname(RUNS), "shadow_runs.jsonl")
+sh = TP.Shadow("claim", "RIMMANDRAKE_NO_SUCH_SELFTEST_ITEM", "BENCH", runs_path=SRUNS)
+sh.run(paths=["src/x.py"], defs=DEFS, src={}, tiers=KW["tiers"], items={}, kind="build")
+sh.gate("E1", lambda: ["spec"], judge=lambda g: ("FAIL", "missing %s" % g) if g else ("PASS", ""))
+f = sh.fields()
+txt = sh.finish()
+ln = json.loads(open(SRUNS).read().splitlines()[-1])
+check(ln["door"] == "claim" and ln["run_id"] == f["preflight_run"] and {"E1", "E12"} <= {c["id"] for c in ln["checks"]},
+      "shadow: one line per run, door and run id as on the event, gates and new checks both")
+check("E1" in txt and "refuses nothing" in txt and f["preflight"].startswith("fail"), "shadow: the FAILs print, verdict on the event")
+os.environ["RIMFLOW_PREFLIGHT_BREAK"] = "1"
+sb = TP.Shadow("start", "X", runs_path=SRUNS).run()
+del os.environ["RIMFLOW_PREFLIGHT_BREAK"]
+check(sb.verdict() == "did not run" and "preflight did not run" in sb.finish(), "shadow bad: a raising runner says it did not run")
+err = io.StringIO()
+with contextlib.redirect_stderr(err):
+    TP.Shadow("file", "X", runs_path=os.path.dirname(RUNS)).finish()      # a directory: the line cannot be written
+check("timing" in err.getvalue(), "shadow bad: an unwritable timing file is reported, not raised")
+n0 = len(open(SRUNS).read().splitlines())
+try:
+    TP.Shadow("claim", "X", runs_path=SRUNS).gate("I2", sys.exit, 2)
+    check(False, "shadow: a refusing gate's SystemExit is re-raised")
+except SystemExit:
+    last = json.loads(open(SRUNS).read().splitlines()[-1])
+    check(len(open(SRUNS).read().splitlines()) == n0 + 1 and last["checks"][0] == {"id": "I2", "ms": last["checks"][0]["ms"],
+          "status": "FAIL", "origin": "gate"}, "shadow: a gate's refusal is re-raised unchanged, and its attempt is a line")
 print("PASS" if not FAILS else "FAILED %d" % len(FAILS))
 sys.exit(1 if FAILS else 0)

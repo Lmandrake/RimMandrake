@@ -666,18 +666,67 @@ def parse_max_s(v):
     return int(v)
 
 
+class _NoShadow(object):
+    """ticket_preflight could not be imported: every check below runs exactly as before."""
+
+    def __init__(self, why):
+        self.why, self.run_id = why, None
+
+    def run(self, **kw):
+        return self
+
+    def gate(self, gid, fn, *a, **kw):
+        kw.pop("judge", None)
+        return fn(*a, **kw)
+
+    def finish(self):
+        return "preflight did not run (%s); the launch carries on" % self.why
+
+
+def _refusal(res):
+    """A launch gate's answer (None, or refusal text) as an observation."""
+    return ("FAIL", str(res)[:300]) if res else ("PASS", "")
+
+
 def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None, sleep=time.sleep,
            events_dir=None, skip_launch_checks=None):
     """-> (exit code, text). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
-    a clone another run still holds (after waiting for one that is being given back)."""
+    a clone another run still holds (after waiting for one that is being given back).
+    The ticket preflight runs here IN SHADOW (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS): its new checks in
+    the run's clone once there is one, and this door's own checks observed in place; it refuses nothing, and its lines
+    end the text. Enforcement is ticket 4 (RIMMANDRAKE_ENFORCE_PREFLIGHT_AT_CLAIM_DECLARED_FACTS_ONLY)."""
+    try:
+        import ticket_preflight
+        pf = ticket_preflight.Shadow("helper_launch", item, seat,      # a test's fake runner records nothing real
+                                     runs_path=None if runner is subprocess.run else os.devnull)
+    except Exception as e:  # noqa: BLE001  a preflight that cannot load never stops a launch
+        pf = _NoShadow("%s: %s" % (type(e).__name__, e))
+    code, text = 1, ""
+    try:
+        code, text = _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir,
+                             skip_launch_checks, pf)
+    finally:
+        try:
+            tail = pf.finish()
+        except Exception as e:  # noqa: BLE001
+            tail = "preflight did not run (%s: %s); the launch carries on" % (type(e).__name__, e)
+    # a refusal's text stays exactly the gate's own (its line is still in runs.jsonl); a launch shows the preflight's lines
+    return code, (text + "\n" + tail) if tail and code == 0 else text
+
+
+def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir, skip_launch_checks, pf):
     now = now or time.time()
-    if seat not in SEATS:
-        return 2, "refused: seat %r is not one of %s" % (seat, ", ".join(SEATS))
-    if model not in MODELS:
-        return 2, "refused: model %r is not one of %s" % (model, ", ".join(MODELS))
+    bad = pf.gate("I1", lambda: None if seat in SEATS else "refused: seat %r is not one of %s" % (seat, ", ".join(SEATS)),
+                  judge=_refusal)
+    if bad:
+        return 2, bad
+    bad = pf.gate("H4", lambda: None if model in MODELS else "refused: model %r is not one of %s" % (model, ", ".join(MODELS)),
+                  judge=_refusal)
+    if bad:
+        return 2, bad
     if not (brief or "").strip():
         return 2, "refused: empty brief"
-    carded = card_refusal(item, brief, events_dir)     # a by-card item's brief carries the card's own words
+    carded = pf.gate("I3", card_refusal, item, brief, events_dir, judge=_refusal)     # a by-card brief carries the card's words
     if carded:
         return 2, carded
     max_s = parse_max_s(max_s)
@@ -690,7 +739,7 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
         return 2, "refused: the ledger read 0 items (blind instrument), cannot check %s" % item
     if item not in known:
         return 2, "refused: %s is not a ledger item; file it first (rimflow namecheck, then file)" % item
-    unpublished = origin_check(item, runner=runner)     # before a clone is made or a unit started
+    unpublished = pf.gate("I6", origin_check, item, runner=runner, judge=_refusal)     # before a clone or a unit
     if unpublished:
         return 2, unpublished
     dest = clone or os.path.join(pool_root(), "clones", item + ".det")
@@ -698,10 +747,11 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     if held:
         return 2, held
     with clone_lock(dest):
-        return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks)
+        return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks, pf)
 
 
-def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks=None):
+def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks=None, pf=None):
+    pf = pf or _NoShadow("no preflight handed in")
     held = clone_holders(dest, runner, now, kept_ok=bool(clone))     # again, under the lock: no waiting now
     if held:
         return 2, "refused: clone %s was taken while this launch waited: %s" % (dest, " | ".join(h[2] for h in held))
@@ -713,8 +763,12 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         except Exception as e:  # noqa: BLE001
             return 1, "clone failed: %s" % e
     notes = []
+    if runner is subprocess.run:    # the ticket's new checks, against the copy this run's clone holds (spec 6.2)
+        pf.run(root=clone)
     if not skip_launch_checks:      # the item's declared checks, in the clone the run will use (GATE_FIRST)
-        refused, notes = launch_check_refusal(item_text(clone, item), clone)
+        # observed as F14: the `## launch-checks` block, whose must-fail line is spec group F's added check (2026-11-15)
+        refused, notes = pf.gate("F14", launch_check_refusal, item_text(clone, item), clone,
+                                 judge=lambda r: _refusal(r[0]))
         if refused:
             return 2, refused + "\n(the Conductor's bypass: --skip-launch-checks \"<why>\")"
     root = state_dir()
@@ -724,6 +778,8 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         rec["launch_checks_skipped"] = skip_launch_checks
     if notes:
         rec["launch_checks_did_not_run"] = notes
+    if getattr(pf, "run_id", None):
+        rec["preflight_run"] = pf.run_id
     unit = reserve_record(rec, root)    # a name no other run's record holds; never overwrites one
     msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat,
                                          bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound", budget="%g" % budget)

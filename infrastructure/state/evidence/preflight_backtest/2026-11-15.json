@@ -1,0 +1,612 @@
+{
+ "answer": "Over 4752 past tickets (4446 closed or dropped in 60 days, 238 from the measured Relentless week, 68 from the labelled lists), each read as it stood at pickup, the preflight as built would have stopped 26 worked tickets before any token (E12 26), worth at most 0.0M tokens; all were then worked to an end (close 26). E12's fact (no declared line) is read off the ticket and cannot be false, so a person's audit (audit_sample) will find them true refusals, yet each is work that went fine without a refs block: that is the starving-gate cost to weigh, and the joint false-block share is bounded above by 1.0%. It catches almost nothing in the past because it reads only declared `## refs` lines and almost no past ticket had any: 5 of the 1240 with prose (3512 had no prose file at all). The 209M-token measured week of setup-class ends shows 0 fires of a refusing check. So what it would catch that today's gates do not is not in the history: it is the declared facts the refs rule makes tickets write from 2026-11-13 on, plus E12 itself, which as ruled would stop 1096 of 2117 open tickets today. The shadow doors (file, claim, start, helper launch, live since this build) are the measurement that counts; the planted tickets show the instrument sees (12 of 12 caught, every good twin passed: True). It is fast: at the doors, p95 file 98, claim 82, start 82, helper_launch 86 ms.",
+ "audit_sample": {
+  "B1": [
+   {
+    "as_of": "today",
+    "commit": null,
+    "corpus": "open",
+    "day": "2026-11-15",
+    "evidence": [
+     "`file: src/RimMandrake/rimflow/promise_scan.py` is not a tracked path"
+    ],
+    "item": "RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_AT_KILL"
+   }
+  ],
+  "E12": [
+   {
+    "as_of": "as it was",
+    "commit": "cc886ce01f11f1b90b1baf8686fb7a07491572be",
+    "corpus": "closed_60d",
+    "day": "2026-11-15",
+    "evidence": [
+     "a build, fix or live ticket (kind bug, needs offline) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_HARDEN_BRIDGE_LOCK_OWNER_HOLES"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "cc886ce01f11f1b90b1baf8686fb7a07491572be",
+    "corpus": "closed_60d",
+    "day": "2026-11-15",
+    "evidence": [
+     "a build, fix or live ticket (kind bug, needs offline) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "cc886ce01f11f1b90b1baf8686fb7a07491572be",
+    "corpus": "closed_60d",
+    "day": "2026-11-15",
+    "evidence": [
+     "a build, fix or live ticket (kind bug, needs offline) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_FAIL_CLIENT_CLOSED_ON_UNREADABLE"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "cc886ce01f11f1b90b1baf8686fb7a07491572be",
+    "corpus": "closed_60d",
+    "day": "2026-11-15",
+    "evidence": [
+     "a build, fix or live ticket (kind bug, needs offline) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_MAKE_BRIDGE_PROBES_SAY_BLIND"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "1dc499045f2da489da3529c096ffffc0f8069323",
+    "corpus": "closed_60d",
+    "day": "2026-11-15",
+    "evidence": [
+     "a build, fix or live ticket (kind code, needs offline) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_MEASURE_MATURATION_CONVERGENCE_PER_ROUND"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "0c28b2596e1b6c0eae9b03edfe0c6cc3b172535b",
+    "corpus": "closed_60d",
+    "day": "2026-11-15",
+    "evidence": [
+     "a build, fix or live ticket (kind fix, needs offline) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "e8c7a0f0c604758cccea9b1537c4f91f646105ee",
+    "corpus": "closed_60d",
+    "day": "2026-11-15",
+    "evidence": [
+     "a build, fix or live ticket (kind bug, needs offline) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "5fcd76e04331bbb132231218dfe73c74d1b2cc3f",
+    "corpus": "closed_60d",
+    "day": "2026-11-15",
+    "evidence": [
+     "a build, fix or live ticket (kind fix, needs offline) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_ALIGN_BLIND_BRIEF_EXIT_WITH_JUDGE_OWED_READER"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "e08abeee312f61bfc61df6221671448a6bcac00e",
+    "corpus": "closed_60d",
+    "day": "2026-11-16",
+    "evidence": [
+     "a build, fix or live ticket (kind fix, needs bridge) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_REBUILD_FLOWWORKS_PAWN_HEIGHT_SCENE_ZEROS_PASSED"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "b64a0243ffb5c00a717e244be89be6d7bf3e2cdb",
+    "corpus": "closed_60d",
+    "day": "2026-11-16",
+    "evidence": [
+     "a build, fix or live ticket (kind fix, needs bridge) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_REBUILD_FLOWWORKS_ICE_SCENE_BASIN_NEVER_FROZE"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "2f14540d726ff04fa34bcedc387a671ad41983d9",
+    "corpus": "closed_60d",
+    "day": "2026-11-16",
+    "evidence": [
+     "a build, fix or live ticket (kind fix, needs bridge) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_REBUILD_FLOWWORKS_ISLANDS_SCENE_SPAWNED_A_DRAW_STYLE"
+   },
+   {
+    "as_of": "as it was",
+    "commit": "bf3005d87ecabb4add8f6d69490e1840a217ce68",
+    "corpus": "closed_60d",
+    "day": "2026-11-15",
+    "evidence": [
+     "a build, fix or live ticket (kind fix, needs offline) has no confirmed `## refs` line"
+    ],
+    "item": "RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN"
+   }
+  ]
+ },
+ "checks": [
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {
+    "open": 1
+   },
+   "fires_total": 1,
+   "group": "B",
+   "id": "B1",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_total": 0,
+   "group": "B",
+   "id": "B10",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_total": 0,
+   "group": "B",
+   "id": "B11",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_total": 0,
+   "group": "B",
+   "id": "B4",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_total": 0,
+   "group": "B",
+   "id": "B6",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_total": 0,
+   "group": "C",
+   "id": "C1",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {
+    "measured_week": 13,
+    "open": 66
+   },
+   "fires_total": 79,
+   "group": "C",
+   "id": "C10",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": false
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_total": 0,
+   "group": "C",
+   "id": "C2",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_total": 0,
+   "group": "C",
+   "id": "C4",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_total": 0,
+   "group": "E",
+   "id": "E11",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {
+    "closed_60d": 129,
+    "open": 1095
+   },
+   "fires_total": 1224,
+   "group": "E",
+   "id": "E12",
+   "incremental": 0,
+   "incremental_tokens_upper_bound": 0,
+   "refusing": true
+  }
+ ],
+ "corpora": {
+  "closed_60d": {
+   "as_of": [
+    "as it was"
+   ],
+   "n": 4446,
+   "text_found": 1173,
+   "unworked": 2132,
+   "with_refs_block": 5,
+   "would_refuse": 129
+  },
+  "labelled": {
+   "as_of": [
+    "as it was"
+   ],
+   "n": 68,
+   "text_found": 13,
+   "with_refs_block": 0,
+   "would_refuse": 0
+  },
+  "measured_week": {
+   "as_of": [
+    "as it was"
+   ],
+   "n": 238,
+   "text_found": 54,
+   "tokens": 208571461,
+   "with_refs_block": 0,
+   "would_refuse": 0
+  },
+  "open": {
+   "as_of": [
+    "today"
+   ],
+   "n": 2117,
+   "text_found": 903,
+   "with_refs_block": 13,
+   "would_refuse": 1096
+  }
+ },
+ "date": "2026-11-15",
+ "def_capture": "2026-11-12T08-10-06Z",
+ "elapsed_s": 195.4,
+ "generated_at": "2026-11-15T21:03:12-0800",
+ "head": "a56213203b",
+ "joint_false_block": {
+  "audited_false": null,
+  "rate": null,
+  "reading": "an UPPER BOUND on the joint false-block rate until each would-be refusal is read as of pickup; rate stays null until that audit",
+  "worked": 2552,
+  "would_block": 26,
+  "would_block_share": 0.0102
+ },
+ "notes": [],
+ "planted": [
+  {
+   "caught": true,
+   "check": "A1",
+   "evidence": "['2 words; a name has 4-9 words: PROJECT_VERB_INTENTION_TWIST', \"slot 1 'BADNAME' is not a project: it must be a registry Id or Name (this project is RIMMANDRAKE), or PROJNOW / PROJTEMP for something that belongs to no project\"]",
+   "good_evidence": "[]",
+   "good_passes": true,
+   "group": "A",
+   "what": "a name outside the PROJECT_VERB_INTENTION_TWIST grammar"
+  },
+  {
+   "caught": true,
+   "check": "B1",
+   "evidence": "`file: src/RimMandrake/no_such_file_planted.py` is not a tracked path",
+   "good_evidence": "['B1 PASS']",
+   "good_passes": true,
+   "group": "B",
+   "what": "a declared file that is not tracked"
+  },
+  {
+   "caught": true,
+   "check": "B4",
+   "evidence": "`RM_NoSuchDefPlantedForBacktest` is in neither the def dump nor src/",
+   "good_evidence": "['B4 PASS', 'C2 UNMEASURED']",
+   "good_passes": true,
+   "group": "B",
+   "what": "a declared def known nowhere"
+  },
+  {
+   "caught": true,
+   "check": "C1",
+   "evidence": "`no_such_tier_planted` is no tier modset_builder knows",
+   "good_evidence": "['C1 PASS', 'C10 FAIL']",
+   "good_passes": true,
+   "group": "C",
+   "what": "a tier modset_builder does not know"
+  },
+  {
+   "caught": true,
+   "check": "C4",
+   "evidence": "the ticket asks for the Full list (`tier: full` or a GREEN-FULL criterion) with no `full-why:` line",
+   "good_evidence": "['C1 PASS', 'C4 PASS']",
+   "good_passes": true,
+   "group": "C",
+   "what": "a Full Mod ask with no full-why: line"
+  },
+  {
+   "caught": true,
+   "check": "E11",
+   "evidence": "refs line 1 (file line 2) `fiel: src/RimMandrake/rimflow/cli.py`: unknown key 'fiel'; nearest valid key: `file:` (known: file, new, def, tier, race, pawnkind, biome, item, sha, full-why, new-def, none, mod, symbol, texture)",
+   "good_evidence": "['B1 PASS']",
+   "good_passes": true,
+   "group": "E",
+   "what": "a typo'd refs key that would silently switch a check off"
+  },
+  {
+   "caught": true,
+   "check": "E12",
+   "evidence": "a build, fix or live ticket (kind build, needs offline) has no confirmed `## refs` line",
+   "good_evidence": "['E12 PASS']",
+   "good_passes": true,
+   "group": "E",
+   "what": "a build ticket with no declared refs"
+  },
+  {
+   "caught": true,
+   "check": "E1",
+   "evidence": "['spec', 'verify', 'criteria']",
+   "good_evidence": "[]",
+   "good_passes": true,
+   "group": "E",
+   "what": "a ticket with no spec, verify or criteria (the existing thin-item gate)"
+  },
+  {
+   "caught": true,
+   "check": "F3",
+   "evidence": "[\"A1: the proof text builds its command at run time ('$'): a gate cannot read what bash will run\"]",
+   "good_evidence": "[]",
+   "good_passes": true,
+   "group": "F",
+   "what": "a live-proof line the lane refuses ($ substitution)"
+  },
+  {
+   "caught": true,
+   "check": "G1",
+   "evidence": "blocked: True",
+   "good_evidence": "blocked: False",
+   "good_passes": true,
+   "group": "G",
+   "what": "a ticket picked up while blocked on an open item"
+  },
+  {
+   "caught": true,
+   "check": "H4",
+   "evidence": "refused: model 'haiku' is not one of fable, opus, sonnet",
+   "good_evidence": "launch went past the seat and model gates (planted launch reached the runner)",
+   "good_passes": true,
+   "group": "H",
+   "what": "a helper launched on a banned model (haiku)"
+  },
+  {
+   "caught": true,
+   "check": "I1",
+   "evidence": "refused: seat 'FOUNDRY' is not one of BENCH, STEVE, RUNNER",
+   "good_evidence": "launch went past the seat and model gates (planted launch reached the runner)",
+   "good_passes": true,
+   "group": "I",
+   "what": "a helper launched for the retired FOUNDRY seat"
+  }
+ ],
+ "proposed_for_ticket_4": [
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {
+    "open": 1
+   },
+   "fires_on_worked": 0,
+   "id": "B1",
+   "status": "stays WARN: 0 audited of the 30 needed"
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_on_worked": 0,
+   "id": "B10",
+   "status": "stays WARN: 0 audited of the 30 needed; it fired on no past ticket, so there is nothing to audit yet: the shadow doors collect"
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_on_worked": 0,
+   "id": "B11",
+   "status": "stays WARN: 0 audited of the 30 needed; it fired on no past ticket, so there is nothing to audit yet: the shadow doors collect"
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_on_worked": 0,
+   "id": "B4",
+   "status": "stays WARN: 0 audited of the 30 needed; it fired on no past ticket, so there is nothing to audit yet: the shadow doors collect"
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_on_worked": 0,
+   "id": "B6",
+   "status": "stays WARN: 0 audited of the 30 needed; it fired on no past ticket, so there is nothing to audit yet: the shadow doors collect"
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_on_worked": 0,
+   "id": "C1",
+   "status": "stays WARN: 0 audited of the 30 needed; it fired on no past ticket, so there is nothing to audit yet: the shadow doors collect"
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_on_worked": 0,
+   "id": "C2",
+   "status": "stays WARN: 0 audited of the 30 needed; it fired on no past ticket, so there is nothing to audit yet: the shadow doors collect"
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_on_worked": 0,
+   "id": "C4",
+   "status": "enforce in ticket 4 (owner, by card 2026-11-13: refuses at pickup); these numbers say how many it will stop"
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {},
+   "fires_on_worked": 0,
+   "id": "E11",
+   "status": "stays WARN: 0 audited of the 30 needed; it fired on no past ticket, so there is nothing to audit yet: the shadow doors collect"
+  },
+  {
+   "audited": 0,
+   "false": null,
+   "fires": {
+    "closed_60d": 129,
+    "open": 1095
+   },
+   "fires_on_worked": 129,
+   "id": "E12",
+   "status": "enforce in ticket 4 (owner, by card 2026-11-13: refuses at pickup); these numbers say how many it will stop"
+  }
+ ],
+ "rules": {
+  "gate_ends_excluded_from_incremental": [
+   "game_refused",
+   "proof_unrunnable",
+   "rebind_proposed"
+  ],
+  "refusing": [
+   "B1",
+   "B4",
+   "B6",
+   "B10",
+   "B11",
+   "C1",
+   "C2",
+   "C4",
+   "E11",
+   "E12"
+  ],
+  "ruled_after": {
+   "checks": [
+    "E12",
+    "C4",
+    "E11",
+    "P0"
+   ],
+   "from": "2026-11-13"
+  }
+ },
+ "spec": "design/specs/2026-11-12-ticket-preflight-before-any-token.md section 8",
+ "timing": {
+  "backtest_per_ticket_inline": {
+   "max": 29.3,
+   "n": 6869,
+   "p50": 0.0,
+   "p95": 10.1,
+   "source": "this backtest, indexes preloaded (the sweep's cost, not a door's)"
+  },
+  "claim": {
+   "max": 102.8,
+   "n": 40,
+   "p50": 65.2,
+   "p95": 81.8,
+   "source": "shadow sample over 40 open tickets, 2026-11-15"
+  },
+  "file": {
+   "max": 107.7,
+   "n": 40,
+   "p50": 66.4,
+   "p95": 97.7,
+   "source": "shadow sample over 40 open tickets, 2026-11-15"
+  },
+  "helper_launch": {
+   "max": 108.6,
+   "n": 40,
+   "p50": 65.8,
+   "p95": 85.8,
+   "source": "shadow sample over 40 open tickets, 2026-11-15"
+  },
+  "live_claim": {
+   "max": 114.0,
+   "n": 21,
+   "p50": 72.8,
+   "p95": 98.2,
+   "source": "real door runs in /home/mandrake/.local/state/rimmandrake/preflight/runs.jsonl"
+  },
+  "live_file": {
+   "max": 148.7,
+   "n": 40,
+   "p50": 84.3,
+   "p95": 113.1,
+   "source": "real door runs in /home/mandrake/.local/state/rimmandrake/preflight/runs.jsonl"
+  },
+  "live_start": {
+   "max": 96.0,
+   "n": 3,
+   "p50": 69.3,
+   "p95": 96.0,
+   "source": "real door runs in /home/mandrake/.local/state/rimmandrake/preflight/runs.jsonl"
+  },
+  "start": {
+   "max": 101.6,
+   "n": 40,
+   "p50": 65.8,
+   "p95": 82.2,
+   "source": "shadow sample over 40 open tickets, 2026-11-15"
+  }
+ },
+ "unworked_row": {
+  "n": 2132,
+  "would_refuse": 103
+ }
+}

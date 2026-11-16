@@ -477,11 +477,16 @@ class TransitionError(LedgerError):
 #   "owner" — the seat that OWNS the item (not the human owner; see OWNER below)
 #   a tuple — exactly those seats. "OWNER" in a tuple means the human.
 # ---------------------------------------------------------------------------
+PREFLIGHT_FIELDS = ("preflight_run", "preflight_ms", "preflight")
+
 VERBS = {
+    # `preflight_run` / `preflight_ms` / `preflight` (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS): the door's
+    # shadow preflight, its run id (= the line in ~/.local/state/rimmandrake/preflight/runs.jsonl), time and verdict.
+    # Informational: nothing replays them. An older reader strips them (_tolerate_unknown_fields).
     "file":      {"who": "any",   "req": ("for", "title", "kind"),
-                  "opt": ("row", "target", "needs", "spec", "from")},
-    "claim":     {"who": "owner", "req": (), "opt": ()},
-    "start":     {"who": "owner", "req": (), "opt": ()},
+                  "opt": ("row", "target", "needs", "spec", "from") + PREFLIGHT_FIELDS},
+    "claim":     {"who": "owner", "req": (), "opt": PREFLIGHT_FIELDS},
+    "start":     {"who": "owner", "req": (), "opt": PREFLIGHT_FIELDS},
     # `until` (RIM-1, 2026-10-25): the level of `on` that SATISFIES this block,
     # built|validated|done; absent means done. Satisfaction is only ever ANNOUNCED
     # (priority.block_frontier), never applied: the block stays until a seat lifts it.

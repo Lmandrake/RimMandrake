@@ -2,8 +2,8 @@
 """Ticket preflight, the spine (design/specs/2026-11-12-ticket-preflight-before-any-token.md, section 7 ticket 1).
 
 Report-only: reads the declared facts of one ticket (`## refs` lines file:, new:, def:, tier: and the proof file's
-live-tier: / live-mods: lines; prose is never read) and says PASS / FAIL / UNMEASURED per fact. It refuses nothing and
-no door calls it yet. Index loading and every check run in ONE forked child with ONE deadline; a cut-off reads
+live-tier: / live-mods: lines; prose is never read) and says PASS / FAIL / UNMEASURED per fact. It refuses nothing;
+since ticket 3 the doors (rimflow file / claim / start, detached_helper.launch) run it in shadow through `Shadow`. Index loading and every check run in ONE forked child with ONE deadline; a cut-off reads
 UNMEASURED and `cut_off: true`. A door never builds an index: no cached def index reads UNMEASURED with the build command.
 
     run_text(text, proof_text="", *, item_id="ACCEPT", trigger="pickup", paths=None, defs=None, src=None,
@@ -35,11 +35,13 @@ UTILS = os.path.join(HERE, "..", "Utils")
 KEYS = ("file", "new", "def", "tier", "race", "pawnkind", "biome", "item", "sha", "full-why", "new-def", "none",
         "mod", "symbol", "texture")
 KIND_TYPES = {"race": "ThingDef", "pawnkind": "PawnKindDef", "biome": "BiomeDef"}
+FULL_TIER = "full"         # RIMMANDRAKE_FIX_PREFLIGHT_TIER_FULL_ITS_OWN_REPAIR_FAILS: modset_builder has no such tier
 FULL_REASONS = ("interaction", "load-order", "performance", "owner-save", "explicit")
 LIVE_KINDS = ("build", "fix", "bug", "defect", "code", "feature")
 LIVE_NEEDS = ("deploy", "game-up", "bridge", "harvest")
 E12_FIX = ("add to the ticket a `## refs` section with at least one confirmed line (no `(auto)` mark), e.g.\n"
-           "## refs\nfile: <a path this ticket changes>\ndef: <Type>/<a def it touches>\ntier: <small|wide>\n"
+           "## refs\nfile: <a path this ticket changes>\ndef: <Type>/<a def it touches>\n"
+           "tier: <a tier from python3 src/RimMandrake/Utils/modset_builder.py --list>\n"
            "or, when it names nothing checkable, one line `none: <why>`")
 BUILD_CMD = "python3 src/RimMandrake/Utils/defindex.py   # builds and caches the def index from the newest capture"
 DEFAULT_RUNS = os.path.join(os.path.expanduser("~"), ".local", "state", "rimmandrake", "preflight", "runs.jsonl")
@@ -124,8 +126,8 @@ def plan(decls, bad, live_tiers, live_mods, asks_full=False, owes_declared=False
     return out
 
 
-def _git_paths():
-    r = subprocess.run(["git", "ls-files"], cwd=REPO, capture_output=True, text=True, timeout=60)
+def _git_paths(repo=None):
+    r = subprocess.run(["git", "ls-files"], cwd=repo or REPO, capture_output=True, text=True, timeout=60)
     if r.returncode != 0:
         raise OSError("git ls-files exited %d: %s" % (r.returncode, r.stderr.strip()[:200]))
     return r.stdout.splitlines()
@@ -225,8 +227,17 @@ def _index(raw):
     return hit[1]
 
 
+def _model():
+    """The ledger module the caller already bound: the CLI loads it as `rimflow.model` and points it at a redirected
+    ledger (RIMFLOW_LEDGER / RIMFLOW_ITEMS); a second, plain `import model` would be a fresh copy aimed at the real one."""
+    m = sys.modules.get("rimflow.model")
+    if m is None:
+        import model as m
+    return m
+
+
 def _ledger_items():
-    import model
+    model = _model()
     return {iid: {"state": it.state, "successor": it.superseded_by} for iid, it in model.replay(model.read()).items.items()}
 
 
@@ -296,6 +307,10 @@ def _child(decls, bad, live_tiers, live_mods, paths, defs, src, tiers, ctx, emit
     pkgs, known_lists = set(p.lower() for p in live_mods), bool(live_mods)
     for name in dict.fromkeys(tier_names):
         t = time.perf_counter()
+        if name.lower() == FULL_TIER:                # the owner's Full list: what C4 asks for, no modset_builder tier
+            obs("C1", name, "PASS", "the Full list (the owner's; no offline list holds it, so defs read UNMEASURED "
+                "against it)", t0=t)
+            continue
         if tier_map is None:
             obs("C1", name, "UNMEASURED", "could not read the tiers (%s)" % twhy, t0=t)
             continue
@@ -443,7 +458,7 @@ def _id_checks(obs, decls, ctx):
                     "check the sha, or fetch it if another clone holds it", t0=t, origin=org)
                 continue
             full = r.stdout.strip()
-            a = _git(repo, "merge-base", "--is-ancestor", full, "HEAD")
+            a = _git(repo, "merge-base", "--is-ancestor", full, ctx.get("head") or "HEAD")
             if a.returncode == 0:
                 obs("B11", v, "PASS", "a landed commit (ancestor of HEAD)", t0=t, origin=org)
             elif a.returncode == 1:
@@ -467,7 +482,8 @@ def _full_check(obs, decls, live_tiers, ctx, state):
         defs = [_split_def(v)[1] for k, v, *_ in decls if k == "def"]
         owners = sorted({o for d in defs for o in (ms.owner(d) if ms else [])})
         cand = ("a candidate minimal list from %d declared def(s), no dependency closure: `live-mods: %s`" % (len(defs), " ".join(owners))
-                if owners else "no declared def gave an owning mod to build a `live-mods:` list from; declare defs, or name `tier: small`")
+                if owners else "no declared def gave an owning mod to build a `live-mods:` list from; declare defs, or name a "
+                "smaller tier from `python3 src/RimMandrake/Utils/modset_builder.py --list`")
         obs("C4", None, "FAIL", "the ticket asks for the Full list (`tier: full` or a GREEN-FULL criterion) with no `full-why:` line",
             "add `full-why: <%s>: <specifics>`, or use a smaller list; %s" % ("|".join(FULL_REASONS), cand), t0=t)
         return
@@ -577,10 +593,13 @@ def _append_run(runs_path, line):
 
 
 def run_text(text, proof_text="", *, item_id="ACCEPT", trigger="pickup", paths=None, defs=None, src=None,
-             tiers=None, deadline_s=5.0, runs_path=None, kind="task", needs="offline", items=None, repo=None, inline=False):
+             tiers=None, deadline_s=5.0, runs_path=None, kind="task", needs="offline", items=None, repo=None, inline=False,
+             head=None, run_id=None, record=True):
+    if os.environ.get("RIMFLOW_PREFLIGHT_BREAK") == "1":      # the test hook: the runner raises at entry
+        raise RuntimeError("RIMFLOW_PREFLIGHT_BREAK=1 (test hook)")
     t0 = time.perf_counter()
     decls, bad, live_tiers, live_mods = parse(text, proof_text)
-    ctx = {"kind": kind, "needs": needs, "items": items, "repo": repo,
+    ctx = {"kind": kind, "needs": needs, "items": items, "repo": repo, "head": head,
            "asks_full": _asks_full(decls, live_tiers, text),
            "owes_declared": _owes_declared(kind, needs, proof_text)}
     owed = plan(decls, bad, live_tiers, live_mods, ctx["asks_full"], ctx["owes_declared"])
@@ -604,11 +623,12 @@ def run_text(text, proof_text="", *, item_id="ACCEPT", trigger="pickup", paths=N
                 checks.append({"id": cid, "ref": ref, "status": "UNMEASURED", "ms": 0.0, "fix": "",
                                "evidence": "cut off at the %.1f s deadline" % deadline_s if cut else
                                "the preflight child died before reaching it"})
-    rep = {"item": item_id, "trigger": trigger, "run_id": uuid.uuid4().hex[:12],
+    rep = {"item": item_id, "trigger": trigger, "run_id": run_id or uuid.uuid4().hex[:12],
            "total_ms": round((time.perf_counter() - t0) * 1000, 1), "cut_off": cut, "checks": checks}
-    _append_run(runs_path, {"run_id": rep["run_id"], "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "item": item_id,
-                            "trigger": trigger, "total_ms": rep["total_ms"], "cut_off": cut,
-                            "checks": [{"id": c["id"], "ms": c.get("ms", 0.0), "status": c["status"]} for c in checks]})
+    if record:
+            _append_run(runs_path, {"run_id": rep["run_id"], "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "item": item_id,
+                                "trigger": trigger, "total_ms": rep["total_ms"], "cut_off": cut,
+                                "checks": [{"id": c["id"], "ms": c.get("ms", 0.0), "status": c["status"]} for c in checks]})
     return rep
 
 
@@ -619,14 +639,25 @@ def _read(path):
         return ""
 
 
-def run_item(iid, trigger="pickup", **kw):
-    """The ticket's live prose plus its proof file, from the repo the CLI runs in; kind, needs and item ids from the ledger."""
-    root = os.path.join(REPO, "infrastructure", "state")
-    text = _read(os.path.join(root, "items", "%s.md" % iid)) or _read(os.path.join(root, "items", "closed", "%s.md" % iid))
-    proof = _read(os.path.join(root, "live_proofs", iid + ".txt"))
+def run_item(iid, trigger="pickup", root=None, **kw):
+    """The ticket's live prose plus its proof file, from the repo the CLI runs in (or the clone `root`: the helper-launch
+    door reads the copy its run will use); kind, needs and item ids from the ledger. The CLI's redirected items folder
+    (RIMFLOW_ITEMS, bound into model.ITEMS) is honoured, so a sandbox ledger's doors read the sandbox's prose."""
+    state = os.path.join(root or REPO, "infrastructure", "state")
+    items_dir = os.path.join(state, "items")
+    if root is None:
+        try:
+            items_dir = _model().ITEMS
+        except Exception:                           # noqa: BLE001  the repo's own folder, as before
+            pass
+    text = _read(os.path.join(items_dir, "%s.md" % iid)) or _read(os.path.join(items_dir, "closed", "%s.md" % iid))
+    proof = _read(os.path.join(state, "live_proofs", iid + ".txt"))
+    if root is not None:
+        kw.setdefault("repo", root)
+        kw.setdefault("paths", lambda: _git_paths(root))
     if "kind" not in kw or "items" not in kw:
         try:
-            import model
+            model = _model()
             its = model.replay(model.read()).items
             it = its.get(iid)
             if it is not None:
@@ -647,7 +678,7 @@ def _raiser(e):
 def sweep(hard_stop_s=30.0, per_ticket_s=2.0):
     """Every open ticket once, indexes loaded once, one timing line each (trigger "sweep"), inside the hard stop.
     -> {"tickets", "cut_off", "skipped", "task_with_verify", "e12", "c4", "worst"}; changes no ticket."""
-    import model
+    model = _model()
     t_start = time.monotonic()
     its = model.replay(model.read()).items
     items = {k: {"state": v.state, "successor": v.superseded_by} for k, v in its.items()}
@@ -658,13 +689,13 @@ def sweep(hard_stop_s=30.0, per_ticket_s=2.0):
         except Exception as e:                      # each ticket then reads UNMEASURED with the reason
             shared[name] = _raiser(e)
     root = os.path.join(REPO, "infrastructure", "state")
-    todo = sorted((i for i in its.values() if i.open), key=lambda i: (not os.path.exists(os.path.join(root, "items", i.id + ".md")), i.id))
+    todo = sorted((i for i in its.values() if i.open), key=lambda i: (not os.path.exists(os.path.join(model.ITEMS, i.id + ".md")), i.id))
     reps, skipped, twv = [], 0, 0
     for n, it in enumerate(todo):
         if time.monotonic() - t_start > hard_stop_s - per_ticket_s:
             skipped = len(todo) - n
             break
-        text = _read(os.path.join(root, "items", it.id + ".md"))
+        text = _read(os.path.join(model.ITEMS, it.id + ".md"))
         proof = _read(os.path.join(root, "live_proofs", it.id + ".txt"))
         if (it.kind or "task") == "task" and re.search(r"^##\s*verify\s*\n\s*\S", text, re.M | re.I):
             twv += 1
@@ -706,6 +737,104 @@ def render(rep):
             lines.append("  %-10s %s %s: %s%s" % (c["status"], c["id"], c.get("ref") or "", c.get("evidence", ""),
                                                   ("  FIX: " + c["fix"]) if c.get("fix") else ""))
     return "\n".join(lines)
+
+
+# --- the doors, in shadow (ticket 3, RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS) ------------------------------
+# rimflow file / claim / start and detached_helper.launch run the preflight here: they print its lines and record them,
+# and refuse nothing. Not in Relentless (owner, by card 2026-11-13; Relentless itself was retired 2026-11-13).
+DOOR_TRIGGER = {"file": "create", "claim": "pickup", "start": "pickup", "helper_launch": "pickup"}
+SHOW_MAX = 8
+
+
+class Shadow(object):
+    """One door's preflight in shadow. `run(**kw)` runs the new checks (run_item's keywords); `gate(id, fn, *a,
+    judge=None)` calls an existing gate exactly as the door did and records its answer and time: `judge(result)` ->
+    (status, evidence), default PASS; a SystemExit (the gate refused) is recorded FAIL, the line is written, and it is
+    re-raised unchanged. `fields()` -> the ledger event's preflight_run / preflight_ms / preflight; `finish()` writes the
+    one timing line (door, seat, new checks and gates) and returns the text to show. A runner that throws is "preflight
+    did not run"; an unwritable timing file is reported. The authority of every gate stays in its own code."""
+
+    def __init__(self, door, item_id, seat=None, runs_path=None):
+        self.door, self.item, self.seat, self.runs_path = door, item_id, seat, runs_path
+        self.trigger = DOOR_TRIGGER.get(door, "pickup")
+        self.run_id = uuid.uuid4().hex[:12]
+        self.checks, self.gates, self.crash, self.cut, self.done = [], [], None, False, None
+        self.ms = 0.0
+
+    def run(self, **kw):
+        t = time.perf_counter()
+        try:
+            kw.setdefault("deadline_s", 5.0 if kw.get("needs") in LIVE_NEEDS else 3.0)
+            rep = run_item(self.item, trigger=self.trigger, run_id=self.run_id, record=False, **kw)
+            self.checks, self.cut = rep["checks"], rep["cut_off"]
+        except Exception as e:                          # noqa: BLE001  the door carries on
+            self.crash = "%s: %s" % (type(e).__name__, str(e)[:200])
+        self.ms += (time.perf_counter() - t) * 1000
+        return self
+
+    def gate(self, gid, fn, *a, **kw):
+        judge = kw.pop("judge", None)
+        t = time.perf_counter()
+        try:
+            res = fn(*a, **kw)
+        except SystemExit as e:
+            self._note(gid, "FAIL", "the existing gate refused at the door (exit %s)" % e.code, t)
+            self.finish()
+            raise
+        except Exception as e:
+            self._note(gid, "FAIL", "the existing gate raised %s: %s" % (type(e).__name__, str(e)[:160]), t)
+            self.finish()
+            raise
+        try:
+            status, ev = judge(res) if judge else ("PASS", "")
+        except Exception as e:                          # noqa: BLE001  a judge that cannot read says so
+            status, ev = "UNMEASURED", "could not read the gate's answer: %s" % e
+        self._note(gid, status, ev, t)
+        return res
+
+    def _note(self, gid, status, evidence, t0):
+        ms = round((time.perf_counter() - t0) * 1000, 1)
+        self.ms += ms
+        self.gates.append({"id": gid, "ref": None, "status": status, "evidence": evidence, "fix": "", "ms": ms,
+                           "origin": "gate"})
+
+    def verdict(self):
+        if self.crash:
+            return "did not run"
+        fails = sorted({c["id"] for c in self.checks + self.gates if c["status"] == "FAIL"})
+        return ("fail " + " ".join(fails)) if fails else "pass"
+
+    def fields(self):
+        return {"preflight_run": self.run_id, "preflight_ms": round(self.ms, 1), "preflight": self.verdict()}
+
+    def finish(self):
+        if self.done is not None:
+            return self.done
+        allc = self.checks + self.gates
+        line = {"run_id": self.run_id, "at": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "item": self.item,
+                "trigger": self.trigger, "door": self.door, "seat": self.seat, "total_ms": round(self.ms, 1),
+                "cut_off": self.cut, "verdict": self.verdict(), "crash": self.crash,
+                "checks": [{"id": c["id"], "ms": c.get("ms", 0.0), "status": c["status"],
+                            "origin": c.get("origin", "declared")} for c in allc]}
+        _append_run(self.runs_path, line)
+        if self.crash:
+            self.done = "preflight did not run (%s); the door carries on" % self.crash
+            return self.done
+        bad = [c for c in allc if c["status"] != "PASS"]
+        out = ["PREFLIGHT, shadow, refuses nothing (%s %s, %.0f ms%s): %d checks, %d not PASS" % (
+            self.door, self.item, self.ms, ", CUT OFF" if self.cut else "", len(allc), len(bad))]
+        for c in bad[:SHOW_MAX]:
+            out.append("  %-10s %s %s: %s%s" % (c["status"], c["id"], c.get("ref") or "", c.get("evidence", "")[:220],
+                                                ("  FIX: " + c["fix"][:160]) if c.get("fix") else ""))
+        if len(bad) > SHOW_MAX:
+            out.append("  ... %d more: rimflow preflight %s" % (len(bad) - SHOW_MAX, self.item))
+        self.done = "\n".join(out)
+        return self.done
+
+
+def items_of(world):
+    """-> a callable the child calls: the ledger's items as B10 reads them, from a world the door already replayed."""
+    return lambda: {k: {"state": v.state, "successor": v.superseded_by} for k, v in world.items.items()}
 
 
 if __name__ == "__main__":
