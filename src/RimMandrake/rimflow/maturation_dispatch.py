@@ -127,7 +127,7 @@ import judge_certificate as JC  # noqa: E402  the pre-judgement certificate, rea
 import maturation_now as MN     # noqa: E402
 import maturation_autonomy as AUT   # noqa: E402
 import detached_helper as DH    # noqa: E402
-import modledger                # noqa: E402  a pilot mod's stage runs start from its ledger packet
+import modledger                # noqa: E402  the mod ledger: stage runs from its packet; holder sessions (resume_plan)
 
 UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
@@ -1365,6 +1365,10 @@ def end_ledger_runs(root, st, facts, now, fx=None):
                 out.setdefault(mod, []).append("%s: run.end failed: %s: %s" % (r["run"], type(e).__name__, e))
                 continue
             r.update(ended=now, status=status, flags=flags)
+            try:        # Option B: the holder's session, resumed by the next launch (holder_launch)
+                r["session"] = record_holder_session(root, mod, r, fx)
+            except Exception as e:      # noqa: BLE001  said in the reading; the next launch starts from the packet
+                r["session"] = "session.id failed: %s: %s" % (type(e).__name__, e)
             out.setdefault(mod, []).append("%s %s %s" % (r["run"], status, ",".join(flags) or "checkpointed"))
             mods.append(mod)
     if mods:
@@ -1378,6 +1382,10 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
     do_publish = fx.get("publish", publish_filed)
     do_launch = fx.get("launch", lambda mod, cap, item, **kw: launch_stage(root, cfg, st, mod, cap, item, now, fx, **kw))
     known = fx["known"]() if "known" in fx else known_items()
+
+    def launch_holder(mod, s, row, cap, item, **kw):     # a pilot mod's run is its holder (holder_launch)
+        hcap, hkw = holder_launch(root, cfg, s, row, cap, fx)
+        return do_launch(mod, hcap, item, **dict(hkw, **kw))
     done = []
     for row in rows:
         if row["mod"] not in launches:
@@ -1396,7 +1404,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 cfg, s, row, now, "ingame_auto", {"visit_id": row.get("visit_id"), "visit": row.get("visit")},
                 lambda: ingame_item_id(mod, row.get("visit"), known),
                 lambda it: do_file(it, title, why, needs="game-up"), do_publish,
-                lambda it: do_launch(mod, row["cap"], it, **resume_kw(row)))
+                lambda it: launch_holder(mod, s, row, row["cap"], it, **resume_kw(row)))
             if ok:
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
@@ -1430,7 +1438,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             ok, item, unit, text, entry = launch_counted(
                 cfg, s, row, now, "blind_auto", {"visit_id": row.get("visit_id"), "cycle": row.get("cycle")},
                 lambda: item, lambda it: do_file(it, title, why), do_publish,
-                lambda it: do_launch(mod, row["cap"], it, **resume_kw(row)))
+                lambda it: launch_holder(mod, s, row, row["cap"], it, **resume_kw(row)))
             if ok:
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
@@ -1459,14 +1467,15 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             ok, text = do_file(item, title, why) if item else (False, "no free item name")
             filed = ok
         if ok:
-            rc, text2, unit = do_launch(mod, cfg["cap_usd"], item, **({"bars": row["batch"]} if row.get("batch") else {}))
+            hcap, hkw = holder_launch(root, cfg, s, row, cfg["cap_usd"], fx)
+            rc, text2, unit = do_launch(mod, hcap, item, **dict(hkw, **({"bars": row["batch"]} if row.get("batch") else {})))
             text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
             ok = rc == 0 and bool(unit)
         else:
             unit = None
         if ok:
             s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "refused": row["refused"],
-                                                 "ids": row["refused_ids"], "cap": cfg["cap_usd"],
+                                                 "ids": row["refused_ids"], "cap": hcap,
                                                  "stage": "offline_build"})
             s["watch"] = {"unit": unit, "refused": row["refused"], "ids": row["refused_ids"], "at": now, "ours": True,
                           "fp": row.get("bar_fp")}
@@ -1489,6 +1498,45 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             row.update(decision="launch_failed", why=text,
                        need="%s: the launch failed%s (%s); the step will not retry it on its own" % (mod, spent, text))
     return done
+
+
+def holder_launch(root, cfg, s, row, cap, fx=None):
+    """Option B (RIMMANDRAKE_RESUME_HOLDER_SESSIONS_TO_400K_KILL_AND_RESUME; spec §3.4): a pilot mod's run is its holder.
+    modledger.resume_plan decides from the last `session.id` (end_ledger_runs records it): resume that session
+    (`--resume`), rotate at or past holder_context_ceiling_tokens, or start from the packet; after a killed or lost run
+    (its run.end, or this launch retrying a killed unit) the brief opens with the reconcile step. The holder's cap is per
+    mod and stage, not per run: what is left of stage_ceiling_usd at this stage (never less than the run cap).
+    -> (cap, launch_mod keyword arguments). A mod outside modledger.json's pilot_mods, or with no ledger: (cap, {})."""
+    mod = row["mod"]
+    if not pilot_ledger(root, mod):
+        return cap, {}
+    plan = modledger.resume_plan(root, mod)
+    killed = (row.get("retry_of") or {}).get("unit")
+    if killed and not plan["reconcile"]:
+        plan = dict(plan, reconcile=True, why="%s; this launch retries killed run %s: reconcile the clone, unpublished "
+                    "commits and the bridge first" % (plan["why"], killed))
+    row["holder"] = plan
+    kw = {}
+    if plan["action"] == "resume":
+        kw["session"] = plan["session_id"]
+    if plan["reconcile"]:
+        kw["reconcile"] = plan["why"]
+    ceiling, usd = cfg.get("stage_ceiling_usd"), row.get("stage_usd")
+    if _usd_ok(ceiling, True) and _usd_ok(usd):
+        cap = max(cap, round(ceiling - usd, 2))
+        row["cap"] = cap
+    return cap, kw
+
+
+def record_holder_session(root, mod, r, fx=None):
+    """An ended pilot run's claude session and its context (detached_helper.session_of) -> a `session.id` under that
+    run's lease, so the next launch can resume it. -> a reading line, or None when the run left no session."""
+    sid, ctx = (fx or {}).get("session_of", DH.session_of)(r["unit"])
+    if not sid:
+        return None
+    got = modledger.record_session(root, mod, sid, ctx, lease=r["run"])
+    return "session %s (%s context tokens)%s" % (sid, ctx if isinstance(ctx, int) else UNM,
+                                                 "" if got else ": no lease to record it under")
 
 
 def resume_kw(row):

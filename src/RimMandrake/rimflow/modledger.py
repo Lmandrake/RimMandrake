@@ -35,6 +35,7 @@ standard's caps).
     modledger.py show   --mod M [SUBJECT]            events, one line each
     modledger.py state  --mod M                      the reduced state, JSON
     modledger.py packet --mod M [--budget N] [--strict]
+    modledger.py resume-plan --mod M                  B: resume the holder session, rotate, or start from the packet
     modledger.py views  --mod M                      regenerate the views (append does it by itself)
     modledger.py lint   [--mod M] [--base origin/main]   exit 0 clean, 1 findings, 2 could not run
     modledger.py delete --mod M --id ID [--id ...]   delete on sight: any writer, anyone's entry; git is the archive
@@ -1578,6 +1579,59 @@ def since(root, mod, cursor):
     return sorted(moved.values(), key=lambda m: m["last_ts"] or "")
 
 
+# ---- resume (Option B) ----------------------------------------------------------------------------------------------
+#
+# Item RIMMANDRAKE_RESUME_HOLDER_SESSIONS_TO_400K_KILL_AND_RESUME (spec §3.4; his card 2026-11-15: "Resumed session per
+# mod" and "Try 400k first."). The holder's resumable session is its last `session.id`; the dispatcher resumes it while
+# its recorded context is under holder_context_ceiling_tokens, rotates (a fresh holder from the packet) at or past it,
+# and after a killed or lost run has the holder reconcile its clone, unpublished commits and the bridge first. A
+# version.open does not end the holder: the session carries into the next Design Version.
+
+RECONCILE_STATUSES = ("killed", "lost")
+UNMEASURED = "UNMEASURED"
+
+
+def resume_plan(root, mod, events=None):
+    """-> {"action": "packet"|"resume"|"rotate", "session_id", "reconcile", "why", "context_tokens", "ceiling"}. The
+    ceiling is read from modledger.json at call time. session_id is the session to resume (None unless "resume")."""
+    events = read(root, mod) if events is None else events
+    st = reduce(events)
+    ceiling = config()["holder_context_ceiling_tokens"]
+    ends = [e for e in events if e.get("writer") == "DISPATCH" and e.get("kind") == "run.end"]
+    last_end = (ends[-1].get("body") or {}) if ends else {}
+    reconcile = str(last_end.get("status") or "").lower().startswith(RECONCILE_STATUSES)     # "killed: ..." too
+    S = st.get("session") or {}
+    sid, ctx = S.get("session_id"), S.get("context_tokens")
+    out = {"session_id": None, "reconcile": reconcile, "context_tokens": ctx, "ceiling": ceiling}
+    rec = ("; the last run %s was %s: reconcile the clone, unpublished commits and the bridge first" % (
+        last_end.get("run") or "?", last_end.get("status"))) if reconcile else ""
+    if not isinstance(sid, str) or not sid:
+        out.update(action="packet", why="no holder session recorded: start from the packet" + rec)
+    elif isinstance(ctx, int) and not isinstance(ctx, bool) and ctx >= ceiling:
+        out.update(action="rotate", rotated_from=sid, why="session %s at %d context tokens, at or past the %d ceiling: "
+                   "a fresh holder starts from the packet%s" % (sid, ctx, ceiling, rec))
+    else:
+        out.update(action="resume", session_id=sid, why="resume session %s (%s of %d context tokens)%s" % (
+            sid, ctx if isinstance(ctx, int) else UNMEASURED, ceiling, rec))
+    return out
+
+
+
+def record_session(root, mod, session_id, context_tokens, lease=None, ts=None, views=True):
+    """DISPATCH records the holder's session (its id and context size, read from its transcript at the run's end) in
+    its own shard, naming the run's lease (default: the current one), so the next launch can resume it. Never in the
+    HOLDER shard: the dispatch clone writing a shard the holder publishes from its clone could overwrite its lines.
+    -> (event id, created), or None when that lease was never granted."""
+    by, current = leases(read(root, mod))
+    current = lease or current
+    if current not in by:
+        return None
+    body = {"session_id": session_id, "lease": current}
+    if isinstance(context_tokens, int) and not isinstance(context_tokens, bool):
+        body["context_tokens"] = context_tokens
+    return append(root, mod, "DISPATCH", "session.id", "session", body=body, ts=ts, env_writer=None, views=views)
+
+
 # ---- lint -----------------------------------------------------------------------------------------------------------
 
 def mods_with_ledgers(root):
@@ -1823,6 +1877,8 @@ def main(argv=None):
     p.add_argument("--mod", required=True)
     p.add_argument("--budget", type=int)
     p.add_argument("--strict", action="store_true", help="exit 1 on an empty ledger or a packet over budget")
+    rp = sub.add_parser("resume-plan", help="the holder's next launch: resume its session, rotate, or the packet")
+    rp.add_argument("--mod", required=True)
     v = sub.add_parser("views")
     v.add_argument("--mod", required=True)
     de = sub.add_parser("delete", help="delete wrong or useless entries on sight (any writer, anyone's)")
@@ -1894,6 +1950,8 @@ def main(argv=None):
                      else "nothing but the full history"), file=sys.stderr)
             if o.strict and (info["events"] == 0 or info["over_budget"]):
                 return 1
+        elif o.verb == "resume-plan":
+            print(json.dumps(resume_plan(root, o.mod), sort_keys=True))
         elif o.verb == "views":
             for pth in write_views(root, o.mod):
                 print("wrote " + os.path.relpath(pth, root))

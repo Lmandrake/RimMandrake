@@ -1,0 +1,1 @@
+claude -p --resume <session> run from a different working directory still finds and continues the session (measured 2026-11-15, claude 2.x, /tmp/rh_a -> /tmp/rh_b answered from the first turn); a pool clone per run does not by itself break a holder resume.

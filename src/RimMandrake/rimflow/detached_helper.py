@@ -53,6 +53,7 @@ import json
 import os
 import re
 import shlex
+import shutil
 import subprocess
 import sys
 import time
@@ -551,6 +552,82 @@ def unit_interop(environ=os.environ, exists=os.path.exists):
     return WSL_SOCKET if exists(WSL_SOCKET) else None
 
 
+PROJECTS = os.path.expanduser("~/.claude/projects")
+SESSION_RE = re.compile(r"^[A-Za-z0-9-]{8,64}$")
+
+
+def project_dir(cwd, projects=None):
+    """claude's transcript folder for a working directory: every character but a letter or digit becomes '-'."""
+    return os.path.join(projects or PROJECTS, re.sub(r"[^A-Za-z0-9]", "-", os.path.abspath(cwd)))
+
+
+def find_transcript(session_id, projects=None):
+    """-> the newest <session>.jsonl under any project folder, or None."""
+    if not SESSION_RE.match(session_id or ""):
+        return None
+    hits = glob.glob(os.path.join(projects or PROJECTS, "*", session_id + ".jsonl"))
+    return max(hits, key=os.path.getmtime) if hits else None
+
+
+def carry_session(session_id, clone, projects=None):
+    """Each run gets its own pool clone: copy the holder's transcript into that clone's project folder (a newer copy
+    already there is kept) and refuse a session with no transcript. claude 2.x resumed a session from another
+    directory without the copy (measured 2026-11-15, /tmp/rh_a -> /tmp/rh_b); the copy keeps the run independent of
+    that lookup. -> the path, or None."""
+    src = find_transcript(session_id, projects)
+    if not src:
+        return None
+    dst = os.path.join(project_dir(clone, projects), session_id + ".jsonl")
+    if os.path.abspath(src) != os.path.abspath(dst):
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        if not os.path.exists(dst) or os.path.getmtime(dst) < os.path.getmtime(src):
+            shutil.copy2(src, dst)
+    return dst
+
+
+def context_tokens(transcript):
+    """-> the context the session's last main-thread turn read (input + cache creation + cache read + output), or
+    None. A sidechain (a subagent's turn) is not the holder's context."""
+    last = None
+    try:
+        with open(transcript, encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                if '"usage"' not in line:
+                    continue
+                try:
+                    ev = json.loads(line)
+                except ValueError:
+                    continue
+                u = (ev.get("message") or {}).get("usage") if isinstance(ev, dict) else None
+                if isinstance(u, dict) and not ev.get("isSidechain"):
+                    last = u
+    except OSError:
+        return None
+    if not last:
+        return None
+    return sum(int(last.get(k) or 0) for k in ("input_tokens", "cache_creation_input_tokens",
+                                                "cache_read_input_tokens", "output_tokens"))
+
+
+def session_of(unit, root=None, projects=None):
+    """-> (session id, context tokens) of a finished run, from claude's result JSON and its transcript; (None, None)
+    when unreadable."""
+    rec = read_record(unit, root) or {}
+    sid = rec.get("session_id")
+    if not sid and rec.get("out"):
+        try:
+            with open(rec["out"], encoding="utf-8", errors="replace") as fh:
+                text = fh.read()
+            m = re.search(r'"session_id"\s*:\s*"([A-Za-z0-9-]{8,64})"', text)
+            sid = m.group(1) if m else None
+        except OSError:
+            sid = None
+    if not sid:
+        return None, None
+    t = find_transcript(sid, projects)
+    return sid, (context_tokens(t) if t else None)
+
+
 def launch_argv(rec, msg, claude):
     """role_launch.launch_argv's shape, plus ExecStopPost=finish so the outcome is recorded even on a kill."""
     clone, unit, seat = rec["clone"], rec["unit"], rec["seat"]
@@ -565,6 +642,8 @@ def launch_argv(rec, msg, claude):
     back = "-" + shlex.join(return_argv(rec))
     cmd = [bounded, "-p", msg, "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--max-budget-usd", "%g" % rec["budget_usd"], "--output-format", "json", "--dangerously-skip-permissions"]
+    if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
+        cmd += ["--resume", rec["resume_session"]]
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             # append:, never file: — file: hands every ExecStopPost the file at offset 0 and finish's line overwrote the
             # head of claude's JSON (RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER); finish also moves its own
@@ -690,7 +769,7 @@ def _refusal(res):
 
 
 def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None, sleep=time.sleep,
-           events_dir=None, skip_launch_checks=None, env=None):
+           events_dir=None, skip_launch_checks=None, env=None, resume_session=None, projects=None):
     """-> (exit code, text). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
     a clone another run still holds (after waiting for one that is being given back).
     The ticket preflight runs here IN SHADOW (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS): its new checks in
@@ -705,7 +784,7 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     code, text = 1, ""
     try:
         code, text = _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir,
-                             skip_launch_checks, pf, env)
+                             skip_launch_checks, pf, env, resume=(resume_session, projects))
     finally:
         try:
             tail = pf.finish()
@@ -716,7 +795,7 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
 
 
 def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir, skip_launch_checks, pf,
-            env=None):
+            env=None, resume=(None, None)):
     now = now or time.time()
     bad = pf.gate("I1", lambda: None if seat in SEATS else "refused: seat %r is not one of %s" % (seat, ", ".join(SEATS)),
                   judge=_refusal)
@@ -750,11 +829,12 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
         return 2, held
     with clone_lock(dest):
         return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks, pf,
-                              env)
+                              env, resume=resume)
 
 
 def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks=None, pf=None,
-                   env=None):
+                   env=None, resume=(None, None)):
+    resume_session, projects = resume
     pf = pf or _NoShadow("no preflight handed in")
     held = clone_holders(dest, runner, now, kept_ok=bool(clone))     # again, under the lock: no waiting now
     if held:
@@ -782,6 +862,13 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         rec["launch_checks_skipped"] = skip_launch_checks
     if env:
         rec["env"] = dict(env)
+    if resume_session:
+        moved = carry_session(resume_session, clone, projects)
+        if not moved:
+            return 2, ("REFUSED: session %s has no transcript under %s; the holder starts from the packet instead "
+                       "(drop --resume)" % (resume_session, projects or PROJECTS))
+        rec["resume_session"] = resume_session
+        rec["resume_transcript"] = moved
     if notes:
         rec["launch_checks_did_not_run"] = notes
     if getattr(pf, "run_id", None):
@@ -1165,6 +1252,8 @@ def main(argv=None):
                    help="an RM_ variable the run's unit carries (a pilot holder's RM_MODLEDGER_WRITER, say)")
     a.add_argument("--skip-launch-checks", metavar="WHY",
                    help="the Conductor's bypass of the item's ## launch-checks block; WHY is recorded on the run record")
+    a.add_argument("--resume", metavar="SESSION", help="resume this claude session (a mod's holder; its transcript is "
+                                                        "carried into the run's clone)")
     f = sub.add_parser("finish")
     f.add_argument("--unit", required=True)
     b = sub.add_parser("return", help="give the run's pool clone back, bundled (the unit's last step; --all sweeps strays)")
@@ -1191,7 +1280,7 @@ def main(argv=None):
         else:
             rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model,
                               args.max_s, args.budget_usd, clone=args.clone, skip_launch_checks=args.skip_launch_checks,
-                              env=env)
+                              env=env, resume_session=args.resume)
     elif args.cmd == "finish":
         keep_off_result(args.unit)      # before anything prints: never into claude's result or error file
         rc, text = finish(args.unit)
