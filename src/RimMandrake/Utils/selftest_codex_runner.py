@@ -182,5 +182,29 @@ class CodexRunnerTests(unittest.TestCase):
         self.assertEqual(len(RL.chain_sweep("Designer", {}, base, 10000, lambda **kw: None, rows)), 2)
 
 
+    def test_draft_is_input_to_verify(self):
+        """RIMMANDRAKE_SEED_DESIGNER_WITH_A_DRAFT_TO_VERIFY: a concept seeded with another model's draft names it in the
+        stage 0-3 packets as input to verify, sha-checked; a changed draft is said, stage 4 does not carry it."""
+        with tempfile.TemporaryDirectory() as d:
+            dr = os.path.join(d, "M.designer_draft.md")
+            Path(dr).write_text("draft")
+            c = os.path.join(d, "M")
+            st = DS.init(c, "M", runner="codex", draft=dr, draft_by="Codex lane E")
+            self.assertEqual(st["draft_input"]["path"], dr)
+            line = DS.draft_line(st)
+            self.assertIn("DRAFT TO VERIFY", line)
+            self.assertIn(dr, line)
+            self.assertIn("unchanged since init", line)
+            self.assertIn("DRAFT TO VERIFY", DS.packet(c, dict(st, stage=3), {}, 1000))
+            self.assertIsNone(DS.draft_line(dict(st, stage=4)))
+            Path(dr).write_text("edited")
+            self.assertIn("CHANGED since init", DS.draft_line(st))
+            os.remove(dr)
+            self.assertIn("UNREADABLE", DS.draft_line(st))
+            self.assertIsNone(DS.draft_line(DS.init(os.path.join(d, "N"), "N")))
+            with self.assertRaises(DS.Refused):
+                DS.init(os.path.join(d, "P"), "P", draft=os.path.join(d, "missing.md"))
+
+
 if __name__ == "__main__":
     unittest.main()

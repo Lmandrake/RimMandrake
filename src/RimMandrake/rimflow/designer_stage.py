@@ -17,7 +17,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   exam.json     the Stage 4 record, frozen against the tree and sheet hashes
   result.json   what a run says it did; only `close` (the launcher) reads it and advances
 
-  init     <dir> --mod M [--item ID] [--alias GSS]... [--cap N] [--reserve N] [--runner claude|codex]   start a concept's state
+  init     <dir> --mod M [--item ID] [--alias GSS]... [--cap N] [--reserve N] [--runner claude|codex] [--draft F]   start a concept's state
   open     <dir> --run U [--run-cap N]     the launcher: refuse or return the stage packet (stdout) and reserve budget
   close    <dir> --run U [--tokens N]      the launcher: charge the run, validate result.json, advance or not
   charge   <dir> --tokens N --kind K --ref R   a helper, review or consult outside the run's own transcript
@@ -1339,7 +1339,33 @@ def spend_by_stage(st):
     return out
 
 
-def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=(), runner=None):
+def file_sha(path):
+    with open(path, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()
+
+
+def draft_line(st):
+    """The packet's line naming a draft another model made, given as input to VERIFY (never the run's output), with
+    its sha checked now. None when the concept has no draft (item RIMMANDRAKE_SEED_DESIGNER_WITH_A_DRAFT_TO_VERIFY)."""
+    dr = st.get("draft_input")
+    if not isinstance(dr, dict) or st.get("stage") not in (0, 1, 2, 3):
+        return None
+    try:
+        now = file_sha(dr["path"])
+    except (OSError, KeyError, TypeError):
+        now = None
+    state = ("sha256 %s, unchanged since init" % dr.get("sha256", "")[:12] if now == dr.get("sha256") else
+             "UNREADABLE now: treat it as absent" if now is None else
+             "CHANGED since init (sha256 now %s): treat every line as unverified" % now[:12])
+    return ("A DRAFT TO VERIFY, not your output: %s (%s; made by %s). Another model drafted this pass. Use it only "
+            "as a map of what to check: confirm every claim, file:line, defName and quote against the source yourself "
+            "before you rely on it, record nothing from it you did not verify, and cite the source, never the draft. "
+            "Where it is wrong or missing something, say so in record.json." % (
+                dr.get("path"), state, dr.get("by") or "another model"))
+
+
+def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=(), runner=None, draft=None,
+         draft_by=None):
     """runner: the concept's own runner (claude|codex), read by every later launch of it, the tick's orphan sweep and
     chain included (item RIMMANDRAKE_DRAFT_BIOME_DESIGNER_PASSES_WITH_CODEX_BEFORE_RESET); None = the role's default."""
     if runner not in (None, "claude", "codex"):
@@ -1354,6 +1380,11 @@ def init(d, mod, item=None, cap=DEFAULT_CAP, reserve=DEFAULT_RESERVE, aliases=()
           "running": None, "results": [], "recovery": [], "history": []}
     if runner:
         st["runner"] = runner
+    if draft:
+        if not os.path.isfile(draft):
+            raise Refused("--draft %s is not a readable file" % draft)
+        st["draft_input"] = {"path": os.path.abspath(draft), "sha256": file_sha(draft), "by": draft_by,
+                             "use": "input to verify, never the output"}
     hist(st, "init", "stage 0, budget %d (reserve %d)%s" % (cap, reserve, ", runner %s" % runner if runner else ""))
     write_json(state_path(d), st)
     return st
@@ -2222,6 +2253,8 @@ def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST, repo=N
         head.append("Returned here for this missing decision: %s." % st["pending_decision"])
     if retries:
         head.append("This stage has had %d rejected or unclosed run(s); read the last rejection in stage.json." % retries)
+    if draft_line(st):
+        head.append(draft_line(st))
     held = [r for r in st.get("recovery") or [] if r.get("state") == "held"]
     if held:
         head.append("Held for his review: %s." % ", ".join("%s (until %s)" % (r["scene"], r.get("until")) for r in held))
@@ -2412,6 +2445,8 @@ def main(argv=None):
     x.add_argument("--reserve", type=int, default=DEFAULT_RESERVE)
     x.add_argument("--alias", action="append", default=[], help="another item-id subject naming the mod (GSS)")
     x.add_argument("--runner", choices=("claude", "codex"), help="the concept's runner for every launch (default: the role's)")
+    x.add_argument("--draft", help="a first-touch draft another model made: named in the stage 0-3 packets as input to verify")
+    x.add_argument("--draft-by", help="who made the draft (e.g. 'Codex, lane E 2026-11-15')")
     for name in ("open", "close"):
         x = sub.add_parser(name)
         x.add_argument("dir")
@@ -2489,7 +2524,7 @@ def main(argv=None):
         if a.cmd == "manifest":
             print(json.dumps({"stage_%d" % s: manifest_hashes(s) for s in STAGES}, indent=1))
         elif a.cmd == "init":
-            init(a.dir, a.mod, a.item, a.cap, a.reserve, a.alias, a.runner)
+            init(a.dir, a.mod, a.item, a.cap, a.reserve, a.alias, a.runner, a.draft, a.draft_by)
             print("init %s: stage 0" % a.dir)
         elif a.cmd == "open":
             text, budget = open_run(a.dir, a.run, a.run_cap)
