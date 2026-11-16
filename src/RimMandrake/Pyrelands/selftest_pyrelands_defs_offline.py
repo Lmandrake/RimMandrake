@@ -3,7 +3,7 @@
 
 Reads the repo's XML and C# only (plus the def dump for the rainRate of weathers that are not ours):
   no_ordinary_rain       every weather on RM_Pyrelands's list, native AND patch-added, has rainRate 0 except black rain
-  engineered             the biome description says "engineered"
+  engineered             the biome description says the savanna was "genetically engineered", not negated in its clause
   venom tendable (g7)    RM_FlamefangVenom is tendable, immunizable, and tended severity falls (rise + tended < 0)
   furnace (g6 static)    RM_FurnaceBeast body size at least twice every other RM_Pyrelands animal's (native AND
                          patch-added rows) and its adult draw size strictly the largest; Patch_FurnaceBeastHeatImmunity
@@ -176,7 +176,13 @@ def facts(root, dump_rain):
     # engineered
     biomes, _ = _defs(root, "BiomeDef")
     desc = (biomes.get(BIOME).findtext("description") if BIOME in biomes else "") or ""
-    fact("biome_text_says_engineered", re.search(r"\bengineered\b", desc, re.I), "description %d chars" % len(desc))
+    # The leaf: the savanna WAS genetically engineered (blind challenge cycle 2: "\bengineered\b" alone passed "never
+    # genetically engineered"); no negation in the clause before the phrase.
+    eng = re.search(r"\bgenetically engineered\b", desc, re.I)
+    clause = re.split(r"[.;:!?]", desc[:eng.start()])[-1] if eng else ""
+    negated = re.search(r"\b(not|never|no longer|nor|un)\b|n't\b", clause, re.I)
+    fact("biome_text_says_engineered", eng and not negated,
+         "description %d chars%s" % (len(desc), "; negated: %r" % negated.group(0) if negated else ""))
     # venom
     hd, hab = _defs(root, "HediffDef")
     v = hd.get("RM_FlamefangVenom")
@@ -246,6 +252,8 @@ MUTANTS = [
     ("black rain dry", D + "WeatherDefs/BlackRain.xml", "<rainRate>1.1</rainRate>", "<rainRate>0</rainRate>"),
     ("ash fall rains", D + "WeatherDefs/AshFall.xml", "<rainRate>0</rainRate>", "<rainRate>0.5</rainRate>"),
     ("not engineered", D + "BiomeDefs/Pyrelands.xml", "genetically engineered", "planted"),
+    ("engineered negated", D + "BiomeDefs/Pyrelands.xml", "savanna, genetically engineered", "savanna, never genetically engineered"),
+    ("engineered without genetically", D + "BiomeDefs/Pyrelands.xml", "genetically engineered", "engineered"),
     ("venom not tendable", D + "HediffDefs/RM_FlamefangVenom.xml", "<tendable>true</tendable>", "<tendable>false</tendable>"),
     ("tending too weak", D + "HediffDefs/RM_FlamefangVenom.xml", "<severityPerDayTended>-0.4<", "<severityPerDayTended>-0.2<"),
     ("furnace size 8.9", D + "ThingDefs_Races/RM_PyrelandsFauna.xml", "<baseBodySize>9</baseBodySize>", "<baseBodySize>8.9</baseBodySize>"),

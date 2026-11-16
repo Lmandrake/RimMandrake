@@ -9,6 +9,13 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
   read             the field is read (RM_PyrelandsSettings.<name>) in a mechanic file outside the settings file
   gated            every switch the "Mod enabled" master declares is read only in files that consult
                    PyrelandsMechanicsGate.On (the static half of g10), and the declared set is the pinned set
+  gate_wired       PyrelandsMechanicsGate.On feeds "Mod enabled" (pyrelandsEnabled) and the Baroque Biomes toggle under the
+                   key "Pyrelands" into RM_FireEcoKernel.MechanicsOn (blind challenge cycle 2: a gate that ignored either
+                   left every other check green)
+  entry_gated      each pinned mechanic entry point (a Harmony postfix) consults the gate in ITS OWN body, not merely
+                   somewhere in its file (cycle 2: an ungated postfix in a gated file stayed green)
+  sliders          every slider's range holds its field's shipped default (a range that excludes it moves the value the
+                   first time the settings window draws)
 Every planted fault must go red and the clean copy stay green.
 Run: python3 <this file>      exit 0 = PASS, 1 = FAIL
 """
@@ -47,6 +54,48 @@ def _val(v, typ, consts):
     if typ == "string":
         return v.strip('"')
     return round(float(v.rstrip("fFdD")), 6)
+
+
+GATE_FILE = "PyrelandsMechanicsGate.cs"
+GATE_EXPR = "RM_FireEcoKernel.MechanicsOn(RM_PyrelandsSettings.pyrelandsEnabled, ShellPresent, ShellOn)"
+# (file, class, method): mechanic entry points that must consult the gate themselves.
+ENTRY_POINTS = [("PyrelandsAshField.cs", "PyrelandsAshFieldPatches", "FertilityPostfix"),
+                ("FireEcologyHook.cs", "Patch_FireTick_BlackRainDouses", "Postfix"),
+                ("FireEcologyHook.cs", "Patch_FireTick_AshAndScorchFruit", "Postfix"),
+                ("FireEcologyHook.cs", "Patch_FilthMaker_NoAshOnAsh", "Postfix"),
+                ("PyrelandsNoOrdinaryRain.cs", "PyrelandsNoOrdinaryRain", "Postfix_ChooseNextWeather")]
+
+
+def _block(s, start):
+    """The brace-matched body that opens at or after index start, or None."""
+    i = s.find("{", start)
+    if i < 0:
+        return None
+    d, j = 1, i + 1
+    while d and j < len(s):
+        d += {"{": 1, "}": -1}.get(s[j], 0)
+        j += 1
+    return s[i + 1:j - 1] if d == 0 else None
+
+
+def _method_body(s, cls, meth):
+    m = re.search(r"\bclass %s\b" % re.escape(cls), s)
+    body = _block(s, m.end()) if m else None
+    if body is None:
+        return None
+    mm = re.search(r"\b%s\s*\([^;{}]*\)\s*\{" % re.escape(meth), body)
+    return _block(body, mm.end() - 1) if mm else None
+
+
+def _num(v, consts):
+    v = consts.get(v.strip(), v.strip())
+    m = re.match(r"^(\w+)\s*\*\s*([\d.]+)f?$", v)
+    if m and m.group(1) in consts:
+        return float(consts[m.group(1)].rstrip("fFdD")) * float(m.group(2))
+    try:
+        return float(v.rstrip("fFdD"))
+    except ValueError:
+        return None
 
 
 def facts(mod):
@@ -94,6 +143,30 @@ def facts(mod):
             if GATE not in code[f]:
                 bad.append("%s read in %s, which never consults %s" % (n, f, GATE))
     fact("gated", bad, "%d gated switches, %d read sites" % (len(GATED), sum(len(readers.get(n, [])) for n in GATED)))
+    g = code.get(GATE_FILE, "")
+    bad = []
+    if not re.search(r"\bOn\s*=>\s*" + re.escape(GATE_EXPR), g):
+        bad.append("PyrelandsMechanicsGate.On is not " + GATE_EXPR)
+    if not re.search(r'RosterKey\s*=\s*"Pyrelands"\s*;', g):
+        bad.append('the roster key is not "Pyrelands"')
+    fact("gate_wired", bad, "On = MechanicsOn(Mod enabled, shell, toggle \"Pyrelands\")")
+    bad = []
+    for f, cls, meth in ENTRY_POINTS:
+        body = _method_body(code.get(f, ""), cls, meth)
+        if body is None:
+            bad.append("%s.%s not found in %s" % (cls, meth, f))
+        elif GATE not in body:
+            bad.append("%s.%s never consults %s" % (cls, meth, GATE))
+    fact("entry_gated", bad, "%d entry points consult the gate" % len(ENTRY_POINTS))
+    bad = []
+    sliders = re.findall(r"(\w+)\s*=\s*(?:Mathf\.RoundToInt\(|\(int\)\s*)?list\.Slider\((\w+),\s*([^,]+),\s*([^)]+)\)", ms)
+    for target, arg, lo, hi in sliders:
+        if target not in fields:
+            continue
+        d, l, h = fields[target][1], _num(lo, consts), _num(hi, consts)
+        if l is None or d < l - 1e-6 or (h is not None and d > h + 1e-6):
+            bad.append("%s ships %s outside its slider [%s, %s]" % (target, d, lo.strip(), hi.strip()))
+    fact("sliders", bad if sliders else ["no slider found"], "%d sliders hold their defaults" % len(sliders))
     return out
 
 
@@ -109,6 +182,12 @@ MUTANTS = [
     ("reader only in a comment", S + "RM_PyrelandsGiants.cs", "RM_PyrelandsSettings.furnaceBeastGiant", "true /* RM_PyrelandsSettings.furnaceBeastGiant */"),
     ("gate dropped at a read site", S + "PlantGrowthStages.cs", GATE, "true"),
     ("switch undeclared from the master", S + SETTINGS, '"burrowOnFireEnabled", "ashWaterFertilityEnabled", "blackRainDousingEnabled")', '"ashWaterFertilityEnabled", "blackRainDousingEnabled")'),
+    ("gate ignores Mod enabled", S + GATE_FILE, "MechanicsOn(RM_PyrelandsSettings.pyrelandsEnabled,", "MechanicsOn(true,"),
+    ("roster key misspelt", S + GATE_FILE, 'RosterKey = "Pyrelands";', 'RosterKey = "Pyrelandz";'),
+    ("ash-field postfix ungated", S + "PyrelandsAshField.cs", "if (___map == null || !PyrelandsMechanicsGate.On) return;", "if (___map == null) return;"),
+    ("black-rain douse ungated", S + "FireEcologyHook.cs", "BlackRainDouseAmount(PyrelandsMechanicsGate.On,", "BlackRainDouseAmount(true,"),
+    ("rain swap ungated", S + "PyrelandsNoOrdinaryRain.cs", "pyre, PyrelandsMechanicsGate.On)", "pyre, true)"),
+    ("slider range excludes its default", S + SETTINGS, "list.Slider(blackRainDousing, 0f, 100f)", "list.Slider(blackRainDousing, 50f, 100f)"),
 ]
 
 
