@@ -168,6 +168,25 @@ execution state". Where it disagreed, and what I did:
 - It said zero mod-defect pauses does not mean defect-free mods. Agreed: mod defects appear as 5 sends back.
 - It added one remedy: a finite release contract, separating new requirements from defects. That is remedy 5(b).
 
+### Filed
+
+- `RIMMANDRAKE_LIFT_DESIGNER_BLOCK_NAMING_DONE_ITEM_SLIME_WAITS`: a Designer block whose reason names an item that is
+  already done never lifts (Gelatinous Slime, blocked since 11-16 8:55 AM PST). This run may not change pipeline
+  code, so it is filed for a builder. Acceptance oracle (prints FAIL on base `1a6c7b26c7`, watched; expected one PASS
+  line once fixed), run from the repo root:
+
+```python
+import json, re, subprocess
+r = json.load(open('/mnt/d/ClaudeWork/rimmandrake/dispatcher/maturation/reading.json'))
+bad = []
+for m, row in r['mods'].items():
+    if row.get('decision') == 'designer_blocked':
+        for i in re.findall(r'\b(RIMMANDRAKE_[A-Z0-9_]+)', row.get('why') or ''):
+            out = subprocess.run(['python3', 'src/RimMandrake/rimflow/cli.py', 'show', i], capture_output=True, text=True).stdout.split('\n')[0]
+            if re.search(r'\s(done|dropped|superseded)\s', out): bad.append((m, i))
+print('FAIL' if bad else 'PASS', bad)
+```
+
 ### Appendix: every pause, 2026-11-13 to 2026-11-16 2:24 PM PST
 
 Pause names are the program's own. Times are PST. "census row" = before the per-minute log, from the 11-15 census.
