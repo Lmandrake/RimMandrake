@@ -12,13 +12,43 @@
    "stage": 0,
    "what": "init",
    "why": "stage 0, budget 4000000 (reserve 60000), runner codex"
+  },
+  {
+   "at": "2026-11-16T02:54:03Z",
+   "stage": 0,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794797629, stage 0, budget 500000"
+  },
+  {
+   "at": "2026-11-16T02:56:20Z",
+   "stage": 0,
+   "what": "retry",
+   "why": "run rm-role-designercodex-1794797629 result rejected: no result.json (a closing message is not a result); Codex transport failed: no Codex transport result"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD",
  "mod": "Stillsand",
  "recovery": [],
- "results": [],
+ "results": [
+  {
+   "at": "2026-11-16T02:56:20Z",
+   "outcome": "rejected",
+   "run": "rm-role-designercodex-1794797629",
+   "stage": 0,
+   "why": [
+    "no result.json (a closing message is not a result)",
+    "Codex transport failed: no Codex transport result"
+   ]
+  }
+ ],
  "runner": "codex",
+ "runner_spend": [
+  {
+   "run": "rm-role-designercodex-1794797629",
+   "runner": "codex",
+   "usage": "UNMEASURED"
+  }
+ ],
  "running": null,
  "schema": 1,
  "stage": 0,
