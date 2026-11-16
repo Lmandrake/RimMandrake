@@ -988,16 +988,186 @@ def _pit_trap_raid(S):
     S.row('PTR_control_open_pit_no_one_falls', not seen['held'], sorted(seen['held']), unmeasured=not seen['reached'])
 
 
+# RIMMANDRAKE_REBUILD_FLOWWORKS_ISLANDS_SCENE_SPAWNED_A_DRAW_STYLE (visit 1, 2026-11-15): the draft spawned
+# 'RM_SuspensionBridge' (a DrawStyleCategoryDef: spawn_batch 'unknown ThingDef'), dropped two bare gates in the channel, fired
+# an unplaced raid and never staged a winch loss. Now the bridges are built through the mod's own drag (RM_SuspensionProofs.
+# ProofBuild, RM_DrawbridgeProofs.ProofMakeDrawbridge with its winch houses), read back lowered, six sappers stand on the
+# long span, both leaves go up, and each row needs its event: no raider on the span, no winch lost, no leaf down reads
+# UNMEASURED, never PASS. If the sappers never take a winch in the window that row FAILs and the harness destroys the west
+# winch itself (staged=True in the detail) so the drop and the escape are still asked. The control holds both winches at
+# full hit points every poll (no tool makes a building indestructible; a winch lost anyway leaves the control UNMEASURED).
+#   x: west island <= O0 | drawbridge O0..O0+4 (hole +1..+3) | pillar +4,+5 | steel span +5..+16 (hole +6..+15)
+#      | pillar +16,+17 | drawbridge +17..+21 (hole +18..+20) | east island >= +21; channel dug 4 m at z = O1-3..O1+3
+DPROOF = 'RimMandrake.FlowWorks.Pits.RM_DrawbridgeProofs'
+SPROOF = 'RimMandrake.FlowWorks.Pits.RM_SuspensionProofs'
+RAIDW = 'RimMandrake.FlowWorks.Pits.JobGiver_RM_DrawbridgeWinch'
+ISL_DEEP, ISL_HALF = 8, 3                           # notches (4 m) and the channel's half-width in rows
+ISL_PILLARS = (4, 5, 16, 17)                        # undug squares at z = O1 (dx from O0): anchors stand on them
+ISL_DRAW = (((0, 4), 'A', -1), ((17, 21), 'B', 22))   # (dx span, hinge bank, winch dx): each winch on its outer island
+ISL_LONG = (5, 16)                                  # the steel span between the pillars (up to 20 between supports)
+ISL_LEAVES = (2, 19)                                # a deck square of each leaf
+ISL_WINCH_DEF = 'RM_DrawbridgeWinch_Timber'
+ISL_KIND, ISL_RAIDERS = 'Grenadier_Destructive', 6  # sapper-capable (drawbridge_proof RAID_UP sapper variant)
+ISL_POLL, ISL_POLLS = 120, 50                       # 6,000 ticks a watch
+
+
+def _isl_xz(dx):
+    return O[0] + dx, O[1]
+
+
+def _isl_channel():
+    return [(O[0] + dx, O[1] + dz) for dx in range(1, 21) for dz in range(-ISL_HALF, ISL_HALF + 1)
+            if not (dz == 0 and dx in ISL_PILLARS)]
+
+
+def _isl_leaf(S, dx):
+    """That leaf's ProofLeaf read; a reply without its winch and progress (REFUSED, 'LEAF none') is a staging fault, never
+    a lost winch or a dropped leaf."""
+    txt = S.sc(DPROOF, 'ProofLeaf', '%d,%d' % _isl_xz(dx))
+    d = kv(txt)
+    require('winch' in d and 'progress' in d, 'leaf %d unreadable: %s' % (dx, txt))
+    return d
+
+
+def _isl_hostile_faction(S):
+    """A hostile humanlike faction def from spawn_pawn's refusal of faction '?' (drawbridge_proof.faction's recipe)."""
+    probe = S.B.call('jawa/spawn_pawn', _answer=True, kindDef=ISL_KIND, x=0, z=0, faction='?', count=1) or {}
+    avail = (probe.get('details') or {}).get('available') or []
+    hostile = [f.get('def') for f in avail if f.get('hostile') and f.get('def') not in ('Entities', 'Mechanoid', 'Insect')]
+    fac = next((f for f in hostile if str(f).startswith('Pirate')), hostile[0] if hostile else None)
+    require(fac, 'no hostile humanlike faction to spawn: %s' % str(probe)[:200])
+    return fac
+
+
+def _isl_stage(S):
+    """Dig the channel, build both drawbridges (winches on the outer islands) and the steel span, read them back lowered,
+    put two colonists on the west island and six sappers on the span, then raise both leaves. -> the staged state."""
+    S.dig(_isl_channel(), ISL_DEEP)
+    winch = []
+    for (a, b), bank, wdx in ISL_DRAW:
+        txt = S.sc(DPROOF, 'ProofMakeDrawbridge', '%d,%d;%d,%d;timber;%s;winch' % (_isl_xz(a) + _isl_xz(b) + (bank,)))
+        d = kv(txt)
+        require(d.get('ok') == 'True' and d.get('leaves') == '1', 'drawbridge %d..%d not built as one leaf: %s' % (a, b, txt))
+        require(d.get('winchAt') == '%d,%d' % _isl_xz(wdx), 'drawbridge %d..%d winch not on its outer island: %s' % (a, b, txt))
+        winch.append(_isl_xz(wdx))
+    txt = S.sc(SPROOF, 'ProofBuild', '%d,%d;%d,%d;steel;god' % (_isl_xz(ISL_LONG[0]) + _isl_xz(ISL_LONG[1])))
+    require(txt.startswith('BUILD ok=True') and kv(txt).get('records') == '1', 'the long span was not built: %s' % txt)
+    leaves = [_isl_leaf(S, dx) for dx in ISL_LEAVES]
+    require(all(l.get('progress') == '0' and l.get('winch') == 'True' for l in leaves),
+            'the drawbridges do not read lowered with their winches: %s' % leaves)
+    ids = []
+    for c in winch:
+        t = S.call('jawa/list_things', defName=ISL_WINCH_DEF, rect='%d,%d,1,1' % c).get('things') or []
+        require(len(t) == 1 and t[0].get('maxHitPoints'), 'no winch house (with its hit points) listed at %s: %s' % (c, t))
+        ids.append((t[0]['id'], t[0].get('maxHitPoints')))
+    for dz in (-1, 1):
+        S.pawn('Colonist', (O[0] - 3, O[1] + dz), 'player')
+    fac = _isl_hostile_faction(S)
+    raiders = []
+    for k in range(ISL_RAIDERS):
+        at = _isl_xz(7 + k)
+        r = S.call('jawa/spawn_pawn', kindDef=ISL_KIND, x=at[0], z=at[1], faction=fac, count=1)
+        pid = ((r.get('pawns') or [{}])[0]).get('id')
+        require(pid, 'raider not spawned at %s: %s' % (at, r))
+        # set BEFORE the lord: LordToil_AssaultColonySappers picks its sappers at UpdateAllDuties (Mining raw 20; a refusal
+        # from a backstory that disables mining is a reading, the IsGoodSapper check below decides)
+        S.B.call('jawa/set_pawn_skill', _answer=True, pawn=pid, skill='Mining', level=20)
+        has = S.sc('RimWorld.SappersUtility', 'HasBuildingDestroyerWeapon', pid)
+        if has != 'True':
+            S.call('jawa/pawn_gear', pawn=pid, action='clear', clearWhat='equipment')
+            S.call('jawa/pawn_gear', pawn=pid, action='equip', **{'def': 'Weapon_GrenadeFrag'})
+        raiders.append(pid)
+    S.call('jawa/lord_assault_spawn', pawns=','.join(raiders), sappers=True)
+    good = [p for p in raiders if S.sc('RimWorld.SappersUtility', 'IsGoodSapper', p) == 'True']
+    require(good, 'no raider IsGoodSapper (none gets the Sapper duty, so none would go for a winch): %s' % raiders)
+    for dx in ISL_LEAVES:
+        txt = S.sc(DPROOF, 'ProofDevSet', '%d,%d;raise;instant' % _isl_xz(dx))
+        require(kv(txt).get('target') == 'raised' and kv(txt).get('progress', '0') != '0', 'leaf %d did not go up: %s' % (dx, txt))
+    return {'winch': winch, 'winch_ids': ids, 'raiders': raiders, 'sappers': good}
+
+
+def _isl_counter(S):
+    r = S.B.call('jawa/mod_settings_field', _answer=True, typeName=RAIDW, field='WinchJobs', action='get') or {}
+    try:
+        return int(r.get('value'))
+    except (TypeError, ValueError):
+        return None
+
+
+def _isl_watch(S, st, until='loss', hold=False):
+    """ISL_POLL chunks on the narrowed governor (a raid hurts, downs and kills by design). Each poll: our raiders still alive,
+    those on the span (inside the channel) and those on an island, and which winch still stands. `until`: 'loss' stops at
+    the first winch lost, 'escape' at the first raider on an island, None runs every poll. `hold` puts each winch back to
+    full hit points before every chunk (the control's unbreakable winches)."""
+    prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON
+    seen = {'polls': 0, 'on_span': 0, 'live': 0, 'escaped': [], 'lost': [], 'resets': 0, 'last': []}
+    mine = set(st['raiders'])
+    try:
+        for _ in range(ISL_POLLS):
+            if hold:
+                for wid, hp in st['winch_ids']:
+                    S.B.call('jawa/set_thing_props', _answer=True, thing=wid, hitPoints=int(hp))
+                    seen['resets'] += 1
+            S.ticks(ISL_POLL)
+            seen['polls'] += 1
+            live = [p for p in S.call('jawa/list_pawns', faction='hostile').get('pawns') or []
+                    if p.get('id') in mine and not p.get('dead') and p.get('x') is not None]
+            seen['live'] = len(live)
+            seen['last'] = [(p['id'], p['x'], p['z']) for p in live]
+            seen['on_span'] = max(seen['on_span'], sum(1 for p in live if O[0] < p['x'] < O[0] + 21
+                                                       and abs(p['z'] - O[1]) <= ISL_HALF))
+            seen['escaped'] = sorted(p['id'] for p in live if p['x'] <= O[0] or p['x'] >= O[0] + 21)
+            seen['lost'] = [dx for dx in ISL_LEAVES if _isl_leaf(S, dx).get('winch') != 'True']
+            if (until == 'loss' and seen['lost']) or (until == 'escape' and seen['escaped']):
+                break
+    finally:
+        S.B.stop_on = prior
+    return seen
+
+
 def _islands(S):
-    span = _line(O[0], O[1], 16)
-    S.dig(span, 8); S.fill(span, 2.0, WATER)
-    S.call('jawa/spawn_batch', ops='RM_SuspensionBridge:%d,%d' % span[0])
-    S.call('jawa/spawn_batch', ops='RM_DrawbridgeGate:%d,%d;RM_DrawbridgeGate:%d,%d' % (span[0] + span[-1]))
-    S.call('jawa/fire_raid', points=900, dryRun=False, strategy='ImmediateAttack', spawnCenter='%d,%d' % span[8])
-    S.ticks(5000)
-    on = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,16,1' % O).get('pawns') or []
-    gates = S.call('jawa/list_things', defName='RM_DrawbridgeGate', rect='%d,%d,17,1' % (O[0] - 1, O[1])).get('things') or []
-    S.row('ISL_winch_destroyed_and_escape', len(gates) < 2 and not on, (len(gates), on))
+    st = _isl_stage(S)
+    w0 = _isl_counter(S)
+    seen = _isl_watch(S, st, until='loss')
+    no_raid = not seen['on_span']
+    why = 'no raider of ours stood on the span (last %s); ' % seen['last'] if no_raid else ''
+    S.row('ISL_trapped_while_winches_stand', not seen['escaped'],
+          why + 'on an island before any winch fell %s, polls %d' % (seen['escaped'], seen['polls']), unmeasured=no_raid)
+    w1 = _isl_counter(S)
+    jobs = None if w0 is None or w1 is None else w1 - w0
+    S.row('ISL_raiders_destroy_a_winch', bool(seen['lost']),
+          why + 'leaves whose winch fell %s, WinchJobs +%s, sappers %s' % (seen['lost'], jobs, st['sappers']), unmeasured=no_raid)
+    lost, staged = list(seen['lost']), False
+    if not lost and not no_raid:
+        gone = S.call('jawa/destroy_batch', rects='%d,%d,1,1' % st['winch'][0], categories='Building')
+        require(int(gone.get('destroyed') or 0) >= 1, 'the staged winch loss destroyed nothing: %s' % gone)
+        lost, staged = [ISL_LEAVES[0]], True
+    prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON
+    try:
+        S.ticks(10)                                      # the crash lands on the next drive step
+    finally:
+        S.B.stop_on = prior
+    after = [_isl_leaf(S, dx) for dx in lost]
+    dropped = [dx for dx, l in zip(lost, after) if l.get('progress') == '0']
+    S.row('ISL_lost_winch_drops_its_leaf', bool(lost) and dropped == lost,
+          (why or ('' if lost else 'no winch was lost; ')) + 'staged=%s leaves %s after %s' % (staged, lost, after),
+          unmeasured=not lost)
+    out = _isl_watch(S, st, until='escape') if dropped else None
+    S.row('ISL_raiders_escape', bool(out and out['escaped']),
+          ('no leaf came down, so there was no way off; ' if not dropped else '') +
+          ('' if not out else 'on an island %s, live %d, polls %d, last %s' % (out['escaped'], out['live'], out['polls'],
+                                                                               out['last'])),
+          unmeasured=not dropped or not (out and (out['live'] or out['escaped'])))
+    S.again()                                            # control: the same span, both winches held at full hit points
+    st = _isl_stage(S)
+    ctl = _isl_watch(S, st, until=None, hold=True)
+    up = [_isl_leaf(S, dx) for dx in ISL_LEAVES]
+    raised = all(l.get('target') == 'raised' and l.get('progress', '0') != '0' for l in up)
+    S.row('ISL_control_unbreakable_winches_stay_trapped', not ctl['escaped'] and raised,
+          ('no raider of ours stood on the span; ' if not ctl['on_span'] else '') +
+          ('a held winch fell anyway %s; ' % ctl['lost'] if ctl['lost'] else '') +
+          'on an island %s, leaves %s, resets %d' % (ctl['escaped'], [l.get('progress') for l in up], ctl['resets']),
+          unmeasured=not ctl['on_span'] or bool(ctl['lost']))
 
 
 def _vacuous(v):

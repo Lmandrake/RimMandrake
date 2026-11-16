@@ -1,0 +1,10 @@
+ok    the fake knows the real ThingDefs (RM_DrawbridgeGate in, RM_SuspensionBridge out) 
+ok    every staging call keeps its tool contract (ThingDefs only; proof args; build rules) 
+ok    the scene leaves the governor as it found it 
+ok    healthy fake (sappers take the west winch, its leaf crashes, they walk off; held winches hold): every row PASS 
+ok    sappers that never take a winch: that row FAILs, the staged loss still asks the drop and the escape (PASS) 
+ok    a leaf that stays up after its winch falls: the drop FAILs, the escape UNMEASURED 
+ok    raiders that walk off over raised leaves: the trap and the control FAIL 
+ok    a raid that is gone at the first poll: every row UNMEASURED, none PASS 
+ok    a REFUSED leaf read mid-watch is never a lost winch: the scene stops UNMEASURED, no row PASS 
+selftest_islands_scene: ok
