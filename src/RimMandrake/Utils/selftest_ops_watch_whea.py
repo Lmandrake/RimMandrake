@@ -29,10 +29,15 @@ def pin_rules(r):
             t.update(json.loads(json.dumps(PIN_TARGETS[t["key"]])))
     return r
 
+_load_rules = OW.load_rules
+OW.load_rules = lambda *a, **k: pin_rules(_load_rules(*a, **k))
+
 TMP = Path(tempfile.mkdtemp(prefix="selftest_ops_whea_"))
 FAILS = []
 COR, SEV, BLIND = "disk.whea_corrected_24h", "disk.whea_severe_24h", "disk.whea_blind"
 RULES = pin_rules(json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8")))
+PINNED_RULES = TMP / "pinned_rules.json"      # the CLI pass reads the shipped rules with the alarm lines pinned
+PINNED_RULES.write_text(json.dumps(RULES), encoding="utf-8")
 TG = {t["key"]: t for t in RULES["targets"] if isinstance(t, dict) and str(t.get("key", "")).startswith("disk.whea")}
 ENV = {"RM_POOL_ROOT": str(TMP / "pool"), "RM_SCRATCH_ROOT": str(TMP / "scratch"), "RM_OBJSTORE_STATE": str(TMP / "objstore"),
        "RM_SESSION_GLOB": str(TMP / "none/*"), "RM_OPS_DISKS": "root=/"}
@@ -67,7 +72,7 @@ def cli_pass(name, body):
         f.write_text(body if isinstance(body, str) else "\r\n".join(body) + "\r\n", encoding="utf-8")
     ops = d / "ops"
     env = {**os.environ, **ENV, "RM_SCRATCH_REAP_RUNS": str(d / "runs.jsonl"), "RM_OPS_WATCH_DIR": str(ops),
-           "RM_OPS_WHEA_EVENTS": str(f)}
+           "RM_OPS_WHEA_EVENTS": str(f), "RM_OPS_WATCH_RULES": str(PINNED_RULES)}
     r = subprocess.run([sys.executable, str(HERE / "ops_watch.py"), "run", "--family", "disk"], env=env, capture_output=True,
                        text=True, timeout=120)
     assert r.returncode == 0, r.stderr[-600:]
