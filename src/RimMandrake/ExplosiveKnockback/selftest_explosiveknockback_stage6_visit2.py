@@ -21,6 +21,9 @@ in a game:
   F1 SITE: pit_goods_fetch runs 60000 ticks; FlowWorks' rain filled both 3x3 pits to 2 m (WaterDeep, measured live), and
      dug water 2 m deep is swum (owner R12), so the hauler swam into the raised-ladder control pit and carried its steel
      out (sc_pit_fetch FAIL, visit 1 and visit 2). The scene turns rainFillsExcavationsEnabled off and restores it.
+  R1 HARNESS: validation.py's walk (sc_walk_raid) required mandrake.rm.cauldron in activeMods, but the Cauldron is folded
+     into mandrake.rm.biomes (Biomes.compose.json) and the owner's full list has no mandrake.rm.cauldron: W_PRECONDITIONS
+     could never pass. MODS_NEEDED names no folded member's packageId and names the composite.
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit2.py [--src DIR]
 --src reads the mod's Source/ from DIR (laid out like this folder).
@@ -85,6 +88,23 @@ def main():
     pf = pf[:pf.find("s.verdict = sc =>")]
     check("F1", '"rainFillsExcavationsEnabled"' in pf and "SetValue(null, false)" in pf and "rfWas" in pf
           and pf.find("s.restore") >= 0, "pit_goods_fetch keeps rain out of its pits for the run and restores the setting")
+    val = open(os.path.join(root, "validation.py"), encoding="utf-8").read()
+    m = re.search(r"MODS_NEEDED = \(([^)]*)\)", val)
+    needed = re.findall(r'"([^"]+)"', m.group(1)) if m else []
+    rm = os.path.abspath(os.path.join(root, ".."))
+    folded = set()
+    comp = os.path.join(rm, "Biomes.compose.json")
+    if os.path.exists(comp):
+        import json
+        for e in json.load(open(comp, encoding="utf-8")).get("entries", []):
+            about = os.path.join(rm, e.get("source", ""), "About", "About.xml")
+            if os.path.exists(about):
+                pm = re.search(r"<packageId>([^<]+)</packageId>", open(about, encoding="utf-8").read())
+                if pm:
+                    folded.add(pm.group(1).strip().lower())
+    check("R1", bool(needed) and bool(folded) and not (set(n.lower() for n in needed) & folded)
+          and "mandrake.rm.biomes" in needed, "the walk's MODS_NEEDED %s names no folded member (%d read) and the composite"
+          % (needed, len(folded)))
     print("explosiveknockback stage6 visit2: %d failed" % len(fails))
     return 1 if fails else 0
 

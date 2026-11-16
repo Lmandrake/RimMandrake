@@ -198,6 +198,7 @@ namespace RimMandrake.ExplosiveKnockback
             Thing cover = null;
             // visit 2 (2026-11-15): the cover goes on FIRST. Planned against the open pit, a throw stops on the first pit cell it
             // meets; with the cover built that cell no longer stops it, so a plan made before the cover never matched after it.
+            var withCover = new List<string>();
             for (int cx = -6; cx <= 6 && !coverFrom.IsValid; cx++)
             {
                 IntVec3 cc = new IntVec3(s.o.x + cx, 0, s.o.z - 4);
@@ -208,6 +209,9 @@ namespace RimMandrake.ExplosiveKnockback
                 cover = Build("RM_PitCover_WovenScrap", cc);
                 foreach (IntVec3 c in cand)
                 {
+                    IntVec3 wt = PlanGood(s, c, DefMass("WoodLog", 10));
+                    withCover.Add("[cover " + cx + ",-4 " + (cover == null ? "none" : cover.Spawned ? cover.Position.x - s.o.x + "," + (cover.Position.z - s.o.z) : "unspawned")
+                        + " pit=" + RM_KnockbackCompat.IsSuperdeep(Map, cc) + "] " + (c.x - s.o.x) + "," + (c.z - s.o.z) + "->" + (wt.IsValid ? (wt.x - s.o.x) + "," + (wt.z - s.o.z) : "none"));
                     for (int n = 1; n <= 24 && !coverFrom.IsValid; n++)   // 24 logs = 9.6 kg, under the 10 kg heavy threshold
                     {
                         if (PlanGood(s, c, DefMass("WoodLog", n)) == cc)
@@ -235,7 +239,7 @@ namespace RimMandrake.ExplosiveKnockback
                     return (c.x - s.o.x) + "," + (c.z - s.o.z) + "->" + (to.IsValid ? (to.x - s.o.x) + "," + (to.z - s.o.z) : "none"); });
                 return "no floor stack within two cells whose planned throw ends on a covered near-row pit cell (pit stack "
                     + (pitFrom.x - s.o.x) + "," + (pitFrom.z - s.o.z) + "->" + (pitTo.x - s.o.x) + "," + (pitTo.z - s.o.z)
-                    + "; plans " + string.Join(" ", plans) + ")";
+                    + "; plans " + string.Join(" ", plans) + "; with the cover " + string.Join(" ", withCover.Take(12)) + ")";
             }
             Item(s, "g_pit", "Cloth", 10, pitFrom);
             Item(s, "g_cover", "WoodLog", coverCount, coverFrom);

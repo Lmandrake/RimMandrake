@@ -353,7 +353,7 @@ SHELL = ("Bomb", 2.9)        # Bullet_Shell_HighExplosive (Core Items_Resource_S
 GRENADE = ("Bomb", 1.9)      # Proj_GrenadeFrag (Core RangedIndustrialGrenades.xml)
 VENTGAS = "RimMandrake.Cauldron.RM_MapComponent_VentGas"
 SETTINGS_TYPE = "RimMandrake.ExplosiveKnockback.RimMandrakeExplosiveKnockbackSettings"
-MODS_NEEDED = ("mandrake.rm.explosiveknockback", "mandrake.rm.flowworks", "mandrake.rm.cauldron")
+MODS_NEEDED = ("mandrake.rm.explosiveknockback", "mandrake.rm.flowworks", "mandrake.rm.biomes")   # the Cauldron is folded into Biomes (visit 2)
 
 
 
