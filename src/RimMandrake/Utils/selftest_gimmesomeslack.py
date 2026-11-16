@@ -68,28 +68,31 @@ def main(argv):
         r = subprocess.run([sys.executable, os.path.join(HERE, "mockups", "messy_conduit", "export_oracle.py")])
         if r.returncode:
             return r.returncode
-    rc, rec = winbuild.stage_build(CSPROJ, stage_name="GimmeSomeSlackSelfTest",
-                                   extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Source", "Core")])
-    if rc:
-        print("selftest build FAILED")
-        return rc
-    dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
-    args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else [])
-    for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
-        if a.startswith("--fuzz") and i + 1 < len(argv):
-            args += [a, argv[i + 1]]
-    if "--scale-bench" in argv:   # CordScaleBench.cs: --scale-bench [K,K,...] (frame cost and per-frame allocation vs lattices)
-        i = argv.index("--scale-bench")
-        args += ["--scale-bench"] + [a for a in argv[i + 1:i + 2] if not a.startswith("--")]
-    if "--unroutable-census" in argv:   # A7 census (UnroutableCensus.cs): --unroutable-census OUT.json [SEEDS]
-        i = argv.index("--unroutable-census")
-        args += ["--unroutable-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
-    if "--lab" in argv:   # LabWorld.cs: --lab WORLD.json OUT.json, the shape lab on a world the live probe dumped
-        i = argv.index("--lab")
-        args += ["--lab", winbuild.win(os.path.abspath(argv[i + 1])), winbuild.win(os.path.abspath(argv[i + 2]))]
-    if "--dump" in argv:
-        args += ["--dump", winbuild.win(os.path.abspath(argv[argv.index("--dump") + 1]))]
-    return winbuild.run_interop(args, cwd=selftest_cwd(), timeout=None)
+    # every clone stages this test in the same D: folder: hold it from build through run (another clone's run held the
+    # DLL while this one rebuilt it, MSB3027, 2026-11-16; RIMMANDRAKE_LOCK_GSS_SELFTEST_STAGE_SHARED_BY_EVERY_CLONE)
+    with winbuild.exclusive("GimmeSomeSlackSelfTest"):
+        rc, rec = winbuild.stage_build(CSPROJ, stage_name="GimmeSomeSlackSelfTest",
+                                       extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack", "Source", "Core")])
+        if rc:
+            print("selftest build FAILED")
+            return rc
+        dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
+        args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else [])
+        for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
+            if a.startswith("--fuzz") and i + 1 < len(argv):
+                args += [a, argv[i + 1]]
+        if "--scale-bench" in argv:   # CordScaleBench.cs: --scale-bench [K,K,...] (frame cost and per-frame allocation vs lattices)
+            i = argv.index("--scale-bench")
+            args += ["--scale-bench"] + [a for a in argv[i + 1:i + 2] if not a.startswith("--")]
+        if "--unroutable-census" in argv:   # A7 census (UnroutableCensus.cs): --unroutable-census OUT.json [SEEDS]
+            i = argv.index("--unroutable-census")
+            args += ["--unroutable-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
+        if "--lab" in argv:   # LabWorld.cs: --lab WORLD.json OUT.json, the shape lab on a world the live probe dumped
+            i = argv.index("--lab")
+            args += ["--lab", winbuild.win(os.path.abspath(argv[i + 1])), winbuild.win(os.path.abspath(argv[i + 2]))]
+        if "--dump" in argv:
+            args += ["--dump", winbuild.win(os.path.abspath(argv[argv.index("--dump") + 1]))]
+        return winbuild.run_interop(args, cwd=selftest_cwd(), timeout=None)
 
 
 if __name__ == "__main__":
