@@ -133,7 +133,9 @@ def sweep(repo, cfg_rel, tests=None, jobs=6, timeout=300, log=print, deep=False,
 
     try:
         base = run_tests(root, tests, jobs, timeout)
-        mut = with_leaves(every, [t for t in tests if base[t]])
+        fmt = with_leaves([], [t for t in tests if base[t]])      # the file rewritten by json.dump with nothing changed
+        fmt_red = sorted(t for t, v in fmt.items() if v is False)
+        mut = with_leaves(every, [t for t in tests if base[t] and t not in fmt_red])
         rep = {"config": cfg_rel, "leaves": len(every), "tests": len(tests),
                "base_red": sorted(t for t in tests if base[t] is False),
                "base_timeout": sorted(t for t in tests if base[t] is None),
@@ -146,6 +148,9 @@ def sweep(repo, cfg_rel, tests=None, jobs=6, timeout=300, log=print, deep=False,
             rep["pinned"][t] = ["/".join(map(str, c)) if c and not isinstance(c[0], tuple)
                                 else " + ".join("/".join(map(str, x)) for x in c) for c in culprits(t, every)]
             log("PINNED %s <- %s" % (t, ", ".join(rep["pinned"][t])))
+        rep["format_sensitive"] = fmt_red
+        for t in fmt_red:
+            log("FORMAT-SENSITIVE %s (red when json.dump merely rewrites the file, e.g. text-matching mutants: not judged)" % t)
         for t in rep["base_red"]:
             log("BASE RED %s (red before any change: not judged)" % t)
         for t in rep["base_timeout"] + rep["mut_timeout"]:

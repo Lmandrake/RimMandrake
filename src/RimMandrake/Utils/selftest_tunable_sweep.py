@@ -65,6 +65,14 @@ def main():
     open(os.path.join(d, "selftest_pinned.py"), "w").write(READ + "sys.exit(0 if c['cap'] > 0 else 1)\n")
     rep2 = TS.sweep(d, "cfg.json", tests=["selftest_pinned.py"], jobs=1, timeout=60, log=lambda s: None)
     ok(rep2["pinned"] == {}, "the tree's uncommitted fix is swept, and is clean")
+    # a text-matching reader (the mutants proof) is red once json.dump rewrites the file: not a pinned tunable
+    open(os.path.join(d, "selftest_text.py"), "w").write(
+        "import os\nsys_raw = open(os.path.join(os.path.dirname(__file__), 'cfg.json')).read()\n"
+        "raise SystemExit(0 if '\"cap\": 4, \"pair\"' in sys_raw else 1)\n")
+    subprocess.run(["git", "-C", d, "add", "selftest_text.py"], check=True, capture_output=True)
+    rep4 = TS.sweep(d, "cfg.json", tests=["selftest_text.py"], jobs=1, timeout=60, log=lambda s: None)
+    ok(rep4["pinned"] == {} and rep4["format_sensitive"] == ["selftest_text.py"],
+       "a reader red on a bare rewrite is format-sensitive, not pinned: %s" % rep4)
     raw = json.load(open(os.path.join(d, "cfg.json")))
     ok(raw["cap"] == 4, "the real config is never touched")
     print("RESULT: %s (%d failed)" % ("PASS" if not FAILS else "FAIL", FAILS))
