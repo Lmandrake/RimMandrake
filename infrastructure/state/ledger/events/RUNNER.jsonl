@@ -7648,3 +7648,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T04:55:04Z","tsn":1794804904439731023}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-16T05:03:04Z","tsn":1794805384793053309}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","result":"broken","detail":"Ops alarm MATURATION_IDLE: maturation.idle_owed_max_min = 69 min (MEASURED), line > 60","ts":"2026-11-16T05:05:29Z","tsn":1794805529694409718}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","result":"broken","detail":"Ops alarm MATURATION_IDLE: maturation.idle_owed_max_min = 69 min (MEASURED), line > 60","ts":"2026-11-16T05:08:08Z","tsn":1794805688416378045}
+{"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T05:08:13Z","tsn":1794805693960498499}
