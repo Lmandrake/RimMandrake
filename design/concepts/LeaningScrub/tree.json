@@ -6,7 +6,13 @@
  "root_ref": "design/validation_walks/RimMandrake/LeaningScrub.md#north-star",
  "root_state": "VALIDATED",
  "root_hash": "3843bd7bde1a0e672fbad5c53925c8e9c83574a233ddbaaa376579817c281518",
- "coverage": null,
+ "coverage": {
+  "signed_by": "CoverageJudge",
+  "at": "2026-11-16T16:56:00Z",
+  "tree_hash": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9",
+  "sheet_hash": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
+  "ledger_item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF"
+ },
  "floor": {
   "ref": "concept_floor.json",
   "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",

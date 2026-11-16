@@ -1,32 +1,96 @@
 {
- "advisory_gaps": [
-  {
-   "advisory_why": "the judge filed it as declared_data: not a bar (bar_rule.RULE_TEXT)",
-   "bar_kind": "declared_data",
-   "criterion_verdict": "flawed",
-   "criterion_why": "The clause predates the Evidence-for-Ask and Conductor-authority rulings and has no case for an owner who declines to pick and delegates the order, which is what he did; it checks provenance, not anything a player sees.",
-   "evidence": [
-    "scenes.json:2785",
-    "record.json:242",
-    "record.json:375",
-    "sheet.md:96"
-   ],
-   "ids": [],
-   "new_since": "unfixed",
-   "observed": "Showcase 1 has source 'CONDUCTOR:1794794271528276351' and decision stage2_flagship_home_routes, whose speaker is 'conductor'. The owner's decision stage2_owner_corrected_bar records that 'he declined to pick (These are all important)' and that 'the contract clause demanding an owner-picked flagship is a flawed criterion for the neutral fixer'.",
-   "return_to": 2,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Neutral criteria fixer amends the showcase-1 clause in src/RimMandrake/rimflow/roles/designer_scene_contract.md (item RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK)"
-   },
-   "what": "Flagship showcase 1 is still bound to a Conductor-speaker decision, not the owner-speaker decision the contract text requires",
-   "where": "scenes.json showcases[0] home_routes_expedition",
-   "would_pass": "designer_scene_contract.md admits a recorded owner decision that declines the pick and delegates the order, so designer_stage.py showcases accepts showcase 1; or showcase 1 cites an owner-speaker record carrying flagship=home_routes_expedition and its OWNER:<tsn>."
-  }
+ "against": "rm-coverage-judge-1794846217",
+ "at": "2026-11-16T16:55:33Z",
+ "calibration": "CALIBRATED",
+ "changed": [
+  "dec:stage3_coverage_g1_g2",
+  "dec:stage4_exam_reuse_unchanged_inputs",
+  "scene:sc_cuts",
+  "scene:sc_gale_exposure"
  ],
- "at": "2026-11-16T16:23:37Z",
  "checklist": [
+  {
+   "evidence": [
+    "design/concepts/LeaningScrub/scenes.json:170 (sc_gale_exposure)",
+    "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:85",
+    "design/concepts/LeaningScrub/coverage_fixes.json (dec:stage3_coverage_g1_g2)",
+    "design/concepts/LeaningScrub/exam.json (dec:stage4_exam_reuse_unchanged_inputs)"
+   ],
+   "id": "gale_exposure",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gale_exposure",
+     "what": "An unroofed organic pawn in a Gale gets RM_GaleDeafened with reduced hearing/speech"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gale_exposure",
+     "what": "Roofed organic and unroofed mechanoid in the same Gale are spared (asserted in expect; roof state asserted in start)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gale_exposure",
+     "what": "Deafened actor recovers after the Gale ends"
+    },
+    {
+     "ok": true,
+     "scene": "sc_gale_exposure",
+     "what": "Control rejects both the setting-off case (Arm A: no deafening) and an apply-to-every-pawn fixture (Arm B: roofed organic or mechanoid deafened fails the checker); matches the real gate at RM_WindCalendar.cs:85 (Dead, IsMechanoid, Roofed skipped)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "design/concepts/LeaningScrub/scenes.json:2229 (sc_cuts)",
+    "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:6",
+    "design/concepts/LeaningScrub/coverage_fixes.json (dec:stage3_coverage_g1_g2)"
+   ],
+   "id": "cuts",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "No active guardian/roost/rage, farmer camps or drying scar, and no text promising them"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "Control has a third isolated-manifest arm injecting a vaporator that dries or converts surrounding terrain, which the checker must reject, so a check that never looks for drying scars cannot pass; matches the 'Plain vaporator, no scar' ruling at RM_WindVaporator.xml:6"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "Retained tree systems still required independently (deleting them does not pass)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "design/concepts/LeaningScrub/scenes.json:2229 (sc_cuts exercises, expect, control)"
+   ],
+   "id": "bark_wardens_removed",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "No active guardian/roost/rage or text promising it; control rejects an injected stale guardian promise"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "design/concepts/LeaningScrub/scenes.json:2229 (sc_cuts exercises, expect, control)"
+   ],
+   "id": "farmer_camps_removed",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cuts",
+     "what": "No farmer camps generated and no farmerFaction active; control rejects an injected active farmerFaction"
+    }
+   ]
+  },
   {
    "evidence": [
     "record.json",
@@ -182,31 +246,6 @@
      "ok": true,
      "scene": "sc_stall_wait",
      "what": "small idle wild animals wait in Stall; others active; wandering returns"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "tree.json",
-    "scenes.json"
-   ],
-   "id": "gale_exposure",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_gale_exposure",
-     "what": "exposed organics gain the Gale penalty"
-    },
-    {
-     "ok": true,
-     "scene": "sc_gale_exposure",
-     "what": "penalty expires"
-    },
-    {
-     "ok": false,
-     "scene": "sc_gale_exposure",
-     "what": "roofed pawns and mechanoids spared (staged, never asserted)"
     }
    ]
   },
@@ -1179,39 +1218,6 @@
   {
    "evidence": [
     "record.json",
-    "scenes.json"
-   ],
-   "id": "bark_wardens_removed",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_cuts",
-     "what": "no guardian; stale promise rejected"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json"
-   ],
-   "id": "farmer_camps_removed",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_cuts",
-     "what": "no farmer camps; active faction rejected"
-    },
-    {
-     "ok": true,
-     "scene": "sc_removed_save_preservation",
-     "what": "no save-only tombstone ships"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
     "sheet.md",
     "scenes.json"
    ],
@@ -1901,36 +1907,6 @@
    "evidence": [
     "tree.json",
     "scenes.json",
-    "sheet.md"
-   ],
-   "id": "cuts",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_cuts",
-     "what": "no guardian; injection rejected"
-    },
-    {
-     "ok": true,
-     "scene": "sc_cuts",
-     "what": "no farmer camps; injection rejected"
-    },
-    {
-     "ok": false,
-     "scene": "sc_cuts",
-     "what": "no drying scar: asserted but no control can reject one"
-    },
-    {
-     "ok": true,
-     "scene": "sc_removed_save_preservation",
-     "what": "no save preservation ships"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json",
     "floor.json"
    ],
    "id": "colony_walk",
@@ -1953,395 +1929,17 @@
    ]
   }
  ],
- "contract": {
-  "advisory": false,
-  "alarms": [
-   {
-    "family": "coverage_judge",
-    "first_at": "2026-11-15T09:32:09Z",
-    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
-    "last_at": "2026-11-16T16:31:02Z",
-    "open": true,
-    "subject": "family:coverage_judge",
-    "told_at": "2026-11-15T09:32:09Z",
-    "trips": 14,
-    "why": "refused 20 of its last 20 verdicts (limit 70%)"
-   }
-  ],
-  "cached": [],
-  "calibration": "CALIBRATED",
-  "counted": true,
-  "may_judge": true,
-  "ok": true,
-  "repair_due": []
- },
- "contract_reasked": [
-  "refusal 0 (gale_exposure): evidence 'record.json inventory gale_exposure' is not one of the inputs the judge was given",
-  "refusal 0 (gale_exposure): evidence 'tree.json leaf gale_exposure' is not one of the inputs the judge was given",
-  "refusal 0 (gale_exposure): evidence 'scenes.json sc_gale_exposure' is not one of the inputs the judge was given",
-  "refusal 1 (cuts): evidence 'tree.json leaf cuts' is not one of the inputs the judge was given",
-  "refusal 1 (cuts): evidence 'scenes.json sc_cuts' is not one of the inputs the judge was given",
-  "refusal 1 (cuts): evidence 'record.json inventory wind_vaporator' is not one of the inputs the judge was given",
-  "refusal 1 (cuts): evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
-  "refusal 1 (cuts): evidence 'sheet.md ## does not' is not one of the inputs the judge was given",
-  "refusal 1 (cuts): evidence 'scenes.json sc_removed_save_preservation' is not one of the inputs the judge was given",
-  "passed biome_cast: evidence 'record.json inventory biome_cast' is not one of the inputs the judge was given",
-  "passed biome_cast: evidence 'scenes.json sc_native_cast' is not one of the inputs the judge was given",
-  "passed biome_cast: evidence 'scenes.json coverage_rest biome_cast' is not one of the inputs the judge was given",
-  "passed weather_calendar: evidence 'record.json inventory weather_calendar' is not one of the inputs the judge was given",
-  "passed weather_calendar: evidence 'scenes.json sc_wind_plain' is not one of the inputs the judge was given",
-  "passed wind_sound: evidence 'record.json inventory wind_sound' is not one of the inputs the judge was given",
-  "passed wind_sound: evidence 'scenes.json sc_wind_audio' is not one of the inputs the judge was given",
-  "passed lean_heading: evidence 'record.json inventory lean_heading' is not one of the inputs the judge was given",
-  "passed lean_heading: evidence 'scenes.json sc_wind_plain' is not one of the inputs the judge was given",
-  "passed plant_lean: evidence 'record.json inventory plant_lean' is not one of the inputs the judge was given",
-  "passed plant_lean: evidence 'scenes.json sc_wind_plain' is not one of the inputs the judge was given",
-  "passed gale_dust: evidence 'record.json inventory gale_dust' is not one of the inputs the judge was given",
-  "passed gale_dust: evidence 'scenes.json sc_gale_drawing' is not one of the inputs the judge was given",
-  "passed stall_freeze: evidence 'record.json inventory stall_freeze' is not one of the inputs the judge was given",
-  "passed stall_freeze: evidence 'scenes.json sc_stall_wait' is not one of the inputs the judge was given",
-  "passed gale_turbines: evidence 'record.json inventory gale_turbines' is not one of the inputs the judge was given",
-  "passed gale_turbines: evidence 'scenes.json sc_working_wind' is not one of the inputs the judge was given",
-  "passed gale_raid_weight: evidence 'record.json inventory gale_raid_weight' is not one of the inputs the judge was given",
-  "passed gale_raid_weight: evidence 'scenes.json sc_raid_weight' is not one of the inputs the judge was given",
-  "passed gale_raid_weight: evidence 'exam.json exam_raid_weight_read_only_gale_factor' is not one of the inputs the judge was given",
-  "passed upwind_scent: evidence 'record.json inventory upwind_scent' is not one of the inputs the judge was given",
-  "passed upwind_scent: evidence 'scenes.json sc_scent' is not one of the inputs the judge was given",
-  "passed downwind_fire: evidence 'record.json inventory downwind_fire' is not one of the inputs the judge was given",
-  "passed downwind_fire: evidence 'scenes.json sc_fire_bias' is not one of the inputs the judge was given",
-  "passed ripple: evidence 'record.json inventory ripple' is not one of the inputs the judge was given",
-  "passed ripple: evidence 'scenes.json sc_concealment' is not one of the inputs the judge was given",
-  "passed ripple: evidence 'scenes.json ix_conceal_hunt' is not one of the inputs the judge was given",
-  "passed windbreak_lee: evidence 'record.json inventory windbreak_lee' is not one of the inputs the judge was given",
-  "passed windbreak_lee: evidence 'scenes.json sc_lee_reveal' is not one of the inputs the judge was given",
-  "passed stall_hunter: evidence 'record.json inventory stall_hunter' is not one of the inputs the judge was given",
-  "passed stall_hunter: evidence 'scenes.json sc_stall_predation' is not one of the inputs the judge was given",
-  "passed stall_hunter: evidence 'scenes.json ix_conceal_hunt' is not one of the inputs the judge was given",
-  "passed vine_islands: evidence 'record.json inventory vine_islands' is not one of the inputs the judge was given",
-  "passed vine_islands: evidence 'scenes.json sc_island_land' is not one of the inputs the judge was given",
-  "passed vine_creep: evidence 'record.json inventory vine_creep' is not one of the inputs the judge was given",
-  "passed vine_creep: evidence 'scenes.json sc_creep' is not one of the inputs the judge was given",
-  "passed vine_creep: evidence 'scenes.json ix_route_growth' is not one of the inputs the judge was given",
-  "passed vine_growth_exemption: evidence 'record.json inventory vine_growth_exemption' is not one of the inputs the judge was given",
-  "passed vine_growth_exemption: evidence 'scenes.json sc_creep' is not one of the inputs the judge was given",
-  "passed vine_hazard: evidence 'record.json inventory vine_hazard' is not one of the inputs the judge was given",
-  "passed vine_hazard: evidence 'scenes.json sc_vine_contact' is not one of the inputs the judge was given",
-  "passed dripping_harvest: evidence 'record.json inventory dripping_harvest' is not one of the inputs the judge was given",
-  "passed dripping_harvest: evidence 'scenes.json sc_dripping' is not one of the inputs the judge was given",
-  "passed twitcher: evidence 'record.json inventory twitcher' is not one of the inputs the judge was given",
-  "passed twitcher: evidence 'tree.json leaf twitcher' is not one of the inputs the judge was given",
-  "passed twitcher: evidence 'scenes.json sc_twitcher' is not one of the inputs the judge was given",
-  "passed twitcher: evidence 'scenes.json floor_visual' is not one of the inputs the judge was given",
-  "passed hollow_passage: evidence 'record.json inventory hollow_passage' is not one of the inputs the judge was given",
-  "passed hollow_passage: evidence 'scenes.json sc_hollow' is not one of the inputs the judge was given",
-  "passed crown_mob: evidence 'record.json inventory crown_mob' is not one of the inputs the judge was given",
-  "passed crown_mob: evidence 'scenes.json sc_crown' is not one of the inputs the judge was given",
-  "passed rearing: evidence 'record.json inventory rearing' is not one of the inputs the judge was given",
-  "passed rearing: evidence 'tree.json leaf rearing' is not one of the inputs the judge was given",
-  "passed rearing: evidence 'scenes.json sc_rearing' is not one of the inputs the judge was given",
-  "passed walking: evidence 'record.json inventory walking' is not one of the inputs the judge was given",
-  "passed walking: evidence 'tree.json leaf walking' is not one of the inputs the judge was given",
-  "passed walking: evidence 'scenes.json sc_walking' is not one of the inputs the judge was given",
-  "passed walking: evidence 'scenes.json ix_route_growth' is not one of the inputs the judge was given",
-  "passed hoard: evidence 'record.json inventory hoard' is not one of the inputs the judge was given",
-  "passed hoard: evidence 'tree.json leaf hoard' is not one of the inputs the judge was given",
-  "passed hoard: evidence 'scenes.json sc_hoard' is not one of the inputs the judge was given",
-  "passed quench: evidence 'record.json inventory quench' is not one of the inputs the judge was given",
-  "passed quench: evidence 'tree.json leaf quench' is not one of the inputs the judge was given",
-  "passed quench: evidence 'scenes.json sc_quench' is not one of the inputs the judge was given",
-  "passed sworn: evidence 'record.json inventory sworn' is not one of the inputs the judge was given",
-  "passed sworn: evidence 'tree.json leaf sworn' is not one of the inputs the judge was given",
-  "passed sworn: evidence 'scenes.json sc_sworn' is not one of the inputs the judge was given",
-  "passed shedding: evidence 'record.json inventory shedding' is not one of the inputs the judge was given",
-  "passed shedding: evidence 'tree.json leaf shedding' is not one of the inputs the judge was given",
-  "passed shedding: evidence 'scenes.json sc_shedding' is not one of the inputs the judge was given",
-  "passed strangler: evidence 'record.json inventory strangler' is not one of the inputs the judge was given",
-  "passed strangler: evidence 'tree.json leaf strangler' is not one of the inputs the judge was given",
-  "passed strangler: evidence 'scenes.json sc_strangler' is not one of the inputs the judge was given",
-  "passed weeper: evidence 'record.json inventory weeper' is not one of the inputs the judge was given",
-  "passed weeper: evidence 'tree.json leaf weeper' is not one of the inputs the judge was given",
-  "passed weeper: evidence 'scenes.json sc_weeper' is not one of the inputs the judge was given",
-  "passed sleeper: evidence 'record.json inventory sleeper' is not one of the inputs the judge was given",
-  "passed sleeper: evidence 'tree.json leaf sleeper' is not one of the inputs the judge was given",
-  "passed sleeper: evidence 'scenes.json sc_sleeper' is not one of the inputs the judge was given",
-  "passed lure: evidence 'record.json inventory lure' is not one of the inputs the judge was given",
-  "passed lure: evidence 'tree.json leaf lure' is not one of the inputs the judge was given",
-  "passed lure: evidence 'scenes.json sc_lure' is not one of the inputs the judge was given",
-  "passed smother_craft: evidence 'record.json inventory smother_craft' is not one of the inputs the judge was given",
-  "passed smother_craft: evidence 'scenes.json sc_smother_claim' is not one of the inputs the judge was given",
-  "passed smother_craft: evidence 'scenes.json sc_cane_fuel' is not one of the inputs the judge was given",
-  "passed dead_cane_fuel: evidence 'record.json inventory dead_cane_fuel' is not one of the inputs the judge was given",
-  "passed dead_cane_fuel: evidence 'scenes.json sc_cane_fuel' is not one of the inputs the judge was given",
-  "passed sweetline_landmark: evidence 'record.json inventory sweetline_landmark' is not one of the inputs the judge was given",
-  "passed sweetline_landmark: evidence 'scenes.json sc_tree_landmark' is not one of the inputs the judge was given",
-  "passed sweetline_canopy: evidence 'record.json inventory sweetline_canopy' is not one of the inputs the judge was given",
-  "passed sweetline_canopy: evidence 'scenes.json sc_tree_landmark' is not one of the inputs the judge was given",
-  "passed sweetline_canopy: evidence 'scenes.json floor_visual' is not one of the inputs the judge was given",
-  "passed sweetline_shed: evidence 'record.json inventory sweetline_shed' is not one of the inputs the judge was given",
-  "passed sweetline_shed: evidence 'scenes.json sc_tree_shed' is not one of the inputs the judge was given",
-  "passed sweetline_scratching: evidence 'record.json inventory sweetline_scratching' is not one of the inputs the judge was given",
-  "passed sweetline_scratching: evidence 'scenes.json sc_tree_scratch' is not one of the inputs the judge was given",
-  "passed sweetline_felt_bank: evidence 'record.json inventory sweetline_felt_bank' is not one of the inputs the judge was given",
-  "passed sweetline_felt_bank: evidence 'scenes.json sc_tree_bank' is not one of the inputs the judge was given",
-  "passed felt_comfort: evidence 'record.json inventory felt_comfort' is not one of the inputs the judge was given",
-  "passed felt_comfort: evidence 'tree.json leaf felt_comfort' is not one of the inputs the judge was given",
-  "passed felt_comfort: evidence 'scenes.json sc_felt_comfort' is not one of the inputs the judge was given",
-  "passed sweetline_visits: evidence 'record.json inventory sweetline_visits' is not one of the inputs the judge was given",
-  "passed sweetline_visits: evidence 'scenes.json sc_tree_traces' is not one of the inputs the judge was given",
-  "passed runway_bloom: evidence 'record.json inventory runway_bloom' is not one of the inputs the judge was given",
-  "passed runway_bloom: evidence 'scenes.json sc_bloom' is not one of the inputs the judge was given",
-  "passed vissler_arm_food: evidence 'record.json inventory vissler_arm_food' is not one of the inputs the judge was given",
-  "passed vissler_arm_food: evidence 'scenes.json sc_arm_food' is not one of the inputs the judge was given",
-  "passed thornhold_quills: evidence 'record.json inventory thornhold_quills' is not one of the inputs the judge was given",
-  "passed thornhold_quills: evidence 'scenes.json sc_thornhold_quill' is not one of the inputs the judge was given",
-  "passed thornhold_den_stand: evidence 'record.json inventory thornhold_den_stand' is not one of the inputs the judge was given",
-  "passed thornhold_den_stand: evidence 'scenes.json sc_thornhold_den' is not one of the inputs the judge was given",
-  "passed surrik_crustswim: evidence 'record.json inventory surrik_crustswim' is not one of the inputs the judge was given",
-  "passed surrik_crustswim: evidence 'scenes.json sc_surrik' is not one of the inputs the judge was given",
-  "passed ribbonwhip_wind_concealment: evidence 'record.json inventory ribbonwhip_wind_concealment' is not one of the inputs the judge was given",
-  "passed ribbonwhip_wind_concealment: evidence 'scenes.json sc_concealment' is not one of the inputs the judge was given",
-  "passed ribbonwhip_wind_concealment: evidence 'scenes.json sc_bloom' is not one of the inputs the judge was given",
-  "passed shirrel_glide: evidence 'record.json inventory shirrel_glide' is not one of the inputs the judge was given",
-  "passed shirrel_glide: evidence 'scenes.json sc_shirrel_flight' is not one of the inputs the judge was given",
-  "passed shirrel_flight_art: evidence 'record.json inventory shirrel_flight_art' is not one of the inputs the judge was given",
-  "passed shirrel_flight_art: evidence 'scenes.json sc_shirrel_flight' is not one of the inputs the judge was given",
-  "passed rollbug_carrion: evidence 'record.json inventory rollbug_carrion' is not one of the inputs the judge was given",
-  "passed rollbug_carrion: evidence 'scenes.json sc_rollbug' is not one of the inputs the judge was given",
-  "passed ruin_injections: evidence 'record.json inventory ruin_injections' is not one of the inputs the judge was given",
-  "passed ruin_injections: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
-  "passed ruin_injections: evidence 'sheet.md ## later' is not one of the inputs the judge was given",
-  "passed ruin_injections: evidence 'scenes.json sc_ruins' is not one of the inputs the judge was given",
-  "passed wind_vaporator: evidence 'record.json inventory wind_vaporator' is not one of the inputs the judge was given",
-  "passed wind_vaporator: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
-  "passed wind_vaporator: evidence 'scenes.json sc_vaporator' is not one of the inputs the judge was given",
-  "passed scavenger_camps: evidence 'record.json inventory scavenger_camps' is not one of the inputs the judge was given",
-  "passed scavenger_camps: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
-  "passed scavenger_camps: evidence 'scenes.json sc_camps' is not one of the inputs the judge was given",
-  "passed fire_stamping: evidence 'record.json inventory fire_stamping' is not one of the inputs the judge was given",
-  "passed fire_stamping: evidence 'scenes.json sc_stamping' is not one of the inputs the judge was given",
-  "passed fire_stamping: evidence 'exam.json exam_stamping_misfiled_as_deferred' is not one of the inputs the judge was given",
-  "passed calling_pyre: evidence 'record.json inventory calling_pyre' is not one of the inputs the judge was given",
-  "passed calling_pyre: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
-  "passed calling_pyre: evidence 'scenes.json sc_pyre_beliefs' is not one of the inputs the judge was given",
-  "passed calling_pyre: evidence 'scenes.json sc_pyre_ritual' is not one of the inputs the judge was given",
-  "passed save_aliases: evidence 'record.json inventory save_aliases' is not one of the inputs the judge was given",
-  "passed save_aliases: evidence 'record.json decision stage2_owner_corrected_bar' is not one of the inputs the judge was given",
-  "passed save_aliases: evidence 'scenes.json sc_removed_save_preservation' is not one of the inputs the judge was given",
-  "passed acoustic_payload: evidence 'record.json inventory acoustic_payload' is not one of the inputs the judge was given",
-  "passed acoustic_payload: evidence 'tree.json leaf acoustic_payload' is not one of the inputs the judge was given",
-  "passed acoustic_payload: evidence 'scenes.json sc_acoustic_payload' is not one of the inputs the judge was given",
-  "passed proximity_hatch: evidence 'record.json inventory proximity_hatch' is not one of the inputs the judge was given",
-  "passed proximity_hatch: evidence 'tree.json leaf proximity_hatch' is not one of the inputs the judge was given",
-  "passed proximity_hatch: evidence 'scenes.json sc_proximity_hatch' is not one of the inputs the judge was given",
-  "passed settings: evidence 'record.json inventory settings' is not one of the inputs the judge was given",
-  "passed settings: evidence 'floor.json lines.mod_settings' is not one of the inputs the judge was given",
-  "passed settings: evidence 'scenes.json sc_settings' is not one of the inputs the judge was given",
-  "passed settings: evidence 'sheet.md [floor:mod_settings]' is not one of the inputs the judge was given",
-  "passed dependable_home_routes: evidence 'record.json inventory dependable_home_routes' is not one of the inputs the judge was given",
-  "passed dependable_home_routes: evidence 'scenes.json sc_home_routes' is not one of the inputs the judge was given",
-  "passed dependable_home_routes: evidence 'scenes.json ix_route_growth' is not one of the inputs the judge was given",
-  "passed ordered_crossing_policy: evidence 'record.json inventory ordered_crossing_policy' is not one of the inputs the judge was given",
-  "passed ordered_crossing_policy: evidence 'scenes.json sc_ordered_travel' is not one of the inputs the judge was given",
-  "passed ordered_crossing_policy: evidence 'exam.json exam_ordered_trip_leaks_after_reload' is not one of the inputs the judge was given",
-  "passed fire_maker_witness_trail: evidence 'record.json inventory fire_maker_witness_trail' is not one of the inputs the judge was given",
-  "passed fire_maker_witness_trail: evidence 'scenes.json sc_maker' is not one of the inputs the judge was given",
-  "passed fire_maker_witness_trail: evidence 'exam.json exam_giant_pursues_nearest_innocent' is not one of the inputs the judge was given",
-  "passed premium_dead_cane: evidence 'record.json inventory premium_dead_cane' is not one of the inputs the judge was given",
-  "passed premium_dead_cane: evidence 'scenes.json sc_cane_fuel' is not one of the inputs the judge was given",
-  "passed shokka_ambush: evidence 'record.json inventory shokka_ambush' is not one of the inputs the judge was given",
-  "passed shokka_ambush: evidence 'scenes.json sc_shokka' is not one of the inputs the judge was given",
-  "passed fuzzviper_ambush: evidence 'record.json inventory fuzzviper_ambush' is not one of the inputs the judge was given",
-  "passed fuzzviper_ambush: evidence 'scenes.json sc_fuzzviper' is not one of the inputs the judge was given",
-  "passed ribbonwhip_canopy_route: evidence 'record.json inventory ribbonwhip_canopy_route' is not one of the inputs the judge was given",
-  "passed ribbonwhip_canopy_route: evidence 'scenes.json sc_ribbon_route' is not one of the inputs the judge was given",
-  "passed pillowmoss_wet_spot: evidence 'record.json inventory pillowmoss_wet_spot' is not one of the inputs the judge was given",
-  "passed pillowmoss_wet_spot: evidence 'scenes.json sc_pillowmoss' is not one of the inputs the judge was given",
-  "passed tanglefuzz_den_ecology: evidence 'record.json inventory tanglefuzz_den_ecology' is not one of the inputs the judge was given",
-  "passed tanglefuzz_den_ecology: evidence 'scenes.json sc_tanglefuzz' is not one of the inputs the judge was given",
-  "passed cruststar_grazing_ecology: evidence 'record.json inventory cruststar_grazing_ecology' is not one of the inputs the judge was given",
-  "passed cruststar_grazing_ecology: evidence 'scenes.json sc_cruststar' is not one of the inputs the judge was given",
-  "passed vissler_finite_arm_regrowth: evidence 'record.json inventory vissler_finite_arm_regrowth' is not one of the inputs the judge was given",
-  "passed vissler_finite_arm_regrowth: evidence 'scenes.json sc_arm_regrowth' is not one of the inputs the judge was given",
-  "passed bark_wardens_removed: evidence 'record.json inventory bark_wardens_removed' is not one of the inputs the judge was given",
-  "passed bark_wardens_removed: evidence 'scenes.json sc_cuts' is not one of the inputs the judge was given",
-  "passed farmer_camps_removed: evidence 'record.json inventory farmer_camps_removed' is not one of the inputs the judge was given",
-  "passed farmer_camps_removed: evidence 'scenes.json sc_cuts' is not one of the inputs the judge was given",
-  "passed farmer_camps_removed: evidence 'scenes.json sc_removed_save_preservation' is not one of the inputs the judge was given",
-  "passed sweetline_scratching_healing: evidence 'record.json inventory sweetline_scratching_healing' is not one of the inputs the judge was given",
-  "passed sweetline_scratching_healing: evidence 'sheet.md his words 2026-11-16' is not one of the inputs the judge was given",
-  "passed sweetline_scratching_healing: evidence 'scenes.json sc_tree_healing' is not one of the inputs the judge was given",
-  "passed route_observer: evidence 'tree.json leaf route_observer' is not one of the inputs the judge was given",
-  "passed route_observer: evidence 'scenes.json sc_route_observer' is not one of the inputs the judge was given",
-  "passed witness_observer: evidence 'tree.json leaf witness_observer' is not one of the inputs the judge was given",
-  "passed witness_observer: evidence 'scenes.json sc_witness_observer' is not one of the inputs the judge was given",
-  "passed economy_observer: evidence 'tree.json leaf economy_observer' is not one of the inputs the judge was given",
-  "passed economy_observer: evidence 'scenes.json sc_economy_observer' is not one of the inputs the judge was given",
-  "passed wind_plain: evidence 'tree.json leaf wind_plain' is not one of the inputs the judge was given",
-  "passed wind_plain: evidence 'scenes.json sc_wind_plain' is not one of the inputs the judge was given",
-  "passed wind_plain: evidence 'sheet.md [leaf:wind_plain]' is not one of the inputs the judge was given",
-  "passed gale_drawing: evidence 'tree.json leaf gale_drawing' is not one of the inputs the judge was given",
-  "passed gale_drawing: evidence 'scenes.json sc_gale_drawing' is not one of the inputs the judge was given",
-  "passed wind_audio: evidence 'tree.json leaf wind_audio' is not one of the inputs the judge was given",
-  "passed wind_audio: evidence 'scenes.json sc_wind_audio' is not one of the inputs the judge was given",
-  "passed working_wind: evidence 'tree.json leaf working_wind' is not one of the inputs the judge was given",
-  "passed working_wind: evidence 'scenes.json sc_working_wind' is not one of the inputs the judge was given",
-  "passed raid_weight: evidence 'tree.json leaf raid_weight' is not one of the inputs the judge was given",
-  "passed raid_weight: evidence 'scenes.json sc_raid_weight' is not one of the inputs the judge was given",
-  "passed scent: evidence 'tree.json leaf scent' is not one of the inputs the judge was given",
-  "passed scent: evidence 'scenes.json sc_scent' is not one of the inputs the judge was given",
-  "passed fire_bias: evidence 'tree.json leaf fire_bias' is not one of the inputs the judge was given",
-  "passed fire_bias: evidence 'scenes.json sc_fire_bias' is not one of the inputs the judge was given",
-  "passed stall_wait: evidence 'tree.json leaf stall_wait' is not one of the inputs the judge was given",
-  "passed stall_wait: evidence 'scenes.json sc_stall_wait' is not one of the inputs the judge was given",
-  "passed concealment: evidence 'tree.json leaf concealment' is not one of the inputs the judge was given",
-  "passed concealment: evidence 'scenes.json sc_concealment' is not one of the inputs the judge was given",
-  "passed lee_reveal: evidence 'tree.json leaf lee_reveal' is not one of the inputs the judge was given",
-  "passed lee_reveal: evidence 'scenes.json sc_lee_reveal' is not one of the inputs the judge was given",
-  "passed stall_predation: evidence 'tree.json leaf stall_predation' is not one of the inputs the judge was given",
-  "passed stall_predation: evidence 'scenes.json sc_stall_predation' is not one of the inputs the judge was given",
-  "passed island_land: evidence 'tree.json leaf island_land' is not one of the inputs the judge was given",
-  "passed island_land: evidence 'scenes.json sc_island_land' is not one of the inputs the judge was given",
-  "passed creep: evidence 'tree.json leaf creep' is not one of the inputs the judge was given",
-  "passed creep: evidence 'scenes.json sc_creep' is not one of the inputs the judge was given",
-  "passed home_routes: evidence 'tree.json leaf home_routes' is not one of the inputs the judge was given",
-  "passed home_routes: evidence 'scenes.json sc_home_routes' is not one of the inputs the judge was given",
-  "passed home_routes: evidence 'scenes.json ix_route_growth' is not one of the inputs the judge was given",
-  "passed ordered_travel: evidence 'tree.json leaf ordered_travel' is not one of the inputs the judge was given",
-  "passed ordered_travel: evidence 'scenes.json sc_ordered_travel' is not one of the inputs the judge was given",
-  "passed vine_contact: evidence 'tree.json leaf vine_contact' is not one of the inputs the judge was given",
-  "passed vine_contact: evidence 'scenes.json sc_vine_contact' is not one of the inputs the judge was given",
-  "passed dripping: evidence 'tree.json leaf dripping' is not one of the inputs the judge was given",
-  "passed dripping: evidence 'scenes.json sc_dripping' is not one of the inputs the judge was given",
-  "passed hollow: evidence 'tree.json leaf hollow' is not one of the inputs the judge was given",
-  "passed hollow: evidence 'scenes.json sc_hollow' is not one of the inputs the judge was given",
-  "passed crown: evidence 'tree.json leaf crown' is not one of the inputs the judge was given",
-  "passed crown: evidence 'scenes.json sc_crown' is not one of the inputs the judge was given",
-  "passed smother_claim: evidence 'tree.json leaf smother_claim' is not one of the inputs the judge was given",
-  "passed smother_claim: evidence 'scenes.json sc_smother_claim' is not one of the inputs the judge was given",
-  "passed smother_claim: evidence 'sheet.md [leaf:smother_claim]' is not one of the inputs the judge was given",
-  "passed cane_fuel: evidence 'tree.json leaf cane_fuel' is not one of the inputs the judge was given",
-  "passed cane_fuel: evidence 'scenes.json sc_cane_fuel' is not one of the inputs the judge was given",
-  "passed tree_landmark: evidence 'tree.json leaf tree_landmark' is not one of the inputs the judge was given",
-  "passed tree_landmark: evidence 'scenes.json sc_tree_landmark' is not one of the inputs the judge was given",
-  "passed tree_shed: evidence 'tree.json leaf tree_shed' is not one of the inputs the judge was given",
-  "passed tree_shed: evidence 'scenes.json sc_tree_shed' is not one of the inputs the judge was given",
-  "passed tree_scratch: evidence 'tree.json leaf tree_scratch' is not one of the inputs the judge was given",
-  "passed tree_scratch: evidence 'scenes.json sc_tree_scratch' is not one of the inputs the judge was given",
-  "passed tree_healing: evidence 'tree.json leaf tree_healing' is not one of the inputs the judge was given",
-  "passed tree_healing: evidence 'scenes.json sc_tree_healing' is not one of the inputs the judge was given",
-  "passed tree_healing: evidence 'exam.json exam_sweetline_rub_badge_without_cure' is not one of the inputs the judge was given",
-  "passed tree_bank: evidence 'tree.json leaf tree_bank' is not one of the inputs the judge was given",
-  "passed tree_bank: evidence 'scenes.json sc_tree_bank' is not one of the inputs the judge was given",
-  "passed tree_traces: evidence 'tree.json leaf tree_traces' is not one of the inputs the judge was given",
-  "passed tree_traces: evidence 'scenes.json sc_tree_traces' is not one of the inputs the judge was given",
-  "passed native_cast: evidence 'tree.json leaf native_cast' is not one of the inputs the judge was given",
-  "passed native_cast: evidence 'scenes.json sc_native_cast' is not one of the inputs the judge was given",
-  "passed native_cast: evidence 'exam.json exam_native_census_staged_ground_cover' is not one of the inputs the judge was given",
-  "passed bloom: evidence 'tree.json leaf bloom' is not one of the inputs the judge was given",
-  "passed bloom: evidence 'scenes.json sc_bloom' is not one of the inputs the judge was given",
-  "passed arm_regrowth: evidence 'tree.json leaf arm_regrowth' is not one of the inputs the judge was given",
-  "passed arm_regrowth: evidence 'scenes.json sc_arm_regrowth' is not one of the inputs the judge was given",
-  "passed arm_food: evidence 'tree.json leaf arm_food' is not one of the inputs the judge was given",
-  "passed arm_food: evidence 'scenes.json sc_arm_food' is not one of the inputs the judge was given",
-  "passed thornhold_quill: evidence 'tree.json leaf thornhold_quill' is not one of the inputs the judge was given",
-  "passed thornhold_quill: evidence 'scenes.json sc_thornhold_quill' is not one of the inputs the judge was given",
-  "passed thornhold_den: evidence 'tree.json leaf thornhold_den' is not one of the inputs the judge was given",
-  "passed thornhold_den: evidence 'scenes.json sc_thornhold_den' is not one of the inputs the judge was given",
-  "passed surrik: evidence 'tree.json leaf surrik' is not one of the inputs the judge was given",
-  "passed surrik: evidence 'scenes.json sc_surrik' is not one of the inputs the judge was given",
-  "passed shokka: evidence 'tree.json leaf shokka' is not one of the inputs the judge was given",
-  "passed shokka: evidence 'scenes.json sc_shokka' is not one of the inputs the judge was given",
-  "passed fuzzviper: evidence 'tree.json leaf fuzzviper' is not one of the inputs the judge was given",
-  "passed fuzzviper: evidence 'scenes.json sc_fuzzviper' is not one of the inputs the judge was given",
-  "passed ribbon_route: evidence 'tree.json leaf ribbon_route' is not one of the inputs the judge was given",
-  "passed ribbon_route: evidence 'scenes.json sc_ribbon_route' is not one of the inputs the judge was given",
-  "passed pillowmoss: evidence 'tree.json leaf pillowmoss' is not one of the inputs the judge was given",
-  "passed pillowmoss: evidence 'scenes.json sc_pillowmoss' is not one of the inputs the judge was given",
-  "passed tanglefuzz: evidence 'tree.json leaf tanglefuzz' is not one of the inputs the judge was given",
-  "passed tanglefuzz: evidence 'scenes.json sc_tanglefuzz' is not one of the inputs the judge was given",
-  "passed cruststar: evidence 'tree.json leaf cruststar' is not one of the inputs the judge was given",
-  "passed cruststar: evidence 'scenes.json sc_cruststar' is not one of the inputs the judge was given",
-  "passed shirrel_flight: evidence 'tree.json leaf shirrel_flight' is not one of the inputs the judge was given",
-  "passed shirrel_flight: evidence 'scenes.json sc_shirrel_flight' is not one of the inputs the judge was given",
-  "passed shirrel_flight: evidence 'floor.json lines.flight' is not one of the inputs the judge was given",
-  "passed rollbug: evidence 'tree.json leaf rollbug' is not one of the inputs the judge was given",
-  "passed rollbug: evidence 'scenes.json sc_rollbug' is not one of the inputs the judge was given",
-  "passed stamping: evidence 'tree.json leaf stamping' is not one of the inputs the judge was given",
-  "passed stamping: evidence 'scenes.json sc_stamping' is not one of the inputs the judge was given",
-  "passed stamping: evidence 'scenes.json ix_fire_accountability' is not one of the inputs the judge was given",
-  "passed maker: evidence 'tree.json leaf maker' is not one of the inputs the judge was given",
-  "passed maker: evidence 'scenes.json sc_maker' is not one of the inputs the judge was given",
-  "passed maker: evidence 'scenes.json ix_fire_accountability' is not one of the inputs the judge was given",
-  "passed colony_walk: evidence 'tree.json leaf colony_walk' is not one of the inputs the judge was given",
-  "passed colony_walk: evidence 'scenes.json sc_colony_walk' is not one of the inputs the judge was given",
-  "passed colony_walk: evidence 'floor.json lines' is not one of the inputs the judge was given",
-  "passed colony_walk: evidence 'scenes.json showcases' is not one of the inputs the judge was given",
-  "coverage: given inputs in no passed or refused evidence: exam.json, floor.json, record.json, scenes.json, sheet.md, tree.json"
- ],
- "gaps": [
+ "claims": [
   {
-   "bar_kind": "experience",
-   "criterion_by": "second_reader",
-   "criterion_verdict": "sound",
-   "criterion_why": "The criterion says only unroofed organic pawns are deafened, and a player would notice roofed colonists or mechanoids losing hearing; asking the scene to prove they are spared is a fair, attainable bar that names no number.",
-   "evidence": [
-    "record.json:666",
-    "tree.json:198",
-    "scenes.json:170"
-   ],
-   "gid": "g1",
-   "ids": [
-    "gale_exposure"
-   ],
-   "judge_criterion_verdict": "sound",
-   "judge_criterion_why": "Shelter from Gale under a roof is a rule the player sees and plans around, and the scene already stages the actors it needs.",
-   "late_why": "sc_gale_exposure and the gale_exposure leaf are unchanged since ff64e249a2; the prior judge passed this row and missed that the exclusion is staged but never asserted.",
-   "new_since": "changed",
-   "observed": "The inventory says the penalty applies to 'unroofed non-mechanoid living pawns'. The scene's start stages 'Healthy organic actors outdoors/roofed and mechanoid outdoors', but its expect only says 'unroofed living non-mechanoids gain RM_GaleDeafened', and the only control is 'galeDeafenEnabled off'.",
-   "return_to": 3,
-   "since": "entries gale_exposure changed since rm-coverage-judge-1794823485",
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json sc_gale_exposure: add roofed and mechanoid negative arms to expect, and a roof-ignoring mutant to control"
-   },
-   "what": "The Gale exposure scene stages roofed pawns and a mechanoid but never asserts that they are spared, so a penalty applied to every pawn would pass",
-   "where": "scenes.json sc_gale_exposure expect and control",
-   "would_pass": "sc_gale_exposure expect or control states that in the same Gale the roofed organic and the outdoor mechanoid gain no RM_GaleDeafened while the unroofed organic does, and a roof-ignoring fixture fails the checker."
+   "evidence": "scenes.json sc_gale_exposure start/expect/control: start stages an unroofed organic, a roofed organic and an unroofed mechanoid in one Gale with roof state asserted; expect requires RM_GaleDeafened on the unroofed organic only and none on the roofed organic or the mechanoid; control arm B, a roof- and mechanoid-ignoring deafen fixture, is rejected. Gate verified in source: src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:85 skips Dead, IsMechanoid and Roofed pawns.",
+   "gap": "g1"
   },
   {
-   "bar_kind": "experience",
-   "criterion_by": "second_reader",
-   "criterion_verdict": "sound",
-   "criterion_why": "The cuts experience says outright that no drying scar appears, and a player would notice one; a control that can catch an injected scar is an attainable way to make that clause checkable, and it pins no tuning value or art variant.",
-   "evidence": [
-    "scenes.json:2228",
-    "scenes.json:2243",
-    "tree.json:1471",
-    "record.json:1527",
-    "sheet.md:77"
-   ],
-   "gid": "g2",
-   "ids": [
-    "cuts"
-   ],
-   "judge_criterion_verdict": "sound",
-   "judge_criterion_why": "An absence check needs a mutant it can reject, or it cannot tell 'absent' from 'not looked at'; the other two cuts already have one.",
-   "late_why": "sc_cuts' control case is word for word the same as at ff64e249a2, which already expected 'no ... drying scar' with no control for it; the prior judge missed it.",
-   "new_since": "changed",
-   "observed": "sc_cuts expects 'No active guardian/roost/rage, farmer camps or drying scar', but its control case is only 'Inject stale guardian promise or active farmerFaction in isolated manifest'. The sheet promises 'No active guardians, farmer camps or drying scar', and the owner said the drying-scar cut stands.",
-   "return_to": 3,
-   "since": "entries cuts changed since rm-coverage-judge-1794823485",
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json sc_cuts control: add a drying-scar injection arm with expect 'rejected'"
-   },
-   "what": "The cuts scene asserts 'no drying scar', but its control can reject only a guardian promise or an active farmerFaction, so a check blind to drying scars passes",
-   "where": "scenes.json sc_cuts control",
-   "would_pass": "The sc_cuts control adds an isolated fixture whose vaporator or terrain effect produces a drying scar, and the checker rejects it alongside the guardian and farmerFaction injections."
+   "evidence": "scenes.json sc_cuts control: a third isolated-manifest arm injects a vaporator fixture that dries or converts surrounding terrain (a drying scar), and the checker must reject it alongside the stale guardian promise and the active farmerFaction. Cut verified in source: src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:6 records the ruling 'Plain vaporator, no scar' and no terrain morph.",
+   "gap": "g2"
   }
  ],
+ "gaps": [],
  "hashes": {
   "dec:grounding_boundaries": "0e6c3912bf223ded",
   "dec:proof_freshness_policy": "80f2fca432f895a2",
@@ -2358,6 +1956,7 @@
   "dec:stage2_vine_hazards_and_signs": "85a35cf74856a130",
   "dec:stage2_years_and_material_payoff": "c1a5514261f2f9a5",
   "dec:stage3_canonical_root_observations": "fcd6117b246057a1",
+  "dec:stage3_coverage_g1_g2": "80431984e239f5dc",
   "dec:stage3_finite_smother_migration": "519f3e2ede6af5f1",
   "dec:stage3_owner_bar_rewrite": "7ec49c33383a2ebb",
   "dec:stage3_proof_catalog_and_floor": "0c869b94a36eb594",
@@ -2365,6 +1964,7 @@
   "dec:stage3_useful_fuel_and_ecology_tuning": "230d0d85fd4ce4ce",
   "dec:stage4_cold_reader_exam": "a943bff28d08ccde",
   "dec:stage4_corrected_bar_cold_reader_exam": "8f91b8da77b57a05",
+  "dec:stage4_exam_reuse_unchanged_inputs": "12a8720310cd230d",
   "dec:stage4_helper_budget_overrun": "4b75113e09685601",
   "dec:stage5_lock_return_root_validation": "e9b30e5887c82b70",
   "exam": "425d9b7400f90cb4",
@@ -2541,14 +2141,14 @@
   "scene:sc_creep": "899769027960f5bf",
   "scene:sc_crown": "ad1ec334158a03fb",
   "scene:sc_cruststar": "386188ae85b8df85",
-  "scene:sc_cuts": "700aa286244f31f2",
+  "scene:sc_cuts": "3b9107ded256bc70",
   "scene:sc_dripping": "b788ff5fbe50f5b7",
   "scene:sc_economy_observer": "8c862e9f5ea84212",
   "scene:sc_felt_comfort": "a465114d786b6a57",
   "scene:sc_fire_bias": "d21e4bdc7643ec74",
   "scene:sc_fuzzviper": "1bb4f0069adfbc35",
   "scene:sc_gale_drawing": "37b33e4ad9f9a488",
-  "scene:sc_gale_exposure": "090993a7bb2fedec",
+  "scene:sc_gale_exposure": "a7bad9c11b2cfd7e",
   "scene:sc_hoard": "d08acee8944695ad",
   "scene:sc_hollow": "caab169c27e5ee24",
   "scene:sc_home_routes": "7bf146472d69ab34",
@@ -2621,17 +2221,17 @@
  "inputs": {
   "exam.json": "c14b912af881803f5a5a08a6605df0d251dd26f78482e6c269c61c95d1780d91",
   "floor.json": "53fa8d74b4bf609d0cf94f70de53c2adf1a292aebbc0815ac21266aee5a69484",
-  "record.json": "ca6aa4ca344fbfaa9e92d794cec58bdaf989c537fd3105e77620ed5d07a27294",
-  "scenes.json": "f2aa27f1e7d5a81a596d0f008c8384ba760b25209153fe3c2959a0e7ce608497",
+  "record.json": "47a5d01acf2895aed9c269f94d4ca44271c3320d1defb581dc0799cf379e34f4",
+  "scenes.json": "0e1e605a3edf72075ce791895f9878b335f232d011485cc3b0f5b5b0002df71c",
   "sheet.md": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1"
  },
- "judge": "rm-coverage-judge-1794846217",
- "mode": "full",
- "prompt_chars": 7543,
- "reasons": "Round 2. All six artifacts changed since the prior verdict (rm-coverage-judge-1794823485); I diffed scenes.json and tree.json against ff64e249a2 and judged every changed or added scene in full. Prior gaps g1-g11 are fixed in the scenes as claimed: wild-plant census with a disabled-row control, measured wind values and the weather table, two-tile independent heading geometry with mutants, a fog audio arm, offline fallback-material arms, true clean-start Dripping arms, all 16 vine form/state lanes, real research and sowing for Sworn, a property consumer fixture with a disconnected-adapter control, a simultaneous all-off settings arm, and the smother legacy-import arms removed. Structure holds: every tree leaf has a script-staged acceptance scene with start, control and restore; no leaf rests on an exploration scene; every inventory unit is in one of six showcases or in coverage_rest (computed: none uncovered); the owner's 2026-11-16 card ruling (OWNER:1794835478275153823) moves the technology and calling-pyre units to the next version (characterization only) and drops save preservation (removal check sc_removed_save_preservation). The sheet lists every player-facing leaf and the later/cut scope. Three gaps remain. (1) g12 is unfixed: showcase 1 is still bound to a Conductor decision. The owner declined to pick and called the clause a flawed criterion, so this is a provenance field: advisory, for the neutral fixer. (2) Late: sc_gale_exposure stages roofed and mechanoid actors but never asserts that they are spared. (3) Late: sc_cuts asserts 'no drying scar' but its control cannot reject one.",
+ "judge": "rm-coverage-judge-1794848133",
+ "mode": "delta",
+ "prompt_chars": 12955,
+ "reasons": "Both claimed fixes hold. In g1, sc_gale_exposure's start now stages an unroofed organic, a roofed organic and an unroofed mechanoid in one Gale, with each pawn's roof state asserted. Its expect requires RM_GaleDeafened on the unroofed organic only. Control Arm B (a deafen hook that ignores roof and mechanoid status) must be rejected. This matches the real gate at RM_WindCalendar.cs:85 (`p.Dead || p.RaceProps.IsMechanoid || p.Position.Roofed(map)` → continue). In g2, sc_cuts' control adds a third arm, a vaporator that dries or converts terrain, which the checker must reject. So a check blind to drying scars no longer passes. This matches the 'Plain vaporator, no scar' card ruling at RM_WindVaporator.xml:6. The changed entries open no new gap. Both scenes still meet the contract: acceptance kind, staged by a script, a named entry_point with an entry_point_item filed because the entry point is missing, asserted start, a control with rules_out, recovery and hold. The exam-reuse decision changes no scene or bar. bark_wardens_removed and farmer_camps_removed are covered by sc_cuts' expect and its guardian and farmerFaction control arms. No proof is claimed; the scenes are planned and their entry points not yet built, which this coverage judgment does not require.",
  "sheet": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
- "signed": false,
- "tokens": 919810,
+ "signed": true,
+ "tokens": 134155,
  "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9",
- "verdict": "not_covered"
+ "verdict": "covered"
 }

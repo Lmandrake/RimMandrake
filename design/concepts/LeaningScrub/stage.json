@@ -156,10 +156,24 @@
     "ref": "run rm-role-designer-1794847684",
     "stage": 4,
     "tokens": 222980
+   },
+   {
+    "at": "2026-11-16T16:56:00Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794848133",
+    "stage": 5,
+    "tokens": 134155
+   },
+   {
+    "at": "2026-11-16T16:56:13Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794848128",
+    "stage": 5,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 3908343
+  "spent": 4042498
  },
  "coverage_rounds": [
   {
@@ -212,6 +226,18 @@
    "tokens": 919810,
    "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-16T16:55:33Z",
+   "error": null,
+   "gaps": 0,
+   "ids": [],
+   "judge": "rm-coverage-judge-1794848133",
+   "late": [],
+   "tags": {},
+   "tokens": 134155,
+   "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9",
+   "verdict": "covered"
   }
  ],
  "draft_input": {
@@ -418,6 +444,18 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1794847684: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T16:55:33Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794848128, stage 5, budget 31657"
+  },
+  {
+   "at": "2026-11-16T16:56:14Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794848128: stage 5 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF",
@@ -810,6 +848,28 @@
    "run": "rm-role-designer-1794847684",
    "stage": 4,
    "summary": "Exam stands without a rerun: the g1/g2 rework (run rm-role-designer-1794847391) edited only scenes.json and coverage_fixes.json; tree.json (c9fed9a9...) and sheet.md (d7dff6d4...) are byte-identical to the inputs frozen in exam.json, which are all a Reader, the Examiner, the Challenger and the Control saw. That exam (run rm-role-designercodex-1794843033): both Readers 18/18, zero core false accepts, all six Challenger cases matched, raid_weight control missed. No helpers spawned, nothing charged; no live acceptance, coverage signature, version lock or first-touch certification claimed."
+  },
+  {
+   "at": "2026-11-16T16:56:14Z",
+   "by": "program",
+   "inputs": {
+    "exam": "c14b912af881803f5a5a08a6605df0d251dd26f78482e6c269c61c95d1780d91",
+    "floor": "53fa8d74b4bf609d0cf94f70de53c2adf1a292aebbc0815ac21266aee5a69484",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "706aa26e5a5bf03dcce05b37fd3bd4a67b1f20f8c077115fa6e65055285e8705",
+    "scenes": "0e1e605a3edf72075ce791895f9878b335f232d011485cc3b0f5b5b0002df71c",
+    "sheet": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
+    "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1794848128",
+   "stage": 5,
+   "summary": "locked by program: rm-coverage-judge-1794848133 returned covered and signed the tree"
   }
  ],
  "runner": "claude",
@@ -911,6 +971,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "locked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
