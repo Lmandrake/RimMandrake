@@ -6793,6 +6793,759 @@ def scene_floor_visual(t):
         _stable(t, body)
 
 
+# --------------------------------------------------------------------------- scenes: wind + vine forms (batch 6)
+# SCRUB_PROVE_WIND_FIRE_AND_RITUAL (gale_exposure, working_wind, raid_weight) and SCRUB_PROVE_VINE_FORMS_AND_CRAFT
+# (hollow, hoard). Names read from the mod, never guessed: RM_WindCalendar.cs (deafen every 250 ticks in the Gale,
+# skips Dead / IsMechanoid / Roofed; breakdown roll every 2500 ticks over allBuildingsColonist; the surge and raid
+# postfixes), RM_LeaningScrub_Hediffs.xml (RM_GaleDeafened: severityPerDay -24, capMods Hearing -0.5 / Talking -0.35),
+# RM_VenomvineForms.cs (RM_CompHoard: held / firstSeen / HeldCount, a 3x3 item sweep every 250 ticks).
+
+PADS.update(exposure=(-40, -40), windwork=(40, -40), raidweight=(0, 0), hollow=(-40, 40), hoard=(40, 40))
+MECH = "Mech_Lancer"          # vanilla mechanoid (RaceProps.IsMechanoid)
+HUGE = "Muffalo"              # vanilla baseBodySize 2.4 (Races_Animal_CowGroup.xml): past every barrier's 1.5 block
+DEAFEN = "RM_GaleDeafened"
+CORPSE = "Corpse_Human"
+HOLLOW = "RM_HollowVenomvine"
+HOARD = "RM_HoardVenomvine"
+RAID_DEFS = ("RaidEnemy", "ResourcePodCrash", "WandererJoin")     # one raid worker, two non-raid controls
+# Nothing on the bridge reads IncidentWorker.ChanceFactorNow (the postfix's only output): set LSCRUB_RAID_WEIGHT_HOOK to
+# "<Type>.<Method>", a public static (IncidentDef, Map) -> float that returns def.Worker.ChanceFactorNow(map), once one
+# is built. Unset, the weight rows are UNMEASURED with this recipe, never a pass. The scene never fires an incident.
+RAID_WEIGHT_HOOK = os.environ.get("LSCRUB_RAID_WEIGHT_HOOK", "").strip()
+# The mod has no crawl JobDef (RM_HollowVenomvine slows a pawn by pathCost and the body-size barrier only). Set
+# LSCRUB_HOLLOW_CRAWL_JOB to its defName once one ships; unset, hollow_crawl_job is UNMEASURED.
+HOLLOW_CRAWL_JOB = os.environ.get("LSCRUB_HOLLOW_CRAWL_JOB", "").strip()
+# No bridge tool reads a live pawn's Hearing or Talking (jawa/pawn_health's capacities block carries consciousness,
+# moving and manipulation only). Set LSCRUB_CAPACITY_HOOK to "<Type>.<Method>", a public static (Pawn, string
+# capacityDefName) -> float returning pawn.health.capacities.GetLevel(def), once one is built; unset, UNMEASURED.
+CAPACITY_HOOK = os.environ.get("LSCRUB_CAPACITY_HOOK", "").strip()
+
+
+def _only(offences, *needles):
+    """FAIL with the checker's offences that this row owns (substring match), as scene_maker does."""
+    bad = [o for o in offences if any(n in o for n in needles)]
+    if bad:
+        _fail("; ".join(bad))
+
+
+def _rejects(name, fn, good, injected):
+    """The `<scene>_checker_rejects_injections` row: a clean reading passes, every injected one is refused."""
+    if fn(good):
+        _fail("the %s checker refuses a clean reading: %s" % (name, fn(good)))
+    missed = sorted(k for k, a in injected.items() if not fn(a))
+    if missed:
+        _fail("the %s checker passed injected reading(s) %s: it is blind there" % (name, missed))
+
+
+def _cell_roofed(t, x, z):
+    return _roofed(t.bridge_call("jawa/get_roof_batch", rects="%d,%d,1,1" % (x, z)))
+
+
+def _defs_of(row):
+    return [h.get("def") if isinstance(h, dict) else str(h) for h in _hediffs(row)]
+
+
+def _capmods(obj, out=None):
+    """{capacity: offset} from any dict carrying both keys, at any depth of a deep get_defs answer."""
+    out = {} if out is None else out
+    if isinstance(obj, dict):
+        if obj.get("capacity") and obj.get("offset") is not None:
+            out[str(obj["capacity"])] = float(obj["offset"])
+        for v in obj.values():
+            _capmods(v, out)
+    elif isinstance(obj, list):
+        for v in obj:
+            _capmods(v, out)
+    return out
+
+
+# ---- sc_gale_exposure
+
+def _exposure_offences(r):
+    """r {"outdoor", "indoor", "mech", "off_outdoor": [hediff defs], "indoor_roofed", "outdoor_roofed": bool,
+    "caps": {capacity: offset}|None, "recovered": bool|None}. -> offences."""
+    out = []
+    if r.get("outdoor_roofed"):
+        out.append("the outdoor cell reads roofed: no open-sky subject")
+    elif DEAFEN not in (r.get("outdoor") or []):
+        out.append("the unroofed organic pawn was not deafened in the Gale (hediffs %s)" % r.get("outdoor"))
+    if not r.get("indoor_roofed"):
+        out.append("the indoor cell reads unroofed: no roof control")
+    elif DEAFEN in (r.get("indoor") or []):
+        out.append("the roofed pawn was deafened: the roof is ignored")
+    if DEAFEN in (r.get("mech") or []):
+        out.append("the mechanoid was deafened")
+    caps = r.get("caps")
+    if caps is not None and not (caps.get("Hearing", 0) < 0 and caps.get("Talking", 0) < 0):
+        out.append("RM_GaleDeafened does not cut Hearing and Talking: %s" % caps)
+    lv = r.get("levels")
+    if lv is not None:
+        for cap in ("Hearing", "Talking"):
+            if not (lv["out"][cap] < lv["in"][cap]):
+                out.append("live %s not reduced on the deafened pawn (%s vs roofed %s)" % (cap, lv["out"][cap], lv["in"][cap]))
+    if r.get("recovered") is False:
+        out.append("the deafness did not recover after the Gale ended")
+    if DEAFEN in (r.get("off_outdoor") or []):
+        out.append("deafened with galeDeafenEnabled off")
+    return out
+
+
+@suite.chain("scene_gale_exposure")
+def scene_gale_exposure(t):
+    """sc_gale_exposure: in the Gale an unroofed organic colonist is deafened, a roofed one beside a sealed steel room
+    and an unroofed player mechanoid are not; the def cuts Hearing and Talking; the deafness wears off once the Gale
+    ends (severityPerDay -24: one day = 2500 ticks from full); galeDeafenEnabled off deafens nobody. Roof is read per
+    pawn cell. NOT MEASURABLE LIVE: the Hearing/Talking capacity on a live pawn (no bridge tool reads it; jawa/pawn_get
+    and pawn_stats carry no capacities) -- that row is UNMEASURED by name. Hold: immediate."""
+    _prep(t, "exposure", 24)
+    x, z = t.anchor
+    ids, got = {}, {}
+
+    def read(key, pid):
+        got[key] = _defs_of(_rows(t, health=True).get(pid))
+
+    def body():
+        with _comp(t, "exposure_staged", poison=True):
+            if _live(t):
+                _ok(t.bridge_call("jawa/make_empty_room", rect="%d,%d,9,9" % (x - 11, z - 4), stuffDef="Steel"),
+                    "make_empty_room")
+                ids["in"] = _spawn(t, "Colonist", x - 7, z, faction="player")
+                ids["out"] = _spawn(t, "Colonist", x + 6, z + 8, faction="player")
+                ids["mech"] = _spawn(t, MECH, x + 6, z - 8, faction="player")
+                for p in (ids["in"], ids["out"]):
+                    t.bridge_call("jawa/set_draft", pawnId=p, drafted=True)
+                got["indoor_roofed"] = _cell_roofed(t, x - 7, z)
+                got["outdoor_roofed"] = _cell_roofed(t, x + 6, z + 8) or _cell_roofed(t, x + 6, z - 8)
+                rows = _rows(t, health=True)
+                if any(DEAFEN in _defs_of(rows.get(p)) for p in ids.values()):
+                    _unmeasured(t, "a subject already carries %s before the Gale" % DEAFEN)
+                if got["outdoor_roofed"] or not got["indoor_roofed"]:
+                    _unmeasured(t, "roof staging failed (indoor roofed %s, outdoor roofed %s)"
+                                % (got["indoor_roofed"], got["outdoor_roofed"]))
+                _lock_weather(t, "RM_Gale")
+        with _comp(t, "exposure_unroofed_organic_deafened", toggle="galeDeafenEnabled"):
+            if _live(t):
+                t.wait_ticks(600)
+                rows = _rows(t, health=True)
+                for k in ("in", "out", "mech"):
+                    if k not in rows and ids[k] not in rows:
+                        _unmeasured(t, "subject %s missing from list_pawns" % k)
+                got.update(outdoor=_defs_of(rows.get(ids["out"])), indoor=_defs_of(rows.get(ids["in"])),
+                           mech=_defs_of(rows.get(ids["mech"])))
+                _note(t, "hediffs after 600 Gale ticks", {k: got[k] for k in ("outdoor", "indoor", "mech")})
+                _only(_exposure_offences(got), "organic pawn")
+        with _comp(t, "exposure_roof_spares", toggle="galeDeafenEnabled"):
+            if _live(t):
+                _only(_exposure_offences(got), "roofed pawn", "indoor cell")
+        with _comp(t, "exposure_mech_spares", toggle="galeDeafenEnabled"):
+            if _live(t):
+                _only(_exposure_offences(got), "mechanoid")
+        with _comp(t, "exposure_def_cuts_hearing_talking"):
+            if _live(t):
+                defs, raw = _get_defs(t, "HediffDef/" + DEAFEN, "stages", deep=True)
+                got["caps"] = _capmods(defs.get(DEAFEN))
+                if not got["caps"]:
+                    _unmeasured(t, "get_defs(%s, stages, deep) carries no capMods rows: %s"
+                                % (DEAFEN, json.dumps(raw, default=str)[:300]))
+                _only(_exposure_offences(got), "Hearing and Talking")
+        with _comp(t, "exposure_live_capacity_reduced"):
+            if _live(t):
+                if not CAPACITY_HOOK:
+                    _unmeasured(t, "no bridge tool reads a live pawn's Hearing or Talking capacity (jawa/pawn_health "
+                                   "carries consciousness/moving/manipulation only); set LSCRUB_CAPACITY_HOOK")
+                if DEAFEN not in (got.get("outdoor") or []):
+                    _unmeasured(t, "nobody was deafened: no live capacity to compare")
+                typ, meth = CAPACITY_HOOK.rsplit(".", 1)
+                got["levels"] = dict((k, dict((cap, float(_ok(t.bridge_call(
+                    "jawa/static_call", type=typ, method=meth, args="%s|%s" % (ids[k], cap)),
+                    "static_call %s" % CAPACITY_HOOK)["result"])) for cap in ("Hearing", "Talking")))
+                    for k in ("out", "in"))
+                _note(t, "live Hearing/Talking, deafened vs roofed", got["levels"])
+                _only(_exposure_offences(got), "live Hearing", "live Talking")
+        with _comp(t, "exposure_recovers_after_gale", toggle="galeDeafenEnabled"):
+            if _live(t):
+                if DEAFEN not in (got.get("outdoor") or []):
+                    _unmeasured(t, "nobody was deafened, so there is nothing to recover from")
+                _lock_weather(t, "Clear")
+                t.wait_ticks(3000)
+                read("after", ids["out"])
+                got["recovered"] = DEAFEN not in got["after"]
+                _note(t, "outdoor hediffs 3000 ticks after the Gale", got["after"])
+                _only(_exposure_offences(got), "recover")
+        with _comp(t, "exposure_toggle_off", toggle="galeDeafenEnabled"):
+            if _live(t):
+                t.bridge_call("jawa/pawn_health", pawn=ids["out"], action="remove", hediff=DEAFEN)
+                read("pre_off", ids["out"])
+                if DEAFEN in got["pre_off"]:
+                    _unmeasured(t, "could not clear %s to start the OFF arm" % DEAFEN)
+                with _setting(t, "galeDeafenEnabled", False):
+                    _lock_weather(t, "RM_Gale")
+                    t.wait_ticks(600)
+                    read("off_outdoor", ids["out"])
+                _only(_exposure_offences(got), "galeDeafenEnabled off")
+        with _comp(t, "exposure_checker_rejects_injections"):
+            if _live(t):
+                good = {"outdoor": [DEAFEN], "indoor": [], "mech": [], "off_outdoor": [], "indoor_roofed": True,
+                        "outdoor_roofed": False, "caps": {"Hearing": -0.5, "Talking": -0.35}, "recovered": True}
+                _rejects("exposure", _exposure_offences, good, {
+                    "roof ignored": dict(good, indoor=[DEAFEN]),
+                    "mech deafened": dict(good, mech=[DEAFEN]),
+                    "ambient Heatstroke read as deafness": dict(good, outdoor=["Heatstroke"]),
+                    "old ear injury read as deafness": dict(good, outdoor=["Cut"]),
+                    "roof misread": dict(good, indoor_roofed=False),
+                    "never recovers": dict(good, recovered=False),
+                    "toggle ignored": dict(good, off_outdoor=[DEAFEN]),
+                    "def cuts nothing": dict(good, caps={"Hearing": -0.5}),
+                    "live capacity untouched": dict(good, levels={"out": {"Hearing": 1.0, "Talking": 0.65},
+                                                                  "in": {"Hearing": 1.0, "Talking": 1.0}})})
+    with _scene(t, "sc_gale_exposure", "immediate"):
+        _stable(t, body)
+
+
+# ---- sc_working_wind
+
+def _wind_offences(r):
+    """r {"clear_ratio", "gale_ratio", "factor", "battery_delta", "broken_power": float|None, "mtb0_broken",
+    "seeded_broken", "unowned_broken", "repaired": bool|None}. -> offences."""
+    out = []
+    cr = r.get("clear_ratio")
+    if cr is not None and not 0.9 <= cr <= 1.1:
+        out.append("the surge acts in ordinary wind (on/off ratio %.3f)" % cr)
+    if r.get("battery_delta") is not None and r["battery_delta"] <= 0:
+        out.append("the battery stored nothing (delta %.1f)" % r["battery_delta"])
+    gr = r.get("gale_ratio")
+    if gr is not None and abs(gr - float(r.get("factor") or 0)) > 0.05:
+        out.append("the Gale surge ratio %.3f is not the factor %s" % (gr, r.get("factor")))
+    if r.get("mtb0_broken"):
+        out.append("a turbine broke down with the breakdown MTB at 0")
+    if r.get("seeded_broken") is False:
+        out.append("no breakdown at a seeded 0.01-day MTB in the Gale")
+    if r.get("unowned_broken"):
+        out.append("an unowned turbine was rolled for breakdown")
+    if r.get("broken_power") is not None and r["broken_power"] > 0:
+        out.append("a broken-down turbine still produces %.1f W (surge on a broken turbine)" % r["broken_power"])
+    if r.get("repaired") is False:
+        out.append("the FixBrokenDownBuilding job did not restore the turbine")
+    return out
+
+
+def _power_w(t, tid):
+    """Inspect 'Power output' in W, or 0.0 when the line is absent (a broken turbine shows none)."""
+    t.wait_ticks(5)
+    m = _POWER.search(" ".join(_inspect(t, tid)[1]))
+    return float(m.group(1).replace(",", "")) if m else 0.0
+
+
+def _broken(t, tid):
+    return bool(re.search(r"broken down", " ".join(_inspect(t, tid)[1]), re.I))
+
+
+@suite.chain("scene_working_wind")
+def scene_working_wind(t):
+    """sc_working_wind: a colony turbine wired to a battery. In Clear the surge setting changes nothing; the battery
+    stores; in the Gale surge-on/off is the configured factor; MTB 0 never breaks it; a seeded 0.01-day MTB breaks it
+    within two 2500-tick rolls; an unowned turbine (not in allBuildingsColonist) is never rolled; the broken turbine
+    yields 0 W, surge or not; a colonist's FixBrokenDownBuilding job with a ComponentIndustrial restores it.
+    NOT OBSERVABLE: a second DoBreakdown on an already broken turbine (the roll skips BrokenDown, nothing records a
+    call). Hold: immediate."""
+    _prep(t, "windwork", 24)
+    x, z = t.anchor
+    tx, tz, ux = x - 4, z - 2, x + 10
+    ids, got = {}, {}
+
+    def owned(tid):
+        own = t.bridge_call("jawa/set_thing_props", thing=tid, faction="PlayerColony")
+        if "faction" not in json.dumps((own or {}).get("changed")):
+            _unmeasured(t, "set_thing_props could not make %s player-owned: %r" % (tid, own))
+
+    def stored():
+        n = (_ok(t.bridge_call("jawa/power_net", thing=ids["battery"]), "power_net").get("net") or {})
+        return float(n.get("currentStoredEnergy") or 0), float(n.get("currentEnergyGainRate") or 0)
+
+    def ratio():
+        on1 = _power_w(t, ids["turbine"])
+        with _setting(t, "galeTurbineSurgeEnabled", False):
+            t.wait_ticks(600)
+            off = _power_w(t, ids["turbine"])
+        t.wait_ticks(600)
+        on2 = _power_w(t, ids["turbine"])
+        if off <= 0:
+            _unmeasured(t, "turbine yields %.1f W with the surge off: no baseline" % off)
+        return (on1 + on2) / 2.0 / off, [on1, off, on2]
+
+    def body():
+        with _comp(t, "wind_staged", poison=True):
+            if _live(t):
+                for cx in (tx, ux):     # each turbine's wind path open (gale_chain's recipe)
+                    path = "%d,%d,7,10;%d,%d,7,6" % (cx - 3, tz + 2, cx - 3, tz - 6)
+                    t.bridge_call("jawa/set_roof_batch", ops=";".join("None:" + r for r in path.split(";")))
+                t.bridge_call("jawa/spawn_batch", ops="WindTurbine:%d,%d;WindTurbine:%d,%d;Battery:%d,%d"
+                              % (tx, tz, ux, tz, tx + 5, tz), rot=0)
+                t.bridge_call("jawa/spawn_batch", ops="ComponentIndustrial:%d,%d,1" % (tx + 2, tz - 3))
+                turb = dict((w["x"], w["id"]) for w in _things(t, "WindTurbine", _rs(_rect(t, 32))))
+                bat = _things(t, "Battery", _rs(_rect(t, 32)))
+                comp = _things(t, "ComponentIndustrial", _rs(_rect(t, 32)))
+                if tx not in turb or ux not in turb or not bat or not comp:
+                    _unmeasured(t, "staging incomplete: turbines %s, battery %s, component %s" % (turb, bat, comp))
+                ids.update(turbine=turb[tx], unowned=turb[ux], battery=bat[0]["id"], comp=comp[0]["id"])
+                owned(ids["turbine"])
+                owned(ids["battery"])
+                net = _ok(t.bridge_call("jawa/power_net", thing=ids["battery"]), "power_net")
+                if not net.get("connected") or int((net.get("net") or {}).get("batteryCompsCount") or 0) < 1:
+                    _unmeasured(t, "the battery is not on a net with the turbine: %r" % net)
+                ids["col"] = _spawn(t, "Colonist", tx, tz - 4, faction="player")
+                _full(t, ids["col"])
+                got["factor"] = float(_get_setting(t, "galeTurbineSurgeFactor"))
+                _set(t, "galeTurbineBreakdownMtbDays", 0)
+        try:
+            with _comp(t, "wind_ordinary_no_surge", toggle="galeTurbineSurgeEnabled"):
+                if _live(t):
+                    _lock_weather(t, "Clear")
+                    t.wait_ticks(600)
+                    got["clear_ratio"], w = ratio()
+                    _note(t, "Clear output W (on, off, on)", w)
+                    _only(_wind_offences(got), "ordinary wind")
+            with _comp(t, "wind_battery_stores"):
+                if _live(t):
+                    e0, _ = stored()
+                    t.wait_ticks(600)
+                    e1, gain = stored()
+                    got["battery_delta"] = e1 - e0
+                    _note(t, "battery stored energy (before, after, gain/tick)", [e0, e1, gain])
+                    _only(_wind_offences(got), "battery")
+            with _comp(t, "wind_gale_ratio_matches_factor", toggle="galeTurbineSurgeEnabled"):
+                if _live(t):
+                    _lock_weather(t, "RM_Gale")
+                    t.wait_ticks(4100)      # the wind ramps into the Gale over the transition
+                    got["gale_ratio"], w = ratio()
+                    _note(t, "Gale output W (on, off, on), factor", [w, got["factor"]])
+                    _only(_wind_offences(got), "Gale surge ratio")
+            with _comp(t, "wind_mtb_zero_never_breaks", toggle="galeTurbineSurgeEnabled"):
+                if _live(t):
+                    got["mtb0_broken"] = _broken(t, ids["turbine"])    # MTB 0 over the 5300+ Gale ticks above
+                    _only(_wind_offences(got), "MTB at 0")
+            with _comp(t, "wind_breakdown_seeded", toggle="galeTurbineSurgeEnabled"):
+                if _live(t):
+                    with _setting(t, "galeTurbineBreakdownMtbDays", 0.01):
+                        t.wait_ticks(5200)     # two 2500-tick rolls at a 600-tick mean
+                        got["seeded_broken"] = _broken(t, ids["turbine"])
+                        got["unowned_broken"] = _broken(t, ids["unowned"])
+                    _only(_wind_offences(got), "seeded")
+            with _comp(t, "wind_unowned_never_rolled", toggle="galeTurbineSurgeEnabled"):
+                if _live(t):
+                    _only(_wind_offences(got), "unowned")
+            with _comp(t, "wind_broken_gets_no_surge", toggle="galeTurbineSurgeEnabled"):
+                if _live(t):
+                    if not got.get("seeded_broken"):
+                        _unmeasured(t, "no broken turbine to read")
+                    got["broken_power"] = _power_w(t, ids["turbine"])
+                    _note(t, "broken turbine W in the Gale (a second DoBreakdown is not observable)",
+                          got["broken_power"])
+                    _only(_wind_offences(got), "broken-down turbine")
+            with _comp(t, "wind_repair_by_job"):
+                if _live(t):
+                    if not got.get("seeded_broken"):
+                        _unmeasured(t, "no broken turbine to repair")
+                    r = t.bridge_call("jawa/ordered_job", pawnId=ids["col"], jobDef="FixBrokenDownBuilding",
+                                      targetAId=ids["turbine"], targetBId=ids["comp"])
+                    if not isinstance(r, dict) or r.get("success") is False:
+                        _unmeasured(t, "ordered_job(FixBrokenDownBuilding) refused: %r" % (r,))
+                    got["repaired"] = False
+                    for _ in range(10):
+                        t.wait_ticks(300)
+                        if not _broken(t, ids["turbine"]):
+                            got["repaired"] = True
+                            break
+                    _only(_wind_offences(got), "FixBrokenDownBuilding")
+            with _comp(t, "wind_checker_rejects_injections"):
+                if _live(t):
+                    good = {"clear_ratio": 1.0, "gale_ratio": 1.3, "factor": 1.3, "battery_delta": 50.0,
+                            "broken_power": 0.0, "mtb0_broken": False, "seeded_broken": True,
+                            "unowned_broken": False, "repaired": True}
+                    _rejects("wind", _wind_offences, good, {
+                        "surge in Clear": dict(good, clear_ratio=1.3), "wrong factor": dict(good, gale_ratio=1.22),
+                        "empty battery": dict(good, battery_delta=0.0), "breaks at MTB 0": dict(good, mtb0_broken=True),
+                        "never breaks": dict(good, seeded_broken=False),
+                        "unowned rolled": dict(good, unowned_broken=True),
+                        "broken still surges": dict(good, broken_power=650.0), "never fixed": dict(good, repaired=False)})
+        finally:
+            if _live(t):
+                _restore(t, "galeTurbineBreakdownMtbDays")
+    with _scene(t, "sc_working_wind", "immediate"):
+        _stable(t, body)
+
+
+# ---- sc_raid_weight
+
+def _raid_offences(r):
+    """r {"armed": bool, "factor": float, "w": {"<def>|<gale|clear>|<on|off>": float}|None, "scheduled": bool}."""
+    out = []
+    if not r.get("armed"):
+        out.append("the raid weighting postfix is not armed on IncidentWorker.ChanceFactorNow")
+    w, f = r.get("w"), float(r.get("factor") or 0)
+    if w:
+        base = w.get("RaidEnemy|clear|on")
+        if base is None or abs(w.get("RaidEnemy|gale|on", -1) - base * f) > 0.02 * max(base * f, 1e-6):
+            out.append("the raid weight does not follow the Gale x%s: %s" % (f, w))
+        if base is not None and (abs(w.get("RaidEnemy|gale|off", -1) - base) > 1e-6 * max(base, 1)
+                                 or abs(w.get("RaidEnemy|clear|off", -1) - base) > 1e-6 * max(base, 1)):
+            out.append("the raid weight ignores galeRaidWeightingEnabled: %s" % w)
+        for d in RAID_DEFS[1:]:
+            if abs(w.get("%s|gale|on" % d, -1) - w.get("%s|clear|on" % d, -2)) > 1e-6:
+                out.append("a non-raid incident (%s) was weighted by the Gale" % d)
+    if r.get("scheduled"):
+        out.append("reading the weights queued or fired an incident")
+    return out
+
+
+@suite.chain("scene_raid_weight")
+def scene_raid_weight(t):
+    """sc_raid_weight: reads weights only and NEVER fires or queues an incident. The ChanceFactorNow postfix must be
+    armed (jawa/harmony_patches, RULES); the raid worker's factor is x galeRaidWeightFactor only in the Gale with the
+    toggle on; ResourcePodCrash and WandererJoin are untouched; the incident queue and journal show nothing new.
+    The weight itself is read through RAID_WEIGHT_HOOK (no bridge tool reads ChanceFactorNow): UNMEASURED until it is
+    built. Hold: immediate."""
+    _pad(t, "raidweight")
+    got = {}
+
+    def snapshot():
+        q = _ok(t.bridge_call("jawa/incident_queue_peek"), "incident_queue_peek")
+        j = _ok(t.bridge_call("jawa/incident_journal", sinceSeq=-1, limit=200), "incident_journal")
+        return int(q.get("count") or 0), len(j.get("rows") or [])
+
+    def body():
+        with _comp(t, "raid_binding_armed", toggle="galeRaidWeightingEnabled"):
+            if _live(t):
+                typ, meth, kind, patch = [r for r in RULES if r[1] == "ChanceFactorNow"][0]
+                r = t.bridge_call("jawa/harmony_patches", typeName=typ, methodName=meth)
+                mine = [p for m in (r or {}).get("methods") or [] for p in m.get(kind) or []
+                        if p.get("patchMethod", "").endswith(patch) and p.get("owner") == HARMONY_OWNER]
+                got.update(armed=bool(mine), factor=float(_get_setting(t, "galeRaidWeightFactor")))
+                got["before"] = snapshot()
+                _only(_raid_offences(got), "not armed")
+        with _comp(t, "raid_weight_gale_only", toggle="galeRaidWeightingEnabled"):
+            if _live(t):
+                if not RAID_WEIGHT_HOOK or "." not in RAID_WEIGHT_HOOK:
+                    _unmeasured(t, "no bridge tool reads IncidentWorker.ChanceFactorNow; set LSCRUB_RAID_WEIGHT_HOOK="
+                                   "<Type>.<Method> (public static (IncidentDef, Map) -> float) once one is built")
+                typ, meth = RAID_WEIGHT_HOOK.rsplit(".", 1)
+                w = {}
+                try:
+                    for weather in ("RM_Gale", "Clear"):
+                        _lock_weather(t, weather)
+                        for on in (True, False):
+                            with _setting(t, "galeRaidWeightingEnabled", on):
+                                for d in RAID_DEFS:
+                                    r = _ok(t.bridge_call("jawa/static_call", type=typ, method=meth,
+                                                          args="%s|current" % d), "static_call(%s)" % d)
+                                    w["%s|%s|%s" % (d, "gale" if weather == "RM_Gale" else "clear",
+                                                    "on" if on else "off")] = float(r.get("result"))
+                finally:
+                    _unlock_weather(t)
+                got["w"] = w
+                _note(t, "ChanceFactorNow by def|weather|toggle", w)
+                _only(_raid_offences(got), "Gale x", "ignores galeRaidWeightingEnabled")
+        with _comp(t, "raid_nonraid_unchanged", toggle="galeRaidWeightingEnabled"):
+            if _live(t):
+                if not got.get("w"):
+                    _unmeasured(t, "no weights were read (LSCRUB_RAID_WEIGHT_HOOK unset or refused)")
+                _only(_raid_offences(got), "non-raid")
+        with _comp(t, "raid_nothing_scheduled"):
+            if _live(t):
+                after = snapshot()
+                got["scheduled"] = after != got.get("before")
+                _note(t, "incident queue count / journal rows (before, after)", [got.get("before"), after])
+                _only(_raid_offences(got), "queued or fired")
+        with _comp(t, "raid_checker_rejects_injections"):
+            if _live(t):
+                w = {}
+                for d in RAID_DEFS:
+                    for k in ("gale|on", "gale|off", "clear|on", "clear|off"):
+                        w["%s|%s" % (d, k)] = 0.5
+                w["RaidEnemy|gale|on"] = 1.0
+                good = {"armed": True, "factor": 2.0, "w": w, "scheduled": False}
+                _rejects("raid", _raid_offences, good, {
+                    "unarmed": dict(good, armed=False),
+                    "Gale ignored": dict(good, w=dict(w, **{"RaidEnemy|gale|on": 0.5})),
+                    "toggle ignored": dict(good, w=dict(w, **{"RaidEnemy|gale|off": 1.0})),
+                    "every incident weighted": dict(good, w=dict(w, **{"WandererJoin|gale|on": 1.0})),
+                    "a raid fired": dict(good, scheduled=True)})
+    with _scene(t, "sc_raid_weight", "immediate"):
+        _stable(t, body)
+
+
+# ---- sc_hollow
+
+HOLLOW_LANES = (("bare", "Colonist"), ("hollow", "Colonist"), ("thicket", "Colonist"),
+                ("bare", HUGE), ("hollow", HUGE), ("thicket", HUGE))
+
+
+def _hollow_offences(r):
+    """r {"times": {"<lane>|<kind>": ticks|None}, "on_hollow": bool, "venom": {"hollow": bool, "thicket": bool},
+    "crawl_seen": bool|None}. -> offences."""
+    out, tm, v = [], r.get("times") or {}, r.get("venom") or {}
+    th, tt = tm.get("hollow|Colonist"), tm.get("thicket|Colonist")
+    if th is None:
+        out.append("the colonist did not cross the Hollow")
+    elif not r.get("on_hollow"):
+        out.append("the colonist was never seen on a Hollow cell (it went round it)")
+    elif tt is not None and th >= tt:
+        out.append("the Hollow (%s ticks) is no freer than the thicket (%s ticks)" % (th, tt))
+    if v.get("hollow"):
+        out.append("the Hollow gave contact venom")
+    if tm.get("hollow|" + HUGE) is not None:
+        out.append("a huge body passed the Hollow")
+    if tm.get("thicket|" + HUGE) is not None:
+        out.append("thicket hazard lost: a huge body passed the thicket")
+    if not v.get("thicket"):
+        out.append("thicket hazard lost: no contact venom in the thicket")
+    if r.get("crawl_seen") is False:
+        out.append("no crawl job while inside the Hollow")
+    return out
+
+
+@suite.chain("scene_hollow")
+def scene_hollow(t):
+    """sc_hollow: six walled one-cell tubes, bare / Hollow / thicket x colonist / Muffalo (body 2.4), six plant cells
+    each mid-tube; every subject is ordered to the far end. The colonist must cross the Hollow (seen on a Hollow cell)
+    faster than the thicket and without venom; a huge body must not pass the Hollow (block 1.5) nor the thicket; the
+    thicket keeps its contact venom. The bare-tube Muffalo is the control that a huge body CAN cross. The crawl job
+    the spec names does not exist in the mod: hollow_crawl_job is UNMEASURED until HOLLOW_CRAWL_JOB is set.
+    Hold: owner_review (the end state is saved for him)."""
+    _prep(t, "hollow", 32)
+    x, z = t.anchor
+    lanes = dict(((lane, kind), x - 12 + 5 * i) for i, (lane, kind) in enumerate(HOLLOW_LANES))
+    ids, got = {}, {"times": {}, "venom": {}, "on_hollow": False}
+    plant = {"hollow": HOLLOW, "thicket": THICKET}
+
+    def body():
+        with _comp(t, "hollow_staged", poison=True):
+            if _live(t):
+                walls, plants = [], []
+                for (lane, kind), lx in lanes.items():
+                    walls += [(lx + d, zz) for d in (-1, 1) for zz in range(z - 9, z + 10)]
+                    walls += [(lx, z - 9), (lx, z + 9)]
+                    if lane in plant:
+                        plants.append("%s:%d,%d,1,6" % (plant[lane], lx, z - 2))
+                t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % c for c in walls), stuff="Steel")
+                t.bridge_call("jawa/set_plants", ops=";".join(plants), growth=1.0)
+                for name, p in plant.items():
+                    if len(_things(t, p, _rs(_rect(t, 32)))) < 12:
+                        _unmeasured(t, "%s did not stand in its tubes (%d cells)"
+                                    % (p, len(_things(t, p, _rs(_rect(t, 32))))))
+                for (lane, kind), lx in lanes.items():
+                    pid = _spawn(t, kind, lx, z - 7, faction="player")
+                    ids["%s|%s" % (lane, kind)] = pid
+                    if kind == "Colonist":
+                        _full(t, pid)
+                        t.bridge_call("jawa/set_draft", pawnId=pid, drafted=True)
+                for key, pid in ids.items():
+                    r = t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=lanes[tuple(
+                        key.split("|"))], targetAZ=z + 7, waitTicks=0)
+                    if not isinstance(r, dict) or r.get("success") is False:
+                        _unmeasured(t, "ordered_job(Goto) refused for %s: %r" % (key, r))
+                for tick in range(60, 3001, 60):
+                    t.wait_ticks(60)
+                    rows = _rows(t, health=True)
+                    for key, pid in ids.items():
+                        p = _xz(rows.get(pid))
+                        if p and p[1] >= z + 6 and got["times"].get(key) is None:
+                            got["times"][key] = tick
+                        if key == "hollow|Colonist" and p and z - 2 <= p[1] <= z + 3:
+                            got["on_hollow"] = True
+                            if HOLLOW_CRAWL_JOB:
+                                job = _jobs(t).get(pid)
+                                got["crawl_seen"] = bool(got.get("crawl_seen")) or job == HOLLOW_CRAWL_JOB
+                    for lane in ("hollow", "thicket"):
+                        got["venom"][lane] = got["venom"].get(lane) or any(
+                            h in LASH_HEDIFFS for h in _defs_of(rows.get(ids["%s|Colonist" % lane])))
+                    if all(got["times"].get("%s|%s" % k) is not None for k in HOLLOW_LANES
+                           if k[0] == "bare" or k[1] == "Colonist"):
+                        break
+                for key in ids:
+                    got["times"].setdefault(key, None)
+                _note(t, "tube crossing ticks / venom / seen on Hollow", got)
+        with _comp(t, "hollow_free_pass_band"):
+            if _live(t):
+                if got["times"].get("bare|Colonist") is None:
+                    _unmeasured(t, "the colonist could not cross even the bare tube")
+                _only(_hollow_offences(got), "did not cross the Hollow", "never seen", "no freer")
+        with _comp(t, "hollow_no_contact_venom"):
+            if _live(t):
+                _only(_hollow_offences(got), "Hollow gave contact venom")
+        with _comp(t, "hollow_huge_blocked"):
+            if _live(t):
+                if got["times"].get("bare|" + HUGE) is None:
+                    _unmeasured(t, "the Muffalo could not cross even the bare tube: no huge-body control")
+                _only(_hollow_offences(got), "passed the Hollow")
+        with _comp(t, "thicket_keeps_hazards"):
+            if _live(t):
+                _only(_hollow_offences(got), "thicket hazard lost")
+        with _comp(t, "hollow_crawl_job"):
+            if _live(t):
+                if not HOLLOW_CRAWL_JOB:
+                    _unmeasured(t, "the mod has no crawl JobDef (RM_HollowVenomvine slows by pathCost and the "
+                                   "body-size barrier only); set LSCRUB_HOLLOW_CRAWL_JOB once one ships")
+                got["crawl_seen"] = bool(got.get("crawl_seen"))
+                _only(_hollow_offences(got), "crawl job")
+        with _comp(t, "hollow_checker_rejects_injections"):
+            if _live(t):
+                good = {"times": {"bare|Colonist": 300, "hollow|Colonist": 700, "thicket|Colonist": 2400,
+                                  "bare|" + HUGE: 300, "hollow|" + HUGE: None, "thicket|" + HUGE: None},
+                        "on_hollow": True, "venom": {"hollow": False, "thicket": True}, "crawl_seen": True}
+                tm = good["times"]
+                _rejects("hollow", _hollow_offences, good, {
+                    "Hollow threads like thicket": dict(good, times=dict(tm, **{"hollow|Colonist": 2400})),
+                    "went round the Hollow": dict(good, on_hollow=False),
+                    "Hollow venoms": dict(good, venom={"hollow": True, "thicket": True}),
+                    "huge passes Hollow": dict(good, times=dict(tm, **{"hollow|" + HUGE: 900})),
+                    "huge passes thicket": dict(good, times=dict(tm, **{"thicket|" + HUGE: 900})),
+                    "thicket lost venom": dict(good, venom={"hollow": False, "thicket": False}),
+                    "no crawl": dict(good, crawl_seen=False)})
+    with _scene(t, "sc_hollow", "owner_review"):
+        _stable(t, body)
+
+
+# ---- sc_hoard
+
+def _hoard_offences(r):
+    """r {"near_held", "far_kept", "bystander_kept", "corpse_stays", "gear_held", "reload_same", "off_taken": bool,
+    "fall_total": [after fall, 1000 ticks later]|None, "expect_total": int}. -> offences."""
+    out = []
+    if not r.get("near_held"):
+        out.append("the hoard did not store the adjacent steel")
+    if not r.get("far_kept"):
+        out.append("the hoard took goods outside its 3x3 sweep")
+    if not r.get("bystander_kept"):
+        out.append("the hoard took or moved the live bystander")
+    if not r.get("corpse_stays"):
+        out.append("the hoard took the corpse")
+    if not r.get("gear_held"):
+        out.append("the hoard kept none of the dead colonist's gear")
+    if r.get("reload_same") is False:
+        out.append("the hoard's held items / firstSeen changed across a save and reload")
+    ft = r.get("fall_total")
+    if ft is not None and any(n != r.get("expect_total") for n in ft):
+        out.append("the fallen hoard did not return its goods exactly once (steel %s, expected %s)"
+                   % (ft, r.get("expect_total")))
+    if r.get("off_taken"):
+        out.append("the hoard stored items with hoardEnabled off")
+    return out
+
+
+@suite.chain("scene_hoard")
+def scene_hoard(t):
+    """sc_hoard: a grown RM_HoardVenomvine (hoardGrowInHours 0.05) with 10 steel beside it, a colonist killed beside
+    it (Corpse_Human, gear on), 7 steel three cells off and a drafted live colonist adjacent. It must store the
+    steel, leave the far steel, the bystander and the corpse, and keep the dead colonist's gear; held / firstSeen /
+    HeldCount survive a save and reload; when the stand is destroyed its goods drop exactly once; with hoardEnabled
+    off a second stand stores nothing. Hold: immediate."""
+    _prep(t, "hoard", 24)
+    x, z = t.anchor
+    ids, got = {}, {"expect_total": 22}
+    box = "%d,%d,7,7" % (x - 3, z - 3)
+
+    def comp(tid):
+        r = _ok(t.bridge_call("jawa/comp_read", thing=tid, comp="RM_CompHoard", members="held,firstSeen,HeldCount"),
+                "comp_read(RM_CompHoard)")
+        if r.get("missing"):
+            _unmeasured(t, "RM_CompHoard members missing: %s" % r.get("missing"))
+        return r.get("values") or {}
+
+    def stand(cx, cz):
+        s = _things(t, HOARD, "%d,%d,1,1" % (cx, cz))
+        if not s:
+            _unmeasured(t, "%s did not stand at %d,%d" % (HOARD, cx, cz))
+        return s[0]["id"]
+
+    def body():
+        with _setting(t, "hoardGrowInHours", 0.05):
+            with _comp(t, "hoard_staged", poison=True):
+                if _live(t):
+                    t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (HOARD, x, z), growth=1.0)
+                    ids["stand"] = stand(x, z)
+                    t.bridge_call("jawa/spawn_batch", ops="Steel:%d,%d,10;Steel:%d,%d,7" % (x + 1, z, x + 3, z))
+                    near = _things(t, "Steel", "%d,%d,1,1" % (x + 1, z))
+                    if not near:
+                        _unmeasured(t, "no adjacent steel after spawn_batch")
+                    ids["steel"] = near[0]["id"]
+                    victim = _spawn(t, "Colonist", x + 1, z + 1, faction="player")
+                    t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=victim,
+                                  allowColonists=True)
+                    if not _things(t, CORPSE, "%d,%d,1,1" % (x + 1, z + 1)):
+                        _unmeasured(t, "the killed colonist left no %s beside the stand" % CORPSE)
+                    ids["by"] = _spawn(t, "Colonist", x - 1, z, faction="player")
+                    _full(t, ids["by"])
+                    t.bridge_call("jawa/set_draft", pawnId=ids["by"], drafted=True)
+            with _comp(t, "hoard_stores_eligible", toggle="hoardEnabled"):
+                if _live(t):
+                    t.wait_ticks(750)
+                    got["held"] = comp(ids["stand"])
+                    _note(t, "RM_CompHoard after 750 ticks", got["held"])
+                    got["near_held"] = ids["steel"] in str(got["held"].get("held"))
+                    _only(_hoard_offences(got), "adjacent steel")
+            with _comp(t, "hoard_excludes_goods_and_bystander", toggle="hoardEnabled"):
+                if _live(t):
+                    got["far_kept"] = _stack_total(t, "Steel", "%d,%d,1,1" % (x + 3, z)) == 7
+                    by = _rows(t).get(ids["by"])
+                    got["bystander_kept"] = _xz(by) == (x - 1, z) and ids["by"] not in str(got["held"].get("held"))
+                    _only(_hoard_offences(got), "outside its 3x3", "bystander")
+            with _comp(t, "hoard_corpse_stays_gear_kept", toggle="hoardKeepsDeadGear"):
+                if _live(t):
+                    got["corpse_stays"] = bool(_things(t, CORPSE, "%d,%d,1,1" % (x + 1, z + 1)))
+                    got["gear_held"] = int(got["held"].get("HeldCount") or 0) >= 2
+                    _only(_hoard_offences(got), "corpse", "gear")
+            with _comp(t, "hoard_survives_reload", toggle="hoardEnabled"):
+                if _live(t):
+                    with _setting(t, "hoardGrowInHours", 2.0):     # seen (firstSeen) but not yet taken
+                        t.bridge_call("jawa/spawn_batch", ops="Steel:%d,%d,5" % (x, z - 1))
+                        t.wait_ticks(300)
+                        before = comp(ids["stand"])
+                        name = "lscrub_hoard_reload_%d" % int(time.time())
+                        _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game")
+                        _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000),
+                            "load_game_ready")
+                        after = comp(ids["stand"])
+                    _note(t, "RM_CompHoard before / after reload", [before, after])
+                    got["reload_same"] = all(str(before.get(k)) == str(after.get(k))
+                                             for k in ("held", "firstSeen", "HeldCount"))
+                    _only(_hoard_offences(got), "save and reload")
+            with _comp(t, "hoard_returns_once_on_fall", toggle="hoardEnabled"):
+                if _live(t):
+                    t.bridge_call("jawa/destroy_batch", rects="%d,%d,1,1" % (x, z), categories="All")
+                    if _things(t, HOARD, "%d,%d,1,1" % (x, z)):
+                        _unmeasured(t, "the stand survived destroy_batch")
+                    a = _stack_total(t, "Steel", box)
+                    t.wait_ticks(1000)
+                    got["fall_total"] = [a, _stack_total(t, "Steel", box)]
+                    _only(_hoard_offences(got), "exactly once")
+            with _comp(t, "hoard_toggle_off", toggle="hoardEnabled"):
+                if _live(t):
+                    t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (HOARD, x + 8, z), growth=1.0)
+                    s2 = stand(x + 8, z)
+                    t.bridge_call("jawa/spawn_batch", ops="Steel:%d,%d,3" % (x + 9, z))
+                    with _setting(t, "hoardEnabled", False):
+                        t.wait_ticks(750)
+                        held = comp(s2)
+                    got["off_taken"] = int(held.get("HeldCount") or 0) > 0 or \
+                        _stack_total(t, "Steel", "%d,%d,1,1" % (x + 9, z)) != 3
+                    _only(_hoard_offences(got), "hoardEnabled off")
+            with _comp(t, "hoard_checker_rejects_injections"):
+                if _live(t):
+                    good = {"near_held": True, "far_kept": True, "bystander_kept": True, "corpse_stays": True,
+                            "gear_held": True, "reload_same": True, "off_taken": False, "fall_total": [22, 22],
+                            "expect_total": 22}
+                    _rejects("hoard", _hoard_offences, good, {
+                        "never takes": dict(good, near_held=False), "takes far goods": dict(good, far_kept=False),
+                        "takes the bystander": dict(good, bystander_kept=False),
+                        "takes the corpse": dict(good, corpse_stays=False), "drops dead gear": dict(good, gear_held=False),
+                        "forgets on reload": dict(good, reload_same=False),
+                        "drops twice": dict(good, fall_total=[22, 32]), "loses goods": dict(good, fall_total=[12, 12]),
+                        "ignores toggle": dict(good, off_taken=True)})
+    with _scene(t, "sc_hoard", "immediate"):
+        _stable(t, body)
+
+
 def _run_offline(name):
     """`python3 validation.py <offline scene>`: run one offline chain with no game; exit 0 when every row PASSes."""
     from suite import TestContext

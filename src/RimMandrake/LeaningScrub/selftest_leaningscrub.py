@@ -35,6 +35,9 @@ V.CAST_TILES = (11, 12, 13)                        # sc_native_cast's three map-
 V.DRIP_STARTUP = "true"                            # sc_dripping's clean-start arm: the fake starts with regrowth saved on
 V.BLIND_READ, V.ART_EVAL = "fake:blind", "fake:art"  # floor_visual's judge files: the fake answers both
 V.EVIDENCE_HOOK = "RimMandrake.RimProperty.FakeEvidenceProof.ProofArm"   # sc_maker's store fixture (fake type)
+V.RAID_WEIGHT_HOOK = "RimMandrake.LeaningScrub.FakeRaidWeight.ChanceFactorNow"   # sc_raid_weight's reader (fake type)
+V.CAPACITY_HOOK = "RimMandrake.LeaningScrub.FakeCapacity.Level"      # sc_gale_exposure's live reader (fake)
+V.HOLLOW_CRAWL_JOB = "RM_FakeHollowCrawl"           # sc_hollow's crawl job as the spec designs it (fake)
 
 from suite import TestContext                     # noqa: E402
 
@@ -69,7 +72,7 @@ def cs_arities(type_name, method):
 
 
 BODY = {"RM_Thornhold": 0.4, "RM_Shirrel": 0.7, "RM_Dustflutter": 0.08, "RM_Crustweevil": 0.05,
-        "RM_Fuzzrunner": 0.2, "RM_Vissler": 0.15, "Colonist": 1.0, "RM_Ribbonwhip": 0.25}
+        "RM_Fuzzrunner": 0.2, "RM_Vissler": 0.15, "Colonist": 1.0, "RM_Ribbonwhip": 0.25, "Muffalo": 2.4}
 BLOOM = {"RM_Crustweevil", "RM_Fuzzrunner", "RM_Dustflutter", "RM_Vissler"}
 MEAT_EATERS = ("RM_Surrik", "RM_Ribbonwhip")        # ProofArmScavengers' fake answer names these two
 SMALL_SPAWN_ONLY = None
@@ -95,6 +98,7 @@ class Fake(object):
         self.ticks = 1000
         self.n = 0
         self.settings = dict((k, str(v)) for k, v in V.DEFAULTS.items())
+        self.queued = []       # incidents a raid-weight read queued (it must queue none)
         if "setting_missing" in self.broken:
             del self.settings["leanFireBias"]
         self.weather, self.things, self.pawns = "RM_ScrubWind", {}, {}
@@ -181,6 +185,8 @@ class Fake(object):
                     bl["stackCount"] -= n
                     fire["fuel_level"], fire["fuel_at"] = min(20.0, self.fuel(fire["id"]) + n * c), self.ticks
                     fire["burning"] = bl["def"]
+            if job["kind"] == "repair" and job["a"] in self.things and "repair_never_fixes" not in b:
+                self.things[job["a"]]["broken"] = False
             if job["kind"] == "harvest" and job["a"] in self.things:
                 pl = self.things.get(job["a"])
                 if pl:
@@ -215,22 +221,36 @@ class Fake(object):
         # --- Gale: deafen
         if self.weather == "RM_Gale":
             gate = self.on("galeDeafenEnabled") or "deafen_ignores_toggle" in b
+            self.gale_last = self.ticks
             for p in self.pawns.values():
                 if p["faction"] != "player" or "no_deafen" in b or not gate:
+                    continue
+                if p["kind"].startswith("Mech_") and "deafen_ignores_mech" not in b:     # RaceProps.IsMechanoid
                     continue
                 roofed = any(inrect(p["x"], p["z"], r) for r in self.rooms)
                 if roofed and "deafen_ignores_roof" not in b:
                     continue
                 if "RM_GaleDeafened" not in p["hediffs"]:
                     p["hediffs"].append("RM_GaleDeafened")
+        elif self.ticks - getattr(self, "gale_last", -10 ** 9) >= 2500 and "deafen_never_recovers" not in b:
+            for p in self.pawns.values():      # severityPerDay -24: gone a day (2500 ticks) after the last refresh
+                if "RM_GaleDeafened" in p["hediffs"]:
+                    p["hediffs"].remove("RM_GaleDeafened")
+        # --- batteries charge from a whole colony turbine; the hoard sweeps its 3x3
+        if "battery_never_charges" not in b and any(t.get("faction") == "PlayerColony" and not t.get("broken")
+                                                    for t in self.of("WindTurbine")):
+            for t in self.of("Battery"):
+                t["stored"] = t.get("stored", 0.0) + 0.1 * d
+        self.hoard_pass()
         # --- turbines (2500 boundary)
         if self.ticks // 2500 != self.tick_hist:
             self.tick_hist = self.ticks // 2500
             if (self.weather == "RM_Gale" and self.on("galeTurbineSurgeEnabled")
-                    and 0 < float(self.settings["galeTurbineBreakdownMtbDays"]) < 0.1
+                    and (0 < float(self.settings["galeTurbineBreakdownMtbDays"]) or "breaks_at_mtb_zero" in b)
+                    and float(self.settings["galeTurbineBreakdownMtbDays"]) < 0.1
                     and "no_breakdown" not in b):
                 for t in self.of("WindTurbine"):
-                    if t.get("faction") == "PlayerColony":    # listerBuildings.allBuildingsColonist only
+                    if t.get("faction") == "PlayerColony" or "breaks_unowned" in b:    # allBuildingsColonist only
                         t["broken"] = True
             # smother maturation
             if self.on("smotherCraftEnabled") or "smother_ignores_toggle" in b:
@@ -415,6 +435,12 @@ class Fake(object):
             return {"success": True, "foundCount": 1, "notFound": [],
                     "defs": [{"defName": V.TREE, "fields": {"label": "sweetline tree", "thingClass": "Plant", "comps": [
                         "RimMandrake.LeaningScrub.RM_CompProperties_SweetlineStation"]}}]}
+        if want == ["HediffDef/RM_GaleDeafened"]:      # the shipped stages: Hearing -0.5, Talking -0.35
+            caps = [{"capacity": "Hearing", "offset": -0.5}, {"capacity": "Talking", "offset": -0.35}]
+            if "deafen_cuts_nothing" in self.broken:
+                caps = caps[1:]
+            return {"success": True, "foundCount": 1, "notFound": [], "defs": [{"defName": "RM_GaleDeafened",
+                                                                                  "fields": {"stages": [{"capMods": caps}]}}]}
         if want == ["GenStepDef/RM_ScrubInjections"]:
             ff = "RM_Faction_CombHolds" if "farmer_camps_back" in self.broken else None
             return {"success": True, "foundCount": 1, "notFound": [],
@@ -451,10 +477,76 @@ class Fake(object):
             comps.append({"class": "RimMandrake.LeaningScrub.RM_CompProperties_Smotherable"})
         return {"success": True, "comps": comps}
 
+    def through_plants(self, p, gx, gz):
+        """A straight ordered walk through RM_HollowVenomvine / thicket cells: the body-size barrier (passFreely /
+        block 1.5), the path cost, and the thicket's first-contact venom (MapComponent_ContactVenom)."""
+        if gx != p["x"]:
+            return
+        lo, hi = sorted((p["z"], gz))
+        cells = [t for t in self.things.values() if t["x"] == gx and lo < t["z"] < hi and t["def"] in (V.HOLLOW, V.THICKET)]
+        if not cells:
+            return
+        b, d = self.broken, cells[0]["def"]
+        hollow = d == V.HOLLOW
+        if BODY.get(p["kind"], 1.0) >= 1.5 and not (hollow and "huge_passes_hollow" in b):
+            p["goto"] = None      # no path: the pawn stays put
+            return
+        slow = 300 if (not hollow or "hollow_threads" in b) else 60
+        p["moving_until"] += slow * len(cells)
+        p["via"], p["via_at"], p["via_def"] = (gx, cells[0]["z"]), self.ticks + 150, d
+        if (not hollow and "thicket_no_venom" not in b) or (hollow and "hollow_venoms" in b):
+            p["hediffs"].append("RM_VenomvineVenom")
+
+    def hoard_pass(self):
+        """RM_CompHoard: every grown stand sweeps items (Item, EverHaulable) in its 3x3; an item is taken once it has
+        been seen hoardGrowInHours; a corpse stays and its gear is kept (hoardKeepsDeadGear)."""
+        b = self.broken
+        if not (self.on("hoardEnabled") or "hoard_ignores_toggle" in b):
+            return
+        grow = float(self.settings["hoardGrowInHours"]) * 2500
+        reach = 3 if "hoard_takes_far" in b else 1
+        for st in self.of(V.HOARD):
+            seen, held = st.setdefault("seen", {}), st.setdefault("held", [])
+            for t in list(self.things.values()):
+                if max(abs(t["x"] - st["x"]), abs(t["z"] - st["z"])) > reach or t is st:
+                    continue
+                corpse = t["def"].startswith("Corpse_")
+                if t["def"] != "Steel" and not corpse:
+                    continue
+                if t["def"] == "Steel" and "hoard_never_takes" in b:
+                    continue
+                seen.setdefault(t["id"], self.ticks)
+                if self.ticks - seen[t["id"]] < grow:
+                    continue
+                if corpse and "hoard_takes_corpse" not in b:
+                    if self.on("hoardKeepsDeadGear"):
+                        held += [dict(id="G%s_%s" % (t["id"], g), **{"def": g}) for g in t.get("gear") or []]
+                        t["gear"] = []
+                    continue
+                held.append(dict(t))
+                del self.things[t["id"]]
+                del seen[t["id"]]
+
+    def t_power_net(self, thing=None, **k):
+        t = self.things.get(thing)
+        if t is None:
+            return {"success": False, "message": "no thing %r" % thing}
+        live = any(w.get("faction") == "PlayerColony" and not w.get("broken") for w in self.of("WindTurbine"))
+        return {"success": True, "connected": True, "net": {
+            "batteryCompsCount": len(self.of("Battery")), "currentStoredEnergy": t.get("stored", 0.0),
+            "currentEnergyGainRate": 0.1 if live and "battery_never_charges" not in self.broken else 0.0}}
+
+    def t_incident_queue_peek(self, **k):
+        return {"success": True, "count": len(self.queued), "queue": [{"defName": d} for d in self.queued]}
+
+    def t_incident_journal(self, sinceSeq=-1, limit=200, **k):
+        return {"success": True, "installed": True, "rows": [{"aseq": i, "def": d} for i, d in enumerate(self.queued)]}
+
     def t_harmony_patches(self, typeName=None, methodName=None, **k):
         for typ, meth, kind, patch in V.RULES:
             if (typ, meth) == (typeName, methodName):
-                armed = not ("rule_unarmed" in self.broken and typ == "JobGiver_Wander")
+                armed = not ("rule_unarmed" in self.broken and typ == "JobGiver_Wander") and not (
+                    "raid_rule_unarmed" in self.broken and meth == "ChanceFactorNow")
                 row = {"owner": V.HARMONY_OWNER, "patchMethod": "RimMandrake.LeaningScrub." + patch}
                 m = {"method": meth, "prefixes": [], "postfixes": []}
                 if armed:
@@ -503,7 +595,8 @@ class Fake(object):
 
     def t_site_state(self, **k):
         return {"success": True, "pawns": [
-            {"id": p["id"], "job": "Flee" if self.ticks < p.get("flee_until", 0) else
+            {"id": p["id"], "job": V.HOLLOW_CRAWL_JOB if p.get("in_hollow") and "no_crawl_job" not in self.broken else
+             "Flee" if self.ticks < p.get("flee_until", 0) else
              ("Goto" if p.get("goto") and self.ticks < p.get("moving_until", 0) and p["kind"] == "Colonist"
               and "order_ignored" not in self.broken else p.get("job", "Wait_Wander"))}
             for p in self.pawns.values()]}
@@ -520,6 +613,20 @@ class Fake(object):
         if type == "Verse.Log":
             self.log.append({"type": method, "text": args})
             return {"success": True}
+        if type == "RimMandrake.LeaningScrub.FakeCapacity":       # GetLevel: the shipped capMods on a deafened pawn
+            pid, cap = args.split("|")
+            off = {"Hearing": 0.5, "Talking": 0.35}[cap]
+            deaf = "RM_GaleDeafened" in self.pawns[pid]["hediffs"] and "deafen_live_untouched" not in self.broken
+            return {"success": True, "result": "%.2f" % (1.0 - off if deaf else 1.0)}
+        if type == "RimMandrake.LeaningScrub.FakeRaidWeight":     # ChanceFactorNow after the postfix, as shipped
+            d, b = args.split("|")[0], self.broken
+            raid = d == "RaidEnemy" or "raid_weights_all" in b
+            gale = self.weather == "RM_Gale" or "raid_weight_ignores_gale" in b
+            on = self.on("galeRaidWeightingEnabled") or "raid_weight_ignores_toggle" in b
+            if "raid_hook_schedules" in b:
+                self.queued.append(d)
+            f = float(self.settings["galeRaidWeightFactor"]) if raid and gale and on else 1.0
+            return {"success": True, "result": "%.4f" % (0.5 * f)}
         if type == "RimMandrake.RimProperty.FakeEvidenceProof":     # sc_maker's shared-store fixture, as designed
             bad = "store_reads_fire_as_taking" in self.broken and args == "fire_only_same_actor"
             return {"success": True, "result": "FAIL a fire record was read as taking evidence" if bad else "PASS " + args}
@@ -694,7 +801,8 @@ class Fake(object):
         p = self.pawns.get(thingId)
         if p is not None and amount >= 100 and not p["dead"]:
             p["dead"] = True
-            self.new("Corpse_" + p["kind"], p["x"], p["z"], faction=p["faction"])
+            self.new("Corpse_" + ("Human" if p["kind"] == "Colonist" else p["kind"]), p["x"], p["z"],
+                     faction=p["faction"], gear=["Apparel_Pants", "Apparel_CollarShirt"] if p["kind"] == "Colonist" else [])
         return {"success": True}
 
     def dens_proof(self, type, method, args):
@@ -809,8 +917,13 @@ class Fake(object):
         if "Pawn" in str(categories):    # live: refused; and no category ever removes a pawn
             return {"success": False, "message": "destroy_batch never removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1)"}
         self.rooms = [r for r in self.rooms if not (inrect(r[0], r[1], rr) and inrect(r[0] + r[2] - 1, r[1] + r[3] - 1, rr))]
+        fallen = [t for t in self.things.values() if t["def"] == V.HOARD and inrect(t["x"], t["z"], rr)]
         for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)]:
             del self.things[tid]
+        for st in fallen:       # RM_CompHoard.PostDeSpawn: the held goods drop where the stand stood
+            for _ in range(2 if "hoard_drops_twice" in self.broken else 1):
+                for h in st.get("held") or []:
+                    self.new(h["def"], st["x"], st["z"], stackCount=h.get("stackCount", 1))
         self.claims = dict((s, t) for s, t in self.claims.items() if s in self.things)
         return {"success": True}
 
@@ -834,6 +947,10 @@ class Fake(object):
         return {"success": True}
 
     def t_get_roof_batch(self, rects=None, **k):
+        r = V_rect(rects) if rects and ";" not in rects else None
+        if r and r[2] == 1 and r[3] == 1:      # one cell: the live answer shape, roofed only inside a made room
+            inside = any(inrect(r[0], r[1], q) for q in self.rooms)
+            return {"success": True, "cellsRead": 1, "roofs": ["RoofConstructed" if inside else "None"]}
         return {"success": True, "roofedCells": 49}
 
     def t_pawn_health(self, pawn=None, action=None, hediff=None, **k):
@@ -862,6 +979,12 @@ class Fake(object):
         if comp == "Rottable" and t:
             return {"success": True, "values": {"RotProgress": str(
                 0 if "arm_never_rots" in self.broken else self.ticks - t.get("born", 0))}}
+        if comp == "RM_CompHoard" and t and t["def"] == V.HOARD:
+            held = t.get("held") or []
+            return {"success": True, "missing": [], "values": {
+                "held": "Count=%d [%s]" % (len(held), ", ".join(h["id"] for h in held)),
+                "firstSeen": "Count=%d [%s]" % (len(t.get("seen") or {}), ", ".join(
+                    "%s:%d" % kv for kv in sorted((t.get("seen") or {}).items()))), "HeldCount": str(len(held))}}
         if comp == "SandSwim" and thing in self.pawns:
             return {"success": True, "values": {"Submerged": "True"}}
         return {"success": False, "message": "no comp %s on %s" % (comp, thing)}
@@ -892,9 +1015,12 @@ class Fake(object):
         limit = float(self.settings.get("rippleMaxBodySize", 0.6)) * (2 if self.weather == "RM_Gale"
                                                                        and "ripple_gale_no_extend" not in b else 1)
         for p in self.pawns.values():
+            if p.get("via") and p.get("goto") and self.ticks >= p["via_at"]:
+                p["x"], p["z"] = p["via"]
+                p["in_hollow"] = p.get("via_def") == V.HOLLOW
             if p.get("goto") and self.ticks >= p["moving_until"]:
                 p["x"], p["z"] = p["goto"]
-                p["goto"] = None
+                p["goto"], p["via"], p["in_hollow"] = None, None, False
             wild = p["faction"] == "none" and p["kind"] != "Colonist" and p["kind"] != "RM_Surrik" and (
                 not p.get("mental") or "ripple_hides_mental" in b)
             cover = (p["x"], p["z"]) in fuzz or "ripple_bare_hides" in b
@@ -1092,6 +1218,10 @@ class Fake(object):
 
     def t_load_game_ready(self, saveName=None, **k):
         ticks, pawns, things = copy.deepcopy(self.saves[saveName])
+        if "hoard_forgets_on_reload" in self.broken:
+            for t in things.values():
+                if t["def"] == V.HOARD:
+                    t["held"], t["seen"] = [], {}
         if "cane_credit_lost_on_reload" in self.broken:
             for t in things.values():
                 if t.get("burning") == "RM_DeadVenomvine":
@@ -1138,10 +1268,14 @@ class Fake(object):
         if jobDef == "Goto":        # the scenes: an ordered walk arrives 300 ticks later and is "moving" until then
             p = self.pawns[pawnId]
             p["goto"], p["moving_until"] = (targetAX, targetAZ), self.ticks + 300
+            self.through_plants(p, targetAX, targetAZ)
             if p["kind"] == "RM_Dustflutter":
                 p["job"] = "Goto"
             if "trip_never_returns" in self.broken and p["kind"] == "Colonist" and targetAX < p["x"]:
                 p["goto"] = None
+            return {"success": True, "accepted": True}
+        if jobDef == "FixBrokenDownBuilding":
+            self.jobs[pawnId] = {"kind": "repair", "a": targetAId, "b": targetBId, "left": 600}
             return {"success": True, "accepted": True}
         if jobDef in ("Ignite", "Wear", "RemoveApparel"):
             return self.instant_job(pawnId, jobDef, targetAId)
@@ -1237,10 +1371,12 @@ class Fake(object):
         lines, label = [], t["def"]
         d = t["def"]
         if d == "WindTurbine":
-            lines = ["Broken down"] if t.get("broken") else [
-                "Power output: %d W" % (round(1000 * (1.3 if self.weather == "RM_Gale" and
-                                                      self.on("galeTurbineSurgeEnabled")
-                                                      and "no_surge" not in self.broken else 1.0)))]
+            f = 1.22 if "surge_wrong_factor" in self.broken else float(self.settings["galeTurbineSurgeFactor"])
+            surge = (self.on("galeTurbineSurgeEnabled") and "no_surge" not in self.broken
+                     and (self.weather == "RM_Gale" or "surge_in_clear" in self.broken))
+            lines = ["Power output: %d W" % round(1000 * (f if surge else 1.0))]
+            if t.get("broken"):
+                lines = ["Broken down"] + (lines if "broken_still_surges" in self.broken else [])
         elif d == "RM_TwitcherVenomvine":
             if self.on("twitcherLashEnabled") or "lash_ignores_toggle" in self.broken:
                 lines = ["Poised to strike." if self.ticks >= t.get("ready", 0)
@@ -1679,6 +1815,42 @@ BREAKS.update({
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form
     BREAKS["%s_ignores_toggle" % _form] = "forms.%s_toggle_off" % _form
+# the five live scenes (sc_gale_exposure, sc_working_wind, sc_raid_weight, sc_hollow, sc_hoard): a defect the older
+# chains already catch also turns the scene row that watches the same behaviour red
+BREAKS.update({
+    "no_deafen": ("gale.gale_deafens_outdoors", "scene_gale_exposure.exposure_unroofed_organic_deafened"),
+    "deafen_ignores_roof": ("gale.gale_spares_roofed", "scene_gale_exposure.exposure_roof_spares"),
+    "no_surge": ("gale.gale_turbine_surge", "scene_working_wind.wind_gale_ratio_matches_factor"),
+    "no_breakdown": ("gale.gale_turbine_breakdown", "scene_working_wind.wind_breakdown_seeded"),
+    "hoard_ignores_toggle": ("forms.hoard_toggle_off", "scene_hoard.hoard_toggle_off"),
+    "deafen_ignores_mech": "scene_gale_exposure.exposure_mech_spares",
+    "deafen_cuts_nothing": "scene_gale_exposure.exposure_def_cuts_hearing_talking",
+    "deafen_live_untouched": "scene_gale_exposure.exposure_live_capacity_reduced",
+    "deafen_ignores_toggle": ("gale.gale_deafen_toggle_off", "scene_gale_exposure.exposure_toggle_off"),
+    "deafen_never_recovers": "scene_gale_exposure.exposure_recovers_after_gale",
+    "surge_in_clear": "scene_working_wind.wind_ordinary_no_surge",
+    "surge_wrong_factor": "scene_working_wind.wind_gale_ratio_matches_factor",
+    "breaks_unowned": "scene_working_wind.wind_unowned_never_rolled",
+    "broken_still_surges": "scene_working_wind.wind_broken_gets_no_surge",
+    "battery_never_charges": "scene_working_wind.wind_battery_stores",
+    "repair_never_fixes": "scene_working_wind.wind_repair_by_job",
+    "raid_weight_ignores_gale": "scene_raid_weight.raid_weight_gale_only",
+    "raid_weight_ignores_toggle": "scene_raid_weight.raid_weight_gale_only",
+    "raid_weights_all": "scene_raid_weight.raid_nonraid_unchanged",
+    "raid_hook_schedules": "scene_raid_weight.raid_nothing_scheduled",
+    "raid_rule_unarmed": ("patches.rules_armed", "scene_raid_weight.raid_binding_armed"),
+    "breaks_at_mtb_zero": "scene_working_wind.wind_mtb_zero_never_breaks",
+    "no_crawl_job": "scene_hollow.hollow_crawl_job",
+    "hollow_threads": "scene_hollow.hollow_free_pass_band",
+    "hollow_venoms": "scene_hollow.hollow_no_contact_venom",
+    "huge_passes_hollow": "scene_hollow.hollow_huge_blocked",
+    "thicket_no_venom": "scene_hollow.thicket_keeps_hazards",
+    "hoard_never_takes": "scene_hoard.hoard_stores_eligible",
+    "hoard_takes_far": "scene_hoard.hoard_excludes_goods_and_bystander",
+    "hoard_takes_corpse": "scene_hoard.hoard_corpse_stays_gear_kept",
+    "hoard_forgets_on_reload": "scene_hoard.hoard_survives_reload",
+    "hoard_drops_twice": "scene_hoard.hoard_returns_once_on_fall",
+})
 
 
 def main():
