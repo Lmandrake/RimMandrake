@@ -42,7 +42,8 @@
    "brief": [
     "src/RimMandrake/rimflow/coverage_judge.py",
     "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
-    "src/RimMandrake/rimflow/roles/designer_lock.md"
+    "src/RimMandrake/rimflow/roles/designer_lock.md",
+    "src/RimMandrake/rimflow/bar_rule.py"
    ],
    "cases": {
     "bad": [
@@ -50,6 +51,7 @@
     ],
     "good": [
      "planted (coverage_calibration.py): good_lanterns, every capability and leaf with a contract scene, his flagship bound; it also plants the Pyrelands round 6 noise kinds g17 and g18 (a gap asking for documentation or another showcase that names no wrong behaviour)",
+     "planted (coverage_calibration.py): good_lanterns_tuning, good_lanterns plus a burn rate, a MarketValue and three graphic variants no scene reads (the Contagion pedantry kinds, owner 2026-11-16): a judge that blocks on them is not calibrated",
      "design/concepts/FlowWorks: signed by the retired Arbiter (tree.json coverage.signed_by Arbiter, 2026-11-05) at tree 572198fed9, not by this brief; a legacy signature, not a calibration case of it",
      "design/concepts/ExplosiveKnockback judge9 gaps 3 (racks) and 4 (flagship shelf): owner 2026-11-12 ruled them no blockers (conductor log 2026-11-13T00:05:11Z), so a sound brief does not refuse on them"
     ]
@@ -103,6 +105,10 @@
     {
      "expect": "pass",
      "id": "good_lanterns"
+    },
+    {
+     "expect": "pass",
+     "id": "good_lanterns_tuning"
     },
     {
      "expect": "refuse",

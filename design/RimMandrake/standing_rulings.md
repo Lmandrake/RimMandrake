@@ -596,7 +596,44 @@ destroy my account uselessly."*
   refusing most of what it sees, raises `REFUSAL_NOTHING_COULD_EVER_PASS` to the Conductor. The Designer's coverage
   judge stops at its third not_covered, parks on a second refusal while he is away, and parks at twice the item's cap.
 
+- **A judge does not grade its own criterion** (owner 2026-11-16, below): the Contagion judge marked all 25 of its own
+  criteria `sound`. The coverage judge's `criterion_verdict` is kept as its opinion (`judge_criterion_verdict`); the
+  binding one comes from a second reader that did not judge (`coverage_judge.second_read`, one fresh Opus call), and
+  with no second read the refusal is stored and shown only. A judge confessing its own criterion flawed still reaches
+  the neutral fixer.
 Spec: `design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md`. Item: `RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS`.
+
+## A passing bar is an experience, never a tuning number — owner, 2026-11-16
+
+*"Official ruling: Everything about the Coalescence is next version. Everything about the Grown Limbs is next version.
+The mod passing bars should not specify flora and fauna yield rates! That would mean every time we renormalize every
+mod must repass its bars... drop that! How do we get the Judges to not demand pendantic stuff like this? Who cares the
+halfmade tree has more than one graphic? There's variants all the time. Defer Helix trade to next version."*
+(OWNER.jsonl note on `RIMMANDRAKE_APPLY_CONTAGION_JUDGE_FIXES_EIGHT_REFUSALS_HALTED`, 2026-11-16T15:14:15Z, about 7:14 AM
+PST, after reading the Contagion coverage judge's 25 refusals; "pendantic" is his phone's "pedantic".)
+
+- **The rule, for every mod:** a passing bar states an experience a player would notice. It never pins a yield rate, a
+  stat value or any other tuning number a renormalization pass changes, never an asset-variant count, and never "every
+  field of every row" of a def.
+- **The test, one sentence a judge applies:** would this bar have to be re-passed after we renormalize numbers or add an
+  art variant? Then it is not a bar.
+- **Named non-gaps** (the Contagion look, `design/concepts/Contagion/coverage_verdict.json` g16 and g18): "the selftest
+  covers every rostered plant's ingestible and yield fields"; "the Halfmade Tree resolves more than one graphic
+  variant"; "one row per inventory special, each with its field and expected value".
+- **Enforced in code:** `src/RimMandrake/rimflow/bar_rule.py` (the rule text and the gate). The coverage judge's prompt
+  carries it, every gap names its `bar_kind`, and only an `experience` gap blocks; a gap that pins a tuning number, a
+  variant count or a declared field (by the judge's word, the second reader's or the gate's detector) is advisory:
+  stored and shown, blocking nothing. A new gap at a later look on material that did not change is the earlier look's
+  miss: advisory too (folds in `DESIGNER_GAPJUDGE_FIX_ONE_BATCH_PER_ROUND`). The Designer's leaf rule:
+  `src/RimMandrake/rimflow/roles/designer_write.md`. Regression set: `selftest_bar_rule_tuning_numbers.py`.
+- **What it does not change:** behaviour is still tested (a comparison a player sees, "gunfire leaves less mulch than a
+  burn", is an experience); a mod's selftest may still read its declared numbers as a regression check, which is not a
+  passing bar; north-star bars that already pin a number are his to change (census:
+  `design/RimMandrake/bars_pinning_tuning_numbers_census_2026-11-16.md`, brought to him by the Conductor).
+- **The rest of the same ruling is Contagion's scope:** the Coalescence, the Grown Limbs and the Helix trade move to
+  Contagion's next Design Version (the re-scope of `design/concepts/Contagion/`).
+
+Item: `RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS`.
 
 ## Broken tests are expected; an inability to measure is reported up, never read as broken work — owner, 2026-11-03
 

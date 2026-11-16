@@ -151,6 +151,10 @@ def main():
             check("fixed on the re-ask -> the not_covered stands", rec["verdict"] == "not_covered"
                   and rec["contract"]["ok"], rec.get("contract"))
 
+            # A fresh concept: on the one above, a gap on new ids at a later look over unchanged material is `late` and
+            # advisory (bar_rule.blocks, RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS), so it never reaches
+            # the record check these cases test.
+            d = concept(os.path.join(root, "rows"))
             # RIMMANDRAKE_SPEND_PYRELANDS_LOOK_ON_MALFORMED_REFUSAL: one broken record must not void a whole look.
             # The re-ask names only the broken records (the gaps schema), with the checker's complaint and the text
             # the record cites; the well-formed rows stand.

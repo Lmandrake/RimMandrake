@@ -132,6 +132,11 @@ def one_pass(root, calls, runner_of, signed):
     rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
     check("a failed part its gap already names is not listed twice", bare(rec["gaps"]) == [gap], rec)
     failing[1] = row("inv_b", False, "sc_b")
+    # a first look: after the refusing looks above, a new gap on unchanged material is late and advisory (bar_rule.blocks)
+    os.remove(os.path.join(d, CJ.VERDICT_FILE))
+    concept(os.path.join(root, "onepass"))   # a fresh stage.json: no earlier rounds or judge charges
+    with open(os.path.join(d, "tree.json"), "w") as f:
+        json.dump({"kind": "mod", "leaves": [{"id": "leaf_c"}, {"id": "inv_a"}]}, f)
     rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
     check("a failed part no gap names joins the list",
           len(rec["gaps"]) == 2 and rec["gaps"][1]["ids"] == ["inv_b"] and "sc_b" in rec["gaps"][1]["where"], rec)

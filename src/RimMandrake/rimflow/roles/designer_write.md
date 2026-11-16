@@ -38,6 +38,14 @@ signature, and refuses Setter fields (`oracle`, `tier`, `guard`, `budget`). Then
 - `false_pass`: a named wrong world, the worker's cheapest way to fake this leaf.
 - `red`: the broken version of the mod this leaf catches, in a plain sentence (hose: "water stops after the first cell").
   If you cannot name one, the leaf is decoration: cut it.
+- 🔴 **A leaf is an experience a player would notice, never a tuning number** (owner, 2026-11-16: *"The mod passing bars
+  should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its
+  bars... drop that!"*). No leaf, oracle, scene expect or `would_pass` pins a yield rate, a stat value, a MarketValue,
+  a speed, a size or any number a renormalization pass changes, nor an asset-variant count (*"Who cares the halfmade
+  tree has more than one graphic? There's variants all the time."*), nor "every field of every row" of a def. The test:
+  would this bar have to be re-passed after we renormalize numbers or add an art variant? Then it is not a bar. Say the
+  experience instead ("nothing in this biome feeds a forager", "the Doublemaw outruns a colonist"); a def's declared
+  numbers are the mod's selftest's business, and a judge's gap about one is advisory only (`bar_rule.py`).
 - `oracle_proposed` and `tier_proposed`: your offer. The Setter binds. Live needs `tier_reason`. Skills
   `rimworld-debug-testing` and `live-debugging-proof-harness` say what a quicktest, a bridge read or a live proof can show.
 - One `walk` leaf per mod: a reload from a save made mid-way, a repeat of the core action, a second order of main actions.

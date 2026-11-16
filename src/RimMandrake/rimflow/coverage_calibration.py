@@ -11,6 +11,9 @@ in a temp tree (the real role files copied in), puts each to the coverage judge 
                           (g17, g18: a gap that asks for documentation or another showcase and names no wrong behaviour
                           a check would accept): the sheet does not restate each scene's thresholds and there is one
                           showcase only. A judge that refuses on those is not calibrated.
+  good_lanterns_tuning    good_lanterns plus the pedantry the Contagion judge refused on (owner 2026-11-16, bar_rule.py):
+                          an inventory row that pins a burn rate, a MarketValue and three graphic variants no scene
+                          reads -> must pass: a judge that blocks on a tuning number or a variant count is not calibrated
   bad_leaf_no_scene       the oil leaf and its capability have no scene -> must be refused
   bad_scene_no_control    the light scene has no control and no asserted start -> must be refused
 
@@ -122,7 +125,21 @@ def _no_control(c):
     sc["start"] = ["quicktest map", "one lantern hung at the room's centre"]
 
 
-CASES = (("good_lanterns", "pass", None), ("bad_leaf_no_scene", "refuse", _no_oil_scene),
+def _tuning_bait(c):
+    """The Contagion pedantry kinds (RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS): numbers and a variant count
+    that a renormalization or a new art variant changes, read by no scene. None of them is a bar."""
+    c["record.json"]["inventory"].append({
+        "id": "inv_lantern_def", "what": "The lantern def: fuel burn rate 1.0 per day, MarketValue 12, Mass 1.5, and "
+        "three graphic variants (Lantern_a, Lantern_b, Lantern_c, Graphic_Random)", "impl": "present",
+        "impl_evidence": ["src/RimMandrake/Lanterns/Defs/ThingDefs/Lantern.xml"], "proof": "current",
+        "scope": "approved", "source": ["OWNER:1"]})
+    c["scenes.json"]["coverage_rest"].append({
+        "capability": "inv_lantern_def", "by": ["sc_light"],
+        "why": "the lantern is drawn and lit in sc_light; its numbers and variants are tuning, not an experience"})
+
+
+CASES = (("good_lanterns", "pass", None), ("good_lanterns_tuning", "pass", _tuning_bait),
+         ("bad_leaf_no_scene", "refuse", _no_oil_scene),
          ("bad_scene_no_control", "refuse", _no_control))
 
 
@@ -168,8 +185,11 @@ def judge(root, d):
         detail["error"] = "no well-formed verdict (exit %s)" % p.returncode
         return None, detail
     gaps = list(so.get("gaps") or []) + CJ.failed_part_gaps(so.get("checklist") or [], so.get("gaps") or [])
-    detail.update(verdict=so["verdict"], gaps=[str(g.get("what"))[:200] for g in gaps if isinstance(g, dict)][:8])
-    return ("pass" if so["verdict"] == "covered" and not gaps else "refuse"), detail
+    # the gate run() applies: only a gap the bar rule lets block refuses (bar_rule.blocks)
+    gaps, adv = CJ.BR.split(gaps)
+    detail.update(verdict=so["verdict"], gaps=[str(g.get("what"))[:200] for g in gaps if isinstance(g, dict)][:8],
+                  advisory=[str(g.get("what"))[:200] for g in adv][:8])
+    return ("pass" if not gaps and (so["verdict"] == "covered" or adv) else "refuse"), detail
 
 
 def run():

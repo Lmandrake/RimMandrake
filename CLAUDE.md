@@ -256,6 +256,10 @@ when the fix is unknown, outside its tools, or would change a north-star bar, wi
 workaround without the permanent fix is not allowed. A mod's gaps still go through the stages. Full text:
 `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
+## 🔴 A passing bar is an experience, never a tuning number — owner, 2026-11-16
+
+*"The mod passing bars should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its bars... drop that!"* No bar pins a yield rate, a stat value, any tuning number or an asset-variant count. The test: would this bar have to be re-passed after we renormalize numbers or add an art variant? Then it is not a bar. Gate: `src/RimMandrake/rimflow/bar_rule.py`; full text: `standing_rulings.md` §A passing bar is an experience.
+
 ## 🔴 Nothing reaches the owner unread — owner, 2026-10-22
 
 User-level rule. Here: a walkthrough means a zoomed capture of every station and connection, stared at; a naive judge is a fresh Opus that did not make it (`gpt_consult.py` for a big sheet). Sheet tools refuse without `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`). Full text: `standing_rulings.md` §Nothing reaches the owner unread.

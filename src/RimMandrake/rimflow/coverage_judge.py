@@ -23,6 +23,15 @@ missing row is re-asked once in the same session and still missing is kept in `u
 never signs); a failed part no gap names becomes a gap. A re-judge reads the previous verdict, so a passed row whose scene
 did not change reopens only for a defect it can quote.
 
+A passing bar is an experience (RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS, owner 2026-11-16; bar_rule.py):
+every gap carries a `bar_kind`, and only an `experience` gap blocks. A gap that pins a tuning number, an asset-variant
+count or a def's declared field (its own word, or the bar_rule detector's on its demand), and a `late` gap (new at a later
+look on material that did not change: the earlier look's miss), is moved to `advisory_gaps`: stored and shown, blocking
+nothing; a look left with no blocking gap is `covered`. The judge does not grade its own criterion: its
+`criterion_verdict` is kept as `judge_criterion_verdict`, and the binding one comes from a second reader that did not
+judge (one fresh Opus call over the blocking records, `second_read`; `criterion_by` says which). With no second read the
+refusal is stored and shown only, and the Designer is not sent back.
+
   release <dir> --why TEXT     a concept stopped by the loop limit gets one more judge look; a look that does not cover
                                stops it again
 
@@ -58,12 +67,15 @@ sys.path.insert(0, HERE)
 import concept_tree as CT  # noqa: E402
 import designer_stage as DS  # noqa: E402
 import refusal_contract as RC  # noqa: E402
+import bar_rule as BR  # noqa: E402
 
 CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
 VERDICT_FILE = "coverage_verdict.json"
 TIMEOUT_S = 1500        # the judge's own wall bound; the Designer schedule's pre_launch_max_s holds it plus slack
 MODEL = "opus"
+READER_BUDGET_USD = 2   # the second reader of the refusals' criteria (second_read)
+READER_TIMEOUT_S = 600
 BUDGET_USD = 8          # hard spend stop per judge run (claude --max-budget-usd; owner 2026-11-12: "Don't let any burn go to 90M this time ok?")
 REASK_MIN_S = 120       # less judge time than this left: no re-ask, the missing rows go on file as unchecked
 ROW_REASK_MAX = 2       # re-asks of only the broken refusal records; one still broken is kept on file as malformed
@@ -105,9 +117,10 @@ RECORD_TEXT = (
     "is the concrete result that would pass, checkable by a script or a fresh judge (not the clause restated, never "
     "'insufficient' or 'needs more work'); `smallest_fix` is the smallest change that reaches it (`what` names the "
     "files, scenes or leaves; `attainable` yes/no; `cost` edit, rerun, new instrument or owner); `criterion_verdict` "
-    "judges the criterion itself: `sound`, `flawed` (wrong or ambiguous) or `unattainable` (nothing could ever pass "
-    "it), with `criterion_why`, a sentence, whatever the verdict. A flawed or unattainable criterion goes to a neutral "
-    "fixer, not back to the Designer. Each checklist row's `evidence` names the files its parts rest on, so every file "
+    "is your opinion of the criterion itself: `sound`, `flawed` (wrong or ambiguous) or `unattainable` (nothing could "
+    "ever pass it), with `criterion_why`, a sentence, whatever the verdict; it is kept as your opinion and binds "
+    "nothing: a second reader who did not judge grades every criterion you refuse on, and a flawed or unattainable "
+    "one goes to a neutral fixer, not back to the Designer. `bar_kind` says what the gap is about (bar rule above). Each checklist row's `evidence` names the files its parts rest on, so every file "
     "you were given is cited by some row or gap. A refusal without these is itself refused and re-asked (only the "
     "broken records, at most twice); one still broken is kept on file as malformed and counts for nothing.")
 SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict", "checklist", "gaps", "reasons"],
@@ -125,8 +138,9 @@ SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict
                                                                "ok": {"type": "boolean"}}}}}}},
                          "gaps": {"type": "array", "items": {"type": "object", "additionalProperties": False,
                                                              "required": ["what", "where", "return_to", "ids",
-                                                                          "new_since"] + list(RECORD_FIELDS),
+                                                                          "new_since", "bar_kind"] + list(RECORD_FIELDS),
                                                              "properties": dict(RECORD_PROPS, **{
+                                                                 "bar_kind": {"enum": list(BR.BAR_KINDS)},
                                                                  "what": {"type": "string"},
                                                                  "where": {"type": "string"},
                                                                  "return_to": {"enum": [2, 3]},
@@ -356,9 +370,9 @@ def delta_prompt(d, repo, dp, round_no):
     body += ["", "## Gaps still open, carried on file (do not repeat them)"]
     body += ["- %s: %s" % (g.get("gid"), " ".join(str(g.get("what") or "").split())) for g in dp["carried"]] or ["(none)"]
     body += ["", "Write `checklist` with one row for each of these ids, none skipped: %s. A gap on anything not shown "
-             "above counts only tagged `late` with `late_why` saying why the earlier pass could not have seen it; "
-             "otherwise it is dropped. Answer `covered` only when every claimed gap is fixed and no change opened one."
-             % (", ".join(dp["ids"]) or "(none)")]
+             "above is the earlier pass's miss: tagged `late` with `late_why` it is stored as advisory and blocks "
+             "nothing; otherwise it is dropped. Answer `covered` only when every claimed gap is fixed and no change "
+             "opened one.\n\nThe bar rule: %s" % (", ".join(dp["ids"]) or "(none)", BR.RULE_TEXT)]
     return "\n".join(body) + RECORD_TEXT
 
 
@@ -573,6 +587,146 @@ def tag_gaps(gaps, earlier):
     return late
 
 
+def changed_rows(prior, now_hashes):
+    """-> (the checklist ids whose own entry changed since the prior verdict, whether anything changed at all), or
+    (None, None) when the prior verdict kept no hashes."""
+    old = (prior or {}).get("hashes")
+    if not isinstance(old, dict):
+        return None, None
+    keys = {k for k in set(old) | set(now_hashes) if old.get(k) != now_hashes.get(k)}
+    return {k.partition(":")[2] for k in keys if k.partition(":")[0] in ROW_KINDS}, bool(keys)
+
+
+def retag_against_prior(gaps, prior, now_hashes):
+    """A full re-judge's tags checked against the prior verdict's entry hashes: a `late` gap on a row whose own entry
+    changed is `changed` (new material, not a miss); a `changed` or `regression` gap when nothing at all changed is
+    `late` (the judge named a change there is none of)."""
+    rows, anything = changed_rows(prior, now_hashes)
+    if rows is None:
+        return
+    for g in gaps:
+        ns, ids = g.get("new_since"), set(g.get("ids") or [])
+        if ns == "late" and ids & rows:
+            g.update(new_since="changed", since=g.get("since") or "entries %s changed since %s" % (
+                ", ".join(sorted(ids & rows)), prior.get("judge")))
+        elif ns in ("changed", "regression") and not anything:
+            g.setdefault("judge_said", ns)
+            g["new_since"] = "late"
+
+
+def last_refuser(st, d):
+    """The last earlier judge whose look was a well-formed not_covered (it had to list every gap), or None."""
+    rs = [r for r in rounds(st, d) if r.get("verdict") == "not_covered"]
+    return rs[-1].get("judge") if rs else None
+
+
+def apply_bar_rule(rec):
+    """Move every gap the bar rule does not let block (bar_rule.blocks) into rec["advisory_gaps"]; a not_covered look
+    left with no blocking gap is covered (its advisory gaps stored and shown)."""
+    keep, adv = BR.split(rec.get("gaps") or [])
+    if not adv:
+        return rec
+    rec["gaps"] = keep
+    rec["advisory_gaps"] = list(rec.get("advisory_gaps") or []) + adv
+    if rec.get("verdict") == "not_covered" and not keep:
+        rec["verdict"] = "covered"
+        rec["covered_by_bar_rule"] = ("every gap is advisory under the bar rule (%d): a passing bar is an experience, "
+                                      "never a tuning number, asset count, declared field or a later look's miss"
+                                      % len(adv))
+    return rec
+
+
+READER_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["grades"],
+                 "properties": {"grades": {"type": "array", "items": {
+                     "type": "object", "additionalProperties": False,
+                     "required": ["criterion_verdict", "criterion_why", "bar_kind"],
+                     "properties": {"criterion_verdict": {"enum": list(RC.VERDICTS)},
+                                    "criterion_why": {"type": "string"},
+                                    "bar_kind": {"enum": list(BR.BAR_KINDS)}}}}}}
+PROGRAM_WHY = ("the program reader finds no tuning number, asset count or declared field in this demand; the neutral "
+               "fixer reads the clause itself at its third refusal")
+
+
+def reader_items(rec, crit):
+    """-> (the blocking gaps a second reader grades, what it is shown for each: the criterion text and the demand,
+    never the judge's own grade)."""
+    gaps = [g for g in rec.get("gaps") or [] if isinstance(g, dict) and not g.get("carried") and not g.get("malformed")]
+    items = []
+    for g in gaps:
+        ids = list(g.get("ids") or []) or [REST_CLAUSE]
+        items.append({"clause": ids, "criterion": [str(crit.get(i) or "")[:1500] for i in ids[:3]],
+                      "what": g.get("what"), "where": g.get("where"), "would_pass": g.get("would_pass"),
+                      "smallest_fix": g.get("smallest_fix")})
+    return gaps, items
+
+
+def reader_prompt(items):
+    return ("You are a second reader of a RimMandrake coverage judge's refusals. You did not write the concept and you "
+            "did not judge it. For each refusal below, in order, grade the CRITERION it applies, not whether the concept "
+            "passes: `sound` (a fair bar a correct mod could pass, about something a player would notice), `flawed` "
+            "(wrong, ambiguous, or not a bar under the rule below) or `unattainable` (nothing could ever pass it); give "
+            "`criterion_why`, one sentence, and the refusal's `bar_kind`. Read no file and edit nothing.\n\nThe bar "
+            "rule: %s\n\nThe refusals (JSON, in order):\n%s\n\nAnswer `grades`, exactly one per refusal, in order."
+            % (BR.RULE_TEXT, json.dumps(items, ensure_ascii=False, indent=1)))
+
+
+def llm_reader(d, repo, unit, charge=True, runner=None):
+    """The default second reader: one fresh Opus call that did not judge. -> reader(items) -> [grade] or None."""
+    def reader(items):
+        argv = [CLAUDE, "-p", reader_prompt(items), "--model", MODEL, "--name", "COVERAGE SECOND READER %s" % unit,
+                "--output-format", "json", "--json-schema", json.dumps(READER_SCHEMA, separators=(",", ":")),
+                "--dangerously-skip-permissions", "--max-budget-usd", "%g" % READER_BUDGET_USD]
+        try:
+            code, out = (runner or default_runner)(argv, repo, dict(os.environ, RM_ROLE_UNIT=unit), READER_TIMEOUT_S)
+            res = json.loads(out or "null")
+        except (OSError, subprocess.SubprocessError, ValueError):
+            return None
+        if not isinstance(res, dict):
+            return None
+        if charge:
+            try:
+                import role_launch as RL
+                tok = RL.run_tokens(res)
+                DS.charge(d, tok or 0, "review" if tok is not None else "unmeasured", unit + "-reader")
+            except Exception:  # noqa: BLE001 - a charge we cannot measure never fails the read
+                pass
+        grades = (res.get("structured_output") or {}).get("grades") if code == 0 else None
+        return grades if isinstance(grades, list) and len(grades) == len(items) else None
+    return reader
+
+
+def second_read(rec, crit, reader):
+    """The binding criterion verdicts, from a reader that did not judge (RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_
+    NUMBERS (c)). The judge's own grade is kept as judge_criterion_verdict/why. reader None = the program reader (the
+    bar rule only; selftests and runs with a stubbed judge). -> None, or why no second read was had (the refusal then
+    binds nothing)."""
+    gaps, items = reader_items(rec, crit)
+    if not gaps:
+        return None
+    for g in gaps:
+        if "judge_criterion_verdict" not in g:
+            g["judge_criterion_verdict"] = g.get("criterion_verdict")
+            g["judge_criterion_why"] = g.get("criterion_why")
+    if reader is None:
+        for g in gaps:
+            if g.get("judge_criterion_verdict") not in ("flawed", "unattainable"):   # a confession stands
+                g.update(criterion_verdict="sound", criterion_why=PROGRAM_WHY)
+            g["criterion_by"] = "program"
+        return None
+    grades = reader(items)
+    if not grades:
+        for g in gaps:
+            g["criterion_by"] = "judge (no second read)"
+        return ("no second reader graded the refusals' criteria: this refusal is stored and shown, the Designer is "
+                "not sent back")
+    for g, gr in zip(gaps, grades):
+        g.update(criterion_verdict=gr.get("criterion_verdict"), criterion_why=gr.get("criterion_why"),
+                 criterion_by="second_reader")
+        if gr.get("bar_kind") in BR.ADVISORY_KINDS:
+            g["bar_kind"] = gr["bar_kind"]   # the second reader's word on the kind also counts (bar_rule.blocks)
+    return None
+
+
 def contract_verdict(d, rec, item):
     """-> (verdict, given): a coverage verdict in the refusal contract's form (refusal_contract.py). One clause per
     checklist id (its text is the inventory row or tree leaf it names) plus `rest` for a gap on no single row; every row
@@ -596,6 +750,7 @@ def contract_verdict(d, rec, item):
                 refused[c] = {"clause": c, "evidence": list(g.get("evidence") or []), "observed": g.get("observed"),
                               "would_pass": g.get("would_pass"), "smallest_fix": g.get("smallest_fix"),
                               "criterion_verdict": g.get("criterion_verdict"), "criterion_why": g.get("criterion_why"),
+                              "criterion_by": g.get("criterion_by") or "judge",
                               "new_since": ns, "gap": g.get("gid")}
                 continue
             r["evidence"] += [e for e in g.get("evidence") or [] if e not in r["evidence"]]
@@ -772,9 +927,10 @@ def prompt(d, repo, ids=(), prior=False, round_no=1):
              "artifact changed since that verdict; `since` names the file and what changed), `regression` (that verdict "
              "passed it and a change broke it; `since` names the change), or `late` (it was there then and that judge "
              "missed it: say so). A gap on ids no earlier verdict named, with no change you can name, is recorded as "
-             "late: a miss of the earlier pass. " % (rel, VERDICT_FILE)) if prior else (
+             "late: a miss of the earlier pass, stored as advisory: it blocks nothing. " % (rel, VERDICT_FILE)) if prior else (
         "This is the first verdict on this concept: tag every gap `new_since` `first`, and leave nothing for later: a gap "
-        "a later judge finds that was already there is recorded as this pass's miss. ")
+        "a later judge finds that was already there is recorded as this pass's miss and never blocks, so a gap you hold "
+        "back is a gap that is lost. ")
     again += ("This is judge round %d. The third not_covered verdict on a concept stops judging and blocks it for the "
               "Conductor, so the list must be whole now. " % round_no)
     return (
@@ -793,12 +949,12 @@ def prompt(d, repo, ids=(), prior=False, round_no=1):
         "This one pass must list EVERY gap: each round of gaps costs a full rewrite, exam and judge, so a gap held back "
         "for later is the failure this checklist exists to stop. Do not stop at the first few. Before you answer, write "
         "`checklist`, one row for each of these ids and none skipped: %(ids)s. In each row's `parts`, name every separate "
-        "thing that capability or leaf says it ships or tests, reading its text and impl_evidence (a bite on an animal "
-        "roster, a size claim, one effect among several), each with the id of the scene that tests it ('' if none) and "
-        "`ok`. A part waived or out in his words, or an offline leaf the contract exempts, is ok with the reason in "
+        "thing a player would notice that capability or leaf ships or tests (one effect among several, a creature that "
+        "must appear, a control that must fail), each with the id of the scene that tests it ('' if none) and `ok`; a "
+        "number, field or variant its text or impl_evidence lists is not a part (the bar rule below). A part waived or out in his words, or an offline leaf the contract exempts, is ok with the reason in "
         "`what`. Every part not ok must be in a gap, and the gap's `ids` names its rows; a gap about no single row "
-        "(a showcase's claims, the sheet) has empty `ids`. %(again)s" % {"rel": rel, "again": again,
-                                                                         "ids": ", ".join(ids) or "(none)"}
+        "(a showcase's claims, the sheet) has empty `ids`. %(again)s\n\nThe bar rule: %(rule)s" % {
+            "rel": rel, "again": again, "ids": ", ".join(ids) or "(none)", "rule": BR.RULE_TEXT}
         + RECORD_TEXT)
 
 
@@ -871,8 +1027,10 @@ def plan(d, repo=None):
     return "judge", why
 
 
-def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge=True):
-    """-> (verdict record or None, message). Signs only on a well-formed `covered` verdict over unchanged inputs."""
+def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge=True, reader="auto"):
+    """-> (verdict record or None, message). Signs only on a well-formed `covered` verdict over unchanged inputs.
+    `reader` grades the refusals' criteria (second_read): "auto" is the fresh Opus reader when the judge is the real
+    claude (runner is default_runner) and the program reader (None) when a selftest stubs the judge."""
     repo = repo or DS.clone_of(d) or DS.REPO
     try:
         st_l = DS.load_state(d)
@@ -973,7 +1131,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         extra = failed_part_gaps(so["checklist"], so["gaps"])
         rec.update(verdict=so["verdict"], checklist=so["checklist"], gaps=so["gaps"] + extra,
                    reasons=str(so.get("reasons") or ""))
-        for k in ("unchecked", "late", "dropped"):
+        for k in ("unchecked", "late", "dropped", "advisory_gaps", "covered_by_bar_rule"):
             rec.pop(k, None)
         if extra and rec["verdict"] == "covered" and not so["gaps"]:
             rec["verdict"] = "not_covered"  # its own rows failed: the rows outrank the word
@@ -982,8 +1140,19 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         if dp is not None:
             delta_merge(rec, dp)
         late = tag_gaps(rec["gaps"], earlier)
+        if dp is None and prior is not None:
+            retag_against_prior(rec["gaps"], prior, hashes)
+            late = [i for g in rec["gaps"] if g.get("new_since") == "late" for i in g.get("ids") or []]
         if late:
             rec["late"] = late
+        refuser = dp["against"] if dp is not None else last_refuser(st0, d)
+        for g in rec["gaps"]:
+            if g.get("new_since") == "late" and refuser:
+                g["miss_of"] = refuser   # an earlier look refused and was told to list every gap: this is its miss
+        if dp is not None and rec.get("dropped"):
+            for g in rec["dropped"]:   # a dropped gap is shown too, never counted
+                g.setdefault("advisory_why", g.get("dropped"))
+        apply_bar_rule(rec)
 
     if so:
         take(so, missing)
@@ -1028,6 +1197,10 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             late = tag_gaps(new, earlier)
             if late:
                 rec["late"] = sorted(set(rec.get("late") or []) | set(late))
+            apply_bar_rule(rec)
+            if rec.get("verdict") != "not_covered":
+                errs = []
+                break
             cv, given, errs = contract_errors(d, rec, st0.get("item"))
         if errs and rec.get("verdict") == "not_covered":
             rows, glob = row_errors(errs, cv)
@@ -1042,14 +1215,30 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
                 else:   # nothing well formed is left to stand: the whole look is malformed, as before
                     for g in bad:
                         g.pop("malformed", None)
-        if rec.get("verdict") == "not_covered":
+        unread = None
+        if rec.get("verdict") == "not_covered" and not errs:
+            # the judge does not grade its own criterion: a second reader does, and may file a gap's kind as advisory
+            if reader == "auto":
+                reader = llm_reader(d, repo, unit, charge) if runner is default_runner else None
+            unread = second_read(rec, cv["given"]["criteria"] if "given" in cv else given["criteria"], reader)
+            apply_bar_rule(rec)
+            if rec.get("verdict") == "not_covered":
+                cv, given, errs = contract_errors(d, rec, st0.get("item"))
+        if rec.get("verdict") == "not_covered" and unread and not errs:
+            rec["contract"] = {"ok": True, "submitted": False, "why": unread}
+            rec["advisory"] = unread
+        elif rec.get("verdict") == "not_covered":
             rec["contract"] = {k: v for k, v in RC.submit(cv, given).items() if k != "errors"}
             if errs:
                 rec.update(verdict="malformed", malformed=errs)
             elif rec["contract"].get("advisory"):   # T6: only a CALIBRATED brief's refusal sends the Designer back
                 rec["advisory"] = ("the coverage brief is %s: this refusal is stored and shown, the Designer is not "
                                    "sent back" % rec["contract"].get("calibration"))
-            suspect = [r["clause"] for r in cv["refusals"] if r.get("criterion_verdict") in ("flawed", "unattainable")]
+            # the binding grade is the second reader's; a judge confessing its own criterion flawed is heard too
+            bad_c = {i for g in rec.get("gaps") or [] if g.get("judge_criterion_verdict") in ("flawed", "unattainable")
+                     for i in g.get("ids") or [REST_CLAUSE]}
+            suspect = [r["clause"] for r in cv["refusals"] if r.get("criterion_verdict") in ("flawed", "unattainable")
+                       or r["clause"] in bad_c]
             if suspect and not errs:
                 rec["criteria_suspect"] = suspect
     tree2 = CT.load(d)
