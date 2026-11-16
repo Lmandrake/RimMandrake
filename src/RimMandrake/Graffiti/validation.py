@@ -2579,3 +2579,487 @@ def scene_art_skill(t):
             if signed:
                 raise ExpectationFailed("a Normal-craft mark gave a skill-signed thought: %s" % signed)
             t._current.detail = "Beauty %.2f = %.2f; %s" % (ba, bb, lines)
+
+
+# ------------------------------------- wall loss, lived-in soak, walk (scenes.json: sc_wall_loss, sc_lived_in_soak, sc_walk)
+
+LIVED_IN_SAVE = "RM_GraffitiLivedIn"         # the soak's mid-way keeper, which sc_walk loads (a scene save, never a canonical world save)
+SOAK_START_SAVE = "RM_GraffitiSoakStart"      # the soak's restore point, saved before its first tick
+WALK_RUNTIME_SAVES = ("RM_GraffitiWalkReload", "RM_GraffitiWalkOrders", "RM_GraffitiWalkStripped")   # deleted at the walk's end
+TALLY_DEF = "RM_Graffiti_TallyMarks"
+DAY, WEEK = 60000, 7 * 60000
+SOAK_WEEKS, SOAK_SAMPLE, SOAK_FORCE_EVERY, SOAK_CONTROL_DAYS = 3, 15000, 2500, 3   # a sample each 6 in-game hours; forced paint hourly
+SOAK_MOOD_BAND = 3.0          # tree.json stories_not_tax oracle: "summed mark thoughts per colonist ... about plus or minus 3 on average"
+# "few per week" (tree.json stories_not_tax) has no number of his. The agent's reading, 2026-11-15: two a day at most. Its red is "a message
+# every few hours" (6+ a day); the lived-in walk of RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES measured 1.0-1.4 a day.
+SOAK_FEW_MESSAGES = 14
+COLONY_W, COLONY_H = 44, 30                   # RM_GraffitiStage.W, H (RM_GraffitiStage.cs:16); origin is the map centre less half (:72)
+
+
+def _humans(t):
+    """List rows of the player's living, spawned humans (jawa/list_pawns id, name = the nick the probes print)."""
+    r = t.bridge_call("jawa/list_pawns", limit=500) or {}
+    return [p for p in r.get("pawns") or [] if p.get("isPlayer") and p.get("def") == "Human" and p.get("id")
+            and not p.get("dead") and p.get("spawned", True)]
+
+
+def _walls_at(t, cells):
+    """The cells among `cells` where a Wall stands now (jawa/list_things defName=Wall); an unreadable read fails, never reads as gone."""
+    xs, zs = [c[0] for c in cells], [c[1] for c in cells]
+    r = t.bridge_call("jawa/list_things", defName="Wall", limit=500,
+                      rect="%d,%d,%d,%d" % (min(xs), min(zs), max(xs) - min(xs) + 1, max(zs) - min(zs) + 1))
+    if not t._guard():
+        return set(cells)
+    if not (r or {}).get("success", True) or (r or {}).get("isCompleteList") is False:
+        raise ExpectationFailed("jawa/list_things Wall unreadable or truncated: %r" % (r,))
+    have = {((x.get("position") or {}).get("x", x.get("x")), (x.get("position") or {}).get("z", x.get("z"))) for x in (r or {}).get("things") or []}
+    return {c for c in cells if c in have}
+
+
+@suite.chain("scene_wall_loss")
+def scene_wall_loss(t):
+    """sc_wall_loss (paint_dies_with_wall, inv_wall_loss): three marks painted on one wall run, each on the front face of its own wall cell;
+    one wall is deconstructed by a colonist (a Deconstruct designation and its ordered job), another destroyed by damage (jawa/damage Bomb),
+    and each mark is gone the tick its wall goes (WallLossPatch prefixes Building.DeSpawn: WallLossPatch.cs:14). Every read pairs the wall
+    and its mark between two ticks, so a read with the wall gone and the mark standing, or the mark gone under a standing wall, fails.
+    Control: the untouched neighbour's mark stays (rules out a sweep removing every mark). Restore: the runner destroys the quicktest map."""
+    x, z = t.anchor
+    painter = "GrfWallLoss"
+    cells = {"deconstruct": (x - 4, z), "destroy": (x, z), "neighbour": (x + 4, z)}   # floor cells; each one's wall is the cell north
+    wall = {k: (c[0], c[1] + 1) for k, c in cells.items()}
+    ids = {}
+    with t.component("site_ready_wall_loss"):
+        _site_start(t)
+        _prep_site(t, 30)
+        _wall_run(t, x - 6, z + 1, 13)
+        t.bridge_call("jawa/map_commit")                # FIXTURE write (walls/terrain), never marks
+        _recruit(t, painter, PLAIN, 10)
+        _no_cleaning(t)
+        for k, c in sorted(cells.items()):
+            mid, _m = _order_mark(t, painter, ART_DEF, "", *c)
+            side, line = _side_at(t, c)
+            if t._guard():
+                if side != 0:
+                    raise ExpectationFailed("SITE: the %s mark at %s records wallSide %r, not 0 (its wall north of it): %r" % (k, c, side, line))
+                ids[k] = mid
+        if t._guard():
+            if _walls_at(t, list(wall.values())) != set(wall.values()):
+                raise ExpectationFailed("SITE: not every wall cell stands before the loss: %s" % sorted(_walls_at(t, list(wall.values()))))
+            t._current.detail = "marks %s" % ids
+        t.screenshot(rect=(x - 7, z - 2, 15, 5), padding=0, ppc=PLAY_PPC)
+
+    with t.component("deconstructed_wall_takes_its_mark"):
+        if t._guard():
+            w, c = wall["deconstruct"], cells["deconstruct"]
+            t.bridge_call("jawa/designate_batch", action="add", designation="Deconstruct", rect="%d,%d,1,1" % w)
+            for p in _humans(t):        # an undesignated Deconstruct order fails its reservation (Rites/validation.py:653); one hand takes it
+                t.bridge_call("jawa/ordered_job", pawnId=p["id"], jobDef="Deconstruct", targetAX=w[0], targetAZ=w[1], waitTicks=0)
+            waited, up = 0, True
+            while waited < 6000 and t._guard():
+                t.wait_ticks(60)
+                waited += 60
+                up = bool(_walls_at(t, [w]))
+                standing = ids.get("deconstruct") in _all_marks(t, "%d,%d,1,1" % c)
+                if not up and standing:
+                    raise ExpectationFailed("the wall at %s was deconstructed by +%d ticks and its mark %s still stands at %s" % (w, waited, ids.get("deconstruct"), c))
+                if up and not standing:
+                    raise ExpectationFailed("the mark %s at %s went at +%d ticks while its wall %s still stands" % (ids.get("deconstruct"), c, waited, w))
+                if not up:
+                    break
+            if up and t._guard():
+                raise ExpectationFailed("SITE: the wall at %s still stands %d ticks after its Deconstruct designation and orders" % (w, waited))
+            t._current.detail = "wall %s deconstructed by +%d ticks; its mark went with it" % (w, waited)
+
+    with t.component("destroyed_wall_takes_its_mark"):
+        if t._guard():
+            w, c = wall["destroy"], cells["destroy"]
+            r = t.bridge_call("jawa/damage", damageDef="Bomb", amount=5000, x=w[0], z=w[1], allowColonists=False)
+            up = bool(_walls_at(t, [w]))                # no tick between the damage and these reads: the same tick
+            standing = ids.get("destroy") in _all_marks(t, "%d,%d,1,1" % c)
+            if up:
+                raise ExpectationFailed("SITE: jawa/damage Bomb 5000 left the wall at %s standing: %s" % (w, str(r)[:300]))
+            if standing:
+                raise ExpectationFailed("the wall at %s was destroyed and its mark %s still stands at %s, the same tick" % (w, ids.get("destroy"), c))
+            t._current.detail = "wall %s destroyed; its mark gone the same tick" % (w,)
+
+    with t.component("control_untouched_neighbour_keeps_its_mark"):
+        if t._guard():
+            t.wait_ticks(2500)
+            w, c = wall["neighbour"], cells["neighbour"]
+            if not _walls_at(t, [w]):
+                raise ExpectationFailed("SITE: the neighbour's wall at %s is gone too: the control rules nothing out" % (w,))
+            if ids.get("neighbour") not in _all_marks(t, "%d,%d,1,1" % c):
+                raise ExpectationFailed("the untouched neighbour's mark %s at %s is gone: marks went that no wall loss explains" % (ids.get("neighbour"), c))
+            t._current.detail = "neighbour mark %s stands under its wall %s" % (ids.get("neighbour"), w)
+        t.screenshot(rect=(x - 7, z - 2, 15, 5), padding=0, ppc=PLAY_PPC)
+
+
+def _load(t, name):
+    """Load the save `name` (rimworld/load_game_ready, as _reload); a map that does not come back fails the component."""
+    import time
+    if not t._guard():
+        return
+    t.bridge_call("rimworld/load_game_ready", saveName=name)
+    for _ in range(60):
+        mi = t.bridge_call("jawa/map_info")
+        if isinstance(mi, dict) and mi.get("success") is not False and mi.get("size"):
+            return
+        time.sleep(1.0)
+    raise ExpectationFailed("save %r did not load to a map within 60 s" % name)
+
+
+def _said(t):
+    """GraffitiSocial.messagesSent, every message the walls sent since the game started (RM_GraffitiSocialProof.Said, GraffitiSocial.cs:593)."""
+    text, _ = _static(t, SOCIAL_PROOF, "Said", "1")
+    if t._guard() and not text.startswith("SAID "):
+        raise ExpectationFailed("RM_GraffitiSocialProof.Said answered %r" % text)
+    return int((text.split() + ["0", "0"])[1]) if text.startswith("SAID ") else 0
+
+
+def _mood_sum(t):
+    """(mean over the colonists of each one's summed RM_Graffiti_ mood offsets, {nick: sum}) now (jawa/pawn_thoughts per colonist)."""
+    sums = {}
+    for p in _humans(t):
+        sums[p.get("name") or p["id"]] = round(sum(float(x.get("moodOffset") or 0) for x in _graffiti_thoughts(t, p["id"])), 2)
+    return (sum(sums.values()) / len(sums) if sums else 0.0), sums
+
+
+@contextlib.contextmanager
+def _graffiti_minds(ids):
+    """clockgate.expected_disturbance for the mod's OWN mental states on these colonists (a spree, a compulsive clean): a soak of an ordinary
+    colony meets them by design. Anything else (another break, a death, a raid, a modal) still stops the clock and the row reads it."""
+    import clockgate
+    nums = set(n for n in (clockgate._thing_number(p) for p in ids if p) if n is not None)
+
+    def pred(tr):
+        return (isinstance(tr, dict) and tr.get("kind") == "mental" and clockgate._thing_number(tr.get("subjectId")) in nums
+                and str(tr.get("detail") or "").endswith((SPREE_STATE, CLEAN_STATE)))
+    with clockgate.expected_disturbance("the colony's own Graffiti mental states", pred):
+        yield
+
+
+def _soak(t, ticks, force_every=None, keep_at=None):
+    """Run `ticks` (suite.wait_ticks' verified chunks are the top speed: no game-speed call), a mood sample each SOAK_SAMPLE ticks and the message count each week; with `force_every`, one colonist is
+    put on the forced spree (RM_GraffitiStage.Spree "1") that often; at `keep_at` ticks the game is saved as LIVED_IN_SAVE.
+    -> ([(tick offset, mean mood sum, {nick: sum})], [messages per week (or part week)], spree calls started)"""
+    samples, weeks, forced = [], [], 0
+    ids = [p["id"] for p in _humans(t)]
+    said0 = _said(t)
+    step = force_every or SOAK_SAMPLE
+    done, kept = 0, keep_at is None
+    with _graffiti_minds(ids):
+        while done < ticks and t._guard():
+            if force_every:
+                text, _ = _static(t, STAGE, "Spree", "1")
+                forced += 1 if text.startswith("SPREE started 1") else 0
+            t.wait_ticks(step)
+            done += step
+            if done % SOAK_SAMPLE == 0 or done >= ticks:
+                mean, sums = _mood_sum(t)
+                samples.append((done, round(mean, 2), sums))
+            if done % WEEK == 0 or done >= ticks:
+                said = _said(t)
+                weeks.append(said - said0)
+                said0 = said
+            if not kept and done >= keep_at:
+                t.bridge_call("rimworld/save_game", saveName=LIVED_IN_SAVE)
+                kept = True
+    return samples, weeks, forced
+
+
+def _mean(xs):
+    return sum(xs) / len(xs) if xs else 0.0
+
+
+@suite.chain("scene_lived_in_soak")
+def scene_lived_in_soak(t):
+    """sc_lived_in_soak (stories_not_tax): a colony of six on ordinary (vanilla Wall) walls, RM_GraffitiStage.Colony's base with Busy's work,
+    runs three in-game weeks at top speed with no forcing; after week one the colonists' summed Graffiti mood thoughts average within
+    SOAK_MOOD_BAND, and Graffiti messages number SOAK_FEW_MESSAGES or fewer in every week (all kinds: GraffitiSocial.Tell counts every one).
+    Mid-way the game is saved as LIVED_IN_SAVE, the lived-in save sc_walk loads. Control: from the same start, painting forced every hour
+    for SOAK_CONTROL_DAYS shows a standing tax outside the band (rules out an instrument blind to thoughts). Restore: load SOAK_START_SAVE.
+    The 3 raider-pressure settings join the start once PRESSURE_ITEM lands. A raid, a death or another break mid-soak stops the clock
+    (clockgate): only the colony's own Graffiti mental states are declared."""
+    samples, weeks = [], []
+    with t.component("site_ready_lived_in_soak"):
+        _site_start(t)
+        if _pressure_built():
+            _need_pressure("the 3 raider-pressure settings at shipped defaults")
+        colony, _ = _static(t, STAGE, "Colony")
+        busy, _ = _static(t, STAGE, "Busy")
+        have = _humans(t)
+        if t._guard() and len(have) > 6:
+            raise ExpectationFailed("SITE: the map holds %d colonists before casting, more than the scene's six" % len(have))
+        for i in range(6 - len(have) if t._guard() else 0):
+            _cast(t, "Recruit", "GrfSoak%d//" % i)          # ordinary colonists: their own traits and skills, nothing cast
+        if t._guard():
+            have = _humans(t)
+            _fed(t, *[p["id"] for p in have])
+            mi = t.bridge_call("jawa/map_info") or {}
+            ox, oz = int(mi.get("sizeX") or 250) // 2 - COLONY_W // 2, int(mi.get("sizeZ") or 250) // 2 - COLONY_H // 2
+            r = t.bridge_call("jawa/list_things", defName="Wall", rect="%d,%d,%d,%d" % (ox, oz, COLONY_W, COLONY_H), limit=1000) or {}
+            nwall = len(r.get("things") or [])
+            if len(have) != 6 or nwall == 0:
+                raise ExpectationFailed("SITE: %d colonists (want 6) and %d vanilla Wall in the base: %s; %s" % (len(have), nwall, colony, busy))
+            t.bridge_call("rimworld/save_game", saveName=SOAK_START_SAVE)
+            t._current.detail = "%s; %s; colonists %s; %d walls" % (colony, busy, sorted(p.get("name") for p in have), nwall)
+
+    with t.component("soak_three_weeks"):
+        if t._guard():
+            samples, weeks, _ = _soak(t, SOAK_WEEKS * WEEK, keep_at=SOAK_WEEKS * WEEK // 2)
+            if len(_humans(t)) != 6:
+                raise ExpectationFailed("SITE: %d of the six colonists are alive after the soak: the colony is no longer the scene's" % len(_humans(t)))
+            t._current.detail = "messages per week %s; mood mean by day %s" % (weeks, [s[1] for s in samples if s[0] % DAY == 0])
+
+    with t.component("soak_mood_sum_stays_small"):
+        if t._guard():
+            late = [s[1] for s in samples if s[0] > WEEK]
+            if not late:
+                raise ExpectationFailed("no mood sample after week one: the soak never reached a steady state")
+            avg = _mean(late)
+            if abs(avg) > SOAK_MOOD_BAND:
+                worst = max(samples, key=lambda s: abs(s[1]))
+                raise ExpectationFailed("after week one the colonists' summed Graffiti mood averages %+.2f (band +-%.1f); worst sample at +%d: %s"
+                                        % (avg, SOAK_MOOD_BAND, worst[0], worst[2]))
+            t._current.detail = "after week one: mean %+.2f over %d samples (min %+.2f, max %+.2f)" % (avg, len(late), min(late), max(late))
+
+    with t.component("soak_messages_few_per_week"):
+        if t._guard():
+            if len(weeks) < SOAK_WEEKS or any(n > SOAK_FEW_MESSAGES for n in weeks):
+                raise ExpectationFailed("Graffiti messages per week %s (want %d weeks, each <= %d)" % (weeks, SOAK_WEEKS, SOAK_FEW_MESSAGES))
+            t._current.detail = "messages per week %s" % weeks
+
+    with t.component("control_forced_hourly_painting_shows_a_tax"):
+        if t._guard():
+            _load(t, SOAK_START_SAVE)
+            ctl, cweeks, forced = _soak(t, SOAK_CONTROL_DAYS * DAY, force_every=SOAK_FORCE_EVERY)
+            late = [s[1] for s in ctl if s[0] > DAY]
+            avg = _mean(late)
+            if not forced:
+                raise ExpectationFailed("SITE: RM_GraffitiStage.Spree started no spree in %d hourly calls" % (SOAK_CONTROL_DAYS * 24))
+            if abs(avg) <= SOAK_MOOD_BAND:
+                raise ExpectationFailed("painting forced hourly for %d days: summed Graffiti mood averages %+.2f, inside the band +-%.1f; the "
+                                        "instrument cannot tell a tax (%d sprees, samples %s)" % (SOAK_CONTROL_DAYS, avg, SOAK_MOOD_BAND, forced, late))
+            t._current.detail = "forced %d sprees: mean %+.2f after day one; messages %s" % (forced, avg, cweeks)
+
+    with t.component("restore_soak_start"):
+        _load(t, SOAK_START_SAVE)
+
+
+def _colony_rects(t):
+    """RM_GraffitiStage.Colony's corridor and its two steel wall rows (RM_GraffitiStage.cs:72,82,86), from the map size it centres on.
+    -> (corridor 'x,z,w,h', [corridor floor cells beside the south steel wall])"""
+    mi = t.bridge_call("jawa/map_info") or {}
+    ox, oz = int(mi.get("sizeX") or 250) // 2 - COLONY_W // 2, int(mi.get("sizeZ") or 250) // 2 - COLONY_H // 2
+    return "%d,%d,36,3" % (ox + 4, oz + 13), [(ox + dx, oz + 13) for dx in range(6, 38, 4)]
+
+
+def _visit(t, trader, acc):
+    """A trader caravan of `trader` arrives (jawa/storyteller_fire TraderCaravanArrival, as scene_visitors) and walks the corridor ten
+    times. -> (its charge lines off the trace, its goodwill change over the visit)."""
+    names = (trader["name"], trader.get("defName"))
+    t.expect("pawn", lambda p: p.get("faction") in names)
+    g0 = (_factions(t).get(trader["name"]) or {}).get("goodwill")
+    r = t.bridge_call("jawa/storyteller_fire", incidentDef="TraderCaravanArrival", faction=trader.get("defName"), dryRun=False) or {}
+    if t._guard() and not r.get("fired"):
+        raise ExpectationFailed("SITE: TraderCaravanArrival for %s did not fire: %s" % (trader.get("defName"), str(r)[:300]))
+    caravan, waited = [], 0
+    while waited < 6000 and t._guard() and not caravan:
+        t.wait_ticks(500)
+        waited += 500
+        rr = t.bridge_call("jawa/list_pawns", limit=500) or {}
+        caravan = [p["id"] for p in rr.get("pawns") or [] if p.get("faction") in names and not p.get("dead") and p.get("id")]
+    if t._guard() and not caravan:
+        raise ExpectationFailed("SITE: no pawn of %s on the map %d ticks after the caravan fired" % (trader["name"], waited))
+    rect, _cells = _colony_rects(t)
+    cx, cz, cw, _ch = (int(v) for v in rect.split(","))
+    for leg in range(10):
+        if not t._guard():
+            break
+        t.bridge_call("jawa/order_pawn", pawnId=",".join(caravan), x=cx + (cw - 2 if leg % 2 else 1), z=cz + 1, waitTicks=0)
+        t.wait_ticks(1500)
+        _story(t, acc)
+    charged = [l for l in acc if (" of %s reads " % trader["name"]) in l and re.search(r": goodwill -?\d+$", l) and "none of theirs" not in l]
+    g1 = (_factions(t).get(trader["name"]) or {}).get("goodwill")
+    return charged, (g1 - g0 if g0 is not None and g1 is not None else None)
+
+
+def _order_run(t, trader, first):
+    """One order of the walk: 'raid' then the trader's visit, or 'trader' then the raid (RM_GraffitiProof A2 RaidStart/RaidExit).
+    -> (charge lines of the visit, goodwill change, the raid's exit line)"""
+    acc = []
+    _story(t, acc)
+    del acc[:]                                       # the ring emptied: only this order's lines below
+    raid = ""
+    if first == "raid":
+        _n, raid = _exit_tags(t)
+    charged, delta = _visit(t, trader, acc)
+    if first == "trader":
+        _n, raid = _exit_tags(t)
+    return charged, delta, raid
+
+
+@suite.chain("scene_walk_lived_in")
+def scene_walk_lived_in(t):
+    """sc_walk (walk_lived_in): LIVED_IN_SAVE (sc_lived_in_soak's mid-way keeper, loaded by name; a fresh map would read under a week of
+    ticks) is reloaded and every mark matches the save; a scrawl and tally pair on the lived-in wall is captured at 64 px for his re-show;
+    a colonist low on joy takes RM_PaintGraffitiJob and leaves a mark; a spree repeated on the corridor raises the mark count; with an
+    insult to a trader faction on the corridor wall, raid then trader, reload, trader then raid: each order charges the insult once and
+    both give the same goodwill change. The raider pressure record and letter wait on PRESSURE_ITEM (_need_pressure). Control: the same
+    save with every mark stripped (jawa/destroy_batch Filth on each mark's cell) fails the reload check. Restore: keep LIVED_IN_SAVE, delete
+    WALK_RUNTIME_SAVES (game_paths.SAVES). Hold: owner_review."""
+    rows, trader = {}, None
+    with t.component("site_ready_walk_lived_in"):
+        _load(t, LIVED_IN_SAVE)
+        _site_start(t)
+        if _pressure_built():
+            _need_pressure("the 3 raider-pressure settings at shipped defaults")
+        _, now = _static(t, PROOF, "Loaded")
+        if t._guard():
+            if now is None or int(now) < WEEK:
+                raise ExpectationFailed("SITE: %s loaded at tick %r, under a week: not the lived-in save made mid-way" % (LIVED_IN_SAVE, now))
+            rows = _mark_rows(t)
+            if not rows:
+                raise ExpectationFailed("SITE: %s holds no mark: the lived-in wall is bare" % LIVED_IN_SAVE)
+            t._current.detail = "%s at tick %s, %d marks, colonists %s" % (LIVED_IN_SAVE, now, len(rows), sorted(p.get("name") for p in _humans(t)))
+
+    with t.component("reload_keeps_every_mark"):
+        _reload(t, WALK_RUNTIME_SAVES[0])
+        if t._guard():
+            after = _mark_rows(t)
+            lost = sorted(set(rows) - set(after))
+            changed = sorted(c for c in rows if c in after and after[c] != rows[c])
+            if lost or changed or len(after) != len(rows):
+                raise ExpectationFailed("after reload %d of %d marks: lost %s, changed %s" % (len(after), len(rows), lost[:5], [(c, rows[c], after[c]) for c in changed[:3]]))
+            t._current.detail = "%d marks match the save after reload" % len(after)
+
+    with t.component("reload_keeps_the_pressure_record"):
+        if t._guard():
+            _need_pressure("the raider pressure record across a reload")
+
+    with t.component("scrawl_and_tally_pair_captured"):
+        if t._guard():
+            rows = _mark_rows(t)
+            scrawls = [c for c, r in rows.items() if FORM_OF.get(r["def"]) == "Scrawl" and r["def"] != TALLY_DEF]
+            tallies = [c for c, r in rows.items() if r["def"] == TALLY_DEF]
+            if not (scrawls and tallies):
+                raise ExpectationFailed("SITE: the lived-in wall holds %d scrawl(s) and %d tally mark(s): no pair to capture" % (len(scrawls), len(tallies)))
+            s, k = min(((a, b) for a in scrawls for b in tallies), key=lambda p: abs(p[0][0] - p[1][0]) + abs(p[0][1] - p[1][1]))
+            x0, z0 = min(s[0], k[0]) - 2, min(s[1], k[1]) - 2
+            t.screenshot(rect=(x0, z0, abs(s[0] - k[0]) + 5, abs(s[1] - k[1]) + 5), padding=0, ppc=PLAY_PPC)
+            t._current.detail = "scrawl %s %s, tally %s, for his re-show" % (rows[s]["def"], s, k)
+
+    with t.component("recreation_job_leaves_a_mark"):
+        if t._guard():
+            hands = _humans(t)
+            fun = hands[0].get("name") if hands else None
+            if not fun:
+                raise ExpectationFailed("SITE: no colonist on the lived-in map")
+            for p in hands:
+                t.bridge_call("jawa/pawn_need", pawn=p["id"], action="need", need="Joy", level=0.2 if p.get("name") == fun else 0.9)
+            before, seen, waited = len(_marks_by(t, fun)), None, 0
+            while waited < 15000 and t._guard():
+                t.wait_ticks(500)
+                waited += 500
+                who = _who(t)
+                if seen is None and (who.get(fun) or {}).get("job") == PAINT_JOB:
+                    seen = waited
+                if seen is not None and len(_marks_by(t, fun)) > before:
+                    break
+            mine = _marks_by(t, fun)
+            if seen is None or len(mine) <= before:
+                raise ExpectationFailed("%s at joy 0.2: seen on %s at %r, marks by it %d -> %d in %d ticks" % (fun, PAINT_JOB, seen, before, len(mine), waited))
+            t._current.detail = "%s on %s at +%d; %s" % (fun, PAINT_JOB, seen, mine[-1])
+
+    with t.component("repeated_spree_adds_marks"):
+        if t._guard():
+            rect, cells = _colony_rects(t)
+            whole = _whole_map(t)
+            n0, c0 = len(_all_marks(t, whole)), len(_all_marks(t, rect))
+            hands = [p for p in _humans(t)][:2]
+            for p, cell in zip(hands, cells[1::3]):
+                _hold_at(t, p["id"], cell[0], cell[1], ticks=0)
+            t.wait_ticks(900)
+            started = []
+            for p in hands:
+                t.bridge_call("jawa/set_draft", pawnId=p["id"], drafted=False)
+                r = t.bridge_call("jawa/pawn_force_mental_break", pawn=p["id"], breakDef=SPREE_BREAK)
+                started.append(bool((r or {}).get("started")))
+            with _own_spree([p["id"] for p in hands]):
+                t.wait_ticks(3000)
+            n1, c1 = len(_all_marks(t, whole)), len(_all_marks(t, rect))
+            if not (started and all(started)):
+                raise ExpectationFailed("SITE: not every corridor painter entered the spree: %r" % started)
+            if n1 <= n0:
+                raise ExpectationFailed("the repeated spree on the corridor: marks on the map %d -> %d (corridor %d -> %d)" % (n0, n1, c0, c1))
+            t._current.detail = "marks on the map %d -> %d, corridor %d -> %d" % (n0, n1, c0, c1)
+            t.screenshot(rect=tuple(int(v) for v in rect.split(",")), ppc=PLAY_PPC)
+
+    runs = {}
+    with t.component("site_ready_two_orders"):
+        if t._guard():
+            fs = _factions(t)
+            calm = [f for f in fs.values() if not f.get("isPlayer") and not f.get("hostile") and not f.get("hidden") and f.get("goodwill") is not None]
+            defs = [f.get("defName") for f in fs.values()]
+            alone = [f for f in calm if defs.count(f.get("defName")) == 1]     # as scene_visitors: a caravan told apart by its def
+            trader = alone[0] if alone else None
+            if not trader:
+                raise ExpectationFailed("SITE: no non-hostile faction alone of its def among %s" % sorted((f.get("name"), f.get("defName")) for f in calm))
+            _rect, cells = _colony_rects(t)
+            free = [c for c in cells if c not in _mark_rows(t)]
+            painter = (_humans(t) or [{}])[0].get("name")
+            if not free or not painter:
+                raise ExpectationFailed("SITE: no free corridor cell (%s) or no painter for the insult" % cells)
+            _fed(t, painter)
+            _order_mark(t, painter, INSULT_DEF, trader["name"], *free[0])
+            runs["insult"] = free[0]
+            t.bridge_call("rimworld/save_game", saveName=WALK_RUNTIME_SAVES[1])
+            t._current.detail = "insult to %s at %s" % (trader["name"], free[0])
+
+    for first in ("raid", "trader"):
+        with t.component("order_%s_first" % first):
+            if t._guard():
+                if first == "trader":
+                    _load(t, WALK_RUNTIME_SAVES[1])
+                charged, delta, raid = _order_run(t, trader, first)
+                runs[first] = (charged, delta)
+                on_ours = [l for l in charged if ("FactionInsult@(%d, 0, %d)" % runs.get("insult", (-1, -1))) in l]
+                if len(on_ours) != 1 or delta is None:
+                    raise ExpectationFailed("%s first: the insult to %s charged %s; goodwill change %r; raid %s" % (first, trader["name"], on_ours, delta, raid))
+                t._current.detail = "%s first: %s; goodwill %+d; %s" % (first, on_ours[0], delta, raid)
+
+    with t.component("both_orders_same_insult_goodwill_once"):
+        if t._guard():
+            if not ("raid" in runs and "trader" in runs):
+                raise ExpectationFailed("an order did not run to its end: ran %s" % sorted(k for k in runs if k != "insult"))
+            (ca, da), (cb, db) = runs["raid"], runs["trader"]
+            if da != db:
+                raise ExpectationFailed("raid then trader moved %s's goodwill %+d, trader then raid %+d: %s / %s" % (trader["name"], da, db, ca, cb))
+            t._current.detail = "both orders %+d" % da
+
+    with t.component("both_orders_same_pressure_letter"):
+        if t._guard():
+            _need_pressure("the pressure letter of each order")
+
+    with t.component("control_stripped_save_fails_reload_check"):
+        if t._guard():
+            _load(t, WALK_RUNTIME_SAVES[1])
+            held = _mark_rows(t)
+            t.bridge_call("jawa/destroy_batch", rects=";".join("%d,%d,1,1" % c for c in held), categories="Filth")
+            t.bridge_call("rimworld/save_game", saveName=WALK_RUNTIME_SAVES[2])
+            _load(t, WALK_RUNTIME_SAVES[2])
+            after = _mark_rows(t)
+            lost = sorted(set(held) - set(after))
+            if not held or len(lost) != len(held):
+                raise ExpectationFailed("the stripped save reloads %d of %d marks: the reload check would not fail it (lost %d)" % (len(after), len(held), len(lost)))
+            t._current.detail = "stripped save: %d of %d marks missing, the reload check fails it" % (len(lost), len(held))
+
+    with t.component("restore_delete_runtime_saves"):
+        import game_paths
+        gone = []
+        for name in WALK_RUNTIME_SAVES:                     # never LIVED_IN_SAVE, never a canonical world save
+            p = os.path.join(game_paths.SAVES, name + ".rws")
+            if os.path.exists(p):
+                os.remove(p)
+                gone.append(name)
+        t._current.detail = "deleted %s; kept %s" % (gone, LIVED_IN_SAVE)
