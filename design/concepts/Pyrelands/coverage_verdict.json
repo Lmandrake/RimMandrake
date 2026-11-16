@@ -1,82 +1,82 @@
 {
- "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
- "against": "rm-coverage-judge-1794750987",
- "at": "2026-11-15T21:55:51Z",
+ "against": "rm-coverage-judge-1794779751",
+ "at": "2026-11-16T00:52:25Z",
  "changed": [
-  "dec:d_fix_seventeen_round_six_gaps",
-  "floor",
-  "inv:inv_animal_roster",
-  "inv:inv_art_and_text",
-  "inv:inv_ash_field",
-  "inv:inv_burrowers_heat_dome",
-  "inv:inv_furnacebeast",
-  "inv:inv_plant_roster",
-  "inv:inv_ullai_herd_giant",
-  "inv:inv_weather",
-  "leaf:ash_fertile_when_watered",
-  "leaf:firehawk_hunt_rewards",
-  "leaf:firehawk_lights_ahead",
+  "dec:d_furnace_body_nine",
+  "exam",
   "leaf:furnacebeast_warms",
-  "leaf:grass_carpets_and_regreens",
-  "leaf:no_ordinary_rain",
-  "leaf:populations_are_the_biomes_own",
-  "leaf:ullai_cross_the_map_as_vanilla_herds",
-  "leaf:walk_season_on_the_pyre",
-  "rest:inv_art_and_text",
-  "rest:inv_biome_self_contained",
-  "rest:inv_firefoam_sprayer",
-  "rest:inv_firehawk_hunt_rewards",
-  "rest:inv_sand_shovel",
-  "rest:inv_settings_gate",
-  "scene:sc_ash_ground",
-  "scene:sc_ashwallow",
-  "scene:sc_burn_compounds",
-  "scene:sc_burn_line_walks",
-  "scene:sc_firehawk_rewards",
-  "scene:sc_foreign_arrivals",
   "scene:sc_furnace_giant",
-  "scene:sc_furnace_hide_bank",
-  "scene:sc_grass_regreens",
-  "scene:sc_heat_dome",
-  "scene:sc_herd_thirst",
-  "scene:sc_no_rain",
-  "scene:sc_roof_withers",
-  "scene:sc_scorchfruit",
-  "scene:sc_walk",
-  "sheet:delegated",
-  "sheet:does",
-  "showcase:burn_line",
-  "showcase:fire_solace",
-  "showcase:sky_and_shelter"
+  "sheet:does"
  ],
  "checklist": [
   {
    "evidence": [
-    "scenes.json",
-    "record.json",
-    "scenes.json:688"
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml:290",
+    "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Zeer.xml:84",
+    "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml:28",
+    "design/concepts/Pyrelands/scenes.json:688",
+    "design/concepts/Pyrelands/tree.json:257",
+    "design/concepts/Pyrelands/sheet.md:25",
+    "design/concepts/Pyrelands/exam.json",
+    "design/concepts/Pyrelands/record.json:209"
+   ],
+   "id": "furnacebeast_warms",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_furnace_giant",
+     "what": "giant size bar attainable on the shipped resolved roster (round-7 gap g1)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_giant",
+     "what": "RM_FurnaceBeast baseBodySize reads 9; all 15 roster kinds measured (9 native + 7 patch-added RSW_ minus none): largest other is RSW_Zeer 4.5, then RM_Barbslinger/RSW_Dalgo 2.5; 9 >= 2x4.5 holds exactly"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_giant",
+     "what": "adult draw 7.5 above every other kind's largest draw (Zeer 6, Dalgo 3.0, Sytheclaw 3); ullai 1.8x3=5.4 < 9"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_giant control",
+     "what": "giant numbers live in XML; RM_PyrelandsGiants only writes classic 3.2 and draws 1.6/2.4/3.2 when the switch is off, so the control's classic restore is a real live-def change"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_giant",
+     "what": "scene expect, tree oracle_proposed, sheet does-line and the d_furnace_body_nine decision all state body size 9, twice the Zeer; no 'size 6' bar is left in sheet/tree/scenes/record"
+    },
+    {
+     "ok": true,
+     "scene": "exam",
+     "what": "exam covers the new bar: e15 (size 6 rejected), e16 (size 9 accepted), e17 (XML-only read rejected), c1 (6.5 rejected); 23/23 both readers, control missed e2/e3 so the exam discriminates"
+    },
+    {
+     "ok": true,
+     "scene": "T_DEFS_OFFLINE",
+     "what": "selftest_pyrelands_defs_offline.py re-run by this judge: PASS, 7 def facts hold, 16 of 16 mutants red; the live read stays UNRUN with its command recorded"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "design/concepts/Pyrelands/record.json:293",
+    "design/concepts/Pyrelands/scenes.json:802",
+    "design/concepts/Pyrelands/tree.json:257",
+    "design/concepts/Pyrelands/sheet.md:25"
    ],
    "id": "inv_furnacebeast",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_furnace",
-     "what": "warmth aura and room heat"
+     "scene": "sc_furnace_giant and the furnace-beast scenes",
+     "what": "inventory entry (impl present) names the giant, aura, thermal charge, bed ignition, room heating, hide and hide bank; each part is stated in the furnacebeast_warms leaf's experience, oracle and red"
     },
     {
      "ok": true,
-     "scene": "sc_furnace_bed",
-     "what": "bed smoulder, heat immunity"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace_hide_bank",
-     "what": "hide and hide heat bank (g1): the beast's leatherDef is RM_FurnaceHide, the bank's costList is 60 hide and its CompHeatPusher is 10/s with a 21 C max and no fuel or power comp (defs read); control is the twin room on a cold map"
-    },
-    {
-     "ok": false,
-     "scene": "sc_furnace_giant",
-     "what": "the giant"
+     "scene": "showcases",
+     "what": "exercised by a showcase (scenes.json:802 lists inv_furnacebeast); the body-9 edit changes no showcase membership"
     }
    ]
   },
@@ -327,32 +327,6 @@
      "ok": true,
      "scene": "sc_ashwallow, sc_heat_dome",
      "what": "dive and dome, each with a switch control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:257",
-    "tree.json:269",
-    "scenes.json:685",
-    "scenes.json:688"
-   ],
-   "id": "furnacebeast_warms",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_furnace, sc_furnace_bed",
-     "what": "warmth status, room heat, bed fire"
-    },
-    {
-     "ok": true,
-     "scene": "sc_furnace_hide_bank",
-     "what": "hide and hide bank"
-    },
-    {
-     "ok": false,
-     "scene": "sc_furnace_giant",
-     "what": "giant against every roster kind (g10): the bar 'at least twice every other kind' fails on the shipped RSW_Zeer (body size 4.5)"
     }
    ]
   },
@@ -843,276 +817,11 @@
  ],
  "claims": [
   {
-   "evidence": "scenes.json sc_furnace_hide_bank (new, in showcase sky_and_shelter): a furnace-beast butchered for RM_FurnaceHide, a RM_FurnaceHideBank built from it with no fuel or power comp in one of two twin closed rooms on a cold map (below its 21 C heatPushMaxTemperature), hourly temperatures; control the twin room with no bank; tree.json furnacebeast_warms experience, oracle, scenario, false_pass and red state the hide bank; sheet.md furnacebeast_warms does-line; record.json inv_furnacebeast parts_covered_by (no new leaf: a new leaf would be a new locked bar)",
+   "evidence": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml:290 baseBodySize 9 (was 6); the largest other roster kind is RSW_Zeer at 4.5 (RSW_Zeer.xml:84), so 9 is exactly twice it and the scene's x2 bar against the full resolved roster, patch-added cast included, is attainable and unchanged; adult drawSize 7.5 > the Zeer's 6. scenes.json sc_furnace_giant expect and tree.json furnacebeast_warms oracle_proposed now read body size 9; sheet.md furnacebeast_warms reads 9, twice the Zeer's 4.5; record.json d_furnace_body_nine. selftest_pyrelands_defs_offline.py run in this run: PASS, 7 def facts hold, 16 of 16 mutants red. The live read in sc_furnace_giant stays UNRUN.",
    "gap": "g1"
-  },
-  {
-   "evidence": "scenes.json showcase burn_line no longer claims inv_biome_self_contained; coverage_rest inv_biome_self_contained (by sc_populations, biome_text_says_engineered; checks T_SELF_CONTAINED_OFFLINE, T_LINT, T_SITE) names the payload, the mutator ports and the generic text; T_SELF_CONTAINED_OFFLINE = src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py (payload FindMod-guarded on the scanner's About name and aimed at RM_Pyrelands and declared defs; every TileMutatorDef in RM_RetiredMutatorPorts_Pyrelands a mapped port; no campaign vocabulary in Defs, Patches or Languages text; PASS, 8 of 8 mutants red); version/test_table.json tests T_SELF_CONTAINED_OFFLINE; the canon-save load of the ported tiles is live, UNRUN, its command in the row",
-   "gap": "g2"
-  },
-  {
-   "evidence": "record.json d_fix_seventeen_round_six_gaps: g3 is POLISH, out of passing in his words (OWNER:1794774724955142310); kept in version/polish.md",
-   "gap": "g3"
-  },
-  {
-   "evidence": "scenes.json coverage_rest inv_settings_gate settings_map: all 43 Scribe'd settings of RM_PyrelandsMod.cs, each to the scene whose action or control turns it off (14: sc_walk for pyrelandsEnabled, sc_fire_dusts_ash, sc_scorchfruit, sc_ash_ground twice, sc_populations, sc_burn_line_walks, sc_firehawk, sc_firehawk_rewards, sc_ashwallow, sc_heat_dome, sc_furnace_giant, sc_ash_watered, sc_burn_compounds) and to T_SETTINGS_SWEEP_OFFLINE; biomeGenerationEnabled to T_SITE; the four cross-biome settings to T_SELF_CONTAINED_OFFLINE (Unsupported label drawn) and the sweep (ship off); the why says which off states stay static; controls in sc_scorchfruit and sc_ash_ground added, switch names written into six controls; sc_walk turns the Mod enabled master off for a day in place of 'switch the other mechanics off and on'; floor.json mod_settings establishes; T_ROUND6_GAPS diffs the map against the settings file",
-   "gap": "g4"
-  },
-  {
-   "evidence": "scenes.json sc_roof_withers (new, requirement grass_carpets_and_regreens): roofed ember grass against the unroofed patch beside it, hourly for two days, and the pair with PyrelandsMechanicsGate off; sc_herd_thirst (new, requirement populations_are_the_biomes_own): RM_Thirst of 4 ullai against 4 vanilla muffalo with the same water, the herds' staggered starts and 7-day water arrivals, and a same-seed toggle-off map where the visits overlap; record.json inv_plant_roster and inv_animal_roster parts_covered_by name them",
-   "gap": "g5"
-  },
-  {
-   "evidence": "scenes.json sc_ash_ground start asserts at least one standing-water body (a map with none regenerated, never passed); expect deep ash on at least 0.85 of open land (validation.py DEEP_ASH_MIN, bar pyre_ground_deep_ash) and every water body ringed with mud or rich soil; control adds a same-seed toggle-off regeneration (GenStep_PyrelandsStandingWater and GenStep_PyrelandsGreenRing return) and vanilla shores without the ring",
-   "gap": "g6"
-  },
-  {
-   "evidence": "scenes.json sc_ash_ground action, expect and control: a noon capture pair of ten ash-laden grass cells as they lie against the same cells with their sand-grid depth cleared; the first shows the ash cover (PyrelandsAshCover) and the plant dust (PyrelandsAshDust), a judge names which is which; record.json inv_ash_field parts_covered_by reworded",
-   "gap": "g7"
-  },
-  {
-   "evidence": "scenes.json sc_no_rain start, action, expect and control: a GameCondition_ForceWeather forced to Rain on the Pyrelands map brings black rain, never Rain (PyrelandsNoOrdinaryRain), and the same condition yields Rain on the vanilla temperate map; tree.json no_ordinary_rain scenario, oracle and false_pass; record.json inv_weather parts_covered_by",
-   "gap": "g8"
-  },
-  {
-   "evidence": "scenes.json sc_heat_dome expect reads ProbeDome's bodyGraphic: the race's domeTexPath (AshwallowDome) while domed and the standing body after, the two paths different, plus two captures a judge tells apart; record.json inv_burrowers_heat_dome proof_note corrected: the dome sprite is its own art (AshwallowDome_north/south/east, adf45e2103, 2026-10-15), not the standing body, so no dome-art build item is owed",
-   "gap": "g9"
-  },
-  {
-   "evidence": "scenes.json sc_furnace_giant action and expect: the live body and draw size of every RM_Pyrelands roster kind (resolved through biome_probe, a read of fewer than the nine native kinds is blind), the furnace-beast at least twice every other kind's body size and above each draw size; tree.json furnacebeast_warms oracle",
-   "gap": "g10"
-  },
-  {
-   "evidence": "scenes.json sc_firehawk_rewards action and expect: the letter's label (RM_FireHawkSightedLabel) and text naming the hawk (LabelShortCap) and its ember (RM_FireHawkEmberFromPlant or RM_FireHawkEmberFromBurn); the live crestfeather MarketValue above the fire-hawk's own and Beauty above 0; tree.json firehawk_hunt_rewards oracle",
-   "gap": "g11"
-  },
-  {
-   "evidence": "scenes.json coverage_rest inv_art_and_text post_approval_art: every texture added under Pyrelands/Textures since 2026-10-16 (git), the borrowed ThrumboHorn placeholder, the text written since and the three open follow-ups, each with its judge verdict or owed item: RIMMANDRAKE_JUDGE_PYRELANDS_ART_ADDED_SINCE_HIS_SHEET (17 entries, acceptance test watched failing 17 unjudged) and RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN; T_ROUND6_GAPS fails on any unlisted texture; record.json inv_art_and_text proof_note points there",
-   "gap": "g12"
-  },
-  {
-   "evidence": "scenes.json sc_burn_line_walks action, expect and restore: 24 hourly captures of the front and its black trail at play zoom, the hour asserted at each, a judge confirms a walking line; one savegame of the walking front (burn_line_walking) kept for his review",
-   "gap": "g13"
-  },
-  {
-   "evidence": "scenes.json sc_burn_compounds start records colony vitals and pending incidents before the seven-day wait; expect reads them unchanged at day 7 (no raid, no death, no fire off the pads)",
-   "gap": "g14"
-  },
-  {
-   "evidence": "scenes.json sc_grass_regreens start: the cover census runs first on a fresh map, no sow, spawn or set_terrain before it (from the script's call log), live plantDensity read; expect plants on at least 0.85 of open plantable cells (validation.py grass_cover, bar pyre_grass_chokes_ground); control a same-seed map generated at plantDensity 1.0 reads lower; tree.json grass_carpets_and_regreens oracle",
-   "gap": "g15"
-  },
-  {
-   "evidence": "scenes.json sc_foreign_arrivals requirement adds ullai_cross_the_map_as_vanilla_herds; expect: IncidentWorker_HerdMigration.CanFireNow true on the Pyrelands map under PyrelandsForeignArrivals and an executed migration bringing RM_Ullai; tree.json ullai_cross_the_map_as_vanilla_herds oracle names T_CUT_STAYS_CUT with its command; record.json inv_ullai_herd_giant parts_covered_by",
-   "gap": "g16"
-  },
-  {
-   "evidence": "tree.json experience and oracle text: walk_season_on_the_pyre (steps away from fire, eats before fire duty; sc_fire_sense's requirement), ash_fertile_when_watered (roots as if cooler; sc_ash_watered), firehawk_lights_ahead (flies to a burn it can see; sc_firehawk), populations_are_the_biomes_own (two fire-hawks and eight ashwallows, slow thirst; sc_populations, sc_herd_thirst), grass_carpets_and_regreens (withers under a roof; sc_roof_withers); sheet.md does-lines for the same five leaves",
-   "gap": "g17"
-  },
-  {
-   "evidence": "scenes.json showcase 4 fire_solace (sc_firefoam_sprayer, sc_scorchfruit, sc_sand_shovel, sc_firehawk_rewards) exercising inv_firefoam_sprayer, inv_sand_shovel, inv_firehawk_hunt_rewards and inv_scorchfruit (overlap 0.25, overlap_why given); their three coverage_rest rows removed; sheet.md delegated names the solace showcase; designer_stage.py showcases: set accepted",
-   "gap": "g18"
   }
  ],
- "contract": {
-  "advisory": true,
-  "alarms": [
-   {
-    "detail": {
-     "clauses": {
-      "ash_fertile_when_watered": 2,
-      "ash_ground_and_blowing_ash": 3,
-      "ashwallow_dives_unharmed": 1,
-      "burn_line_walks": 1,
-      "firehawk_hunt_rewards": 1,
-      "flamefang_bite_carries_venom": 2,
-      "fresh_burn_compounds_with_black_rain": 2,
-      "furnacebeast_warms": 2,
-      "grass_carpets_and_regreens": 3,
-      "inv_animal_roster": 3,
-      "inv_art_and_text": 2,
-      "inv_ash_field": 3,
-      "inv_biome_self_contained": 2,
-      "inv_burn_line_fire_clock": 2,
-      "inv_burrowers_heat_dome": 1,
-      "inv_embergrass_regrow": 2,
-      "inv_firehawk_ember": 3,
-      "inv_firehawk_hunt_rewards": 2,
-      "inv_furnacebeast": 4,
-      "inv_plant_roster": 3,
-      "inv_ruins_scorched": 2,
-      "inv_settings_gate": 3,
-      "inv_ullai_herd_giant": 3,
-      "inv_weather": 3,
-      "no_ordinary_rain": 1,
-      "populations_are_the_biomes_own": 2,
-      "rest": 3,
-      "ruins_stand_blackened": 2,
-      "three_skies": 2,
-      "ullai_cross_the_map_as_vanilla_herds": 1,
-      "walk_season_on_the_pyre": 1
-     },
-     "repair_due": [
-      "inv_furnacebeast"
-     ]
-    },
-    "family": "coverage_judge",
-    "first_at": "2026-11-15T14:05:35Z",
-    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
-    "last_at": "2026-11-15T22:00:21Z",
-    "open": true,
-    "subject": "item:BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
-    "told_at": "2026-11-15T14:05:35Z",
-    "trips": 2,
-    "why": "4 refused verdicts (limit 4); clause inv_furnacebeast refused 3 times: criteria repair due"
-   },
-   {
-    "family": "coverage_judge",
-    "first_at": "2026-11-15T09:32:09Z",
-    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
-    "last_at": "2026-11-15T22:00:21Z",
-    "open": true,
-    "subject": "family:coverage_judge",
-    "told_at": "2026-11-15T09:32:09Z",
-    "trips": 3,
-    "why": "refused all of its last 8 verdicts across 4 items"
-   }
-  ],
-  "cached": [],
-  "calibration": "UNTESTED",
-  "counted": true,
-  "may_judge": false,
-  "ok": true,
-  "repair_due": [
-   "inv_furnacebeast"
-  ]
- },
- "contract_reasked": [
-  "evidence 'designer_stage.py showcases (run: set accepted)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'exam.json (crestfeather probed)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'floor.json mod_settings' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'infrastructure/state/items/RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN.md' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'infrastructure/state/items/RIMMANDRAKE_JUDGE_PYRELANDS_ART_ADDED_SINCE_HIS_SHEET.md' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json d_fix_seventeen_round_six_gaps' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_animal_roster parts_covered_by' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_art_and_text proof_note' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_ash_field parts_covered_by' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_burrowers_heat_dome proof_note' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_furnacebeast parts_covered_by' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_plant_roster parts_covered_by' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_ullai_herd_giant parts_covered_by' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json inv_weather parts_covered_by' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json coverage_rest inv_art_and_text post_approval_art' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json coverage_rest inv_biome_self_contained' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json coverage_rest inv_settings_gate settings_map' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_ash_ground' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_ash_watered' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_ashwallow' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_burn_compounds' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_burn_line_walks' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_fire_dusts_ash' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_fire_sense' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_firefoam_sprayer' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_firehawk' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_firehawk_rewards' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_foreign_arrivals' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_foreign_arrivals requirement' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_furnace' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_furnace_bed' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_furnace_giant' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_furnace_hide_bank' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_grass_regreens' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_heat_dome' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_herd_thirst' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_no_rain' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_populations' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_roof_withers' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_sand_shovel' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_scorchfruit' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_three_skies' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json sc_walk' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json showcase burn_line' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json showcase fire_solace' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json showcase fire_solace overlap_why' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json showcase sky_and_shelter' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json:685-688 (sc_furnace_giant start and expect)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json:685-688 sc_furnace_giant' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md delegated' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does ash line' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does ash_fertile line' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does firehawk_lights_ahead line' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does fresh_burn line' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does grass line' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does populations line' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'sheet.md does walk line' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Defs/ThingDefs_Buildings/RM_FurnaceHideBank.xml' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_PristineFirehawkCrestfeather.xml' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml:289 (furnace-beast baseBodySize 6)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Languages/English/Keyed/Pyrelands.xml' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Source/CompWithersUnderRoof.cs' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Source/PyrelandsHerdThirst.cs' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Source/PyrelandsNoOrdinaryRain.cs' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs (43 Scribe_Values.Look, measured)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Ashwallow/AshwallowDome_*.png (exist)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py (run: PASS 8 of 8)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py (run: PASS, 8 of 8 mutants red)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py (run: PASS, 10 of 10 mutants red)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py (run: PASS 12 of 12)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/validation.py:77-79 (ANIMAL_MANIFEST lists RSW_Zeer)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimMandrake/Pyrelands/validation.py:77-79 ANIMAL_MANIFEST' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Zeer.xml' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Zeer.xml:84 (baseBodySize 4.5)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml:34 (RSW_Zeer 0.6)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json ash_fertile_when_watered' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json firehawk_hunt_rewards oracle' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json firehawk_lights_ahead' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json grass_carpets_and_regreens' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json no_ordinary_rain' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json populations_are_the_biomes_own' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json ullai_cross_the_map_as_vanilla_herds oracle' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json walk_season_on_the_pyre' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json:257 (furnacebeast_warms oracle)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json:257 furnacebeast_warms oracle' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json:269 (experience: far larger than any other animal)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json:269 experience' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
- ],
- "criteria_suspect": [
-  "furnacebeast_warms",
-  "inv_furnacebeast"
- ],
- "gaps": [
-  {
-   "criterion_verdict": "unattainable",
-   "criterion_why": "His ruled body size of 6 is fixed and the shipped Pyrelands roster holds RSW_Zeer at 4.5, so no correct build can be twice every other roster kind; the x2 bar as written fails every build and belongs to the neutral fixer.",
-   "evidence": [
-    "scenes.json:685",
-    "scenes.json:688",
-    "tree.json:257",
-    "tree.json:269",
-    "record.json"
-   ],
-   "gid": "g1",
-   "ids": [
-    "furnacebeast_warms",
-    "inv_furnacebeast"
-   ],
-   "new_since": "changed",
-   "observed": "scenes.json:688 expects \"the furnace-beast's live body size at least twice every other RM_Pyrelands roster kind's, and its adult draw size above each of theirs\", and the roster is read with \"the patch-added cast included\". That roster holds RSW_Zeer at body size 4.5 (RSW_Zeer.xml:84) with adult drawSize 6, while the furnace-beast is 6 (RM_PyrelandsFauna.xml:289; his ruled size, sheet.md furnacebeast_warms). A correct build reads 6 < 9 and the scene goes red. If the read silently drops the Utinni cast, it passes without testing the leaf's \"far larger than any other animal on the map\" (tree.json:269) against the largest animal.",
-   "return_to": 3,
-   "since": "scene:sc_furnace_giant (the g10 fix; also leaf:furnacebeast_warms oracle)",
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Edit scenes.json sc_furnace_giant expect and tree.json furnacebeast_warms oracle_proposed: strictly the largest body size and draw size across the full resolved roster, with the x2 ratio only against the RM_ native kinds. Add a note on record.json inv_furnacebeast comparing the Zeer with the leaf's 'far larger' wording."
-   },
-   "what": "sc_furnace_giant's new size bar cannot pass on the shipped roster. It wants the furnace-beast at least twice every other RM_Pyrelands roster kind's body size, the patch-added cast included. RSW_Zeer is patch-added to the Pyrelands (WildAnimals_Pyrelands.xml, commonality 0.6) and listed in validation.py's ANIMAL_MANIFEST, with baseBodySize 4.5 and adult drawSize 6; twice 4.5 is 9, against the furnace-beast's ruled 6.",
-   "where": "scenes.json sc_furnace_giant expect (scenes.json:688); tree.json furnacebeast_warms oracle_proposed (tree.json:257)",
-   "would_pass": "sc_furnace_giant's expect and the furnacebeast_warms oracle state a bar the shipped resolved roster meets with RM_FurnaceBeast at body size 6. A script reading the live body size and adult drawSize of every kind in validation.py's ANIMAL_MANIFEST finds the furnace-beast strictly largest on both. Any ratio clause names only the kinds it holds for (for example: at least twice every RM_ native kind, and strictly above RSW_Zeer's 4.5). If the leaf's 'far larger than any other animal' is not met against the Zeer, that is recorded on record.json inv_furnacebeast as a design delta for him, not written as a scene bar that fails a correct build."
-  }
- ],
+ "gaps": [],
  "hashes": {
   "dec:d_bar_reworded": "e2e8547d20af51a9",
   "dec:d_blackrain_stop_wipe": "ba9eb5d2975bf78d",
@@ -1120,12 +829,14 @@
   "dec:d_fix_seventeen_round_six_gaps": "4d2d8d13e5e65cbc",
   "dec:d_fix_twelve_gaps_in_0_1_0": "9f71281ad4afab36",
   "dec:d_flagship_burn_line": "7d4ad469db0504da",
+  "dec:d_furnace_body_nine": "bfbbcd684954cb79",
   "dec:d_root": "714beb2928c9af52",
   "dec:d_root_ending": "ff0a8ffa994193d4",
   "dec:d_scorchfruit_rapid": "68b490b4dcb6ad6d",
   "dec:d_ullai_keep_vanilla_herd_migration": "0acb3d67603d85ef",
   "dec:d_worldgen_outside_promise": "509a7f41fac0309b",
   "dec:d_worldswitch_off_by_card": "155807d6caee8247",
+  "exam": "47e4ed5b2c119773",
   "floor": "7212bd0147832f6d",
   "inv:inv_animal_roster": "6bfd1be3a345ae51",
   "inv:inv_art_and_text": "93b1bf3b0bc489cd",
@@ -1160,7 +871,7 @@
   "leaf:firehawk_lights_ahead": "da3faa8fa3aa9524",
   "leaf:flamefang_bite_carries_venom": "bb56e15f4dd92168",
   "leaf:fresh_burn_compounds_with_black_rain": "fe13c369e10bdbfa",
-  "leaf:furnacebeast_warms": "c34abc17ec0f1dcf",
+  "leaf:furnacebeast_warms": "d4c93c880ecf92a0",
   "leaf:grass_carpets_and_regreens": "2bb9b7b1751f7de5",
   "leaf:no_ordinary_rain": "fa6b3895f8ff9d79",
   "leaf:populations_are_the_biomes_own": "a0cdf7105d146454",
@@ -1190,7 +901,7 @@
   "scene:sc_foreign_arrivals": "7a82c8f186233ff6",
   "scene:sc_furnace": "c4d13b638dea9c9e",
   "scene:sc_furnace_bed": "5dab5ea5fe55b43a",
-  "scene:sc_furnace_giant": "7d1b786e91da9d80",
+  "scene:sc_furnace_giant": "64c93a17369cb767",
   "scene:sc_furnace_hide_bank": "0705ce1e1b29ff58",
   "scene:sc_grass_regreens": "fb16da4a2f123ac3",
   "scene:sc_heat_dome": "ce8915fb9933752b",
@@ -1207,7 +918,7 @@
   "scene:sc_walk": "37fb1e28b354b330",
   "sheet:": "3e632ce42c2b10bd",
   "sheet:delegated": "9ed84ada59a7d09a",
-  "sheet:does": "dccce4344a0fcba9",
+  "sheet:does": "a5395a5f31ae3b56",
   "sheet:does not": "6dfb0c571e26ec57",
   "sheet:his words": "20ee4c80b7dafafb",
   "sheet:open": "35c155548e9dd273",
@@ -1220,20 +931,19 @@
   "tree:rest": "9d64f9382e682c55"
  },
  "inputs": {
-  "exam.json": "a65757c2436fbac4ede517e5bc3bd2b2816770d5ef9f599393afc0aea302883e",
+  "exam.json": "16914afbf8aa005e5484f69b53b63ea11ceca3a93a1454759f90ddda4e56cf2b",
   "floor.json": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-  "record.json": "2a829d5274afeb98bf9cd8a2c74f7cfe246b5b89637917f41817b6aa648cf215",
-  "scenes.json": "c171dc000d7ccef7b4ce500242afac6462be44870f16017be0c1c81cd68d8e62",
-  "sheet.md": "e40ff569c78f875927bbd1388bb56b009ec840b5a12d3b0d6e25e536bd0931b5"
+  "record.json": "8a734f0dc11f803bb5f11e9f0d606e62c5a5233f1672604752a2f22cee69a770",
+  "scenes.json": "094f6b143492b2d130b01b3a4ca7ced20d06e5384fd4559173a5d7fa35b2133f",
+  "sheet.md": "c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab"
  },
- "judge": "rm-coverage-judge-1794779751",
+ "judge": "rm-coverage-judge-1794790345",
  "mode": "delta",
- "prompt_chars": 102461,
- "reasons": "17 of the 18 claimed fixes hold. g3 is out of scope by his card (OWNER:1794774724955142310, record.json). Each fix was checked at its named evidence. The four new offline selftests were run: self_contained 8/8 mutants red, settings_sweep 10/10, cut_stays_cut 8/8, ullai_herd_migration 12/12. The settings map has 43 keys and RM_PyrelandsMod.cs has 43 Scribe calls. The hide-bank def, its leather, the letter keys, the crestfeather value and beauty, the dome textures and the owed items all exist. designer_stage.py accepts the showcase set. The g10 fix opens a 'changed' gap: sc_furnace_giant's bar of at least twice every roster kind's body size fails on the shipped, patch-added RSW_Zeer (4.5) against the ruled size of 6. The criterion is unattainable, goes to the neutral fixer, and is a one-line edit. Per d_fix_seventeen_round_six_gaps this not_covered stops judging and pauses Pyrelands for him.",
- "sheet": "e40ff569c78f875927bbd1388bb56b009ec840b5a12d3b0d6e25e536bd0931b5",
- "signed": false,
- "stopped": "the final look (granted 2026-11-15T21:11:14Z, after RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS) at round 7 was not_covered: the owner's to decide",
- "tokens": 512610,
- "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21",
- "verdict": "not_covered"
+ "prompt_chars": 31135,
+ "reasons": "Gap g1 from round 7 is fixed [measured]. RM_FurnaceBeast now has baseBodySize 9 (RM_PyrelandsFauna.xml:290). I read the size of every kind on the resolved RM_Pyrelands roster: the 9 kinds in the BiomeDef plus the 7 RSW_ kinds patched in by WildAnimals_Pyrelands.xml. The largest other kind is RSW_Zeer at 4.5, so the 'at least twice' bar holds exactly at 9. The adult draw size of 7.5 is above every other kind's (the Zeer's is 6), and 9 is more than three times the ullai's 1.8. The giant values come from the XML. The C# giant patch only writes the classic 3.2 and its draw sizes when the switch is off, so the scene's control can tell the live def from the file. The scene expect, the tree oracle, the sheet's does-line and record decision d_furnace_body_nine all say the same thing. The frozen exam tests the new bar with e15, e16, e17 and c1 and scores 23/23, and its control still discriminates. The offline selftest passes again in my run. The change opens no new gap. The live sc_furnace_giant read is still UNRUN, with its command recorded; that is allowed under the contract.",
+ "sheet": "c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab",
+ "signed": true,
+ "tokens": 241440,
+ "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5",
+ "verdict": "covered"
 }
