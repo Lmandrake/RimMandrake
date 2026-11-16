@@ -402,5 +402,6 @@
     "mint_duplicate_overlap": 0.7,
     "mint_duplicate_min_tokens": 4,
     "find_limit": 10
-  }
+  },
+  "backfill_reader": {"_doc": "modledger_backfill.py run --read: one claude -p call per batch of tickets (modledger_reader.py); budget_usd bounds one run; model is a ladder alias, never an account", "model": "sonnet", "budget_usd": 8, "workers": 4}
 }

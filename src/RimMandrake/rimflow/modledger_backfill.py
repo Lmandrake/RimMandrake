@@ -27,6 +27,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import modledger as M                                            # noqa: E402
+import modledger_reader as R                                     # noqa: E402
 
 W = "BACKFILL"
 
@@ -72,10 +73,154 @@ PATH_RE = re.compile(r"(?<![\w/.-])((?:src|design|infrastructure|skills)/[\w./-]
 # adjective ('a refuted cause')
 REFUTED_RE = re.compile(r"(?i:false theor(?:y|ies)\s*:)|\b(?i:is|was|were|are|been|now)\s+(?i:refuted)\b|"
                         r"\b[A-Z][A-Za-z0-9_]*\)?\s+refuted\b|\b(?i:refuted)\s*(?:by|at|on|:)")
-NOT_REFUTED_RE = re.compile(r"\b(?:not|never|un)[- ]?refuted\b", re.I)
+NOT_REFUTED_RE = re.compile(r"\b(?:not|never|un)[- ]?refuted\b|\b(?:not|never|can't|cannot|can not|couldn't|could "
+                            r"not) (?:yet )?(?:be )?ruled out\b|^\W*-{3}|\bcriterion:", re.I)
 
 
 TOOLING_RE = re.compile(r"\bmod ledger\b", re.I)
+
+# ruled-out causes and traps under ANY of the wordings tickets use (the judges' rule 2); a cause needs a sha to pin it,
+# else it is mined as the trap it is for the next reader ('X looks like the cause; it was ruled out')
+CAUSE_RE = re.compile(r"\bruled out\b|\bnot (?:the|a) (?:cause|culprit)\b|\bwas not (?:the|a) (?:cause|bug|defect)\b|"
+                      r"\bno [\w-]+(?: [\w-]+)? (?:bug|defect) in\b|\bfault was in\b|\bexplained\b|\bred herring\b|"
+                      r"\bnot (?:caused by|due to)\b|\brather than (?:the |a )?(?:mod|[A-Z][A-Za-z]+(?:Knockback|Slack|Works))\b",
+                      re.I)
+TRAP_RE = re.compile(r"\bCorrection:|\bturned out\b|\bgreen because\b|\bis green\b[^.]{0,80}\bbecause\b|"
+                     r"\bexits? \d+ for both\b|\bgreen for the wrong\b|\bfalse pass\b|\bno longer resolves\b", re.I)
+WHERE_RE = re.compile(r"`([^`]{2,160})`|((?:src|design|infrastructure|skills)/[\w./-]*\w)|\b([\w-]+\.(?:py|cs|xml|json|"
+                      r"jsonl|md))\b|\b(T_[A-Z0-9_]{2,})\b")
+# owner words ride on these events as authority for the act, never as a statement about the mod (the judges' rule 3)
+OWNER_WORD_EVENTS = ("note", "file", "close", "drop", "supersede")
+FLEET_WIDE_IDS = 3                     # the same words on this many tickets are a fleet-wide order, not about one mod
+BULK_STAMP_IDS = 3                     # one OWNER sha stamped `implemented` on this many tickets is a bulk re-stamp
+PROVENANCE_RE = re.compile(r"(?i)^\W*(?:found[- ]by\b|found by\b|verdict:|written by the producer|producer\b|"
+                           r"status at filing|step \d+ of\b|detached run\b[:,]?|relentless:)")
+LEAD_NOISE_RE = re.compile(r"(?i)^(?:detached run(?: ended \w+)?|closed?(?: at [0-9a-f]+)?(?: by \w+)?)\s*[:;,.-]\s*")
+CAUSE_LINE_RE = re.compile(r"(?i)\b(?:root )?cause(?: \[[^\]]*\])?\s*:\s*(.+)")
+
+
+def _closed_like(state):
+    return state in ("done", "dropped", "superseded")
+
+
+_STATES = {}
+
+
+def _fold(evs):
+    """A minimal fold of a ticket's rimflow verbs, for a root that is not this checkout (a fixture): close -> done,
+    drop -> dropped, supersede -> superseded, reopen -> ready, implemented -> built unless done."""
+    st = "proposed"
+    for t in evs:
+        k = t[2].get("event")
+        if k == "close":
+            st = "done"
+        elif k == "drop":
+            st = "dropped"
+        elif k == "supersede":
+            st = "superseded"
+        elif k == "reopen":
+            st = "ready"
+        elif k == "implemented" and st not in ("done", "dropped", "superseded"):
+            st = "built"
+    return st
+
+
+def rimflow_states(root, names, tev):
+    """-> {ticket: its FINAL rimflow state} (the judges' rule 1). On this checkout it is rimflow's own fold
+    (`model.replay` over every shard and the frozen ledger: a refused or bulk event moves nothing there either); on
+    any other root (a fixture) the minimal fold of its events."""
+    try:
+        import model
+        here = os.path.realpath(model.ROOT) == os.path.realpath(root)
+    except ImportError:
+        here = False
+    if here:
+        if root not in _STATES:
+            w = model.replay(model.read())
+            _STATES[root] = {i: getattr(it, "state", None) for i, it in w.items.items()}
+        return {n: _STATES[root].get(n) for n in names}
+    return {n: _fold(tev.get(n, [])) for n in names}
+
+
+def bulk_shas(root):
+    """-> the shas an OWNER `implemented` event stamped on BULK_STAMP_IDS or more tickets (a bulk re-stamp such as
+    2026-11-06's c29007b6b66e): never the fix a ticket's claim names while its own builder's sha lands."""
+    ids = {}
+    for sp in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "ledger", "events", "*.jsonl"))):
+        with open(sp, encoding="utf-8", errors="replace") as fh:
+            for line in fh:
+                if '"implemented"' not in line or '"OWNER"' not in line:
+                    continue
+                try:
+                    e = json.loads(line)
+                except ValueError:
+                    continue
+                if e.get("event") == "implemented" and e.get("seat") == "OWNER" and isinstance(e.get("sha"), str):
+                    ids.setdefault(e["sha"][:12], set()).add(e.get("id"))
+    return {sha for sha, v in ids.items() if len(v) >= BULK_STAMP_IDS}
+
+
+def fleet_words(root):
+    """-> the owner words (ownerSaid or byCard) attached to FLEET_WIDE_IDS or more tickets: fleet-wide orders."""
+    ids = {}
+    for sp_ in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER*.jsonl"))):
+        for e in _jsonl(sp_):
+            for k in ("ownerSaid", "byCard"):
+                if e.get(k):
+                    ids.setdefault(str(e[k]), set()).add(e.get("id"))
+    return {k for k, v in ids.items() if len(v) >= FLEET_WIDE_IDS}
+
+
+def clean_lead(text):
+    """A close reason or note without its run-history lead ('detached run: ', 'Closed at X by Y: ')."""
+    t = " ".join(str(text or "").split())
+    for _ in range(3):
+        t2 = LEAD_NOISE_RE.sub("", t)
+        if t2 == t:
+            break
+        t = t2
+    return t
+
+
+def where_of(sentence, fallback):
+    m = WHERE_RE.search(sentence)
+    return fit(next(g for g in m.groups() if g), 160) if m else fallback
+
+
+def split_bars(bar, locked):
+    """A fault's `bar` may list several ('no_hose, no_hose_in_gss'): -> the locked ids among them, in order."""
+    out = []
+    for b in re.split(r"[,;/]|\band\b", str(bar or "")):
+        b = b.strip().strip("()` ")
+        if b in locked and b not in out:
+            out.append(b)
+    return out
+
+
+def defect_paras(prose):
+    """A ticket's paragraphs with headings and provenance (found-by, Producer re-plan, 'Step N of') left out."""
+    return [x.strip() for x in prose.split("\n\n") if x.strip() and not x.lstrip().startswith("#")
+            and not PROVENANCE_RE.match(x.strip().lstrip("-* "))]
+
+
+def fix_line(texts):
+    """The ticket's own 'Fix:' line, from its prose or notes: -> the words after it, or None."""
+    for t in texts:
+        m = re.search(r"(?im)^\W*(?:\*\*)?(?:proposed )?fix(?:\*\*)?\s*:\s*(.+)", str(t or ""))
+        if m and len(m.group(1).strip()) >= 12:
+            return words_of(m.group(1)).strip()
+    return None
+
+
+def accept_line(texts):
+    """The acceptance test the ticket filed: an 'Acceptance test:' line in its prose, its filing or its notes."""
+    for t in texts:
+        m = re.search(r"Acceptance test:\s*(.+)", str(t or ""))
+        if m and words_of(m.group(1)).strip():
+            return words_of(m.group(1)).strip()
+    return None
+
+
 
 
 def _closed_in_ledger(evs):
@@ -121,15 +266,20 @@ def _words(mod):
 
 
 def fit(text, cap):
-    """One paragraph of at most `cap` chars. A longer text keeps its leading sentences and ends with ' […]': the
-    whole is in the old file every backfilled event cites, so the cut loses nothing (standard rule 3)."""
+    """One paragraph of at most `cap` chars: a longer text keeps its leading whole sentences (or, when the first
+    sentence alone is longer, its leading whole clauses), never a '[…]' marker (the judges' rule 6: a cut that hides
+    the fact behind a marker reads as the fact). The event cites the old file that holds the whole (standard rule 3)."""
     t = " ".join(str(text or "").split())
     if len(t) <= cap:
         return t
-    head = t[:cap - 4]   # cut-ok: the event cites the old file that holds the whole text
-    stop = max(head.rfind(". "), head.rfind("; "))
-    head = head[:stop + 1] if stop > cap // 2 else head[:head.rfind(" ")] if " " in head else head
-    return head.rstrip() + " […]"
+    head = t[:cap + 1]   # cut-ok: whole sentences or clauses only; the event cites the old file holding the whole
+    stop = max(head.rfind(". "), head.rfind("; "), head.rfind("? "), head.rfind("! "))
+    if stop >= 40:
+        return head[:stop + 1].rstrip(" ;")
+    stop = max(head.rfind(", "), head.rfind(" — "), head.rfind(": "), head.rfind(" ("))
+    if stop >= 40:
+        return head[:stop].rstrip(" ,;:—")
+    return head[:head.rfind(" ")].rstrip(" ,;:") if " " in head else head[:cap]
 
 
 def words_of(text):
@@ -198,58 +348,148 @@ def other_mod_words(root, mod):
     return out
 
 
-def _mine_finding(add, name, prose, titles, locked, S, src):
-    """One ticket's finding.open: its filer's title, its spec as the proposed fix, its acceptance test."""
-    paras = [x.strip() for x in prose.split("\n\n") if x.strip() and not x.lstrip().startswith("#")]
+def _mine_finding(add, name, prose, titles, locked, S, src, texts=(), reading=None):
+    """One ticket's finding.open: its defect (the filer's title, else its first paragraph that is not provenance), its
+    own 'Fix:' line or its spec as the proposed fix, the acceptance test it filed (prose, filing or notes; else its
+    criteria; else its verify section). `texts` are the ticket's rimflow event texts; `reading` (a per-ticket reading,
+    see read_tickets) replaces a field only where it holds one."""
+    reading = reading or {}
+    paras = defect_paras(prose)
     m = re.search(r"^## spec\s*\n(.*?)(?=^## |\Z)", prose, re.S | re.M)
-    fix = (words_of(m.group(1)).strip() if m and words_of(m.group(1)).strip() else
+    spec = " ".join(x for x in defect_paras(m.group(1)) if not x.startswith("Acceptance test:")) if m else ""
+    fix = (fix_line([prose] + list(texts)) or words_of(spec).strip() or
            "not written by its filer: read item:%s" % name)
-    acc = re.search(r"Acceptance test:\s*(.+)", prose) or re.search(r"^## verify\s*\n(.*?)(?=^## |\Z)", prose,
-                                                                     re.S | re.M)
+    crit = re.search(r"^## criteria\s*\n(.*?)(?=^## |\Z)", prose, re.S | re.M)
+    crit = " ".join(defect_paras(crit.group(1))).lstrip("-* ") if crit else ""
+    ver = re.search(r"^## verify\s*\n(.*?)(?=^## |\Z)", prose, re.S | re.M)
+    acc = accept_line([prose] + list(texts)) or words_of(crit).strip() or (words_of(ver.group(1)).strip() if ver else
+                                                                           "") or "none, not written at filing"
     named_bars = [b for b in locked if re.search(r"\b%s\b" % re.escape(b), prose)][:3]
+    bars = [b for b in reading.get("bars") or [] if b in locked] or named_bars
+    text = titles.get(name) or (words_of(paras[0]).strip() if paras else "") or name
+    cls = ("polish" if re.search(r"\bpolish\b", prose, re.I) and not re.search(r"\bproblem\b", prose, re.I)
+           else "problem")
     add("finding.open", "finding:" + name, {
-        "class": "polish" if re.search(r"\bpolish\b", prose, re.I) and not re.search(r"\bproblem\b", prose, re.I)
-        else "problem", "bars": named_bars, "tags": [] if named_bars else _tags(prose),
-        "text": fit(titles.get(name) or (words_of(paras[0]).strip() if paras else "") or name, S["text"]),
-        "proposed_fix": fit(fix, S["proposed_fix"]),
-        "accept": fit(words_of(acc.group(1)).strip() if acc and words_of(acc.group(1)).strip() else
-                      "none, not written at filing", S["accept"])},
+        "class": reading.get("class") if reading.get("class") in ("problem", "polish") else cls,
+        "bars": bars, "tags": [] if bars else _tags(prose),
+        "text": fit(reading.get("defect") or text, S["text"]),
+        "proposed_fix": fit(reading.get("proposed_fix") or fix, S["proposed_fix"]),
+        "accept": fit(reading.get("accept") or acc, S["accept"])},
         src)           # the old file first: evidence[0] is what the backfill came from
 
 
-def _final_state(name, evs, S):
-    """-> (kind, body, sha, ledger ref pattern) for a ticket's last state change in the rimflow ledger, or None.
-    close with noCode -> finding.withdrawn (by reading, or a test when it names one); close or implemented with a sha ->
-    finding.claimed_fixed, its test the last verify's command (a verify is lifecycle: it is read, never mined); a reopen
-    after them, a drop or a supersede states nothing a finding can carry."""
-    term, verify = None, None
+def changed_text(evs, sha):
+    """What a fix changed, from the ticket's own words: its close reason and the 'Cause:' line of its notes, each
+    without run history; -> the text, or a plain pointer when the record names no change."""
+    parts = []
     for t in evs:
-        k = t[2].get("event")
-        if k in ("close", "implemented", "drop", "supersede", "reopen"):
-            term = t
-        elif k == "verify" and t[2].get("result") == "pass":
-            verify = t[2]
-    if not term:
+        e = t[2]
+        for k in ("text", "reason", "why"):
+            m = CAUSE_LINE_RE.search(str(e.get(k) or "")) if e.get("event") in ("note", "implemented", "close") else None
+            if m:
+                c = _sentences(m.group(1))[0] if _sentences(m.group(1)) else m.group(1)
+                if c not in parts:
+                    parts.insert(0, "cause: " + c)
+    close = next((t[2] for t in reversed(evs) if t[2].get("event") in ("close", "implemented") and
+                  (t[2].get("reason") or t[2].get("why"))), None)
+    if close:
+        r = clean_lead(close.get("reason") or close.get("why"))
+        if r and not re.match(r"(?i)^(detached run|re-pointed|re-recorded)\b", r):
+            parts.insert(0, r)
+    return "; ".join(parts) if parts else "Fixed at %s; the record names no change beyond its title" % sha
+
+
+def _final_state(name, evs, S, state=None, landed=None, bulk=(), reading=None):
+    """-> (kind, body, sha, ledger ref pattern) for a ticket's FINAL rimflow state (the judges' rule 1), or None.
+    `state` is rimflow's fold of the ticket: proposed / ready / doing (reopened included) state no fix; dropped and
+    superseded nothing. done with noCode -> finding.withdrawn; done, built or validated with a verify pass ->
+    finding.verified; else finding.claimed_fixed. The sha is the last one its own builders stamped that lands on
+    origin/main; a bulk OWNER re-stamp (`bulk`) only when nothing else lands. A verify is read, never mined."""
+    landed = landed or (lambda x: x)
+    reading = reading or {}
+    if state is None:
+        state = _fold(evs)
+    if state not in ("done", "built", "validated"):
         return None
-    e = term[2]
-    sha = e.get("sha") if isinstance(e.get("sha"), str) and re.match(r"^[0-9a-f]{7,40}$", e.get("sha")) else None
-    if e["event"] not in ("close", "implemented") or not sha:
-        return None
-    ref = "ledger:%%s:%d" % term[1]
-    if e.get("noCode"):
-        nc = str(e["noCode"])
+    term = [t for t in evs if t[2].get("event") in ("close", "implemented") and isinstance(t[2].get("sha"), str) and
+            re.match(r"^[0-9a-f]{7,40}$", t[2]["sha"])]
+    verify = [t[2] for t in evs if t[2].get("event") == "verify" and t[2].get("result") == "pass"]
+    close = next((t for t in reversed(evs) if t[2].get("event") == "close"), None)
+    if state == "done" and close and close[2].get("noCode"):
+        nc = str(close[2]["noCode"])
+        sha = close[2].get("sha") if isinstance(close[2].get("sha"), str) else None
+        if not sha:
+            return None
         how = "reading+test" if re.search(r"\b(selftest|test)\b", nc, re.I) else "reading"
         return ("finding.withdrawn", {"text": fit("No defect at %s: %s" % (sha, nc), S["text"]), "how_checked": how},
+                sha, "ledger:%%s:%d" % close[1])
+    pick = None
+    for t in reversed(term):
+        if t[2]["sha"][:12] not in bulk and landed(t[2]["sha"]):
+            pick = t
+            break
+    if pick is None:
+        pick = next((t for t in reversed(term) if landed(t[2]["sha"])), term[-1] if term else None)
+    if pick is None:
+        return None
+    sha = pick[2]["sha"]
+    ref = "ledger:%%s:%d" % pick[1]
+    did = reading.get("changed") or changed_text(evs, sha)
+    impl = next((t[2] for t in reversed(evs) if t[2].get("event") == "implemented" and t[2].get("criteria")), {})
+    crit = "; ".join("%s %s" % (c.get("id"), c.get("text")) for c in impl.get("criteria") or [] if isinstance(c, dict))
+    if verify:
+        v = verify[-1]
+        return ("finding.verified", {"text": fit("%s; verified: %s" % (did, clean_lead(v.get("config")) or
+                                                                       "a verify pass"), S["text"])},
                 sha, ref)
-    if e["event"] == "implemented":
-        crit = "; ".join("%s %s" % (c.get("id"), c.get("text")) for c in e.get("criteria") or [] if isinstance(c, dict))
-        text = "Implemented at %s (%s); not closed. Criteria: %s" % (sha, e.get("seat"), crit or "none recorded")
-        test = crit or "none recorded with the implemented event"
-    else:
-        text = "Closed at %s by %s: %s" % (sha, e.get("seat"), e.get("reason") or e.get("why") or "no reason recorded")
-        test = ("%s (verify pass, %s)" % (verify.get("config"), verify.get("seat")) if verify and verify.get("config")
-                else "none recorded at close (live: %s)" % (e.get("live") or "-"))
-    return ("finding.claimed_fixed", {"text": fit(text, S["text"]), "test": fit(test, S["test"])}, sha, ref)
+    test = crit or "none recorded at %s (live: %s)" % ("close" if state == "done" else "build",
+                                                       (close[2].get("live") if close else None) or "-")
+    return ("finding.claimed_fixed", {"text": fit(did, S["text"]), "test": fit(test, S["test"])}, sha, ref)
+
+
+def readings_path(root, mod):
+    """The committed per-ticket readings of one mod (read_tickets writes them; every clone's re-mine reads them, so a
+    re-run without --read keeps what the reading found instead of deleting it)."""
+    return os.path.join(root, "src", "RimMandrake", "rimflow", "modledger_readings", "%s.json" % mod)
+
+
+def load_readings(root, mod):
+    d = _load(readings_path(root, mod))
+    return d.get("tickets", {}) if isinstance(d, dict) else {}
+
+
+RECORDS = {}        # {mod: {ticket: record text}}: what plan() would hand the reader (modledger_reader.record_text)
+NARRATION_RE = re.compile(r"(?i)^(?:I |We |Now |Started|Began|Working on|Looking at|Continuing)")
+
+
+def valid_reading(rd, root, locked):
+    """A reading's words, checked: strings only, no narration or provenance lead, caps by fit, bars from the locked
+    ids, depends_on paths that exist. Anything else is dropped (the deterministic field stands in)."""
+    if not isinstance(rd, dict):
+        return {}
+    out = {}
+    for k in ("defect", "proposed_fix", "accept", "changed"):
+        v = rd.get(k)
+        if isinstance(v, str) and v.strip() and not NARRATION_RE.match(v.strip()) and not PROVENANCE_RE.match(v):
+            out[k] = " ".join(v.split())
+    if rd.get("class") in ("problem", "polish"):
+        out["class"] = rd["class"]
+    out["bars"] = [b for b in rd.get("bars") or [] if isinstance(b, str) and b in locked]
+    for k, extra in (("causes_refuted", "depends_on"), ("traps", "where")):
+        lst = []
+        for c in rd.get(k) or []:
+            if not isinstance(c, dict) or not isinstance(c.get("text"), str) or not c["text"].strip() or \
+                    NARRATION_RE.match(c["text"].strip()):
+                continue
+            c2 = {"text": " ".join(c["text"].split())}
+            if extra == "depends_on":
+                c2["depends_on"] = [x for x in c.get("depends_on") or [] if isinstance(x, str) and
+                                    os.path.exists(os.path.join(root, re.sub(r"[#:].*$", "", x)))]
+            elif isinstance(c.get("where"), str) and c["where"].strip():
+                c2["where"] = " ".join(c["where"].split())
+            lst.append(c2)
+        out[k] = lst
+    return out
 
 
 _BASE = {}
@@ -306,6 +546,9 @@ def plan(root, mod):
     vdir = os.path.join(cdir, "version")
     S = M.config()["standard"]["caps"]
     ev, notes, said_seen = [], [], []
+    raw_readings = load_readings(root, mod)
+    RECORDS[mod] = {}
+    titles = item_titles(root)
 
     def add(kind, subject, body, evidence, authority=None, code_sha=None):
         ev.append((kind, subject, body, [e for e in evidence if e][:6], authority, code_sha))
@@ -356,6 +599,7 @@ def plan(root, mod):
     lb = _load(lbp) or {}
     bars = {b["id"]: b for b in tt.get("bars") or [] if isinstance(b, dict) and b.get("id")}
     locked = list(lb.get("ids") or sorted(bars))
+    readings = {k: valid_reading(v.get("reading"), root, locked) for k, v in raw_readings.items()}
     decider = {}
     for bid in locked:
         b = bars.get(bid, {})
@@ -398,7 +642,7 @@ def plan(root, mod):
     if no_bar:
         notes.append("left out: %d live rows whose scene decides no locked bar (the visit rows keep them)" % no_bar)
     # blind challenge faults: the finder's smallest_fix IS the proposed fix; its criterion is the acceptance
-    fault_ids, noted = set(), 0
+    fault_ids, noted, fault_raw = set(), 0, {}
     for fp in sorted(glob.glob(os.path.join(vdir, "blind_challenge", "cycle_*", "lane2", "faults.json"))):
         d = _load(fp)
         faults = d if isinstance(d, list) else (d or {}).get("faults") or []
@@ -408,19 +652,27 @@ def plan(root, mod):
             if not isinstance(f, dict) or not f.get("id"):
                 continue
             src = [P(fp, i), "item:%s" % f["id"]]
+            fault_raw[f["id"]] = (f, fixes.get(f["id"]), _rel(root, fp))
             fix = f.get("smallest_fix") or "not written by its finder; read the fault record"
             if not isinstance(fix, str):
                 fix = json.dumps(fix, ensure_ascii=False)
             if len(fix.strip()) < M.config()["proposed_fix_min_chars"]:
                 fix = "%s (the finder's smallest_fix as written, a pointer rather than a fix; read the fault record)" % fix
-            seen = (f.get("evidence") or [""])[0] if isinstance(f.get("evidence"), list) else f.get("evidence")
-            bar = f.get("bar") if f.get("bar") in locked else None
+            evl = f.get("evidence") if isinstance(f.get("evidence"), list) else [f.get("evidence") or ""]
+            evl = [str(x) for x in evl if x]
+            cause = next((CAUSE_LINE_RE.search(x).group(1) for x in evl if CAUSE_LINE_RE.match(x.strip())), None)
+            # the defect line: the fault's own 'cause:' evidence, else its filer's title, else its first evidence
+            seen = cause or titles.get(f["id"]) or (evl[0] if evl else None)
+            rd = readings.get(f["id"]) or {}
+            fbars = [b for b in rd.get("bars") or [] if b in locked] or split_bars(f.get("bar"), locked)
             add("finding.open", "finding:" + f["id"], {
                 "class": "polish" if str(f.get("class") or f.get("cls")).lower() == "polish" else "problem",
-                "bars": [bar] if bar else [], "tags": [] if bar else _tags(json.dumps(f)),
-                "text": fit(seen or f.get("criterion") or f["id"], S["text"]),
-                "proposed_fix": fit(fix, S["proposed_fix"]),
-                "accept": fit(f.get("criterion") or "none, the fault record names no criterion", S["accept"])}, src)
+                "bars": fbars, "tags": [] if fbars else (["instrument"] if "instrument" in str(f.get("bar")) else
+                                                         _tags(json.dumps(f))),
+                "text": fit(rd.get("defect") or seen or f.get("criterion") or f["id"], S["text"]),
+                "proposed_fix": fit(rd.get("proposed_fix") or fix, S["proposed_fix"]),
+                "accept": fit(rd.get("accept") or f.get("would_pass") or f.get("criterion") or
+                              "none, the fault record names no criterion", S["accept"])}, src)
             fault_ids.add(f["id"])
             st = f.get("status") or ""
             if st.startswith("FIXED"):
@@ -429,8 +681,12 @@ def plan(root, mod):
                 red, green = _last(x.get("red")), _last(x.get("green"))
                 test = "red rc %s, green rc %s: %s" % (red.get("rc"), green.get("rc"), red.get("command") or
                                                        red.get("cmd") or green.get("command") or "see fixes.jsonl")
+                did = rd.get("changed") or "; ".join(x for x in (
+                    f.get("fix_as_shipped") or f.get("smallest_fix") if isinstance(
+                        f.get("fix_as_shipped") or f.get("smallest_fix"), str) else None,
+                    ("cause: " + cause) if cause else None) if x) or "the fault's smallest_fix, shipped at %s" % sha
                 add("finding.claimed_fixed", "finding:" + f["id"], {
-                    "text": "fixed by the blind cycle's fixer; no later judge verdict is recorded",
+                    "text": fit(did, S["text"]),
                     "test": fit(test, S["test"])}, [P(fxp) if os.path.exists(fxp) else P(fp, i), "item:%s" % f["id"],
                                                     "sha:%s" % sha if sha else None], None, sha)
             elif st.startswith("NOTED"):
@@ -509,7 +765,6 @@ def plan(root, mod):
     spaced, word = _words(mod)
     words = M.config().get("backfill_item_words", {}).get(mod, [])
     items, dup_fault, elsewhere = [], 0, 0
-    titles = item_titles(root)
     others = other_mod_words(root, mod) - set(words) - {word, mod.upper()}
     idir = os.path.join(root, "infrastructure", "state", "items")
     cands = [(p, False) for p in sorted(glob.glob(os.path.join(idir, "*.md")))] + \
@@ -529,7 +784,9 @@ def plan(root, mod):
     # most tickets have no prose file: their rimflow events (title, notes, close) are the whole record
     have = {os.path.basename(p)[:-3] for p, _ in cands}
     cands += [(None, n) for n in sorted(titles) if n not in have and id_or_title_names(n)]
-    tev = ticket_events(root, have | {n for p, n in cands if p is None})
+    tev = ticket_events(root, have | {n for p, n in cands if p is None} | fault_ids)
+    states = rimflow_states(root, sorted(tev), tev)
+    bulk = bulk_shas(root)
     sha_ok = {}
 
     def landed(sha):
@@ -566,7 +823,11 @@ def plan(root, mod):
         if set(name.split("_")) & others and not (mod.upper() in name or set(name.split("_")) & (set(words) | {word})):
             elsewhere += 1
             continue
-        state = _final_state(name, tev.get(name, []), S)
+        rd = readings.get(name) or {}
+        fr = fault_raw.get(name) or (None, None, None)
+        RECORDS[mod][name] = R.record_text(name, titles.get(name), states.get(name), prose if ip else None,
+                                           tev.get(name, []), fr[0], fr[1], _rel(root, ip) if ip else fr[2])
+        state = _final_state(name, tev.get(name, []), S, states.get(name), landed, bulk, rd)
         if state and state[2]:
             tw = landed(state[2])
             if not tw:
@@ -575,44 +836,71 @@ def plan(root, mod):
             elif not (tw.startswith(state[2][:12]) or state[2].startswith(tw)):
                 rebased += 1
                 kind_, body_, said_, ref_ = state
-                state = (kind_, dict(body_, text=fit(body_["text"].replace(said_, "%s (pre-landing; landed as %s)" % (
-                    said_, tw), 1), S["text"])), tw, ref_)
+                t_ = body_["text"]
+                t_ = (t_.replace(said_, "%s (pre-landing; landed as %s)" % (said_, tw), 1) if said_ in t_ else
+                      "%s (recorded on pre-landing %s; landed as %s)" % (t_, said_[:12], tw))
+                state = (kind_, dict(body_, text=fit(t_, S["text"])), tw, ref_)
         if is_closed and not state:
             closed_unstated.append(name)
             continue
         items.append(name)
         fe = next((t for t in tev.get(name, []) if t[2].get("event") == "file"), None)
         src = [P(ip) if ip else "path:%s:%d" % (_rel(root, fe[0]), fe[1]), "item:" + name]
+        etexts = [str(t[2].get(k) or "") for t in tev.get(name, []) for k in ("text", "why", "reason", "title")
+                  if t[2].get("event") in ("file", "note", "close", "implemented")]
         if name in fault_ids:
             dup_fault += 1
         else:
-            _mine_finding(add, name, prose, titles, locked, S, src)
+            _mine_finding(add, name, prose, titles, locked, S, src, etexts, rd)
         if state and "finding:" + name not in claimed:
             kind, body, sha, ref = state
             add(kind, "finding:" + name, body, src + ["sha:" + sha, ref % _rel(root, ref_path(state, tev, name))],
                 None, sha)
-        # refuted causes: a 'False theory:' or 'X refuted' sentence in the ticket or its notes (rule 10: every cause)
-        texts = [(None, prose)] + [(t, e.get("text") or e.get("reason") or e.get("noCode") or "")
+        # ruled-out causes and traps, under any wording, from the ticket's prose and its notes (the judges' rule 2): a
+        # cause pinned to a sha that lands is cause.refuted; one with no sha, and every 'reader would get it wrong'
+        # line, is trap.noted. A per-ticket reading's causes and traps come first; the sentences add what it lacks.
+        texts = [(None, prose)] + [(t, e.get("text") or e.get("reason") or e.get("why") or e.get("noCode") or "")
                                    for t in tev.get(name, []) for e in [t[2]] if e.get("event") in
-                                   ("note", "close", "drop", "implemented")]
+                                   ("note", "close", "drop", "implemented", "verify") and
+                                   str(e.get("sha") or "")[:12] not in bulk]
+        found = [("cause", c.get("text"), c.get("depends_on") or [], None) for c in rd.get("causes_refuted") or []
+                 if isinstance(c, dict) and c.get("text")] + \
+                [("trap", c.get("text"), [], c.get("where")) for c in rd.get("traps") or []
+                 if isinstance(c, dict) and c.get("text")]
         for t, txt in texts:
-            for sen in _sentences(txt):
-                if not REFUTED_RE.search(sen) or NOT_REFUTED_RE.search(sen):
+            for sen in _sentences(words_of(txt)):
+                is_cause = (CAUSE_RE.search(sen) or REFUTED_RE.search(sen)) and not NOT_REFUTED_RE.search(sen)
+                if not (is_cause or TRAP_RE.search(sen)):
                     continue
-                key = " ".join(re.findall(r"[a-z0-9]+", sen.lower()))
-                if key in causes_seen:
-                    continue
-                causes_seen.add(key)
-                shas = [landed(x) for x in SHA_RE.findall(txt) if landed(x)] or ([state[2]] if state else [])
-                if not shas:
-                    refuted_no_sha += 1
-                    continue
-                paths = PATH_RE.findall(sen) or PATH_RE.findall(txt) or [
+                if rd and not rd.get("_stale"):
+                    continue              # the reading read these same lines with judgement; its list is the answer
+                found.append(("cause" if is_cause else "trap", sen, PATH_RE.findall(sen), None, t, txt))
+        for f_ in found:
+            kind_, sen, deps, where = f_[:4]
+            t, txt = (f_[4], f_[5]) if len(f_) > 4 else (None, sen)
+            key = " ".join(re.findall(r"[a-z0-9]+", str(sen).lower()))
+            if key in causes_seen:
+                continue
+            causes_seen.add(key)
+            lref = ["ledger:%s:%d" % (_rel(root, t[0]), t[1])] if t else []
+            shas = [landed(x) for x in SHA_RE.findall(txt) if landed(x)] or ([state[2]] if state else [])
+            subj = slug(re.sub(r"(?i)^.*?(?:false theor(?:y|ies)|correction|ruled out[^:]*):\s*", "", sen), 8)
+            if kind_ == "cause" and shas:
+                paths = deps or PATH_RE.findall(txt) or [
                     _rel(root, d) for d in [os.path.join(root, "src", "RimMandrake", mod)] if os.path.isdir(d)] or [
                     re.sub(r":\d+$", "", src[0][5:])]
-                add("cause.refuted", "cause:" + slug(re.sub(r"(?i)^.*?false theor(?:y|ies):\s*", "", sen), 8),
+                add("cause.refuted", "cause:" + subj,
                     {"text": fit(sen, S["text"]), "finding": "finding:" + name, "depends_on": paths[:4]},
-                    src + (["ledger:%s:%d" % (_rel(root, t[0]), t[1])] if t else []), None, shas[0])
+                    src + lref, None, shas[0])
+            else:
+                refuted_no_sha += kind_ == "cause"
+                add("trap.noted", "trap:" + subj, {"text": fit(sen, S["text"]), "where": fit(
+                    where or where_of(sen, "item:" + name), S["where"]), "tags": ["instrument"] if re.search(
+                        r"(?i)\b(test|proof|gate|check|scan|wrapper|census|verify|green|harness|instrument)\b", sen)
+                        else ["code"]}, src + lref)
+    for fid, (f, fx, fpr) in fault_raw.items():
+        if fid not in RECORDS[mod]:
+            RECORDS[mod][fid] = R.record_text(fid, titles.get(fid), None, None, tev.get(fid, []), f, fx, fpr)
     if dup_fault:
         notes.append("left out: %d items that only repeat the blind fault of the same name" % dup_fault)
     if closed_unstated:
@@ -629,12 +917,14 @@ def plan(root, mod):
     notes.append("tickets mined: %d, %d of them with no item file (their rimflow events are the whole record)"
                  % (len(items), len(nofile)))
     if refuted_no_sha:
-        notes.append("left out: %d refuted causes with no sha to pin them to" % refuted_no_sha)
+        notes.append("%d ruled-out causes with no sha to pin them to are mined as traps" % refuted_no_sha)
     if elsewhere:
         notes.append("left out: %d items named for another mod that cite this one" % elsewhere)
     # his words and cards in the OWNER ledger shards, on the finding they bear on when it is one of ours
     mined = {s for k, s, *_ in ev if k == "finding.open"}
     mined_items = set(items)
+    fleet = fleet_words(root)
+    lifecycle_words = 0
     for sp_ in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER*.jsonl"))):
         for i, e in enumerate(_jsonl(sp_), 1):
             blob = json.dumps(e, ensure_ascii=False)
@@ -642,6 +932,12 @@ def plan(root, mod):
                 continue
             said, card = e.get("ownerSaid"), e.get("byCard")
             if not (said or card):
+                continue
+            # rule 3: words riding a lifecycle event (needs, reassign, raise, block, a FROZEN STOP note) or the same
+            # words on many tickets (a fleet-wide order) authorise an act; they say nothing about the mod
+            if (e.get("event") not in OWNER_WORD_EVENTS or str(said or card) in fleet or
+                    re.match(r"\s*(?:FROZEN|STOP\b|PARK|UNPARK|PAUSE)", str(e.get("text") or ""))):
+                lifecycle_words += 1
                 continue
             card = card if isinstance(card, str) or card is None else json.dumps(card, ensure_ascii=False)
             words_ = fit(said, S["said"]) if said else fit(card, S["text"])
@@ -652,6 +948,9 @@ def plan(root, mod):
             auth = {"owner_said": words_} if said else {"by_card": words_}
             add("decision", subj, {"said": words_} if said else {"text": words_},
                 ["path:%s:%d" % (_rel(root, sp_), i), ("item:" + iid) if iid else None], auth)
+    if lifecycle_words:
+        notes.append("left out: %d owner words riding lifecycle or fleet-wide events (authority for an act, not a "
+                     "statement about the mod)" % lifecycle_words)
     return ev, notes
 
 
@@ -677,20 +976,37 @@ def _fit_line(body, auth, measured):
     return True
 
 
-def run(root, mod, dry=False):
+def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
     """Write the plan through `modledger.append` (the standard's refusals included). An event the standard still
     refuses is left out and counted, never forced. A BACKFILL line already in the shard that the plan no longer holds
     is deleted after the appends (delete on sight: it failed the standard, or the old stores no longer say it); a line
     the plan still holds is kept as it is (same key, same id). A line over the byte cap has its longest text fitted
     (`_fit_line`) and is held under the fitted key."""
     ev, notes = plan(root, mod)
+    reader = None
+    if read:
+        cfg = M.config().get("backfill_reader", {})
+        bud = budget_usd if budget_usd is not None else cfg.get("budget_usd", 5)
+        locked = sorted(s[4:] for k, s, *_ in ev if k == "bar.locked")
+        reader = R.read_tickets(readings_path(root, mod), RECORDS.get(mod, {}), locked, bud,
+                                cfg.get("model", "sonnet"), cfg.get("workers", 4), log)
+        notes.append("reader: %d of %d tickets read in %d batches, $%.2f spent (bound $%.2f), %d failed, %d skipped "
+                     "for the bound" % (reader["read"], reader["asked"], reader["batches"], reader["spent_usd"], bud,
+                                        len(reader["failed"]), reader["skipped_for_budget"]))
+        ev, notes2 = plan(root, mod)
+        notes = notes2 + notes[-1:]
+    have_r = load_readings(root, mod)
+    stale = sum(1 for n, t in RECORDS.get(mod, {}).items() if (have_r.get(n) or {}).get("hash") not in (None, R.rec_hash(t)))
+    unread = sum(1 for n in RECORDS.get(mod, {}) if n not in have_r)
+    notes.append("readings: %d tickets unread (mined by the sentence rules), %d read from an older record (re-read "
+                 "with --read)" % (unread, stale))
     if dry:
         return {"planned": len(ev), "written": 0, "already": 0, "deleted": 0, "refused": [], "near_duplicates": [],
                 "notes": notes}
     version = next((b.get("version") for k, s, b, *_ in ev if k == "version.open"), None)
     written = already = 0
-    refused, near, held = [], [], set()
-    for kind, subject, body, evidence, auth, sha in ev:
+    refused, near, held, seq = [], [], set(), {}
+    for idx, (kind, subject, body, evidence, auth, sha) in enumerate(ev):
         apart = fit("a separate source record (%s); listed in the backfill report" % (
             evidence[0] if evidence else "?"), 160)
         try:
@@ -719,8 +1035,34 @@ def run(root, mod, dry=False):
                 refused.append((kind, subject, str(r)))
                 continue
         held.add(eid)
+        seq.setdefault(subject, []).append((idx, eid, created, body, auth))
         written += created
         already += not created
+    # a subject's events must stay in plan order (the reducer reads the last): a line kept from an earlier run that the
+    # plan puts AFTER a line written now (a re-read finding text before its kept claim) is re-appended after it
+    redo = []
+    for subject, xs in seq.items():
+        first = next((i for i, x in enumerate(xs) if x[2]), None)
+        if first is not None:
+            redo += [x for x in xs[first + 1:] if not x[2]]
+    if redo:
+        M.delete(root, mod, [x[1] for x in redo])
+        for idx, eid, _c, body, auth in sorted(redo, key=lambda x: x[0]):
+            kind, subject, _b, evidence, _a, sha = ev[idx]
+            apart = fit("a separate source record (%s); listed in the backfill report" % (
+                evidence[0] if evidence else "?"), 160)
+            for ns in (None, apart):
+                try:
+                    M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
+                             authority=auth, code_sha=sha, views=False, new_subject=ns)
+                    break
+                except M.Refusal as r:
+                    if ns or not (r.field in ("subject", "text")):
+                        refused.append((kind, subject, str(r)))
+                        held.discard(eid)
+                        break
+            written += 1
+            already -= 1
     # after the appends (a line fitted to the byte cap is held under its fitted key): a BACKFILL line the plan no
     # longer holds is deleted
     old = [e for e in M.read(root, mod) if e.get("_shard") == W and e.get("id") not in held]
@@ -778,12 +1120,15 @@ def main(argv=None):
     r = sub.add_parser("run")
     r.add_argument("--mod", required=True)
     r.add_argument("--dry", action="store_true")
+    r.add_argument("--read", action="store_true", help="read unread or changed tickets with claude -p first")
+    r.add_argument("--read-budget", type=float, default=None, help="dollar bound on --read (modledger.json "
+                   "backfill_reader.budget_usd)")
     c = sub.add_parser("compare")
     c.add_argument("--mod", required=True)
     o = ap.parse_args(argv)
     root = o.root or M.default_root()
     if o.verb == "run":
-        res = run(root, o.mod, o.dry)
+        res = run(root, o.mod, o.dry, o.read, o.read_budget)
         for n in res["notes"]:
             print("note: " + n)
         for kind, subject, why in res["refused"]:

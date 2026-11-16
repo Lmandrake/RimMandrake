@@ -184,6 +184,93 @@ with open(os.path.join(c, "journal.md"), "a", encoding="utf-8") as fh:
     fh.write("\n1. **47, not 48.** `VERSION.json` says 47; the sum is 48 because one row is a leaf too. [measured]\n"
              "2. **The old shock name is a mirror.** `AerialSettings.fallenWireShock` is derived; the setting is\n"
              "   `shockReach`.\n\n### Questions for him\n\n1. Re-pin?\n")
+# --- the independent judges' six rules (RIMMANDRAKE_FIX_MINER_JUDGE_FAILED_SLACK_EIGHT_OF_TWENTY) ---
+# rule 1: state from the ticket's FINAL rimflow state; a bulk OWNER re-stamp never displaces the original fix sha
+RS, RO, RC, RT, RF, RK, RL = ("RIMMANDRAKE_FIX_FIXTUREMOD_STUB_PASSED_LAST_WEEK",
+                              "RIMMANDRAKE_FIX_FIXTUREMOD_BUILT_THEN_REOPENED",
+                              "RIMMANDRAKE_TRACE_FIXTUREMOD_PIT_FETCH_PAST_LADDER",
+                              "RIMMANDRAKE_FIX_FIXTUREMOD_WATER_STUB_CORRECTED",
+                              "RIMMANDRAKE_FIX_FIXTUREMOD_THEFT_WRONG_VICTIM",
+                              "RIMMANDRAKE_FIX_FIXTUREMOD_STOREROOM_COVER_INVALID",
+                              "RIMMANDRAKE_FIX_FIXTUREMOD_LONG_SPEC_NEVER_CUT")
+LONG = " ".join("Sentence %d says the pump primes from tank %d before the valve opens." % (i, i) for i in range(9))
+w(os.path.join(IT, RS + ".md"), "## spec\n\nFixtureMod water stubs drop on deep water.\n")
+w(os.path.join(IT, RO + ".md"), "## spec\n\nFixtureMod drains the wrong battery.\n")
+w(os.path.join(IT, RT + ".md"), "## spec\n\nFixtureMod water stub reads twice.\n\n## evidence\n\n"
+  "- T_GEOM is green (4513/4513) because it reads the 7 oracle scenes only.\n")
+w(os.path.join(IT, RF + ".md"), "## spec\n\nfound-by: GPT review, verified by Opus.\n\nThe drain charges the wrong "
+  "faction.\n\nFix: record which faction supplied each drained tick; charge each its own share.\n\n## criteria\n\n"
+  "- A1 selftest_theft.py: drain A then switch to B; A is charged only A's share\n\n"
+  "- Written by the Producer re-plan 2026-10-29.\n")
+w(os.path.join(IT, RL + ".md"), "## spec\n\n" + LONG + "\n\nAcceptance test: " + LONG + "\n")
+EV2 = [
+    {"seat": "BENCH", "event": "file", "id": RS, "title": "FixtureMod water stubs drop on deep water", "tsn": 100},
+    {"seat": "BENCH", "event": "implemented", "id": RS, "sha": "abcd0011", "tsn": 101,
+     "criteria": [{"id": "A1", "text": "live: stubs stay on deep water"}]},
+    {"seat": "CLAUDE_X", "event": "verify", "id": RS, "result": "pass", "sha": "abcd0b0b",
+     "config": "proof_all.py --live --only matrix: PASS", "tsn": 102},
+    {"seat": "OWNER", "event": "close", "id": RS, "sha": "abcd0b0b", "tsn": 103},
+    {"seat": "BENCH", "event": "implemented", "id": RO, "sha": "abcd0022", "tsn": 110},
+    {"seat": "OWNER", "event": "reassign", "id": RO, "to": "BENCH", "tsn": 111},
+    # rule 2: ruled-out causes under any wording, from the notes, and traps
+    {"seat": "BENCH", "event": "file", "id": RC, "title": "FixtureMod sc_pit FAIL: a hauler fetched the control stack "
+     "past a raised ladder", "tsn": 120},
+    {"seat": "BENCH", "event": "note", "id": RC, "tsn": 121, "text": "Ruled out by reading the source (base abcd0033): "
+     "the ladder is placed right in src/RimMandrake/FixtureMod/Source/L.cs, so the masks are not stale."},
+    {"seat": "BENCH", "event": "note", "id": RC, "tsn": 122, "text": "The stale DLL was not the cause: the deployed DLL "
+     "matched abcd0033."},
+    {"seat": "BENCH", "event": "note", "id": RC, "tsn": 123, "text": "The fault was in the test setup; FixtureMod itself "
+     "behaved correctly (no escape bug in the mod)."},
+    {"seat": "BENCH", "event": "close", "id": RC, "sha": "abcd0033", "tsn": 124,
+     "why": "detached run: the test now lowers the control ladder first"},
+    {"seat": "BENCH", "event": "note", "id": RT, "tsn": 130, "text": "Correction: the A1 live pass ran the DLL committed "
+     "at abcd0044, not the older abcd0033 DLL."},
+    {"seat": "RUNNER", "event": "note", "id": RT, "tsn": 131, "text": "relentless: game_fail at abcd0044 explained "
+     "(PROOF): the binding has no site step, so the proof ran against whatever state the game was in."},
+    {"seat": "BENCH", "event": "note", "id": RT, "tsn": 132, "text": "It turned out the wrapper exits 1 for both row FAIL "
+     "and row never measured."},
+    # rule 4: the accept a ledger-only ticket filed, the change a close names
+    {"seat": "OWNER", "event": "file", "id": RK, "title": "FixtureMod sc_storeroom UNMEASURED: no stack plan ends on the "
+     "covered pit cell", "why": "REAL MISS. Acceptance test: live, python.exe runner.py --scenes sc_storeroom,"
+     "sc_storeroom_control --ticks 900 stages both and reads PASS or FAIL", "tsn": 140},
+    {"seat": "BENCH", "event": "note", "id": RK, "tsn": 141, "text": "Fixed abcd0066. Cause [measured]: MassScale caps "
+     "at 2 under ~17.5 kg, so every small log stack threw 3 cells, past the cover. Search now runs to CoverLogsMax=75."},
+    {"seat": "BENCH", "event": "close", "id": RK, "sha": "abcd0066", "tsn": 142,
+     "why": "detached run: cover-stack search fixed offline"},
+    {"seat": "BENCH", "event": "close", "id": RL, "sha": "abcd0077", "tsn": 150, "why": "pump primed"},
+    # rule 3: his words on lifecycle and fleet-wide events are never a decision about the mod
+    {"seat": "OWNER", "event": "needs", "id": RK, "to": "owner", "tsn": 160,
+     "ownerSaid": "You should work that item right now so we can keep going together."},
+    {"seat": "OWNER", "event": "reassign", "id": RK, "to": "BENCH", "tsn": 161,
+     "byCard": "What should happen to FOUNDRY? → Retire it (Recommended)"},
+    {"seat": "OWNER", "event": "note", "id": RK, "tsn": 162, "text": "FROZEN STOP 2026-11-07: was checking",
+     "ownerSaid": "Please have those Frozen items shut down their work."},
+    {"seat": "OWNER", "event": "note", "id": RK, "tsn": 163, "ownerSaid": "Gas should chain through every vent."}]
+for i_, t_ in enumerate((RK, RC, RT)):
+    EV2.append({"seat": "OWNER", "event": "note", "id": t_, "tsn": 170 + i_, "ownerSaid": "Stop all the lanes tonight."})
+for i_ in range(4):     # the bulk re-stamp: one OWNER sha stamped on many tickets at once
+    EV2.append({"seat": "OWNER", "event": "implemented", "id": "OTHERMOD_BULK_STAMP_%d" % i_, "sha": "abcd0b0b",
+                "tsn": 180 + i_})
+EV2.append({"seat": "OWNER", "event": "implemented", "id": RS, "sha": "abcd0b0b", "tsn": 190,
+            "why": "re-pointed to abcd0b0b (current DLL, contains the fix)"})
+for e_ in EV2:          # each seat's events in its own shard, as rimflow writes them
+    with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "%s.jsonl" % (
+            "OWNER" if e_["seat"] == "OWNER" else "BENCH")), "a", encoding="utf-8") as fh:
+        fh.write(json.dumps(e_) + "\n")
+# rules 4 and 5: a blind fault's defect line, its would_pass, its comma-listed bars, and what its fix changed
+w(os.path.join(v, "blind_challenge", "cycle_4", "lane2", "faults.json"), {"faults": [
+    {"id": "RIMMANDRAKE_WIDEN_FIXTURE_SCAN_FIVE_SLIPPED", "class": "Problem", "bar": "bar_a, bar_b",
+     "criterion": "tree oracle: an offline scan finds no hose", "would_pass": "every planted leftover NH1..NH5 turns "
+     "T1 red by name, and the clean tree stays green",
+     "evidence": ["lane2/planted.jsonl: NH1..NH5 each left T_NO_HOSE green",
+                  "cause: the scan read a fixed tag list, never the element tag or xpath"],
+     "smallest_fix": "read every element's text and tag; pin the five as mutants", "status": "FIXED abcd0055"}]})
+w(os.path.join(v, "blind_challenge", "cycle_4", "lane2", "fixes.jsonl"), json.dumps(
+    {"fault": "RIMMANDRAKE_WIDEN_FIXTURE_SCAN_FIVE_SLIPPED", "red": {"cmd": "check_nohose.py", "rc": 1},
+     "green": {"cmd": "check_nohose.py", "rc": 0}, "sha": "abcd0055"}) + "\n")
+_states0 = getattr(B, "rimflow_states", None)       # the test stands in for rimflow's fold on one ticket
+if _states0:
+    B.rimflow_states = lambda root_, names, tev: dict(_states0(root_, names, tev), **{RO: "ready"})
 before = {}
 for d, _, fs in os.walk(c):
     for f in fs:
@@ -270,8 +357,8 @@ check("compare: the stage agrees with the stage record", rows["stage (version/st
 check("compare: a journal claiming every scene UNRUN against live rows is a DIFF",
       rows["journal.md stands: in-game scenes"][3] is False, rows["journal.md stands: in-game scenes"])
 _fx = rows["blind faults marked FIXED in faults.json"]
-check("compare: the FIXED-faults row counts the blind faults, not every claimed ticket", _fx[1] == 2 and
-      "2 claimed_fixed" in str(_fx[2]), _fx)
+check("compare: the FIXED-faults row counts the blind faults, not every claimed ticket", _fx[1] == 3 and
+      "3 claimed_fixed" in str(_fx[2]), _fx)
 F = st["findings"]
 lo = [e for e in bevs if "item:" + LO in e["evidence"]]
 check("a ticket with no prose file is mined from its rimflow events: its title as the finding, its close as claimed "
@@ -301,9 +388,10 @@ TEST = {e["subject"]: e["body"].get("test") or "" for e in bevs if e["kind"] == 
 fc = F.get("finding:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX") or {}
 check("a list-shaped red record is read (its last red command and rc)",
       "selftest_census.py" in TEST.get("finding:RIMMANDRAKE_RESET_FIXTURE_STATICS_CENSUS_CAUGHT", ""), TEST)
-check("a closed ticket is mined: its finding, and its close as claimed_fixed on the close sha with the verify command",
-      fc.get("status") == "claimed_fixed" and fc.get("code_sha") == "abcdef12" and "selftest_b.py" in TEST.get(
-          "finding:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "") and
+check("a closed ticket is mined: its finding, and its close with a verify pass as verified on the close sha, the verify "
+      "command named", fc.get("status") == "verified" and fc.get("code_sha") == "abcdef12" and "selftest_b.py" in
+      " ".join(e["body"]["text"] for e in bevs if e["kind"] == "finding.verified" and
+               e["subject"] == "finding:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX") and
       "Source/B.cs" in (fc.get("proposed_fix") or "") and fc.get("text") == "Arcs overshoot walls", fc)
 fw = F.get("finding:RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL") or {}
 check("a close with no code is a withdrawal by reading, on its sha", fw.get("status") == "withdrawn" and
@@ -323,22 +411,24 @@ check("a closed ticket of another concept (SlackMaster) is not mined",
       "finding:RIMMANDRAKE_FIX_SLACKMASTER_POST_AS_RIGHT_TEAM" not in F, sorted(F))
 mined_items = [e for e in bevs if any(r == "item:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX" for r in e["evidence"])]
 check("lifecycle is never mined: the claim and the verify make no event of their own",
-      sorted(e["kind"] for e in mined_items) == ["cause.refuted", "decision", "finding.claimed_fixed", "finding.open"],
+      sorted(e["kind"] for e in mined_items) == ["cause.refuted", "decision", "finding.open", "finding.verified"],
       sorted(e["kind"] for e in mined_items))
-cr = [e for e in bevs if e["kind"] == "cause.refuted"]
+cr = [e for e in bevs if e["kind"] == "cause.refuted" and
+      e["body"]["finding"] == "finding:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX"]
 check("a 'False theory:' note is a refuted cause on its finding, with the sha and path it names",
       len(cr) == 1 and cr[0]["body"]["finding"] == "finding:RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX" and
       cr[0]["code_sha"] == "5555eee" and cr[0]["body"]["depends_on"] == ["src/RimMandrake/FixtureMod/Source/B.cs"]
       and "pool fix" in cr[0]["body"]["text"], [e["body"] for e in cr])
 check("every mined ticket event cites item:<ticket>", all(any(r.startswith("item:") for r in e["evidence"])
       for e in bevs if e["kind"] in ("finding.claimed_fixed", "finding.withdrawn", "cause.refuted")))
-tr = [e for e in bevs if e["kind"] == "trap.noted"]
+tr = [e for e in bevs if e["kind"] == "trap.noted" and e["evidence"][0].startswith("path:design/")]
 check("the journal's oddities are traps, one each, a wrapped line joined, the first backticked name as where",
       len(tr) == 2 and tr[1]["body"]["where"] == "AerialSettings.fallenWireShock" and "shockReach" in tr[1]["body"]["text"],
       [e["body"] for e in tr])
-check("his long words that overflow the line are fitted to it (deciding sentences kept, the ref for the whole), not "
-      "refused", any(e["kind"] == "decision" and "Arc number 0" in (e["body"].get("said") or "") and
-                     e["body"]["said"].endswith("[…]") for e in bevs), [e["body"] for e in bevs if e["kind"] == "decision"])
+check("his long words that overflow the line are fitted to it (whole deciding sentences kept, no marker, the ref for "
+      "the whole), not refused", any(e["kind"] == "decision" and (e["body"].get("said") or "").startswith("Arc number 0")
+                                     and e["body"]["said"].endswith("always.") and "[…]" not in e["body"]["said"]
+                                     for e in bevs), [e["body"] for e in bevs if e["kind"] == "decision"])
 pump = F.get("finding:RIMMANDRAKE_FIX_FIXTUREMOD_REBASED_PUMP_FIX") or {}
 check("a close on a pre-landing sha (rewritten by ./publish) is claimed on its landed twin, naming both",
       pump.get("status") == "claimed_fixed" and pump.get("code_sha") == "abc7777" and
@@ -352,6 +442,111 @@ check("a fault's class under 'cls' is read", (F.get("finding:RIMMANDRAKE_TRIM_FI
 check("his words on a closed ticket's ledger event become a decision on that finding",
       any(e["kind"] == "decision" and e["subject"] == "finding:RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL"
           for e in bevs), [(e["kind"], e["subject"]) for e in bevs if e["kind"] == "decision"])
+
+# --- the independent judges' six rules (RIMMANDRAKE_FIX_MINER_JUDGE_FAILED_SLACK_EIGHT_OF_TWENTY) ---
+def on(t, kinds=None):
+    return [e for e in bevs if "item:" + t in e["evidence"] and (kinds is None or e["kind"] in kinds)]
+
+
+TEXTS = ("text", "proposed_fix", "accept", "test")
+fs = F.get("finding:" + RS) or {}
+check("rule 1: a done ticket with a verify pass is verified, on the original fix sha, never the bulk re-stamp",
+      fs.get("status") == "verified" and fs.get("code_sha") == "abcd0011" and
+      not [e for e in on(RS) if "not closed" in json.dumps(e["body"])], (fs, [e["body"] for e in on(RS)]))
+check("rule 1: a ticket implemented and then reopened (rimflow state ready) is open, with no claim of a fix",
+      (F.get("finding:" + RO) or {}).get("status") == "open" and not on(RO, ("finding.claimed_fixed",)),
+      [(e["kind"], e["body"]) for e in on(RO)])
+CR = [e for e in bevs if e["kind"] in ("cause.refuted", "trap.noted") and any(r.startswith("item:") for r in e["evidence"])]
+for t, phrase in ((RC, "ladder is placed right"), (RC, "stale DLL was not the cause"), (RC, "fault was in the test setup"),
+                  (RT, "Correction: the A1"), (RT, "game_fail at"), (RT, "wrapper exits 1"),
+                  (RT, "reads the 7 oracle scenes")):
+    check("rule 2: '%s' is mined as a ruled-out cause or a trap citing its ticket" % phrase,
+          any(phrase in e["body"]["text"] and "item:" + t in e["evidence"] for e in CR),
+          [(e["kind"], e["body"]["text"][:80]) for e in on(t)])
+DEC = [e for e in bevs if e["kind"] == "decision"]
+for phrase in ("work that item right now", "What should happen to FOUNDRY", "Frozen items shut down",
+               "Stop all the lanes tonight"):
+    check("rule 3: his words on a needs/reassign/stop/fleet-wide event are no decision ('%s')" % phrase,
+          not [e for e in DEC if phrase in json.dumps(e["body"], ensure_ascii=False)],
+          [e["body"] for e in DEC if phrase in json.dumps(e["body"], ensure_ascii=False)])
+check("rule 3: his words about the mod on a plain note stay a decision",
+      any("chain through every vent" in (e["body"].get("said") or "") for e in DEC), [e["body"] for e in DEC])
+FW = F.get("finding:RIMMANDRAKE_WIDEN_FIXTURE_SCAN_FIVE_SLIPPED") or {}
+cw = on("RIMMANDRAKE_WIDEN_FIXTURE_SCAN_FIVE_SLIPPED", ("finding.claimed_fixed",))
+check("rule 4: a blind fault's text is its defect line, its accept the would_pass",
+      "fixed tag list" in (FW.get("text") or "") and "lane2/planted" not in (FW.get("text") or "") and
+      "turns T1 red by name" in (FW.get("accept") or ""), FW)
+check("rule 4: a fixed fault's claim says what changed, never 'fixed by the blind cycle's fixer'",
+      cw and "element's text and tag" in cw[0]["body"]["text"] and "blind cycle's fixer" not in cw[0]["body"]["text"],
+      [e["body"] for e in cw])
+ff = F.get("finding:" + RF) or {}
+check("rule 4: a ticket's proposed fix is its Fix: line and its accept its criterion, never found-by or Producer prose",
+      (ff.get("proposed_fix") or "").startswith("record which faction") and "selftest_theft.py" in (ff.get("accept") or "")
+      and not re.search(r"found-by|Producer", (ff.get("proposed_fix") or "") + (ff.get("accept") or "")), ff)
+fk = F.get("finding:" + RK) or {}
+ck = on(RK, ("finding.claimed_fixed", "finding.verified"))
+check("rule 4: the acceptance test a ledger-only ticket filed is its accept",
+      "runner.py --scenes sc_storeroom" in (fk.get("accept") or ""), fk)
+check("rule 4: a close's claim names the cause it fixed, with no 'Closed at X by Y:' history",
+      ck and "MassScale caps" in ck[0]["body"]["text"] and not ck[0]["body"]["text"].startswith("Closed at"),
+      [e["body"] for e in ck])
+check("rule 4: no proposed fix or claim anywhere is found-by provenance",
+      not [e for e in bevs if re.match(r"(?i)\s*found[- ]by\b", e["body"].get("proposed_fix") or "") or
+           "blind cycle's fixer" in (e["body"].get("text") or "")])
+check("rule 5: comma-listed bars split into the locked bar ids", FW.get("bars") == ["bar_a", "bar_b"], FW)
+cut = [(e["subject"], f) for e in bevs for f in TEXTS if "[…]" in str(e["body"].get(f) or "") or
+       "[...]" in str(e["body"].get(f) or "")]
+check("rule 6: no text, fix, accept or test is cut with a '[…]' marker", not cut, cut)
+fl = F.get("finding:" + RL) or {}
+check("rule 6: a long spec is fitted to whole sentences", (fl.get("proposed_fix") or "").endswith("valve opens.") and
+      len(fl.get("proposed_fix") or "") <= 320, fl.get("proposed_fix"))
+
+# the per-ticket reading (claude -p, faked here): its words replace the sentence rules', never its state; a bad bar or
+# path is dropped; the dollar bound stops new batches; the committed readings carry a re-run without --read
+import modledger_reader as R                                     # noqa: E402
+CALLS = []
+
+
+def fake_call(prompt, model):
+    CALLS.append(prompt)
+    ans = {}
+    for n in re.findall(r"=== TICKET (\S+)", prompt):
+        ans[n] = {"defect": "Reading: %s is wrong" % n, "proposed_fix": "Reading: change the thing", "accept":
+                  "selftest_read.py exit 0", "class": "problem", "bars": ["bar_a", "not_a_bar"], "changed": None,
+                  "causes_refuted": [{"text": "Reading: the DLL was not stale for %s" % n, "depends_on":
+                                      ["src/RimMandrake/NoSuchMod/X.cs"]}],
+                  "traps": [{"text": "Reading: T_GEOM reads seven scenes only (%s)" % n, "where": "T_GEOM"}]}
+    return ans, 0.5
+
+
+R.CALL = fake_call
+rr = B.run(root, MOD, read=True, budget_usd=0.6)
+rnote = [n for n in rr["notes"] if n.startswith("reader:")]
+check("reader: the dollar bound stops new batches (one 0.50 batch under a 0.60 bound) and the spend is reported",
+      len(CALLS) == 1 and rnote and "$0.50 spent" in rnote[0], (len(CALLS), rnote))
+R.BATCH_CHARS_SAVED = R.BATCH_CHARS
+CALLS.clear()
+rr = B.run(root, MOD, read=True, budget_usd=100)
+evr = [e for e in M.read(root, MOD) if e["_shard"] == "BACKFILL"]
+Fr = M.reduce(M.read(root, MOD))["findings"]
+fr = Fr.get("finding:" + RC) or {}
+check("reader: a read ticket's defect, fix, accept and bars come from its reading; a bar not locked is dropped",
+      fr.get("text") == "Reading: %s is wrong" % RC and fr.get("accept") == "selftest_read.py exit 0" and
+      fr.get("bars") == ["bar_a"], fr)
+check("reader: a read ticket keeps its rimflow state and sha (a reading supplies words, never state)",
+      fr.get("status") == "claimed_fixed" and fr.get("code_sha") == "abcd0033", (fr, rr["refused"]))
+rc_ = [e for e in evr if "item:" + RC in e["evidence"] and e["kind"] in ("cause.refuted", "trap.noted")]
+check("reader: its ruled-out causes and traps are mined, a path that does not exist dropped from depends_on",
+      any(e["kind"] == "cause.refuted" and e["body"]["text"].startswith("Reading: the DLL") and
+          "NoSuchMod" not in json.dumps(e["body"]["depends_on"]) for e in rc_) and
+      any(e["kind"] == "trap.noted" and e["body"]["where"] == "T_GEOM" for e in rc_), [e["body"] for e in rc_])
+check("reader: the readings are committed beside the miner, one per ticket, with the record hash",
+      os.path.exists(B.readings_path(root, MOD)) and RC in B.load_readings(root, MOD) and
+      B.load_readings(root, MOD)[RC].get("hash"), B.readings_path(root, MOD))
+CALLS.clear()
+rr2 = B.run(root, MOD)
+check("reader: a re-run without --read keeps every read line (no call, nothing written or deleted)",
+      not CALLS and rr2["written"] == 0 and rr2["deleted"] == 0, rr2)
 
 shutil.rmtree(root, ignore_errors=True)
 print("selftest_modledger_backfill: %d failure%s" % (len(FAIL), "" if len(FAIL) == 1 else "s"))
