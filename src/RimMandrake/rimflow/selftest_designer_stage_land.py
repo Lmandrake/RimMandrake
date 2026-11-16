@@ -134,9 +134,39 @@ def main():
         DS.charge(d, 5, "helper", "selftest")
         got = DS.land_state(d, "rm-role-designer-13")
         check("a later land publishes", got.startswith("PUBLISHED"), got)
-        check("a peer's README edit and the Designer's record.json stay off origin/main",
-              on_origin(clone, "README") == "fixture" and on_origin(clone, REL + "/record.json") is None,
-              (on_origin(clone, "README"), on_origin(clone, REL + "/record.json")))
+        # RIMMANDRAKE_LAND_DESIGNER_WORK_HARVEST_STRANDED_TWICE: the run's own work in its concept folder lands too
+        # (stage 3's tree/sheet/scenes and stage 4's exam.json sat in the bench clone while origin/main read them absent)
+        check("a peer's README edit outside the concept folder stays off origin/main",
+              on_origin(clone, "README") == "fixture", on_origin(clone, "README"))
+        check("the Designer's record.json, written in its concept folder, lands", on_origin(clone, REL + "/record.json")
+              == "{}", on_origin(clone, REL + "/record.json"))
+        # 4b. nested exam evidence and a modified tracked file land; a file the clone did not change is never reverted
+        os.makedirs(os.path.join(d, "exam_evidence"), exist_ok=True)
+        with open(os.path.join(d, "exam.json"), "w") as f:
+            f.write('{"exam": 1}\n')
+        with open(os.path.join(d, "exam_evidence", "reader_one.verdicts.json"), "w") as f:
+            f.write("[]\n")
+        with open(os.path.join(d, "plan.md"), "w") as f:
+            f.write("old plan\n")
+        git(clone, "add", REL + "/plan.md")
+        git(clone, "commit", "-q", "-m", "plan as this clone has it")
+        git(clone, "push", "-q", "origin", "HEAD:main")
+        peer = os.path.join(tmp, "peer")
+        subprocess.run(["git", "clone", "-q", origin, peer], check=True, capture_output=True)
+        for k, v in (("user.name", "selftest"), ("user.email", "selftest@example.invalid")):
+            git(peer, "config", k, v)
+        with open(os.path.join(peer, REL, "plan.md"), "w") as f:
+            f.write("newer plan from a peer\n")
+        git(peer, "commit", "-q", "-am", "a peer's newer plan")
+        git(peer, "push", "-q", "origin", "HEAD:main")
+        got = DS.land_state(d, "rm-role-designer-14")
+        check("work products land", got.startswith("PUBLISHED"), got)
+        check("exam.json and nested exam_evidence/ land",
+              on_origin(clone, REL + "/exam.json") == '{"exam": 1}' and
+              on_origin(clone, REL + "/exam_evidence/reader_one.verdicts.json") == "[]",
+              (on_origin(clone, REL + "/exam.json"), on_origin(clone, REL + "/exam_evidence/reader_one.verdicts.json")))
+        check("a concept file this clone left unchanged is not reverted over a peer's newer copy",
+              on_origin(clone, REL + "/plan.md") == "newer plan from a peer", on_origin(clone, REL + "/plan.md"))
         # 5. a folder that is not design/concepts/<Mod> of a clone never pushes (selftest fixtures elsewhere)
         loose = os.path.join(tmp, "design/concepts/Loose")
         DS.init(loose, "Loose", "X", cap=1000, reserve=10)

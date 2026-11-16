@@ -2044,12 +2044,28 @@ def state_paths(d, repo):
     out += [os.path.join(rel, PARK_FILE)] if os.path.isfile(os.path.join(d, PARK_FILE)) else []
     out += sorted(os.path.join(rel, n) for n in os.listdir(d) if re.match(r"result(\..+)?\.json$", n))
     gone = os.path.join(rel, "result.json")
+    import subprocess
     if gone not in out:
-        import subprocess
         r = subprocess.run(["git", "-C", repo, "ls-tree", "--name-only", "origin/main", "--", gone],
                            capture_output=True, text=True, timeout=120)
         if r.returncode == 0 and r.stdout.strip():
             out.append(gone)
+    # RIMMANDRAKE_LAND_DESIGNER_WORK_HARVEST_STRANDED_TWICE: the run's own work in the folder (record, tree, sheet,
+    # scenes, exam.json, exam_control/, exam_evidence/ ...) lands too, but only files this clone changed (modified or
+    # untracked, on disk): a file it left alone is never reverted over a peer's newer copy on origin/main
+    r = subprocess.run(["git", "-C", repo, "status", "--porcelain", "-z", "--untracked-files=all", "--", rel],
+                       capture_output=True, text=True, timeout=120)
+    fields = r.stdout.split("\0") if r.returncode == 0 else []
+    i = 0
+    while i < len(fields):
+        e, i = fields[i], i + 1
+        if len(e) < 4:
+            continue
+        if e[0] in "RC" or e[1] in "RC":
+            i += 1                         # -z: a rename or copy is "XY dest\0source"; the source field is skipped
+        p = e[3:]
+        if p not in out and os.path.isfile(os.path.join(repo, p)):
+            out.append(p)
     return out
 
 
@@ -2078,7 +2094,8 @@ def land_state(d, run, timeout=120):
     last = (st.get("results") or [{}])[-1]
     mod = st.get("mod") or os.path.basename(os.path.abspath(d))
     msg = ("Designer: %s stage %s %s (run %s), harvest lands its own state\n\n"
-           "Landed by designer_stage.land_state (DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE): stage.json, park_summary.md and result files only."
+           "Landed by designer_stage.land_state (DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE): stage.json, park_summary.md, result files "
+           "and the concept-folder files this clone changed."
            % (mod, last.get("stage", st.get("stage")), last.get("outcome", st.get("status")), run))
     p = subprocess.run([LAND, "-m", msg] + paths, cwd=repo, capture_output=True, text=True, timeout=timeout,
                        env=dict(os.environ, LAND_REPO=repo))
