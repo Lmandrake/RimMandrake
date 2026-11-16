@@ -749,6 +749,20 @@ def _run_live(args, B, tap):
     V.row(rows, "R3_sway_proxy", "PASS" if on_ok and s_off.get("swayDraws") == 0 and s_off.get("swayReason") == "setting off" else "FAIL", "MOD",
           {"on": {k: s_on.get(k) for k in ("swayReason", "swayDraws", "wind", "plantSwayPref")},
            "off": {k: s_off.get(k) for k in ("swayReason", "swayDraws")}})
+    # R3b (owner 2026-11-16, "They're too stiff."): each hanging-wire look draws when chosen; the pins and the shape are
+    # offline (AerialSelfTest.SwayLooks: attachment error 0 at every frame); this row proves the setting reaches the draw
+    looks = {}
+    B.ap("set:sway=CPU")
+    for lk in ("Pendulum", "Rope", "Gust"):
+        B.ap("set:swayLook=%s" % lk)
+        time.sleep(0.6)
+        c = B.ap("census")
+        looks[lk] = {k: c.get(k) for k in ("swayLook", "swayDraws", "swayReason", "wind")}
+    B.ap("set:swayLook=Rope")
+    B.ap("set:sway=Auto")
+    calm = all((v.get("swayReason") or "") == "no wind" for v in looks.values())
+    drew = all(v.get("swayLook") == k and (v.get("swayDraws") or 0) > 0 for k, v in looks.items())
+    V.row(rows, "R3b_sway_looks_each_draw", "UNMEASURED" if calm else ("PASS" if drew else "FAIL"), "MOD" if not calm else "SITE", looks)
 
     # ---------------------------------------------------------------- M19: the one-way power tap
     tb = [B.call("jawa/build_batch", ops="Battery:%d,%d,0" % HBAT, faction="hostile"),

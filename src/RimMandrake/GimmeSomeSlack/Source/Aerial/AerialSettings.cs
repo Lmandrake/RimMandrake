@@ -31,6 +31,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static int maxStrands = 3;
         public static WireSwayMode sway = WireSwayMode.Auto;
         public static float swayStrength = 1f;
+        /// <summary>How a pole wire swings (owner 2026-11-16, "too stiff"; AerialMath.SwayPose): Rope by default.</summary>
+        public static WireSwayLook swayLook = WireSwayLook.Rope;
         /// <summary>An explosion whose radius reaches a span's ground line cuts it.</summary>
         public static bool explosionsCut = true;
         /// <summary>A kinetic blast (Kinetic Arms' push wave) swings the spans it reaches; it never cuts them (owner Q3).</summary>
@@ -87,6 +89,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref maxStrands, "maxStrands", 3);
             Scribe_Values.Look(ref sway, "sway", WireSwayMode.Auto);
             Scribe_Values.Look(ref swayStrength, "swayStrength", 1f);
+            Scribe_Values.Look(ref swayLook, "swayLook", WireSwayLook.Rope);
             Scribe_Values.Look(ref explosionsCut, "explosionsCut", true);
             Scribe_Values.Look(ref kineticSway, "kineticSway", true);
             Scribe_Values.Look(ref tapsEnabled, "tapsEnabled", true);
@@ -115,6 +118,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             maxStrands = 3;
             sway = WireSwayMode.Auto;
             swayStrength = 1f;
+            swayLook = WireSwayLook.Rope;
             explosionsCut = true;
             kineticSway = true;
             tapsEnabled = true;
@@ -185,9 +189,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 list.GapLine();
             }
 
-            if (Group(list, "Wire sway", RimMandrake.Shared.SettingScope.Now, new[] { "sway", "swayStrength" }))
+            if (Group(list, "Wire sway", RimMandrake.Shared.SettingScope.Now, new[] { "sway", "swayStrength", "swayLook" }))
             {
-            using (Dependent(list, "sway", "swayStrength"))
+            using (Dependent(list, "sway", "swayStrength", "swayLook"))
             {
             list.Label("Wire sway in the wind");
             foreach (WireSwayMode m in Enum.GetValues(typeof(WireSwayMode)))
@@ -195,6 +199,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     sway = m;
             list.Label("Sway strength: " + swayStrength.ToString("0.0") + "x");
             swayStrength = list.Slider(swayStrength, 0f, 2f);
+            list.Label("How the wires swing");
+            foreach (WireSwayLook k in Enum.GetValues(typeof(WireSwayLook)))
+                if (list.RadioButton(k == WireSwayLook.Pendulum ? "   Pendulum (the sag swings out and back as one)" :
+                                     k == WireSwayLook.Rope ? "   Rope (default: the belly wanders, the wire flexes)" :
+                                     "   Gust (leans downwind, ripples travel along the span)", swayLook == k))
+                    swayLook = k;
             }
                 list.GapLine();
             }
@@ -278,7 +288,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// under the sway mode: a kinetic swing reads it with sway off. Clamp chain: tapsEnabled -> tapRate, tapEvents;
         /// tapEvents -> theftGoodwill (TapEvents.Raise -> PowerTheftConsequences.OnDrained) -> per-day loss, sight range.</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
-            .Declare("enabled", "sag", "autoLink", "dripLoops", "sway", "swayStrength", "fallenWireIgnites",
+            .Declare("enabled", "sag", "autoLink", "dripLoops", "sway", "swayStrength", "swayLook", "fallenWireIgnites",
                      "wireDownAlert", "cutWiresOnOwnerChange", "tapsEnabled")
             .Declare("tapsEnabled", "tapRate", "tapEvents")
             .Declare("tapEvents", "theftGoodwill")

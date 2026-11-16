@@ -3,6 +3,7 @@
 // design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 2. Called from Program.Main.
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using RimMandrake.GimmeSomeSlack.Aerial;
 
@@ -31,6 +32,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Strands();
             Shadow();
             Sway();
+            SwayLooks();
             Links();
             Spanning();
             Removal();
@@ -225,6 +227,88 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             C(Math.Abs(AerialMath.Sway(0.5, 3.3, 0.0, 0.12, 7)) < 1e-9, "no wind, no sway");
             C(AerialMath.Sway(0.5, 3.3, 1.0, 0.12, 7) == AerialMath.Sway(0.5, 3.3, 1.0, 0.12, 7), "sway deterministic in (t, time, seed)");
             C(AerialMath.Sway(0.5, 3.3, 1.0, 0.12, 7) != AerialMath.Sway(0.5, 3.3, 1.0, 0.12, 8), "seed changes the phase");
+        }
+
+        /// <summary>RIMMANDRAKE_CLEAN_SLACK_SWAY_POLE_WIRES_ONLY_NOT_CONDUIT (owner 2026-11-16: "They're too stiff."): the three
+        /// hanging-wire looks (tools/pole_sway_sweep.py) pin both ends, swing the belly most, swing longer spans wider and
+        /// slower, lag each strand slightly, follow the wind, beat today's amplitude, and cost no more per sample than today.</summary>
+        private static void SwayLooks()
+        {
+            var looks = (WireSwayLook[])Enum.GetValues(typeof(WireSwayLook));
+            C(looks.Length == 3, "three sway looks");
+            double[] spans = { 5, 10, 18 }, winds = { 0.15, 0.9, 2.2 };
+            foreach (WireSwayLook look in looks)
+            {
+                double endErr = 0;
+                var peak = new Dictionary<(double, double), double>();
+                var period = new Dictionary<double, double>();
+                foreach (double L in spans)
+                    foreach (double w in winds)
+                    {
+                        double sag = 0.06 * L, pk = 0, prev = 0; int zc = 0;
+                        double mean = 0; var series = new List<double>();
+                        for (int f = 0; f < 600; f++)
+                        {
+                            double time = f / 30.0;
+                            for (int si = 0; si < 3; si++)
+                            {
+                                var fr = AerialMath.SwayFrame(look, time, w, 1.0, sag, 7, si, 60, 60);
+                                AerialMath.SwayPose(fr, 0.0, out double l0, out double r0);
+                                AerialMath.SwayPose(fr, 1.0, out double l1, out double r1);
+                                endErr = Math.Max(endErr, Math.Max(Math.Abs(l0) + Math.Abs(r0), Math.Abs(l1) + Math.Abs(r1)));
+                            }
+                            var f1 = AerialMath.SwayFrame(look, time, w, 1.0, sag, 7, 1, 60, 60);
+                            AerialMath.SwayPose(f1, 0.5, out double lm, out double rm);
+                            pk = Math.Max(pk, Math.Sqrt(lm * lm + rm * rm));
+                            series.Add(lm);
+                        }
+                        mean = series.Average();
+                        for (int i = 1; i < series.Count; i++) if (Math.Sign(series[i] - mean) != Math.Sign(series[i - 1] - mean)) zc++;
+                        peak[(L, w)] = pk;
+                        if (w == 0.9) period[L] = zc > 1 ? 2 * 20.0 / zc : 99;
+                    }
+                C(endErr == 0, look + ": both attachment points stay exactly pinned at every frame (error " + endErr + ")");
+                C(peak[(18, 0.9)] > peak[(10, 0.9)] && peak[(10, 0.9)] > peak[(5, 0.9)], look + ": longer spans swing wider (" +
+                  peak[(5, 0.9)].ToString("0.00") + " / " + peak[(10, 0.9)].ToString("0.00") + " / " + peak[(18, 0.9)].ToString("0.00") + ")");
+                C(period[18] > period[5] * 1.3, look + ": longer spans swing slower (period " + period[5].ToString("0.0") + " s short, " + period[18].ToString("0.0") + " s long)");
+                C(peak[(10, 2.2)] > peak[(10, 0.9)] && peak[(10, 0.9)] > peak[(10, 0.15)], look + ": calm < breezy < storm");
+                // owner: today's sway "is too stiff" -- AerialMath.Sway peaks at 0.12 x 1.3 x min(wind, 1.5) / 1.5 whatever the span
+                double today = 0;
+                for (int f = 0; f < 600; f++) today = Math.Max(today, Math.Abs(AerialMath.Sway(0.5, f / 30.0, 0.9, 0.12, 7)));
+                C(peak[(10, 0.9)] > 2 * today, look + ": a breezy 10-cell span swings over twice today's " + today.ToString("0.000") + " (" + peak[(10, 0.9)].ToString("0.000") + ")");
+                // the belly moves most: displacement grows from the insulator to mid-span
+                double q1 = 0, q2 = 0, q3 = 0;
+                for (int f = 0; f < 600; f++)
+                {
+                    var fr = AerialMath.SwayFrame(look, f / 30.0, 0.9, 1.0, 0.6, 7, 1, 60, 60);
+                    AerialMath.SwayPose(fr, 0.1, out double a1, out double b1); q1 = Math.Max(q1, Math.Abs(a1) + Math.Abs(b1));
+                    AerialMath.SwayPose(fr, 0.25, out double a2, out double b2); q2 = Math.Max(q2, Math.Abs(a2) + Math.Abs(b2));
+                    AerialMath.SwayPose(fr, 0.5, out double a3, out double b3); q3 = Math.Max(q3, Math.Abs(a3) + Math.Abs(b3));
+                }
+                C(q1 < q2 && q2 < q3, look + ": displacement grows toward the belly (" + q1.ToString("0.000") + " < " + q2.ToString("0.000") + " < " + q3.ToString("0.000") + ")");
+                // neighbouring strands move nearly, not exactly, in step
+                double sxy = 0, sxx = 0, syy = 0, diff = 0;
+                for (int f = 0; f < 600; f++)
+                {
+                    AerialMath.SwayPose(AerialMath.SwayFrame(look, f / 30.0, 0.9, 1.0, 0.6, 7, 0, 60, 60), 0.5, out double x, out _);
+                    AerialMath.SwayPose(AerialMath.SwayFrame(look, f / 30.0, 0.9, 1.0, 0.6, 7, 1, 60, 60), 0.5, out double y, out _);
+                    sxy += x * y; sxx += x * x; syy += y * y; diff = Math.Max(diff, Math.Abs(x - y));
+                }
+                double corr = sxy / Math.Sqrt(Math.Max(1e-12, sxx * syy));
+                C(corr > 0.85 && diff > 1e-3, look + ": neighbouring strands slightly out of phase (correlation " + corr.ToString("0.000") + ")");
+                var z0 = AerialMath.SwayFrame(look, 3.3, 0.0, 1.0, 0.6, 7, 1, 60, 60); AerialMath.SwayPose(z0, 0.5, out double zl, out double zr);
+                var s0 = AerialMath.SwayFrame(look, 3.3, 0.9, 0.0, 0.6, 7, 1, 60, 60); AerialMath.SwayPose(s0, 0.5, out double sl, out double sr);
+                C(zl == 0 && zr == 0 && sl == 0 && sr == 0, look + ": no wind or strength 0, no sway");
+            }
+            // frame cost: one span's samples per frame, against today's AerialMath.Sway per sample (best of 5)
+            double Bench(Func<double> body) { double best = double.MaxValue; for (int r = 0; r < 5; r++) { var sw = Stopwatch.StartNew(); double acc = body(); sw.Stop(); best = Math.Min(best, sw.Elapsed.TotalMilliseconds + acc * 0); } return best; }
+            double oldMs = Bench(() => { double acc = 0; for (int f = 0; f < 4000; f++) for (int si = 0; si < 3; si++) for (int i = 0; i <= 40; i++) acc += AerialMath.Sway(i / 40.0, f / 60.0, 0.9, 0.12, 7 + si * 977); return acc; });
+            foreach (WireSwayLook look in looks)
+            {
+                double newMs = Bench(() => { double acc = 0; for (int f = 0; f < 4000; f++) for (int si = 0; si < 3; si++) { var fr = AerialMath.SwayFrame(look, f / 60.0, 0.9, 1.0, 0.6, 7, si, 60, 60); for (int i = 0; i <= 40; i++) { AerialMath.SwayPose(fr, i / 40.0, out double l, out double r); acc += l + r; } } return acc; });
+                C(newMs <= oldMs * 1.5, look + ": per-frame sway cost " + newMs.ToString("0.0") + " ms vs today's " + oldMs.ToString("0.0") + " ms (bound 1.5x)");
+                Console.WriteLine("  sway look " + look + ": " + newMs.ToString("0.0") + " ms vs today " + oldMs.ToString("0.0") + " ms per 4000 frames x 3 strands x 41 samples");
+            }
         }
 
         // ------------------------------------------------------------------ link rules

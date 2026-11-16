@@ -1023,6 +1023,7 @@ SETTINGS = [
     ("aerial", "keepWiresOnGravship", "True", "wires on a launched gravship stay strung", "no station (needs a gravship launch)"),
     ("aerial", "sway", "Auto", "wire sway: Auto / CPU (always) / Off", "6, 21 (unpause)"),
     ("aerial", "swayStrength", "1.0", "wire sway strength", "6, 21"),
+    ("aerial", "swayLook", "Rope", "how pole wires swing: Pendulum, Rope or Gust", "6, 21"),
     ("aerial", "explosionsCut", "True", "explosions cut wires", "13"),
     ("aerial", "kineticSway", "True", "Kinetic Arms push waves swing wires, never cut", "no station (needs a Kinetic Arms push wave)"),
     ("aerial", "shockReach", "All", "live lines shock whoever crosses them: All (floor cord ends too) / Only downed lines / None", "29"),

@@ -273,7 +273,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                       ",\"shockCellList\":[" + string.Join(",", audit.cells.Take(200).Select(c => "[" + c.x + "," + c.z + "]")) + "]");
             sb.Append(",\"netRepairs\":" + comp.netRepairs + ",\"watchdogRuns\":" + comp.watchdogRuns + ",\"roofCuts\":" + comp.roofCuts +
                       ",\"explosionCuts\":" + comp.explosionCuts + ",\"kineticSways\":" + comp.kineticSways + ",\"autoLinks\":" + comp.autoLinks + ",\"orphanRelinks\":" + comp.orphanRelinks + ",\"liveWirePriced\":" + RM_LiveWirePathCost.CountOn(map) + ",\"postfixAppends\":" + AerialPowerScope.appendedCalls);
-            sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) +
+            sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) + ",\"swayLook\":" + S(AerialSettings.swayLook.ToString()) +
                       ",\"topDraws\":" + comp.lastTopDraws + ",\"dropDraws\":" + comp.lastDropDraws + ",\"look\":" + S(AerialMaterials.Look) +
                       ",\"spanPath\":" + S(AerialMaterials.SpanPath) + ",\"spanWidth\":" + F(AerialMaterials.SpanWidth) +
                       ",\"poleTex\":{" + string.Join(",", AerialMaterials.PoleTex.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" + ",\"hookupCablesPrinted\":" + ConduitVisuals.HookupCablesPrinted + ",\"glowDraws\":" + comp.lastGlowDraws + ",\"spanMeshes\":" + comp.SpanMeshCount);

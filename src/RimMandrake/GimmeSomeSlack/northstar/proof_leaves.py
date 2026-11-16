@@ -112,6 +112,7 @@ ROW_LEAVES = dict(_MATRIX, **{
     "M15f_restring_joined_run_one_look": ["restring_cut_span", "four_looks_one_run"],
     "M15d_diagonal_cut_halves_meet_on_line": ["fallen_span_on_ground"],
     "R3_sway_proxy": ["settings_switch_cleanly", "spans_above_everything"],
+    "R3b_sway_looks_each_draw": ["settings_switch_cleanly", "spans_above_everything"],
     "M19_tap_drains_one_way": ["tap_steals_and_costs_goodwill"],
     "M19n_taps_off_control": ["tap_steals_and_costs_goodwill", "settings_switch_cleanly"],
     "M19m_tap_mixed_net_connects_own_conduit": ["tap_steals_and_costs_goodwill", "drawing_true_to_grid"],

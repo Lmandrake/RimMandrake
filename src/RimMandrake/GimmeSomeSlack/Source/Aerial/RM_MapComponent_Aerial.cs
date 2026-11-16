@@ -601,7 +601,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     if ((sway || swung) && AerialKinds.Sways(a.Kind))   // phase 4: a pipe span is rigid, it never sways
                     {
                         float amp = 0.12f * Mathf.Max(AerialSettings.swayStrength, 0.25f);
-                        m.Sway(sway ? time : 0f, sway ? wind : 0f, sway ? 0.12f * AerialSettings.swayStrength : 0f, swung ? age : -1, bs.kick, bs.side, amp);
+                        m.Sway(sway ? time : 0f, sway ? wind : 0f, sway ? AerialSettings.swayStrength : 0f, swung ? age : -1, bs.kick, bs.side, amp);
                         lastSwayDraws++;
                     }
                     else m.Rest();
@@ -1004,6 +1004,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public List<AerialMath.SpanStrand> ends = new List<AerialMath.SpanStrand>();
         private readonly List<double> ts = new List<double>();
         private readonly List<double[]> strandTs = new List<double[]>();
+        /// <summary>Each strand's mid-span sag (cells) and the span midpoint: the hanging-wire sway reads them (AerialMath.SwayFrame).</summary>
+        private readonly List<double> strandSag = new List<double>();
+        private double midX, midZ;
         private Vector3[] verts;
         private P2 dir;
         private float y;
@@ -1021,6 +1024,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Vector3 ba = a.BasePoint, bb = b.BasePoint;
             double len = Math.Max(0.01, Vector3.Distance(ba, bb));
             m.dir = new P2((bb.x - ba.x) / len, (bb.z - ba.z) / len);
+            m.midX = (ba.x + bb.x) / 2; m.midZ = (ba.z + bb.z) / 2;
             // B23: one wire per insulator, each ending exactly on an insulator tip of each pole
             // phase 4: per kind (a pipe span: one strand, its own sag, no drip loop)
             AerialLineKind kind = a.Kind;
@@ -1032,6 +1036,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     ? AerialMath.SpanCurveDrip(s.A, s.B, sagK * s.SagMul, AerialSettings.DripDepth, AerialSettings.DripReach)
                     : AerialMath.SpanCurve(s.A, s.B, sagK * s.SagMul);
                 m.strands.Add(c);
+                m.strandSag.Add(Math.Max(0, sagK * s.SagMul) * P2.Dist(s.A, s.B));
                 // sway pins by the projected fraction (drip-loop samples are not uniform in t)
                 m.strandTs.Add(c.Select(q => AerialMath.ProjectT(s.A, s.B, q)).ToArray());
             }
@@ -1078,28 +1083,32 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             atRest = true;
         }
 
-        /// <summary>Wind sway plus, while <paramref name="blastAge"/> is in [0, BlastSwayTicks), a kinetic blast's swing.</summary>
-        public void Sway(float time, float wind, float amp, int blastAge, double kick, int side, float blastAmp)
+        /// <summary>Wind sway (the chosen AerialSettings.swayLook at <paramref name="strength"/>) plus, while
+        /// <paramref name="blastAge"/> is in [0, BlastSwayTicks), a kinetic blast's swing.</summary>
+        public void Sway(float time, float wind, float strength, int blastAge, double kick, int side, float blastAmp)
         {
-            WriteVerts(time, wind, amp, blastAge, kick, side, blastAmp);
+            WriteVerts(time, wind, strength, blastAge, kick, side, blastAmp);
             mesh.vertices = verts;
             atRest = false;
         }
 
-        /// <summary>Ribbon vertices; each sample displaced perpendicular to the span in the ground plane by AerialMath.Sway.</summary>
-        private void WriteVerts(float time, float wind, float amp, int blastAge = -1, double kick = 0, int side = 0, float blastAmp = 0f)
+        /// <summary>Ribbon vertices; each sample swung as a hanging wire (AerialMath.SwayPose: sideways along the span's ground
+        /// normal, rising toward the chord as it swings out), the insulator samples (t 0 and 1) never moved.</summary>
+        private void WriteVerts(float time, float wind, float strength, int blastAge = -1, double kick = 0, int side = 0, float blastAmp = 0f)
         {
             var n = new P2(-dir.Z, dir.X);
             int v = 0;
+            WireSwayLook look = AerialSettings.swayLook;
             for (int si = 0; si < strands.Count; si++)
             {
                 List<P2> s = strands[si];
+                var fr = AerialMath.SwayFrame(look, time, strength > 0 ? wind : 0, strength, si < strandSag.Count ? strandSag[si] : 0, seed, si, midX, midZ);
                 for (int i = 0; i < s.Count; i++)
                 {
                     double t = si < strandTs.Count && i < strandTs[si].Length ? strandTs[si][i] : i / (double)(s.Count - 1);
-                    double off = amp > 0 ? AerialMath.Sway(t, time, wind, amp, seed + si * 977) : 0;
+                    AerialMath.SwayPose(fr, t, out double off, out double rise);
                     if (blastAge >= 0) off += AerialMath.BlastSway(t, blastAge, kick, side, blastAmp, seed + si * 977);
-                    P2 p = new P2(s[i].X + n.X * off, s[i].Z + n.Z * off);
+                    P2 p = new P2(s[i].X + n.X * off, s[i].Z + n.Z * off + rise);
                     P2 prev = i > 0 ? s[i - 1] : s[i], next = i < s.Count - 1 ? s[i + 1] : s[i];
                     double tx = next.X - prev.X, tz = next.Z - prev.Z, tl = Math.Sqrt(tx * tx + tz * tz);
                     if (tl < 1e-9) { tx = dir.X; tz = dir.Z; tl = 1; }

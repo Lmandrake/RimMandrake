@@ -9,6 +9,9 @@ using System.Linq;
 
 namespace RimMandrake.GimmeSomeSlack.Aerial
 {
+    /// <summary>The pole-wire sway look (owner 2026-11-16 review matrix): Pendulum, Rope or Gust (AerialMath.SwayPose).</summary>
+    public enum WireSwayLook { Pendulum, Rope, Gust }
+
     /// <summary>A ground-plane point: X east, Z north (RimWorld's x / z).</summary>
     public struct P2
     {
@@ -203,6 +206,79 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             double phi = 2 * Math.PI * U(seed, 3), phi2 = 2 * Math.PI * U(seed, 4);
             double wave = (Math.Sin(w * timeSec + phi) + 0.3 * Math.Sin(2.3 * w * timeSec + phi2)) / 1.3;
             return amp * Math.Min(wind, 1.5) / 1.5 * Droop(t) * wave * 1.3;
+        }
+
+        // ------------------------------------------------------------------ hanging-wire sway (owner 2026-11-16: "They're too stiff.")
+        // Sweep and rationale: tools/pole_sway_sweep.py. Today's Sway moves one fixed shape by one scalar (0.12 cells whatever the
+        // span), at one frequency, each strand on its own random clock. A hanging wire instead swings its sag about the chord like
+        // a pendulum: at angle th the belly is d sin(th) to the side and d cos(th) below the chord (d = sag x Droop(t)), so it
+        // also RISES toward the chord as it swings out; longer, slacker spans swing wider (d) and slower (w ~ 1/sqrt(sag)).
+
+        /// <summary>Swing amplitude at a breezy wind (0.9), degrees; storm (2.2) is ~1.7x, calm (0.15) ~0.34x.</summary>
+        public const double SwayDegBreezy = 22;
+        /// <summary>Swing period of a 10-cell span at default sag (0.6 cells), game seconds.</summary>
+        public const double SwayPeriodMid = 2.6;
+        /// <summary>Phase lag of each strand behind the last (rad): neighbours move nearly, not exactly, in step.</summary>
+        public const double SwayStrandLag = 0.15;
+
+        /// <summary>Swing amplitude (rad) for a wind speed (clamped 0..2.5) and the swayStrength setting.</summary>
+        public static double SwayAngle(double wind, double strength)
+        {
+            double w = Math.Min(Math.Max(wind, 0), 2.5);
+            if (w <= 0 || strength <= 0) return 0;
+            return SwayDegBreezy * Math.PI / 180 * Math.Pow(w / 0.9, 0.6) * strength;
+        }
+
+        /// <summary>Pendulum angular frequency (rad / game second) for a strand of this mid-span sag (cells).</summary>
+        public static double SwayOmega(double sag) => 2 * Math.PI / (SwayPeriodMid * Math.Sqrt(Math.Max(sag, 0.05) / 0.6));
+
+        /// <summary>Map-wide gust envelope 0.6..1.0: a slow front drifting across the map (mx, mz = span midpoint).</summary>
+        public static double Gust(double timeSec, double mx, double mz)
+        {
+            double u = 0.21 * timeSec - 0.015 * mx - 0.011 * mz;
+            return 0.8 + 0.12 * Math.Sin(2 * Math.PI * u) + 0.08 * Math.Sin(2 * Math.PI * 1.7 * u + 1.3);
+        }
+
+        /// <summary>One strand's sway state for one frame (computed once per strand, then read per sample by SwayPose).</summary>
+        public struct SwayStrandFrame
+        {
+            public WireSwayLook Look;
+            public double Sag, SinTh, CosTh, RopeAmp, Amp, Lean, WaveArg;
+            public bool Still;
+        }
+
+        public static SwayStrandFrame SwayFrame(WireSwayLook look, double timeSec, double wind, double strength, double sag, int seed, int si, double mx, double mz)
+        {
+            var f = new SwayStrandFrame { Look = look, Sag = sag };
+            double a0 = SwayAngle(wind, strength);
+            if (a0 <= 0 || sag <= 0) { f.Still = true; return f; }
+            double a = a0 * Gust(timeSec, mx, mz), w = SwayOmega(sag), ph = 2 * Math.PI * U(seed, 3) + si * SwayStrandLag;
+            double th = a * Math.Sin(w * timeSec + ph);
+            f.SinTh = Math.Sin(th); f.CosTh = Math.Cos(th);
+            if (look == WireSwayLook.Rope) f.RopeAmp = 0.325 * a * sag * Math.Sin(2.1 * w * timeSec + 1.7 * ph + 0.9);
+            if (look == WireSwayLook.Gust) { f.Lean = 1.1 * a0 * Math.Min(Math.Max(wind, 0), 2.5) / 2.5; f.Amp = 0.7 * a; f.WaveArg = w * timeSec + ph; }
+            return f;
+        }
+
+        /// <summary>
+        /// The sample at span fraction t: <paramref name="lat"/> along the span's ground normal and <paramref name="rise"/> toward
+        /// the chord (screen +z), both exactly 0 at t = 0 and t = 1 (the insulators) and with no wind. Pendulum: the sag swings as
+        /// one hanging shape. Rope: plus an S-shaped second mode at twice the frequency, so the belly wanders. Gust: the swing
+        /// travels along the span and the wire leans downwind with the wind, shivering about the lean.
+        /// </summary>
+        public static void SwayPose(in SwayStrandFrame f, double t, out double lat, out double rise)
+        {
+            lat = 0; rise = 0;
+            if (f.Still || t <= 0 || t >= 1) return;
+            double sp = Math.Sin(Math.PI * t), d = f.Sag * sp * sp;
+            if (f.Look == WireSwayLook.Gust)
+            {
+                double th = f.Lean + f.Amp * Math.Sin(f.WaveArg - 2.2 * t);
+                lat = d * Math.Sin(th); rise = d * (1 - Math.Cos(th));
+                return;
+            }
+            lat = d * f.SinTh; rise = d * (1 - f.CosTh);
+            if (f.Look == WireSwayLook.Rope) lat += f.RopeAmp * Math.Sin(2 * Math.PI * t) * sp;
         }
 
         // ------------------------------------------------------------------ link rules (design 2.2.5, 2.4)
