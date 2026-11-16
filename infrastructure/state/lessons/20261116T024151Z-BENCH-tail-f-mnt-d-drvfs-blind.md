@@ -1,0 +1,1 @@
+tail -F on /mnt/d (drvfs) is blind: a Monitor on the Conductor log delivered 0 events in 30 min while 6 DETACHED RUN ENDED lines landed (2026-11-15 6:10-6:40 PM PST). Watch a drvfs file with a stat-size poll loop, never tail -F/inotify.
