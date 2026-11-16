@@ -1,0 +1,32 @@
+{
+ "aliases": [],
+ "budget": {
+  "cap": 4000000,
+  "charges": [],
+  "reserve": 60000,
+  "spent": 0
+ },
+ "draft_input": {
+  "by": "Codex (GPT), lane E of codex_experiment_20261115, checked by BENCH (/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/FeverWood.check.json)",
+  "path": "/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/FeverWood.designer_draft.md",
+  "sha256": "446e4de3db376da3b1220978e7e5cac6a6831431428332a127085148b4814833",
+  "use": "input to verify, never the output"
+ },
+ "history": [
+  {
+   "at": "2026-11-16T01:27:12Z",
+   "stage": 0,
+   "what": "init",
+   "why": "stage 0, budget 4000000 (reserve 60000), runner codex"
+  }
+ ],
+ "item": "RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND",
+ "mod": "FeverWood",
+ "recovery": [],
+ "results": [],
+ "runner": "codex",
+ "running": null,
+ "schema": 1,
+ "stage": 0,
+ "status": "ready"
+}
