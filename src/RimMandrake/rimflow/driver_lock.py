@@ -502,7 +502,7 @@ def heartbeat(path, identity):
         return False
 
 
-def release(path, seat, identity, force=None, spare_owner=False, owner_heartbeat=None):
+def release(path, seat, identity, force=None, spare_owner=False, owner_heartbeat=None, expect=None):
     """spare_owner: a forced release still refuses a held OWNER lock (owner_held); owner_heartbeat: the heartbeat of the
     lock of his a caller's verdict measured - any other OWNER lock was not cleared. Both are judged INSIDE the fence, on
     the lock about to be removed (a check on an earlier unfenced read could delete a newer OWNER hold)."""
@@ -511,15 +511,18 @@ def release(path, seat, identity, force=None, spare_owner=False, owner_heartbeat
         return {"ok": True, "why": "already free"}      # nothing to fence (and no fence to make if the dir is gone)
     try:
         with _fence(path):
-            return _release(path, seat, identity, force, spare_owner, owner_heartbeat)
+            return _release(path, seat, identity, force, spare_owner, owner_heartbeat, expect)
     except FenceBusy as e:
         return {"ok": False, "why": "driver lock contended: %s" % e}
 
 
-def _release(path, seat, identity, force, spare_owner=False, owner_heartbeat=None):
+def _release(path, seat, identity, force, spare_owner=False, owner_heartbeat=None, expect=None):
     cur, problem = _read(path)
     if cur is None and not problem:
         return {"ok": True, "why": "already free"}
+    if expect is not None and cur != expect:          # a forced release frees only the very lock its caller judged
+        return {"ok": False, "why": "driver lock changed under the release (now %s generation %s): nothing released"
+                % ((cur or {}).get("seat"), (cur or {}).get("generation"))}
     if cur is not None and cur.get("seat") == "OWNER" and seat != "OWNER" \
             and not same_process(cur["identity"], identity):
         if spare_owner and owner_held(cur):

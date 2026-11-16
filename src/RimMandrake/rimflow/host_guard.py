@@ -178,14 +178,34 @@ def _measures_owner():
     return local_machine() == _model().DEFAULT_BRIDGE_HOST
 
 
-def _owner_measured(holds):
-    """-> (takeable, text): his rule, measured here. An unreadable ledger is UNMEASURED, which refuses."""
+def _ledger():
+    """-> the replayed ledger, or None (UNMEASURED: an unreadable ledger is never "he was quiet")."""
+    led = os.environ.get("RIMFLOW_LEDGER")       # a redirected test ledger is the ledger, never production's
     try:
-        evs = _model().read()
-    except Exception as e:             # LedgerError, an unreadable shard: never "he was quiet"
+        return _model().read(led) if led else _model().read()
+    except Exception as e:             # LedgerError, an unreadable shard
         sys.stderr.write("host_guard: ledger unreadable for his rule: %s\n" % e)
-        evs = None
-    return owner_interaction.measure(evs, holds)
+        return None
+
+
+def _owner_measured(holds, evs=False):
+    """-> (takeable, text): his rule, measured here. An unreadable ledger is UNMEASURED, which refuses."""
+    return owner_interaction.measure(_ledger() if evs is False else evs, holds)
+
+
+def owner_released(cur, evs):
+    """-> why his driver lock `cur` is no longer his, or None: its holder process is gone AND he deliberately released
+    his hold after the lock was acquired (owner_interaction.his_release). A live holder stays his whatever was said."""
+    if not cur or cur.get("seat") != "OWNER" or evs is None:
+        return None
+    alive, how = driver_lock._alive(cur)
+    if alive:
+        return None
+    ev = owner_interaction.his_release(evs, cur.get("acquired"), _model().DEFAULT_BRIDGE_HOST)
+    if ev is None:
+        return None
+    words = ev.get("ownerSaid") or ev.get("byCard") or "by his own hand"
+    return "he released his hold at %s (%s) and %s" % (ev.get("ts"), words, how)
 
 
 def _owner_gate(cur, seat, identity, owner_cleared):
@@ -193,8 +213,12 @@ def _owner_gate(cur, seat, identity, owner_cleared):
     if not cur or cur.get("seat") != "OWNER" or seat == "OWNER" or \
             driver_lock.same_process(cur.get("identity"), identity):
         return None, owner_cleared, None
-    if _measures_owner():
-        ok, text = _owner_measured([("his guard lock's heartbeat", cur.get("heartbeat"))])
+    if _measures_owner():              # his release, like his interactions, is measured on Archmagi only
+        evs = _ledger()
+        released = owner_released(cur, evs)
+        if released:
+            return None, released, cur.get("heartbeat")
+        ok, text = _owner_measured([("his guard lock's heartbeat", cur.get("heartbeat"))], evs)
         if not ok:
             return "the OWNER holds this lock: %s" % text, None, None
         return None, text, cur.get("heartbeat")

@@ -3425,12 +3425,38 @@ def _bridge_give(args, seat, w, holder):
     return 0
 
 
-def _driver_release(seat, force=None):
-    """Free the process-keyed driver lock if THIS process holds it (or force). Never silent when it stays held."""
+def _his_dead_lock(seat):
+    """-> {force, expect} when this release is HIS deliberate one (his words, his card, or his own hands) and the
+    Archmagi driver lock is his with its holder process gone: his release frees it ("... or I deliberately release
+    it", owner by card 2026-10-30; RIMMANDRAKE_FREE_DEAD_OWNER_DRIVER_LOCK_BLOCKS_EVERY_TAKE). Else {}: a live holder,
+    a seat's lock, or a release that carries no decision of his (--per-ruling, --why) frees nothing here."""
+    dl = _archmagi_lock_path()
+    if seat != "OWNER" or not dl:
+        return {}
+    probe = {"seat": "OWNER", "event": "bridge", "state": "released"}
+    for attr, field in (("OWNER_SAID", "ownerSaid"), ("BY_CARD", "byCard"), ("PER_RULING", "perRuling"),
+                        ("AGENT_WHY", "why")):
+        if getattr(model, attr, ""):
+            probe[field] = getattr(model, attr)
+    hands = owner_interaction.agent_hands(_role_file_seat())
+    if hands:
+        probe["ranBy"] = hands
+    if not (any(probe.get(f) for f in owner_interaction.HIS_WORDS) or owner_interaction.is_his_act(probe)):
+        return {}
+    cur, problem = driver_lock._read(dl)
+    if problem or not cur or cur.get("seat") != "OWNER" or driver_lock._alive(cur)[0]:
+        return {}
+    words = probe.get("ownerSaid") or probe.get("byCard") or "by his own hand"
+    return {"force": "the OWNER released his hold (%s); its holder process is gone" % words, "expect": cur}
+
+
+def _driver_release(seat, force=None, expect=None):
+    """Free the process-keyed driver lock if THIS process holds it (or force). Never silent when it stays held.
+    expect: the lock a forced release judged; any other lock found inside the fence is left alone."""
     dl = _archmagi_lock_path()
     if not dl:
         return
-    r = driver_lock.release(dl, seat, driver_lock.my_identity(), force=force)
+    r = driver_lock.release(dl, seat, driver_lock.my_identity(), force=force, expect=expect)
     if not r["ok"]:
         print("⚠️  %s - the driver lock stays; another take is refused while its holder process lives" % r["why"])
     return r
@@ -3539,7 +3565,7 @@ def _bridge_release_write(seat, w, holder):
     if crossed:
         ev["override"] = "released the bridge out from under %s" % holder
     _refuse_before_lock(ev)
-    failed = _driver_release_failed(_driver_release(seat))
+    failed = _driver_release_failed(_driver_release(seat, **_his_dead_lock(seat)))
     if failed:                         # never "released" over an enforcing lock that may still be ours
         die("bridge NOT released: the driver lock did not come free (%s).\n  nothing written: the ledger still "
             "shows %s holding it; retry  rimflow bridge release" % (failed, holder or "nobody"))
@@ -3683,6 +3709,10 @@ def _driver_owner_gate(seat, evs):
     if state == "FREE" or (state in ("HELD", "STALE") and st.get("seat") != "OWNER"):
         return None, None
     his = state in ("HELD", "STALE")
+    cur = driver_lock._read(dl)[0] if his else None
+    released = host_guard.owner_released(cur, evs) if cur and cur.get("heartbeat") == st.get("heartbeat") else None
+    if released:                       # "... or I deliberately release it": his released hold, its process gone
+        return None, {"text": released, "heartbeat": cur.get("heartbeat")}
     verdict = _owner_verdict([("his driver lock", st.get("heartbeat"))] if his else [], evs)
     if not verdict[0]:
         return _owner_refusal(verdict).replace(

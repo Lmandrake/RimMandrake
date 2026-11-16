@@ -75,6 +75,28 @@ def is_his_act(ev):
     return ev.get("seat") == "OWNER" or str(ev.get("override") or "").startswith("the OWNER ")
 
 
+HIS_WORDS = ("ownerSaid", "byCard")          # a relayed release that carries HIS decision; perRuling/why carry ours
+
+
+def his_release(evs, since, default_host):
+    """Pure. -> the `released` event by which he deliberately let go of his hold on the default bridge at or after
+    `since` (his driver lock's `acquired`), when it is his latest bridge act there; else None. Deliberate: his words
+    (ownerSaid), his card (byCard) or his own hands (is_his_act). The other half of his rule ("45 minutes after my last
+    interaction, or I deliberately release it", owner by card 2026-10-30): RIMMANDRAKE_FREE_DEAD_OWNER_DRIVER_LOCK_
+    BLOCKS_EVERY_TAKE - his released hold's dead driver lock refused every take while he kept chatting."""
+    t0 = _epoch(since) if since else 0.0
+    if not t0:
+        return None
+    last = None
+    for ev in evs or ():
+        if ev.get("event") == "bridge" and ev.get("seat") == "OWNER" and \
+                (ev.get("host") or default_host) == default_host and _epoch(ev.get("ts")) >= t0:
+            last = ev
+    if last is None or last.get("state") != "released":
+        return None
+    return last if (any(last.get(f) for f in HIS_WORDS) or is_his_act(last)) else None
+
+
 def agent_hands(role_seat=None):
     """-> the seat whose shell is running this ("BENCH", "AGENT" for a Claude shell naming none), or "" for a plain
     terminal: his. Stamped as `ranBy` on what they write under his seat, and it keeps a bare `./bridge` run by an agent
