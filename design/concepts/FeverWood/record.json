@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "stage": 1,
-  "run": "rm-role-designercodex-1794804230",
+  "stage": 2,
+  "run": "rm-role-designercodex-1794805981",
   "grounded_at": "2026-11-16T02:22:44.174396+00:00",
   "source_revision": "95d37b04a86c8477e4c5280eaba0988bce259ac5",
   "scope": [
@@ -88,6 +88,89 @@
         "log.md#L1"
       ],
       "text": "The root prioritizes ordinary branch work and travel with water interruptions. It does not reduce or put up for removal any built capability. Rescuability, pool locality, saved memory and escaped-young maturity remain the existing delivery obligations and contradictions. Stage 2 must resolve core edges from evidence; no stage-2 disposition or flagship is granted by this run."
+    },
+    {
+      "id": "stage2_flagship",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "flagship": "branches_and_shore",
+      "text": "Flagship 1 is branches_and_shore: ordinary harvest/haul work between crown destinations, then real shore seizure and nearby-companion rescue; compare a distant helper from the same asserted start. Other features retain independent coverage.",
+      "source": "CONDUCTOR:1794806166917699063",
+      "basis_sources": [
+        "OWNER:1794374372850231423",
+        "CONDUCTOR:1794804413045937607"
+      ],
+      "evidence_against": [],
+      "review": {
+        "by": "/root/edge_review",
+        "verdict": "pass",
+        "why": "Directly demonstrates the November answers. No contrary evidence found; asking again is redundant. No live or first-touch certification."
+      }
+    },
+    {
+      "id": "stage2_chorus_contract",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "text": "Retain the existing working-crown ambient sound. It does not discharge individual calls from living birds, which thin with the actual population. The water warning hushes both, using the shared silence authority. Do not synthesize a chorus-level number or let an independent bird recording stand in for living calls. The October card contains no explicit owner reversal of the September population-dependent promise.",
+      "source": [
+        "CONDUCTOR:1794806166917699063",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:611",
+        "design/Jawa/worldbuilding/biomes/feverwood_bedazzle_review_2026-10-02.md:444"
+      ],
+      "authority_limit": "September quoted words and October card histories are documentary evidence, not newly recovered OWNER events. Sound separation and audibility remain unmeasured."
+    },
+    {
+      "id": "stage2_water_state_contract",
+      "speaker": "agent",
+      "text": "One aquifer does not imply every consequence has the same scope. Preserve map-wide adult eye victory and the existing map-wide adult suppression service. Porter anger and the November escaped-young intervention attach to their particular pool. Shared Tenant strikes must respect applicable adult defeat/chemical quiet and pool provocation. BestiaryEnabled retains its explicit narrow scope over limbs and the drive-off ladder; it is not a master switch for shared water hazards. Reload must preserve active consequences and obligations.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:160",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:176",
+        "OWNER:1794374372850231423",
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:31",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549",
+        "design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md:60"
+      ]
+    },
+    {
+      "id": "stage2_terrain_edges",
+      "speaker": "agent",
+      "text": "The branch home uses ordinary walk-on/off terrain, without climb points, lifts or asymmetric access rules. Routes must affect actual work. Marsh refusal and stilts remain. Preserve documented weight-scaled sink-mud with self/assisted escape and slow visible borer galleries; these are missing delivery, not fresh approval questions. No directed borer-control promise is added. Broken lootable mirror-side hives remain distinct from live reactive inland dungeons. Dynamic branch-lane movement stays later; the dismissed density split stays discharged.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:220",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:525",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:737",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:750",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:772",
+        "design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md:214"
+      ]
+    },
+    {
+      "id": "stage2_material_rule",
+      "speaker": "agent",
+      "text": "Ammeth, sodderel and varnoth were explicitly stripped of wood by the later size rule; the plant-economy decision keeps those defs harvest-free and adds no replacement product. Their older construction-material descriptions must be reconciled. Zero yield alone is not a missing wood mechanic and gives no authority to restore logs or invent a replacement material.",
+      "source": [
+        "OWNER:1792259531032237213",
+        "design/RimMandrake/tree_burst_design_2026-10-17.md:228",
+        "design/RimMandrake/tree_burst_design_2026-10-17.md:231",
+        "design/RimMandrake/tree_burst_design_2026-10-17.md:232",
+        "design/RimMandrake/plant_economy_rule_2026-11-01.md:69",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:113"
+      ]
+    },
+    {
+      "id": "stage2_scope_and_proof_boundary",
+      "speaker": "agent",
+      "text": "No new owner question survives evidence review. Stage 2 settles intent, not implementation or experience acceptance. Every current built capability retains its existing scope and needs coverage; missing documentary mud/gallery/broken-hive obligations remain in the current planning account. No code, art, instrument, numerical tuning, waiver, north-star validation or first-touch certification is supplied. Geometry-only heat, native-water doctrine, accepted current art, no rite and later feature cuts retain their exact existing rulings.",
+      "source": [
+        "src/RimMandrake/rimflow/roles/designer.md",
+        "OWNER:1792410159136516913",
+        "OWNER:1793542983826647230",
+        "OWNER:1792374240816575285",
+        "OWNER:1790968079652964812",
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:29",
+        "CONDUCTOR:1794806166917699063"
+      ]
     }
   ],
   "asks": [
@@ -125,6 +208,39 @@
         "verdict": "struck",
         "why": "Do not send: the alternative names no concrete competing experience. November OWNER answers already select daily branch routes and occasional tentacle interruptions; documentary October context supplies remembering water. No evidence against the obvious root was found. The proposed root itself passed accuracy and scope review."
       }
+    },
+    {
+      "id": "a_chorus_source",
+      "text": "When birds leave the crown, which change should the player hear: their calls fade with them over the working crown ambience, or the bird chorus continues independently as part of that ambience?",
+      "decision": "Whether the living bird population audibly supplies the chorus alongside the already-built crown ambience, or whether the later build-first card superseded that population-dependent behavior.",
+      "about": [
+        "fw_chorus",
+        "fw_birds"
+      ],
+      "owner_cites": [],
+      "offers_removal": false,
+      "author": "rm-role-designercodex-1794805981",
+      "status": "struck",
+      "recommended_answer": "Living birds supply their own calls; the built crown ambience remains alongside, and the water warning hushes both.",
+      "evidence_against": [],
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:611",
+        "design/Jawa/worldbuilding/biomes/feverwood_bedazzle_review_2026-10-02.md:296",
+        "design/Jawa/worldbuilding/biomes/feverwood_bedazzle_review_2026-10-02.md:520",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:19",
+        "src/RimMandrake/FeverWood/Defs/SoundDefs/RM_FeverWoodSoundscape.xml:5"
+      ],
+      "candidate_evidence_rebutted": [
+        "September explicitly forbids a map-wide chorus and ties calls to living animals (fever_wood_deep_and_mud_2026-09-23.md:611). October row 0 explicitly includes bird calls in soundsAmbient, and the accepted build-first summary repeats crown ambient sound (feverwood_bedazzle_review_2026-10-02.md:296,520). This could be a later substitution, rather than an addition."
+      ],
+      "review": {
+        "by": "/root/edge_review",
+        "verdict": "struck",
+        "why": "The actual October card asks for working crown sound while landing previously decided work. It never explicitly reverses population-dependent individual calls. The claimed substitution appears in agent implementation specifications and retrospective summaries. Both promises can be delivered alongside each other without putting built ambience up for removal. A new owner choice would be redundant."
+      },
+      "resolution": "Never sent. Retain built crown ambience alongside individual living-bird calls; water-warning hush covers both. Individual calls and their hush remain delivery gaps, not accepted implementation.",
+      "answer_source": "CONDUCTOR:1794806166917699063",
+      "history_check": "askcheck returned HISTORY_NOT_CHECKED because no tree exists. Read current record and original stage-1 log excerpt; no sent ask or waiver on this decision exists."
     }
   ],
   "inventory": [
@@ -770,8 +886,10 @@
       ],
       "impl": "absent",
       "proof": "missing",
-      "scope": "open_question",
-      "search_scope": "Read brathek definition, food flag settings adapter and the living-bole regrowth path. Searched src for Brathek plus gallery/boring/wall damage callers and the roster row. Found the diet adapter and no live gallery-extension mechanism."
+      "scope": "approved",
+      "search_scope": "Read brathek definition, food flag settings adapter and the living-bole regrowth path. Searched src for Brathek plus gallery/boring/wall damage callers and the roster row. Found the diet adapter and no live gallery-extension mechanism.",
+      "scope_source": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md",
+      "scope_resolution": "Retain existing documented obligation for planning, agent reading stage2_terrain_edges. Not a new owner quotation, waiver or claim of implementation."
     },
     {
       "id": "fw_birds",
@@ -843,13 +961,15 @@
     },
     {
       "id": "fw_flora",
-      "text": "The planted free-tier flora roster, harvest products, fertility constraints and nubrith light exist. Plennith soil-making, cistrel potable supply, fed-pool corvath indication and skimmel sink-mud behavior lack functional local wiring. Ammeth, varnoth and sodderel also declare zero harvest and an empty harvestedThingDef despite their material-resource descriptions.",
+      "text": "The planted free-tier flora roster, existing harvest products, fertility constraints and nubrith light exist. Plennith soil-making, cistrel potable supply, fed-pool corvath indication and skimmel sink-mud behavior lack functional local wiring. Ammeth, varnoth and sodderel are deliberately harvest-free under the later global plant rules; their older material descriptions need alignment.",
       "source": [
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:134",
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:231",
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:388",
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:473",
-        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:263"
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:263",
+        "design/RimMandrake/plant_economy_rule_2026-11-01.md:69",
+        "OWNER:1792259531032237213"
       ],
       "impl": "present",
       "proof": "stale",
@@ -999,8 +1119,10 @@
       ],
       "impl": "absent",
       "proof": "missing",
-      "scope": "open_question",
-      "search_scope": "Searched all src C#/XML for SinkMud, sink-mud, MudStuck, mud stuck and StuckInMud, read all local terrain definitions and GroundRefusal, and checked the flora/fauna rosters. References describe the idea but provide no weight-based sticking or mud-rescue caller."
+      "scope": "approved",
+      "search_scope": "Searched all src C#/XML for SinkMud, sink-mud, MudStuck, mud stuck and StuckInMud, read all local terrain definitions and GroundRefusal, and checked the flora/fauna rosters. References describe the idea but provide no weight-based sticking or mud-rescue caller.",
+      "scope_source": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md",
+      "scope_resolution": "Retain existing documented obligation for planning, agent reading stage2_terrain_edges. Not a new owner quotation, waiver or claim of implementation."
     },
     {
       "id": "fw_abandoned_hives",
@@ -1011,8 +1133,10 @@
       ],
       "impl": "unknown",
       "proof": "missing",
-      "scope": "open_question",
-      "search_scope": "Read current FeverWood hive genstep and map component, searched src filenames and C#/XML for abandoned/broken/ruined hive profiles. A generic external ruin path has not been established."
+      "scope": "approved",
+      "search_scope": "Read current FeverWood hive genstep and map component, searched src filenames and C#/XML for abandoned/broken/ruined hive profiles. A generic external ruin path has not been established.",
+      "scope_source": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md",
+      "scope_resolution": "Retain existing documented obligation for planning, agent reading stage2_terrain_edges. Not a new owner quotation, waiver or claim of implementation."
     }
   ],
   "contradictions": [
@@ -1025,8 +1149,14 @@
         "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:100",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:584"
       ],
-      "status": "open",
-      "resolution_owner_needed": false
+      "status": "design_resolved",
+      "resolution_owner_needed": false,
+      "core": true,
+      "resolved": true,
+      "resolution": "The November answer controls: water arrival establishes a particular pool and starts a saved several-day interval; it must not immediately revive the adult. Only the right poison delivered to that pool is the specified post-arrival intervention. Deliberate peaceful return remains a different path. Exact days and alerts are engineering/tuning work, not another scope ask.",
+      "resolution_decision": "stage2_water_state_contract",
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_suppression_locality",
@@ -1038,7 +1168,14 @@
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549",
         "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:494"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "Preserve the existing adult suppression scope; add the pool identity needed for the November establishment intervention without treating unrelated young pools. Free-tier Uranium charges are built. Campaign dangerous radioactive salvage remains a required integration lane to establish in planning, not a license to substitute seep oil, toxin sealant, or an irradiated wreck hazard. No campaign reagent defName is approved here.",
+      "resolution_decision": "stage2_water_state_contract",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_tenant_authority",
@@ -1048,9 +1185,18 @@
         "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:204",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:478",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:589",
-        "design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md"
+        "design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md",
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:31"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "Applicable adult defeat and chemical suppression must mean the same quiet water through Tenant strikes and Watch encounters; pool provocation must affect real danger. Preserve the documented narrow bestiary-toggle boundary: independent shared hazards are not themselves a settings defect. Stage 3 must distinguish the toggle control from the quiet/defeat control.",
+      "resolution_decision": "stage2_water_state_contract",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "qualification": "Bestiary toggle independence is explicitly documented in RM_FeverWoodMod.cs; only disagreement about applicable defeat/suppression/provocation is the delivery conflict."
     },
     {
       "id": "gap_porter_locality",
@@ -1061,7 +1207,14 @@
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:403",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:531"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "The attacked pool loses porter service and becomes more hostile; an unrelated pool does not inherit that porter grievance. Use durable pool identity. Keep ordinary porter loot and the wider encounter ladder.",
+      "resolution_decision": "stage2_water_state_contract",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_tenant_persistence",
@@ -1071,7 +1224,14 @@
         "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:353",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "Reload is not rescue, forgiveness or a reroll of consequences. Preserve agitation and its expiry and each active rescue obligation; dead/removed victims must resolve cleanly. Other serialized queues are not evidence for this missing path.",
+      "resolution_decision": "stage2_water_state_contract",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_mirror_intel",
@@ -1081,7 +1241,14 @@
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_FeverWood_MirrorList.xml:31",
         "src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs:45"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "The list is acquired through its documented supply integration and snapshots independently agitated pools; using intelligence must not copy the reader state into unrelated water or change actual agitation. Distinguish snapshot staleness from current danger. Supply integration remains to locate/build, not delivered.",
+      "resolution_decision": "stage2_water_state_contract",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_chorus",
@@ -1093,7 +1260,14 @@
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:19",
         "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs:163"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "Fresh review struck the owner question. Retain built crown ambience alongside population-dependent individual calls; hush both for the water warning. Actual October card wording does not explicitly supersede individual calls. Current ambient substitution and biome-only hush remain implementation gaps.",
+      "resolution_decision": "stage2_chorus_contract",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_heat_fields",
@@ -1104,7 +1278,14 @@
         "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:185",
         "src/RimMandrake/FeverWood/validation.py:904"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "Apply the later geometry-only OWNER ruling. Remove incompatible biome heat fields and their validator expectation in the subsequent implementation plan; preserve ordinary ambient temperature and the shared heat system. No second heat model.",
+      "resolution_decision": "stage2_scope_and_proof_boundary",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_foul_proof",
@@ -1114,7 +1295,14 @@
         "src/RimMandrake/FeverWood/validation.py:1387",
         "src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:51"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": false,
+      "resolved": true,
+      "resolution": "Plan a registered-pool normal-designation/workgiver scene, with cancellation and disabled-mid-haul arms returning charges. A direct forced job lacking its required designation cannot accept this behavior. This is a proof repair under settled behavior.",
+      "resolution_decision": "stage2_scope_and_proof_boundary",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_lure_proof",
@@ -1125,7 +1313,14 @@
         "src/RimMandrake/FeverWood/validation.py:1694",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:151"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": false,
+      "resolved": true,
+      "resolution": "Observe either production-valid first faction and the actual delayed optional second wave; disabled second-wave staging cannot prove two fronts. Keep the no-second-arrival outcome as an intended wager.",
+      "resolution_decision": "stage2_scope_and_proof_boundary",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_lure_targeting",
@@ -1136,7 +1331,14 @@
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:225",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:238"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "Living bait draws approaching enemies away from ordinary colony work while it remains available; a lone successful front may look around afterward. Observe actual targeting and travel from separated approaches, not a first goto alone. Later theft/raidback cuts do not cancel the bait wager.",
+      "resolution_decision": "stage2_scope_and_proof_boundary",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_flora_roles",
@@ -1149,18 +1351,35 @@
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:473",
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:591"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": false,
+      "resolved": true,
+      "resolution": "Retain present flora and bough-soil. Plan separate checks/work for the documented plennith soil role, cistrel safe-water role, fed-pool corvath indication and skimmel mud interaction. Their descriptions cannot be accepted as functional wiring, and no new per-plant engine or duplicate water system is authorized. Use owning services.",
+      "resolution_decision": "stage2_terrain_edges",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_resource_plants",
       "speaker": "agent",
-      "text": "The draft misses an additional material-economy gap. Varnoth, ammeth and sodderel describe usable timber or panels but locally set harvestYield 0 and an empty harvestedThingDef. Any alternate source of those goods must be established before claiming these plants deliver them.",
+      "text": "Zero harvest on varnoth, ammeth and sodderel follows the later tree-size and plant-economy rulings. Older material-resource descriptions are stale. The original stage-0 inference of a missing harvest mechanic was too broad.",
       "source": [
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:113",
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:401",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:513"
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:513",
+        "OWNER:1792259531032237213",
+        "design/RimMandrake/plant_economy_rule_2026-11-01.md:69"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": false,
+      "resolved": true,
+      "resolution": "Correct the earlier inference: the later tree-size rule deliberately ends their wood yield, and plant-economy explicitly adds no replacement product. Align stale material descriptions and check absence of forbidden wood; do not restore harvests to satisfy superseded prose.",
+      "resolution_decision": "stage2_material_rule",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "previous_reading": "The draft misses an additional material-economy gap. Varnoth, ammeth and sodderel describe usable timber or panels but locally set harvestYield 0 and an empty harvestedThingDef. Any alternate source of those goods must be established before claiming these plants deliver them."
     },
     {
       "id": "gap_native_truce",
@@ -1172,7 +1391,14 @@
         "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:252",
         "design/Jawa/worldbuilding/biomes/the_fever_wood.md:131"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "Natives can drink their own environmental water under the later doctrine. Preserve the documented Tenant native exemption and apply consistent targeting at the snare path. Drinking support and hazard exemption require independent integration evidence; drinking success alone proves neither.",
+      "resolution_decision": "stage2_scope_and_proof_boundary",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_pool_reach",
@@ -1184,7 +1410,14 @@
         "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:193",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:214"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": true,
+      "resolved": true,
+      "resolution": "Pool size must affect actual danger reach, not only rare-set-piece eligibility. Compare differently sized connected pools at discriminating distances. Preserve nearby-companion rescue and avoid an undisclosed fixed-range substitute. The reach curve is tuning to measure.",
+      "resolution_decision": "stage2_water_state_contract",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_cut_text",
@@ -1196,7 +1429,14 @@
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Glomvar_Race.xml:24",
         "OWNER:1792410159136516913"
       ],
-      "status": "open"
+      "status": "design_resolved",
+      "core": false,
+      "resolved": true,
+      "resolution": "Align player-facing theft/heat and dormant glomvar text with the later cuts, geometry heat and retained definitions. No revival or additional art gate.",
+      "resolution_decision": "stage2_scope_and_proof_boundary",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     },
     {
       "id": "gap_fatal_limb_yield",
@@ -1209,8 +1449,15 @@
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_Sekkulaath_Tentacles.xml:55",
         "src/RimMandrake/FeverWood/validation.py:1123"
       ],
-      "status": "open",
-      "status_detail": "unmeasured quantity"
+      "status": "design_resolved",
+      "status_detail": "unmeasured quantity",
+      "core": false,
+      "resolved": true,
+      "resolution": "Require exact sever/fatal output accounting before alleging duplication. Ordinary severe damage, fatal limb damage and fatal eye damage expose different callback routes. Preserve the promised sever reward; current presence-only checks do not establish amounts.",
+      "resolution_decision": "stage2_scope_and_proof_boundary",
+      "resolution_owner_needed": false,
+      "delivery_status": "open_implementation_or_proof",
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
     }
   ],
   "failure_modes": [
@@ -1430,6 +1677,34 @@
         "CONDUCTOR:1794804413045937607"
       ],
       "finding": "Independently checked the draft root map against the November OWNER event, original documentary experience and current branch/rescue/persistence wiring. Adopted a synthesis with occasional water interruptions explicit; did not adopt the draft as authority. The draft root and proposed flagship had no owner approval. Root authority now comes only from the recorded Evidence-for-Ask call; flagship remains unresolved. The October documentary sentence stays distinct from an OWNER quotation and the DRAFT north-star stays DRAFT."
+    },
+    {
+      "id": "draft_stage2_chorus_question_struck",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:611",
+        "design/Jawa/worldbuilding/biomes/feverwood_bedazzle_review_2026-10-02.md:444",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:19",
+        "CONDUCTOR:1794806166917699063"
+      ],
+      "finding": "The draft suggests an owner question based on the later ambient summary. Reading the actual card and fresh review found no explicit reversal of living individual calls. Do not adopt the draft question: preserve ambience and deliver the missing population-dependent calls and hush. BENCH events corroborate the work order, not owner words approving substitution."
+    },
+    {
+      "id": "stage0_material_gap_corrected",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:113",
+        "design/RimMandrake/tree_burst_design_2026-10-17.md:228",
+        "design/RimMandrake/plant_economy_rule_2026-11-01.md:69",
+        "OWNER:1792259531032237213"
+      ],
+      "finding": "The external draft omitted zero-yield plants. Stage 0 noticed their descriptions but missed the later explicit stop-giving-wood rule in their own XML comments. Correct that inference here: this is stale description, not authority to restore wood or add panel products."
+    },
+    {
+      "id": "stage2_settings_boundary_corrected",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:31",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:204"
+      ],
+      "finding": "Neither the draft nor a broad reading of the earlier gap should turn the bestiary toggle into an all-water-danger switch. Its declared boundary preserves shared mirror hazards. Unifying applicable suppression and defeat is a separate obligation."
     }
   ],
   "neighbors": [
@@ -1603,7 +1878,8 @@
     ],
     "before_additional_design": true,
     "recovery": "Before any future persistent mutation, record scene-begin with the original save/settings/weather and a reload recovery path. Restore and scene-end, or explicitly scene-hold for owner_review.",
-    "status": "QUICK LOOK OFFERED before the stage-1 root decision; not run. This headless seat is forbidden to take the bridge, restart or deploy. No existing ready save is claimed."
+    "status": "QUICK LOOK OFFERED first in stages 1 and 2, not run. Headless BENCH cannot take the bridge, restart or deploy. Current experience remains unmeasured.",
+    "sound_extension": "In a disposable copy, listen at the same crown position with a living flock, then the flock absent, then a real sentinel up/down. Distinguish the ambient bed from per-animal calls and observe overlapping hush reasons. Label current substitution and missing living-call behavior; do not pretend the absent implementation is demonstrated."
   },
   "script_audit": {
     "source": [
@@ -2300,5 +2576,248 @@
       "measurement": "conservative estimate; exact reviewer usage unavailable",
       "charged_as": "review"
     }
+  },
+  "stage2_review": {
+    "by": "/root/edge_review",
+    "ask_verdict": "struck",
+    "flagship_verdict": "pass",
+    "source": "CONDUCTOR:1794806166917699063",
+    "why": "Full card context provides no owner reversal of individual living calls; promises coexist. November OWNER answers directly support branches_and_shore. No question sent.",
+    "usage": {
+      "weighted_tokens": 65000,
+      "measurement": "conservative reviewer estimate; exact usage unavailable",
+      "charged_as": "review"
+    },
+    "second_review": {
+      "verdict": "pass",
+      "why": "Later tree-size/plant-economy rules deliberately leave the three plants harvest-free. Bestiary toggle stays narrow. Map-wide adult suppression remains distinct from the pool-local young intervention. Campaign reagent mapping remains unfinished implementation work, with no invented substitute.",
+      "weighted_tokens": 15000,
+      "source": [
+        "OWNER:1792259531032237213",
+        "design/RimMandrake/plant_economy_rule_2026-11-01.md:69",
+        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:31",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml:5"
+      ]
+    }
+  },
+  "stage2_completion": {
+    "run": "rm-role-designercodex-1794805981",
+    "all_asks_disposed": true,
+    "sent_asks": [],
+    "core_intent_resolved": true,
+    "delivery_complete": false,
+    "owner_question_rounds": 0,
+    "review_rounds": 2,
+    "source": "CONDUCTOR:1794806166917699063",
+    "next_stage": "Write only via launcher. Preserve all delivery gaps in plan/scenes and exact inventory coverage. No builder admission beyond the concept item Preflight ceiling."
+  },
+  "stage2_edges": [
+    {
+      "id": "edge_home",
+      "core": true,
+      "disposition": "does",
+      "claim": "Actual branch routes govern ordinary jobs, using terrain-based crown access and the existing ground-construction constraint.",
+      "dumb_version": "Paint a branch texture over a normal freely buildable map.",
+      "counterexample": "A worker reaches food, stores and bedroom by an equally good marsh shortcut, so living above the water changes nothing.",
+      "other_side": "Vanilla jobs and pathing already do work and hauling; make the terrain layout matter to them rather than adding a parallel access system.",
+      "unsaid_sweep": "First build, routine haul/harvest, one route interrupted, and a 40-colonist routine expose construction, path choice, recovery and crowding separately.",
+      "does_not": "No climbing, lifts, forbidden raider access, crown/floor spawn-density system, or moving-lane mechanism in this version.",
+      "reject_implementation": "Jobs finish without using the claimed routes, ordinary heavy ground construction succeeds, or the demo relies on hand-teleported pawns.",
+      "finite_proof_variants": [
+        "Normal generated branch route and ground-refusal/stilt comparison",
+        "Shore interruption with an alternative branch route",
+        "Weight-scaled sink-mud self/assisted escape",
+        "Slow visible borer-gallery advance in inhabited living wood",
+        "A 40-colonist routine for contention; no invented performance threshold"
+      ],
+      "cost_assumption": "Agent assumption: detours, companion labour and construction choice buy safety; this is not free transport. Mud and galleries are documented missing work, not accepted scenes.",
+      "source": [
+        "OWNER:1794374372850231423",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:525",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:750",
+        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:127"
+      ],
+      "live_status": "unmeasured",
+      "leaf_grouping": "Argument only. Independent promises still need distinct leaves/scenes where the pruning test warrants them."
+    },
+    {
+      "id": "edge_water",
+      "core": true,
+      "disposition": "does",
+      "claim": "Water consequences are readable, persist, and agree about which creature or pool is quiet; nearby help has a fair rescue chance.",
+      "dumb_version": "Show a downed pawn beside water, then carry them, without any active strike deadline.",
+      "counterexample": "The watch announces lasting victory while the independent Tenant still takes a shore worker; a reload then erases another active rescue.",
+      "other_side": "Vanilla rescue supplies movement/carrying; the added obligation is the real timed shore consequence and consistent pool state.",
+      "unsaid_sweep": "Near versus far helper; differently sized pools at the same distance; attacked versus untouched porter pool; suppressed/defeated versus active water; mid-rescue reload expose different failures.",
+      "does_not": "No guaranteed rescue from across the settlement; no map-wide porter grievance or young-intervention effect; no assumption bestiary-off disables all shared hazards.",
+      "reject_implementation": "Rescue succeeds only with forced downing, larger pools have the same fixed reach, unrelated pools inherit anger, or reload forgives danger.",
+      "finite_proof_variants": [
+        "Real shore strike/snare with nearby helper and distant-helper comparison",
+        "Small/large disconnected pools at discriminating reach",
+        "Porter attacked at pool A, observe A and untouched B",
+        "Adult active/suppressed/defeated with real exposure and oil ignition controls",
+        "Mid-rescue and agitation reload; actual/native versus non-native targets"
+      ],
+      "cost_assumption": "Agent assumption: exposing a worker and assigning a companion costs useful labour. The current 2500 ticks is an engineering starting point, not a proven fairness bar.",
+      "source": [
+        "OWNER:1794374372850231423",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:289",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:353",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:160",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:220"
+      ],
+      "live_status": "unmeasured",
+      "leaf_grouping": "Argument only. Independent promises still need distinct leaves/scenes where the pruning test warrants them."
+    },
+    {
+      "id": "edge_warning",
+      "core": true,
+      "disposition": "does",
+      "claim": "Living birds supply population-dependent calls alongside crown ambience, and water hush has audible meaning; pool intelligence reports independently existing state.",
+      "dumb_version": "Play a permanent recording with bird sprites present and print a hush boolean.",
+      "counterexample": "The player sells every bird yet hears their whole chorus; using a mirror list makes a quiet pool agitated.",
+      "other_side": "Use the existing shared silence-reason authority and ordinary usable-item path; independent bird calls and a genuine snapshot must supply the promised difference.",
+      "unsaid_sweep": "Live flock/absent flock, sentinel up/down, overlapping water hush and a stale list after actual pool state changes expose distinct failures.",
+      "does_not": "No synthetic chorus-level mechanic, ambient substitution for live birds, or intelligence that edits actual danger. Built working-crown ambience remains.",
+      "reject_implementation": "An audio flag changes without audible change, bird removal has no population-specific sound effect, or the list repeats only the reader cell.",
+      "finite_proof_variants": [
+        "Same listener position with flock present/absent",
+        "Sentinel raised/withdrawn and overlapping hush reason",
+        "Two differently agitated pools, acquired list, then changed danger while snapshot ages"
+      ],
+      "cost_assumption": "Agent assumption: distinctive sparse calls and an audible hush must remain legible at colony scale. Current placeholder clips and tuning have not been listened to in this run.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:611",
+        "design/Jawa/worldbuilding/biomes/feverwood_bedazzle_review_2026-10-02.md:444",
+        "design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md:113",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs:163"
+      ],
+      "live_status": "unmeasured",
+      "leaf_grouping": "Argument only. Independent promises still need distinct leaves/scenes where the pruning test warrants them."
+    },
+    {
+      "id": "edge_captive",
+      "core": true,
+      "disposition": "does",
+      "claim": "The prison economy can fail into a delayed pool establishment, while deliberate return buys the separate promised gift.",
+      "dumb_version": "Spawn products and an escapee, then call the adult-install method immediately.",
+      "counterexample": "A young reaches water after the colony has won and the adult returns before the colony can obtain and use its right poison.",
+      "other_side": "The built tank feed/product clocks, armed escape path and peaceful-return/gift queues already distinguish upkeep, escape and deliberate release.",
+      "unsaid_sweep": "Neglect, damage/fatal destruction and deconstruction, armed versus wild/tamed arrival, several-day maturity, returned-young gift, failed placement and mid-obligation reload expose separate adapters.",
+      "does_not": "After escaped-young water arrival no alternative removal intervention is promised; unrelated pool poisoning is not the answer. No instant maturity or peaceful-return-as-escape shortcut.",
+      "reject_implementation": "No saved pool and deadline, immediate adult revival, poison at another pool succeeds, or return gifts duplicate/disappear on disable/reload.",
+      "finite_proof_variants": [
+        "Ordinary tank feed to product placement with actual resource deltas",
+        "Neglect/damage/fatal destruction versus deconstruction route",
+        "Armed escaped young arrives; compare right pool/right poison, other pool and no intervention over several days",
+        "Deliberate release and gift retry while disabled/blocked, reload before due",
+        "World tally and campaign display/goodwill consequences separately"
+      ],
+      "cost_assumption": "Agent assumption: feed, handler labour, keeping valuable young and dangerous rare treatment are the price of the bargain. Campaign reagent acquisition remains to establish; free Uranium does not prove campaign supply.",
+      "source": [
+        "OWNER:1794374372850231423",
+        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:475",
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:100",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:181",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml:5"
+      ],
+      "live_status": "unmeasured",
+      "leaf_grouping": "Argument only. Independent promises still need distinct leaves/scenes where the pruning test warrants them."
+    },
+    {
+      "id": "edge_bait",
+      "core": true,
+      "disposition": "does",
+      "claim": "Living bait is a wager: enemies approach it in separated fronts, the second arrives later if at all, and a lone winner can become dangerous.",
+      "dumb_version": "Spawn two groups simultaneously or order one goto toward a stake and call it sustained bait behavior.",
+      "counterexample": "The first lord abandons an available lure and assaults ordinary workers before reaching it, while the fixture observes only the other possible faction.",
+      "other_side": "Vanilla assault lords handle combat, but their first goto cannot prove the bait bargain. The real designator/downing/hauling path must supply eligible living bait.",
+      "unsaid_sweep": "Either first faction, second-wave delay/absence, unavailable opposite edge, locked release, bait lost and pending-wave reload expose distinct failures.",
+      "does_not": "No guarantee of a safe colony, guaranteed second rescue-wave, revived kurreth theft or raidback.",
+      "reject_implementation": "Two fronts appear together, bait is a corpse or fixture-only downed pawn, or expected-hostile filtering hides the alternate faction.",
+      "finite_proof_variants": [
+        "Normal eligible-bait designation/down/haul/release and invalid-bait controls",
+        "Either valid first faction then actual delayed second front from separated reachable approaches",
+        "Lone-front outcome and bait consumption/loss",
+        "Reload while a second wave is pending"
+      ],
+      "cost_assumption": "Agent assumption: a living victim, handling time and increased chance of attack are paid before knowing whether the second front comes.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:288",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:216",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:238"
+      ],
+      "live_status": "unmeasured",
+      "leaf_grouping": "Argument only. Independent promises still need distinct leaves/scenes where the pruning test warrants them."
+    },
+    {
+      "id": "edge_hive",
+      "core": false,
+      "disposition": "does",
+      "claim": "The built hive is a reactive dungeon, with a functioning farm and guarded deeper route; broken mirrorside hives stay a distinct exception.",
+      "dumb_version": "Line up ants, trigger an alarm and display a geometry readout without ever entering the generated dungeon.",
+      "counterexample": "Workers rally on a pad but resin never changes a retreat path in an actual chamber chain.",
+      "other_side": "Use physical rooms, real reachability and CreatureBehaviors alarms; no substitute painting or duplicate reaction engine.",
+      "unsaid_sweep": "Generated entrance-to-queen travel, farm return/nectar, guard feeder removal, sealing behind intrusion, and exceptional dead ruins expose different promises.",
+      "does_not": "No glomvar feeding parasite or retired theft/column quest; retained glomvar content still receives load/absence coverage.",
+      "reject_implementation": "A painted outline is called enclosed, no exit changes, the farm never functions, or dead hives replace the living dungeon.",
+      "finite_proof_variants": [
+        "Enter actual generated rooms, reach queen and retreat during alarm sealing",
+        "Farm worker-room herd return and nectar behavior",
+        "Deep-choke guard with worker present/absent and hunger state",
+        "Broken lootable near-mirror hive versus live inland hive"
+      ],
+      "cost_assumption": "Agent assumption: intrusion costs route certainty and retreat time; the dormant parasite is not restored to create that cost.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:125",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:59",
+        "src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs:29",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:772",
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:35"
+      ],
+      "live_status": "unmeasured",
+      "leaf_grouping": "Argument only. Independent promises still need distinct leaves/scenes where the pruning test warrants them."
+    },
+    {
+      "id": "edge_oil",
+      "core": false,
+      "disposition": "does",
+      "claim": "Oil-boil makes ordinary harvesting tempting while real ground-level ignition can flash exposed haze and wake eligible water.",
+      "dumb_version": "Invoke a proof helper for YieldNow and another for a spark, then claim the player harvest and projectile paths work.",
+      "counterexample": "The multiplier works in a helper but a real worker harvest does not; fire wakes chemically quiet water.",
+      "other_side": "Use ordinary harvest jobs, real fire/projectile/lightning entries and the shared Watch state, not a second water-danger model.",
+      "unsaid_sweep": "Actual harvest on/off, each distinct ignition hook, exposed ground versus raised/roofed/disconnected haze and active versus suppressed/defeated adult expose distinct seams.",
+      "does_not": "No invented biome heat offset, flowing-water or rain mechanism. Ignition does not override applicable chemical quiet or lasting defeat.",
+      "reject_implementation": "Only proof helpers work, raised/roofed exclusions are never staged, or restoration leaves fire, weather or encounter state behind.",
+      "finite_proof_variants": [
+        "Worker harvest with haze active/inactive",
+        "Real projectile, fire/burning pawn, explosion and lightning seams",
+        "Raised/roofed versus exposed connected/disconnected haze",
+        "Ignition beside adult active/suppressed/defeated water"
+      ],
+      "cost_assumption": "Agent assumption: the increased yield is bought with exposure and restricted safe use of sparks; current yield settings and ordinary heat need separate evidence.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:52",
+        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:190",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:478",
+        "OWNER:1792410159136516913"
+      ],
+      "live_status": "unmeasured",
+      "leaf_grouping": "Argument only. Independent promises still need distinct leaves/scenes where the pruning test warrants them."
+    }
+  ],
+  "stage2_supporting_obligations": {
+    "not_waived": [
+      "Every present inventory capability remains subject to showcase or cheaper ordinary coverage, including scanner optional checkout, wreck salvage, flora, guild refusals, fear-gated nectar, native ambush/diet/flight and settings.",
+      "Supporting obligations are not all new core leaves. Stage 3 must apply the pruning test and preserve coverage independently of leaf count."
+    ],
+    "parameters": "Rescue timing, exact several-day maturity, reach curve, gallery pace, call sparsity and product economy require provisional engineering/tuning and observation within existing promises. They are not reasons to re-ask settled intent.",
+    "observer": "Mechanical observations may establish state transitions. Player-facing route use, silence, fairness and full journeys also need a live observer. Enjoyment remains a prediction for owner confirmation.",
+    "shared_services": "Use existing EnvironmentalHazards, CreatureBehaviors, Wreckage, RimProperty and campaign ownership; do not duplicate their engines.",
+    "recovery": "Every future mutating scene needs asserted start, discriminating control, recorded scene-begin recovery and restore/scene-end or explicit owner_review hold. This run ran no live scene.",
+    "source": [
+      "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+      "src/RimMandrake/rimflow/roles/designer_scene_contract.md"
+    ]
   }
 }
