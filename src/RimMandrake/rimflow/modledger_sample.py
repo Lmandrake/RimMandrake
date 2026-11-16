@@ -59,7 +59,7 @@ def main(argv=None):
     root = o.root or M.default_root()
     pop, samples = draw(root, o.mod, o.seed, o.n)
     sha = subprocess.run(["git", "-C", root, "rev-parse", "--short=12", "HEAD"], capture_output=True,
-                         text=True).stdout.strip()
+                         text=True, timeout=60).stdout.strip()
     doc = {"mod": o.mod, "round": 2, "ledger": "design/concepts/%s/ledger/BACKFILL.jsonl" % o.mod, "ledger_sha": sha,
            "population": "BACKFILL events citing an item: ref (ticket-mined), in ledger read order",
            "population_size": len(pop), "seed": o.seed,
