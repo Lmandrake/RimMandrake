@@ -372,6 +372,7 @@ def main():
         refusals_record_result(tmp, repo, tree)
         refusals_showcases(repo, root_src, good, flood, tree)
         evidence_for_ask(repo, root_src, good, flood, tree)
+        evidence_for_ask_intake(tmp, repo)
         show = [{"id": "ladder_show", "scenes": ["climb"], "exercises": ["ladder"], "source": [root_src],
                  "decision": "d_flag"}]
         flag = {"id": "d_flag", "text": "judged first on the ladder climb", "source": [root_src], "speaker": "owner",
@@ -594,6 +595,59 @@ def main():
         shutil.rmtree(tmp, ignore_errors=True)
     print("FAILED %d: %s" % (len(FAILS), FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
+
+
+def evidence_for_ask_intake(tmp, repo):
+    """Cited delegated calls are read as CONDUCTOR, without consuming real owner replies that way."""
+    item = "INTAKE_DELEGATED_ITEM"
+    d = os.path.join(tmp, "design/concepts/Intake")
+    DS.init(d, "Intake", item)
+    root_src = repo.said("Intake lets a pawn climb out", item=item)
+    rec = {"root": {"text": "climb out", "source": root_src, "speaker": "owner"}}
+    put(d, "record.json", rec)
+    st = DS.load_state(d)
+    st["stage"] = 2
+    DS.write_json(DS.state_path(d), st)
+    DS.open_run(d, "intake-stage2", repo=repo.root)
+
+    repo.tsn += 1
+    tsn = str(repo.tsn)
+    with open(repo.owner, "a") as f:
+        f.write(json.dumps({"tsn": tsn, "id": item, "seat": "OWNER", "text": "Intake flagship: climb",
+                            "perRuling": DS.EVIDENCE_FOR_ASK,
+                            "why": "delegated: evidence-for-ask: Intake flagship climb"}) + "\n")
+    check("intake: an uncited delegated call stays unread", DS.owner_uncited(repo.root, item, d) == [tsn])
+    rec["decisions"] = [{"id": "flag", "text": "climb first", "speaker": "conductor",
+                         "source": "CONDUCTOR:" + tsn + "0", "delegated": "evidence-for-ask",
+                         "flagship": "climb"}]
+    put(d, "record.json", rec)
+    check("intake: a longer CONDUCTOR tsn does not consume a prefix", DS.owner_uncited(repo.root, item, d) == [tsn])
+    rec["decisions"][0]["source"] = "CONDUCTOR:" + tsn
+    put(d, "record.json", rec)
+    check("intake: a delegated call cited as CONDUCTOR leaves the unread feed",
+          DS.owner_uncited(repo.root, item, d) == [], DS.owner_uncited(repo.root, item, d))
+    result(d, "done")
+    ok, errs = DS.close_run(d, "intake-stage2", 10, repo=repo.root)
+    check("intake: stage 2 closes after recording its own delegated flagship without an OWNER citation",
+          ok and DS.load_state(d)["stage"] == 3, errs)
+
+    owner_src = repo.said("Intake owner correction must still be read", item=item)
+    rec["decisions"].append({"id": "correction", "source": owner_src.replace("OWNER:", "CONDUCTOR:")})
+    put(d, "record.json", rec)
+    check("intake: CONDUCTOR cannot consume a real owner reply",
+          DS.owner_uncited(repo.root, item, d) == [owner_src.split(":")[1]], DS.owner_uncited(repo.root, item, d))
+    rec["decisions"][-1]["source"] = owner_src
+    put(d, "record.json", rec)
+    check("intake: an OWNER citation still consumes a real reply", DS.owner_uncited(repo.root, item, d) == [])
+    repo.tsn += 1
+    bad_tsn = str(repo.tsn)
+    with open(repo.owner, "a") as f:
+        f.write(json.dumps({"tsn": bad_tsn, "id": item, "seat": "OWNER", "text": "Intake other ruling",
+                            "perRuling": DS.EVIDENCE_FOR_ASK, "why": "ordinary note, not delegated"}) + "\n")
+    rec["decisions"].append({"id": "other", "source": "CONDUCTOR:" + bad_tsn})
+    put(d, "record.json", rec)
+    check("intake: the ruling without a delegated reason is not consumed as CONDUCTOR",
+          DS.owner_uncited(repo.root, item, d) == [bad_tsn], DS.owner_uncited(repo.root, item, d))
 
 
 def evidence_for_ask(repo, root_src, good, flood, tree):

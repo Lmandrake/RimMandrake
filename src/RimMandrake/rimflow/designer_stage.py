@@ -155,14 +155,16 @@ def manifest_hashes(stage, path=MANIFEST):
 
 def owner_uncited(repo, item, d=None):
     """tsns of the OWNER.jsonl events naming this concept's item that neither record.json nor tree.json cites yet:
-    his words not yet taken in. A reply he gives adds one; the Designer citing it (OWNER:<tsn>) takes it out again,
-    so recording his answer inside a run is not a change underneath that run. None = the shard is unreadable."""
+    his words not yet taken in. A reply he gives adds one; the Designer citing it (OWNER:<tsn>) takes it out again.
+    Evidence-for-Ask calls share that shard but are cited as CONDUCTOR:<tsn>, never as his words. Recognize those
+    citations only for recorded delegated calls, so recording a call inside a run does not invalidate that run.
+    None = the shard is unreadable."""
     if not item:
         return None
     lines = CT.owner_lines(repo, clone_of(d))     # working trees AND origin/main: a stale clone is not his silence
     if lines is None:
         return None
-    tsns = []
+    tsns, delegated = [], set()
     for ln in lines:
         if item not in ln:
             continue
@@ -171,7 +173,10 @@ def owner_uncited(repo, item, d=None):
         except ValueError:
             continue
         if isinstance(ev, dict) and ev.get("tsn"):
-            tsns.append(str(ev["tsn"]))
+            tsn = str(ev["tsn"])
+            tsns.append(tsn)
+            if ev.get("perRuling") == EVIDENCE_FOR_ASK and str(ev.get("why") or "").startswith(EFA_WHY):
+                delegated.add(tsn)
     cited = ""
     for name in ("record.json", "tree.json"):
         try:
@@ -179,7 +184,8 @@ def owner_uncited(repo, item, d=None):
                 cited += f.read()
         except OSError:
             pass
-    return sorted(t for t in tsns if not re.search(r"OWNER:%s(?![0-9])" % re.escape(t), cited))
+    return sorted(t for t in tsns if not re.search(r"OWNER:%s(?![0-9])" % re.escape(t), cited)
+                  and not (t in delegated and re.search(r"CONDUCTOR:%s(?![0-9])" % re.escape(t), cited)))
 
 
 def clone_of(d):
