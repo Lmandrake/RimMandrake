@@ -474,6 +474,8 @@ def valid_reading(rd, root, locked):
         v = rd.get(k)
         if isinstance(v, str) and v.strip() and not NARRATION_RE.match(v.strip()) and not PROVENANCE_RE.match(v):
             out[k] = " ".join(v.split())
+    if len(out.get("proposed_fix") or "x" * 99) < M.config()["proposed_fix_min_chars"]:
+        out.pop("proposed_fix")              # a pointer, not a fix: the ticket's own words stand in
     if rd.get("class") in ("problem", "polish"):
         out["class"] = rd["class"]
     out["bars"] = [b for b in rd.get("bars") or [] if isinstance(b, str) and b in locked]

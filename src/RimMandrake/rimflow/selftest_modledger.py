@@ -17,6 +17,7 @@ a trap, a refuted cause or his answer; closed subjects are one line; notes are n
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -835,6 +836,18 @@ tfull = M.packet(r10, MOD, budget=100000)[1]["tokens"]
 tl, tli = M.packet(r10, MOD, budget=BUD2 + (tfull - bfi["tokens"]) // 2)
 check("long traps past the budget fit by the line rule: each trap listed, its text cut, not OVER BUDGET",
       not tli["over_budget"] and all(n in tl for n in TRP) and "TRAPHEAD_%s" % letters(59) in tl, (tli, tfull))
+# traps mined from tickets whose finding is claimed fixed (FlowWorks: 454 traps, 254 on closed findings): past every
+# cut above they collapse to a count with the search that lists them; traps on open work stay listed
+CTR = ["trap:claimed-trap-" + letters(i).lower() for i in range(80)]
+for i, nm in enumerate(CTR):
+    M.append(r10, MOD, "BACKFILL", "trap.noted", nm, body={"text": "CLAIMTRAP_%s " % letters(i) +
+             "the decider reads one row only and stays green " * 6, "where": "T_ROW"},
+             evidence=["path:x", "item:" + CLM[i % 40][len("finding:"):]], ts="2026-11-15T23:%02d:00Z" % (i % 60),
+             views=False, new_subject="a fixture backlog: one trap per letter")
+cl_, cli = M.packet(r10, MOD, budget=tli["budget"] + 120)
+check("traps on claimed-fixed findings collapse to a counted line past the budget; traps on open work stay listed",
+      not cli["over_budget"] and all(n in cl_ for n in TRP) and "CLAIMTRAP_" not in cl_ and
+      re.search(r"80 traps? on (?:closed|claimed)", cl_), (cli, [l for l in cl_.split("\n") if "traps" in l][:4]))
 
 # ---- the CLI the way it is used ------------------------------------------------------------------------------------
 env = dict(os.environ, RM_MODLEDGER_ROOT=r9)

@@ -1249,15 +1249,34 @@ def packet_from(mod, events, budget=None, stale=None):
         return "- %s: %s%s" % (k, cut(c["text"], 160 if lv == 7 else 80) if lv >= 7 else cl(c["text"], k),
                                (" (%s)" % on) if on else "")
 
+    trap_item = {}
+    for e in events:
+        if e.get("kind") == "trap.noted":
+            it = [r[5:] for r in e.get("evidence") or [] if isinstance(r, str) and r.startswith("item:")]
+            trap_item[e.get("subject")] = it[0] if it else None
+
+    def trap_on(k):
+        """-> the status of the finding a trap was mined from (its item: ref), or None."""
+        it = trap_item.get(k)
+        return (st["findings"].get("finding:" + it) or {}).get("status") if it else None
+
     def traps_block(lv):
         """The live traps and refuted causes, every one; past everything else at its briefest (lv 7, 8) each text is
-        cut (traps to 120 then 60 chars, causes to 160 then 80), the subject and where always kept."""
+        cut (traps to 120 then 60 chars, causes to 160 then 80), the subject and where always kept. Past that (lv 9,
+        10) the traps mined from a verified or withdrawn finding, then from a claimed-fixed one, are counted on one line
+        with the search that lists them; at lv 11 the traps left print their subject only."""
         n = 60 if lv >= 8 else 120
+        folded = ("verified", "withdrawn") + (("claimed_fixed",) if lv >= 10 else ()) if lv >= 9 else ()
+        shown = [(k, t) for k, t in traps if trap_on(k) not in folded]
         out = ["", "## Traps (%d) — what a reader would otherwise get wrong%s" % (
             len(traps), (" (each cut to %d chars; `modledger.py show --mod %s <subject>` for the whole)" % (n, mod))
             if lv >= 7 and traps else "")]
-        out += ["- %s (%s): %s" % (k, t.get("where") or "?", cut(t["text"], n) if lv >= 7 else cl(t["text"], k))
-                for k, t in traps]
+        out += ["- %s" % k if lv >= 11 else
+                "- %s (%s): %s" % (k, t.get("where") or "?", cut(t["text"], n) if lv >= 7 else cl(t["text"], k))
+                for k, t in shown]
+        if len(shown) < len(traps):
+            out.append("- %d traps on closed or claimed findings (%s), not listed: `modledger.py find --mod %s --class "
+                       "trap <words>`" % (len(traps) - len(shown), ", ".join(x for x in folded), mod))
         out += ["", "## Causes refuted (%d) — do not chase these again" % (len(refuted) - len(is_stale))]
         out += [cause_line(k, c, lv) for k, c in refuted if k not in is_stale]
         if is_stale:
@@ -1353,8 +1372,9 @@ def packet_from(mod, events, budget=None, stale=None):
         if lv >= 4:
             out.append("- his answers and the bars' texts in brief (cut at %d and 60 chars)" % (100 if lv >= 6 else 160))
         if lv >= 7 and (traps or refuted):
-            out.append("- traps and refuted causes in brief (texts cut at %s chars)" % ("60 and 80" if lv >= 8 else
-                                                                                       "120 and 160"))
+            out.append("- traps and refuted causes in brief (texts cut at %s chars)%s" % (
+                "60 and 80" if lv >= 8 else "120 and 160", "; traps on closed findings counted, not listed" if lv >= 9
+                else ""))
         if st["notes"]:
             out.append("- notes: %d, never printed here (`modledger.py find --mod %s <words>`)" % (len(st["notes"]), mod))
         if st["superseded"] or st["fenced"]:
@@ -1397,7 +1417,7 @@ def packet_from(mod, events, budget=None, stale=None):
                     break
             else:
                 if not done:
-                    for lv in (6, 7, 8):                  # last: the traps' and causes' texts in brief
+                    for lv in (6, 7, 8, 9, 10, 11):       # last: the traps' and causes' texts in brief, then counted
                         text, gone = render(k, lv, n_open)
                         if tokens(text) <= budget:
                             break
