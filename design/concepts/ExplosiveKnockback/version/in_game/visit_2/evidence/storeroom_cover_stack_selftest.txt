@@ -1,0 +1,16 @@
+# selftest_explosiveknockback_storeroom_bomb_pit.py at ff8b4a952e (fix) and with --src at base 50f3f64a87
+PASS P0 kernel constants read: baseCells=4.0 refMass=70.0 maxCells=6.0 wild=1.6 heavy=10.0
+PASS P1 the cover loop's log-count bound read: 75
+PASS P2 the open-pit stack (10 cloth, 4 kg): (-1, -2) -> (-2, -4)
+PASS P3 a floor stack's kernel plan ends on the covered near-row cell, with the cover built: from (1, -2), 61 logs, onto (2, -4)
+PASS P4 that stack's path crosses no colonist: [(2, -3), (2, -4)]
+PASS: 0 failed
+# base:
+PASS G Pit(O(s, -3, -5), 7, 2) builder/verdict carries Pit(O(s, -3, -5), 7, 2)
+PASS K2 pS (0,-1) thrown 3 south lands in the pit's near row: (0, -4) Pit
+PASS P0 kernel constants read: baseCells=4.0 refMass=70.0 maxCells=6.0 wild=1.6 heavy=10.0
+PASS P1 the cover loop's log-count bound read: 24
+PASS P2 the open-pit stack (10 cloth, 4 kg): (-1, -2) -> (-2, -4)
+FAIL P3 a floor stack's kernel plan ends on the covered near-row cell, with the cover built: none in 1..24 logs
+FAIL P4 that stack's path crosses no colonist: none
+FAIL: 2 failed
