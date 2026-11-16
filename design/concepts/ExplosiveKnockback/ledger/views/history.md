@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788} body_sha256=72634486bd7fb00ada354471c8113c1f2e823daa9f75a385c6d808cd3e281bd7 -->
-# ExplosiveKnockback — mod ledger history (441 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304} body_sha256=dad848bfbe5692629e32aa4da24f4e7d88dc511e0a6a064cd70bdba82a082779 -->
+# ExplosiveKnockback — mod ledger history (443 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -440,5 +440,7 @@
 - 2026-11-16T11:59:18Z DISPATCH#14 session.id session v0.1.0: 
 - 2026-11-16T12:02:19Z DISPATCH#15 lease.grant lease v0.1.0: 
 - 2026-11-16T12:02:19Z DISPATCH#16 run.start run v0.1.0: 
+- 2026-11-16T12:05:07Z HOLDER.run-1794830532#1 question.ask q:walk-frame-clause-list-floor-already-eighty v0.1.0: Walk frame clause: on the walk colony the mod-off arm alone is p99 80.2 ms (mod on 83.1, visit 3 run 4), over the 50 ms barrage bar the harness uses, so FRAME_BUDGET is UNMEASURED and the walk never exits 0. Judge it against its own mod-off arm with a margin, or lighten the walk colony?
+- 2026-11-16T12:05:27Z HOLDER.run-1794830532#2 session.checkpoint session v0.1.0: 
 - 2026-11-16T12:07:18Z DISPATCH#17 run.end run v0.1.0: 
 - 2026-11-16T12:07:18Z DISPATCH#18 session.id session v0.1.0: 

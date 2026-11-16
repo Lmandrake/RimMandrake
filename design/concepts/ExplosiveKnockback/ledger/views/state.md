@@ -1,28 +1,24 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788} body_sha256=df1ca5ebd03574ec9cdfeaccf047453909cf01581d4f3caca5e33025fdb37d64 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304} body_sha256=7720a5c93fb912c9dafbf0eb183e9cc6fb83cb109468f014486543b45e2eeaf1 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 441 events in 4 shards · reducer 1
-holder lease run-1794830532, token 5, last active 2026-11-16T12:02:19Z
+version 0.1.0 · stage in_game · 443 events in 5 shards · reducer 1
+holder lease run-1794830532, token 5, last active 2026-11-16T12:05:27Z
 holder session 7bae3178-26bc-4b3f-9301-f14a097d4fa8, context 120337 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1794824768, 2026-11-16T11:56:38Z)
-- done: visit 3: 54 PASS, 1 FAIL (storeroom cover, open MOD finding), 1 UNMEASURED (walk FRAME_BUDGET: on 83.1 / off 80.2 ms) of 56; 6 fixes landed, listed in visit_3/SUMMARY.md; walk save EK_VISIT3_WALK_CLEAR_20261116
-- next: Conductor: rule on the walk frame clause (judge vs its mod-off arm, or lighten the colony); route the storeroom cover finding
-- ruled out: pit_fetch regression (SITE: earlier scenes crowded its stockpiles); walk frame over bar as mod cost (mod-off arm over too); blotches as a draw fault (smoke, gone in 1500 ticks)
+## Last checkpoint (HOLDER.run-1794830532, 2026-11-16T12:05:27Z)
+- done: walk raid: the six visit-2 rows all resolved by earlier runs (visit 3 run 4, 17 of 17 judged rows PASS); only FRAME_BUDGET is UNMEASURED; filed as q:walk-frame-clause-list-floor-already-eighty; no live rerun
+- next: Conductor: answer q:walk-frame-clause-list-floor-already-eighty, then rerun the sc_walk_raid row command with --save EK_WALK_RAID_BASE_20261115T173148
+- ruled out: a live rerun now: src/RimMandrake/ExplosiveKnockback unchanged since harness f04232e629 (run 4), so it reads the same UNMEASURED
 
 ## Open findings (56)
-(claimed fixes, awaiting a judge, on one line each with the oldest 3 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
+(claimed fixes, awaiting a judge, on one line each with the oldest 5 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
 - RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED on 81392aea384e9105a92263aea39b2d08c844c1f4
 - RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE on 81392aea384e9105a92263aea39b2d08c844c1f4
 - RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT on 81392aea384e9105a92263aea39b2d08c844c1f4
 - RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish · bars closed_container_holds]: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter lightMassLimit) is called by no game code; ThrowContainer thr…
 - RIMMANDRAKE_STAGE_KERNEL_SELFTEST_COPY_INSIDE_LOCK [open, polish · bars inv_kernel]: selftest_explosiveknockback_kernel.py copies RM_KnockbackMath.cs into the machine-wide ExplosiveKnockbackSelfTest build…
 - RIMMANDRAKE_RECORD_FULL_LAST_LINE_IN_TEST_TABLE_RUNS [open, polish]: test_table.json runs_today.last is truncated at 200 characters (T_FW_COVER) and for T_RESTORE holds a Python SyntaxWarn…
-- finding:RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER [open, polish] by BACKFILL, 2026-11-16T11:37:17Z · bars settings_scale_and_switch, goods_arc_spin_rebound: The goods wild factor ships as a constant 1.6 because adding a saved setting (goodsThrowWild) turns T_STAGE3_SCENES red (F1/F2) until sc_settings_sweep's locked action text names it.
-  proposed fix: Conductor allows the scene action text to name goodsThrowWild (a bar text change), then add the four code lines making it a saved, reset setting on the Flying goods group.
-  accept: none filed as a command; would_pass: goodsThrowWild saved, reset, on the Flying goods group, swept by sc_settings_sweep, named in its action.
-- finding:RIMMANDRAKE_REPAIR_WILD_RATIO_BAND_FOR_INTEGER_CELLS [open, problem] by BACKFILL, 2026-11-16T11:37:17Z · bars goods_arc_spin_rebound: scenes.json sc_storeroom_mortar requires every wild-to-kernel ratio between 1.3 and 2.0, but integer cells make any correct build fail per good (kernel 1.5 cells gives 2 vs round(2.4)=2, ratio 1.0; a 1-cell good gets 1 or 2; max-throw goods ratio 1.0).
-  proposed fix: A neutral fixer rewrites the scene check: apply the band to goods whose kernel throw is 3+ cells and below max, or to the batch mean, or wild = round(raw x 1.6) within half a cell; no code change.
-  accept: none filed; would_pass: the band applied to goods with kernel throw 3+ cells below the maximum, the batch mean, or wild = round(raw x 1.6) within half a cell (as lane 1 L1_goods_fly_wild checks).
+- RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER [open, polish · bars settings_scale_and_switch, goods_arc_spin_rebound]: The goods wild factor ships as a constant 1.6 because adding a saved setting (goodsThrowWild) turns T_STAGE3_SCENES red…
+- RIMMANDRAKE_REPAIR_WILD_RATIO_BAND_FOR_INTEGER_CELLS [open, problem · bars goods_arc_spin_rebound]: scenes.json sc_storeroom_mortar requires every wild-to-kernel ratio between 1.3 and 2.0, but integer cells make any cor…
 - finding:RIMMANDRAKE_READ_WILD_CELLS_FROM_ITEM_MOVE_NOT_REQUEST [open, polish] by BACKFILL, 2026-11-16T11:37:17Z · bars goods_arc_spin_rebound: scenes.json says each good's request line carries its kernel cells and wild cells, but the request line is written at Enqueue, before the good's mass and throw are known.
   proposed fix: Change the scene text from the request line to the item_move line.
   accept: none, no acceptance test filed.
@@ -244,7 +240,8 @@ holder session 7bae3178-26bc-4b3f-9301-f14a097d4fa8, context 120337 of ceiling 4
 - decision:finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN: Thrown pawn lands on another pawn → Bruise in the next version
 - decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
 
-## Open questions (0)
+## Open questions (1)
+- q:walk-frame-clause-list-floor-already-eighty: Walk frame clause: on the walk colony the mod-off arm alone is p99 80.2 ms (mod on 83.1, visit 3 run 4), over the 50 ms barrage bar the harness uses, so FRAME_BUDGET is UNMEASURED and the walk never exits 0. Judge it against its own mod-off arm with a margin, or lighten the walk colony? (obvious answer: judge the walk frame clause against its own mod-off arm (FAIL when mod-on p99 exceeds mod-off p99 by more than a stated margin, e.g. 10 ms); the walk leaf says only frame budget held, the 50 ms number belongs to barrage_frame_budget, which already PASSes live; against it: this loosens how a locked bar is judged (frames over 50 ms would pass), and loosening a bar stays the owner s (CLAUDE.md north-star; delegation_policy 2.1); lightening the colony instead would strip the full-list played raid the walk tier exists for (tier_reason: the walk is the full list, played))
 
 ## Bars (59)
 - bar:barrage_frame_budget [locked] verdict none: constraint bar from tree.json, proves at stage 6
@@ -314,7 +311,7 @@ spend recorded: USD 98.24, 140077376 tokens
 - closed findings: 22, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 94, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 3 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 441 events (views/history.md; never read whole)
+- open findings in brief: the oldest 5 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
+- the full history: 443 events (views/history.md; never read whole)
 
 cursor: t=2026-11-16T12:07:18Z.1794830838533084089 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T12:07:18Z.1794830838533084089 prints what changed after this packet)

@@ -1,12 +1,13 @@
 {
  "_view": {
-  "body_sha256": "a05f7fa4c28d9d3d2eb688ab388eac43379898d1619ce4ab3cc75eb5470f3c63",
+  "body_sha256": "f9cc26843c08c68e71629feb4ea8cee60a51152845c2d32b69d7ae657cf74ce7",
   "reducer": 1,
   "shards": {
    "BACKFILL": 302988,
    "DISPATCH": 6100,
    "HOLDER.run-1794813483": 1382,
-   "HOLDER.run-1794824768": 1788
+   "HOLDER.run-1794824768": 1788,
+   "HOLDER.run-1794830532": 2304
   }
  },
  "state": {
@@ -630,11 +631,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1794824768",
-   "done": "visit 3: 54 PASS, 1 FAIL (storeroom cover, open MOD finding), 1 UNMEASURED (walk FRAME_BUDGET: on 83.1 / off 80.2 ms) of 56; 6 fixes landed, listed in visit_3/SUMMARY.md; walk save EK_VISIT3_WALK_CLEAR_20261116",
-   "next": "Conductor: rule on the walk frame clause (judge vs its mod-off arm, or lighten the colony); route the storeroom cover finding",
-   "ruled_out": "pit_fetch regression (SITE: earlier scenes crowded its stockpiles); walk frame over bar as mod cost (mod-off arm over too); blotches as a draw fault (smoke, gone in 1500 ticks)",
-   "ts": "2026-11-16T11:56:38Z"
+   "by": "HOLDER.run-1794830532",
+   "done": "walk raid: the six visit-2 rows all resolved by earlier runs (visit 3 run 4, 17 of 17 judged rows PASS); only FRAME_BUDGET is UNMEASURED; filed as q:walk-frame-clause-list-floor-already-eighty; no live rerun",
+   "next": "Conductor: answer q:walk-frame-clause-list-floor-already-eighty, then rerun the sc_walk_raid row command with --save EK_WALK_RAID_BASE_20261115T173148",
+   "ruled_out": "a live rerun now: src/RimMandrake/ExplosiveKnockback unchanged since harness f04232e629 (run 4), so it reads the same UNMEASURED",
+   "ts": "2026-11-16T12:05:27Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -822,7 +823,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 441,
+  "events": 443,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2138,13 +2139,22 @@
    }
   },
   "lease": {
-   "last": "2026-11-16T12:02:19Z",
+   "last": "2026-11-16T12:05:27Z",
    "lease": "run-1794830532",
    "released": false,
    "token": 5
   },
   "notes": [],
-  "questions": {},
+  "questions": {
+   "q:walk-frame-clause-list-floor-already-eighty": {
+    "against": "this loosens how a locked bar is judged (frames over 50 ms would pass), and loosening a bar stays the owner s (CLAUDE.md north-star; delegation_policy 2.1); lightening the colony instead would strip the full-list played raid the walk tier exists for (tier_reason: the walk is the full list, played)",
+    "by": "HOLDER.run-1794830532",
+    "obvious": "judge the walk frame clause against its own mod-off arm (FAIL when mod-on p99 exceeds mod-off p99 by more than a stated margin, e.g. 10 ms); the walk leaf says only frame budget held, the 50 ms number belongs to barrage_frame_budget, which already PASSes live",
+    "status": "open",
+    "text": "Walk frame clause: on the walk colony the mod-off arm alone is p99 80.2 ms (mod on 83.1, visit 3 run 4), over the 50 ms barrage bar the harness uses, so FRAME_BUDGET is UNMEASURED and the walk never exits 0. Judge it against its own mod-off arm with a margin, or lighten the walk colony?",
+    "ts": "2026-11-16T12:05:07Z"
+   }
+  },
   "reducer": 1,
   "session": {
    "ceiling": 400000,
@@ -2157,7 +2167,8 @@
    "BACKFILL",
    "DISPATCH",
    "HOLDER.run-1794813483",
-   "HOLDER.run-1794824768"
+   "HOLDER.run-1794824768",
+   "HOLDER.run-1794830532"
   ],
   "spend_tokens": 140077376,
   "spend_usd": 98.2416,
