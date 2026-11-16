@@ -1,0 +1,1 @@
+jawa/map_fire start answers firesStarted 0 on bare soil with nothing to burn (success true): put a wood log on the cell first, and read firesStarted, never success (ExplosiveKnockback walk, 2026-11-15).

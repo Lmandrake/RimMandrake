@@ -1,0 +1,1 @@
+Probing a bridge tool's parameter list with a dummy argument is safe only on a read-only tool: rimworld/start_debug_game_ready given an unknown arg ran in-game, held an UNKNOWN outcome, and refused every mutating call until rimbridge_client.py --reconcile --resolve (ExplosiveKnockback visit 2, 2026-11-15).

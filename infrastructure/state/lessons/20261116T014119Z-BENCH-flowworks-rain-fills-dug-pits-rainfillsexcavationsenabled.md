@@ -1,0 +1,1 @@
+FlowWorks rain fills dug pits (rainFillsExcavationsEnabled): over a 60000-tick scene both 3x3 pits reached 2 m, which is swum water (owner R12), so pawns entered a pit whose ladder was raised. Any pit scene longer than a few in-game hours turns that setting off for its run, or its ladder rows read swims (ExplosiveKnockback visit 2, 2026-11-15).
