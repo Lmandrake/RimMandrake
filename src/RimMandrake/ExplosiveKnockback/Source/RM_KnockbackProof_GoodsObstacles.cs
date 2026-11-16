@@ -70,7 +70,7 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 string k = ObstacleLanes[i];
                 Thing t = s.things[k];
-                int want = WantCells(s, k, 2.9f);
+                int want = WantCellsFrom(s, k, O(s, 0, ObstacleLaneZ[i]), 2.9f);   // each lane blasts at its own centre (visit 2: from s.o, S and W read 0)
                 if (want < 1)
                 {
                     return "lane " + k + " component would not be thrown (want=0)";

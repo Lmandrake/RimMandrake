@@ -12,6 +12,12 @@ in a game:
      alight and a burning colonist runs (live: "Burning (fire size 31)", "Moving.", 4 to 9 cells, 2 of 4 runs). The
      control still refuses any burst, launch, descent or pit; it allows cells moved only when the colonist burned, and
      reports burned and cells.
+  O1 HARNESS: goods_obstacles' lanes S and W blast at O(0, +-5), but WantCells measured each component's distance from the
+     scene origin (5.1 cells, outside the 2.9 radius): want=0, INVALID on every run. The lane's want is measured from its own
+     blast centre (WantCellsFrom).
+  P1 HARNESS: storeroom_bomb_pit planned the cover stack against the uncovered pit (a pit stops a throw on its first cell),
+     then re-planned with the cover built (a covered cell does not stop it), so no stack ever matched: INVALID on every run.
+     The cover goes on first, and the stack is searched with it in place.
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit2.py [--src DIR]
 --src reads the mod's Source/ from DIR (laid out like this folder).
@@ -64,6 +70,14 @@ def main():
     check("G1", "burned" in off and "cells == 0 || burned" in ret and "launch.Count == 0" in ret and "!inPit" in ret
           and "desc.Count == 0" in ret and "bursts == 0" in ret,
           "gas_into_pit_off allows a fire run (burned) but still refuses burst, launch, descent and pit")
+    go = open(os.path.join(src, "RM_KnockbackProof_GoodsObstacles.cs"), encoding="utf-8").read()
+    check("O1", "private static int WantCellsFrom(" in proof and "WantCellsFrom(s, k, O(s, 0, ObstacleLaneZ[i]), 2.9f)" in go
+          and "WantCells(s, k, 2.9f)" not in go, "goods_obstacles measures each lane's want from that lane's blast centre")
+    sb = open(os.path.join(src, "RM_KnockbackProof_StoreroomBombPit.cs"), encoding="utf-8").read()
+    j = sb.find("IntVec3 coverFrom = IntVec3.Invalid")
+    blk = sb[j:sb.find("no floor stack within two cells whose planned throw ends on a covered", j)] if j >= 0 else ""
+    b, pl = blk.find('Build("RM_PitCover_WovenScrap"'), blk.find("PlanGood(")
+    check("P1", b >= 0 and pl > b, "storeroom_bomb_pit builds the cover before it plans the stack that must land on it")
     print("explosiveknockback stage6 visit2: %d failed" % len(fails))
     return 1 if fails else 0
 

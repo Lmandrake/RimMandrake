@@ -80,8 +80,8 @@ def main():
           "the control unhooks the gas chain registration before lighting")
     check("C2", re.search(r"s\.restore = \(\) =>\s*\{\s*RM_KnockbackCompat\.VentGasRegistered = reg;", body) is not None
           and body.find("s.restore = ()") < off_at, "the restore, set before the unhook, puts the registration back")
-    check("V1", "bursts == 0 && launch.Count == 0 && desc.Count == 0 && !inPit && cells == 0" in body,
-          "control: no burst, no launch, no descent, not in the pit, not moved")
+    check("V1", "bursts == 0 && launch.Count == 0 && desc.Count == 0 && !inPit && (cells == 0 || burned)" in body,
+          "control: no burst, no launch, no descent, not in the pit, not moved unless it burned (visit 2: vanilla fire runs it)")
     check("V2", 'launch.Count == 1 && (int)launch[0]["planned"] <= 1 && Convert.ToSingle(launch[0]["impact"]) == 0f' in body
           and "landed && desc.Count == 1 && inPit" in body and "bursts >= 1 && shove && fell" in body,
           "main: one one-cell launch with no impact, landed on the pit's first cell, one descent")

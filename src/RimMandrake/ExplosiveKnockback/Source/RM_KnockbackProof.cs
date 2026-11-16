@@ -879,6 +879,16 @@ namespace RimMandrake.ExplosiveKnockback
             return mass > k.lightMassLimit ? 0 : RM_KnockbackMath.WildCells((s.starts[key] - s.o).LengthHorizontal, r, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
         }
 
+        /// <summary>WantCells for a blast centred on <paramref name="centre"/> rather than the scene origin (a scene with several
+        /// lanes, each with its own blast: goods_obstacles).</summary>
+        private static int WantCellsFrom(Scene s, string key, IntVec3 centre, float r)
+        {
+            KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
+            Thing t = s.things[key];
+            float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
+            return mass > k.lightMassLimit ? 0 : RM_KnockbackMath.WildCells((s.starts[key] - centre).LengthHorizontal, r, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
+        }
+
         // ── the scenes ───────────────────────────────────────────────────
 
         private static string Build(Scene s)

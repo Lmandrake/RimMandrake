@@ -196,31 +196,36 @@ namespace RimMandrake.ExplosiveKnockback
             IntVec3 coverFrom = IntVec3.Invalid, coverCell = IntVec3.Invalid;
             int coverCount = 0;
             Thing cover = null;
-            foreach (IntVec3 c in cand)
+            // visit 2 (2026-11-15): the cover goes on FIRST. Planned against the open pit, a throw stops on the first pit cell it
+            // meets; with the cover built that cell no longer stops it, so a plan made before the cover never matched after it.
+            for (int cx = -6; cx <= 6 && !coverFrom.IsValid; cx++)
             {
-                for (int n = 1; n <= 24 && !coverFrom.IsValid; n++)   // 24 logs = 9.6 kg, under the 10 kg heavy threshold
+                IntVec3 cc = new IntVec3(s.o.x + cx, 0, s.o.z - 4);
+                if (!cc.InBounds(Map) || cc == sLanding || cc == pitTo || !OpenPitCell(cc))
                 {
-                    IntVec3 to = PlanGood(s, c, DefMass("WoodLog", n));
-                    if (!to.IsValid || to.z != s.o.z - 4 || to == sLanding || to == pitTo || !OpenPitCell(to))
+                    continue;
+                }
+                cover = Build("RM_PitCover_WovenScrap", cc);
+                foreach (IntVec3 c in cand)
+                {
+                    for (int n = 1; n <= 24 && !coverFrom.IsValid; n++)   // 24 logs = 9.6 kg, under the 10 kg heavy threshold
                     {
-                        continue;
+                        if (PlanGood(s, c, DefMass("WoodLog", n)) == cc)
+                        {
+                            coverFrom = c;
+                            coverCell = cc;
+                            coverCount = n;
+                        }
                     }
-                    cover = Build("RM_PitCover_WovenScrap", to);
-                    if (PlanGood(s, c, DefMass("WoodLog", n)) == to)
+                    if (coverFrom.IsValid)
                     {
-                        coverFrom = c;
-                        coverCell = to;
-                        coverCount = n;
-                    }
-                    else
-                    {
-                        cover.Destroy(DestroyMode.Vanish);
-                        cover = null;
+                        break;
                     }
                 }
-                if (coverFrom.IsValid)
+                if (!coverFrom.IsValid)
                 {
-                    break;
+                    cover.Destroy(DestroyMode.Vanish);
+                    cover = null;
                 }
             }
             if (!coverFrom.IsValid)
