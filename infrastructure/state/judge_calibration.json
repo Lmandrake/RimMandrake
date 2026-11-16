@@ -55,6 +55,45 @@
     ]
    },
    "hash": "66337fdd01cd92b1",
+   "last_run": {
+    "at": "2026-11-16T15:02:34Z",
+    "cases": "3 planted case(s) ran and came out as planted",
+    "exit": 0,
+    "out": "bad_scene_no_control   expect refuse got refuse sc_light, the only acceptance scene for leaf light and inventory inv_light, has no control, so nothing rules out the cells being lit by daylight or another lamp; sc_light's start is not an asserted state that fits the leaf's scenario (dark roofed room at midnight, no other light source), and sc_oil_out reuses that room",
+    "results": [
+     {
+      "cost_usd": 0.41559419999999997,
+      "expect": "pass",
+      "gaps": [],
+      "got": "pass",
+      "id": "good_lanterns",
+      "verdict": "covered"
+     },
+     {
+      "cost_usd": 0.44415720000000003,
+      "expect": "refuse",
+      "gaps": [
+       "Leaf oil_out (live experience leaf) has no acceptance scene",
+       "inv_oil is exercised by no showcase and absent from coverage_rest; the flagship showcase drops the 'going out' half of his pick",
+       "inv_oil's burn-rate claim 'one oil per day' is tested by nothing"
+      ],
+      "got": "refuse",
+      "id": "bad_leaf_no_scene",
+      "verdict": "not_covered"
+     },
+     {
+      "cost_usd": 0.4612674,
+      "expect": "refuse",
+      "gaps": [
+       "sc_light, the only acceptance scene for leaf light and inventory inv_light, has no control, so nothing rules out the cells being lit by daylight or another lamp",
+       "sc_light's start is not an asserted state that fits the leaf's scenario (dark roofed room at midnight, no other light source), and sc_oil_out reuses that room"
+      ],
+      "got": "refuse",
+      "id": "bad_scene_no_control",
+      "verdict": "not_covered"
+     }
+    ]
+   },
    "model_check": [
     "python3",
     "src/RimMandrake/rimflow/coverage_calibration.py",
@@ -75,7 +114,7 @@
     }
    ],
    "reset_at": "2026-11-16T14:59:28Z",
-   "status": "UNTESTED",
+   "status": "CALIBRATED",
    "timeout_s": 1800,
    "was": "UNTESTED"
   },
