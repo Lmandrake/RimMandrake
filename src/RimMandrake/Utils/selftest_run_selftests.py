@@ -144,6 +144,8 @@ eq(rs._only_names(["a,b", "c"]), ["a", "b", "c"], "--only takes commas as well a
 eq(rs._only_path("selftest_one.py", _tests), Path("/r/a/selftest_one.py"), "--only takes a bare file name")
 eq(rs._only_path("selftest_two", _tests).name, "selftest_two", "an ambiguous stem stays a missing path, refused")
 eq(rs._only_path("selftest_nope", _tests).is_file(), False, "an unknown stem stays a missing path, refused")
+eq(rs._only_path("one", _tests), Path("/r/a/selftest_one.py"), "--only takes the name without selftest_ (an item's verify line)")
+eq(rs._only_path("two", _tests).name, "two", "an ambiguous short name stays a missing path, refused")
 
 # The memory pen's report line: stripped from stderr, parsed, and only that line.
 err, rep = rs._split_marker("real stderr\n" + rs._MARKER + '{"ok": true, "oom_kill": 2}\nmore\n')

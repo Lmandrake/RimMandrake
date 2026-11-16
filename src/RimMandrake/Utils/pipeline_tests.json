@@ -20,7 +20,9 @@
     "src/RimMandrake/rimflow/refusal_contract*.py",
     "src/RimMandrake/rimflow/incident.py",
     "src/RimMandrake/Utils/systemd/rm-maturation-dispatch.*",
-    "src/RimMandrake/Utils/pipeline_tests.json"
+    "src/RimMandrake/Utils/pipeline_tests.json",
+    "src/RimMandrake/rimflow/modledger*.py",
+    "src/RimMandrake/rimflow/modledger*.json"
   ],
   "tests": [
     {"test": "src/RimMandrake/Utils/selftest_maturation_convergence.py", "seconds": 0.4},
@@ -47,7 +49,8 @@
     {"test": "src/RimMandrake/rimflow/selftest_seat_restart_death.py", "seconds": 7.4},
     {"test": "src/RimMandrake/rimflow/selftest_seat_restart_held.py", "seconds": 1.7},
     {"test": "src/RimMandrake/rimflow/selftest_seat_restart_queued_wait.py", "seconds": 0.4},
-    {"test": "src/RimMandrake/rimflow/selftest_seat_restart_send_again.py", "seconds": 0.1}
+    {"test": "src/RimMandrake/rimflow/selftest_seat_restart_send_again.py", "seconds": 0.1},
+    {"test": "src/RimMandrake/rimflow/selftest_modledger.py", "seconds": 1.2}
   ],
   "live_excluded": {
     "src/RimMandrake/Utils/selftest_maturation_now.py": "runs on the live tree: the real concept journals, ledger shards and run records (its point 6)",

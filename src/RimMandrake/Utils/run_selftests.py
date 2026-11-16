@@ -270,11 +270,11 @@ def _only_names(entries: list[str]) -> list[str]:
 
 
 def _only_path(name: str, tests: list[Path]) -> Path:
-    """An --only entry as a path. A bare stem (selftest_foo) means the one discovered test of that name; none, or two,
-    stays the missing path it is, so main() refuses it by name."""
+    """An --only entry as a path. A bare stem (selftest_foo, or foo as an item's verify line says it) means the one
+    discovered test of that name; none, or two, stays the missing path it is, so main() refuses it by name."""
     path = Path(name)
     if len(path.parts) == 1 and not path.is_file():
-        hits = [t for t in tests if t.stem == name or t.name == name]
+        hits = [t for t in tests if t.stem in (name, "selftest_" + name) or t.name == name]
         if len(hits) == 1:
             return hits[0].resolve()
     return path.resolve()

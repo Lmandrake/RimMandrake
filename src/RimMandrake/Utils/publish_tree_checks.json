@@ -4,6 +4,7 @@
   "timeout_s": 60,
   "skip_when_only": ["infrastructure/state/ledger/events/*.jsonl", "infrastructure/state/lessons/*.md"],
   "checks": [
+    {"test": "src/RimMandrake/rimflow/selftest_modledger_tree.py", "seconds": 0.3, "fix": "never edit a mod ledger shard or view by hand: append with modledger.py append, then modledger.py views --mod <Mod>; run modledger.py lint --mod <Mod> to see the line"},
     {"test": "src/RimMandrake/rimflow/selftest_bench_word_prose.py", "seconds": 1.2, "fix": "say Conductor or Relentless, or keep BENCH only on a held path or key (the test's ALLOWED)"},
     {"test": "src/RimMandrake/Utils/selftest_biome_twins_retired.py", "seconds": 1.3, "fix": "drop the twin name from src/, or list the tool in TOOLS with why it reads the record"},
     {"test": "src/RimMandrake/Utils/selftest_one_path_seam.py", "seconds": 0.9, "fix": "import the path from game_paths (LOCALLOW, PLAYER_LOG, MODS_CONFIG, DEF_DUMP)"},
