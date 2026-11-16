@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":318515,"DISPATCH":3051,"HOLDER.run-1794813483":1382} body_sha256=0a2c0e6a5c5674baf32e97dd498ec18f35a975a72085b8b60c7abd07008ebe38 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":309557,"DISPATCH":3051,"HOLDER.run-1794813483":1382} body_sha256=5da37bb132f6aa5600ccdc93df8ed02309740f22cc10220d90f9c855049dd1ca -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage offline_build · 452 events in 3 shards · reducer 1
+version 0.1.0 · stage offline_build · 440 events in 3 shards · reducer 1
 holder lease run-1794816087, token 3, last active 2026-11-16T08:01:28Z
 holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 400000
 
@@ -10,7 +10,7 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - ruled out: RM_PitPathing TryPlan/OutsiderBarredFromFloor and portable-ladder Reaches as the dry-pit cause (read)
 
 ## Open findings (59)
-(claimed fixes, awaiting a judge, on one line each with the oldest 41 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
+(claimed fixes, awaiting a judge, on one line each with the oldest 39 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
 - RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED on 81392aea384e9105a92263aea39b2d08c844c1f4
 - RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE on 81392aea384e9105a92263aea39b2d08c844c1f4
 - RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT on 81392aea384e9105a92263aea39b2d08c844c1f4
@@ -66,8 +66,12 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES [open, problem · bars walk_storeroom_raid]: sc_walk_raid FAIL at visit 2 (10 PASS 6 FAIL, FRAME_BUDGET UNMEASURED): A_RELOAD_NO_DUP_LOST 11 before save, 7 after re…
 - RIMMANDRAKE_KEEP_SPARED_SLEEPER_IN_BED_ON_FULL_LIST [open, problem · bars the_spared]: On the owner's full mod list the staged sleeper is not in its bed at the blast, so spared_states is INVALID. It passes…
 - RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE [open, problem · bars pit_goods_fetched, inv_pit_floor_haul]: In sc_pit_fetch the corpse at O(3,1) sits on the 3x3 pit's edge row, so a hauler on the rim can touch it without descen…
-- RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE [open, problem · bars inv_proof_scenes]: Run the blind offline challenge (Stages 4 and 5, tests first) by hand on Explosive Knockback 0.1.0, one cycle, and writ…
-- RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO [open, problem · bars barrage_frame_budget]: sc_barrage_perf judged the worst frame on the full 316-mod list; the mod-off control's worst frame in the barrage windo…
+- finding:RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE [open, problem] by BACKFILL, 2026-11-16T08:26:06Z · bars inv_proof_scenes: Run the blind offline challenge (Stages 4 and 5, tests first) by hand on Explosive Knockback 0.1.0, one cycle, and write down its record format.
+  proposed fix: Run lane 1 (rows), lane 2 (code review, planted faults, reruns), fix Problems red-first, then rule on the NOTED_FOR_CONDUCTOR faults and start cycle 2.
+  accept: none, the exit condition is: inv_proof_scenes green and no Problems found.
+- finding:RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO [open, problem] by BACKFILL, 2026-11-16T08:26:06Z · bars barrage_frame_budget: sc_barrage_perf judged the worst frame on the full 316-mod list; the mod-off control's worst frame in the barrage window (0.9-8.25 s) is 151.3/54.4/100.8 ms, over the 50 ms bar in 3 of 3 runs, so the instrument cannot see the barrage's cost.
+  proposed fix: Reword sc_barrage_perf to the 99th-percentile frame inside the 0.9-8.25 s barrage window, at most 50 ms; worst frame reported, not judged; a probe stopping before 8.25 s fails.
+  accept: Live: python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25 on the full list reads barrage_perf PASS, windowP99Ms <= 50.
 - finding:RIMMANDRAKE_RETAKE_KNOCKBACK_EXAM_NO_SCENARIO_READS_LEAF [open, problem] by BACKFILL, 2026-11-16T08:26:06Z: The Stage 4 Cold Reader exam is stale against the re-certified tree (barrage p99 rewording): the repin left stage 4 voided by its own rule (stale_from 4). No exam scenario mentions barrage or frame (grep 0).
   proposed fix: Refreeze the exam with fresh Claude readers (the exam11 route, 3d5eeb0e44) against the re-certified tree.
   accept: python3 src/RimMandrake/rimflow/designer_stage.py status design/concepts/ExplosiveKnockback | grep -c '"stale_from": null' prints 1 (watched failing: prints 0, stale_from 4).
@@ -203,7 +207,7 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - cause:the-container-s-movement-was-not-the-mod: The container's movement was not the mod: the SC journal was empty, so it was vanilla building destruction. (on bb195048ac51, depends on src/RimMandrake/ExplosiveKnockback)
 - cause:no-escape-bug-in-the-mod-the-control: No escape bug in the mod: the control used RM_LadderPortable, and FlowWorks' RM_CompLadder.EffectivelyRaised = raised && !Props.portable && setting, so a portable ladder never reads raised and the control pit stayed open. The fault was in the test setup. (on 7c17ebc62201, depends on src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs)
 
-## His answers (26)
+## His answers (23)
 - decision:version: Yes, fix it like that, and then please record this as an actual Pass.
 - decision:q:you-can-t-fall-in-by: You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall.
 - decision:q:1-1-totally-even-better-if: 1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly.
@@ -212,12 +216,8 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - decision:q:1-anything-that-draws-its-contents: 1: Anything that draws its contents is open. … 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly. No blockers.
 - decision:q:we-really-shouldn-t-blow-back: We really shouldn't blow back creatures beyond a certain mass, and the heavier something is, the less it should fly. That should also be a function of the explosive damage itself as well. · with a single scene we can check ALL these things together · Melee shove is a great idea, but it belongs in FlowWorks, not here.
 - decision:q:can-t-we-actually-simulate-that: can't we actually simulate that settings check offline? That seems a gratuitous use of the game, unless that's actually a very fast check?
-- decision:q:rimmaster-run-codex-designer-to-questions-23-mods: 1:2 but don't invent new UI, there are already animal tools for this sort of thing 2:2 3:1
 - decision:q:rimmandrake-bind-refusals-to-fixes-no-ceremony-loops: Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists
-- decision:q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit: Should a thrown pawn landing on another pawn hurt anyone? -> Bruise in the next version
-- decision:q:rimmandrake-release-stage-ceiling-per-mod-only-global-knob: Which release do you want? → Raise the limit to $100
-- decision:q:rimmandrake-design-holder-pipeline-fusion-checklist-not-handoff: Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first.
-- decision:q:rimmandrake-build-mod-ledger-holders-three-pilots-at-once: I would like this tried at the same time on three mods concurrently so that we can observe different outcomes rapidly. It should roughly start where it last was in the pipeline as that is the same path it treads yes? Then start to build context and learning as it goes.
+- decision:q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit: It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3).
 - decision:finding:RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS: Test 1: looks great! Full pass.
 - decision:finding:RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: the result was superb. Item scatter was exceptional, people and items flew into the pit, and more items survived the explosion than previously. Full pass I believe.
 - decision:finding:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH: EK 5 gaps → fix the 5 gaps then one more judge; gas shove onto an open pit drops the pawn in → yes, it stands
@@ -230,6 +230,7 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - decision:finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN: Thrown pawn lands on another pawn → Bruise in the next version
 - decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
 - decision:finding:RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO: 1 agree.
+- decision:finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC: For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.
 
 ## Open questions (0)
 
@@ -301,7 +302,7 @@ spend recorded: USD 70.74, 138207197 tokens
 - closed findings: 19, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 64, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 41 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 452 events (views/history.md; never read whole)
+- open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
+- the full history: 440 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T08:26:08Z.1794817568017931278 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T08:26:08Z.1794817568017931278 prints what changed after this packet)
+cursor: t=2026-11-16T08:32:10Z.1794817930184734874 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T08:32:10Z.1794817930184734874 prints what changed after this packet)

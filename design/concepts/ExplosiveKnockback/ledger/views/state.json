@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "86baa25da4519d635f88b0c51c5283f5d945b4e356d989eacdf2ffcf24bdc79a",
+  "body_sha256": "d5d01ba06cfc081c6a107649730d59a7a972f1a4f9e07cb07425b81bde0f5e10",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 318515,
+   "BACKFILL": 309557,
    "DISPATCH": 3051,
    "HOLDER.run-1794813483": 1382
   }
@@ -49,6 +49,14 @@
     },
     "question": null,
     "ts": "2026-11-16T08:26:07Z"
+   },
+   "decision:finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC": {
+    "answer": "For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.",
+    "authority": {
+     "owner_said": "For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories."
+    },
+    "question": null,
+    "ts": "2026-11-16T08:32:10Z"
    },
    "decision:finding:RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD": {
     "answer": "the result was superb. Item scatter was exceptional, people and items flew into the pit, and more items survived the explosion than previously. Full pass I believe.",
@@ -154,42 +162,10 @@
     "question": null,
     "ts": "2026-11-16T06:51:52Z"
    },
-   "decision:q:rimmandrake-build-mod-ledger-holders-three-pilots-at-once": {
-    "answer": "I would like this tried at the same time on three mods concurrently so that we can observe different outcomes rapidly. It should roughly start where it last was in the pipeline as that is the same path it treads yes? Then start to build context and learning as it goes.",
-    "authority": {
-     "owner_said": "I would like this tried at the same time on three mods concurrently so that we can observe different outcomes rapidly. It should roughly start where it last was in the pipeline as that is the same path it treads yes? Then start to build context and learning as it goes."
-    },
-    "question": null,
-    "ts": "2026-11-16T06:51:52Z"
-   },
-   "decision:q:rimmandrake-design-holder-pipeline-fusion-checklist-not-handoff": {
-    "answer": "Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first.",
-    "authority": {
-     "owner_said": "Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first."
-    },
-    "question": null,
-    "ts": "2026-11-16T06:51:52Z"
-   },
    "decision:q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit": {
-    "answer": "Should a thrown pawn landing on another pawn hurt anyone? -> Bruise in the next version",
+    "answer": "It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3).",
     "authority": {
-     "by_card": "Should a thrown pawn landing on another pawn hurt anyone? -> Bruise in the next version"
-    },
-    "question": null,
-    "ts": "2026-11-16T06:51:52Z"
-   },
-   "decision:q:rimmandrake-release-stage-ceiling-per-mod-only-global-knob": {
-    "answer": "Which release do you want? → Raise the limit to $100",
-    "authority": {
-     "by_card": "Which release do you want? → Raise the limit to $100"
-    },
-    "question": null,
-    "ts": "2026-11-16T06:51:52Z"
-   },
-   "decision:q:rimmaster-run-codex-designer-to-questions-23-mods": {
-    "answer": "1:2 but don't invent new UI, there are already animal tools for this sort of thing 2:2 3:1",
-    "authority": {
-     "owner_said": "1:2 but don't invent new UI, there are already animal tools for this sort of thing 2:2 3:1"
+     "owner_said": "It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3)."
     },
     "question": null,
     "ts": "2026-11-16T06:51:52Z"
@@ -704,6 +680,14 @@
     "text": "EK 5 gaps → fix the 5 gaps then one more judge; gas shove onto an open pit drops the pawn in → yes, it stands",
     "ts": "2026-11-16T08:26:07Z"
    },
+   "finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC": {
+    "authority": {
+     "owner_said": "For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories."
+    },
+    "by": "BACKFILL",
+    "text": "For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.",
+    "ts": "2026-11-16T08:32:10Z"
+   },
    "finding:RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD": {
     "authority": {
      "owner_said": "the result was superb. Item scatter was exceptional, people and items flew into the pit, and more items survived the explosion than previously. Full pass I believe."
@@ -816,44 +800,12 @@
     "text": "Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists",
     "ts": "2026-11-16T06:51:52Z"
    },
-   "q:rimmandrake-build-mod-ledger-holders-three-pilots-at-once": {
-    "authority": {
-     "owner_said": "I would like this tried at the same time on three mods concurrently so that we can observe different outcomes rapidly. It should roughly start where it last was in the pipeline as that is the same path it treads yes? Then start to build context and learning as it goes."
-    },
-    "by": "BACKFILL",
-    "text": "I would like this tried at the same time on three mods concurrently so that we can observe different outcomes rapidly. It should roughly start where it last was in the pipeline as that is the same path it treads yes? Then start to build context and learning as it goes.",
-    "ts": "2026-11-16T06:51:52Z"
-   },
-   "q:rimmandrake-design-holder-pipeline-fusion-checklist-not-handoff": {
-    "authority": {
-     "owner_said": "Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first."
-    },
-    "by": "BACKFILL",
-    "text": "Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first.",
-    "ts": "2026-11-16T06:51:52Z"
-   },
    "q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit": {
     "authority": {
-     "by_card": "Should a thrown pawn landing on another pawn hurt anyone? -> Bruise in the next version"
+     "owner_said": "It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3)."
     },
     "by": "BACKFILL",
-    "text": "Should a thrown pawn landing on another pawn hurt anyone? -> Bruise in the next version",
-    "ts": "2026-11-16T06:51:52Z"
-   },
-   "q:rimmandrake-release-stage-ceiling-per-mod-only-global-knob": {
-    "authority": {
-     "by_card": "Which release do you want? → Raise the limit to $100"
-    },
-    "by": "BACKFILL",
-    "text": "Which release do you want? → Raise the limit to $100",
-    "ts": "2026-11-16T06:51:52Z"
-   },
-   "q:rimmaster-run-codex-designer-to-questions-23-mods": {
-    "authority": {
-     "owner_said": "1:2 but don't invent new UI, there are already animal tools for this sort of thing 2:2 3:1"
-    },
-    "by": "BACKFILL",
-    "text": "1:2 but don't invent new UI, there are already animal tools for this sort of thing 2:2 3:1",
+    "text": "It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3).",
     "ts": "2026-11-16T06:51:52Z"
    },
    "q:we-really-shouldn-t-blow-back": {
@@ -881,7 +833,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 452,
+  "events": 440,
   "exit_claims": [],
   "fenced": [],
   "findings": {

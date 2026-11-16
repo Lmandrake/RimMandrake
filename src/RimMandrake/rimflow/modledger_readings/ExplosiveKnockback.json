@@ -1,11 +1,15 @@
 {
 "model": "sonnet",
 "prompt_version": "2026-11-16.1",
-"spent_usd_last_run": 1.1119,
+"spent_usd_last_run": 0.0371,
 "tickets": {
 "RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS": {
 "at": "2026-11-16T00:25:29",
 "hash": "e14006429fc53746",
+"owner": [
+1
+],
+"owner_hash": "59685cfe1166c97f",
 "reading": {
 "accept": "python3 src/RimMandrake/ExplosiveKnockback/proof/absorb_blast_show_check.py exits 0 with 'PASS absorb blast show: 0 failing line(s)' (A1-A6).",
 "bars": [],
@@ -67,6 +71,10 @@
 "RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN": {
 "at": "2026-11-16T00:25:29",
 "hash": "a56ef9099661ab09",
+"owner": [
+1
+],
+"owner_hash": "1921dc00fbc2d86c",
 "reading": {
 "accept": "Kernel selftest new K case: 40 kg < 70 kg < 140 kg amounts, capped, 0 with no pawn. Revised sc_pawn_arc: both take one Blunt hit, neither downed, heavy bruises more, empty-cell control gives no hit.",
 "bars": [],
@@ -102,6 +110,10 @@
 "RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER": {
 "at": "2026-11-16T00:25:29",
 "hash": "7dabbb11b5ef4732",
+"owner": [
+1
+],
+"owner_hash": "34721fead1437e1b",
 "reading": {
 "accept": "none filed as a command. The oracle is live scene sc_mass_and_power (rat/colonist/muffalo/thrumbo 5/3/2/0 at damage 50, 6/5/4/0 at 100) plus a builder-written kernel selftest.",
 "bars": [
@@ -141,6 +153,11 @@
 "RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN": {
 "at": "2026-11-16T00:25:29",
 "hash": "e6dc8e46748e7a45",
+"owner": [
+1,
+2
+],
+"owner_hash": "a7c166b339afda44",
 "reading": {
 "accept": "none filed as a command. The work order's measure is that maturation.py next no longer refuses every_bar_has_a_check_that_runs.",
 "bars": [
@@ -348,6 +365,12 @@
 "RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB": {
 "at": "2026-11-16T00:25:21",
 "hash": "2c93a37dc20d8dd0",
+"owner": [
+2,
+3,
+4
+],
+"owner_hash": "61318a6612456cc0",
 "reading": {
 "accept": "none, a decision card; no mod list changed.",
 "bars": [],
@@ -405,6 +428,8 @@
 "RIMMANDRAKE_DEPLOY_KNOCKBACK_DRAWING_STORAGE_OPEN": {
 "at": "2026-11-16T00:25:21",
 "hash": "54509a72b2c657d4",
+"owner": [],
+"owner_hash": "fa163bf6d2420159",
 "reading": {
 "accept": "Plan shows '-' for ClosedContainers.xml; dry run also gave + HiddenStorage.xml and ~ DLL and .srchash.",
 "bars": [],
@@ -428,6 +453,28 @@
 "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH": {
 "at": "2026-11-16T00:24:59",
 "hash": "25dd675e150c2f0d",
+"owner": [
+1,
+2,
+3,
+4,
+5,
+6,
+7,
+8,
+9,
+10,
+11,
+12,
+16,
+17,
+18,
+19,
+20,
+21,
+22
+],
+"owner_hash": "946dce90b110bf09",
 "reading": {
 "accept": "none, the coverage judge never signed (last verdict not_covered, 6 gaps); the owner certified on his word and concept_tree.py gate still refuses with 'no coverage signature'.",
 "bars": [
@@ -813,6 +860,10 @@
 "RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC": {
 "at": "2026-11-16T00:25:15",
 "hash": "7d66bfa6473c61ee",
+"owner": [
+1
+],
+"owner_hash": "3a6be7a267241c4f",
 "reading": {
 "accept": "Offline kernel K case: 70 kg pawn and 10 kg stack get separate plans, stack farther, over-limit stack no plan; static check no flyWithCarriedThing true. In game: revised sc_pawn_arc, hands empty at launch, stack lands on its own cell, no dup.",
 "bars": [
@@ -835,6 +886,11 @@
 "RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD": {
 "at": "2026-11-16T00:25:37",
 "hash": "2b069fa35f2f9194",
+"owner": [
+1,
+2
+],
+"owner_hash": "726b04acd97ce37e",
 "reading": {
 "accept": "none, no command filed; proof rows named: validation chain flying_goods (goods_fly_midair/lands/wall/rebound/off) and proof/goods_flight_saveload.py on the RmProofs=true build.",
 "bars": [
@@ -987,6 +1043,11 @@
 "RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE": {
 "at": "2026-11-16T00:25:37",
 "hash": "c120ef66d43f265a",
+"owner": [
+1,
+2
+],
+"owner_hash": "af53dcc0f0414a61",
 "reading": {
 "accept": "all_fly_no_cap PASS, red under Plant throwcap; perf: a 25-HE blast into 195 stacks adds no slow frame at Normal speed (perf2.jsonl).",
 "bars": [
@@ -1219,6 +1280,10 @@
 "RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE": {
 "at": "2026-11-16T00:25:48",
 "hash": "36d80a97e5052da2",
+"owner": [
+1
+],
+"owner_hash": "c55858e0f6c3a632",
 "reading": {
 "accept": "none, no command filed; a colonist fetches one good from the pit floor down the ladder (scene sc_pit_fetch).",
 "bars": [
@@ -1378,6 +1443,10 @@
 "RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO": {
 "at": "2026-11-16T00:26:00",
 "hash": "9e7bdb5b2888d9e1",
+"owner": [
+1
+],
+"owner_hash": "aca0bd6b96fd8578",
 "reading": {
 "accept": "Live: python.exe src\\RimMandrake\\ExplosiveKnockback\\knockback_runner.py --scenes frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25 on the full list reads barrage_perf PASS, windowP99Ms <= 50.",
 "bars": [
@@ -1611,6 +1680,10 @@
 "RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER": {
 "at": "2026-11-16T00:26:00",
 "hash": "cb1a9eded018d065",
+"owner": [
+1
+],
+"owner_hash": "4db3f66f3bfa0f65",
 "reading": {
 "accept": "Live proof/storeroom_pit_proof.py, 3 arms, on EK_SITTING_STATION1_STOREROOM_PIT_20261112 (minimal tier EK+FlowWorks+GSS+MandrakePatches), 13/13 PASS.",
 "bars": [
@@ -1821,6 +1894,10 @@
 "RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS": {
 "at": "2026-11-16T00:26:01",
 "hash": "c8b31edd6ca7f746",
+"owner": [
+1
+],
+"owner_hash": "566e7e5fcb8c6712",
 "reading": {
 "accept": "Live scenes fire_half and harmful_unpatched PASS; mutation unpatched=0 turns harmful_unpatched FAIL.",
 "bars": [
@@ -1847,6 +1924,10 @@
 "RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE": {
 "at": "2026-11-16T00:26:01",
 "hash": "575acceadb5509a4",
+"owner": [
+1
+],
+"owner_hash": "fb88907dedd5d160",
 "reading": {
 "accept": "Scene container_thrown rows thrown, together, shorter, shielded PASS; planted breaks (shoveClosedContainers off, Plant nocontentsshield=on) FAIL.",
 "bars": [
