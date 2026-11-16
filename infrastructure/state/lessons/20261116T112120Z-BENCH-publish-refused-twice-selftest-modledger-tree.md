@@ -1,0 +1,1 @@
+./publish refused twice on selftest_modledger_tree reds that origin/main had already fixed (GimmeSomeSlack re-seal): its gate ran on the un-replayed local tree. land.sh <sha> <paths> landed the same commits at once (visit 3, 2026-11-16).
