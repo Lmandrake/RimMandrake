@@ -495,10 +495,21 @@ def done_items(repo):
         return None
     try:
         import model  # noqa: E402  (rimflow's ledger fold, beside this file)
-        w = model.replay(model.read())
+        # one fold per ledger state: a Designer launch built its packet twice in a Dispatcher beat, each calling this
+        # twice, so four ~1.7 s replays inside the 20 s beat (RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT)
+        stamp = tuple((f, s.st_size, s.st_mtime_ns) for f in model.ledger_files() for s in (os.stat(f),))
+        if _DONE_MEMO.get("stamp") != stamp:
+            w = model.replay(model.read())
+            _DONE_MEMO.clear()
+            _DONE_MEMO.update(stamp=stamp, done={i: (getattr(it, "title", "") or "") for i, it in w.items.items()
+                                                 if it.state == "done"})
     except Exception:  # an unreadable ledger is reported as UNMEASURED by the caller
+        _DONE_MEMO.clear()
         return None
-    return {i: (getattr(it, "title", "") or "") for i, it in w.items.items() if it.state == "done"}
+    return dict(_DONE_MEMO["done"])
+
+
+_DONE_MEMO = {}
 
 
 def mod_prefixes(mod, aliases=()):
