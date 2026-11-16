@@ -1,0 +1,52 @@
+{
+  "run": "rm-role-designercodex-1794810374",
+  "stage": 3,
+  "outcome": "done",
+  "summary": "Wrote source-backed FeverWood sheet, 23-leaf proposed tree, implementation plan, 44 planned scenes, five authority-bound/greedy showcases and complete inherited floor applicability. Filed seven child build specifications covering missing entry points, observations, controls, durable recovery and documented delivery gaps. All 44 built/in-scope inventory units are covered; absent scoped-out theft also has an explicit regression check. Implementation/live proof/scope remain unchanged, all live acceptance unmeasured, legacy north-star DRAFT and no first-touch, exam, signature or waiver claimed. BENCH only; no game, bridge, restart, deployment, art or game-code change.",
+  "published": "76942658de1d30e2b5897ee1ed67de8e4daadffa",
+  "validation": {
+    "gate_a": "PASS",
+    "scenes_and_floor": "PASS",
+    "showcase_set": "PASS",
+    "source_quote_coverage_self_audit": "PASS; write_checks.json",
+    "publication_tree_checks": "14 green in 11.0 seconds",
+    "filed_item_preflight_after_publication": [
+      {
+        "item": "FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY",
+        "status": "PASS",
+        "checks": 4
+      },
+      {
+        "item": "FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD",
+        "status": "PASS",
+        "checks": 4
+      },
+      {
+        "item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+        "status": "PASS",
+        "checks": 4
+      },
+      {
+        "item": "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
+        "status": "PASS",
+        "checks": 4
+      },
+      {
+        "item": "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
+        "status": "PASS",
+        "checks": 4
+      },
+      {
+        "item": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+        "status": "PASS",
+        "checks": 4
+      },
+      {
+        "item": "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR",
+        "status": "PASS",
+        "checks": 4
+      }
+    ],
+    "runtime_acceptance": "UNMEASURED; no live scene executed"
+  }
+}
