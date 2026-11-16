@@ -1,437 +1,513 @@
 {
- "author": "rm-role-designer-1794774716",
- "examiner": "rm-judge ab1f2a220ca715453 (opus, fresh; saw only sheet.md and tree.json)",
- "challenger": "rm-judge a19389cde05763c4a (opus, fresh; saw only sheet.md and tree.json)",
+ "author": "rm-role-designer-1794819648",
+ "examiner": "rm-judge afcc33884c2e275f8 (opus, fresh; saw only sheet.md and tree.json)",
+ "challenger": "rm-judge abaa4d89fdd761b22 (opus, fresh; saw only sheet.md and tree.json)",
+ "open_run": "rm-role-designer-1794820103",
  "inputs": {
-  "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69",
-  "sheet": "e0e9a86330827203b114a0265ed56d80d9b1b4bc6ef4940b0144e6e5aab76cf3"
+  "tree": "b95090b8c584a87f142359f62c4cf37a789a8b5514aca998a495bf91578961fb",
+  "sheet": "44508a3b521bba651237b68dd458d8db18330177646761dbfa22d01d7937ae40"
  },
  "scenarios": [
   {
    "id": "s1",
    "by": "examiner",
-   "expect_source": "leaf:bloom_reads_sick",
-   "expect": "reject: the Bloom must read as a red storm lid at play zoom; a def that reads RM_ContagionBloom while the screen shows vanilla grey rain is the named false pass",
-   "text": "At midday on the saved Contagion site, the weather readout says RM_ContagionBloom and the rain particles fall steadily. At play zoom the sky and ambient light are the same flat grey as the temperate-forest control map in vanilla rain. A tinted red rain sprite is the only change from the control."
+   "text": "A touched colonist is mid-change. A second colonist with a Sunbeam is right-click ordered to hold the lens on them, and a beam of light strikes the touched colonist while the job runs. When it ends, the colonist's mutations are all still listed, a burn injury is added, and on going back out into the Bloom their change no longer advances.",
+   "expect": "accept: the leaf wants the beam seen, the progression stopped, the mutations kept and a burn left as the price; its red line (erased mutations, no burn, job never completes) is not hit",
+   "expect_source": "leaf:sunbeam_arrest_treats"
   },
   {
    "id": "s2",
    "by": "examiner",
-   "expect_source": "leaf:tells_then_burn",
-   "expect": "accept: the tells (gawpsacks sinking, rattlegrope shaking, red puffs, rustle) visibly come first and the light changes only after a lead, so the Burn is announced",
-   "text": "On the saved site, a little under an in-game hour before a natural Burn, the gawpsacks start to sink, the rattlegrope shakes and small red puffs rise from the ground while a dry rustle plays. Over the following ticks nothing else changes. Then the light shifts and the Burn condition starts."
+   "text": "While a natural Burn is building on the saved site, the gawpsacks sink, the rattlegrope shakes, red puffs rise from the ground and a rustling sound plays. Some time after these begin, the light across the map changes and the Burn condition starts.",
+   "expect": "accept: the leaf wants the tells (sinking gawpsacks, shaking rattlegrope, red puffs, rustle) seen first and the light change of the Burn only after",
+   "expect_source": "leaf:tells_then_burn"
   },
   {
    "id": "s3",
-   "by": "examiner",
-   "expect_source": "leaf:one_dash_at_cost",
-   "expect": "reject: a prepared colonist crossing 20 open cells between refuges must arrive alive and hurt; dying mid-crossing makes the Burn a lockdown, the owner's stop line",
-   "text": "During a forced Burn, a healthy colonist is ordered across 20 open cells from one roofed refuge to the next. Their RM_BurnDose climbs fast and they collapse and die at cell 14. A second colonist drafted in the open for the whole Burn also dies, a little sooner."
+   "by": "challenger",
+   "text": "Gestation run on the saved site. A sample is taken from a donor and a Bloody Mess host is injected. Four days are jumped, and a batch of three parts with the donor's label arrives even though the wanted part missed. Installing one organ on the donor gives the matched mood and no mismatch. An injection interrupted mid-bar keeps its sample. On the odds, the run notes say: success odds are computed and written before the injection starts, see the dev log line 'gestation odds 34%' at the tick before the job. The inspect pane on the host shows its usual text, with no odds line.",
+   "expect": "reject: the odds are written only in a dev log (a named false_pass). The player never sees them before committing, which the leaf calls red: odds hidden until after the stab",
+   "expect_source": "leaf:genome_brings_tissue"
   },
   {
    "id": "s4",
-   "by": "examiner",
-   "expect_source": "leaf:refuge_is_shade",
-   "expect": "reject: the refuge must be whatever the shared shade grid calls shade; canopy shade beside a trunk still burning is the old exact-cell tree test the ruling removed",
-   "text": "In a forced Burn, pawns stand on a roofed cell, on a water cell, on a tree's trunk cell and on a cell in the tree's canopy shade two cells off the trunk. RM_MapComponent_ShadeGrid marks the canopy cell as shade. The roofed, water and trunk pawns take no Burn dose. The canopy pawn takes the same dose as a pawn on plain open ground."
+   "by": "challenger",
+   "text": "A touched colonist with two mutations is laid in a bed indoors. The RM_ContagionTouched severity, read every hour, has stayed flat for the last day and a half. A second colonist takes the right-click hold-the-lens job with the Sunbeam, and the capture shows a bright beam striking the patient. When the job ends, progression is stopped, both mutation hediffs are unchanged and a Sunbeam burn has been added. After the colonist goes back out into the Bloom, progression starts again. Report: arrest, keep, burn and restart all confirmed.",
+   "expect": "reject: progression had already stopped before the beam fired (a named false_pass). The scene was meant to start mid-progression, so this one cannot show the beam stopping anything",
+   "expect_source": "leaf:sunbeam_arrest_treats"
   },
   {
    "id": "s5",
    "by": "examiner",
-   "expect_source": "leaf:natives_take_burn",
-   "expect": "accept: the UV-shy native is hurt by the Burn itself while the armoured Scaldhide and Crispling keep their exemption",
-   "text": "A forced Burn runs over a UV-shy native, a Scaldhide and a Crispling standing in the open, with no predators on the map. After 2500 ticks the UV-shy native carries a Burn injury and is limping. The Scaldhide and the Crispling have no new hediffs and have kept grazing in the open."
+   "text": "A UV-shy native, a Scaldhide and a Crispling stand in the open through a forced Burn. When their health is read 2500 ticks later, none of the three has any Burn-related hediff or injury.",
+   "expect": "reject: the leaf's red line names Burn harm never reaching natives (the 2026-11-06 FAIL), and its false_pass names every native exempt; the UV-shy native must be hurt",
+   "expect_source": "leaf:natives_take_burn"
   },
   {
    "id": "s6",
    "by": "examiner",
-   "expect_source": "leaf:touched_reads_early",
-   "expect": "reject: exposure must build a readable early state with one message when change begins, never a letter per small exposure",
-   "text": "A colonist hauls outdoors under the Bloom for a full day. RM_ContagionTouched shows up early on their health tab at low severity and rises through its stages. The player also gets a blue letter, 'Bloom exposure', each time the colonist steps back outside: nine in the day, plus one more when the first change starts."
+   "text": "In a forced Burn, one pawn stands on a tree's trunk cell and another stands one cell off the trunk, inside the canopy shadow that the shade overlay marks as shade. After the Burn, the trunk-cell pawn has no dose. The pawn in the canopy shadow has taken a Burn dose like the pawn on plain open ground.",
+   "expect": "reject: the leaf's red line and false_pass name only the trunk cell protecting, the old exact-cell tree test, so canopy shade beside a trunk still burns; shelter must follow the shared shade cells",
+   "expect_source": "leaf:refuge_is_shade"
   },
   {
    "id": "s7",
-   "by": "examiner",
-   "expect_source": "leaf:sunbeam_arrest_treats",
-   "expect": "accept: the hold-the-lens job runs, a beam visibly strikes the worker, progression stops, the mutations stay and a burn is left as the price",
-   "text": "A touched colonist is partway through progression with two mutations. A second colonist with a Sunbeam is right-clicked onto them and takes the hold-the-lens job, and a bright beam of light hits the patient for the length of the job. Afterwards the health tab shows progression halted, both mutations still there and a fresh burn on the torso. Exposed to the Bloom again, the patient does not progress further."
+   "by": "challenger",
+   "text": "Tick-by-tick read across a natural Burn's tells window. The tell state for gawpsack sink, rattlegrope shake and red puffs switches on 1,800 ticks before the RM_ContagionBurn condition starts, and the rustle sound is logged at the same tick. The build report says the tells lead the Burn by the configured window. A capture of the window shows the gawpsacks hovering at a steady height, the rattlegrope still, and no puffs, until the light changes when the Burn arrives.",
+   "expect": "reject: the tell flag is set but nothing moves on screen (a named false_pass). The player sees no tells before the light changes, so on screen the Burn arrives unannounced",
+   "expect_source": "leaf:tells_then_burn"
   },
   {
    "id": "s8",
    "by": "examiner",
-   "expect_source": "leaf:sunbeam_arrest_treats",
-   "expect": "reject: the arrest must keep the mutations and leave a burn; a clean cure that erases mutations and costs nothing breaks the line",
-   "text": "A colonist holds the Sunbeam's lens on a touched worker, and the beam visibly strikes the worker for the whole job. When the job finishes, the progression has stopped. The worker's three mutations are gone from the health tab and there is no injury of any kind: they are back to an ordinary unmarked body."
+   "text": "Two colonists are working 8 cells from a roofed hut and two more are working 60 cells away. When the warning signs begin, the player orders everyone in. The two near colonists walk into the hut before the Burn starts. The two far ones are still crossing open ground when the Burn begins, and the player has to find them other cover.",
+   "expect": "accept: the leaf wants those within one dash of a planned refuge inside during the tells lead while a distant work party is caught in the open and must improvise",
+   "expect_source": "leaf:shelter_in_lead"
   },
   {
    "id": "s9",
    "by": "examiner",
-   "expect_source": "leaf:coalescence_grows_and_breaks",
-   "expect": "accept: the Unfinished reach the ring and are absorbed, the mass and graphic grow a stage, the manhunters stay bounded, and the Burn collapse beats gunfire with Monstrous samples",
-   "text": "A Coalescence is placed and six Unfinished are spawned nearby. They walk to its ring and are drawn in one by one, the mass readout rises and the body redraws larger at stage 2, while three manhunters circle and no more come. A forced Burn collapses it into a pile that includes Monstrous samples. A control Coalescence killed with rifles leaves only ordinary tissue and fewer samples."
+   "text": "On the saved Contagion site at midday under the standing Bloom, the camera at play zoom shows a deep crimson sky with a heavy low cloud ceiling. Reddish rain streaks fall across the map and a faint red haze hangs over the ground. The temperate forest control under vanilla rain, taken at the same hour, shows a flat grey sky.",
+   "expect": "accept: the leaf wants a red, storm-roofed sky with red rain or fog under the standing Bloom at midday, unlike an ordinary grey overcast day",
+   "expect_source": "leaf:bloom_reads_sick"
   },
   {
    "id": "s10",
    "by": "examiner",
-   "expect_source": "leaf:genome_brings_tissue",
-   "expect": "reject: when the wanted part misses, the gestation must still bring matched or sellable tissue; a missed batch that yields nothing breaks the line",
-   "text": "Before injecting the Bloody Mess, the player reads in its inspect text a 35% chance of the wanted lung. After four days of gestation the roll misses and the host produces nothing at all, just a message: 'Gestation failed'. A second injection interrupted mid-bar returns the genome sample unspent."
+   "text": "At midday under the standing Bloom, several Unfinished wander in the open, and over 2500 ticks none of them runs for shade. A Burn is then forced and the sky clears. Within the next 2500 ticks several Unfinished break off and run for shaded cells.",
+   "expect": "accept: the leaf wants no Unfinished or native dashing from the sun under the Bloom, and the sun escape returning once the Burn clears the sky",
+   "expect_source": "leaf:bloom_quiets_sundash"
   },
   {
    "id": "s11",
    "by": "examiner",
-   "expect_source": "leaf:shelter_in_lead",
-   "expect": "accept: the near workers reach the refuge during the tells lead while the far party is caught in the open and improvises, with no teleport",
-   "text": "As the tells window opens, two colonists are planting 8 cells from a roofed refuge and two are mining 60 cells away. The near pair drop their work and walk inside before the Burn starts. The far pair are still crossing open ground when it lands, and one ducks into a pond while the other heads for a tree's shade."
+   "text": "During a forced Burn, a colonist runs 20 open cells from one roofed refuge to another. The colonist drafted standing in the open for the whole Burn is also checked. Afterwards neither has any Burn dose or any burn injury, and both health tabs are unchanged from before the Burn.",
+   "expect": "reject: the leaf's red line and false_pass name a Burn harmless to colonists, which makes the dash no choice; the crosser should arrive hurt and the one left outside gravely hurt",
+   "expect_source": "leaf:one_dash_at_cost"
   },
   {
    "id": "s12",
+   "by": "challenger",
+   "text": "Saved Contagion site v3 at midday under the standing Bloom. The weather readout says RM_ContagionBloom and the Bloom condition is active. In the play-zoom shot the falling rain particles are tinted a dull red, while the sky overlay and ambient light are the same flat grey as the control shot of the temperate forest under vanilla rain. The build note reads: Bloom weather confirmed live, red rain rendering.",
+   "expect": "reject: the def reads RM_ContagionBloom while the sky carries the vanilla rain colours. The leaf asks for a red, storm-roofed sky and calls a Bloom loading with vanilla rain sky colours red; red rain under a grey overcast lid is the grey day it rules out",
+   "expect_source": "leaf:bloom_reads_sick"
+  },
+  {
+   "id": "s13",
    "by": "examiner",
-   "expect_source": "leaf:prints_pay",
-   "expect": "accept: a print scanned from a living Unfinished answers a Helix contract that asks for that exact roll, is consumed and pays silver, and a second scan is refused",
-   "text": "A colonist scans a living Unfinished and gets a draftprint item that names its limb and skin roll. A second scan of the same Unfinished is refused with 'already printed'. A Helix contract asking for that exact combination is fired, the print is delivered, and it leaves the stockpile while silver is paid out."
+   "text": "As a natural Burn builds and the warning signs play, the UV-shy natives keep grazing in the open and the sun-loving native stays where it is. The Burn lands, the UV-shy natives take burn injuries, and only then do they sprint for cover.",
+   "expect": "reject: the leaf's red line names a build where the only dive is the reactive sprint after damage, so the Burn hurts first and natives flee after; the dive must come during the tells",
+   "expect_source": "leaf:preburn_dive"
   },
   {
-   "id": "c1",
-   "text": "The forced-Burn scene places five pawns: one under a roof, one in a tree's canopy shade two cells east of the trunk, one standing in a shallow pond, one on the trunk cell itself, and one on bare ground. After the Burn only the bare-ground pawn carries any Burn dose; the other four read zero. The shade overlay toggled on for the screenshot paints the canopy cell and the pond as shade, but leaves the trunk cell unshaded. The build report reads 'all four refuge types protect, open ground burns'.",
-   "expect": "reject: a pawn is safe on the trunk cell that the shared shade grid calls open, so the Burn still runs its own exact-cell tree test beside the shade grid; refuge must be exactly what shade calls shade",
-   "expect_source": "leaf:refuge_is_shade",
-   "by": "challenger"
+   "id": "s14",
+   "by": "examiner",
+   "text": "A player extracts a genome sample from a donor and injects a Bloody Mess host. The inspect text shows no odds before the injection. Four days later the gestation ends, the wanted organ has not come, and nothing at all spawns: no batch and no tissue of any kind.",
+   "expect": "reject: the leaf's red line names a missed batch that yields nothing and odds hidden until after the injection; it wants the odds shown first and matched or sellable tissue on a miss",
+   "expect_source": "leaf:genome_brings_tissue"
   },
   {
-   "id": "c2",
-   "text": "When the tells window opens, the sun-loving native wanders out of the thicket into the open, which looks like the sorting has begun. The six UV-shy grazers keep grazing in the open through the whole window. Within a few seconds of the Burn landing all six break into a run for the tree line and reach cover, each with a small burn on its health tab, and the job log shows a shelter-dive job started for 6 of 6.",
-   "expect": "reject: the UV-shy natives dive only after the Burn lands and hurts them, the reactive sprint, not a dive during the tells before the Burn",
-   "expect_source": "leaf:preburn_dive",
-   "by": "challenger"
+   "id": "s15",
+   "by": "challenger",
+   "text": "Forced Burn on the saved site with five pawns: on a roofed cell, on a canopy-shade cell beside a tree, on a water cell, on a tree's trunk cell, and on plain open ground. After the Burn the roofed, canopy, water and trunk pawns all show zero RM_BurnDose; the open-ground pawn's dose has risen. RM_MapComponent_ShadeGrid reads the trunk cell as open. Summary: every pawn under a roof, in water or under a tree was safe, and open ground burned, so shelter matches shade.",
+   "expect": "reject: the trunk-cell pawn is safe on a cell the shade grid calls open. That means the Burn's own old exact-cell tree test is still running beside the shared grid, and the leaf says no pawn may be safe on a cell shade calls open",
+   "expect_source": "leaf:refuge_is_shade"
   },
   {
-   "id": "c3",
-   "text": "During a forced Burn a prepared colonist runs the 20 open cells between two roofed refuges, collapses downed at cell 17, and is dragged the last three cells by a second colonist who sprints out to fetch them. After a doctor treats them they survive. The colonist left drafted in the open for the whole Burn dies. The scene summary reads 'dash colonist alive and hurt, outdoor colonist gravely hurt: contrast present'.",
-   "expect": "reject: a single crossing on foot does not survive the Burn, since the colonist goes down before arriving and lives only by rescue, so the dash is no real choice and the Burn is a lockdown",
-   "expect_source": "leaf:one_dash_at_cost",
-   "by": "challenger"
+   "id": "s16",
+   "by": "examiner",
+   "text": "A tester clock-jumps the saved site to just inside the window before a natural Burn and steps tick by tick. On one tick the light over the map shifts and the Burn condition begins. On that same tick the gawpsacks drop, the rattlegrope starts to shake and red puffs appear. Nothing had moved on the earlier ticks.",
+   "expect": "reject: the leaf's false_pass names tells that fire on the same tick as the Burn so there is no lead; the tells must come first",
+   "expect_source": "leaf:tells_then_burn"
   },
   {
-   "id": "c4",
-   "text": "Before the stab, the Bloody Mess's inspect text shows the chance of getting the wanted heart, and an injection interrupted mid-bar leaves the donor sample in the colonist's inventory. The second injection completes, and after four jumped days the gestation misses the heart. The host shudders, a 'gestation failed' message appears, and it drops a pile of slime and mulch that colonists haul to the fertilizer stockpile.",
-   "expect": "reject: the missed batch yields no matched or sellable tissue, only slime and mulch, so a miss still returns nothing useful",
-   "expect_source": "leaf:genome_brings_tissue",
-   "by": "challenger"
+   "id": "s17",
+   "by": "examiner",
+   "text": "A Coalescence is placed and six Unfinished are spawned near it. The Unfinished walk to its ring and are absorbed one by one, and after passive growth its sprite is visibly larger, a new stage. A small, steady number of manhunters stays around it. A forced Burn then collapses it into a pile of Monstrous samples, more than a second Coalescence left after being killed by gunfire.",
+   "expect": "accept: the leaf wants Unfinished absorbed at the ring, a visible stage of growth, bounded manhunters, and a Burn collapse into Monstrous samples where killing gives less",
+   "expect_source": "leaf:coalescence_grows_and_breaks"
+  },
+  {
+   "id": "s18",
+   "by": "examiner",
+   "text": "Same set-up: two colonists 8 cells from a roofed hut and two 60 cells away. On the tick the warning signs begin, all four disappear from where they were working and appear inside the hut. Nobody is outside when the Burn starts.",
+   "expect": "reject: the leaf's red line names every pawn on the map being teleported to safety; the far party must be caught out",
+   "expect_source": "leaf:shelter_in_lead"
+  },
+  {
+   "id": "s19",
+   "by": "examiner",
+   "text": "A colonist works outdoors under the Bloom for a full in-game day. Over the day the letter stack fills with more than a dozen near-identical letters, one for each exposure. Their health tab shows no Contagion state until a mutation suddenly appears.",
+   "expect": "reject: the leaf's red line names every exposure sending a letter, or change starting with no prior visible state; it wants one noticeable message and an early readable touched state",
+   "expect_source": "leaf:touched_reads_early"
   }
  ],
- "scenarios_hash": "27115a5d275dbcc7940fc9b90ed0a4a818c08998fa9f7ec3cc9a138ad006c97e",
+ "scenarios_hash": "e31cae54eaf04025e5d0acf92348851594f34c5b3d9c015e5ba6a431d5652104",
  "readers": [
-  "rm-judge a849016fd528d3644 (opus, fresh)",
-  "rm-judge a5b6767bae007f4b3 (opus, fresh)"
+  "rm-judge a3aafe445c031f1fb (opus, fresh; saw only sheet.md, tree.json and scenario text)",
+  "rm-judge a4aa44bc13413a0f6 (opus, fresh; saw only sheet.md, tree.json and scenario text)"
  ],
  "reader_verdicts": {
-  "a849016fd528d3644": [
+  "a3aafe445c031f1fb": [
    {
     "id": "s1",
-    "verdict": "reject",
-    "leaf": "bloom_reads_sick",
-    "why": "The Bloom sky reads as the same flat grey as vanilla rain, so the lid is not red; a tinted rain sprite is not a red storm roof."
+    "verdict": "accept",
+    "leaf": "sunbeam_arrest_treats",
+    "why": "The beam strikes, the change stops, the mutations stay and a burn is left, which is what the experience, sheet line and red ask for; restart on re-exposure appears only in the oracle, not in the experience, red or false_pass lines."
    },
    {
     "id": "s2",
     "verdict": "accept",
     "leaf": "tells_then_burn",
-    "why": "Visible tells and the rustle come well ahead of the Burn and its light change, never after."
+    "why": "Sinking gawpsacks, shaking rattlegrope, red puffs and the rustle all come before the light changes and the Burn starts, never the Burn first."
    },
    {
     "id": "s3",
     "verdict": "reject",
-    "leaf": "one_dash_at_cost",
-    "why": "The dasher dies inside one crossing, so the Burn is a lockdown, not a dash at a cost."
+    "leaf": "genome_brings_tissue",
+    "why": "The odds exist only in a dev log and never in the inspect pane, which is the false_pass 'odds are written in a dev log only', so the player does not see the odds before committing."
    },
    {
     "id": "s4",
     "verdict": "reject",
-    "leaf": "refuge_is_shade",
-    "why": "A canopy cell the shade grid calls shade still burns like open ground, so shelter does not follow the shared shade."
+    "leaf": "sunbeam_arrest_treats",
+    "why": "Severity was already flat indoors before the beam, which is the false_pass 'the beam fires but progression was already stopped', so the arrest is not shown."
    },
    {
     "id": "s5",
-    "verdict": "accept",
+    "verdict": "reject",
     "leaf": "natives_take_burn",
-    "why": "With no predators, the UV-shy native is hurt by the Burn while Scaldhide and Crispling are unharmed."
+    "why": "The UV-shy native takes no Burn harm, which is the red 'Burn harm never reaches natives'."
    },
    {
     "id": "s6",
     "verdict": "reject",
-    "leaf": "touched_reads_early",
-    "why": "A letter fires for each small exposure, nine in a day, not one message when change begins."
+    "leaf": "refuge_is_shade",
+    "why": "Canopy shade the overlay calls shade still burns while only the trunk cell protects, which is the red and the false_pass of the old exact-cell tree test."
    },
    {
     "id": "s7",
-    "verdict": "accept",
-    "leaf": "sunbeam_arrest_treats",
-    "why": "The beam strikes, progression stops, the mutations stay and a burn is left; none of the red cases happen (no progression on re-exposure differs from the oracle, but not from the experience, red or false_pass lines)."
+    "verdict": "reject",
+    "leaf": "tells_then_burn",
+    "why": "The tell flags and log lead the Burn, but nothing moves on screen, which is the false_pass 'the tell state flag is set but nothing moves on screen'."
    },
    {
     "id": "s8",
-    "verdict": "reject",
-    "leaf": "sunbeam_arrest_treats",
-    "why": "The arrest erases the mutations and leaves no burn, which is the red case."
+    "verdict": "accept",
+    "leaf": "shelter_in_lead",
+    "why": "The near pair walk in during the lead and the far pair is caught in the open and must improvise, as the experience describes, with none of the false_pass conditions."
    },
    {
     "id": "s9",
     "verdict": "accept",
-    "leaf": "coalescence_grows_and_breaks",
-    "why": "It absorbs arrivals, grows a stage, keeps its manhunters bounded, and a Burn collapse gives Monstrous samples where gunfire gives less."
+    "leaf": "bloom_reads_sick",
+    "why": "A midday play-zoom shot shows a red, storm-roofed sky with red rain and haze against a grey vanilla control."
    },
    {
     "id": "s10",
-    "verdict": "reject",
-    "leaf": "genome_brings_tissue",
-    "why": "The missed batch yields nothing at all, which is the red case."
+    "verdict": "accept",
+    "leaf": "bloom_quiets_sundash",
+    "why": "No Unfinished runs from the sun under the Bloom with Unfinished present, and the sun escape comes back once the Burn clears the sky."
    },
    {
     "id": "s11",
-    "verdict": "accept",
-    "leaf": "shelter_in_lead",
-    "why": "The near pair leave their work and get inside during the lead, and the far pair are caught out and improvise."
+    "verdict": "reject",
+    "leaf": "one_dash_at_cost",
+    "why": "Neither the dasher nor the colonist standing outside takes any dose, which is the false_pass and red of a Burn that is harmless to colonists."
    },
    {
     "id": "s12",
-    "verdict": "accept",
-    "leaf": "prints_pay",
-    "why": "One print per Unfinished names its roll, a second scan is refused, and the matching contract consumes the print and pays silver."
-   },
-   {
-    "id": "c1",
     "verdict": "reject",
-    "leaf": "refuge_is_shade",
-    "why": "The trunk cell the shade overlay leaves open still protects, so the old exact-cell tree test survives beside the shade grid (red), and the build report hides it."
+    "leaf": "bloom_reads_sick",
+    "why": "The def reads Bloom but the sky and light are vanilla grey, which is the red 'loads with the vanilla rain sky colours, so the lid is not red'; red rain alone does not give a red lid."
    },
    {
-    "id": "c2",
+    "id": "s13",
     "verdict": "reject",
     "leaf": "preburn_dive",
-    "why": "The UV-shy natives dive only after the Burn lands and burns them, the reactive dive named as false_pass and red."
+    "why": "Natives flee only after they are burned and the sun lover never comes out, which is the red and false_pass of the reactive dive."
    },
    {
-    "id": "c3",
-    "verdict": "reject",
-    "leaf": "one_dash_at_cost",
-    "why": "The dasher is downed before arriving and has to be dragged in, so the crossing is near-lethal, not a readable cost they arrive alive with; the summary overstates it."
-   },
-   {
-    "id": "c4",
+    "id": "s14",
     "verdict": "reject",
     "leaf": "genome_brings_tissue",
-    "why": "The missed gestation leaves only slime and mulch (plain fertilizer), not matched or sellable tissue."
+    "why": "No odds are shown before the injection and a missed batch yields nothing, both named in the red."
+   },
+   {
+    "id": "s15",
+    "verdict": "reject",
+    "leaf": "refuge_is_shade",
+    "why": "The trunk pawn is safe on a cell the shade grid reads as open, against 'no pawn safe in a cell that shade calls open', so the old exact-cell tree test still runs beside the grid (red)."
+   },
+   {
+    "id": "s16",
+    "verdict": "reject",
+    "leaf": "tells_then_burn",
+    "why": "The tells fire on the same tick as the Burn, which is the false_pass 'no lead' and the red 'Burn lands unannounced'."
+   },
+   {
+    "id": "s17",
+    "verdict": "accept",
+    "leaf": "coalescence_grows_and_breaks",
+    "why": "Unfinished reach the ring and are absorbed, the sprite grows a stage, manhunters stay few, and the Burn collapse yields more Monstrous samples than gunfire."
+   },
+   {
+    "id": "s18",
+    "verdict": "reject",
+    "leaf": "shelter_in_lead",
+    "why": "Every pawn is teleported to safety, which is named in the red, and the far party is never caught out."
+   },
+   {
+    "id": "s19",
+    "verdict": "reject",
+    "leaf": "touched_reads_early",
+    "why": "A letter fires for every exposure and the change begins with no visible state before it, both named in the red."
    }
   ],
-  "a5b6767bae007f4b3": [
+  "a4aa44bc13413a0f6": [
    {
     "id": "s1",
-    "verdict": "reject",
-    "leaf": "bloom_reads_sick",
-    "why": "The sky is the control's flat grey with only red rain sprites, the false_pass of a Bloom def read over a vanilla grey sky."
+    "verdict": "accept",
+    "leaf": "sunbeam_arrest_treats",
+    "why": "A colonist ordered to hold the lens, a visible beam on a worker who is mid-change, mutations kept, a burn added and progression stopped is exactly the leaf's experience."
    },
    {
     "id": "s2",
     "verdict": "accept",
     "leaf": "tells_then_burn",
-    "why": "Sinking gawpsacks, shaking rattlegrope, red puffs and rustle come well before the light changes and the Burn starts."
+    "why": "Gawpsacks sink, rattlegrope shakes, red puffs rise and the rustle plays some time before the light changes and the Burn starts, so the tells lead and the Burn is never first."
    },
    {
     "id": "s3",
     "verdict": "reject",
-    "leaf": "one_dash_at_cost",
-    "why": "The dash colonist dies mid-crossing, so the Burn is lethal within one crossing, which is the red lockdown."
+    "leaf": "genome_brings_tissue",
+    "why": "The odds exist only in a dev log line and the host's inspect pane shows none, which is the named false pass 'odds are written in a dev log only', so the player never sees the odds before committing."
    },
    {
     "id": "s4",
     "verdict": "reject",
-    "leaf": "refuge_is_shade",
-    "why": "Canopy shade the grid marks as shade still burns while the trunk cell protects, which is the red exact-cell tree test."
+    "leaf": "sunbeam_arrest_treats",
+    "why": "Severity was already flat for a day and a half before the beam, the false pass 'the beam fires but progression was already stopped', and progression restarting in the Bloom contradicts an arrest."
    },
    {
     "id": "s5",
-    "verdict": "accept",
+    "verdict": "reject",
     "leaf": "natives_take_burn",
-    "why": "With no predators, the UV-shy native takes a Burn injury while Scaldhide and Crispling stay unharmed."
+    "why": "The UV-shy native comes through a Burn with no harm, which is the leaf's red (Burn harm never reaches natives, the 2026-11-06 FAIL)."
    },
    {
     "id": "s6",
     "verdict": "reject",
-    "leaf": "touched_reads_early",
-    "why": "A letter fires for each small exposure, nine in a day, which is the red per-exposure letter spam."
+    "leaf": "refuge_is_shade",
+    "why": "Only the trunk cell protects while canopy shade the overlay marks as shade still burns, which is the leaf's red and its false pass 'the old exact-cell tree test'."
    },
    {
     "id": "s7",
-    "verdict": "accept",
-    "leaf": "sunbeam_arrest_treats",
-    "why": "A beam strikes the patient, progression stops, mutations stay and a burn is left; no experience, red or false_pass line covers re-exposure (only the oracle expects it to restart)."
+    "verdict": "reject",
+    "leaf": "tells_then_burn",
+    "why": "The tell state flag and sound fire 1,800 ticks early, but on screen nothing moves until the Burn arrives, which is the false pass 'the tell state flag is set but nothing moves on screen'."
    },
    {
     "id": "s8",
-    "verdict": "reject",
-    "leaf": "sunbeam_arrest_treats",
-    "why": "The arrest erases the mutations and leaves no burn, both named in red."
+    "verdict": "accept",
+    "leaf": "shelter_in_lead",
+    "why": "The near colonists, who started outside, get into the refuge during the tells while the far party is caught in the open and must improvise, as the leaf describes."
    },
    {
     "id": "s9",
     "verdict": "accept",
-    "leaf": "coalescence_grows_and_breaks",
-    "why": "It absorbs arrivals, grows to stage 2 with bounded manhunters, and a Burn collapse yields Monstrous samples where gunfire gives less."
+    "leaf": "bloom_reads_sick",
+    "why": "At midday under the Bloom the sky is deep crimson with a low storm ceiling, with red rain and haze, set against a grey vanilla control, which is the red lid and not grey overcast."
    },
    {
     "id": "s10",
-    "verdict": "reject",
-    "leaf": "genome_brings_tissue",
-    "why": "The missed batch yields nothing at all, which is the red line."
+    "verdict": "accept",
+    "leaf": "bloom_quiets_sundash",
+    "why": "With Unfinished present, none dash for shade under the Bloom, and the sun escape returns once the Burn clears the sky."
    },
    {
     "id": "s11",
-    "verdict": "accept",
-    "leaf": "shelter_in_lead",
-    "why": "The near pair get inside during the tells and the far pair are caught in the open and improvise."
+    "verdict": "reject",
+    "leaf": "one_dash_at_cost",
+    "why": "Neither the dashing colonist nor the one left out for the whole Burn takes any dose, so the Burn is harmless to colonists, which is the leaf's red and its false pass."
    },
    {
     "id": "s12",
-    "verdict": "accept",
-    "leaf": "prints_pay",
-    "why": "A second scan is refused, and the matching Helix contract consumes the print and pays silver."
-   },
-   {
-    "id": "c1",
     "verdict": "reject",
-    "leaf": "refuge_is_shade",
-    "why": "The trunk pawn is safe on a cell the shade overlay calls open, so the exact-cell tree test survives beside the shade grid; the report hides this."
+    "leaf": "bloom_reads_sick",
+    "why": "The sky and ambient light are the vanilla flat grey and only the rain particles are tinted, which is the red 'the lid is not red' and the false pass where the weather def reads Bloom but the screen shows grey."
    },
    {
-    "id": "c2",
+    "id": "s13",
     "verdict": "reject",
     "leaf": "preburn_dive",
-    "why": "The UV-shy natives graze through the tells and run only after being burned, the reactive-dive false_pass."
+    "why": "The natives keep grazing through the tells and run only after the Burn has hurt them, which is the reactive sprint the leaf names as red and as a false pass."
    },
    {
-    "id": "c3",
-    "verdict": "reject",
-    "leaf": "one_dash_at_cost",
-    "why": "The dasher is downed mid-crossing and survives only by rescue, so one crossing is effectively lethal and they do not arrive alive under their own power."
-   },
-   {
-    "id": "c4",
+    "id": "s14",
     "verdict": "reject",
     "leaf": "genome_brings_tissue",
-    "why": "The missed gestation gives only slime and mulch, not matched or sellable tissue, so a miss yields no useful tissue."
+    "why": "No odds are shown before the injection, and a missed batch yields nothing at all, both named in the leaf's red."
+   },
+   {
+    "id": "s15",
+    "verdict": "reject",
+    "leaf": "refuge_is_shade",
+    "why": "The trunk pawn is safe on a cell the shade grid reads as open, which breaks 'no pawn safe in a cell that shade calls open' and shows the separate tree test is still in place."
+   },
+   {
+    "id": "s16",
+    "verdict": "reject",
+    "leaf": "tells_then_burn",
+    "why": "The tells start on the same tick as the Burn, which is the false pass 'tells fire on the same tick as the Burn so there is no lead'."
+   },
+   {
+    "id": "s17",
+    "verdict": "accept",
+    "leaf": "coalescence_grows_and_breaks",
+    "why": "The Unfinished walk to the ring and are absorbed, it visibly grows a stage, its manhunters stay bounded, and a Burn collapse gives more Monstrous samples than a gunfire kill."
+   },
+   {
+    "id": "s18",
+    "verdict": "reject",
+    "leaf": "shelter_in_lead",
+    "why": "Every pawn is teleported into the hut, which is named in the leaf's red, and the far party is never caught out."
+   },
+   {
+    "id": "s19",
+    "verdict": "reject",
+    "leaf": "touched_reads_early",
+    "why": "A letter fires for each exposure and no early touched state shows before the mutation, both named in the leaf's red."
    }
   ]
  },
  "control": {
   "broken_leaf": "sunbeam_arrest_treats",
-  "reader": "rm-judge a8fc83cd66c9646f7 (opus, fresh)",
+  "reader": "rm-judge a814085ae84d198c7 (opus, fresh)",
   "missed": true,
   "missed_ids": [
-   "s8"
+   "s4"
   ],
   "verdicts": [
    {
     "id": "s1",
-    "verdict": "reject",
-    "leaf": "bloom_reads_sick",
-    "why": "The Bloom sky reads the same flat grey as vanilla rain; only the rain sprite is tinted, so the lid is not red."
+    "verdict": "accept",
+    "leaf": "none",
+    "why": "No leaf or sheet line covers the Sunbeam or arresting a change, so nothing in the tree rejects what happens, but nothing in it promises this either."
    },
    {
     "id": "s2",
     "verdict": "accept",
     "leaf": "tells_then_burn",
-    "why": "Visible tells lead the Burn by nearly an hour and the light changes only afterwards."
+    "why": "The tells (sinking gawpsacks, shaking rattlegrope, red puffs, rustle) come first and the light change and Burn come after, which is the order the leaf asks for."
    },
    {
     "id": "s3",
     "verdict": "reject",
-    "leaf": "one_dash_at_cost",
-    "why": "The dash colonist dies mid-crossing, so the Burn is a lockdown rather than a costly choice."
+    "leaf": "genome_brings_tissue",
+    "why": "The odds exist only in a dev log line and the host's inspect pane shows none, which is this leaf's false_pass 'odds are written in a dev log only'."
    },
    {
     "id": "s4",
-    "verdict": "reject",
-    "leaf": "refuge_is_shade",
-    "why": "Canopy shade burns while the trunk protects, which is the old exact-cell tree test the leaf names as red."
+    "verdict": "accept",
+    "leaf": "none",
+    "why": "No leaf covers the Sunbeam arrest; note that severity was already flat indoors before the job ran, so this scene does not show the lens causing the arrest, but no leaf in the tree rejects it."
    },
    {
     "id": "s5",
-    "verdict": "accept",
+    "verdict": "reject",
     "leaf": "natives_take_burn",
-    "why": "The UV-shy native is hurt by the Burn with no predator present, and Scaldhide and Crispling are unharmed."
+    "why": "The UV-shy native has no Burn harm at all, which is the red 'Burn harm never reaches natives'."
    },
    {
     "id": "s6",
     "verdict": "reject",
-    "leaf": "touched_reads_early",
-    "why": "There is a letter for every exposure instead of one message when change begins."
+    "leaf": "refuge_is_shade",
+    "why": "Canopy shade beside a trunk still burns while only the trunk cell protects, which is both the red and the false_pass of this leaf."
    },
    {
     "id": "s7",
-    "verdict": "accept",
-    "leaf": "none",
-    "why": "No line of the tree mentions a Sunbeam cure, and nothing in it rules this out."
+    "verdict": "reject",
+    "leaf": "tells_then_burn",
+    "why": "The tell flags switch on but the capture shows nothing moving until the Burn, which is the false_pass 'the tell state flag is set but nothing moves on screen'."
    },
    {
     "id": "s8",
     "verdict": "accept",
-    "leaf": "none",
-    "why": "No line of the tree mentions a Sunbeam or removing mutations, and nothing in it rules this out."
+    "leaf": "shelter_in_lead",
+    "why": "The near pair walks in during the tells lead and the far pair is caught in the open and has to improvise, exactly as the leaf describes."
    },
    {
     "id": "s9",
     "verdict": "accept",
-    "leaf": "coalescence_grows_and_breaks",
-    "why": "It absorbs, grows a stage, keeps manhunters bounded, and the Burn collapse yields more than gunfire."
+    "leaf": "bloom_reads_sick",
+    "why": "At midday the sky is a crimson storm ceiling with red rain and haze, and the vanilla-rain control is grey."
    },
    {
     "id": "s10",
-    "verdict": "reject",
-    "leaf": "genome_brings_tissue",
-    "why": "A missed batch yields nothing, which the leaf names as red."
+    "verdict": "accept",
+    "leaf": "bloom_quiets_sundash",
+    "why": "Unfinished are on the map and none sun-dash under the Bloom, and the sun escape comes back once the Burn clears the sky."
    },
    {
     "id": "s11",
-    "verdict": "accept",
-    "leaf": "shelter_in_lead",
-    "why": "The near pair reach the refuge during the tells and the far pair are caught out and improvise."
+    "verdict": "reject",
+    "leaf": "one_dash_at_cost",
+    "why": "Neither the dasher nor the colonist standing in the open takes any dose, so the Burn is harmless to colonists, which is the red and the false_pass."
    },
    {
     "id": "s12",
-    "verdict": "accept",
-    "leaf": "prints_pay",
-    "why": "There is one print per Unfinished naming its roll, and the matching contract consumes it and pays silver."
-   },
-   {
-    "id": "c1",
     "verdict": "reject",
-    "leaf": "refuge_is_shade",
-    "why": "The trunk pawn is safe on a cell the shade grid calls open, so a separate tree test still protects."
+    "leaf": "bloom_reads_sick",
+    "why": "The sky and light are the same flat grey as the vanilla control and only the rain is tinted, so the lid is not red, and the weather def reading RM_ContagionBloom is the false_pass."
    },
    {
-    "id": "c2",
+    "id": "s13",
     "verdict": "reject",
     "leaf": "preburn_dive",
-    "why": "The UV-shy natives flee only after the Burn has hurt them, which is the reactive dive the leaf names as red."
+    "why": "The natives flee only after they are burned and the sun lover does not come out, which is the red 'reactive sprint after damage'."
    },
    {
-    "id": "c3",
-    "verdict": "reject",
-    "leaf": "one_dash_at_cost",
-    "why": "The dasher goes down mid-crossing and has to be rescued, so the dose passed the downed threshold rather than arriving alive and hurt."
-   },
-   {
-    "id": "c4",
+    "id": "s14",
     "verdict": "reject",
     "leaf": "genome_brings_tissue",
-    "why": "The missed gestation gives only slime and mulch, not matched or sellable tissue."
+    "why": "No odds are shown before the injection and the missed gestation yields nothing, which hits both parts of the red."
+   },
+   {
+    "id": "s15",
+    "verdict": "reject",
+    "leaf": "refuge_is_shade",
+    "why": "The trunk pawn is safe on a cell the shade grid reads as open, which breaks 'no pawn safe in a cell that shade calls open'; the summary's verdict is wrong."
+   },
+   {
+    "id": "s16",
+    "verdict": "reject",
+    "leaf": "tells_then_burn",
+    "why": "The tells fire on the same tick as the Burn, so there is no lead, which is this leaf's false_pass."
+   },
+   {
+    "id": "s17",
+    "verdict": "accept",
+    "leaf": "coalescence_grows_and_breaks",
+    "why": "It absorbs arrivals, visibly grows a stage, its manhunters stay bounded, and the Burn collapse yields more than gunfire."
+   },
+   {
+    "id": "s18",
+    "verdict": "reject",
+    "leaf": "shelter_in_lead",
+    "why": "Every colonist is teleported to safety, which is named in the leaf's red."
+   },
+   {
+    "id": "s19",
+    "verdict": "reject",
+    "leaf": "touched_reads_early",
+    "why": "One letter fires per exposure and the change starts with no visible touched state first, which is the leaf's red."
    }
   ]
  },
  "score": {
-  "right": 16,
-  "total": 16
+  "right": 19,
+  "total": 19
  },
  "accept_where_reject_core": 0,
  "challenger_misses": []
