@@ -543,8 +543,50 @@ def _pressure_built():
 def _need_pressure(what):
     if not _pressure_built():
         raise ExpectationFailed("UNLANDED: %s (no raider-pressure setting in Graffiti/Source): %s cannot be read" % (PRESSURE_ITEM, what))
-    raise ExpectationFailed("MISSING TOOL: %s has landed but this scene has no reader for %s yet: write it here, naming the "
-                            "settings and letter it built (never a guessed name)" % (PRESSURE_ITEM, what))
+
+
+# Raider pressure (RaiderPressure.cs, RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS): settings raiderPressureEnabled,
+# raiderPressureMode (0 larger, 1 sooner), raiderPressurePush; the letter "Marked by <faction>"; the live reads are RM_GraffitiPressureProof.
+PRESSURE_PROOF = "RimMandrake.Graffiti.RM_GraffitiPressureProof"
+PRESSURE_POINTS = 1000          # a storyteller budget above every raid strategy's floor (IncidentWorker_Raid.AdjustedRaidPoints' Max)
+
+
+def _kernel_const(name):
+    """A numeric const of RM_GraffitiKernel.cs, read from the source (never typed here)."""
+    src = open(os.path.join(_HERE, "Source", "Kernel", "RM_GraffitiKernel.cs"), encoding="utf-8-sig").read()
+    m = re.search(r"\b%s\s*=\s*([0-9.]+)f?\b" % name, src)
+    if not m:
+        raise ExpectationFailed("RM_GraffitiKernel.cs has no const %s" % name)
+    return float(m.group(1))
+
+
+def _pset(t, spec):
+    """RM_GraffitiPressureProof.Set 'on;mode;push' -> {'on': 'True', 'mode': 'Larger', 'push': '1.5'}."""
+    text, _ = _static(t, PRESSURE_PROOF, "Set", spec)
+    return _probe_fields(text) if t._guard() else {}
+
+
+def _pread(t, faction):
+    text, _ = _static(t, PRESSURE_PROOF, "Read", faction)
+    return _probe_fields(text) if t._guard() else {}
+
+
+def _prefresh(t):
+    text, _ = _static(t, PRESSURE_PROOF, "Refresh")
+    return _probe_fields(text) if t._guard() else {}
+
+
+def _ppoints(t, faction):
+    """(out, vanilla) raid points for `faction` at PRESSURE_POINTS through IncidentWorker_Raid.AdjustedRaidPoints, the mod's hook."""
+    text, _ = _static(t, PRESSURE_PROOF, "Points", "%s;%d" % (faction, PRESSURE_POINTS))
+    if not t._guard():
+        return 1.0, 1.0
+    f = _probe_fields(text)
+    return float(f["out"]), float(f["vanilla"])
+
+
+def _near(a, b):
+    return abs(a - b) <= 0.01 * max(1.0, abs(b))
 
 
 def _static(t, typ, method, args=""):
@@ -803,31 +845,117 @@ def scene_weathered_raid_mark(t):
                 raise ExpectationFailed("both raid marks weathered away, EnemyClaim still held at stage %r" % st)
 
     with t.component("raider_pressure_lifts_with_the_marks"):
+        _need_pressure("faction A's raider pressure before and after its marks weather away")
         if t._guard():
-            _need_pressure("faction A's raider pressure before and after its marks weather away")
+            _prefresh(t)
+            ra = _pread(t, faction)
+            if ra.get("pressured") != "False" or ra.get("standing") != "0" or float(ra.get("factor", 0)) != 1.0:
+                raise ExpectationFailed("both of A's marks weathered away, its pressure stands: %r" % ra)
+            t._current.detail = "A after weathering: %r" % ra
 
 
 @suite.chain("scene_raider_pressure")
 def scene_raider_pressure(t):
     """sc_raider_pressure (raider_pressure): in each mode (larger, then sooner) A's raid, with two exit marks standing, beats B's at the same
     storyteller points by the setting and a letter names A and points at its marks; one A mark scrubbed keeps the pressure; both scrubbed and
-    A matches B. Control: the pressure setting off gives equal raids and no letter. Restore: the runner destroys the quicktest map.
-    Every row waits on PRESSURE_ITEM (the switch, mode and push-size settings and the letter); until it lands each fails by that name."""
+    A matches B. Control: the pressure setting off gives equal raids and no letter. Restore: the runner destroys the quicktest map; the
+    three pressure settings are put back to what the start read.
+    Larger is read through IncidentWorker_Raid.AdjustedRaidPoints (RM_GraffitiPressureProof.Points, out against the switch-off vanilla);
+    sooner as the ticks to A's return raid (Read 'returnIn', within SoonerBaseDays / push days) at equal points."""
+    seen, start, base = set(), {}, {}
+    faction, other, tags = None, None, {}
+
+    def letters():
+        return int(_prefresh(t).get("letters", 0) or 0)
+
+    def lifts():
+        return int(_prefresh(t).get("lifts", 0) or 0)
+
     with t.component("site_ready_raider_pressure"):
-        if not _pressure_built():
-            raise ExpectationFailed("UNLANDED: %s: no raider-pressure setting in Graffiti/Source, so there is no pressure to stage" % PRESSURE_ITEM)
-        faction, tags = _raid_start(t, "site_ready_raider_pressure")
-        if t._guard() and len(tags) < 2:
-            raise ExpectationFailed("faction A (%s) left %d exit mark(s); the scene needs two" % (faction, len(tags)))
+        _need_pressure("the scene's start")
+        start = _pset(t, "")
+        if t._guard() and (start.get("on") != "True" or start.get("mode") != "Larger"):
+            raise ExpectationFailed("pressure settings not at shipped defaults (on, Larger): %r" % start)
+
+    def stage(mode):
+        """A raid exit of faction A under `mode`; -> (A, B, tags, letters sent by it)."""
+        _pset(t, "true;%s;%s" % (mode, start.get("push", "")))
+        l0 = letters()
+        a, tg = _raid_start(t, "pressure_%s" % mode)
+        if not t._guard():
+            return None, None, {}, 0
+        if len(tg) < 2:
+            raise ExpectationFailed("faction A (%s) left %d exit mark(s); the scene needs two" % (a, len(tg)))
+        b = _probe_fields(_static(t, PRESSURE_PROOF, "Other", a)[0]).get("faction")
+        return a, b, tg, letters() - l0
+
     for mode in ("larger", "sooner"):
+        push = float(start.get("push") or 0)
+        order = []
         with t.component("pressure_%s_names_A_and_beats_B" % mode):
-            _need_pressure("the %s-mode raid of A against B and the letter naming A" % mode)
+            _need_pressure("the %s-mode raid of A against B" % mode)
+            faction, other, tags, sent = stage(mode)
+            if t._guard():
+                order = sorted(tags.items(), key=lambda kv: (kv[1]["x"], kv[1]["z"]))
+                letter = _prefresh(t).get("letter", "")
+                if sent != 1 or faction not in letter:
+                    raise ExpectationFailed("%d letter(s) on A's marks, last %r: want one naming %s" % (sent, letter, faction))
+                ra, rb = _pread(t, faction), _pread(t, other)
+                (ao, av), (bo, bv) = _ppoints(t, faction), _ppoints(t, other)
+                if not _near(bv, av) or not _near(bo, bv) or rb.get("pressured") != "False":
+                    raise ExpectationFailed("B is not vanilla at the same budget: A %s/%s, B %s/%s, B read %r" % (ao, av, bo, bv, rb))
+                if mode == "larger":
+                    if not _near(ao, av * push):
+                        raise ExpectationFailed("larger: A's raid %s points, want %s x %s = %s (B %s)" % (ao, av, push, av * push, bo))
+                else:
+                    days = _kernel_const("SoonerBaseDays")
+                    ret = ra.get("returnIn", "-")
+                    if not _near(ao, av):
+                        raise ExpectationFailed("sooner: A's raid size moved (%s vs vanilla %s); sooner keeps the size" % (ao, av))
+                    if ret == "-" or not (0 < int(ret) <= days * 60000 / push) or rb.get("returnIn") != "-":
+                        raise ExpectationFailed("sooner: A returns in %r ticks (want 0 < t <= %d / %s days), B %r" % (ret, days, push, rb.get("returnIn")))
+                t._current.detail = "A %s %r; points A %s (vanilla %s) B %s" % (faction, ra, ao, av, bo)
+
         with t.component("pressure_%s_stays_with_one_scrubbed" % mode):
             _need_pressure("A's %s-mode pressure with one of its marks scrubbed" % mode)
+            if t._guard():
+                _scrub_one(t, order[0][0], order[0][1], seen)
+                ra = _pread(t, faction)
+                ao, av = _ppoints(t, faction)
+                want = av * push if mode == "larger" else av
+                if ra.get("pressured") != "True" or int(ra.get("standing", 0)) < 1 or not _near(ao, want):
+                    raise ExpectationFailed("one A mark scrubbed, the pressure went: read %r, points %s (want %s)" % (ra, ao, want))
+                if mode == "sooner" and ra.get("returnIn") == "-" and ra.get("returned") != "True":
+                    raise ExpectationFailed("one A mark scrubbed, A's return raid was cancelled: %r" % ra)
+                t._current.detail = "read %r points %s" % (ra, ao)
+
         with t.component("pressure_%s_gone_with_both_scrubbed" % mode):
             _need_pressure("A against B in %s mode with both marks scrubbed" % mode)
+            if t._guard():
+                m0 = lifts()
+                for mid, m in order[1:]:
+                    _scrub_one(t, mid, m, seen)
+                ra = _pread(t, faction)
+                (ao, av), (bo, bv) = _ppoints(t, faction), _ppoints(t, other)
+                lifted = lifts() - m0
+                if ra.get("pressured") != "False" or ra.get("returnIn") != "-" or not _near(ao, av) or not _near(ao, bo) or lifted != 1:
+                    raise ExpectationFailed("every A mark scrubbed: read %r, points A %s B %s (vanilla %s), lift messages %d (want 1)"
+                                            % (ra, ao, bo, av, lifted))
+                t._current.detail = "A %s = B %s; one lift message" % (ao, bo)
+
     with t.component("control_pressure_off_equal_raids"):
-        _need_pressure("A against B with the pressure switch off (equal raids, no letter)")
+        _need_pressure("A against B with the pressure switch off")
+        if t._guard():
+            _pset(t, "false;larger;%s" % start.get("push", ""))
+            l0 = letters()
+            a, tg = _raid_start(t, "control_pressure_off")
+            sent = letters() - l0
+            ra = _pread(t, a)
+            ao, av = _ppoints(t, a)
+            _pset(t, "%s;%s;%s" % (start.get("on", "true"), start.get("mode", "larger"), start.get("push", "")))
+            if sent or ra.get("pressured") != "False" or not _near(ao, av) or not tg:
+                raise ExpectationFailed("switch off with %d A mark(s): %d letter(s), read %r, points %s vs vanilla %s" % (len(tg), sent, ra, ao, av))
+            t._current.detail = "switch off: %d A marks, no letter, points %s = vanilla" % (len(tg), ao)
 
 
 # ------------------------------------------------- own fun, rereads, temperament (scenes.json: sc_own_fun, sc_rereads, sc_temperament)
@@ -1571,8 +1699,20 @@ def scene_settings_each_switch(t):
         _breach_pick(t, "breach bias's own behaviour (sc_breach_bias_raid)")
 
     with t.component("switch_raider_pressure_off_stops_it"):
+        _need_pressure("the raider-pressure switch, its sooner-or-larger mode and push size")
         if t._guard():
-            _need_pressure("the raider-pressure switch, its sooner-or-larger mode and push size")
+            start = _pset(t, "")
+            a, tg = _raid_start(t, "switch_raider_pressure_off")
+            _pset(t, "false;;")
+            off_out, off_van = _ppoints(t, a)
+            _pset(t, "true;;")
+            on_out, on_van = _ppoints(t, a)
+            _pset(t, "%s;%s;%s" % (start.get("on", "true"), start.get("mode", "larger"), start.get("push", "")))
+            push = float(start.get("push") or 0)
+            if not _near(off_out, off_van) or (start.get("mode") == "Larger" and not _near(on_out, on_van * push)):
+                raise ExpectationFailed("raider pressure: off %s (vanilla %s), back on %s (want x%s) with %d A marks"
+                                        % (off_out, off_van, on_out, push, len(tg)))
+            t._current.detail = "off %s = vanilla; on %s = x%s" % (off_out, on_out, push)
 
 
 @suite.chain("scene_ideo_removed_save_reload")

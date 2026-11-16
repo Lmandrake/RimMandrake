@@ -6,7 +6,9 @@ from northstar_driver import site
 
 SETTINGS = "RimMandrake.Graffiti.RM_GraffitiSettings"
 DEFAULTS = {"paintingEnabled": True, "paintIntervalTicks": 250, "viewerReactionEnabled": True,
-            "breachBiasEnabled": True, "raidExitTaggingEnabled": True, "autoCleanProtectionEnabled": True}
+            "breachBiasEnabled": True, "raidExitTaggingEnabled": True, "autoCleanProtectionEnabled": True,
+            # raider pressure (RaiderPressure.cs): on, mode 0 = larger, push = RM_GraffitiKernel.PushDefault
+            "raiderPressureEnabled": True, "raiderPressureMode": 0, "raiderPressurePush": 1.5}
 SITE = (60, 60, 80, 80)     # carved at the map centre by the suite; checked for filth here
 
 

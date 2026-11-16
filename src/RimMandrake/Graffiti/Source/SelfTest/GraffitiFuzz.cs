@@ -8,6 +8,7 @@
 //   lure    the breach-lure choice: nearest wins, ties by key, order does not matter
 //   wall    the wall-face draw: side priority over all 16 neighbour masks, offset onto that wall, angle facing it
 //   weather the fade curve: roofed life > open for every form and craft, alpha 1 to 60% of life, 0 at its end, monotone; planted mutants must go red
+//   pressure a raider faction's standing marks: no mark or switch off -> 1.0 exactly, one mark -> the push (capped, never stacked), larger vs sooner, letter/lift; mutants go red
 // A failing case is printed as `family seed N: message | detail`; --fuzz-seed N replays it.
 using System;
 using System.Collections.Generic;
@@ -543,6 +544,71 @@ namespace RimMandrake.Graffiti.SelfTest
             return fails;
         }
 
+        // ════════════════════════ pressure ════════════════════════
+        // RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS: a raider faction's standing marks push its raids. No mark -> 1.0
+        // exactly; switch off -> 1.0 exactly; one mark -> the setting's push (clamped to [1, PushMax]); more marks never stack past it.
+        // Larger mode scales points and never schedules a return; sooner mode keeps points and brings the return forward by the push.
+        // The start/lift transition sends one letter on start and one message on lift, nothing while it holds. Planted mutants must go red.
+        private static List<string> Pressure(int n, int seed)
+        {
+            var fails = Loop("pressure", n, seed, r => PressureOne(r, RM_GraffitiKernel.PressureFactor, RM_GraffitiKernel.PressurePoints, RM_GraffitiKernel.PressureReturnTicks));
+            if (n <= 1) return fails;
+            Func<bool, int, float, float> f = RM_GraffitiKernel.PressureFactor;
+            Func<float, bool, RM_PressureMode, int, float, float> pts = RM_GraffitiKernel.PressurePoints;
+            Func<int, bool, RM_PressureMode, int, float, int> ret = RM_GraffitiKernel.PressureReturnTicks;
+            var mutants = new (string name, Func<bool, int, float, float> f, Func<float, bool, RM_PressureMode, int, float, float> p, Func<int, bool, RM_PressureMode, int, float, int> t)[]
+            {
+                ("stacks per mark", (on, k, push) => on && k > 0 ? (float)Math.Pow(Math.Max(1f, push), k) : 1f, pts, ret),
+                ("ignores the switch", (on, k, push) => f(true, k, push), pts, ret),
+                ("pushes with no mark", (on, k, push) => on ? Math.Max(1f, push) : 1f, pts, ret),
+                ("uncapped", (on, k, push) => on && k > 0 ? Math.Max(1f, push) : 1f, pts, ret),
+                ("larger also in sooner", f, (p, on, m, k, push) => p * f(on, k, push), ret),
+                ("sooner never comes", f, pts, (tpd, on, m, k, push) => -1),
+            };
+            foreach (var m in mutants)
+            {
+                var hit = Loop("pressure mutant", Math.Max(n, 1), seed, r => PressureOne(r, m.f, m.p, m.t));
+                Console.WriteLine($"  pressure mutant '{m.name}': {(hit.Count > 0 ? "RED (caught)" : "GREEN (survived)")}");
+                if (hit.Count == 0) fails.Add($"pressure mutant '{m.name}' survived every check: the family is blind to it");
+            }
+            return fails;
+        }
+
+        private static void PressureOne(Random r, Func<bool, int, float, float> factor, Func<float, bool, RM_PressureMode, int, float, float> points,
+            Func<int, bool, RM_PressureMode, int, float, int> returnTicks)
+        {
+            Steps++;
+            bool on = r.Next(4) != 0;
+            int marks = r.Next(4) == 0 ? 0 : r.Next(1, 12);
+            // pushes across and beyond the slider, the edges included
+            float push = r.Next(6) switch { 0 => RM_GraffitiKernel.PushMin, 1 => RM_GraffitiKernel.PushMax, 2 => RM_GraffitiKernel.PushMax * 2f, 3 => 0.5f, _ => (float)(1 + r.NextDouble() * 3) };
+            var mode = (RM_PressureMode)r.Next(2);
+            float basePts = (float)(35 + r.NextDouble() * 10000);
+            const int Tpd = 60000;
+            float fac = factor(on, marks, push);
+            float want = !on || marks <= 0 ? 1f : Math.Min(Math.Max(push, 1f), RM_GraffitiKernel.PushMax);
+            Check(fac == want, $"factor(on={on}, marks={marks}, push={push}) = {fac}, want {want}");
+            Check(factor(on, 0, push) == 1f, "no standing mark must be exactly vanilla (1.0)");
+            Check(factor(false, marks, push) == 1f, "switch off must be exactly vanilla (1.0)");
+            if (marks > 0) Check(factor(on, marks, push) == factor(on, 1, push), "more marks never stack past one mark's push");
+            float p = points(basePts, on, mode, marks, push);
+            float wantP = mode == RM_PressureMode.Larger ? basePts * want : basePts;
+            Check(Math.Abs(p - wantP) <= 1e-3f * Math.Max(1f, wantP), $"points({basePts}, on={on}, {mode}, marks={marks}, push={push}) = {p}, want {wantP}");
+            int t = returnTicks(Tpd, on, mode, marks, push);
+            if (!on || marks <= 0 || mode != RM_PressureMode.Sooner) Check(t == -1, $"return scheduled ({t}) with on={on}, marks={marks}, {mode}");
+            else
+            {
+                int wantT = (int)Math.Round(RM_GraffitiKernel.SoonerBaseDays * Tpd / (double)want);
+                Check(t == wantT, $"return ticks {t}, want {wantT} (push {push})");
+                Check(t > 0 && t <= RM_GraffitiKernel.SoonerBaseDays * Tpd, "a sooner return comes within the base days");
+            }
+            // the start/lift transition: a letter once on start, a message once on lift, nothing while it holds or with the switch off
+            bool was = r.Next(2) == 0;
+            int ch = RM_GraffitiKernel.PressureChange(was, marks, on);
+            bool now = on && marks > 0;
+            Check(ch == (now && !was ? 1 : !now && was ? -1 : 0), $"PressureChange(was={was}, marks={marks}, on={on}) = {ch}");
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -561,6 +627,7 @@ namespace RimMandrake.Graffiti.SelfTest
                 ("wall", () => Wall()),
                 ("paint", () => Paint()),
                 ("weather", () => Weather(N(400), S(1))),
+                ("pressure", () => Pressure(N(4000), S(1))),
             };
             foreach (var f in fam)
             {

@@ -73,6 +73,7 @@
     <Compile Include="BreachBiasHook.cs" />
     <Compile Include="AutoCleanProtection.cs" />
     <Compile Include="RaidExitTagger.cs" />
+    <Compile Include="RaiderPressure.cs" />
     <Compile Include="Designator_PaintGraffitiMark.cs" />
     <Compile Include="Designator_ScrubGraffiti.cs" />
     <Compile Include="WorkGiver_PaintGraffitiDesignated.cs" />

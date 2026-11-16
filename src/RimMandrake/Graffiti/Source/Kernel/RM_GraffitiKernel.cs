@@ -21,6 +21,9 @@ namespace RimMandrake.Graffiti
     /// <summary>What a pawn does about a mark: wipe it, cross it out, paint back at the painter, or go and have it out.</summary>
     public enum RM_Answer { None, Scrub, Deface, Reply, Confront }
 
+    /// <summary>Raider pressure's Mod Setting: a pressured faction's raids come larger, or its return comes sooner.</summary>
+    public enum RM_PressureMode { Larger, Sooner }
+
     /// <summary>The temperament table's answer column: what a person would rather do about a mark than what the answer table says.</summary>
     public enum RM_Lean { None, Scrub, Reply, Nothing }
 
@@ -242,6 +245,43 @@ namespace RimMandrake.Graffiti
         {
             if (!paintingOn || !exitTaggingOn) return false;
             return factionKnown && !factionIsPlayer && hostileToPlayer;
+        }
+
+        // ── raider pressure (RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS; owner's card pick "Sooner or bigger raid") ──
+        // While a hostile faction's mark stands on the colony's walls, its raids come larger (points × push) or its return comes sooner
+        // (SoonerBaseDays / push). One mark is enough and more never stack: the push is the setting's, capped at PushMax.
+
+        /// <summary>The push slider's range (Mod Settings) and its shipped value; PushMax is the cap no number of marks gets past.</summary>
+        public const float PushMin = 1.1f, PushMax = 3f, PushDefault = 1.5f;
+
+        /// <summary>Sooner mode: a pressured faction returns within this many days at push 1 (a quadrum), divided by the push.</summary>
+        public const int SoonerBaseDays = 15;
+
+        /// <summary>The raid factor for a faction: exactly 1 with the switch off or no standing mark, else the push clamped to [1, PushMax].</summary>
+        public static float PressureFactor(bool on, int standingMarks, float push)
+        {
+            if (!on || standingMarks <= 0) return 1f;
+            return Clamp(push, 1f, PushMax);
+        }
+
+        /// <summary>A raid's points under pressure: scaled by the factor in Larger mode, untouched in Sooner mode.</summary>
+        public static float PressurePoints(float points, bool on, RM_PressureMode mode, int standingMarks, float push)
+        {
+            return mode == RM_PressureMode.Larger ? points * PressureFactor(on, standingMarks, push) : points;
+        }
+
+        /// <summary>Sooner mode: ticks from the pressure's start to the faction's return raid; -1 when no return is owed.</summary>
+        public static int PressureReturnTicks(int ticksPerDay, bool on, RM_PressureMode mode, int standingMarks, float push)
+        {
+            if (!on || standingMarks <= 0 || mode != RM_PressureMode.Sooner) return -1;
+            return (int)Math.Round(SoonerBaseDays * ticksPerDay / (double)PressureFactor(on, standingMarks, push));
+        }
+
+        /// <summary>The record's transition: +1 the pressure starts (one letter), -1 it lifts (one message), 0 nothing changes.</summary>
+        public static int PressureChange(bool wasPressured, int standingMarks, bool on)
+        {
+            bool now = on && standingMarks > 0;
+            return now && !wasPressured ? 1 : !now && wasPressured ? -1 : 0;
         }
 
         /// <summary>A raid turns to leave when its lord moves from a toil that was not leaving onto one that is (GRAFFITI_V1_LIVE_PROOF_1):

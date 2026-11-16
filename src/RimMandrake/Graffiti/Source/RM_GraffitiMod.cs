@@ -27,6 +27,9 @@ namespace RimMandrake.Graffiti
     //      "Come And Take It" taunt mark (BreachBiasHookMod's Harmony
     //      postfix on BreachingGrid.FindBuildingToBreach).
     //
+    // RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS adds raider pressure (RaiderPressure.cs): its switch, Larger or
+    //   Sooner mode, and the push size.
+    //
     // GRAFFITI_PUNK_IDEOLIGION_SCOPE_1 adds two more:
     //   5. Raid-exit tagging — a departing hostile pawn leaves its gang's
     //      own mark nearby (RaidExitTaggerMod's Harmony prefix/postfix on
@@ -46,6 +49,9 @@ namespace RimMandrake.Graffiti
         public static bool autoCleanProtectionEnabled = true;
         public static bool socialEnabled = true;
         public static bool socialMessagesEnabled = true;
+        public static bool raiderPressureEnabled = true;
+        public static int raiderPressureMode = 0;                                   // 0 larger, 1 sooner (RM_PressureMode)
+        public static float raiderPressurePush = RM_GraffitiKernel.PushDefault;
 
         public override void ExposeData()
         {
@@ -58,6 +64,9 @@ namespace RimMandrake.Graffiti
             Scribe_Values.Look(ref autoCleanProtectionEnabled, "autoCleanProtectionEnabled", true);
             Scribe_Values.Look(ref socialEnabled, "socialEnabled", true);
             Scribe_Values.Look(ref socialMessagesEnabled, "socialMessagesEnabled", true);
+            Scribe_Values.Look(ref raiderPressureEnabled, "raiderPressureEnabled", true);
+            Scribe_Values.Look(ref raiderPressureMode, "raiderPressureMode", 0);
+            Scribe_Values.Look(ref raiderPressurePush, "raiderPressurePush", RM_GraffitiKernel.PushDefault);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -97,7 +106,7 @@ namespace RimMandrake.Graffiti
                 list.GapLine();
             }
 
-            if (Group(list, "Raiders", RimMandrake.Shared.SettingScope.Now, new[] { "breachBiasEnabled", "raidExitTaggingEnabled" }))
+            if (Group(list, "Raiders", RimMandrake.Shared.SettingScope.Now, new[] { "breachBiasEnabled", "raidExitTaggingEnabled", "raiderPressureEnabled", "raiderPressureMode", "raiderPressurePush" }))
             {
                 list.CheckboxLabeled("Raiders lured to taunt marks", ref breachBiasEnabled,
                     "A \"Come And Take It\"-style taunt mark biases raiders to breach toward it. "
@@ -105,6 +114,20 @@ namespace RimMandrake.Graffiti
                 list.CheckboxLabeled("Raiders tag on their way out", ref raidExitTaggingEnabled,
                     "A departing hostile pawn leaves its own gang's mark on a nearby wall. "
                   + "Off: raiders leave no marks when they exit the map.");
+                list.CheckboxLabeled("Raider marks bring them back", ref raiderPressureEnabled,
+                    "While a hostile faction's mark stands on your walls (in the Home area, not crossed out), that faction comes back "
+                  + "harder: a letter names it and points at its marks. Scrub or cross out its last mark, or let it weather away, and "
+                  + "the threat lifts. Off: every faction raids exactly as it would without this mod.");
+                bool sooner = raiderPressureMode == 1;
+                list.CheckboxLabeled("Sooner instead of larger", ref sooner,
+                    "Off (shipped): a marked faction's raids come with more raid points. On: their raids are their usual size, but they "
+                  + "come back within " + RM_GraffitiKernel.SoonerBaseDays + " days divided by the push, once per standing claim.");
+                raiderPressureMode = sooner ? 1 : 0;
+                list.Label((TaggedString)("Push: x" + raiderPressurePush.ToString("0.0")), -1f,
+                    "How hard a standing mark pushes. Larger: raid points times this. Sooner: they return within "
+                  + RM_GraffitiKernel.SoonerBaseDays + " days divided by this. Shipped " + RM_GraffitiKernel.PushDefault.ToString("0.0")
+                  + "; more marks never push past one mark's push.");
+                raiderPressurePush = Mathf.Round(list.Slider(raiderPressurePush, RM_GraffitiKernel.PushMin, RM_GraffitiKernel.PushMax) * 10f) / 10f;
                 list.GapLine();
             }
 

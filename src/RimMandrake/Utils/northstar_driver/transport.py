@@ -176,6 +176,9 @@ class MockGame(object):
              "rimworld/get_camera_state", "rimworld/jump_camera_to_cell", "rimworld/take_screenshot",
              "jawa/running_mods"]
 
+    # mod settings that are not a "True" bool, as the game prints their shipped default (Graffiti's RM_GraffitiSettings)
+    NON_BOOL_DEFAULTS = {"paintIntervalTicks": "250", "raiderPressureMode": "0", "raiderPressurePush": "1.5"}
+
     def __init__(self, faults=(), mods=("ludeon.rimworld",), sizex=200, sizez=200):
         self.faults = set(faults)
         self.ticks = 1000
@@ -318,7 +321,7 @@ class MockGame(object):
             key = p["field"]
             if p.get("action") == "set":
                 self.settings[key] = p["value"]
-            return {"success": True, "value": self.settings.get(key, "250" if key == "paintIntervalTicks" else "True")}
+            return {"success": True, "value": self.settings.get(key, self.NON_BOOL_DEFAULTS.get(key, "True"))}
         if tool == "jawa/running_mods":
             return {"success": True, "count": len(self.mods), "packageIds": list(self.mods)}
         if tool == "jawa/dlc_status":
