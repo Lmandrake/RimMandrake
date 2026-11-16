@@ -1746,6 +1746,8 @@ TOGGLES_NOT_ON_FLOOR = ["rainPocketApproxEnabled", "blastsBreakPitCovers", "pitS
                         # rows are owed on their items; not yet a toggle chain
                         "wallClimbEnabled", "raidersMayClimbWalls", "wallClimbAutoRoute", "raidersCarryClimbingGear",
                         "raiderTrenchEnabled", "raiderJumpsEnabled", "raiderLaddersEnabled", "raiderFillEnabled",
+                        # FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN (2026-11-16): its live row is sc_fetch_fallen, not a toggle chain
+                        "raiderFetchFallenEnabled",
                         "deepSwimEnabled", "swimOpenWaterEnabled", "humanlikesSwim", "mechanoidsSink", "animalsAvoidDeepWater",
                         "tiredSwimmersHeadForShore", "deepSwimJoyEnabled", "shallowWaterDrowningEnabled",
                         "waterBodyMendsEnabled", "fishRollOnGrowth", "fishReturnOnRefill", "fishingZoneReturnOnRefill",

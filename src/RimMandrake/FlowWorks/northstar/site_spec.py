@@ -210,6 +210,7 @@ SETTINGS = {
         "raiderLadderSpeed": 1.0, "raiderFillSpeed": 18.0, "raiderJumpPackShare": 0.1,   # x18: CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP
         "raiderFillLineFollowsDigCap": True, "raiderFillMaxDepth": 4,   # owner ruling 2026-10-31 (3c4a9ba173): fill only shallow pits
         "raiderShovelShare": 0.25, "sapperShovelShare": 0.5,   # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (PROVISIONAL)
+        "raiderFetchFallenEnabled": True,   # FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN (RM_RaiderFetchFallen)
     },
     # DEEP_WATER_BUILD_SWIM_OR_SINK (numeric defaults are RM_SwimMath consts)
     "RimMandrake.FlowWorks.Swimming.RM_SwimSettings": {

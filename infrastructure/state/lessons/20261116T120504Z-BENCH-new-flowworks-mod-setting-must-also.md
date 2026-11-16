@@ -1,0 +1,1 @@
+A new FlowWorks Mod Setting must also go in northstar/site_spec.py SETTINGS, validation.py's registered-toggle list, and the toggle count in northstar/selftest_flowworks_northstar.py; a sweep of src/RimMandrake/FlowWorks/selftest_*.py does not reach northstar/ and misses all three (raiderFetchFallenEnabled, 2026-11-16: found only by the certificate rerun).
