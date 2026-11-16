@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":7068,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=2539ddb810e936d2c538485cccea34e0f3f581cb1663c634b5ca4356202cc4ad -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":7769,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=9b9913a0bb0731b19250c61476d75a174eab3abe49df534caad486921b5a7c79 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage offline_build · 448 events in 7 shards · reducer 1
+version 0.1.0 · stage offline_build · 450 events in 7 shards · reducer 1
 holder lease run-1794860741, token 6, last active 2026-11-16T20:29:02Z
-holder session 7bae3178-26bc-4b3f-9301-f14a097d4fa8, context 120337 of ceiling 400000
+holder session 6dd13b7d-724a-4d6a-9410-bdfb2b563e8b, context 130317 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794860741, 2026-11-16T20:29:02Z)
 - done: visit 3 read: 54 PASS, sc_storeroom_bomb_pit FAIL (cover half, REAL MISS), sc_walk_raid UNMEASURED (resolved later by the pilot, 18/18 PASS); filed RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE (needs offline, replaces RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY); advanced to offline_build
@@ -312,6 +312,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - tests: 94, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 5 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 448 events (views/history.md; never read whole)
+- the full history: 450 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T20:29:02Z.1794860942590125800 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T20:29:02Z.1794860942590125800 prints what changed after this packet)
+cursor: t=2026-11-16T20:32:00Z.1794861120816700427 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T20:32:00Z.1794861120816700427 prints what changed after this packet)
