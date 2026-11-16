@@ -31,3 +31,9 @@ file: design/concepts/FeverWood/plan.md
 ## dependencies
 
 Observation and durable recovery are prerequisites for all later scenes.
+
+## stage 3 coverage rework
+
+Extend independent observations to generated pass before/after terrain, source/target pool identity, real incident seed, live agitation versus dated intel, effective strike chance and actual RM_Thirst job/need. Every generated_terrain and settings-control arm has the same durable baseline/interruption recovery and exact non-default restoration contract as other scenes.
+
+Follow the acceptance assertions and per-scene settings_controls in design/concepts/FeverWood/scenes.json. This amendment keeps the item filed and leaves its status and admission ceiling in place.

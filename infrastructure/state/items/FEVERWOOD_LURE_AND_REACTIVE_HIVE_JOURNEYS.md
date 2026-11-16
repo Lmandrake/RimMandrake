@@ -36,3 +36,9 @@ file: design/concepts/FeverWood/plan.md
 ## dependencies
 
 Use FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY before runtime acceptance; feature dependencies and shared ownership are specified in plan.md. This is implementation order, not a ledger priority change.
+
+## stage 3 coverage rework
+
+Deliver mirrorSideRuinsEnabled as a new-map-only broken-hive generation gate with its on/off control. Existing ruins retain loot and inland reactive hives keep independent settings. Preserve every existing lure, geometry, farm, guard, reaction and sealing switch listed in scenes.json settings_contract.
+
+Follow the acceptance assertions and per-scene settings_controls in design/concepts/FeverWood/scenes.json. This amendment keeps the item filed and leaves its status and admission ceiling in place.

@@ -9,11 +9,11 @@
 ## does
 
 - [leaf:observation] Independent observations and interruption recovery precede acceptance.
-- [leaf:branch_home] Branch routes govern ordinary work; marsh refusal and usable stilts make the choice real.
+- [leaf:branch_home] Generated, bole-anchored branch routes govern ordinary work. Marsh refusal and completed stilts shape construction, and colonists and raiders walk on and off the crown in both directions without ascent gates.
 - [leaf:mud_escape] Weight-scaled sink-mud holds without injuring and supports self and companion escape.
-- [leaf:living_wood] Living trunks regrow and can be sealed; borers extend slow visible galleries without a new directed-control promise.
+- [leaf:living_wood] Living trunks regrow and can be sealed. Borers extend slow visible galleries through living wood while adjacent boughways, colony-built walls and buildings stay intact.
 - [leaf:pool_reach] Real danger reach grows with pool size, separately from large-pool encounter eligibility.
-- [leaf:shore_rescue] Real shore seizure rewards nearby help; distant help is not guaranteed.
+- [leaf:shore_rescue] Real shore seizure gives player and tamed victims a rescue deadline and rewards nearby help. Unrescued victims expire, wild victims are lost, and distant help remains uncertain.
 - [leaf:pool_memory] Porter grievance and raised danger belong to the attacked pool and survive reload.
 - [leaf:crown_warning] Living birds add their own calls to retained crown ambience; shared water hush silences both.
 - [leaf:mirror_intel] Obtainable mirror intelligence reports an independent dated snapshot without editing danger.
@@ -25,9 +25,9 @@
 - [leaf:bait_wager] Normal living-bait work creates a delayed two-front wager whose raiders actually converge on the bait.
 - [leaf:living_hive] The live inland hive functions as a reactive dungeon, with farm, guarded depth and an altered retreat.
 - [leaf:broken_hives] Lootable broken mirror-side hives coexist with the separate living inland dungeons.
-- [leaf:crown_livelihood] Crown provisions use real gather and harvest jobs; fear, guild refusals and the documented ecological roles matter.
-- [leaf:native_life] Retained natives drink their own water, respect their targeting and ambush contracts, and retain their products and optional integration.
-- [leaf:oil_opportunity] Oil-boil rewards actual harvesting and real ignition flashes eligible ground haze.
+- [leaf:crown_livelihood] Crown provisions use real gather and harvest jobs. Damage, failed tame, failed training and fear trigger the guild’s seal, swelling or alarm even after taming, with calm and successful-handling controls. Documented ecological roles function.
+- [leaf:native_life] With FlowWorks RM_Thirst active, retained natives drink their home water through normal thirst jobs. Absent thirst is unmeasured for drinking. Targeting, bounded ambush, plumage and optional theft retain independent checks.
+- [leaf:oil_opportunity] Oil-boil rewards actual harvesting. Real ignition flashes eligible ground haze and wakes eligible water while respecting applicable adult quiet.
 - [leaf:supported_checkout] Supported composition, wreck salvage, scanner payloads, scoped settings and geometry-only sun survive checkout.
 - [leaf:ordinary_walk] Reload mid-consequence, repeat the core trip and do the main actions in a second order.
 - [floor:mod_settings] Clear settings, per-feature off behavior and all-off checkout retain each owning service’s scope.
@@ -36,7 +36,7 @@
 
 ## does not
 
-- [leaf:retired_absence] Theft, raid-back, hive parasitism and rite stay absent; shipped dormant glomvar content keeps load coverage.
+- [leaf:retired_absence] Theft, raid-back, hive parasitism and rite stay absent. Shipped dormant glomvar keeps load coverage, and arrival/creature descriptions are aligned with the theft cuts, geometry-only heat and dormant status.
 - [floor:worldgen] No natural placement or world-generation work.
 - [floor:multiplayer] No multiplayer support or work.
 - [floor:flight] No live flight test without the owner attending.
@@ -48,13 +48,13 @@
 ## open
 
 - No core intent question remains. Delivery and live acceptance stay open as filed build and proof work.
-- The old validation-walk north-star is still DRAFT; this stage does not validate it.
+- The north star was separately validated under CONDUCTOR:1794838259873987749 at c568d46eacf7. This stage restamps that hash. Fresh exam, coverage review and owner first-touch remain pending.
 
 ## delegated
 
 - CONDUCTOR:1794804413045937607, evidence-for-ask root: Make a home on the branches, whose routes shape daily work and travel, above black water that remembers what you do and sometimes reaches up to change your plans.
 - CONDUCTOR:1794806166917699063, evidence-for-ask flagship: branches-and-shore ordinary harvest and haul, then real shore rescue with nearby and distant companions compared.
-- Stage 3 agent choices: proposed leaf grouping, greedy later showcases, script scenes and implementation sequence. These are not owner quotations.
+- Stage 3 agent choices include leaf grouping, seven-showcase ordering, script controls, proposed missing-feature settings and a campaign-only output from the existing dangerous irradiated-wreck salvage lane. These remain implementation proposals subject to fresh exam and coverage review.
 
 ## pruning
 

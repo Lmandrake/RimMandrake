@@ -1,0 +1,58 @@
+{
+  "run": "rm-role-designercodex-1794847684",
+  "at": "2026-11-16T17:06:16.658355+00:00",
+  "reviewer": "BENCH self-review",
+  "tree_hash": "150e2ceeb71c7d182b449ff62741207f4edecc720015ad6149f17b723ee0570f",
+  "root_hash": "c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418",
+  "checks": [
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/concept_tree.py",
+        "lint",
+        "design/concepts/FeverWood"
+      ],
+      "exit_code": 0,
+      "stdout": "lint (Gate A): PASS",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/designer_stage.py",
+        "showcases",
+        "design/concepts/FeverWood"
+      ],
+      "exit_code": 0,
+      "stdout": "limits: max_overlap 0.25, min_new_after_first 3 (UNMEASURED: both numbers are a first gue)\n1 branches_and_shore           exercises  4  new  4  overlap 0.00  \n2 water_judgment               exercises 11  new 10  overlap 0.09  fw_pools\n3 prisoner_and_gift            exercises  8  new  7  overlap 0.12  fw_pools\n4 crown_ecology                exercises  8  new  7  overlap 0.12  fw_pools\n5 living_and_broken_hives      exercises  6  new  6  overlap 0.00  \n6 living_wood_and_mud          exercises  4  new  3  overlap 0.25  fw_borer_diet\n7 oil_and_salvage              exercises  5  new  3  overlap 0.40  fw_flora,fw_pools\nshowcase set accepted",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "src/RimMandrake/rimflow/designer_stage.py",
+        "check",
+        "design/concepts/FeverWood"
+      ],
+      "exit_code": 0,
+      "stdout": "result.json would be accepted",
+      "stderr": ""
+    }
+  ],
+  "artifacts": {
+    "tree.json": "ad7f42c98babaef2f24a5a329431de36dda677359bf045131fc9a98e48167821",
+    "sheet.md": "67da97a2873ba050304cb017790e197836bcb9d197ea117600d6c38e604912a7",
+    "scenes.json": "377f659e1d044c6cce8bd450bc36a3191e90ba8988ef2711dbdc78b43d916ce3",
+    "floor.json": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+    "record.json": "f9d434248de402718c4e28f6e116fee909542340ec62aca2b2450635819056ae",
+    "plan.md": "283a2014fa5a2561ed733b84e8c24e60351d6f44eaa902644362d77dd6ed45a4",
+    "coverage_fixes.json": "cfa02d2f92a7ffa4648db8a606dcc7750fdb9814f0209706efb4b8c0de016c8f"
+  },
+  "inventory_entries": 46,
+  "counted_units": 45,
+  "scene_count": 45,
+  "showcase_count": 7,
+  "settings_rows": 62,
+  "floor_lines": 23,
+  "scope": "Stage-3 planning validators and source/provenance review. Fresh stage-4 exam, stage-5 coverage review and runtime acceptance remain pending."
+}

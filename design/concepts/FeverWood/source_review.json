@@ -229,5 +229,202 @@
     "documented mud/galleries/flora/ruins",
     "actual normal-action scripts and interrupted recovery"
   ],
-  "tests_this_stage": "Design validators and cross-reference/quote/coverage audit only; previous proof_runs in record retain their earlier scope and dates."
+  "tests_this_stage": "Design validators and cross-reference/quote/coverage audit only; previous proof_runs in record retain their earlier scope and dates.",
+  "coverage_rework": {
+    "run": "rm-role-designercodex-1794847684",
+    "at": "2026-11-16T17:06:16.658355+00:00",
+    "kind": "BENCH_direct_source_delta_review",
+    "prior_fingerprints_checked": 50,
+    "changed_prior_sources": [
+      {
+        "path": "src/RimMandrake/rimflow/roles/designer_write.md",
+        "previous": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941",
+        "current": "6fe74fbb02bcf0aa8e63f66868152f42e2f873c23ddfcb2f0c6e55d5f192a4b4",
+        "reading": "Reread current designer_write.md. Acceptance describes outcomes and current-source resource accounting. Campaign stock chance/price are read as tuning, with no fixed rate or asset-variant bar."
+      }
+    ],
+    "sources": [
+      {
+        "path": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md",
+        "sha256": "4cf8a9c0a3aa7908295e99a55853a00b56a3c48c600467833e052f0c72ac5539"
+      },
+      {
+        "path": "design/Jawa/worldbuilding/biomes/fever_wood_fauna_roster_2026-09-23.md",
+        "sha256": "5d51f49d574c0d3b8dd89557aac873d249718b802ca4a42d9a64a22067f2146b"
+      },
+      {
+        "path": "design/validation_walks/RimMandrake/FeverWood.md",
+        "sha256": "6858fe3a7a200618fcc7c6ec33351ca799489c8b076acdba69ac6cefaa1c5f36"
+      },
+      {
+        "path": "infrastructure/state/delegated/2026-11-16/FeverWood_north_star_bars.json",
+        "sha256": "cd8603c431125589cc49e934e36b216901ea7817a92980c69409bc8d05ef4d72"
+      },
+      {
+        "path": "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml",
+        "sha256": "83e23e1c1f95ceff15b88f9d1cd832e0bdd58051611fd6f09d9aa286cfe0e743"
+      },
+      {
+        "path": "src/RimMandrake/CreatureBehaviors/Source/RM_CompPlantAlarm.cs",
+        "sha256": "0f96d127a37e5b887ca017ea87be8b7756c95b4e2c2ba149f1bbb18280d8b958"
+      },
+      {
+        "path": "src/RimMandrake/CreatureBehaviors/Source/RM_CompReactionSource.cs",
+        "sha256": "f596dfde02771e1bacd48519a28a13c1a74762e00622e78ded09435c2c164bfc"
+      },
+      {
+        "path": "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs",
+        "sha256": "f83d945c5adededfc2eb6f6fc2579948f086d295a36d6c563540c438405c443e"
+      },
+      {
+        "path": "src/RimMandrake/CreatureBehaviors/Source/RM_ReactionSuppression.cs",
+        "sha256": "3a299c76373259ce1b4ed34671e1434ec301afa2f8e54769cae116201c6cc42f"
+      },
+      {
+        "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs",
+        "sha256": "e088bd78d9826bec708b27d79b6848b649a1525ed25cdc9e9825d46f2f77607a"
+      },
+      {
+        "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs",
+        "sha256": "c8ba7390797938980aff846c9e221172ff823b8780a83017a2de81bcd7189b68"
+      },
+      {
+        "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs",
+        "sha256": "e41e3bb5a1deeb53c689565f6e9f108afcc4f451617d89d96ed6a1e34b0a581e"
+      },
+      {
+        "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_ScatterPools.cs",
+        "sha256": "d9bb2cce66a5e01566a52045cb6c4a946fb8a883f4e549faff4d94f24581e166"
+      },
+      {
+        "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_MirrorBreak.cs",
+        "sha256": "187eea2a8f5564dad25e447459a2b6a22e078d985a8f6371a4d7a20e4fb8dcbc"
+      },
+      {
+        "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs",
+        "sha256": "c753a97042a609acd7ab9285eee07de50c0ef8559ca2eed7118832277f6e3b39"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml",
+        "sha256": "0b3b94541bb1ecd26cc0ea1ed7e609abced474133b9f7da4104dc791bc2bee19"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWoodWreckField.xml",
+        "sha256": "0971926800fe4774cb0d8e44d03829b473e1346d500cebb64131b02151138485"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml",
+        "sha256": "7b04d9b34f95df65bd6ce58242fac539a276b6ea99e7152c46bc26da41c180bb"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml",
+        "sha256": "44bb6f2324579534f48deb57b3c11566d0f678ba53fa3ab9d5a6d9e23fb96fc1"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs",
+        "sha256": "8e2936ee99f523090a867d36a4240ce6e25a9e21a0686db195594b98e069776a"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs",
+        "sha256": "28b91f26c5d57ab29809de3c11ed1da2ce70df7d53f4f3d712d2d2a76ff290ea"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs",
+        "sha256": "235cb8636d0a40d2102ce2c1f63226e9a71f457036547c6700a3cc05e459a55b"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs",
+        "sha256": "5c2e3021563f0a095869143e608d86eb54c998d035915a2b9a2b96d4c3de0fa1"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs",
+        "sha256": "fca85e215d8fe3dc4f11be4a8605370b66609d740143f1fe5cb6db798f182578"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Source/RM_Patch_SapSuckerMishandle.cs",
+        "sha256": "97ec991b92c5569d91ec346fbdec92e2651a8a81b7b5bfc7c08d99bb51eb2f53"
+      },
+      {
+        "path": "src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs",
+        "sha256": "27285c033995b2efee0a770ce9669e3b86bf1d817096711dbd02abef283e43cc"
+      },
+      {
+        "path": "src/RimMandrake/FlowWorks/About/About.xml",
+        "sha256": "2a1e7e752ab48ff974018b8f6fa52484e910de5fc897682d1ad5ff4081ae288a"
+      },
+      {
+        "path": "src/RimMandrake/FlowWorks/Defs/Thirst/RM_Thirst_Need.xml",
+        "sha256": "d3ec3ccd7cea161b23c20b7fe0bb6bcf3f69ee9484587086b1dd26e83d25c054"
+      },
+      {
+        "path": "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_DrinkableTerrain_ForeignTerrains.xml",
+        "sha256": "8af3cc3826db190e1b9b2e5419ecccbf7ca746d3acf5de44c436f675a533a37c"
+      },
+      {
+        "path": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstJobs.cs",
+        "sha256": "3ac2c6959c959249b3fc6dc78cb3a89dae37f443376379d4f9131f0abd10fe93"
+      },
+      {
+        "path": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstProvider.cs",
+        "sha256": "28c97f943abfcf116da22832f04dde6aecf3c97ddfa241122a398d90fadc7783"
+      },
+      {
+        "path": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstSettings.cs",
+        "sha256": "e8a5aee43f94c25f691dd6016d45c4dbaf8514708cc3900ae99866ce5670a4f8"
+      },
+      {
+        "path": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs",
+        "sha256": "556adcce2b5837ea303fc0cf4a7e4d88b0ec2de3ff8ded97e7de19e111f62db3"
+      },
+      {
+        "path": "src/RimMandrake/RimProperty/Source/PropertySettings.cs",
+        "sha256": "559fd61be0eb7bf0e7fb89b01e9850e211deacf886692946c98dc17389a6a518"
+      },
+      {
+        "path": "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesWrecks.xml",
+        "sha256": "bb3e9cbf96e80ee6b69b5c60dfaee4751018ec4abd866ab8f0d639895c2db0f1"
+      },
+      {
+        "path": "src/RimMandrake/Wreckage/Defs/RM_WreckWeatheringDefs/RM_WreckWeatherings.xml",
+        "sha256": "ed3b494d36de894c4a3cf945d8c79519228fd1317a54657eb2d45d8a3d7534fa"
+      },
+      {
+        "path": "src/RimMandrake/Wreckage/Source/RM_CompSalvageLoot.cs",
+        "sha256": "9f96e7cf6f3a4e077b4cbfdb0fec23c297105524b396a53b38d417cf47a7d2f9"
+      },
+      {
+        "path": "src/RimMandrake/Wreckage/Source/RM_WreckageMod.cs",
+        "sha256": "e4ab43d3f06617fd85b00a2b02b8815a4efe0ecb060572928bc4ea8984000451"
+      },
+      {
+        "path": "src/RimMandrake/rimflow/roles/designer.md",
+        "sha256": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6"
+      },
+      {
+        "path": "src/RimMandrake/rimflow/roles/designer_lock.md",
+        "sha256": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+      },
+      {
+        "path": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+        "sha256": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+      },
+      {
+        "path": "src/RimMandrake/rimflow/roles/designer_write.md",
+        "sha256": "6fe74fbb02bcf0aa8e63f66868152f42e2f873c23ddfcb2f0c6e55d5f192a4b4"
+      },
+      {
+        "path": "src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml",
+        "sha256": "b0917536a2d73f0ebdd24f81250d7bbffeaa1e90568cdff5ecd4a79ccc46f405"
+      }
+    ],
+    "findings": [
+      "Validated root hash restamped through the normal writer.",
+      "FlowWorks native-water provider is present with an actual RM_Thirst need and terrain-job path.",
+      "Dangerous irradiated-wreck salvage exists. Its campaign-only qualifying output and treatment mapping remain missing and filed.",
+      "The peaceful-return completion also calls Notify_SekkulaathInstalled, beyond the hostile armed-arrival gate. Existing peaceful-return negative acceptance covers the correction.",
+      "General-fear/failed-training hooks and the proposed feature switches remain delivery work."
+    ],
+    "external_draft": "No new claim was taken from the external draft.",
+    "runtime": "UNMEASURED"
+  }
 }

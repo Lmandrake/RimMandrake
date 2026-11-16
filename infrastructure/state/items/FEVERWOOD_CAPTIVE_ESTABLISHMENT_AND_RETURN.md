@@ -36,3 +36,11 @@ file: design/concepts/FeverWood/plan.md
 ## dependencies
 
 Use FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY before runtime acceptance; feature dependencies and shared ownership are specified in plan.md. This is implementation order, not a ledger priority change.
+
+## stage 3 coverage rework
+
+The campaign young intervention uses the same dangerous irradiated-wreck output lane specified under FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS. RUT_FeverWoodRadioactiveSalvage is a proposed missing campaign-only output and qualification, never a claim of existing acquisition. Prove actual salvage and treatment with absent-patch/wrong-pool/wrong-material controls. Implement youngEstablishmentEnabled with saved identity/deadline and due-on-re-enable resolution. campaign_display must assert Wildsteam faction-filtered settlement/caravan cask stock, actual trade/tally changes and boughtLine/soldLine/returnedLine at the real events, with unrelated-faction/failed-roll/free-no-lines controls.
+
+Follow the acceptance assertions and per-scene settings_controls in design/concepts/FeverWood/scenes.json. This amendment keeps the item filed and leaves its status and admission ceiling in place.
+
+Direct source review of RM_CompEscapedCaptive.ArriveReleased (RM_CompEscapedCaptive.cs:280) finds a separate Notify_SekkulaathInstalled call before gift scheduling. Reconcile that adult-revival side effect with the existing young_establishment peaceful-return negative arm, retaining completed return, story message and owed-gift delivery. The hostile armed-arrival guard alone cannot prove that control.

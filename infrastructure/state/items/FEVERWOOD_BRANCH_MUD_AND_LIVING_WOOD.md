@@ -18,6 +18,8 @@ Implement the following named normal proof-script entry points, their asserted s
 
 Use the future authorised runner on the declared supported lists; the filing itself executes no runtime proof. Run offline production-kernel/adapter checks appropriate to the implementation, then the exact normal-action and negative controls of each scene. Never label a fixture or an unavailable observation accepted. Live flight waits for owner attendance.
 
+- src/RimMandrake/FeverWood/validation.py::scene_generated_terrain — acceptance; requirements branch_home
+
 ## criteria
 
 - All listed entry points exist and execute their actual normal actions; a failed or absent prerequisite remains explicit.
@@ -34,3 +36,9 @@ file: design/concepts/FeverWood/plan.md
 ## dependencies
 
 Use FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY before runtime acceptance; feature dependencies and shared ownership are specified in plan.md. This is implementation order, not a ledger priority change.
+
+## stage 3 coverage rework
+
+Implement scene_generated_terrain alongside the existing five scene functions. Observe real ordered local-map gensteps at pass boundaries and assert Soil/SoilRich conversion, original-ground allowlists, living-bole anchoring and ScatterPools registration/cluster membership. Same-seed generation-off controls are mandatory. At the active borer frontier a boughway, player-built wall and building must retain terrain/identity/full HP while living-wood geometry advances. Add independent sinkMudEnabled and borerGalleriesEnabled controls as proposed in scenes.json settings_contract.
+
+Follow the acceptance assertions and per-scene settings_controls in design/concepts/FeverWood/scenes.json. This amendment keeps the item filed and leaves its status and admission ceiling in place.

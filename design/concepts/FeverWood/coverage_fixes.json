@@ -1,0 +1,45 @@
+{
+  "against": "rm-coverage-judge-1794833596",
+  "claims": [
+    {
+      "gap": "g1",
+      "evidence": "scenes.json showcases now adds living_wood_and_mud and oil_and_salvage, and combines provision/native scenes as crown_ecology in greedy order. Existing showcase groups explicitly perform observation calls, water-state reload, settings-off actions and campaign remaps before claiming their units. coverage_rest and showcase_candidate_audit leave only two played units, two static checks and the scoped-out race. record.json coverage_plan retains each independent scene. plan.md records counts, overlap reasons and stop audit."
+    },
+    {
+      "gap": "g2",
+      "evidence": "scenes.json generated_terrain is a new script acceptance scene with real ordered pass-boundary terrain diffs, all eligible Soil/SoilRich conversion, per-pass ground allowlist and bole-anchoring checks, ScatterPools registration and cluster membership, and independent generation-off maps. FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD now files scene_generated_terrain and its recovery. branch_home and all three inventory coverage plans cite it."
+    },
+    {
+      "gap": "g3",
+      "evidence": "scenes.json porter_and_agitation now executes the real mirror-break incident, captures actual selected seed, checks agitation and effective strike chance at A against disconnected B and withheld/expiry controls. mirror_snapshot compares live warning rings from Tenant.MapComponentDraw against a deliberately older dated list, with separate live/list expiry and display-off controls. Water item and coverage plans include both."
+    },
+    {
+      "gap": "g4",
+      "evidence": "record.json gap_suppression_locality.campaign_lane and fw_suppression trace RM_WastesWreckHull/RM_WastesWreckTank -> RM_WreckWeathering_Irradiated -> RM_CompSalvageLoot with actual handling ToxicBuildup. A proposed missing RUT_FeverWoodRadioactiveSalvage output/qualification is explicitly filed in the existing water/captive items. normal_suppression and young_establishment require normal acquisition, exact campaign item/patch and absent-patch, clean-wreck, wrong-material/free-Uranium controls. plan.md cites primary source for the lane and its absent output."
+    },
+    {
+      "gap": "g5",
+      "evidence": "scenes.json nectar_and_guild now requires failed training and local fear separately to yield vaulm RM_Hediff_SapSealed, drommath RM_Hediff_Swollen and ollareth alarm, in wild/tamed arms, with successful-training/no-handling/no-fear controls. record.json fw_guild names the missing hooks and filed ecology item. The tree scenario/oracle, sheet and item now state the same outcomes and label failed training as the concrete agent-authored handling case."
+    },
+    {
+      "gap": "g6",
+      "evidence": "scenes.json borer_gallery asserts boughway terrain and colony-built wall/building identity/full HP at the active frontier while living wood advances over the same interval. living_wood experience/scenario/oracle/false_pass, sheet and branch item preserve that boundary."
+    },
+    {
+      "gap": "g7",
+      "evidence": "record.json fw_native_drinking names mandrake.rm.flowworks, RM_Thirst/Need_RM_Thirst, RM_DrinkFromTerrain, terrain nativeWater patch and declared free/full/campaign provider contexts, with impl present and source evidence. native_water asserts the real provider/need/think-tree/terrain and uses absent-FlowWorks or absent animal need as UNMEASURED controls. Existing item covers its missing complete acceptance function. Unsupported duplicate-provider composition is a prerequisite failure."
+    },
+    {
+      "gap": "g8",
+      "evidence": "scenes.json settings_contract lists each existing relevant owning-mod toggle and every proposed_missing feature gate with off_expect, normal scene and filed item. Each affected scene carries literal settings_controls/off assertions. settings_and_heat enumerates all rows and all-off/re-enable/non-default persistence. New mud/gallery/reach/establishment/calls/ruins/ecology and missing shared/guild controls are filed in existing items. Explicit no_toggle_reasons cite service/invariant/content boundaries."
+    },
+    {
+      "gap": "g9",
+      "evidence": "scenes.json campaign_display now tests actual Wildsteam settlement/bulk-caravan stock, faction/chance/price eligibility, buy/sell tally changes and exact boughtLine/soldLine/returnedLine emitted at real trade/return events. No-hook free list, unrelated faction/trade, failed stock roll, disabled brood and incomplete arrival are negative controls. record.json fw_display_campaign and captive item state the outcomes."
+    },
+    {
+      "gap": "g10",
+      "evidence": "sheet.md leaf:branch_home now names two-way colonist/raider crown access, leaf:shore_rescue names wild versus player/tamed deadline outcomes, leaf:oil_opportunity names water wake under adult quiet and leaf:retired_absence names stale arrival/creature theft/heat/dormancy text alignment. Fresh sheet-only prediction of these outcomes is explicitly carried to the required stage-4 exam."
+    }
+  ]
+}

@@ -34,3 +34,9 @@ file: design/concepts/FeverWood/plan.md
 ## dependencies
 
 Use FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY before runtime acceptance; feature dependencies and shared ownership are specified in plan.md. This is implementation order, not a ledger priority change.
+
+## stage 3 coverage rework
+
+settings_and_heat must enumerate every scenes.json settings_contract row by owning mod and exact setting name and perform each positive/off arm, non-default save/load and all-off/re-enable with pending debt. Existing fields and proposed_missing fields have distinct status. Missing major-feature gates are delivered by their named existing child items. Add no feature-removal assumption. Independently check canonical/full/campaign thirst-provider composition before native-water acceptance. Current FULL.LATEST still contains the unsupported DBH thirst add-on alongside FlowWorks, so an unresolved list cannot accept a drinking result. No live list is changed by this specification.
+
+Follow the acceptance assertions and per-scene settings_controls in design/concepts/FeverWood/scenes.json. This amendment keeps the item filed and leaves its status and admission ceiling in place.

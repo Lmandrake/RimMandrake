@@ -20,7 +20,8 @@
       "filed_for": "CLI printed BENCH after redirecting retired FOUNDRY; ledger compatibility routing is RELENTLESS. Filing starts no worker.",
       "acceptance_status": "planned_unmeasured",
       "ledger_source": "CONDUCTOR:1794814590858188790",
-      "filed_for_ledger": "RELENTLESS"
+      "filed_for_ledger": "RELENTLESS",
+      "coverage_rework_run": "rm-role-designercodex-1794847684"
     },
     {
       "id": "FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD",
@@ -28,6 +29,7 @@
       "title": "FeverWood: prove branch work and deliver the documented mud and living galleries",
       "spec": "design/concepts/FeverWood/plan.md",
       "scenes": [
+        "generated_terrain",
         "branch_work",
         "foundations",
         "sink_mud",
@@ -43,7 +45,8 @@
       "filed_for": "CLI printed BENCH after redirecting retired FOUNDRY; ledger compatibility routing is RELENTLESS. Filing starts no worker.",
       "acceptance_status": "planned_unmeasured",
       "ledger_source": "CONDUCTOR:1794814595391912839",
-      "filed_for_ledger": "RELENTLESS"
+      "filed_for_ledger": "RELENTLESS",
+      "coverage_rework_run": "rm-role-designercodex-1794847684"
     },
     {
       "id": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
@@ -71,7 +74,8 @@
       "filed_for": "CLI printed BENCH after redirecting retired FOUNDRY; ledger compatibility routing is RELENTLESS. Filing starts no worker.",
       "acceptance_status": "planned_unmeasured",
       "ledger_source": "CONDUCTOR:1794814600804453611",
-      "filed_for_ledger": "RELENTLESS"
+      "filed_for_ledger": "RELENTLESS",
+      "coverage_rework_run": "rm-role-designercodex-1794847684"
     },
     {
       "id": "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
@@ -96,7 +100,8 @@
       "filed_for": "CLI printed BENCH after redirecting retired FOUNDRY; ledger compatibility routing is RELENTLESS. Filing starts no worker.",
       "acceptance_status": "planned_unmeasured",
       "ledger_source": "CONDUCTOR:1794814606005103808",
-      "filed_for_ledger": "RELENTLESS"
+      "filed_for_ledger": "RELENTLESS",
+      "coverage_rework_run": "rm-role-designercodex-1794847684"
     },
     {
       "id": "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
@@ -121,7 +126,8 @@
       "filed_for": "CLI printed BENCH after redirecting retired FOUNDRY; ledger compatibility routing is RELENTLESS. Filing starts no worker.",
       "acceptance_status": "planned_unmeasured",
       "ledger_source": "CONDUCTOR:1794814611119118828",
-      "filed_for_ledger": "RELENTLESS"
+      "filed_for_ledger": "RELENTLESS",
+      "coverage_rework_run": "rm-role-designercodex-1794847684"
     },
     {
       "id": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
@@ -147,7 +153,8 @@
       "filed_for": "CLI printed BENCH after redirecting retired FOUNDRY; ledger compatibility routing is RELENTLESS. Filing starts no worker.",
       "acceptance_status": "planned_unmeasured",
       "ledger_source": "CONDUCTOR:1794814616267081839",
-      "filed_for_ledger": "RELENTLESS"
+      "filed_for_ledger": "RELENTLESS",
+      "coverage_rework_run": "rm-role-designercodex-1794847684"
     },
     {
       "id": "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR",
@@ -170,8 +177,15 @@
       "filed_for": "CLI printed BENCH after redirecting retired FOUNDRY; ledger compatibility routing is RELENTLESS. Filing starts no worker.",
       "acceptance_status": "planned_unmeasured",
       "ledger_source": "CONDUCTOR:1794814621544418104",
-      "filed_for_ledger": "RELENTLESS"
+      "filed_for_ledger": "RELENTLESS",
+      "coverage_rework_run": "rm-role-designercodex-1794847684"
     }
   ],
-  "manifest_note": "Canonical tracked manifest is work_manifest.json; initial filing reasons used build_items.json, a filename ignored by the repository wildcard. This filename correction changes no item or scene obligation."
+  "manifest_note": "Canonical tracked manifest is work_manifest.json; initial filing reasons used build_items.json, a filename ignored by the repository wildcard. This filename correction changes no item or scene obligation.",
+  "rework": {
+    "run": "rm-role-designercodex-1794847684",
+    "against": "rm-coverage-judge-1794833596",
+    "status": "filed_item_specs_amended",
+    "scene_count": 45
+  }
 }

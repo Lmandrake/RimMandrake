@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "stage": 2,
-  "run": "rm-role-designercodex-1794845723",
+  "stage": 3,
+  "run": "rm-role-designercodex-1794847684",
   "grounded_at": "2026-11-16T02:22:44.174396+00:00",
   "source_revision": "95d37b04a86c8477e4c5280eaba0988bce259ac5",
   "scope": [
@@ -37,10 +37,12 @@
     {
       "id": "documentary_north_star",
       "speaker": "agent",
-      "text": "The walk records the treetop-home and remembering-water experience as chosen by card, while its north-star block remains DRAFT with an empty validated hash. Use this as context alongside the November OWNER event. A source-backed root still belongs to stage 1.",
+      "text": "The documentary treetop-home and remembering-water quotation remains verbatim. The north-star section is now VALIDATED with matching current/recorded hash c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418 under separate delegated NEW-bar authority. Both must-show IDs remain agent-authored bars bound by that authority. Historical DRAFT records describe the earlier version.",
       "source": [
         "design/validation_walks/RimMandrake/FeverWood.md:75",
-        "design/RimMandrake/biome_experiences_2026-10-20.md:12"
+        "design/RimMandrake/biome_experiences_2026-10-20.md:12",
+        "infrastructure/state/delegated/2026-11-16/FeverWood_north_star_bars.json",
+        "CONDUCTOR:1794838259873987749"
       ]
     },
     {
@@ -252,6 +254,17 @@
         "design/concepts/FeverWood/stage.json"
       ],
       "text": "Verified the separately published delegated NEW-bar validation at commit 95c5d7512e15. northstar.parse reports VALIDATED, with matching nonempty recorded/current hash c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418 and both feverwood_branch_home and feverwood_water_memory. The published independent PASS verdict names that final section hash; CONDUCTOR:1794838259873987749 records the fresh judge and validation. No core intent or unanswered ask remains. Stage 3 must restamp the root and reconcile stale DRAFT prose, fix all ten coverage gaps and write coverage_fixes.json against rm-coverage-judge-1794833596, then repeat the exam and coverage review for changed artifacts. This run supplies no new validation, coverage signature, runtime acceptance, owner first-touch or implementation."
+    },
+    {
+      "id": "stage3_root_and_coverage_rework",
+      "speaker": "agent",
+      "text": "Restamp the separately validated north-star hash through concept_tree.write. Rework all ten rm-coverage-judge-1794833596 gaps with generated-terrain assertions, real mirror agitation/live overlay controls, a filed campaign irradiated-salvage output lane, concrete guild trigger outcomes, protected borer boundaries, FlowWorks native-drinking inventory, explicit existing/proposed settings controls, campaign trade/story outcomes and sheet alignment. The seven-showcase set counts actual readout/settings/reload and campaign-remap use, with independent checks retained. No final exam or coverage verdict is supplied by the author.",
+      "source": [
+        "design/concepts/FeverWood/coverage_fixes.json",
+        "design/concepts/FeverWood/scenes.json",
+        "design/concepts/FeverWood/plan.md",
+        "CONDUCTOR:1794838259873987749"
+      ]
     }
   ],
   "asks": [
@@ -452,6 +465,7 @@
           {
             "showcase": "branches_and_shore",
             "scenes": [
+              "generated_terrain",
               "branch_work",
               "foundations",
               "real_shore_rescue"
@@ -485,6 +499,7 @@
           {
             "showcase": "branches_and_shore",
             "scenes": [
+              "generated_terrain",
               "branch_work",
               "foundations",
               "real_shore_rescue"
@@ -517,7 +532,13 @@
             "by": [
               "living_trunk"
             ],
-            "why": "An isolated real mining/regrowth/seal comparison is cheaper than another whole-colony showcase."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "living_wood_and_mud",
+            "scenes": [
+              "living_trunk"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -548,6 +569,7 @@
           {
             "showcase": "branches_and_shore",
             "scenes": [
+              "generated_terrain",
               "branch_work",
               "foundations",
               "real_shore_rescue"
@@ -574,6 +596,25 @@
               "brood_tally",
               "peaceful_return",
               "campaign_display"
+            ]
+          },
+          {
+            "showcase": "crown_ecology",
+            "scenes": [
+              "nectar_and_guild",
+              "flora_roles",
+              "native_water",
+              "native_ambush_diet",
+              "birds_and_optional_theft"
+            ]
+          },
+          {
+            "showcase": "oil_and_salvage",
+            "scenes": [
+              "oil_harvest",
+              "oil_ignition",
+              "oil_water_authority",
+              "wrecks_and_scanner"
             ]
           }
         ],
@@ -807,13 +848,19 @@
     },
     {
       "id": "fw_suppression",
-      "text": "The uranium suppressant, machining recipe, designator, workgiver and haul/dump job exist. The job checks feature state and surviving designation before consumption. Suppression updates map-wide clocks and optionally withdraws all limbs.",
+      "text": "The uranium suppressant, machining recipe, designator, workgiver and haul/dump job exist. The job checks feature state and surviving designation before consumption. Suppression updates map-wide clocks and optionally withdraws all limbs. Campaign qualification/output is absent. The filed campaign lane uses dangerous RM_WastesWreckHull/RM_WastesWreckTank salvage and a proposed RUT_FeverWoodRadioactiveSalvage output, with normal salvage hazard preserved and ordinary Uranium excluded from campaign treatment.",
       "source": [
         "src/RimMandrake/FeverWood/Source/RM_Designator_FoulPool.cs",
         "src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs:17",
         "src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:51",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml"
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:494",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesWrecks.xml:14",
+        "src/RimMandrake/Wreckage/Defs/RM_WreckWeatheringDefs/RM_WreckWeatherings.xml:90",
+        "src/RimMandrake/Wreckage/Source/RM_CompSalvageLoot.cs:79",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml:5",
+        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs:57"
       ],
       "impl": "present",
       "proof": "stale",
@@ -893,11 +940,12 @@
     },
     {
       "id": "fw_escape_install",
-      "text": "Only an armed tank escapee reaching registered water installs a tenant. Gaining a faction disarms installation. Current installation immediately clears the map-wide defeat flag and destroys the escapee.",
+      "text": "The hostile-arrival branch is armed only for a tank escapee reaching registered water. Gaining a faction disarms this branch. Its installation immediately clears map-wide defeat and destroys the escapee. A separate peaceful-return completion also currently calls Notify_SekkulaathInstalled before scheduling its gift, so the hostile-arrival gate alone cannot establish the intended no-peaceful-install control.",
       "source": [
         "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:63",
         "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:100",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:584"
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:584",
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:280"
       ],
       "impl": "present",
       "proof": "stale",
@@ -999,7 +1047,7 @@
     },
     {
       "id": "fw_return_gift",
-      "text": "Tank/cask release arms a peaceful young that selects reachable water, prefers FeverWood pools, and schedules a gift on arrival. Due gifts remain queued while disabled, and unplaced rolls retry. State is serialized and queue lengths repaired on load.",
+      "text": "Tank/cask release arms a peaceful young that selects reachable water, prefers FeverWood pools, and schedules a gift on arrival. Due gifts remain queued while disabled, and unplaced rolls retry. State is serialized and queue lengths repaired on load. Direct reread of ArriveReleased at line 280 also finds Notify_SekkulaathInstalled before gift scheduling. Its adult-revival side effect must be checked against the settled no-peaceful-install arm in young_establishment; gift completion alone cannot accept that control.",
       "source": [
         "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:452",
         "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:213",
@@ -1037,7 +1085,7 @@
     },
     {
       "id": "fw_display_campaign",
-      "text": "Generic keeper, display-tank, cask-trader and story-line hooks support the campaign's Sporefall display tank, enhanced gift and goodwill cost. Freed-display state persists. A pure static campaign-wiring selftest passed this run.",
+      "text": "Generic keeper, display-tank, cask-trader and story-line hooks support the campaign's Sporefall display tank, enhanced gift and goodwill cost. Freed-display state persists. A pure static campaign-wiring selftest passed this run. The cask trader has a Wildsteam faction filter on the settlement/bulk-caravan generators, fixed chance and Expensive purchase price. Campaign bought/sold/returned story lines fire at the actual trade or completed-return event. These have explicit positive and absent-hook controls in campaign_display.",
       "source": [
         "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:529",
         "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:414",
@@ -1394,7 +1442,7 @@
         "source": "design/concepts/FeverWood/scenes.json",
         "checks": [
           {
-            "showcase": "crown_provisions",
+            "showcase": "crown_ecology",
             "scenes": [
               "nectar_and_guild",
               "flora_roles"
@@ -1406,12 +1454,14 @@
     },
     {
       "id": "fw_guild",
-      "text": "Vaulm sealing and drommath swelling use deterministic cooldown hediffs. Ollareth has an alarm refusal with no refusal hediff. Damage and failed tame paths exist, with a Harmony hook for the latter. General fear and failed training remain uncovered.",
+      "text": "Vaulm sealing and drommath swelling use deterministic cooldown hediffs. Ollareth has an alarm refusal with no refusal hediff. Damage and failed tame paths exist, with a Harmony hook for the latter. General fear and failed training remain uncovered. The documented frightened/mishandled outcomes are vaulm seal, drommath swelling and ollareth alarm, including tamed animals. Current comp/patch has damage and failed-tame paths. General fear and failed training are missing delivery under FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS; failed training is the agent operational handling case and has successful/no-handling controls.",
       "source": [
         "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:18",
         "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:50",
         "src/RimMandrake/FeverWood/Source/RM_Patch_SapSuckerMishandle.cs:24",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml"
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml",
+        "design/Jawa/worldbuilding/biomes/fever_wood_fauna_roster_2026-09-23.md:44",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:695"
       ],
       "impl": "present",
       "proof": "stale",
@@ -1431,7 +1481,7 @@
         "source": "design/concepts/FeverWood/scenes.json",
         "checks": [
           {
-            "showcase": "crown_provisions",
+            "showcase": "crown_ecology",
             "scenes": [
               "nectar_and_guild",
               "flora_roles"
@@ -1443,7 +1493,7 @@
     },
     {
       "id": "fw_native_cast",
-      "text": "The free-tier roster carries kasselith, the sap guild, the retained birds, grolth, brathek and silloch. Silloch has a wait-ambush comp and tame-hostility filter. Its pursuit leash is measured from the current position and needs a moving-prey check.",
+      "text": "The free-tier roster carries kasselith, the sap guild, the retained birds, grolth, brathek and silloch. Silloch has a wait-ambush comp and tame-hostility filter. Its pursuit leash is measured from the current position and needs a moving-prey check. Native drinking is separately inventoried as fw_native_drinking through FlowWorks RM_Thirst; native Tenant/snare exemption remains separate missing integration.",
       "source": [
         "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:213",
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml",
@@ -1465,7 +1515,14 @@
               "native_water",
               "native_ambush_diet"
             ],
-            "why": "Finite roster needs kind-specific drinking/targeting/diet/moving-prey checks; grouping those as another face would hide independent controls."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "crown_ecology",
+            "scenes": [
+              "native_water",
+              "native_ambush_diet"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1493,7 +1550,19 @@
               "native_ambush_diet",
               "borer_gallery"
             ],
-            "why": "Existing tree diet and absent gallery extension are separately controlled in ordinary checks."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "crown_ecology",
+            "scenes": [
+              "native_ambush_diet"
+            ]
+          },
+          {
+            "showcase": "living_wood_and_mud",
+            "scenes": [
+              "borer_gallery"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1519,7 +1588,13 @@
             "by": [
               "borer_gallery"
             ],
-            "why": "A time-sequence frontier/geometry check is cheaper and clearer than another full scene group."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "living_wood_and_mud",
+            "scenes": [
+              "borer_gallery"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1552,7 +1627,13 @@
               "birds_and_optional_theft",
               "crown_audio"
             ],
-            "why": "Ordinary shearing, calls, optional theft and owner-attended movement check cover the retained roster without a new art gate."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "crown_ecology",
+            "scenes": [
+              "birds_and_optional_theft"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1632,7 +1713,15 @@
               "oil_ignition",
               "oil_water_authority"
             ],
-            "why": "Keep the complete worker-harvest and real-hook journey plus interaction; one inventory unit cannot meet later-showcase minimum."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "oil_and_salvage",
+            "scenes": [
+              "oil_harvest",
+              "oil_ignition",
+              "oil_water_authority"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1672,10 +1761,19 @@
         "source": "design/concepts/FeverWood/scenes.json",
         "checks": [
           {
-            "showcase": "crown_provisions",
+            "showcase": "crown_ecology",
             "scenes": [
               "nectar_and_guild",
               "flora_roles"
+            ]
+          },
+          {
+            "showcase": "oil_and_salvage",
+            "scenes": [
+              "oil_harvest",
+              "oil_ignition",
+              "oil_water_authority",
+              "wrecks_and_scanner"
             ]
           }
         ],
@@ -1708,7 +1806,13 @@
             "by": [
               "wrecks_and_scanner"
             ],
-            "why": "Inherited salvage and texture resolution fit a small actual-work checkout."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "oil_and_salvage",
+            "scenes": [
+              "wrecks_and_scanner"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1733,7 +1837,13 @@
             "by": [
               "wrecks_and_scanner"
             ],
-            "why": "Optional service readings require a paired integration checkout, not a biome face."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "oil_and_salvage",
+            "scenes": [
+              "wrecks_and_scanner"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1769,7 +1879,13 @@
               "package_and_tiers",
               "campaign_display"
             ],
-            "why": "Paired supported-list runtime remap observations are cheaper than another showcase."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "prisoner_and_gift",
+            "scenes": [
+              "campaign_display"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1777,7 +1893,7 @@
     },
     {
       "id": "fw_settings",
-      "text": "A saved FeverWood settings screen controls bestiary, lure, tank, hive and oil mechanics. Terrain generation, nectar fear, silence and shared behavior also depend on their owning mods' settings. The suite checks field roundtrips and selected effects. Full all-off behavior and screen quality remain unmeasured.",
+      "text": "A saved FeverWood settings screen controls bestiary, lure, tank, hive and oil mechanics. Terrain generation, nectar fear, silence and shared behavior also depend on their owning mods' settings. The suite checks field roundtrips and selected effects. Full all-off behavior and screen quality remain unmeasured. The explicit owning-mod field/off-behavior inventory and proposed missing major-feature switches live in scenes.json settings_contract. Existing fields and proposed fields are distinguished, and every proposed switch is assigned to its already-filed feature item.",
       "source": [
         "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:278",
         "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:36",
@@ -1801,7 +1917,14 @@
               "settings_and_heat",
               "floor_checkout"
             ],
-            "why": "Real UI and each named off behavior remain floor/checkout obligations."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "normal_suppression",
+              "adult_authority"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1831,7 +1954,13 @@
             "by": [
               "observation_control"
             ],
-            "why": "Read purity and independent truth checks precede every scene rather than being showcased."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "observation_control"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1871,7 +2000,14 @@
               "water_rescue_reload",
               "return_disable_reload"
             ],
-            "why": "Persistence needs state-specific checkpoints and the single walk, not an idle-map screenshot."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "porter_and_agitation",
+              "water_rescue_reload"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1898,7 +2034,13 @@
             "by": [
               "sink_mud"
             ],
-            "why": "Weight, self/assisted escape and danger-vs-mud control remain a separate ordinary scene."
+            "why": "Independent ordinary checks retain their own controls and restoration alongside the new showcase coverage."
+          },
+          {
+            "showcase": "living_wood_and_mud",
+            "scenes": [
+              "sink_mud"
+            ]
           }
         ],
         "status": "planned_unexecuted"
@@ -1927,6 +2069,65 @@
               "hive_reaction",
               "hive_farm_guard",
               "mirror_side_ruin"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
+    },
+    {
+      "id": "fw_native_drinking",
+      "text": "FlowWorks (mandrake.rm.flowworks) supplies NeedDef RM_Thirst, class RimMandrake.FlowWorks.Thirst.Need_RM_Thirst, the animal thirst job giver and RM_DrinkFromTerrain. Its conditional FeverWood terrain patch maps RM_FeverWoodMirrorPool to RM_Liquid_NotDrinkable with nativeWater true. NativeHere uses actual positive biome PawnKind commonality, so home animals can find and drink it. Eligible bodies require thirstEnabled and animalsGetThirst. This drinking path is independent of the missing Tenant/snare native exemption.",
+      "source": [
+        "OWNER:1793542983826647230",
+        "src/RimMandrake/FlowWorks/Defs/Thirst/RM_Thirst_Need.xml:10",
+        "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstProvider.cs:46",
+        "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs",
+        "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstJobs.cs:112",
+        "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_DrinkableTerrain_ForeignTerrains.xml:204"
+      ],
+      "impl": "present",
+      "impl_evidence": [
+        "src/RimMandrake/FlowWorks/Defs/Thirst/RM_Thirst_Need.xml:10",
+        "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstProvider.cs:46",
+        "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs",
+        "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstJobs.cs:112",
+        "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_DrinkableTerrain_ForeignTerrains.xml:204"
+      ],
+      "proof": "stale",
+      "scope": "approved",
+      "scope_source": "OWNER:1793542983826647230",
+      "supported_contexts": [
+        {
+          "list": "Dependency-complete free FeverWood composed-biomes plus FlowWorks, all DLC",
+          "requires": [
+            "mandrake.rm.biomes",
+            "mandrake.rm.flowworks"
+          ],
+          "expected_need": "RM_Thirst"
+        },
+        {
+          "list": "Canonical supported full and campaign lists containing composed Biomes and FlowWorks",
+          "source": [
+            "src/RimMandrake/Utils/modset_builder.py:82",
+            "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml:286"
+          ],
+          "expected_need": "RM_Thirst",
+          "precondition": "Freeze actual resolved list hash and assert provider/need. FULL.LATEST currently also names dubwise.dubsbadhygiene.thirst at line 77, while RM_ThirstProvider and FlowWorks About declare that provider unsupported. Report unresolved composition as UNMEASURED and reconcile through existing supported-list checkout before running. No live list is changed by this plan."
+        },
+        {
+          "list": "Biomes-only list without FlowWorks, or thirstEnabled/animalsGetThirst off",
+          "expected_need": "absent",
+          "drinking_verdict": "UNMEASURED"
+        }
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "crown_ecology",
+            "scenes": [
+              "native_water"
             ]
           }
         ],
@@ -1967,12 +2168,18 @@
     {
       "id": "gap_suppression_locality",
       "speaker": "agent",
-      "text": "The job targets a designated cell, but its suppression call passes only duration and updates map-wide clocks. This cannot implement the approved intervention at the particular escaped-young pool. Ordinary adult suppression locality must retain its own documented scope. Poison availability in the campaign requires checking the existing radioactive-salvage lane before choosing a reagent mapping.",
+      "text": "Adult suppression currently remains map-wide, while the approved young intervention must identify its particular pool. Campaign acquisition is planned through the located dangerous irradiated-wreck salvage service. RM_WastesWreckHull/RM_WastesWreckTank inherit RM_WreckWeathering_Irradiated, and RM_CompSalvageLoot applies the ToxicBuildup dose on actual careful deconstruction. A campaign-only qualifying output RUT_FeverWoodRadioactiveSalvage and its treatment mapping are absent and filed under FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS and FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN. Free Uranium remains its own recipe. Source header and WorkGiver confirm the campaign output/mapping do not currently exist.",
       "source": [
         "OWNER:1794374372850231423",
         "src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:79",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549",
-        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:494"
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:494",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:494",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesWrecks.xml:14",
+        "src/RimMandrake/Wreckage/Defs/RM_WreckWeatheringDefs/RM_WreckWeatherings.xml:90",
+        "src/RimMandrake/Wreckage/Source/RM_CompSalvageLoot.cs:79",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml:5",
+        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs:57"
       ],
       "status": "design_resolved",
       "core": true,
@@ -1993,6 +2200,23 @@
         ],
         "status": "intent_resolved_delivery_and_proof_unmeasured",
         "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      },
+      "campaign_lane": {
+        "status": "proposed_missing_output_and_qualification",
+        "source_lane": "RM_WastesWreckHull/RM_WastesWreckTank -> RM_WreckWeathering_Irradiated -> RM_CompSalvageLoot",
+        "proposed_output": "RUT_FeverWoodRadioactiveSalvage",
+        "items": [
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+          "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN"
+        ],
+        "sources": [
+          "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:494",
+          "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesWrecks.xml:14",
+          "src/RimMandrake/Wreckage/Defs/RM_WreckWeatheringDefs/RM_WreckWeatherings.xml:90",
+          "src/RimMandrake/Wreckage/Source/RM_CompSalvageLoot.cs:79",
+          "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml:5",
+          "src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs:57"
+        ]
       }
     },
     {
@@ -2727,6 +2951,32 @@
         "design/concepts/FeverWood/floor.json"
       ],
       "finding": "All floor lines remain applicable with no floor disable/waiver. Preserve current-art acceptance and later review, geometry-only sun and ordinary air, native drinking separate from truce, and the live-flight attendance rule. Source presence and planned tests do not establish current acceptance. Exact owner quotations in sheet.md were matched to their original OWNER events."
+    },
+    {
+      "id": "stage3_supply_and_thirst_corrections",
+      "finding": "The prior stage-3 package omitted the already-shipped FlowWorks native-water path and left the campaign lane unlocated. Direct source review finds RM_Thirst/nativeWater and existing irradiated-wreck salvage with a handling dose. Its campaign qualifying output is still absent. This run records those distinctions from current source. The supplied external draft was not used for any new claim.",
+      "source": [
+        "src/RimMandrake/FlowWorks/Defs/Thirst/RM_Thirst_Need.xml:10",
+        "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstProvider.cs:46",
+        "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs",
+        "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstJobs.cs:112",
+        "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_DrinkableTerrain_ForeignTerrains.xml:204",
+        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:494",
+        "src/RimMandrake/Wastes/Defs/ThingDefs_Buildings/RM_WastesWrecks.xml:14",
+        "src/RimMandrake/Wreckage/Defs/RM_WreckWeatheringDefs/RM_WreckWeatherings.xml:90",
+        "src/RimMandrake/Wreckage/Source/RM_CompSalvageLoot.cs:79",
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml:5",
+        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs:57"
+      ]
+    },
+    {
+      "id": "stage3_peaceful_return_install_side_effect",
+      "finding": "While verifying the campaign returnedLine hook directly, ArriveReleased was found to call Notify_SekkulaathInstalled on a home pool. The prior inventory wording that only armed arrivals install was too broad. The hostile gate and peaceful-return path are now recorded separately. The existing young_establishment peaceful-return negative arm already requires this side effect to be prevented under the settled stage-2 contract, and the captive item names the correction. No new intent choice or leaf is introduced.",
+      "source": [
+        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:280",
+        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:584",
+        "design/concepts/FeverWood/scenes.json"
+      ]
     }
   ],
   "neighbors": [
@@ -3994,5 +4244,36 @@
     "remaining": "All ten gaps remain open without alteration, including each would_pass and smallest_fix. No stage-3 artifact changed. Stage 3, a new exam and a new coverage review remain required.",
     "recovery": "No active recovery records, no scene or game mutation.",
     "draft_use": "No claim in this completion relies on the supplied third-party draft."
+  },
+  "stage3_rework_review": {
+    "run": "rm-role-designercodex-1794847684",
+    "at": "2026-11-16T16:59:18.328261+00:00",
+    "reviewer": "BENCH self-review",
+    "against": "rm-coverage-judge-1794833596",
+    "root_hash": "c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418",
+    "gaps_claimed": [
+      "g1",
+      "g2",
+      "g3",
+      "g4",
+      "g5",
+      "g6",
+      "g7",
+      "g8",
+      "g9",
+      "g10"
+    ],
+    "leaf_count": 23,
+    "scene_count": 45,
+    "showcase_count": 7,
+    "live_results": "UNMEASURED",
+    "exam": "Existing exam binds the preceding tree/sheet hashes. Fresh stage-4 exam required.",
+    "coverage": "Previous not_covered verdict remains the refusal being reworked. Fresh stage-5 coverage review required.",
+    "choices": "New settings names, campaign-only salvage output and expanded later showcases are agent implementation/planning proposals. Root and flagship text keep their existing authority.",
+    "inventory_preservation": {
+      "prior_entries": 45,
+      "added": "fw_native_drinking",
+      "prior_impl_proof_scope_unchanged": true
+    }
   }
 }

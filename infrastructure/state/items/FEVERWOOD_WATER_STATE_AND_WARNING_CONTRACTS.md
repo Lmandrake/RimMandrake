@@ -39,3 +39,9 @@ file: design/concepts/FeverWood/plan.md
 ## dependencies
 
 Use FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY before runtime acceptance; feature dependencies and shared ownership are specified in plan.md. This is implementation order, not a ledger priority change.
+
+## stage 3 coverage rework
+
+Fire the real mirror-break incident and compare actual selected-pool agitation/expiry and effective strike chance with disconnected B. Independently assert the live agitation overlay against a differing dated list snapshot. Campaign acquisition is planned delivery under FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS and FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN. Use the existing dangerous irradiated-wreck salvage lane, RM_WastesWreckHull/RM_WastesWreckTank carrying RM_WreckWeathering_Irradiated through RM_CompSalvageLoot.PostDestroy and ApplyHazard. Add a rare campaign-only radioactive-salvage output provisionally named RUT_FeverWoodRadioactiveSalvage, preserve the actual ToxicBuildup handling hazard and trace that output through hauling and the treatment job. This proposed item and its qualification are absent today. Ordinary Uranium, seep oil and toxin sealant do not qualify in the campaign. The free RM_MakeRadioactiveSuppressant route remains self-sufficient. Rates, handling dose and charge amounts are engineering tuning. No new worldgen lane is introduced. Add the exact proposed setting fields and off/re-enable controls assigned to this item by scenes.json settings_contract. Preserve separate cosmetic waterAgitationEnabled scope and caller-owned sentinel hush.
+
+Follow the acceptance assertions and per-scene settings_controls in design/concepts/FeverWood/scenes.json. This amendment keeps the item filed and leaves its status and admission ceiling in place.

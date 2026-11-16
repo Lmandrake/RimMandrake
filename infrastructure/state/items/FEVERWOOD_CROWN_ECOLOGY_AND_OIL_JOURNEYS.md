@@ -37,3 +37,9 @@ file: design/concepts/FeverWood/plan.md
 ## dependencies
 
 Use FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY before runtime acceptance; feature dependencies and shared ownership are specified in plan.md. This is implementation order, not a ledger priority change.
+
+## stage 3 coverage rework
+
+General fear and failed training each independently trigger vaulm RM_Hediff_SapSealed, drommath RM_Hediff_Swollen and ollareth alarm, including tamed animals. Successful training/no-handling/calm controls cause none. Failed training is the concrete agent-authored mishandling case. Deliver the missing hooks and proposed sapSuckerDefensesEnabled/sapSuckerFearRefusalEnabled, thornbugFearEnabled and floraEcologicalRolesEnabled controls. Native drinking already uses FlowWorks RM_Thirst/Need_RM_Thirst, nativeWater and RM_DrinkFromTerrain. Assert that real provider/need and test no-FlowWorks/animalsGetThirst-off as UNMEASURED for drinking. Keep Tenant/snare exemption separately implemented and proven.
+
+Follow the acceptance assertions and per-scene settings_controls in design/concepts/FeverWood/scenes.json. This amendment keeps the item filed and leaves its status and admission ceiling in place.
