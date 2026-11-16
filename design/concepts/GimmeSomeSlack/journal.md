@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:28 AM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-16 3:25 AM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:28 AM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 3:25 AM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -335,3 +335,13 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - No record gap, criterion flaw or real miss in the reading; judge checked: `tests_edited.json` empty, the only GSS test change in the window (396433f04a, cycle 5's fix, before this cycle began) widens the decider and keeps its green cases; the decider `selftest_gss_no_hose.py` reran here rc 0, 25 PASS, last line `PASS  G0_clean_copy`, same as recorded.
 - Not advanced by this run: the exit-met confirmation (advance to Stage 6) is the next steward step, and it moves 3 lane-1 FAILs and 6 faults onto the Polish list, which his card answer says is confirmed with him.
 - Pipeline defect filed and fixed: RIMMANDRAKE_HOLD_TICK_LAUNCHES_ON_STALE_CLONE_GHOST_STEWARD.
+
+### 2026-11-16 3:25 AM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to In-game acceptance (Stage 6) (by BENCH)
+
+- Why: delegated: steward confirms blind cycle 6 exit (judge-1794822790); Polish classing of 3 lane-1 FAILs accepted as the obvious answer (evidence-for-ask)
+- Checks passed: order, by, version, hold, steward_confirms, judge_certificate.
+- Steward confirms: Read cycle_6/SUMMARY.md (judge-1794822790) and its rows: lane1 85 rows 33 PASS/3 FAIL/3 INFO/46 UNSETTLED (not_kernel, owed Stage 6) matches lane1_rows.jsonl; lane2 27 offline reruns all PASS at last read (T_GATE, T_CORD_GEOMETRY_OFFLINE first FAIL on a locked SelfTest.dll, PASS alone, filed Polish RIMMANDRAKE_KILL_GSS_ORPHAN_SELFTEST_HOLDING_BUILD_LOCK); decider T_NO_HOSE PASS rc 0; planted 20/19 caught (P15 miss filed Polish); tests_edited none; cycle-5 decider diff widens the scan (adds 1.6/Common/LoadFolders roots, assemblies, text claims), its ALLOWED_NAMES allowlist is the known shared DrawOrder altitudes, already a trap. 3 lane-1 FAILs are Polish: K_DLL_NO_HOSE_TYPES is shared _Shared/SlackGeometry names GSS never calls in shipped source (only SelfTest, excluded from the DLL); K_FALLEN_WIRE 23/2917 sub-cell wall clips max 0.238 (Stage 6 look); K_RESTRING NaN unreachable. Locked tree/sheet/scenes unchanged since c991553a4f. Verdict: exit met, 0 Problem, advance to in_game.
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward confirms blind cycle 6 exit (judge-1794822790); Polish classing of 3 lane-1 FAILs accepted as the obvious answer (evidence-for-ask)
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:28 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:28 AM PST).
+- Record: `version/stage_record.json`.

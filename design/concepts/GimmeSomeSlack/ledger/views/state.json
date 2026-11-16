@@ -1,10 +1,11 @@
 {
  "_view": {
-  "body_sha256": "9eae0bf7e1c4a16f0dfdebcb6e37471324cc8761e169181b52e0559f586d4397",
+  "body_sha256": "6d96a84f9cab1989bf9a5433a41ef4578b97120a755994d846ff274bc7d9039a",
   "reducer": 1,
   "shards": {
    "BACKFILL": 384722,
-   "DISPATCH": 5508,
+   "DISPATCH": 5812,
+   "HOLDER.run-1794828190": 994,
    "JUDGE.judge-1794822790": 13753,
    "JUDGE.judge-1794822890": 2037
   }
@@ -776,7 +777,13 @@
     "ts": "2026-11-16T08:21:20Z"
    }
   },
-  "checkpoint": null,
+  "checkpoint": {
+   "by": "HOLDER.run-1794828190",
+   "done": "steward confirmed blind cycle 6 exit (judge-1794822790): 0 Problem, 6 Polish; advanced GimmeSomeSlack to in_game",
+   "next": "Run Stage 6 in-game acceptance: the 46 game-side bars and the 37 live claimed fixes",
+   "ruled_out": "no test weakened in cycle 6 (tests_edited none); K_DLL_NO_HOSE_TYPES is not a Problem: the hose names come from _Shared/SlackGeometry and only SelfTest (not shipped) calls LayParams.Hose",
+   "ts": "2026-11-16T11:25:18Z"
+  },
   "decisions": {
    "finding:GIMMESOMESLACK_NORTHSTAR_VALIDATE_1": {
     "authority": {
@@ -971,7 +978,7 @@
     "ts": "2026-11-16T07:11:06Z"
    }
   },
-  "events": 534,
+  "events": 537,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -3261,7 +3268,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-16T11:23:37Z",
+   "last": "2026-11-16T11:25:18Z",
    "lease": "run-1794828190",
    "released": false,
    "token": 2
@@ -3279,12 +3286,13 @@
   "shards": [
    "BACKFILL",
    "DISPATCH",
+   "HOLDER.run-1794828190",
    "JUDGE.judge-1794822790",
    "JUDGE.judge-1794822890"
   ],
   "spend_tokens": 50251246,
   "spend_usd": 84.1503,
-  "stage": "blind_challenge",
+  "stage": "in_game",
   "superseded": [],
   "tests": [
    {
