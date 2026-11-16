@@ -583,7 +583,7 @@
         "infrastructure/state/ledger/events/FOUNDRY.jsonl:1749",
         "infrastructure/state/live_proofs/STILLSAND_MUURROK_EMERGENCE_1.txt"
       ],
-      "scope_note": "Existing shipped implementation is inventoried; no proposal to remove it.",
+      "scope_note": "Broad built event/hunt/beam/take/sign capability remains not_opened. The historical travel-thirsty exclusion is reconciled in c_appraisal as a narrower implementation discrepancy, with original path provenance and no invented OWNER event.",
       "source_checked_in_run": "rm-role-designercodex-1794797937"
     },
     {
@@ -738,7 +738,7 @@
       ],
       "proof": "stale",
       "scope": "not_opened",
-      "proof_note": "Recorded L1; no current warm control, carried/storage boundary, release and reload acceptance. Does not establish biome-wide no-rot for every body outdoors.",
+      "proof_note": "Recorded L1 remains stale. Warm control, carried/storage boundary, release and reload acceptance remain owed. Outdoor eligible giant preservation is separately inventoried as giant_preservation. T3 internal resource pools follow the later titan ruling.",
       "proof_evidence": [
         "infrastructure/state/ledger/events/FOUNDRY.jsonl:3530"
       ],
@@ -819,7 +819,7 @@
       ],
       "proof": "stale",
       "scope": "not_opened",
-      "proof_note": "Existing positive/toggle-off scene. Shared HugeThings titan-site conversion can intercept giant corpses before this longer clock and needs a joint check.",
+      "proof_note": "Existing positive/toggle-off scene remains stale. Preserve the scoped giant no-rot/desiccation history separately from cave-only freezing. HugeThings T3 conversion can intercept this longer clock and follows later ordinary-meat-spoilage/competition rulings. Joint eligibility, conversion-owner, blocked-placement and reload checks remain owed.",
       "proof_evidence": [
         "infrastructure/state/ledger/events/FOUNDRY.jsonl:1648",
         "infrastructure/state/ledger/events/FOUNDRY.jsonl:3540"
@@ -1417,6 +1417,24 @@
       "proof_note": "Removed from current capability set by recorded later cut; not a missing feature. Historical comments/closed items may still name it. Future coverage is an absence check, never a showcase.",
       "impl": "absent",
       "source_checked_in_run": "rm-role-designercodex-1794797937"
+    },
+    {
+      "id": "giant_preservation",
+      "speaker": "agent",
+      "text": "Historical ordinary eligible giant corpses desiccate without rot before becoming species skeleton landmarks. Later HugeThings T3 corpse-site/resource rules govern that distinct lifecycle.",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/stillsand_turn3_development_2026-09-30.md:645",
+        "infrastructure/state/items/closed/STILLSAND_EVENT_CREATURES_REMAINDER_1.md:38",
+        "OWNER:1793738532289727072",
+        "OWNER:1793738707492209767"
+      ],
+      "impl": "unknown",
+      "proof": "missing",
+      "scope": "not_opened",
+      "search_scope": "Read Stillsand RM_CavePlace.cs and RM_GiantSkeletons.cs, skeleton wiring, race/item defs, CreatureBehaviors RM_CompSandSwim.cs, HugeThings Titanic/CorpseSite source and bounded rot/vanish/corpseDef searches across these folders and SWBestiary defs. Found location-limited cave suppression, age-based skeleton conversion and T3 site ownership. No adequate outdoor ordinary-giant preservation implementation established by this bounded search.",
+      "proof_note": "The previous inventory covered cave freezing and skeleton conversion separately. Neither proves outdoor ordinary-giant no-rot. Current T3 ApplyDailySpoilage retains a flat fractional clock contrary to later normal-meat-rot ruling. No runtime observation performed.",
+      "scope_note": "Preserve this historically commissioned species/lifecycle promise and the later T3 owner rulings. Determine actual tier eligibility in the composed configuration. No general biome-wide no-rot obligation is inferred.",
+      "source_checked_in_run": "rm-role-designercodex-1794808321"
     }
   ],
   "failure_modes": [
@@ -2202,7 +2220,7 @@
       "id": "s_run_boundary",
       "speaker": "agent",
       "source": "src/RimMandrake/rimflow/roles/designer.md",
-      "text": "Stage 0 is a source and evidence inventory only. All DLC assumed. No bridge, game restart, deployment, implementation, art, owner question or stage advancement in this run."
+      "text": "Stage 2 reconciles design scope from existing evidence and records finite observation obligations. All DLC assumed. The existing-code live walk remains proposed. BENCH performs no game/bridge/deployment mutation and the launcher owns stage advancement."
     }
   ],
   "decisions": [
@@ -2275,6 +2293,49 @@
         "design/concepts/Stillsand/log.md"
       ],
       "text": "The fresh reviewer passed the root synthesis and struck another human approval ask as redundant. The crowding counterexample carries forward as F1. The workshop sentence adopts the reviewer input-precision correction."
+    },
+    {
+      "id": "d_stage2_appraisal",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/stage2_edges.md",
+        "infrastructure/state/ledger/events/BENCH.jsonl:665",
+        "design/Jawa/worldbuilding/biomes/stillsand_bedazzle_cast_2026-09-30.md:22"
+      ],
+      "text": "The OUT travel-thirsty proposal explicitly included Muurrok. Same-commission event prose supplies no later owner reversal. Exclude water-ranked targeting while preserving complete event/hunt/beam/take/sign coverage and separate existing droid/wet-thumper mechanics. The replacement algorithm remains technical work. Historical path provenance is retained."
+    },
+    {
+      "id": "d_stage2_preservation",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/stage2_edges.md",
+        "OWNER:1793738532289727072",
+        "OWNER:1793738707492209767",
+        "infrastructure/state/items/closed/STILLSAND_EVENT_CREATURES_REMAINDER_1.md:38"
+      ],
+      "text": "Retain scoped ordinary eligible giant preservation/history, cave-only freezing/release and the later HugeThings T3 harvest/normal-temperature-meat-spoilage lifecycle. Add the missing outdoor giant preservation inventory as unknown. Keep combined eligibility/ordering/resource/reload proof explicit for stage 3."
+    },
+    {
+      "id": "d_stage2_claims",
+      "speaker": "agent",
+      "source": "design/concepts/Stillsand/stage2_edges.md",
+      "text": "Two argument rounds derive E1-E8 from the adopted root, owner answers/rulings and retained capabilities. Each dossier contains a claim, rejected cheap implementation, play picture, neighbour comparison, finite transition variants, boundary, costs/assumptions and observation obligation. These are stage-3 drafting input. No owner enjoyment verdict, waiver, flagship pick or current live proof is inferred."
+    },
+    {
+      "id": "d_stage2_delegated",
+      "speaker": "conductor",
+      "delegated": "evidence-for-ask",
+      "source": "CONDUCTOR:1794809023340457492",
+      "text": "Adopt the evidence-derived stage-2 edge dispositions. Original proposal/selection/commission history resolves water-ranked targeting while retaining the giant lifecycle and independent physical eligibility. Ordinary giant/cave preservation and later T3 harvest/spoilage scope are retained. Fresh review passed corrected E1-E8. Source/proof obligations continue at stage 3. No fresh owner decision is needed."
+    },
+    {
+      "id": "d_stage2_review",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/stage2_review.json",
+        "design/concepts/Stillsand/stage2_edges.md"
+      ],
+      "text": "Fresh reviewer /root/edge_review passed authority reconciliation, corrected one overbroad body-size phrase and passed the revised E1-E8 artifacts. The prospective extra owner question was struck as redundant. Original September card transcript is unrecovered. All pictures and future acceptance observations remain unrun."
     }
   ],
   "asks": [
@@ -2368,18 +2429,28 @@
     {
       "id": "c_decay",
       "source": [
+        "design/Jawa/worldbuilding/biomes/stillsand_turn3_development_2026-09-30.md:645",
+        "infrastructure/state/items/closed/STILLSAND_EVENT_CREATURES_REMAINDER_1.md:38",
         "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs:26",
-        "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs"
+        "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs:446",
+        "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs",
+        "OWNER:1793738532289727072",
+        "OWNER:1793738707492209767",
+        "design/concepts/Stillsand/stage2_edges.md"
       ],
       "speaker": "agent",
-      "text": "Current cave preservation is limited to recorded roofed cave cells and restores its owned vanish/rot state on release. MovingDunes owns sealed buried caches; HugeThings queues T3 corpse-site conversion before Stillsand seasonal skeleton conversion. These mechanisms do not prove biome-wide no-rot, nor their combined ordering. Do not infer a new biome-wide preservation promise from the old sheet; stage 3 needs a shared corpse/preservation interaction check.",
-      "status": "interaction_proof_gap",
+      "text": "The scoped historical giant-corpse preservation/species-skeleton promise remains. Roofed recorded cave preservation has separate ownership and release. Later T3 titan-site rulings require harvest competition and ordinary temperature-driven meat spoilage. Current cave-only suppression and seasonal scans do not establish the combined lifecycle.",
+      "status": "resolved_design_interaction_and_implementation_gap",
       "related": [
         "cave_preservation",
-        "corpse_history"
+        "corpse_history",
+        "giant_preservation"
       ],
       "core": false,
-      "resolved": false
+      "resolved": true,
+      "resolution": "Retain ordinary eligible giant preservation and species history, cave preservation/release, and HugeThings-owned T3 conversion governed by the later titan rulings. Derive no blanket outdoor-item or T3-resource immortality. Classify actual composed species/titan tier, establish a single conversion owner and test resources through blocked placement/reload. Current T3 flat-per-day spoilage is an implementation discrepancy under CORPSE_YIELD_TUNE_SPOILAGE_OUTRUNS_EATING.",
+      "next": "Stage 3 carries ordinary outdoor giant, cave entry/release, T3 conversion/resources, blocked placement and reload interaction observations. Outdoor ordinary-giant preservation remains unknown in inventory.",
+      "resolved_in_run": "rm-role-designercodex-1794808321"
     },
     {
       "id": "c_cast",
@@ -2397,17 +2468,26 @@
     },
     {
       "id": "c_appraisal",
-      "source": "src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs:286",
+      "source": [
+        "design/Jawa/worldbuilding/biomes/stillsand_turn3_development_2026-09-30.md:722",
+        "infrastructure/state/ledger/events/BENCH.jsonl:665",
+        "design/Jawa/worldbuilding/biomes/stillsand_bedazzle_cast_2026-09-30.md:22",
+        "infrastructure/state/items/closed/STILLSAND_EVENT_CREATURES_1.md:25",
+        "src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs:283",
+        "design/concepts/Stillsand/stage2_edges.md"
+      ],
       "speaker": "agent",
-      "text": "Turn-four slate removes travel-thirsty appraisal, while event code retains WaterScore/WettestBody. The later creature-specific event spec explicitly appraises Muurrok targets. Preserve present capability, flag the scope difference, and recover original card context before asking a removal/replacement question.",
-      "status": "authority_conflict_to_reconcile_at_stage_2",
+      "text": "Historical travel-thirsty exclusion explicitly covers swimmers and Muurrok. The same-commission generic appraisal prose supplies no later reversal. Current WaterScore/WettestBody retain water-ranked selection contrary to the recorded exclusion.",
+      "status": "resolved_design_implementation_gap",
       "related": [
         "leviathan"
       ],
       "core": true,
-      "resolved": false,
-      "evidence_against_obvious": "The turn-4 cast bible and original BENCH ledger note cut travel thirsty/the water appraisal, but the later creature-specific spec and shipped RM_SandLeviathan.WaterScore/WettestBody still appraise the Muurrok target. Do not infer permission to remove built appraisal, or call the implementation an owner-approved reversal.",
-      "next": "Recover whether the cut applied to the general travel-thirsty mechanism or also to creature-specific Muurrok selection. Have Conductor reconcile original authority before an owner fork; any proposed question must explain the conflicting evidence and offer a quick look."
+      "resolved": true,
+      "next": "Stage 3 records a correction/proof obligation for water-ranked selection while preserving the complete event lifecycle. Pair fixed eligible bodies with changed hydration. In thirst-mod absence, trace selection to declared physical/eligibility inputs and check water-proxy independence without prescribing ordering solely by size. Retain separate droid/wet-thumper controls.",
+      "resolution": "Exclude hydration/water-content prey ranking and retention of the rejected water-appraisal fallback. Independent physical prey-size suitability and existing eligibility criteria remain technical choices. Preserve incident, warning, hunting, mirror beam, take, signs, living-body eligibility, droid immunity and vibration/moisture draws. Broad leviathan scope stays not_opened. Original proposal, historical by-card BENCH note and cast ruling establish scope without inventing an OWNER tsn.",
+      "evidence_search": "Read original turn3 row 2, historical BENCH notes 663/665/666/680, cast ruling, event specification and current selection code. git show 0763d6e311 shows both conflicting documents originated together. Bounded OWNER/BENCH/FOUNDRY ledger search found no later water-ranking reversal. Original September card transcript was not recovered.",
+      "resolved_in_run": "rm-role-designercodex-1794808321"
     }
   ],
   "grounding": {
@@ -2428,9 +2508,11 @@
     "status": "proposed_not_run",
     "scene": "Use a disposable Stillsand scene in the composed Biomes tier, with open sand/deep sand beside a rock-island cave, a shade-bearing giant and tenant, and an established glass/water workshop. Show the calm landscape and refuge, then a separately recoverable gale/swimmer scene. Pair open ground with roof at the same sun angle; inspect warning, wet line and Return only in the tier that supplies its faith.",
     "settles": [
-      "whether sparse terrain and moving giant shade read as the chosen experience",
-      "whether refuge and warning are legible",
-      "whether sunlight machines and water output work through ordinary jobs"
+      "E1 apparent emptiness and expedition destination",
+      "E2 unfamiliar island and prepared refuge",
+      "E3 practical cave payoff through ordinary workshop work",
+      "E5 signs and giant shade in the existing scene",
+      "E6 herald/gale/aftermath in a separately recoverable scene"
     ],
     "save": "No canonical or owner save is selected or modified. The documented northstar site regenerates its map and cannot be run on a save to preserve. A scene runner needs snapshot/recovery and hold before a live walk.",
     "constraint": "Proposal only; this BENCH run does not use the bridge, restart, deploy or stage live state."
@@ -3042,22 +3124,256 @@
     "author": "rm-role-designercodex-1794805106"
   },
   "dialogue": {
-    "stage": 1,
-    "run": "rm-role-designercodex-1794805106",
-    "source": "design/concepts/Stillsand/log.md",
-    "turns": 1,
-    "root_resolution": "CONDUCTOR:1794805294378261874",
+    "stage": 2,
+    "run": "rm-role-designercodex-1794808321",
+    "source": "design/concepts/Stillsand/stage2_edges.md",
+    "turns": 2,
     "owner_questions_sent": 0,
+    "asks_proposed": 0,
     "walk_offered_first": "walk_existing_first",
-    "review": "design/concepts/Stillsand/stage1_review.json",
-    "evidence_search": "Read the exact three-choice OWNER event and original cards, selected experience row and current inventory. Later OWNER shard matches for Stillsand contain operational retirement/reclaim events.",
+    "review": "design/concepts/Stillsand/stage2_review.json",
+    "evidence_search": "Historical proposal/card-ledger/cast chronology and same-commission git history resolve appraisal. Later explicit titan harvest/spoilage OWNER events clarify corpse scope. No original September card transcript recovered. All resulting observations remain unrun.",
     "carry_forward": [
       "c_sun",
       "c_gale_oracle",
       "c_wetting",
       "c_decay",
-      "c_cast",
       "c_appraisal"
-    ]
-  }
+    ],
+    "resolution": "All core design contradictions are resolved by existing authority. Source/proof gaps remain explicit for stage 3.",
+    "delegated_resolution": "CONDUCTOR:1794809023340457492"
+  },
+  "edge_claims": [
+    {
+      "id": "E1",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794377002766121379",
+        "CONDUCTOR:1794805294378261874"
+      ],
+      "status": "does",
+      "text": "Scattered fortunes organise repeated expeditions through apparent emptiness.",
+      "about": [
+        "terrain",
+        "roster",
+        "rock_island",
+        "cave_table",
+        "giant_residents"
+      ],
+      "failure_mode": "F1",
+      "argument": "design/concepts/Stillsand/stage2_edges.md",
+      "acceptance_state": "drafting_obligations_unrun",
+      "section": "E1"
+    },
+    {
+      "id": "E2",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794377002766121379"
+      ],
+      "status": "does",
+      "text": "Dependable rest follows exploration and securing a prepared harbour.",
+      "about": [
+        "rock_island",
+        "cave_table",
+        "cave_preservation",
+        "swim_consumers"
+      ],
+      "failure_mode": "F2",
+      "argument": "design/concepts/Stillsand/stage2_edges.md",
+      "acceptance_state": "drafting_obligations_unrun",
+      "section": "E2"
+    },
+    {
+      "id": "E3",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794377002766121379",
+        "CONDUCTOR:1794805294378261874"
+      ],
+      "status": "does",
+      "text": "Successful cave fortunes supply or fund the next expedition or outpost through practical use.",
+      "about": [
+        "cave_table",
+        "glass_materials",
+        "sifting",
+        "sun_tables",
+        "solar_ovens",
+        "solar_still",
+        "brine"
+      ],
+      "failure_mode": "F1/F2",
+      "argument": "design/concepts/Stillsand/stage2_edges.md",
+      "acceptance_state": "drafting_obligations_unrun",
+      "section": "E3"
+    },
+    {
+      "id": "E4",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1792410399049610407"
+      ],
+      "status": "does",
+      "text": "Exposure obeys shared geometry-only Direct Sun, ordinary air heat and roof/parasol protection.",
+      "about": [
+        "legacy_sun",
+        "unified_direct_sun",
+        "glare_gear",
+        "giant_residents",
+        "sun_tables"
+      ],
+      "failure_mode": "F3",
+      "argument": "design/concepts/Stillsand/stage2_edges.md",
+      "acceptance_state": "drafting_obligations_unrun",
+      "section": "E4"
+    },
+    {
+      "id": "E5",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/stage2_edges.md",
+        "CLAUDE.md"
+      ],
+      "status": "does",
+      "text": "Built signs and giant encounters remain readable through their stated uncertainty and loss consequences.",
+      "about": [
+        "listening",
+        "tracks",
+        "geophone",
+        "horizon",
+        "swim_signs",
+        "leviathan",
+        "mirror_beam"
+      ],
+      "failure_mode": "F2",
+      "argument": "design/concepts/Stillsand/stage2_edges.md",
+      "acceptance_state": "drafting_obligations_unrun",
+      "section": "E5"
+    },
+    {
+      "id": "E6",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/stage2_edges.md",
+        "OWNER:1792759873235145774"
+      ],
+      "status": "does",
+      "text": "The herald, gale and aftermath retain altered sun/senses/sand and exposed-pawn carry/return consequences.",
+      "about": [
+        "gale",
+        "gale_carry",
+        "gale_aftermath"
+      ],
+      "failure_mode": "F2/F3",
+      "argument": "design/concepts/Stillsand/stage2_edges.md",
+      "acceptance_state": "drafting_obligations_unrun",
+      "section": "E6"
+    },
+    {
+      "id": "E7",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1793794389686592719",
+        "design/concepts/Stillsand/stage2_edges.md"
+      ],
+      "status": "does",
+      "text": "Water production/use remains consistent and ground wetting participates in shared consumable growth, with tier-owned Debt/Return.",
+      "about": [
+        "pour",
+        "wet_line",
+        "thumper",
+        "solar_still",
+        "ledger",
+        "return_ritual"
+      ],
+      "failure_mode": "F3",
+      "argument": "design/concepts/Stillsand/stage2_edges.md",
+      "acceptance_state": "drafting_obligations_unrun",
+      "section": "E7"
+    },
+    {
+      "id": "E8",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/stage2_edges.md",
+        "OWNER:1793738532289727072",
+        "OWNER:1793738707492209767",
+        "CLAUDE.md"
+      ],
+      "status": "does",
+      "text": "Ordinary work, settings and persistent consequences remain usable through routine growth, interruption and reload.",
+      "about": [
+        "settings",
+        "sifting",
+        "sun_tables",
+        "corpse_history",
+        "giant_preservation",
+        "cave_preservation"
+      ],
+      "failure_mode": "F3",
+      "argument": "design/concepts/Stillsand/stage2_edges.md",
+      "acceptance_state": "drafting_obligations_unrun",
+      "section": "E8"
+    }
+  ],
+  "edge_boundaries": [
+    {
+      "id": "B_water_ranking",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/stage2_edges.md",
+        "infrastructure/state/ledger/events/BENCH.jsonl:665"
+      ],
+      "status": "does_not",
+      "text": "Rank prey by hydration/water content or retain the rejected water-appraisal fallback. Independent physical prey-size suitability and existing eligibility criteria remain technical choices. Existing droid immunity and vibration/moisture attraction retain coverage."
+    },
+    {
+      "id": "B_guaranteed_fortune",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794377002766121379",
+        "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_PreciousCaves.xml"
+      ],
+      "status": "does_not",
+      "text": "Guarantee a useful fortune in every cave. The previously taken cave remains part of uncertain discoveries."
+    },
+    {
+      "id": "B_unprepared_safety",
+      "speaker": "agent",
+      "source": "OWNER:1794377002766121379",
+      "status": "does_not",
+      "text": "Grant dependable rest solely for reaching an unfamiliar rock island."
+    },
+    {
+      "id": "B_blanket_preservation",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1793738707492209767",
+        "design/concepts/Stillsand/stage2_edges.md"
+      ],
+      "status": "does_not",
+      "text": "Extend ordinary-giant or roofed-cave preservation into general outdoor-item or T3-resource immunity from rot."
+    }
+  ],
+  "dialogue_history": [
+    {
+      "stage": 1,
+      "run": "rm-role-designercodex-1794805106",
+      "source": "design/concepts/Stillsand/log.md",
+      "turns": 1,
+      "root_resolution": "CONDUCTOR:1794805294378261874",
+      "owner_questions_sent": 0,
+      "walk_offered_first": "walk_existing_first",
+      "review": "design/concepts/Stillsand/stage1_review.json",
+      "evidence_search": "Read the exact three-choice OWNER event and original cards, selected experience row and current inventory. Later OWNER shard matches for Stillsand contain operational retirement/reclaim events.",
+      "carry_forward": [
+        "c_sun",
+        "c_gale_oracle",
+        "c_wetting",
+        "c_decay",
+        "c_cast",
+        "c_appraisal"
+      ]
+    }
+  ]
 }

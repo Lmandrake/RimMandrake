@@ -9,10 +9,17 @@
     "ref": "rm-role-designercodex-1794805106 /root/root_review reviewer-estimated weighted usage, stage1_review.json",
     "stage": 1,
     "tokens": 13000
+   },
+   {
+    "at": "2026-11-16T06:04:10Z",
+    "kind": "review",
+    "ref": "rm-role-designercodex-1794808321 /root/edge_review reviewer-estimated weighted usage across authority, artifact and correction reviews; stage2_review.json",
+    "stage": 2,
+    "tokens": 60000
    }
   ],
   "reserve": 60000,
-  "spent": 13000
+  "spent": 73000
  },
  "history": [
   {
@@ -56,6 +63,12 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designercodex-1794805106: stage 1 done"
+  },
+  {
+   "at": "2026-11-16T05:52:09Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794808321, stage 2, budget 500000"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD",
@@ -149,7 +162,27 @@
    }
   }
  ],
- "running": null,
+ "running": {
+  "at": "2026-11-16T05:52:09Z",
+  "inputs": {
+   "exam": null,
+   "floor": null,
+   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "root": "5ffcd8aa1a581b45d26cf2c9f00e61aec0d773462aa3caef53c0f4b93cbaf0aa",
+   "scenes": null,
+   "sheet": null,
+   "tree": null
+  },
+  "manifest": {
+   "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+   "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
+  },
+  "owner_uncited": [],
+  "reserved": 500000,
+  "run": "rm-role-designercodex-1794808321",
+  "runner": "codex",
+  "stage": 2
+ },
  "schema": 1,
  "stage": 2,
  "status": "ready"

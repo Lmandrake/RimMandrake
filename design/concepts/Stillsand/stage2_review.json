@@ -1,0 +1,74 @@
+{
+  "run": "rm-role-designercodex-1794808321",
+  "reviewer": "/root/edge_review",
+  "fresh": true,
+  "verdict": "pass",
+  "owner_ask_verdict": "struck",
+  "owner_ask_reason": "Original proposal, historical card ledger, cast ruling and same-commission history settle water-appraisal scope. Existing owner decisions settle the other core edges. No additional owner question was authored or sent.",
+  "rounds": [
+    {
+      "kind": "authority_review",
+      "verdict": "pass",
+      "reason": "Travel-thirsty explicitly included Muurrok. Subsequent OUT selection and cast exclusion govern. Event and cast specs originated in the same commission, so no later reversal exists. Preserve giant lifecycle and distinct retained eligibility/draw mechanics. Later explicit T3 rulings clarify corpse scope.",
+      "estimated_usage": {
+        "input_tokens": 30000,
+        "output_tokens": 2000,
+        "weighted_tokens": 40000
+      }
+    },
+    {
+      "kind": "artifact_review",
+      "verdict": "struck_phrase",
+      "reason": "The fully-watered body-size proxy phrase could forbid independent physical-size suitability. E1-E8 otherwise pass.",
+      "smallest_fix": "Exclude water appraisal and its rejected fallback while allowing independent physical-size/eligibility targeting. In thirst-mod absence, check declared physical inputs and water-proxy independence without prescribing size ordering.",
+      "estimated_usage": {
+        "input_tokens": 12000,
+        "output_tokens": 1000,
+        "weighted_tokens": 17000
+      }
+    },
+    {
+      "kind": "correction_verification",
+      "verdict": "pass",
+      "reason": "Corrected passages preserve independent physical prey-size criteria, droid immunity, wet-thumper attraction and the complete event lifecycle. Implementation and proof obligations remain explicit.",
+      "estimated_usage": {
+        "input_tokens": 2000,
+        "output_tokens": 200,
+        "weighted_tokens": 3000
+      }
+    }
+  ],
+  "correction_applied": true,
+  "strongest_remaining_failure": "Cave-only preservation passes while an eligible outdoor giant corpse rots or disappears before its species landmark. The ordinary outdoor-giant case is now explicitly inventoried and carried to stage 3. T3 resource immortality would conflict with the newer titan rule.",
+  "inspected": [
+    "design/concepts/Stillsand/record.json",
+    "design/concepts/Stillsand/stage2_edges.md",
+    "design/RimMandrake/designer_codex_2026-11-09/Stillsand/QUESTIONS_OWNER.md",
+    "design/RimMandrake/designer_codex_2026-11-09/Stillsand/ANSWERS_OWNER.md",
+    "design/Jawa/worldbuilding/biomes/stillsand_turn3_development_2026-09-30.md",
+    "design/Jawa/worldbuilding/biomes/stillsand_bedazzle_cast_2026-09-30.md",
+    "infrastructure/state/ledger/events/BENCH.jsonl:663",
+    "infrastructure/state/ledger/events/BENCH.jsonl:665",
+    "infrastructure/state/items/closed/STILLSAND_EVENT_CREATURES_1.md",
+    "infrastructure/state/items/closed/STILLSAND_EVENT_CREATURES_REMAINDER_1.md",
+    "src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs",
+    "src/RimMandrake/Stillsand/Source/Kernel/RM_LeviathanKernel.cs",
+    "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs",
+    "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs",
+    "src/RimMandrake/HugeThings/Source/Titanic/CorpseSite/TitanicCorpseSiteUtility.cs",
+    "OWNER:1793738532289727072",
+    "OWNER:1793738707492209767",
+    "OWNER:1794377002766121379"
+  ],
+  "history_commit": "0763d6e311b3dd61368c46e9dfc0eab1072457d5",
+  "limitations": [
+    "Original September question-card transcript unrecovered. Contemporaneous proposal, historical selection ledger, cast ruling and commissioning history supply the scope evidence.",
+    "Written thought experiments and source review only. Runtime compliance and enjoyment remain unproved."
+  ],
+  "usage": {
+    "basis": "reviewer estimates across authority review, artifact review and correction verification",
+    "input_tokens": 44000,
+    "output_tokens": 3200,
+    "weighted_tokens": 60000
+  }
+}

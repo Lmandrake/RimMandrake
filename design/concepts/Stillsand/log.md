@@ -33,3 +33,20 @@ Candidate wording was “Does this root capture Stillsand's purpose?” Its deci
 ### Disposition
 
 The root synthesis goes through the standing Evidence-for-Ask delegation. The delegated event and exact source are recorded in record.json. The three historical owner answers retain their original provenance. The root is the acting agent's synthesis recorded through delegated authority.
+
+
+## Stage 2, run rm-role-designercodex-1794808321
+
+The existing-code live walk remains offered first. Use a disposable composed-tier Stillsand scene to see the open crossing, giant shade, unfamiliar cave, prepared harbour and ordinary glass/water workshop. Its gale segment needs separate recovery. The proposal remains unrun.
+
+Two written argument rounds are recorded in `stage2_edges.md`. E1-E4 cover expedition emphasis, prepared harbour, practical fortune and shared sun. E5-E8 cover signs/giants, gale, connected water and routine work/settings/persistent consequences. Each carries the rejected cheap implementation, play picture, neighbour, finite variants, boundary, cost assumption and observer obligation. These are agent-derived drafting dispositions from existing authority.
+
+The original travel-thirsty proposal explicitly covered Muurrok. BENCH's historical card record and the cast bible exclude it. The event item and cast bible originated together in commission 0763d6e311, so generic appraisal prose supplies no later owner reversal. Preserve giant event/hunt/beam/take/sign coverage and separate eligibility/droid/moisture-draw mechanics, and carry water-ranked targeting as an implementation discrepancy. No original September card transcript or OWNER tsn was recovered for that selection. Historical paths retain the provenance.
+
+Fresh reviewer /root/edge_review passed the authority reconciliation and struck another owner question as redundant. The artifact review corrected one overbroad phrase so independent physical prey-size suitability remains a technical option. The reviewer then passed the corrected passages and E1-E8. Full verdicts and estimated usage are in `stage2_review.json`.
+
+Review also recovered the ordinary giant no-rot/species-history promise, recorded separately from cave freezing/release. Later OWNER:1793738532289727072 and OWNER:1793738707492209767 govern T3 harvest competition and normal temperature-driven meat spoilage. `giant_preservation` is inventoried as implementation unknown and proof missing. Joint eligibility, conversion ordering, resource preservation, blocked placement and reload checks remain stage-3 obligations.
+
+No owner question was proposed or sent. No waiver, enjoyment verdict, first-touch certification, flagship decision or current runtime proof is inferred. Source/proof gaps remain explicit for stage 3. The delegated reconciliation event is recorded below.
+
+Delegated resolution CONDUCTOR:1794809023340457492 records this scope reconciliation under the standing Evidence-for-Ask ruling. Its text is Conductor authority, with agent reasoning in the event why field. Original owner choices and historical path-only selections retain their own provenance.
