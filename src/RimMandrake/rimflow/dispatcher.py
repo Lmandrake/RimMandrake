@@ -2014,7 +2014,9 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
             stuck = now - st.get("publish_fail_since", now) >= sch.get("publish_stuck_s", 1800)
             # a young lock (ingest.py says "under N s: another git may be running") is traffic the next tick retries,
             # not a jam; one that persists trips publish_stuck_s (PUBLISH_ALARM_HARDEN_FRESH_LOCK_IS_TRAFFIC)
-            jam = "index.lock" in (out or "") and "another git may be running" not in out
+            # a publish that waited out another git's lock and then pushed is a success (RIMMANDRAKE_QUIET_LOCK_ALARM_ON_A_PUSH_THAT_WAITED)
+            pushed = out == "pushed" or (out or "").endswith("; pushed")
+            jam = "index.lock" in (out or "") and "another git may be running" not in out and not pushed
             if out and (jam or stuck):    # a stuck lock silently stops all publishing (review S, F3)
                 key = "publish:index_lock" if jam else "publish:stuck"
                 if now - st["alarms"].get(key, -1e18) >= sch.get("alarm_every_s", 6 * 3600):

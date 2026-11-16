@@ -836,6 +836,11 @@ def test_publish_young_lock_is_traffic():
     st, noted = run([young, young, young], (10.0, 900.0, 1900.0))
     check(len(noted) == 1 and "publish:stuck" in st["alarms"] and "publish:index_lock" not in st["alarms"],
           "a young lock persisting past publish_stuck_s alarms as stuck: %r %r" % (noted, st["alarms"]))
+    # RIMMANDRAKE_QUIET_LOCK_ALARM_ON_A_PUSH_THAT_WAITED: a publish that waited out another git's lock and
+    # pushed is a success, not a jam (incident publish-20261116020910 rang on exactly this result)
+    st, noted = run(["waited 0.3 s for another git's index.lock; pushed"], (10.0,))
+    check(not noted and not any(k.startswith("publish:") for k in st["alarms"]),
+          "a push that waited for a lock raises nothing: %r %r" % (noted, st["alarms"]))
 
 def test_seat_rule():
     base = [{"seat": "BENCH", "event": "file", "id": "SOME_ITEM_DO_IT", "title": "t", "kind": "task", "for": "FOUNDRY",
