@@ -7908,3 +7908,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_STALLED_KHOT","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T18:10:45Z","tsn":1794852645924239072}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_STALLED_KHOT","result":"broken","detail":"Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0","ts":"2026-11-16T18:12:12Z","tsn":1794852732831102247}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_STALLED_KHOT","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T18:12:19Z","tsn":1794852739058854273}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_END: disk.scratch_dirty_end = 3 sanity problems at the end of the last run (MEASURED), line > 0","ts":"2026-11-16T18:13:34Z","tsn":1794852814150017332}
