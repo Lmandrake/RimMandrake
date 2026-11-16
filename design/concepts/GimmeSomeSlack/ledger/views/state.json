@@ -1,10 +1,10 @@
 {
  "_view": {
-  "body_sha256": "2c1c6be6476a1f2da94ddc698ea2d46b2e93f175e406aff52d2e63b9cf1bc013",
+  "body_sha256": "6aef198e584e27e4b4ac7c9fd56a738e97f80ad17a624f8e35b7fcef4e659d91",
   "reducer": 1,
   "shards": {
    "BACKFILL": 393359,
-   "DISPATCH": 666
+   "DISPATCH": 1374
   }
  },
  "state": {
@@ -987,7 +987,7 @@
     "ts": "2026-11-16T07:11:06Z"
    }
   },
-  "events": 515,
+  "events": 517,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -3188,7 +3188,13 @@
   "notes": [],
   "questions": {},
   "reducer": 1,
-  "session": null,
+  "session": {
+   "ceiling": 400000,
+   "context_tokens": 372469,
+   "rotate_due": false,
+   "session_id": "4a28f45b-ffd0-4d0c-a8ac-ee16b8e43565",
+   "ts": "2026-11-16T09:04:17Z"
+  },
   "shards": [
    "BACKFILL",
    "DISPATCH"

@@ -1,4 +1,4 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393359,"DISPATCH":666} body_sha256=1c75671a2f3f512e7c008f970b1e51dcfab6faa4a219db6fa0696fa466d48733 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393359,"DISPATCH":1374} body_sha256=1c75671a2f3f512e7c008f970b1e51dcfab6faa4a219db6fa0696fa466d48733 -->
 # GimmeSomeSlack — closed in Design Version 0.1.0 (38)
 
 - finding:GIMMESOMESLACK_HOSE_BEND_TRACE_1 verified 8ad79de445f4 (2026-11-16T08:21:17Z)

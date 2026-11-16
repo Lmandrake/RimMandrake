@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393359,"DISPATCH":666} body_sha256=3dca39983e4f030cdf6bc8c1dd1f9a835bc2672c2884dffd8fb7c88019d5fdbc -->
-# GimmeSomeSlack — mod ledger history (515 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393359,"DISPATCH":1374} body_sha256=e22e7e910171273c7cdd3616e2f7e2af02fcf920b12f464a50d9bd57c5100c9b -->
+# GimmeSomeSlack — mod ledger history (517 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 39 of 48 bars met at the lock
 - 2026-11-16T07:11:06Z BACKFILL#2 decision version v0.1.0: 
@@ -516,3 +516,5 @@
 - 2026-11-16T08:30:13Z BACKFILL#511 trap.noted trap:a-stamp-made-before-the-fix-carries-no v0.1.0: A stamp made before the fix carries no command and is read as before until its next `maturation.py certificate <Mod> --run`. A no-op command that is itself rerun and stamped still certifies, since the build does not know what a test is meant to run.
 - 2026-11-16T08:30:13Z BACKFILL#512 trap.noted trap:build-id-hashes-files-not-the-test-command v0.1.0: build_id hashes files, not the test command, so a swapped command does not change the build id and a green stamp stays valid.
 - 2026-11-16T08:30:16Z BACKFILL#513 finding.open finding:RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET v0.1.0: Task: run Gimme Some Slack blind cycle 5, the first started from its mod-ledger packet, and produce a verdict with exit_met stated in the cycle SUMMARY.
+- 2026-11-16T09:04:17Z DISPATCH#3 run.end run v0.1.0: 
+- 2026-11-16T09:04:17Z DISPATCH#4 session.id session v0.1.0: 
