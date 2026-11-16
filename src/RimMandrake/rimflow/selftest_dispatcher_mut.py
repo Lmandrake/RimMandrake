@@ -1078,7 +1078,8 @@ class TickRig(object):
         self.saved = {k: getattr(D, k) for k in ("state_root", "execute", "unreserve", "live_runs_alarm")}
         D.state_root = lambda apply: self.root
 
-        def ex(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=None, act_deadline=None, fence=None):
+        def ex(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=None, act_deadline=None, fence=None,
+               timing=None):
             self.exec_args.append(dict(actions=actions, deadline=deadline, persist=persist, apply=apply, root=root, now=now))
             if "execute" in self.kw:
                 self.kw["execute"](actions)

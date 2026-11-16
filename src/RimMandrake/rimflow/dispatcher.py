@@ -131,6 +131,13 @@ BEAT_BUDGET_MIN_S = 1.0       # the helper budget (~0.25 s measured) starts only
 # notes and publish end this much earlier still, so a publish killed at its deadline (11 s, every beat from
 # 2026-11-14 15:14Z) leaves the helper budget its slot: 4 beats in a row were cut there before this reserve
 BEAT_BUDGET_RESERVE_S = 1.5
+# A ledger note is a `rimflow note` child (replay + queue render: 6.0 s and 9.2 s measured 2026-11-16) and the publish a
+# git commit, rebase and push. In a beat a note starts only when its measured cost (st["beat_costs"], a running mean of
+# the beat's own readings; unmeasured counts 0, so the first note runs and is measured) fits before the notes' deadline,
+# and its child is killed at that deadline; after a publish the beat starved (skipped or killed), notes also leave the
+# publish its measured cost, so it runs (RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT: 90 step_cut and 60 of ~170
+# publishes skipped or killed in 24 h, 2026-11-16)
+COST_WEIGHT = 0.3             # the weight of a new reading in the running mean
 STEPS_FILE = "tick_steps.jsonl"   # one line per beat's tick: seconds per step, for measuring which step is slow
 STEPS_MAX_BYTES = 2 * 1024 * 1024
 
@@ -1324,11 +1331,11 @@ def claude_env(seat):
     return env
 
 
-def ledger_note(item, text, run=subprocess.run):
+def ledger_note(item, text, run=subprocess.run, timeout=120):
     cli = os.path.join(HERE, "cli.py")
     env = dict(os.environ, RIMFLOW_SEAT="DISPATCHER", CLAUDE_PROJECT_DIR=REPO)
     r = run([sys.executable, cli, "note", item, "--text", text, "--seat", "DISPATCHER"], cwd=REPO, env=env,
-            capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+            capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
     return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()
 
 
@@ -1545,20 +1552,37 @@ def git_lock(wait_s=90):
             time.sleep(2)
 
 
+def beat_cost(st, what):
+    """The measured seconds of a beat's note or publish (st["beat_costs"]); 0 before any reading."""
+    v = (st.get("beat_costs") or {}).get(what)
+    return float(v) if isinstance(v, (int, float)) and v >= 0 else 0.0
+
+
+def measure_cost(st, what, seconds):
+    c = st.setdefault("beat_costs", {})
+    old = c.get(what)
+    c[what] = round(seconds if not isinstance(old, (int, float)) else old + COST_WEIGHT * (seconds - old), 3)
+
+
 def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=None, act_deadline=None,
-            fence=None):
+            fence=None, timing=None):
     """Carry the actions out (apply) or only journal them (dry). fx overrides the side effects (selftests).
     persist() saves st durably (tick: an atomic state.json write); it runs around every role launch so a tick killed
     after systemd-run cannot forget the run and launch the role again (review round R, A). deadline (epoch, real
     clock): past it no more ledger notes, and publish is killed at it. act_deadline (a metronome beat): past it no
     act is started; the rest are given back as a killed tick's are and journalled `deferred`. fence(what) (the
-    metronome's ownership fence) is asked before every act; False raises Fenced."""
+    metronome's ownership fence) is asked before every act; False raises Fenced. timing (a dict): the notes' and the
+    publish's seconds go into it (tick_steps.jsonl)."""
     fx = fx or {}
+    timing = {} if timing is None else timing
     deadline = deadline if deadline is not None else time.time() + sch.get("tick_budget_s", 420)
     beat = act_deadline is not None
     do_persist = fx.get("persist") or persist or (lambda: None)
     do_ring, do_withdraw = fx.get("ring", ring), fx.get("withdraw", withdraw)
-    do_recover, do_note, do_publish = fx.get("recover", recover), fx.get("note", ledger_note), fx.get(
+    # in a beat the note child is killed at the notes' deadline (a 120 s timeout ran it into the hard end: execute cut)
+    do_recover, do_note, do_publish = fx.get("recover", recover), fx.get("note") or (
+        (lambda item, text: ledger_note(item, text, timeout=max(0.5, deadline - time.time()))) if beat
+        else (lambda item, text: ledger_note(item, text))), fx.get(
         "publish", lambda n: publish_bounded(n, deadline - time.time(), kill_wait=1 if beat else 10))
     # in a beat the ingest.lock wait ends with the time to start acts: busy is not an alarm, the notes wait a beat
     do_lock = fx.get("lock") or ((lambda: git_lock(max(0.0, min(5.0, act_deadline - time.time())))) if beat
@@ -1742,7 +1766,10 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 # the stage machine opens the run now (decide only previewed it): the packet hashes
                                 # and the budget reservation are written before the run exists, so a refusal here is
                                 # a launch that never happened (the except below gives the slot back)
-                                fx.get("stage_open", RL.stage_open)(a["concept"], a["unit"], a["budget"], commit=True)
+                                # without a second fetch: decide's preview fetched origin this tick (2 git fetches,
+                                # ~1.2 s each, in the beat: RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT)
+                                fx.get("stage_open", RL.stage_open)(a["concept"], a["unit"], a["budget"], commit=True,
+                                                                    sync=False)
                                 if role.get("runner") == "codex":
                                     RL.stage_runner(a["concept"], a["unit"], "codex")
                             out_p, err_p = RL.run_paths(root, a["unit"])
@@ -1902,13 +1929,22 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             a["ledger"] = "not noted: token values on a token-blind item and no token_notes_item"
                     elif not ledger_ok:
                         a["ledger"] = "not noted: testq ingest.lock busy (the journal holds it)"
-                    elif time.time() >= deadline:
+                    elif time.time() >= deadline or (beat and deadline - time.time() < beat_cost(st, "note") + (
+                            beat_cost(st, "publish") if st.get("publish_starved") else 0.0)):
                         a["ledger"] = "not noted: tick budget spent (the journal holds it)"
                     else:
+                        t0 = time.time()
                         try:
                             ok, out = do_note(item, text)
                         except Exception as e:  # noqa: BLE001 - a rimflow timeout
                             ok, out = False, "%s: %s" % (type(e).__name__, str(e))
+                        took = time.time() - t0
+                        timing["notes"] = round(timing.get("notes", 0.0) + took, 3)
+                        timing["notes_n"] = timing.get("notes_n", 0) + 1
+                        if ok or not str(out).startswith("TimeoutExpired"):
+                            measure_cost(st, "note", took)
+                        else:           # killed at the deadline: it took at least that long
+                            measure_cost(st, "note", max(took, beat_cost(st, "note")))
                         notes += ok
                         a["ledger"] = "noted" if ok else "note failed: " + out
             if stamped:      # a stamp means somebody was told: an alarm no destination took is retried next tick
@@ -1935,10 +1971,23 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
             journal(root, rec)
             actions.append(rec)
         if apply and ledger_ok and sch.get("publish"):
+            t0 = time.time()
             try:
                 out = do_publish(notes)       # also retries an earlier publish that stopped (ingest.unpublished)
             except Exception as e:  # noqa: BLE001
                 out = "error: %s: %s" % (type(e).__name__, str(e))
+            took = time.time() - t0
+            timing["publish"] = round(took, 3)
+            # starved by the beat (skipped, or killed at its deadline): the next beat's notes leave it its cost
+            starved_pub = (out or "").startswith(("publish skipped: tick budget", "publish KILLED"))
+            if starved_pub:
+                st["publish_starved"] = True
+                if (out or "").startswith("publish KILLED"):
+                    measure_cost(st, "publish", max(took, beat_cost(st, "publish")))
+            else:
+                st.pop("publish_starved", None)
+                if out == "pushed" or (out or "").endswith("; pushed"):
+                    measure_cost(st, "publish", took)
             if out is not None:
                 journal(root, {"at": iso(now), "do": "publish", "result": out})
             # the next tick retries a failed publish by itself; one that stays failed is a stuck clone. Each publish
@@ -2401,7 +2450,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
                 t0 = time.time()
                 with step_limit("execute", hard_end):
                     execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline,
-                            act_deadline=act_deadline, fence=still_owner)
+                            act_deadline=act_deadline, fence=still_owner, timing=steps)
                 timed("execute", t0)
             except StepCut as e:
                 cut(e)

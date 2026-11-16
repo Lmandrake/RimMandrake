@@ -398,11 +398,109 @@ def test_killed_publish_leaves_the_helper_budget_its_slot():
     check(isinstance(out, list) and time.time() < t0 + 5.0, "the slow-publish tick ends inside its beat")
 
 
+# Measured 2026-11-16 (RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT, second pass): no overrun in 24 h, but 90 step_cut rows
+# and 3 tick:beat_starved. One `rimflow note` child costs 6-9 s (replay + queue render) and was started with 1 s left and a
+# 120 s timeout, so it ran into the hard end (execute cut) or ate the publish (killed or skipped in 60 of ~170 beats).
+def _note_exec(name, st, deadline_s, note):
+    sch, root = sched(), os.path.join(TMP, name)
+    os.makedirs(root, exist_ok=True)
+    pub = []
+    fx = {"lock": Lock, "note": note, "publish": lambda n: pub.append(n) or "pushed"}
+    acts = [dict(alarms(1)[0], kind="k0")]
+    D.execute(acts, sch, st, root, True, 100.0, fx, act_deadline=time.time() + deadline_s,
+              deadline=time.time() + deadline_s)
+    return acts, pub
+
+
+def test_note_that_cannot_fit_is_not_started():
+    called = []
+    st = {"seats": {}, "alarms": {}, "beat_costs": {"note": 5.0, "publish": 1.0}}
+    acts, pub = _note_exec("note_nofit", st, 2.0, lambda i, t: called.append(i) or (True, "ok"))
+    check(not called, "a note measured at 5 s is not started with 2 s left before the notes' end: %s" % called)
+    check(str(acts[0].get("ledger", "")).startswith("not noted:"), "it says not noted: %s" % acts[0].get("ledger"))
+    check("k0" not in st["alarms"], "the alarm nobody was told is unstamped, so the next beat says it again")
+    st = {"seats": {}, "alarms": {}, "beat_costs": {"note": 0.1, "publish": 0.1}}
+    acts, pub = _note_exec("note_fits", st, 2.0, lambda i, t: called.append(i) or (True, "ok"))
+    check(called and acts[0].get("ledger") == "noted", "a note that fits is started and noted: %s" % acts[0].get("ledger"))
+
+
+def test_note_child_is_bounded_by_the_deadline():
+    seen, saved = [], D.ledger_note
+    D.ledger_note = lambda item, text, timeout=120, **k: seen.append(timeout) or (True, "ok")
+    try:
+        st = {"seats": {}, "alarms": {}, "beat_costs": {"note": 0.1, "publish": 0.1}}
+        t0 = time.time()
+        _note_exec("note_bound", st, 3.0, None)
+    finally:
+        D.ledger_note = saved
+    check(seen and seen[0] <= 3.0 + (time.time() - t0) and seen[0] > 0,
+          "in a beat the note child's timeout ends at the notes' deadline, never 120 s: %s" % seen)
+
+
+def test_note_and_publish_costs_are_measured():
+    st = {"seats": {}, "alarms": {}}
+    _note_exec("note_measure", st, 10.0, slow_note)
+    c = st.get("beat_costs") or {}
+    check(isinstance(c.get("note"), float) and 0.2 < c["note"] < 1.0, "a 0.25 s note is measured: %s" % c)
+    st["beat_costs"]["note"], st["alarms"] = 5.0, {}
+    _note_exec("note_measure", st, 10.0, slow_note)
+    check(1.0 < st["beat_costs"]["note"] < 5.0, "a fast reading pulls a 5 s mean down, not to itself: %s" % st["beat_costs"])
+    check(isinstance(c.get("publish"), float), "the publish's seconds are measured too: %s" % c)
+
+
+def test_starved_publish_keeps_its_floor():
+    called = []
+    st = {"seats": {}, "alarms": {}, "beat_costs": {"note": 2.0, "publish": 3.0}, "publish_starved": True,
+          "publish_fail_since": 50.0}
+    acts, pub = _note_exec("pub_floor", st, 4.0, lambda i, t: called.append(i) or (True, "ok"))
+    check(not called and pub, "after a publish starved by the beat, a note that would eat its floor waits; the publish "
+          "runs: noted %s published %s" % (called, pub))
+    check("publish_starved" not in st, "a publish that pushed ends the starvation")
+    st = {"seats": {}, "alarms": {}, "beat_costs": {"note": 2.0, "publish": 3.0}}
+    acts, pub = _note_exec("pub_nofloor", st, 4.0, lambda i, t: called.append(i) or (True, "ok"))
+    check(called, "with no starved publish the same note is started")
+    st = {"seats": {}, "alarms": {}}
+    sch, root = sched(), os.path.join(TMP, "pub_starve")
+    os.makedirs(root, exist_ok=True)
+    D.execute([], sch, st, root, True, 100.0, {"lock": Lock, "note": slow_note,
+              "publish": lambda n: "publish KILLED after 3 s (tick budget; the commit stays local, the next tick retries)"},
+              act_deadline=time.time() + 4, deadline=time.time() + 4)
+    check(st.get("publish_starved") is True, "a publish killed by the beat marks it starved: %s" % st.get("publish_starved"))
+    st = {"seats": {}, "alarms": {}}
+    D.execute([], sch, st, root, True, 100.0, {"lock": Lock, "note": slow_note,
+              "publish": lambda n: "error: could not detach HEAD"}, act_deadline=time.time() + 4, deadline=time.time() + 4)
+    check(not st.get("publish_starved"), "a publish failing for another reason is not starved by time (no floor taken)")
+
+
+def test_designer_launch_fetches_once():
+    # decide's preview (stage_open) fetched origin seconds ago; execute's commit must not fetch again (2 git fetches)
+    sch, root = sched(), os.path.join(TMP, "designer_once")
+    os.makedirs(root, exist_ok=True)
+    sch["roles"] = [{"name": "Designer", "enabled": True, "seat": "BENCH", "model": "opus"}]
+    st = {"seats": {}, "alarms": {}, "roles": {"Designer": {"pending_launch": {"unit": "u1"}, "done": {}}}}
+    opened = []
+    fx = {"lock": Lock, "note": lambda i, t: (True, "ok"), "publish": lambda n: "pushed", "off": lambda p: None,
+          "paused": lambda: None, "stage_open": lambda *a, **k: opened.append(k),
+          "role_launch": lambda role, unit, msg, root, exe: (True, "unit u1", {}), "stage_abort": lambda *a: None}
+    a = {"do": "role_launch", "role": "Designer", "unit": "u1", "budget": 1, "slot": "s", "band": "b", "mode": "slot",
+         "concept": "/nonexistent/concept", "message": "m", "why": "w", "ticket": None}
+    saved = D.claude_exe
+    D.claude_exe = lambda: "claude"
+    try:
+        D.execute([a], sch, st, root, True, 100.0, fx, deadline=time.time() + 30)
+    finally:
+        D.claude_exe = saved
+    check(opened and opened[0].get("commit") is True and opened[0].get("sync") is False,
+          "execute's stage_open commits without a second fetch (decide's preview fetched this tick): %s" % opened)
+
+
 def main():
     for t in (test_beat_deadline_defers, test_deferred_launch_is_given_back, test_deferred_ring_is_given_back, test_fence_stops_the_tick,
               test_tick_fenced_and_beat_end, test_apply_without_generation_refuses_when_owned, test_step_limit, test_cut_publish_child_dies,
               test_slow_observe_is_cut, test_slow_execute_is_cut, test_slow_helper_budget_is_cut,
-              test_killed_publish_leaves_the_helper_budget_its_slot):
+              test_killed_publish_leaves_the_helper_budget_its_slot, test_note_that_cannot_fit_is_not_started,
+              test_note_child_is_bounded_by_the_deadline, test_note_and_publish_costs_are_measured,
+              test_starved_publish_keeps_its_floor, test_designer_launch_fetches_once):
         try:
             t()
         except Exception as e:  # noqa: BLE001
