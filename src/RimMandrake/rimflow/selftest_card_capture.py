@@ -213,6 +213,11 @@ def main():
         check(rc == 0 and "card" not in evf and "no answered card" in err,
               "unmatched: a text matching no card still records, and says so on stderr")
 
+        rc, out, err = run(tmp, "note", C, "--text", "late relay", "--by-card",
+                           "Delete the four old placeholder files? → Delete them")
+        check(rc == 0 and not os.path.exists(os.path.join(tmp, "items", C + ".md")) and (last_for(tmp, C) or {}).get("card"),
+              "closed: a card note on a closed item lands on the ledger but makes no live prose (%d %s)" % (rc, err.strip()[-120:]))
+
         import card_capture as CC
         neg = {"questions": [{"picked": [{"label": "x", "description": "Offline stages need no game; it needs nothing new "
                                           "registered. Costs: needs a person there once."}]}]}

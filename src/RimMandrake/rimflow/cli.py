@@ -351,7 +351,9 @@ def _write_one(ev):
         model.append(ev)
     except model.LedgerError as e:
         die(str(e))                     # verbatim, non-zero — see the module docstring
-    if isinstance(ev.get("card"), dict) and ev.get("event") in ("file", "note") and ev.get("id"):
+    if isinstance(ev.get("card"), dict) and ev.get("event") in ("file", "note") and ev.get("id") \
+            and getattr(model.replay(model.read()).items.get(ev["id"]), "state", None) not in model.TERMINAL:
+        # (a closed item gets no live prose: items/*.md is the live set)
         # the card's whole text into the item's prose (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART)
         import card_capture
         wrote = card_capture.append_prose(model.ITEMS, ev["id"], ev["card"], ev["event"], ev.get("seat", "?"))
