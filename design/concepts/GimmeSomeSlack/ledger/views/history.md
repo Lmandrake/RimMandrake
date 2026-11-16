@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393548,"DISPATCH":7163,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=aa9f6d4ecf38dcf4f169a7c8912dce1238b658f5bf75cdda7bff3f1edead1630 -->
-# GimmeSomeSlack — mod ledger history (540 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393548,"DISPATCH":7516,"HOLDER.run-1794828190":994,"JUDGE.judge-1794822790":13753,"JUDGE.judge-1794822890":2037} body_sha256=fbb800d4335e79cb245e88fa4a986cbaf966b6506cc6dee4e21ffb4270a5df0d -->
+# GimmeSomeSlack — mod ledger history (541 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 39 of 48 bars met at the lock
 - 2026-11-16T07:11:06Z BACKFILL#2 decision version v0.1.0: 
@@ -541,3 +541,4 @@
 - 2026-11-16T11:45:53Z BACKFILL#498 trap.noted trap:they-are-carried-by-rimmandrake-part-gss-twin v0.1.0: They are carried by RIMMANDRAKE_PART_GSS_TWIN_LEADS_EACH_DRAWN_ALONE and need a cross-piece pass.
 - 2026-11-16T12:15:32Z DISPATCH#18 lease.grant lease v0.1.0: 
 - 2026-11-16T12:15:34Z DISPATCH#19 run.start run v0.1.0: 
+- 2026-11-16T12:16:24Z DISPATCH#20 run.end run v0.1.0: 
