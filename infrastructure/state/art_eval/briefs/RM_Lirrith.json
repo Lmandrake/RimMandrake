@@ -1,22 +1,35 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Lirrith",
  "nearest_earth_animal": "jackal",
  "earth_body_named": false,
  "departures": [
-  "dark skin drawn tight over visible ribs, with no fur",
-  "a long hooked tail carried curled up over its back",
-  "a fluted crest of pale green ridges running up the snout",
-  "four glowing yellow eyes below the crest"
+  {
+   "feature": "four glowing yellow eyes",
+   "quote": "four eyes glow yellow"
+  },
+  {
+   "feature": "fluted crest of pale green ridges running up the snout",
+   "quote": "A fluted crest of pale green ridges runs up its snout"
+  },
+  {
+   "feature": "long hooked tail carried curled over the back",
+   "quote": "a long hooked tail carried curled over its back"
+  },
+  {
+   "feature": "dark skin drawn tight over visible ribs",
+   "quote": "dark skin drawn tight over its ribs"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T13:53:29-08:00",
  "source": "description only (no image)"
 }

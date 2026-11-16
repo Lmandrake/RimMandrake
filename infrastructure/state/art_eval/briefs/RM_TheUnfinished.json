@@ -1,22 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_TheUnfinished",
  "nearest_earth_animal": "dog",
  "earth_body_named": false,
  "departures": [
-  "an asymmetric chimera body: three good legs and one stump",
-  "a useless half-formed wing growing from one side",
-  "a jaw on a body that cannot eat, parts that do not match",
-  "raw red flesh from the Contagion's goo showing where it is unfinished"
+  {
+   "feature": "three whole legs and a fourth that is only a stump",
+   "quote": "three good legs and a stump"
+  },
+  {
+   "feature": "a useless wing sprouting from the body",
+   "quote": "a wing that never had anywhere to go"
+  },
+  {
+   "feature": "body only partly formed, the rest left unfinished",
+   "quote": "one part finished and the rest abandoned mid-thought"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T15:51:58-08:00",
  "source": "description only (no image)"
 }

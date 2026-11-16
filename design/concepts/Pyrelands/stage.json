@@ -592,10 +592,24 @@
     "ref": "run rm-role-designer-1794789873",
     "stage": 4,
     "tokens": 77941
+   },
+   {
+    "at": "2026-11-16T00:54:21Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794790345",
+    "stage": 5,
+    "tokens": 241440
+   },
+   {
+    "at": "2026-11-16T00:57:59Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794790336",
+    "stage": 5,
+    "tokens": 427530
    }
   ],
   "reserve": 60000,
-  "spent": 16255777
+  "spent": 16924747
  },
  "coverage_releases": [
   {
@@ -791,6 +805,18 @@
    "tokens": 451948,
    "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-16T00:52:25Z",
+   "error": null,
+   "gaps": 0,
+   "ids": [],
+   "judge": "rm-coverage-judge-1794790345",
+   "late": [],
+   "tags": {},
+   "tokens": 241440,
+   "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5",
+   "verdict": "covered"
   }
  ],
  "history": [
@@ -1423,6 +1449,24 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1794789873: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T00:52:24Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "16255777 of 4000000 spent; run rm-role-designer-1794790336 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T00:52:25Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794790336, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T00:57:59Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794790336: stage 5 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1862,12 +1906,37 @@
    "run": "rm-role-designer-1794789873",
    "stage": 4,
    "summary": "Cold Reader exam retaken on the tree and sheet as edited by the furnace-beast body-9 build (6120bb02aa, his card OWNER:1794786804170379047): 23 frozen scenarios (Examiner abd12815cb1880bd4 e1-e17, three new on the twice-the-Zeer bar; Challenger ac15eed2b5fd7af54 c1-c6, all rejects; 17 rejects), Readers a327667c750d88e96 and a677c54087433ad4d match all 23, 23/23, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with three_skies removed (a7ccf3500aca03beb) accepted e2, e3, which both Readers reject, so the set discriminates. exam.json carries it."
+  },
+  {
+   "at": "2026-11-16T00:57:59Z",
+   "inputs": {
+    "exam": "16914afbf8aa005e5484f69b53b63ea11ceca3a93a1454759f90ddda4e56cf2b",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "094f6b143492b2d130b01b3a4ca7ced20d06e5384fd4559173a5d7fa35b2133f",
+    "sheet": "c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab",
+    "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834",
+    "1794611171307640419",
+    "1794774895716093173"
+   ],
+   "run": "rm-role-designer-1794790336",
+   "stage": 5,
+   "summary": "Locked. Coverage judge rm-coverage-judge-1794790345 (delta round on the furnace body-9 fix) returned covered with 0 gaps and signed tree 2c1e467c / sheet c356b3cd; signature, verdict and ledger shard committed (4a44d06017). concept_tree.py gate PASS; designer_stage.py showcases accepts burn_line 6 new, fire_cast 3, sky_and_shelter 3, fire_solace 3 at overlap 0.25. All 29 scenes name an entry point; the five chains not yet in validation.py (roof_withers, herd_thirst, fire_sense, furnace_hide_bank, foreign_arrivals) are owed by live build items RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED and RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN. Mod item filed --kind mod: RIMMANDRAKE_FINISH_PYRELANDS_AGAINST_TREE_FURNACE_GREW_TO_NINE, ## verify citing design/concepts/Pyrelands/tree.json at hash 2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5. sc_furnace_giant live read stays UNRUN with its command."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "locked",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }

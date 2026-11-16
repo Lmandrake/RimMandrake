@@ -1,22 +1,39 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Chellow",
- "nearest_earth_animal": "pigeon",
+ "nearest_earth_animal": "quail",
  "earth_body_named": false,
  "departures": [
-  "a bare wrinkled head with no feathers at all",
-  "no beak: a lipless flap of skin in place of a mouth",
-  "a translucent veined throat-fan hanging below, faintly lit from behind",
-  "a squat round body"
+  {
+   "feature": "head entirely featherless, covered in bare wrinkled skin",
+   "quote": "no feathers on its head at all"
+  },
+  {
+   "feature": "bare wrinkled skin on the head",
+   "quote": "bare wrinkled skin"
+  },
+  {
+   "feature": "no beak",
+   "quote": "no beak"
+  },
+  {
+   "feature": "a lipless flap of skin where the mouth would be",
+   "quote": "in place of a mouth a lipless flap of skin"
+  },
+  {
+   "feature": "a translucent throat-fan hanging below the head, veined and faintly backlit",
+   "quote": "a translucent throat-fan it inflates to carry the call, veined and lit faintly from behind"
+  }
  ],
- "body_plan": "flyer",
+ "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T17:51:41-08:00",
  "source": "description only (no image)"
 }

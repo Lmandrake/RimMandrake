@@ -1,22 +1,31 @@
 {
- "schema": "rm-art-eval/departures@v1",
+ "schema": "rm-art-eval/departures@v2",
  "subject": "RM_Krissek",
- "nearest_earth_animal": "hyena",
+ "nearest_earth_animal": "weasel",
  "earth_body_named": false,
  "departures": [
-  "a low, long body that is all haunches and jaw",
-  "grey hide that reads like grey ice when still",
-  "a coat of blue arc-fire standing off its whole body",
-  "an oversized jaw dominating the head"
+  {
+   "feature": "blue fire standing off the whole body like a coat (when running or fighting)",
+   "quote": "blue fire stands off its whole body like a coat"
+  },
+  {
+   "feature": "body proportions dominated by massive haunches and jaw",
+   "quote": "all haunch and jaw"
+  },
+  {
+   "feature": "welding-arc colour while running",
+   "quote": "running in a colour you only see at the edge of a welding arc"
+  }
  ],
  "body_plan": "walker",
+ "dropped": [],
  "by": [
   "claude-opus-5-5"
  ],
  "prompt_version": {
-  "tag": "departures_brief@v2",
-  "sha": "9cda888a5233"
+  "tag": "departures_brief@v3",
+  "sha": "4e4c26e4f103"
  },
- "at": "2026-10-26T08:20:00-07:00",
+ "at": "2026-11-05T15:51:46-08:00",
  "source": "description only (no image)"
 }

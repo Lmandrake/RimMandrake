@@ -1,25 +1,38 @@
 {
-  "run": "rm-role-designercodex-1794837471",
-  "stage": 2,
-  "outcome": "blocked",
-  "on": "RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS",
-  "summary": "The root-validation owner ask was struck by fresh independent review: both existing north-star bars are NEW, with no earlier validated baseline, so the authorized Conductor/Arbiter route under delegation_policy section 2.1 applies. Filed the concrete validation act and recorded the routing decision as CONDUCTOR:1794837810453463606. The Designer has not bound the bars: the walk remains DRAFT with an empty validated hash and the frozen tree remains unchanged. Stage 2 waits on that act, without sending an owner question. All ten coverage gaps, including every would_pass and smallest_fix, are preserved unchanged for stage 3. After actual validation, stage 3 must restamp the root, fix all ten gaps, and repeat exam and coverage review. No first-touch, coverage acceptance or builder admission is supplied.",
+  "run": "rm-role-designercodex-1794837152",
+  "stage": 5,
+  "outcome": "return",
+  "to": 2,
+  "decision": "root validation. designer_lock.md step 1 requires stage 2 because the validation-walk north star remains DRAFT with an empty validated hash and the frozen tree has root_state DRAFT and root_hash null. The delegated concept-root approval supplies the approved root wording. North-star validation requires the owner authority specified by the Lock packet. After root validation, stage 3 must stamp the new root hash and address all ten coverage gaps, then repeat the exam and coverage review for the changed artifacts.",
+  "summary": "Lock gate refused for an unvalidated root and missing coverage signature. The existing coverage judge returned ten sound-criterion gaps, each assigned to stage 3. Returned to stage 2 for the earlier root-validation requirement and preserved the complete stage-3 rework list. Showcase validation accepts the current set, while judge gap g1 still requires the greedy coverage audit. All 68 checklist rows were reviewed and none is unchecked.",
   "sources": [
-    "CONDUCTOR:1794837810453463606",
-    "ITEM:RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS",
-    "design/concepts/FeverWood/root_validation_review.json",
-    "src/RimMandrake/rimflow/roles/designer_lock.md:5",
-    "design/RimMandrake/delegation_policy.md:55",
-    "src/RimMandrake/Utils/modcheck/cli.py:564",
-    "design/validation_walks/RimMandrake/FeverWood.md:75"
+    "src/RimMandrake/rimflow/roles/designer_lock.md",
+    "design/validation_walks/RimMandrake/FeverWood.md:75",
+    "design/concepts/FeverWood/tree.json",
+    "design/concepts/FeverWood/coverage_verdict.json"
   ],
   "checks": {
-    "northstar_parse": "DRAFT; empty recorded hash; exactly two must-show IDs; zero cannot-show IDs",
-    "validated_baseline": "None: no earlier validated section",
-    "modcheck_validate_without_authority": "DRAFT and Nothing written; no validation performed",
-    "askcheck": "clear",
-    "review_usage": "30000 weighted tokens charged; conservative estimate, exact metering unavailable",
-    "recovery": "stage.json recovery list empty; no live scene performed"
+    "gate": {
+      "command": "python3 src/RimMandrake/rimflow/concept_tree.py gate design/concepts/FeverWood",
+      "exit_code": 1,
+      "errors": [
+        "root is not VALIDATED: state: is DRAFT, not VALIDATED",
+        "no coverage signature"
+      ]
+    },
+    "showcases": {
+      "command": "python3 src/RimMandrake/rimflow/designer_stage.py showcases design/concepts/FeverWood",
+      "exit_code": 0,
+      "result": "showcase set accepted",
+      "coverage_gap_g1": "The mechanical acceptance leaves the judge-requested audit of additional efficient scene groups pending."
+    },
+    "recovery_open": [],
+    "frozen_inputs_verified": {
+      "sheet.md": "76035605f9e4f8631d54424a48ddc5761ff32f1bde91b4dab7c35277810ce48f",
+      "scenes.json": "92a9acc19a47073553cc2f082f1cd5b03d038093a0bb9ea7d854363a1d0cd6ff",
+      "floor.json": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+      "exam.json": "c58d8679ee618998ae20d7a883ba7479ab4777a25fa3fa7793aaa98e48148e0e"
+    }
   },
   "coverage": {
     "judge": "rm-coverage-judge-1794833596",
@@ -299,10 +312,10 @@
   "quick_look": {
     "offer": true,
     "settles": [
+      "root_validation",
       "fw_routes",
-      "fw_shore_rescue",
-      "gap_pool_reach"
+      "fw_shore_rescue"
     ],
-    "scene": "Proposed disposable authored FeverWood holding, no ready save claimed: assert biome, branch destinations and registered pools; run ordinary harvest/haul, then real shore seizure with nearby versus distant companion from the same start. Label all current delivery gaps. Missing water-memory/reload behavior cannot be demonstrated; this look does not supply validation authority. Register recovery before any future persistent mutation. Not run on headless BENCH."
+    "scene": "QUICK LOOK OFFERED for stage 2. Use the previously proposed disposable authored FeverWood colony with asserted branch routes, marsh, living trunk and registered pools. Observe ordinary harvest and haul between crown destinations, then a real shore strike with a nearby companion and the same start with a distant helper. The owner can assess the proposed branch-home and remembering-water bars from this walk. Scene preparation and recovery registration belong to the authorized live seat. No ready save is claimed."
   }
 }

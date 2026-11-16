@@ -2,17 +2,15 @@
 
 ## spec
 
-Implement exact full recovery/tier/log common wrapper first with the other instruments; all assigned compatibility/technology sc_* and five floor_* scenes use it. Implement every current settings field/effect and later new-field census rather than copying incomplete DEFAULTS. Add actual ruins/techprint/research/build/power/water, eligible scavenger peace-war-peace on campaign and expected base absence. Alias old-save identities, scanner four target groups, proximity/timer hatch and cut/tombstone/text controls each retain their own scene. Floor coverage includes production performance/work counters, artifact/profile memory rather than GC delta, saved-state growth under compressed cycles, real old-save addition and reload, named supported list effect checks, art/state/click/order/motion, dead-log/tap-loss controls and same-def bystander recovery. Document removal consequences; execute removal/external compatibility only when asked.
+Implement the universal floor and optional integrations, exact settings/source/UI/effect census and shared recovery/log/list wrapper. Settings and current-schema reload support the walk; there is no standalone settings promise. Add simultaneous all switches off, same-map load and 6000 observed ticks with zero attributable errors and current claims/banks/hoards intact, then re-enable with effects once; individual toggles alone cannot accept it. Replace sc_save_aliases with sc_removed_save_preservation: no Scrub-owned alias rows, old-debug import/conversion, legacy fuel-credit import or save-only tombstone support; retain real current product/egg defs. Ordinary add-to-unmodded-save defaults/current-schema reload and removal documentation remain universal floor work. Technology/camps and pyre are next-version built characterization, not required current acceptance. Scanner four target families, proximity/timer hatch, cuts/text/art/click/order/motion, actual production performance/counters and compressed lifecycle retention keep independent controls.
 
-Design source: design/concepts/LeaningScrub/plan.md and build_items_03.md; exact per-scene contracts in scenes.json. Stage3 author rm-role-designercodex-1794799806, BENCH. This is a child proof-contract package; it does not replace or close the broader Designer intake item.
+Authority: OWNER:1794835478275153823. Design revision rm-role-designercodex-1794840775, BENCH. Complete scene contracts: design/concepts/LeaningScrub/scenes.json; rationale/tuning: plan.md. This is filed child work, not a mod handoff or a claim of completion.
 
-Owned entries:
-- sc_ruins: src/RimMandrake/LeaningScrub/validation.py::scene_ruins
-- sc_vaporator: src/RimMandrake/LeaningScrub/validation.py::scene_vaporator
-- sc_camps: src/RimMandrake/LeaningScrub/validation.py::scene_camps
+Current owned entries:
+
 - sc_settings: src/RimMandrake/LeaningScrub/validation.py::scene_settings
 - sc_cuts: src/RimMandrake/LeaningScrub/validation.py::scene_cuts
-- sc_save_aliases: src/RimMandrake/LeaningScrub/validation.py::scene_save_aliases
+- sc_removed_save_preservation: src/RimMandrake/LeaningScrub/validation.py::scene_removed_save_preservation
 - sc_acoustic_payload: src/RimMandrake/LeaningScrub/validation.py::scene_acoustic_payload
 - sc_proximity_hatch: src/RimMandrake/LeaningScrub/validation.py::scene_proximity_hatch
 - floor_runtime: src/RimMandrake/LeaningScrub/validation.py::scene_floor_runtime
@@ -21,18 +19,12 @@ Owned entries:
 - floor_visual: src/RimMandrake/LeaningScrub/validation.py::scene_floor_visual
 - floor_recovery: src/RimMandrake/LeaningScrub/validation.py::scene_floor_recovery
 
+Deferred built characterization only (no current acceptance): sc_ruins, sc_vaporator, sc_camps. Original next-version recipes are preserved separately.
+
 ## criteria
 
-Implement every named owned scene as a real script entry, reusing validation_core/rimdrive and production kernels. Before any mutation, capture exact original save/settings/world and call scene-begin. Assert scene-specific starting state, execute normal engine scheduling/jobs wherever promised, emit a separate result for each finite variant, run its discriminating negative control, then verify full restoration/scene-end or explicit owner_review scene-hold. A helper's direct effect never accepts a natural trigger. Same-def bystander IDs must survive. Missing preconditions/log observability/tool/list/owner for flight yield UNMEASURED, never PASS. Implement injected failures for starts/control/restoration and an exception during staging; demonstrate offline that they refuse false passes and leave recovery open. No actual bridge/restart/deploy is authorized by filing.
-
-Each item requires an offline fake-driver/contract test of start refusal, specific control failure, exact settings restoration and interrupted journal handling. It also requires later targeted actual engine evidence for its live leaves, on the declared supported list, plus owner-attended portions where required. Implementing an entry is not closing its live proof obligation. Every outstanding Stage 0 chain/auxiliary audit is mapped in `audit_disposition_03.json`; legacy helpers are never certified merely by being wrapped.
-
-
-- Every owned entry exists with its asserted start, action, expected positive, distinct negative control, full recovery and correct hold.
-- Offline tests deliberately break start, control, accounting or restoration and refuse false PASS.
-- No live acceptance is claimed from fake-driver tests, source presence, direct helper calls or unavailable preconditions. Live evidence is later required at each declared tier.
-- Product/dependency gaps remain named, including existing authorized migration; do not mark completed merely because a proof wrapper was added.
+Each required entry must implement the asserted start, ordinary production path, finite variant results, discriminating control, restoration and hold from scenes.json. Record recovery before preflight mutation, verify exact restoration and close the journal or hold a named review save. Interrupted/unrestored work stays open. Deliberately broken start/control/accounting/restoration fixtures must refuse false PASS. Missing list/tool/preconditions/log observability or owner for actual flight yields UNMEASURED. Production code ownership and broader product gaps remain named; wrapping a helper does not certify play. No code/art/bridge/restart/deploy action is authorized by this filing.
 
 ## verify
 
-Run targeted offline contract/selftests first. Later authorized bridge driver runs the named scene entries with source/assembly/list identities and exact recovery journal; owner present for every actual-flight arm. Read scenes.json for PROVE/EXPECT/LIES and finite variants. No bridge/restart/deploy action is authorized by this filing.
+Run targeted offline production/contract checks and corrupt fixtures before later authorized engine scenes. Validate each scene and both control outcomes, including exact recovery on exception. Retain independent component acceptances, five interactions and the complete colony walk. Source/list/assembly identities and actual evidence are required at each proposed tier. No live run occurred while writing this spec.

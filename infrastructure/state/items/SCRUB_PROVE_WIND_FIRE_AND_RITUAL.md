@@ -2,11 +2,12 @@
 
 ## spec
 
-Implement witness_observer first and all assigned wind/fire sc_* plus ix_fire_accountability. Reuse windlean/lean/gale/stamp/pyre chains and production kernels, without promoting direct helper calls to natural play. Add real sound transitions, driven overlays, useful turbine/load/breakdown/repair, deterministic weight/direction controls, scent attribution, actual distant herd approach and physical maker perception/trail/loss of contact/reload. Complete actual ritual UI/participants/outcome, all belief gates/history and thin-fire cluster controls. Positive franchise-free herd/stamping depends on existing authorized thunderstep rehome and shared evidence service; no-kind diagnostic is not acceptance. No lore/canon migration is newly authorized.
+Historical item id retained; current work is wind/fire and shared evidence, with calling-pyre deferred. Implement witness_observer, independent two-tile sun geometry (0.1-degree tolerance, correct E/W plant snap), actual configured wind values/effective tables with non-Scrub controls, wind-fog day/night audio and isolated production missing-art material-load fixtures. Keep useful turbine/load/breakdown/repair, exposure, scent, raid weighting and actual spread. Positive franchise-free thundersteps require the already-authorized species rehome/dependency untangle and base binding, without aliases or save migration. Add real TakingEvent through PropertyEngine.Fire/shared-store/property-reader with identity/age/type separation and humanlike-only reporting; animal-capable fire perception remains separate. ix_fire_accountability uses an actual lighter/spread/stamping/maker pursuit without pyre. Existing pyre code receives characterization only; its acceptance/build work belongs to the next Design Version.
 
-Design source: design/concepts/LeaningScrub/plan.md and build_items_03.md; exact per-scene contracts in scenes.json. Stage3 author rm-role-designercodex-1794799806, BENCH. This is a child proof-contract package; it does not replace or close the broader Designer intake item.
+Authority: OWNER:1794835478275153823. Design revision rm-role-designercodex-1794840775, BENCH. Complete scene contracts: design/concepts/LeaningScrub/scenes.json; rationale/tuning: plan.md. This is filed child work, not a mod handoff or a claim of completion.
 
-Owned entries:
+Current owned entries:
+
 - sc_wind_plain: src/RimMandrake/LeaningScrub/validation.py::scene_wind_plain
 - sc_gale_drawing: src/RimMandrake/LeaningScrub/validation.py::scene_gale_drawing
 - sc_wind_audio: src/RimMandrake/LeaningScrub/validation.py::scene_wind_audio
@@ -17,23 +18,15 @@ Owned entries:
 - sc_fire_bias: src/RimMandrake/LeaningScrub/validation.py::scene_fire_bias
 - sc_stamping: src/RimMandrake/LeaningScrub/validation.py::scene_stamping
 - sc_maker: src/RimMandrake/LeaningScrub/validation.py::scene_maker
-- sc_pyre_beliefs: src/RimMandrake/LeaningScrub/validation.py::scene_pyre_beliefs
-- sc_pyre_ritual: src/RimMandrake/LeaningScrub/validation.py::scene_pyre_ritual
 - sc_witness_observer: src/RimMandrake/LeaningScrub/validation.py::scene_witness_observer
 - ix_fire_accountability: src/RimMandrake/LeaningScrub/validation.py::scene_ix_fire_accountability
 
+Deferred built characterization only (no current acceptance): sc_pyre_beliefs, sc_pyre_ritual. Original next-version recipes are preserved separately.
+
 ## criteria
 
-Implement every named owned scene as a real script entry, reusing validation_core/rimdrive and production kernels. Before any mutation, capture exact original save/settings/world and call scene-begin. Assert scene-specific starting state, execute normal engine scheduling/jobs wherever promised, emit a separate result for each finite variant, run its discriminating negative control, then verify full restoration/scene-end or explicit owner_review scene-hold. A helper's direct effect never accepts a natural trigger. Same-def bystander IDs must survive. Missing preconditions/log observability/tool/list/owner for flight yield UNMEASURED, never PASS. Implement injected failures for starts/control/restoration and an exception during staging; demonstrate offline that they refuse false passes and leave recovery open. No actual bridge/restart/deploy is authorized by filing.
-
-Each item requires an offline fake-driver/contract test of start refusal, specific control failure, exact settings restoration and interrupted journal handling. It also requires later targeted actual engine evidence for its live leaves, on the declared supported list, plus owner-attended portions where required. Implementing an entry is not closing its live proof obligation. Every outstanding Stage 0 chain/auxiliary audit is mapped in `audit_disposition_03.json`; legacy helpers are never certified merely by being wrapped.
-
-
-- Every owned entry exists with its asserted start, action, expected positive, distinct negative control, full recovery and correct hold.
-- Offline tests deliberately break start, control, accounting or restoration and refuse false PASS.
-- No live acceptance is claimed from fake-driver tests, source presence, direct helper calls or unavailable preconditions. Live evidence is later required at each declared tier.
-- Product/dependency gaps remain named, including existing authorized migration; do not mark completed merely because a proof wrapper was added.
+Each required entry must implement the asserted start, ordinary production path, finite variant results, discriminating control, restoration and hold from scenes.json. Record recovery before preflight mutation, verify exact restoration and close the journal or hold a named review save. Interrupted/unrestored work stays open. Deliberately broken start/control/accounting/restoration fixtures must refuse false PASS. Missing list/tool/preconditions/log observability or owner for actual flight yields UNMEASURED. Production code ownership and broader product gaps remain named; wrapping a helper does not certify play. No code/art/bridge/restart/deploy action is authorized by this filing.
 
 ## verify
 
-Run targeted offline contract/selftests first. Later authorized bridge driver runs the named scene entries with source/assembly/list identities and exact recovery journal; owner present for every actual-flight arm. Read scenes.json for PROVE/EXPECT/LIES and finite variants. No bridge/restart/deploy action is authorized by this filing.
+Run targeted offline production/contract checks and corrupt fixtures before later authorized engine scenes. Validate each scene and both control outcomes, including exact recovery on exception. Retain independent component acceptances, five interactions and the complete colony walk. Source/list/assembly identities and actual evidence are required at each proposed tier. No live run occurred while writing this spec.
