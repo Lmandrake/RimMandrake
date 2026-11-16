@@ -9,6 +9,11 @@ version/test_table.json); this proves what can be read without one:
   K  the room's geometry, walked with a port of RM_KnockbackMath.Line/Resolve: the east colonist's 3-cell throw stops at the
      east wall two cells on, the south colonist's stops in the pit's near row, the steel's line reaches p4, no colonist's path
      crosses another colonist, and some floor stack's throw can end exactly on a near-row cell (the covered cell exists)
+  P  the cover-stack search, fed the covered pit layout with the kernel's own throw length (WildCells: baseCells x falloff x
+     MassScale x GoodsThrowWild, constants read from the source) over the scene's own log-count range, finds a stack whose
+     plan ends on the covered cell, and a heavy one crosses no colonist (visit 2: under ~17.5 kg MassScale caps at 2, so
+     the old 1-24 log range threw every stack 3 cells, past the cover: INVALID in four live runs; K5 alone counted cells
+     1..6 freely and passed)
   T  test_table.json marks the entry present
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storeroom_bomb_pit.py [--src DIR]
 --src reads the mod's files from DIR (laid out like this folder) instead: the way it was watched red on the base commit.
@@ -140,6 +145,54 @@ def main():
     check("K5", bool(hits), "a floor cell within two cells throws exactly onto a near-row pit cell (%d ways, e.g. %s)"
           % (len(hits), hits[0] if hits else "none"))
     check("K6", (-3, 0) not in WALLS and (-4, 0) in WALLS, "the locker at (-2,0) has a free cell (-3,0) behind it, then the wall")
+
+    # P: the scene's own search with the kernel's throw length (RM_KnockbackProof_StoreroomBombPit.cs PlanGood / the cover loop)
+    math_src = rd("Source", "RM_KnockbackMath.cs")
+    mod_src = rd("Source", "RM_KnockbackMod.cs")
+    num = lambda src, pat: float(re.search(pat, src).group(1)) if re.search(pat, src) else None
+    base, ref, cap = num(math_src, r"baseCells = ([\d.]+)f;"), num(math_src, r"refMass = ([\d.]+)f;"), num(math_src, r"maxCells = (\d+);")
+    wild, heavy = num(mod_src, r"GoodsThrowWild = ([\d.]+)f;"), num(mod_src, r"heavyGoodsMinMass = ([\d.]+)f;")
+    check("P0", None not in (base, ref, cap, wild, heavy), "kernel constants read: baseCells=%s refMass=%s maxCells=%s wild=%s heavy=%s"
+          % (base, ref, cap, wild, heavy))
+    loop = re.search(r"for \(int n = 1; n <= (\w+) && !coverFrom\.IsValid; n\+\+\)", scene)
+    bound = loop.group(1) if loop else None
+    if bound and not bound.isdigit():
+        m = re.search(r"int %s = Math\.Min\((\w+), DefDatabase<ThingDef>\.GetNamed\(\"WoodLog\"\)\.stackLimit\)" % bound, scene)
+        c = re.search(r"const int %s = (\d+);" % m.group(1), scene) if m else None
+        bound = str(min(int(c.group(1)), 75)) if c else None   # WoodLog stackLimit 75
+    check("P1", bound is not None, "the cover loop's log-count bound read: %s" % bound)
+    if None not in (base, ref, cap, wild, heavy) and bound:
+        def cells(x, z, mass):
+            raw = base * max(0.0, 1 - min(1.0, (x * x + z * z) ** 0.5 / 2.9)) * min(2.0, max(0.25, (ref / max(mass, 1.0)) ** 0.5)) * wild
+            c = int(raw + 0.5)
+            return 0 if c < 1 else min(c, int(cap))
+        pit_from = next(((x, z) for z in range(-2, 1) for x in range(-2, 3) if (x, z) not in used and cells(x, z, 4.0)
+                         and resolve(x, z, cells(x, z, 4.0))[1] == "Pit" and resolve(x, z, cells(x, z, 4.0))[0] != (0, -4)), None)
+        pit_to = resolve(pit_from[0], pit_from[1], cells(pit_from[0], pit_from[1], 4.0))[0] if pit_from else None
+        check("P2", pit_from is not None, "the open-pit stack (10 cloth, 4 kg): %s -> %s" % (pit_from, pit_to))
+        stops = set(cols.values()) | {(0, -4)}
+        found = None
+        for cx in range(-3, 4):
+            cc = (cx, -4)
+            if found or cc in ((0, -4), pit_to):
+                continue
+            for (x, z) in [(x, z) for z in range(-2, 1) for x in range(-2, 3) if (x, z) not in used and (x, z) != pit_from]:
+                for n in range(1, int(bound) + 1):
+                    mass = 0.4 * n   # WoodLog 0.4 kg
+                    c = cells(x, z, mass)
+                    if c and resolve(x, z, c, cover=cc)[0] == cc:
+                        path = line(x, z, x, z, max(abs(cc[0] - x), abs(cc[1] - z)))
+                        if mass < heavy or not stops.intersection(path):
+                            found = ((x, z), n, cc, path)
+                            break
+                if found:
+                    break
+            if found:
+                break
+        check("P3", found is not None, "a floor stack's kernel plan ends on the covered near-row cell, with the cover built: %s"
+              % (("from %s, %d logs, onto %s" % found[:3]) if found else "none in 1..%s logs" % bound))
+        check("P4", found is not None and not stops.intersection(found[3]), "that stack's path crosses no colonist: %s"
+              % (found[3] if found else "none"))
 
     tt = json.load(open(os.path.join(CONCEPT, "version", "test_table.json"), encoding="utf-8"))["tests"].get("sc_storeroom_bomb_pit", {})
     check("T", tt.get("entry") == "storeroom_bomb_pit" and tt.get("entry_exists") is True,

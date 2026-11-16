@@ -49,6 +49,18 @@ namespace RimMandrake.ExplosiveKnockback
             return r.cellsTravelled > 0 ? new IntVec3(r.destX, 0, r.destZ) : IntVec3.Invalid;
         }
 
+        /// <summary>The most logs the covered-cell stack may hold: WoodLog's stackLimit (75 logs = 30 kg, under lightMassLimit).
+        /// The selftest reads this number.</summary>
+        private const int CoverLogsMax = 75;
+
+        /// <summary>Does the straight throw from `from` to `to` (away from s.o) pass a colonist's start cell or pS's landing?</summary>
+        private static bool CrossesColonist(Scene s, IntVec3 from, IntVec3 to)
+        {
+            int n = Math.Max(Math.Abs(to.x - from.x), Math.Abs(to.z - from.z));
+            var stops = RoomColonists.Select(k => s.starts[k]).Concat(new[] { O(s, 0, -4) }).ToList();
+            return RM_KnockbackMath.Line(from.x, from.z, from.x - s.o.x, from.z - s.o.z, n).Any(p => stops.Any(c => c.x == p.x && c.z == p.z));
+        }
+
         private static float DefMass(string def, int n) => DefDatabase<ThingDef>.GetNamed(def).GetStatValueAbstract(StatDefOf.Mass) * n;
 
         private static bool OpenPitCell(IntVec3 c) => RM_KnockbackCompat.IsSuperdeep(Map, c) && RM_KnockbackCompat.CoverAt(Map, c) == null;
@@ -198,6 +210,10 @@ namespace RimMandrake.ExplosiveKnockback
             Thing cover = null;
             // visit 2 (2026-11-15): the cover goes on FIRST. Planned against the open pit, a throw stops on the first pit cell it
             // meets; with the cover built that cell no longer stops it, so a plan made before the cover never matched after it.
+            // visit 2 again: MassScale caps at 2 under ~17.5 kg, so every stack up to 24 logs threw the same 3 cells (past the
+            // cover); only a heavier stack throws short enough to stop on it (from 1,-2: 61-75 logs, 2 cells). Search every
+            // count a stack holds; a heavy one (heavyGoodsMinMass) must not cross a colonist, who would stop it.
+            int maxLogs = Math.Min(CoverLogsMax, DefDatabase<ThingDef>.GetNamed("WoodLog").stackLimit);
             var withCover = new List<string>();
             for (int cx = -6; cx <= 6 && !coverFrom.IsValid; cx++)
             {
@@ -212,9 +228,10 @@ namespace RimMandrake.ExplosiveKnockback
                     IntVec3 wt = PlanGood(s, c, DefMass("WoodLog", 10));
                     withCover.Add("[cover " + cx + ",-4 " + (cover == null ? "none" : cover.Spawned ? cover.Position.x - s.o.x + "," + (cover.Position.z - s.o.z) : "unspawned")
                         + " pit=" + RM_KnockbackCompat.IsSuperdeep(Map, cc) + "] " + (c.x - s.o.x) + "," + (c.z - s.o.z) + "->" + (wt.IsValid ? (wt.x - s.o.x) + "," + (wt.z - s.o.z) : "none"));
-                    for (int n = 1; n <= 24 && !coverFrom.IsValid; n++)   // 24 logs = 9.6 kg, under the 10 kg heavy threshold
+                    for (int n = 1; n <= maxLogs && !coverFrom.IsValid; n++)
                     {
-                        if (PlanGood(s, c, DefMass("WoodLog", n)) == cc)
+                        float mass = DefMass("WoodLog", n);
+                        if (PlanGood(s, c, mass) == cc && (mass < RimMandrakeExplosiveKnockbackSettings.heavyGoodsMinMass || !CrossesColonist(s, c, cc)))
                         {
                             coverFrom = c;
                             coverCell = cc;
