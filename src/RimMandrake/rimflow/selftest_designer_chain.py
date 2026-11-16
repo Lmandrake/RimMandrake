@@ -274,6 +274,17 @@ def test_rejected_sweep():
         two = dict(one, results=one["results"] + [dict(one["results"][0], run="rm-role-designer-2")])
         st, acts, opened = sweep_with(sweep_decide, [(C1, two, old)], SD_ro)
         check(opened == [], "the same rejection twice in a row is parked (the arbiter's, not a third run)")
+        # Contagion 2026-11-16: both stage-5 rejections were the coverage judge's own pre-launch stop (advisory brief,
+        # then its spend stop), and the release (owner's one more look, 16:03Z) came after them; parked for good, the
+        # look was never spent (RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING)
+        later = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - 600))
+        for what in ("coverage_release", "unblock"):
+            rel5 = dict(two, stage=5, results=[dict(r, stage=5) for r in two["results"]],
+                        history=[{"at": later, "what": what, "why": "one more look", "stage": 5}])
+            check(DS.rejection_parked(rel5, repo) is None,
+                  "a %s after two identical rejections: the cause is gone, a retry is due" % what)
+        early = dict(two, history=[{"at": "2026-01-01T00:00:00Z", "what": "coverage_release", "why": "x", "stage": 4}])
+        check(bool(DS.rejection_parked(early, repo)), "a release BEFORE the rejections changes nothing: still parked")
         env = dict(one, results=[dict(one["results"][0], why=["account died [cause:environment]"])])
         st, acts, opened = sweep_with(sweep_decide, [(C1, env, old)], SD_ro)
         check(opened == [], "a rejection labelled [cause:environment] is the cause book's: parked")

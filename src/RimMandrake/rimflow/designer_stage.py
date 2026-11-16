@@ -1564,6 +1564,9 @@ MISSING_PATH_RX = re.compile(r"source path (.+?) does not exist")
 PARK_CLASSES = ("check", "bar", "environment")   # role_launch.CAUSE_ROUTE sends these to the Setter or the cause book
 _PARK_MASK = re.compile(r"rm-role-[a-z]+-\d+|\b\d{6,}\b")
 
+# the history rows that take a stopped or blocked concept's cause away (rejection_parked: a retry is due after one)
+RELEASE_KINDS = ("coverage_release", "unblock")
+
 
 def rejection_parked(st, repo=REPO):
     """Pure but for os.path.exists. -> why a ready concept whose last result is REJECTED is parked (a retry cannot
@@ -1591,6 +1594,13 @@ def rejection_parked(st, repo=REPO):
         # No mtime test (a copy that keeps mtimes would park a fixed concept for good); chain_ask's daily cap bounds it.
         return None
     if len(res) >= 2 and res[-2].get("outcome") == "rejected" and res[-2].get("stage") == res[-1].get("stage"):
+        # a release after the rejection (coverage_judge release, designer_stage unblock) took its cause away: Contagion's
+        # two stage-5 rejections were the judge's own stop, and the owner's one more look (16:03Z) came after them
+        # (RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING)
+        last_at = _epoch(res[-1].get("at"))
+        if last_at is not None and any(isinstance(h, dict) and h.get("what") in RELEASE_KINDS
+                                       and (_epoch(h.get("at")) or 0) > last_at for h in st.get("history") or []):
+            return None
         sig = lambda r: sorted(_PARK_MASK.sub("#", str(w)) for w in r.get("why") or [])  # noqa: E731
         if sig(res[-2]) == sig(res[-1]):
             return "rejected twice in a row for the same reasons: the arbiter's, not a third run"
