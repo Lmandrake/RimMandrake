@@ -635,9 +635,14 @@ static class BlindLane1
             float sum = ms.Sum();
             var g = KbFrameStats.Summarize(ms, paused, air, 1000, sum / 1000f);
             bool self = KbFrameStats.SelfCheck(g, 100f, out string w1), within = KbFrameStats.WithinBudget(g, 50f, out string w2);
-            bool ok = g.worstMs == 100f && g.pausedRows == 1 && g.maxInAir == 69 && self && !within;
+            // the bar is the p99 frame (owner, 9c8c37aced "1 agree."; RIMMANDRAKE_ALIGN_LANE_FRAME_ROW_TO_P99_STILL_WORST): one 100 ms
+            // frame is the worst frame yet within the 50 ms budget; a sustained stall (15 rows at 75 ms) is refused
+            var stall = (float[])ms.Clone(); for (int i = 600; i < 615; i++) stall[i] = 75f;
+            var gs = KbFrameStats.Summarize(stall, paused, air, 1000, stall.Sum() / 1000f);
+            bool stallRefused = !KbFrameStats.WithinBudget(gs, 50f, out string w3);
+            bool ok = g.worstMs == 100f && g.pausedRows == 1 && g.maxInAir == 69 && self && within && stallRefused;
             var gNo = KbFrameStats.Summarize(new float[0], new bool[0], new int[0], 0, 0f); ok &= !KbFrameStats.WithinBudget(gNo, 50f, out _);
-            Row("L1_frame_probe_reading", "frame_time_probe,barrage_frame_budget", "fixed", ok, 3, $"worst {g.worstMs} (paused 500 ms row ignored), slept 100 ms seen {self} ({w1}), 50 ms budget refused {!within} ({w2}); an empty run is not within budget");
+            Row("L1_frame_probe_reading", "frame_time_probe,barrage_frame_budget", "fixed", ok, 4, $"worst {g.worstMs} (paused 500 ms row ignored), slept 100 ms seen {self} ({w1}), one 100 ms frame within the p99 50 ms budget {within} ({w2}), 15 rows at 75 ms refused {stallRefused} ({w3}); an empty run is not within budget");
         }
 
         // ===================== cycle-1 fixes, red first (lane2/faults.json) =====================
