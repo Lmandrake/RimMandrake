@@ -170,7 +170,7 @@ def main(argv=None):
         return 2
     repo = repo.stdout.strip()
     cfg_rel = os.path.relpath(os.path.abspath(a.config), repo)
-    rep = sweep(repo, cfg_rel, a.tests, a.jobs, a.timeout, deep=a.deep)
+    rep = sweep(repo, cfg_rel, a.tests, a.jobs, a.timeout, log=lambda m: print(m, flush=True), deep=a.deep)
     if a.out:
         with open(a.out, "w", encoding="utf-8") as f:
             json.dump(rep, f, indent=2)
