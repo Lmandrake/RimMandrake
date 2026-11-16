@@ -188,7 +188,8 @@ def prior_verdict(d):
 # next judge is shown only those gaps with their evidence and the entries whose hash changed, whole. A gap not claimed
 # stays open, carried. A new gap on material that did not change counts only tagged late with `late_why`. Nothing
 # claimed and nothing changed: no judge runs at all. A prior verdict with no hashes (or one that errored, left rows
-# unchecked or covered) gets a full judge, which leaves hashes for the next.
+# unchecked, advisory or covered) gets a full judge, which leaves hashes for the next. An advisory verdict waits until
+# the brief is calibrated, then receives a full review because its checklist cannot supply a trusted delta baseline.
 FIXES_FILE = "coverage_fixes.json"
 SCHEMA["properties"]["gaps"]["items"]["properties"]["late_why"] = {"type": "string"}
 ROW_KINDS = ("inv", "leaf", "rest")   # entry kinds whose id is a checklist row
@@ -298,6 +299,7 @@ def delta_plan(d, prior, read=None):
     current entries, the checklist rows to redo, and the gaps carried open."""
     if not (isinstance(prior, dict) and prior.get("verdict") == "not_covered" and isinstance(prior.get("hashes"), dict)
             and not prior.get("error") and not prior.get("unchecked")
+            and not prior.get("advisory") and not (prior.get("contract") or {}).get("advisory")
             and all(isinstance(g, dict) and g.get("gid") for g in prior.get("gaps") or [])):
         return None
     now_ents = entries(d, read)
@@ -735,7 +737,7 @@ def stop_exit(rec):
     itself (a malformed refusal never sends the Designer back to rework), or the refusal is advisory (an
     uncalibrated brief, T6)."""
     return isinstance(rec, dict) and bool(rec.get("stopped") or rec.get("parked") or rec.get("malformed")
-                                          or rec.get("advisory"))
+                                          or rec.get("advisory") or (rec.get("contract") or {}).get("advisory"))
 
 
 def record_round(d, rec):
@@ -858,7 +860,11 @@ def plan(d, repo=None):
     stop = stop_reason(st, d)
     if stop:
         return "stopped", stop
-    dp = delta_plan(d, prior_verdict(d))
+    prior = prior_verdict(d)
+    if prior and (prior.get("advisory") or (prior.get("contract") or {}).get("advisory")) \
+            and RC.status(CONTRACT_FAMILY) != "CALIBRATED":
+        return "skip", "advisory verdict %s waits for a calibrated coverage brief" % prior.get("judge")
+    dp = delta_plan(d, prior)
     if dp is not None and not dp["claims"] and not dp["changed"]:
         return "skip", "nothing claimed fixed in %s and nothing changed since %s: no judge%s" % (
             FIXES_FILE, dp["against"], "" if not dp["refused"] else " (%s)" % "; ".join(dp["refused"]))
@@ -884,6 +890,9 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         hold(d, why, now)
         return {"stopped": why}, "stopped: %s" % why
     if what != "judge":
+        prior = prior_verdict(d)
+        if prior and (prior.get("advisory") or (prior.get("contract") or {}).get("advisory")):
+            return prior, "%s: %s" % (what, why)
         return None, "%s: %s" % (what, why)
     tree = CT.load(d)
     before = fresh_key(d, tree)

@@ -205,6 +205,50 @@ def fallbacks(root):
         check("a prior verdict with %s gets a full judge" % sorted(bad), CJ.delta_plan(d, prior) is None)
 
 
+def advisory_transition(root):
+    repo = os.path.join(root, "advisory")
+    d, j = make(repo), Judge()
+    j.script.append(answer("not_covered", [gap(["inv_a"], "ADVISORY GAP")], ALL_ROWS))
+    CJ.run(d, repo, j, now=1794350000)
+    prior = dict(verdict(d), advisory="brief UNTESTED", contract={"advisory": True})
+    write(d, CJ.VERDICT_FILE, prior)
+    calls = len(j.prompts)
+    status = CJ.RC.status
+    try:
+        CJ.RC.status = lambda family: "UNTESTED"
+        what, why = CJ.plan(d, repo)
+        rec, _ = CJ.run(d, repo, j, now=1794350100)
+        check("an unchanged advisory verdict stops the pre-step without another model or round",
+              what == "skip" and CJ.stop_exit(rec) and len(j.prompts) == calls
+              and len(DS.load_state(d)["coverage_rounds"]) == 1, (what, why, rec))
+
+        for verdict_kind in ("not_covered", "covered"):
+            write(d, CJ.VERDICT_FILE, dict(prior, verdict=verdict_kind))
+            check("an uncalibrated prior %s verdict waits without another judge" % verdict_kind,
+                  CJ.plan(d, repo)[0] == "skip")
+
+        contract_only = dict(prior)
+        contract_only.pop("advisory")
+        write(d, CJ.VERDICT_FILE, contract_only)
+        rec, _ = CJ.run(d, repo, j, now=1794350150)
+        check("a contract-only advisory marker stops the skipped pre-step", CJ.stop_exit(rec))
+
+        CJ.RC.status = lambda family: "CALIBRATED"
+        write(d, CJ.VERDICT_FILE, prior)
+        check("new calibration starts a full review of unchanged advisory inputs",
+              CJ.plan(d, repo)[0] == "judge" and CJ.delta_plan(d, prior) is None)
+        check("a contract-only advisory marker also requires a full review",
+              CJ.delta_plan(d, contract_only) is None)
+        j.script.append(answer("covered", [], ALL_ROWS))
+        rec, _ = CJ.run(d, repo, j, now=1794350200)
+        check("the calibrated review checks every row and carries no untrusted gap into its signature",
+              rec is not None and rec.get("mode") == "full" and rec.get("signed") is True
+              and rec.get("gaps") == [] and len(rec.get("checklist") or []) == len(ALL_ROWS)
+              and len(j.prompts) == calls + 1 and "Read, in this order" in j.prompts[-1], rec)
+    finally:
+        CJ.RC.status = status
+
+
 def units(root):
     d = make(os.path.join(root, "units"))
     h0 = CJ.entry_hashes(d)
@@ -216,7 +260,7 @@ def units(root):
           sorted(k for k in h0 if h0[k] != h1.get(k)) == ["sheet:Does"], sorted(k for k in h0 if h0[k] != h1.get(k)))
     check("entries read a commit through `read`",
           set(CJ.entries(d, lambda n: '{"inventory": [{"id": "z"}]}' if n == "record.json" else None)) == {
-              "inv:z", "record:scope", "floor"})
+              "inv:z", "record:scope", "floor", "exam"})
     check("the schema lets a gap carry late_why",
           "late_why" in CJ.SCHEMA["properties"]["gaps"]["items"]["properties"])
 
@@ -239,6 +283,7 @@ def main():
             main_walk(root)
             covered_cases(root)
             fallbacks(root)
+            advisory_transition(root)
             units(root)
     finally:
         CT.coverage_problem, CT.sign, DS.exam_errors = saved

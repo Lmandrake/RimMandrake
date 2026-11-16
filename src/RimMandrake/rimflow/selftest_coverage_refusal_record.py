@@ -91,7 +91,8 @@ def script(answers, argvs):
 def main():
     CJ.delta_plan = lambda d, prior, read=None: None   # the full judge; the delta judge shares the record text
     DS.owner_away = lambda: (False, "selftest: attended")
-    saved = (CT.coverage_problem, CT.sign, DS.exam_errors)
+    saved = (CT.coverage_problem, CT.sign, DS.exam_errors, RC.status)
+    RC.status = lambda family: "CALIBRATED"  # calibration transitions have their own selftest
     CT.coverage_problem = lambda d, repo, tree: "no coverage signature"
     DS.exam_errors = lambda ex, d, st, repo=None: []
     CT.sign = lambda d, by, repo=None, **kw: []
@@ -121,7 +122,7 @@ def main():
             check("a well-formed not_covered stands, one call, the contract accepted it",
                   rec["verdict"] == "not_covered" and len(argvs) == 1 and rec["contract"]["ok"]
                   and not rec.get("malformed"), rec.get("contract"))
-            check("a well-formed not_covered from an uncalibrated brief is advisory (selftest_judge_calibration tests both)",
+            check("a well-formed not_covered reflects its brief calibration (selftest_judge_calibration tests both)",
                   bool(rec.get("advisory")) == RC.advisory(CJ.CONTRACT_FAMILY) and CJ.stop_exit(rec) is bool(
                       rec.get("advisory")), (rec.get("advisory"), RC.status(CJ.CONTRACT_FAMILY)))
             rows = [json.loads(x) for x in open(os.path.join(root, "refusals", "refusals.jsonl"))]
@@ -241,7 +242,7 @@ def main():
             check("a covered verdict is a well-formed contract verdict with no refusals",
                   v["refusals"] == [] and not RC.check(v, given), RC.check(v, given))
     finally:
-        CT.coverage_problem, CT.sign, DS.exam_errors = saved
+        CT.coverage_problem, CT.sign, DS.exam_errors, RC.status = saved
         for k, v in env.items():
             if v is None:
                 os.environ.pop(k, None)
