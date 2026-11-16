@@ -93,10 +93,80 @@
     "ref": "rm-coverage-judge-1794838039",
     "stage": 5,
     "tokens": 354901
+   },
+   {
+    "at": "2026-11-16T15:47:28Z",
+    "kind": "helper",
+    "ref": "coverage calibration COVERAGE CALIBRATION Lanterns_bad_leaf_no_scene 85183054-864c-4a48-81af-fc3b4a843923",
+    "stage": 5,
+    "tokens": 116493
+   },
+   {
+    "at": "2026-11-16T15:47:28Z",
+    "kind": "helper",
+    "ref": "coverage calibration COVERAGE CALIBRATION Lanterns_good_lanterns c67a3913-79e7-468e-a34e-4f7f0a1af1eb",
+    "stage": 5,
+    "tokens": 117835
+   },
+   {
+    "at": "2026-11-16T15:47:28Z",
+    "kind": "helper",
+    "ref": "coverage calibration COVERAGE CALIBRATION Lanterns_bad_scene_no_control f842da7b-f8f2-47ab-8c3d-79fe67b8e81c",
+    "stage": 5,
+    "tokens": 125611
+   },
+   {
+    "at": "2026-11-16T15:53:31Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794844087",
+    "stage": 5,
+    "tokens": 699557
+   },
+   {
+    "at": "2026-11-16T15:53:50Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794844087",
+    "stage": 5,
+    "tokens": 356158
+   },
+   {
+    "at": "2026-11-16T16:01:55Z",
+    "kind": "helper",
+    "ref": "bar-rule coverage calibration COVERAGE CALIBRATION Lanterns_good_lanterns_tuning 19f39317-6ae0-4271-9709-b3dbe32be08d",
+    "stage": 5,
+    "tokens": 107538
+   },
+   {
+    "at": "2026-11-16T16:01:55Z",
+    "kind": "helper",
+    "ref": "bar-rule coverage calibration COVERAGE CALIBRATION Lanterns_good_lanterns 36136909-4f98-4f30-bc3e-cb2c0d646c29",
+    "stage": 5,
+    "tokens": 109708
+   },
+   {
+    "at": "2026-11-16T16:01:55Z",
+    "kind": "helper",
+    "ref": "bar-rule coverage calibration COVERAGE CALIBRATION Lanterns_bad_leaf_no_scene db61c456-12de-43a9-ab0a-7ba7114fc60d",
+    "stage": 5,
+    "tokens": 115132
+   },
+   {
+    "at": "2026-11-16T16:01:55Z",
+    "kind": "helper",
+    "ref": "bar-rule coverage calibration COVERAGE CALIBRATION Lanterns_bad_scene_no_control 0fbaf200-a68d-462f-9e66-eb2b2921229d",
+    "stage": 5,
+    "tokens": 124971
+   },
+   {
+    "at": "2026-11-16T16:03:45Z",
+    "kind": "review",
+    "ref": "rm-coverage-criterion-cauldron-1794843525-reader",
+    "stage": 5,
+    "tokens": 159489
    }
   ],
   "reserve": 60000,
-  "spent": 1499876
+  "spent": 3532368
  },
  "coverage_rounds": [
   {
@@ -145,6 +215,63 @@
     "first": 12
    },
    "tokens": 1024937,
+   "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff",
+   "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-16T15:48:07Z",
+   "error": null,
+   "gaps": 14,
+   "ids": [
+    "acid_air",
+    "aerosol_neighbour",
+    "ambient_protection",
+    "assay",
+    "biome_identity",
+    "campaign_cast",
+    "cauldron_walk",
+    "connected_gas",
+    "containers_gates",
+    "eskith",
+    "explosive_displacement",
+    "falter_warning",
+    "fire_warden",
+    "flora_base",
+    "forestry",
+    "gas_grid",
+    "growth_stalled",
+    "ixalith_beauty",
+    "mineral_forest",
+    "oomo_shrine",
+    "prepared_day",
+    "scanner_payload",
+    "shared_cast",
+    "shore_gardens",
+    "suush_ecology",
+    "suush_flight",
+    "thornwood_work",
+    "trunk_deposit_coat",
+    "vent_competition",
+    "vent_cycle_falter",
+    "vent_drinking",
+    "vent_gardens",
+    "vent_sites",
+    "vexxiss_shear",
+    "vexxith_door",
+    "vexxith_gear",
+    "zisska"
+   ],
+   "judge": "rm-coverage-judge-1794844087",
+   "late": [
+    "zisska",
+    "vexxiss_shear",
+    "gas_grid"
+   ],
+   "tags": {
+    "late": 2,
+    "unfixed": 12
+   },
+   "tokens": 1055715,
    "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff",
    "verdict": "not_covered"
   }
@@ -287,10 +414,23 @@
    "stage": 5,
    "what": "unblock",
    "why": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS fixed at 34237790bd8d (code 8655da17bc; coverage_judge CALIBRATED) (was blocked on RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS)"
+  },
+  {
+   "at": "2026-11-16T15:38:58Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794843525, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T16:12:44Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794843525: stage 5 return"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND",
  "mod": "Cauldron",
+ "pending_decision": "rm-coverage-judge-1794844087 has eight blocking Stage-3 gaps after the independently read bar-rule reconciliation. Fix the complete blocking list, then write coverage_fixes.json against this judge and rerun the exam. g1: Seven leaves whose owner_part says he inspects, judges or performs have no scene held for his review: every scene is hold 'immediate'. g2: The sheet a player reads omits what the tree tests: the walk leaf is missing from 'does', and the vent_competition line omits the water poisoning, fire-warden response and tracks that its leaf and scenes test. g3: The integration and optional-service capabilities are tested by scenes whose cited requirement leaves never describe them, so no approved requirement states their intent. g4: Map-generation behaviour of vents and gardens appears only as an 'observations' note, with no expect or control. g7: falter_hour does not require eskith although showcase 1 claims it, and no scene asserts that weather changes scale vent output; eskith flock behaviour is unexercised. g8: The melee-cancellation half of the vent-drinking and fire-warden toggles is observed with no pass condition. g9: thornwood_work and mineral_forest are accepted partly through trunk_coat_check, which tests absent, unopened content and has no defined leaf verdict when UNBUILT. The sheet is silent on the coat. g11: Vexxith door, containers, gear and acid air ship parts no scene exercises. Advisory findings g5,g6,g10,g12,g13,g14 are preserved and impose no additional passing bar. Apply the experience rule to mixed demands, retaining existing owner-ruled behavior.",
  "recovery": [],
  "results": [
   {
@@ -507,6 +647,29 @@
    "run": "rm-role-designercodex-1794840444",
    "stage": 5,
    "summary": "Stage-5 lock is blocked on the existing coverage-judge calibration dependency. The current verdict is advisory because its brief is UNTESTED. The gate refuses with no coverage signature. All twelve findings remain recorded as advisory evidence. A calibrated coverage verdict and the program-recorded signature are required before lock can finish."
+  },
+  {
+   "at": "2026-11-16T16:12:44Z",
+   "decision": "rm-coverage-judge-1794844087 has eight blocking Stage-3 gaps after the independently read bar-rule reconciliation. Fix the complete blocking list, then write coverage_fixes.json against this judge and rerun the exam. g1: Seven leaves whose owner_part says he inspects, judges or performs have no scene held for his review: every scene is hold 'immediate'. g2: The sheet a player reads omits what the tree tests: the walk leaf is missing from 'does', and the vent_competition line omits the water poisoning, fire-warden response and tracks that its leaf and scenes test. g3: The integration and optional-service capabilities are tested by scenes whose cited requirement leaves never describe them, so no approved requirement states their intent. g4: Map-generation behaviour of vents and gardens appears only as an 'observations' note, with no expect or control. g7: falter_hour does not require eskith although showcase 1 claims it, and no scene asserts that weather changes scale vent output; eskith flock behaviour is unexercised. g8: The melee-cancellation half of the vent-drinking and fire-warden toggles is observed with no pass condition. g9: thornwood_work and mineral_forest are accepted partly through trunk_coat_check, which tests absent, unopened content and has no defined leaf verdict when UNBUILT. The sheet is silent on the coat. g11: Vexxith door, containers, gear and acid air ship parts no scene exercises. Advisory findings g5,g6,g10,g12,g13,g14 are preserved and impose no additional passing bar. Apply the experience rule to mixed demands, retaining existing owner-ruled behavior.",
+   "inputs": {
+    "exam": "e17b4ae5ef61e3dfd2086fe26e923d202287985626ded802900829db0ff4e5b8",
+    "floor": "66359ed7392ca235e47204d7acf0624a637bf1e395cfa787ab7a9801777e82a9",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "0d9b9f345bd9417cf140faf8a80a8902aa5bd8b2c4f2f09dd31ba86fe3bde7f3",
+    "scenes": "454f335eb2ed461a7d6fa3ce2f647dda3b889099c4bf3d891709dc523b43c56a",
+    "sheet": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec",
+    "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+   },
+   "outcome": "return",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794843525",
+   "stage": 5,
+   "summary": "Return to Stage 3 for eight sound experience-coverage gaps after independent criterion reading under the new owner bar rule. Six further findings are advisory and impose no passing bar. The current brief passed four planted cases. The frozen design artifacts remain intact. Lock has no coverage signature. The unchanged-advisory recovery defect is repaired and closed.",
+   "to": 3
   }
  ],
  "runner": "codex",
@@ -589,10 +752,18 @@
     "input_tokens": 763844,
     "output_tokens": 3856
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794843525",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 21245637,
+    "output_tokens": 37663
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 3,
  "status": "ready"
 }
