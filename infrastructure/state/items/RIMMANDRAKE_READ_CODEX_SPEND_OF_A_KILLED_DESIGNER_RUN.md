@@ -18,3 +18,13 @@ Acceptance test: `python3 src/RimMandrake/Utils/selftest_codex_runner.py`, test 
 (a fake Codex that writes one turn and times out; a run with no result line and only an events file). It failed on the
 base commit 75a320386b (FAIL plus ERROR) and passes after: 14 tests, 0 failures. Real-path probe: a live Codex call through
 the changed agent_runner wrote 4 event lines and usage {input 15379, output 5}.
+
+## second half (17:20 PST, same day)
+
+Streaming alone is not enough: `codex exec` is ONE turn, and its only `turn.completed` (with usage) comes at the very end,
+so a run killed mid-turn still has no usage in its events (measured on rm-role-designercodex-1794791300: 88 events after
+9 min, 0 turn.completed). Codex's own session rollout (`~/.codex/sessions/YYYY/MM/DD/rollout-*-<thread_id>.jsonl`) writes a
+`token_count` with the thread's running `total_token_usage` after every model call. `agent_runner.rollout_usage` reads its
+last one for the thread the events started; `usage_of_files` and a timed-out run fall back to it. On the live run it read
+input 7,938,113 (7,629,952 cached), output 19,045 at 17:20 PST.
+Acceptance test: `test_rollout_usage_of_an_unfinished_turn` in the same selftest; failed on the base (ERROR), passes after.

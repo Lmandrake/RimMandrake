@@ -238,5 +238,27 @@ class CodexRunnerTests(unittest.TestCase):
                 self.assertIn("the Designer slot", MA.designer_unit("Nobody"))
 
 
+    def test_rollout_usage_of_an_unfinished_turn(self):
+        """codex exec is one turn: a run killed mid-turn has no turn.completed, so its usage is read from Codex's own
+        session rollout (the last token_count's running total) for the thread its events started."""
+        tid = "01a1e1e6-2713-7983-8668-aac2e813aa91"
+        started = json.dumps({"type": "thread.started", "thread_id": tid}) + "\n" + json.dumps({"type": "turn.started"})
+        tc = lambda i, o: json.dumps({"type": "event_msg", "payload": {"type": "token_count", "info": {
+            "total_token_usage": {"input_tokens": i, "cached_input_tokens": i - 1, "output_tokens": o}}}})
+        with tempfile.TemporaryDirectory() as home:
+            self.assertEqual(AR.rollout_usage(started, home), "UNMEASURED")       # no rollout file
+            day = Path(home, "sessions", "2026", "11", "15")
+            day.mkdir(parents=True)
+            Path(day, "rollout-2026-11-15T17-08-39-%s.jsonl" % tid).write_text("\n".join([tc(10, 1), "junk", tc(50, 4)]))
+            u = AR.rollout_usage(started, home)
+            self.assertEqual((u["input_tokens"], u["output_tokens"], u["cached_input_tokens"]), (50, 4, 49))
+            self.assertEqual(AR.rollout_usage(json.dumps({"type": "thread.started", "thread_id": "../../x"}), home),
+                             "UNMEASURED")
+            ev = Path(home, "ev.jsonl")
+            ev.write_text(started)
+            self.assertEqual(AR.usage_of_files(Path(home, "no-spend"), ev, home)["input_tokens"], 50)
+            self.assertEqual(AR.usage_of_files(Path(home, "no-spend"), Path(home, "no-events"), home), "UNMEASURED")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -77,9 +77,49 @@ def event_usage(stream):
     return total if seen else "UNMEASURED"
 
 
-def usage_of_files(spend, events):
+def rollout_usage(stream, home=None):
+    """The running token total of the Codex thread a stream started: `codex exec` is ONE turn, so its turn.completed
+    usage comes only at the very end, and a run killed before then has none in its events. Codex's own session
+    rollout (<home>/sessions/**/rollout-*-<thread_id>.jsonl) writes a token_count after every model call; its last
+    total_token_usage is the run's spend so far. -> dict, or "UNMEASURED"."""
+    tid = None
+    for line in stream.splitlines():
+        try:
+            e = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(e, dict) and e.get("type") == "thread.started":
+            tid = e.get("thread_id")
+            break
+    if not tid or not re.fullmatch(r"[0-9a-f-]{8,64}", str(tid)):
+        return "UNMEASURED"
+    try:
+        root = Path(home) if home else CX.codex_home(None)
+        files = sorted((root / "sessions").glob("*/*/*/rollout-*-%s.jsonl" % tid))
+        text = files[-1].read_text(encoding="utf-8", errors="replace") if files else ""
+    except (OSError, IndexError, AttributeError):
+        return "UNMEASURED"
+    last = None
+    for line in text.splitlines():
+        if '"token_count"' not in line:
+            continue
+        try:
+            t = ((json.loads(line).get("payload") or {}).get("info") or {}).get("total_token_usage")
+        except (ValueError, AttributeError):
+            continue
+        if isinstance(t, dict) and all(type(t.get(k)) is int and t[k] >= 0 for k in ("input_tokens", "output_tokens")):
+            last = t
+    if last is None:
+        return "UNMEASURED"
+    return dict({k: last[k] for k in ("input_tokens", "output_tokens")},
+                **({"cached_input_tokens": last["cached_input_tokens"]} if type(last.get("cached_input_tokens")) is int
+                   else {}), usage_from="codex rollout %s (running total; the run never completed its turn)" % tid)
+
+
+def usage_of_files(spend, events, home=None):
     """A run's measured usage from what it left on disk: the spend envelope, else the events streamed so far (a run
-    killed before it wrote the envelope). Neither readable -> UNMEASURED, never zero."""
+    killed before it wrote the envelope), else Codex's session rollout for the thread those events started. None
+    readable -> UNMEASURED, never zero."""
     try:
         u = json.loads(Path(spend).read_text(encoding="utf-8")).get("usage")
         if isinstance(u, dict):
@@ -87,9 +127,11 @@ def usage_of_files(spend, events):
     except (OSError, ValueError, AttributeError):
         pass
     try:
-        return event_usage(Path(events).read_text(encoding="utf-8", errors="replace"))
+        stream = Path(events).read_text(encoding="utf-8", errors="replace")
     except OSError:
         return "UNMEASURED"
+    u = event_usage(stream)
+    return u if isinstance(u, dict) else rollout_usage(stream, home)
 
 
 def event_error(stream):
@@ -183,7 +225,10 @@ def run(cwd, prompt, result, events, spend, *, model=None, effort=None,
         error = "Codex timeout: %s" % timeout
     except Exception as e:
         error = "%s: %s" % (type(e).__name__, e)
-    rec.update(usage=event_usage(stream), error=error, returncode=rc)
+    usage = event_usage(stream)
+    if not isinstance(usage, dict) and stream:
+        usage = rollout_usage(stream, rec.get("codex_home"))
+    rec.update(usage=usage, error=error, returncode=rc)
     rec["usage_from"] = "turn.completed events in %s" % events
     events.write_text(stream, encoding="utf-8")
     spend.write_text(json.dumps(rec, indent=2) + "\n", encoding="utf-8")
