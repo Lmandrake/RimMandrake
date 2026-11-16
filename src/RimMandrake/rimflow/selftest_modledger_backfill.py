@@ -102,6 +102,21 @@ w(os.path.join(IT, "closed", "RIMMANDRAKE_DROP_FIXTUREMOD_FILED_TWICE.md"), "## 
 w(os.path.join(IT, "RIMMANDRAKE_BUILD_FIXTUREMOD_IMPLEMENTED_NOT_CLOSED.md"),
   "## spec\n\nfile: Source/E.cs: drain the right faction.\n")
 w(os.path.join(IT, "closed", "RIMMANDRAKE_FIX_SLACKMASTER_POST_AS_RIGHT_TEAM.md"), "## spec\n\nPost as the right team.\n")
+# FlowWorks' shapes: a close on a pre-landing sha ./publish rewrote, a spec holding a pasted traceback, a fault class
+# under 'cls', a long card label, his words past the line cap in multibyte characters
+w(os.path.join(IT, "closed", "RIMMANDRAKE_FIX_FIXTUREMOD_REBASED_PUMP_FIX.md"), "## spec\n\nFixtureMod: prime the pump.\n")
+w(os.path.join(IT, "closed", "RIMMANDRAKE_FIX_FIXTUREMOD_FENCED_SPEC_PASTE.md"),
+  "## spec\n\nFixtureMod: guard the null def.\nTraceback (most\nrecent call last): x\n```\n  at Verse.X()\n```\n\n"
+  "## verify\n\n```\nselftest_b.py\n```\n")
+w(os.path.join(v, "blind_challenge", "cycle_3", "lane2", "faults.json"), [
+    {"id": "RIMMANDRAKE_TRIM_FIXTURE_VALVE_ON_EXACT_FIT", "cls": "Polish", "bar": "bar_b", "criterion": "an exact fit "
+     "opens", "evidence": ["row L2 FAIL"], "smallest_fix": "compare with <= at the last cell", "status": "PENDING"}])
+# two tickets whose subjects the mint check calls near-duplicates: kept apart on the first run, kept on the re-run
+w(os.path.join(IT, "RIMMANDRAKE_FIX_FIXTUREMOD_PROOF_DRIVERS_EARLY_FALSE_PASS.md"),
+  "## spec\n\nFixtureMod proof drivers pass early on a stale read.\n")
+w(os.path.join(IT, "RIMMANDRAKE_FIX_FIXTUREMOD_PROOF_DRIVERS_LATE_FALSE_PASS.md"),
+  "## spec\n\nFixtureMod proof drivers pass late on a stale read.\n")
+B.landed_sha = lambda root_, sha: "abc7777" if sha == "beef123" else sha
 EVL = [
     {"seat": "BENCH", "event": "file", "id": "FIXTUREMOD_OLD_TICKET_WITH_NO_FILE_1", "title": "ledger-only", "tsn": 9},
     {"seat": "BENCH", "event": "file", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_CLOSED_BY_A_FIX", "title": "Arcs overshoot walls",
@@ -148,6 +163,15 @@ EVL += [
      "title": "FixtureMod 0.1.0: run the blind offline challenge cycle one by hand and record it", "tsn": 71},
     {"seat": "BENCH", "event": "file", "id": "RIMMANDRAKE_RUN_FIXTUREMOD_BLIND_CHALLENGE_CYCLE_TWO",
      "title": "FixtureMod 0.1.0: run the blind offline challenge cycle two by hand and record it", "tsn": 72}]
+EVL += [
+    {"seat": "BENCH", "event": "close", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_REBASED_PUMP_FIX", "sha": "beef123",
+     "reason": "pump primed", "tsn": 60},
+    {"seat": "BENCH", "event": "close", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_FENCED_SPEC_PASTE", "sha": "abcdef90",
+     "tsn": 61},
+    {"seat": "OWNER", "event": "note", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_REBASED_PUMP_FIX", "tsn": 62,
+     "byCard": "FixtureMod pump question → " + "prime it from the tank every dawn " * 12},
+    {"seat": "OWNER", "event": "note", "id": "RIMMANDRAKE_FIX_FIXTUREMOD_FENCED_SPEC_PASTE", "tsn": 63,
+     "ownerSaid": "Shelves — “never” — lost " * 24}]
 with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"), "a", encoding="utf-8") as fh:
     for e_ in EVL:
         fh.write(json.dumps(e_) + "\n")
@@ -315,6 +339,16 @@ check("the journal's oddities are traps, one each, a wrapped line joined, the fi
 check("his long words that overflow the line are fitted to it (deciding sentences kept, the ref for the whole), not "
       "refused", any(e["kind"] == "decision" and "Arc number 0" in (e["body"].get("said") or "") and
                      e["body"]["said"].endswith("[…]") for e in bevs), [e["body"] for e in bevs if e["kind"] == "decision"])
+pump = F.get("finding:RIMMANDRAKE_FIX_FIXTUREMOD_REBASED_PUMP_FIX") or {}
+check("a close on a pre-landing sha (rewritten by ./publish) is claimed on its landed twin, naming both",
+      pump.get("status") == "claimed_fixed" and pump.get("code_sha") == "abc7777" and
+      [e for e in bevs if e["kind"] == "finding.claimed_fixed" and "beef123" in e["body"]["text"] and
+       "sha:abc7777" in e["evidence"]], pump)
+fen = F.get("finding:RIMMANDRAKE_FIX_FIXTUREMOD_FENCED_SPEC_PASTE") or {}
+check("a spec holding a pasted traceback mines its words, cut at the paste", fen.get("proposed_fix") ==
+      "FixtureMod: guard the null def.", fen)
+check("a fault's class under 'cls' is read", (F.get("finding:RIMMANDRAKE_TRIM_FIXTURE_VALVE_ON_EXACT_FIT") or {}).get(
+    "class") == "polish", F.get("finding:RIMMANDRAKE_TRIM_FIXTURE_VALVE_ON_EXACT_FIT"))
 check("his words on a closed ticket's ledger event become a decision on that finding",
       any(e["kind"] == "decision" and e["subject"] == "finding:RIMMANDRAKE_READ_FIXTUREMOD_NO_DEFECT_AFTER_ALL"
           for e in bevs), [(e["kind"], e["subject"]) for e in bevs if e["kind"] == "decision"])

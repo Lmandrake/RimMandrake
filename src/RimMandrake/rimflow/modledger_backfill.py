@@ -21,6 +21,7 @@ import glob
 import json
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -131,6 +132,16 @@ def fit(text, cap):
     return head.rstrip() + " […]"
 
 
+def words_of(text):
+    """The words of a ticket section: code fences unwrapped (a fenced command is words), cut at the first pasted
+    stack or traceback (the standard refuses one; the event cites the ticket that holds it)."""
+    t = str(text or "").replace("```", " ")
+    m = M.STACK_RE.search(t)
+    t = " ".join((t[:m.start()] if m else t).split())
+    m = M.STACK_RE.search(t)                 # a traceback wrapped across lines matches only once joined
+    return t[:m.start()] if m else t
+
+
 def slug(text, words=6):
     return "-".join(re.findall(r"[a-z0-9]+", str(text or "").lower())[:words]) or "untitled"
 
@@ -191,7 +202,7 @@ def _mine_finding(add, name, prose, titles, locked, S, src):
     """One ticket's finding.open: its filer's title, its spec as the proposed fix, its acceptance test."""
     paras = [x.strip() for x in prose.split("\n\n") if x.strip() and not x.lstrip().startswith("#")]
     m = re.search(r"^## spec\s*\n(.*?)(?=^## |\Z)", prose, re.S | re.M)
-    fix = (m.group(1).strip() if m and m.group(1).strip() else
+    fix = (words_of(m.group(1)).strip() if m and words_of(m.group(1)).strip() else
            "not written by its filer: read item:%s" % name)
     acc = re.search(r"Acceptance test:\s*(.+)", prose) or re.search(r"^## verify\s*\n(.*?)(?=^## |\Z)", prose,
                                                                      re.S | re.M)
@@ -199,9 +210,10 @@ def _mine_finding(add, name, prose, titles, locked, S, src):
     add("finding.open", "finding:" + name, {
         "class": "polish" if re.search(r"\bpolish\b", prose, re.I) and not re.search(r"\bproblem\b", prose, re.I)
         else "problem", "bars": named_bars, "tags": [] if named_bars else _tags(prose),
-        "text": fit(titles.get(name) or (paras[0] if paras else name), S["text"]),
+        "text": fit(titles.get(name) or (words_of(paras[0]).strip() if paras else "") or name, S["text"]),
         "proposed_fix": fit(fix, S["proposed_fix"]),
-        "accept": fit(acc.group(1).strip() if acc else "none, not written at filing", S["accept"])},
+        "accept": fit(words_of(acc.group(1)).strip() if acc and words_of(acc.group(1)).strip() else
+                      "none, not written at filing", S["accept"])},
         src)           # the old file first: evidence[0] is what the backfill came from
 
 
@@ -238,6 +250,43 @@ def _final_state(name, evs, S):
         test = ("%s (verify pass, %s)" % (verify.get("config"), verify.get("seat")) if verify and verify.get("config")
                 else "none recorded at close (live: %s)" % (e.get("live") or "-"))
     return ("finding.claimed_fixed", {"text": fit(text, S["text"]), "test": fit(test, S["test"])}, sha, ref)
+
+
+_BASE = {}
+
+
+def _base(root):
+    """-> ({7-char prefix: [full sha]}, {(author date, subject): [full sha]}) of origin/main, one `git log` per root."""
+    if root not in _BASE:
+        r = subprocess.run(["git", "-C", root, "log", "origin/main", "--format=%H%x09%aI%x09%s"], capture_output=True,
+                           text=True, timeout=120)
+        idx, twin = {}, {}
+        for line in r.stdout.split("\n"):
+            parts = line.split("\t", 2)
+            if len(parts) == 3:
+                idx.setdefault(parts[0][:7], []).append(parts[0])
+                twin.setdefault((parts[1], parts[2]), []).append(parts[0])
+        _BASE[root] = (idx, twin)
+    return _BASE[root]
+
+
+def landed_sha(root, sha):
+    """-> the 12-char origin/main sha for `sha` (the standard's lint rule for every code_sha): itself when it is on
+    origin/main; else its landed twin, the one origin/main commit with the same author date and subject (`./publish`
+    rebases, so a close often records the pre-landing sha); else None. One `git log` per root, then lookups."""
+    if not re.match(r"^[0-9a-f]{7,40}$", sha or ""):
+        return None
+    if not os.path.exists(os.path.join(root, ".git")):
+        return sha                  # not a git checkout (a fixture): taken as written
+    idx, twin = _base(root)
+    hit = [f for f in idx.get(sha[:7], ()) if f.startswith(sha)]
+    if len(hit) == 1:
+        return hit[0][:12]
+    r = subprocess.run(["git", "-C", root, "log", "--no-walk", "--format=%aI%x09%s", sha, "--"], capture_output=True,
+                       text=True, timeout=30)
+    parts = r.stdout.strip().split("\t", 1) if r.returncode == 0 else []
+    t = twin.get(tuple(parts)) if len(parts) == 2 else None
+    return t[0][:12] if t and len(t) == 1 else None
 
 
 def ref_path(state, tev, name):
@@ -367,7 +416,7 @@ def plan(root, mod):
             seen = (f.get("evidence") or [""])[0] if isinstance(f.get("evidence"), list) else f.get("evidence")
             bar = f.get("bar") if f.get("bar") in locked else None
             add("finding.open", "finding:" + f["id"], {
-                "class": "polish" if str(f.get("class")).lower() == "polish" else "problem",
+                "class": "polish" if str(f.get("class") or f.get("cls")).lower() == "polish" else "problem",
                 "bars": [bar] if bar else [], "tags": [] if bar else _tags(json.dumps(f)),
                 "text": fit(seen or f.get("criterion") or f["id"], S["text"]),
                 "proposed_fix": fit(fix, S["proposed_fix"]),
@@ -483,15 +532,14 @@ def plan(root, mod):
     tev = ticket_events(root, have | {n for p, n in cands if p is None})
     sha_ok = {}
 
-    def resolves(sha):
-        """A sha cited must resolve on origin/main (a pre-landing sha can be rewritten at landing): checked when the
-        root is a git checkout, taken as written otherwise (a fixture)."""
-        if not os.path.exists(os.path.join(root, ".git")):
-            return True
+    def landed(sha):
+        """A sha cited must resolve on origin/main: -> it, or its landed twin (./publish rewrites a pre-landing sha),
+        or None (landed_sha)."""
         if sha not in sha_ok:
-            sha_ok[sha] = M._sha_on(root, sha, "origin/main")
+            sha_ok[sha] = landed_sha(root, sha)
         return sha_ok[sha]
 
+    rebased = 0
     claimed = {s for k, s, *_ in ev if k == "finding.claimed_fixed"}
     closed_unstated, sha_dead, refuted_no_sha, causes_seen = [], 0, 0, set()
     for ip, is_closed in cands:
@@ -519,9 +567,16 @@ def plan(root, mod):
             elsewhere += 1
             continue
         state = _final_state(name, tev.get(name, []), S)
-        if state and state[2] and not resolves(state[2]):
-            sha_dead += 1
-            state = None
+        if state and state[2]:
+            tw = landed(state[2])
+            if not tw:
+                sha_dead += 1
+                state = None
+            elif not (tw.startswith(state[2][:12]) or state[2].startswith(tw)):
+                rebased += 1
+                kind_, body_, said_, ref_ = state
+                state = (kind_, dict(body_, text=fit(body_["text"].replace(said_, "%s (pre-landing; landed as %s)" % (
+                    said_, tw), 1), S["text"])), tw, ref_)
         if is_closed and not state:
             closed_unstated.append(name)
             continue
@@ -548,7 +603,7 @@ def plan(root, mod):
                 if key in causes_seen:
                     continue
                 causes_seen.add(key)
-                shas = [x for x in SHA_RE.findall(txt) if resolves(x)] or ([state[2]] if state else [])
+                shas = [landed(x) for x in SHA_RE.findall(txt) if landed(x)] or ([state[2]] if state else [])
                 if not shas:
                     refuted_no_sha += 1
                     continue
@@ -564,6 +619,9 @@ def plan(root, mod):
         notes.append("left out: %d closed tickets whose closing the ledger does not state with a sha on origin/main "
                      "(a drop, a supersede, or no close event; no sha to withdraw on), so none is left looking open"
                      % len(closed_unstated))
+    if rebased:
+        notes.append("%d ticket final states recorded a pre-landing sha: each is claimed on its landed twin (the one "
+                     "origin/main commit with its author date and subject), both named" % rebased)
     if sha_dead:
         notes.append("left out: %d ticket final states whose sha does not resolve on origin/main" % sha_dead)
     nofile = [n for n in items if not os.path.exists(os.path.join(idir, n + ".md")) and
@@ -586,7 +644,7 @@ def plan(root, mod):
             if not (said or card):
                 continue
             card = card if isinstance(card, str) or card is None else json.dumps(card, ensure_ascii=False)
-            words_ = fit(said or card, S["said"])
+            words_ = fit(said, S["said"]) if said else fit(card, S["text"])
             if not his(words_):
                 continue
             iid = e.get("id") if isinstance(e.get("id"), str) else None
@@ -633,6 +691,8 @@ def run(root, mod, dry=False):
     written = already = 0
     refused, near, held = [], [], set()
     for kind, subject, body, evidence, auth, sha in ev:
+        apart = fit("a separate source record (%s); listed in the backfill report" % (
+            evidence[0] if evidence else "?"), 160)
         try:
             for _try in range(3):
                 try:
@@ -651,9 +711,7 @@ def run(root, mod, dry=False):
                     near.append((subject, r.measured))
                 try:
                     eid, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
-                                          authority=auth, code_sha=sha, views=False,
-                                          new_subject="a separate source record (%s); the near-duplicate is listed in "
-                                                      "the backfill report" % (evidence[0] if evidence else "?"))
+                                          authority=auth, code_sha=sha, views=False, new_subject=apart)
                 except M.Refusal as r2:
                     refused.append((kind, subject, str(r2)))
                     continue
