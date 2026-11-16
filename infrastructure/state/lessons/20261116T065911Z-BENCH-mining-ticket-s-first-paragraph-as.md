@@ -1,0 +1,1 @@
+Mining a ticket's first paragraph as its finding text picks up shared boilerplate ('Step N of plan.md (...)'): the near-duplicate check flagged 7 of 47 Explosive Knockback items. The filer's one-line title from rimflow's file event is the better text.

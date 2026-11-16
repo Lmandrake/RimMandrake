@@ -1,0 +1,1 @@
+A cached derived index keyed only on its inputs' offsets and the reducer version stays stale when the code that fills it changes (modledger find showed [None] after a status fix): stamp the index with its own version and bump it with the code.
