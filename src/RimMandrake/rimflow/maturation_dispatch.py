@@ -2332,8 +2332,11 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
         if stale:
             rd.setdefault("needs_conductor", []).append(
                 "stale_clone: nothing launched; %s (OPS_DISPATCH_CLONE_BEHIND_UNSTICK)" % clone_line(clone))
-        rd["spend_rows"] = record_spend(root, facts, fx)
-        rd["ledger_runs"] = end_ledger_runs(root, st, facts, now, fx)
+        if stale:       # both are idempotent: the first level tick writes what these held back
+            rd["spend_rows"] = rd["ledger_runs"] = "held: the clone reads an old tree (stale_clone)"
+        else:
+            rd["spend_rows"] = record_spend(root, facts, fx)
+            rd["ledger_runs"] = end_ledger_runs(root, st, facts, now, fx)
         if aut:
             rd["chores"] = slow_chores(st, facts, now, fx)
         try:        # every hand act on the pipeline, recorded; one left a day with no follow-up alarms

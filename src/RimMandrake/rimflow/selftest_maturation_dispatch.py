@@ -208,6 +208,10 @@ def main():
            and any("stale_clone" in x or "behind origin/main" in x for x in rd["needs_conductor"]),
            "a clone 10 min behind launches nothing: FlowWorks reads stale_clone, a Needs Conductor line (%s)"
            % rd["mods"]["FlowWorks"].get("decision"))
+        ok(str(rd.get("ledger_runs", "")).startswith("held") and str(rd.get("spend_rows", "")).startswith("held"),
+           "nor does it seal, end or spend-record a run from the old tree (its 02:59 publish sealed a 19-line judge "
+           "shard empty and dropped a re-seal line): ledger_runs %r, spend_rows %r"
+           % (rd.get("ledger_runs"), rd.get("spend_rows")))
         world["clone"] = (3, 0)
         reset()
         world["live"] = {"ExplosiveKnockback": ["rm-detached-bench-rimmandrake-build-knockback-stage-three-1"]}
