@@ -1,0 +1,20 @@
+{
+  "run": "rm-role-designercodex-1794822752",
+  "stage": 3,
+  "outcome": "return",
+  "to": 2,
+  "decision": "flagship_selection. Record the required pick for showcase 1 before completing stage 3. Proposed chosen_gene_friend_rescue is supported by the adopted root and existing-content walk. No concrete contrary evidence was found. Stage 2 should apply the Evidence-for-Ask delegated route and cite a Conductor event naming that flagship. Existing root and edge events explicitly exclude a pick.",
+  "summary": "Audited the role, stage state, working record, merged ledger and working/origin OWNER events. The required flagship has never been selected. Recorded a source-backed candidate, its playable sequence, proposed exercised capabilities, alternatives and delivery gaps in record.json. Return to stage 2 follows the showcase contract. Stage-3 artifacts and their gates remain pending.",
+  "quick_look": {
+    "offer": true,
+    "settles": [
+      "flagship_selection",
+      "seeker_scanner",
+      "seeker_extraction",
+      "gene_injection",
+      "warnings",
+      "antidote"
+    ],
+    "scene": "Existing-content chosen-gene/friend-rescue walk on a verified review save of the composed biomes package. Select through the normal archive dialog, locate and extract the current, order injection and friend treatment, then inspect target/rider and social consequences. The authorised live runner identifies the save, records recovery before changes and restores or explicitly holds it. Exact save identity remains unverified."
+  }
+}

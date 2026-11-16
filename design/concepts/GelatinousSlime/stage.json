@@ -63,10 +63,23 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designercodex-1794809122: stage 2 done"
+  },
+  {
+   "at": "2026-11-16T09:53:12Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794822752, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-16T09:57:03Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794822752: stage 3 return"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_GELATINOUSSLIME_DESIGNER_ON_CODEX_FOURTH",
  "mod": "GelatinousSlime",
+ "pending_decision": "flagship_selection. Record the required pick for showcase 1 before completing stage 3. Proposed chosen_gene_friend_rescue is supported by the adopted root and existing-content walk. No concrete contrary evidence was found. Stage 2 should apply the Evidence-for-Ask delegated route and cite a Conductor event naming that flagship. Existing root and edge events explicitly exclude a pick.",
  "recovery": [],
  "results": [
   {
@@ -168,6 +181,42 @@
    "run": "rm-role-designercodex-1794809122",
    "stage": 2,
    "summary": "Resolved the design edges through eleven source-backed claim/attack/counterexample/boundary arguments and fresh independent review. Recorded Evidence-for-Ask edge delegation (CONDUCTOR:1794810108456236688); no owner question sent and no core contradiction remains unresolved. Preserved prior UI/family/weapon answers, every built/authored capability, archive/rain obligations and explicit technical delivery gaps. Added finite observation variants and labelled costs/defaults. Root unchanged; runtime proof unchanged; no bridge, restart or deployment, no flagship, waiver or first-touch certification."
+  },
+  {
+   "at": "2026-11-16T09:57:03Z",
+   "decision": "flagship_selection. Record the required pick for showcase 1 before completing stage 3. Proposed chosen_gene_friend_rescue is supported by the adopted root and existing-content walk. No concrete contrary evidence was found. Stage 2 should apply the Evidence-for-Ask delegated route and cite a Conductor event naming that flagship. Existing root and edge events explicitly exclude a pick.",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "23cfc23f4265f52ff71148df4f63e96b89cf3ed38d3bd3f89f535d6ceccd05e7",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "return",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "Existing-content chosen-gene/friend-rescue walk on a verified review save of the composed biomes package. Select through the normal archive dialog, locate and extract the current, order injection and friend treatment, then inspect target/rider and social consequences. The authorised live runner identifies the save, records recovery before changes and restores or explicitly holds it. Exact save identity remains unverified.",
+    "settles": [
+     "flagship_selection",
+     "seeker_scanner",
+     "seeker_extraction",
+     "gene_injection",
+     "warnings",
+     "antidote"
+    ]
+   },
+   "run": "rm-role-designercodex-1794822752",
+   "stage": 3,
+   "summary": "Audited the role, stage state, working record, merged ledger and working/origin OWNER events. The required flagship has never been selected. Recorded a source-backed candidate, its playable sequence, proposed exercised capabilities, alternatives and delivery gaps in record.json. Return to stage 2 follows the showcase contract. Stage-3 artifacts and their gates remain pending.",
+   "to": 2
   }
  ],
  "runner": "codex",
@@ -195,10 +244,18 @@
     "input_tokens": 5137897,
     "output_tokens": 27480
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794822752",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 853588,
+    "output_tokens": 5205
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 2,
  "status": "ready"
 }
