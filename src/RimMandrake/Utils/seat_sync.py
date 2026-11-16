@@ -227,6 +227,48 @@ def union_paths(g: Git, paths: list[str]) -> set[str]:
     return {f[i] for i in range(0, len(f) - 2, 3) if f[i + 2] == "union"}
 
 
+def landed_twin(g: Git, up: str, c: str, base: str | None = None) -> str | None:
+    """The upstream commit that already landed local commit c under another sha, "" when c touches only union shards
+    whose added lines are all upstream, or None (not proven landed).
+
+    `git cherry` hashes a patch with its context, and a merge=union shard's context differs between a clone and origin
+    for ever, so a landed commit that touches one reads '+'. Replaying such a twin re-added prose origin had moved to
+    closed/ (the orphan hook refused every publish), and where nothing stopped it origin took one commit 27 times
+    (RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES). Proof here: every line c adds to a union path is in
+    origin's copy and none it removes is; the rest of its patch has the `patch-id --stable` of an upstream commit since
+    the merge base, and that commit left each of those paths with c's exact mode and bytes."""
+    parents = g.run("rev-list", "--parents", "-n1", c).split()[1:]
+    if len(parents) != 1:
+        return None
+    touched = g.lines("diff-tree", "--no-commit-id", "--name-only", "-r", "-z", "--no-renames", c)
+    if not touched:
+        return None
+    union = union_paths(g, touched)
+    for u in sorted(union):
+        theirs = set(g.run("show", f"{up}:{u}", check=False).splitlines())
+        for ln in g.run("diff-tree", "-p", "--no-renames", "--no-commit-id", c, "--", u).splitlines():
+            if ln.startswith(("+++", "---")):
+                continue
+            if (ln[:1] == "+" and ln[1:] not in theirs) or (ln[:1] == "-" and ln[1:] in theirs):
+                return None
+    rest = [t for t in touched if t not in union]
+    if not rest:
+        return ""
+
+    def pid(text: str) -> str:
+        return g.run("patch-id", "--stable", inp=text).split(" ", 1)[0].strip()
+    mine = pid(g.run("diff-tree", "-p", "--binary", "--no-renames", c, "--", *rest))
+    if not mine:
+        return None
+    want = g.entries(c, rest)
+    base = base or g.run("merge-base", up, c).strip()
+    for u in g.lines("rev-list", "--no-merges", f"{base}..{up}", "--", *rest):
+        if pid(g.run("diff-tree", "-p", "--binary", "--no-renames", u, "--", *rest)) == mine \
+                and g.entries(u, rest) == want:
+            return u
+    return None
+
+
 def derived_paths(g: Git, paths: list[str]) -> set[str]:
     """The paths .gitattributes marks rm-derived (a mod ledger's views, printed from the ledger): a dirty one that does not
     merge cleanly takes upstream's bytes at a move instead of stranding the branch; the next append prints it again."""
@@ -641,6 +683,12 @@ def plan(g: Git, superseded: tuple = ()) -> dict:
         diff = [t for t in touched if a.get(t) != b.get(t) and not g.shard_upstream(head, up, t)]
         if not diff:
             p["local"].append((subj, "ledger lines upstream"))
+            continue
+        # Judged by its own patch, not by HEAD's bytes: a twin whose file origin changed later, or a shard commit
+        # followed by a still-unlanded line, is landed all the same (RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES).
+        twin = landed_twin(g, up, c)
+        if twin is not None:
+            p["local"].append((subj, f"landed twin {twin[:10]}" if twin else "ledger lines upstream"))
             continue
         raise Refused(f"local commit {subj} is NOT on origin/main ({len(diff)} path(s) differ, e.g. {diff[0]}). "
                       f"Land it first (land.sh <sha> <paths>), then sync")

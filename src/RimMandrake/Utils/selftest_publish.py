@@ -245,6 +245,43 @@ def t_replay_never_doubles_a_shard_line_origin_already_holds(a, b):
     assert sha and sorted(open(os.path.join(a, SHARD)).read().splitlines()) == sorted(got)
 
 
+def twin_world(a, b):
+    """Clone a holds commit C (new items/X.md + a shard line); origin holds C's twin landed under other shard context,
+    then moves items/X.md to items/closed/. Returns C."""
+    seed_shard(a, b)
+    peer_push(b, SHARD, "seed\npeer line\n")
+    write(a, "items/X.md", "prose\n")
+    sh(a, "add", "--", "items/X.md")
+    append(a, SHARD, "C line\n")
+    sh(a, "commit", "-q", "-m", "C", "--", "items/X.md", SHARD)
+    write(b, "items/X.md", "prose\n")
+    sh(b, "add", "--", "items/X.md")
+    append(b, SHARD, "C line\n")
+    sh(b, "commit", "-q", "-m", "C", "--", "items/X.md", SHARD)
+    os.makedirs(os.path.join(b, "items/closed"), exist_ok=True)
+    sh(b, "mv", "items/X.md", "items/closed/X.md")
+    sh(b, "commit", "-q", "-m", "close X")
+    sh(b, "push", "-q", "origin", "HEAD:main")
+    sh(a, "fetch", "-q")
+    assert sh(a, "cherry", "origin/main", "HEAD").startswith("+"), "the world must make git cherry call C unlanded"
+    return sh(a, "rev-parse", "HEAD")
+
+
+def t_landed_twin_is_not_replayed_over_an_upstream_move(a, b):
+    # RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES: git cherry called a landed commit unlanded (its
+    # union-shard context differed), the replay re-added prose origin had moved to closed/, and the orphan-prose hook
+    # refused every publish; where no hook stopped it, origin took the same commit 27 times.
+    twin_world(a, b)
+    before = sh(a, "rev-parse", "origin/main")
+    write(a, "h.txt", "mine\n")
+    sha = P_quiet_publish(a, ["h.txt"], "mine")
+    names = sh(a, "ls-tree", "-r", "--name-only", "origin/main").split()
+    assert "items/X.md" not in names and "items/closed/X.md" in names, names
+    assert sh(a, "rev-parse", sha + "^") == before, "exactly one new commit lands"
+    assert sorted(show(a, SHARD).splitlines()) == ["C line", "peer line", "seed"]
+    assert sha == sh(a, "rev-parse", "HEAD") and not os.path.exists(os.path.join(a, "items/X.md"))
+
+
 def t_stale_shard_snapshot_in_index_lands(a, b):
     """A commit races appends: the index holds an older snapshot of the shard, every line of it still on disk."""
     seed_shard(a, b)

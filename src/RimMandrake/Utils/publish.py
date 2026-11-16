@@ -210,6 +210,23 @@ def rebase(top):
         raise Refuse("local commit %s is a merge; publish cannot replay it" % merges[0][:12])
     todo = [] if behind_only else [ln[2:].strip() for ln in out(top, "cherry", up, head).splitlines()
                                    if ln.startswith("+")]
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import seat_sync
+    # git cherry calls a landed commit unlanded when it touches a union shard (the patch-id context differs), and its
+    # replay re-adds files origin has since moved or deleted (RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES)
+    if todo:
+        sg, base = seat_sync.Git(top), out(top, "merge-base", up, head)
+        kept = []
+        for c in todo:
+            try:
+                twin = seat_sync.landed_twin(sg, up, c, base)
+            except seat_sync.Refused:                    # a git error proves nothing: replay it as before
+                twin = None
+            if twin is None:
+                kept.append(c)
+            else:
+                print("%s is already on origin%s; not replaying it" % (c[:12], " as " + twin[:12] if twin else ""))
+        todo = kept
     tip = up
     for c in todo:
         r = run(top, "merge-tree", "--write-tree", "--name-only", "--merge-base=%s^" % c, tip, c, check=False)
@@ -236,8 +253,6 @@ def rebase(top):
                              capture_output=True, text=True, check=True).stdout.strip()
     # seat_sync.reset_keep: a plain --keep would DELETE every file upstream stopped tracking (Transient/,
     # 2026-10-18); it keeps them on disk and otherwise behaves exactly like `git reset --keep`.
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    import seat_sync
     if before_reset:
         before_reset()
     now = out(top, "rev-parse", "HEAD")

@@ -50,6 +50,42 @@ def run(repo, *extra):
     return rc, buf.getvalue()
 
 
+def landed_twin_scenario(td):
+    """RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES: commits landed under other shas whose union-shard
+    context differs read '+' to git cherry. Twin T1 touches a file origin later changed (so it is not equal at origin's
+    tip); ledger-only L1 is landed while a later local ledger line is not. The sync must call T1 and L1 landed and
+    refuse only on the one really unlanded commit, then level once that lands."""
+    o, seat, peer = f"{td}/tw.git", f"{td}/tw_seat", f"{td}/tw_peer"
+    sh(td, "git", "init", "-q", "--bare", "-b", "main", o)
+    sh(td, "git", "clone", "-q", o, seat)
+    shard = "infrastructure/state/ledger/events/S.jsonl"
+    write(seat, ".gitattributes", "infrastructure/state/ledger/events/*.jsonl merge=union\n")
+    write(seat, shard, "seed\n"); write(seat, "r.json", "r1\n")
+    git(seat, "add", "--", ".gitattributes", shard, "r.json"); git(seat, "commit", "-qm", "init")
+    git(seat, "push", "-q", "origin", "HEAD:main")
+    sh(td, "git", "clone", "-q", o, peer)
+    peer_push(peer, {shard: "seed\npeer line\n"}, "peer ledger")
+    for repo, lines in ((seat, "seed\nT1 line\n"), (peer, "seed\npeer line\nT1 line\n")):
+        write(repo, "r.json", "r2\n"); write(repo, shard, lines)
+        git(repo, "commit", "-qm", "T1", "--", "r.json", shard)
+    for repo, lines in ((seat, "seed\nT1 line\nL1 line\n"), (peer, "seed\npeer line\nT1 line\nL1 line\n")):
+        write(repo, shard, lines); git(repo, "commit", "-qm", "L1", "--", shard)
+    write(peer, "r.json", "r3\n"); git(peer, "commit", "-qm", "upstream edits r.json", "--", "r.json")
+    git(peer, "push", "-q", "origin", "HEAD:main")
+    write(seat, shard, "seed\nT1 line\nL1 line\nunlanded\n"); git(seat, "commit", "-qm", "U", "--", shard)
+    git(seat, "fetch", "-q")
+    check(git(seat, "cherry", "origin/main", "HEAD").count("+") == 3, "twin world: git cherry calls all three unlanded")
+    rc, out = run(seat, "--no-fetch")
+    check(rc == 1 and "U is NOT on origin/main" in out, "only the really unlanded commit refuses the sync: " + out[-200:])
+    peer_push(peer, {shard: "seed\npeer line\nT1 line\nL1 line\nunlanded\n"}, "land U")
+    git(seat, "fetch", "-q")
+    rc, out = run(seat, "--no-fetch")
+    check(rc == 0 and "SYNCED" in out, "with U landed the clone levels: " + out[-200:])
+    check(any(" T1  [landed twin " in ln for ln in out.splitlines()), "the twin reads as landed twin: " + out[-300:])
+    check(git(seat, "rev-parse", "HEAD") == git(seat, "rev-parse", "origin/main")
+          and Path(seat, "r.json").read_text() == "r3\n", "HEAD equals origin/main and r.json holds upstream's edit")
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory() as td:
         os.environ["HOME"] = td
@@ -338,6 +374,7 @@ def main() -> int:
                   "its undo keeps the completed line whole: %r" % f.read_bytes())
         finally:
             S._blob = real_blob
+        landed_twin_scenario(td)
     print(f"{'ALL PASS' if not FAILS else f'{len(FAILS)} FAIL'}")
     return 1 if FAILS else 0
 
