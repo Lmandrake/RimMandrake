@@ -16,7 +16,10 @@ the old scan read hose|reel only), and three blind cycle 3 saw pass (a hose text
 path built by concatenation, a ThingDef labelled "garden hose reel" under an innocent defName), and five blind cycle 4 saw pass (a
 hose texture in a texture field the old tag list did not name, topTexPath; a reel texture in texturePath; a FlowWorks hose def type
 under an innocent defName, named only by its element tag; an RM_HoseReel defName literal in C#, no "/" in it; a patch whose xpath
-reaches into a hose reel's drawing) must each go red BY NAME; the clean copy and a hose COMMENT must stay green.
+reaches into a hose reel's drawing) must each go red BY NAME; and five blind cycle 5 saw pass (a hose def under 1.6/Defs and a
+hose texture under Common/, folders the game loads beside the root; a leftover assembly in Assemblies/ holding hose types; a
+hose texture path joined from slash-free pieces; Mod Settings text saying the mod draws hoses). The clean copy, a hose
+COMMENT and the slide-under setting's "pipe or hose port" text must stay green.
 Exit 0 green, 1 red, 2 instrument broke (a mutant that never applied, or the clean copy read red).
 """
 import re
@@ -32,6 +35,33 @@ LIT = re.compile(r'"((?:[^"\\\n]|\\.)*)"')   # a C# string literal; one holding 
 TYPE = re.compile(r"\b(?:class|struct|enum|interface|record)\s+(\w*(?:Hose|Reel|Pipe|hose|reel|pipe)\w*)")
 # a defName literal by the naming scheme (RM_/RSW_/RUT_), e.g. DefDatabase lookups: no "/" in it (blind cycle 4)
 DEFNAME = re.compile(r"^(?:RM|RSW|RUT)_\w+$")
+# blind cycle 5: a hose or reel as a name part, never inside "those" (bare literals, assembly identifiers, player text)
+HOSE_PART = re.compile(r"(?<![a-z])(?i:hose|reel)|Hose|Reel")
+# player-facing text that says this mod draws a hose or flexible pipe; text about a port (the slide-under setting) or
+# naming FlowWorks (where the hose went) is not such a claim
+CLAIM = re.compile(r"(?i)\bhoses?\b|\breels?\b|\bflexible pipes?\b")
+# names compiled into the GSS DLL from the shared draw-order table (_Shared/SlackGeometry/DrawOrder.cs, altitudes, not
+# things) and the legacy settings-file name LegacyName maps for FlowWorks to import (Core/LegacyName.cs)
+ALLOWED_NAMES = {"HoseBaseLift", "HoseFittingLift", "HoseQueue", "HoseTopAltitude", "LayerHose", "FireHosesMod"}
+
+
+def content_roots(mod):
+    """The folders the game loads content from: the mod root, any version folder (1.6) or Common/ beside it, and every
+    folder LoadFolders.xml names (blind cycle 5: a def under 1.6/Defs ships though no root scan sees it)."""
+    roots = [mod] + sorted(d for d in mod.iterdir() if d.is_dir() and re.fullmatch(r"\d+\.\d+|Common", d.name))
+    lf = mod / "LoadFolders.xml"
+    if lf.is_file():
+        try:
+            for li in ET.parse(lf).getroot().iter("li"):
+                if li.text and li.text.strip() not in ("/", ""):
+                    roots.append(mod / li.text.strip().strip("/"))
+        except ET.ParseError:
+            pass
+    seen, out = set(), []
+    for r in roots:
+        if r.is_dir() and r.resolve() not in seen:
+            seen.add(r.resolve()); out.append(r)
+    return out
 # prose fields: they may say where the hose went; every other element's text is a def field and is read (blind cycle 4: the
 # old fixed tag list missed topTexPath, texturePath and every modExtension field; label stays read, blind cycle 3)
 PROSE = {"description", "jobString", "reportString", "letterText", "letterLabel", "tooltip", "text"}
@@ -42,8 +72,9 @@ def scan(mod):
     FlowWorks' own art and defs, so GSS ships no pipe of its own)."""
     mod = Path(mod)
     hits = []
-    for top in ("Defs", "Patches"):
-        for f in sorted((mod / top).rglob("*.xml")) if (mod / top).is_dir() else []:
+    roots = content_roots(mod)
+    for top in [r / t for r in roots for t in ("Defs", "Patches")]:
+        for f in sorted(top.rglob("*.xml")) if top.is_dir() else []:
             try:
                 root = ET.parse(f).getroot()
             except ET.ParseError as e:
@@ -63,11 +94,19 @@ def scan(mod):
                 cls = el.get("Class")
                 if cls and WORD.search(cls):
                     hits.append("Class: %s (%s)" % (cls, f.relative_to(mod)))
-    tex = mod / "Textures"
-    for f in sorted(tex.rglob("*")) if tex.is_dir() else []:
-        # the whole path under Textures/, so a hose texture inside a Hose/ folder is seen (the bar's false pass: "missing a texture folder")
-        if f.is_file() and WORD.search(str(f.relative_to(tex))):
-            hits.append("texture: %s" % f.relative_to(mod))
+    for tex in [r / "Textures" for r in roots]:
+        for f in sorted(tex.rglob("*")) if tex.is_dir() else []:
+            # the whole path under Textures/, so a hose texture inside a Hose/ folder is seen (the bar's false pass: "missing a texture folder")
+            if f.is_file() and WORD.search(str(f.relative_to(tex))):
+                hits.append("texture: %s" % f.relative_to(mod))
+    # what ships as code: every assembly the game loads, read for hose and reel type and member names (blind cycle 5: a
+    # leftover hose DLL in Assemblies/ ships its classes whatever Source/ holds)
+    for asm in [r / "Assemblies" for r in roots]:
+        for f in sorted(asm.glob("*.dll")) if asm.is_dir() else []:
+            names = set(m.group(0).decode("ascii") for m in re.finditer(rb"[A-Za-z_][A-Za-z0-9_]{2,}", f.read_bytes()))
+            for n in sorted(names):
+                if HOSE_PART.search(n) and n not in ALLOWED_NAMES:
+                    hits.append("assembly: %s (%s)" % (n, f.relative_to(mod)))
     src = mod / "Source"
     for f in sorted(src.rglob("*.cs")) if src.is_dir() else []:
         text = re.sub(r"//[^\n]*|/\*.*?\*/", "", f.read_text(encoding="utf-8", errors="replace"), flags=re.S)
@@ -76,17 +115,27 @@ def scan(mod):
         if "SelfTest" in f.relative_to(src).parts:
             continue                        # the selftest project is never shipped: its literals draw nothing
         for m in LIT.finditer(text):
-            if "/" in m.group(1) and WORD.search(m.group(1)):
-                hits.append("texpath: %s (%s)" % (m.group(1)[:80], f.relative_to(mod)))
-            elif DEFNAME.match(m.group(1)) and WORD.search(m.group(1)):
-                hits.append("defname-literal: %s (%s)" % (m.group(1)[:80], f.relative_to(mod)))
+            lit = m.group(1)
+            if "/" in lit and WORD.search(lit):
+                hits.append("texpath: %s (%s)" % (lit[:80], f.relative_to(mod)))
+            elif DEFNAME.match(lit) and WORD.search(lit):
+                hits.append("defname-literal: %s (%s)" % (lit[:80], f.relative_to(mod)))
+            elif not re.search(r"\s", lit) and HOSE_PART.search(lit) and lit not in ALLOWED_NAMES:
+                # a path piece joined without a "/" literal (string.Join("/", ..., "Hose", ...)), blind cycle 5
+                hits.append("literal: %s (%s)" % (lit[:80], f.relative_to(mod)))
+            elif re.search(r"\s", lit) and CLAIM.search(lit) and not re.search(r"(?i)\bports?\b|FlowWorks", lit):
+                # player-facing text saying this mod draws a hose or a flexible pipe (the settings header, blind cycle 5)
+                hits.append("text: %s (%s)" % (lit[:80], f.relative_to(mod)))
     return hits
 
 
 def _copy(dst):
-    for top in ("Defs", "Patches", "Textures", "Source"):
+    tops = ["Defs", "Patches", "Textures", "Source", "Assemblies", "About"] + [r.name for r in content_roots(HERE)[1:]]
+    for top in tops:
         if (HERE / top).is_dir():
             shutil.copytree(HERE / top, Path(dst) / top, ignore=shutil.ignore_patterns("bin", "obj"))
+    if (HERE / "LoadFolders.xml").is_file():
+        shutil.copy(HERE / "LoadFolders.xml", Path(dst) / "LoadFolders.xml")
     return Path(dst)
 
 
@@ -197,6 +246,46 @@ def _plant_patch_xpath(m):
     return 'xpath: Defs/ThingDef[defName="RM_HoseReel"]/graphicData'
 
 
+def _plant_version_folder_def(m):
+    d = m / "1.6" / "Defs"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "RM_Planted.xml").write_text('<?xml version="1.0" encoding="utf-8"?>\n<Defs><ThingDef><defName>RM_HoseReel</defName>'
+                                      '<thingClass>Building</thingClass></ThingDef></Defs>\n', encoding="utf-8")
+    return "defName: RM_HoseReel"
+
+
+def _plant_common_texture(m):
+    d = m / "Common" / "Textures" / "Things"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "RM_HoseReel_south.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+    return "texture: Common/Textures/Things/RM_HoseReel_south.png"
+
+
+def _plant_assembly(m):
+    d = m / "Assemblies"
+    d.mkdir(exist_ok=True)
+    (d / "RimMandrakeFireHoses.dll").write_bytes(b"MZ\x90\x00\x03\x00Building_HoseReel\x00CompProperties_HoseReel\x00")
+    return "assembly: Building_HoseReel"
+
+
+def _plant_joined_path(m):
+    (m / "Source" / "PlantedJoin.cs").write_text('namespace X { static class D { static string P() => string.Join("/", "RimMandrake", '
+                                                 '"FlowWorks", "Hose", "HoseSegment"); } }\n', encoding="utf-8")
+    return "literal: Hose"
+
+
+def _plant_settings_text(m):
+    (m / "Source" / "PlantedText.cs").write_text('namespace X { static class D { const string H = "Drawn flexible hoses and wires '
+                                                 'to better display simple circuit-like plans underneath."; } }\n', encoding="utf-8")
+    return "text: Drawn flexible hoses"
+
+
+def _green_port_text(m):
+    (m / "Source" / "PlantedPort.cs").write_text('namespace X { static class D { const string L = "Cords slide under buildings at a '
+                                                 'diagonal (never onto a pipe or hose port)"; } }\n', encoding="utf-8")
+    return None
+
+
 def _green_selftest_literal(m):
     d = m / "Source" / "SelfTest"
     d.mkdir(parents=True, exist_ok=True)
@@ -224,7 +313,11 @@ def main():
                         ("M10_planted_label_hose_reel", _plant_label),
                         ("M11_planted_toptexpath", _plant_toptexpath), ("M12_planted_texturepath", _plant_texturepath),
                         ("M13_planted_def_type_tag", _plant_def_type_tag), ("M14_planted_defname_literal", _plant_defname_literal),
-                        ("M15_planted_patch_xpath", _plant_patch_xpath), ("G2_selftest_literal_stays_green", _green_selftest_literal),
+                        ("M15_planted_patch_xpath", _plant_patch_xpath),
+                        ("M16_planted_version_folder_def", _plant_version_folder_def), ("M17_planted_common_texture", _plant_common_texture),
+                        ("M18_planted_assembly_hose_types", _plant_assembly), ("M19_planted_joined_path_pieces", _plant_joined_path),
+                        ("M20_planted_settings_text_hoses", _plant_settings_text), ("G3_port_text_stays_green", _green_port_text),
+                        ("G2_selftest_literal_stays_green", _green_selftest_literal),
                         ("G1_hose_comment_stays_green", _green_comment), ("G0_clean_copy", None)):
         with tempfile.TemporaryDirectory(prefix="gss_nohose_") as tmp:
             m = _copy(tmp)

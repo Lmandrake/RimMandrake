@@ -497,8 +497,9 @@ namespace RimMandrake.GimmeSomeSlack
 
         public override string SettingsCategory() => "RimMandrake: Gimme Some Slack";
 
-        /// <summary>Owner review 2026-10-04 B27, his words: the one header line of the one settings entry.</summary>
-        public const string Header = "Drawn flexible pipes and wires to better display simple circuit-like plans underneath.";
+        /// <summary>Owner review 2026-10-04 B27, his words: the one header line of the one settings entry; "flexible pipes and"
+        /// dropped 2026-11-16 (blind cycle 5) because the hoses it named moved to FlowWorks by his 2026-10-10 ruling.</summary>
+        public const string Header = "Drawn wires to better display simple circuit-like plans underneath.";
 
         /// <summary>B27: ONE Mod Settings entry for the one mod. The overhead-line settings keep their own ModSettings class and
         /// saved file (no settings lost on upgrade), but its Mod returns an empty category so RimWorld does not list it; this
