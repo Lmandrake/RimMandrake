@@ -51,5 +51,26 @@
       "evidence": "All 50 targeted read-source fingerprints still match; owner quotes already compared exactly to original events."
     }
   ],
-  "limits": "Design validation only. No game, installed assembly, actual scene, runtime acceptance, deployment or production code tested/changed in this stage."
+  "limits": "Design validation only. No game, installed assembly, actual scene, runtime acceptance, deployment or production code tested/changed in this stage.",
+  "retry_reviews": [
+    {
+      "run": "rm-role-designercodex-1794823184",
+      "at": "2026-11-16T10:01:41.477592+00:00",
+      "source": [
+        "design/concepts/FeverWood/stage.json",
+        "design/concepts/FeverWood/source_review.json",
+        "design/concepts/FeverWood/write_checks.json",
+        "design/concepts/FeverWood/work_manifest.json"
+      ],
+      "reviewer": "BENCH self-audit",
+      "rejection": "The previous run was rejected for a Codex websocket idle timeout after writing its stage-3 package.",
+      "recovery": "Retained the persisted stage-3 design and reran offline validation for the current run.",
+      "sources": "All 50 recorded source fingerprints match current files. Sheet quotations were reread in the original OWNER events.",
+      "coverage": "23 leaves, 44 planned scenes, five showcases and 44 built/in-scope coverage units. All 44 missing full scene entry points map to seven filed items with spec, verify, criteria and refs sections.",
+      "floor": "All 23 inherited lines remain applicable.",
+      "choices": "Retained the prior agent-authored grouping, scene designs and later-showcase order.",
+      "runtime_acceptance": "UNMEASURED",
+      "transport": "Current result validation can verify the files. Final transport completion is observed by the launcher when this run ends."
+    }
+  ]
 }
