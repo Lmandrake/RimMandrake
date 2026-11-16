@@ -834,22 +834,33 @@ def holder_brief(mod, lease, token, role, stage):
 UNM_STAGE = "UNMEASURED"
 
 
-def launch(root, mod, lease, role, stage=None, ts=None, views=True):
+def launch(root, mod, lease, role, stage=None, ts=None, views=True, budget=None):
     """DISPATCH starts a holder's stage run from the packet (spec §3.1, §3.3): grants `lease` (the next fencing token),
     records run.start naming the lease, the role, the stage the ledger stands at now (`stage` only when the ledger
     names none) and the packet's size, and -> {"token", "run", "brief", "stage", "writer"}; the brief begins with the
-    packet text, then how the holder writes and checkpoints. The run is named for its lease."""
+    packet text, then how the holder writes and checkpoints. The run is named for its lease. The packet AND the holder
+    lines fit `budget` (packet_budget_tokens): the packet is trimmed to what the holder lines leave (FlowWorks launched
+    at 15,093 against 15,000, RIMMANDRAKE_DISPATCH_PILOT_HOLDER_RUN_ITSELF_HAND_LAUNCHED_TWICE); one that still cannot
+    fit raises, its lease revoked and no run.start written."""
     _check_mod(mod)
+    budget = budget or config()["packet_budget_tokens"]
     tok = grant(root, mod, lease, ts=ts, views=False)
     events = read(root, mod)
     at = reduce(events).get("stage") or stage
+    tail = "\n\n" + holder_brief(mod, lease, tok, role, at) + "\n"
+    room = max(1, budget - tokens(tail) - 1)
     try:
-        text, _info = packet_from(mod, events, stale=stale_check(root))
+        text, _info = packet_from(mod, events, budget=room, stale=stale_check(root))
     except Exception:                               # noqa: BLE001 — the git staleness check is a nicety, not the packet
-        text, _info = packet_from(mod, events)
+        text, _info = packet_from(mod, events, budget=room)
+    brief = text.rstrip("\n") + tail
+    if tokens(brief) > budget:
+        append(root, mod, "DISPATCH", "lease.revoke", "lease", body={"lease": lease}, ts=ts, views=views)
+        raise ModLedgerError("packet over the line: %d tokens with the holder lines > packet_budget_tokens %d, and "
+                             "nothing droppable is left; lease %r revoked, no run started" % (tokens(brief), budget,
+                                                                                             lease))
     append(root, mod, "DISPATCH", "run.start", "run", run=lease, ts=ts, views=views,
            body={"run": lease, "lease": lease, "token": tok, "role": role, "stage": at, "packet_tokens": tokens(text)})
-    brief = text.rstrip("\n") + "\n\n" + holder_brief(mod, lease, tok, role, at) + "\n"
     return {"token": tok, "run": lease, "brief": brief, "stage": at, "writer": "HOLDER.%s" % lease}
 
 

@@ -65,6 +65,15 @@ design/RimMandrake/pipeline_interventions_census_2026-11-15.md; selftest_maturat
   hand acts     maturation_hands.observe records every hand act on the pipeline; the reading's hand_acts block counts
                 the ones with no follow-up, and one open a day is a Needs Conductor line and the alarm
                 OPS_MATURATION_HAND_ACT_UNFOLDED (RIMMANDRAKE_RECORD_HAND_ACTS_TICK_ONLY_SAW_ITS_OWN)
+  pilot hands   the Conductor's `pilot-launch` acts of 2026-11-15/16, applied by the tick
+                (RIMMANDRAKE_DISPATCH_PILOT_HOLDER_RUN_ITSELF_HAND_LAUNCHED_TWICE; selftest_dispatch_pilot_holder.py): a
+                Conductor decision on the move that opened blind cycle N launches cycle N past the visit's automatic
+                count (cycle_decision); a pilot whose road-back fixers are spent gets ONE holder run on all its open
+                road-back items, another only once that set shrank (pilot_holders); red deciders with no open item at
+                the certificate get an item each and one builder (cert_red_decide, never twice at the same reds); a
+                blind judge on a pilot writes JUDGE.<run>, starts with no packet and never in the holder's session,
+                and is sealed at its end (judge_open, end_judge_run; `judge-verify MOD` is its verification list);
+                the ledger part of a launch fits packet_budget_tokens or is refused (modledger.launch)
   slots_full    max_live live runs on advancing mods already (the Conductor's included)
   account_hold  the Dispatcher's account pick holds role launches (its rule's `hold` list): nothing
   launch        spawn a ledger item under this one (seat RUNNER, as ops_watch files), publish the shard, `maturation.py launch` it (opus, the cap)
@@ -288,6 +297,8 @@ def gather(root, cfg, live=True):
             f["live_units"] = UNM
         out[mod] = add_ingame(root, mod, add_blind(root, mod, f, runs if isinstance(runs, list) else []),
                               runs if isinstance(runs, list) else [])
+        if f.get("stage") == "offline_build" and f.get("owed") == "certificate":
+            add_cert(root, mod, f)
         out[mod]["killed"] = killed_runs(runs if isinstance(runs, list) else [])
         out[mod]["ingame_live_other"] = list(other)
     return out
@@ -340,6 +351,16 @@ def add_ingame(root, mod, f, runs):
     return f
 
 
+def add_cert(root, mod, f):
+    """At the offline build waiting on its certificate: the certificate's rows and the test table's known_red marks
+    (cert_red_decide reads which red deciders an item already owes)."""
+    f["certificate"] = M.certificate(root, mod, "blind_challenge")
+    tt, _ = JC.read_table(root, mod)
+    f["known_red"] = {tid: t["known_red"] for tid, t in ((tt or {}).get("tests") or {}).items()
+                      if isinstance(t, dict) and isinstance(t.get("known_red"), str)}
+    return f
+
+
 def add_blind(root, mod, f, runs):
     """At the blind challenge: maturation.blind_facts (cycle, visit, exit reading, owed) and blind_runs, the runs whose
     item names a blind run (BLIND in it) that started since the cycle opened (10 min of slack for a launch that beat
@@ -348,10 +369,24 @@ def add_blind(root, mod, f, runs):
         return f
     f.update(M.blind_facts(root, mod))
     f["certificate"] = M.certificate(root, mod, "blind_challenge")
+    f["cycle_decision"] = cycle_decision(M.load(root, mod) or {})
     t0 = _ts(f.get("opened"))
     f["blind_runs"] = [r.get("unit") for r in runs or [] if "BLIND" in str(r.get("item") or "").upper()
                        and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
     return f
+
+
+def cycle_decision(rec):
+    """-> {"at", "text"} when the move that opened the blind cycle now open (the record's last move into the blind
+    challenge) carries a recorded Conductor decision (`maturation.py advance <Mod> --to blind_challenge
+    --conductor-decision ...`), else None. That decision allows that one cycle, past the visit's automatic cycles
+    (RIMMANDRAKE_DISPATCH_PILOT_HOLDER_RUN_ITSELF_HAND_LAUNCHED_TWICE: GimmeSomeSlack read "auto_spent (cycle 2, 3, 4)"
+    after the Conductor opened cycle 5, and the cycle was launched by hand)."""
+    if not isinstance(rec, dict) or rec.get("stage") != "blind_challenge":
+        return None
+    moves = [m for m in rec.get("moves") or [] if isinstance(m, dict) and m.get("to") == "blind_challenge"]
+    text = ((moves[-1].get("confirmed") or {}).get("conductor_decision") if moves else None)
+    return {"at": moves[-1].get("at"), "text": str(text)} if text else None
 
 
 def account_gate(sched_path=None, dstate=None):
@@ -708,8 +743,13 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             put("held" if "hold" in (f.get("other_refusals") or []) else "blocked", "refused by %s, not build work" % what)
             continue
         if owed == "certificate":
-            cert_put(put, mod, "blind_challenge", f.get("certificate_why"), f.get("certificate_fix"),
-                     "the move into the blind challenge")
+            got = cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap if cap_ok else 0, releases)
+            if got == "launch":
+                live_total += 1
+                launches.append(mod)
+            elif not got:
+                cert_put(put, mod, "blind_challenge", f.get("certificate_why"), f.get("certificate_fix"),
+                         "the move into the blind challenge")
             continue
         if owed == "ready to advance":
             put("ready", "every exit test passes", "ready to advance: every Stage 3 exit test passes "
@@ -725,11 +765,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             put("blind", "the test table cannot be read" + te, "the test table cannot be read%s; no builder launches on "
                 "it" % te)
             continue
-        spent = dict(f.get("stage_runs") or {})
-        for x in s.get("launches") or []:
-            if x.get("stage") == "offline_build" and x.get("unit") not in spent:
-                spent[x["unit"]] = (f.get("run_usd") or {}).get(x["unit"], x.get("cap") or 0.0)
-        usd = round(sum(spent.values()), 2)
+        usd = offline_usd(f, s)
         row["stage_usd"] = usd
         over, rid = ceiling_gate(cfg, s, mod, "offline_build", usd, cap if cap_ok else 0, "the offline build", releases)
         stop = s.get("stopped")
@@ -791,6 +827,183 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             n, ", this run takes a batch of %d" % len(batch) if row.get("batch") else "", account[1]))
         launches.append(mod)
     return rows, launches
+
+
+def offline_usd(f, s):
+    """-> the mod's measured dollars at the offline build: the runs the status page places there, plus this step's
+    launches there it does not place yet (at their measured dollars, else their cap)."""
+    spent = dict(f.get("stage_runs") or {})
+    for x in s.get("launches") or []:
+        if x.get("stage") == "offline_build" and x.get("unit") not in spent:
+            spent[x["unit"]] = (f.get("run_usd") or {}).get(x["unit"], x.get("cap") or 0.0)
+    return round(sum(spent.values()), 2)
+
+
+def red_deciders(f):
+    """-> the offline deciders the certificate refuses as recorded red (clause green), sorted."""
+    cv = f.get("certificate")
+    if not isinstance(cv, dict):
+        return []
+    return sorted({r.get("test") for r in cv.get("rows") or [] if r.get("status") == "REFUSED"
+                   and r.get("clause") == "green" and r.get("test")})
+
+
+def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases=None):
+    """At the offline build waiting on its certificate, with deciders recorded red (FlowWorks, 2026-11-16 1:36 AM PST:
+    "owes nothing launchable at offline_build (certificate) and has no open road-back item", reds
+    T_FETCH_FALLEN_OFFLINE, T_LIQUID_COATING_OFFLINE, T_TOSS_FLAME_OFFLINE). -> "launch" (row["cert_reds"]: execute
+    files the item that owes each red decider and launches ONE builder on them, cert_launch), "decided" (the row put:
+    settling, stopped, or a gate), or None (no reds: the certificate wait stands; stale stamps alone are
+    `certificate --run`). Never a second automatic try at the same reds: another only once the red set shrank, or a
+    launch that never started on a transient fault, within launch_tries."""
+    mod = row["mod"]
+    reds = red_deciders(f)
+    if not reds:
+        return None
+    row["cert_reds"] = reds
+    row["certificate"] = {"rows": [r for r in (f.get("certificate") or {}).get("rows") or []
+                                   if r.get("clause") == "green" and r.get("test") in reds]}
+    row["known_red"] = {t: (f.get("known_red") or {}).get(t) for t in reds if (f.get("known_red") or {}).get(t)}
+    prior = s.get("cert_red") if isinstance(s.get("cert_red"), dict) else None
+    if prior and prior.get("unit") and 0 <= now - float(prior.get("at") or 0) < float(cfg.get("settle_s", 180)):
+        put("settling", "the builder %s on red deciders %s started %d s ago" % (
+            prior["unit"], ", ".join(prior.get("tests") or []), now - float(prior.get("at") or 0)))
+        return "decided"
+    retry = bool(prior and not prior.get("unit") and AUT.transient(str(prior.get("failed") or ""))
+                 and int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3)))
+    if prior and not retry and not set(reds) < set(prior.get("tests") or []):
+        why = ("the builder %s on red deciders %s ended and %s still red" % (
+            prior["unit"], ", ".join(prior.get("tests") or []), ", ".join(reds)) if prior.get("unit") else
+            "the launch on red deciders %s failed: %s" % (", ".join(prior.get("tests") or []), prior.get("failed")))
+        put("stopped", why, "stopped, %s; never a second automatic try at the same reds (items %s; "
+            "`maturation_dispatch.py clear %s --why ...` lifts it)" % (
+                why, ", ".join(sorted(set((prior.get("items") or {}).values()))) or "none filed", mod))
+        return "decided"
+    usd = offline_usd(f, s)
+    row["stage_usd"] = usd
+    over, rid = ceiling_gate(cfg, s, mod, "offline_build", usd, cap, "the offline build", releases)
+    if over:
+        put("stopped", over, "stopped, %s" % over)
+        return "decided"
+    if rid:
+        row["release"] = rid
+    if not cap:
+        put("no_cap", "the settings have no positive cap_usd; nothing launches without a cap")
+        return "decided"
+    if not account[0]:
+        put("account_hold", account[1])
+        return "decided"
+    if no_slot(cfg, live_total, put):
+        return "decided"
+    row["cap"] = cap
+    put("launch", "its certificate refuses %d red decider(s) (%s) and nothing is live on it: the item owing each and "
+        "one builder on them%s (%s)" % (len(reds), ", ".join(reds), ", a retry after a transient fault" if retry
+                                       else "", account[1]))
+    return "launch"
+
+
+def cert_item_id(mod, test, known):
+    """-> a rimflow name for the item owing red decider `test`: RIMMANDRAKE_GREEN_<MOD>_<TEST words>_RED_DECIDER, test
+    words dropped from the end until it fits 9 words and 64 chars (rimflow namecheck)."""
+    words = [w for w in re.split(r"[^A-Z0-9]+", str(test).upper()) if w]
+    while True:
+        parts = ["RIMMANDRAKE", "GREEN", mod.upper()] + words + ["RED", "DECIDER"]
+        name = "_".join(parts)
+        if (len(parts) <= 9 and len(name) <= 64) or not words:
+            break
+        words = words[:-1]
+    if name not in known:
+        return name
+    for k in range(2, 20):
+        cand = "%s_AGAIN_%s" % (name[:-len("_DECIDER")], ONES[k])
+        if cand not in known and len(cand) <= 64 and cand.count("_") <= 8:
+            return cand
+    return None
+
+
+def cert_brief(mod, chosen, cap, bars):
+    lines = ["# Make %s's red offline deciders green (Stage 3: the certificate before the blind challenge)" % mod, "",
+             "Items: %s. Seat BENCH. Spend bound $%s. Offline only: no game, no bridge, no helpers." % (
+                 ", ".join(sorted(set(chosen.values()))), cap), "",
+             "`maturation.py certificate %s` refuses the move into the blind challenge: these offline deciders are "
+             "recorded red, and no open item owed them until the Dispatch step filed these (item "
+             "RIMMANDRAKE_DISPATCH_PILOT_HOLDER_RUN_ITSELF_HAND_LAUNCHED_TWICE):" % mod, ""]
+    lines += ["- `%s` (bars %s): item %s" % (t, ", ".join(bars.get(t) or []) or "-", it) for t, it in sorted(
+        chosen.items())]
+    lines += ["", "1. First run `python3 src/RimMandrake/rimflow/maturation.py certificate %s --run` (zero tokens): it "
+              "reruns every offline decider and stamps its build. A decider that turns green needs nothing more: land "
+              "`design/concepts/%s/version/test_table.json` and close its item with that sha." % (mod, mod),
+              "2. For each decider still red: read the test and the mod. Fix the mod, or the test where the test is "
+              "wrong (never loosen a north-star bar); the failing test first, seen failing; land with `./publish -m "
+              "... <paths>`; close its item with the published sha.",
+              "3. Rerun `certificate %s --run`, land the table, and end with `maturation.py certificate %s` exiting 0, "
+              "or a note starting `LEFT OPEN:` on each item still red saying what remains." % (mod, mod)]
+    return "\n".join(lines) + "\n"
+
+
+def cert_launch(root, cfg, st, row, now, fx, known, do_file):
+    """execute's act for cert_red_decide's launch: reuse the open item a red decider already has (its known_red, or
+    the one filed for it before), file one for each other, then ONE builder on all of them (a pilot's from its ledger
+    packet as its holder). Booked in s["cert_red"]: the reds, the items, the unit. -> True when it started."""
+    mod, s = row["mod"], st["mods"][row["mod"]]
+    reds, kr = row["cert_reds"], row.get("known_red") or {}
+    mine = s.setdefault("cert_red_items", {})
+    cand = {t: kr.get(t) or mine.get(t) for t in reds}
+    ended = (fx.get("ended") or (lambda ids: M.ledger_ended(root, ids)))([v for v in cand.values() if v])
+    bars = {}
+    for r in ((row.get("certificate") or {}).get("rows") or []):
+        if r.get("test") in reds and r.get("clause") == "green":
+            bars.setdefault(r["test"], []).append(r.get("bar"))
+    chosen, failed = {}, None
+    prior = s.get("cert_red") if isinstance(s.get("cert_red"), dict) else {}
+    for t in reds:
+        if cand.get(t) and cand[t] not in ended:
+            chosen[t] = cand[t]
+            continue
+        name = cert_item_id(mod, t, known)
+        title = ("%s Stage 3: offline decider %s is recorded red; make it green, offline (filed by the Dispatch step)"
+                 % (mod, t))
+        why = ("delegated: maturation_dispatch.py; the certificate refuses %s as recorded red with no open item owing "
+               "it, measured %s" % (t, pac(now)))
+        ok, text = do_file(name, title, why) if name else (False, "no free item name")
+        if not ok:
+            failed = text
+            break
+        mine[t] = name
+        chosen[t] = name
+        known.add(name) if isinstance(known, set) else None
+    unit, text = None, failed
+    if not failed:
+        cap = row.get("cap") or cfg["cap_usd"]
+        item = sorted(set(chosen.values()))[0]
+        brief = cert_brief(mod, chosen, cap, bars)
+        do_brief = fx.get("launch_brief") or AUT.launch_brief
+        if (fx.get("pilot") or pilot_ledger)(root, mod):
+            try:
+                led = ledger_open(root, mod, "builder", brief, stage="offline_build", now=now, fx=fx)
+            except Exception as e:      # noqa: BLE001  a refused grant is a launch that never started
+                led, text = None, "REFUSED: %s's ledger launch failed: %s: %s" % (mod, type(e).__name__, e)
+            if led:
+                rc, text, unit = do_brief(item, led["brief"], cfg.get("model", "opus"), cap, cfg.get("seat", "BENCH"),
+                                          env=led["env"])
+                unit = unit if rc == 0 else None
+                text = "%s; %s" % ((text or "").splitlines()[0] if text else rc,
+                                   ledger_after(root, st, mod, led, unit, item, now, fx))
+        else:
+            rc, text, unit = do_brief(item, brief, cfg.get("model", "opus"), cap, cfg.get("seat", "BENCH"))
+            unit = unit if rc == 0 else None
+        if unit:
+            s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap": cap,
+                                                 "stage": "offline_build", "cert_reds": reds})
+    s["cert_red"] = {"tests": reds, "items": chosen, "unit": unit, "at": now, "failed": None if unit else text,
+                     "tries": int(prior.get("tries") or 0) + 1 if not prior.get("unit") and prior else 1}
+    if unit:
+        row.update(decision="launched", unit=unit, item=sorted(set(chosen.values()))[0], why=text,
+                   items=sorted(set(chosen.values())))
+        return True
+    row.update(decision="launch_failed", why=str(text), need="%s: the launch on red deciders %s failed (%s); the step "
+               "will not retry it on its own" % (mod, ", ".join(reds), text))
+    return False
 
 
 def retriable(cfg, x, killed=None):
@@ -945,7 +1158,10 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
         put("stopped", why, "stopped, %s; never a second automatic try" % why)
         return False
     per = int(cfg.get("blind_auto_cycles_per_visit", 1))
-    if len([x for x in ours if x is not retry]) >= per:
+    dec = f.get("cycle_decision")
+    if dec:     # the Conductor's recorded decision opened this cycle: it allows this one, past the visit's count
+        row["conductor_decision"] = "%s: %s" % (dec.get("at"), str(dec.get("text"))[:160])
+    if len([x for x in ours if x is not retry]) >= per and not dec:
         put("auto_spent", "the visit's %d automatic cycle(s) are spent (cycle %s)" % (
             per, ", ".join(str(x.get("cycle")) for x in ours)),
             "blind cycle %s is open; the Dispatch step runs %d automatic cycle(s) per visit (cycle %s was), so launch "
@@ -1270,8 +1486,87 @@ def ledger_open(root, mod, role, brief, stage=None, now=None, fx=None):
     out = modledger.launch(root, mod, lease, role, stage=stage)
     landed = land_ledger(root, [mod], "run %s on %s granted" % (lease, mod), fx)
     return {"run": lease, "stage": out["stage"], "packet": out["brief"], "landed": landed,
-            "brief": out["brief"].rstrip("\n") + ("\n\n---\n\n" + brief if brief else ""),
+            "brief": out["brief"].rstrip("\n") + "\n\n" + renew_line(mod, out["writer"], out["token"]) + (
+                "\n\n---\n\n" + brief if brief else ""),
             "env": {"RM_MODLEDGER_WRITER": out["writer"], "RM_MODLEDGER_TOKEN": str(out["token"])}}
+
+
+def renew_line(mod, writer, token):
+    """-> the holder's lease-renewal instruction: a lease idle past lease_idle_minutes lapses, and every later append,
+    the closing checkpoint included, is refused (GimmeSomeSlack blind cycle 5, 2026-11-16 1:03 AM PST)."""
+    idle = modledger.config()["lease_idle_minutes"]
+    return ("Your lease lapses after %d minutes with no append from you, and then every append is refused, your closing "
+            "checkpoint included. Renew it at least every %d minutes of work (and before a long build or test):\n\n"
+            "    python3 src/RimMandrake/rimflow/modledger.py append --mod %s --writer %s --token %d --kind lease.renew "
+            "--subject lease" % (idle, max(5, idle * 2 // 3), mod, writer, token))
+
+
+JUDGE_ME = "python3 src/RimMandrake/rimflow/modledger.py"
+
+
+def judge_open(root, mod, stage=None, now=None, fx=None):
+    """A blind judge's run on a pilot mod begins (spec §3.6): DISPATCH records run.start naming role blind_judge and the
+    writer JUDGE.<run>; no holder lease is granted (a judge holds none, so none lapses), and the brief carries NO ledger
+    packet: the judge is told nothing an earlier judge or the holder found. It writes its findings and its verdicts on
+    claimed fixes to its own shard, sealed at its end (end_ledger_runs). The ledger lands before the launch, as a
+    holder's grant does. -> the dict ledger_open returns, with "judge": True and "writer"."""
+    now = now or time.time()
+    run = "judge-%d" % int(now)
+    w = "JUDGE.%s" % run
+    lines = judge_lines(mod, run, stage)
+    modledger.append(root, mod, "DISPATCH", "run.start", "run", run=run,
+                     body={"run": run, "role": "blind_judge", "writer": w, "stage": stage,
+                           "packet_tokens": modledger.tokens(lines)})
+    landed = land_ledger(root, [mod], "judge run %s on %s started" % (run, mod), fx)
+    return {"run": run, "stage": stage, "packet": lines, "landed": landed, "brief": lines, "judge": True,
+            "writer": w, "env": {"RM_MODLEDGER_WRITER": w}}
+
+
+def judge_lines(mod, run, stage):
+    w = "JUDGE.%s" % run
+    a = "%s append --mod %s --writer %s --run %s" % (JUDGE_ME, mod, w, run)
+    return "\n".join([
+        "## You judge %s blind: run %s, stage %s; you write the mod ledger as `%s`" % (mod, run, stage or "-", w), "",
+        "You hold no lease and are not the mod's holder. You are told nothing an earlier judge or the holder found: "
+        "until your lane 1 is recorded, do not open `design/concepts/%s/ledger/` (its shards and views) and do not run "
+        "`modledger.py packet`, `find`, `show` or `since` on %s." % (mod, mod), "",
+        "**Discovery (blind).** Each fault you find goes in as you find it, with the precise fix you would make (it goes "
+        "back to the holder fully informed):", "",
+        "    %s --kind finding.open --subject finding:<NAME> --text \"<what fails>\" \\" % a,
+        "      --fix \"<file: the change>\" --accept \"<command and its expected result>\" --bars <ids> "
+        "--evidence <ref>", "",
+        "**Verification (after your lane 1 is recorded).** Only then print the findings the holder claims fixed (each "
+        "finding's text, reproduction and the claim's test, never the holder's story):", "",
+        "    python3 src/RimMandrake/rimflow/maturation_dispatch.py judge-verify %s" % mod, "",
+        "and rule on each, against the commit you judged:", "",
+        "    %s --kind finding.verified --subject <finding> --code-sha <sha> --text \"<how you checked>\"" % a,
+        "    %s --kind finding.reopened --subject <finding> --code-sha <sha> --text \"<what still fails>\"" % a, "",
+        "Tests you run go in as `--kind test.run` (result, command). Your shard is sealed when your run ends: write "
+        "every verdict before you stop."])
+
+
+def judge_verify_text(root, mod):
+    """-> `judge-verify MOD`: the mod's findings the holder claims fixed, for a judge's verification phase: each one's
+    finding text, its accept command, its bars and the test the claim names, never the claim's text (the holder's
+    story, spec §3.6). 'none' when there are none."""
+    events = modledger.read(root, mod)
+    st = modledger.reduce(events)
+    tests = {}
+    for e in events:
+        if e.get("kind") == "finding.claimed_fixed":
+            tests[e.get("subject")] = (e.get("body") or {}).get("test")
+    out = ["# %s: findings claimed fixed, to verify (judge-verify)" % mod, ""]
+    n = 0
+    for subj, f in sorted((st.get("findings") or {}).items()):
+        if f.get("status") != "claimed_fixed":
+            continue
+        n += 1
+        out += ["- `%s` (%s; bars %s)" % (subj, f.get("class") or "-", ", ".join(f.get("bars") or []) or "none"),
+                "  finding: %s" % f.get("text"), "  reproduce: %s" % (f.get("accept") or "none recorded"),
+                "  the claim's test: %s" % (tests.get(subj) or "none named"),
+                "  claimed at code %s" % (f.get("code_sha") or UNM)]
+    out.append("" if n else "none: no finding is claimed fixed")
+    return "\n".join(out) + "\n"
 
 
 def ledger_after(root, st, mod, led, unit, item, now, fx=None):
@@ -1279,7 +1574,10 @@ def ledger_after(root, st, mod, led, unit, item, now, fx=None):
     never started; land the ledger. -> one line for the launch text."""
     if unit:
         st.setdefault("mods", {}).setdefault(mod, {}).setdefault("ledger_runs", []).append(
-            {"run": led["run"], "unit": unit, "item": item, "at": now, "stage": led["stage"]})
+            {"run": led["run"], "unit": unit, "item": item, "at": now, "stage": led["stage"],
+             "writer": led.get("writer") or led["env"].get("RM_MODLEDGER_WRITER")})
+    elif led.get("judge"):
+        end_judge_run(root, mod, led["run"], "never_started")
     else:
         modledger.end_run(root, mod, led["run"], "never_started")
     land_ledger(root, [mod], "run %s on %s %s" % (led["run"], mod, "started" if unit else "never started"), fx)
@@ -1298,7 +1596,10 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
         return launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, **kw)
     now = now or time.time()
     try:
-        led = ledger_open(root, mod, ROLE_OF_STAGE.get(stage, "holder"), "", stage=stage, now=now, fx=fx)
+        if stage == "blind_challenge":      # a judge is never the holder: it writes JUDGE.<run>, blind (spec §3.6)
+            led = judge_open(root, mod, stage=stage, now=now, fx=fx)
+        else:
+            led = ledger_open(root, mod, ROLE_OF_STAGE.get(stage, "holder"), "", stage=stage, now=now, fx=fx)
     except Exception as e:      # noqa: BLE001  a refused grant is a launch that never started, said in its words
         return 2, "REFUSED: %s's ledger launch failed: %s: %s" % (mod, type(e).__name__, e), None
     rc, text, unit = launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, preface=led["brief"],
@@ -1336,47 +1637,128 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
                 return 2, "REFUSED: %s owes %s at %s; name the filed item it runs under: --item <ID>" % (mod, owed, stage)
             rc, text, unit = launch_stage(root, cfg, st, mod, cap, item, now, fx, launch=fx.get("launch"))
         elif opened:
-            have = M.ledger_needs(root, [x["id"] for x in opened if not x.get("needs")])
-            opened = [dict(x, needs=x.get("needs") or have.get(x["id"])) for x in opened]
-            # offline stages never wait for a game: at one, an item only the game can show is Stage 6 work, given no
-            # run here (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)
-            game6 = [x["id"] for x in opened if x["needs"] in M.LIVE_NEEDS] if not M.game_takeable(stage) else []
-            ids = [x["id"] for x in opened if x["id"] not in game6]
-            if not ids:
-                return 2, ("REFUSED: %s stands at %s, an offline stage, and every open road-back item (%s) needs the "
-                           "live game: no offline run can close one, and none is given the game. They are Stage 6 "
-                           "work; return the record there: %s" % (mod, stage, ", ".join(game6),
-                                                                  M.game_only_cmd(mod, game6)))
-            item = item if item and item not in game6 else ids[0]
-            # at Stage 6, every open item needs the live game: the holder takes the bridge and the game, one holder at a
-            # time (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
-            live = M.game_takeable(stage) and AUT.live_only(opened)
-            if live:
-                ok, why_b = (fx.get("bridge") or M.bridge_idle)("%s live holder run" % mod)
-                if not ok:
-                    return 2, ("REFUSED: %s's open items all need the live game and the bridge is not takeable (%s); "
-                               "one bridge holder at a time" % (mod, why_b))
-            plan = modledger.resume_plan(root, mod)     # the holder's recorded session is resumed, not restarted
-            rkw = {"session": plan["session_id"]} if plan.get("action") == "resume" and plan.get("session_id") else {}
-            led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap, live=live) + (
-                "\nReconcile first: %s.\n" % plan["why"] if plan.get("reconcile") else "") + (
-                "\nThis is the mod's %sholder run: work every open road-back item together, from the packet above: %s. "
-                "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
-                % ("live " if live else "", ", ".join(ids)) + (
-                "Not yours: %s need%s the live game, Stage 6 work; work none of them here.\n" % (
-                    ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "")), stage=stage, now=now, fx=fx)
-            rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
-                item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"), env=led["env"], **rkw)
-            unit = unit if rc == 0 else None
-            text = "%s%s%s; %s" % ("live holder (bridge and game allowed): " if live else "",
-                                   "%s; " % plan["why"] if rkw else "",
-                                   (text or "").splitlines()[0] if text else rc,
-                                   ledger_after(root, st, mod, led, unit, item, now, fx))
+            rc, text, unit, item = road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx)
+            if rc is None:      # refused before any launch
+                return 2, text
         else:
             return 2, "REFUSED: %s owes nothing launchable at %s (%s) and has no open road-back item" % (mod, stage, owed)
         s.setdefault("pilot_launches", []).append({"at": now, "item": item, "unit": unit, "why": why, "stage": stage})
         _write(p, st)
     return (0 if unit else 1), "%s %s: %s" % ("LAUNCHED" if unit else "NOT STARTED", mod, text)
+
+
+def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx):
+    """One pilot holder run on every open road-back item together (`opened`, [{id, needs}]), from the ledger packet:
+    pilot-launch's road back, and the tick's once the fixers are spent (pilot_holders). Items only the live game can
+    show get no run at an offline stage; at Stage 6 a live-only set gets the live brief when the bridge is takeable.
+    -> (rc, text, unit, item); rc None is a refusal before any launch, said in its words, nothing booked. Booked in s["holder_road_back"] with
+    the item set it ran on (holder_spent reads it)."""
+    have = M.ledger_needs(root, [x["id"] for x in opened if not x.get("needs")])
+    opened = [dict(x, needs=x.get("needs") or have.get(x["id"])) for x in opened]
+    # offline stages never wait for a game: at one, an item only the game can show is Stage 6 work, given no
+    # run here (RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)
+    game6 = [x["id"] for x in opened if x["needs"] in M.LIVE_NEEDS] if not M.game_takeable(stage) else []
+    ids = [x["id"] for x in opened if x["id"] not in game6]
+    if not ids:
+        return None, ("REFUSED: %s stands at %s, an offline stage, and every open road-back item (%s) needs the "
+                   "live game: no offline run can close one, and none is given the game. They are Stage 6 "
+                   "work; return the record there: %s" % (mod, stage, ", ".join(game6),
+                                                          M.game_only_cmd(mod, game6))), None, item
+    item = item if item and item not in game6 else ids[0]
+    # at Stage 6, every open item needs the live game: the holder takes the bridge and the game, one holder at a
+    # time (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
+    live = M.game_takeable(stage) and AUT.live_only(opened)
+    if live:
+        ok, why_b = (fx.get("bridge") or M.bridge_idle)("%s live holder run" % mod)
+        if not ok:
+            return None, ("REFUSED: %s's open items all need the live game and the bridge is not takeable (%s); "
+                          "one bridge holder at a time" % (mod, why_b)), None, item
+    plan = modledger.resume_plan(root, mod)     # the holder's recorded session is resumed, not restarted
+    rkw = {"session": plan["session_id"]} if plan.get("action") == "resume" and plan.get("session_id") else {}
+    led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap, live=live) + (
+        "\nReconcile first: %s.\n" % plan["why"] if plan.get("reconcile") else "") + (
+        "\nThis is the mod's %sholder run: work every open road-back item together, from the packet above: %s. "
+        "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
+        % ("live " if live else "", ", ".join(ids)) + (
+        "Not yours: %s need%s the live game, Stage 6 work; work none of them here.\n" % (
+            ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "")), stage=stage, now=now, fx=fx)
+    rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
+        item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"), env=led["env"], **rkw)
+    unit = unit if rc == 0 else None
+    text = "%s%s%s; %s" % ("live holder (bridge and game allowed): " if live else "",
+                           "%s; " % plan["why"] if rkw else "",
+                           (text or "").splitlines()[0] if text else rc,
+                           ledger_after(root, st, mod, led, unit, item, now, fx))
+    st.setdefault("mods", {}).setdefault(mod, {}).setdefault("holder_road_back", []).append(
+        {"at": now, "ids": sorted(ids), "item": item, "unit": unit, "stage": stage})
+    return rc, text, unit, item
+
+
+def holder_spent(s, open_ids):
+    """-> why no automatic holder run goes on these open road-back items, or None. The last holder run on the road back
+    (the tick's or a hand pilot-launch since it opened) ran on a set of items; it ended with those still open (the
+    set did not shrink) or it never started: never a second automatic try at the same items. A hand launch recorded
+    before the set was booked counts as having run on today's open set plus its own item."""
+    rb = s.get("road_back") or {}
+    t0 = rb.get("at") if isinstance(rb.get("at"), (int, float)) else 0
+    runs = [dict(x, ids=x["ids"]) for x in s.get("holder_road_back") or [] if (x.get("at") or 0) >= t0]
+    runs += [dict(x, ids=sorted(set(open_ids) | {x.get("item")}), hand=True) for x in s.get("pilot_launches") or []
+             if (x.get("at") or 0) >= t0 and x.get("item") and not any(
+                 abs((y.get("at") or 0) - (x.get("at") or 0)) < 1 for y in s.get("holder_road_back") or [])]
+    if not runs:
+        return None
+    last = max(runs, key=lambda x: x.get("at") or 0)
+    if not last.get("unit"):
+        return "the last holder run on them (%s) never started" % last.get("item")
+    if set(open_ids) < set(last["ids"]):
+        return None
+    return "%sholder run %s on %s ended with them still open" % ("the hand " if last.get("hand") else "the ",
+                                                                  last.get("unit"), ", ".join(last["ids"]))
+
+
+def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
+    """After the autonomy layer: a PILOT mod whose road-back fixers are spent (fixer_spent), whose ledger is ready
+    (pilot_ledger) and with nothing live on it gets ONE holder run on every open road-back item together, from the
+    tick (it was the Conductor's `pilot-launch` by hand on 2026-11-15/16: Explosive Knockback and FlowWorks). Another
+    only once the open set has shrunk (holder_spent); within max_live and the account gate; a non-pilot is untouched.
+    -> (rows, launches); a launched row carries holder_items and no aut, so execute starts it."""
+    fx = fx or {}
+    open_items = fx.get("open_items", lambda ids: M.ledger_items_caused_by(root, ids))
+    account = fx["account"]() if "account" in fx else account_gate()
+    planned = occupancy(facts)
+    planned = None if planned is None else planned + len(launches)
+    for row in rows:
+        mod = row["mod"]
+        s = st.setdefault("mods", {}).setdefault(mod, {})
+        if row.get("decision") != "fixer_spent" or not s.get("road_back") or (facts.get(mod) or {}).get("live_units"):
+            continue
+        if not (fx.get("pilot") or pilot_ledger)(root, mod):
+            continue
+        items = open_items(AUT._road_back_ids(s, s["road_back"]))
+        if not items:
+            continue
+        ids = sorted(x["id"] for x in items)
+
+        def put(decision, why, need=None):
+            row.update(decision=decision, why=why, aut=None)
+            if need:
+                row["need"] = "%s: %s" % (mod, need)
+        spent = holder_spent(s, ids)
+        if spent:
+            put("holder_spent", spent, "PAUSED, %s; the pipeline gives one holder run per set of open road-back items "
+                "(pilot-launch %s --why ... starts another by hand)" % (spent, mod))
+            continue
+        if not account[0]:
+            put("account_hold", account[1])
+            continue
+        if no_slot(cfg, planned, put):
+            continue
+        planned += 1
+        row.update(holder_items=items, cap=cfg.get("cap_usd"))
+        put("launch", "its road-back fixers are spent and its ledger is ready: one holder run on all %d open items "
+            "(%s), nothing live on it (%s)" % (len(ids), ", ".join(ids), account[1]))
+        launches = [m for m in launches if m != mod] + [mod]
+    return rows, launches
 
 
 def end_ledger_runs(root, st, facts, now, fx=None):
@@ -1394,12 +1776,18 @@ def end_ledger_runs(root, st, facts, now, fx=None):
             if rec.get("status") != "finished" and r["unit"] not in done:
                 continue
             status = rec.get("result") or rec.get("status") or "ended"
+            judge = str(r.get("writer") or "").startswith("JUDGE.")
             try:
-                flags = modledger.end_run(root, mod, r["run"], status)
+                flags = end_judge_run(root, mod, r["run"], status) if judge else modledger.end_run(
+                    root, mod, r["run"], status)
             except Exception as e:      # noqa: BLE001  said in the reading; the next tick tries again
                 out.setdefault(mod, []).append("%s: run.end failed: %s: %s" % (r["run"], type(e).__name__, e))
                 continue
             r.update(ended=now, status=status, flags=flags)
+            if judge:       # a judge's session is never the holder's: the next holder never resumes a judge
+                out.setdefault(mod, []).append("%s %s %s" % (r["run"], status, ",".join(flags) or "sealed"))
+                mods.append(mod)
+                continue
             try:        # Option B: the holder's session, resumed by the next launch (holder_launch)
                 r["session"] = record_holder_session(root, mod, r, fx)
             except Exception as e:      # noqa: BLE001  said in the reading; the next launch starts from the packet
@@ -1409,6 +1797,18 @@ def end_ledger_runs(root, st, facts, now, fx=None):
     if mods:
         out["_land"] = land_ledger(root, sorted(set(mods)), "run.end of ended pilot runs", fx)
     return out
+
+
+def end_judge_run(root, mod, run, status):
+    """A judge run's end: DISPATCH seals JUDGE.<run> (its hash and lines) and records run.end. -> its flags: NO_VERDICTS
+    when the shard holds nothing (a judge holds no lease and writes no checkpoint, so NO_CHECKPOINT never applies)."""
+    seal_id = modledger.seal(root, mod, run, views=False)
+    lines = [e for e in modledger.read(root, mod) if e.get("_shard") == "JUDGE.%s" % run]
+    flags = [] if lines else ["NO_VERDICTS"]
+    modledger.append(root, mod, "DISPATCH", "run.end", "run", run=run,
+                     body={"run": run, "writer": "JUDGE.%s" % run, "status": str(status), "flags": flags,
+                           "sealed": seal_id})
+    return flags
 
 
 def execute(root, cfg, st, rows, launches, now, fx=None):
@@ -1427,6 +1827,22 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             continue
         mod, s = row["mod"], st["mods"][row["mod"]]
         blind = row.get("stage") == "blind_challenge"
+        if row.get("holder_items"):     # pilot_holders: one holder run on the open road-back items
+            rc, text, unit, item = road_back_holder(root, cfg, st, mod, row.get("stage"), row["holder_items"], None,
+                                                    row.get("cap") or cfg["cap_usd"], now, fx)
+            if unit:
+                s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap": row.get("cap"),
+                                                     "stage": row.get("stage"), "holder": True})
+                row.update(decision="launched", unit=unit, item=item, why=text)
+                done.append(row)
+            else:
+                row.update(decision="launch_failed", why=text, need="%s: the holder run on its road-back items did not "
+                           "start (%s); never retried on its own" % (mod, text))
+            continue
+        if row.get("cert_reds"):        # red deciders: their items and one builder (cert_launch)
+            if cert_launch(root, cfg, st, row, now, fx, known, do_file):
+                done.append(row)
+            continue
         if row.get("stage") == "in_game":
             title = ("%s Stage 6: in-game acceptance visit %s, one live driver on the bridge (launched by the Dispatch "
                      "step)" % (mod, row.get("visit")))
@@ -1550,6 +1966,10 @@ def holder_launch(root, cfg, s, row, cap, fx=None):
     if killed and not plan["reconcile"]:
         plan = dict(plan, reconcile=True, why="%s; this launch retries killed run %s: reconcile the clone, unpublished "
                     "commits and the bridge first" % (plan["why"], killed))
+    if row.get("stage") == "blind_challenge" and plan["action"] == "resume":
+        # a blind judge never resumes the holder's warm session (spec §3.6): it starts cold, from its own brief
+        plan = dict(plan, action="packet", session_id=None, why="a blind judge starts cold, never in the holder's "
+                    "session %s" % plan.get("session_id"))
     row["holder"] = plan
     kw = {}
     if plan["action"] == "resume":
@@ -1822,6 +2242,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     rows, launches = decide(cfg, st, facts, now, account, bridge=fx.get("bridge"), releases=releases)
     if aut:
         rows, launches = AUT.resolve(root, cfg, st, facts, rows, launches, now, fx)
+        rows, launches = pilot_holders(root, cfg, st, facts, rows, launches, now, dict(fx, account=lambda: account))
     if not cfg.get("enabled"):
         for r in rows:
             if r["mod"] in launches:
@@ -1914,6 +2335,9 @@ def main(argv=None):
     pl.add_argument("--item", help="the filed item the run works under (default on a road back: its first open item)")
     pl.add_argument("--usd", type=float, help="the run's spend cap (default maturation_dispatch.json cap_usd)")
     sub.add_parser("releases", help="every ceiling release with its spend, amount and why, and whether a launch spent it")
+    jv = sub.add_parser("judge-verify", help="a blind judge's verification list: MOD's findings claimed fixed (finding "
+                                             "text, reproduction, the claim's test; never the holder's story)")
+    jv.add_argument("mod")
     o = ap.parse_args(argv)
     cfg = load_cfg()
     if o.cmd == "tick":
@@ -1923,6 +2347,9 @@ def main(argv=None):
         print("idle owed max %s min%s; launched %d; page %s" % (
             rd["idle_owed_max_min"], (" (over %s: %s)" % (rd["idle_alarm_min"], ", ".join(rd["idle_owed_mods"])))
             if rd["idle_owed_mods"] else "", len(rd["launched"]), rd.get("page", "not regenerated")))
+        return 0
+    if o.cmd == "judge-verify":
+        print(judge_verify_text(os.path.abspath(o.root), o.mod), end="")
         return 0
     if o.cmd == "pilot-launch":
         rc, text = pilot_launch(os.path.abspath(o.root), cfg, o.mod, o.why, item=o.item, usd=o.usd)
@@ -1988,6 +2415,9 @@ def _clear(o):
         return 1
     s = (st.get("mods") or {}).get(o.mod) or {}
     was = s.pop("stopped", None)
+    if s.get("cert_red"):       # a stop on red deciders (cert_red_decide) lifts the same way
+        was = was or {"cert_red": s.pop("cert_red")}
+        s.pop("cert_red", None)
     # a steward or fixer key that never launched, or ended outside an open road back, is released: the next tick
     # may run it once more (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT: clear left those spent)
     released = {}
