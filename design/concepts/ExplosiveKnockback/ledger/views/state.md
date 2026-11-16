@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":305856,"DISPATCH":4073,"HOLDER.run-1794813483":1382} body_sha256=3225d53cab4dad263e70f3305a779f0ff0e9e27ba9d8350103cb1baea28693f5 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":305856,"DISPATCH":4023,"HOLDER.run-1794813483":1382} body_sha256=b0c9a7021dac5a7b04e308a75417c8dd8b8281dd35d2c7761b6d27faaf236e06 -->
 # ExplosiveKnockback — mod ledger packet
 version 0.1.0 · stage in_game · 438 events in 3 shards · reducer 1
-holder lease run-1794816087, token 3, last active 2026-11-16T08:01:28Z
-holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 504298 of ceiling 400000 — ROTATE DUE
+holder lease run-1794824768, token 4, last active 2026-11-16T10:26:24Z
+holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794813483, 2026-11-16T07:33:24Z)
 - done: 3 road-back items LEFT OPEN (live tests only); pipeline fixes 0c763edd9f (grant lands before launch) and 0ed7ae5001 (door tests drop holder env)
@@ -306,4 +306,4 @@ spend recorded: USD 70.74, 138207197 tokens
 - open findings in brief: the oldest 36 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
 - the full history: 438 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T10:01:10Z.1794823270747186631 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T10:01:10Z.1794823270747186631 prints what changed after this packet)
+cursor: t=2026-11-16T10:26:25Z.1794824785057590741 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T10:26:25Z.1794824785057590741 prints what changed after this packet)

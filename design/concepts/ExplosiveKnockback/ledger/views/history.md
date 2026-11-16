@@ -1,4 +1,4 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":305856,"DISPATCH":4073,"HOLDER.run-1794813483":1382} body_sha256=77c99caed7922042d319c6d57e9d7e7dee1b05fd1445ccb6c505dd0c4e83be07 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":305856,"DISPATCH":4023,"HOLDER.run-1794813483":1382} body_sha256=872c3f618504de14770069f67d3399a3b49c764e29cc429df32d2dda2c592f63 -->
 # ExplosiveKnockback — mod ledger history (438 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
@@ -437,5 +437,5 @@
 - 2026-11-16T08:26:08Z BACKFILL#423 decision finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN v0.1.0: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
 - 2026-11-16T08:32:10Z BACKFILL#424 decision finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC v0.1.0: 
 - 2026-11-16T09:34:22Z DISPATCH#10 stage.accepted stage v0.1.0: 
-- 2026-11-16T10:01:10Z DISPATCH#11 run.end run v0.1.0: 
-- 2026-11-16T10:01:10Z DISPATCH#12 session.id session v0.1.0: 
+- 2026-11-16T10:26:24Z DISPATCH#11 lease.grant lease v0.1.0: 
+- 2026-11-16T10:26:25Z DISPATCH#12 run.start run v0.1.0: 
