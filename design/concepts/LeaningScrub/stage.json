@@ -16,11 +16,96 @@
     "ref": "/root/review_stage2_edges",
     "stage": 2,
     "tokens": 100000
+   },
+   {
+    "at": "2026-11-16T07:55:31Z",
+    "kind": "helper",
+    "ref": "examiner session 4a0b6dbf-61aa-4b46-a201-b99a6a07c6a4",
+    "stage": 4,
+    "tokens": 121209
+   },
+   {
+    "at": "2026-11-16T07:55:31Z",
+    "kind": "helper",
+    "ref": "challenger session 0d637ed2-077b-49ce-a7b8-1a7f3f91f6ff",
+    "stage": 4,
+    "tokens": 112185
+   },
+   {
+    "at": "2026-11-16T07:56:29Z",
+    "kind": "helper",
+    "ref": "reader_one session b4e12050-dca3-4dba-951b-0d81bc2c4852",
+    "stage": 4,
+    "tokens": 116041
+   },
+   {
+    "at": "2026-11-16T07:56:29Z",
+    "kind": "helper",
+    "ref": "reader_two session f5d76b68-5a88-421e-a2a3-50ce547a79d1",
+    "stage": 4,
+    "tokens": 115251
+   },
+   {
+    "at": "2026-11-16T07:56:29Z",
+    "kind": "helper",
+    "ref": "control session 3a0bfc26-71fd-4430-96df-2b5be1d84dc4",
+    "stage": 4,
+    "tokens": 116263
+   },
+   {
+    "at": "2026-11-16T10:12:15Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794823485",
+    "stage": 5,
+    "tokens": 882609
+   },
+   {
+    "at": "2026-11-16T10:14:35Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794823485",
+    "stage": 5,
+    "tokens": 173803
    }
   ],
   "reserve": 60000,
-  "spent": 205000
+  "spent": 1842361
  },
+ "coverage_rounds": [
+  {
+   "at": "2026-11-16T10:04:45Z",
+   "error": null,
+   "gaps": 12,
+   "ids": [
+    "biome_cast",
+    "dripping",
+    "dripping_harvest",
+    "fire_maker_witness_trail",
+    "gale_drawing",
+    "gale_dust",
+    "lean_heading",
+    "maker",
+    "native_cast",
+    "settings",
+    "smother_claim",
+    "smother_craft",
+    "sworn",
+    "vine_contact",
+    "vine_hazard",
+    "weather_calendar",
+    "wind_audio",
+    "wind_plain",
+    "wind_sound"
+   ],
+   "judge": "rm-coverage-judge-1794823485",
+   "late": [],
+   "tags": {
+    "first": 12
+   },
+   "tokens": 1056412,
+   "tree": "e3e3f2aa7fb4feba4babd1c994112a067021f10756936e842ca95164dccf6de8",
+   "verdict": "not_covered"
+  }
+ ],
  "draft_input": {
   "by": "Codex (GPT), lane E of codex_experiment_20261115, checked by BENCH (/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/LeaningScrub.check.json)",
   "path": "/mnt/d/ClaudeWork/rimmandrake/codex_designer_drafts_20261115/LeaningScrub.designer_draft.md",
@@ -93,6 +178,30 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designercodex-1794806809: stage 3 done"
+  },
+  {
+   "at": "2026-11-16T07:51:48Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794815494, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T08:03:53Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794815494: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T10:04:42Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794823475, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T10:16:42Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designercodex-1794823475 result rejected: no result.json (a closing message is not a result); Codex transport failed: no Codex transport result"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF",
@@ -235,6 +344,37 @@
    "run": "rm-role-designercodex-1794806809",
    "stage": 3,
    "summary": "Rechecked all20 prior root-reference rejections. All resolve against identical eight-item DRAFT north stars in BENCH and Dispatcher; Gate A and full result validation pass against both. Existing70 leaves,81 scenes,7 showcases,7 remainder checks and23 applicable floor lines retain71-unit coverage. All95 prior source hashes match. Updated retry evidence and working record. Live acceptance, exam, coverage signature and owner first-touch certification remain pending."
+  },
+  {
+   "at": "2026-11-16T08:03:53Z",
+   "inputs": {
+    "exam": "54b7ea2102d1a07359e2e062361ad8893c44af4e1466e84518eb5e872101db1b",
+    "floor": "96e493e971174222b68dda98d2fbb2e4c613be69f09a988555c82954346dd4c9",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "706aa26e5a5bf03dcce05b37fd3bd4a67b1f20f8c077115fa6e65055285e8705",
+    "scenes": "11dc78601a1b9fe2b36e9f65e40597de324cf5dfc485c2b2d6fadfaa61cbe02b",
+    "sheet": "7a8a610c267422e5717865415cb926c660b3cf6432f69dadeeea3c6fdb7f6ed6",
+    "tree": "e3e3f2aa7fb4feba4babd1c994112a067021f10756936e842ca95164dccf6de8"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794815494",
+   "stage": 4,
+   "summary": "Independent Claude Opus Cold Reader exam passed18/18 with zero core false accepts. Six Challenger cases included. Control missed the removed raid-weight rule. All five helper session UUIDs and raw usage retained and charged580949 weighted tokens, exceeding500000 allowance by80949. Validator UUID recognition repaired with regression tests. Current play, coverage and owner first-touch certification remain pending."
+  },
+  {
+   "at": "2026-11-16T10:16:42Z",
+   "outcome": "rejected",
+   "run": "rm-role-designercodex-1794823475",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)",
+    "Codex transport failed: no Codex transport result"
+   ]
   }
  ],
  "runner": "codex",
@@ -278,10 +418,23 @@
     "input_tokens": 1340054,
     "output_tokens": 6401
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794815494",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 4802340,
+    "output_tokens": 16143
+   }
+  },
+  {
+   "run": "rm-role-designercodex-1794823475",
+   "runner": "codex",
+   "usage": "UNMEASURED"
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }
