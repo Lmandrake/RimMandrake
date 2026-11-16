@@ -1,0 +1,112 @@
+{
+  "verdicts": [
+    {
+      "id": "exam_raid_weight_multiplied_with_gale_raid_setting_disabled",
+      "verdict": "reject",
+      "leaf": "raid_weight",
+      "reason": "The multiplier must apply only in enabled Gale. Here it applied while the setting was switched off."
+    },
+    {
+      "id": "exam_post_expedition_auto_haul_crosses_armed_island",
+      "verdict": "reject",
+      "leaf": "ordered_travel",
+      "reason": "An explicit order permits only its own trip and return. Completion and reload cannot authorize later automatic work through an armed hazard."
+    },
+    {
+      "id": "exam_body_size_exactly_1_5_blocked_by_thicket",
+      "verdict": "reject",
+      "leaf": "vine_contact",
+      "reason": "Common blocking is strictly greater than 1.5, so a body of exactly 1.5 must not be blocked. Calling all injuries venom is also a listed false pass."
+    },
+    {
+      "id": "exam_claim_duration_frozen_after_tuning_change",
+      "verdict": "accept",
+      "leaf": "smother_claim",
+      "reason": "One finished job consumed one tailored blanket for one saved 120-day countdown. The interrupted try consumed nothing, and per-claim duration stayed frozen while new claims used the new tuning."
+    },
+    {
+      "id": "exam_failed_harvest_debits_felt_bank",
+      "verdict": "reject",
+      "leaf": "tree_bank",
+      "reason": "A failed harvest must not debit the bank. The balance dropped with no felt delivered."
+    },
+    {
+      "id": "exam_felt_single_thought_two_garments",
+      "verdict": "accept",
+      "leaf": "felt_comfort",
+      "reason": "Same-quality seats show the material comfort offset. Exactly one apparel thought appears regardless of garment count and is removed when all felt is removed."
+    },
+    {
+      "id": "exam_gale_deafness_on_roofed_and_mechanoid",
+      "verdict": "reject",
+      "leaf": "gale_exposure",
+      "reason": "Only unroofed living non-mechanoids should gain RM_GaleDeafened. The roofed colonist and the mechanoid were affected."
+    },
+    {
+      "id": "exam_working_wind_gale_breakdown_then_repair",
+      "verdict": "accept",
+      "leaf": "working_wind",
+      "reason": "Connected load output matches the surge factor and stays at baseline with surge off. Breakdown and real-job repair are attributed separately, and useful wind does not promise uninterrupted power."
+    },
+    {
+      "id": "exam_giant_pursues_nearest_innocent",
+      "verdict": "reject",
+      "leaf": "maker",
+      "reason": "The maker must be identified only by witness or fresh trail, never innocent nearby B. A nearest-pawn fallback is a listed false pass."
+    },
+    {
+      "id": "exam_shimmer_visible_but_animal_targetable",
+      "verdict": "reject",
+      "leaf": "concealment",
+      "reason": "Target selection must agree with the shimmer. A hediff with still-targetable wildlife is a listed false pass."
+    },
+    {
+      "id": "exam_vaporator_full_chain_powered_water",
+      "verdict": "accept",
+      "leaf": "vaporator",
+      "reason": "The full plans, research, build and power chain produced actual RM_FogWater. The clock persisted across reload, nothing was produced unpowered, and no drying scar appeared."
+    },
+    {
+      "id": "exam_farmer_camp_generates_on_scrub",
+      "verdict": "reject",
+      "leaf": "cuts",
+      "reason": "Farmer camps must be absent. An active farmer-faction camp appeared on the map."
+    },
+    {
+      "id": "challenge_equal_threshold_body_blocked",
+      "verdict": "reject",
+      "leaf": "vine_contact",
+      "reason": "Blocking must be strictly greater than 1.5. Blocking the 1.5 body means >= has silently replaced >, which is a listed false pass."
+    },
+    {
+      "id": "challenge_reloaded_expedition_token_reused_by_hauler",
+      "verdict": "reject",
+      "leaf": "ordered_travel",
+      "reason": "A completed order and reload cannot authorize later automatic work. Reusing a stale expedition token for routine hauling violates this."
+    },
+    {
+      "id": "challenge_post_harvest_tree_stops_shedding",
+      "verdict": "reject",
+      "leaf": "tree_shed",
+      "reason": "A once-mature tree must keep shedding after harvest, with saved everMature preserved at low growth. Here everMature was lost and shedding stopped."
+    },
+    {
+      "id": "challenge_nearest_pawn_pursued_after_trail_expired",
+      "verdict": "reject",
+      "leaf": "maker",
+      "reason": "With trail expired and no witness, the maker may escape. Choosing the closest pawn substitutes for knowledge and targets innocent B."
+    },
+    {
+      "id": "challenge_cane_longer_burn_same_heat",
+      "verdict": "reject",
+      "leaf": "cane_fuel",
+      "reason": "Heat-coupled consumers must emit 1.25 times the matched wood heat rate while burning cane. Here the heat rate was equal."
+    },
+    {
+      "id": "challenge_gale_multiplier_leaks_to_nonraid",
+      "verdict": "reject",
+      "leaf": "raid_weight",
+      "reason": "Other weights must stay unchanged. The trader caravan was multiplied too."
+    }
+  ]
+}

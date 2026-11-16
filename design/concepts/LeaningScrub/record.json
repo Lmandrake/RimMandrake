@@ -287,6 +287,27 @@
       "text": "Authored70 leaves including3 instruments and1 walk,81 planned scenes,7 greedy showcases and7 cheaper remainder checks; all71 built/in-scope inventory units covered. Two absent/out cuts retain explicit absence scene but are not invalid program coverage units. All23 floor lines applicable; no exception/waiver. Filed5 missing-entry/recovery work packages and mapped all34 previous audits. No game action or current proof upgrade.",
       "author": "rm-role-designercodex-1794799806",
       "ran_by": "BENCH"
+    },
+    {
+      "id": "stage3_retry_root_references",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/LeaningScrub/write_checks_03.json",
+        "design/validation_walks/RimMandrake/LeaningScrub.md"
+      ],
+      "text": "Retained the existing Stage 3 design after independently checking every reported root-reference rejection against both validator checkouts. Both expose the same eight DRAFT root observations. Existing root approval, proposed tuning, planned acceptance entries and proof boundaries retain their recorded provenance."
+    },
+    {
+      "id": "stage4_cold_reader_exam",
+      "speaker": "agent",
+      "source": "design/concepts/LeaningScrub/exam.json",
+      "text": "Frozen Stage 3 tree and sheet passed the independent Claude Opus Cold Reader exam. Two fresh Readers matched 18/18 expectations with zero accept-where-core-rejects. Challenger contributed six cases. Program-created control removed raid_weight and every mention of its rule. Control missed the non-raid-weight case while full Readers rejected it. All five returned CLI session UUIDs and usage records are retained. No live acceptance, coverage signature, version lock or first-touch certification follows from this exam."
+    },
+    {
+      "id": "stage4_helper_budget_overrun",
+      "speaker": "agent",
+      "source": "design/concepts/LeaningScrub/exam.json",
+      "text": "The five independent helper processes consumed 580949 weighted tokens, exceeding this run allowance500000 by80949. All actual helper usage was charged exactly with designer_stage.py charge --kind helper. Remaining task cap is available. No exemption or reset inferred."
     }
   ],
   "asks": [
@@ -4098,11 +4119,11 @@
     }
   },
   "stage_3": {
-    "run": "rm-role-designercodex-1794799806",
+    "run": "rm-role-designercodex-1794806809",
     "author": "BENCH DesignerCodex",
     "source": "design/concepts/LeaningScrub/plan.md",
     "written_at": "2026-11-16T04:37:16.744679+00:00",
-    "status": "done_checks_passed",
+    "status": "retry_checks_passed_pending_launcher",
     "leaf_count": 70,
     "instrument_count": 3,
     "walk_count": 1,
@@ -4188,6 +4209,33 @@
         "ratio": 0.25,
         "why": "Retained fire/accountability interaction needs actual downwind spread; staging reason explicit."
       }
+    },
+    "authored_run": "rm-role-designercodex-1794799806",
+    "rejection_recheck": {
+      "run": "rm-role-designercodex-1794806809",
+      "source": "design/concepts/LeaningScrub/write_checks_03.json",
+      "previous_run": "rm-role-designercodex-1794799806",
+      "reported_reasons_resolved": 20,
+      "checked_repositories": [
+        "/home/mandrake/rm/bench",
+        "/home/mandrake/rm/dispatch"
+      ],
+      "north_star_hash": "787d3f37799dd51480095df641fcbb8fa8c2c8c9c0083fd261b8b0a666c377e5",
+      "text": "All reported leaf/root pairs resolve in both BENCH and Dispatcher checkouts. Each checkout passes Gate A and rejects a deliberately missing root. Source continuity matches all 95 previously verified files. The retry revalidates existing design artifacts."
     }
+  },
+  "stage_4": {
+    "run": "rm-role-designercodex-1794815494",
+    "exam": "design/concepts/LeaningScrub/exam.json",
+    "score": {
+      "right": 18,
+      "total": 18
+    },
+    "control_missed": [
+      "challenge_gale_multiplier_leaks_to_nonraid"
+    ],
+    "helper_weighted_tokens": 580949,
+    "helper_allowance_overrun": 80949,
+    "validator_repair_item": "RIMMANDRAKE_ACCEPT_EXAM_SESSIONS_UUIDS_ARE_IDENTITIES"
   }
 }

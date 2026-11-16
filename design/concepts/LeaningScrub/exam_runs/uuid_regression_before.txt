@@ -1,0 +1,383 @@
+ok   packet: stage 0 injects core, grounding and scene contract by manifest, hashed into stage.json
+ok   packet: the run budget is the remaining task budget less the reserve
+ok   no result.json: rejected, stage stays 0, the run is charged
+ok   stage 0: absent without search_scope and only two failure modes are refused
+ok   built evidence: the src tree, the done item under FOO_ and its live proof, nothing unrelated
+ok   built evidence: an alias adds its prefix (GSS for GimmeSomeSlack)
+ok   stage 0: a done item and its live proof the inventory never mentions are refused (ask what we built)
+ok   packet: stage 0 lists what is built, and done items naming the mod only in their title
+ok   stage 0: an unreadable ledger is UNMEASURED and refuses done, never 'nothing built'
+ok   stage 0: built_reviewed covered_by an id not in the inventory accounts for nothing
+ok   stage 0 done -> stage 1
+ok   inventory: the baseline entry is clean (so each refusal below is its own field)
+ok   inventory: impl 'built' is refused by name
+ok   inventory: proof 'bogus' is refused by name
+ok   inventory: scope '?' is refused by name
+ok   inventory: proof current with no proof_evidence is refused
+ok   inventory: proof current WITH proof_evidence passes
+ok   inventory: present with no impl_evidence is refused
+ok   working record: the inventory line carries impl, proof and scope
+ok   working record: the inventory line carries its source ids
+ok   working record: a decision line carries its source id
+ok   stage 1: a root approved by Conductor text is refused (owner-only, his words)
+ok   Conductor text stored as his quotation is refused
+ok   an OWNER source that is not in OWNER.jsonl is refused
+ok   a source path that does not exist is refused
+ok   built-but-unproven: an ask offering to remove a present capability is refused
+ok   built: a keep/remove question about a built thing is refused without the flag: 'Do we still need the ladder?'
+ok   built: a keep/remove question about a built thing is refused without the flag: 'Should we keep the ladder or cut it?'
+ok   built: a keep/remove question about a built thing is refused without the flag: 'Is removing the ladder fine?'
+ok   built: keep/remove wording naming no inventory entry is refused
+ok   built-but-unproven: an ask on its correct behaviour, reviewed by another agent, passes
+ok   built-but-unproven: removal may be asked once he opened that scope
+ok   an ask reviewed by its own author, or with no review, is refused
+ok   an ask that names no decision is refused
+ok   stage 1 done with his root -> stage 2
+ok   stage 2 waiting_owner with a reviewed sent ask is accepted
+ok   no owner reply: the next run is refused, silence never advances
+ok   no owner reply: stage 2 done with an ask still sent is refused
+ok   his reply (an owner event naming the item) lets the next run open
+ok   stage 2 done once answered, his follow-up recorded and cited inside the run -> stage 3
+ok   stage 3 may not wait on him itself
+ok   a return that names no missing decision is refused
+ok   stage 3 returns to stage 2 with the named decision
+ok   the returned stage's packet names the missing decision
+ok   back to stage 3
+ok   missing script: an acceptance scene whose entry point is not in the proof script is refused
+ok   missing script: with its implementation filed (entry_point_item) it is accepted
+ok   hand-staged labelled as proof: refused, however it is labelled
+ok   a hand-staged exploration scene is fine (it accepts nothing)
+ok   a control with no rules_out (the alternative it excludes) is refused
+ok   an interaction scene beside each feature's own scene is fine
+ok   an interaction scene never stands in for a feature's own acceptance scene
+ok   no applicable visual floor lines: not_applicable with evidence passes, no owner words needed
+ok   not_applicable with no evidence is refused
+ok   a line that applies to every mod (mod_settings) cannot be not_applicable
+ok   a standing ruling cannot be disabled
+ok   disabled with no floor.off in his words is refused (applicability is not a waiver)
+ok   a compressed soak must say what it establishes
+ok   every floor line needs a status
+ok   refusal table: the scene baseline is clean
+ok   scenes: no scenes list is refused
+ok   scenes: a scene with no id is refused
+ok   scenes: an unknown kind is refused
+ok   scenes: an unknown staged_by is refused
+ok   scenes: an exploration scene with no question is refused
+ok   scenes: an acceptance scene with no action is refused
+ok   scenes: an acceptance scene with no expect is refused
+ok   scenes: an acceptance scene with no restore is refused
+ok   scenes: no asserted starting conditions is refused
+ok   scenes: an unknown hold is refused
+ok   scenes: an acceptance scene with no requirement is refused
+ok   scenes: an interaction scene joining one feature is refused
+ok   scenes: a requirement that is not a tree leaf is refused
+ok   scenes: an entry point 'src/Foo/validation.py' that names no function is refused
+ok   scenes: an entry point None that names no function is refused
+ok   scenes: an entry point 'src/Foo/validation.py::' that names no function is refused
+ok   scenes: an off-offline experience leaf with no acceptance scene is refused
+ok   refusal table: the floor baseline is clean
+ok   floor: no lines object is refused
+ok   floor: a key that is not a floor line is refused
+ok   floor: an unknown status is refused
+ok   floor: an unknown evidence_mode on a numeric line is refused
+ok   floor: a floor.off line the floor still calls applicable is refused
+ok   floor: disabled with floor.off carrying his words on that event passes
+ok   floor: disabled with floor.off words he never said is refused
+ok   refusal table: the record baseline is clean
+ok   record: no record is refused
+ok   record: a section that is not a list is refused, and nothing inside it is read
+ok   record: an entry with no id is refused
+ok   record: a duplicate id is refused
+ok   record: an entry with no source is refused
+ok   record: a source of no known shape is refused
+ok   record: an unknown speaker is refused
+ok   record: an agent's text stored as a quotation is refused
+ok   record: a root with no text is refused
+ok   record: a root whose words are not on its owner event is refused
+ok   record: scope opened_by_owner with no OWNER scope_source is refused
+ok   refusal table: the ask baseline is clean
+ok   ask: no text is refused
+ok   ask: no decision is refused by name
+ok   ask: citing neither inventory nor his words is refused
+ok   ask: about an entry not in the inventory is refused
+ok   ask: a struck review does not go to him
+ok   result: a result for another stage is refused
+ok   result: a result naming another run is refused
+ok   result: an unknown outcome is refused
+ok   blocked: a block naming no dependency is refused
+ok   blocked: a block naming its dependency is accepted
+ok   return: to a later stage is refused
+ok   return: to no stage is refused
+ok   return: an owner question returning past stage 2 is refused
+ok   return: an earlier stage with a named decision is accepted
+ok   waiting_owner: with no ask sent is refused
+ok   done: stage 0 with no inventory is refused
+ok   done: stage 1 with no root is refused
+ok   done: stage 1 with his root is accepted
+ok   done: stage 2 with an unresolved core contradiction is refused
+ok   done: stage 3 with no scenes.json is refused
+ok   done: stage 3 with no floor.json is refused
+ok   showcases: the baseline set is accepted, with new coverage 3/3/3 and overlap 0 reported
+ok   showcases: an unbuilt, unopened inventory line is not a unit
+ok   showcases: a BUILT capability scoped out is still a unit (it ships until removed)
+ok   showcases: a built scoped-out capability with no cover is refused
+ok   showcases: a showcase exercising a scoped-out capability is refused (coverage_rest only)
+ok   showcases: a built scoped-out capability in coverage_rest is accepted
+ok   showcases: a list as decision refuses without crashing
+ok   showcases: a dict among a later showcase's exercises refuses without crashing
+ok   showcases: a dict among a candidate's exercises during the greedy comparison refuses without crashing
+ok   showcases: a string inventory is refused, not read as zero capabilities to cover
+ok   showcases: no record.json is refused, not read as zero capabilities to cover
+ok   showcases: an omitted inventory is refused, not read as zero capabilities to cover
+ok   showcases: an inventory entry that is not an object is refused, not read as zero capabilities to cover
+ok   showcases: an inventory entry with no id is refused, not read as zero capabilities to cover
+ok   showcases: an inventory entry with no impl or scope is refused, not read as zero capabilities to cover
+ok   showcases: an inventory entry with a misspelt impl and scope is refused, not read as zero capabilities to cover
+ok   showcases: an explicitly empty inventory with no showcases is accepted (nothing to cover)
+ok   showcases: a set whose only units are built-but-scoped-out passes on coverage_rest alone (no showcase)
+ok   showcases: overlap at the limit (1 of 4 = 0.25) is accepted and reported with the shared capability
+ok   showcases: overlap 0.40 over the limit with no staging reason is refused
+ok   showcases: the refusal names the overlap and the bare capabilities
+ok   showcases: over the limit with a staging reason for every shared capability is accepted
+ok   showcases: a reason for only some shared capabilities is refused
+ok   showcases: a later showcase with fewer than min_new_after_first new capabilities is refused
+ok   showcases: a later showcase newly exercising more than the one before it is refused (not greedy)
+ok   showcases: greedy is checked against every later chosen showcase, not only the next count
+ok   showcases: showcase 1 is exempt from min_new and the greedy order (his pick)
+ok   showcases: showcase 1 without his OWNER source is refused
+ok   showcases: showcase 1 citing a real but unrelated OWNER event is refused (not bound to his pick)
+ok   showcases: showcase 1 bound to his root approval (same OWNER event, no flagship pick) is refused
+ok   showcases: showcase 1 bound to his pick of ANOTHER showcase id is refused
+ok   showcases: showcase 1 bound to an agent's decision is refused
+ok   showcases: showcase 1 citing an OWNER event that does not exist is refused
+ok   showcases: exercising an unbuilt, unopened capability is refused
+ok   showcases: a showcase naming a scene that is not in scenes.json is refused
+ok   showcases: a capability covered by no showcase and no coverage_rest is refused (stop criterion)
+ok   showcases: coverage_rest naming no real scene or leaf is refused
+ok   showcases: coverage_rest without a why is refused
+ok   showcases: coverage_rest listing a capability a showcase exercises is refused
+ok   showcases: no showcases at all while capabilities exist is refused
+ok   showcases: a mod with no unit needs no showcase
+ok   showcases: a missing rules file is a refusal reason, never a pass
+ok   showcases: a rules file with an impossible limit is refused, never a silent pass
+ok   showcases: the real rules file reads, its numbers sane (overlap in [0, 1), new >= 1), labelled UNMEASURED
+ok   showcases: full showcase coverage does not excuse a walk leaf from its own acceptance scene
+ok   evidence-for-ask: a root approved by a recorded delegated Evidence-for-Ask call is accepted
+ok   evidence-for-ask: an ask carrying evidence against the obvious answer still waits for him
+ok   evidence-for-ask: a delegated root must name the ask it answers
+ok   evidence-for-ask: a delegated root citing a ruling other than Evidence-for-Ask is refused
+ok   evidence-for-ask: a delegated root whose event is not a delegated: evidence-for-ask call is refused
+ok   evidence-for-ask: a delegated call about another concept does not approve this root
+ok   evidence-for-ask: a delegated root is never stored as his quotation
+ok   evidence-for-ask: a delegated root is refused blind (no OWNER ledger to check it against)
+ok   evidence-for-ask: a conductor root that does not say it is delegated stays owner-only
+ok   owner root: his event about this concept is accepted
+ok   owner root: an OWNER event about another concept does not approve this root (any OWNER:<tsn> passed)
+ok   owner root: words found on another concept's event still do not approve this root
+ok   owner root: a per-ruling event with none of his words is not his approval
+ok   owner root: an OWNER:<tsn> with no event is refused
+ok   evidence-for-ask: a flagship picked by a recorded delegated Evidence-for-Ask call is accepted
+ok   evidence-for-ask: a conductor flagship decision that does not say it is delegated is refused
+ok   evidence-for-ask: a flagship delegated call about another concept is refused
+ok   intake: an uncited delegated call stays unread
+ok   intake: a longer CONDUCTOR tsn does not consume a prefix
+ok   intake: a delegated call cited as CONDUCTOR leaves the unread feed
+ok   intake: stage 2 closes after recording its own delegated flagship without an OWNER citation
+ok   intake: CONDUCTOR cannot consume a real owner reply
+ok   intake: an OWNER citation still consumes a real reply
+ok   intake: the ruling without a delegated reason is not consumed as CONDUCTOR
+ok   stage 3: scenes.json with no showcase set is refused (the mod's face is a list, showcase 1 his pick)
+ok   stage 3 done with lint, scenes and floor valid -> stage 4
+ok   resumed stage 4 (log.md present): the exam procedure is injected, the log is not
+ok   resumed stage 4: an exam run against another tree hash is refused
+ok   exam: 8/10 is refused
+ok   exam: scenarios edited after the freeze are refused
+ok   refusal table: the exam baseline is clean
+FAIL exam: fresh CLI session UUID identities pass  got: ["exam: examiner '0d637ed2-077b-49ce-a7b8-1a7f3f91f6ff' names no agent id, so nothing shows no reader is the examiner", "exam: challenger '37bef0d9-b179-4370-b17b-99ff1ef1c753' names no agent id, so nothing shows no reader is the challenger", "exam: reader 'ec9476e1-1037-4801-851a-242d32a87bd7' names no agent id, so nothing shows it is a fresh agent", "exam: reader '8e761ab3-4490-472b-a72e-dacbe20f72dc' names no agent id, so nothing shows it is a fresh agent"]
+FAIL exam: session UUID is preserved as its exact identity  got: []
+ok   exam: UUID case differences retain one identity
+ok   exam: UUID reader sharing author is refused
+ok   exam: UUID reader sharing examiner is refused
+ok   exam: UUID reader sharing challenger is refused
+ok   exam: duplicate UUID readers are refused
+ok   exam: UUID reader embedded beside a legacy helper id is refused
+ok   exam: UUID is stripped before interpreting identity labels
+ok   exam: malformed session identity is refused x0d637ed2-077b-49ce-a7b8-1a7f3f91f6ff
+ok   exam: malformed session identity is refused 0d637ed2-077b-49ce-a7b8-1a7f3f91f6ff-tail
+ok   exam: malformed session identity is refused 0d637ed2-077b-49ce-a7b8-1a7f3f91f6f
+ok   exam: no exam.json and no waiver is refused
+ok   exam: fewer than ten scenarios is refused
+ok   exam: a scenario with no expect_source is refused
+ok   exam: a total that is not the scenario count is refused
+ok   exam: right above total is refused
+ok   exam: right one above total is refused
+ok   exam: a negative right is refused
+ok   exam: a boolean right is refused
+ok   exam: a boolean total is refused
+ok   exam: a float right is refused
+ok   exam: right exactly at the 9/10 bar still passes
+ok   exam: right one under the bar is refused
+ok   exam: an accept where the core rejects is refused
+ok   exam: a boolean accept_where_reject_core is refused
+ok   exam: an examiner who is the author is refused
+ok   exam: no readers field is refused
+ok   exam: a one-reader exam is refused
+ok   exam: a readers field that is not a list is refused
+ok   exam: a blank reader does not count as the second reader
+ok   exam: a non-text reader does not count as the second reader
+ok   exam: the same reader twice is refused
+ok   exam: one reader twice under different annotations is refused
+ok   exam: the author as a reader is a self-read and is refused
+ok   exam: an annotated author as a reader is refused
+ok   exam: the examiner as a reader is refused, it wrote expect
+ok   exam: the challenger as a reader is refused
+ok   exam: a reader named inside the examiner field is refused
+ok   exam: the open Designer run as a reader is refused
+ok   exam: an open run under a plain name, named in a reader's annotation, is refused
+ok   exam: with no author a self-read cannot be ruled out, so it is refused
+ok   exam: author 'designer' names no agent id and is refused
+ok   exam: author 'the Designer' names no agent id and is refused
+ok   exam: author 'the Designer (tree last written)' names no agent id and is refused
+ok   exam: an examiner that names no agent id is refused
+ok   exam: a challenger that names no agent id is refused
+ok   exam: reader 'agent:a973694af5dc4757a (the designer, self-read)' declares a self-read and is refused
+ok   exam: reader 'rm-role-judge-4 (self-read)' declares a self-read and is refused
+ok   exam: reader 'agent:a973694af5dc4757a (self read)' declares a self-read and is refused
+ok   exam: reader 'agent:a973694af5dc4757a (SELF-READ)' declares a self-read and is refused
+ok   exam: reader 'agent:a973694af5dc4757a (self-reading)' declares a self-read and is refused
+ok   exam: reader 'agent:a973694af5dc4757a (the author)' declares a role that saw expect and is refused
+ok   exam: reader 'agent:a973694af5dc4757a (examiner)' declares a role that saw expect and is refused
+ok   exam: reader 'rm-judge Challenger a973694af5dc4757a' declares a role that saw expect and is refused
+ok   exam: 'agent:a973694af5dc4757a (the designer, self-read)' under a words-only author is refused
+ok   exam: 'rm-role-designer-4 (self-read)' under a words-only author is refused
+ok   exam: another Designer run as a reader is refused, not fresh
+ok   exam: a reader that denies the role is not declaring it
+ok   exam: a reader that names no agent id is refused
+ok   exam: a reader that only says fresh names no agent id
+ok   exam: one reader in words, annotated, is the same agent
+ok   exam: a blank third reader is refused
+ok   exam: a reader run id is an agent id and passes
+ok   exam: the instrument sees the real concept exams on disk
+ok   exam: real PyrelandsMechanics passes the reader check as filed
+ok   exam: real Graffiti passes the reader check as filed
+ok   exam: real Contagion passes the reader check as filed
+ok   exam: real FlowWorks passes the reader check as filed
+ok   exam: real GimmeSomeSlack passes the reader check as filed
+ok   exam: real Pyrelands passes the reader check as filed
+ok   exam: real ExplosiveKnockback passes the reader check as filed
+ok   exam: the real FlowWorks reader strings still pass
+ok   exam: the real GimmeSomeSlack reader strings still pass
+ok   exam: the real Pyrelands reader strings still pass
+ok   exam: the real PyrelandsMechanics reader strings still pass
+ok   exam: two helpers launched by the author's run are neither the author nor each other
+ok   exam: an unaccounted challenger miss is refused
+ok   exam: an exam with no control is refused
+ok   exam: a control naming no broken leaf is refused
+ok   exam: a control that did not miss is refused
+ok   exam: a control with no missed field is refused
+ok   exam: a control breaking a leaf the tree lacks is refused
+ok   exam: two scenarios with the same text are refused
+ok   exam: two scenarios with the same id are refused
+ok   exam: a scenario with no text is refused
+ok   exam: an expect_source naming no leaf is refused
+ok   exam: an expect_source citing an OWNER event he never made is refused
+ok   exam: a leaf:-prefixed expect_source on a real leaf passes
+ok   exam: an exam with no Challenger is refused
+ok   exam: a Challenger who is the examiner is refused
+ok   exam: an exam with no Challenger scenario is refused
+ok   exam: a challenger miss on an Examiner scenario is refused
+ok   exam: an accounted miss on a Challenger scenario passes
+ok   exam: a control that names no missed scenario is refused
+ok   exam: a control miss naming no scenario is refused
+ok   exam: a control whose only miss is not sourced on the removed leaf is refused
+ok   exam: a control with no copy made by the program is refused
+ok   exam: a control copy that still holds the leaf is refused
+ok   exam: a control copy whose tree still names the leaf is refused
+ok   exam: a control copy whose sheet still names the leaf is refused
+ok   exam: the program's control copy has no line naming the leaf and keeps the rest
+ok   refusal table: the restored control copy is clean again
+ok   exam-control refuses a leaf the tree lacks
+ok   exam: a control cannot be checked against a missing tree.json, so it is refused
+ok   exam: a leaf whose id is not a string neither crashes nor counts
+ok   exam: a tree.json that does not parse is refused, not a crash
+ok   exam: a tree with exam_waived needs no exam.json (the gate checks his words)
+ok   late owner correction DURING the exam run: its done result is refused
+ok   late owner correction: the next run is back at stage 2, the packet says why
+ok   late owner correction: stage 2 cannot finish until the record takes his correction in
+ok   stage 2 done clears the must_cite list it was reopened with
+ok   after the correction the stages rerun in order (2, 3)
+ok   stage 4 done with a fresh exam -> stage 5
+ok   an edited scenes.json after the exam reopens stage 3
+ok   stage 5: done with a failing gate is refused
+ok   stage 5: closed from another clone, the gate reads the concept's own clone
+ok   stage 5: the lock is refused while an inventory capability is exercised by no showcase and no scene
+ok   stage 5: a bare scene added mid-run to cover a capability is refused (scene contract rechecked)
+ok   stage 5: a valid showcase edit made during the lock run is refused (accepted inputs moved)
+ok   stage 5 done with the gate passing -> locked
+ok   a locked concept refuses further runs
+ok   a locked concept edited underneath still refuses (his word only), status shows the drift
+ok   scene-begin with no recovery information is refused
+ok   interrupted teardown: the next run is refused until recovery
+ok   a scene held for his review lets work go on, and the packet says it is held
+ok   scene-end restores it
+ok   an unclosed run is charged its whole reservation at the next open (a retry, conservative)
+ok   exhausted budget is advisory: the run opens, stage unchanged, history says over_budget
+ok   an UNMEASURED run is charged its whole reservation
+ok   helpers are charged to the same task budget; a run gets min(role cap, remaining - reserve)
+ok   an unknown charge kind is refused
+ok   the default cap survives a measured stage-0 read and review: stage 1 opens without over_budget
+ok   the default cap holds six median stages (529,000 measured) and the reserve the largest review
+ok   spend_by_stage splits a stage's runs from its reviews and helpers
+ok   a state on the legacy 500,000 cap is upgraded at load, says so, and the next open is not over_budget
+ok   a cap set by hand is never upgraded
+ok   blocked: the result is accepted, the state is blocked on the named dependency, the stage holds
+ok   blocked: the next run is refused while the block stands
+ok   blocked: the refused open is written to the concept's history
+ok   blocked: unblock releases it
+ok   blocked: unblock takes the block's reason off the record
+ok   unblock on a concept that is not blocked is refused
+ok   unblock repairs a stale reason on a concept that is not blocked, status and stage unchanged
+ok   and once repaired, unblock is refused again
+ok   a run closing on a ready concept takes an older writer's leftover reason off
+ok   blocked: control, the same stale state reopens when it is not blocked
+ok   blocked: a stale input does not reopen (or unblock) a blocked concept
+ok   abort: another run's id drops nothing
+ok   abort: the open run is dropped and nothing is charged
+ok   close: a run that is not the open run is refused
+ok   close: a rejected result.json is moved aside, never left to be read as the next run's
+ok   packet: a stage with rejected runs says so
+ok   waiting_owner: once he moved, the opened run leaves the state ready
+ok   a negative charge is refused
+ok   a fractional charge is refused
+ok   init over an existing stage.json is refused
+ok   init: reserve 0 against cap 100 is refused
+ok   init: reserve 100 against cap 100 is refused
+ok   init: reserve 150 against cap 100 is refused
+ok   manifest: one with no packet list for stage 5 is refused
+ok   manifest: a packet file that is missing is refused, never supplied short
+ok   manifest: a present packet hashes
+ok   scene-end on a scene with no open recovery is refused
+ok   a held scene's packet line carries until when
+ok   owner_uncited with no item is None (unmeasured), not []
+ok   working record: an empty record says so
+ok   working record: the root line carries its source
+ok   working record: an ask line carries its status
+ok   working record: the failure modes are listed
+ok   schedule: the Designer row names the stage machine
+ok   run-now: the Designer needs --concept
+ok   run-now: a concept with no stage.json is refused
+ok   run-now: --concept on a role with no stage machine is refused
+ok   run-now: the concept is resolved against the role's clone
+ok   decide's preview writes nothing
+ok   execute's commit records the open run
+ok   a launch that never happened is aborted uncharged
+ok   decide: the Designer's launch message carries the stage packet and the concept
+ok   execute: the stage's run is open in stage.json under the launched unit before systemd-run runs
+ok   execute: a launch systemd-run refuses drops the stage's open run, uncharged
+ok   decide: a role cap under the task budget's remainder is the run's budget, and the packet says so
+ok   decide: an exhausted budget is advisory: the run-now still launches (owner 2026-11-04)
+ok   decide: the refused run-now stops there: no launch, no unit, and deciding it raises nothing
+ok   decide: a blocked concept refuses the run-now with an alarm, no launch
+ok   supervise: the finished run is charged to the task and its missing result is an alarm
+ok   sanity probe: the real ledger's done items are readable (not None, not a round zero)
+FAILED 2: ['exam: fresh CLI session UUID identities pass', 'exam: session UUID is preserved as its exact identity']

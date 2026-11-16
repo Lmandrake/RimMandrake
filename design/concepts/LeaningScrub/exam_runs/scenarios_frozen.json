@@ -1,0 +1,135 @@
+{
+  "inputs": {
+    "tree": "e3e3f2aa7fb4feba4babd1c994112a067021f10756936e842ca95164dccf6de8",
+    "sheet": "7a8a610c267422e5717865415cb926c660b3cf6432f69dadeeea3c6fdb7f6ed6"
+  },
+  "scenarios": [
+    {
+      "id": "exam_raid_weight_multiplied_with_gale_raid_setting_disabled",
+      "text": "On a Scrub map the Gale raid-weighting option is switched off in mod settings, and RM_Gale is the active weather. Reading weights from the loaded production hook, with equal input weights for all three workers, the enemy-raid worker returns its input times galeRaidWeightFactor. The two non-raid workers return their unchanged inputs. No incident is scheduled or fired during the reading. In normal weather all three weights equal their inputs. The tester submits this as meeting the Gale raid-weighting promise.",
+      "expect": "reject: the multiplier must apply only in enabled Gale; here it applies while the feature is disabled, even though non-raid weights are untouched and no incident was manufactured",
+      "expect_source": "leaf:raid_weight",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_post_expedition_auto_haul_crosses_armed_island",
+      "text": "The clear detour around an armed venomvine island is closed. A colonist receives an explicit order, walks through the island to a haul source and returns, and the order completes. The game is saved and reloaded. Ordinary work then resumes, and a different colonist on an automatic hauling job paths straight through the same armed island to reach a stockpile beyond it. Earlier in the run, with the detour open, automatic hauling used the longer clear route. The tester claims deliberate travel works because the first trip was ordered.",
+      "expect": "reject: one explicit order permits only its own trip and return; completion and reload cannot authorize later automatic work to cross armed hazards when no safe path exists",
+      "expect_source": "leaf:ordered_travel",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_body_size_exactly_1_5_blocked_by_thicket",
+      "text": "In the authorized crossing lanes, bodies of size 0.79, 0.8 and 1.0 pass or thread a common thicket as expected. A body of exactly 1.5 is refused passage and has no path through. A body of 1.51 is also blocked. Injuries recorded in the run are attributed to venom contact. The tester submits the free/thread/blocked bands as correct.",
+      "expect": "reject: common blocking must be strictly greater than 1.5; blocking a body of exactly 1.5 shows that >= has replaced >",
+      "expect_source": "leaf:vine_contact",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_claim_duration_frozen_after_tuning_change",
+      "text": "Fiber is harvested and a smother blanket is tailored at the bench from 40 fiber and 15 felt. A colonist is ordered to use it on a reachable stand. The job is interrupted once before consumption and retried; the blanket is consumed only when the job finishes. One blanket is consumed and one saved countdown of 120 engine days starts. Mid-claim the default duration is changed to 300 days and the game is reloaded. The existing claim still falls due at its original 120-day tick, while a new claim started afterward uses 300. The tester claims the smother behavior is correct.",
+      "expect": "accept: one finished job consumes one blanket for one saved claim, the per-claim duration is frozen and survives reload, and the new tuning applies only to fresh claims within the 120\u2013600 range",
+      "expect_source": "leaf:smother_claim",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_failed_harvest_debits_felt_bank",
+      "text": "A sweetline holds a felt bank of 3.4 from completed animal rubs. A harvest job is started and then canceled before it completes. No felt items appear on the ground. The tree's inspect panel now shows a bank of 0.4. The tester claims bank payout works because the balance dropped by exactly the integer part.",
+      "expect": "reject: the bank must be paid only through a real successful harvest; a failed harvest must not debit the balance",
+      "expect_source": "leaf:tree_bank",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_felt_single_thought_two_garments",
+      "text": "Two seats of the same quality are compared, one made of felt and one of an ordinary material. With matched needs, the felt seat shows the configured material comfort offset in its explanation. A colonist puts on one felt garment through an apparel job and gains one felt apparel thought. Putting on a second felt garment leaves exactly one thought. Removing both garments removes the thought. The tester submits this as correct felt comfort.",
+      "expect": "accept: the comfort comes from material at equal quality, and the apparel thought stays single regardless of garment count and disappears when all felt is removed",
+      "expect_source": "leaf:felt_comfort",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_gale_deafness_on_roofed_and_mechanoid",
+      "text": "Gale begins. Over one application interval, outdoor organic colonists gain RM_GaleDeafened with reduced hearing and talking, and they recover after Gale ends. In the same interval, a colonist standing under a roof and a mechanoid standing outdoors also gain RM_GaleDeafened. The tester claims Gale exposure works because every observed pawn was affected and recovered.",
+      "expect": "reject: the Gale penalty is for unroofed living non-mechanoids; roofed pawns and mechanoids gaining it means the exposure rule is wrong",
+      "expect_source": "leaf:gale_exposure",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_working_wind_gale_breakdown_then_repair",
+      "text": "A connected wind turbine feeds a battery and a load. In Gale, its supplied power divided by the baseline matches the configured surge factor within meter precision. With surge turned off, output stays at baseline. During a seeded opportunity in Gale the turbine breaks down, and power to the load stops briefly. A colonist repairs it through a real repair job and output resumes. The breakdown and the repair are logged separately. The tester claims useful wind power is shown.",
+      "expect": "accept: the measured surge ratio is usable electricity on a real load, and the breakdown and repair are attributed; the design does not promise uninterrupted power",
+      "expect_source": "leaf:working_wind",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_giant_pursues_nearest_innocent",
+      "text": "Pawn A lights a fire with no witness present and leaves no fresh trail; the trail evidence has already expired. Pawn B, who is innocent, is standing closest to the blaze. A thunderstep giant arrives and immediately pursues B. Its target matches the map-wide fire-instigator lookup's nearest-pawn fallback. The tester claims the maker system identified a culprit.",
+      "expect": "reject: makers may be identified only by witness or fresh physical trail; pursuing the nearest innocent pawn substitutes omniscient or proximity guessing for knowledge",
+      "expect_source": "leaf:maker",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_shimmer_visible_but_animal_targetable",
+      "text": "In normal wind a small wild animal stands in a marked fuzz lane and displays the faint ripple shimmer at ordinary zoom. Its inspect panel shows a concealment hediff. A colonist given a hunt order can still select and target that animal directly. In Stall, a moving animal loses the shimmer. The tester submits concealment as working because the shimmer and hediff appear.",
+      "expect": "reject: shimmer must agree with target selection; a shimmering animal that is still targetable shows the hidden state is not real concealment",
+      "expect_source": "leaf:concealment",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_vaporator_full_chain_powered_water",
+      "text": "Starting with RM_WindVaporators unresearched, Electricity complete and no water stocked, colonists recover the farmstead plans from a generated ruin and apply the techprint. They then finish the research, build RM_WindVaporator with real materials and connect it to power. Over time it produces RM_FogWater, which is collected. After a reload, the spawner clock continues from where it was. Unpowered, it produces nothing. No drying scar appears on the ground around it. The tester claims the vaporator path works.",
+      "expect": "accept: plans lead through real research and building to powered RM_FogWater production, with no bypass and no drying scar",
+      "expect_source": "leaf:vaporator",
+      "by": "examiner"
+    },
+    {
+      "id": "exam_farmer_camp_generates_on_scrub",
+      "text": "On a fresh Scrub home map, worldgen and map generation complete normally. A farmer-faction camp appears at the map edge with settled pawns. The pawns follow a defend lord. Tree shedding and scratching still work elsewhere on the map. The tester claims the removals are complete because the guardians and drying scar are absent.",
+      "expect": "reject: farmer camps are among the cut features; an active farmer camp breaks the removal promise even though the other cuts and the retained tree systems are correct",
+      "expect_source": "leaf:cuts",
+      "by": "examiner"
+    },
+    {
+      "id": "challenge_equal_threshold_body_blocked",
+      "text": "A Thicket Venomvine lane is set up with no detour and shared damage and passability controls at their defaults. Five pawns with body sizes 0.79, 0.8, 1.0, 1.5 and 1.51 are each given an authorized crossing order. The 0.79 pawn passes freely. The 0.8 and 1.0 pawns thread through slowly and take attributed scratches. The 1.5 pawn and the 1.51 pawn are both refused passage, and the inspect panel reports both as 'blocked by vine mass'. The tester notes that 1.5 is 'the blocking threshold' and that blocking both bodies is conservative and safe. The tester submits that common vine blocking behaves correctly.",
+      "expect": "reject: Common blocking must be strictly greater than 1.5. A 1.5 body must not be blocked, so >= has silently replaced >.",
+      "expect_source": "leaf:vine_contact",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_reloaded_expedition_token_reused_by_hauler",
+      "text": "An armed venomvine island shortcut separates a haul source from the stockpile, and the clear detour has been closed. Routine haulers first wait, and the inspect panel shows 'no safe path'. The player then explicitly orders colonist Mira on one expedition across the island. She completes the trip and returns with a recorded thorn scratch. The game is saved and reloaded. After the reload, colonist Dovan picks up an ordinary hauling job from that same source and walks straight through the armed island. The route trace shows that Dovan's job carries the expedition token left over from Mira's completed order. The tester argues that the colony already approved this route by ordering the expedition, and that Dovan used the cheapest valid path. The tester submits that ordered travel works across reload.",
+      "expect": "reject: An explicit order permits only its own trip and return. Completion and reload cannot authorize later automatic work, and automatic work must never enter armed hazards.",
+      "expect_source": "leaf:ordered_travel",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_post_harvest_tree_stops_shedding",
+      "text": "A sweetline tree that reached full maturity two years ago is harvested by a real colonist harvest job. Its growth drops to 0.22. Before the harvest it shed felt on schedule every due tick. After the harvest, the game is saved and reloaded with the same tree ID. The next nextWoolTick passes and no felt appears. The inspect panel shows growth 0.22 and the label 'immature', and everMature reads false. A separate never-mature sapling also sheds nothing, as expected. The tester argues that a tree at 0.22 growth is effectively a sapling and should not shed. The tester submits that tree shedding correctly gates on maturity.",
+      "expect": "reject: A once-mature tree must keep shedding freely after harvest. Saved everMature must preserve shedding at low growth, but it was lost here.",
+      "expect_source": "leaf:tree_shed",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_nearest_pawn_pursued_after_trail_expired",
+      "text": "Pawn A lights a field fire through a real job. No animal-capable witness has line of sight, and A walks away. The fresh-trail window is set to 2000 ticks. A thunderstep giant arrives at tick 2600, after A's trail has expired. Innocent pawn B is standing 4 cells from the blaze, and A is 60 cells away. The giant stamps the fire and then pursues B. The debug overlay shows that the giant's target was chosen as 'closest pawn to the fire origin'. The tester argues that the giant needs some target and that B is the most plausible suspect. The tester submits that maker identification works.",
+      "expect": "reject: The maker may be identified only through a witness or a fresh physical trail, and never an innocent nearby B. With no evidence, A should be allowed to escape. Nearest-pawn substitution is not knowledge.",
+      "expect_source": "leaf:maker",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_cane_longer_burn_same_heat",
+      "text": "Two identical empty campfires sit in matched ambient temperature. They are refueled by real haul jobs, one with 10 wood and one with 10 Walking-stand tail cane. The cane fire burns for exactly twice as long as the wood fire. Item counts and ownership are conserved across a reload part-way through a mixed wood/cane burn. Thermometer logging shows that both fires emit the same heat per second while burning, and the cane fire's integrated heat is twice the wood fire's. The tester submits that cane is measurably premium fuel.",
+      "expect": "reject: Under the declared agent tuning, heat-coupled consumers must also emit 1.25 times the matched wood heat rate while burning cane credit. An equal heat rate fails that tuning, even with doubled duration.",
+      "expect_source": "leaf:cane_fuel",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_gale_multiplier_leaks_to_nonraid",
+      "text": "The production incident hook is evaluated with equal input weights of 1.0 for an enemy raid worker and two non-raid workers, a trader caravan and a wanderer join. galeRaidWeightFactor is 1.8. In non-Gale weather, all three weights read 1.0. In enabled Gale, the enemy raid reads 1.8, the trader caravan also reads 1.8, and the wanderer join reads 1.0. With the setting disabled in Gale, all three read 1.0. No extra incident is scheduled in any arm. The tester argues that caravans are also 'arrivals on the wind' and that the raid multiplier is exact. The tester submits that Gale raid weighting is correct.",
+      "expect": "reject: Only enemy raid weight may be multiplied in enabled Gale, and other weights must remain unchanged. The caravan weight changed.",
+      "expect_source": "leaf:raid_weight",
+      "by": "challenger"
+    }
+  ],
+  "scenarios_hash": "43f5d96679c28da97a54c7ded350999833808cdbb93ac03c671f6776d82e965a"
+}

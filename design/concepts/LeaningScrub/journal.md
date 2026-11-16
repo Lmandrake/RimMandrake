@@ -27,3 +27,17 @@ RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF.
 ## Stage 3 — rm-role-designercodex-1794799806
 
 Wrote sheet/tree/plan/scenes/floor and supporting source/setting/audit contracts. Gate A, showcase set and stage check pass; result.json is done for this run only.70 leaves,81 planned scenes,7 showcases and7 remainder checks cover71 required units; two absent cuts retain an explicit check. Five proof-contract build items filed without queue priority. No live acceptance, exam, signature or lock inferred. No bridge, game, restart, deployment, mod-code or art action. See write_checks_03.json and record.stage_3. Launcher alone closes/advances the stage.
+
+## Stage 3 retry — rm-role-designercodex-1794806809
+
+The launcher rejected the previous result with 20 reported root-reference errors. The earlier local check passed, and the launcher rejection remains the recorded outcome for that attempt.
+
+This retry checked each reported leaf/root pair against BENCH and Dispatcher. Both checkouts now expose the same eight DRAFT observations at north-star hash 787d3f37799dd51480095df641fcbb8fa8c2c8c9c0083fd261b8b0a666c377e5. All 70 leaves resolve, and each checkout rejects an intentionally missing root. Full result validation passes against both. All 95 primary source hashes match the previous source audit.
+
+Gate A passes, the showcase set is accepted, and designer_stage.py check reports that this run's result.json would be accepted. The existing design remains the submitted Stage 3 product. Current gameplay acceptance, exam, signature and owner first-touch certification remain pending. Per-rejection evidence is in write_checks_03.json. The launcher owns stage closure.
+
+## Stage 4 — rm-role-designercodex-1794815494
+
+The frozen tree and sheet passed the independent Claude Opus exam, 18/18 with zero core false accepts. Six Challenger cases joined twelve Examiner cases before freezing. Two fresh Readers and a fresh Control received only their allowed documents and scenario text. The Control missed the non-raid-weight case after removal of raid_weight and its rule. Raw JSON, session UUIDs, briefs, frozen scenarios and per-reader verdicts are retained under exam_runs. All five helpers were charged580949 weighted tokens, exceeding the500000 run allowance by80949. The task cap retains budget.
+
+Fresh Claude CLI UUID identities exposed an unsupported identity format in the validator. Filed RIMMANDRAKE_ACCEPT_EXAM_SESSIONS_UUIDS_ARE_IDENTITIES, observed two regression failures, and repaired the identity parser with all stage selftests passing. Exam criteria and identity-reuse rejection remain enforced. Live acceptance, coverage, owner first-touch and Lock remain pending. Launcher alone closes and advances this run.

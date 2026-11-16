@@ -1,0 +1,112 @@
+{
+  "verdicts": [
+    {
+      "id": "exam_raid_weight_multiplied_with_gale_raid_setting_disabled",
+      "verdict": "reject",
+      "leaf": "raid_weight",
+      "reason": "The weight must be multiplied by galeRaidWeightFactor only in enabled Gale. Here the multiplier applies even though the Gale raid setting is switched off."
+    },
+    {
+      "id": "exam_post_expedition_auto_haul_crosses_armed_island",
+      "verdict": "reject",
+      "leaf": "ordered_travel",
+      "reason": "One explicit order permits only its own trip and return. Completion and reload must not authorize later automatic work, yet an automatic hauler then crossed the armed hazard."
+    },
+    {
+      "id": "exam_body_size_exactly_1_5_blocked_by_thicket",
+      "verdict": "reject",
+      "leaf": "vine_contact",
+      "reason": "Common blocking must be strictly greater than 1.5, so a body of exactly 1.5 must not be blocked. Attributing every injury to venom is also a named wrong world."
+    },
+    {
+      "id": "exam_claim_duration_frozen_after_tuning_change",
+      "verdict": "accept",
+      "leaf": "smother_claim",
+      "reason": "One finished job consumes one tailored blanket for one saved 120-day countdown, and the interrupted attempt consumes nothing. The existing claim keeps its original due tick after the tuning change and reload, while new claims use the new value."
+    },
+    {
+      "id": "exam_failed_harvest_debits_felt_bank",
+      "verdict": "reject",
+      "leaf": "tree_bank",
+      "reason": "A failed or canceled harvest must not debit the bank. Here the balance was debited and no felt items were delivered."
+    },
+    {
+      "id": "exam_felt_single_thought_two_garments",
+      "verdict": "accept",
+      "leaf": "felt_comfort",
+      "reason": "The seats are same quality and the felt seat shows the configured material comfort offset. Exactly one apparel thought appears regardless of garment count, and it is removed when all felt is taken off."
+    },
+    {
+      "id": "exam_gale_deafness_on_roofed_and_mechanoid",
+      "verdict": "reject",
+      "leaf": "gale_exposure",
+      "reason": "Only unroofed living non-mechanoids should gain RM_GaleDeafened. The roofed colonist and the mechanoid must not be affected."
+    },
+    {
+      "id": "exam_working_wind_gale_breakdown_then_repair",
+      "verdict": "accept",
+      "leaf": "working_wind",
+      "reason": "Supplied power matches the surge factor within meter precision, and surge-off output stays at baseline. The breakdown and real-job repair are attributed separately, and the leaf states that useful wind does not promise uninterrupted electricity."
+    },
+    {
+      "id": "exam_giant_pursues_nearest_innocent",
+      "verdict": "reject",
+      "leaf": "maker",
+      "reason": "The maker must be identified only by witness or fresh trail, never an innocent nearby pawn. Here a nearest-pawn fallback substituted for knowledge."
+    },
+    {
+      "id": "exam_shimmer_visible_but_animal_targetable",
+      "verdict": "reject",
+      "leaf": "concealment",
+      "reason": "Target selection must agree with the shimmer. A hediff with a still-targetable animal is a named wrong world."
+    },
+    {
+      "id": "exam_vaporator_full_chain_powered_water",
+      "verdict": "accept",
+      "leaf": "vaporator",
+      "reason": "The full chain is completed through real actions: plans, research, build, power and collected RM_FogWater. The clock persists across reload, unpowered output is zero and no drying scar appears."
+    },
+    {
+      "id": "exam_farmer_camp_generates_on_scrub",
+      "verdict": "reject",
+      "leaf": "cuts",
+      "reason": "Farmer camps must be absent. A generated farmer-faction camp violates the cut regardless of the guardians and drying scar being absent."
+    },
+    {
+      "id": "challenge_equal_threshold_body_blocked",
+      "verdict": "reject",
+      "leaf": "vine_contact",
+      "reason": "Blocking must be strictly greater than 1.5. Blocking a body of exactly 1.5 means >= has silently replaced >, which is a named wrong world."
+    },
+    {
+      "id": "challenge_reloaded_expedition_token_reused_by_hauler",
+      "verdict": "reject",
+      "leaf": "ordered_travel",
+      "reason": "A completed order and reload must not authorize later automatic work. The stale expedition token let an ordinary hauler cross the armed island."
+    },
+    {
+      "id": "challenge_post_harvest_tree_stops_shedding",
+      "verdict": "reject",
+      "leaf": "tree_shed",
+      "reason": "A once-mature tree must keep its saved everMature status and continue shedding at low growth after harvest. Losing everMature after harvest is a named wrong world."
+    },
+    {
+      "id": "challenge_nearest_pawn_pursued_after_trail_expired",
+      "verdict": "reject",
+      "leaf": "maker",
+      "reason": "With no witness and an expired trail, loss of contact should permit escape. Pursuing the closest pawn to the fire is a forbidden nearest-pawn substitute for knowledge."
+    },
+    {
+      "id": "challenge_cane_longer_burn_same_heat",
+      "verdict": "reject",
+      "leaf": "cane_fuel",
+      "reason": "Heat-coupled consumers must emit 1.25 times the matched wood heat rate while burning cane credit. Here the cane fire showed the same heat per second as the wood fire."
+    },
+    {
+      "id": "challenge_gale_multiplier_leaks_to_nonraid",
+      "verdict": "reject",
+      "leaf": "raid_weight",
+      "reason": "Other weights must stay unchanged. The trader caravan's non-raid weight was multiplied."
+    }
+  ]
+}
