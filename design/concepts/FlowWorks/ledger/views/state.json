@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "380f926d64ee7d08b1596c021b9f46337ba4f7110aad68249a7e6baa296674e7",
+  "body_sha256": "9c05b817b51f93ad95d8b6b4b10053aaf43346d89c1baeb5b2a99ef7bbe2dc75",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 691198
+   "BACKFILL": 703081
   }
  },
  "state": {
@@ -247,6 +247,14 @@
     },
     "question": null,
     "ts": "2026-11-16T07:31:18Z"
+   },
+   "decision:finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE": {
+    "answer": "May donor test pass despite Minerals NRE → Pass it, retire that mod, and ensure we create whatever it did within our own holdings",
+    "authority": {
+     "by_card": "May donor test pass despite Minerals NRE → Pass it, retire that mod, and ensure we create whatever it did within our own holdings"
+    },
+    "question": null,
+    "ts": "2026-11-16T07:51:26Z"
    },
    "decision:finding:NORTH_STAR_WALK_AUTHORING_1": {
     "answer": "What should happen to FOUNDRY? → Retire it (Recommended)",
@@ -1742,6 +1750,14 @@
     "text": "You take all items including foundry item during this experiment.",
     "ts": "2026-11-16T07:31:18Z"
    },
+   "finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE": {
+    "authority": {
+     "by_card": "May donor test pass despite Minerals NRE → Pass it, retire that mod, and ensure we create whatever it did within our own holdings"
+    },
+    "by": "BACKFILL",
+    "text": "May donor test pass despite Minerals NRE → Pass it, retire that mod, and ensure we create whatever it did within our own holdings",
+    "ts": "2026-11-16T07:51:26Z"
+   },
    "finding:NORTH_STAR_WALK_AUTHORING_1": {
     "authority": {
      "by_card": "What should happen to FOUNDRY? → Retire it (Recommended)"
@@ -2639,7 +2655,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 877,
+  "events": 891,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -4949,6 +4965,41 @@
     "ts": "2026-11-16T07:31:16Z",
     "version": "0.1.0"
    },
+   "finding:FW_ART_POLISH_REDRAW_FOUR_SMALL_MISSES": {
+    "accept": "none, not written at filing",
+    "bars": [],
+    "by": "BACKFILL",
+    "claim": "Closed at 06a879b1038304d5ad612b69eb375cefa7c8a8b0 by RELENTLESS: relentless: blind PASS at 5b30380461ab66b21926f3ac565cdbe14560488e after 0 return(s): Ran run_selftests --only selftest_fw_art_four_misses: GREEN 1/1. […]",
+    "class": "problem",
+    "code_sha": "06a879b1038304d5ad612b69eb375cefa7c8a8b0",
+    "proposed_fix": "found-by: GPT art review, verified (BENCH, 2026-10-23/24; whole-FlowWorks+GSS art sheet at true scale, gpt_consult default model). Report: `Transient/flowworks_takeover_20261023/GPT_ART_REVIEW.md`. Sheet: `Transient/biome_ffar/flowworks_gpt_art_review_sheet_2026-10-23.html` (untracked; […]",
+    "status": "claimed_fixed",
+    "tags": [
+     "art",
+     "other-mod"
+    ],
+    "text": "Four small art misses: scorch keyline, sign shadow, weir spill, bottle",
+    "ts": "2026-11-16T07:51:19Z",
+    "version": "0.1.0"
+   },
+   "finding:FW_MOCK_FIX_PULSE_FORGOT_ITS_DL": {
+    "accept": "none, not written at filing",
+    "bars": [],
+    "by": "BACKFILL",
+    "claim": "No defect at e9600b7843: selftest_extensions.py PASS on origin/main e9600b7843 (run_selftests --only, 62 s, 2026-11-12)",
+    "class": "problem",
+    "code_sha": "e9600b7843",
+    "how_checked": "reading",
+    "proposed_fix": "not written by its filer: read item:FW_MOCK_FIX_PULSE_FORGOT_ITS_DL",
+    "status": "withdrawn",
+    "tags": [
+     "test",
+     "other-mod"
+    ],
+    "text": "selftest_extensions red: validation_v2 mock flowworks_pulse sends no per-cell dl since 7cae6d72be (exact-water check), so the clean mock run is NOT GREEN (A0_instrument, E3, E3n, E5, E5n, E2, E6 FAIL)",
+    "ts": "2026-11-16T07:51:22Z",
+    "version": "0.1.0"
+   },
    "finding:FW_PROOF_DRIVERS_FIX_EARLY_FALSE_PASS": {
     "accept": "none, not written at filing",
     "bars": [],
@@ -4985,6 +5036,78 @@
     ],
     "text": "FlowWorks review/matrix drivers false PASS (GPT 7.3-7.10, 8.1, 8.2, 8.4-8.9) - file:line + fix in D:\\ClaudeWork\\rimmandrake\\review_debt_20261026\\gptfw_progress.md",
     "ts": "2026-11-16T07:18:55Z",
+    "version": "0.1.0"
+   },
+   "finding:FW_PROOF_TOOLS_HARDEN_READ_GAPS": {
+    "accept": "none, not written at filing",
+    "bars": [],
+    "by": "BACKFILL",
+    "claim": "Implemented at fb06a1c34146 (RELENTLESS); not closed. Criteria: A1 on any loaded map, jawa/flowworks_excavation_rect over a 4x4 rect returns rows that each carry dl (a non-negative int, exact water in decilitres) and fluid (a F",
+    "class": "problem",
+    "code_sha": "fb06a1c34146",
+    "proposed_fix": "not written by its filer: read item:FW_PROOF_TOOLS_HARDEN_READ_GAPS",
+    "status": "claimed_fixed",
+    "tags": [
+     "live",
+     "test",
+     "other-mod"
+    ],
+    "text": "Proof bridge reads lack fields the proofs need (GPT 4.5+7.12 excavation liquid/dL, 6.2 pulse dL, 6.4 InFloorBand read, 7.1 proof_hose DLL stamp, 7.11 hose_port P9 window, 8.3 CR5 forced fallback) - C#/hose files; file:line + fix in D:\\ClaudeWork\\rimmandrake\\review_debt_20261026\\gptfw_progress.md",
+    "ts": "2026-11-16T07:51:19Z",
+    "version": "0.1.0"
+   },
+   "finding:FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY": {
+    "accept": "none, not written at filing",
+    "bars": [],
+    "by": "BACKFILL",
+    "claim": "Closed at 695812d5ec (pre-landing; landed as 805c1272fbb9) by BENCH: R1 live PASS at 695812d5ec (Transient/bench_live_20261014_r3/live/ext_river_swept2.json, ext_river.json, river_settings.json)",
+    "class": "problem",
+    "code_sha": "805c1272fbb9",
+    "proposed_fix": "not written by its filer: read item:FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY",
+    "status": "claimed_fixed",
+    "tags": [
+     "live"
+    ],
+    "text": "River extension returns_home / panning_draws_stock / flood_refill UNMEASURED on every pass 4-8 (SWEPT pending=0; pan=nothing). Classed SITE presumed: the river site never sweeps a pawn and the pan draws nothing. Build a site where both happen, or prove the classification. […]",
+    "ts": "2026-11-16T07:51:22Z",
+    "version": "0.1.0"
+   },
+   "finding:FW_SELFTESTS_MEND_TWO_RED_AFTER_PARITY": {
+    "accept": "none, not written at filing",
+    "bars": [],
+    "by": "BACKFILL",
+    "claim": "Closed at 0df38f45e0 (pre-landing; landed as 03aeb83202d1) by BENCH: both selftests green: selftest_drawbridge_proof ok (4 cable cases listed), selftest_review_map 0 uncovered (chop job + Dev fill/empty covered)",
+    "class": "problem",
+    "code_sha": "03aeb83202d1",
+    "proposed_fix": "not written by its filer: read item:FW_SELFTESTS_MEND_TWO_RED_AFTER_PARITY",
+    "status": "claimed_fixed",
+    "tags": [
+     "live",
+     "test",
+     "settings",
+     "other-mod"
+    ],
+    "text": "Two FlowWorks selftests red: northstar/selftest_drawbridge_proof.py (validation.DRAWBRIDGE_CASES missing Drawbridge_raised_leaf_draws_without_its_winch vs DrawbridgeChecks.cs) and FlowWorks/selftest_review_map.py (uncovered: JobDef RM_RaiderTakeLadder, setting digDeepStoneEnabled, gizmo 'Repair breach')",
+    "ts": "2026-11-16T07:51:22Z",
+    "version": "0.1.0"
+   },
+   "finding:FW_SELFTEST_REPAIR_TWO_PATTERNS_ADRIFT": {
+    "accept": "Prove it where the title says (offline selftest, or the live proof named in the owed criterion); then `rimflow verify FW_SELFTEST_REPAIR_TWO_PATTERNS_ADRIFT --sha <sha> --level <L> --result pass --config <what ran> --evidence <path>` […]",
+    "bars": [],
+    "by": "BACKFILL",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "The full FlowWorks C# SelfTest has two red source-pattern cases unrelated to the kernel: RiverSwitchFlip_weirWhiteWater (DrawAt call-site pattern 'if (RM_RiversSettings.weirWhiteWater && ' not found) and PitCapture_follows_a_held_pawn_that_moves ('the job driver asks the step and pins the victim for the hold'); […]",
+    "status": "open",
+    "tags": [
+     "live",
+     "test",
+     "settings",
+     "other-mod"
+    ],
+    "text": "The full FlowWorks C# SelfTest has two red source-pattern cases unrelated to the kernel: RiverSwitchFlip_weirWhiteWater (DrawAt call-site pattern 'if (RM_RiversSettings.weirWhiteWater && ' not found) and PitCapture_follows_a_held_pawn_that_moves ('the job driver asks the step and pins the victim for the hold'); […]",
+    "ts": "2026-11-16T07:51:16Z",
     "version": "0.1.0"
    },
    "finding:GLOWTANK_SALT_FIX_ONE_PINCH_ONLY": {
@@ -5864,6 +5987,22 @@
     ],
     "text": "FlowWorks: static per-Map tables, NativeArrays and meshes outlive removed maps",
     "ts": "2026-11-16T07:16:26Z",
+    "version": "0.1.0"
+   },
+   "finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE": {
+    "accept": "none, not written at filing",
+    "bars": [],
+    "by": "BACKFILL",
+    "claim": "Implemented at 41d00f21000b (pre-landing; landed as 55ea29af63a2) (FOUNDRY); not closed. Criteria: none recorded",
+    "class": "problem",
+    "code_sha": "55ea29af63a2",
+    "proposed_fix": "not written by its filer: read item:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE",
+    "status": "claimed_fixed",
+    "tags": [
+     "code"
+    ],
+    "text": "Retire MineralsFramework; reproduce whatever map step of it we rely on inside our own mods",
+    "ts": "2026-11-16T07:51:23Z",
     "version": "0.1.0"
    },
    "finding:MISSION_TANK_GOAL_REWIRE_TO_DEST": {

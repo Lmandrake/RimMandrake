@@ -1,9 +1,9 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":691198} body_sha256=bec46d465d2c6a10ae1fa463533f391815f175b45423c4ac8040389dfbfedcef -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":703081} body_sha256=36afc3a13c81b6853c55c0e0e015b568305f9ae3e764011bbc00b99aab3f9ba9 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 877 events in 1 shards · reducer 1
+version 0.1.0 · stage offline_build · 891 events in 1 shards · reducer 1
 
-## Open findings (332)
-(claimed fixes, awaiting a judge, on one line each with the oldest 123 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
+## Open findings (338)
+(claimed fixes, awaiting a judge, on one line each with the oldest 128 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
 - RIMMANDRAKE_FIX_CONVERTER_RATE_REMAINDER_EATEN_BY_THE_CAP on a34a529cc2
 - RIMMANDRAKE_PIN_CONVERTER_CALLER_KEEPS_CLIPPED_INCOME on a34a529cc2
 - RIMMANDRAKE_FIX_SHEET_DRY_ISLAND_UNDER_A_STANDING_POOL on a34a529cc2
@@ -317,33 +317,31 @@ version 0.1.0 · stage offline_build · 877 events in 1 shards · reducer 1
 - POND_PUMP_FIX_LAST_DROP_COUNTS on 04178f53d0d4
 - PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD on 45b2320184f9
 - RAIDER_CHOP_FIX_AXE_NEVER_LANDS [open, problem]: FlowWorks MOD: ladderless raiders take RM_RaiderChopForLadd…
-- finding:READOUT_CHECK_FIX_STALE_AFTER_PROOF_REWIRE [open, problem] by BACKFILL, 2026-11-16T07:31:16Z: FlowWorks SelfTest Readout_two_numbers_and_the_limitless_mark fails: RewireChecks.cs:203 still expects RM_NorthstarProofs 'return "OK " + (eng.DepthReadoutAt(c) ?? "-")', which 56bd0e0876 (READOUT_PROOF_FIX_BYPASSES_MOUSEOVER) replaced with DepthSuffix; selftest_flowworks_stock.py is RED on main
-  proposed fix: not written by its filer: read item:READOUT_CHECK_FIX_STALE_AFTER_PROOF_REWIRE
-  accept: none, not written at filing
+- READOUT_CHECK_FIX_STALE_AFTER_PROOF_REWIRE [open, problem]: FlowWorks SelfTest Readout_two_numbers_and_the_limitless_ma…
 - READOUT_SELFTEST_MEND_PATTERN_LOST_ITS_LINE on 8fda7ee60f
 - REVIEW_MAP_FIX_COVER_NEW_DEFS on 1a62baf78407
-- finding:RIVER_SITE_FIX_MAPS_OUTLIVE_THEIR_RUN [open, problem] by BACKFILL, 2026-11-16T07:31:17Z: FlowWorks/northstar/river_site.py founds a NEW site map on every run in a kept game; leftover_maps drops only maps THIS run made, so each earlier site stays loaded. […]
-  proposed fix: not written by its filer: read item:RIVER_SITE_FIX_MAPS_OUTLIVE_THEIR_RUN
-  accept: none, not written at filing
+- RIVER_SITE_FIX_MAPS_OUTLIVE_THEIR_RUN [open, problem]: FlowWorks/northstar/river_site.py founds a NEW site map on…
 - SELFTEST_FILTER_BUILD_SERIAL_DLL on f06f2f36d0ac
 - SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ on 6873efad10a1
 - SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND on 11bd26b8a855
 - STATION_REACH_CENTRE_RETHINK_FOOTPRINT on 90b7600efab4
 - SWIM_REAPPLY_FIX_LATE_TOGGLE_STAYS_DRY on 413f16e88b02
-- finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH [open, problem] by BACKFILL, 2026-11-16T07:31:17Z: FlowWorks tanks (liquid tank, universal cargo tank, etc.) get the four-look style switch like hose reels and the rest
-  proposed fix: not written by its filer: read item:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH
-  accept: none, not written at filing
+- TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH [open, problem]: FlowWorks tanks (liquid tank, universal cargo tank, etc.) g…
 - TANK_STUB_HUNT_POINTS_AT_NOTHING on 45cd799d28ac
 - TESTENV_HIVES_HARDEN_RIVER_MAP_SQUATTERS on fb8b127f0c64
 - TEST_SWITCH_FIX_NO_SCRIBE_NO_PEACE on 6cf4c4fa8bfb
 - THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY on 7fdf43c9319b
-- finding:THIRST_CHAIN_UNSTICK_STILL_SIPPING [open, problem] by BACKFILL, 2026-11-16T07:31:18Z: FlowWorks chain 'thirst' hangs on SteveDesktop: two filler jobs INVALID/HARNESS (J20261027T022443Z-6675e4 stalled ~17 min in 'FlowWorks C# SelfTest (offline)', modcheck exit 5; J20261027T024615Z-c14359: thirst_live.py jawa/pawn_need timed out 600 s, left an UNKNOWN-outcome bridge marker that refused the run). […]
-  proposed fix: not written by its filer: read item:THIRST_CHAIN_UNSTICK_STILL_SIPPING
-  accept: none, not written at filing
+- THIRST_CHAIN_UNSTICK_STILL_SIPPING [open, problem]: FlowWorks chain 'thirst' hangs on SteveDesktop: two filler…
 - THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE on 3f4004d8e557
 - TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG on c22de8bf0b58
 - VALIDATION_HOSE_REELS_FIX_STILL_WEST on c7019b9f29b9
 - WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST on cd5acbaf2cd4
+- FW_SELFTEST_REPAIR_TWO_PATTERNS_ADRIFT [open, problem]: The full FlowWorks C# SelfTest has two red source-pattern c…
+- FW_ART_POLISH_REDRAW_FOUR_SMALL_MISSES on 06a879b1038304d5ad612b69eb375cefa7c8a8b0
+- FW_PROOF_TOOLS_HARDEN_READ_GAPS on fb06a1c34146
+- FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY on 805c1272fbb9
+- FW_SELFTESTS_MEND_TWO_RED_AFTER_PARITY on 03aeb83202d1
+- MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE on 55ea29af63a2
 
 ## Traps (7) — what a reader would otherwise get wrong
 - trap:three-bar-vocabularies ([floor:…]): Three bar vocabularies. The 57 checklist rows are the bars of 0.1.0. The sheet's `[floor:…]` lines (mod_settings, tick_cost, worldgen, multiplayer) and the 22 lines of `floor.json` are floor lines every mod meets, not among the 59. […]
@@ -357,7 +355,7 @@ version 0.1.0 · stage offline_build · 877 events in 1 shards · reducer 1
 ## Causes refuted (1) — do not chase these again
 - cause:undecided-site-vs-mod-only-by-one-live: Undecided SITE-vs-MOD only by one live print. - The "weir at the map edge" reading is REFUTED. `FindWeirSite` (`src/RimMandrake/FlowWorks/Source/Rivers/RM_RiverWorksProofWorks.cs:24-69`) already skips a margin of `weirPoolLength + 4` = 12 cells (`RM_RiversSettings.cs:57`, default 8); […] (on 25e8af1c727b, depends on src/RimMandrake/FlowWorks/Source/Rivers/RM_RiverWorksProofWorks.cs)
 
-## His answers (142) (each cut to 160 chars, a decision named without its 'decision:': `modledger.py show`)
+## His answers (143) (each cut to 160 chars, a decision named without its 'decision:': `modledger.py show`)
 - version: Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of FlowWorks, Gimme Some Slack, Pyrelands, Pyrelands Mechanics)
 - q:filled-water-moat-has-raiders-swimming: Filled water moat has raiders swimming across it (getting tired swimming in deep water), then water drains and they become Prisoners in a prisoner pit for awhi…
 - q:two-squares-away-from-the-canal: Two squares away from the canal should become · … This isn't the same as flood water … Wetted ground means the plants have access to water.
@@ -500,6 +498,7 @@ version 0.1.0 · stage offline_build · 877 events in 1 shards · reducer 1
 - finding:THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: Cut scope → Thirst: drop Dubs interop
 - finding:FWSHEET_CULL_MIXED_CONTAINER_ROWS: It was making me choose between different objects for bottles and barrels.
 - finding:FWSHEET_UNIFY_COUPLED_STATE_ROWS: The choice between wrecked and repaired is also coupled.
+- finding:MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE: May donor test pass despite Minerals NRE → Pass it, retire that mod, and ensure we create whatever it did within our own holdings
 
 ## Open questions (0)
 
@@ -565,11 +564,11 @@ version 0.1.0 · stage offline_build · 877 events in 1 shards · reducer 1
 spend recorded: USD 33.19, 24322723 tokens
 
 ## Left out
-- closed findings: 4, oldest first (`modledger.py show --mod FlowWorks <subject>`)
+- closed findings: 5, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - tests: 27, oldest first (`modledger.py show --mod FlowWorks <subject>`)
-- claimed fixes in brief: 205 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 123 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
+- claimed fixes in brief: 210 on one line (name and sha), their claim, test and fix by `show`
+- open findings in brief: the oldest 128 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 160 and 60 chars)
-- the full history: 877 events (views/history.md; never read whole)
+- the full history: 891 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T07:31:20Z.1794814280461569980 (modledger.py since --mod FlowWorks t=2026-11-16T07:31:20Z.1794814280461569980 prints what changed after this packet)
+cursor: t=2026-11-16T07:51:26Z.1794815486386234837 (modledger.py since --mod FlowWorks t=2026-11-16T07:51:26Z.1794815486386234837 prints what changed after this packet)
