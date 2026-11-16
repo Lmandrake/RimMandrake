@@ -13,6 +13,7 @@ too fluid otherwise. Wrong phase." Cases, all on temp trees and fake systemctl (
      no catch-up start
   6  the door: a change touching a pipeline file with a failing pipeline test is refused at publish; a change touching
      none runs nothing; the 13 publish tree checks still run
+  7  the clean clone: made from origin, reset to origin/main each run, and the sweep runs inside it with ~/.local/bin
 """
 import json
 import os
@@ -229,6 +230,32 @@ pc = json.load(open(os.path.join(REPO, P.PIPELINE_TESTS), encoding="utf-8"))
 check("6 the shipped pipeline set is out of the nightly (one line, nightly: false) and lists only existing tests",
       pc["nightly"] is False and all(os.path.isfile(os.path.join(REPO, c["test"])) for c in pc["tests"])
       and all(os.path.isfile(os.path.join(REPO, t)) for t in pc["live_excluded"]))
+
+# ---- 7. the clean clone ----------------------------------------------------------------------------------------------
+O = os.path.join(TMP, "origin_work")
+G = ["git", "-c", "user.name=t", "-c", "user.email=t@t", "-c", "commit.gpgsign=false"]
+os.makedirs(O)
+subprocess.run(G + ["init", "-q", "-b", "main", O], check=True)
+put(O, "a.txt", "one\n")
+subprocess.run(G + ["-C", O, "add", "a.txt"], check=True)
+subprocess.run(G + ["-C", O, "commit", "-q", "-m", "one"], check=True)
+CL = os.path.join(TMP, "nightly_clone")
+check("7 the clean clone is made from origin", NS.refresh_clone(CL, O) is None
+      and open(os.path.join(CL, "a.txt")).read() == "one\n")
+put(O, "a.txt", "two\n")
+subprocess.run(G + ["-C", O, "commit", "-q", "-am", "two"], check=True)
+put(CL, "a.txt", "local edit\n")
+put(CL, "stray.txt", "left by a test\n")
+check("7 a refresh lands on origin/main exactly: local edits and strays gone",
+      NS.refresh_clone(CL, O) is None and open(os.path.join(CL, "a.txt")).read() == "two\n"
+      and not os.path.exists(os.path.join(CL, "stray.txt")))
+seen = {}
+rc = NS.run(C, clone=CL, origin=O, out=buf,
+            runner=lambda argv, **kw: (seen.update(argv=argv, **kw), subprocess.CompletedProcess(argv, 0))[1])
+check("7 with a finished mod the sweep runs run_selftests --nightly IN the clean clone, ~/.local/bin first on PATH",
+      rc == 0 and seen.get("cwd") == CL and seen["argv"][1:] == [os.path.join(CL, "src", "RimMandrake", "Utils",
+                                                                               "run_selftests.py"), "--nightly"]
+      and seen["env"]["PATH"].split(os.pathsep)[0] == os.path.expanduser("~/.local/bin"), seen)
 
 print("RESULT: %s (%d fail)" % ("GREEN" if not FAILS else "RED", len(FAILS)))
 sys.exit(1 if FAILS else 0)

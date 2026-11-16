@@ -116,8 +116,8 @@ def refresh_clone(clone, origin):
                            stdin=subprocess.DEVNULL)
         if r.returncode:
             return "git clone: %s" % r.stderr.strip()
-    for a in (("fetch", "-q", "origin", "main"), ("checkout", "-q", "-B", "main", "origin/main"),
-              ("reset", "-q", "--hard", "origin/main"), ("clean", "-q", "-fd")):
+    for a in (("fetch", "-q", "origin", "main"), ("checkout", "-q", "-f", "-B", "main", "origin/main"),
+              ("clean", "-q", "-fd")):
         r = _git(clone, *a)
         if r.returncode:
             return "git %s: %s" % (a[0], r.stderr.strip())
