@@ -474,6 +474,12 @@ check("a subject outside the classes (bar:/finding:/cause:/trap:/q: or a singlet
       std_refusal(why, "subject"), why)
 why = try_open(subject="finding:F_BLAST", body=finding("bad finding name"))
 check("a finding: name that fails the project namecheck is refused", std_refusal(why, "subject"), why)
+# most tickets have no prose file: their rimflow `file` event is the whole record, and their legacy name stays valid
+os.makedirs(os.path.join(rs, "infrastructure", "state", "ledger", "events"), exist_ok=True)
+with open(os.path.join(rs, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"), "a", encoding="utf-8") as fh:
+    fh.write(json.dumps({"event": "file", "id": "THIRST_BUILD_OWN_BOTTLES_DUBS", "title": "t"}) + "\n")
+why = try_open(subject="finding:THIRST_BUILD_OWN_BOTTLES_DUBS", body=finding("a ledger-only ticket"))
+check("a finding named for a ticket filed in the rimflow ledger (no prose file, legacy name) passes", why is None, why)
 why = refuses(M.append, rs, MOD, "BACKFILL", "trap.noted", "trap:Not A Slug", body={"text": "t", "where": "w"},
               evidence=["item:X"], ts=ts(4))
 check("a trap: subject that is not a kebab slug is refused", std_refusal(why, "subject"), why)

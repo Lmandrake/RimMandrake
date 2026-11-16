@@ -53,6 +53,7 @@ lint is what catches it (spec §3.1, GPT objection 10).
 import argparse
 import datetime
 import fcntl
+import glob
 import hashlib
 import json
 import os
@@ -198,13 +199,36 @@ def subject_class(subject):
     return head if sep and head in std()["subject_classes"] else None
 
 
+_FILED = {}
+
+
+def _filed_ids(root):
+    """-> the ids of every ticket filed in the rimflow ledger (its `file` events), read once per root: most tickets
+    have no prose file, their events are the whole record."""
+    shards = sorted(glob.glob(os.path.join(root, "infrastructure", "state", "ledger", "events", "*.jsonl")))
+    sig = tuple((sp, os.path.getsize(sp)) for sp in shards)        # an append grows a shard: re-read then
+    if _FILED.get(root, (None,))[0] != sig:
+        ids = set()
+        for sp in shards:
+            with open(sp, encoding="utf-8", errors="replace") as fh:
+                for line in fh:
+                    if '"file"' in line:
+                        m = re.search(r'"id": ?"([A-Za-z0-9_]+)"', line)
+                        if m and re.search(r'"event": ?"file"', line):
+                            ids.add(m.group(1))
+        _FILED[root] = (sig, ids)
+    return _FILED[root][1]
+
+
 def _finding_name_ok(name, root):
-    """A finding keeps its ticket's name: any existing rimflow item (open or closed), any legacy form, or a name the
-    project namecheck would mint."""
+    """A finding keeps its ticket's name: any existing rimflow item (open or closed, with a prose file or filed in the
+    rimflow ledger only), any legacy form, or a name the project namecheck would mint."""
     for r in {root, REPO_ROOT}:
         for sub in ("", "closed"):
             if os.path.exists(os.path.join(r, "infrastructure", "state", "items", sub, name + ".md")):
                 return None
+        if name in _filed_ids(r):
+            return None
     if model.NAMED_ID.match(name):
         return None
     probs = model.mint_problems(name, set())
