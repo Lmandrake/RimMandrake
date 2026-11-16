@@ -171,7 +171,8 @@ def test_launch_argv_shape():
     role["pre_launch"] = [["a", "b c"], ["d"]]
     a = RL.launch_argv(role, "U", "MSG", "/o", "/e", "/bin/claude")
     j = a.index("/bin/sh")
-    check(a[j + 2] == "a 'b c' 1>&2 && d 1>&2 && exec \"$@\"", "pre-steps quoted and chained: %r" % a[j + 2])
+    check(a[j + 2] == "a 'b c' 1>&2 && d 1>&2; r=$?; [ \"$r\" -eq 0 ] && exec \"$@\"; [ \"$r\" -eq %d ] && exit 0; "
+          "exit \"$r\"" % RL.PRE_DONE_EXIT, "pre-steps quoted and chained (PRE_DONE_EXIT ends the unit 0): %r" % a[j + 2])
     role["pre_launch"] = ["a", ""]
     check(raises(lambda: RL.launch_argv(role, "U", "M", "/o", "/e", "/c/claude"), "pre_launch"), "bad pre_launch refused")
 

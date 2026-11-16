@@ -938,6 +938,31 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                         % (name, run["unit"], ustate, tries))
             continue
         res = obs["result"](run)
+        if run.get("concept") and not isinstance(res, dict):
+            # no model output: stage5_program may have closed the run itself (no model started, nothing charged)
+            try:
+                pc = (obs.get("program_closed") or program_closed)(run["concept"], run["unit"])
+            except Exception as e:  # noqa: BLE001 - unread: the run is harvested as before (a failed run, alarmed)
+                pc = ("error", "its stage.json could not be read: %s" % e)
+            if pc and pc[0] == "closed":
+                run.update(state="done", tokens=0, raw_tokens=0, token_unit=TOKEN_UNIT, by="program")
+                act(do="role_done", role=name, unit=run["unit"], ticket=run.get("item"), note=True,
+                    why="%s run %s closed by program at stage 5 (%s%s): no model started, 0 tokens" % (
+                        name, run["unit"], pc[1].get("outcome"),
+                        " to stage %s" % pc[1].get("to") if pc[1].get("outcome") == "return" else ""),
+                    blind=blind(name, "completed", run.get("mode"), run["unit"]))
+                finish_slot_alarms(rs, run)
+                close_concept(name, rs, cfg, run, {}, 0, now, act, obs)
+                continue
+        if run.get("concept") and isinstance(res, dict):
+            try:
+                pc = (obs.get("program_closed") or program_closed)(run["concept"], run["unit"])
+            except Exception:  # noqa: BLE001 - only the alarm below reads it
+                pc = None
+            if pc and pc[0] == "error":
+                act(do="alarm", kind="role:%s:stage5_program" % name, ticket=run.get("item"), note=True,
+                    why="%s run %s on %s: the stage-5 program step did not run, the Designer ran as today: %s" % (
+                        name, run["unit"], run["concept"], pc[1]))
         is_codex = run.get("runner") == "codex" or (isinstance(res, dict) and res.get("runner") == "codex")
         if is_codex:
             run["runner"] = "codex"
@@ -2039,7 +2064,69 @@ def coverage_pre(concept):
         return None
     if st.get("stage") != 5 or st.get("status") == "locked":
         return None
-    return [["python3", "src/RimMandrake/rimflow/coverage_judge.py", "run", concept]]
+    return [["python3", "src/RimMandrake/rimflow/coverage_judge.py", "run", concept],
+            ["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-program", concept]]
+
+
+PRE_DONE_EXIT = 79     # a pre-step that did the run's work itself: the unit ends 0 and the model never starts
+
+
+def stage5_program(concept, unit=None, sync=True):
+    """The second pre-launch step at stage 5, after the judge (RIMMANDRAKE_CARRY_STAGE_FIVE_BY_PROGRAM_TEN_RELAY_RUNS):
+    when designer_stage.program_result has the run's result from the verdict alone, write that result.json and close the
+    open run through designer_stage.close_run with no model and 0 tokens. -> ("closed", line) | ("designer", why).
+    A close that rejects it puts stage.json back as it was (the run open, nothing recorded but one history line) and the
+    Designer runs as today. Raises only on an unreadable concept (main says "did not run" and lets the Designer run)."""
+    import designer_stage as DS
+    import concept_tree as CT
+    st = DS.load_state(concept)
+    run = (st.get("running") or {}).get("run")
+    if not run or (unit and run != unit):
+        return "designer", "the open run is %r, not this unit %r" % (run, unit)
+    try:
+        tree_now = CT.tree_hash(CT.load(concept))
+    except (OSError, ValueError) as e:
+        return "designer", "the tree is unreadable (%s)" % e
+    verdict = DS.read_json(os.path.join(concept, "coverage_verdict.json"))
+    res = DS.program_result(dict(st, tree_now=tree_now), verdict, run)
+    if res is None:
+        return "designer", "the verdict leaves something to decide (%s)" % (
+            (verdict or {}).get("verdict") if isinstance(verdict, dict) else "no verdict")
+    if sync:
+        judge_sync(concept)            # the same fresh origin stage_close reads OWNER.jsonl from
+    sp = DS.state_path(concept)
+    with open(sp, "rb") as f:
+        before = f.read()
+    rp = os.path.join(concept, "result.json")
+    DS.write_json(rp, res)
+    ok, errs = DS.close_run(concept, run, 0, repo=DS.REPO)
+    if ok:
+        return "closed", "run %s closed by program: stage 5 %s%s, no model started" % (
+            run, res["outcome"], " to stage 3" if res["outcome"] == "return" else "")
+    with open(sp, "wb") as f:
+        f.write(before)
+    rej = os.path.join(concept, "result.%s.rejected.json" % DS.safe(run))
+    if os.path.exists(rej):
+        os.replace(rej, os.path.join(concept, "result.%s.program-rejected.json" % DS.safe(run)))
+    st = DS.load_state(concept)
+    DS.hist(st, "program_rejected", "run %s: the program's result was rejected (%s); the Designer runs" % (
+        run, "; ".join(errs[:3])))
+    DS.write_json(sp, st)
+    return "designer", "close rejected the program's result: %s" % "; ".join(errs[:3])
+
+
+def program_closed(concept, unit):
+    """-> ("closed", its stage.json result entry) when stage5_program closed `unit`, ("error", why) when that step did
+    not run on it, else None (the Designer ran, as today)."""
+    import designer_stage as DS
+    st = DS.load_state(concept)
+    hit = next((r for r in st.get("results") or [] if isinstance(r, dict) and r.get("run") == unit
+                and r.get("by") == "program" and r.get("outcome") != "rejected"), None)
+    if hit:
+        return "closed", hit
+    err = next((h for h in reversed(st.get("history") or []) if isinstance(h, dict) and h.get("what") == "program_error"
+                and str(h.get("why") or "").startswith("run %s:" % unit)), None)
+    return ("error", err["why"]) if err else None
 
 
 CLOSE_OWED_MAX_S = 2 * 86400     # a stage close still raising after this long is given up, said to the Conductor
@@ -2070,7 +2157,9 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
         cfg = dict(cfg, runner=run["runner"])
     run["close_owed"] = owed
     try:
-        if (run.get("runner") == "codex" or res.get("runner") == "codex") and not obs.get("stage_close"):
+        if run.get("by") == "program":     # stage5_program closed it in the unit through close_run: accepted there
+            ok, errs = True, []
+        elif (run.get("runner") == "codex" or res.get("runner") == "codex") and not obs.get("stage_close"):
             import designer_stage as DS
             ok, errs = DS.close_run(run["concept"], run["unit"], repo=DS.REPO,
                                    runner="codex", usage=codex_usage(run, res),
@@ -2797,7 +2886,7 @@ def scope_bound_s(role):
 def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     """The transient unit's argv. A role's `pre_launch` (an argv or a list of argvs, run in its clone) runs first inside the same unit,
     its stdout sent to the err file so `out` stays claude's JSON alone; if it exits non-zero, claude never starts
-    (the Designer's coverage_judge.py, the Auditor's pre-screen)."""
+    (the Designer's coverage_judge.py, the Auditor's pre-screen); PRE_DONE_EXIT ends the unit 0 (stage5_program)."""
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
@@ -2828,7 +2917,9 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
                              % (role.get("name"), pre))
         # the pre-steps' words are quoted into the script; the claude argv (the message) stays positional, unquoted
         script = " && ".join(" ".join(shlex.quote(x) for x in st) + " 1>&2" for st in steps)
-        cmd = ["/bin/sh", "-c", script + ' && exec "$@"', "role-pre-launch"] + cmd
+        # a step exiting PRE_DONE_EXIT did the run's work itself (stage5_program): the unit ends 0, the model never starts
+        script = '%s; r=$?; [ "$r" -eq 0 ] && exec "$@"; [ "$r" -eq %d ] && exit 0; exit "$r"' % (script, PRE_DONE_EXIT)
+        cmd = ["/bin/sh", "-c", script, "role-pre-launch"] + cmd
     bound = scope_bound_s(role)
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             "-p", "StandardOutput=file:" + out, "-p", "StandardError=file:" + err,
@@ -3116,7 +3207,26 @@ def main(argv=None):
     s = sub.add_parser("run-status")
     s.add_argument("--root")
     s.add_argument("--role", required=True)
+    g = sub.add_parser("stage5-program", help="the stage-5 pre-launch step after the judge (stage5_program)")
+    g.add_argument("concept")
     a = p.parse_args(argv)
+    if a.cmd == "stage5-program":
+        concept = os.path.abspath(a.concept)
+        try:
+            how, line = stage5_program(concept, os.environ.get("RM_ROLE_UNIT") or None)
+        except Exception as e:  # noqa: BLE001 - a guard that cannot run lets the Designer run, and says so
+            line = "stage5-program DID NOT RUN: %s: %s; the Designer runs as today" % (type(e).__name__, e)
+            print(line, file=sys.stderr)
+            try:
+                import designer_stage as DS
+                st = DS.load_state(concept)
+                DS.hist(st, "program_error", "run %s: %s" % ((st.get("running") or {}).get("run"), line))
+                DS.write_json(DS.state_path(concept), st)
+            except Exception:  # noqa: BLE001 - the err file keeps the line
+                pass
+            return 0
+        print("stage5-program: %s" % line)
+        return PRE_DONE_EXIT if how == "closed" else 0
     import dispatcher as D
     root = a.root or D.state_root(True)
     if a.cmd == "run-status":

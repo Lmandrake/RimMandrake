@@ -1877,6 +1877,35 @@ def park(d, kind, why, repo=REPO, st=None):
     return st
 
 
+def program_result(st, verdict, run):
+    """Pure. The result.json a stage-5 Designer run would write when the coverage verdict leaves nothing to decide, or
+    None (a Designer run is needed, as today). RIMMANDRAKE_CARRY_STAGE_FIVE_BY_PROGRAM_TEN_RELAY_RUNS: ten Designer runs,
+    USD 8.39, wrote down only what the verdict said (cheap-guards spec 3.3). not_covered with every gap returning to
+    stage 3 -> return to 3; covered and signed -> done. A gap returning elsewhere (his answer), an unsigned, malformed,
+    advisory or missing verdict, or a verdict on another tree than st["tree_now"] -> None."""
+    if not isinstance(st, dict) or st.get("stage") != 5 or st.get("status") == "locked":
+        return None
+    if not isinstance(verdict, dict) or verdict.get("advisory") or verdict.get("error"):
+        return None
+    if verdict.get("tree") and st.get("tree_now") and verdict["tree"] != st["tree_now"]:
+        return None
+    judge = verdict.get("judge") or "the coverage judge"
+    gaps = verdict.get("gaps")
+    if verdict.get("verdict") == "covered":
+        if verdict.get("signed") is not True or gaps:
+            return None
+        return {"run": run, "stage": 5, "outcome": "done", "by": "program",
+                "summary": "locked by program: %s returned covered and signed the tree" % judge}
+    if verdict.get("verdict") != "not_covered" or not isinstance(gaps, list) or not gaps:
+        return None
+    if not all(isinstance(g, dict) and g.get("return_to") in (3, "3") and CT.txt(g.get("gid") or g.get("id"))
+               and CT.txt(g.get("what")) for g in gaps):
+        return None
+    return {"run": run, "stage": 5, "outcome": "return", "to": 3, "by": "program",
+            "decision": "%s returned not_covered; every gap returns to stage 3: %s" % (judge, "; ".join(
+                "%s: %s" % (g.get("gid") or g.get("id"), " ".join(str(g["what"]).split())) for g in gaps))}
+
+
 def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, transport_error=None):
     """The launcher, after the run ends: charge it (UNMEASURED = its whole reservation), then validate result.json
     and advance only on a valid result. -> (accepted?, reasons)."""
@@ -1925,7 +1954,7 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
              "owner_uncited": owner_uncited(repo, st.get("item"), d), "manifest": r["manifest"]}
     if out == "done" and stage == 2:
         st.pop("must_cite", None)
-    for k in ("to", "decision", "on", "question", "summary", "quick_look"):
+    for k in ("to", "decision", "on", "question", "summary", "quick_look", "by"):
         if k in res:
             entry[k] = res[k]
     st["results"].append(entry)

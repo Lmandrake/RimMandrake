@@ -239,8 +239,9 @@ def main():
             check("no stage.json -> error", CJ.plan(os.path.join(root, "nothing"), root)[0] == "error")
             # the launcher's wiring
             pre = RL.coverage_pre(d)
-            check("role_launch: a Designer run at stage 5 gets the judge as its pre-launch step",
-                  pre == [["python3", "src/RimMandrake/rimflow/coverage_judge.py", "run", d]], pre)
+            check("role_launch: a Designer run at stage 5 gets the judge, then the program step, as its pre-launch steps",
+                  pre == [["python3", "src/RimMandrake/rimflow/coverage_judge.py", "run", d],
+                          ["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-program", d]], pre)
             check("role_launch: at stage 4 no pre-launch step", RL.coverage_pre(d4) is None)
             check("role_launch: locked, no pre-launch step", RL.coverage_pre(dl) is None)
             check("role_launch: unreadable concept, no pre-launch step", RL.coverage_pre(os.path.join(root, "x")) is None)

@@ -121,16 +121,24 @@ item and no code.
 ### 3.3 Stage five by program
 
 - **Protects against:** paying a Designer run to write down what a program already knows.
-- **Evidence:** ten runs, USD 8.39 `[measured]`: seven that ended "no lock: the coverage judge returned not_covered,
-  all gaps return to stage 3" (USD 0.55 to 1.00 each) and three that ended "locked" after a signed verdict (USD 0.73
-  to 1.29).
+- **Evidence:** ten stage-5 Designer runs, USD 8.39 `[measured]`: seven that ended "no lock" after a not_covered
+  verdict or no signature (USD 0.55 to 1.00 each) and three Graffiti runs after a signed verdict (USD 0.73 to 1.29).
+  Read run by run (backtest below), only two wrote down what the verdict alone said.
 - **The guard:** after the pre-launch judge, `designer_stage.program_result` writes the `result.json` such a run would
   have written, and the launcher closes it through the same `close_run` every Designer result passes. A gap that
   returns anywhere but stage 3, an unsigned or malformed verdict, or a verdict on another tree needs a Designer, as
   today.
 - **Its cost:** none; it removes a run.
 - **Cannot run:** if `close_run` rejects the program's result, the Designer is launched as today.
-- **Backtest:** all ten, by their own summaries.
+- **Backtest** `[measured]`, each run's stage.json result and own summary, with its verdict from git where it was
+  committed (`D:\ClaudeWork\rimmandrake\stage5_program\backtest_2026-11-15.md`): **2 of 10 caught, USD 1.42 of 8.39**.
+  Caught: GimmeSomeSlack 11-06 (`rm-role-designer-1793952614`, 11 gaps, "none needs your answer", return to 3) and
+  Graffiti 11-15 (`1794755317`, covered and signed, locked). Rightly not caught: three returned to stage 2 because a gap
+  needed his answer (GimmeSomeSlack `1793955943`, verdict gaps return to 2 and 3; Pyrelands `1793932102` and
+  `1793980998`); two had an advisory verdict from an uncalibrated brief, which sends nothing back on its own
+  (GimmeSomeSlack `1794600004`, Graffiti `1794732140`); FlowWorks `1793867400` had no verdict (no signer existed then).
+  Not caught and not savable here: Graffiti `1794753910` and `1794754884`, covered and signed, were rejected by the gate
+  ("no coverage signature on the ledger"); a program close meets the same gate, is rejected, and the Designer runs.
 - **Ticket:** `RIMMANDRAKE_CARRY_STAGE_FIVE_BY_PROGRAM_TEN_RELAY_RUNS`.
 
 ### 3.4 Scenes can ask
