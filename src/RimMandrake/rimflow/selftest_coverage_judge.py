@@ -250,7 +250,7 @@ def main():
             # the launcher's wiring
             pre = RL.coverage_pre(d)
             check("role_launch: a Designer run at stage 5 gets the judge, then the program step, as its pre-launch steps",
-                  pre == [["python3", "src/RimMandrake/rimflow/coverage_judge.py", "run", d],
+                  pre == [["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-judge", d],
                           ["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-program", d]], pre)
             check("role_launch: at stage 4 no pre-launch step", RL.coverage_pre(d4) is None)
             check("role_launch: locked, no pre-launch step", RL.coverage_pre(dl) is None)

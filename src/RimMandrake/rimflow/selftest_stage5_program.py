@@ -109,9 +109,24 @@ def test_close_and_reject(root):
 def test_pre_steps(root):
     d = concept(root, "Pre", NC)
     pre = RL.coverage_pre(d)
-    check(pre == [["python3", "src/RimMandrake/rimflow/coverage_judge.py", "run", d],
+    check(pre == [["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-judge", d],
                   ["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-program", d]],
-          "stage 5: the judge, then the program step: %r" % pre)
+          "stage 5: the judge (through its stage check), then the program step: %r" % pre)
+    # Contagion 2026-11-16: a run asked at stage 5 reopened stage 3 at its open (inputs changed); the judge step then
+    # skipped but exited STOP over an old advisory verdict and the stage-3 Designer never started. The step reads the
+    # stage when it runs: not 5 -> exit 0, no judge (RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING)
+    d3 = concept(root, "Pre3", dict(NC, advisory="UNTESTED brief", stopped="judge spend over its limit"))
+    st3 = DS.load_state(d3)
+    st3["stage"] = 3
+    DS.write_json(DS.state_path(d3), st3)
+    called = []
+    real_run = RL.subprocess.run
+    RL.subprocess.run = lambda *a, **k: called.append(a) or type("P", (), {"returncode": 3})()
+    try:
+        rc = RL.main(["stage5-judge", d3])
+    finally:
+        RL.subprocess.run = real_run
+    check(rc == 0 and not called, "stage5-judge at stage 3: exit 0 and no judge run (rc %r, calls %r)" % (rc, called))
     role = {"name": "Designer", "clone": "/c", "model": "opus", "seat": "BENCH"}
     with tempfile.TemporaryDirectory() as td:
         mark = os.path.join(td, "claude-ran")

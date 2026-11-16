@@ -2064,8 +2064,28 @@ def coverage_pre(concept):
         return None
     if st.get("stage") != 5 or st.get("status") == "locked":
         return None
-    return [["python3", "src/RimMandrake/rimflow/coverage_judge.py", "run", concept],
+    return [["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-judge", concept],
             ["python3", "src/RimMandrake/rimflow/role_launch.py", "stage5-program", concept]]
+
+
+def stage5_judge(concept, runner=None):
+    """The first pre-launch step at stage 5: `coverage_judge.py run` only while the concept is still at stage 5 when the
+    unit runs. The steps are fixed when the run is asked; a run asked at stage 5 can reopen stage 3 at its open (inputs
+    changed), and the judge's skip there handed back an old advisory verdict and exited STOP_EXIT, so the stage-3
+    Designer never started (Contagion 2026-11-16, RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING). The check
+    lives here, not in coverage_judge.py: that file is part of the judge's calibrated brief. -> the step's exit code."""
+    import designer_stage as DS
+    try:
+        stage = (DS.load_state(concept) or {}).get("stage")
+    except Exception:  # noqa: BLE001 - the judge reads the concept itself and says why it cannot
+        stage = 5
+    if stage != 5:
+        print("stage5-judge: %s is at stage %s, not 5: no judge, nothing held" % (os.path.basename(concept), stage))
+        return 0
+    run = runner or subprocess.run
+    judge = os.path.join(os.path.dirname(os.path.abspath(__file__)), "coverage_judge.py")
+    # the judge bounds its own claude (coverage_judge.TIMEOUT_S); this bound only stops a hung step from holding the unit
+    return run(["python3", judge, "run", concept], stdin=subprocess.DEVNULL, timeout=6 * 3600).returncode
 
 
 PRE_DONE_EXIT = 79     # a pre-step that did the run's work itself: the unit ends 0 and the model never starts
@@ -3209,7 +3229,11 @@ def main(argv=None):
     s.add_argument("--role", required=True)
     g = sub.add_parser("stage5-program", help="the stage-5 pre-launch step after the judge (stage5_program)")
     g.add_argument("concept")
+    j = sub.add_parser("stage5-judge", help="the stage-5 pre-launch judge step, only while still at stage 5 (stage5_judge)")
+    j.add_argument("concept")
     a = p.parse_args(argv)
+    if a.cmd == "stage5-judge":
+        return stage5_judge(os.path.abspath(a.concept))
     if a.cmd == "stage5-program":
         concept = os.path.abspath(a.concept)
         try:

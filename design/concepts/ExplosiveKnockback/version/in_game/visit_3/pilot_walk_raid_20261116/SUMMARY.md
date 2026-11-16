@@ -1,4 +1,4 @@
-# ExplosiveKnockback 0.1.0 — the walk's frame row on the smallest list (Test Pilot during visit 3; this folder was visit_4/ until 2026-11-16 12:50 PST, moved: only the Stage 6 driver opens a visit)
+# ExplosiveKnockback 0.1.0 — the walk's frame row on the smallest list (Test Pilot during visit 3; this folder was visit_4/ until 2026-11-16 ~12:23 PM PST, moved: only the Stage 6 driver opens a visit)
 
 Detached Test Pilot, seat BENCH, item RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, 2026-11-16 05:53-09:45 PST.
 Scope, the owner's words (5:43 AM PST, OWNER:1794836946186553250): "The game pause has been a consistent issue well beyond
