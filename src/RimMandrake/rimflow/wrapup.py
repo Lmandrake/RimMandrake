@@ -274,6 +274,23 @@ class World(object):
     def exists(self, path):
         return os.path.isdir(path)
 
+    def clone_in_use(self, clone):
+        """Is a live process working in this clone (its cwd inside it)? A later run of the same item reuses the
+        clone, and its work in flight is not debris. Raises when /proc cannot be read (never clear on ignorance)."""
+        root = os.path.realpath(clone)
+        if not os.path.isdir("/proc/self"):
+            raise OSError("no /proc")
+        for pid in os.listdir("/proc"):
+            if not pid.isdigit():
+                continue
+            try:
+                cwd = os.readlink("/proc/%s/cwd" % pid)
+            except OSError:
+                continue                        # another user's process, or gone
+            if cwd == root or cwd.startswith(root + os.sep):
+                return True
+        return False
+
     def game_relaunched(self):
         """-> epoch seconds the previous game process last wrote its log (every process older than the running one
         had ended by then), or None when unmeasured: a debt is never voided on ignorance. Env RM_WRAPUP_PREV_LOG
@@ -454,7 +471,12 @@ def row_standing(world, row, rec):
     if k == "debt" and void_debt(world, row.get("at") or rec.get("at")):
         return False                            # owed to a game process that has exited
     if k == "clone":
-        return check_clone(world, row["what"], False)["act"] in ("filed", "unmeasured")
+        if check_clone(world, row["what"], False)["act"] not in ("filed", "unmeasured"):
+            return False
+        try:
+            return not world.clone_in_use(row["what"])  # a later run working in it: in flight, not debris
+        except Exception:  # noqa: BLE001  unreadable: still standing
+            return True
     if k == "bridge":
         sh = world.shared_bridge()
         ctx = rec.get("ctx") or {}
