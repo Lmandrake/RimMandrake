@@ -142,7 +142,12 @@ EVL += [
      "tsn": 67},
     {"seat": "BENCH", "event": "file", "id": LM, "title": "Mine FixtureMod's tickets into its mod ledger", "tsn": 68},
     {"seat": "BENCH", "event": "file", "id": LG, "title": "Add OtherMod to the full list", "tsn": 69},
-    {"seat": "BENCH", "event": "close", "id": LG, "sha": "abcdef91", "why": "added", "tsn": 70}]
+    {"seat": "BENCH", "event": "close", "id": LG, "sha": "abcdef91", "why": "added", "tsn": 70},
+    # two tickets whose titles look alike: the second is kept with --new-subject, and must stay kept on every re-run
+    {"seat": "BENCH", "event": "file", "id": "RIMMANDRAKE_RUN_FIXTUREMOD_BLIND_CHALLENGE_CYCLE_ONE",
+     "title": "FixtureMod 0.1.0: run the blind offline challenge cycle one by hand and record it", "tsn": 71},
+    {"seat": "BENCH", "event": "file", "id": "RIMMANDRAKE_RUN_FIXTUREMOD_BLIND_CHALLENGE_CYCLE_TWO",
+     "title": "FixtureMod 0.1.0: run the blind offline challenge cycle two by hand and record it", "tsn": 72}]
 with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"), "a", encoding="utf-8") as fh:
     for e_ in EVL:
         fh.write(json.dumps(e_) + "\n")
@@ -177,10 +182,14 @@ check("nothing the plan holds is refused by the standard on the fixture", res["r
 check("the report names what it left out on purpose", any("no mod sha" in n for n in res["notes"]) and
       any("repeat the blind fault" in n for n in res["notes"]) and any("derived per-bar" in n for n in res["notes"]),
       res["notes"])
+check("the fixture holds a near-duplicate pair kept with --new-subject", len(res["near_duplicates"]) >= 1, res)
 before_bytes = open(oldp, "rb").read()
 res2 = B.run(root, MOD)
 check("a second backfill writes nothing (idempotent)", res2["written"] == 0 and res2["already"] == res["written"]
       and res2["deleted"] == 0, res2)
+res3 = B.run(root, MOD)
+check("a third backfill writes and deletes nothing either: a line kept with --new-subject is one the plan holds",
+      res3["written"] == 0 and res3["deleted"] == 0 and res3["refused"] == [], res3)
 check("a re-run keeps the lines it still holds byte for byte", open(oldp, "rb").read() == before_bytes)
 after = {p: hashlib.sha256(open(p, "rb").read()).hexdigest() for p in before}
 check("shadow mode: every old file is unchanged byte for byte", after == before)

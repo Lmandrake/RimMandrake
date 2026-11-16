@@ -643,8 +643,12 @@ def run(root, mod, dry=False):
                     if r.field != "line" or _try == 2 or not _fit_line(body, auth, r.measured):
                         raise
         except M.Refusal as r:
-            if r.field == "subject" and "looks like" in r.measured:
-                near.append((subject, r.measured))
+            # a near-duplicate subject is kept with --new-subject; on a re-run the plain append restates that kept line,
+            # so the same --new-subject append finds it by key and holds it (else the run deletes it, the next rewrites)
+            again = r.field == "text" and "restates" in r.measured
+            if (r.field == "subject" and "looks like" in r.measured) or again:
+                if not again:
+                    near.append((subject, r.measured))
                 try:
                     eid, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
                                           authority=auth, code_sha=sha, views=False,
