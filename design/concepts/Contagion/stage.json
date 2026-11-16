@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -128,10 +129,24 @@
     "ref": "run rm-role-designer-1794816061",
     "stage": 5,
     "tokens": 294220
+   },
+   {
+    "at": "2026-11-16T08:10:50Z",
+    "kind": "review",
+    "ref": "gpt_consult ask review a_walk_bars, 1 round (estimated: codex log carries no token count)",
+    "stage": 2,
+    "tokens": 12000
+   },
+   {
+    "at": "2026-11-16T08:12:49Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794816366",
+    "stage": 2,
+    "tokens": 640000
    }
   ],
   "reserve": 60000,
-  "spent": 6817629
+  "spent": 7469629
  },
  "coverage_rounds": [
   {
@@ -390,6 +405,24 @@
    "stage": 2,
    "what": "close",
    "why": "run rm-role-designer-1794816061: stage 5 return"
+  },
+  {
+   "at": "2026-11-16T08:06:25Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "6817629 of 4000000 spent; run rm-role-designer-1794816366 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T08:06:25Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1794816366, stage 2, budget 500000"
+  },
+  {
+   "at": "2026-11-16T08:12:49Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1794816366: stage 2 blocked"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -631,12 +664,40 @@
    "stage": 5,
    "summary": "Stage 5 Lock cannot pass. The gate refuses on two counts. The walk root is DRAFT, and validating it binds north-star bars, which only he can do; it was never validated before stage 3 wrote the tree, so the Lock packet returns to stage 2. There is no coverage signature: the judge's advisory not_covered lists 31 gaps, all stage-3 fixes, one of which (the grown limbs) contradicts his ruling that moves limbs to 0.2.0. The showcase set is accepted (5 showcases, no overlap). The question asks him to validate the walk bars, with the grown-limb bar moved to 0.2.0, and offers a quick look at the staged site.",
    "to": 2
+  },
+  {
+   "at": "2026-11-16T08:12:49Z",
+   "inputs": {
+    "exam": "d7ab9110c711550d64ed89d60a09dbccba1545cf92100f6429e8288e8d95ea07",
+    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
+    "scenes": "0a5d99349d37cf82f302ef21ab2b771a524ac041d93bcd36cd50a4a78e989ba4",
+    "sheet": "e0e9a86330827203b114a0265ed56d80d9b1b4bc6ef4940b0144e6e5aab76cf3",
+    "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
+   },
+   "on": "RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS",
+   "outcome": "blocked",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "quick_look": {
+    "offer": false,
+    "why": "No question goes to him: the decision was taken as a delegated call, and the remaining act is a Conductor validation, not something a look would settle."
+   },
+   "run": "rm-role-designer-1794816366",
+   "stage": 2,
+   "summary": "Root validation decided without asking him: the drafted ask was struck by a fresh review because the walk's bars are NEW (never validated) and delegable under delegation_policy §2.1, and his 2026-11-15 ruling moves the one doubtful line (grown limb) to 0.2.0. Logged delegated (OWNER:1794816612487799110, evidence-for-ask), recorded as d_walk_bars_delegated. The Designer may not bind bars, so the act is filed for the Conductor as RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS with its acceptance test (FAIL 3/3 on base). Once it passes and the concept is unblocked, stage 3 writes against the validated root and works the 31 coverage gaps of rm-coverage-judge-1794788108 (g27: take limb_still_grows out of the 0.1.0 tree)."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 2,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
