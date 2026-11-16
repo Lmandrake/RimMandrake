@@ -245,10 +245,17 @@ Every hand act of yours on the pipeline is recorded by the tick (owner, 2026-11-
 
 ```
 python3 src/RimMandrake/Utils/handoff.py --wake        # FIRST turn of a fresh window only; opens with the dead window's last reply
+python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR --owed   # what you OWE, first: at most 40 lines, LATE past 2 h
 python3 src/RimMandrake/rimflow/cli.py seat ready
 tail -n 40 /mnt/d/ClaudeWork/rimmandrake/conductor/log.md
 python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR
 ```
+
+**Anything you owe is an owed item, filed when the sentence that creates the debt is written** (a launch you promise, a
+decision you call yours, a question you put to him, a page you say you will write):
+`rimflow file <ID> --for BENCH --kind owed --title "<the act>" --caused-by <item it acts on>`. Park one on a trigger with
+`rimflow wait`; discharge it with evidence (`close --sha`, or `--no-code` naming a sha, a run id, a path or `told him at
+<time>`). Closing its parent discharges nothing. Spec: `design/specs/2026-11-15-conductor-restart-loses-nothing.md` §3.
 
 Then report in a few lines what is open, what needs him, and what the last quick check found; then wait for him.
 

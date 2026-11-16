@@ -503,6 +503,20 @@ def show_last_reply():
         print(r.stdout.rstrip() + "\n")
 
 
+def show_owed():
+    """The Conductor's owed view, right after the old window's last reply: `rimflow queue CONDUCTOR --owed`
+    (rimflow/owed.py; RIMMANDRAKE_LIST_CONDUCTOR_OWES_FIRST_AT_EVERY_WAKE). Only the Conductor's seat owes; a view that
+    cannot run says so and the wake goes on."""
+    if seat() != "BENCH":
+        return
+    try:
+        sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "rimflow"))
+        import owed
+        print("\n".join(owed.wake_lines(ROOT)) + "\n")
+    except Exception as e:                       # noqa: BLE001 - said, never silent
+        print("\n== OWED view did not run (%r): run `rimflow queue CONDUCTOR --owed` yourself\n" % e)
+
+
 # A section is kept by what its heading says, not by its exact words: "## Half-done" and "## Game and bridge state" are
 # real headings in the corpus that an exact-prefix match dropped (review, 2026-11-11). "Tree state" alone is git's.
 WAKE_KEEP = re.compile(r"carry forward|owner should see|half-done|\bgame\b|\bbridge\b", re.I)
@@ -589,6 +603,7 @@ def wake():
     if reason:
         print("Account status: " + reason)
     show_last_reply()
+    show_owed()
     prev_name, prev_ts = previous_handoff()
     if not prev_name:
         print("no committed handoff for %s — nothing to wake from" % seat())

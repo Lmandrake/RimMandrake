@@ -416,6 +416,10 @@ def cmd_queue(args, seat):
     if getattr(args, "acceptance", False):
         return _print_acceptance(args, seat)
     which = model.canonical((args.which or seat or "").upper())     # `queue CONDUCTOR` reads BENCH's view
+    if getattr(args, "owed", False):    # the owed view: short, read first at every wake (owed.py)
+        _, w = load()
+        print("\n".join(_owed().view(w, which, show_all=args.all)))
+        return 0
     try:
         from . import render as _render
     except ImportError:
@@ -435,6 +439,14 @@ def cmd_queue(args, seat):
     except OSError as e:
         die("rendered, but %s could not be read: %s" % (path, e))
     return 0
+
+
+def _owed():
+    try:
+        from . import owed
+    except ImportError:
+        from rimflow import owed
+    return owed
 
 
 def _rerender_queue_views():
@@ -1177,7 +1189,9 @@ def _choose(w, seat, args, ctx, idx):
     (Keyed `offer`: selftest_cli bans a one-letter write-mode literal in this file.)
     `item` is what gets leased. Items under a LIVE lease never reach here: `rank()`
     and `_claimable` both skip them."""
-    offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
+    # an owed act is the Conductor's, never a builder's (owed.py): it is never offered
+    offers, skipped = reconcile.guard([i for i in priority.rank(w, seat, args.target, ctx)
+                                       if not _owed().is_owed(i)], idx)
     out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "also": [], "skipped": skipped}
     claimable = []
     for c in _claimable(w, seat, args.target, ctx.get("now"), ctx):     # judged complete: as guard() does for ranked work
@@ -1378,7 +1392,7 @@ def _claimable(w, seat, target="v1", now=None, ctx=None):
     out = [i for i in w.items.values()
            if i.owner == seat and i.state == "proposed" and not priority.block_holds(w, i, now)
            and (not target or i.target in (None, target))  # "" = no filter, as rank()
-           and model.lease_status(i, now) != "live"]
+           and model.lease_status(i, now) != "live" and not _owed().is_owed(i)]   # owed acts are never offered
     if ctx is not None:      # `next`: the availability rule a ranked item passes (--mode afk and needs=owner, above all)
         out = [i for i in out if priority.satisfiable(i, w, ctx, seat)]
     orders = (ctx or {}).get("plan_order") or {}
@@ -2654,6 +2668,8 @@ def cmd_close(args, seat):
     # attributable on the screen as well as in the ledger.
     it = w.items.get(args.id)
     holder = getattr(it, "owner", None)
+    if it is not None and no_code and _owed().is_owed(it) and not _owed().evidence_ok(no_code):
+        die(_owed().refusal(args.id, no_code))      # an owed act is discharged by evidence, never by "done"
     if it is not None:
         args.seat_is_owner = seat == "OWNER"
         _close_gate(args, it, sha, no_code)
@@ -4666,6 +4682,9 @@ def build_parser():
     s.add_argument("--acceptance", action="store_true",
                    help="print built/validated work grouped by cheapest owed level "
                         "(same as `next --acceptance`); renders nothing")
+    s.add_argument("--owed", action="store_true",
+                   help="only the open `kind: owed` items (what this seat owes), at most 40 lines; renders nothing")
+    s.add_argument("--all", action="store_true", help="with --owed: every line, no 40-line cap")
     s = add("render", "rebuild queue/*.md (owned by render.py)",
             _delegate("render"))
     s.add_argument("rest", nargs=argparse.REMAINDER,

@@ -133,7 +133,8 @@ def test_end_to_end():
     check(rc == 0 and "GOODBYE" in out and "seat_restart.py request" in out,
           "e2e: with the BENCH restart switched on, 'Good night!' ends in the request")
     rc, out = run("goodbye to the old pipe system")
-    check(rc == 0 and out == "", "e2e: 'goodbye to the old pipe system' prints nothing (%r)" % out[:80])
+    check(rc == 0 and [l for l in out.splitlines() if l] and all(l.startswith("OWED ") for l in out.splitlines() if l),
+          "e2e: 'goodbye to the old pipe system' prints only the OWED line (%r)" % out[:120])
     rc, out = run("bye", env_seat="FOUNDRY")
     check(rc == 0 and out == "", "e2e: FOUNDRY saying bye prints nothing")
     p = subprocess.run([sys.executable, str(HOOK)], input="not json", capture_output=True, text=True, timeout=30)

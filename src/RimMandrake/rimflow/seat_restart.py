@@ -3400,6 +3400,16 @@ def _wake_last_reply(rec, cfg=None, me=None):
           "and >>> lines, and only then answer or report. Do not summarize it." % LAST_REPLY_HEADER)
 
 
+def _wake_owed():
+    """What the Conductor owes, right after the old window's last reply: `rimflow queue CONDUCTOR --owed` (owed.py;
+    RIMMANDRAKE_LIST_CONDUCTOR_OWES_FIRST_AT_EVERY_WAKE). A view that cannot run says so and the wake goes on."""
+    try:
+        import owed
+        print("\n".join(owed.wake_lines(REPO)))
+    except Exception as e:                                     # noqa: BLE001 - the wake must reach its last line
+        print("\n== OWED view did not run (%s: %s): run `rimflow queue CONDUCTOR --owed` yourself" % (type(e).__name__, e))
+
+
 def cmd_last_reply(args):
     """The re-show alone, for a wake no restart made: handoff.py --wake runs it, so the tile's first launch shows it too."""
     seat = (args.seat or doorbell.seat_name() or "").upper()
@@ -3672,6 +3682,7 @@ def cmd_wake(args):
     if cfg.get("kind") == "conductor":
         pid = doorbell.claude_ancestor()
         _wake_last_reply(rec, cfg, (session_file(pid) or {}).get("sessionId") if pid else None)
+        _wake_owed()
         _wake_conductor(seat, cfg, rec, gen=args.gen, me=session_file(pid) if pid else None)
         return 0
     print("\n== handoff pointers (handoff.py --wake)")

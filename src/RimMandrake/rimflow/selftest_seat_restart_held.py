@@ -229,7 +229,8 @@ def test_refused_or_held_reaches_the_next_turn():
           % r.stdout[:160])
     r = subprocess.run([sys.executable, hook], input=json.dumps({"prompt": "how is it going", "session_id": "sid-x"}),
                        capture_output=True, text=True, env=dict(os.environ, AGENT_SEAT="BENCH"))
-    check(r.stdout.strip() == "", "and prints nothing for another window")
+    check("HELD" not in r.stdout and all(l.startswith("OWED ") for l in r.stdout.splitlines() if l),
+          "and prints no restart notice for another window, only the OWED line (%r)" % r.stdout[:120])
     os.remove(sp)
 
 

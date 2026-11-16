@@ -18,8 +18,10 @@ unreadable). A window whose session file cannot be read gets one diagnostic line
 His whole message can also be the reset switch (src/RimMandrake/rimflow/reset_mode.py: hold / ready / auto,
 CONDUCTOR_RESET_FIX_KILLED_MID_READ): the same identity gate, then the switch is written by this hook, not left to the window.
 
-On an ordinary prompt it prints only this window's own refused or held restart, if any (restart_notice), so a window
-whose HANDOFF READY was refused or held stops saying it into the void. Prints nothing else on an ordinary prompt and on any unreadable input (exit 0 always: a hook must never block his message).
+On an ordinary prompt it prints this window's own refused or held restart, if any (restart_notice), so a window
+whose HANDOFF READY was refused or held stops saying it into the void, and the owed view's first line, `OWED n …`
+(owed_line; rimflow/owed.py, RIMMANDRAKE_LIST_CONDUCTOR_OWES_FIRST_AT_EVERY_WAKE), so the oldest debt is in front of every
+turn. Prints nothing else on an ordinary prompt and on any unreadable input (exit 0 always: a hook must never block his message).
 It only prints: the restart itself is requested by the window and acted on by the Dispatcher, which holds it while
 helpers are alive, he is typing, or the window is mid-reply.
 """
@@ -157,6 +159,15 @@ def restart_notice(session_id):
         return None
 
 
+def owed_line():
+    """The owed view's first line (`OWED n (actionable a, waiting w), oldest <age> <ID>`), or its `did not run` line."""
+    try:
+        import owed
+        return owed.safe_banner(SEAT)
+    except Exception as e:  # noqa: BLE001 - never block his message
+        return "OWED view did not run (%s): run `rimflow queue CONDUCTOR --owed`" % type(e).__name__
+
+
 def _load_schedule():
     try:
         with open(SCHEDULE, encoding="utf-8") as f:
@@ -197,6 +208,7 @@ def main():
         notice = restart_notice(data.get("session_id"))
         if notice:
             print(notice)
+        print(owed_line())
         return 0
     sf = _session_file()
     ok, why = is_conductor(os.environ, sf, sch)
