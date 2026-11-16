@@ -32,6 +32,24 @@ os.environ["RM_OPS_DISKS"] = "root=%s" % TMP
 os.environ["RM_TESTING_METRICS_DIR"] = str(TMP / "no_testing_metrics")     # no collector call may read the real one
 os.environ["RM_DATA_ROOT"] = str(TMP / "data")      # REAL mint_name reaches rmpaths: a bare box has no root and no Lodestar
 import ops_watch as OW  # noqa: E402
+
+# Operations and the owner tune these alarm lines: the cases run on the ones shipped 2026-11-15
+# (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
+PIN_TARGETS = {
+    "steve.seats_absent_min": {"value": 10, "worse": {"factor": 2}},
+    "steve.incident_unclaimed_min": {"value": 30, "worse": {"factor": 2}},
+    "steve.invalid_streak": {"value": 3, "worse": {"factor": 2}},
+    "disk.root_free_gb": {"tag": "DISK_LOW", "value": 210, "worse": {"add": 50}},
+    "timers.deploy_update_age_min": {"value": 90, "worse": {"factor": 2}}}
+
+
+def pin_rules(r):
+    for t in r.get("targets") or ():
+        if isinstance(t, dict) and t.get("key") in PIN_TARGETS and PIN_TARGETS[t["key"]].get("tag", t.get("tag")) == t.get("tag"):
+            t.update(json.loads(json.dumps(PIN_TARGETS[t["key"]])))
+    return r
+_load_rules = OW.load_rules
+OW.load_rules = lambda *a, **k: pin_rules(_load_rules(*a, **k))
 REAL_MINT = OW.mint_name
 FIX = "OPS_TIMER_REPAIR_" + OW.alarm_twist("OPS_TIMER_REPAIR")   # the timers rule's fixed id
 

@@ -17,10 +17,22 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import ops_watch as OW  # noqa: E402
 
+# Operations and the owner tune these alarm lines: the cases run on the ones shipped 2026-11-15
+# (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
+PIN_TARGETS = {
+    "disk.whea_corrected_24h": {"value": 30, "worse": {"factor": 2}}}
+
+
+def pin_rules(r):
+    for t in r.get("targets") or ():
+        if isinstance(t, dict) and t.get("key") in PIN_TARGETS:
+            t.update(json.loads(json.dumps(PIN_TARGETS[t["key"]])))
+    return r
+
 TMP = Path(tempfile.mkdtemp(prefix="selftest_ops_whea_"))
 FAILS = []
 COR, SEV, BLIND = "disk.whea_corrected_24h", "disk.whea_severe_24h", "disk.whea_blind"
-RULES = json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8"))
+RULES = pin_rules(json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8")))
 TG = {t["key"]: t for t in RULES["targets"] if isinstance(t, dict) and str(t.get("key", "")).startswith("disk.whea")}
 ENV = {"RM_POOL_ROOT": str(TMP / "pool"), "RM_SCRATCH_ROOT": str(TMP / "scratch"), "RM_OBJSTORE_STATE": str(TMP / "objstore"),
        "RM_SESSION_GLOB": str(TMP / "none/*"), "RM_OPS_DISKS": "root=/"}

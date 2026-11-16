@@ -24,6 +24,21 @@ os.environ["TESTQ_QUEUE"] = str(TMP / "q")
 import deadman_check as DM  # noqa: E402
 import ops_watch as OW  # noqa: E402
 
+# Operations and the owner tune these alarm lines: the cases run on the ones shipped 2026-11-15
+# (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
+PIN_TARGETS = {
+    "relentless.books_behind_min": {"value": 30, "worse": {"factor": 2}},
+    "relentless.game_hold_idle_min": {"value": 30, "worse": {"factor": 2}}}
+
+
+def pin_rules(r):
+    for t in r.get("targets") or ():
+        if isinstance(t, dict) and t.get("key") in PIN_TARGETS:
+            t.update(json.loads(json.dumps(PIN_TARGETS[t["key"]])))
+    return r
+_load_rules = OW.load_rules
+OW.load_rules = lambda *a, **k: pin_rules(_load_rules(*a, **k))
+
 FAILS = []
 STOP = 1793992930.0      # 2026-11-06T19:22:10Z
 UNIT = "rm-relentless.timer"
@@ -131,7 +146,7 @@ check(DM.just_restarted("hook=block_foo.py") is False, "a hook has no start to w
 
 # ------------------------------------------------------------------ ops_watch: RELENTLESS_BLIND, 19:44Z on a 19:22Z stamp
 STORE = TMP / "belt" / "store"
-RULES = json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8"))
+RULES = pin_rules(json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8")))
 RULES["relentless"]["root"] = str(TMP / "belt")      # the store under test IS the one the timer writes
 g = lambda *x, cwd=None: subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *x], cwd=cwd, capture_output=True,
                                         text=True, timeout=60, check=True)
@@ -179,7 +194,7 @@ pts = collect(blind_run, STOP + 16 * 60)
 check(pts["relentless.blind"]["v"] >= 1, "systemd unread: frozen stays blind")
 pts = collect(systemd("active", began=STOP - 86400), STOP + 16 * 60)
 check(pts["relentless.blind"]["v"] >= 1, "a running timer that stopped stamping: blind, restart long past")
-check(collect(HAND_ARMED, STOP + 16 * 60, json.loads((HERE / "ops_watch_rules.json").read_text()))["relentless.blind"]["v"] >= 1,
+check(collect(HAND_ARMED, STOP + 16 * 60, pin_rules(json.loads((HERE / "ops_watch_rules.json").read_text())))["relentless.blind"]["v"] >= 1,
       "a store that is not the timer's (the throwaway belts of other selftests) never asks systemd")
 
 (STORE / "staffing.json").unlink()
@@ -250,7 +265,7 @@ check(pts[BOOKS]["v"] == 35.0 and STALE in al, "restarted 35 min ago and still b
 pts, al = whole_pass(systemd("active", began=STOP - 86400), STOP + 60 * 60)
 check(pts[BOOKS]["v"] == 50.0 and "stopped_min" not in pts[BOOKS]["x"] and STALE in al, "a timer running all along: the full age, no stop to take off (%s)" % pts[BOOKS])
 OW.RL_SYSTEMD = HAND_ARMED
-check(OW.c_relentless(STOP + 60 * 60, json.loads((HERE / "ops_watch_rules.json").read_text()), {})[BOOKS]["v"] == 50.0,
+check(OW.c_relentless(STOP + 60 * 60, pin_rules(json.loads((HERE / "ops_watch_rules.json").read_text())), {})[BOOKS]["v"] == 50.0,
       "a store that is not the timer's: the full age")
 level()
 land(LAST_STAMP - 40 * 60)

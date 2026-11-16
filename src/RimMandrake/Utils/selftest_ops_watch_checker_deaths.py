@@ -38,6 +38,19 @@ def ok(cond, what, got=None):
 
 def main():
     import ops_watch as ow
+    # Operations and the owner tune these alarm lines: the cases run on the ones shipped 2026-11-15
+    # (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
+    PIN_TARGETS = {
+        "relentless.checker_deaths_run": {"value": 2, "worse": {"factor": 2}}}
+
+
+    def pin_rules(r):
+        for t in r.get("targets") or ():
+            if isinstance(t, dict) and t.get("key") in PIN_TARGETS:
+                t.update(json.loads(json.dumps(PIN_TARGETS[t["key"]])))
+        return r
+    _load_rules = ow.load_rules
+    ow.load_rules = lambda *a, **k: pin_rules(_load_rules(*a, **k))
     tmp = Path(tempfile.mkdtemp(prefix="ow_checker_run_"))
     store = tmp / "store"
     store.mkdir()

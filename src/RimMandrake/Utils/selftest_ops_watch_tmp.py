@@ -21,7 +21,21 @@ def ok(cond, what):
 
 
 def main():
+    import json
     import ops_watch as ow
+    # Operations and the owner tune these alarm lines: the cases run on the ones shipped 2026-11-15
+    # (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
+    PIN_TARGETS = {
+        "disk.tmp_used_pct": {"value": 80, "worse": {"add": 10}}}
+
+
+    def pin_rules(r):
+        for t in r.get("targets") or ():
+            if isinstance(t, dict) and t.get("key") in PIN_TARGETS:
+                t.update(json.loads(json.dumps(PIN_TARGETS[t["key"]])))
+        return r
+    _load_rules = ow.load_rules
+    ow.load_rules = lambda *a, **k: pin_rules(_load_rules(*a, **k))
     saved = os.environ.pop("RM_OPS_DISKS", None)
     try:
         ok(ow.disk_mounts().get("tmp") == "/tmp", "/tmp is a default disk")

@@ -21,9 +21,23 @@ os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
 os.environ["RELENTLESS_ROOT"] = str(TMP / "belt")
 import ops_watch as OW  # noqa: E402
 
+# Operations and the owner tune these alarm lines: the cases run on the ones shipped 2026-11-15
+# (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
+PIN_TARGETS = {
+    "relentless.game_hold_idle_min": {"value": 30, "worse": {"factor": 2}}}
+
+
+def pin_rules(r):
+    for t in r.get("targets") or ():
+        if isinstance(t, dict) and t.get("key") in PIN_TARGETS:
+            t.update(json.loads(json.dumps(PIN_TARGETS[t["key"]])))
+    return r
+_load_rules = OW.load_rules
+OW.load_rules = lambda *a, **k: pin_rules(_load_rules(*a, **k))
+
 FAILS = []
 STORE = TMP / "belt" / "store"
-RULES = json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8"))
+RULES = pin_rules(json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8")))
 for tg in RULES["targets"]:     # never the real Conductor log
     if tg.get("conductor_log"):
         tg["conductor_log"] = str(TMP / "conductor.md")
