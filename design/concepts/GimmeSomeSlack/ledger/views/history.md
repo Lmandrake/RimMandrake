@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":180146} body_sha256=2f37553d1ccaaa86e9ad64b1f86d4514a012cad2c8f3f5aa9735212f1ccf324d -->
-# GimmeSomeSlack — mod ledger history (235 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":180146,"DISPATCH":666} body_sha256=c9b009a1dc0ccdb06c59a7869e1c77104336393e5781cac491cc806b071ca070 -->
+# GimmeSomeSlack — mod ledger history (237 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 39 of 48 bars met at the lock
 - 2026-11-16T07:11:06Z BACKFILL#2 decision version v0.1.0: 
@@ -236,3 +236,5 @@
 - 2026-11-16T07:11:06Z BACKFILL#233 decision q:rimmandrake-advance-gimmesomeslack-offline-beside-the-pilot v0.1.0: Does 'lock the other four' also pass the Exam and coverage judge for Gimme Some Slack and Pyrelands? → They still owe it: one exam and one coverage judge pass each on the locked tree, no loop; the cords bar gets a scene
 - 2026-11-16T07:11:06Z BACKFILL#234 decision q:rimmandrake-design-holder-pipeline-fusion-checklist-not-handoff v0.1.0: 
 - 2026-11-16T07:13:56Z BACKFILL#235 decision q:concept-agent-design-argues-before-building v0.1.0: 
+- 2026-11-16T07:40:19Z DISPATCH#1 lease.grant lease v0.1.0: 
+- 2026-11-16T07:40:19Z DISPATCH#2 run.start run v0.1.0: 

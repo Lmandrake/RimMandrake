@@ -1,6 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":180146} body_sha256=889a8baaa4eb94402681899e568a2fa1cbb7c5a9cd61f1ac1c802a6b91227e93 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":180146,"DISPATCH":666} body_sha256=06f57b1202609c17f89bc1367944079df72c3890f0c782f15c838dd1cdabe16d -->
 # GimmeSomeSlack — mod ledger packet
-version 0.1.0 · stage blind_challenge · 235 events in 1 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 237 events in 2 shards · reducer 1
+holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 
 ## Open findings (69)
 - finding:RIMMANDRAKE_WIDEN_GSS_HOSE_SCAN_ONE_TEST_TWO_BARS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: T_NO_HOSE is the only decider of both proves_at 4-5 bars (test_table.json bars no_hose, no_hose_in_gss: decides [T_NO_HOSE])
@@ -323,6 +324,6 @@ spend recorded: USD 72.28, 45795737 tokens
 - finding:GSS_STYLED_WINNER_FIX_KEEPS_LEGACY_LOOK withdrawn (reading) a47aef70c7
 
 ## Left out
-- the full history: 235 events (views/history.md; never read whole)
+- the full history: 237 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T07:13:56Z.1794813236216172318 (modledger.py since --mod GimmeSomeSlack t=2026-11-16T07:13:56Z.1794813236216172318 prints what changed after this packet)
+cursor: t=2026-11-16T07:40:19Z.1794814819768024051 (modledger.py since --mod GimmeSomeSlack t=2026-11-16T07:40:19Z.1794814819768024051 prints what changed after this packet)
