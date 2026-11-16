@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":300611,"DISPATCH":4023,"HOLDER.run-1794813483":1382} body_sha256=2e05e0173feb1f5069c3b5c58d182b8c421770af728cdb986c0a461e39bc113f -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":300611,"DISPATCH":4023,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":291} body_sha256=c49e0e580dd182fecf8311c82133988ad4c9b671fd2960bea0b5263882c6ecac -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 430 events in 3 shards · reducer 1
-holder lease run-1794824768, token 4, last active 2026-11-16T10:26:24Z
+version 0.1.0 · stage in_game · 431 events in 4 shards · reducer 1
+holder lease run-1794824768, token 4, last active 2026-11-16T10:42:28Z
 holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794813483, 2026-11-16T07:33:24Z)
@@ -313,6 +313,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - tests: 64, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 20 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 430 events (views/history.md; never read whole)
+- the full history: 431 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T10:26:25Z.1794824785057590741 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T10:26:25Z.1794824785057590741 prints what changed after this packet)
+cursor: t=2026-11-16T10:42:28Z.1794825748953439100 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T10:42:28Z.1794825748953439100 prints what changed after this packet)

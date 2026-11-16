@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":300611,"DISPATCH":4023,"HOLDER.run-1794813483":1382} body_sha256=8801b995ef5432aac3021ad2858313667c406b2737b112f1c2a63be18ea85e0a -->
-# ExplosiveKnockback — mod ledger history (430 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":300611,"DISPATCH":4023,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":291} body_sha256=768e7e87ebfba3164cfb5bdf2d066a3c703c5866b2ccb5ab76fde362554e7a46 -->
+# ExplosiveKnockback — mod ledger history (431 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -431,3 +431,4 @@
 - 2026-11-16T10:22:10Z BACKFILL#416 decision finding:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH v0.1.0: EK 5 gaps → fix the 5 gaps then one more judge; gas shove onto an open pit drops the pawn in → yes, it stands
 - 2026-11-16T10:26:24Z DISPATCH#11 lease.grant lease v0.1.0: 
 - 2026-11-16T10:26:25Z DISPATCH#12 run.start run v0.1.0: 
+- 2026-11-16T10:42:28Z HOLDER.run-1794824768#1 lease.renew session v0.1.0: 
