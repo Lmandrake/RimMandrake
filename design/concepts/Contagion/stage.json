@@ -246,6 +246,13 @@
   "reserve": 60000,
   "spent": 12018230
  },
+ "coverage_release_granted": {
+  "after": [
+   "RIMMANDRAKE_FIX_CONTAGION_COVERAGE_GAPS_TWENTY_FIVE_ALL_SOUND"
+  ],
+  "at": "2026-11-16T09:50:47Z",
+  "why": "Conductor quick run 2026-11-16 per evidence-for-ask: all 25 gaps of rm-coverage-judge-1794821839 are sound and fixable at stage 3, 0 late; fix first, then exactly one more look"
+ },
  "coverage_rounds": [
   {
    "at": "2026-11-16T00:15:08Z",
@@ -754,6 +761,12 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794821827 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-16T09:50:47Z",
+   "stage": 5,
+   "what": "coverage_release_granted",
+   "why": "Conductor quick run 2026-11-16 per evidence-for-ask: all 25 gaps of rm-coverage-judge-1794821839 are sound and fixable at stage 3, 0 late; fix first, then exactly one more look (takes effect after RIMMANDRAKE_FIX_CONTAGION_COVERAGE_GAPS_TWENTY_FIVE_ALL_SOUND close and the re-pin lands)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",

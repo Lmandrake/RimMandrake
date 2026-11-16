@@ -1,0 +1,3230 @@
+{
+ "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+ "at": "2026-11-16T09:37:19Z",
+ "checklist": [
+  {
+   "evidence": [
+    "record.json:617",
+    "tree.json:662",
+    "scenes.json:507"
+   ],
+   "id": "biome_roster",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "biome_def_declared",
+     "what": "terrain, plant density, disease table, zero forage declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "animal density spawns natives"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "post-patch def state (proof_note: not measured)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "bloom",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_bloom_reads_sick",
+     "what": "red storm sky, rain/fog read by judge"
+    },
+    {
+     "ok": true,
+     "scene": "sc_bloom_reads_sick",
+     "what": "movement penalty and ranged accuracy x0.4"
+    },
+    {
+     "ok": true,
+     "scene": "sc_bloom_reads_sick",
+     "what": "vanilla wet lulls reachable"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:643",
+    "scenes.json"
+   ],
+   "id": "burn_clock",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_walk_red_lid",
+     "what": "saved natural schedule survives reload"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tells_then_burn",
+     "what": "frequency scaling halves interval"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tells_then_burn",
+     "what": "tells window"
+    },
+    {
+     "ok": true,
+     "scene": "sc_tells_then_burn",
+     "what": "long-Bloom clock advances only between Burns"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "forced condition is map-local (other map unaffected)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "record.json:1973",
+    "scenes.json"
+   ],
+   "id": "burn_pressure_dive",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_natives_take_burn",
+     "what": "Burn damage to UV-shy natives"
+    },
+    {
+     "ok": true,
+     "scene": "sc_natives_take_burn",
+     "what": "visitor dose, roofed visitor none"
+    },
+    {
+     "ok": true,
+     "scene": "sc_natives_take_burn",
+     "what": "armored and leaker classification"
+    },
+    {
+     "ok": true,
+     "scene": "sc_natives_take_burn",
+     "what": "sprint target reads shade"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "sprint target reachable (CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS open, unread)"
+    },
+    {
+     "ok": true,
+     "scene": "floor:tick_cost",
+     "what": "bounded rotating candidate windows and counters: perf/diagnostic, floor tick_cost line"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:674",
+    "record.json:1973",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "visible_tells",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tells_then_burn",
+     "what": "gawpsack sink, rattlegrope shake, red puffs, LeavesRustle before Burn"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "gawpsack rise after the Burn"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "sinkers state after save-reload (CONTAGION_SINKERS_FIX_RESET_AFTER_LOAD open, unread)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:687",
+    "scenes.json:255"
+   ],
+   "id": "repulsor",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_repulsor_warns_and_clears",
+     "what": "powered warmup and whole-map Burn on Contagion"
+    },
+    {
+     "ok": true,
+     "scene": "sc_repulsor_warns_and_clears",
+     "what": "violet beam captured"
+    },
+    {
+     "ok": true,
+     "scene": "sc_repulsor_warns_and_clears",
+     "what": "off-biome clear-sky condition"
+    },
+    {
+     "ok": true,
+     "scene": "sc_repulsor_warns_and_clears",
+     "what": "lapses after lost power"
+    },
+    {
+     "ok": false,
+     "scene": "sc_repulsor_warns_and_clears",
+     "what": "honest whole-map warning before warmup: no inventory entry, no owed build"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json"
+   ],
+   "id": "repulsor_ship",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_repulsor_warns_and_clears",
+     "what": "hardpoint variant powers and warms the same comp"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:600"
+   ],
+   "id": "sunbeam_weapon",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_fires",
+     "what": "UV projectile judged unlike a bullet"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_fires",
+     "what": "native damage multiplier vs muffalo"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_fires",
+     "what": "scarring injury"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_fires",
+     "what": "landed hit arrests; miss control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:726",
+    "scenes.json:278"
+   ],
+   "id": "touched_exposure",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_touched_reads_early",
+     "what": "open Bloom exposure"
+    },
+    {
+     "ok": true,
+     "scene": "sc_touched_reads_early",
+     "what": "stronger Burn exposure"
+    },
+    {
+     "ok": true,
+     "scene": "sc_touched_reads_early",
+     "what": "Unfinished contact off-biome"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Coalescence contact"
+    },
+    {
+     "ok": true,
+     "scene": "sc_touched_reads_early",
+     "what": "humanlike only (muffalo none)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "flesh only (humanlike non-flesh pawn excluded)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk_red_lid",
+     "what": "saved progression across reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "mutation_deck",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "mutations_both_ways",
+     "what": "weighted split, nonduplicate, cap, part selection (offline)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_arrest_treats",
+     "what": "no automatic reversal"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "mutation letter and progression tips in play"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json"
+   ],
+   "id": "sunbeam_arrest",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_arrest_treats",
+     "what": "hold-the-lens job with reservation and reach"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_arrest_treats",
+     "what": "stops progression, keeps mutations, burns"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_arrest_treats",
+     "what": "re-exposure restarts; interrupt control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:767",
+    "scenes.json:328"
+   ],
+   "id": "unfinished_budding",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_unfinished_malformed",
+     "what": "periodic budding, off-switch control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_unfinished_malformed",
+     "what": "nearby population cap 3"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "bud is neutral faction"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "saved spawn deadline survives reload"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "no Burn/Bloom gate (buds during a Burn)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:328"
+   ],
+   "id": "unfinished_variation",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_unfinished_malformed",
+     "what": "pairwise different limb rolls"
+    },
+    {
+     "ok": false,
+     "scene": "sc_unfinished_malformed",
+     "what": "rare Monstrous buff: three unseeded buds may roll none"
+    },
+    {
+     "ok": true,
+     "scene": "sc_unfinished_malformed",
+     "what": "lethal unraveling"
+    },
+    {
+     "ok": true,
+     "scene": "sc_unfinished_malformed",
+     "what": "no reroll on load"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json"
+   ],
+   "id": "unfinished_mulch",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_unfinished_malformed",
+     "what": "slime and mulch, no corpse"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:806",
+    "scenes.json"
+   ],
+   "id": "coalescence_formation",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_coalescence_forms",
+     "what": "forms after long Bloom outside home area"
+    },
+    {
+     "ok": true,
+     "scene": "sc_coalescence_forms",
+     "what": "requires Burns enabled"
+    },
+    {
+     "ok": true,
+     "scene": "sc_coalescence_forms",
+     "what": "clears plants, threat letter"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "only one organism (second jump forms none)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:355",
+    "scenes.json:357"
+   ],
+   "id": "coalescence_growth",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_coalescence_grows_and_breaks",
+     "what": "saved mass across reload"
+    },
+    {
+     "ok": true,
+     "scene": "sc_coalescence_grows_and_breaks",
+     "what": "passive growth (wall control)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_coalescence_grows_and_breaks",
+     "what": "staged graphics"
+    },
+    {
+     "ok": true,
+     "scene": "sc_coalescence_grows_and_breaks",
+     "what": "walk-to-ring absorption"
+    },
+    {
+     "ok": true,
+     "scene": "sc_coalescence_grows_and_breaks",
+     "what": "own manhunters excluded"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "inspect and diagnostic counts read"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:832",
+    "scenes.json:379",
+    "scenes.json:355"
+   ],
+   "id": "coalescence_threat",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_waiting_costs_more",
+     "what": "stage-dependent emission"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "map-wide count cap reached and held"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:845",
+    "tree.json:351",
+    "scenes.json:355"
+   ],
+   "id": "coalescence_payoff",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_coalescence_grows_and_breaks",
+     "what": "Repulsor Burn collapse gives Monstrous samples and mulch"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "natural Burn collapse ('any active Burn')"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "gunfire destruction gives less mulch and no samples"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:407"
+   ],
+   "id": "genome_extract",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "blood loss and donor-labelled nonstacking sample"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:871",
+    "scenes.json:407"
+   ],
+   "id": "genome_inject",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "carry and inject an existing Bloody Mess"
+    },
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "interruption keeps sample"
+    },
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "moving host reach"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "eligibility refusal of an ineligible host"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "setting off refuses injection (ITEM CONTAGION_INJECT_FIX_IGNORES_OFF_SWITCH)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Monstrous samples selected first"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:884",
+    "sheet.md:59",
+    "scenes.json:407"
+   ],
+   "id": "gestation",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "four-day gestation, consumable host"
+    },
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "normal batch 2-4 natural parts"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk_red_lid",
+     "what": "saved donor and grade across reload"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Monstrous output one of five limbs that shows"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "limbs disabled fall back to ordinary batch"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:407"
+   ],
+   "id": "birth_safety",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "no acid burst at birth"
+    },
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "other deaths burst"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:910",
+    "scenes.json:407"
+   ],
+   "id": "natural_match",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "matched organ install gives mood, no mismatch"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "control: non-donor install gets no matched mood"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "grown natural arm/leg via custom limb recipes"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:183",
+    "scenes.json"
+   ],
+   "id": "pillar_arm",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "limbs_stay_built",
+     "what": "resolves and draws; costs moved to 0.2.0 in his words OWNER:1794772416196929336"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:183"
+   ],
+   "id": "lash",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "limbs_stay_built",
+     "what": "resolves and draws; costs 0.2.0 by his word"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:183"
+   ],
+   "id": "eyeburst",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "limbs_stay_built",
+     "what": "resolves and draws; costs 0.2.0 by his word"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:183"
+   ],
+   "id": "caudal_spring",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "limbs_stay_built",
+     "what": "resolves and draws; costs 0.2.0 by his word"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:183"
+   ],
+   "id": "bellows",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "limbs_stay_built",
+     "what": "resolves; no render node; costs 0.2.0 by his word"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:183"
+   ],
+   "id": "limb_removal",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "limbs_stay_built",
+     "what": "emerge comp declared; behaviour testing moved to 0.2.0 by his word"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1019",
+    "scenes.json"
+   ],
+   "id": "draftprints",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_prints_pay",
+     "what": "once-only scan"
+    },
+    {
+     "ok": true,
+     "scene": "sc_prints_pay",
+     "what": "label, inspect, market value name the roll"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "records Monstrous status, extreme stat and failure"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "touch-range job may provoke"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "saved label across reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1035",
+    "scenes.json"
+   ],
+   "id": "helix_contracts",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_prints_pay",
+     "what": "asks for a combination, consumes match, pays silver"
+    },
+    {
+     "ok": true,
+     "scene": "sc_prints_pay",
+     "what": "wrong roll refused"
+    },
+    {
+     "ok": true,
+     "scene": "sc_helix_trade",
+     "what": "only offered with a Contagion home"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "optional device via drop pod"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1048",
+    "scenes.json:647"
+   ],
+   "id": "helix_trade",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_helix_trade",
+     "what": "sells devices and ship gift, buys tissue"
+    },
+    {
+     "ok": false,
+     "scene": "sc_helix_trade",
+     "what": "start: campaign trader attachment loaded on the minimal list, asserted"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json",
+    "scenes.json:530"
+   ],
+   "id": "zhool_haze",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "visible haze and conversion in owned biomes only"
+    },
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "special-plant immunity, growth retention, crop opt-in"
+    },
+    {
+     "ok": false,
+     "scene": "sc_settings_superb",
+     "what": "independent look and conversion toggles each stop only their part"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1074",
+    "tree.json:636"
+   ],
+   "id": "zhool_render",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "custom body and render tree declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "reads as its own creature at play zoom"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "life-stage scaling"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "VEF floating/fission when present"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1087",
+    "tree.json:636"
+   ],
+   "id": "bulloo",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "custom body and acid death"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "zero MeatAmount, light leather"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "VEF floating/fission when loaded"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "captured at play zoom"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636",
+    "scenes.json"
+   ],
+   "id": "fauna_bloody_mess",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_unfinished_malformed",
+     "what": "budding host"
+    },
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "acid death coupling"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads as its own creature"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json",
+    "tree.json:527"
+   ],
+   "id": "fauna_gawpsack",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tells_then_burn",
+     "what": "sky tell sink"
+    },
+    {
+     "ok": true,
+     "scene": "airborne_stats",
+     "what": "grounded floater, no flight stat"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns at density"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:527",
+    "tree.json:636"
+   ],
+   "id": "fauna_blisterfloat",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "airborne_stats",
+     "what": "flight stat and flags (flip-book FAIL until owed item)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "leave-map wiring"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json",
+    "tree.json:636"
+   ],
+   "id": "fauna_scorchpod",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_natives_take_burn",
+     "what": "leaker exemption"
+    },
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "acid death declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_bloodlurk",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "pool habitat declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_meltgut",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "very large size declared"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "slow speed declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:527"
+   ],
+   "id": "fauna_sparkleech",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "airborne_stats",
+     "what": "flyer stat, flags, frames"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_sparkleech_grub",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "grounded smaller race declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json"
+   ],
+   "id": "fauna_scaldhide",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_natives_take_burn",
+     "what": "armored Burn-exempt"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_doublemaw",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "fast two-jawed omnivore declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_gnashling",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "pack and size declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_contagion_ikee",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "distinct RM_ContagionIkee identifier"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_peeper",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "docile browser declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_eyestinger",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "heavy ambusher melee tools declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_fleshsop",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "durable retaliating pack declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:527",
+    "tree.json:636"
+   ],
+   "id": "fauna_skinflap",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "airborne_stats",
+     "what": "flyer stat and frames"
+    },
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "slime death declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:527"
+   ],
+   "id": "fauna_gorekite",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "airborne_stats",
+     "what": "flyer stat (flip-book FAIL until owed item)"
+    },
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "slime death declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_danglemaw",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "",
+     "what": "slow high-damage lurker declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json"
+   ],
+   "id": "fauna_crispling",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_natives_take_burn",
+     "what": "armored Burn-exempt"
+    },
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "slime death declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_sloshbelly",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "goo-bud slime death declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_ogleknot",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "slime death declared"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "spawns and reads distinct"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:527",
+    "scenes.json"
+   ],
+   "id": "flight",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "airborne_stats",
+     "what": "MaxFlightTime, flags, flip-book frames; offline only by his standing flight rule"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_eyebark",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own RM art reads as flesh"
+    },
+    {
+     "ok": true,
+     "scene": "flora_yields_declared",
+     "what": "wood harvest"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_lashgrass",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "no food nutrition (zero forage)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_bleedleaf",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art"
+    },
+    {
+     "ok": true,
+     "scene": "flora_yields_declared",
+     "what": "inedible"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_gorestalk",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art"
+    },
+    {
+     "ok": true,
+     "scene": "flora_yields_declared",
+     "what": "inedible"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687",
+    "scenes.json"
+   ],
+   "id": "flora_rattlegrope",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tells_then_burn",
+     "what": "shaking tell"
+    },
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "no food nutrition"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_sapblister",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art"
+    },
+    {
+     "ok": true,
+     "scene": "flora_yields_declared",
+     "what": "nonfood red sap yield"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_bloody_fist",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art"
+    },
+    {
+     "ok": true,
+     "scene": "flora_yields_declared",
+     "what": "nonfood seed-fist yield"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_halfmade_tree",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "flora_yields_declared",
+     "what": "wood harvest"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "variant art (more than one variant renders)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_halfmade_blighted",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art (rostered 0.15)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "yield and inedibility"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_meatvine",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art"
+    },
+    {
+     "ok": true,
+     "scene": "flora_yields_declared",
+     "what": "inedible"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_toothmoss",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art"
+    },
+    {
+     "ok": true,
+     "scene": "flora_yields_declared",
+     "what": "inedible"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687",
+    "scenes.json"
+   ],
+   "id": "flora_wombpod",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "own art"
+    },
+    {
+     "ok": true,
+     "scene": "sc_wombpod_hatch",
+     "what": "harvests host sac"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:662"
+   ],
+   "id": "rustpuff_roster",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "biome_def_declared",
+     "what": "guard read with and without TheRot"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json"
+   ],
+   "id": "wombpod_hatch",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_wombpod_hatch",
+     "what": "hatches Bloody Mess after three days, two-day control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json"
+   ],
+   "id": "mulched_soil",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_mulched_soil",
+     "what": "three mulch per cell builds fertile soil, two-mulch control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_mulched_soil",
+     "what": "plain fertilizer only, by his card OWNER:1792111464689406295"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1583",
+    "scenes.json:507"
+   ],
+   "id": "wrecks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_cast_lives_here",
+     "what": "own art and Wreckage deconstruction"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cast_lives_here",
+     "what": "local-map scatter binding"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "weathering"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json",
+    "tree.json:662"
+   ],
+   "id": "scanner_payload",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "biome_def_declared",
+     "what": "payload patch matches AcousticScanner defs"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json"
+   ],
+   "id": "creep_defs",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "no_magenta",
+     "what": "defs resolve with art; event owned elsewhere"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json",
+    "tree.json:662"
+   ],
+   "id": "legacy_flora_terrain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "biome_def_declared",
+     "what": "TentacularPlant off roster"
+    },
+    {
+     "ok": true,
+     "scene": "no_magenta",
+     "what": "art resolves"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:530",
+    "floor.json:30"
+   ],
+   "id": "settings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings_superb",
+     "what": "toggles, multipliers, search, collapse, reset"
+    },
+    {
+     "ok": false,
+     "scene": "sc_settings_superb",
+     "what": "every switch named in the concept, including owed-build switches"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json"
+   ],
+   "id": "proof_tooling",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "walk_red_lid",
+     "what": "tooling exercised end to end; not gameplay acceptance"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1664",
+    "scenes.json:896",
+    "floor.json:57"
+   ],
+   "id": "legacy_placement_worker",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "sc_settings_superb",
+     "what": "scoped out: coverage_rest needs a removal or absence check, gets a label check"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1677",
+    "scenes.json:201"
+   ],
+   "id": "preburn_dive",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_preburn_dive",
+     "what": "UV-shy natives sheltered before Burn, dive-off control"
+    },
+    {
+     "ok": false,
+     "scene": "sc_preburn_dive",
+     "what": "sun lover counter-movement: species unnamed, start lines conflict"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1688",
+    "scenes.json:459"
+   ],
+   "id": "bodyprints",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_bodyprints_phased",
+     "what": "corpse, skin, print in order; Bloody Mess eats skin; print sampled; ridge husks"
+    },
+    {
+     "ok": false,
+     "scene": "sc_bodyprints_phased",
+     "what": "control: unnamed native, 'old slime death' for a corpse"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json"
+   ],
+   "id": "rawshade",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "",
+     "what": "impl absent and scope not_opened: not a unit"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1710",
+    "scenes.json:715"
+   ],
+   "id": "zhooliza",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_zhooliza",
+     "what": "both variants spawn and read distinct"
+    },
+    {
+     "ok": false,
+     "scene": "sc_zhooliza",
+     "what": "entry_point_item names the scene's script build"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "bloom_reads_sick",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_bloom_reads_sick",
+     "what": "red storm sky at midday vs grey control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_bloom_reads_sick",
+     "what": "owner shot held"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "tells_then_burn",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tells_then_burn",
+     "what": "tells lead the Burn, tells-off control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_burn_dash",
+     "what": "light change only after"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "shelter_in_lead",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_shelter_in_lead",
+     "what": "near pair in, far pair caught; tells-off control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "one_dash_at_cost",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_one_dash_at_cost",
+     "what": "dasher alive with dose, stander at least 3x"
+    },
+    {
+     "ok": true,
+     "scene": "sc_burn_dash",
+     "what": "flagship stop line held for him"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "refuge_is_shade",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_refuge_is_shade",
+     "what": "dose only on cells shade grid reads open, five placements"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "natives_take_burn",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_natives_take_burn",
+     "what": "UV-shy hurt, Scaldhide and Crispling not; no-Burn control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "bloom_quiets_sundash",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_bloom_quiets_sundash",
+     "what": "zero sun escape under Bloom, returns under Burn; clear-temperate control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:255",
+    "record.json:687"
+   ],
+   "id": "repulsor_warns_and_clears",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "sc_repulsor_warns_and_clears",
+     "what": "warning names whole map before warmup"
+    },
+    {
+     "ok": true,
+     "scene": "sc_repulsor_warns_and_clears",
+     "what": "sky clears to Burn, lapses, off-biome clear sky"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:279"
+   ],
+   "id": "touched_reads_early",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_touched_reads_early",
+     "what": "touched state visible before mutation"
+    },
+    {
+     "ok": false,
+     "scene": "sc_touched_reads_early",
+     "what": "exactly one transition message at active change: unbuilt, no owed build"
+    },
+    {
+     "ok": true,
+     "scene": "sc_touched_reads_early",
+     "what": "no letter per sub-threshold exposure"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json"
+   ],
+   "id": "mutations_both_ways",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "mutations_both_ways",
+     "what": "offline leaf: seeded deck selftest, exempt from scene contract"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "sunbeam_arrest_treats",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_arrest_treats",
+     "what": "beam judged, progression stops, mutations kept, burn added"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sunbeam_arrest_treats",
+     "what": "re-exposure restarts"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:328"
+   ],
+   "id": "unfinished_malformed",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_unfinished_malformed",
+     "what": "three pairwise different buds captured"
+    },
+    {
+     "ok": true,
+     "scene": "sc_unfinished_malformed",
+     "what": "death into slime and mulch"
+    },
+    {
+     "ok": false,
+     "scene": "sc_unfinished_malformed",
+     "what": "Monstrous buff arm unseeded"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:351",
+    "scenes.json:355",
+    "scenes.json:357"
+   ],
+   "id": "coalescence_grows_and_breaks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_coalescence_grows_and_breaks",
+     "what": "absorbs and grows a stage"
+    },
+    {
+     "ok": false,
+     "scene": "sc_coalescence_grows_and_breaks",
+     "what": "manhunters bounded"
+    },
+    {
+     "ok": true,
+     "scene": "sc_coalescence_grows_and_breaks",
+     "what": "Burn collapse into Monstrous samples"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "gunfire kill gives less and no samples"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:387",
+    "scenes.json:379"
+   ],
+   "id": "waiting_costs_more",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_waiting_costs_more",
+     "what": "stage 2 emits more, all from the Coalescence"
+    },
+    {
+     "ok": false,
+     "scene": "sc_waiting_costs_more",
+     "what": "recovery workers take more exposure: no workers staged"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:407"
+   ],
+   "id": "genome_brings_tissue",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "odds shown before job (owed build asserted)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "miss still brings 2-4 donor-labelled sellable parts"
+    },
+    {
+     "ok": false,
+     "scene": "sc_genome_brings_tissue",
+     "what": "matched install mood, with a non-donor control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_genome_brings_tissue",
+     "what": "interrupted injection keeps sample"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "prints_pay",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_prints_pay",
+     "what": "one print per Unfinished, label names roll, contract pays; wrong-roll control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:459"
+   ],
+   "id": "bodyprints_phased",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_bodyprints_phased",
+     "what": "phases in order, Bloody Mess eats, print sampled"
+    },
+    {
+     "ok": false,
+     "scene": "sc_bodyprints_phased",
+     "what": "control discriminates the phases from today's behaviour"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "flora_flesh",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "every rostered plant own art, judged flesh"
+    },
+    {
+     "ok": true,
+     "scene": "sc_flora_flesh",
+     "what": "haze converts only in owned biomes"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:501",
+    "scenes.json:507",
+    "sheet.md:32"
+   ],
+   "id": "cast_lives_here",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "every roster row spawns and is captured"
+    },
+    {
+     "ok": false,
+     "scene": "sc_cast_lives_here",
+     "what": "judge names each a distinct creature"
+    },
+    {
+     "ok": true,
+     "scene": "sc_cast_lives_here",
+     "what": "no missing texture"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:527"
+   ],
+   "id": "airborne_stats",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "airborne_stats",
+     "what": "offline leaf, exempt; flight live test needs him"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:530",
+    "floor.json:30"
+   ],
+   "id": "settings_superb",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings_superb",
+     "what": "each switch stops only its feature; reset"
+    },
+    {
+     "ok": false,
+     "scene": "sc_settings_superb",
+     "what": "the switch list is in the concept and includes the owed builds' new switches"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "no_vanilla_forest",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_no_vanilla_forest",
+     "what": "judge does not name the Contagion a forest; forest control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json"
+   ],
+   "id": "no_magenta",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "no_magenta",
+     "what": "offline texPath resolution, exempt"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:636"
+   ],
+   "id": "fauna_specials_declared",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fauna_specials_declared",
+     "what": "named table rows (acid, slime, leaker, pack/size, pool, bodies)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "table rows for Doublemaw, Peeper, Eyestinger, Fleshsop, Danglemaw, Ikee, Sparkleech grub, Meltgut speed, Bulloo meat/leather, Blisterfloat leave-map"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:662",
+    "record.json:617"
+   ],
+   "id": "biome_def_declared",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "biome_def_declared",
+     "what": "raw XML fields, RustPuff guard, TentacularPlant, scanner patch"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "post-patch def state"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:687"
+   ],
+   "id": "flora_yields_declared",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "flora_yields_declared",
+     "what": "nine named plants' yields and inedibility"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Lashgrass, Rattlegrope, Halfmade Blighted nutrition"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "sheet.md:59",
+    "record.json:183"
+   ],
+   "id": "limbs_stay_built",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "limbs_stay_built",
+     "what": "defs, recipes, textures, emerge comp resolve (offline)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "sheet's 'a Monstrous batch yields one that shows' check"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:715"
+   ],
+   "id": "zhooliza_lives_here",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_zhooliza",
+     "what": "both variants spawn, judged distinct; temperate control"
+    },
+    {
+     "ok": false,
+     "scene": "sc_zhooliza",
+     "what": "entry_point_item is the script build"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json"
+   ],
+   "id": "walk_red_lid",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_walk_red_lid",
+     "what": "reload matches Burn clock, touched severity, gestation"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk_red_lid",
+     "what": "both orders same samples and letters"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk_red_lid",
+     "what": "repeat dash costs a dose; fresh-map control INVALID"
+    }
+   ]
+  }
+ ],
+ "contract": {
+  "advisory": true,
+  "alarms": [
+   {
+    "family": "coverage_judge",
+    "first_at": "2026-11-15T09:32:09Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-16T09:45:23Z",
+    "open": true,
+    "subject": "family:coverage_judge",
+    "told_at": "2026-11-15T09:32:09Z",
+    "trips": 6,
+    "why": "refused all of its last 8 verdicts across 3 items"
+   }
+  ],
+  "cached": [],
+  "calibration": "UNTESTED",
+  "counted": true,
+  "may_judge": true,
+  "ok": true,
+  "repair_due": []
+ },
+ "gaps": [
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each acceptance part the leaf names needs a scene arm that reads it.",
+   "evidence": [
+    "tree.json:351",
+    "scenes.json:355",
+    "scenes.json:357",
+    "record.json:845"
+   ],
+   "gid": "g1",
+   "ids": [
+    "coalescence_payoff",
+    "coalescence_grows_and_breaks"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The leaf oracle says 'gunfire yields less mulch and no samples', and the start stages 'a second Coalescence for the control'. But the scene's expect has no gunfire arm, and its control is 'the same Unfinished held by a wall one cell outside the ring'. Only a Repulsor Burn is used, although the capability says 'Any active Burn'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add the gunfire arm and a natural-Burn arm to sc_coalescence_grows_and_breaks's expect"
+   },
+   "what": "Coalescence payoff: no scene kills a Coalescence by gunfire, and none collapses one in a natural Burn",
+   "where": "scenes.json sc_coalescence_grows_and_breaks",
+   "would_pass": "sc_coalescence_grows_and_breaks (or a new scene) expects: the second Coalescence, destroyed by gunfire, leaves less mulch than the Burn-collapsed one and zero Monstrous samples; and one Coalescence collapses in a natural Burn with samples."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A cap is exercised only when it is reached.",
+   "evidence": [
+    "record.json:832",
+    "scenes.json:379",
+    "scenes.json:355"
+   ],
+   "gid": "g2",
+   "ids": [
+    "coalescence_threat",
+    "coalescence_grows_and_breaks"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "Both scenes only expect 'within the cap'. Neither raises emission to the 'map-wide count cap', so a missing cap passes trivially.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add a cap-saturation arm to sc_waiting_costs_more"
+   },
+   "what": "Coalescence map-wide manhunter cap is never driven to its limit",
+   "where": "scenes.json sc_waiting_costs_more, sc_coalescence_grows_and_breaks",
+   "would_pass": "A scene arm runs emission until the count reaches the cap (for example a stage-3 Coalescence held long) and reads that the count equals the cap and stays there for N emissions."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A scene must stage what its expect reads.",
+   "evidence": [
+    "tree.json:387",
+    "scenes.json:379"
+   ],
+   "gid": "g3",
+   "ids": [
+    "waiting_costs_more"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The expect says 'the recovery workers sent to the stage-2 site take more touched exposure than at stage 1'. The start and action stage no workers: the action is only 'read manhunter count and spread at stage 1, jump to stage 2, read again'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: add the recovery party to sc_waiting_costs_more's start and action"
+   },
+   "what": "waiting_costs_more reads recovery workers it never stages",
+   "where": "scenes.json sc_waiting_costs_more",
+   "would_pass": "The start asserts N colonists ordered to the site at each stage, and the action reads their touched severity and the manhunters' reach toward them at stage 1 and at stage 2."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A scene may not accept less than its leaf's oracle.",
+   "evidence": [
+    "tree.json:501",
+    "scenes.json:507",
+    "sheet.md:32"
+   ],
+   "gid": "g4",
+   "ids": [
+    "cast_lives_here",
+    "biome_roster",
+    "fauna_bloody_mess",
+    "fauna_gawpsack",
+    "fauna_blisterfloat",
+    "fauna_scorchpod",
+    "fauna_bloodlurk",
+    "fauna_meltgut",
+    "fauna_sparkleech",
+    "fauna_sparkleech_grub",
+    "fauna_scaldhide",
+    "fauna_doublemaw",
+    "fauna_gnashling",
+    "fauna_contagion_ikee",
+    "fauna_peeper",
+    "fauna_eyestinger",
+    "fauna_fleshsop",
+    "fauna_skinflap",
+    "fauna_gorekite",
+    "fauna_danglemaw",
+    "fauna_crispling",
+    "fauna_sloshbelly",
+    "fauna_ogleknot",
+    "zhool_render",
+    "bulloo"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The leaf's oracle is 'every roster row spawns at least once within the day and is captured', and a judge names each one distinct. The scene's expect is 'at least half the rows spawn; no missing texture', with no judge reading. The sheet says 'each reads as its own creature'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: restore the leaf oracle in sc_cast_lives_here's expect"
+   },
+   "what": "The cast scene weakens its leaf to half the roster and drops the judge's distinctness read",
+   "where": "scenes.json sc_cast_lives_here",
+   "would_pass": "sc_cast_lives_here expects every roster row to spawn (or be spawned by the biome's own spawner when a row misses the day) and to be captured, and a judge who did not stage it names each capture distinct."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "An unbuilt promised part must be filed and gated, not silently expected.",
+   "evidence": [
+    "record.json:687",
+    "scenes.json:255",
+    "tree.json"
+   ],
+   "gid": "g5",
+   "ids": [
+    "repulsor_warns_and_clears",
+    "repulsor"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The repulsor inventory 'what' lists 'Powered warmup, violet beam ... lapses after lost power' and no warning. The scene expects 'warning names the whole map before warmup' and asserts no owed build, as the refuge, dive, sundash and odds scenes do. Measured: grep of CompCloudRepulsor.cs finds no warning or confirm text.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "record.json inventory row and sc_repulsor_warns_and_clears start: name the owed build"
+   },
+   "what": "The Repulsor's whole-map warning is not built, and no scene names an owed build for it",
+   "where": "scenes.json sc_repulsor_warns_and_clears; record.json inventory repulsor",
+   "would_pass": "The record carries an inventory entry (impl absent, approved per d_efa_q04) and a filed build item for the warning, and the scene's start asserts that build's deployed selftest, else records UNMEASURED."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Certified d_efa_q05 behaviour must be built and gated before acceptance.",
+   "evidence": [
+    "scenes.json:279",
+    "record.json:726",
+    "tree.json"
+   ],
+   "gid": "g6",
+   "ids": [
+    "touched_reads_early",
+    "mutation_deck"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The scene expects 'one transition message at active change' with no owed build asserted. Measured: RM_ContagionTouched.cs sends only a 'Contagion mutation:' letter and an arrest message, nothing at the stage change. The mutation_deck parts 'progression tips and mutation letters' are read by no scene.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "record.json, scenes.json sc_touched_reads_early: owed build and a letter count"
+   },
+   "what": "The touched state's single transition message is not built, and the mutation letter is unchecked",
+   "where": "scenes.json sc_touched_reads_early; record.json touched_exposure, mutation_deck",
+   "would_pass": "An inventory row and an owed build item exist for the transition message, and the scene asserts that build. The scene also expects exactly one mutation letter when the deck mutation lands."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Every source of exposure the capability names needs a read.",
+   "evidence": [
+    "record.json:726",
+    "scenes.json:278"
+   ],
+   "gid": "g7",
+   "ids": [
+    "touched_exposure"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The capability says 'adjacent Unfinished/Coalescence contact' and 'humanlike flesh only'. The action stages contact with 'a third adjacent to an Unfinished on a temperate map' and 'a muffalo'. No pawn stands by a Coalescence, and no humanlike non-flesh pawn is staged.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_touched_reads_early: two arms"
+   },
+   "what": "Touched exposure from Coalescence contact, and the flesh-only rule, are untested",
+   "where": "scenes.json sc_touched_reads_early",
+   "would_pass": "The scene adds a colonist adjacent to a Coalescence, who gains the hediff, and a humanlike non-flesh pawn (for example a mechanoid-bodied humanlike), who gains none."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The sheet must say only what the tree tests, and built paths that ship need a check.",
+   "evidence": [
+    "sheet.md:59",
+    "record.json:884",
+    "record.json:183",
+    "tree.json"
+   ],
+   "gid": "g8",
+   "ids": [
+    "gestation",
+    "limbs_stay_built"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The sheet says '0.1.0 checks only that a Monstrous batch yields one that shows'. limbs_stay_built is an offline def read, and no scene gestates a Monstrous sample. The gestation capability's 'Monstrous output one of five limbs; disabled limbs fall back to ordinary batch' has no arm.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_genome_brings_tissue: Monstrous and limbs-off arms (or reword sheet.md:59)"
+   },
+   "what": "The sheet promises a Monstrous-limb check that no scene runs; the gestation Monstrous and fallback paths are untested",
+   "where": "sheet.md delegated; scenes.json sc_genome_brings_tissue",
+   "would_pass": "A scene arm injects a Monstrous sample and expects one of the five limb items whose art draws, and a grownLimbsEnabled-off arm expects an ordinary batch. Or the sheet line is reworded to what limbs_stay_built checks, and the fallback gets its own arm."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A control must rule out the plausible alternative.",
+   "evidence": [
+    "record.json:910",
+    "scenes.json:407"
+   ],
+   "gid": "g9",
+   "ids": [
+    "natural_match",
+    "genome_brings_tissue"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The expect has 'matched install gives the mood and no mismatch'. The control covers only 'a second injection cancelled mid-bar, and a host killed outside gestation', so nothing rules out every install giving the mood. 'Grown natural arm/leg items' and 'custom limb recipes' are never installed.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_genome_brings_tissue: non-donor control and a limb install"
+   },
+   "what": "Matched-organ mood has no non-donor control, and the arm/leg recipe path is untested",
+   "where": "scenes.json sc_genome_brings_tissue",
+   "would_pass": "The same part installed on a non-donor gives no matched mood, and a grown natural arm or leg installed on the donor gives the mood."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Built behaviour that ships needs a read.",
+   "evidence": [
+    "record.json:871",
+    "scenes.json:407"
+   ],
+   "gid": "g10",
+   "ids": [
+    "genome_inject"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The capability lists 'eligibility, setting, interruption and moving-host reach checked; Monstrous samples selected first'. The scene covers only interruption and the moving host.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_genome_brings_tissue: three arms"
+   },
+   "what": "Injection's eligibility check, off switch and Monstrous-first rule are untested",
+   "where": "scenes.json sc_genome_brings_tissue",
+   "would_pass": "Arms show: an ineligible host refused; the injection setting off refuses the job; with a Monstrous and a normal sample both carried, the Monstrous one is injected."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A promise recorded in the record must reach the scenes.",
+   "evidence": [
+    "record.json:1973",
+    "record.json:674",
+    "scenes.json"
+   ],
+   "gid": "g11",
+   "ids": [
+    "visible_tells",
+    "burn_pressure_dive",
+    "settings"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "c_open_fixes resolves to 'stage 3 reads the seven fix items ... closes or re-measures each'. Only INJECT_FIX_CANCEL_STILL_STABS, INJECT_FIX_HOST_WANDERS_OFF and WOMBPOD_FIX_SAC_NEVER_HATCHES appear in scenes. SINKERS_FIX_RESET_AFTER_LOAD, CLAWS_FIX_ABSTRACT_VERB, DIVE_FIX_FOUR_WALLED_CELLS and BURN_OFF_FIX_PAWN_WONT_WALK do not. The tells capability's 'sink/rise' is read only up to Burn start.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: gate and arms in sc_tells_then_burn, sc_natives_take_burn, sc_settings_superb, sc_cast_lives_here"
+   },
+   "what": "Four of the seven open fix items are read by no scene, and gawpsack rise is untested",
+   "where": "record.json c_open_fixes; scenes.json",
+   "would_pass": "Each of the four items is gated in a scene start (UNMEASURED while open) with an arm that reads it: tells state after a save-reload; native melee verbs resolving; a sprint refusing four-walled cells; a pawn walking with the Burn off. sc_tells_then_burn also reads the gawpsacks rising after the Burn."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A rare outcome needs a deterministic start to be asserted.",
+   "evidence": [
+    "record.json:767",
+    "scenes.json:328"
+   ],
+   "gid": "g12",
+   "ids": [
+    "unfinished_budding",
+    "unfinished_variation",
+    "unfinished_malformed"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The capability says 'neutral Unfinished ... saved spawn deadline; no Burn/Bloom gate'. The expect has none of these, and expects 'a Monstrous one reads its buff' from three buds, although the Monstrous roll is 'rare' and no seed is set.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_unfinished_malformed: start seed and three reads"
+   },
+   "what": "Budding's neutral faction, saved deadline and lack of a sky gate are untested; the Monstrous roll is unseeded",
+   "where": "scenes.json sc_unfinished_malformed",
+   "would_pass": "The expect reads each bud's faction as neutral and the deadline equal across a save-reload, and a bud forms during a forced Burn. The start seeds or forces one Monstrous roll."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The contract defines entry_point_item as the build item for a missing entry point, which is the script function, not the content it tests.",
+   "evidence": [
+    "scenes.json:708-715",
+    "record.json:1710"
+   ],
+   "gid": "g13",
+   "ids": [
+    "zhooliza",
+    "zhooliza_lives_here"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "sc_zhooliza is 'staged_by': 'script' with 'entry_point': 'src/RimMandrake/Contagion/validation.py::scene_zhooliza', but its 'entry_point_item': 'ZHOOLIZA_BUILD_FROM_JELLY_RENDERS' is the build of the creature itself (record.json 'id': 'zhooliza'). It is not the item that implements scene_zhooliza in validation.py, which every other scene names as RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "In scenes.json sc_zhooliza, change entry_point_item from ZHOOLIZA_BUILD_FROM_JELLY_RENDERS to RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL (or a new script item filed for scene_zhooliza). Leave the ZHOOLIZA_BUILD_FROM_JELLY_RENDERS gate in its start."
+   },
+   "what": "sc_zhooliza's entry_point_item names the creature build, not the scene's script build",
+   "where": "scenes.json sc_zhooliza",
+   "would_pass": "In scenes.json, sc_zhooliza's entry_point_item equals the filed item that implements validation.py::scene_zhooliza (for example RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL), and its start keeps 'ZHOOLIZA_BUILD_FROM_JELLY_RENDERS landed (asserted: def resolves, else UNMEASURED)' as the content gate."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Built code that is out of scope still ships, so coverage must show it is inert or removed; a label shows neither.",
+   "evidence": [
+    "scenes.json:896-900",
+    "record.json:1664-1673",
+    "floor.json:57"
+   ],
+   "gid": "g14",
+   "ids": [
+    "legacy_placement_worker"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The record says 'Biome scoring worker and rarity setting remain built in source' with 'scope': 'out'. coverage_rest covers it 'by' 'sc_settings_superb' because 'the sweep checks its switch is labelled unsupported'. A label proves nothing about whether the scoring worker still scores tiles, yet the contract requires a scoped-out built entry to be covered by 'its removal or absence check', and the floor keeps 'worldgen' applicable.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Two edits: in scenes.json sc_settings_superb (or a new offline leaf in tree.json) add an arm that reads the scoring worker's output at defaults as zero; then point coverage_rest's legacy_placement_worker 'by' and 'why' at that arm."
+   },
+   "what": "legacy_placement_worker (scoped out) is covered by a label check, not the absence or removal check the contract names",
+   "where": "scenes.json coverage_rest",
+   "would_pass": "The coverage_rest entry for legacy_placement_worker cites a scene arm or leaf that reads the deployed game at shipped defaults and finds the RM_ContagionBiome scoring worker contributes no placement (score 0 or not registered on the BiomeDef). Or it cites a filed removal item and an offline check that RM_ContagionBiome.cs and its rarity setting are gone."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Coverage of each switch must be checkable from the concept.",
+   "evidence": [
+    "scenes.json:530",
+    "floor.json:30"
+   ],
+   "gid": "g15",
+   "ids": [
+    "settings",
+    "settings_superb",
+    "zhool_haze"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The action is 'flip each of the 16 switches listed in the walk's must-be-true section'. Owed builds add switches that other scenes use as controls ('dive switched off', 'Bodyprints switched off'), and zhool look and conversion are 'independent ... toggles'. A judge cannot tell from the concept which switches are swept.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_settings_superb: list or derive the switches"
+   },
+   "what": "The settings sweep's switch list lives outside the concept as a fixed count of 16",
+   "where": "scenes.json sc_settings_superb",
+   "would_pass": "sc_settings_superb names every switch (including those of the dive, bodyprints, sundash and odds builds, and both zhool toggles) with its feature step, or states 'every bool in RM_ContagionSettings', read from the deployed type."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each built special needs a named check.",
+   "evidence": [
+    "tree.json:636",
+    "record.json:1087",
+    "record.json:1074"
+   ],
+   "gid": "g16",
+   "ids": [
+    "fauna_specials_declared",
+    "fauna_doublemaw",
+    "fauna_peeper",
+    "fauna_eyestinger",
+    "fauna_fleshsop",
+    "fauna_danglemaw",
+    "fauna_contagion_ikee",
+    "fauna_sparkleech_grub",
+    "fauna_meltgut",
+    "fauna_blisterfloat",
+    "bulloo",
+    "zhool_render"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The leaf lists 'acid deaths ..., slime deaths ..., the Scorchpod leaker flag, pack and size on Gnashling and Meltgut, the Bloodlurk's pool habitat, and the Zhool's and Bulloo's custom bodies'. Not listed: Doublemaw fast, Peeper docile, Eyestinger heavy ambusher, Fleshsop retaliating pack, Danglemaw slow high-damage, the distinct RM_ContagionIkee identifier, the grub grounded and smaller, Meltgut slow, Bulloo 'zero MeatAmount, light leather', Blisterfloat leave-map, Zhool life-stage scaling, and VEF floating/fission.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "tree.json fauna_specials_declared experience and oracle"
+   },
+   "what": "fauna_specials_declared's table omits the specials of many inventory rows",
+   "where": "tree.json fauna_specials_declared",
+   "would_pass": "The leaf's table has one row per inventory special, each with its field and expected value, and the VEF arms run with VEF loaded or are marked out with a reason."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Patches change defs, so a raw read can pass a broken loaded def.",
+   "evidence": [
+    "tree.json:662",
+    "record.json:617"
+   ],
+   "gid": "g17",
+   "ids": [
+    "biome_def_declared",
+    "biome_roster"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The scenario is 'Selftest over RM_Contagion.xml and RM_Contagion_DonorPorts.xml'. The inventory's proof_note says 'current post-patch def state and disease dependencies not measured'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "tree.json biome_def_declared scenario and oracle"
+   },
+   "what": "biome_def_declared reads raw XML, not the patched def the game loads",
+   "where": "tree.json biome_def_declared",
+   "would_pass": "The leaf reads the fields from the post-patch def (fingerprinted dump or live def read), including disease defs that resolve."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A zero-forage claim needs every rostered plant checked.",
+   "evidence": [
+    "tree.json:687"
+   ],
+   "gid": "g18",
+   "ids": [
+    "flora_yields_declared",
+    "flora_lashgrass",
+    "flora_rattlegrope",
+    "flora_halfmade_blighted",
+    "flora_halfmade_tree"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The scenario lists 'Eyebark, Bleedleaf, Gorestalk, Sapblister, Bloody Fist, Halfmade Tree, Meatvine, Toothmoss and Wombpod'. Lashgrass, Rattlegrope and RM_HalfmadeTreeBlighted (rostered in RM_Contagion.xml) are missing, and the Halfmade Tree's 'variant art' is never read.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "tree.json flora_yields_declared scenario"
+   },
+   "what": "The zero-forage nutrition check omits three rostered plants, and Halfmade variant art is unread",
+   "where": "tree.json flora_yields_declared",
+   "would_pass": "The selftest covers every rostered plant's ingestible and yield fields, and the Halfmade Tree resolves more than one graphic variant."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Built parts that ship need reads.",
+   "evidence": [
+    "record.json:1019",
+    "record.json:1035",
+    "scenes.json"
+   ],
+   "gid": "g19",
+   "ids": [
+    "draftprints",
+    "helix_contracts"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The capability says the print 'records rolled limbs, Monstrous status, extreme stat and failure; completed touch-range job may provoke; saved item label'. The contract pays 'silver and optional device via drop pod'. The scene reads only the roll in the label and the silver.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_prints_pay expect"
+   },
+   "what": "Draftprint record contents, provocation and saved label are untested, as is the contract's device drop pod",
+   "where": "scenes.json sc_prints_pay",
+   "would_pass": "The expect reads the Monstrous flag, extreme stat and failure in the print's inspect text, the label unchanged after a save-reload, the provocation chance (or a forced provoke), and the device drop pod when the contract offers one."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A start must be asserted and consistent.",
+   "evidence": [
+    "scenes.json:201",
+    "record.json:1677"
+   ],
+   "gid": "g20",
+   "ids": [
+    "preburn_dive"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The start says both 'a sun-loving native in the open' and 'a sun lover native under shade at the first tell'. No inventory native is labelled a sun lover, so the counter-movement can't be staged as asserted.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_preburn_dive start and control"
+   },
+   "what": "sc_preburn_dive's sun-lover start is ambiguous and its species is unnamed",
+   "where": "scenes.json sc_preburn_dive",
+   "would_pass": "The start names the sun-lover species (or the owed build's flag) and its asserted cell, one line, and the control reads that the counter-movement stops with the dive off."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A control must be a reachable state that discriminates.",
+   "evidence": [
+    "scenes.json:459",
+    "record.json:1688"
+   ],
+   "gid": "g21",
+   "ids": [
+    "bodyprints",
+    "bodyprints_phased"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The start has 'a native corpse in the open', and the control expects 'the old slime death and no print'. A corpse already exists, so a slime death cannot follow, and the species is not named.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_bodyprints_phased start and control"
+   },
+   "what": "sc_bodyprints_phased's control expects a slime death from an unnamed native corpse",
+   "where": "scenes.json sc_bodyprints_phased",
+   "would_pass": "The start names the species, and the control expects what today's build does to that corpse (for example the corpse rots in place, no skin or print), read from the deployed build."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Built scope behaviour needs a read.",
+   "evidence": [
+    "record.json:643",
+    "scenes.json"
+   ],
+   "gid": "g22",
+   "ids": [
+    "burn_clock"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The capability says 'map-local forced condition'. No scene forces a Burn while a second map is loaded and reads that map.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_repulsor_warns_and_clears or sc_bloom_reads_sick: one arm"
+   },
+   "what": "The forced Burn's map-local scope is untested",
+   "where": "scenes.json",
+   "would_pass": "An arm forces a Burn on the Contagion map with a second map loaded and reads no RM_ContagionBurn on the second map."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Built behaviour needs a read.",
+   "evidence": [
+    "record.json:1583",
+    "scenes.json:507"
+   ],
+   "gid": "g23",
+   "ids": [
+    "wrecks"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The capability says 'Wreckage family deconstruction/weathering'. The scene reads art and deconstruction only.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_cast_lives_here expect"
+   },
+   "what": "Wreck weathering is untested",
+   "where": "scenes.json sc_cast_lives_here",
+   "would_pass": "An arm jumps the clock and reads the weathering state change on a wreck fragment."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Built limits need a read.",
+   "evidence": [
+    "record.json:806",
+    "scenes.json:355"
+   ],
+   "gid": "g24",
+   "ids": [
+    "coalescence_formation",
+    "coalescence_growth"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The capability says 'One stationary organism may form' and 'inspect and diagnostic counts'. No arm jumps the clock a second time to read that no second organism forms, and no arm reads the inspect text.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json: two expect clauses"
+   },
+   "what": "Coalescence one-only formation and its inspect counts are unread",
+   "where": "scenes.json sc_coalescence_forms, sc_coalescence_grows_and_breaks",
+   "would_pass": "A second formation-clock jump forms no second Coalescence, and the inspect string names mass and stage, matching the comp."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A start must be asserted.",
+   "evidence": [
+    "scenes.json:647",
+    "record.json:1048"
+   ],
+   "gid": "g25",
+   "ids": [
+    "helix_trade"
+   ],
+   "judge_said": "first",
+   "new_since": "unfixed",
+   "observed": "The start says 'a Helix Curators caravan called by the campaign trader attachment', and the capability says the 'campaign patch owns actual Helix faction trader attachment'. The common start is 'minimal list plus all five DLC', with no assertion that the campaign patch is active.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_helix_trade start"
+   },
+   "what": "sc_helix_trade's start depends on a campaign patch it does not assert is loaded",
+   "where": "scenes.json sc_helix_trade",
+   "would_pass": "The start asserts the campaign patch's packageId is in the active list (else UNMEASURED), or spawns RM_HelixCurators directly and says so."
+  }
+ ],
+ "hashes": {
+  "dec:d_bloom_quiets_sundash": "19cbc02b58bf25aa",
+  "dec:d_burn_refuge_is_geometry": "f32600d7b99f0ca8",
+  "dec:d_carry_codex": "55fd52d8c2bc4ce0",
+  "dec:d_dive_bodyprints_stay": "1f725825a054b8f9",
+  "dec:d_efa_q04": "fb6401e0691a34dc",
+  "dec:d_efa_q05": "298e230ef7a4011a",
+  "dec:d_efa_q08": "029e744e0f69d270",
+  "dec:d_limbs_next_version": "0735b66a10375a72",
+  "dec:d_mulch_plain": "c7069fc00db6e208",
+  "dec:d_one_dash": "5538a232025c807d",
+  "dec:d_other_tissue": "c9f8695fcc3511f6",
+  "dec:d_q02_first_demo": "bbfd3806df3719b8",
+  "dec:d_spine": "e5fc2abfa89da6a2",
+  "dec:d_walk_bars_delegated": "6b54b992701dc2e7",
+  "dec:d_walk_first": "f37c233b3ca3bbce",
+  "exam": "f2939e01bfad0350",
+  "floor": "edfdb5f6c82bc784",
+  "inv:bellows": "424e84d4217ae4cf",
+  "inv:biome_roster": "0abe168ecd0f541d",
+  "inv:birth_safety": "7c5553e49b7b096c",
+  "inv:bloom": "f7118613d69b5c40",
+  "inv:bodyprints": "b7b099ead7c3e6f7",
+  "inv:bulloo": "0183fd2d041ba26c",
+  "inv:burn_clock": "fe2c227445215eae",
+  "inv:burn_pressure_dive": "fd853555ec436845",
+  "inv:caudal_spring": "7da83ea3e605a60a",
+  "inv:coalescence_formation": "46c8985620b00c2a",
+  "inv:coalescence_growth": "bb04ed86de52d83c",
+  "inv:coalescence_payoff": "2a15c209ada9a316",
+  "inv:coalescence_threat": "10d52154925b81c3",
+  "inv:creep_defs": "fd99465898a8f99e",
+  "inv:draftprints": "7719a73077f9bcac",
+  "inv:eyeburst": "9743d46eb6102fbf",
+  "inv:fauna_blisterfloat": "5ddffa3d327f3177",
+  "inv:fauna_bloodlurk": "e48dd1ebdb778022",
+  "inv:fauna_bloody_mess": "be5e4f21aba2c43a",
+  "inv:fauna_contagion_ikee": "5b0d667c3a0ad38c",
+  "inv:fauna_crispling": "b55b9889ccd1361c",
+  "inv:fauna_danglemaw": "2da8297311d0414f",
+  "inv:fauna_doublemaw": "17c254451ec1527f",
+  "inv:fauna_eyestinger": "7c7de0a932582531",
+  "inv:fauna_fleshsop": "00155a2d7fbcdb2a",
+  "inv:fauna_gawpsack": "ebba332df8d2e100",
+  "inv:fauna_gnashling": "446cf4642008ac85",
+  "inv:fauna_gorekite": "62242221f8c6c69a",
+  "inv:fauna_meltgut": "2f9240e37f2dd697",
+  "inv:fauna_ogleknot": "d234aa93e2772248",
+  "inv:fauna_peeper": "1588c70aa0256897",
+  "inv:fauna_scaldhide": "33d9da0714e9b1bd",
+  "inv:fauna_scorchpod": "56cac37072031cd8",
+  "inv:fauna_skinflap": "deacce7e88716115",
+  "inv:fauna_sloshbelly": "39fdfcc61c488d41",
+  "inv:fauna_sparkleech": "a927a75255c780d3",
+  "inv:fauna_sparkleech_grub": "46e45f09569029cd",
+  "inv:flight": "ce86facf33578355",
+  "inv:flora_bleedleaf": "3d2d339cb26db031",
+  "inv:flora_bloody_fist": "53629e7098e6cbe2",
+  "inv:flora_eyebark": "d404642b45f4c550",
+  "inv:flora_gorestalk": "877b26ec82e48986",
+  "inv:flora_halfmade_blighted": "4b5a7808c048003a",
+  "inv:flora_halfmade_tree": "172ac88e121df3e7",
+  "inv:flora_lashgrass": "8f61c7632760c23b",
+  "inv:flora_meatvine": "8a4d5ad850558a0f",
+  "inv:flora_rattlegrope": "7d2a11958997a22a",
+  "inv:flora_sapblister": "e5c1492a68570386",
+  "inv:flora_toothmoss": "59bd47f020370f1b",
+  "inv:flora_wombpod": "e2090ab2b955c48d",
+  "inv:genome_extract": "fa6996f2a281b35d",
+  "inv:genome_inject": "f253f18946d5936a",
+  "inv:gestation": "1320de480320a216",
+  "inv:helix_contracts": "d8d0b8c68b232fc6",
+  "inv:helix_trade": "4affd297adef36fd",
+  "inv:lash": "a834c523d984793a",
+  "inv:legacy_flora_terrain": "e79228b727c7f775",
+  "inv:legacy_placement_worker": "9a03b22e924ea4c9",
+  "inv:limb_removal": "72f3bb2475125158",
+  "inv:mulched_soil": "6f31cf85d61e72f8",
+  "inv:mutation_deck": "7ac94fbeca29b1d2",
+  "inv:natural_match": "16d7aa1daeb02e96",
+  "inv:pillar_arm": "6df57a1c25596265",
+  "inv:preburn_dive": "bdc67802c680b452",
+  "inv:proof_tooling": "4455d765cda38225",
+  "inv:rawshade": "772340bb89c9ecea",
+  "inv:repulsor": "8973cb256f1d0009",
+  "inv:repulsor_ship": "c0d77bdbf2ccd243",
+  "inv:rustpuff_roster": "890c4ebf5119fed8",
+  "inv:scanner_payload": "4306d741a6fad771",
+  "inv:settings": "a597d6ad19b3dfef",
+  "inv:sunbeam_arrest": "4863d536fdc5bc19",
+  "inv:sunbeam_weapon": "0c6d6dec7c10caef",
+  "inv:touched_exposure": "422e26225309732c",
+  "inv:unfinished_budding": "3869e4ef75c6884d",
+  "inv:unfinished_mulch": "d24ec2a3b3a63224",
+  "inv:unfinished_variation": "57de20538e33ebdb",
+  "inv:visible_tells": "f9586fc4e00d65e2",
+  "inv:wombpod_hatch": "137354dd0517291d",
+  "inv:wrecks": "37b57568f9e100db",
+  "inv:zhool_haze": "ba23ec239a87e7e6",
+  "inv:zhool_render": "2aea2d67deba5644",
+  "inv:zhooliza": "a824091d6a2a118d",
+  "leaf:airborne_stats": "2f77f75befa27260",
+  "leaf:biome_def_declared": "a07bfdb0749a8bac",
+  "leaf:bloom_quiets_sundash": "03c05d3ce7df6634",
+  "leaf:bloom_reads_sick": "519de6d4ff36223e",
+  "leaf:bodyprints_phased": "b9f1e4864df608bd",
+  "leaf:cast_lives_here": "5219b740afb9e4ec",
+  "leaf:coalescence_grows_and_breaks": "10c9814bfefb8ce6",
+  "leaf:fauna_specials_declared": "40c384140e189172",
+  "leaf:flora_flesh": "4d393eaabc948ad5",
+  "leaf:flora_yields_declared": "12b2accf8758da15",
+  "leaf:genome_brings_tissue": "6512b0884fc422c4",
+  "leaf:limbs_stay_built": "0c46a27ebedc9dd4",
+  "leaf:mutations_both_ways": "d416fe6ee5524b49",
+  "leaf:natives_take_burn": "ee2c552a26df0558",
+  "leaf:no_magenta": "4de11a4002eb438e",
+  "leaf:no_vanilla_forest": "421e6c75ef58d0dd",
+  "leaf:one_dash_at_cost": "6e6d7275dc3f79af",
+  "leaf:preburn_dive": "1287065b1d3156c1",
+  "leaf:prints_pay": "8f487f4ecf44b5bd",
+  "leaf:refuge_is_shade": "795a1611cc92d976",
+  "leaf:repulsor_warns_and_clears": "c029883e20b20029",
+  "leaf:settings_superb": "b39e8c3f94f0ec82",
+  "leaf:shelter_in_lead": "7a93d7ca030040f8",
+  "leaf:sunbeam_arrest_treats": "0c4a07182a727dc6",
+  "leaf:tells_then_burn": "c23edf8886494f65",
+  "leaf:touched_reads_early": "03829c63f7217dcb",
+  "leaf:unfinished_malformed": "7e3c696c8af2783a",
+  "leaf:waiting_costs_more": "1f8b7ab3d17109a7",
+  "leaf:walk_red_lid": "f15cfb3026d0d8ec",
+  "leaf:zhooliza_lives_here": "6fabba2a4588ca78",
+  "record:scope": "8bafef65546e7a70",
+  "rest:bellows": "0d2399f383ce70c2",
+  "rest:caudal_spring": "d34563f67c62e8ed",
+  "rest:creep_defs": "29e3c291e6e0e208",
+  "rest:eyeburst": "aa158c28fe1e42ef",
+  "rest:flight": "865ce296b0d0ef20",
+  "rest:lash": "0236f12ab9626c00",
+  "rest:legacy_flora_terrain": "25a89861badf08d7",
+  "rest:legacy_placement_worker": "24930f7996c224af",
+  "rest:limb_removal": "b103327b7f6c6f21",
+  "rest:mutation_deck": "975f3f123a75addd",
+  "rest:pillar_arm": "e54d2b730dc11fe9",
+  "rest:proof_tooling": "c3e7826771c39386",
+  "rest:repulsor_ship": "933152e42ff743bc",
+  "rest:rustpuff_roster": "1efd17efeb8a70dc",
+  "rest:scanner_payload": "186d1fc963601eb8",
+  "rest:settings": "6e000fce61d092fb",
+  "scene:sc_bloom_quiets_sundash": "4523abd8d2f977b3",
+  "scene:sc_bloom_reads_sick": "945ca70cf942e6f4",
+  "scene:sc_bodyprints_phased": "8d30c111363f7ebd",
+  "scene:sc_burn_dash": "85052202b6397386",
+  "scene:sc_cast_lives_here": "bf12139ddefe63d4",
+  "scene:sc_coalescence_forms": "d34a813dda1b48fd",
+  "scene:sc_coalescence_grows_and_breaks": "a4416bd42dd4a9f4",
+  "scene:sc_flora_flesh": "14754446ebe063a6",
+  "scene:sc_genome_brings_tissue": "d3cd85148d6a7b92",
+  "scene:sc_helix_trade": "0abaea69292e1ba4",
+  "scene:sc_mulched_soil": "31695ceb351d03be",
+  "scene:sc_natives_take_burn": "758dda4bea8179d2",
+  "scene:sc_no_vanilla_forest": "520c2c12debbda6b",
+  "scene:sc_one_dash_at_cost": "2f8a1004e41dbd39",
+  "scene:sc_preburn_dive": "c65594f1f7f3bcac",
+  "scene:sc_prints_pay": "6aa3688143238f93",
+  "scene:sc_refuge_is_shade": "890a9d37a94ee535",
+  "scene:sc_repulsor_warns_and_clears": "91f0f33bc4af9052",
+  "scene:sc_settings_superb": "d75fe036d3e47850",
+  "scene:sc_shelter_in_lead": "0a004259e76e97ab",
+  "scene:sc_sunbeam_arrest_treats": "1e468109ea004e24",
+  "scene:sc_sunbeam_fires": "e78042c75093f803",
+  "scene:sc_tells_then_burn": "0bd6c7357d726e4a",
+  "scene:sc_touched_reads_early": "696bcda717b8a2ba",
+  "scene:sc_unfinished_malformed": "5037ba9bf15ebb6b",
+  "scene:sc_waiting_costs_more": "1d76b70929c8a095",
+  "scene:sc_walk_red_lid": "9b33b2fa8e6e2922",
+  "scene:sc_wombpod_hatch": "30e7d1dc7d6668a8",
+  "scene:sc_zhooliza": "907f5bcf7c8d46f5",
+  "sheet:": "77741392ff87a01e",
+  "sheet:delegated": "053db9a12531554d",
+  "sheet:does": "5d84d6005164e9d2",
+  "sheet:does not": "6219bc094c19c88c",
+  "sheet:his words": "b4e1c4b02b0b9d0f",
+  "sheet:later": "1710d16e5b890ed7",
+  "sheet:open": "225766d67a587313",
+  "sheet:pruning": "4f5be4c59878b5a4",
+  "sheet:waived": "e7c919eee065e618",
+  "showcase:burn_dash": "951c3bf0b84357c6",
+  "showcase:coalescence_harvest": "65047028ccbd5238",
+  "showcase:genome_bench": "4a2583df3a6073e0",
+  "showcase:helix_market": "acb488ad4cfed082",
+  "showcase:living_map": "ac0ac580e3f4177e",
+  "tree:rest": "4ab409f0fe42a2e8"
+ },
+ "inputs": {
+  "exam.json": "d4b9f7820012d6e2184061e631cf65bf53b49f68a512034369084701bdced103",
+  "floor.json": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
+  "record.json": "7616239b8c4b2a3495e3128190b5394aef755404f5a9be7a021ce2d9dd7b014a",
+  "scenes.json": "43681c42512f4fcae010ea7d65b7c9976f8847287654c1c01efda1dd334cc81e",
+  "sheet.md": "44508a3b521bba651237b68dd458d8db18330177646761dbfa22d01d7937ae40"
+ },
+ "judge": "rm-coverage-judge-1794821839",
+ "mode": "full",
+ "prompt_chars": 5468,
+ "reasons": "Showcases, unit coverage and flagship binding hold (every built or approved inventory unit is in a showcase or coverage_rest; showcase 1 burn_dash is bound to d_q02_first_demo). But 25 gaps remain, and every one can be fixed at stage 3. Measured against source: no Repulsor warning exists in CompCloudRepulsor.cs, and RM_ContagionTouched.cs has no active-change transition message, yet neither scene names an owed build. Scene expectations are also weaker than their leaves' oracles: sc_cast_lives_here accepts \"at least half the rows spawn\", sc_coalescence_grows_and_breaks drops the gunfire arm, and sc_waiting_costs_more reads recovery workers it never stages. The sheet claims a Monstrous-limb check that no scene runs. Several built parts have no scene or check at all: the manhunter cap, the inject eligibility and Monstrous-first rules, the non-donor mismatch control, gawpsack rise and its reset after load, four of the seven open fix items, and the Bulloo meat and leather. legacy_placement_worker's coverage_rest is a label check, not the absence check the contract requires.",
+ "rows_reasked": [
+  [
+   "legacy_placement_worker",
+   "zhooliza",
+   "zhooliza_lives_here"
+  ]
+ ],
+ "sheet": "44508a3b521bba651237b68dd458d8db18330177646761dbfa22d01d7937ae40",
+ "signed": false,
+ "stopped": "judge spend 3151034 tokens (limit 3007272, 4x the p90)",
+ "tokens": 1119788,
+ "tree": "b95090b8c584a87f142359f62c4cf37a789a8b5514aca998a495bf91578961fb",
+ "verdict": "not_covered"
+}
