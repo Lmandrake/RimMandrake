@@ -1,0 +1,1 @@
+A wrap-up 'setting' debt whose recorded orig differs from the shipped default (e.g. ExplosiveKnockback enabled: orig False, shipped true) is moot: the harness RESTORED the default, and running its undo would switch the feature off. Check the C# default before running an aged setting debt's undo; pay it with wrapup.py paid when the current value is the shipped one.
