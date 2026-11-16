@@ -1643,8 +1643,10 @@ def t_breaker_di2():
     x.w.prepare = real.prepare
     x.w.clone_path = lambda item, q=0: os.path.join(d, "clones", item)
     x.w.clone_present = lambda c: False
+    # RM_OBJSTORE_STATE: scratch_clone logs every call to uses.jsonl; without it each run of this test wrote a real
+    # "pool full: 0 clones, cap 0" failure into ~/.local/state/rm-objstore (1210 of 1242 failures, 2026-11-16)
     pool = {"RM_POOL_MAX_CLONES": "0", "RM_POOL_ROOT": os.path.join(d, "clones"),
-            "RM_POOL_STATE_GLOB": os.path.join(d, "none*")}
+            "RM_POOL_STATE_GLOB": os.path.join(d, "none*"), "RM_OBJSTORE_STATE": os.path.join(d, "objstate")}
     env = {k: os.environ.get(k) for k in pool}
     os.environ.update(pool)
     try:
@@ -1655,6 +1657,8 @@ def t_breaker_di2():
     ok(any(R.POOL_REFUSED in str(a.get("why")) for a in acts), "planted: the pool really refused: %s" % acts)
     ok(not R.load_breaker(x.s), "a real pool refusal does not charge the breaker")
     ok(not told_rows(d), "and tells nobody")
+    ok(os.path.exists(os.path.join(d, "objstate", "uses.jsonl")),
+       "the refused call is logged in the fixture's state, never the live uses.jsonl")
     x.done()
     x = Rig(n=1, share=1.0, launch_breaker=1)
     x.w.lfail = "memory 3.1 GB after the clone"
