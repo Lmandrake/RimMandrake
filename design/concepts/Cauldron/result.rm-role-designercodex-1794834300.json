@@ -1,0 +1,8 @@
+{
+  "run": "rm-role-designercodex-1794834300",
+  "stage": 4,
+  "outcome": "done",
+  "summary": "Cold Reader exam passed against frozen tree and sheet hashes. Both independent final Opus Readers matched all 30 expectations, zero core false accepts, no Challenger misses. The program-generated falter-warning control missed e05 and c03. Inherited-stdin prompt contamination was corrected with fresh Reader/control retries and exact-prompt audits. All helper usage including retries was charged. Runtime scenes remain unrun and scenario caveats are recorded.",
+  "exam": "design/concepts/Cauldron/exam.json",
+  "helper_weighted_tokens": 424939
+}

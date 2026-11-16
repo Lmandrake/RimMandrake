@@ -9,10 +9,80 @@
     "ref": "cauldron_root_review: conservative estimated allowance for independent root/authority review, including inherited context; actual token usage unavailable through collaboration tool",
     "stage": 1,
     "tokens": 50000
+   },
+   {
+    "at": "2026-11-16T13:07:13Z",
+    "kind": "helper",
+    "ref": "263266ab-1143-4ed3-9b66-612122ef57bd examiner startup auth failure, no inference",
+    "stage": 4,
+    "tokens": 0
+   },
+   {
+    "at": "2026-11-16T13:07:13Z",
+    "kind": "helper",
+    "ref": "92b8fcbe-ea23-49f4-a863-60ef92a2b4e8 challenger startup auth failure, no inference",
+    "stage": 4,
+    "tokens": 0
+   },
+   {
+    "at": "2026-11-16T13:08:22Z",
+    "kind": "helper",
+    "ref": "02cb3985-73c5-443e-a39b-65e8e58b6f23 challenger stage 4 run rm-role-designercodex-1794834300",
+    "stage": 4,
+    "tokens": 47280
+   },
+   {
+    "at": "2026-11-16T13:08:44Z",
+    "kind": "helper",
+    "ref": "864162f4-4d0e-46ff-ba92-24a72a415fa4 examiner stage 4 run rm-role-designercodex-1794834300",
+    "stage": 4,
+    "tokens": 58732
+   },
+   {
+    "at": "2026-11-16T13:10:52Z",
+    "kind": "helper",
+    "ref": "7d77a087-78c5-4cf8-bd9c-c163951b3038 reader_one stage 4 run rm-role-designercodex-1794834300",
+    "stage": 4,
+    "tokens": 52740
+   },
+   {
+    "at": "2026-11-16T13:10:52Z",
+    "kind": "helper",
+    "ref": "36e9daf5-3e49-42f5-b489-d776caf2ed56 reader_two stage 4 run rm-role-designercodex-1794834300",
+    "stage": 4,
+    "tokens": 55230
+   },
+   {
+    "at": "2026-11-16T13:10:52Z",
+    "kind": "helper",
+    "ref": "06a153a4-13f5-4306-a672-8a2b3dc09778 control stage 4 run rm-role-designercodex-1794834300",
+    "stage": 4,
+    "tokens": 52683
+   },
+   {
+    "at": "2026-11-16T13:14:05Z",
+    "kind": "helper",
+    "ref": "2c3b6a33-1fa1-43a4-b6ae-c6a691c5586c reader_one closed-stdin retry stage 4 run rm-role-designercodex-1794834300",
+    "stage": 4,
+    "tokens": 54392
+   },
+   {
+    "at": "2026-11-16T13:14:32Z",
+    "kind": "helper",
+    "ref": "02f38b34-a959-4725-be4e-0cbd5820b494 reader_two closed-stdin retry stage 4 run rm-role-designercodex-1794834300",
+    "stage": 4,
+    "tokens": 52352
+   },
+   {
+    "at": "2026-11-16T13:14:32Z",
+    "kind": "helper",
+    "ref": "be3bb52a-cdcc-403b-8d04-718f6800e12f control closed-stdin retry stage 4 run rm-role-designercodex-1794834300",
+    "stage": 4,
+    "tokens": 51530
    }
   ],
   "reserve": 60000,
-  "spent": 50000
+  "spent": 474939
  },
  "history": [
   {
@@ -110,6 +180,18 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designercodex-1794831672: stage 3 done"
+  },
+  {
+   "at": "2026-11-16T13:05:19Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794834300, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T13:17:43Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794834300: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND",
@@ -277,6 +359,27 @@
    "run": "rm-role-designercodex-1794831672",
    "stage": 3,
    "summary": "Revalidated all 19 rejection reasons after the published concept-clone artifact-resolution repair. The existing plan, scenes and adopted cauldron_experience root are intact. Gate A and ordered showcases pass with 17 leaves, 35 planned scenes, 5 showcases and all 67 mandatory capabilities covered. Scene entry points and construction gaps remain filed and unimplemented. Runtime behavior remains unverified."
+  },
+  {
+   "at": "2026-11-16T13:17:43Z",
+   "inputs": {
+    "exam": "e17b4ae5ef61e3dfd2086fe26e923d202287985626ded802900829db0ff4e5b8",
+    "floor": "66359ed7392ca235e47204d7acf0624a637bf1e395cfa787ab7a9801777e82a9",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "0d9b9f345bd9417cf140faf8a80a8902aa5bd8b2c4f2f09dd31ba86fe3bde7f3",
+    "scenes": "454f335eb2ed461a7d6fa3ce2f647dda3b889099c4bf3d891709dc523b43c56a",
+    "sheet": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec",
+    "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794834300",
+   "stage": 4,
+   "summary": "Cold Reader exam passed against frozen tree and sheet hashes. Both independent final Opus Readers matched all 30 expectations, zero core false accepts, no Challenger misses. The program-generated falter-warning control missed e05 and c03. Inherited-stdin prompt contamination was corrected with fresh Reader/control retries and exact-prompt audits. All helper usage including retries was charged. Runtime scenes remain unrun and scenario caveats are recorded."
   }
  ],
  "runner": "codex",
@@ -338,10 +441,18 @@
     "input_tokens": 451802,
     "output_tokens": 4121
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794834300",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 3267965,
+    "output_tokens": 17991
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }
