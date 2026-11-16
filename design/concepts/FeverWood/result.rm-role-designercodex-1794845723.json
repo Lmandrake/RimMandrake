@@ -1,0 +1,320 @@
+{
+  "run": "rm-role-designercodex-1794845723",
+  "stage": 2,
+  "outcome": "done",
+  "summary": "Verified the published delegated NEW-bar validation: FeverWood north star is VALIDATED with matching hash c568d46eacf7 and both approved bar IDs. No unanswered asks or unresolved core intent remain. Carry all ten coverage gaps unchanged to stage 3 for root restamping and full rework, followed by a fresh exam and coverage review. Runtime acceptance and owner first-touch remain pending.",
+  "sources": [
+    "CONDUCTOR:1794838259873987749",
+    "design/validation_walks/RimMandrake/FeverWood.md:75",
+    "infrastructure/state/delegated/2026-11-16/FeverWood_north_star_bars.json",
+    "design/concepts/FeverWood/coverage_verdict.json",
+    "design/concepts/FeverWood/stage.json"
+  ],
+  "checks": {
+    "northstar_parse": {
+      "present": true,
+      "declared_state": "VALIDATED",
+      "recorded_hash": "c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418",
+      "current_hash": "c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418",
+      "must_show": [
+        "feverwood_branch_home",
+        "feverwood_water_memory"
+      ],
+      "must_show_text": {
+        "feverwood_branch_home": "Ordinary branch routes shape the colony's daily work and travel above the black water.",
+        "feverwood_water_memory": "Water remembers what the colony does and sometimes reaches up to change its plans; consequences remain legible through rescue, treatment and reload."
+      },
+      "cannot_show": [],
+      "cannot_show_text": {},
+      "kinds": {
+        "feverwood_branch_home": "change",
+        "feverwood_water_memory": "change"
+      },
+      "state": "VALIDATED",
+      "reason": ""
+    },
+    "validation_commit": "95c5d7512e159cb0a0fba772381a49e64163eed1",
+    "judge": "Published independent round 1 PASS names the final section hash; Conductor ledger note records fresh rm-judge Opus.",
+    "sent_asks": [],
+    "unresolved_core_contradictions": [],
+    "recovery": [],
+    "frozen_artifacts_changed": false,
+    "coverage_verdict_sha256": "324ae6821cff717cbd31422dda9fbe8a00c35cc4caee8ec079fabe3d5658fdd1",
+    "coverage_gap_records_equal_to_verdict": true
+  },
+  "coverage": {
+    "judge": "rm-coverage-judge-1794833596",
+    "verdict": "not_covered",
+    "signed": false,
+    "checklist_rows": 68,
+    "unchecked": [],
+    "gaps": [
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "The stop rule is stated plainly in designer_scene_contract.md. Its numbers are UNMEASURED first guesses, but applied as written the rule decides this case.",
+        "evidence": [
+          "scenes.json:1285",
+          "scenes.json:1298",
+          "record.json:408",
+          "record.json:1385"
+        ],
+        "gid": "g1",
+        "ids": [],
+        "new_since": "first",
+        "observed": "coverage_rest lists fw_trunks ('cheaper than another whole-colony showcase'), fw_borer_galleries, fw_borer_diet and fw_sink_mud separately. A 'living wood and mud' group (living_trunk, borer_gallery, sink_mud) would newly exercise fw_trunks, fw_borer_galleries, fw_borer_diet and fw_sink_mud: 4 new, 0 shared. That is more than crown_provisions' 3 at position 5. A native-life group (native_water, native_ambush_diet, birds_and_optional_theft) offers fw_native_cast, fw_birds and possibly fw_borer_diet. The contract says to add showcases 'until no candidate would newly exercise at least min_new_after_first capabilities'.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "scenes.json: add a showcase (e.g. living_wood_and_mud: living_trunk, borer_gallery, sink_mud) placed greedily before crown_provisions, re-evaluate the native-life group, and drop the matching coverage_rest rows; update record.json coverage_plan for those capabilities."
+        },
+        "what": "The showcase set stops before efficient coverage: candidate groups of existing scenes still newly exercise at least 3 capabilities with zero overlap, yet those capabilities were put in coverage_rest with 'cheaper' reasons.",
+        "where": "scenes.json showcases / coverage_rest",
+        "would_pass": "`designer_stage.py showcases design/concepts/FeverWood` accepts the set, and for every remaining coverage_rest entry no grouping of existing scenes newly exercises 3 or more uncovered capabilities within max_overlap 0.25. Any such group is either added in greedy order or its coverage_rest `why` names the overlap that disqualifies it."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "Each built capability's shipped behaviour must be exercised by a scene that has an asserted expectation, and generation is part of what these entries say ships.",
+        "evidence": [
+          "record.json:375",
+          "record.json:341",
+          "record.json:437",
+          "scenes.json:33",
+          "scenes.json:61",
+          "tree.json:58",
+          "exam.json"
+        ],
+        "gid": "g2",
+        "ids": [
+          "fw_foundations",
+          "fw_routes",
+          "fw_pools",
+          "branch_home"
+        ],
+        "new_since": "first",
+        "observed": "fw_foundations ships 'Ground-refusal converts remaining Soil/SoilRich to MarshyTerrain'. foundations only tests a cell already labelled 'untreated marsh', and its control expects 'Ordinary supported ground accepts the building'. branch_work's start says only 'snapshot the local generated terrain passes before furnishing', with no expected result. No scene checks that ScatterPools pools come out registered. exam.json scenario examiner_marsh_base_shortcut ('orders a heavy stone workshop ... placed directly on untreated marsh') is the very failure a broken GroundRefusal would cause on a real map while every scene passes.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "scenes.json: add a generated-map arm to foundations (or a new acceptance scene, e.g. generated_terrain) with these assertions and a GroundRefusal-off control; cite it in record.json coverage_plan for fw_foundations/fw_routes/fw_pools."
+        },
+        "what": "The output of the map-generation passes (GroundRefusal soil-to-marsh, causeway painting anchored to boles inside the ground allowlist, ScatterPools pool painting and registration) is never asserted by any scene. Every scene starts from an authored site with 'registered' pools.",
+        "where": "scenes.json foundations, branch_work, pool_size_reach; record.json fw_foundations, fw_routes, fw_pools",
+        "would_pass": "A scene (or arm of branch_work/foundations) generates a FeverWood map through its real gensteps and asserts: no Soil/SoilRich left outside the documented exceptions, causeway/boughway cells only on allowlisted ground and connected to living boles, and every ScatterPools mirror-pool cell registered with a cluster. A control map with GroundRefusal disabled shows buildable soil."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "Each named effect of a built capability needs a scene that asserts it.",
+        "evidence": [
+          "record.json:528",
+          "record.json:561",
+          "scenes.json:251",
+          "scenes.json:278"
+        ],
+        "gid": "g3",
+        "ids": [
+          "fw_mirror_break",
+          "fw_mirror_list"
+        ],
+        "new_since": "first",
+        "observed": "fw_mirror_break: 'raises agitation and requests a timed CreatureBehaviors hush'. crown_audio tests only the 'real mirror-break timed hush', and mirror_snapshot changes a pool 'through real activity' that is never named. fw_mirror_list: 'The usable mirror-list item and agitation overlay exist'. No scene says what the overlay shows, or whether it shows live agitation or the ageing snapshot.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "scenes.json: add a mirror-break agitation arm and control to porter_and_agitation or mirror_snapshot, and an overlay assertion to mirror_snapshot; update coverage_plan."
+        },
+        "what": "The mirror-break incident's agitation increase and the built agitation overlay have no scene.",
+        "where": "scenes.json crown_audio, mirror_snapshot; record.json fw_mirror_break, fw_mirror_list",
+        "would_pass": "A scene fires the real mirror-break incident on registered pool A and asserts that A's agitation (and effective strike chance, after gap_tenant_authority) rises while disconnected B is unchanged. The agitation overlay is asserted to show a stated source (live or snapshot), with a control in which the two differ."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "The leaf itself promises campaign acquisition; a scene whose start cannot be asserted cannot accept it.",
+        "evidence": [
+          "scenes.json:369",
+          "scenes.json:468",
+          "tree.json:323",
+          "record.json:1878"
+        ],
+        "gid": "g4",
+        "ids": [
+          "fw_suppression",
+          "fw_maturation",
+          "delayed_establishment",
+          "adult_quiet"
+        ],
+        "new_since": "first",
+        "observed": "normal_suppression start: 'Current campaign reagent mapping is unlocated, not invented here.' young_establishment exposes the 'reagent mapping explicitly ... as provisional'. Yet tree leaf delayed_establishment says 'Verify free crafting and campaign acquisition separately', and record gap_suppression_locality says the lane 'remains a required integration lane to establish in planning'. Stage 3 was that planning, and the lane is still not established.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "Locate the campaign salvage-to-reagent lane in source; write it into record.json (gap_suppression_locality) and into the starts of normal_suppression and young_establishment, plus a campaign acquisition arm."
+        },
+        "what": "How the right poison or suppression reagent is obtained in the campaign is left unlocated, so the campaign arm and the leaf's 'campaign acquisition' check have no assertable start.",
+        "where": "scenes.json normal_suppression, young_establishment; tree.json delayed_establishment",
+        "would_pass": "record.json names the campaign reagent and how it is acquired (traced from dangerous radioactive salvage), or files it as a build item with that lane named. normal_suppression and young_establishment carry a campaign arm whose start asserts that item and lane and whose control is a campaign list without it. Only if no lane can be located from the evidence does the question go to stage 2 with that evidence."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "An acceptance scene must define what passes; an open-ended report accepts anything.",
+        "evidence": [
+          "scenes.json:750",
+          "record.json:1318",
+          "tree.json:443"
+        ],
+        "gid": "g5",
+        "ids": [
+          "fw_guild",
+          "crown_livelihood"
+        ],
+        "new_since": "first",
+        "observed": "nectar_and_guild expect: 'Failed-training/general-fear missing behavior is reported and reconciled under the documented contract, not waived.' fw_guild: 'General fear and failed training remain uncovered.' The leaf scenario lists 'failed-training/general-fear seams', but 'reported and reconciled' is not an outcome a runner can pass or fail.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "scenes.json nectar_and_guild expect/control and record.json fw_guild: replace 'reported and reconciled' with the concrete documented outcome per trigger, and name the build item if one is needed."
+        },
+        "what": "The guild's failed-training and general-fear refusal triggers have no pass/fail expectation.",
+        "where": "scenes.json nectar_and_guild; tree.json crown_livelihood",
+        "would_pass": "nectar_and_guild states, for failed training and for general fear, the documented refusal each species gives (or records with a source citation that these triggers are not promised), with a control in which the trigger is absent. If they are promised and missing, a build item is named."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "A shipped exclusion must not silently regress when the new mechanic is built; the control has to rule out that alternative.",
+        "evidence": [
+          "record.json:1385",
+          "scenes.json:142",
+          "exam.json"
+        ],
+        "gid": "g6",
+        "ids": [
+          "fw_borer_diet",
+          "fw_borer_galleries",
+          "living_wood"
+        ],
+        "new_since": "first",
+        "observed": "fw_borer_diet: 'Current source explicitly excludes wall/building/boughway damage.' The living_wood leaf says galleries 'can change a wall or route'. borer_gallery's control (no borer, tree-diet off, painted cave) never puts a boughway, colony-built wall or building at the frontier, and exam.json's only borer scenario (examiner_static_trunk) tests a gallery that never forms, not one that spreads too far. A gallery mechanism that also chews boughways or the player's walls would pass.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "scenes.json borer_gallery: add the non-living-wood adjacency arm to start/control/expect."
+        },
+        "what": "Nothing checks that borer galleries stay inside living wood, even though the shipped diet explicitly excludes wall, building and boughway damage.",
+        "where": "scenes.json borer_gallery; record.json fw_borer_diet, fw_borer_galleries; tree.json living_wood",
+        "would_pass": "borer_gallery has an arm with a boughway cell, a colony-built wall and a building adjacent to the gallery frontier. Across the same interval the living-wood frontier advances while those cells keep full HP and their terrain."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "An owner ruling in scope must be an inventory unit with a scene whose start can actually be asserted.",
+        "evidence": [
+          "record.json:32",
+          "record.json:1355",
+          "scenes.json:801",
+          "tree.json:467",
+          "exam.json"
+        ],
+        "gid": "g7",
+        "ids": [
+          "fw_native_cast",
+          "native_life"
+        ],
+        "new_since": "first",
+        "observed": "native_water start: 'with operative drinking integration and low thirst needs'. The record and scenes never name which mod or need supplies thirst (grep for 'thirst' in record.json: 0 hits). fw_native_cast's text says nothing about drinking, and no inventory entry has an impl status for native drinking, although OWNER:1793542983826647230 rules 'natives should drink their own environmental water'. exam.json examiner_ambusher_chase takes 'Native animals drink from their home pools without dehydrating' as given rather than testing it.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "record.json: add or extend the inventory entry for native drinking with source evidence; scenes.json native_water: name the integration in start."
+        },
+        "what": "The owner-ruled native drinking has no named drinking integration or need, and no inventory unit, so native_water's start cannot be asserted and its built status is unknown.",
+        "where": "scenes.json native_water; record.json fw_native_cast, owner_native_water; tree.json native_life",
+        "would_pass": "record.json has an inventory entry (or fw_native_cast text) naming the drinking integration and its need, the supported lists it loads on, and impl present/absent with evidence (plus a build item if absent). native_water's start asserts that need exists on the run's list, and a control in which it is absent yields UNMEASURED."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "Owner ruling 2026-09-12: on/off per major feature and graceful all-off. A list nobody enumerates cannot be checked.",
+        "evidence": [
+          "scenes.json:981",
+          "scenes.json:990",
+          "record.json:1689",
+          "floor.json"
+        ],
+        "gid": "g8",
+        "ids": [
+          "fw_settings",
+          "fw_pools",
+          "supported_checkout"
+        ],
+        "new_since": "first",
+        "observed": "settings_and_heat start: 'every supported major toggle in all owning mods', with no list. fw_settings names bestiary, lure, tank, hive, oil, terrain generation, nectar fear and silence; fw_pools names tentaclePoolsAreClusters. sink_mud, borer_gallery (beyond the old tree-diet flag), pool_size_reach, young_establishment, crown_audio and mirror_side_ruin have no feature-off arm. The tree claims 'all feature toggles keep their stated scope'.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "scenes.json settings_and_heat: enumerate toggles and expected off behaviour; add off arms or a stated no-toggle reason to the new-feature scenes; file toggles as part of the existing build items where missing."
+        },
+        "what": "The settings coverage never enumerates the toggles and their named off behaviour, and no newly delivered mechanic has a planned toggle or off arm, against the every-mod Mod Settings ruling.",
+        "where": "scenes.json settings_and_heat; record.json fw_settings; tree.json supported_checkout; floor.json mod_settings",
+        "would_pass": "settings_and_heat (or floor.json mod_settings evidence) lists every toggle by setting name with its owning mod, the action it gates and its expected off behaviour. Each new mechanic either names its toggle (with an off arm in its scene) or cites why it has none."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "Every named part of a built capability needs an asserted outcome; 'inspect' is not one.",
+        "evidence": [
+          "record.json:949",
+          "scenes.json:549",
+          "scenes.json:560"
+        ],
+        "gid": "g9",
+        "ids": [
+          "fw_display_campaign"
+        ],
+        "new_since": "first",
+        "observed": "fw_display_campaign: 'Generic keeper, display-tank, cask-trader and story-line hooks support the campaign's Sporefall display tank'. campaign_display action: 'inspect normal cask-trader hooks separately', which states no expectation. The story-line hook appears in no scene.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "scenes.json campaign_display: add expect/control clauses for the cask-trader and story-line hooks."
+        },
+        "what": "The campaign display capability's cask-trader and story-line hooks have no expected outcome.",
+        "where": "scenes.json campaign_display; record.json fw_display_campaign",
+        "would_pass": "campaign_display's expect states what the cask-trader hook produces (e.g. a trader stocking young casks counted by the tally) and what the story-line hook does, each with a control (free list or no hook) showing its absence."
+      },
+      {
+        "criterion_verdict": "sound",
+        "criterion_why": "The judge brief requires that the sheet a player reads says what the tree tests.",
+        "evidence": [
+          "sheet.md:30",
+          "sheet.md:16",
+          "sheet.md:12",
+          "sheet.md:39",
+          "tree.json:491",
+          "tree.json:155",
+          "tree.json:58",
+          "tree.json:540",
+          "exam.json"
+        ],
+        "gid": "g10",
+        "ids": [],
+        "new_since": "first",
+        "observed": "sheet.md:30 reads 'Oil-boil rewards actual harvesting and real ignition flashes eligible ground haze.' The oil_opportunity leaf also tests that the flash will 'wake eligible water' and that 'adult quiet is respected'. sheet.md:16 leaves out 'Wild losses and player or tamed victims follow their distinct outcomes'. sheet.md:12 leaves out walking on/off the crown 'for colonists and raiders without ascent gates'. sheet.md:39 leaves out the stale arrival/creature text alignment that retired_absence tests. The exam (exam.json inputs hash both tree and sheet; 26 of 26 right) had readers who were given the tree as well, so its pass does not show that the sheet alone carries these outcomes.",
+        "return_to": 3,
+        "smallest_fix": {
+          "attainable": "yes",
+          "cost": "edit",
+          "what": "sheet.md: extend the oil_opportunity, shore_rescue, branch_home and retired_absence lines."
+        },
+        "what": "The sheet omits behaviour that the tree tests and that a player would meet: fire waking the water, wild-victim loss in shore strikes, crown walk-on/off for raiders, and alignment of stale theft/heat text.",
+        "where": "sheet.md does / does not",
+        "would_pass": "Each of those four sheet lines names the behaviour its tree leaf tests: water wake under quiet, wild vs tame outcomes, two-way crown access for raiders, text alignment. A fresh reader given only the sheet can predict each of those tested outcomes."
+      }
+    ],
+    "next_rework": "Stage 3: restamp the validated root hash and reconcile stale DRAFT advisories; address every g1-g10 path to pass, including greedy-set audit g1; write coverage_fixes.json against rm-coverage-judge-1794833596. Repeat stage 4 exam and stage 5 coverage review against changed artifacts. The root validation supplies no coverage pass."
+  }
+}
