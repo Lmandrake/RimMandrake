@@ -46,6 +46,8 @@ Records: <RM_DISPATCHER_STATE>/detached/<unit>.json. Use it for anything expecte
 tool stays for short work (CONDUCTOR.md "Checkpoint, so a drain never freezes him").
 """
 import argparse
+import contextlib
+import fcntl
 import glob
 import json
 import os
@@ -67,6 +69,7 @@ except ImportError:
 
 DEFAULT_MAX_S = None    # unbounded: no RuntimeMaxSec on the unit, no CLAUDE_SCOPE_RUNTIME_MAX (owner 2026-11-08)
 MIN_MAX_S = 60
+STOP_S = 600           # TimeoutStopSec: the stop-post steps' bound (finish, wrapup, the return's start)
 GRACE_S = 120          # finish + publish time on top of the run's own bound
 DEFAULT_BUDGET_USD = 15.0
 MODELS = ("fable", "opus", "sonnet")  # owner ladder 2026-11-12: Fable for blank-page design; Haiku is banned
@@ -128,7 +131,9 @@ def read_record(unit, root=None):
 
 def write_record(rec, root=None):
     p = record_path(rec["unit"], root)
-    tmp = p + ".tmp"
+    # a temp name of its own: two writers sharing <record>.tmp could publish a half-written file
+    # (RIMMANDRAKE_UNIQUE_TEMP_PER_RECORD_WRITE_SHARED_TMP)
+    tmp = "%s.%d.%d.tmp" % (p, os.getpid(), time.monotonic_ns())
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1)
     os.replace(tmp, p)
@@ -311,7 +316,11 @@ def take_clone(item, runner=subprocess.run):
     dest = os.path.join(pool_root(), "clones", name)
     if os.path.isdir(os.path.join(dest, ".git")):
         r = runner(["./sync"], cwd=dest, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
-        return dest, "reused %s (sync exit %d: %s)" % (dest, r.returncode, ((r.stdout or "") + (r.stderr or "")).strip())
+        said = ((r.stdout or "") + (r.stderr or "")).strip()
+        if r.returncode:    # a stale clone builds stale code: refused, as a new clone that fails is
+            # (RIMMANDRAKE_REFUSE_STALE_DET_CLONE_WHEN_SYNC_FAILS)
+            raise RuntimeError("reused %s but its ./sync failed (exit %d): %s" % (dest, r.returncode, said))
+        return dest, "reused %s (sync exit 0: %s)" % (dest, said)
     env = dict(os.environ, RM_SCRATCH_ROOT=pool_root(), RM_SEAT="clones")
     r = runner(["python3", os.path.join(REPO, "src", "RimMandrake", "Utils", "scratch_clone.py"), "clone",
                 "detached run for " + item, "--name", name, "--checkout", "--fetch"],
@@ -319,6 +328,23 @@ def take_clone(item, runner=subprocess.run):
     if r.returncode or not os.path.isdir(os.path.join(dest, ".git")):
         raise RuntimeError("scratch_clone failed (exit %d): %s" % (r.returncode, ((r.stdout or "") + (r.stderr or ""))))
     return dest, "made " + dest
+
+
+def clone_lock_path(dest):
+    return os.path.abspath(dest).rstrip("/") + ".lock"
+
+
+@contextlib.contextmanager
+def clone_lock(dest):
+    """One launch at a time takes a clone: held from the last holder check to the run's record
+    (RIMMANDRAKE_LOCK_DET_CLONE_TAKE_TWO_LAUNCHES_ONE_CLONE: two launches of one item both passed the check)."""
+    os.makedirs(os.path.dirname(clone_lock_path(dest)), exist_ok=True)
+    with open(clone_lock_path(dest), "a+") as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
 
 
 def claude_bin():
@@ -554,7 +580,9 @@ def launch_argv(rec, msg, claude):
             "--setenv", "RM_ROLE_UNIT=" + unit, "--setenv", "RM_DETACHED_UNIT=" + unit,
             "--setenv", "RM_DISPATCHER_STATE=" + rec["state"],
             *(["--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound, "-p", "RuntimeMaxSec=%d" % bound] if bound else []),
-            "-p", "TimeoutStopSec=30",
+            # the ExecStopPost steps run inside this bound: finish's note (120 s) and publish (300 s), wrapup and the
+            # return start; 30 s killed ten finishes in a week, measured 2026-11-15 (RIMMANDRAKE_COVER_FINISH_IN_TIMEOUTSTOPSEC_TEN_KILLED)
+            "-p", "TimeoutStopSec=%d" % STOP_S,
             *(["--setenv", "WSL_INTEROP=" + soc] if soc else []),
             "--setenv", "PATH=" + path, "--"] + cmd
 
@@ -589,10 +617,18 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     unpublished = origin_check(item, runner=runner)     # before a clone is made or a unit started
     if unpublished:
         return 2, unpublished
-    held = hold_until_returned(clone or os.path.join(pool_root(), "clones", item + ".det"), runner, sleep, now,
-                               kept_ok=bool(clone))
+    dest = clone or os.path.join(pool_root(), "clones", item + ".det")
+    held = hold_until_returned(dest, runner, sleep, now, kept_ok=bool(clone))
     if held:
         return 2, held
+    with clone_lock(dest):
+        return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest)
+
+
+def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest):
+    held = clone_holders(dest, runner, now, kept_ok=bool(clone))     # again, under the lock: no waiting now
+    if held:
+        return 2, "refused: clone %s was taken while this launch waited: %s" % (dest, " | ".join(h[2] for h in held))
     if clone:
         how = "given " + clone
     else:
@@ -616,8 +652,14 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
         rec["why"] = ((r.stdout or "") + (r.stderr or "")).strip()
         write_record(rec, root)
         return 1, "LAUNCH FAILED %s: %s" % (unit, rec["why"])
-    rec["status"] = "running"
-    write_record(rec, root)
+    now_rec = read_record(unit, root) or {}
+    if now_rec.get("status") not in (None, "launching"):
+        # a helper that ended at once was recorded by its finish step before this line: never `running` over it
+        # (RIMMANDRAKE_KEEP_FINISHED_RECORD_LAUNCH_WROTE_RUNNING)
+        rec = now_rec
+    else:
+        rec["status"] = "running"
+        write_record(rec, root)
     return 0, ("DETACHED %s\n  item %s, model %s, bound %s, $%g\n  clone %s (%s)\n  record %s\n"
                "  it ends with a note on %s and a line in the Conductor log; `detached_helper.py status` lists runs"
                % (unit, item, model, ("%d s" % max_s) if max_s else "none", budget, clone, how, record_path(unit, root), item))
@@ -897,7 +939,14 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
                rec["out"], rec["clone"]))
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
-    steps = [stop_scope(seat, unit, runner)]     # first: the unit is gone but claude is not (and TimeoutStopSec=30)
+    steps = [stop_scope(seat, unit, runner)]     # first: the unit is gone but claude is not
+    if steps[0].count("FAILED") >= 2 and re.search(r"now (active|activating|reloading)\b", steps[0]):
+        # neither the kill nor the stop took and the scope still runs: claude may still be billing. Not finished: the
+        # record stays as it was, so a later finish (the tick's dead-run chore) tries again
+        # (RIMMANDRAKE_RETRY_FINISH_WHEN_SCOPE_STOP_FAILED_BILLING)
+        rec["finish_blocked"] = {"at": now, "why": steps[0]}
+        write_record(rec)
+        return 1, "NOT FINISHED %s: %s" % (unit, steps[0])
     owed = ""
     if not os.path.isdir(clone):                 # deleted under the run: no clone to note from, the log line still goes
         steps.append("clone gone: no note on the item, nothing published")

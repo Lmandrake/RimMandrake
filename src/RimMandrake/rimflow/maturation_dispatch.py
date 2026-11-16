@@ -107,7 +107,9 @@ fixed alarm (over 60 min). A mod first seen owed counts its idle time from its l
 Selftest: selftest_maturation_dispatch.py (fake launcher, temp tree); selftest_maturation.py --launch for slice 4.
 """
 import argparse
+import contextlib
 import datetime as dt
+import fcntl
 import hashlib
 import json
 import os
@@ -166,6 +168,37 @@ def _write(p, obj):
     os.replace(p + ".tmp", p)
 
 
+STATE_LOCK = "state.lock"
+
+
+@contextlib.contextmanager
+def state_lock(d=None):
+    """One writer of state.json at a time: the tick holds it from its read to its write, `clear` likewise
+    (RIMMANDRAKE_LOCK_DISPATCH_STATE_CLEAR_LOST_TICK_WRITES: a clear during a tick was overwritten, or resurrected)."""
+    with open(os.path.join(d or sdir(), STATE_LOCK), "a+") as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
+
+
+def read_state(p):
+    """-> state.json, {} when there is none. One that cannot be read raises: an empty state would drop every stop,
+    retry count and spent release (RIMMANDRAKE_REFUSE_UNREADABLE_DISPATCH_STATE_RESET_STOPS)."""
+    try:
+        with open(p, encoding="utf-8") as f:
+            st = json.load(f)
+    except FileNotFoundError:
+        return {}
+    except (OSError, ValueError) as e:
+        raise RuntimeError("%s cannot be read (%s: %s); nothing runs on a lost state: repair or move it aside" % (
+            p, type(e).__name__, e))
+    if not isinstance(st, dict):
+        raise RuntimeError("%s is not an object; nothing runs on a lost state: repair or move it aside" % p)
+    return st
+
+
 def pac(t):
     return dt.datetime.fromtimestamp(t, MN.PAC).strftime("%Y-%m-%d %I:%M %p %Z").replace(" 0", " ")
 
@@ -209,6 +242,11 @@ def gather(root, cfg, live=True):
     g = MN.gather(root, live=live)
     by = {m["name"]: m for m in g["mods"]}
     out = {}
+    # the one live-game driver is counted over every mod the page reads, not the advancing ones only
+    # (RIMMANDRAKE_COUNT_EVERY_MOD_INGAME_DRIVER_NOT_ADVANCING_ONLY)
+    other = [r.get("unit") for m in g["mods"] if m.get("name") not in (cfg.get("advancing") or [])
+             for r in (m.get("runs") if isinstance(m.get("runs"), list) else []) if r.get("live")
+             and _is_ingame_item(r.get("item"))]
     for mod in cfg.get("advancing") or []:
         f = M.build_facts(root, mod)
         m = by.get(mod) or {}
@@ -237,7 +275,14 @@ def gather(root, cfg, live=True):
         out[mod] = add_ingame(root, mod, add_blind(root, mod, f, runs if isinstance(runs, list) else []),
                               runs if isinstance(runs, list) else [])
         out[mod]["killed"] = killed_runs(runs if isinstance(runs, list) else [])
+        out[mod]["ingame_live_other"] = list(other)
     return out
+
+
+def live_drivers(facts):
+    """-> the live in-game runs, on any mod: the one-driver rule's list."""
+    return list(dict.fromkeys(u for f in facts.values() for u in list(f.get("ingame_live") or []) +
+                              list(f.get("ingame_live_other") or [])))
 
 
 def killed_runs(runs, read=None, runner=subprocess.run):
@@ -425,6 +470,15 @@ def release_cmd(mod, stage, usd, cap, ceiling):
             '--why "..."' % (mod, stage, usd, need))
 
 
+CEILING_WHY = re.compile(r"^USD [0-9.]+ spent at ")      # over_ceiling's words: a stop written before the flag
+
+
+def ceiling_stop(stop):
+    """Is this stop the ceiling's (lifted by a release)? By its flag, or a legacy stop in over_ceiling's words; never a
+    substring: a progress stop naming a bar with "ceiling" in it is not one (RIMMANDRAKE_MATCH_CEILING_STOP_BY_FLAG_NOT_SUBSTRING)."""
+    return bool(stop) and bool(stop.get("ceiling") or CEILING_WHY.match(str(stop.get("why") or "")))
+
+
 def ceiling_gate(cfg, s, mod, stage, usd, cap, where, releases):
     """-> (why the next run may not start, or None; the release record id that lets it start past the ceiling, or
     None). releases: read_releases()'s (records, malformed); s: the mod's state (its releases_used)."""
@@ -459,8 +513,10 @@ def stage_spent(f, stage, ours):
     this step's own launches there not yet placed (at their cap)."""
     spent = dict((f.get("box_runs") or {}).get(M.COL[stage]) or {})
     for x in ours or []:
-        if x.get("unit") and x["unit"] not in spent:
-            spent[x["unit"]] = (f.get("run_usd") or {}).get(x["unit"], x.get("cap") or 0.0)
+        # with the killed attempts a retry replaced: their dollars stay charged (RIMMANDRAKE_CHARGE_KILLED_ATTEMPTS_RETRY_DROPPED_DOLLARS)
+        for u in [x.get("unit")] + list(x.get("killed_before") or []):
+            if u and u not in spent:
+                spent[u] = (f.get("run_usd") or {}).get(u, x.get("cap") or 0.0)
     return round(sum(spent.values()), 2)
 
 
@@ -548,7 +604,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
     cap_ok = isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0
     mods = st.setdefault("mods", {})
     live_total = occupancy(facts)
-    drivers = [u for f in facts.values() for u in (f.get("ingame_live") or [])]
+    drivers = live_drivers(facts)
     for mod in cfg.get("advancing") or []:
         f = facts.get(mod) or {"stage": UNM}
         s = mods.setdefault(mod, {})
@@ -657,7 +713,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
         row["stage_usd"] = usd
         over, rid = ceiling_gate(cfg, s, mod, "offline_build", usd, cap if cap_ok else 0, "the offline build", releases)
         stop = s.get("stopped")
-        if stop and (stop.get("ceiling") or "ceiling" in str(stop.get("why"))) and rid:
+        if ceiling_stop(stop) and rid:
             s.pop("stopped")
             row["stop_lifted"], stop = "a ceiling release (%s)" % rid, None
         lr = s.get("last_run") or {}
@@ -1094,8 +1150,9 @@ def launch_counted(cfg, s, row, now, book, where, new_item, do_file, do_publish,
         entry["code"] = cfg["_code"]        # the pipeline code it failed on: retriable() tries again once it changes
     lst = s.setdefault(book, [])
     if retry:
-        if retry.get("unit"):
-            entry["killed_before"] = list(retry.get("killed_before") or []) + [retry["unit"]]
+        kb = list(retry.get("killed_before") or []) + ([retry["unit"]] if retry.get("unit") else [])
+        if kb:      # a never-started retry carries them on
+            entry["killed_before"] = kb
         lst[:] = [x for x in lst if (x.get("unit") and x.get("unit") != retry.get("unit"))
                   or any(x.get(k) != v for k, v in where.items())]
     lst.append(entry)
@@ -1266,12 +1323,17 @@ def land_spend(root, paths, fx=None):
         return fx["land_spend"](paths)
     if os.environ.get("RM_STAGE_LAND") == "0":
         return "skipped: RM_STAGE_LAND=0"
-    r = subprocess.run(["git", "-C", root, "rev-parse", "--show-toplevel"], capture_output=True, text=True, timeout=120)
-    if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
-        return "skipped: %s is not a clone's top" % root
-    import designer_stage as DS
-    p = subprocess.run([DS.LAND, "-m", "maturation: spend rows of ended runs (Dispatch step)"] + paths, cwd=root,
-                       capture_output=True, text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
+    try:    # a hung git or push is a line in the reading, never a lost tick: the launches are already made
+        # (RIMMANDRAKE_CATCH_SPEND_LANDING_TIMEOUT_TICK_LOST_LAUNCHES); the rows stay and land with the next tick's
+        r = subprocess.run(["git", "-C", root, "rev-parse", "--show-toplevel"], capture_output=True, text=True,
+                           timeout=120)
+        if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
+            return "skipped: %s is not a clone's top" % root
+        import designer_stage as DS
+        p = subprocess.run([DS.LAND, "-m", "maturation: spend rows of ended runs (Dispatch step)"] + paths, cwd=root,
+                           capture_output=True, text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
+    except (OSError, subprocess.SubprocessError) as e:
+        return "land failed: %s: %s" % (type(e).__name__, e)
     if p.returncode and "nothing to land" not in p.stderr:
         return "land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:])
     return (p.stdout.strip().splitlines() or ["nothing to land"])[-1]
@@ -1443,10 +1505,18 @@ def _aut(rows, mod):
 
 
 def tick(root, cfg, apply, fx=None, now=None, page=True):
+    """One tick; with apply, under the state lock from its read of state.json to its write."""
+    if not apply:
+        return _tick(root, cfg, apply, fx, now, page)
+    with state_lock():
+        return _tick(root, cfg, apply, fx, now, page)
+
+
+def _tick(root, cfg, apply, fx=None, now=None, page=True):
     fx = fx or {}
     now = now or time.time()
     d = sdir()
-    st = _read(os.path.join(d, "state.json"), {})
+    st = read_state(os.path.join(d, "state.json"))
     aut = fx.get("autonomy", True)      # False: the per-stage decision alone (selftest_maturation_dispatch's layer)
     shipped = cfg                       # the file's own values, before widen adds discovered mods (maturation_hands)
     cfg = AUT.widen(root, cfg, st, apply, fx) if aut else cfg   # Designer concepts seen and seeded; the game queue
@@ -1597,34 +1667,44 @@ def main(argv=None):
         print("%d release(s), %d malformed line(s) in %s" % (len(recs), bad, releases_path()))
         return 0
     if o.cmd == "clear":
-        p = os.path.join(sdir(), "state.json")
-        st = _read(p, {})
-        s = (st.get("mods") or {}).get(o.mod) or {}
-        was = s.pop("stopped", None)
-        # a steward or fixer key that never launched, or ended outside an open road back, is released: the next tick
-        # may run it once more (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT: clear left those spent)
-        released = {}
-        for book in ("steward", "fixers"):
-            for k, x in list((s.get(book) or {}).items()):
-                if AUT.releasable(s, k, x):
-                    released.setdefault(book, {})[k] = s[book].pop(k)
-        # so is a blind or in-game launch that never started (refused at the spawn, say): it judged nothing, and left
-        # in its book it stops the next tick again (RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP); a run that
-        # started stays the visit's automatic run
-        for book in ("blind_auto", "ingame_auto"):
-            gone = [x for x in s.get(book) or [] if isinstance(x, dict) and x.get("failed") and not x.get("unit")]
-            if gone:
-                s[book] = [x for x in s[book] if not any(x is g for g in gone)]
-                released[book] = gone
-        s.setdefault("cleared", []).append({"at": time.time(), "why": o.why, "was": was, "released": released})
-        st.setdefault("mods", {})[o.mod] = s
-        _write(p, st)
-        print("CLEARED %s (was: %s; released %d steward, %d fixer key(s), %d never-started blind/in-game launch(es))" % (
-            o.mod, (was or {}).get("why", "not stopped"), len(released.get("steward") or {}),
-            len(released.get("fixers") or {}), len(released.get("blind_auto") or []) + len(released.get("ingame_auto") or [])))
-        print(HAND_NOTE % ("clear-%s-%d" % (o.mod, s["cleared"][-1]["at"])))
-        return 0
+        with state_lock():
+            return _clear(o)
     return 2
+
+
+def _clear(o):
+    """`clear`, under the state lock; an unreadable state.json refuses (nothing is written over it)."""
+    p = os.path.join(sdir(), "state.json")
+    try:
+        st = read_state(p)
+    except RuntimeError as e:
+        print("REFUSED: %s" % e)
+        return 1
+    s = (st.get("mods") or {}).get(o.mod) or {}
+    was = s.pop("stopped", None)
+    # a steward or fixer key that never launched, or ended outside an open road back, is released: the next tick
+    # may run it once more (RIMMANDRAKE_RETRY_STEWARD_LAUNCH_GIT_LOCK_COUNTED_AS_SPENT: clear left those spent)
+    released = {}
+    for book in ("steward", "fixers"):
+        for k, x in list((s.get(book) or {}).items()):
+            if AUT.releasable(s, k, x):
+                released.setdefault(book, {})[k] = s[book].pop(k)
+    # so is a blind or in-game launch that never started (refused at the spawn, say): it judged nothing, and left
+    # in its book it stops the next tick again (RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP); a run that
+    # started stays the visit's automatic run
+    for book in ("blind_auto", "ingame_auto"):
+        gone = [x for x in s.get(book) or [] if isinstance(x, dict) and x.get("failed") and not x.get("unit")]
+        if gone:
+            s[book] = [x for x in s[book] if not any(x is g for g in gone)]
+            released[book] = gone
+    s.setdefault("cleared", []).append({"at": time.time(), "why": o.why, "was": was, "released": released})
+    st.setdefault("mods", {})[o.mod] = s
+    _write(p, st)
+    print("CLEARED %s (was: %s; released %d steward, %d fixer key(s), %d never-started blind/in-game launch(es))" % (
+        o.mod, (was or {}).get("why", "not stopped"), len(released.get("steward") or {}),
+        len(released.get("fixers") or {}), len(released.get("blind_auto") or []) + len(released.get("ingame_auto") or [])))
+    print(HAND_NOTE % ("clear-%s-%d" % (o.mod, s["cleared"][-1]["at"])))
+    return 0
 
 
 if __name__ == "__main__":

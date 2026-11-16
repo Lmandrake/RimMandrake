@@ -236,15 +236,23 @@ def entries(d, read=None):
         add("showcase", sc.get("showcases"))
         add("rest", sc.get("coverage_rest"), "capability")
     out["floor"] = js("floor.json")
+    # the exam is judged material too: a changed exam is seen by the delta plan (RIMMANDRAKE_HASH_EXAM_IN_DELTA_ENTRIES_CHANGE_UNSEEN)
+    out["exam"] = js("exam.json")
     text = read("sheet.md")
     if text is not None:
-        head, body = "", []
+        head, body, seen = "", [], {}
+
+        def put(h, lines):
+            # a repeated heading is keyed by its occurrence (`#2`, ...): the second no longer hides the first
+            # (RIMMANDRAKE_KEY_REPEATED_SHEET_HEADINGS_SECOND_HID_FIRST); a heading met once keeps its plain key
+            seen[h] = seen.get(h, 0) + 1
+            out["sheet:%s" % h if seen[h] == 1 else "sheet:%s#%d" % (h, seen[h])] = "\n".join(lines)
         for line in text.splitlines():
             if line.startswith("## "):
-                out["sheet:%s" % head] = "\n".join(body)
+                put(head, body)
                 head, body = line[3:].strip(), []
             body.append(line)
-        out["sheet:%s" % head] = "\n".join(body)
+        put(head, body)
     return out
 
 
@@ -359,7 +367,10 @@ def delta_merge(rec, dp):
     kept, dropped = [], []
     for g in rec.get("gaps") or []:
         ids = set(g.get("ids") or [])
-        if (ids & scope) or (not ids and dp["loose"]) or (g.get("new_since") == "late" and CT.txt(g.get("late_why"))):
+        # a change to shared material (floor, sheet, scope: no row of its own) can open a gap on any row: kept when the
+        # judge tags it changed or regression (RIMMANDRAKE_KEEP_GAPS_OPENED_BY_SHARED_MATERIAL_CHANGES)
+        if (ids & scope) or (not ids and dp["loose"]) or (g.get("new_since") == "late" and CT.txt(g.get("late_why"))) \
+                or (dp["loose"] and g.get("new_since") in ("changed", "regression")):
             kept.append(g)
         else:
             dropped.append(dict(g, dropped="a new gap on material that did not change, not tagged late with a why"))
@@ -1018,7 +1029,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             old = os.environ.get("RM_ROLE_UNIT")
             os.environ["RM_ROLE_UNIT"] = unit
             try:
-                errs = CT.sign(d, CT.SIGNER, repo)
+                errs = CT.sign(d, CT.SIGNER, repo, expect=before[0])
             finally:
                 if old is None:
                     os.environ.pop("RM_ROLE_UNIT", None)

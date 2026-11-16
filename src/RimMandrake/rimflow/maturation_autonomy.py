@@ -78,6 +78,9 @@ def releasable(s, key, x):
     opener = next((k for k, v in book.items() if isinstance(v, dict) and v.get("item") == rb.get("caused_by")), None)
     return not (opener and str(key).split("|")[:4] == opener.split("|")[:4])
 LAUNCH = {"launch", "launched", "would_launch"}
+# a Conductor hold stands: nothing automatic is routed past it, a road-back fixer included
+# (RIMMANDRAKE_HONOUR_CONDUCTOR_HOLD_ROAD_BACK_FIXER_IGNORED_IT)
+HOLDS = {"held"}
 STEWARD_ON = {"hand_step", "ready", "exit_met", "exit_not_met"}
 OWNER_STAGES = {"his_walk": "his live walk (Stage 8): the version passes on his words alone"}
 # A passed version rests (spec: "pass record written; the mod rests"); opening the next one is weighed against the other
@@ -124,6 +127,12 @@ def seed_and_land(root, mod):
                         "record)" % mod, "design/concepts/%s/%s" % (mod, M.RECORD)], cwd=root, capture_output=True,
                        text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
     if p.returncode:
+        # the record made here never reached origin/main: remove it, so the next tick seeds again (a kept one read as
+        # "had a record" and its seed_refused stood for good; RIMMANDRAKE_RETRY_SEED_LANDING_LOCAL_RECORD_KEPT_REFUSAL)
+        try:
+            os.remove(os.path.join(M.mod_dir(root, mod), M.RECORD))
+        except OSError:
+            pass
         raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:]))
     return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
 
@@ -161,6 +170,8 @@ def designer_state(root, mod):
         with open(os.path.join(root, "design", "concepts", mod, "stage.json"), encoding="utf-8") as f:
             st = json.load(f)
     except (OSError, ValueError):
+        return None
+    if not isinstance(st, dict):    # a wrong-shaped file is unreadable, never a crash of the tick
         return None
     try:
         with open(os.path.join(root, "design", "concepts", mod, "record.json"), encoding="utf-8") as f:
@@ -347,7 +358,7 @@ def exam_gate(root, mod):
 
 def version_locked(root, mod):
     v, _ = M.read_json(root, mod, "version/VERSION.json")
-    return str((v or {}).get("state") or "").startswith("locked")
+    return isinstance(v, dict) and str(v.get("state") or "").startswith("locked")
 
 
 UPSTREAM_WAIT = re.compile(r"waits for ([A-Za-z0-9_]+) (\d+\.\d+\.\d+) to pass")
@@ -447,20 +458,42 @@ def autolock_and_land(root, mod, now=None, land=None):
     dg = {"item": M.EVIDENCE_FOR_ASK, "subject": "%s Design Version 0.1.0" % mod, "class": "design",
           "decision": "locked 0.1.0 (the pipeline, Evidence-for-Ask ruling: no recorded evidence against it)",
           "reasons": why, "evidence": vrel, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))}
+    was = {}
     for rel, obj in ((vrel, v), (drel, dg)):
         os.makedirs(os.path.dirname(os.path.join(root, rel)), exist_ok=True)
+        try:
+            with open(os.path.join(root, rel), "rb") as f:
+                was[rel] = f.read()
+        except OSError:
+            was[rel] = None
         with open(os.path.join(root, rel), "w", encoding="utf-8") as f:
             json.dump(obj, f, indent=2)
             f.write("\n")
     subject = "maturation: the pipeline locks %s's Design Version at 0.1.0 (Evidence-for-Ask ruling)" % mod
-    if land:
-        return land(subject, [vrel, drel])
-    import designer_stage as DS
-    p = subprocess.run([DS.LAND, "-m", subject, vrel, drel], cwd=root, capture_output=True, text=True, timeout=300,
-                       env=dict(os.environ, LAND_REPO=root))
-    if p.returncode:
-        raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:]))
-    return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
+    try:
+        if land:
+            return land(subject, [vrel, drel])
+        import designer_stage as DS
+        p = subprocess.run([DS.LAND, "-m", subject, vrel, drel], cwd=root, capture_output=True, text=True, timeout=300,
+                           env=dict(os.environ, LAND_REPO=root))
+        if p.returncode:
+            raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:]))
+        return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
+    except Exception:
+        # an unlanded lock is no lock: put both files back, so the next tick reads the version unlocked and the
+        # autolock's own retry count decides (a kept local lock routed on to preflight unpublished;
+        # RIMMANDRAKE_RESTORE_VERSION_FILE_WHEN_AUTOLOCK_LANDING_FAILS)
+        for rel, b in was.items():
+            p_ = os.path.join(root, rel)
+            try:
+                if b is None:
+                    os.remove(p_)
+                else:
+                    with open(p_, "wb") as f:
+                        f.write(b)
+            except OSError:
+                pass
+        raise
 
 
 # ---- one class per mod -----------------------------------------------------------------------------------------------
@@ -476,8 +509,9 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
     fx = fx or {}
     mods = st.setdefault("mods", {})
     import maturation_dispatch as MD
-    live_total = MD.occupancy(facts)
-    live_total = None if live_total is None else live_total + len(launches)
+    base = MD.occupancy(facts)      # the live runs; this tick's planned launches are counted at each gate, so a
+    # launch taken back (a road-back fixer replacing a mod's own build) gives its slot back
+    # (RIMMANDRAKE_RETURN_SLOT_OF_REPLACED_LAUNCH_FIXER_NEVER_RAN: at max_live 1 the fixer read slots_full for good)
     open_items = fx.get("open_items", lambda ids: M.ledger_items_caused_by(root, ids))
     dstate = fx.get("designer_state", lambda m: designer_state(root, m))
     locked = fx.get("version_locked", lambda m: version_locked(root, m))
@@ -522,7 +556,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             # RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM: the road back's items get their fixers before
             # the next cycle or visit launches (a blind_challenge -> blind_challenge road back launched at once)
             launches = [m for m in launches if m != mod]
-        elif dec in WAIT or dec in LAUNCH:
+        elif dec in WAIT or dec in LAUNCH or dec in HOLDS:
             pass
         elif (st.get("seed_refused") or {}).get(mod):
             row.update(decision="seed_refused", why="its stage record could not be seeded: %s" % st["seed_refused"][mod])
@@ -549,10 +583,10 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             continue
         # one automatic run per state, then a steward or fixer within the caps
         if row.get("aut"):
-            ok, why = _gate(cfg, s, row, live_total, ver)
+            launches = [m for m in launches if m != mod]
+            ok, why = _gate(cfg, s, row, None if base is None else base + len(launches), ver)
             if ok:
-                live_total = None if live_total is None else live_total + 1
-                launches = [m for m in launches if m != mod] + [mod]
+                launches = launches + [mod]
             else:
                 if why[0] == "slots_full":
                     row["waits_on"] = "a free slot for the %s run on %s" % (

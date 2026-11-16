@@ -993,17 +993,23 @@ def rimflow_note(repo, item, text):
     return None
 
 
-def sign(d, by, repo=REPO, at=None, item=None, emit=None):
-    """The ledger event first, then the stamp: a failed ledger write leaves tree.json unsigned."""
+def sign(d, by, repo=REPO, at=None, item=None, emit=None, expect=None):
+    """The ledger event first, then the stamp: a failed ledger write leaves tree.json unsigned. expect: the tree hash the
+    judge read; a tree that is not that one is refused (RIMMANDRAKE_SIGN_ONLY_THE_JUDGED_TREE_HASH)."""
     if by != SIGNER:
         return ["only the coverage judge (%s) signs coverage" % SIGNER]
     unit = os.environ.get("RM_ROLE_UNIT", "")
     if not JUDGE_UNIT.fullmatch(unit):
         return ["sign runs inside a coverage judge run (RM_ROLE_UNIT rm-coverage-judge-<n>), not %r" % unit[:60]]
+    moved = ["tree.json is not the tree the judge read (hash %s, judged %s): not signed"]
+    if expect is not None and tree_hash(load(d)) != expect:
+        return [moved[0] % (tree_hash(load(d)), expect)]
     errs, _fl = lint(d, repo)
     if errs:
         return errs
     tree = load(d)
+    if expect is not None and tree_hash(tree) != expect:
+        return [moved[0] % (tree_hash(tree), expect)]
     if tree.get("dry_walk") is True:
         return ["a dry walk is never signed"]
     item = item or stage_item(d)
