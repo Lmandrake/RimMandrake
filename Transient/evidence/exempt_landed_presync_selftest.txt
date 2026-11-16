@@ -1,0 +1,6 @@
+scratch_clone: FAILED: POOL REFUSED: pool full: 2 clones, cap 2 (no idle clone to reuse); finish or push one, then retry
+scratch_clone: FAILED: POOL REFUSED: pool at 0.0 GB, cap 0 GB (the revert line)
+selftest_scratch_clone: OK
+--- real clones:
+harden-sparse []
+selffix []
