@@ -58,11 +58,60 @@
     "ref": "control dbb442b9-216e-4f85-978e-22a7937b8131 raw usage in design/concepts/Stillsand/exam_runs/rm-role-designercodex-1794839860/control.raw.json",
     "stage": 4,
     "tokens": 45830
+   },
+   {
+    "at": "2026-11-16T15:17:43Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794841884",
+    "stage": 5,
+    "tokens": 645544
    }
   ],
   "reserve": 60000,
-  "spent": 361828
+  "spent": 1007372
  },
+ "coverage_rounds": [
+  {
+   "at": "2026-11-16T15:11:24Z",
+   "error": null,
+   "gaps": 14,
+   "ids": [
+    "corpse_history",
+    "direct_sun",
+    "drazzik",
+    "duumma",
+    "eruption",
+    "expedition_ocean",
+    "flora_optics",
+    "gaanok",
+    "gale",
+    "giant_residents",
+    "glass_materials",
+    "horn",
+    "hourbloom",
+    "legacy_sun",
+    "murrowbulb",
+    "practical_fortune",
+    "prepared_harbour",
+    "stillsand_walk",
+    "sun_lance",
+    "sun_tables",
+    "swim_consumers",
+    "terrain",
+    "thumper",
+    "tracks",
+    "unified_direct_sun"
+   ],
+   "judge": "rm-coverage-judge-1794841884",
+   "late": [],
+   "tags": {
+    "first": 14
+   },
+   "tokens": 645544,
+   "tree": "95adfcabc92975ad0ea36224e43ec4771a5cf8d163377de15cbc604361c89e68",
+   "verdict": "not_covered"
+  }
+ ],
  "history": [
   {
    "at": "2026-11-16T01:30:54Z",
@@ -207,6 +256,18 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designercodex-1794839860: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T15:11:21Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794841872, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T15:19:25Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designercodex-1794841872 result rejected: no result.json (a closing message is not a result); Codex transport failed: no Codex transport result"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_STILLSAND_DESIGNER_ON_CODEX_DRAFT_LEFT_UNREAD",
@@ -419,6 +480,16 @@
    "run": "rm-role-designercodex-1794839860",
    "stage": 4,
    "summary": "Passed the frozen Stillsand Cold Reader exam: both fresh Claude Opus Readers matched all 24 sourced scenarios, with zero accept-where-reject-core errors and no Challenger misses. A separate fresh Opus Control accepted e10 and c01 after program removal and paraphrase scrubbing of hydration_exclusion, proving discrimination. Examiner, Challenger, both Readers and Control have distinct returned session ids; saved tool-free prompts mechanically exclude expected verdicts and design notes from Readers. All five raw usages are charged as helper work (238828 weighted tokens). Root, tree, sheet, scenes, floor, adopted water boundary, flagship and all 71 inventory entries remain intact. This establishes written-contract comprehension only; runtime observations, current live proof, oracle binding and owner first-touch certification remain unrun or owed. No bridge, restart or deployment action; launcher owns stage advancement."
+  },
+  {
+   "at": "2026-11-16T15:19:25Z",
+   "outcome": "rejected",
+   "run": "rm-role-designercodex-1794841872",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)",
+    "Codex transport failed: no Codex transport result"
+   ]
   }
  ],
  "runner": "codex",
@@ -507,6 +578,11 @@
     "input_tokens": 2625626,
     "output_tokens": 11089
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794841872",
+   "runner": "codex",
+   "usage": "UNMEASURED"
   }
  ],
  "running": null,

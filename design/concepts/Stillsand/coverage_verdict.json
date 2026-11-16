@@ -1,0 +1,2405 @@
+{
+ "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+ "at": "2026-11-16T15:11:24Z",
+ "checklist": [
+  {
+   "evidence": [
+    "record.json:6",
+    "scenes.json:940"
+   ],
+   "id": "package",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "package_floor",
+     "what": "compiled assembly and composed Biomes shipping route"
+    },
+    {
+     "ok": true,
+     "scene": "package_floor",
+     "what": "owned art assets and load wiring (placeholder-art control)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:26",
+    "scenes.json:64",
+    "scenes.json:169",
+    "scenes.json:984"
+   ],
+   "id": "terrain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "landscape_route",
+     "what": "sparse extreme-desert sand surface reads on the route"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "broad walkable deep sand (travel cost)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "no rain / weather table"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "low fertility"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "no rivers, allowed roads"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "disease table"
+    },
+    {
+     "ok": true,
+     "scene": "sun_geometry",
+     "what": "arrival letter"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:46",
+    "scenes.json:765",
+    "scenes.json:64"
+   ],
+   "id": "roster",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "native wild roster plus upper-tier fauna/flora/pack patches resolve"
+    },
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "Vaalok carrier admitted through Biomes setting gate, disabled-gate control"
+    },
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "Vozzik definition kept for its other home (asserted start)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:70",
+    "scenes.json:765"
+   ],
+   "id": "flora_optics",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "light-pipe nubs yield biosilica"
+    },
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "glasscrust yields biosilica grit, low visible flora"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "no added lush scrub"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:89",
+    "scenes.json:653"
+   ],
+   "id": "ollim",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "shade_landmarks",
+     "what": "tall and kneeling ollims yield the same unusual wood"
+    },
+    {
+     "ok": true,
+     "scene": "shade_landmarks",
+     "what": "slow-growing shade plants form bone-field places"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:110",
+    "scenes.json:508",
+    "scenes.json:401"
+   ],
+   "id": "hourbloom",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "pour_expiry_thumper",
+     "what": "output of pouring"
+    },
+    {
+     "ok": true,
+     "scene": "gale_phases",
+     "what": "output of gale seeding"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "short-lived"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "unsowable"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "not an ordinary wild roster resident"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:131",
+    "scenes.json:765"
+   ],
+   "id": "murrowbulb",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "franchise-free crop grow and raw food use"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "canon bloddle supplied by campaign patch"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:147",
+    "scenes.json:765"
+   ],
+   "id": "rehome_residents",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "Ulgga, Vosska and Ultriss Pad rostered and behaving on Stillsand in the composed package"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:164",
+    "scenes.json:653",
+    "scenes.json:64"
+   ],
+   "id": "giant_residents",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "shade_landmarks",
+     "what": "Oommok moving shade"
+    },
+    {
+     "ok": true,
+     "scene": "landscape_route",
+     "what": "passing giant on the route"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "aurrok grazer (named in no scene)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Oommok 'mirror giant' property, native stats/kinds/art"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:185",
+    "scenes.json:653"
+   ],
+   "id": "shade_tenants",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "shade_landmarks",
+     "what": "Eemmok follows giant shade"
+    },
+    {
+     "ok": true,
+     "scene": "shade_landmarks",
+     "what": "loomma shade-seeking and sunstruck severity"
+    },
+    {
+     "ok": true,
+     "scene": "shade_landmarks",
+     "what": "loomma dung seeding with off control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:206",
+    "scenes.json:805"
+   ],
+   "id": "soorrak",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "soorrak_jobs",
+     "what": "flight stat and map-entry/exit flags read as state (flight live test owner-attended per ruling)"
+    },
+    {
+     "ok": true,
+     "scene": "soorrak_jobs",
+     "what": "runtime job-loop regression with offline mutant control"
+    },
+    {
+     "ok": true,
+     "scene": "soorrak_jobs",
+     "what": "canteen eggs use"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:226",
+    "scenes.json:765"
+   ],
+   "id": "gaanok",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "ordinary slow predator AI"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "in-game description 'patient follower' agrees with implemented behaviour"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:244",
+    "scenes.json:765"
+   ],
+   "id": "grain_life",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "Ikee, likka likka filter feeder, veessa cleaner/carrion, dormant siidda lifecycles"
+    },
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "eggs/products"
+    },
+    {
+     "ok": true,
+     "scene": "package_floor",
+     "what": "native art wiring"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:264",
+    "scenes.json:765",
+    "scenes.json:233"
+   ],
+   "id": "drazzik",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "buried_signs",
+     "what": "drum lure sign"
+    },
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "nizzek proximity-hatching eggs, dormant presentation"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "hatching only when the ProximityHatch service loads (service-absent arm)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:282",
+    "scenes.json:473"
+   ],
+   "id": "duumma",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "water_cycle",
+     "what": "butchered six-litre water sac and fluid-sac volume accounting"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "duumma as a living buried creature"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:302",
+    "scenes.json:473",
+    "scenes.json:574",
+    "scenes.json:765"
+   ],
+   "id": "guzzka",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "cave-resident clutch row"
+    },
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "fertile proximity hatch vs unfertile food/water roles"
+    },
+    {
+     "ok": true,
+     "scene": "water_cycle",
+     "what": "optional DBH extension present/absent"
+    },
+    {
+     "ok": true,
+     "scene": "water_cycle",
+     "what": "six-litre pour/debt comp on unfertile egg"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:323",
+    "scenes.json:765"
+   ],
+   "id": "karrask",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "vanilla shearing of raw plate, cure recipe, unready-shear control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:340",
+    "scenes.json:266",
+    "scenes.json:98"
+   ],
+   "id": "swim_consumers",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "terrain and strike surfacing, re-submerge"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "hit-triggered surfacing"
+    },
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "breach, rumble, wake query"
+    },
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "living-body targeting with droid immunity"
+    },
+    {
+     "ok": true,
+     "scene": "harbour_secured",
+     "what": "surfaced swimmer still dangerous"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:365",
+    "scenes.json:266",
+    "scenes.json:303"
+   ],
+   "id": "swim_signs",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "ordinary Vekka kill leaves meal and signs"
+    },
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "event leviathan take removes victim with drag/letter"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:386",
+    "scenes.json:266",
+    "scenes.json:31"
+   ],
+   "id": "drift_swim",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "deep active drift adds swim ground, shallow/inactive control"
+    },
+    {
+     "ok": true,
+     "scene": "observer_controls",
+     "what": "cached delegate"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:406",
+    "scenes.json:266",
+    "scenes.json:508"
+   ],
+   "id": "thumper",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "pour_expiry_thumper",
+     "what": "water refuel, wets nearby cells, dry control"
+    },
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "calls reachable submerged swimmers, unreachable control"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "only non-player swimmers called (player-owned control)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "radius overlays"
+    },
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "Groundcaller variant patch"
+    },
+    {
+     "ok": true,
+     "scene": "settings_effects",
+     "what": "settings"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:427",
+    "scenes.json:266"
+   ],
+   "id": "sand_fishing",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "deep-sand Fish job yields dune crawlers and rare glass pearls"
+    },
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "new session draws existing swimmer, no-session control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:449",
+    "scenes.json:233",
+    "scenes.json:1095"
+   ],
+   "id": "listening",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "buried_signs",
+     "what": "wind-scaled hiss/saltation"
+    },
+    {
+     "ok": true,
+     "scene": "buried_signs",
+     "what": "slab-movement singing and single near-building warning, stationary control"
+    },
+    {
+     "ok": true,
+     "scene": "gale_signs_wet",
+     "what": "swimmer rumble/breach sounds, gale drowns rumble"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:469",
+    "scenes.json:266",
+    "scenes.json:401"
+   ],
+   "id": "tracks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "invisible swim troughs"
+    },
+    {
+     "ok": true,
+     "scene": "gale_phases",
+     "what": "gale wipe"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "Oommok prints"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "erasure on accumulated sand motion via SetDepth/AddDepth (non-gale)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:490",
+    "scenes.json:233"
+   ],
+   "id": "geophone",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "buried_signs",
+     "what": "coarse compass and size for swimmers or drum lures, rays, rumble notice"
+    },
+    {
+     "ok": true,
+     "scene": "buried_signs",
+     "what": "silent in gale"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:509",
+    "scenes.json:765"
+   ],
+   "id": "zuurrik",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "blood-cluster wake, stripping, unwounded protection"
+    },
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "quiet burial, growth by eating, toggle lets active swarm finish across reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:529",
+    "scenes.json:837"
+   ],
+   "id": "eruption",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "eruption_brood",
+     "what": "biome-gated incident, tunnel-to-mound, threat scaling, letter, non-Stillsand control"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "ruukka/oorrik are incident castes, not ambient residents"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:549",
+    "scenes.json:837"
+   ],
+   "id": "brood",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "eruption_brood",
+     "what": "Hive dormancy, spawning, healing, spreading, destroyed-mound control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:569",
+    "scenes.json:303"
+   ],
+   "id": "leviathan",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "warn, rumble, arrive, breach, appraise, attack, take, dive"
+    },
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "data-driven incident/odds"
+    },
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "loud-draw ordering drill/thumper/shuttle/pour/colony"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:592",
+    "scenes.json:303"
+   ],
+   "id": "mirror_beam",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "animal-safe beam, null-safe attribution, shared sun policy, heat/damage, disabled/shade control"
+    },
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "crest-plate corpse product"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:613",
+    "scenes.json:303"
+   ],
+   "id": "sun_lance",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "fires mirror beam under non-pawn sunlight gate with shade lane"
+    },
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "independent setting"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "elevation scaling measured across two elevations"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "own base/top art"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:632",
+    "scenes.json:869"
+   ],
+   "id": "horn",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "campaign_encounters",
+     "what": "horn use/cooldown routs smaller predators and hostile tribals"
+    },
+    {
+     "ok": true,
+     "scene": "campaign_encounters",
+     "what": "delayed Utinni answer incident"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "RSW horn item recipe (crafting)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:652",
+    "scenes.json:869"
+   ],
+   "id": "den_quest",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "campaign_encounters",
+     "what": "offer, recorded occupant kill clears state, wrong-kill control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:671",
+    "scenes.json:869"
+   ],
+   "id": "sarlacc_seep",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "campaign_encounters",
+     "what": "seep-rooting incident and cave row via Sarlacc machinery, out-of-biome control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:691",
+    "scenes.json:574"
+   ],
+   "id": "rock_island",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "wind-aligned yardang, rockless tor, shade-side tunnel, thick roof"
+    },
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "saved location/row and arrival letter"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:712",
+    "scenes.json:574",
+    "scenes.json:734"
+   ],
+   "id": "cave_table",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "brine web, guzzka clutch, lens grotto, sealed cache, previously taken rows"
+    },
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "saved den occupants"
+    },
+    {
+     "ok": true,
+     "scene": "settings_effects",
+     "what": "row enable toggles"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:732",
+    "scenes.json:574"
+   ],
+   "id": "cave_preservation",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "roofed recorded cells stop rot/vanish; exit, roof loss, held den and disable release"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:751",
+    "scenes.json:574"
+   ],
+   "id": "lens_grotto",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "grown-biosilica ring mined for biosilica, independent toggle"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:770",
+    "scenes.json:574",
+    "scenes.json:869"
+   ],
+   "id": "tier_caves",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "campaign_encounters",
+     "what": "krayt den, sarlacc seep, Sun-Debt shrine rows in supplying tiers"
+    },
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "generic either/or and mummy elements"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:790",
+    "scenes.json:653",
+    "scenes.json:906"
+   ],
+   "id": "skeleton_landmarks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "shade_landmarks",
+     "what": "rib cover, skull shade, bone harp sustainers"
+    },
+    {
+     "ok": true,
+     "scene": "shade_landmarks",
+     "what": "configurable deconstruction leavings"
+    },
+    {
+     "ok": true,
+     "scene": "salvage_fossils_scan",
+     "what": "sparse capped placement distinct from fossil port"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:813",
+    "scenes.json:620"
+   ],
+   "id": "corpse_history",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "giant_history",
+     "what": "old giant corpses convert to species skeletons"
+    },
+    {
+     "ok": true,
+     "scene": "giant_history",
+     "what": "room-first scan and crowded retry, delay/toggle"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "canon skeletons/graveyard supplied above RM"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:833",
+    "scenes.json:370"
+   ],
+   "id": "horizon",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "horizon_warning",
+     "what": "bearing/plume then delayed arrival, quest/drop bypass, reentrant entry, cancelled plume and settled letter"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:853",
+    "scenes.json:697"
+   ],
+   "id": "glass_materials",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "workshop_jobs",
+     "what": "drift clearing yields glass sand"
+    },
+    {
+     "ok": true,
+     "scene": "workshop_jobs",
+     "what": "sun/lens glass, precision/pearl lens recipes"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "traded fine sand"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "guarded canon krayt lens as trade prize (only asserted at start, never traded)"
+    },
+    {
+     "ok": true,
+     "scene": "water_cycle",
+     "what": "plain lens to still"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:876",
+    "scenes.json:697"
+   ],
+   "id": "sifting",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "workshop_jobs",
+     "what": "carried-sieve home-area sifting, fetch-first, batch, yield, grit/pearl, Crafting learning, no building"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:896",
+    "scenes.json:697",
+    "scenes.json:1060"
+   ],
+   "id": "sun_tables",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "workshop_jobs",
+     "what": "vanilla bills under roof/shade/weather gate, interruption and resume"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "stat-part work-speed scaling by sun/elevation"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "outdoor/temperature penalty cancellation"
+    },
+    {
+     "ok": true,
+     "scene": "workshop_jobs",
+     "what": "recipe toggles"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:920",
+    "scenes.json:697"
+   ],
+   "id": "solar_ovens",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "workshop_jobs",
+     "what": "fuel/power-free sun cooking with ordinary bills"
+    },
+    {
+     "ok": true,
+     "scene": "workshop_jobs",
+     "what": "crest-plate oven faster and bakes sun glass"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:941",
+    "scenes.json:473"
+   ],
+   "id": "brine",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "water_cycle",
+     "what": "dipping spot, five-brine bill, work giver, stove salt boiling"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:962",
+    "scenes.json:473",
+    "scenes.json:201"
+   ],
+   "id": "solar_still",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "water_cycle",
+     "what": "processes brine/eggs/meat/sacs with sun-scaled progress and lens multiplier"
+    },
+    {
+     "ok": true,
+     "scene": "debt_return",
+     "what": "production debt notification"
+    },
+    {
+     "ok": true,
+     "scene": "glare_cooling_mirage",
+     "what": "cooling ingestion effect"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:984",
+    "scenes.json:473",
+    "scenes.json:542"
+   ],
+   "id": "wringing",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "water_cycle",
+     "what": "corpse body-size water"
+    },
+    {
+     "ok": true,
+     "scene": "debt_return",
+     "what": "believer/outsider thoughts and ledger booking"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1004",
+    "scenes.json:508"
+   ],
+   "id": "pour",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "pour_expiry_thumper",
+     "what": "one item poured, sunward line/halo, bloom budget, saved attraction, gravel/roof guards"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1025",
+    "scenes.json:508",
+    "scenes.json:1095"
+   ],
+   "id": "wet_line",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "pour_expiry_thumper",
+     "what": "stains fade, draw toggle, saved expiry"
+    },
+    {
+     "ok": true,
+     "scene": "gale_signs_wet",
+     "what": "gale clears wet cells and attraction"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1045",
+    "scenes.json:542"
+   ],
+   "id": "ledger",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "debt_return",
+     "what": "inert in RM, active from upper-tier def; volumes, booked flag, bands, mood, goodwill, incident multipliers"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1067",
+    "scenes.json:542"
+   ],
+   "id": "return_ritual",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "debt_return",
+     "what": "gale/kill/threshold opening, good/great/bad outcomes, debt stone, old debt cave"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1089",
+    "scenes.json:169"
+   ],
+   "id": "legacy_sun",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sun_geometry",
+     "what": "pinned sky and sky-glow solar panel consumer"
+    },
+    {
+     "ok": true,
+     "scene": "sun_geometry",
+     "what": "old elevation regime and glare floor rejected (owner-opened replacement)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "shared shade pathing"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1113",
+    "scenes.json:201"
+   ],
+   "id": "glare_gear",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "glare_cooling_mirage",
+     "what": "glare debuff, gene exemption, goggles, tagged headgear"
+    },
+    {
+     "ok": true,
+     "scene": "glare_cooling_mirage",
+     "what": "six-hour cooling draught"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1136",
+    "scenes.json:201"
+   ],
+   "id": "mirage",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "glare_cooling_mirage",
+     "what": "shimmer penalty, chasing-water state, recovery and letter, ineligible control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1156",
+    "scenes.json:401"
+   ],
+   "id": "gale",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "gale_phases",
+     "what": "herald-gale-aftermath incident, transport/influx with mass cap"
+    },
+    {
+     "ok": true,
+     "scene": "gale_phases",
+     "what": "reduced exposure/senses and rumble drowning"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "launch restriction"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "weather penalties"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1179",
+    "scenes.json:442"
+   ],
+   "id": "gale_carry",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "gale_carry_return",
+     "what": "eligibility and dice, drag/bruises/signs, TakenByLand registration, return/survival/letters, old-save migration"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1200",
+    "scenes.json:401"
+   ],
+   "id": "gale_aftermath",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "gale_phases",
+     "what": "one weighted emergence of each row, track wipe, siidda wake, glasscrust/hourbloom seeding, disabled control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1221",
+    "scenes.json:906"
+   ],
+   "id": "wreck_salvage",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "salvage_fossils_scan",
+     "what": "shared salvage/weathering, own textures/shadows, distinct placement routes"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1241",
+    "scenes.json:906"
+   ],
+   "id": "fossil_port",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "salvage_fossils_scan",
+     "what": "retired fossil scatter with whitelist, nonwhitelisted control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1256",
+    "scenes.json:906"
+   ],
+   "id": "acoustic_payload",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "salvage_fossils_scan",
+     "what": "guarded scanner payload, scanner-absent control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1271",
+    "scenes.json:734",
+    "floor.json"
+   ],
+   "id": "settings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "settings_effects",
+     "what": "every toggle/tuning effect at its timing, irrelevant-setting control"
+    },
+    {
+     "ok": true,
+     "scene": "settings_effects",
+     "what": "scroll/search/collapse/reset UI and entry-value restoration"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1294",
+    "scenes.json:31",
+    "scenes.json:940"
+   ],
+   "id": "proof_tools",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "observer_controls",
+     "what": "fake-game probes, kernels and diagnostics with can-fail controls"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1320",
+    "scenes.json:31"
+   ],
+   "id": "lookup_cache",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "observer_controls",
+     "what": "cached loud-draw and MovingDunes lookups, uncached/stale mutants, absent service"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1342",
+    "scenes.json:169",
+    "tree.json:134"
+   ],
+   "id": "unified_direct_sun",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sun_geometry",
+     "what": "geometry-only exposure, roofs/parasols at low and high angle"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "55 C zenith x sin(angle) value asserted numerically"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "feeds vanilla felt temperature/heatstroke consumer"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1363",
+    "scenes.json:401"
+   ],
+   "id": "removed_gale_fluff",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "gale_phases",
+     "what": "out by OWNER:1792759873235145774; absence check in gale_phases"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1380",
+    "scenes.json:653"
+   ],
+   "id": "removed_skeleton_burial",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "shade_landmarks",
+     "what": "out by OWNER:1792759876250066479; absence check in shade_landmarks"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1397",
+    "scenes.json:574"
+   ],
+   "id": "removed_cave_fluff",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "out by OWNER:1792759874733672738; absence check in cave_rows_preservation"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1414",
+    "scenes.json:940"
+   ],
+   "id": "removed_fulgurite",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "package_floor",
+     "what": "out by OWNER:1792117913860590679; absence check in package_floor"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1424",
+    "scenes.json:620",
+    "scenes.json:1132"
+   ],
+   "id": "giant_preservation",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "giant_history",
+     "what": "ordinary outdoor eligible giant desiccates without rot before skeleton"
+    },
+    {
+     "ok": true,
+     "scene": "giant_history",
+     "what": "T3 lifecycle with meat-rate spoilage, flat-loss mutant control"
+    },
+    {
+     "ok": true,
+     "scene": "giant_death_history",
+     "what": "combat death into one owned lifecycle"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:32",
+    "scenes.json:31"
+   ],
+   "id": "scene_observer",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "observer_controls",
+     "what": "observations matched to scene, list, assembly, settings, tick, actor"
+    },
+    {
+     "ok": true,
+     "scene": "observer_controls",
+     "what": "recovery after interruption with factory-default control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:58",
+    "tree.json:73",
+    "scenes.json:64",
+    "scenes.json:83",
+    "scenes.json:1021"
+   ],
+   "id": "expedition_ocean",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "landscape_route",
+     "what": "broad empty crossing, distant destination, passing giant, crowded reject control"
+    },
+    {
+     "ok": true,
+     "scene": "landscape_route",
+     "what": "three route states"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "owner part 'inspect the expedition route' has a hold or review output"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:83",
+    "tree.json:98",
+    "scenes.json:98",
+    "scenes.json:117"
+   ],
+   "id": "prepared_harbour",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "harbour_secured",
+     "what": "occupied, prepared, reloaded, roof-lost variants with unresolved-threat control"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "owner part 'judge whether the prepared refuge reads as dependable' has a hold or review output"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:108",
+    "tree.json:124",
+    "scenes.json:131",
+    "scenes.json:150"
+   ],
+   "id": "practical_fortune",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fortune_supply",
+     "what": "cache, processed lens/brine/clutch, emptied cave; withheld-find control"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "owner part 'inspect the practical payoff' has a hold or review output"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:134",
+    "scenes.json:169",
+    "scenes.json:201"
+   ],
+   "id": "direct_sun",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sun_geometry",
+     "what": "roof/parasol at low and high angle, matched air temperature, legacy mutant rejected"
+    },
+    {
+     "ok": true,
+     "scene": "sun_geometry",
+     "what": "moving giant shade updates consumers, arrival letter"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "ruled 55 C zenith value checked as a number"
+    },
+    {
+     "ok": true,
+     "scene": "glare_cooling_mirage",
+     "what": "goggles, gene, cooling drink, mirage as separate effects"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:160",
+    "scenes.json:233",
+    "scenes.json:266",
+    "scenes.json:370"
+   ],
+   "id": "sand_signs",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "buried_signs",
+     "what": "rumble, wake, geophone, drum ambiguity, gale silence"
+    },
+    {
+     "ok": true,
+     "scene": "swim_fish_thumper",
+     "what": "crossing, strike, droid, Fish job, charged/dry thumper, kill remains"
+    },
+    {
+     "ok": true,
+     "scene": "gale_signs_wet",
+     "what": "gale track erasure"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:187",
+    "scenes.json:303",
+    "scenes.json:837",
+    "scenes.json:869"
+   ],
+   "id": "giant_encounters",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "Muurrok visit warning to departure, beam and take, target death, hard-ground exit"
+    },
+    {
+     "ok": true,
+     "scene": "giant_visit",
+     "what": "sun lance firing"
+    },
+    {
+     "ok": true,
+     "scene": "eruption_brood",
+     "what": "eruption/brood"
+    },
+    {
+     "ok": true,
+     "scene": "campaign_encounters",
+     "what": "horn, den, seep in supplying tier"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:213",
+    "scenes.json:337",
+    "exam.json"
+   ],
+   "id": "hydration_exclusion",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "hydration_independence",
+     "what": "selection independent of hydration with no-provider arm and water-score mutant"
+    },
+    {
+     "ok": true,
+     "scene": "hydration_independence",
+     "what": "droid immunity and thumper draw retained"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:239",
+    "scenes.json:401",
+    "scenes.json:442"
+   ],
+   "id": "gale_passage",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "gale_phases",
+     "what": "phases change sun, senses, sand with quiet control and mass accounting"
+    },
+    {
+     "ok": true,
+     "scene": "gale_carry_return",
+     "what": "carry and saved return incl. missing origin map"
+    },
+    {
+     "ok": true,
+     "scene": "gale_phases",
+     "what": "aftermath rows under controls"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:265",
+    "scenes.json:473",
+    "scenes.json:508"
+   ],
+   "id": "current_water",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "water_cycle",
+     "what": "production from each feedstock, split/merge/reload/ingestion accounting, DBH arms"
+    },
+    {
+     "ok": true,
+     "scene": "pour_expiry_thumper",
+     "what": "pour, wet line, bloom, attraction, expiry vs gale clear, charged/dry thumper"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:292",
+    "scenes.json:542"
+   ],
+   "id": "debt_return",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "debt_return",
+     "what": "RM inert vs campaign ledger, believer/outsider, bands, Return paths and outcomes, repeat control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:318",
+    "scenes.json:620",
+    "scenes.json:574",
+    "scenes.json:1132"
+   ],
+   "id": "giant_history",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "giant_history",
+     "what": "ordinary giant desiccation into skeleton, crowding and reload"
+    },
+    {
+     "ok": true,
+     "scene": "cave_rows_preservation",
+     "what": "cave preservation and release"
+    },
+    {
+     "ok": true,
+     "scene": "giant_history",
+     "what": "T3 single owner, competition, meat-rate spoilage"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:345",
+    "scenes.json:697",
+    "scenes.json:734",
+    "scenes.json:765"
+   ],
+   "id": "ordinary_work",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "workshop_jobs",
+     "what": "construction, repeated bills, contention at 40 colonists, interruption and reload"
+    },
+    {
+     "ok": true,
+     "scene": "settings_effects",
+     "what": "every toggle at its timing and entry-value restoration"
+    },
+    {
+     "ok": true,
+     "scene": "resident_ecology",
+     "what": "resident/event/salvage built capabilities"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:371",
+    "tree.json:387",
+    "scenes.json:984",
+    "scenes.json:1003",
+    "sheet.md:65"
+   ],
+   "id": "stillsand_walk",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "walk_accept",
+     "what": "loop, mid-work save/reload, emptied-cave repeat, second order, no-reload sibling"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "owner part 'judge the repeat expedition' has a hold or review output"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "sheet 'does' states what the walk tests"
+    }
+   ]
+  }
+ ],
+ "contract": {
+  "advisory": true,
+  "alarms": [
+   {
+    "family": "coverage_judge",
+    "first_at": "2026-11-15T09:32:09Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-16T15:17:44Z",
+    "open": true,
+    "subject": "family:coverage_judge",
+    "told_at": "2026-11-15T09:32:09Z",
+    "trips": 11,
+    "why": "refused all of its last 8 verdicts across 7 items"
+   }
+  ],
+  "cached": [],
+  "calibration": "UNTESTED",
+  "counted": true,
+  "may_judge": true,
+  "ok": true,
+  "repair_due": []
+ },
+ "gaps": [
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Every part a built in-scope capability ships must be exercised by a scene with a control, and these are concrete, observable claims.",
+   "evidence": [
+    "record.json:26",
+    "scenes.json:64",
+    "scenes.json:984"
+   ],
+   "gid": "g1",
+   "ids": [
+    "terrain"
+   ],
+   "new_since": "first",
+   "observed": "record.json:26 claims 'broad walkable deep sand, no rain, low fertility, no rivers, allowed roads, disease/weather tables'; its proof_note says presence 'do[es] not establish current coverage, travel cost or appearance'. landscape_route only expects 'desert surfaces resolve and work at defaults'; no scene reads path cost, rain, fertility, rivers, roads or the disease table.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a terrain arm to scenes.json landscape_route (start, expect, control) listing these reads; file its entry point under the existing scene item"
+   },
+   "what": "Terrain capability claims beyond surface appearance are exercised by no scene",
+   "where": "record.json terrain; scenes.json landscape_route",
+   "would_pass": "An acceptance arm (in landscape_route or package_floor) that, on a generated RM_Stillsand map, reads pawn traversal ticks across RM_DeepSand versus Sand, rainfall over a compressed interval, per-cell fertility, river absence and road permission on the tile, and the active disease incident set, each compared against a control biome map that differs."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each is a separate shipped behaviour of a built unit, and a scene can observe it.",
+   "evidence": [
+    "record.json:164",
+    "record.json:282",
+    "record.json:340",
+    "record.json:264",
+    "scenes.json:765",
+    "scenes.json:653",
+    "scenes.json:266"
+   ],
+   "gid": "g2",
+   "ids": [
+    "giant_residents",
+    "duumma",
+    "swim_consumers",
+    "drazzik"
+   ],
+   "new_since": "first",
+   "observed": "record.json:164 ships 'Oommok mirror giant and aurrok grazer; native giant bodies, stats, kinds and art', but no scene names the aurrok and none checks Oommok's mirror property, stats or art. record.json:282 ships the 'Duumma buried creature', but water_cycle only butchers its sac. record.json:340 lists 'terrain/strike/hit surfacing', but swim_fish_thumper tests terrain and strike only. record.json:264 makes hatching conditional 'when the ProximityHatch service loads', and resident_ecology has no service-absent arm.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Extend resident_ecology and swim_fish_thumper actions/expect/control in scenes.json with these four arms"
+   },
+   "what": "Creature behaviours named in the inventory are exercised by no scene",
+   "where": "scenes.json resident_ecology, shade_landmarks, swim_fish_thumper",
+   "would_pass": "resident_ecology (or a new arm) observes a natural aurrok grazing and Oommok's mirror effect and stats against loaded defs, with art checked beside a human. It observes a living duumma's buried state and surfacing. swim_fish_thumper adds a damage-on-submerged-swimmer arm that surfaces it, with an undamaged control. resident_ecology adds a ProximityHatch-absent arm where nizzek eggs do not proximity-hatch and nothing errors."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "What a player reads must agree with what the tree accepts as the behaviour.",
+   "evidence": [
+    "record.json:226",
+    "scenes.json:765",
+    "floor.json"
+   ],
+   "gid": "g3",
+   "ids": [
+    "gaanok"
+   ],
+   "new_since": "first",
+   "observed": "record.json:226: 'described as patient follower; current implementation is ordinary predator AI and slow movement'. resident_ecology only expects 'Gaanok retains its actual slow ordinary predator AI'. Nothing reconciles the player-read description (floor 'text'/'reads_as' applicable) with that behaviour.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add the description-vs-behaviour check to resident_ecology expect/control; file the text correction as a build item"
+   },
+   "what": "The Gaanok's in-game description promises behaviour the implementation lacks, and no scene checks the text",
+   "where": "record.json gaanok; scenes.json resident_ecology",
+   "would_pass": "A text/reads_as arm reads the loaded Gaanok description and compares its behavioural claims against the observed AI trace. Either it passes because the description no longer claims following, or a filed build item corrects the text, and the arm fails on the current 'patient follower' wording."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The capability text makes these claims, and an XML-element read plus a lifespan observation can falsify each.",
+   "evidence": [
+    "record.json:110",
+    "record.json:70",
+    "record.json:529",
+    "scenes.json:508",
+    "scenes.json:837"
+   ],
+   "gid": "g4",
+   "ids": [
+    "hourbloom",
+    "flora_optics",
+    "eruption"
+   ],
+   "new_since": "first",
+   "observed": "record.json:110: 'Short-lived unsowable hourbloom is output of pouring and gale seeding rather than an ordinary wild roster resident'. Scenes test only the pour and gale outputs. record.json:70 'no added lush scrub' and record.json:529 'ruukka and oorrik are incident castes rather than ambient residents' have no absence or lifecycle check.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add the absence/lifecycle reads to resident_ecology or pour_expiry_thumper with a mutant-roster control"
+   },
+   "what": "Exclusion and lifecycle claims (short-lived, unsowable, not on the wild roster, no lush scrub, castes not ambient) have no scene",
+   "where": "scenes.json pour_expiry_thumper, gale_phases, resident_ecology, eruption_brood",
+   "would_pass": "One roster/lifecycle arm shows a poured hourbloom dying within its declared lifespan, hourbloom absent from the sowable plant list and from the loaded BiomeDef wildPlants/wildAnimals, ruukka/oorrik absent from the ambient roster, and no lush scrub defs in the patched roster. A control fixture that adds each to the roster is detected."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Built supplied content ships with the composed package and needs its own exercise.",
+   "evidence": [
+    "record.json:131",
+    "record.json:813",
+    "record.json:632",
+    "scenes.json:620",
+    "scenes.json:869"
+   ],
+   "gid": "g5",
+   "ids": [
+    "murrowbulb",
+    "corpse_history",
+    "horn"
+   ],
+   "new_since": "first",
+   "observed": "record.json:131 'canon bloddle supplied separately by campaign patch', record.json:813 'canon skeletons/graveyard supplied above RM' and record.json:632 'RSW horn item/recipe' appear in no scene. campaign_encounters uses the horn but never crafts it; giant_history covers only ordinary RM conversion.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add the three campaign-tier arms to campaign_encounters (or resident_ecology/giant_history) in scenes.json"
+   },
+   "what": "Parts supplied by the campaign or upper tier are not exercised in their supplying tier",
+   "where": "scenes.json resident_ecology, giant_history, campaign_encounters",
+   "would_pass": "Campaign-tier arms: the bloddle patch applies and a bloddle grows or is used, a canon giant corpse converts to its canon skeleton/graveyard, and the RSW horn recipe is completed by an ordinary bill. Each has an RM-only control where the item is absent."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Two of the four shipped track behaviours have no observation.",
+   "evidence": [
+    "record.json:469",
+    "scenes.json:266",
+    "scenes.json:401"
+   ],
+   "gid": "g6",
+   "ids": [
+    "tracks"
+   ],
+   "new_since": "first",
+   "observed": "record.json:469 ships 'invisible swim troughs and Oommok prints, erasure on accumulated sand motion through SetDepth/AddDepth and gale wipe'. Scenes test troughs and the gale wipe only; 'prints' appears in scenes.json only inside 'fingerprints'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add the Oommok-print and dune-motion erasure arm to swim_fish_thumper or shade_landmarks"
+   },
+   "what": "Track prints and non-gale erasure are untested",
+   "where": "scenes.json swim_fish_thumper, gale_phases",
+   "would_pass": "An arm where a walking Oommok leaves prints read from the TrackGrid and captured, and accumulated dune motion (no gale) via SetDepth/AddDepth erases a trough or print, with a stationary-sand control that keeps it."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "These are stated behaviours with an obvious plausible alternative (calling every swimmer).",
+   "evidence": [
+    "record.json:406",
+    "scenes.json:266",
+    "scenes.json:508"
+   ],
+   "gid": "g7",
+   "ids": [
+    "thumper"
+   ],
+   "new_since": "first",
+   "observed": "record.json:406: 'calls submerged non-player swimmers; reachable destinations, radius overlays'. The controls cover dry thumper and an unreachable destination, but no player-owned swimmer control and no placement or selection overlay capture.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add the player-owned swimmer control and an overlay capture to swim_fish_thumper"
+   },
+   "what": "Thumper radius overlay and non-player call filter are untested",
+   "where": "scenes.json swim_fish_thumper, pour_expiry_thumper",
+   "would_pass": "A tamed or player-faction submerged swimmer in range is not called by a charged thumper while a wild one is, and the placement/selection radius overlay is captured matching the wet radius."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A gate that only toggles cannot show a claimed scaling.",
+   "evidence": [
+    "record.json:896",
+    "record.json:613",
+    "scenes.json:697",
+    "scenes.json:303"
+   ],
+   "gid": "g8",
+   "ids": [
+    "sun_tables",
+    "sun_lance"
+   ],
+   "new_since": "first",
+   "observed": "record.json:896 ships 'stat-part work-speed scaling and outdoor/temperature penalty cancellation'. workshop_jobs only interrupts and resumes work. record.json:613 ships 'elevation scaling ... and own base/top art', but giant_visit fires in one arm with clear/shade lanes and checks no art.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add the paired-intensity stat reads to workshop_jobs and the two-elevation and art arms to giant_visit"
+   },
+   "what": "Sun-scaled numeric effects of the sun tables and sun lance, and the lance's art, are not measured",
+   "where": "scenes.json workshop_jobs, giant_visit",
+   "would_pass": "workshop_jobs reads the work-speed stat at two sun intensities and with outdoor/temperature penalties present versus cancelled, matching the stat-part. giant_visit fires the lance at low and high elevation and records damage scaling. The lance base/top textures resolve and are captured beside a human."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A start assertion is not an exercise of the capability.",
+   "evidence": [
+    "record.json:853",
+    "scenes.json:697"
+   ],
+   "gid": "g9",
+   "ids": [
+    "glass_materials"
+   ],
+   "new_since": "first",
+   "observed": "record.json:853 ships 'traded fine sand' and a 'guarded canon krayt lens remains a trade prize'. workshop_jobs mentions the krayt lens only in start ('optional canon krayt-lens trade route'); no action trades, and fine sand trade is absent.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a trader arm to workshop_jobs or resident_ecology (which already generates a Vaalok trader)"
+   },
+   "what": "Trade routes for glass materials are only asserted, never exercised",
+   "where": "scenes.json workshop_jobs",
+   "would_pass": "A trader generated on Stillsand stocks fine sand, and in the campaign tier the krayt lens appears as a trade prize and is bought. An RM-only control lacks the lens, and nothing errors when the guard is off."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Both are concrete, observable effects of a built unit.",
+   "evidence": [
+    "record.json:1156",
+    "scenes.json:401"
+   ],
+   "gid": "g10",
+   "ids": [
+    "gale"
+   ],
+   "new_since": "first",
+   "observed": "record.json:1156 ships 'launch restriction and weather penalties'. gale_phases covers phases, mass flux, senses and emergence; 'launch' occurs nowhere in scenes.json.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add launch and penalty reads to gale_phases action/expect/control"
+   },
+   "what": "Gale launch restriction and weather penalties are untested",
+   "where": "scenes.json gale_phases",
+   "would_pass": "During a gale a shuttle/transport launch order is refused with a reason and succeeds in the quiet sibling. The weather's move-speed/accuracy/work penalties are read from pawn stats in gale versus quiet."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The owner's ruling is numeric and names the vanilla consumer, and an observation can check both.",
+   "evidence": [
+    "tree.json:134",
+    "record.json:1342",
+    "record.json:1089",
+    "scenes.json:169"
+   ],
+   "gid": "g11",
+   "ids": [
+    "direct_sun",
+    "unified_direct_sun",
+    "legacy_sun"
+   ],
+   "new_since": "first",
+   "observed": "tree.json:134 promises 'the ruled 55 C zenith value and ordinary air heat'. sun_geometry only 'Record[s] the ruled 55 C zenith input' and expects 'geometry determines exposure and its heat contribution', with no numeric relation and no felt-temperature/Heatstroke read. record.json:1089 also ships 'shared shade/pathing', and no scene observes pawns pathing through shade.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add the numeric expectation, the heatstroke consumer read and a shade-pathing arm to sun_geometry"
+   },
+   "what": "Direct Sun's ruled magnitude, its vanilla heat consumer and legacy shade pathing are not asserted",
+   "where": "scenes.json sun_geometry; tree.json direct_sun",
+   "would_pass": "sun_geometry asserts the Direct Sun contribution equals 55 C x sin(sun angle) within a stated tolerance at the low and high lanes, and roofed/parasol lanes read zero. It shows the pawn's felt temperature and Heatstroke severity rising in the open lane and not in the roofed lane at matched air temperature. A shade-pathing arm shows a pawn's chosen path through available shade versus open ground."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The contract defines hold as whether the scene stays up for his review, and these leaves declare his review.",
+   "evidence": [
+    "tree.json:73",
+    "tree.json:98",
+    "tree.json:124",
+    "tree.json:387",
+    "scenes.json:83",
+    "scenes.json:117",
+    "scenes.json:150",
+    "scenes.json:1003"
+   ],
+   "gid": "g12",
+   "ids": [
+    "expedition_ocean",
+    "prepared_harbour",
+    "practical_fortune",
+    "stillsand_walk"
+   ],
+   "new_since": "first",
+   "observed": "tree.json:73 'owner_part': 'yes: inspect the expedition route and apparent emptiness' (similarly :98, :124, :387), yet every scene in scenes.json has 'hold': 'immediate' and none names the capture set or held save he reviews. The flagship showcase built from these scenes is meant for him to judge.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Set hold or add a named review-output field on those four scenes in scenes.json"
+   },
+   "what": "Leaves whose owner part is 'yes' end at once with no review output named",
+   "where": "tree.json owner_part; scenes.json hold",
+   "would_pass": "Each of landscape_route, harbour_secured, fortune_supply and walk_accept has either hold 'owner_review' with a scene-hold condition, or names the keeper savegame/capture packet produced for his review (per the savegame-options rule), so a script can confirm the review artifact exists."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The judge brief requires the sheet a player reads to say what the tree tests.",
+   "evidence": [
+    "sheet.md:15",
+    "sheet.md:17",
+    "sheet.md:19",
+    "sheet.md:65",
+    "tree.json:265",
+    "tree.json:318",
+    "tree.json:371"
+   ],
+   "gid": "g13",
+   "ids": [],
+   "new_since": "first",
+   "observed": "sheet.md:17 says current water capabilities 'retain their full coverage'. sheet.md:19 says giant history 'keep[s] their distinct ownership'. sheet.md:15 says encounters 'complete their warning, action and consequence routes'. These are process words a player cannot read as play. Giant remains drying into skeleton landmarks, glass/lens/sun-cooking work, the Muurrok beam and take, and the stillsand_walk leaf (tree.json:371; only in pruning at sheet.md:65) have no 'does' line.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Rewrite sheet.md does lines for current_water, giant_history, giant_encounters and ordinary_work, and add a stillsand_walk line"
+   },
+   "what": "The player sheet describes process instead of what the tree tests, and omits the walk and central capabilities",
+   "where": "sheet.md does",
+   "would_pass": "Every tree leaf (including stillsand_walk) has a 'does' line stating the observable play outcome its scenes test (e.g. 'a dead giant dries into a species skeleton landmark; titan meat spoils like meat'), with no 'coverage'/'ownership'/'routes' process words. A fresh reader can map each line to its leaf's expect."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A floor line claiming an evidence mode needs a scheduled observation that can produce it.",
+   "evidence": [
+    "floor.json",
+    "scenes.json:951"
+   ],
+   "gid": "g14",
+   "ids": [],
+   "new_since": "first",
+   "observed": "floor.json memory 'establishes' bounds by 'Short repeated create/use/clear/reload cycles', and save_size by 'repeated compressed wet/incident/corpse cycles'. package_floor collects them only 'when the respective controlled route is scheduled', and no scene names those cycles or their counts.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Name the measurement cycles and their scenes in package_floor's action/expect"
+   },
+   "what": "Floor evidence modes rely on cycles that no scene schedules",
+   "where": "floor.json memory, save_size; scenes.json package_floor",
+   "would_pass": "package_floor (or a named floor scene) lists the concrete create/use/clear/reload and wet/incident/corpse cycles, their repetition counts and the scene that runs each, with a same-list baseline control, so a script can match each floor line to a scheduled measurement."
+  }
+ ],
+ "hashes": {
+  "dec:d_answers_recovered": "33281d2dd19567a0",
+  "dec:d_built_first": "2c902f0011210b78",
+  "dec:d_flagship_pick": "906550307642dd26",
+  "dec:d_neighbour": "3e21bf43f51f92f2",
+  "dec:d_proof": "40aff305296af3b3",
+  "dec:d_provenance": "68f9acb32665fb7e",
+  "dec:d_root_synthesis": "d8072cfcbfebd17b",
+  "dec:d_source_refresh": "8bac742cda015b29",
+  "dec:d_stage1_review": "0df70940e0b0a5db",
+  "dec:d_stage2_appraisal": "74ed5fd8a28de037",
+  "dec:d_stage2_claims": "a2d66472a50aa511",
+  "dec:d_stage2_delegated": "a6e0055265ca8112",
+  "dec:d_stage2_preservation": "fa9b56b9c542d399",
+  "dec:d_stage2_reopened_intake": "2beef9b1121e7a9e",
+  "dec:d_stage2_return_review": "12211e8163ccd461",
+  "dec:d_stage2_review": "b27e92b83443d7f4",
+  "dec:d_stage3_drafting": "3c296de41762ded7",
+  "dec:d_stage3_rejection_repair": "5b7c2cfe9dba11bc",
+  "dec:d_stage3_return_evidence": "b568380e3b5db88a",
+  "dec:d_stage3_revalidated_after_intake": "7e399cdf3e4783bb",
+  "dec:d_stage4_exam": "1b3123bea3aa2633",
+  "dec:d_walk_first": "b5758abe7fe586a2",
+  "dec:d_water_version_disposition": "80c2e8f8e92acd9b",
+  "exam": "9eb653242e367497",
+  "floor": "23b0c05e7dac424b",
+  "inv:acoustic_payload": "6e900c50855fc22a",
+  "inv:brine": "c821e6adadf94f6d",
+  "inv:brood": "58cc4095f0ca2dcc",
+  "inv:cave_preservation": "58910ac1d27b97f3",
+  "inv:cave_table": "787d1b70024f47fa",
+  "inv:corpse_history": "f46e446ac45599fc",
+  "inv:den_quest": "2dea1579cd3842a5",
+  "inv:drazzik": "4f3f6b7e4d4adc18",
+  "inv:drift_swim": "e7217509768e605e",
+  "inv:duumma": "16e5df0ca87d13f6",
+  "inv:eruption": "64a5116847dcb0fa",
+  "inv:flora_optics": "dec27b353d00270e",
+  "inv:fossil_port": "50e0fdfcc1fd38eb",
+  "inv:gaanok": "b1851096ebad0ab8",
+  "inv:gale": "e6699c573557e012",
+  "inv:gale_aftermath": "4ca0e01d244f1c9f",
+  "inv:gale_carry": "247132876d360f3f",
+  "inv:geophone": "1a3f3dc7b620e228",
+  "inv:giant_preservation": "8efd54404db0401f",
+  "inv:giant_residents": "0416b5759d7e6e03",
+  "inv:glare_gear": "bc4e520fb268ef70",
+  "inv:glass_materials": "1eec76e56a2c11e1",
+  "inv:grain_life": "d4f634202d9b84bd",
+  "inv:guzzka": "9b76e317655ec8a6",
+  "inv:horizon": "788d6e0ebdfb81f5",
+  "inv:horn": "a06756f7e37c32a9",
+  "inv:hourbloom": "b3a41c678aa6a86d",
+  "inv:karrask": "76b69045bf05f98e",
+  "inv:ledger": "30e1c9cf570f8d74",
+  "inv:legacy_sun": "2aede51cc7ca35bf",
+  "inv:lens_grotto": "49d5c49226c5cbe5",
+  "inv:leviathan": "c574a637518fe63e",
+  "inv:listening": "ef86ea4a54b4eac7",
+  "inv:lookup_cache": "1fba1beaec326b1a",
+  "inv:mirage": "9b76cf45360a3fd8",
+  "inv:mirror_beam": "c278487754cac392",
+  "inv:murrowbulb": "297d2558f2db1f24",
+  "inv:ollim": "493bf9c85d933864",
+  "inv:package": "b50ff98b0e9c7635",
+  "inv:pour": "be1d25face0a8d95",
+  "inv:proof_tools": "3fa96c3a83a4a48f",
+  "inv:rehome_residents": "d6ef2291d89270ba",
+  "inv:removed_cave_fluff": "8532779c6462420d",
+  "inv:removed_fulgurite": "22ed65b3e0ba9917",
+  "inv:removed_gale_fluff": "3e1bd2ec25fe053c",
+  "inv:removed_skeleton_burial": "570fea5f404a57e7",
+  "inv:return_ritual": "bda44d42e6d8c2d5",
+  "inv:rock_island": "840bfa2b7cd208aa",
+  "inv:roster": "24851585ebee2fe4",
+  "inv:sand_fishing": "1693f46dad6c1547",
+  "inv:sarlacc_seep": "bb59dd43634d7202",
+  "inv:settings": "6bcae3edc3d0d9ee",
+  "inv:shade_tenants": "b78cc27dad1d3c60",
+  "inv:sifting": "ac92decbf4135526",
+  "inv:skeleton_landmarks": "b61bf0e49f16c72b",
+  "inv:solar_ovens": "b1d9f36e311b2c42",
+  "inv:solar_still": "c480f40ba0fb63a5",
+  "inv:soorrak": "7abaf86f7a023d4f",
+  "inv:sun_lance": "cfc6e65bac409d7d",
+  "inv:sun_tables": "0c77c02176442d95",
+  "inv:swim_consumers": "0fab94e173f4c9ce",
+  "inv:swim_signs": "557c420c7bb31b44",
+  "inv:terrain": "9d58e2d2cb525a5b",
+  "inv:thumper": "a433351ca349d365",
+  "inv:tier_caves": "e1a89d21f9b455a5",
+  "inv:tracks": "e9b691d9876e2d6e",
+  "inv:unified_direct_sun": "be54c51154d71114",
+  "inv:wet_line": "5510578573969a2e",
+  "inv:wreck_salvage": "863ab133ed2fb31d",
+  "inv:wringing": "90922a2e229138ab",
+  "inv:zuurrik": "282f42a4edf76252",
+  "leaf:current_water": "01ed1ffeff53a021",
+  "leaf:debt_return": "0724b8fece0569ef",
+  "leaf:direct_sun": "4ac02a7963ba00be",
+  "leaf:expedition_ocean": "03167f778477c800",
+  "leaf:gale_passage": "5de89db18cdbdefb",
+  "leaf:giant_encounters": "f85e1c55e5d09ae5",
+  "leaf:giant_history": "0290f362404bb76e",
+  "leaf:hydration_exclusion": "25fb08fa13f94210",
+  "leaf:ordinary_work": "2cb3af8f9fb3890b",
+  "leaf:practical_fortune": "24d536f7db4eb83e",
+  "leaf:prepared_harbour": "c593cd92e8092307",
+  "leaf:sand_signs": "3e538cd0db24f963",
+  "leaf:scene_observer": "36b4c21528496481",
+  "leaf:stillsand_walk": "1d45f8d4744338fa",
+  "record:scope": "ae4165369483ba23",
+  "rest:acoustic_payload": "5c0182a7ba5b3756",
+  "rest:brood": "8d37a31d566f1c3c",
+  "rest:den_quest": "d05cbc18bfe5a783",
+  "rest:eruption": "6d407db875f9d672",
+  "rest:flora_optics": "36962c47cdcf5991",
+  "rest:fossil_port": "e9248725f105b57d",
+  "rest:gaanok": "b4ede83bdba085fd",
+  "rest:grain_life": "a78c9c6b9085a5c4",
+  "rest:horizon": "5d51825f4b12497e",
+  "rest:horn": "4c442742e63886ba",
+  "rest:karrask": "20f6b85f8607d2c3",
+  "rest:lookup_cache": "1f44c3bc45663b88",
+  "rest:murrowbulb": "2d17c5aeccc0f214",
+  "rest:package": "c3c7e1471496c8e0",
+  "rest:proof_tools": "567e8062f3fc67c5",
+  "rest:rehome_residents": "cd7212b2df262dc5",
+  "rest:roster": "2d8c7d072f40acc0",
+  "rest:sarlacc_seep": "4d75537b5df55f18",
+  "rest:settings": "3dba85f4ac764da9",
+  "rest:soorrak": "1060178ae060f7a8",
+  "rest:tier_caves": "f7fa68663a2313c3",
+  "rest:wreck_salvage": "cece26e41de3fc08",
+  "rest:zuurrik": "301b3f95ed0bb20a",
+  "scene:buried_signs": "21272bf72c827f15",
+  "scene:campaign_encounters": "efd767096ef13418",
+  "scene:cave_rows_preservation": "1ecbc2260e699c2a",
+  "scene:debt_return": "b9775da8148222d4",
+  "scene:eruption_brood": "dd2967dd833852ff",
+  "scene:existing_code_walk": "60a910e27e32d70b",
+  "scene:expedition_loop": "24817750705461b3",
+  "scene:fortune_supply": "a9b17498f9e6a9a3",
+  "scene:gale_carry_return": "7596c846ff8653b0",
+  "scene:gale_phases": "00694206e46468c4",
+  "scene:gale_signs_wet": "44974ac5456ae0c4",
+  "scene:giant_death_history": "15bbbc47c2940d0b",
+  "scene:giant_history": "73d0dba27c7b1f55",
+  "scene:giant_visit": "c89eaba08b422326",
+  "scene:glare_cooling_mirage": "244cbaf4c72ec8f2",
+  "scene:harbour_secured": "12c43f75b3d8eceb",
+  "scene:horizon_warning": "dd1c5ccbde5ab7d4",
+  "scene:hydration_independence": "73cc630b4267a594",
+  "scene:landscape_route": "895447f1320fb570",
+  "scene:observer_controls": "706b93eac8145af3",
+  "scene:package_floor": "7aeb5258e3b39e57",
+  "scene:pour_expiry_thumper": "be827297de6ccda4",
+  "scene:resident_ecology": "faf9ae2f233ca4ed",
+  "scene:salvage_fossils_scan": "55782a4edfd31afb",
+  "scene:settings_effects": "edf0084dac680379",
+  "scene:shade_landmarks": "6af62b319cedfc0a",
+  "scene:soorrak_jobs": "14024e5b301346e6",
+  "scene:sun_geometry": "69c4fdc5ea23b350",
+  "scene:sun_work_water": "018cf48559d5a0e4",
+  "scene:swim_fish_thumper": "48295a7e20f46774",
+  "scene:walk_accept": "dbc3d505b8ae7441",
+  "scene:water_cycle": "1731a408d3c3010a",
+  "scene:workshop_jobs": "aa9d3f94db441db0",
+  "sheet:": "25db91e1375286c4",
+  "sheet:delegated": "a9a85b8651396528",
+  "sheet:does": "f4d5ac32fb6cf8d8",
+  "sheet:does not": "69d445a7e83a41fe",
+  "sheet:his words": "6f633e8d9d60a3fb",
+  "sheet:later": "0f7b3cf3fa8f7fae",
+  "sheet:open": "ba878cd8e61e0b8b",
+  "sheet:pruning": "52ea2805c39b1952",
+  "sheet:waived": "2c8f5100aec96257",
+  "showcase:expedition_harbour_fortune": "4bb5982707d0cc7c",
+  "showcase:gale_passage": "21d69792bd3c7fa2",
+  "showcase:giant_visit_and_beam": "f2d642f090bf4e73",
+  "showcase:listen_fish_withdraw": "1f1608e89e0b0954",
+  "showcase:shade_and_giant_history": "b8d928857b7aaa0b",
+  "showcase:sun_exposure": "243a8d211eb255c7",
+  "showcase:water_and_return": "b347d8be06f38261",
+  "tree:rest": "c70e5650de41883e"
+ },
+ "inputs": {
+  "exam.json": "d103f013e7263a969a34565fcab9c62f7a8990e69d3e29d8588842a34c4c42da",
+  "floor.json": "874ebcc724b5e49e375d37339c77afb3d4e786d164e44b0a43331c51c79f5279",
+  "record.json": "4197215fd5eed66dd49067ab2f04cb9d6410ca14a4c4321d1234c66430e7d1c8",
+  "scenes.json": "21cd0e91096397275e7f1bc5ad71218b0e4f18b0e4ca51c6c5bcdc357b8ed040",
+  "sheet.md": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40"
+ },
+ "judge": "rm-coverage-judge-1794841884",
+ "mode": "full",
+ "prompt_chars": 4698,
+ "reasons": "Not covered: 14 gaps, all `first` and all Designer-fixable (return_to 3). Every leaf and the scope of every inventory unit have an acceptance scene that is script-staged, with asserted starts, controls and restoration. But many individual shipped parts have no scene. Uncovered: terrain claims (deep-sand travel, rain, fertility, rivers, roads, disease); the aurrok grazer, Oommok mirror/stats/art, buried duumma, hit surfacing and the ProximityHatch-absent arm; the Gaanok description mismatch; hourbloom and roster exclusion claims; campaign-supplied bloddle, canon skeletons and horn recipe; Oommok prints and dune-motion track erasure; the thumper's non-player filter and overlay; sun-table and sun-lance scaling and lance art; glass trade routes; the gale launch restriction and penalties; the Direct Sun 55 C x sin numeric assertion, heatstroke consumer and shade pathing. Owner-part leaves have only 'immediate' scenes with no review output. The sheet is written in process words and omits the walk. Floor cycles are unscheduled. Removed capabilities have absence checks under their OWNER cuts. Note for a neutral fixer, not a gap: the contract says showcase 1's decision is 'speaker owner', but d_flagship_pick is a Conductor Evidence-for-Ask delegation. Later standing rulings (Conductor authority, Evidence-for-Ask) authorize that, so the contract's wording appears stale.",
+ "sheet": "8f8d32e2166150eae17750752cf9c0ee98bb30f8a273ec969d6a3b11b6cbad40",
+ "signed": false,
+ "tokens": 645544,
+ "tree": "95adfcabc92975ad0ea36224e43ec4771a5cf8d163377de15cbc604361c89e68",
+ "verdict": "not_covered"
+}
