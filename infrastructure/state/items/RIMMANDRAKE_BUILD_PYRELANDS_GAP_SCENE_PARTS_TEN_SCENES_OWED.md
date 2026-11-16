@@ -35,3 +35,16 @@ registered in validation.py:
 
 Expected: exit 0 (1 assertion). The live part is each scene's `live_command` in scenes.json
 (`modcheck run Pyrelands --chains <chain>`), UNRUN as of filing: the game was held by the Pyrelands in-game visit.
+
+## refs
+file: src/RimMandrake/Pyrelands/validation.py
+new: src/RimMandrake/Pyrelands/selftest_pyrelands_ten_scenes_parts.py
+
+## verify
+- Offline: `python3 src/RimMandrake/Utils/run_selftests.py --only selftest_pyrelands_ten_scenes_parts` passes (watched FAIL on base first), and the acceptance one-liner above exits 0.
+- Live (not part of the offline build): each scene's `live_command` in design/concepts/Pyrelands/scenes.json, UNRUN until a bridge seat runs it.
+
+## criteria
+- A1 L0: every entry point in the table is a registered `@suite.chain` in validation.py (foreign_arrivals and fire_sense new)
+- A2 L0: each chain body makes the owed reads named in its table row (static selftest selftest_pyrelands_ten_scenes_parts); a read with no bridge tool is recorded UNMEASURED with a reason, not invented
+- A3 L2: each scene's `live_command` run on a bridge seat (owed; live_run stays UNRUN here)

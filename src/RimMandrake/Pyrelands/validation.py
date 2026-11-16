@@ -1027,6 +1027,7 @@ def plant_census(t):
             if foreign:
                 _fail("foreign plant defs on the site: %r" % foreign)
         t.screenshot()
+    _ten_plant_census(t)
 
 
 @suite.chain("animal_census")
@@ -1152,6 +1153,7 @@ def ruins(t):
             if filthy < RUIN_FILTH_MIN * len(picks):
                 _fail("%d of %d sampled ruins carry ash on the ground, want >= %.0f%%" % (filthy, len(picks), 100 * RUIN_FILTH_MIN))
         t.screenshot()
+    _ten_ruins(t)
 
 
 @suite.chain("burn_line")
@@ -1304,6 +1306,7 @@ def ground_deep_ash(t):
             if ring["WaterShallow"] and not (ring["RM_FE_Ground_SoilRich"] or ring["Mud"]):
                 _fail("standing water with no rich-soil / mud ring: %r" % ring)
         t.screenshot()
+    _ten_ground_deep_ash(t)
 
 
 ASH_STRIP_W, ASH_STRIP_H = 12, 3
@@ -1388,6 +1391,7 @@ def ash_fertility_watered(t):
             if wet["fertility"] - dry["fertility"] < WATERED_MIN_GAIN:
                 _fail("watered %.2f vs dry %.2f: gain < %.2f" % (wet["fertility"], dry["fertility"], WATERED_MIN_GAIN))
         t.screenshot()
+    _ten_ash_fertility_watered(t)
 
 
 @suite.chain("fresh_burn_bonus")
@@ -1809,6 +1813,7 @@ def cinderfall(t):
         _weather_pair(t, "RM_FE_Weather_Cinderfall", "RM_FE_Weather_AshFall",
                       ("overlayClasses", "skyColorsDay", "skyColorsNightMid", "windSpeedFactor"))
     _sky_lightning(t)
+    _ten_cinderfall(t)
 
 
 @suite.chain("blackrain")
@@ -2086,6 +2091,7 @@ def firehawk(t):
             _fail("no %s job in 100 samples over 6000 ticks beside a live fire (job state read only)"
                   % FIRE_HAWK_JOB)
         t.screenshot(rect=rect)
+    _ten_firehawk(t)
 
 
 WARMTH_FIELD = "RimMandrake.Pyrelands.FurnaceWarmthField"   # jawa/static_call target (CompFurnaceWarmthAura.cs)
@@ -2447,6 +2453,7 @@ def furnace_sleep(t):
             if verdict != "PASS":
                 _unmeasured(t, "no verdict in %d ticks: %s" % (waited, why))
         t.screenshot(rect=(plots["A"][0] - 1, plots["A"][1] - 1, 18, 7))
+    _ten_furnace_sleep(t)
 
 
 @suite.chain("burrowers")
@@ -2673,6 +2680,7 @@ def embergrass_regrow(t):
             if not fracs[-1][1] or fracs[-1][1] < REGROW_WEEK_FRAC:
                 _fail("not largely green again within about a week: %r" % (fracs,))
         t.screenshot(rect=regrow)
+    _ten_embergrass_regrow(t)
 
 
 def _live_setting(t, field):
@@ -3290,6 +3298,7 @@ def flamefang_venom(t):
                 _unmeasured(t, "the %s never bit in 6000 ticks: the control saw no bite" % PLAIN_BITER)
             if _has_hediff(row, VENOM):
                 _fail("a %s bite carried %s: the venom is not the flamefang's own" % (PLAIN_BITER, VENOM))
+    _ten_flamefang_venom(t)
 
 
 def _log_mark(t):
@@ -3555,6 +3564,879 @@ def walk_season(t):
                 _fail("%d fire cells burned with the mechanics off after an extinguish" % fires_off)
             if errs:
                 _fail("the log holds %d error line(s) over the switch: %r" % (len(errs), errs[:2]))
+    _ten_walk_season(t)
+
+
+# ---- RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED: the owed parts of twelve scenes ----
+# Each existing chain ends with `_ten_<chain>(t)`; foreign_arrivals and fire_sense are new chains. A read no bridge tool
+# can make is recorded `_unmeasured(...)` with its reason, never invented. Every part is independent of the chain's own
+# rows (`_independent`), so a FAIL above does not hide it. Offline (the declaration probe) every bridge call is a no-op.
+TEN_DAY = 60000
+TEN_HOUR = 2500
+TEN_PAD_SENSE = (30, 160)      # fire_sense: free of every other pad (nearest PAD_HERD_OLD, 60 cells)
+TEN_PAD_ROOF = (95, 30)        # walk_season's roofed room on ember grass
+TEN_PAD_BED = (190, 160)       # furnace_sleep's beast A2 and the muffalo
+TEN_PAD_WET = (95, 95)         # ash_fertility_watered's wet and dry potato strips
+TEN_PAD_GRASS = (160, 225)     # embergrass_regrow's three sown patches
+TEN_PAD_HAWK_FIRE = (30, 60)   # firehawk: the far burn; the second hawk starts TEN_HAWK_OFFSET cells east of it
+TEN_HAWK_REACH = 54            # CompFireHawkSpread scanRadius (JobGiver_RUT_FireHawkSeekBurn: seeks only beyond 0.9 * 54)
+TEN_HAWK_OFFSET = 60           # > 0.9 * 54 = 48.6 and <= SightRange 180: the seek band
+TEN_GATE = "RimMandrake.Pyrelands.PyrelandsMechanicsGate"
+TEN_SAFE_CLEAR = 3             # PyrelandsFireSense.SafeClear (a walking pawn)
+TEN_STEP_JOB = "RM_PyreStepAwayFromFire"
+TEN_SEEK_JOB = "RM_FireHawkSeekBurn"
+TEN_NATIVE = ("HerdMigration", "ManhunterPack")
+TEN_TILE_SCAN = 60000          # world tiles scanned (200 a read) for a vanilla control tile
+TEN_CONTROL_SIZE = 100
+TEN_BURST = 1.5                # a "burst": a day's gain above 1.5x the plant's vanilla daily rate (no code defines one)
+TEN_WATER_RING = ("Mud", "RM_FE_Ground_SoilRich")   # GenStep_PyrelandsStandingWater's shore ring
+TEN_CROP = "Plant_Potato"
+
+
+def _ten_glow(t, xz):
+    """jawa/glow_at on one cell -> {hour, skyGlow, groundGlow}, None offline."""
+    r = t.bridge_call("jawa/glow_at", cells="%d,%d" % tuple(xz))
+    if not _live(t):
+        return None
+    _ok(r, "glow_at(%r)" % (xz,))
+    cell = (r.get("cells") or [{}])[0]
+    return {"hour": r.get("hour"), "skyGlow": r.get("skyGlow"), "groundGlow": cell.get("groundGlow")}
+
+
+def _ten_hour(t):
+    g = _ten_glow(t, (1, 1))
+    h = (g or {}).get("hour")
+    return float(h) if isinstance(h, (int, float)) else None
+
+
+def _ten_noon_hour(t, lo=10, hi=14):
+    """Run the clock into [lo, hi) and assert it there (the capture hour); UNMEASURED when the clock is unreadable."""
+    if not _live(t):
+        return None
+    h = _ten_hour(t)
+    if h is None:
+        _unmeasured(t, "glow_at returned no hour, so the %dh-%dh capture window cannot be asserted" % (lo, hi))
+    if not lo <= h < hi:
+        _wait(t, int(((lo + 0.5 - h) % 24) * TEN_HOUR))
+        h = _ten_hour(t)
+    if h is None or not lo <= h < hi:
+        _fail("the clock reads %r after the run to %dh, outside the %dh-%dh capture window" % (h, lo, lo, hi))
+    return h
+
+
+def _ten_wild_kinds(t):
+    """{kindDef: n} of the wild animals (no faction) on the current map; {} offline."""
+    r = t.bridge_call("jawa/list_pawns", limit=1000)
+    if not _live(t):
+        return {}
+    _ok(r, "list_pawns")
+    if r.get("truncated"):
+        _fail("wild animal census truncated: %r" % r.get("message"))
+    out = {}
+    for p in r.get("pawns") or []:
+        if p.get("faction") is None and p.get("intelligence") == "Animal" and not p.get("dead"):
+            out[p.get("kindDef")] = out.get(p.get("kindDef"), 0) + 1
+    return out
+
+
+def _ten_static(t, type_, method, args=None):
+    kw = {"type": type_, "method": method}
+    if args is not None:
+        kw["args"] = args
+    r = t.bridge_call("jawa/static_call", **kw)
+    if not _live(t):
+        return None
+    _ok(r, "static_call %s.%s" % (type_, method))
+    return str(r.get("result"))
+
+
+def _ten_gate_on(t):
+    """PyrelandsMechanicsGate.On (the pyrelandsEnabled setting AND the shell's Pyrelands roster toggle) -> bool or None."""
+    v = _ten_static(t, TEN_GATE, "get_On")
+    return None if v is None else v.strip().lower() == "true"
+
+
+def _ten_control_map_tile(t, biome):
+    """A land tile the world ALREADY carries as `biome` (flat or small hills, no world object on it), or None. Read
+    only: no tile's biome is written (no worldgen of any kind)."""
+    for start in range(0, TEN_TILE_SCAN, 200):
+        r = t.bridge_call("jawa/world_tile_get", range="%d-%d" % (start, start + 199), limit=200)
+        rows = (r or {}).get("tiles") or []
+        if not rows:
+            return None
+        cands = [w.get("tile") for w in rows if w.get("biome") == biome and not w.get("waterCovered")
+                 and w.get("hilliness") in ("Flat", "SmallHills")]
+        if not cands:
+            continue
+        objs = t.bridge_call("jawa/world_objects_get", tiles=",".join(str(c) for c in cands), limit=200)
+        taken = set(o.get("tile") for o in ((objs or {}).get("objects") or []))
+        for c in cands:
+            if c not in taken:
+                return c
+    return None
+
+
+def _ten_control_map(t, biome, size=TEN_CONTROL_SIZE):
+    """A vanilla `biome` map beside the site, generated on a tile that already is `biome` (never world_tile_map_generate's
+    biome= write). Leaves it CURRENT, hostiles killed; -> (mapId, tile, site mapId). The caller reads it at once (no
+    ticks: no keeper colonist, so nothing culls it) and drops it with _ten_control_map_drop in a finally."""
+    if not _live(t):
+        return None
+    site = (t.bridge_call("jawa/map_info") or {}).get("mapId")
+    tile = _ten_control_map_tile(t, biome)
+    if tile is None:
+        _unmeasured(t, "no free flat %s land tile among the first %d world tiles for the vanilla control map"
+                    % (biome, TEN_TILE_SCAN))
+    r = _ok(t.bridge_call("jawa/world_tile_map_generate", tile=tile, sizeX=size, sizeZ=size),
+            "world_tile_map_generate(%s)" % tile)
+    ctl = (r.get("mapId"), tile, site)
+    objs = (t.bridge_call("jawa/world_objects_get", tiles=str(tile), limit=10) or {}).get("objects") or []
+    ids = ",".join(str(o.get("id")) for o in objs if o.get("id") is not None)
+    if ids:
+        t.bridge_call("jawa/world_objects_set", ids=ids, faction="PlayerColony")
+    t.bridge_call("jawa/set_current_map", mapId=ctl[0])
+    t.bridge_call("jawa/kill_hostiles", mapId=ctl[0])
+    got = (t.bridge_call("jawa/map_info") or {}).get("mapBiome")
+    if got != biome:
+        _ten_control_map_drop(t, ctl)
+        _unmeasured(t, "the control map on tile %s reads mapBiome %r, not %s" % (tile, got, biome))
+    return ctl
+
+
+def _ten_control_map_drop(t, ctl):
+    """Drop the control map (current) and its settlement; the site is current again."""
+    if not _live(t) or not ctl:
+        return
+    mid, tile, site = ctl
+    if (t.bridge_call("jawa/map_info") or {}).get("mapId") == mid:
+        t.bridge_call("jawa/map_drop", mapIndex=-1, notifyPlayer=False)
+    objs = (t.bridge_call("jawa/world_objects_get", tiles=str(tile), limit=10) or {}).get("objects") or []
+    ids = ",".join(str(o.get("id")) for o in objs if o.get("id") is not None)
+    if ids:
+        t.bridge_call("jawa/world_objects_remove", ids=ids)
+    if site is not None:
+        t.bridge_call("jawa/set_current_map", mapId=site)
+    _on_site(t)
+
+
+def _ten_foreign_arrivals_disallowed():
+    """The fixed-species incidents Patches/RM_Pyrelands_NoForeignArrivals.xml refuses on the site."""
+    return ("AnimaTreeSpawn", "FarmAnimalsWanderIn", "GauranlenPodSpawn", "HarbingerTreeSpawn", "PoluxTreeSpawn",
+            "ThrumboPasses")
+
+
+def _ten_foreign_arrivals_dry_runs(t, defs):
+    """fire_incident(dryRun=True) per def -> {def: canFireNow}. The dry-run reply's success IS canFire, so it is read
+    raw, never through _ok."""
+    out = {}
+    for d in defs:
+        r = t.bridge_call("jawa/fire_incident", incidentDef=d, dryRun=True)
+        out[d] = (r or {}).get("canFireNow")
+    return out
+
+
+@suite.chain("foreign_arrivals")
+@_teardown(fire=True)
+def foreign_arrivals(t):
+    """Scene sc_foreign_arrivals (gap g1). On the site every disallowed fixed-species incident (_ten_foreign_arrivals_disallowed()) is refused
+    (canFireNow False on a dry run) and the wild census holds no species outside ANIMAL_MANIFEST; the native herd
+    migration and a manhunter pack fire and bring only roster species. Control: a vanilla AridShrubland map beside the
+    site, where at least one of the same incidents can fire. Live half: scenes.json live_command (UNRUN here)."""
+    _pad(t, PAD_PROBE)
+    with _comp(t, "foreign_incidents_refused"):
+        before = _ten_wild_kinds(t)
+        dry = _ten_foreign_arrivals_dry_runs(t, _ten_foreign_arrivals_disallowed())
+        if _live(t):
+            _note(t, "disallowed incidents, canFireNow on the site", dry)
+            foreign = sorted(k for k in before if k not in ANIMAL_MANIFEST)
+            if foreign:
+                _fail("wild animals outside ANIMAL_MANIFEST on the site: %r" % foreign)
+            if any(v is None for v in dry.values()):
+                _unmeasured(t, "fire_incident dry run unread for %r" % sorted(k for k, v in dry.items() if v is None))
+            if any(dry.values()):
+                _fail("disallowed incidents can fire on the site: %r" % sorted(k for k, v in dry.items() if v))
+    _independent(t)
+    with _comp(t, "native_herds_only_roster"):
+        got = {}
+        for inc in TEN_NATIVE:
+            pre = _ten_wild_kinds(t)
+            r = t.bridge_call("jawa/fire_incident", incidentDef=inc, dryRun=False, forced=True)
+            _wait(t, 600)
+            post = _ten_wild_kinds(t)
+            new = dict((k, post.get(k, 0) - pre.get(k, 0)) for k in post if post.get(k, 0) > pre.get(k, 0))
+            got[inc] = {"fired": (r or {}).get("fired"), "canFireNow": (r or {}).get("canFireNow"), "new": new}
+            if inc == "ManhunterPack":
+                t.bridge_call("jawa/kill_hostiles")
+        if _live(t):
+            _note(t, "native incidents and the species they brought", got)
+            if not any(v["fired"] for v in got.values()):
+                _unmeasured(t, "neither HerdMigration nor ManhunterPack fired: %r" % got)
+            stray = sorted(set(k for v in got.values() for k in v["new"] if k not in ANIMAL_MANIFEST))
+            if stray:
+                _fail("native incidents brought species outside ANIMAL_MANIFEST: %r" % stray)
+    _independent(t)
+    with _comp(t, "vanilla_control_can_fire"):
+        ctl = _ten_control_map(t, "AridShrubland")
+        try:
+            dry = _ten_foreign_arrivals_dry_runs(t, _ten_foreign_arrivals_disallowed())
+        finally:
+            _ten_control_map_drop(t, ctl)
+        if _live(t):
+            _note(t, "disallowed incidents, canFireNow on the vanilla AridShrubland control", dry)
+            if not any(dry.values()):
+                _unmeasured(t, "no disallowed incident can fire even on the vanilla control (their own gates: season, "
+                               "DLC, cooldown), so the site's refusal is not told apart: %r" % dry)
+
+
+def _ten_lit_plot(t, rect):
+    """Soil, ember grass, a ring of concrete, then fire on `rect`."""
+    _firebreak(t, rect)
+    _soil(t, rect)
+    _plants(t, "RM_FE_Plant_EmberGrass", rect)
+    return _fire(t, rect)
+
+
+def _ten_pos(t, pid):
+    row = _pawn_row(t, pid)
+    return (row.get("x"), row.get("z")) if row else None
+
+
+def _ten_clear_of(pos, rect):
+    """Euclidean distance from `pos` to the nearest cell of `rect`."""
+    x, z, w, h = rect
+    return min(((pos[0] - cx) ** 2 + (pos[1] - cz) ** 2) ** 0.5 for cx in range(x, x + w) for cz in range(z, z + h))
+
+
+def _ten_jobs(t, pid, polls, step):
+    """The distinct jobs `pid` held, in order, over `polls` reads `step` ticks apart."""
+    seq = []
+    for _ in range(polls):
+        _wait(t, step)
+        j = _job_of(t, pid)
+        if j and (not seq or seq[-1] != j):
+            seq.append(j)
+    return seq
+
+
+@suite.chain("fire_sense")
+@_teardown(fire=True, weather=True)
+def fire_sense(t):
+    """Scene sc_fire_sense (round-5 g2). P, beside a test-lit Fire with Firefighter off, takes RM_PyreStepAwayFromFire and
+    ends at least SafeClear (3) cells from the fire; H, urgently hungry (UrgentlyHungry: Food 0.08) with Firefighter on
+    and a home-area fire 15 cells off, eats (Ingest) before it beats fire (BeatFire). Control: PyrelandsMechanicsGate
+    off (pyrelandsEnabled False) and P beside a fire takes no step-away. The shell's Pyrelands roster toggle has no bridge
+    setter: UNMEASURED. Live half: scenes.json live_command (UNRUN here)."""
+    _pad(t, TEN_PAD_SENSE)
+    t.clear_area(size=TEST_SIZE)
+    x, z = t.anchor
+    with _comp(t, "fire_sense_gate_on"):
+        info = t.bridge_call("jawa/map_info") or {}
+        on = _ten_gate_on(t)
+        if _live(t):
+            if info.get("mapBiome") != "RM_Pyrelands":
+                _unmeasured(t, "the current map is %r, not RM_Pyrelands" % info.get("mapBiome"))
+            if on is not True:
+                _fail("PyrelandsMechanicsGate.get_On reads %r on the site" % on)
+    _independent(t)
+    with _comp(t, "fire_sense_steps_away"):
+        t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+        plot = (x - 1, z - 1, 3, 3)
+        p = _spawn_colonist(t, x + 2, z)
+        t.bridge_call("jawa/set_work_priority", pawnId=p, workType="Firefighter", priority=0)
+        _ten_lit_plot(t, plot)
+        seq = _ten_jobs(t, p, 20, 30)
+        pos = _ten_pos(t, p)
+        if _live(t):
+            clear = _ten_clear_of(pos, plot) if pos else None
+            _note(t, "P beside the fire: jobs, end cell, distance to the plot (SafeClear %d)" % TEN_SAFE_CLEAR,
+                  {"jobs": seq, "end": pos, "clear": clear})
+            if TEN_STEP_JOB not in seq:
+                _fail("P beside a lit Fire never took %s: %r" % (TEN_STEP_JOB, seq))
+            if clear is None or clear < TEN_SAFE_CLEAR:
+                _fail("P ended %r cells from the fire, under SafeClear %d" % (clear, TEN_SAFE_CLEAR))
+        _extinguish(t)
+    _independent(t)
+    with _comp(t, "fire_sense_hungry_eats_first"):
+        h = _spawn_colonist(t, x - 8, z + 6)
+        t.bridge_call("jawa/set_work_priority", pawnId=h, workType="Firefighter", priority=1)
+        t.bridge_call("jawa/paint_area", area="home", ops=_rs(_rect(t)), value=True)
+        t.bridge_call("jawa/spawn_batch", ops="MealSimple:%d,%d,1" % (x + 2, z + 6))
+        t.bridge_call("jawa/pawn_need", pawn=h, action="need", need="Food", level=0.08)   # UrgentlyHungry
+        _ten_lit_plot(t, (x + 6, z + 5, 2, 2))
+        seq = _ten_jobs(t, h, 50, 60)
+        if _live(t):
+            _note(t, "H urgently hungry, a fire on the home area: jobs in order", seq)
+            if "Ingest" not in seq:
+                _fail("urgently hungry H never ate (no Ingest) with a fire burning: %r" % seq)
+            if "BeatFire" in seq and seq.index("BeatFire") < seq.index("Ingest"):
+                _fail("H beat fire (BeatFire) before eating (Ingest) while urgently hungry: %r" % seq)
+        _extinguish(t)
+    _independent(t)
+    with _comp(t, "fire_sense_gate_off_control"):
+        _set(t, {"pyrelandsEnabled": False})
+        on = _ten_gate_on(t)
+        q = _spawn_colonist(t, x + 2, z - 8)
+        t.bridge_call("jawa/set_work_priority", pawnId=q, workType="Firefighter", priority=0)
+        _ten_lit_plot(t, (x - 1, z - 9, 3, 3))
+        seq = _ten_jobs(t, q, 20, 30)
+        _extinguish(t)
+        _set(t, {"pyrelandsEnabled": True})
+        if _live(t):
+            _note(t, "gate off: PyrelandsMechanicsGate.On and the jobs beside the fire", {"on": on, "jobs": seq})
+            if on is not False:
+                _fail("pyrelandsEnabled False left PyrelandsMechanicsGate.get_On %r" % on)
+            if TEN_STEP_JOB in seq:
+                _fail("with the gate off P still took %s: %r" % (TEN_STEP_JOB, seq))
+    _independent(t)
+    with _comp(t, "fire_sense_roster_toggle_off"):
+        _unmeasured(t, "the shell's Pyrelands roster toggle (RM_BiomesSettings.enabled[\"Pyrelands\"], a dictionary entry) "
+                       "has no bridge setter; the gate-off control runs through pyrelandsEnabled instead")
+
+
+def _ten_plant_census(t):
+    """sc_populations: the firecast counts (RM_FireHawk >= 2, RM_Ashwallow >= 8); a day with wildPlantAllowlistEnabled on,
+    then a day off, censusing plants outside PLANT_MANIFEST (on: none may appear); the same-seed map with
+    PyrelandsMechanicsGate off is UNMEASURED (no tool regenerates the site's tile with its seed beside the live site)."""
+    _independent(t)
+    with _comp(t, "firecast_counts"):
+        kinds = _ten_wild_kinds(t)
+        if _live(t):
+            _note(t, "firecast counts", {"RM_FireHawk": kinds.get("RM_FireHawk", 0),
+                                         "RM_Ashwallow": kinds.get("RM_Ashwallow", 0)})
+            if kinds.get("RM_FireHawk", 0) < 2:
+                _fail("RM_FireHawk %d on the site, the scene asks >= 2" % kinds.get("RM_FireHawk", 0))
+            if kinds.get("RM_Ashwallow", 0) < 8:
+                _fail("RM_Ashwallow %d on the site, the scene asks >= 8" % kinds.get("RM_Ashwallow", 0))
+    _independent(t)
+    with _comp(t, "wild_plant_allowlist_day"):
+        days = {}
+        for on in (True, False):
+            _set(t, {"wildPlantAllowlistEnabled": on})
+            pre = _whole_map(t, "Plant")
+            _wait(t, TEN_DAY)
+            post = _whole_map(t, "Plant")
+            days[on] = dict((k, post[k] - pre.get(k, 0)) for k in post
+                            if k not in PLANT_MANIFEST and post[k] > pre.get(k, 0))
+        _set(t, {"wildPlantAllowlistEnabled": True})
+        if _live(t):
+            _note(t, "plants outside PLANT_MANIFEST that appeared in a day (allowlist on / off)", days)
+            if days[True]:
+                _fail("with wildPlantAllowlistEnabled on, foreign plants appeared: %r" % days[True])
+            if not days[False]:
+                _unmeasured(t, "no foreign plant appeared with the allowlist off either: no donor plant is in this "
+                               "tile's wild-plant pass and no bridge tool adds one, so the on-day is not told apart")
+    _independent(t)
+    with _comp(t, "same_seed_gate_off_map"):
+        _unmeasured(t, "no bridge tool regenerates the site's tile with the same seed beside the live site, and "
+                       "PyrelandsMechanicsGate cannot be held off through map generation of a second map")
+
+
+def _ten_walk_season(t):
+    """sc_walk (PYRE_WALK=1 only): the gate off a day then on; a roofed room on ember grass withers; fire-cast thirst
+    (RM_Thirst, no RM_Dehydration); no colonist burned (Burn) or starved (Malnutrition)."""
+    walk = os.environ.get("PYRE_WALK") == "1"
+    _independent(t)
+    with _comp(t, "walk_gate_off_then_on"):
+        if not walk:
+            _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _set(t, {"pyrelandsEnabled": False})
+        off = _ten_gate_on(t)
+        a0, f0 = _depth(t, None), _count(t, "Fire")
+        _wait(t, TEN_DAY)
+        a1, f1 = _depth(t, None), _count(t, "Fire")
+        _set(t, {"pyrelandsEnabled": True})
+        on = _ten_gate_on(t)
+        _wait(t, TEN_DAY)
+        a2 = _depth(t, None)
+        if _live(t):
+            _note(t, "PyrelandsMechanicsGate off a day, then on a day: ash depthSum, fires",
+                  {"off": off, "on": on, "ash": [a0, a1, a2], "fires": [f0, f1]})
+            if off is not False or on is not True:
+                _fail("PyrelandsMechanicsGate.get_On read %r off / %r on" % (off, on))
+            if f1:
+                _fail("%d fires burning after a day with the gate off" % f1)
+            if a1 is not None and a0 is not None and a1 > a0 + 1e-6:
+                _fail("ash gained %.3f with the gate off" % (a1 - a0))
+    _independent(t)
+    with _comp(t, "walk_roster_toggle"):
+        _unmeasured(t, "the shell's Pyrelands roster toggle (RM_BiomesSettings.enabled[\"Pyrelands\"]) has no bridge "
+                       "setter; walk_gate_off_then_on uses pyrelandsEnabled")
+    _independent(t)
+    with _comp(t, "walk_roofed_grass_withers"):
+        if not walk:
+            _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        _pad(t, TEN_PAD_ROOF)
+        x, z = t.anchor
+        room = (x - 4, z - 4, 9, 9)
+        inner = (x - 3, z - 3, 7, 7)
+        t.bridge_call("jawa/make_empty_room", rect=_rs(room), stuffDef="Steel", doorDef="Wall", floorDef=SOIL,
+                      roofDef="RoofConstructed")
+        t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%s" % _rs(inner))
+        _plants(t, "RM_FE_Plant_EmberGrass", inner)
+        n0 = _count(t, "RM_FE_Plant_EmberGrass", _rs(inner))
+        _wait(t, 3 * TEN_DAY)
+        n1 = _count(t, "RM_FE_Plant_EmberGrass", _rs(inner))
+        if _live(t):
+            _note(t, "ember grass under a roof, 3 days", [n0, n1])
+            if not n0:
+                _unmeasured(t, "no ember grass took inside the roofed room")
+            if n1 >= n0:
+                _fail("roofed ember grass did not wither in 3 days: %r -> %r" % (n0, n1))
+    _independent(t)
+    with _comp(t, "walk_firecast_thirst_and_colonists"):
+        if not walk:
+            _unmeasured(t, "the walk parts run only with PYRE_WALK=1 (full list, Stage 6)")
+        thirst, bad = {}, []
+        for _ in range(4):
+            r = t.bridge_call("jawa/list_pawns", limit=1000, includeHealth=True)
+            for p in ((r or {}).get("pawns") or []):
+                if p.get("dead"):
+                    continue
+                if p.get("intelligence") == "Animal" and p.get("kindDef") in ANIMAL_MANIFEST:
+                    thirst[p.get("id")] = _need(t, p.get("id"), "RM_Thirst")
+                    if _has_hediff(p, "RM_Dehydration"):
+                        bad.append((p.get("id"), "RM_Dehydration"))
+                if p.get("intelligence") == "Humanlike" and p.get("faction") == "Player":
+                    for hd in ("Burn", "Malnutrition"):
+                        if _has_hediff(p, hd):
+                            bad.append((p.get("id"), hd))
+            _wait(t, TEN_DAY // 4)
+        if _live(t):
+            _note(t, "fire-cast RM_Thirst levels", thirst)
+            if not any(v is not None for v in thirst.values()):
+                _fail("no fire-cast animal carries an RM_Thirst need")
+            if bad:
+                _fail("over a day: %r" % sorted(set(bad)))
+
+
+def _ten_ground_deep_ash(t):
+    """sc_ash_ground: at noon (asserted) save ashground_noon; AshFall locked, light (glow_at skyGlow) and ProbeAsh each
+    hour; reload ashground_noon, Clear over the same hours; ash-fall light below and ash gain above at every hour.
+    Shore ring: every land cell beside standing water reads Mud or RM_FE_Ground_SoilRich."""
+    _independent(t)
+    with _comp(t, "ash_fall_vs_clear_by_hour"):
+        _ten_noon_hour(t)
+        t.bridge_call("rimworld/save_game", saveName="ashground_noon")
+        runs = {}
+        for w in (ASHFALL, "Clear"):
+            t.bridge_call("rimworld/load_game", saveName="ashground_noon")
+            _on_site(t)
+            t.bridge_call("jawa/weather_set", weather=w, lockWeather=True)
+            rows = []
+            a0 = _ash(t).get("depthSum")
+            for _ in range(4):
+                _wait(t, TEN_HOUR)
+                gr = t.bridge_call("jawa/glow_at", cells="%d,%d" % tuple(t.anchor)) or {}
+                g = {"hour": gr.get("hour"), "skyGlow": gr.get("skyGlow")}
+                a = _ash(t).get("depthSum")
+                rows.append({"hour": g.get("hour"), "skyGlow": g.get("skyGlow"),
+                             "gain": None if a is None or a0 is None else a - a0})
+            runs[w] = rows
+        t.bridge_call("jawa/weather_set", unlock=True)
+        if _live(t):
+            _note(t, "ash fall vs clear from ashground_noon, hour by hour", runs)
+            for af, cl in zip(runs[ASHFALL], runs["Clear"]):
+                if af["hour"] != cl["hour"]:
+                    _fail("the two runs read different clock hours: %r / %r" % (af["hour"], cl["hour"]))
+                if not af["skyGlow"] < cl["skyGlow"]:
+                    _fail("at hour %r ash-fall light %r is not below clear %r" % (af["hour"], af["skyGlow"], cl["skyGlow"]))
+                if not af["gain"] > cl["gain"]:
+                    _fail("at hour %r ash-fall gain %r is not above clear %r" % (af["hour"], af["gain"], cl["gain"]))
+    _independent(t)
+    with _comp(t, "shore_ring"):
+        r = t.bridge_call("jawa/get_terrain_batch", rects=_whole(t))
+        if _live(t):
+            _ok(r, "get_terrain_batch(whole map)")
+            cells = {}
+            for op in str(r.get("ops") or "").split(";"):
+                d, _, rr = op.partition(":")
+                try:
+                    ox, oz, ow, oh = (int(v) for v in rr.split(","))
+                except ValueError:
+                    continue
+                for cx in range(ox, ox + ow):
+                    for cz in range(oz, oz + oh):
+                        cells[(cx, cz)] = d
+            water = set(c for c, d in cells.items() if is_water_family(d))
+            if not water:
+                _unmeasured(t, "this map rolled no standing water, so there is no shore ring to read")
+            ring = {}
+            for (cx, cz) in water:
+                for dx in (-1, 0, 1):
+                    for dz in (-1, 0, 1):
+                        n = (cx + dx, cz + dz)
+                        if n in cells and n not in water:
+                            ring[n] = cells[n]
+            off = dict((c, d) for c, d in ring.items() if d not in TEN_WATER_RING)
+            tally = {}
+            for d in ring.values():
+                tally[d] = tally.get(d, 0) + 1
+            _note(t, "shore ring terrain (Mud / RM_FE_Ground_SoilRich expected)", tally)
+            if off:
+                _fail("%d of %d shore-ring cells are neither Mud nor RM_FE_Ground_SoilRich: %r"
+                      % (len(off), len(ring), sorted(off.items())[:8]))
+
+
+def _ten_cinderfall(t):
+    """sc_three_skies: each sky (AshFall, Cinderfall, BlackRain, Rain) from a reload of skies_noon, the capture hour
+    asserted 10h-14h, a screenshot each; then two equal LayAsh patches from reloads, Clear vs BlackRain, wash_verdict."""
+    _independent(t)
+    with _comp(t, "three_skies_from_noon"):
+        _ten_noon_hour(t)
+        t.bridge_call("rimworld/save_game", saveName="skies_noon")
+        hours = {}
+        for w in (ASHFALL, CINDERFALL, BLACKRAIN, "Rain"):
+            t.bridge_call("rimworld/load_game", saveName="skies_noon")
+            _on_site(t)
+            _ten_noon_hour(t)
+            _sky(t, w)
+            hours[w] = _ten_hour(t)
+            if _live(t) and not (hours[w] is not None and 10 <= hours[w] < 14):
+                _fail("the %s capture hour %r is outside 10h-14h" % (w, hours[w]))
+            t.screenshot(name="sky_%s" % w)
+        _note(t, "capture hours per sky", hours)
+    _independent(t)
+    with _comp(t, "blackrain_wash_vs_clear_patch"):
+        rect = _rs(_rect(t, size=12))
+        got = {}
+        for w in ("Clear", BLACKRAIN):
+            t.bridge_call("rimworld/load_game", saveName="skies_noon")
+            _on_site(t)
+            _sky(t, w)
+            t.bridge_call("jawa/static_call", type=ASH_SAND, method="LayAsh", args="%s|%s" % (rect, WASH_DEPTH))
+            a = _depth(t, rect)
+            _wait(t, WASH_TICKS)
+            got[w] = (a, _depth(t, rect))
+        t.bridge_call("jawa/weather_set", unlock=True)
+        if _live(t):
+            ok, why = wash_verdict(got["Clear"], got[BLACKRAIN])
+            _note(t, "equal patches from skies_noon: clear vs black rain", why)
+            if not ok:
+                _fail(why)
+
+
+def _ten_embergrass_regrow_growth(t, rect):
+    """Mean plant growth (0-1) over `rect` from the inspect strings ('Growth: N%'), None when no plant reads."""
+    r = t.bridge_call("jawa/inspect_string", rect=_rs(rect), limit=100)
+    if not _live(t):
+        return None
+    vals = []
+    for row in (r or {}).get("things") or []:
+        for ln in row.get("inspect") or []:
+            m = re.search(r"Growth:\s*(\d+)%", str(ln))
+            if m:
+                vals.append(int(m.group(1)) / 100.0)
+    return sum(vals) / len(vals) if vals else None
+
+
+def _ten_embergrass_regrow(t):
+    """sc_grass_regreens: three patches burned together, aged past 7 days (no fresh-burn bonus); one is then watered
+    (WaterShallow beside it); ember grass sown on the dry and the watered patch, Plant_Grass on dry ash; daily growth for
+    5 days and a burst count (a day's gain above 1.5x the plant's vanilla daily rate, read off Plant_Grass on the same
+    dry ash scaled by growDays). Dry ember grass >= its vanilla rate, watered > dry, bursts on watered cells only."""
+    _independent(t)
+    with _comp(t, "regrow_dry_watered_vanilla"):
+        _pad(t, TEN_PAD_GRASS)
+        t.clear_area(size=TEST_SIZE)
+        x, z = t.anchor
+        patches = {"dry": (x - 9, z - 2, 4, 4), "watered": (x - 2, z - 2, 4, 4), "vanilla": (x + 5, z - 2, 4, 4)}
+        _firebreak(t, (x - 9, z - 2, 18, 4))
+        for k, r in patches.items():
+            _soil(t, r)
+            _plants(t, "RM_FE_Plant_EmberGrass", r)
+            _fire(t, r)
+        _wait(t, 2 * TEN_HOUR)
+        _extinguish(t)
+        _wait(t, 7 * TEN_DAY + TEN_HOUR)   # past 7 days: the freshBurnDays bonus is spent
+        t.bridge_call("jawa/set_terrain", x=x - 3, z=z - 2, terrainDef="WaterShallow", width=1, height=4, layer="top")
+        _wait(t, 2600)                     # a full watering sweep
+        cells = dict((k, _probe(t, r[0] + 1, r[1] + 1)) for k, r in patches.items())
+        for k in ("dry", "watered"):
+            _plants(t, "RM_FE_Plant_EmberGrass", patches[k], growth=0.05)
+        _plants(t, "Plant_Grass", patches["vanilla"], growth=0.05)
+        defs = _get_defs(t, "ThingDef/RM_FE_Plant_EmberGrass;ThingDef/Plant_Grass", "plant")
+        series = dict((k, [_ten_embergrass_regrow_growth(t, r)]) for k, r in patches.items())
+        for _ in range(5):
+            _wait(t, TEN_DAY)
+            for k, r in patches.items():
+                series[k].append(_ten_embergrass_regrow_growth(t, r))
+        if _live(t):
+            _note(t, "patch cells after 7 days (burnTick, watered, bonus)", cells)
+            if cells["dry"].get("watered") or cells["vanilla"].get("watered") or not cells["watered"].get("watered"):
+                _unmeasured(t, "the patches are not dry/watered as staged: %r" % cells)
+            if any(float(c.get("bonus") or 0) > 0 for c in cells.values()):
+                _unmeasured(t, "a patch still carries the fresh-burn bonus after 7 days: %r" % cells)
+            if any(str(c.get("burnTick")) in ("-1", "None") for c in cells.values()):
+                _unmeasured(t, "a patch was never burned (burnTick -1): %r" % cells)
+            if any(v is None for s in series.values() for v in s):
+                _unmeasured(t, "a patch's growth was unread on some day: %r" % series)
+            gd = dict((d, float(((f.get("plant") or {}).get("growDays")) or 0)) for d, f in defs.items())
+            gains = dict((k, [b - a for a, b in zip(s, s[1:])]) for k, s in series.items())
+            vanilla_day = sum(gains["vanilla"]) / len(gains["vanilla"])
+            ember_rate = vanilla_day * gd["Plant_Grass"] / gd["RM_FE_Plant_EmberGrass"] if gd.get("RM_FE_Plant_EmberGrass") else None
+            bursts = dict((k, sum(1 for g in gs if ember_rate and g > TEN_BURST * ember_rate)) for k, gs in gains.items())
+            bursts["vanilla"] = sum(1 for g in gains["vanilla"] if g > TEN_BURST * vanilla_day) if vanilla_day else 0
+            _note(t, "daily growth, gains, burst count (burst > %.1fx the vanilla daily rate)" % TEN_BURST,
+                  {"series": series, "growDays": gd, "emberVanillaRate": ember_rate, "bursts": bursts})
+            if ember_rate is None:
+                _unmeasured(t, "growDays unread: %r" % gd)
+            if sum(gains["dry"]) / len(gains["dry"]) < ember_rate:
+                _fail("dry ember grass grew below its vanilla daily rate %.3f: %r" % (ember_rate, gains["dry"]))
+            if not sum(gains["watered"]) > sum(gains["dry"]):
+                _fail("watered ember grass did not outgrow the dry patch: %r vs %r" % (gains["watered"], gains["dry"]))
+            if bursts["dry"] or bursts["vanilla"]:
+                _fail("bursts off the watered cells: %r" % bursts)
+        t.screenshot(rect=(x - 10, z - 3, 20, 6))
+
+
+def _ten_furnace_sleep(t):
+    """sc_furnace_bed: beast A2 (RM_FurnaceBeast) asleep on its ember-grass plot, a Muffalo asleep on a like plot; per poll
+    ProbeSleep and a Fire count on each sleeper's own cell (x,z,1,1); the muffalo's plot is lit once A2's burns. Health
+    (health=True) before and after: A2 takes no burns, the muffalo does."""
+    _independent(t)
+    with _comp(t, "bed_fire_beast_vs_muffalo"):
+        _pad(t, TEN_PAD_BED)
+        t.clear_area(size=TEST_SIZE)
+        x, z = t.anchor
+        plots = {"A2": (x - 8, z - 2, 5, 5), "muffalo": (x + 3, z - 2, 5, 5)}
+        beds = dict((k, (r[0] + 2, r[1] + 2)) for k, r in plots.items())
+        _set(t, {"furnaceThermalEnabled": True})
+        _firebreak(t, (x - 8, z - 2, 16, 5))
+        for r in plots.values():
+            _soil(t, r)
+            _plants(t, "RM_FE_Plant_EmberGrass", r)
+        ids = {"A2": _spawn_wild(t, "RM_FurnaceBeast", *beds["A2"]), "muffalo": _spawn_wild(t, "Muffalo", *beds["muffalo"])}
+        before = dict((k, _pawn_row(t, pid, health=True)) for k, pid in ids.items())
+        for k, pid in ids.items():
+            t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
+            t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Rest", level=0.05)
+            t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="LayDown", targetAX=beds[k][0], targetAZ=beds[k][1],
+                          waitTicks=0)
+        polls, lit = [], False
+        for i in range(SLEEP_WAIT_TICKS // SLEEP_POLL_TICKS):
+            _wait(t, SLEEP_POLL_TICKS)
+            row = {"tick": (i + 1) * SLEEP_POLL_TICKS}
+            for k, pid in ids.items():
+                kv = parse_kv(_ten_static(t, FURNACE_BED, "ProbeSleep", pid) or "")
+                c = xz_of(kv.get("cell")) or beds[k]
+                row[k] = {"awake": kv.get("awake"), "cell": kv.get("cell"),
+                          "fireOnOwnCell": _count(t, "Fire", "%d,%d,1,1" % tuple(c))}
+            polls.append(row)
+            if not lit and _count(t, "Fire", _rs(plots["A2"])):
+                _fire(t, plots["muffalo"])
+                lit = True
+            if lit and len(polls) > 1 and not _count(t, "Fire", "%d,%d,16,5" % (x - 8, z - 2)):
+                break
+        _extinguish(t)
+        after = dict((k, _pawn_row(t, pid, health=True)) for k, pid in ids.items())
+        if _live(t):
+            _note(t, "per poll: ProbeSleep and the Fire on each sleeper's own cell (1,1)", polls[-24:])
+            if not lit:
+                _unmeasured(t, "A2's plot never lit in %d ticks asleep" % SLEEP_WAIT_TICKS)
+            new = dict((k, len(burn_injuries(after[k])) - len(burn_injuries(before[k]))) for k in ids)
+            _note(t, "new burn injuries, A2 vs muffalo", new)
+            if new["A2"] > 0:
+                _fail("the furnace-beast A2 took %d burn injuries in its own bed fire" % new["A2"])
+            if new["muffalo"] <= 0:
+                _fail("the Muffalo in a like bed fire took no burns (the control did not bite)")
+
+
+def _ten_flamefang_venom(t):
+    """sc_flamefang_venom: two colonists bitten (VENOM); a doctor tends one (TendPatient); severity every hour for six
+    hours, tended below untended at every read after the first; the immunity read has no bridge tool (UNMEASURED); the
+    untended venom read daily until the hediff goes."""
+    x, z = PAD_VENOM
+    _independent(t)
+    with _comp(t, "venom_tended_vs_untended"):
+        pts = {"tended": _spawn_colonist(t, x + 10, z), "untended": _spawn_colonist(t, x + 10, z - 8)}
+        for k, pid in pts.items():
+            row = _bite_until(t, pid, "RM_Flamefang", x + 10, z if k == "tended" else z - 8, hediff=VENOM)
+            if _live(t) and not _has_hediff(row, VENOM):
+                _unmeasured(t, "the %s patient was never envenomed: %r" % (k, (row or {}).get("health")))
+        doc = _spawn_colonist(t, x + 12, z)
+        r = t.bridge_call("jawa/ordered_job", pawnId=doc, jobDef="TendPatient", targetAId=pts["tended"])
+        series = {"tended": [], "untended": []}
+        for _ in range(VENOM_HOURS + 1):
+            for k, pid in pts.items():
+                series[k].append(hediff_severity(_pawn_row(t, pid, health=True), VENOM))
+            _bite_wait(t, TEN_HOUR)
+        if _live(t):
+            _note(t, "venom severity each hour, tended vs untended", {"order": r, "series": series})
+            if not (r or {}).get("success"):
+                _unmeasured(t, "the TendPatient order was refused: %r" % r)
+            pairs = list(zip(series["tended"], series["untended"]))[1:]
+            if any(a is None or b is None for a, b in pairs):
+                _unmeasured(t, "venom severity unread: %r" % series)
+            low = [a < b for a, b in pairs]
+            if not all(low):
+                _fail("tended venom was not below untended at every read: %r" % series)
+    _independent(t)
+    with _comp(t, "venom_immunity_read"):
+        _unmeasured(t, "no bridge tool reads a pawn's immunity (ImmunityRecord); the venom is read by severity instead")
+    _independent(t)
+    with _comp(t, "venom_wait_out"):
+        cid = _spawn_colonist(t, x + 10, z + 8)
+        row = _bite_until(t, cid, "RM_Flamefang", x + 10, z + 8, hediff=VENOM)
+        days = []
+        for _ in range(10):
+            s = hediff_severity(_pawn_row(t, cid, health=True), VENOM)
+            days.append(s)
+            if _live(t) and s is None:
+                break
+            _bite_wait(t, TEN_DAY)
+        if _live(t):
+            _note(t, "untended venom severity each day until it goes (immunity unread)", days)
+            if not _has_hediff(row, VENOM):
+                _unmeasured(t, "the wait-out colonist was never envenomed")
+            if days[-1] is not None:
+                _fail("the venom was still present after 10 days: %r" % days)
+
+
+def _ten_ash_fertility_watered(t):
+    """sc_ash_watered: a wet and a dry deep-ash strip of Plant_Potato; the cell temperature above the crop's
+    maxOptimalGrowthTemperature asserted (else UNMEASURED); five daily inspect reads, the wet-roots line on wet only;
+    control: ashWaterFertilityEnabled off drops it. Plant.GrowthRateFactor_Temperature is an instance property no bridge
+    tool reads (static_call is static only): UNMEASURED."""
+    wet_line = "Wet ash keeps its roots"   # Languages: the wet-roots inspect line (PyrelandsWetRoots)
+    _independent(t)
+    with _comp(t, "wet_roots_cool_the_crop"):
+        _pad(t, TEN_PAD_WET)
+        t.clear_area(size=TEST_SIZE)
+        x, z = t.anchor
+        radius = int(float(_live_setting(t, "ashNaturalWaterRadius") or 0)) if _live(t) else 4
+        if _live(t) and radius + 8 > TEST_SIZE // 2:
+            _unmeasured(t, "ashNaturalWaterRadius %d leaves no dry strip inside the pad" % radius)
+        wet = (x - 6, z - 1, 3, 2)
+        dry = (x - 6 + radius + 6, z - 1, 3, 2)
+        for r in (wet, dry):
+            t.bridge_call("jawa/set_terrain", x=r[0], z=r[1], terrainDef=DEEP_ASH, width=r[2], height=r[3], layer="top")
+        t.bridge_call("jawa/set_terrain", x=wet[0] - 1, z=wet[1], terrainDef="WaterShallow", width=1, height=2, layer="top")
+        _wait(t, 2600)
+        for r in (wet, dry):
+            _plants(t, TEN_CROP, r, growth=0.3)
+        crop = _get_defs(t, "ThingDef/%s" % TEN_CROP, "plant").get(TEN_CROP) or {}
+        top = (crop.get("plant") or {}).get("maxOptimalGrowthTemperature")
+        reads = []
+        for _ in range(5):
+            tr = t.bridge_call("jawa/cell_temperature", cell="%d,%d" % (wet[0], wet[1])) or {}
+            temp = tr.get("temperature", tr.get("temp"))
+            lines = {}
+            for k, r in (("wet", wet), ("dry", dry)):
+                got = t.bridge_call("jawa/inspect_string", rect=_rs(r), limit=10) or {}
+                lines[k] = any(wet_line in str(ln) for row in got.get("things") or [] for ln in row.get("inspect") or [])
+            reads.append({"temp": temp, "wetLine": lines["wet"], "dryLine": lines["dry"]})
+            _wait(t, TEN_DAY)
+        if _live(t):
+            _note(t, "daily: cell temperature vs %s maxOptimalGrowthTemperature %r, the wet-roots line" % (TEN_CROP, top),
+                  reads)
+            if not isinstance(top, (int, float)):
+                _unmeasured(t, "%s maxOptimalGrowthTemperature unread: %r" % (TEN_CROP, crop))
+            hot = [rd for rd in reads if isinstance(rd["temp"], (int, float)) and rd["temp"] > top]
+            if not hot:
+                _unmeasured(t, "the cell never read above %s's maxOptimalGrowthTemperature %.1f (no tool heats an "
+                               "outdoor cell): %r" % (TEN_CROP, top, [rd["temp"] for rd in reads]))
+            if any(rd["dryLine"] for rd in reads):
+                _fail("the dry strip shows '%s': %r" % (wet_line, reads))
+            if not all(rd["wetLine"] for rd in hot):
+                _fail("a hot day's wet strip lacks '%s': %r" % (wet_line, reads))
+        _set(t, {"ashWaterFertilityEnabled": False})
+        got = t.bridge_call("jawa/inspect_string", rect=_rs(wet), limit=10) or {}
+        off = any(wet_line in str(ln) for row in got.get("things") or [] for ln in row.get("inspect") or [])
+        _set(t, {"ashWaterFertilityEnabled": True})
+        if _live(t) and off:
+            _fail("with ashWaterFertilityEnabled off the wet strip still shows '%s'" % wet_line)
+    _independent(t)
+    with _comp(t, "growth_rate_factor_temperature"):
+        _unmeasured(t, "Plant.GrowthRateFactor_Temperature is an instance property; jawa/static_call reaches only static "
+                       "members and no bridge tool reads it per plant")
+
+
+def _ten_firehawk(t):
+    """sc_firehawk: a second RM_FireHawk spawned 60 cells from a burning plot (beyond 0.9 x scanRadius 54, inside
+    SightRange 180) takes RM_FireHawkSeekBurn and closes; control: fireHawkSpreadEnabled off, a third hawk at the same
+    offset never seeks. The giver reads distance only (no line-of-sight test), so 'visible' is the distance band."""
+    def watch(hawk, plot):
+        seq, dist = [], []
+        for _ in range(60):
+            _wait(t, 250)
+            if not _count(t, "Fire", _rs(plot)):
+                _plants(t, "RM_FE_Plant_EmberGrass", plot)
+                t.bridge_call("jawa/map_fire", action="start", rect=_rs(plot), fireSize=1.2)
+            j = _job_of(t, hawk)
+            if j and (not seq or seq[-1] != j):
+                seq.append(j)
+            pos = _ten_pos(t, hawk)
+            if pos:
+                dist.append(round(_ten_clear_of(pos, plot), 1))
+        return seq, dist
+
+    fx, fz = TEN_PAD_HAWK_FIRE
+    plot = (fx - 2, fz - 2, 5, 5)
+    _independent(t)
+    with _comp(t, "far_hawk_seeks_the_burn"):
+        _set(t, {"burnLineEnabled": True, "fireHawkSpreadEnabled": True})
+        t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+        _ten_lit_plot(t, plot)
+        hawk = _spawn_wild(t, "RM_FireHawk", fx + TEN_HAWK_OFFSET, fz)
+        seq, dist = watch(hawk, plot)
+        if _live(t):
+            _note(t, "far hawk (start %d cells; seek band > %.1f): jobs, distance to the burn"
+                  % (TEN_HAWK_OFFSET, 0.9 * TEN_HAWK_REACH), {"jobs": seq, "dist": dist})
+            if TEN_SEEK_JOB not in seq:
+                _fail("the hawk %d cells off never took %s: %r" % (TEN_HAWK_OFFSET, TEN_SEEK_JOB, seq))
+            if not dist or min(dist) >= dist[0] - 10:
+                _fail("the seeking hawk did not close on the burn: %r" % dist)
+    _independent(t)
+    with _comp(t, "far_hawk_spread_off_control"):
+        _extinguish(t)
+        _set(t, {"fireHawkSpreadEnabled": False})
+        _ten_lit_plot(t, plot)
+        hawk = _spawn_wild(t, "RM_FireHawk", fx + TEN_HAWK_OFFSET, fz + 6)
+        seq, dist = watch(hawk, plot)
+        _extinguish(t)
+        _set(t, {"fireHawkSpreadEnabled": True})
+        if _live(t):
+            _note(t, "fireHawkSpreadEnabled off: jobs, distance", {"jobs": seq, "dist": dist})
+            if TEN_SEEK_JOB in seq:
+                _fail("with fireHawkSpreadEnabled off the hawk still took %s" % TEN_SEEK_JOB)
+
+
+def _ten_ruins_charred_walls(t):
+    """export_things over the current map -> (unowned wall rows, those painted RM_FE_Charred)."""
+    r = t.bridge_call("jawa/export_things", rect=_whole(t), includePawns=False, includeItems=False, limit=2000)
+    if not _live(t):
+        return [], []
+    _ok(r, "export_things")
+    walls = [w for w in r.get("things") or [] if "Wall" in str(w.get("def")) and w.get("faction") in (None, "", "None")]
+    return walls, [w for w in walls if w.get("paint") == "RM_FE_Charred"]
+
+
+def _ten_ruins(t):
+    """sc_ruins: the ruin walls carry RM_FE_Charred paint (FireEcologyHook's ChangePaint), read through export_things'
+    paint field; control: a vanilla TemperateForest map beside the site, whose unowned walls carry none."""
+    _independent(t)
+    with _comp(t, "ruin_walls_charred_paint"):
+        walls, charred = _ten_ruins_charred_walls(t)
+        if _live(t):
+            _note(t, "unowned walls on the site, painted RM_FE_Charred", {"walls": len(walls), "charred": len(charred)})
+            if not walls:
+                _unmeasured(t, "this site has no unowned walls (no ruin) to read the paint of")
+            if not charred:
+                _fail("none of %d ruin walls carries RM_FE_Charred paint: %r"
+                      % (len(walls), sorted(set(str(w.get("paint")) for w in walls))[:6]))
+    _independent(t)
+    with _comp(t, "vanilla_ruins_unpainted"):
+        ctl = _ten_control_map(t, "TemperateForest")
+        try:
+            walls, charred = _ten_ruins_charred_walls(t)
+        finally:
+            _ten_control_map_drop(t, ctl)
+        if _live(t):
+            _note(t, "unowned walls on the vanilla TemperateForest control", {"walls": len(walls), "charred": len(charred)})
+            if not walls:
+                _unmeasured(t, "the vanilla control map generated no unowned walls")
+            if charred:
+                _fail("%d walls on the vanilla control carry RM_FE_Charred paint" % len(charred))
 
 
 # Fire-hawk hunt rewards and the map-wide ember carry: live chains built WITH their items (owner 2026-11-13), kept in their own

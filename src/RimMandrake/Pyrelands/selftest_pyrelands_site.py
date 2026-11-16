@@ -1744,7 +1744,10 @@ def test_sky_clauses_2026_11_15():
     v = _load_validation("pyre_validation_sky")
     wd = os.path.join(HERE, "Defs", "WeatherDefs")
     texts = {n: open(os.path.join(wd, n), encoding="utf-8").read() for n in ("Cinderfall.xml", "AshFall.xml", "BlackRain.xml")}
-    rows = {"cinderfall": ["cinderfall_distinct", "cinderfall_lightning"],
+    # three_skies_from_noon and blackrain_wash_vs_clear_patch: the sc_three_skies clauses (each sky from a reload of
+    # skies_noon; the clear-sky second patch) RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED added.
+    rows = {"cinderfall": ["cinderfall_distinct", "cinderfall_lightning", "three_skies_from_noon",
+                           "blackrain_wash_vs_clear_patch"],
             "blackrain": ["blackrain_reads", "blackrain_washes_ash", "blackrain_fires_out"]}
     for name, fn in v.suite.chains:
         if name in rows:
