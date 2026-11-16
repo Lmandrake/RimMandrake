@@ -1,0 +1,43 @@
+diff --git a/design/concepts/ExplosiveKnockback/sheet.md b/design/concepts/ExplosiveKnockback/sheet.md
+index 8e943ff567..0cd48ce7a8 100644
+--- a/design/concepts/ExplosiveKnockback/sheet.md
++++ b/design/concepts/ExplosiveKnockback/sheet.md
+@@ -71,7 +71,7 @@
+ - The gas census covers every gas source of ours (gas defs, our gas grids, every place our code adds gas); today the one that burns is the Cauldron's vent gas, which opts in by registering its grid; the others add vanilla smoke, tox gas or rot stink, which do not burn; this mod adds no gas of its own
+ - A gas cloud catches the way it already does in play, from a fire touching it; a fire not touching it lights nothing
+ - One gas clump bursts at radius 1.9, throws goods at most 2 cells, one burst per clump cell, advancing with the fire front; a shield belt does not stop the shove
+-- The frame budget is no frame over 50 ms through a 6-shell barrage and a 40-cell chain; advisory until a first measurement calibrates it
++- The frame budget is the 99th-percentile frame inside the barrage-and-chain window (0.9-8.25 s) at most 50 ms through a 6-shell barrage and a 40-cell chain; a single random stall is reported, not judged (owner 2026-11-15, "1 agree.": the mod-off control's single worst frame broke 50 ms on list stalls)
+ - The gas chain and the pit-trap raid stay ordinary scenes (coverage_rest), not showcases, by the greedy showcase rule (his one flagship scene takes the showcase)
+ 
+ ## pruning
+diff --git a/design/concepts/ExplosiveKnockback/tree.json b/design/concepts/ExplosiveKnockback/tree.json
+index cc7cf6ea94..8f7252207a 100644
+--- a/design/concepts/ExplosiveKnockback/tree.json
++++ b/design/concepts/ExplosiveKnockback/tree.json
+@@ -723,7 +723,7 @@
+    "bundle": null,
+    "scenario_informed_by": [],
+    "needs_instrument": "frame_time_probe",
+-   "oracle_proposed": "the frame probe's worst frame across both events",
++   "oracle_proposed": "the frame probe's 99th-percentile frame (nearest rank, unpaused frames) inside the barrage-and-gas-chain window, 0.9-8.25 s of probe time, with the worst frame reported beside it; the same reading of the mod-off control",
+    "tier_reason": "frame time is meaningful only on the real list and machine",
+    "cannot_show": null,
+    "wall_expect_h": null,
+@@ -734,11 +734,12 @@
+    ],
+    "leaf_kind": "constraint",
+    "clause_kind": "change",
+-   "experience": "at most 50 ms per frame on Archmagi, the full mod list, through a 6-shell mortar barrage into a full 10x10 stockpile and a 40-cell gas chain",
+-   "scenario": "The barrage and the chain at normal speed with the frame probe running; read the worst frame.",
++   "experience": "the 99th-percentile frame inside the barrage-and-gas-chain window (0.9-8.25 s) at most 50 ms on Archmagi, the full mod list, through a 6-shell mortar barrage into a full 10x10 stockpile and a 40-cell gas chain; a single random stall is reported, not judged (owner 2026-11-15, \"1 agree.\")",
++   "scenario": "The barrage and the chain at normal speed with the frame probe running; read the 99th-percentile frame inside the 0.9-8.25 s window, and the worst frame beside it.",
+    "false_pass": [
+-    "the average frame is fine but one frame stalls",
+-    "the probe measured a paused game"
++    "the average frame is fine but a stretch of frames stalls",
++    "the probe measured a paused game",
++    "the probe stopped before the gas chain finished"
+    ],
+    "red": "a build where all-fly stutters a barrage",
+    "tier_proposed": "live_full",

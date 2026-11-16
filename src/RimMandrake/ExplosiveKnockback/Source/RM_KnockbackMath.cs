@@ -682,6 +682,10 @@ namespace RimMandrake.ExplosiveKnockback
     {
         public int rows, pausedRows, framesElapsed, maxInAir;
         public float worstMs, meanMs, sumMs, wallSeconds;
+        /// <summary>The bar's window in probe seconds (the running sum of ms), its unpaused rows and their nearest-rank
+        /// 99th-percentile frame. With no window given the window is the whole run.</summary>
+        public float windowLoS, windowHiS, windowP99Ms;
+        public int windowRows;
     }
 
     public static class KbFrameStats
@@ -690,18 +694,40 @@ namespace RimMandrake.ExplosiveKnockback
         /// run; wallSeconds: real time over the run. The worst frame is the MAX of the unpaused rows, never a mean.</summary>
         public static KbFrameSummary Summarize(float[] ms, bool[] paused, int[] inAir, int framesElapsed, float wallSeconds)
         {
-            var g = new KbFrameSummary { rows = ms.Length, framesElapsed = framesElapsed, wallSeconds = wallSeconds };
-            int live = 0;
+            return Summarize(ms, paused, inAir, framesElapsed, wallSeconds, 0f, float.PositiveInfinity);
+        }
+
+        /// <summary>As above, with the bar's window [windowLoS, windowHiS] in probe seconds: a row's probe time is the
+        /// running sum of ms through it, paused rows included (they are real time); its unpaused rows give windowP99Ms.</summary>
+        public static KbFrameSummary Summarize(float[] ms, bool[] paused, int[] inAir, int framesElapsed, float wallSeconds,
+            float windowLoS, float windowHiS)
+        {
+            var g = new KbFrameSummary { rows = ms.Length, framesElapsed = framesElapsed, wallSeconds = wallSeconds, windowLoS = windowLoS, windowHiS = windowHiS };
+            var window = new List<float>();
+            double t = 0;
             for (int i = 0; i < ms.Length; i++)
             {
                 g.sumMs += ms[i];
+                t += ms[i];
                 if (inAir[i] > g.maxInAir) g.maxInAir = inAir[i];
                 if (paused[i]) { g.pausedRows++; continue; }
-                live++;
                 if (ms[i] > g.worstMs) g.worstMs = ms[i];
+                if (t >= windowLoS * 1000.0 && t <= windowHiS * 1000.0) window.Add(ms[i]);
             }
             g.meanMs = ms.Length > 0 ? g.sumMs / ms.Length : 0f;
+            g.windowRows = window.Count;
+            g.windowP99Ms = Percentile(window, 99f);
             return g;
+        }
+
+        /// <summary>Nearest-rank percentile: the smallest value with at least pct% of the values at or below it; 0 for none.</summary>
+        public static float Percentile(List<float> values, float pct)
+        {
+            if (values.Count == 0) return 0f;
+            var v = new List<float>(values);
+            v.Sort();
+            int k = (int)Math.Ceiling(pct / 100.0 * v.Count) - 1;
+            return v[Math.Max(0, Math.Min(v.Count - 1, k))];
         }
 
         /// <summary>The probe's own check: one row per rendered frame (within 5%), its rows add up to the real time (within
@@ -717,13 +743,17 @@ namespace RimMandrake.ExplosiveKnockback
             return why == null;
         }
 
-        /// <summary>The barrage bar: the worst unpaused frame at most budgetMs, on a run that was not paused.</summary>
+        /// <summary>The barrage bar (owner 2026-11-15, "1 agree."): the 99th-percentile unpaused frame inside the window at
+        /// most budgetMs, on a run that was not paused and whose probe ran to the window's end. A single random stall
+        /// does not decide it (the mod-off control's worst frame broke 50 ms on them); a stretch of slow frames does.</summary>
         public static bool WithinBudget(KbFrameSummary g, float budgetMs, out string why)
         {
             why = null;
             if (g.rows == 0) why = "no rows";
             else if (g.rows - g.pausedRows < 0.9f * g.rows) why = "paused: " + g.pausedRows + " of " + g.rows + " rows";
-            else if (g.worstMs > budgetMs) why = "worst frame " + g.worstMs + " ms over " + budgetMs;
+            else if (!float.IsPositiveInfinity(g.windowHiS) && g.sumMs < g.windowHiS * 1000f) why = "the probe stopped at " + (g.sumMs / 1000f).ToString("0.00") + " s, before the window closed at " + g.windowHiS + " s";
+            else if (g.windowRows == 0) why = "no unpaused rows in the window";
+            else if (g.windowP99Ms > budgetMs) why = "p99 frame in the window " + g.windowP99Ms + " ms over " + budgetMs;
             return why == null;
         }
     }

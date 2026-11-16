@@ -53,7 +53,7 @@ Each step is one rimflow item, built by Relentless from the tree; none needs wor
 ## Owed proofs
 
 6. **All-fly performance** (`RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF`; d_c_all_fly, dl_perf_budget). Builds the
-   `frame_time_probe` instrument and measures `barrage_frame_budget` (no frame over 50 ms through a 6-shell barrage
+   `frame_time_probe` instrument and measures `barrage_frame_budget` (the 99th-percentile frame in the 0.9-8.25 s window at most 50 ms, owner 2026-11-15, through a 6-shell barrage
    into a full 10x10 stockpile and a 40-cell gas chain on the full list), then the walk scene `sc_walk_raid`
    (reload, repeat, second order; the hose-carry check rides on it). Needs builds 1 and 4.
 7. **Goods in a pit stay retrievable** (`RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE`; Q10 2026-10-06). Scene

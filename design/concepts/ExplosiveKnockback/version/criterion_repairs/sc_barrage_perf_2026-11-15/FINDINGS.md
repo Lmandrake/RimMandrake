@@ -39,3 +39,28 @@ can be shown to meet the bar's words; the bar is the owner's card (text drafted 
 - (c) shrink the scene: the off in-window spikes include 5.9-7.3 s, the chain's phase, and noise at 0.13/s stays.
 - Not on the card, offered for the asker: a statistic robust to one noise frame (e.g. the in-window p99, or the worst frame
   over N repeated runs' medians) keeps "the barrage stays smooth" without the list's own spikes deciding it.
+
+## Step 2: the bar reworded to his answer (2026-11-15, after 7:28 PM PST)
+
+He agreed (OWNER:1794799770273329641, *"1 agree."*) to the 99th-percentile frame inside the 0.9-8.25 s window at most
+50 ms. Nearest rank over the unpaused frames whose probe time lies in the window; a probe that stops before 8.25 s fails;
+the worst frame is still reported. Decider: `KbFrameStats.WithinBudget` (`Source/RM_KnockbackMath.cs`), fed the window by
+`RM_FrameProbe.Stop(BarrageWindowLoS, BarrageWindowHiS)`. Test: `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_barrage_p99.py`
+runs the production decider on these nine files and four planted ones and checks it against a Python reading of the same rows.
+
+| run | off: p99 in window | on: p99 in window | on: verdict |
+|---|---|---|---|
+| first | 15.0 | 21.6 | PASS |
+| settled | 11.4 | 20.8 | PASS |
+| third | 24.7 | 17.8 | PASS |
+
+Planted, from the settled mod-on run: 1.5 s of 75 ms frames in the window FAIL (p99 75.0); 2 s of 55 ms frames FAIL (p99
+55.0); one 200 ms frame PASS (p99 21.5, worst 200.0); the probe cut at 6 s FAIL ("before the window closed").
+
+- **What p99 gives up:** it counts frames, not time. The top 1% of the window's frames (4 at ~60 fps, 9 at ~120 fps) never
+  decide it, so up to that many separate long hitches pass. A stretch of slow frames longer than 1% of the window fails.
+- **Held:** `tree_sheet_rewording.patch` (this folder) carries the leaf's and the sheet's words. His coverage certificate
+  is bound to the tree hash and needs an event of his on the concept's item (`RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH`), so the
+  patch waits for his re-certification, as the container rewording did.
+- **Live acceptance: UNRUN.** `python.exe src\RimMandrake\ExplosiveKnockback\knockback_runner.py --scenes frame_probe_selfcheck,barrage_perf_off,barrage_perf --ticks 0 --real-seconds 25`
+  on the proof build and the owner's full list on Archmagi.

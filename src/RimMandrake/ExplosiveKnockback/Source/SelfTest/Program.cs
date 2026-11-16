@@ -38,6 +38,30 @@ internal static class Program
 
     private static KbSettings cs0() => new KbSettings();
 
+    /// <summary>--frame-fixtures DIR: read every RM_FrameProbe-format CSV in DIR (row,ms,paused,in_air) through the production
+    /// KbFrameStats with the barrage window (0.9-8.25 s) and print one FIXTURE line each
+    /// (selftest_explosiveknockback_barrage_p99.py checks them against its own reading).</summary>
+    private static int FrameFixtures(string dir)
+    {
+        var inv = System.Globalization.CultureInfo.InvariantCulture;
+        foreach (string f in System.IO.Directory.GetFiles(dir, "*.csv").OrderBy(x => x, StringComparer.Ordinal))
+        {
+            var ms = new List<float>(); var pz = new List<bool>(); var air = new List<int>();
+            foreach (string line in System.IO.File.ReadLines(f).Skip(1))
+            {
+                string[] c = line.Split(',');
+                if (c.Length < 4) continue;
+                ms.Add(float.Parse(c[1], inv)); pz.Add(c[2] == "1"); air.Add(int.Parse(c[3], inv));
+            }
+            KbFrameSummary g = KbFrameStats.Summarize(ms.ToArray(), pz.ToArray(), air.ToArray(), ms.Count, ms.Sum() / 1000f, 0.9f, 8.25f);
+            bool ok = KbFrameStats.WithinBudget(g, 50f, out string why);
+            Console.WriteLine("FIXTURE " + System.IO.Path.GetFileName(f) + " windowRows=" + g.windowRows + " p99=" + g.windowP99Ms.ToString("0.0###", inv)
+                + " worst=" + g.worstMs.ToString("0.0###", inv) + " probeS=" + (g.sumMs / 1000f).ToString("0.000", inv) + " verdict=" + (ok ? "PASS" : "FAIL")
+                + (why == null ? "" : " why=" + why));
+        }
+        return 0;
+    }
+
     private static void Check(string id, bool ok, string detail = "")
     {
         if (ok)
@@ -53,6 +77,11 @@ internal static class Program
 
     private static int Main(string[] args)
     {
+        int ff = Array.IndexOf(args, "--frame-fixtures");
+        if (ff >= 0)
+        {
+            return FrameFixtures(args[ff + 1]);
+        }
         if (args.Contains("--sweep"))
         {
             return KnockbackSweep.Run();
@@ -546,9 +575,25 @@ internal static class Program
             KbFrameSummary gn = KbFrameStats.Summarize(noSleep, Pz(300, false), air, 300, 5.01f);
             Check("K-22 a probe that missed the slept frame fails the self-check", !KbFrameStats.SelfCheck(gn, 100f, out string w4), w4);
             Check("K-22 a smooth run passes the 50 ms budget", KbFrameStats.WithinBudget(gn, 50f, out _));
-            float[] stall = Ms(300, 16.7f); stall[200] = 51f;
-            Check("K-22 one 51 ms frame over a smooth average fails the budget",
-                !KbFrameStats.WithinBudget(KbFrameStats.Summarize(stall, Pz(300, false), air, 300, 5.04f), 50f, out _));
+            // the bar is the p99 frame in the window (owner 2026-11-15, "1 agree."): one random stall is reported, not judged
+            float[] stall = Ms(300, 16.7f); stall[200] = 151f;
+            KbFrameSummary g1 = KbFrameStats.Summarize(stall, Pz(300, false), air, 300, 5.14f, 0.9f, 4.5f);
+            bool ok1 = KbFrameStats.WithinBudget(g1, 50f, out string w5);
+            Check("K-22 one 151 ms stall in the window is the worst frame but passes the p99 budget",
+                g1.worstMs == 151f && g1.windowP99Ms < 20f && ok1, g1.windowP99Ms + " " + w5);
+            float[] sus = Ms(300, 16.7f); for (int i = 100; i < 115; i++) sus[i] = 75f;   // 15 slow frames, 5% of the run
+            KbFrameSummary g2 = KbFrameStats.Summarize(sus, Pz(300, false), air, 300, 5.9f, 0.9f, 5.5f);
+            bool ok2 = KbFrameStats.WithinBudget(g2, 50f, out string w6);
+            Check("K-22 a sustained stall (15 frames at 75 ms) in the window fails the p99 budget",
+                g2.windowP99Ms == 75f && !ok2, g2.windowP99Ms + " " + w6);
+            KbFrameSummary g3 = KbFrameStats.Summarize(sus, Pz(300, false), air, 300, 5.9f, 4.0f, 5.5f);
+            Check("K-22 the same stall outside the window does not count", g3.windowP99Ms < 20f && KbFrameStats.WithinBudget(g3, 50f, out _), g3.windowP99Ms.ToString());
+            KbFrameSummary g4 = KbFrameStats.Summarize(Ms(300, 16.7f), Pz(300, false), air, 300, 5.0f, 0.9f, 8.25f);
+            bool ok4 = KbFrameStats.WithinBudget(g4, 50f, out string w7);
+            Check("K-22 a probe stopped before the window closed fails", !ok4 && w7 != null && w7.Contains("before the window closed"), w7);
+            Check("K-22 nearest-rank p99: 100 values 1..100 give 99, 1 value gives itself, none gives 0",
+                KbFrameStats.Percentile(Enumerable.Range(1, 100).Select(i => (float)i).ToList(), 99f) == 99f
+                && KbFrameStats.Percentile(new List<float> { 7f }, 99f) == 7f && KbFrameStats.Percentile(new List<float>(), 99f) == 0f);
             bool[] half = Pz(300, false); half[200] = true; float[] st2 = Ms(300, 16.7f); st2[200] = 400f;
             Check("K-22 a paused row's long frame is not the worst (paused rows are reported apart)",
                 KbFrameStats.Summarize(st2, half, air, 300, 5.4f).worstMs == 16.7f && KbFrameStats.Summarize(st2, half, air, 300, 5.4f).pausedRows == 1);

@@ -1165,7 +1165,7 @@
    "stage": "6",
    "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
    "entry": "barrage_perf",
-   "observes": "the worst frame across both events is at most 50 ms",
+   "observes": "the 99th-percentile frame inside the barrage-and-gas-chain window (0.9-8.25 s) is at most 50 ms; the worst frame is reported, not judged",
    "reads": [
     "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs",
     "design/concepts/ExplosiveKnockback/scenes.json",

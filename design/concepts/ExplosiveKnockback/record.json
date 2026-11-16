@@ -473,7 +473,7 @@
    ],
    "date": "2026-11-11",
    "delegated": "test numbers for a ruled proof",
-   "what": "All goods fly by pooled carriers drawn in one batch; the proof is a 6-shell mortar barrage into a 10x10 full stockpile and a 40-cell gas chain, each keeping the game at normal speed without a frame over 50 ms on the owner's machine (advisory until calibrated)."
+   "what": "All goods fly by pooled carriers drawn in one batch; the proof is a 6-shell mortar barrage into a 10x10 full stockpile and a 40-cell gas chain, each keeping the game at normal speed with the 99th-percentile frame inside the barrage-and-chain window (0.9-8.25 s) at most 50 ms on the owner's machine (owner 2026-11-15, \"1 agree.\": a single worst frame was decided by random list stalls, mod off too)."
   },
   {
    "id": "d_c_flagship",

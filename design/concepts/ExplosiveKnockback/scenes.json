@@ -773,10 +773,10 @@
     "the frame probe running and its self-check passed"
    ],
    "action": "a 6-shell mortar barrage into the stockpile, then light the chain, at normal speed",
-   "expect": "the worst frame across both events is at most 50 ms",
+   "expect": "the 99th-percentile frame (nearest rank, unpaused frames) inside the barrage-and-gas-chain window, 0.9-8.25 s of probe time (the first shell at 1.0 s to the last gas burst or landing), is at most 50 ms, on a probe that ran past 8.25 s; the worst frame is reported beside it, not judged (owner 2026-11-15, \"1 agree.\": the mod-off control's single worst frame broke 50 ms on random list stalls)",
    "control": {
     "case": "the same events with the mod off",
-    "expect": "the baseline worst frame, so the cost is ours and not the scene's",
+    "expect": "the baseline's 99th-percentile frame in the same window, and its worst frame, so the cost is ours and not the scene's",
     "rules_out": "a stall from the explosions themselves blamed on, or hidden by, the carrier"
    },
    "restore": "RM_KnockbackProof.Verdict undoes what Stage changed (settings, def extensions, spawned things); the quicktest map is disposable and destroyed after",

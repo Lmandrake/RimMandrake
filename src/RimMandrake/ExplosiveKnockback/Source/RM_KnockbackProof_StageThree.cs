@@ -674,7 +674,13 @@ namespace RimMandrake.ExplosiveKnockback
 
         /// <summary>True once frame_probe_selfcheck has passed in this session (barrage_perf's start line).</summary>
         private static bool probeSelfCheckPassed;
-        private static float barrageBaselineWorst = -1f;
+        private static float barrageBaselineWorst = -1f, barrageBaselineP99 = -1f;
+
+        /// <summary>The barrage-and-gas-chain window in probe seconds: the first shell at stagedTick+60 (1.0 s) to the last
+        /// gas burst or landing (at most 8.1 s in visit 2's journal), with margin; the bar reads the p99 frame inside it
+        /// (owner 2026-11-15, "1 agree."; criterion_repairs/sc_barrage_perf_2026-11-15/FINDINGS.md).</summary>
+        internal const float BarrageWindowLoS = 0.9f;
+        internal const float BarrageWindowHiS = 8.25f;
 
         /// <summary>frame_probe_selfcheck (unpaused at normal speed) and frame_probe_selfcheck_paused (the control). Starts
         /// the probe, sleeps one frame 100 ms at +30 ticks, fires a grenade into five stacks at +60; the Verdict stops it.
@@ -719,7 +725,8 @@ namespace RimMandrake.ExplosiveKnockback
 
         /// <summary>barrage_perf (and barrage_perf_off, the mod off: the baseline). On the owner's full list: a 10x10
         /// stockpile, one stack on every cell, and a 40-cell cloud of the Cauldron's vent gas; six Bomb shells (radius 2.9,
-        /// damage 50) into the stockpile half a second apart, then the cloud lit. Worst unpaused frame at most 50 ms.
+        /// damage 50) into the stockpile half a second apart, then the cloud lit. The 99th-percentile unpaused frame inside
+        /// the barrage-and-chain window (BarrageWindowLoS-HiS) at most 50 ms; the worst frame is reported, not judged.
         /// Run frame_probe_selfcheck first in the same session; then --ticks 0 --real-seconds 25.</summary>
         private static string BarragePerf(Scene s)
         {
@@ -783,7 +790,7 @@ namespace RimMandrake.ExplosiveKnockback
             RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + 300, () => vt.GetMethod("Ignite").Invoke(vg, new object[] { O(s, 6, 0), null })));
             s.verdict = sc =>
             {
-                KbFrameSummary g = RM_FrameProbe.Stop();
+                KbFrameSummary g = RM_FrameProbe.Stop(BarrageWindowLoS, BarrageWindowHiS);
                 bool within = KbFrameStats.WithinBudget(g, 50f, out string why);
                 int bursts = Recs(sc, "gas_burst").Count, launches = Recs(sc, "launch").Count + Recs(sc, "item_move").Count;
                 string detail = Summary(g) + " budget=" + (within ? "within 50 ms" : why) + " mods=" + mods + " machine=" + Environment.MachineName
@@ -791,13 +798,15 @@ namespace RimMandrake.ExplosiveKnockback
                 if (off)
                 {
                     barrageBaselineWorst = g.worstMs;
+                    barrageBaselineP99 = g.windowP99Ms;
                     return Result(sc, g.rows > 0 && g.pausedRows < g.rows / 10 + 1, "baseline " + detail);
                 }
                 if (launches == 0)
                 {
                     return "INVALID " + sc.name + " nothing was thrown: " + detail;
                 }
-                return Result(sc, within, detail + " baselineWorstMs=" + (barrageBaselineWorst < 0 ? "UNMEASURED (run barrage_perf_off first)" : barrageBaselineWorst.ToString("0.0")));
+                return Result(sc, within, detail + " baselineWorstMs=" + (barrageBaselineWorst < 0 ? "UNMEASURED (run barrage_perf_off first)" : barrageBaselineWorst.ToString("0.0"))
+                    + " baselineWindowP99Ms=" + (barrageBaselineP99 < 0 ? "UNMEASURED" : barrageBaselineP99.ToString("0.0")));
             };
             return null;
         }
@@ -805,7 +814,9 @@ namespace RimMandrake.ExplosiveKnockback
         private static string Summary(KbFrameSummary g)
         {
             return "frames=" + g.framesElapsed + " probeRows=" + g.rows + " paused=" + g.pausedRows + " wall=" + g.wallSeconds.ToString("0.00") + "s worstMs="
-                + g.worstMs.ToString("0.0") + " meanMs=" + g.meanMs.ToString("0.0") + " maxInAir=" + g.maxInAir;
+                + g.worstMs.ToString("0.0") + " meanMs=" + g.meanMs.ToString("0.0") + " maxInAir=" + g.maxInAir
+                + (float.IsPositiveInfinity(g.windowHiS) ? "" : " window=" + g.windowLoS + "-" + g.windowHiS + "s windowRows=" + g.windowRows
+                    + " windowP99Ms=" + g.windowP99Ms.ToString("0.0"));
         }
     }
 
@@ -833,6 +844,12 @@ namespace RimMandrake.ExplosiveKnockback
 
         internal static KbFrameSummary Stop()
         {
+            return Stop(0f, float.PositiveInfinity);
+        }
+
+        /// <summary>Stop, and read the p99 frame inside [windowLoS, windowHiS] probe seconds (KbFrameStats.Summarize).</summary>
+        internal static KbFrameSummary Stop(float windowLoS, float windowHiS)
+        {
             if (live == null)
             {
                 return default;
@@ -840,7 +857,7 @@ namespace RimMandrake.ExplosiveKnockback
             RM_FrameProbe p = live;
             live = null;
             KbFrameSummary g = KbFrameStats.Summarize(p.ms.ToArray(), p.paused.ToArray(), p.inAir.ToArray(), p.lastFrame - p.firstFrame,
-                p.firstReal < 0f ? 0f : p.lastReal - p.firstReal);
+                p.firstReal < 0f ? 0f : p.lastReal - p.firstReal, windowLoS, windowHiS);
             try
             {
                 string path = System.IO.Path.Combine(GenFilePaths.SaveDataFolderPath, "RM_FrameProbe_" + DateTime.Now.ToString("yyyyMMddTHHmmss") + ".csv");
