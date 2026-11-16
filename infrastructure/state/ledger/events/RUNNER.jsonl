@@ -7680,3 +7680,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-16T08:03:05Z","tsn":1794816185435420647}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"broken","detail":"Ops alarm WRAPUP_DEBRIS: wrapup.debris_standing = 1 filed wrap-up rows still standing (MEASURED), line > 0","ts":"2026-11-16T08:03:33Z","tsn":1794816213175159532}
 {"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T08:03:38Z","tsn":1794816218733538752}
+{"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-16T08:18:05Z","tsn":1794817085574986427}
