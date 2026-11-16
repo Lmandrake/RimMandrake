@@ -1,0 +1,40 @@
+{
+  "subject": "design/validation_walks/RimMandrake/Contagion.md ## north star (7 must-show + 2 cannot-show, all new, never validated), round 2 after the two round-1 REDO bars were reworded",
+  "item": "RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS",
+  "round": 2,
+  "prior": "infrastructure/state/delegated/2026-11-16/Contagion_north_star_bars.json",
+  "judge": "delegated north-star judge, round 2 (did not seed or reword the bars)",
+  "class": "delegated: north-star bars (new)",
+  "verdict": "PASS",
+  "bars": {
+    "contagion_bloom_reads_unwholesome": "ok",
+    "contagion_burn_reads_as_danger": "ok (a before/after frame sequence, as its own '(guess: a sequence)' tag says)",
+    "contagion_repulsor_clears_sky": "ok (map-wide wording matches the certified honest whole-map warning, d_efa_q04)",
+    "contagion_sunbeam_reads_as_beam": "ok: now the round-1 smallest_fix word for word. It describes what the shipped gun does (Verb_Shoot burst of RM_Bullet_Sunbeam) and what the ruled arrest does (a colonist holding the gun on a touched patient), and it is yes/no from a firing frame and an arrest frame. Today the arrest draws only a progress bar, with no shot or fleck, so that frame would honestly read NO. That is art or VFX work owed, not a flaw in the bar. Read the 'or' as covering both cases, so a judge needs both frames. Staying under 'Helix devices' is acceptable, because the def calls it a 'Helix handheld UV projector'.",
+    "contagion_flora_reads_as_flesh": "ok",
+    "contagion_unfinished_read_malformed": "ok: 'and its kin' is gone, and the bar now names one def, RM_TheUnfinished, 'several side by side'. 'Each visibly different' has a design source: CompProperties_RandomizeUnfinished gives each pawn 1-3 limbs from a pool of six, with a 12% Monstrous chance. Those limb hediffs have 0 render nodes, so today's build would read NO, and that is work owed. These are the creature's own limbs, not the colonist grown limbs moved to 0.2.0, so the bar does not contradict the owner's move.",
+    "contagion_coalescence_reads_as_mass": "ok (guess; 'source of something' is loose, but 'a living mass' can be answered yes or no from a still)",
+    "contagion_never_vanilla_forest": "ok",
+    "contagion_never_magenta": "ok",
+    "contagion_grown_limb_visible": "ok: it is not a bar. It sits as prose under '### Design Version 0.2.0 (not a bar of this version)', quoting the owner's move."
+  },
+  "evidence": [
+    "design/validation_walks/RimMandrake/Contagion.md:134-137 - sunbeam bar now reads: 'a colonist firing an RM_Sunbeam (a handheld gun), or holding it on a touched patient (the arrest), shows a bright UV shot from the lens to the target, visibly unlike an ordinary bullet. (guess)', which is the round-1 smallest_fix",
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml:68-69,110-119 - RM_Sunbeam: ParentName BaseGun, Verb_Shoot, defaultProjectile RM_Bullet_Sunbeam, burstShotCount 3, muzzleFlashScale 9",
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml:52-66 - RM_Bullet_Sunbeam has its own texture (Things/Projectile/RM_Bullet_Sunbeam, the PNG is present) tinted (0.85,0.8,1), so 'unlike an ordinary bullet' is a fair visual target",
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml:14-17 - the ruled arrest: a colonist wielding the gun holds it on a touched patient (Source/RM_SunbeamArrest.cs)",
+    "src/RimMandrake/Contagion/Defs/JobDefs/RM_SunbeamArrest.xml:5-10 - JobDef RM_SunbeamArrest, reportString 'holding a sunbeam on TargetA.'",
+    "src/RimMandrake/Contagion/Source/RM_SunbeamArrest.cs:75-97 - arrest = go to Touch, face the patient, WithProgressBarToilDelay; no projectile, fleck or effecter, so today's arrest frame would read NO (work owed, not a bar defect)",
+    "design/validation_walks/RimMandrake/Contagion.md:143-145 - unfinished bar now reads: 'the Unfinished (RM_TheUnfinished), several side by side, read as half-made, wrong creatures, each visibly different'; 'and its kin' removed",
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_TheUnfinished.xml:42-43,114-125 - one ThingDef and one PawnKindDef, one Graphic_Multi body",
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_TheUnfinished.xml:96-110 - CompProperties_RandomizeUnfinished: limbPool of 6 (Claw, Spike, Fang, Stump, VestigialWing, UselessJaw), limbCountRange 1~3, monstrousChance 0.12, the design source of 'each visibly different'",
+    "src/RimMandrake/Contagion/Defs/HediffDefs/RM_UnfinishedHediffs.xml - 0 renderNode entries (grep -c), so today the limbs draw nothing",
+    "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml:26,111,211,259,329 - the colonist grown limbs (PillarArm, Lash, Eyeburst, CaudalSpring, Bellows) are separate defs from the Unfinished limb hediffs",
+    "infrastructure/state/ledger/events/OWNER.jsonl:8284 (tsn 1794772416196929336) - certified a_root, q02 (including 'the touched worker treated'), q04, q05 and q08; moved d_efa_q07, the grown-limb work, to 0.2.0: 'I would like to move the grown limb work to the next version'",
+    "infrastructure/state/ledger/events/OWNER.jsonl:8306 - the 0.2.0 item RIMMANDRAKE_DESIGN_CONTAGION_LIMB_COSTS_FIVE_LIMBS_WAIT names the moved work: Pillar Arm, Lash, Eyeburst, Caudal Spring, Bellows and limb removal; none of these is the Unfinished's limbs",
+    "design/validation_walks/RimMandrake/Contagion.md:156-163 - grown_limb_visible is prose under the 0.2.0 heading, not a checkbox",
+    "design/validation_walks/RimMandrake/Contagion.md:116 - experience line 'When the sky clears, run.'; no bar contradicts it (the Burn is the cleared sky and reads as danger)"
+  ],
+  "would_pass": "Passes as written. All 9 bars are yes/no visual claims a screenshot judge can answer: burn_reads_as_danger needs a frame sequence, and sunbeam_reads_as_beam needs both a firing frame and an arrest frame. None contradicts the certified decisions or the experience line, and the grown-limb bar is parked as 0.2.0 prose. Bars that today's build would fail (the sunbeam arrest frame, Unfinished variety) are targets, not defects.",
+  "smallest_fix": null
+}

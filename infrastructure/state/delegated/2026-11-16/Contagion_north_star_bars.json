@@ -1,0 +1,37 @@
+{
+  "subject": "design/validation_walks/RimMandrake/Contagion.md ## north star (7 must-show + 2 cannot-show, all new, never validated)",
+  "item": "RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS",
+  "judge": "delegated north-star judge (did not seed the bars)",
+  "class": "delegated: north-star bars (new)",
+  "verdict": "REDO",
+  "bars": {
+    "contagion_bloom_reads_unwholesome": "ok",
+    "contagion_burn_reads_as_danger": "ok (needs a before/after frame sequence, which its own '(guess: a sequence)' tag already says)",
+    "contagion_repulsor_clears_sky": "ok (map-wide wording matches the certified honest whole-map warning, d_efa_q04)",
+    "contagion_sunbeam_reads_as_beam": "PROBLEM: it describes the wrong object. RM_Sunbeam is a handheld gun (ParentName BaseGun, Verb_Shoot, a 3-shot burst of the projectile RM_Bullet_Sunbeam), not a device that drops a beam onto the ground. A screenshot judge cannot tell which frame answers 'a beam of light striking the ground': the item lying on the floor, a pawn shooting, or the arrest treatment. It is also filed under 'Helix devices' next to the Repulsor.",
+    "contagion_flora_reads_as_flesh": "ok (RM_Meatvine, RM_Toothmoss, RM_Eyebark and RM_Wombpod all exist in RM_ContagionFlora.xml)",
+    "contagion_unfinished_read_malformed": "PROBLEM (wording): 'and its kin' names nothing. The mod ships one Unfinished kind (RM_TheUnfinished ThingDef plus PawnKindDef) with one Graphic_Multi body, so a judge cannot know which other creatures count. 'Each visibly different' can stay as a target: the limb hediffs have 0 render nodes today, so the current build would honestly read NO, and that NO is work owed, not a flaw in the bar.",
+    "contagion_coalescence_reads_as_mass": "ok (guess; 'source of something' is loose, but 'a living mass' can be answered yes or no from a still)",
+    "contagion_never_vanilla_forest": "ok",
+    "contagion_never_magenta": "ok (a cannot-show floor carried from the concept sheet's leaf no_magenta, not a must-show that passes just by rendering)",
+    "contagion_grown_limb_visible": "ok: it is out of ### must show and parked as unchecked prose under '### Design Version 0.2.0 (not a bar of this version)', quoting the owner's move"
+  },
+  "evidence": [
+    "design/validation_walks/RimMandrake/Contagion.md:134-135 - sunbeam bar: 'an RM_Sunbeam reads as a beam of light striking the ground'",
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml:68-69 - RM_Sunbeam is a ThingDef with ParentName BaseGun",
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml:112,116 - defaultProjectile RM_Bullet_Sunbeam, burstShotCount 3",
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml:14-17 - the ruled arrest: a colonist holds the gun on a touched patient (RM_SunbeamArrest)",
+    "design/concepts/Contagion/sheet.md:23,70 - leaf sunbeam_arrest_treats: 'Holding the Sunbeam's lens stops the change'; pruning: 'the flagship ends with the treated worker'",
+    "design/validation_walks/RimMandrake/Contagion.md:141-142 - unfinished bar: 'RM_TheUnfinished and its kin ... each visibly different'",
+    "src/RimMandrake/Contagion/Defs/ThingDefs/RM_TheUnfinished.xml:43,114-125 - one ThingDef and one PawnKindDef, one Graphic_Multi texPath; no other Unfinished kind",
+    "src/RimMandrake/Contagion/Defs/HediffDefs/RM_UnfinishedHediffs.xml - 0 renderNode entries across the limb hediffs",
+    "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml:12,50,94,151 - RM_Meatvine, RM_Toothmoss, RM_Wombpod, RM_Eyebark exist",
+    "infrastructure/state/ledger/events/OWNER.jsonl:8284 (tsn 1794772416196929336) - owner certified q02/q04/q05/q08 and moved the grown-limb work to 0.2.0: 'I would like to move the grown limb work to the next version'",
+    "design/validation_walks/RimMandrake/Contagion.md:153-160 - grown_limb_visible is prose under the 0.2.0 heading, not a checkbox",
+    "infrastructure/state/ledger/events/OWNER.jsonl:8452 (tsn 1794816612487799110) - Designer's delegated call: bars validate as new, except grown_limb_visible, which moves to 0.2.0",
+    "design/concepts/Contagion/sheet.md:54 vs :75 - the sheet's delegated line says 0.1.0 checks a grown limb 'shows', but its pruning says 'limb_still_grows: no alone, the limbs are 0.2.0 work'; parking follows the owner's words (non-blocking tension, note only)",
+    "design/validation_walks/RimMandrake/Contagion.md:116 - experience line 'When the sky clears, run.'; no bar contradicts it (Burn = the cleared sky = danger)"
+  ],
+  "would_pass": "Pass once the sunbeam bar describes something the shipped gun can be photographed doing, and the unfinished bar drops 'and its kin'. The other seven bars and the 0.2.0 parking are fit to bind as written.",
+  "smallest_fix": "Contagion.md:134-135, replace the sunbeam bar with: '`contagion_sunbeam_reads_as_beam` - a colonist firing an `RM_Sunbeam`, or holding it on a touched patient (the arrest), shows a bright UV shot from the lens to the target, visibly unlike an ordinary bullet. (guess)'. Optionally move it out of 'Helix devices' into its own sub-heading. Contagion.md:141, change '(`RM_TheUnfinished` and its kin)' to '(`RM_TheUnfinished`), several side by side,'."
+}

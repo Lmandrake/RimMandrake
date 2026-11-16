@@ -102,8 +102,9 @@ The genome and organ-growing loop
 Offline: `python3 src/RimMandrake/Contagion/selftest_contagion.py` runs the suite against a scripted fake game: healthy, then once per mod behaviour broken, each of which must turn exactly its own component red.
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: d46c52671f8caceb8fe21aadbea217f85b7b6768ac59a22d1a5b75567f60d7e8
+validated-by: delegated: new north-star bars; judge verdict infrastructure/state/delegated/2026-11-16/Contagion_north_star_bars_r2.json
 
 Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
 `## must be true` and the mod's shipped sprites, defs and settings, on the owner's
@@ -131,22 +132,20 @@ least certain. `### the experience` is his to dictate.
       warm, the whole Contagion map's sky visibly clears into the Burn (owner
       2026-11-15, OWNER:1794772416196929336; the old "cleared patch" guess was wrong:
       the built condition is map-wide).
-- [ ] `contagion_sunbeam_reads_as_beam` — an `RM_Sunbeam` reads as a beam of light
-      striking the ground. (guess)
+- [ ] `contagion_sunbeam_reads_as_beam` — a colonist firing an `RM_Sunbeam` (a
+      handheld gun), or holding it on a touched patient (the arrest), shows a
+      bright UV shot from the lens to the target, visibly unlike an ordinary
+      bullet. (guess)
 
 **Flesh flora and the Unfinished**
 - [ ] `contagion_flora_reads_as_flesh` — the biome's plants (meatvine, toothmoss,
       eyebark, wombpod) read at play zoom as grown flesh, visibly unlike vanilla
       plants.
-- [ ] `contagion_unfinished_read_malformed` — the Unfinished (`RM_TheUnfinished`
-      and its kin) read as half-made, wrong creatures, each visibly different.
+- [ ] `contagion_unfinished_read_malformed` — the Unfinished (`RM_TheUnfinished`),
+      several side by side, read as half-made, wrong creatures, each visibly
+      different.
 - [ ] `contagion_coalescence_reads_as_mass` — an `RM_Coalescence` reads as a
       living mass that is clearly the source of something. (guess)
-
-**Grown limbs**
-- [ ] `contagion_grown_limb_visible` — a colonist fitted with a Monstrous grown
-      limb looks different from one with a natural arm. (guess: hediffs often
-      draw nothing)
 
 ### cannot show
 
@@ -154,6 +153,15 @@ least certain. `### the experience` is his to dictate.
       vanilla forest with recoloured trees. (guess)
 - [ ] `contagion_never_magenta` — a magenta square for any flora, creature or
       device.
+
+### Design Version 0.2.0 (not a bar of this version)
+
+The grown-limb work is in Design Version 0.2.0, not 0.1.0 (owner 2026-11-15,
+OWNER:1794772416196929336: *"I would like to move the grown limb work to the next
+version, not the current one."*; item RIMMANDRAKE_DESIGN_CONTAGION_LIMB_COSTS_FIVE_LIMBS_WAIT).
+Its drafted bar, to be weighed when 0.2.0 opens: `contagion_grown_limb_visible`,
+a colonist fitted with a Monstrous grown limb looks different from one with a
+natural arm (guess: hediffs often draw nothing).
 
 ## anti-guessing notes
 - RULED OUT: "the Burn needs a generated Contagion map" — `Map.Biome => TileInfo.PrimaryBiome` (decompiled `Verse/Map.cs:398`, RimSage 2026-10-01) and `jawa/map_info` says it is a live passthrough, so re-tiling the quicktest map's own tile reaches `RM_ContagionSky.ExtFor`. site.retile_to_contagion is the guard: if the map's biome does not follow, every Contagion chain records UNMEASURED, never PASS.
