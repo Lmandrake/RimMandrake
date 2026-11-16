@@ -18,6 +18,7 @@ the mod that carry his words (ownerSaid) or a card (byCard). Run twice, it write
 """
 import argparse
 import glob
+import hashlib
 import json
 import os
 import re
@@ -872,8 +873,9 @@ def plan(root, mod):
                 is_cause = (CAUSE_RE.search(sen) or REFUTED_RE.search(sen)) and not NOT_REFUTED_RE.search(sen)
                 if not (is_cause or TRAP_RE.search(sen)):
                     continue
-                if rd and not rd.get("_stale"):
-                    continue              # the reading read these same lines with judgement; its list is the answer
+                if rd and not (REFUTED_RE.search(sen) and is_cause):
+                    continue              # the reading read these lines with judgement; only an explicit 'X refuted'
+                    #                       or 'False theory:' sentence is added beside its list
                 found.append(("cause" if is_cause else "trap", sen, PATH_RE.findall(sen), None, t, txt))
         for f_ in found:
             kind_, sen, deps, where = f_[:4]
@@ -1029,6 +1031,11 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
                     eid, created = M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
                                           authority=auth, code_sha=sha, views=False, new_subject=apart)
                 except M.Refusal as r2:
+                    same = re.search(r"restates (BACKFILL:[0-9a-f]+)", str(r2))
+                    if same:                # an older mine holds the same fact under other evidence: keep that line
+                        held.add(same.group(1))
+                        already += 1
+                        continue
                     refused.append((kind, subject, str(r2)))
                     continue
             else:
@@ -1051,10 +1058,14 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
             kind, subject, _b, evidence, _a, sha = ev[idx]
             apart = fit("a separate source record (%s); listed in the backfill report" % (
                 evidence[0] if evidence else "?"), 160)
+            # a fresh key: the same id re-appended reads as a line changed in place (lint EDITED_IN_PLACE); a later
+            # run's plain append of this fact is refused as 'restates' and holds this line
+            rkey = hashlib.sha256(("%s\0reordered after\0%s" % (eid, seq[subject][0][1])).encode()).hexdigest()[:16]
             for ns in (None, apart):
                 try:
                     M.append(root, mod, W, kind, subject, body=body, version=version, evidence=evidence,
-                             authority=auth, code_sha=sha, views=False, new_subject=ns)
+                             authority=auth, code_sha=sha, views=False, new_subject=ns, key=rkey)
+                    held.add(M.derive_id(W, rkey))
                     break
                 except M.Refusal as r:
                     if ns or not (r.field in ("subject", "text")):
@@ -1068,6 +1079,25 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
     old = [e for e in M.read(root, mod) if e.get("_shard") == W and e.get("id") not in held]
     if old:
         M.delete(root, mod, [e["id"] for e in old])
+        # a subject whose old first line just left was written without the mint check (the subject existed then):
+        # its lines are re-appended in order, the first kept apart by --new-subject, each under a fresh key
+        bad = {d.split(" looks like ")[0].split("REFUSED subject: ", 1)[1] for c, pth, ln, d in M.lint(root, mod, None)[0]
+               if c == "STANDARD" and pth.endswith("/BACKFILL.jsonl") and "REFUSED subject: " in d and " looks like " in d}
+        for subject in sorted(bad):
+            lines = [e for e in M.read(root, mod) if e.get("_shard") == W and e["subject"] == subject]
+            M.delete(root, mod, [e["id"] for e in lines])
+            for i, e in enumerate(lines):
+                rkey = hashlib.sha256(("%s\0minted apart" % e["id"]).encode()).hexdigest()[:16]
+                body = {k: v for k, v in e["body"].items() if k not in ("by", "ts", "new_subject_why")}
+                apart = fit("a separate source record (%s); listed in the backfill report" % (
+                    e["evidence"][0] if e.get("evidence") else "?"), 160)
+                try:
+                    M.append(root, mod, W, e["kind"], subject, body=body, version=e.get("version"),
+                             evidence=e.get("evidence") or [], authority=e.get("authority"), code_sha=e.get("code_sha"),
+                             views=False, new_subject=apart if i == 0 else None, key=rkey)
+                except M.Refusal as r:
+                    refused.append((e["kind"], subject, str(r)))
+            near.append((subject, "re-minted apart after its old first line was deleted"))
     M.write_views(root, mod)
     return {"planned": len(ev), "written": written, "already": already, "deleted": len(old), "refused": refused,
             "near_duplicates": near, "notes": notes}

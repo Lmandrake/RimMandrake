@@ -501,6 +501,18 @@ fl = F.get("finding:" + RL) or {}
 check("rule 6: a long spec is fitted to whole sentences", (fl.get("proposed_fix") or "").endswith("valve opens.") and
       len(fl.get("proposed_fix") or "") <= 320, fl.get("proposed_fix"))
 
+# an older mine of the same fact with other evidence: the re-run must keep the fact (the old line held, or the new one
+# written), never delete the old and refuse the new as 'restates' (Gimme Some Slack lost 5 facts so, 2026-11-16)
+t0 = tr[0]
+M.delete(root, MOD, [t0["id"]])
+M.append(root, MOD, "BACKFILL", t0["kind"], t0["subject"], body=t0["body"], version="0.1.0",
+         evidence=["path:design/concepts/FixtureMod/journal.md"], views=False)
+rs_ = B.run(root, MOD)
+check("a re-mine keeps a fact an older mine wrote with other evidence (no 'restates' refusal, the fact still there)",
+      not [r for r in rs_["refused"] if "restates" in r[2]] and
+      [e for e in M.read(root, MOD) if e["subject"] == t0["subject"] and e["body"].get("text") == t0["body"]["text"]],
+      rs_["refused"])
+
 # the per-ticket reading (claude -p, faked here): its words replace the sentence rules', never its state; a bad bar or
 # path is dropped; the dollar bound stops new batches; the committed readings carry a re-run without --read
 import modledger_reader as R                                     # noqa: E402
@@ -520,6 +532,8 @@ def fake_call(prompt, model):
 
 
 R.CALL = fake_call
+_lines = lambda: {json.loads(l)["id"]: l for l in open(oldp, encoding="utf-8") if l.strip()}
+pre_ = _lines()
 rr = B.run(root, MOD, read=True, budget_usd=0.6)
 rnote = [n for n in rr["notes"] if n.startswith("reader:")]
 check("reader: the dollar bound stops new batches (one 0.50 batch under a 0.60 bound) and the spend is reported",
@@ -527,6 +541,10 @@ check("reader: the dollar bound stops new batches (one 0.50 batch under a 0.60 b
 R.BATCH_CHARS_SAVED = R.BATCH_CHARS
 CALLS.clear()
 rr = B.run(root, MOD, read=True, budget_usd=100)
+post_ = _lines()
+check("reader: a line re-ordered after a re-read finding is a new id, never an old id changed in place (lint "
+      "EDITED_IN_PLACE)", not [i for i in pre_ if i in post_ and pre_[i] != post_[i]],
+      [i for i in pre_ if i in post_ and pre_[i] != post_[i]][:3])
 evr = [e for e in M.read(root, MOD) if e["_shard"] == "BACKFILL"]
 Fr = M.reduce(M.read(root, MOD))["findings"]
 fr = Fr.get("finding:" + RC) or {}
@@ -547,6 +565,16 @@ CALLS.clear()
 rr2 = B.run(root, MOD)
 check("reader: a re-run without --read keeps every read line (no call, nothing written or deleted)",
       not CALLS and rr2["written"] == 0 and rr2["deleted"] == 0, rr2)
+subj_probs = [x for x in M.lint(root, MOD, None)[0] if "REFUSED subject" in str(x)]
+check("re-mine: a subject whose old first line was deleted after the new lines were written still passes the "
+      "duplicate-subject check (lint clean)", not subj_probs, subj_probs[:2])
+
+import modledger_sample as SMP                                   # noqa: E402
+pop_, sm_ = SMP.draw(root, MOD, 7, 5)
+check("sample: a seeded draw of ticket-mined entries, each with its ticket and the other entries mined from it",
+      len(sm_) == 5 and sm_ == SMP.draw(root, MOD, 7, 5)[1] and all(x["source_tickets"] for x in sm_) and
+      any(x["same_ticket_entries"] for x in sm_) and all(any(r.startswith("item:") for r in e["evidence"]) for e in pop_),
+      [(x["kind"], x["source_tickets"]) for x in sm_])
 
 shutil.rmtree(root, ignore_errors=True)
 print("selftest_modledger_backfill: %d failure%s" % (len(FAIL), "" if len(FAIL) == 1 else "s"))

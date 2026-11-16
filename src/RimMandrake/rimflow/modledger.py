@@ -1238,23 +1238,33 @@ def packet_from(mod, events, budget=None, stale=None):
 
     keep.append(("FINDINGS",))
     traps = sorted(((k, t) for k, t in st["traps"].items() if t["status"] != "cleared"), key=lambda x: x[1]["ts"])
-    keep += ["", "## Traps (%d) — what a reader would otherwise get wrong" % len(traps)]
-    for k, t in traps:
-        keep.append("- %s (%s): %s" % (k, t.get("where") or "?", cl(t["text"], k)))
+    keep.append(("TRAPS",))
     refuted = sorted(((k, c) for k, c in st["causes"].items() if c["status"] == "refuted"), key=lambda t: t[1]["ts"])
     is_stale = {k for k, c in refuted if stale and stale(c)}
 
-    def cause_line(k, c):
+    def cause_line(k, c, lv=0):
         on = ", ".join(x for x in [("on %s" % c["code_sha"]) if c.get("code_sha") else "",
-                                    ("depends on %s" % ", ".join(c["depends_on"])) if c.get("depends_on") else ""] if x)
-        return "- %s: %s%s" % (k, cl(c["text"], k), (" (%s)" % on) if on else "")
+                                    ("depends on %s" % ", ".join(c["depends_on"])) if c.get("depends_on") and lv < 7
+                                    else ""] if x)
+        return "- %s: %s%s" % (k, cut(c["text"], 160 if lv == 7 else 80) if lv >= 7 else cl(c["text"], k),
+                               (" (%s)" % on) if on else "")
 
-    keep += ["", "## Causes refuted (%d) — do not chase these again" % (len(refuted) - len(is_stale))]
-    keep += [cause_line(k, c) for k, c in refuted if k not in is_stale]
-    if is_stale:
-        keep += ["", "## Causes stale (%d) — refuted on an older commit; their files changed since: re-check"
-                 % len(is_stale)]
-        keep += [cause_line(k, c) for k, c in refuted if k in is_stale]
+    def traps_block(lv):
+        """The live traps and refuted causes, every one; past everything else at its briefest (lv 7, 8) each text is
+        cut (traps to 120 then 60 chars, causes to 160 then 80), the subject and where always kept."""
+        n = 60 if lv >= 8 else 120
+        out = ["", "## Traps (%d) — what a reader would otherwise get wrong%s" % (
+            len(traps), (" (each cut to %d chars; `modledger.py show --mod %s <subject>` for the whole)" % (n, mod))
+            if lv >= 7 and traps else "")]
+        out += ["- %s (%s): %s" % (k, t.get("where") or "?", cut(t["text"], n) if lv >= 7 else cl(t["text"], k))
+                for k, t in traps]
+        out += ["", "## Causes refuted (%d) — do not chase these again" % (len(refuted) - len(is_stale))]
+        out += [cause_line(k, c, lv) for k, c in refuted if k not in is_stale]
+        if is_stale:
+            out += ["", "## Causes stale (%d) — refuted on an older commit; their files changed since: re-check"
+                    % len(is_stale)]
+            out += [cause_line(k, c, lv) for k, c in refuted if k in is_stale]
+        return out
     def answers_block(lv):
         """His answers, every one; at lv >= 4 each cut to 160 chars (100 at lv 6), a decision named without its
         'decision:' (the ledger keeps his words whole)."""
@@ -1317,6 +1327,8 @@ def packet_from(mod, events, budget=None, stale=None):
             if x == ("FINDINGS",):
                 lines, briefed = findings_block(lv, K)
                 out += lines
+            elif x == ("TRAPS",):
+                out += traps_block(lv)
             elif x == ("ANSWERS",):
                 out += answers_block(lv)
             elif x == ("BARS",):
@@ -1340,6 +1352,9 @@ def packet_from(mod, events, budget=None, stale=None):
                        "--mod %s <subject>`" % (briefed, mod))
         if lv >= 4:
             out.append("- his answers and the bars' texts in brief (cut at %d and 60 chars)" % (100 if lv >= 6 else 160))
+        if lv >= 7 and (traps or refuted):
+            out.append("- traps and refuted causes in brief (texts cut at %s chars)" % ("60 and 80" if lv >= 8 else
+                                                                                       "120 and 160"))
         if st["notes"]:
             out.append("- notes: %d, never printed here (`modledger.py find --mod %s <words>`)" % (len(st["notes"]), mod))
         if st["superseded"] or st["fenced"]:
@@ -1382,7 +1397,10 @@ def packet_from(mod, events, budget=None, stale=None):
                     break
             else:
                 if not done:
-                    text, gone = render(k, 6, n_open)
+                    for lv in (6, 7, 8):                  # last: the traps' and causes' texts in brief
+                        text, gone = render(k, lv, n_open)
+                        if tokens(text) <= budget:
+                            break
     over = tokens(text) > budget
     if over:
         text = ("OVER BUDGET: %d tokens > %d, and nothing droppable is left (open findings, traps, refuted causes, his "

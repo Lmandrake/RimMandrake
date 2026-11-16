@@ -824,6 +824,18 @@ check("the left-out list counts what is shown in brief", "in brief" in bl.split(
 check("a packet within budget renders every open finding whole", ("OPENFIX_%s" % letters(0)) in bfull and
       "CLAIMFIX_" not in bfull, bfi)
 
+# many long traps and refuted causes (a reread ticket population: Gimme Some Slack, 160 traps, 18,462 tokens): the line
+# rule cuts their texts after everything else is at its briefest; every trap and cause is still listed by subject
+TRP = ["trap:backlog-trap-" + letters(i).lower() for i in range(60)]
+for i, nm in enumerate(TRP):
+    M.append(r10, MOD, "BACKFILL", "trap.noted", nm, body={"text": "TRAPHEAD_%s reads green " % letters(i) +
+             "because it reads seven scenes only " * 8, "where": "T_GEOM"}, evidence=["path:x"],
+             ts="2026-11-15T22:%02d:00Z" % i, views=False, new_subject="a fixture backlog: one trap per letter")
+tfull = M.packet(r10, MOD, budget=100000)[1]["tokens"]
+tl, tli = M.packet(r10, MOD, budget=BUD2 + (tfull - bfi["tokens"]) // 2)
+check("long traps past the budget fit by the line rule: each trap listed, its text cut, not OVER BUDGET",
+      not tli["over_budget"] and all(n in tl for n in TRP) and "TRAPHEAD_%s" % letters(59) in tl, (tli, tfull))
+
 # ---- the CLI the way it is used ------------------------------------------------------------------------------------
 env = dict(os.environ, RM_MODLEDGER_ROOT=r9)
 p = subprocess.run([sys.executable, CLI, "packet", "--mod", MOD], capture_output=True, text=True, env=env)
