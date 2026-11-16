@@ -2308,7 +2308,7 @@ RM_Fubbum,1,RimMandrake: Baroque Biomes,Biomes/GelatinousSlime/Defs/ThingDefs_Ra
         <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
       </li>
     </tools>"
-RM_FurnaceBeast,1,RimMandrake: Baroque Biomes,Biomes/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml,6,RM_Pyrelands,-10,1000,-10,1000,,,40,,RM_FurnaceHide,3,"[{""i"":1,""label"":""horn"",""power"":24.0,""cooldown"":2.4},{""i"":2,""label"":""left foot"",""power"":15.0,""cooldown"":2.0},{""i"":3,""label"":""right foot"",""power"":15.0,""cooldown"":2.0}]","<tools>
+RM_FurnaceBeast,1,RimMandrake: Baroque Biomes,Biomes/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml,9,RM_Pyrelands,-10,1000,-10,1000,,,40,,RM_FurnaceHide,3,"[{""i"":1,""label"":""horn"",""power"":24.0,""cooldown"":2.4},{""i"":2,""label"":""left foot"",""power"":15.0,""cooldown"":2.0},{""i"":3,""label"":""right foot"",""power"":15.0,""cooldown"":2.0}]","<tools>
       
       <li>
         <label>horn</label>

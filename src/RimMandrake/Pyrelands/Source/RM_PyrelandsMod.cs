@@ -540,7 +540,7 @@ namespace RimMandrake.Pyrelands
             if (Group(list, "Giants and herds (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "furnaceBeastGiant", "ullaiEnabled", "ullaiHerdSizeMultiplier" }, "[next game start]"))
             {
     list.CheckboxLabeled("Giant furnace-beast (restart)", ref furnaceBeastGiant,
-                    "Shipped default: ON. The furnace-beast is a giant (body size 6, a few per map, rarer), drawn huge, "
+                    "Shipped default: ON. The furnace-beast is a giant (body size 9, a few per map, rarer), drawn huge, "
                   + "with a wider warmth and a bigger smouldering bed. Off after a restart: the classic beast (body size "
                   + "3.2, herds of 3 to 7, its original sprite). Animals already spawned keep their size until regenerated.");
     list.CheckboxLabeled("Ullai herds (restart)", ref ullaiEnabled,

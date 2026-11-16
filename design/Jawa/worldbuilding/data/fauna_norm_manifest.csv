@@ -343,13 +343,13 @@ RM_Fubbum,3,tools/li[1]/power,4,7.7,below band -> K=15,bodySize 0.9 band 10.8..1
 RM_Fubbum,3,tools/li[2]/power,7,13.5,below band -> K=15,bodySize 0.9 band 10.8..13.5
 RM_Fubbum,3,tools/li[3]/power,4,7.7,below band -> K=15,bodySize 0.9 band 10.8..13.5
 RM_Fubbum,3,tools/li[4]/power,4,7.7,below band -> K=15,bodySize 0.9 band 10.8..13.5
-RM_FurnaceBeast,3,tools/li[1]/power,24,90,below band -> K=15,bodySize 6 band 72..90
-RM_FurnaceBeast,3,tools/li[1]/cooldownTime,2.4,3.68,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
-RM_FurnaceBeast,3,tools/li[2]/power,15,56.2,below band -> K=15,bodySize 6 band 72..90
-RM_FurnaceBeast,3,tools/li[2]/cooldownTime,2,2.3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
-RM_FurnaceBeast,3,tools/li[3]/power,15,56.2,below band -> K=15,bodySize 6 band 72..90
-RM_FurnaceBeast,3,tools/li[3]/cooldownTime,2,2.3,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
-RM_FurnaceBeast,6,MeatAmount,140,840,"meat base 140 x bodySize (megafauna rule, bs>1)",
+RM_FurnaceBeast,3,tools/li[1]/power,24,135,below band -> K=15,bodySize 9 band 108..135
+RM_FurnaceBeast,3,tools/li[1]/cooldownTime,2.4,4.5,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_FurnaceBeast,3,tools/li[2]/power,15,84.4,below band -> K=15,bodySize 9 band 108..135
+RM_FurnaceBeast,3,tools/li[2]/cooldownTime,2,2.82,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_FurnaceBeast,3,tools/li[3]/power,15,84.4,below band -> K=15,bodySize 9 band 108..135
+RM_FurnaceBeast,3,tools/li[3]/cooldownTime,2,2.82,cooldown lengthened: DPS <= 10 x sqrt(bodySize),
+RM_FurnaceBeast,6,MeatAmount,140,1260,"meat base 140 x bodySize (megafauna rule, bs>1)",
 RM_Fuzzrunner,5,ComfyTemperatureMax,45,61.9,widen to envelope +/-15C,env -7.4..46.8 (RM_LeaningScrub) +/-15
 RM_Fuzzrunner,3,tools/li[1]/power,2,3,below band -> K=15,bodySize 0.2 band 2.4..3
 RM_Fuzzrunner,3,tools/li[2]/power,1.5,2.2,below band -> K=15,bodySize 0.2 band 2.4..3

@@ -754,24 +754,24 @@
     </nomatch>
   </Operation>
 
-  <!-- RM_FurnaceBeast: bodySize 6 -->
+  <!-- RM_FurnaceBeast: bodySize 9 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/statBases/MeatAmount</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/statBases/MeatAmount</xpath>
-      <value><MeatAmount>840</MeatAmount></value>
+      <value><MeatAmount>1260</MeatAmount></value>
     </match>
     <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/statBases</xpath>
       <match Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/statBases</xpath>
-        <value><MeatAmount>840</MeatAmount></value>
+        <value><MeatAmount>1260</MeatAmount></value>
       </match>
       <nomatch Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]</xpath>
         <match Class="PatchOperationAdd">
           <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]</xpath>
-          <value><statBases><MeatAmount>840</MeatAmount></statBases></value>
+          <value><statBases><MeatAmount>1260</MeatAmount></statBases></value>
         </match>
       </nomatch>
     </nomatch>

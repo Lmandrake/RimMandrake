@@ -95,7 +95,7 @@ namespace RimMandrake.Pyrelands
     /// ResolvedDietCategory, which would call the omnivore-flagged Gizka no grazer) with baseBodySize under 2. The suite
     /// checks the same bar by kind name (validation.py COMMON_GRAZERS / BIG_PREDATORS, comp animal_distribution_correct);
     /// read against the race defs on 2026-11-07 this rule yields exactly those five grazers and seven predators, and the
-    /// fire-hawk (0.65), fire-wasp (0.79) and furnace-beast (6.0) count as neither. Change a threshold here and in that
+    /// fire-hawk (0.65), fire-wasp (0.79) and furnace-beast (9) count as neither. Change a threshold here and in that
     /// pair of lists together.</summary>
     public static class PyrelandsAnimalMix
     {

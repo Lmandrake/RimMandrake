@@ -169,8 +169,8 @@ unbuilt rulings but marks nobody ruled, plus the free tier's missing animals.
   hide, tameable as a herd animal; the free tier's answer to *"the herds are the wealth"*. Reuses
   `RM_SeekTargetExtension` pointed at scorched terrain and `MapComponent_BurnLine`'s record. No new
   behaviour code beyond a terrain target. Static art (three facings), no animation.
-- **The furnace-beast, grown** (`RM_FurnaceBeast` after the port). bs 3.2 → about **6**, a few per
-  map, drawn huge on an ordinary pawn footprint (the Orun-Ghal shape). Everything it already does
+- **The furnace-beast, grown** (`RM_FurnaceBeast` after the port). bs 3.2 → **9** (owner by card 2026-11-15: twice every other Pyrelands animal, the Zeer's 4.5
+  the largest), a few per map, drawn huge on an ordinary pawn footprint (the Orun-Ghal shape). Everything it already does
   scales with it: a wider warmth (row 0b), a bigger smouldering bed, a bigger fire hazard when tamed
   (ruled tameable; the owner called that *"insane... I love it"*). Its art is a redraw at larger draw
   size, not a new rig. Commonality falls (0.08 → about 0.04) so it stays an event.
@@ -200,7 +200,7 @@ felt-temperature offset through the built `Thing.AmbientTemperature` postfix. Si
 
 | order | package | marks | reuses | size |
 |---:|---|---|---|---|
-| 1 | **The herd and the giant** (§3): the ullai; the furnace-beast grown to about bs 6. | 4, 5 | `RM_SeekTargetExtension`, the burn line; the furnace comps | M |
+| 1 | **The herd and the giant** (§3): the ullai; the furnace-beast grown to bs 9 (owner by card 2026-11-15: twice every other Pyrelands animal). | 4, 5 | `RM_SeekTargetExtension`, the burn line; the furnace comps | M |
 | 2 | **Lightning breakers** (§5, revised by the owner). | 2 | `RM_GlassSand`, `RM_FE_Ground_Sand`, `RM_FE_Fulgurite` | M |
 | 3 | **The Struck Glass** (§6, revised by the owner). | 9 | found-rites row, `Patch_LightningStrike_Fulgurite` | M |
 | 4 | **The soundscape the sheet wrote.** Grass hiss; the burn's crackle and roar keyed to the camera's distance from the nearest front, arriving before the light; dry thunder with no rain in it; hawk screams; near-silence after BlackRain. Placeholder audio first. | 7 | `RM_HeatSoundscapeExtension` pattern | S to M |

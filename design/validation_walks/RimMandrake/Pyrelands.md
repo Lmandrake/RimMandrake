@@ -14,7 +14,7 @@ status-hint: THE campaign fire biome; its BiomeDef is RM_Pyrelands (renamed from
   ruled roster once PYRELANDS_FAUNA_WIRING_1 completes) — no foreign kinds.
 - PYRELANDS_ULLAI_GIANT_BUILD_1: RM_Ullai (bs 1.8, herds 8~20, tameable) is on the RM_Pyrelands roster with three
   art facings, and follows the four ash rungs. → ullai_and_giant.ullai_wired
-- The furnace-beast is a giant (bs 6, commonality 0.04, the RM_FurnaceBeast_Giant art); off in Mod Settings, the
+- The furnace-beast is a giant (bs 9, commonality 0.04, the RM_FurnaceBeast_Giant art); off in Mod Settings, the
   classic beast returns at startup. → ullai_and_giant.giant_furnace_beast
 - A wild ullai herd grazes ash near where the burn was about two days ago (MapComponent_BurnLine history).
   → ullai_and_giant.herd_follows_two_day_old_burn (UNMEASURED until a drive exists)

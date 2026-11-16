@@ -167,6 +167,7 @@ namespace RimMandrake.Pyrelands
             ThingDef race = kind.race;
             race.race.baseBodySize = PyrelandsTuning.FurnaceClassicBodySize;
             race.race.baseHealthScale = 2.8f;
+            race.race.baseHungerRate = 1.4f;   // the giant (bs 9) eats 2.1; vanilla hunger ignores body size
             kind.combatPower = 220f;
             kind.wildGroupSize = new IntRange(3, 7);
             float[] classicDraw = { 1.6f, 2.4f, 3.2f };

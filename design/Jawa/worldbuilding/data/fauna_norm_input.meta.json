@@ -9,6 +9,7 @@
  },
  "biome_roster_rows": 584,
  "config": "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml",
+ "edited_after_snapshot": "2026-11-15 RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE: RM_FurnaceBeast bodySize 6 -> 9 (owner by card), set in src before the next snapshot",
  "item": "FAUNA_TOLERANCE_NORMALIZATION_1",
  "load_set_fingerprint": "2189e1bbca261eb4",
  "note": "mod XML, inheritance-resolved, PRE-patch; defs from the deployed game Mods folder, roster patch adds from repo src",

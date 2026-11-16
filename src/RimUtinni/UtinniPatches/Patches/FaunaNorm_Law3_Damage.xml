@@ -3020,18 +3020,18 @@
     </nomatch>
   </Operation>
 
-  <!-- RM_FurnaceBeast: bodySize 6, best 24 -> 90 (below band -> K=15) -->
+  <!-- RM_FurnaceBeast: bodySize 9, best 24 -> 135 (below band -> K=15) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[1]/power</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[1]/power</xpath>
-      <value><power>90</power></value>
+      <value><power>135</power></value>
     </match>
     <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[1]</xpath>
       <match Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[1]</xpath>
-        <value><power>90</power></value>
+        <value><power>135</power></value>
       </match>
     </nomatch>
   </Operation>
@@ -3039,13 +3039,13 @@
     <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[1]/cooldownTime</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[1]/cooldownTime</xpath>
-      <value><cooldownTime>3.68</cooldownTime></value>
+      <value><cooldownTime>4.5</cooldownTime></value>
     </match>
     <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[1]</xpath>
       <match Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[1]</xpath>
-        <value><cooldownTime>3.68</cooldownTime></value>
+        <value><cooldownTime>4.5</cooldownTime></value>
       </match>
     </nomatch>
   </Operation>
@@ -3053,13 +3053,13 @@
     <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[2]/power</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[2]/power</xpath>
-      <value><power>56.2</power></value>
+      <value><power>84.4</power></value>
     </match>
     <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[2]</xpath>
       <match Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[2]</xpath>
-        <value><power>56.2</power></value>
+        <value><power>84.4</power></value>
       </match>
     </nomatch>
   </Operation>
@@ -3067,13 +3067,13 @@
     <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[2]/cooldownTime</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[2]/cooldownTime</xpath>
-      <value><cooldownTime>2.3</cooldownTime></value>
+      <value><cooldownTime>2.82</cooldownTime></value>
     </match>
     <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[2]</xpath>
       <match Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[2]</xpath>
-        <value><cooldownTime>2.3</cooldownTime></value>
+        <value><cooldownTime>2.82</cooldownTime></value>
       </match>
     </nomatch>
   </Operation>
@@ -3081,13 +3081,13 @@
     <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[3]/power</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[3]/power</xpath>
-      <value><power>56.2</power></value>
+      <value><power>84.4</power></value>
     </match>
     <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[3]</xpath>
       <match Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[3]</xpath>
-        <value><power>56.2</power></value>
+        <value><power>84.4</power></value>
       </match>
     </nomatch>
   </Operation>
@@ -3095,13 +3095,13 @@
     <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[3]/cooldownTime</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[3]/cooldownTime</xpath>
-      <value><cooldownTime>2.3</cooldownTime></value>
+      <value><cooldownTime>2.82</cooldownTime></value>
     </match>
     <nomatch Class="PatchOperationConditional">
       <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[3]</xpath>
       <match Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="RM_FurnaceBeast"]/tools/li[3]</xpath>
-        <value><cooldownTime>2.3</cooldownTime></value>
+        <value><cooldownTime>2.82</cooldownTime></value>
       </match>
     </nomatch>
   </Operation>

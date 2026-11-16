@@ -276,7 +276,7 @@ def station_defs():
     s = _pen("RM_FurnaceBeast")
     s.update(probes=[("temp", 3, 3, "room")], chill=CHILL_C)
     add("E", "FURNACE-BEAST (GIANT)", "the walking hearth: it warms a cold room",
-        "The giant (setting on by default; body size 6). Its pen and the CONTROL PEN east of it are the same room; the "
+        "The giant (setting on by default; body size 9). Its pen and the CONTROL PEN east of it are the same room; the "
         "build chilled both to %d C, because outside is ~55 C and the beast's heat pusher stops at 24 C (a pen at the "
         "outdoor 56 C can never read warmer: the 2026-10-15 build measured 56.75 vs 56.68). Weak spot: its warmth/"
         "thermal comps attach by a patch that only applies when RimUtinni Patches is loaded "

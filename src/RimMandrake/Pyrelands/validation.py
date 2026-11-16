@@ -2100,8 +2100,8 @@ def furnace_warmth(t):
     x, z = t.anchor
     with _comp(t, "furnacebeast_warmth", shows=["pyre_furnacebeast_warmth"]):
         _set(t, {"furnaceThermalEnabled": True})
-        # CompFurnaceWarmthAura: radius = 4.9 x sqrt(baseBodySize / 3.2) x Lerp(0.35, 1, charge) (giant: x1.37); a fresh beast's charge is
-        # 0, so its aura reaches 1.7 cells, and a wild beast wanders off a colonist walking after
+        # CompFurnaceWarmthAura: radius = 4.9 x sqrt(baseBodySize / 3.2) x Lerp(0.35, 1, charge) (giant bs 9: x1.68); a fresh beast's charge is
+        # 0, so its aura reaches 2.9 cells, and a wild beast wanders off a colonist walking after
         # it (run 7: 6-10 cells apart in 7 of 8 samples). Both stand in a 2x1 pen (a 4x3
         # make_empty_room), so they are never more than 1 cell apart.
         pen = t.bridge_call("jawa/make_empty_room", rect="%d,%d,4,3" % (x - 1, z - 1),
@@ -2117,7 +2117,7 @@ def furnace_warmth(t):
         col = (((r or {}).get("pawns") or [{}])[0]).get("id")
         if col:
             t.session.track("pawn", col, x=x + 1, z=z)
-        # the control: a second colonist 10+ cells off, outside every radius (max 4.9 x 1.37 = 6.7 cells at full charge)
+        # the control: a second colonist 10+ cells off, outside every radius (max 4.9 x 1.68 = 8.2 cells at full charge)
         rf = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=x + FAR_WARMTH_CELLS, z=z, faction="player",
                            count=1)
         far = (((rf or {}).get("pawns") or [{}])[0]).get("id")
@@ -2937,8 +2937,8 @@ def ullai_and_giant(t):
     with _comp(t, "giant_furnace_beast", toggle="furnaceBeastGiant"):
         root = ET.parse(os.path.join(here, "Defs", "ThingDefs_Races", "RM_PyrelandsFauna.xml")).getroot()
         fb = [d for d in root.findall("ThingDef") if d.findtext("defName") == "RM_FurnaceBeast"]
-        if not fb or fb[0].findtext("race/baseBodySize") != "6":
-            _fail("RM_FurnaceBeast is not bs 6 in XML")
+        if not fb or fb[0].findtext("race/baseBodySize") != "9":
+            _fail("RM_FurnaceBeast is not bs 9 in XML")
         live = _get_defs(t, "ThingDef/RM_Ullai;PawnKindDef/RM_Ullai;ThingDef/RM_FurnaceBeast", "race")
         if _live(t) and len(live) < 2:
             _fail("ullai / furnace-beast defs missing live: %r" % sorted(live))

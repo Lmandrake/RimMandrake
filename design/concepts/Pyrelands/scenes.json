@@ -685,7 +685,7 @@
     "the roster read returns at least the nine native kinds of inv_animal_roster (asserted: a roster that reads fewer is a blind instrument, not a pass)"
    ],
    "action": "read the live RM_FurnaceBeast race body size and each life stage's draw size; read the same for every RM_Pyrelands roster kind (the biome's resolved wild animals, the patch-added cast included, read through biome_probe, never the BiomeDef XML); read both pawns' body sizes",
-   "expect": "live body size 6 and the giant draw sizes; the furnace-beast's live body size at least twice every other RM_Pyrelands roster kind's, and its adult draw size above each of theirs; the beast more than three times the ullai's 1.8",
+   "expect": "live body size 9 and the giant draw sizes (3.3, 5.2, 7.5 by life stage); the furnace-beast's live body size at least twice every other RM_Pyrelands roster kind's, and its adult draw size above each of theirs; the beast more than three times the ullai's 1.8",
    "control": {
     "case": "RM_PyrelandsGiants' classic restore invoked with the giant switch (furnaceBeastGiant) off (static call, no reload)",
     "expect": "live body size back to the classic 3.2 and the classic draw sizes",

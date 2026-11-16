@@ -5,7 +5,9 @@ Reads the repo's XML and C# only (plus the def dump for the rainRate of weathers
   no_ordinary_rain       every weather on RM_Pyrelands's list, native AND patch-added, has rainRate 0 except black rain
   engineered             the biome description says "engineered"
   venom tendable (g7)    RM_FlamefangVenom is tendable, immunizable, and tended severity falls (rise + tended < 0)
-  furnace (g6 static)    RM_FurnaceBeast body size 6; Patch_FurnaceBeastHeatImmunity names it and absorbs Heat damage
+  furnace (g6 static)    RM_FurnaceBeast body size at least twice every other RM_Pyrelands animal's (native AND
+                         patch-added rows) and its adult draw size strictly the largest; Patch_FurnaceBeastHeatImmunity
+                         names it and absorbs Heat damage
   sand shovel            RM_FE_Ground_Sand digs to 5 RM_GlassSand and leaves RM_FE_Ground_Gravel
 
 Then every planted fault (a mutant copy of the files) must turn at least one fact red, and the clean copy must stay green.
@@ -100,6 +102,55 @@ def weather_list(root):
     return names
 
 
+def _race_field(d, field, abstract):
+    """A ThingDef's race/<field>, walking ParentName (race is a child element, so _field cannot)."""
+    seen = 0
+    while d is not None and seen < 10:
+        r = d.find("race")
+        if r is not None and r.findtext(field) is not None:
+            return r.findtext(field)
+        d = abstract.get(d.get("ParentName"))
+        seen += 1
+    return None
+
+
+def _adult_draw(k, abstract):
+    """A PawnKindDef's last life stage bodyGraphicData/drawSize (a bare number or "(x,y)": the larger side)."""
+    seen = 0
+    while k is not None and seen < 10:
+        ls = k.find("lifeStages")
+        if ls is not None and len(ls):
+            v = ls[-1].findtext("bodyGraphicData/drawSize")
+            if v is None:
+                return None
+            return max(float(x) for x in v.strip().strip("()").split(","))
+        k = abstract.get(k.get("ParentName"))
+        seen += 1
+    return None
+
+
+def animal_roster(root):
+    """RM_Pyrelands's wild animals: its own <wildAnimals> plus every patch Add aimed at that list (XML elements)."""
+    biomes, _ = _defs(root, "BiomeDef")
+    b = biomes.get(BIOME)
+    names = []
+
+    def take(node):
+        for c in node:
+            names.append(c.findtext("animal") if c.tag == "li" else c.tag)
+    if b is not None and b.find("wildAnimals") is not None:
+        take(b.find("wildAnimals"))
+    for f in _xml_files(root, "Patches"):
+        r = _parse(f)
+        if r is None:
+            continue
+        for op in r.iter():
+            xp = op.findtext("xpath") or ""
+            if 'defName="%s"' % BIOME in xp and xp.rstrip("/").endswith("wildAnimals") and op.find("value") is not None:
+                take(op.find("value"))
+    return names
+
+
 def facts(root, dump_rain):
     out = []
 
@@ -142,8 +193,29 @@ def facts(root, dump_rain):
     # furnace-beast
     td, tab = _defs(root, "ThingDef")
     fb = td.get("RM_FurnaceBeast")
-    size = _field(fb.find("race"), "baseBodySize", {}) if fb is not None and fb.find("race") is not None else None
-    fact("furnace_body_size_6", size is not None and float(size) == 6.0, "baseBodySize %s" % size)
+    # The owner's bar (scenes.json sc_furnace_giant; by card 2026-11-15 "Keep 'twice', raise body to 9+"): twice every
+    # other Pyrelands animal, the patch-added cast included. A roster that reads fewer than 16 kinds, or a kind whose
+    # size will not resolve, is a blind instrument and fails.
+    pk, pab = _defs(root, "PawnKindDef")
+    sizes, draws, blind = {}, {}, []
+    for n in animal_roster(root):
+        k = pk.get(n)
+        race = td.get(k.findtext("race")) if k is not None else None
+        bs = _race_field(race, "baseBodySize", tab)
+        dr = _adult_draw(k, pab)
+        if bs is None or dr is None:
+            blind.append(n)
+            continue
+        sizes[n], draws[n] = float(bs), dr
+    fbs, fdr = sizes.pop("RM_FurnaceBeast", None), draws.pop("RM_FurnaceBeast", None)
+    big = max(sizes, key=sizes.get) if sizes else None
+    fact("furnace_twice_every_pyrelands_animal",
+         fbs is not None and big and not blind and len(sizes) >= 15 and fbs >= 2 * sizes[big],
+         "furnace %s vs largest other %s %s (needs >= %s); %d other kinds; unresolved %s"
+         % (fbs, big, sizes.get(big), 2 * sizes[big] if big else None, len(sizes), blind or "none"))
+    tall = max(draws, key=draws.get) if draws else None
+    fact("furnace_drawn_largest", fdr is not None and tall and fdr > draws[tall],
+         "furnace adult drawSize %s vs largest other %s %s" % (fdr, tall, draws.get(tall)))
     cs = open(os.path.join(root, MOD, "Source", "Patch_FurnaceBeastHeatImmunity.cs"), errors="replace").read()
     fact("furnace_heat_patch_targets_it", '"RM_FurnaceBeast"' in cs and re.search(r"absorbed\s*=\s*true", cs)
          and '"Heat"' in cs, "names RM_FurnaceBeast, the Heat category, and sets absorbed = true")
@@ -176,7 +248,14 @@ MUTANTS = [
     ("not engineered", D + "BiomeDefs/Pyrelands.xml", "genetically engineered", "planted"),
     ("venom not tendable", D + "HediffDefs/RM_FlamefangVenom.xml", "<tendable>true</tendable>", "<tendable>false</tendable>"),
     ("tending too weak", D + "HediffDefs/RM_FlamefangVenom.xml", "<severityPerDayTended>-0.4<", "<severityPerDayTended>-0.2<"),
-    ("furnace size 5", D + "ThingDefs_Races/RM_PyrelandsFauna.xml", "<baseBodySize>6</baseBodySize>", "<baseBodySize>5</baseBodySize>"),
+    ("furnace size 8.9", D + "ThingDefs_Races/RM_PyrelandsFauna.xml", "<baseBodySize>9</baseBodySize>", "<baseBodySize>8.9</baseBodySize>"),
+    ("zeer outgrows half", "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Zeer.xml", "<baseBodySize>4.5</baseBodySize>",
+     "<baseBodySize>4.6</baseBodySize>"),
+    ("patch-added giant", "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml", "<RSW_Gizka>1.0</RSW_Gizka>",
+     "<RSW_Gizka>1.0</RSW_Gizka><RSW_Fambaa>0.1</RSW_Fambaa>"),
+    ("roster kind unresolvable", "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Pyrelands.xml", "<RSW_Gizka>1.0</RSW_Gizka>",
+     "<RSW_Gizka>1.0</RSW_Gizka><RSW_NoSuchBeast>0.1</RSW_NoSuchBeast>"),
+    ("furnace drawn as the zeer", D + "ThingDefs_Races/RM_PyrelandsFauna.xml", "<drawSize>7.5</drawSize>", "<drawSize>6</drawSize>"),
     ("heat patch on wrong def", MOD + "/Source/Patch_FurnaceBeastHeatImmunity.cs", '"RM_FurnaceBeast"', '"RM_Ullai"'),
     ("heat patch absorbs nothing", MOD + "/Source/Patch_FurnaceBeastHeatImmunity.cs", "absorbed = true", "absorbed = false"),
     ("shovel yields 4", D + "TerrainDefs/ScorchableGround.xml", "<count>5</count>", "<count>4</count>"),

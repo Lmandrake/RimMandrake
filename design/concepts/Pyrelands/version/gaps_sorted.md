@@ -49,7 +49,7 @@ is a `scenes.json` or `tree.json` edit (a re-pin; Stage 3 owes it). Judging is S
 | g7 | inv_ash_field | PROBLEM | Ash drawn as ground cover and as dust on plants is the biome's core look, and no scene expects it. |
 | g8 | inv_weather, no_ordinary_rain | PROBLEM | Forced weather can choose ordinary rain (question 4). The code fix was shown live, and `sc_no_rain` still owes the case. |
 | g9 | inv_burrowers_heat_dome, ashwallow_dives_unharmed | PROBLEM | The leaf promises a dome stance, but the dome sprite is the standing body, so the scene can neither see the stance nor fail it. The scene must refuse the standing body, and the dome art is owed. |
-| g10 | furnacebeast_warms | CORRECTION | The claim already holds by defs: body size 6 against at most 2.5 for every other roster animal. Only the scene's expect is narrower than the leaf. |
+| g10 | furnacebeast_warms | CORRECTION | The claim holds by defs at body size 9 against the Zeer's 4.5, the largest other roster animal (patch-added cast included; owner by card 2026-11-15, RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE; T_DEFS_OFFLINE asserts it). |
 | g11 | inv_firehawk_hunt_rewards | PROBLEM | His card 2026-11-14 promises a letter naming the hawk and the ember, and a valuable crestfeather of beauty. `T_FH_LETTER` checks only the keys and the toggle, and the scene reads neither the wording nor the value. |
 | g12 | inv_art_and_text | PROBLEM | Art shipped after his 2026-10-16 approval rests on no judge. The crestfeather uses placeholder art. Art judging is owed before anything reaches him. |
 | g13 | burn_line_walks | PROBLEM | The flagship lead scene takes no capture, though `owner_part` names the face he picked, so he is never shown it. |

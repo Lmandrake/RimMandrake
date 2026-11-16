@@ -224,7 +224,8 @@
     <description>A giant whose banded mineral hide stores the heat of the burns and glows between the plates. It walks into the flames to bank that heat, and carries it long after. A kept furnace-beast can heat a barn for weeks, but may also set the floor alight.</description>
     <statBases>
       <MoveSpeed>3.6</MoveSpeed>
-      <!-- PYRELANDS_ULLAI_GIANT_BUILD_1: the giant (bs 6). The classic stats are restored at startup when Mod
+      <!-- PYRELANDS_ULLAI_GIANT_BUILD_1: the giant (bs 9: twice the Zeer's 4.5, the largest other Pyrelands animal;
+           owner by card 2026-11-15, RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE). The classic stats are restored at startup when Mod
            Settings "Giant furnace-beast" is off (RM_PyrelandsGiants, Source/RM_PyrelandsGiants.cs). -->
       <MarketValue>1600</MarketValue>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
@@ -286,9 +287,9 @@
            two igniters train alike; the gauntlet is the taming, not the
            training. -->
       <trainability>Intermediate</trainability>
-      <baseBodySize>6</baseBodySize>
-      <baseHealthScale>5.2</baseHealthScale>
-      <baseHungerRate>1.4</baseHungerRate>
+      <baseBodySize>9</baseBodySize>
+      <baseHealthScale>7.8</baseHealthScale>
+      <baseHungerRate>2.1</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
       <!-- §8a change 5 / §12: the bespoke hide, Defs/ThingDefs_Items/RM_FurnaceHide.xml. -->
       <leatherDef>RM_FurnaceHide</leatherDef>
@@ -339,7 +340,7 @@
     <defName>RM_FurnaceBeast</defName>
     <label>furnace-beast</label>
     <race>RM_FurnaceBeast</race>
-    <combatPower>400</combatPower>
+    <combatPower>600</combatPower>
     <wildGroupSize>1~3</wildGroupSize>
     <ecoSystemWeight>0.6</ecoSystemWeight>
     <lifeStages>
@@ -347,21 +348,21 @@
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>2.4</drawSize>
+          <drawSize>3.3</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>3.8</drawSize>
+          <drawSize>5.2</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
-          <drawSize>5.5</drawSize>
+          <drawSize>7.5</drawSize>
         </bodyGraphicData>
       </li>
     </lifeStages>
