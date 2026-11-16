@@ -1,78 +1,11 @@
 {
- "against": "rm-coverage-judge-1794750987",
- "by": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS (his card OWNER:1794774724955142310, 'Fix the 17 gaps, one final look'; edits 6a4318a295, 6d8f7fe94c, 4a7b2faf61, 5b463ff0f9); claims written by the BENCH helper after reading each place; T_ROUND6_GAPS (src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py) failed 17 of 17 on 7c9f5784b1 and passes 18 of 18 checks here; every new or extended live read is UNRUN, owed by RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",
+ "against": "rm-coverage-judge-1794779751",
+ "by": "RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE (his card OWNER:1794786804170379047, 'Keep twice, raise body to 9+'; edit 6120bb02aa); claim written by Designer run rm-role-designer-1794789422 after reading each place",
  "claims": [
   {
    "gap": "g1",
-   "evidence": "scenes.json sc_furnace_hide_bank (new, in showcase sky_and_shelter): a furnace-beast butchered for RM_FurnaceHide, a RM_FurnaceHideBank built from it with no fuel or power comp in one of two twin closed rooms on a cold map (below its 21 C heatPushMaxTemperature), hourly temperatures; control the twin room with no bank; tree.json furnacebeast_warms experience, oracle, scenario, false_pass and red state the hide bank; sheet.md furnacebeast_warms does-line; record.json inv_furnacebeast parts_covered_by (no new leaf: a new leaf would be a new locked bar)"
-  },
-  {
-   "gap": "g2",
-   "evidence": "scenes.json showcase burn_line no longer claims inv_biome_self_contained; coverage_rest inv_biome_self_contained (by sc_populations, biome_text_says_engineered; checks T_SELF_CONTAINED_OFFLINE, T_LINT, T_SITE) names the payload, the mutator ports and the generic text; T_SELF_CONTAINED_OFFLINE = src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py (payload FindMod-guarded on the scanner's About name and aimed at RM_Pyrelands and declared defs; every TileMutatorDef in RM_RetiredMutatorPorts_Pyrelands a mapped port; no campaign vocabulary in Defs, Patches or Languages text; PASS, 8 of 8 mutants red); version/test_table.json tests T_SELF_CONTAINED_OFFLINE; the canon-save load of the ported tiles is live, UNRUN, its command in the row"
-  },
-  {
-   "gap": "g3",
-   "evidence": "record.json d_fix_seventeen_round_six_gaps: g3 is POLISH, out of passing in his words (OWNER:1794774724955142310); kept in version/polish.md"
-  },
-  {
-   "gap": "g4",
-   "evidence": "scenes.json coverage_rest inv_settings_gate settings_map: all 43 Scribe'd settings of RM_PyrelandsMod.cs, each to the scene whose action or control turns it off (14: sc_walk for pyrelandsEnabled, sc_fire_dusts_ash, sc_scorchfruit, sc_ash_ground twice, sc_populations, sc_burn_line_walks, sc_firehawk, sc_firehawk_rewards, sc_ashwallow, sc_heat_dome, sc_furnace_giant, sc_ash_watered, sc_burn_compounds) and to T_SETTINGS_SWEEP_OFFLINE; biomeGenerationEnabled to T_SITE; the four cross-biome settings to T_SELF_CONTAINED_OFFLINE (Unsupported label drawn) and the sweep (ship off); the why says which off states stay static; controls in sc_scorchfruit and sc_ash_ground added, switch names written into six controls; sc_walk turns the Mod enabled master off for a day in place of 'switch the other mechanics off and on'; floor.json mod_settings establishes; T_ROUND6_GAPS diffs the map against the settings file"
-  },
-  {
-   "gap": "g5",
-   "evidence": "scenes.json sc_roof_withers (new, requirement grass_carpets_and_regreens): roofed ember grass against the unroofed patch beside it, hourly for two days, and the pair with PyrelandsMechanicsGate off; sc_herd_thirst (new, requirement populations_are_the_biomes_own): RM_Thirst of 4 ullai against 4 vanilla muffalo with the same water, the herds' staggered starts and 7-day water arrivals, and a same-seed toggle-off map where the visits overlap; record.json inv_plant_roster and inv_animal_roster parts_covered_by name them"
-  },
-  {
-   "gap": "g6",
-   "evidence": "scenes.json sc_ash_ground start asserts at least one standing-water body (a map with none regenerated, never passed); expect deep ash on at least 0.85 of open land (validation.py DEEP_ASH_MIN, bar pyre_ground_deep_ash) and every water body ringed with mud or rich soil; control adds a same-seed toggle-off regeneration (GenStep_PyrelandsStandingWater and GenStep_PyrelandsGreenRing return) and vanilla shores without the ring"
-  },
-  {
-   "gap": "g7",
-   "evidence": "scenes.json sc_ash_ground action, expect and control: a noon capture pair of ten ash-laden grass cells as they lie against the same cells with their sand-grid depth cleared; the first shows the ash cover (PyrelandsAshCover) and the plant dust (PyrelandsAshDust), a judge names which is which; record.json inv_ash_field parts_covered_by reworded"
-  },
-  {
-   "gap": "g8",
-   "evidence": "scenes.json sc_no_rain start, action, expect and control: a GameCondition_ForceWeather forced to Rain on the Pyrelands map brings black rain, never Rain (PyrelandsNoOrdinaryRain), and the same condition yields Rain on the vanilla temperate map; tree.json no_ordinary_rain scenario, oracle and false_pass; record.json inv_weather parts_covered_by"
-  },
-  {
-   "gap": "g9",
-   "evidence": "scenes.json sc_heat_dome expect reads ProbeDome's bodyGraphic: the race's domeTexPath (AshwallowDome) while domed and the standing body after, the two paths different, plus two captures a judge tells apart; record.json inv_burrowers_heat_dome proof_note corrected: the dome sprite is its own art (AshwallowDome_north/south/east, adf45e2103, 2026-10-15), not the standing body, so no dome-art build item is owed"
-  },
-  {
-   "gap": "g10",
-   "evidence": "scenes.json sc_furnace_giant action and expect: the live body and draw size of every RM_Pyrelands roster kind (resolved through biome_probe, a read of fewer than the nine native kinds is blind), the furnace-beast at least twice every other kind's body size and above each draw size; tree.json furnacebeast_warms oracle"
-  },
-  {
-   "gap": "g11",
-   "evidence": "scenes.json sc_firehawk_rewards action and expect: the letter's label (RM_FireHawkSightedLabel) and text naming the hawk (LabelShortCap) and its ember (RM_FireHawkEmberFromPlant or RM_FireHawkEmberFromBurn); the live crestfeather MarketValue above the fire-hawk's own and Beauty above 0; tree.json firehawk_hunt_rewards oracle"
-  },
-  {
-   "gap": "g12",
-   "evidence": "scenes.json coverage_rest inv_art_and_text post_approval_art: every texture added under Pyrelands/Textures since 2026-10-16 (git), the borrowed ThrumboHorn placeholder, the text written since and the three open follow-ups, each with its judge verdict or owed item: RIMMANDRAKE_JUDGE_PYRELANDS_ART_ADDED_SINCE_HIS_SHEET (17 entries, acceptance test watched failing 17 unjudged) and RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN; T_ROUND6_GAPS fails on any unlisted texture; record.json inv_art_and_text proof_note points there"
-  },
-  {
-   "gap": "g13",
-   "evidence": "scenes.json sc_burn_line_walks action, expect and restore: 24 hourly captures of the front and its black trail at play zoom, the hour asserted at each, a judge confirms a walking line; one savegame of the walking front (burn_line_walking) kept for his review"
-  },
-  {
-   "gap": "g14",
-   "evidence": "scenes.json sc_burn_compounds start records colony vitals and pending incidents before the seven-day wait; expect reads them unchanged at day 7 (no raid, no death, no fire off the pads)"
-  },
-  {
-   "gap": "g15",
-   "evidence": "scenes.json sc_grass_regreens start: the cover census runs first on a fresh map, no sow, spawn or set_terrain before it (from the script's call log), live plantDensity read; expect plants on at least 0.85 of open plantable cells (validation.py grass_cover, bar pyre_grass_chokes_ground); control a same-seed map generated at plantDensity 1.0 reads lower; tree.json grass_carpets_and_regreens oracle"
-  },
-  {
-   "gap": "g16",
-   "evidence": "scenes.json sc_foreign_arrivals requirement adds ullai_cross_the_map_as_vanilla_herds; expect: IncidentWorker_HerdMigration.CanFireNow true on the Pyrelands map under PyrelandsForeignArrivals and an executed migration bringing RM_Ullai; tree.json ullai_cross_the_map_as_vanilla_herds oracle names T_CUT_STAYS_CUT with its command; record.json inv_ullai_herd_giant parts_covered_by"
-  },
-  {
-   "gap": "g17",
-   "evidence": "tree.json experience and oracle text: walk_season_on_the_pyre (steps away from fire, eats before fire duty; sc_fire_sense's requirement), ash_fertile_when_watered (roots as if cooler; sc_ash_watered), firehawk_lights_ahead (flies to a burn it can see; sc_firehawk), populations_are_the_biomes_own (two fire-hawks and eight ashwallows, slow thirst; sc_populations, sc_herd_thirst), grass_carpets_and_regreens (withers under a roof; sc_roof_withers); sheet.md does-lines for the same five leaves"
-  },
-  {
-   "gap": "g18",
-   "evidence": "scenes.json showcase 4 fire_solace (sc_firefoam_sprayer, sc_scorchfruit, sc_sand_shovel, sc_firehawk_rewards) exercising inv_firefoam_sprayer, inv_sand_shovel, inv_firehawk_hunt_rewards and inv_scorchfruit (overlap 0.25, overlap_why given); their three coverage_rest rows removed; sheet.md delegated names the solace showcase; designer_stage.py showcases: set accepted"
+   "evidence": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml:290 baseBodySize 9 (was 6); the largest other roster kind is RSW_Zeer at 4.5 (RSW_Zeer.xml:84), so 9 is exactly twice it and the scene's x2 bar against the full resolved roster, patch-added cast included, is attainable and unchanged; adult drawSize 7.5 > the Zeer's 6. scenes.json sc_furnace_giant expect and tree.json furnacebeast_warms oracle_proposed now read body size 9; sheet.md furnacebeast_warms reads 9, twice the Zeer's 4.5; record.json d_furnace_body_nine. selftest_pyrelands_defs_offline.py run in this run: PASS, 7 def facts hold, 16 of 16 mutants red. The live read in sc_furnace_giant stays UNRUN.",
+   "fix": "build changed, not the criterion: the owner chose to keep the twice bar and enlarge the beast"
   }
  ]
 }

@@ -204,6 +204,12 @@
    "speaker": "owner",
    "source": "OWNER:1794774724955142310",
    "text": "By his card 2026-11-15 12:22 PM PST (How should Pyrelands 0.1.0 proceed? -> Fix the 17 gaps, one final look): the 14 Problem and 3 Correction gaps of coverage round 6 (rm-coverage-judge-1794750987: g1, g2, g4-g18, sorted in version/gaps_sorted.md Round 6) are fixed inside the locked 0.1.0 as one locked change, each by its smallest_fix. Gap g3 (inv_firehawk_ember: that sc_firehawk does not prove the hawk picks the LARGEST fuel) is Polish: it stays in version/polish.md (RIMMANDRAKE_TEST_FIREHAWK_PICKS_LARGEST_FUEL) and is out of 0.1.0's passing in his words; that part of inv_firehawk_ember is ok for coverage. Then the Cold Reader exam is retaken and the coverage judge gets ONE final look. This supersedes his 2026-11-14 limit (OWNER:1794721773574845016) for exactly that one look; a not_covered on it stops judging and pauses Pyrelands for him again."
+  },
+  {
+   "id": "d_furnace_body_nine",
+   "speaker": "owner",
+   "source": "OWNER:1794786804170379047",
+   "text": "By his card 2026-11-15 (How should the giant be made the giant? -> Keep 'twice', raise body to 9+): the furnace-beast's body size goes from his earlier ruled 6 to 9, so it is at least twice every other Pyrelands roster kind's, the patch-added RSW_Zeer (4.5) included; adult draw 7.5 against the Zeer's 6. Built by RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE (6120bb02aa); T_DEFS_OFFLINE asserts the twice bar. This closes round-7 gap g1 (rm-coverage-judge-1794779751): the bar stays as written and is now attainable."
   }
  ],
  "asks": [
