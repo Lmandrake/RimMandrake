@@ -719,6 +719,17 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
 
 # ---- the move --------------------------------------------------------------------------------------------------------
 
+def ledger_stage_move(root, mod, cur, to, by):
+    """A mod that has a ledger keeps its stage equal to the stage record's: one DISPATCH stage.accepted per move (a
+    backfill alone left ExplosiveKnockback's ledger at offline_build after it moved to in_game). -> the event id, or
+    None for a mod with no ledger."""
+    import modledger
+    if not os.path.isdir(os.path.join(root, "design", "concepts", mod, "ledger")) and not modledger.read(root, mod):
+        return None
+    return modledger.append(root, mod, "DISPATCH", "stage.accepted", "stage",
+                            body={"from": cur, "to": to, "by": by}, env_writer=None)
+
+
 def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, waits_on=None, game_only=None):
     res = evaluate(root, mod, to, steward=steward, conductor=conductor, owner=owner, by=by, why=why, check_by=True,
                    game_only=game_only)
@@ -779,6 +790,7 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
         entry.append("- Record: `%s`." % RECORD)
         jtext = jtext.rstrip("\n") + "\n\n" + "\n".join(entry) + "\n"
     commit_move(root, mod, rec, jtext)
+    ledger_stage_move(root, mod, cur, to, by)
     return res
 
 

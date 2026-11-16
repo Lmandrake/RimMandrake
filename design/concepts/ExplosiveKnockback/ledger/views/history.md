@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":305856,"DISPATCH":3051,"HOLDER.run-1794813483":1382} body_sha256=91ac98540edb2dc6da6a52428a2e82f3350225ebcdd230f6339fa83ffed1f6e5 -->
-# ExplosiveKnockback — mod ledger history (435 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":305856,"DISPATCH":3357,"HOLDER.run-1794813483":1382} body_sha256=e9855132146c94636a4f84c25ed0647cc7950802de326faf7d0fdc13ae8215bc -->
+# ExplosiveKnockback — mod ledger history (436 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -436,3 +436,4 @@
 - 2026-11-16T08:26:07Z BACKFILL#422 decision finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN v0.1.0: Thrown pawn lands on another pawn → Bruise in the next version
 - 2026-11-16T08:26:08Z BACKFILL#423 decision finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN v0.1.0: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
 - 2026-11-16T08:32:10Z BACKFILL#424 decision finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC v0.1.0: 
+- 2026-11-16T09:34:22Z DISPATCH#10 stage.accepted stage v0.1.0: 
