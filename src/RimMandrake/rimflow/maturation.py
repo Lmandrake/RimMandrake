@@ -529,14 +529,17 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
         offline = [i for i in ids if need.get(i) not in LIVE_NEEDS]
         shut = [i for i in ids if i in ended]
         was6 = any(m.get("from") == "in_game" for m in rec.get("moves") or [])
+        # every open sibling (same caused_by) is named: an offline item of the same road back keeps the record here
+        unnamed = [x["id"] for x in ledger_items_caused_by(root, sorted(set(ledger_caused_by(root, ids).values())))
+                   if x["id"] not in ids]
         clause("game_only", "every item the move names is open and needs the live game (ledger needs game-up or "
-               "bridge), and the record came to this stage from Stage 6", bool(ids) and not offline and not shut
-               and was6, [req_ref, rec_ref],
-               observed="items %s; needs %s; closed %s; a move from in_game on the record: %s" % (
-                   ", ".join(ids), ", ".join("%s=%s" % (i, need.get(i)) for i in ids), ", ".join(shut) or "none",
-                   was6),
-               would_pass="--game-only naming only open road-back items whose needs is game-up or bridge, on a record "
-                          "sent here from Stage 6",
+               "bridge), it names every open item of its road back, and the record came to this stage from Stage 6",
+               bool(ids) and not offline and not shut and not unnamed and was6, [req_ref, rec_ref],
+               observed="items %s; needs %s; closed %s; open and not named %s; a move from in_game on the record: %s"
+               % (", ".join(ids), ", ".join("%s=%s" % (i, need.get(i)) for i in ids), ", ".join(shut) or "none",
+                  ", ".join(unnamed) or "none", was6),
+               would_pass="--game-only naming every open item of the road back, each with needs game-up or bridge, on "
+                          "a record sent here from Stage 6",
                fix="work an item an offline test can show here (its offline test first, its in-game check recorded "
                    "UNRUN with `maturation.py unrun`), or set its needs (`rimflow needs <ID> game-up`) only when no "
                    "offline test can show it", cost="edit",
@@ -2473,6 +2476,26 @@ def ledger_items_caused_by(root, ids):
     live = [k for k in sorted(filed) if k not in ended]
     needs = ledger_needs(root, live)
     return [{"id": k, "title": filed[k], "needs": needs.get(k)} for k in live]
+
+
+def ledger_caused_by(root, ids):
+    """-> {id: caused_by} for these ledger items, from their file or spawn event (an item filed with none is absent)."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    want, out = set(ids), {}
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
+        if not f.endswith(".jsonl"):
+            continue
+        with open(os.path.join(d, f), encoding="utf-8") as fh:
+            for ln in fh:
+                if '"caused_by"' not in ln:
+                    continue
+                try:
+                    e = json.loads(ln)
+                except ValueError:
+                    continue
+                if e.get("id") in want and e.get("event") in ("file", "spawn") and e.get("caused_by"):
+                    out[e["id"]] = e["caused_by"]
+    return out
 
 
 def ledger_needs(root, ids):

@@ -156,6 +156,12 @@ check("the tick at Stage 6: a game-up item still gets its fixer (it may have the
       row.get("fix_item") == LIVE_A, row)
 
 put_record("offline_build", BACK)
+ev_part = attempt("evaluate game_only part", lambda: M.evaluate(root, PILOT, "in_game", game_only=[LIVE_A, LIVE_B]))
+check("--game-only leaving an open item of the same road back unnamed (an offline one) is refused",
+      ev_part is not None and "game_only" in [r["clause"] for r in ev_part["verdict"]["refusals"]],
+      ev_part and ev_part["verdict"]["refusals"])
+with open(os.path.join(ev, "BENCH.jsonl"), "a", encoding="utf-8") as fh:
+    fh.write(json.dumps({"event": "close", "id": OFF_C, "sha": "abc1234"}) + "\n")
 ev_ok = attempt("evaluate game_only", lambda: M.evaluate(root, PILOT, "in_game", game_only=[LIVE_A, LIVE_B]))
 refused = [r["clause"] for r in (ev_ok or {}).get("verdict", {}).get("refusals", [])]
 check("advance --to in_game --game-only from Stage 3, every named item open and game-only: order and game_only pass",
