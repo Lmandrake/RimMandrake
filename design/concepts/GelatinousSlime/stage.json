@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: coverage_judge brief is UNTESTED, its verdict is advisory, and concept_tree.py gate requires the missing authorised coverage signature",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -232,6 +233,18 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designercodex-1794839147 result rejected: no result.json (a closing message is not a result); Codex transport failed: no Codex transport result"
+  },
+  {
+   "at": "2026-11-16T15:25:06Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794842698, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T15:27:46Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794842698: stage 5 blocked"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_GELATINOUSSLIME_DESIGNER_ON_CODEX_FOURTH",
@@ -499,6 +512,28 @@
     "no result.json (a closing message is not a result)",
     "Codex transport failed: no Codex transport result"
    ]
+  },
+  {
+   "at": "2026-11-16T15:27:45Z",
+   "inputs": {
+    "exam": "6051e7edbbfc98219c4e9173eaa06f3709d4bc96b09366a8209d71c872161805",
+    "floor": "d7dacc07f1a217ec8328ff05ca30cb09f06b0c2b6147f797144835dd30238e49",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "23cfc23f4265f52ff71148df4f63e96b89cf3ed38d3bd3f89f535d6ceccd05e7",
+    "scenes": "9921adfea00edcc3ac0baffaafb5c88307406423959c622fad0b9e1d7f025f7e",
+    "sheet": "84430387dffa1e1fddd0f4f9aee16c0cf8142446c9fe0fdaf3e11ba966f5860d",
+    "tree": "73a427218f9b65b4ad03c58cba26b209beb2e5900ee0d48bddb25e6df9d3eac8"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+   },
+   "on": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: coverage_judge brief is UNTESTED, its verdict is advisory, and concept_tree.py gate requires the missing authorised coverage signature",
+   "outcome": "blocked",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794842698",
+   "stage": 5,
+   "summary": "Verified frozen inputs, exam, scenes, showcase coverage and recovery. Gate refuses solely for no coverage signature. The 18 findings from rm-coverage-judge-1794839164 remain advisory under the uncalibrated brief, so this run records the existing calibration/signature dependency. The flagship selection is already resolved by CONDUCTOR:1794825281765620778. Wrote result.json for the current run after the previous missing-result and transport rejection."
   }
  ],
  "runner": "codex",
@@ -571,10 +606,18 @@
    "run": "rm-role-designercodex-1794839147",
    "runner": "codex",
    "usage": "UNMEASURED"
+  },
+  {
+   "run": "rm-role-designercodex-1794842698",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 795621,
+    "output_tokens": 4212
+   }
   }
  ],
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready"
+ "status": "blocked"
 }

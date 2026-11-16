@@ -1,0 +1,122 @@
+{
+  "run": "rm-role-designercodex-1794842698",
+  "stage": 5,
+  "outcome": "blocked",
+  "on": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: coverage_judge brief is UNTESTED, its verdict is advisory, and concept_tree.py gate requires the missing authorised coverage signature",
+  "summary": "Verified frozen inputs, exam, scenes, showcase coverage and recovery. Gate refuses solely for no coverage signature. The 18 findings from rm-coverage-judge-1794839164 remain advisory under the uncalibrated brief, so this run records the existing calibration/signature dependency. The flagship selection is already resolved by CONDUCTOR:1794825281765620778. Wrote result.json for the current run after the previous missing-result and transport rejection.",
+  "checks": {
+    "frozen_inputs": "all match the open packet",
+    "exam_errors": [],
+    "scene_errors": [],
+    "showcases": "accepted",
+    "coverage_checklist": {
+      "inventory": 44,
+      "leaves": 13,
+      "rows": 57,
+      "unchecked": []
+    },
+    "gate_errors": [
+      "no coverage signature"
+    ],
+    "open_recovery": []
+  },
+  "coverage": {
+    "judge": "rm-coverage-judge-1794839164",
+    "verdict": "not_covered",
+    "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+    "calibration": "UNTESTED",
+    "findings": [
+      {
+        "gid": "g1",
+        "what": "Settings matrix assigns tuning values and several toggles to scenes that never change them",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g2",
+        "what": "Visitor generation seed, never-on-load and drowned-farm generation/toggle are only inspected after the fact",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g3",
+        "what": "Dwommo flight is accepted by visible movement and a capture sequence, not by a deterministic flight-state read",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g4",
+        "what": "Native resistance of oombs, wuum and fubbum is claimed but never measured against a susceptible control",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g5",
+        "what": "Slime terrain's movement and fertility surfaces are asserted but not observed",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g6",
+        "what": "Titanoslime shedding has no size-threshold or cooldown arm",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g7",
+        "what": "Chunk shelf-life holders omit the carry tracker the record names as unswept",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g8",
+        "what": "The generic RM_SlimeBreachable arm does not assert piece consumption or drench filth",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g9",
+        "what": "The off-map dissolution variant has no expected outcome",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g10",
+        "what": "No scene checks that warnings give a truthful time context",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g11",
+        "what": "The slime-mark generic helpers and the inherited-mark promise are untested",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g12",
+        "what": "Seeker world-tile localisation is not checked for correctness or for a world with slime tiles",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g13",
+        "what": "The prepared-floor, resistant-worker viable routine is never staged",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g14",
+        "what": "Friend rescue does not fix the friend's travel distance or record the time margin",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g15",
+        "what": "The legacy ground contact scene has no expected outcome",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g16",
+        "what": "The rain/water service scene has no pass condition",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g17",
+        "what": "Floor lines are bound to scenes whose actions do not measure them",
+        "suggested_return_to": 3
+      },
+      {
+        "gid": "g18",
+        "what": "The player sheet omits several things the tree tests",
+        "suggested_return_to": 3
+      }
+    ],
+    "source": "design/concepts/GelatinousSlime/coverage_verdict.json"
+  }
+}
