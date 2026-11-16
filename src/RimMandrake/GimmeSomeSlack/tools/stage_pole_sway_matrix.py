@@ -48,6 +48,17 @@ def layout(x0, z0):
     return st
 
 
+def row_order_text(st):
+    """The key sheet's row order as it reads ON SCREEN: north (higher z) is up, so the last-laid row is the top one."""
+    rows = []
+    for s in sorted(st, key=lambda s: -s["a"][1]):
+        name = "%s %s" % (s["look"], s["span"])
+        if name not in rows:
+            rows.append(name)
+    return ("Rows top to bottom: %s. Columns west to east: calm, breezy, storm. Each station's number is on its sign book, "
+            "two cells west of its left mast." % ", ".join(rows))
+
+
 def sign_cell(s):
     """Two cells west of mast A, one north of its base: clear of the mast (drawn ~3 cells tall above its base cell, where a sign
     book hid the mast art in the first live capture, 2026-11-16) and of the previous column's span (COL_W leaves 6 cells)."""
@@ -99,7 +110,7 @@ def main():
     rows += ["| %d | %s | %s (%d) | %s (%.2f) | %s -> %s |" % (s["n"], s["look"], s["span"], s["cells"], s["wind"], s["windSpeed"], s["a"], s["b"])
              for s in st]
     sheet = ["# Pole-wire sway matrix", "", "Save: `%s` (game left paused; unpause to watch, 1x speed)." % a.name, "",
-             "Rows top to bottom: Pendulum, Rope, Gust, each short / medium / long. Columns: calm, breezy, storm.", ""] + rows
+             row_order_text(st), ""] + rows
     open(os.path.join(SHOW, "KEYSHEET.md"), "w").write("\n".join(sheet) + "\n")
     out = dict(stations=len(st), linked=links, bad=bad, registered=reg.get("stations"), save=saved, rect=rect)
     json.dump(out, open(os.path.join(SHOW, "staging.json"), "w"), indent=1)

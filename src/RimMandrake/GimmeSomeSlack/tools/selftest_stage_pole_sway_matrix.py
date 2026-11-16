@@ -42,7 +42,12 @@ def main():
         signs = [M.sign_cell(s) for s in st] if hasattr(M, "sign_cell") else []
         check(len(signs) == 27 and not drawn & set(signs) and len(set(signs)) == 27,
               "every sign book sits clear of the masts and spans (%s)" % sorted(drawn & set(signs))[:3])
-    print("%d/%d" % (5 - len(fails), 5))
+        # north (higher z) is UP on screen; the first sheet said "top to bottom: Pendulum" with Pendulum the bottom row
+        order = [s["look"] + " " + s["span"] for s in sorted(st, key=lambda s: -s["a"][1]) if s["wind"] == "calm"]
+        txt = M.row_order_text(st) if hasattr(M, "row_order_text") else ""
+        check(txt.startswith("Rows top to bottom") and txt.find(order[0]) < txt.find(order[-1]) and order[0] in txt,
+              "the key sheet's row order reads top (north) to bottom: %s ... %s" % (order[0], order[-1]))
+    print("%d/%d" % (6 - len(fails), 6))
     return 1 if fails else 0
 
 
