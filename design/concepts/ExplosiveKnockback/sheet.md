@@ -71,7 +71,7 @@
 - The gas census covers every gas source of ours (gas defs, our gas grids, every place our code adds gas); today the one that burns is the Cauldron's vent gas, which opts in by registering its grid; the others add vanilla smoke, tox gas or rot stink, which do not burn; this mod adds no gas of its own
 - A gas cloud catches the way it already does in play, from a fire touching it; a fire not touching it lights nothing
 - One gas clump bursts at radius 1.9, throws goods at most 2 cells, one burst per clump cell, advancing with the fire front; a shield belt does not stop the shove
-- The frame budget is no frame over 50 ms through a 6-shell barrage and a 40-cell chain; advisory until a first measurement calibrates it
+- The frame budget is the 99th-percentile frame inside the barrage-and-chain window (0.9-8.25 s) at most 50 ms through a 6-shell barrage and a 40-cell chain; a single random stall is reported, not judged (owner 2026-11-15, "1 agree.": the mod-off control's single worst frame broke 50 ms on list stalls)
 - The gas chain and the pit-trap raid stay ordinary scenes (coverage_rest), not showcases, by the greedy showcase rule (his one flagship scene takes the showcase)
 
 ## pruning

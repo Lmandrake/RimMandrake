@@ -3,7 +3,7 @@
 
 He passed ExplosiveKnockback on his own word past a not_covered judge verdict (2026-11-13, OWNER:1794608649743135329:
 "Yes, fix it like that, and then please record this as an actual Pass."). The gate takes that certificate only on his
-own OWNER event (ownerSaid or byCard), on this concept's item, newer than the judge verdict on file; an agent's --why or
+own OWNER event (ownerSaid or byCard), on this concept's item or one caused by it or by its refusal records, newer than the judge verdict on file; an agent's --why or
 --per-ruling event, an older word, another item's word, a newer verdict or changed claims refuse, and lint still
 refuses. Each refusal is checked twice: certify refuses it, and a stamp forged by hand is refused by the gate itself.
 Runs in a temp dir; touches no real concept and no ledger (the note goes to a fake)."""
@@ -187,6 +187,65 @@ def main():
         repo2, d2 = fixture(os.path.join(tmp, "two"))
         got = CT.certify(d2, "2006", repo2, emit=emit)
         check("certify accepts his byCard event (bare tsn)", got == [] and CT.gate(d2, repo2)[0] == [], got)
+
+        # his words on a repair item caused by the mod's item count for the mod's tree
+        # (RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN: twice his agreed rewording sat on the repair item
+        # and had to be re-recorded on the concept's item by hand)
+        repo3, d3 = fixture(os.path.join(tmp, "three"))
+        rep = os.path.join(d3, "version", "criterion_repairs", "bar_x")
+        os.makedirs(rep)
+        put_json(rep, "refusal.json", {"item": "ROUTE_ITEM", "refusals": []})
+        stray = os.path.join(d3, "version", "elsewhere")
+        os.makedirs(stray)
+        put_json(stray, "refusal.json", {"item": "STRAY_ROUTE"})
+        led = os.path.join(repo3, CT.LEDGER_DIR, "events", "RUNNER.jsonl")
+        os.makedirs(os.path.dirname(led), exist_ok=True)
+        filed = [{"event": "spawn", "id": "PIPE_ITEM", "name": "ROUTE_ITEM", "from": "PIPE_ITEM"},
+                 {"event": "file", "id": "REPAIR_ITEM", "caused_by": "ROUTE_ITEM"},
+                 {"event": "file", "id": "RECERT_ITEM", "caused_by": "REPAIR_ITEM/run-1"},
+                 {"event": "file", "id": "KID_ITEM", "caused_by": ITEM},
+                 {"event": "file", "id": "STRAY_REPAIR", "caused_by": "STRAY_ROUTE"},
+                 {"event": "file", "id": "LOOP_A", "caused_by": "LOOP_B"},
+                 {"event": "file", "id": "LOOP_B", "caused_by": "LOOP_A"}]
+        with open(led, "w", encoding="utf-8") as f:
+            for e in filed:
+                f.write(json.dumps(dict(e, seat="RUNNER", ts="2026-11-13T20:00:00Z")) + "\n")
+        word = "1 agree."
+        more = {"repair": ev(3001, "2026-11-14T03:29:30Z", item="REPAIR_ITEM", ownerSaid=word),
+                "recert": ev(3002, "2026-11-14T03:30:00Z", item="RECERT_ITEM", ownerSaid=word),
+                "kid": ev(3003, "2026-11-14T03:31:00Z", item="KID_ITEM", byCard="Bar -> agree"),
+                "route": ev(3004, "2026-11-14T03:32:00Z", item="ROUTE_ITEM", ownerSaid=word),
+                "pipe": ev(3005, "2026-11-14T03:33:00Z", item="PIPE_ITEM", ownerSaid=word),
+                "stray": ev(3006, "2026-11-14T03:34:00Z", item="STRAY_REPAIR", ownerSaid=word),
+                "loop": ev(3007, "2026-11-14T03:35:00Z", item="LOOP_A", ownerSaid=word),
+                "repair_why": ev(3008, "2026-11-14T03:36:00Z", item="REPAIR_ITEM", why="he agreed")}
+        with open(os.path.join(repo3, CT.OWNER_SHARD), "a", encoding="utf-8") as f:
+            for e in more.values():
+                f.write(json.dumps(e) + "\n")
+        for name, key in [("the item a refusal record of this concept names", "route"),
+                          ("a repair item caused by it", "repair"),
+                          ("an item caused by that repair item's run", "recert"),
+                          ("an item caused by the concept's item", "kid")]:
+            CT.load(d3) and CT.put(d3, dict(CT.load(d3), coverage={}))
+            got = CT.certify(d3, "OWNER:%s" % more[key]["tsn"], repo3, emit=emit)
+            check("certify accepts his word on %s" % name, got == [] and CT.gate(d3, repo3)[0] == [],
+                  (got, CT.gate(d3, repo3)[0]))
+        check("the certificate's note still goes to the concept's own item", notes[-1][0] == ITEM, notes[-1])
+        summ = CT.coverage_summary(d3, repo3)
+        check("summary names the item his word sat on when it is not the concept's", "on KID_ITEM" in summ, summ)
+        good3 = copy.deepcopy(CT.load(d3)["coverage"])
+        for name, key, want in [("the upstream pipeline item only (an ancestor, not caused by the mod)", "pipe",
+                                 "not this concept's item"),
+                                ("a repair caused by a refusal record outside criterion_repairs/", "stray",
+                                 "not this concept's item"),
+                                ("an item in a caused_by loop", "loop", "not this concept's item"),
+                                ("the repair item, an agent's --why only", "repair_why", "no ownerSaid or byCard")]:
+            n0 = len(notes)
+            got = CT.certify(d3, "OWNER:%s" % more[key]["tsn"], repo3, emit=emit)
+            check("certify refuses his word on %s" % name, len(got) == 1 and want in got[0] and len(notes) == n0, got)
+            forge(d3, good3, more[key])
+            errs, _ = CT.gate(d3, repo3)
+            check("gate refuses a forged stamp on %s" % name, len(errs) == 1 and want in errs[0], errs)
 
         # the designer pages read it as his word, not as a judge pass
         import designer_stage as DS

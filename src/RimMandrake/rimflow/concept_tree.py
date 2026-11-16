@@ -676,7 +676,8 @@ def coverage_problem(d, repo, tree):
 # his (delegation_policy.md §2). The stamp is `signed_by: owner`, never a judge's name, and it carries the judge's last
 # verdict beside his words, so nobody reads it as a judge pass. The gate takes it only while: the OWNER.jsonl event it
 # names exists, holds his words (ownerSaid) or a card (byCard) -- an agent's --why or --per-ruling event certifies
-# nothing --, names this concept's item, and is newer than the judge verdict on file; that verdict is still the one he
+# nothing --, is on this concept's item or one caused by it or by one of its refusal records (mod_items), and is
+# newer than the judge verdict on file; that verdict is still the one he
 # passed past; and the gap claims (coverage_fixes.json) are the ones he saw. Lint and every other gate check still run.
 OWNER_SIGNER = "owner"
 OWNER_MARK = "owner-certified"
@@ -734,6 +735,65 @@ def judge_verdict(d):
             "gids": [g.get("gid") for g in gaps]}
 
 
+REPAIRS_DIR = os.path.join("version", "criterion_repairs")
+
+
+def mod_items(d):
+    """The items that are this concept's own: its stage.json item, and each item a refusal record under
+    version/criterion_repairs/*/refusal.json names (the run whose refusal opened a criterion repair on this mod)."""
+    out = {stage_item(d)} - {None}
+    root = os.path.join(d, REPAIRS_DIR)
+    try:
+        names = sorted(os.listdir(root))
+    except OSError:
+        names = []
+    for n in names:
+        it = (_read_json(os.path.join(root, n, "refusal.json")) or {}).get("item")
+        if isinstance(it, str) and it.strip():
+            out.add(it)
+    return out
+
+
+def ledger_causes(repo):
+    """-> {item: what caused it} from every file and spawn event (spawn's `from` is its cause; a run cause
+    `ITEM/run-N` is its item). A bad line spoils itself only."""
+    out = {}
+    for p in ledger_files(repo):
+        try:
+            with open(p, encoding="utf-8", errors="replace") as f:
+                for line in f:
+                    if '"file"' not in line and '"spawn"' not in line:
+                        continue
+                    try:
+                        ev = json.loads(line)
+                    except (ValueError, RecursionError):
+                        continue
+                    if not isinstance(ev, dict):
+                        continue
+                    iid, cause = ((ev.get("id"), ev.get("caused_by")) if ev.get("event") == "file" else
+                                  (ev.get("name"), ev.get("from")) if ev.get("event") == "spawn" else (None, None))
+                    if isinstance(iid, str) and isinstance(cause, str) and cause.strip():
+                        out.setdefault(iid, cause.split("/run-")[0])
+        except OSError:
+            continue
+    return out
+
+
+def caused_by_mod(repo, d, item):
+    """-> the chain [item, its cause, ...] ending at one of this concept's own items (mod_items), or None. His words on
+    an item caused by the mod's item count for the mod's tree (RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_
+    AGAIN, the Conductor's call on his "fix the rule" card: twice his agreed rewording sat on the repair item and was
+    re-recorded on the concept's item by hand). Only downward: an item that merely caused the mod's item is not it."""
+    own, causes, chain = mod_items(d), None, []
+    while isinstance(item, str) and item and item not in chain and len(chain) < 32:
+        chain.append(item)
+        if item in own:
+            return chain
+        causes = ledger_causes(repo) if causes is None else causes
+        item = causes.get(item)
+    return None
+
+
 def owner_event_problem(d, repo, ref, verdict, events=None):
     """Why the OWNER event `ref` cannot certify this concept past `verdict`, or None. -> (problem, event)."""
     m = re.fullmatch(r"(?:OWNER:)?([0-9]+)", str(ref or ""))
@@ -743,8 +803,9 @@ def owner_event_problem(d, repo, ref, verdict, events=None):
     if not his_word(e):
         return "%s holds no ownerSaid or byCard: an agent's --why or --per-ruling event certifies nothing" % ref, e
     item = stage_item(d)
-    if not item or e.get("id") != item:
-        return "%s is on %s, not this concept's item (%s)" % (ref, e.get("id"), item), e
+    if not item or not caused_by_mod(repo, d, e.get("id")):
+        return ("%s is on %s, not this concept's item (%s) nor one caused by it or by a refusal record under %s" %
+                (ref, e.get("id"), item, REPAIRS_DIR)), e
     if verdict is None:
         return "no judge verdict on file (%s): there is nothing to certify past" % VERDICT_FILE, e
     t, tv = ev_epoch(e), ev_epoch({"ts": verdict.get("at")})
@@ -790,9 +851,11 @@ def coverage_summary(d, repo=REPO):
         gids = set(x for x in (judge_verdict(d) or {}).get("gids") or [] if x)
         n, got = cov.get("judge_gaps"), len(gids & claimed_gids(d))
         claim = "all claimed fixed" if n and got == n else "%d of %s claimed fixed" % (got, n)
-        line = "passed on the owner's word (%s, %s: \"%s\"); last judge verdict %s (%s gaps, %s; %s)" % (
-            cov.get("owner_event"), cov.get("owner_at"), cov.get("owner_words"), cov.get("judge_verdict"), n, claim,
-            cov.get("judge_run"))
+        m = re.fullmatch(r"(?:OWNER:)?([0-9]+)", str(cov.get("owner_event") or ""))
+        on = (owner_events(repo).get(m.group(1)) or {}).get("id") if m else None
+        line = "passed on the owner's word (%s%s, %s: \"%s\"); last judge verdict %s (%s gaps, %s; %s)" % (
+            cov.get("owner_event"), " on %s" % on if on and on != stage_item(d) else "", cov.get("owner_at"),
+            cov.get("owner_words"), cov.get("judge_verdict"), n, claim, cov.get("judge_run"))
         return line if not why else "owner certificate NOT valid: %s (was: %s)" % (why, line)
     if not why:
         return "signed by the coverage judge (%s)" % cov.get("signed_by")
