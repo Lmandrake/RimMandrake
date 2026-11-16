@@ -1504,6 +1504,10 @@ def cmd_preflight(args, seat):
     if args.build_index:
         print("installed-mod scan cached: %d mods" % ticket_preflight.build_installed())
         return
+    if args.sweep:
+        sw = ticket_preflight.sweep()
+        print(json.dumps(sw, indent=1) if args.json else ticket_preflight.render_sweep(sw))
+        return
     rep = ticket_preflight.run_item(args.id, trigger=args.trigger)
     print(json.dumps(rep, indent=1) if args.json else ticket_preflight.render(rep))
 
@@ -4354,6 +4358,7 @@ def build_parser():
             cmd_preflight)
     s.add_argument("id", nargs="?")
     s.add_argument("--build-index", action="store_true", help="prepare the installed-mod scan (outside any door)")
+    s.add_argument("--sweep", action="store_true", help="every open ticket once, inside a 30 s hard stop, one timing line each")
     s.add_argument("--json", action="store_true")
     s.add_argument("--trigger", choices=("create", "pickup"), default="pickup")
 
