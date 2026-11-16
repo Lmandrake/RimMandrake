@@ -136,6 +136,17 @@ def main():
         fixture(tmp, ["green.py", "slow.py"])
         err, out = call(tmp, ["src/a.py"])
         check(err is None and "UNMEASURED" in out and "slow.py" in out, "a timeout warns and refuses nothing")
+        # RIMMANDRAKE_STRIP_HOLDER_WRITER_FROM_DOOR_TESTS: a holder run's unit carries RM_MODLEDGER_WRITER=HOLDER.<lease>;
+        # a door test that writes a DISPATCH or BACKFILL shard was refused under it, so no holder could publish.
+        script(tmp, "holder.py", "import os, sys\nw = os.environ.get('RM_MODLEDGER_WRITER')\n"
+               "print('FAIL the publisher\\'s ledger identity leaked: %s' % w) if w else print('ok')\nsys.exit(1 if w else 0)\n")
+        fixture(tmp, ["holder.py"])
+        was = {k: os.environ.get(k) for k in ("RM_MODLEDGER_WRITER", "RM_MODLEDGER_TOKEN")}
+        os.environ.update(RM_MODLEDGER_WRITER="HOLDER.run-1", RM_MODLEDGER_TOKEN="1")
+        err, out = call(tmp, ["src/a.py"])
+        for k, v in was.items():
+            os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+        check(err is None and "1 green" in out, "a holder's RM_MODLEDGER_WRITER/TOKEN never reach a door test (%r)" % err)
     cfg = json.load(open(os.path.join(HERE, "..", "..", "..", P.TREE_CHECKS)))
     root = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
     listed = [c["test"] for c in cfg["checks"] + cfg.get("nightly_only", [])]

@@ -721,14 +721,20 @@ def full_head_tree(top):
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+# RIMMANDRAKE_STRIP_HOLDER_WRITER_FROM_DOOR_TESTS: a pilot holder's unit writes the mod ledger as HOLDER.<lease>; a door
+# test is about the tree, not the publisher, and one that writes a DISPATCH or BACKFILL shard was refused under it.
+LEDGER_IDENTITY = ("RM_MODLEDGER_WRITER", "RM_MODLEDGER_TOKEN")
+
+
 def _run_tree_checks(top, cfg, what="tree check"):
     limit = cfg.get("timeout_s", 60)
+    env = {k: v for k, v in os.environ.items() if k not in LEDGER_IDENTITY}
 
     def one(c):
         t0 = time.monotonic()
         try:
             r = subprocess.run([sys.executable, os.path.join(top, c["test"])], cwd=top, capture_output=True, text=True,
-                               timeout=limit, stdin=subprocess.DEVNULL)
+                               timeout=limit, stdin=subprocess.DEVNULL, env=env)
             return c, r.returncode, (r.stdout or "") + (r.stderr or ""), time.monotonic() - t0
         except subprocess.TimeoutExpired:
             return c, None, "", time.monotonic() - t0
