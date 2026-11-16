@@ -2645,6 +2645,8 @@ def launch_role(role, a):
     if not a.get("run_now"):
         return role
     out = dict(role, enabled=True)
+    if a.get("concept"):          # a stage-machine run: its concept folder arms the Stop hook role_result_before_stop
+        out["designer_dir"] = a["concept"]
     if a.get("pre_launch"):
         out["pre_launch"] = a["pre_launch"]
     return out
@@ -2835,7 +2837,10 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
             # the scope's name, chosen here and persisted with the run, and the marker every process of the run
             # inherits: the two things supervise checks before a run counts as ended (review dispatcher-full #1)
             "--setenv", "CLAUDE_SCOPE_UNIT=" + role_scope(role["seat"], unit)[:-len(".scope")],
-            "--setenv", "RM_ROLE_UNIT=" + unit,
+            "--setenv", "RM_ROLE_UNIT=" + unit] + (
+            # a Designer (Claude) stage run: .claude/hooks/role_result_before_stop.py checks result.json before it ends
+            ["--setenv", "RM_DESIGNER_DIR=" + role["designer_dir"]] if role.get("designer_dir") and selected == "claude"
+            else []) + [
             # the run's own wall-time bound, independent of the Dispatcher (review r2 #2): claude_bounded sets it on
             # the scope (RuntimeMaxSec, TERM, then KILL after SCOPE_STOP_S), and the unit gets the same bound; so a
             # run is ended even if no tick ever supervises it again (timer off, dry-run root, unreadable state)

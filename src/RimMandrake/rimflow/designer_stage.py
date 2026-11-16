@@ -42,6 +42,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -284,7 +285,25 @@ def hist(st, what, why):
 
 # ---------------------------------------------------------------- the working record
 
-def source_errors(src, where, repo, owner_ev):
+def on_origin_main(repo, path):
+    """-> True when origin/main holds `path`, False when it does not, None when origin/main could not be read. A cited
+    file the run's clone lacks but origin/main holds is not missing (4 of 16 rejected stage runs 2026-11-04..15:
+    RIMMANDRAKE_CHECK_DESIGNER_RESULT_BEFORE_EXIT_EIGHT_REJECTED)."""
+    try:
+        if subprocess.run(["git", "-C", repo, "rev-parse", "--verify", "-q", "origin/main"], capture_output=True,
+                          timeout=20).returncode:
+            return None
+        return subprocess.run(["git", "-C", repo, "cat-file", "-e", "origin/main:" + path], capture_output=True,
+                              timeout=20).returncode == 0
+    except (OSError, subprocess.SubprocessError):
+        return None
+
+
+def source_errors(src, where, repo, owner_ev, on_origin=None):
+    """A repo path missing in `repo` is asked of on_origin(path) (default on_origin_main): True = it exists, no error;
+    False = "does not exist"; None = "does not exist" plus "origin/main could not be read"."""
+    if on_origin is None:
+        on_origin = lambda p: on_origin_main(repo, p)  # noqa: E731
     errs = []
     srcs = src if isinstance(src, list) else [src]
     if not srcs or not all(isinstance(s, str) and s.strip() for s in srcs):
@@ -298,7 +317,11 @@ def source_errors(src, where, repo, owner_ev):
         elif not s.startswith(("OWNER:", "CONDUCTOR:", "ITEM:", "log.md#")):
             path = s.split(":")[0]
             if not os.path.exists(os.path.join(repo, path)):
-                errs.append("%s: source path %s does not exist" % (where, path))
+                held = on_origin(path)
+                if held is False:
+                    errs.append("%s: source path %s does not exist" % (where, path))
+                elif held is None:
+                    errs.append("%s: source path %s does not exist here (origin/main could not be read)" % (where, path))
     return errs
 
 
