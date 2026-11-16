@@ -1338,15 +1338,25 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
         elif opened:
             ids = [x["id"] for x in opened]
             item = item or ids[0]
-            led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap) + (
-                "\nThis is the mod's holder run: work every open road-back item together, from the packet above: %s. "
+            # every open item needs the live game: the holder takes the bridge and the game, one holder at a time
+            # (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
+            have = M.ledger_needs(root, [i for i in ids if not any(x["id"] == i and x.get("needs") for x in opened)])
+            live = AUT.live_only([dict(x, needs=x.get("needs") or have.get(x["id"])) for x in opened])
+            if live:
+                ok, why_b = (fx.get("bridge") or M.bridge_idle)("%s live holder run" % mod)
+                if not ok:
+                    return 2, ("REFUSED: %s's open items all need the live game and the bridge is not takeable (%s); "
+                               "one bridge holder at a time" % (mod, why_b))
+            led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap, live=live) + (
+                "\nThis is the mod's %sholder run: work every open road-back item together, from the packet above: %s. "
                 "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
-                % ", ".join(ids)), stage=stage, now=now, fx=fx)
+                % ("live " if live else "", ", ".join(ids))), stage=stage, now=now, fx=fx)
             rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
                 item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"), env=led["env"])
             unit = unit if rc == 0 else None
-            text = "%s; %s" % ((text or "").splitlines()[0] if text else rc, ledger_after(root, st, mod, led, unit, item,
-                                                                                         now, fx))
+            text = "%s%s; %s" % ("live holder (bridge and game allowed): " if live else "",
+                                 (text or "").splitlines()[0] if text else rc, ledger_after(root, st, mod, led, unit,
+                                                                                            item, now, fx))
         else:
             return 2, "REFUSED: %s owes nothing launchable at %s (%s) and has no open road-back item" % (mod, stage, owed)
         s.setdefault("pilot_launches", []).append({"at": now, "item": item, "unit": unit, "why": why, "stage": stage})

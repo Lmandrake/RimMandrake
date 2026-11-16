@@ -2406,8 +2406,9 @@ def ledger_ended(root, ids):
 
 
 def ledger_items_caused_by(root, ids):
-    """-> [{id, title}] for the ledger items filed (file or spawn) with caused_by one of ids and not closed, dropped or
-    superseded since, read from every shard under infrastructure/state/ledger/events/."""
+    """-> [{id, title, needs}] for the ledger items filed (file or spawn) with caused_by one of ids and not closed,
+    dropped or superseded since, read from every shard under infrastructure/state/ledger/events/. `needs` is the item's
+    current window (ledger_needs), None when it never had one."""
     d = os.path.join(root, "infrastructure", "state", "ledger", "events")
     want, filed, ended = set(ids), {}, set()
     for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
@@ -2425,7 +2426,36 @@ def ledger_items_caused_by(root, ids):
                     filed[e.get("id")] = e.get("title") or ""
                 elif e.get("event") in ("close", "drop", "supersede"):
                     ended.add(e.get("id"))
-    return [{"id": k, "title": v} for k, v in sorted(filed.items()) if k not in ended]
+    live = [k for k in sorted(filed) if k not in ended]
+    needs = ledger_needs(root, live)
+    return [{"id": k, "title": filed[k], "needs": needs.get(k)} for k in live]
+
+
+def ledger_needs(root, ids):
+    """-> {id: needs} for these ledger items: the `needs` of their file/spawn event, then of each later `needs` event
+    (`to`) or `implemented` event that sets one, in shard order (the fold model.replay does for this one field).
+    An item that never had one is absent. needs says which window an item's work needs (model.NEEDS)."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    want, out, seen = set(ids), {}, []
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
+        if not f.endswith(".jsonl"):
+            continue
+        with open(os.path.join(d, f), encoding="utf-8") as fh:
+            for ln in fh:
+                if '"needs"' not in ln:
+                    continue
+                try:
+                    e = json.loads(ln)
+                except ValueError:
+                    continue
+                if e.get("id") not in want:
+                    continue
+                n = e.get("to") if e.get("event") == "needs" else e.get("needs")
+                if n and e.get("event") in ("file", "spawn", "needs", "implemented"):
+                    seen.append((str(e.get("ts") or ""), e.get("tsn") or 0, e["id"], n))
+    for _, _, i, n in sorted(seen, key=lambda x: (x[0], x[1])):     # shards interleave: time order, not file order
+        out[i] = n
+    return out
 
 
 def ingame_debts(root, mod, tt=None):

@@ -1091,7 +1091,35 @@ def steward_brief(root, mod, row):
         "saying what you read, what you moved or filed, and anything that is the owner's (as card text).", ""])
 
 
-def fixer_brief(item, mod, cap, fix_for=None):
+LIVE_NEEDS = ("game-up", "bridge")      # the model.NEEDS windows only a live game opens
+
+
+def live_only(items):
+    """True when there are items and every one needs the live game (its ledger `needs` in LIVE_NEEDS): a holder run on
+    them is given the live brief (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME: Explosive Knockback's first
+    holder run closed none of its three items, each needing the game its offline brief forbade)."""
+    return bool(items) and all((x or {}).get("needs") in LIVE_NEEDS for x in items)
+
+
+def live_rules(purpose, mod, seat="BENCH"):
+    """-> the live half of a holder or fixer brief: maturation.BRIDGE_RULES (the in-game driver's rules) plus bringing
+    the game up and running each item's live acceptance commands."""
+    rules = [r % tuple(x for x in ((purpose, seat) if "take --idle-ok" in r else (seat,) if "release" in r else
+                                   (mod,) if "deploy_custom_mods" in r else ()))
+             for r in M.BRIDGE_RULES]
+    return ("\n## The bridge and the game (this run may use them; each rule binds)\n\n"
+            "Every item here needs the live game, so this run takes it; one bridge holder at a time.\n%s\n"
+            "- Bring the game up on the tier the test needs, after the bridge is yours (holding the bridge is blanket "
+            "authorization to start Steam and launch the game): swap the list if the test names one, deploy, then "
+            "`./game --idle-ok --why \"%s\" up` once it is at a usable menu or map.\n"
+            "- The live acceptance commands are in each item's newest note starting `LEFT OPEN:` (`python3 "
+            "src/RimMandrake/rimflow/cli.py show <ITEM>`): run them, diagnose and fix what fails while the game is up, "
+            "and re-run until it passes or you know why it cannot.\n"
+            "- Before you end: the game is at a clean state or closed, and the bridge is released.\n" % (
+                "\n".join(rules), purpose))
+
+
+def fixer_brief(item, mod, cap, fix_for=None, live=False):
     if fix_for == "blocked":
         return ("# Pipeline-defect fix: %s (%s)\n\nItem: %s. Seat BENCH. Spend bound $%s.\n\nRead `python3 "
                 "src/RimMandrake/rimflow/cli.py show %s` to its end: %s's Designer ended blocked on it, a defect in the "
@@ -1107,7 +1135,10 @@ def fixer_brief(item, mod, cap, fix_for=None):
             "cycle, sent back by the steward. Fix it, run its acceptance test (watch it fail first if it is new), land "
             "with `./publish -m ... <paths>`, and close the item with the published sha. If it cannot be fixed "
             "offline, or the fix is the owner's (a bar, a ruling, a classification), write that in a note and drop "
-            "nothing. Never take the bridge or a game.\n%s\n" % (item, mod, item, cap, item, mod, M.SELF_FIX_RULE))
+            "nothing. %s\n%s\n" % (item, mod, item, cap, item, mod, "Its acceptance test needs the live game: use it "
+                                    "as the section below says, and write a note starting LEFT OPEN: on what still "
+                                    "fails." if live else "Never take the bridge or a game.", M.SELF_FIX_RULE)
+            + (live_rules("%s holder run on %s" % (mod, item), mod) if live else ""))
 
 
 ADVANCE_KINDS = ("ready",)     # a steward that only advances; designer_locked's own steps (lock-bars, next-version) can
@@ -1206,7 +1237,10 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     tries, filed = int(retry.get("tries") or 0) + 1, False
     if row["aut"] == "fixer":
         item, ok, text = row["fix_item"], True, "road-back item filed by the steward"
-        brief = fixer_brief(item, mod, row["cap"], row.get("fix_for"))
+        # a pilot's fixer on an item that needs the game is given the game (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
+        live = (row.get("fix_for") != "blocked" and MD.pilot_ledger(root, mod) and
+                live_only([{"needs": M.ledger_needs(root, [item]).get(item)}]))
+        brief = fixer_brief(item, mod, row["cap"], row.get("fix_for"), live=live)
         book = s.setdefault("fixers", {})
         key = item
     else:

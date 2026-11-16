@@ -53,7 +53,8 @@
     {"test": "src/RimMandrake/rimflow/selftest_modledger.py", "seconds": 1.2},
     {"test": "src/RimMandrake/rimflow/selftest_holder_resume.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/selftest_modledger_backfill.py", "seconds": 0.4},
-    {"test": "src/RimMandrake/rimflow/selftest_pilot_stage_runs.py", "seconds": 1.0}
+    {"test": "src/RimMandrake/rimflow/selftest_pilot_stage_runs.py", "seconds": 1.0},
+    {"test": "src/RimMandrake/rimflow/selftest_holder_live_brief.py", "seconds": 1.0}
   ],
   "live_excluded": {
     "src/RimMandrake/Utils/selftest_maturation_now.py": "runs on the live tree: the real concept journals, ledger shards and run records (its point 6)",
