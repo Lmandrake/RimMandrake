@@ -5873,6 +5873,916 @@ def scene_economy_observer(t):
             _fail("the observer passed corrupted stream(s): %s" % blind)
 
 
+# --------------------------------------------------------------------------- scene: gale_drawing (batch 5)
+
+GALE = "RM_Gale"
+PADS.update(galedraw=(0, 40), stamping=(40, 0), maker=(0, 0), fuzzviper=(-40, 0), visual=(0, -40))   # 32-cell pads
+GALE_SAMPLES = 6           # ProofGale reads 60 ticks apart: the overlay must tick, draw and stream downwind on every one
+GALE_TRANSITION = 4200     # vanilla WeatherManager ticks the LAST weather's overlays until its 4000-tick lerp ends
+GALE_SHOT = 24             # cells square: one fixed camera rect for the motion sequence the owner reads
+
+
+def _gale_files():
+    """The owned Gale textures the mod ships ({"A", "B"} subset), read off its Textures/Weather folder."""
+    folder = os.path.join(HERE, "Textures", "Weather")
+    return set(k for k in ("A", "B") if os.path.exists(os.path.join(folder, "RM_GaleDust_%s.png" % k)))
+
+
+def _gale_art_expect(files):
+    """The ArtState RM_WeatherOverlay_GaleDust.BuildMaterial reports for the owned textures resolved (A, B, both,
+    neither): neither is a private copy of vanilla fog, reported as the placeholder; else the resolved letters."""
+    if not files:
+        return "PLACEHOLDER (vanilla fog sheet)"
+    return "owned (%s%s)" % ("A" if "A" in files else "-", "B" if "B" in files else "-")
+
+
+def _gale_parse(txt):
+    """One ProofGale answer -> {"verdict", "weather", "art", "dir", "age", "drew"} (dir is Vector2.ToString("F2"))."""
+    txt = str(txt or "")
+    m = re.search(r"\bdir=\(([-\d.]+), ?([-\d.]+)\)", txt)
+    a = re.search(r"\bart=(.*?)(?= dir=| tickAge=| drew=| leanMap=|$)", txt)
+    w, age, drew = (re.search(r"\b%s=(\S+)" % k, txt) for k in ("weather", "tickAge", "drew"))
+    return {"verdict": txt.split(" ")[0] if txt else "", "weather": w.group(1) if w else None,
+            "art": a.group(1).strip() if a else None, "dir": (float(m.group(1)), float(m.group(2))) if m else None,
+            "age": int(age.group(1)) if age else None, "drew": _as_bool(drew.group(1)) if drew else None}
+
+
+def _gale_offences(on, off, clear, art, files, wind):
+    """The Gale-drawing checker, pure. on/off: ProofGale samples (_gale_parse) under a locked Gale with the overlay
+    toggle on / off; clear: {"weather", "age_before", "age_after", "gap"} two reads `gap` ticks apart after the return
+    to Clear; art: the live ArtState; files: the owned textures shipped; wind: the map's Lean Downwind. -> offences."""
+    out = []
+    if len(on) < GALE_SAMPLES:
+        out.append("only %d of %d Gale samples read" % (len(on), GALE_SAMPLES))
+    dot = lambda s: (s["dir"][0] * wind[0] + s["dir"][1] * wind[1]) if s.get("dir") and wind else None
+    still = [s for s in on if s.get("verdict") != "PASS" or not s.get("drew") or s.get("age") is None
+             or not 0 <= s["age"] <= 120 or dot(s) is None or dot(s) < 0.99]
+    if still:
+        out.append("the overlay did not tick, draw and stream downwind on %d of %d Gale samples: %s"
+                   % (len(still), len(on), still[:2]))
+    if not off:
+        out.append("no toggle-off sample")
+    elif any(s.get("drew") for s in off) or any(s.get("weather") != GALE for s in off):
+        out.append("overlay off: the owned overlay still drew, or the Gale did not stay current: %s" % off[:2])
+    if clear.get("weather") in (None, GALE):
+        out.append("normal weather never returned (read %r)" % clear.get("weather"))
+    elif None in (clear.get("age_before"), clear.get("age_after")) or \
+            clear["age_after"] - clear["age_before"] < 0.8 * clear.get("gap", 0):
+        out.append("the overlay kept ticking after the Gale ended: age %s -> %s over %s ticks"
+                   % (clear.get("age_before"), clear.get("age_after"), clear.get("gap")))
+    if art != _gale_art_expect(files):
+        out.append("ArtState %r with owned textures %s; BuildMaterial's rule says %r"
+                   % (art, sorted(files), _gale_art_expect(files)))
+    return out
+
+
+def _gale_proof(t):
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_GaleDustProof", method="ProofGale", args="scene")
+    return _gale_parse((r or {}).get("result") or (r or {}).get("value") or r)
+
+
+def _shot(t, rect, name):
+    """One screenshot of `rect` -> its path (None when the bridge returned none)."""
+    r = t.bridge_call("rimworld/screenshot_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3],
+                      paddingCells=0, fileName="lscrub_%s_%d" % (name, int(time.time() * 1000)))
+    return (r or {}).get("path")
+
+
+@suite.chain("scene_gale_drawing")
+def scene_gale_drawing(t):
+    """sc_gale_drawing (gale_drawing, gale_dust). The Gale is locked on a cleared pad with ground landmarks (a grass
+    cross); RM_GaleDustProof.ProofGale is read GALE_SAMPLES times 60 ticks apart: the overlay ticks, draws and streams
+    along the map's Lean heading on every read, and its ArtState is the one BuildMaterial's rule gives for the owned
+    textures this mod ships. The control turns galeDustOverlayEnabled off under the same Gale (drew=False, the Gale
+    still current), then normal weather returns: past the 4000-tick weather lerp the overlay's tick age must grow with
+    the clock. A fixed-rect screenshot sequence (on, off, clear) is the motion record the owner reads: a still state
+    read cannot pass motion, so the scene holds for him (owner_review).
+    NOT DRIVEN HERE: the isolated production material-loader arms (A/B, A-only, B-only, neither, and the shared vanilla
+    fog material left untouched) need a fixture hook that runs BuildMaterial with injected texture resolution; none
+    exists. The rule those arms judge is _gale_art_expect, fed all four cases in gale_checker_rejects_injections."""
+    _prep(t, "galedraw", 32)
+    x, z = t.anchor
+    shot_rect = (x - GALE_SHOT // 2, z - GALE_SHOT // 2, GALE_SHOT, GALE_SHOT)
+    got = {"on": [], "off": [], "clear": {}, "shots": []}
+
+    def body():
+        with _comp(t, "gale_drawing_staged", poison=True):
+            t.bridge_call("jawa/set_plants", ops="%s:%d,%d,24,1;%s:%d,%d,1,24" % (GRASS, x - 12, z, GRASS, x, z - 12),
+                          growth=1.0)
+            t.bridge_call("rimworld/jump_camera_to_cell", x=x, z=z)
+            _lock_weather(t, GALE)
+            if _live(t):
+                got["wind"] = _lean_wind(t)
+                if not got["wind"] or not any(got["wind"]):
+                    _unmeasured(t, "RM_MapComponent_Lean.Downwind unreadable or zero: no heading to judge against")
+                got["files"] = _gale_files()
+        with _comp(t, "gale_drawing_streams_downwind", toggle="galeDustOverlayEnabled"):
+            if _live(t):
+                with _setting(t, "galeDustOverlayEnabled", True):
+                    t.wait_ticks(60)
+                    for i in range(GALE_SAMPLES):
+                        got["on"].append(_gale_proof(t))
+                        got["shots"].append(_shot(t, shot_rect, "gale_on_%d" % i))
+                        t.wait_ticks(60)
+                got["art"] = (got["on"] or [{}])[-1].get("art")
+                _note(t, "gale on samples", {"samples": got["on"], "wind": got["wind"]})
+                bad = [b for b in _gale_offences(got["on"], [{"drew": False, "weather": GALE}],
+                                                 {"weather": "Clear", "age_before": 0, "age_after": 300, "gap": 300},
+                                                 got["art"], got["files"], got["wind"]) if "Gale samples" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "gale_drawing_overlay_off_control"):
+            if _live(t):
+                with _setting(t, "galeDustOverlayEnabled", False):
+                    t.wait_ticks(60)
+                    for i in range(2):
+                        got["off"].append(_gale_proof(t))
+                        got["shots"].append(_shot(t, shot_rect, "gale_off_%d" % i))
+                        t.wait_ticks(60)
+                _note(t, "gale overlay-off samples", got["off"])
+                bad = [b for b in _gale_offences([{"verdict": "PASS", "drew": True, "age": 0, "dir": got["wind"]}]
+                                                 * GALE_SAMPLES, got["off"],
+                                                 {"weather": "Clear", "age_before": 0, "age_after": 300, "gap": 300},
+                                                 got["art"], got["files"], got["wind"]) if "overlay off" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "gale_drawing_clear_removes"):
+            if _live(t):
+                t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
+                _wait(t, GALE_TRANSITION)
+                a = _gale_proof(t)
+                t.wait_ticks(300)
+                b = _gale_proof(t)
+                got["clear"] = {"weather": _weather_now(t), "age_before": a.get("age"), "age_after": b.get("age"),
+                                "gap": 300}
+                got["shots"].append(_shot(t, shot_rect, "gale_clear"))
+                _note(t, "after the return to Clear", got["clear"])
+                bad = [o for o in _gale_offences([{"verdict": "PASS", "drew": True, "age": 0, "dir": got["wind"]}]
+                                                 * GALE_SAMPLES, [{"drew": False, "weather": GALE}], got["clear"],
+                                                 got["art"], got["files"], got["wind"])
+                       if "weather" in o and "ArtState" not in o or "kept ticking" in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "gale_drawing_art_state"):
+            if _live(t):
+                _note(t, "gale art", {"art": got["art"], "files": sorted(got["files"])})
+                bad = [b for b in _gale_offences([], [], {}, got["art"], got["files"], got["wind"]) if "ArtState" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "gale_drawing_sequence_captured"):
+            if _live(t):
+                missing = [i for i, p in enumerate(got["shots"]) if not p]
+                _note(t, "gale motion sequence for the owner (same rect, on/off/clear)", got["shots"])
+                if missing:
+                    _fail("%d of %d sequence screenshots returned no path" % (len(missing), len(got["shots"])))
+        with _comp(t, "gale_checker_rejects_injections"):
+            if _live(t):
+                w = (1.0, 0.0)
+                on = [{"verdict": "PASS", "drew": True, "age": 1, "dir": w, "weather": GALE}] * GALE_SAMPLES
+                off = [{"verdict": "PASS", "drew": False, "age": 1, "dir": w, "weather": GALE}]
+                clear = {"weather": "Clear", "age_before": 4200, "age_after": 4500, "gap": 300}
+                ok = _gale_offences(on, off, clear, "owned (AB)", {"A", "B"}, w)
+                if ok:
+                    _fail("the Gale checker refuses a clean reading: %s" % ok)
+                for files, art in ((set(), "PLACEHOLDER (vanilla fog sheet)"), ({"A"}, "owned (A-)"),
+                                   ({"B"}, "owned (-B)")):
+                    if _gale_offences(on, off, clear, art, files, w):
+                        _fail("the loader rule refuses the %s arm: %s" % (sorted(files), art))
+                injected = {"motionless (stopped ticking)": (on[:-1] + [dict(on[0], age=900)], off, clear, "owned (AB)",
+                                                             {"A", "B"}),
+                            "streams across the wind": ([dict(s, dir=(0.0, 1.0)) for s in on], off, clear,
+                                                        "owned (AB)", {"A", "B"}),
+                            "draws with its toggle off": (on, [dict(off[0], drew=True)], clear, "owned (AB)",
+                                                          {"A", "B"}),
+                            "overlay lingers in Clear": (on, off, dict(clear, age_after=5), "owned (AB)", {"A", "B"}),
+                            "placeholder with art installed": (on, off, clear, "PLACEHOLDER (vanilla fog sheet)",
+                                                               {"A", "B"}),
+                            "one texture bound as both": (on, off, clear, "owned (AB)", {"A"}),
+                            "art claimed with neither resolved": (on, off, clear, "owned (A-)", set())}
+                missed = sorted(k for k, a in injected.items() if not _gale_offences(*(a + (w,))))
+                if missed:
+                    _fail("the Gale checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_gale_drawing", "owner_review"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: stamping (batch 5)
+
+STAMP_MIN_FIRES = 5          # RM_BlazeKernel.MinOpenFires (PROVISIONAL in RM_FireStamp.cs)
+STAMP_HERD_OFF = 26          # cells: the herd starts this far from the cluster, so an approach is a walk
+STAMP_TELEPORT = 20          # cells in one 60-tick sample: no jog covers it; a jump this long is a teleport
+STAMP_WATCH = 3000           # ticks an arm is watched (50 samples of 60)
+
+
+def _stamper_kinds():
+    """{"base": [...], "campaign": [...]}: race defs carrying RM_FireStamperExtension, read off the repo's defs and
+    patches; base = the franchise-free RimMandrake tree, campaign = RimUtinni / RimStarWars. Names are RACE defNames
+    (the PawnKindDef shares it for every kind here)."""
+    out = {"base": [], "campaign": []}
+    for tier, roots in (("base", ("RimMandrake",)), ("campaign", ("RimUtinni", "RimStarWars"))):
+        for root in roots:
+            for path in sorted(glob.glob(os.path.join(REPO, "src", root, "**", "*.xml"), recursive=True)):
+                try:
+                    with open(path, encoding="utf-8", errors="replace") as fh:
+                        txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+                except OSError:
+                    continue
+                if "RM_FireStamperExtension" not in txt:
+                    continue
+                # a patch names its race in a ThingDef xpath; a def file carries the extension inside the race's block
+                found = re.findall(r"ThingDef\[defName=['\"](\w+)['\"]\]", txt)
+                for m in re.finditer(r"<ThingDef\b[^>]*>(.*?)</ThingDef>", txt, re.S):
+                    d = re.search(r"<defName>(\w+)</defName>", m.group(1))
+                    if d and "RM_FireStamperExtension" in m.group(1):
+                        found.append(d.group(1))
+                for d in found:
+                    if d not in out[tier]:
+                        out[tier].append(d)
+    return out
+
+
+def _stamp_offences(arm):
+    """The stamping checker for one positive arm, pure. arm {"start", "track" [min herd distance per 60-tick
+    sample], "jump" largest single-sample move of any herd member, "peak", "after" open fires in the cluster}."""
+    out = []
+    tr = arm.get("track") or []
+    if not tr or arm.get("start", 0) < STAMP_HERD_OFF - 4:
+        out.append("the herd did not start a walk away (%s cells)" % arm.get("start"))
+    elif min(tr) > STAMP_REACH + 4:
+        out.append("no stamper converged: closest %.1f cells (reach %.1f)" % (min(tr), STAMP_REACH + 4))
+    elif len([d for d in tr if STAMP_REACH + 4 < d < arm["start"] - 2]) < 2:
+        out.append("no approach was seen: the herd was at the fire without walking to it (%s)" % tr[:8])
+    if arm.get("jump", 0) > STAMP_TELEPORT:
+        out.append("a stamper jumped %.1f cells in one 60-tick sample: a teleport is not an approach" % arm["jump"])
+    if arm.get("peak", 0) < STAMP_MIN_FIRES:
+        out.append("the cluster never held %d open fires (peak %s)" % (STAMP_MIN_FIRES, arm.get("peak")))
+    elif arm.get("after", 0) >= arm["peak"]:
+        out.append("the fire was not stamped: %s open fires after against %s at peak" % (arm.get("after"), arm["peak"]))
+    return out
+
+
+def _stamp_control_offences(ctrl):
+    """controls {name: closest herd distance over the watch} for the subthreshold, roofed and toggle-off clusters:
+    none may draw the herd. -> offences."""
+    return ["the %s cluster drew the herd to %s cells" % (k, d) for k, d in sorted(ctrl.items())
+            if d is None or d <= STAMP_REACH + 4]
+
+
+@suite.chain("scene_stamping")
+def scene_stamping(t):
+    """sc_stamping (stamping, fire_stamping). A herd of three stampers stands STAMP_HERD_OFF cells from a 3x3 open grass
+    cluster lit through jawa/map_fire (no lighter: blaze targeting, not maker pursuit); every 60 ticks the herd's
+    distances and the open fires are read: the herd must WALK in (intermediate samples, no teleport) and the cluster
+    must shrink. The franchise-free BASE binding is required: a RimMandrake race carrying RM_FireStamperExtension; the
+    campaign thunderstep (RSW_ShrublandGiant, UtinniPatches) is run as a separate arm when it stands. Controls: a
+    four-cell (sub-threshold) cluster, a roofed cluster and the fireStampEnabled-off cluster must not draw the herd;
+    a kind that does not stand is UNMEASURED (a base gap), never a passing negative. NOT DRIVEN: fueled-building fire
+    overlays (no clean bridge fixture lights a building's fire as a Fire thing). Hold: immediate."""
+    _prep(t, "stamping", 32)
+    x, z = t.anchor
+    kinds = _stamper_kinds()
+    got = {"arms": {}, "ctrl": {}}
+
+    def herd_at(kind):
+        return [_spawn(t, kind, x - STAMP_HERD_OFF + 2 * i, z + 1) for i in range(3)]
+
+    def watch(herd, centre, cluster):
+        track, jump, peak, after, last = [], 0.0, 0, 0, {}
+        for _ in range(STAMP_WATCH // 60):
+            t.wait_ticks(60)
+            rows = _rows(t)
+            pos = dict((h, _xz(rows.get(h))) for h in herd if _xz(rows.get(h)))
+            for h, p in pos.items():
+                if h in last:
+                    jump = max(jump, _dist(p, last[h]))
+            last.update(pos)
+            track.append(round(min([_dist(p, centre) for p in pos.values()] or [999.0]), 1))
+            n = len(_fire_cells(t, cluster))
+            peak, after = max(peak, n), n
+        return {"track": track, "jump": round(jump, 1), "peak": peak, "after": after}
+
+    def positive(kind):
+        herd = herd_at(kind)
+        rows = _rows(t)
+        if len([h for h in herd if h in rows]) < 3:
+            _vanish(t, *herd)
+            return None
+        cluster = (x - 1, z - 1, 3, 3)
+        t.bridge_call("jawa/set_plants", ops="%s:%s" % (GRASS, _rs(cluster)), growth=1.0)
+        t.bridge_call("jawa/map_fire", action="start", rect=_rs(cluster), fireSize=FIRE_SIZE)
+        start = min(_dist(_xz(rows[h]), (x, z)) for h in herd if _xz(rows.get(h)))
+        arm = watch(herd, (x, z), cluster)
+        arm["start"] = round(start, 1)
+        t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 32)))
+        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 32)), categories="All")    # no grass left to spread on
+        _vanish(t, *herd)
+        return arm
+
+    def control(name, kind, n_cells, roofed=False):
+        herd = herd_at(kind)
+        cluster = (x - 1, z - 1, 2, 2) if n_cells < STAMP_MIN_FIRES else (x - 1, z - 1, 3, 3)
+        t.bridge_call("jawa/set_plants", ops="%s:%s" % (GRASS, _rs(cluster)), growth=1.0)
+        if roofed:
+            t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%s" % _rs(cluster))
+        t.bridge_call("jawa/map_fire", action="start", rect=_rs(cluster), fireSize=FIRE_SIZE)
+        arm = watch(herd, (x, z), cluster)
+        got["ctrl"][name] = min(arm["track"]) if arm["track"] else None
+        t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 32)))
+        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, 32)), categories="All")
+        if roofed:
+            _open_sky(t, cluster)
+        _vanish(t, *herd)
+
+    def body():
+        with _comp(t, "stamping_staged", poison=True):
+            if _live(t):
+                _note(t, "stamper kinds (RM_FireStamperExtension)", kinds)
+                if not kinds["base"] and not kinds["campaign"]:
+                    _unmeasured(t, "no race carries RM_FireStamperExtension anywhere in the repo")
+        with _comp(t, "stamping_campaign_binding", toggle="fireStampEnabled"):
+            if _live(t):
+                if not kinds["campaign"]:
+                    _unmeasured(t, "no campaign stamper carries the extension")
+                arm = positive(kinds["campaign"][0])
+                if arm is None:
+                    _unmeasured(t, "%s did not stand: the campaign arm needs the composed list" % kinds["campaign"][0])
+                got["arms"]["campaign"] = arm
+                _note(t, "campaign arm (%s)" % kinds["campaign"][0], arm)
+                bad = _stamp_offences(arm)
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "stamping_controls_quiet"):
+            if _live(t):
+                kind = (kinds["base"] or kinds["campaign"])[0]
+                control("sub-threshold", kind, 4)
+                control("roofed", kind, 9, roofed=True)
+                with _setting(t, "fireStampEnabled", False):
+                    control("toggle-off", kind, 9)
+                _note(t, "control clusters: closest herd distance", got["ctrl"])
+                bad = _stamp_control_offences(got["ctrl"])
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "stamping_checker_rejects_injections"):
+            if _live(t):
+                good = {"start": 26.0, "track": [24.0, 18.0, 12.0, 8.0, 5.0, 4.0], "jump": 6.0, "peak": 9, "after": 2}
+                if _stamp_offences(good) or _stamp_control_offences({"sub-threshold": 26.0, "roofed": 25.0}):
+                    _fail("the stamping checker refuses a clean reading: %s" % _stamp_offences(good))
+                injected = {"teleported to the fire": dict(good, track=[3.0, 3.0, 3.0], jump=23.0),
+                            "never converged": dict(good, track=[26.0, 25.0, 26.0]),
+                            "converged but never stamped": dict(good, after=9),
+                            "sub-threshold blaze": dict(good, peak=3)}
+                missed = sorted(k for k, a in injected.items() if not _stamp_offences(a))
+                if not _stamp_control_offences({"roofed": 4.0}):
+                    missed.append("roofed fire drew the herd")
+                if not _stamp_control_offences({"toggle-off": None}):
+                    missed.append("unread control")
+                if missed:
+                    _fail("the stamping checker passed injected reading(s) %s: it is blind there" % sorted(missed))
+        with _comp(t, "stamping_base_binding"):
+            if _live(t):
+                if not kinds["base"]:
+                    _fail("base gap: no franchise-free (RimMandrake) stamper ships; only %s carry the extension. The "
+                          "authorized invented-species rehome is required for the base binding" % kinds["campaign"])
+                arm = positive(kinds["base"][0])
+                if arm is None:
+                    _unmeasured(t, "the base stamper %s did not stand (three spawned)" % kinds["base"][0])
+                got["arms"]["base"] = arm
+                _note(t, "base arm (%s)" % kinds["base"][0], arm)
+                bad = _stamp_offences(arm)
+                if bad:
+                    _fail("; ".join(bad))
+    with _scene(t, "sc_stamping", "immediate"):
+        try:
+            _stable(t, body)
+        finally:
+            t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 40)))
+
+
+# --------------------------------------------------------------------------- scene: maker (batch 5)
+
+MAKER_WITNESS = 24.0       # cells: the agent's default direct-witness range (scenes.json sc_maker start)
+# The shared evidence store's production-consumer fixture (RimProperty TakingEvent through PropertyEngine.Fire, the
+# shared store and the property reader) has no hook yet: plan.md proposes the store, nothing names its type. Set
+# LSCRUB_EVIDENCE_HOOK to "<Type>.<Method>" (a jawa/static_call proof answering PASS/FAIL per arm) once it is built;
+# unset, that row is UNMEASURED with this recipe, never a pass.
+EVIDENCE_HOOK = os.environ.get("LSCRUB_EVIDENCE_HOOK", "").strip()
+EVIDENCE_ARMS = ("humanlike_taking", "animal_only", "no_los", "no_adapter", "swapped_actor_tick", "expired",
+                 "fire_only_same_actor")
+
+
+def _maker_offences(r):
+    """The maker checker, pure. r {"maker_pursued", "innocent_pursued", "after_reload", "no_event_pursued",
+    "store": {arm: "PASS"|"FAIL..."}|None}. -> offences."""
+    out = []
+    if not r.get("maker_pursued"):
+        out.append("the witnessed maker was not identified (no stamper followed him)")
+    if r.get("innocent_pursued"):
+        out.append("the innocent beside the blaze was pursued: nearest-pawn blame")
+    if r.get("maker_pursued") and not r.get("after_reload"):
+        out.append("the maker identity did not survive a save and reload")
+    if r.get("no_event_pursued"):
+        out.append("a fire with no maker event produced a pursuit: map-wide knowledge")
+    store = r.get("store")
+    if store is not None:
+        bad = sorted(a for a in EVIDENCE_ARMS if not str(store.get(a, "")).startswith("PASS"))
+        if bad:
+            out.append("the shared evidence store failed arm(s) %s: %s" % (bad, dict((a, store.get(a)) for a in bad)))
+    return out
+
+
+@suite.chain("scene_maker")
+def scene_maker(t):
+    """sc_maker (maker, fire_maker_witness_trail). Maker A lights a grass field through the real Ignite job with three
+    campaign stampers 18 cells off (inside the 24-cell witness range, open sky) and innocent B standing as near the
+    fuel as A; when the herd is at the blaze, A walks 40 cells north and B 40 south: the herd's movement is the only
+    reading of a pursuit target (no bridge tool reads one), so a stamper beside A and never beside B is the
+    identification. A save and reload falls mid-pursuit and A walks on: the pursuit must follow. The no-event control
+    lights a field with jawa/map_fire (no maker) beside colonist C: nobody may be pursued. The property arm calls the
+    shared evidence store's fixture hook (EVIDENCE_HOOK) once per EVIDENCE_ARMS case.
+    NOT DRIVEN LIVE: the witness/trail boundaries (23.99/24/24.01 cells, trail age 2499/2500/2501, contact loss
+    599/600/601, caps, death/despawn/map change, two concurrent makers) are production boundaries the scene policy
+    tests offline once the witness/trail kernel exists; it is unbuilt (RM_FireStamp.cs has no witness or trail), so
+    this scene is expected red at Stage 6 until SCRUB_PROVE_WIND_FIRE_AND_RITUAL lands it. Hold: immediate."""
+    _prep(t, "maker", 32)
+    x, z = t.anchor
+    field, ctrl = (x - 4, z - 4, 9, 9), (x + 30, z - 4, 7, 7)
+    got = {}
+
+    def stampers():
+        return dict((k, r) for k, r in _rows(t).items() if r.get("kindDef") == STAMPER)
+
+    def near(rows, pid, _herd=None):
+        """A stamper (any on the map: the pursuer need not be one this scene spawned) within reach of `pid`."""
+        p = _xz(rows.get(pid))
+        return bool(p) and any(r.get("kindDef") == STAMPER and _xz(r) and _dist(_xz(r), p) <= PURSUIT_REACH
+                               for r in rows.values())
+
+    def body():
+        with _comp(t, "maker_staged", poison=True):
+            if _live(t):
+                t.bridge_call("jawa/set_plants", ops="%s:%s;%s:%s" % (GRASS, _rs(field), GRASS, _rs(ctrl)), growth=1.0)
+                got["a"] = _spawn(t, "Colonist", field[0] - 2, z, faction="player")
+                got["b"] = _spawn(t, "Colonist", field[0] - 2, z + 2, faction="player")
+                for p in (got["a"], got["b"]):
+                    _full(t, p)
+                got["herd"] = [_spawn(t, STAMPER, x - 2 + 2 * i, z + 18) for i in range(3)]
+                if len(stampers()) < 3:
+                    _unmeasured(t, "%s did not stand (the thunderstep ships in the composed list only)" % STAMPER)
+        with _comp(t, "maker_witnessed_identified", toggle="fireStampEnabled"):
+            if _live(t):
+                grass = _things(t, GRASS, "%d,%d,1,1" % (field[0], z))
+                if not grass:
+                    _unmeasured(t, "no grass at the lighting cell")
+                _ok(t.bridge_call("jawa/ordered_job", pawnId=got["a"], jobDef="Ignite", targetAId=grass[0]["id"],
+                                  waitTicks=60), "ordered_job(Ignite)")
+                for _ in range(20):
+                    t.wait_ticks(150)
+                    if any(_xz(r) and _dist(_xz(r), (x, z)) <= STAMP_REACH + 6 for r in stampers().values()):
+                        break
+                _order_goto(t, got["a"], field[0] - 2, z + 40)
+                _order_goto(t, got["b"], field[0] - 2, z - 40)
+                for _ in range(10):
+                    t.wait_ticks(300)
+                    rows = _rows(t)
+                    got["maker_pursued"] = got.get("maker_pursued") or near(rows, got["a"], got["herd"])
+                    got["innocent_pursued"] = got.get("innocent_pursued") or near(rows, got["b"], got["herd"])
+                _note(t, "witnessed arm", {k: got.get(k) for k in ("maker_pursued", "innocent_pursued")})
+                bad = [o for o in _maker_offences(dict(got, after_reload=True)) if "identified" in o or "innocent" in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "maker_pursuit_survives_reload"):
+            if _live(t):
+                name = "lscrub_maker_mid_%d" % int(time.time())
+                _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game")
+                _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000), "load_game_ready")
+                a0 = _xz(_rows(t).get(got["a"]))
+                if not a0:
+                    _unmeasured(t, "the maker is not on the map after the reload")
+                _order_goto(t, got["a"], a0[0] + 12, a0[1])
+                for _ in range(4):
+                    t.wait_ticks(300)
+                rows = _rows(t)
+                a1 = _xz(rows.get(got["a"]))
+                if not a1 or _dist(a0, a1) < 5:
+                    _unmeasured(t, "the maker did not move after the reload (%s -> %s)" % (a0, a1))
+                got["after_reload"] = near(rows, got["a"], got["herd"])
+                bad = [o for o in _maker_offences(dict(got, maker_pursued=True)) if "reload" in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "maker_no_event_no_pursuit"):
+            if _live(t):
+                t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 40)))
+                _vanish(t, got["a"], got["b"])
+                c = _spawn(t, "Colonist", ctrl[0] - 3, ctrl[1] + 3, faction="player")
+                _full(t, c)
+                t.bridge_call("jawa/map_fire", action="start", rect=_rs(ctrl), fireSize=1.0)
+                cpos = (ctrl[0] + 3, ctrl[1] + 3)
+                for _ in range(20):     # the herd first answers the blaze (its path may pass C: that is no pursuit)
+                    t.wait_ticks(150)
+                    if any(r.get("kindDef") == STAMPER and _xz(r) and _dist(_xz(r), cpos) <= STAMP_REACH + 6
+                           for r in _rows(t).values()):
+                        break
+                _order_goto(t, c, ctrl[0] - 3, ctrl[1] - 30)     # then C walks away: a follower now is a pursuer
+                hits = 0
+                for _ in range(8):
+                    t.wait_ticks(300)
+                    rows = _rows(t)
+                    hits += int(near(rows, c) and _dist(_xz(rows[c]), cpos) > 10)
+                got["no_event_pursued"] = hits > 1
+                _note(t, "no-event arm: samples with a stamper beside C away from the blaze", hits)
+                _vanish(t, c)
+                bad = [o for o in _maker_offences(dict(got, maker_pursued=True, after_reload=True)) if "no maker" in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "maker_shared_evidence_store"):
+            if _live(t):
+                if not EVIDENCE_HOOK or "." not in EVIDENCE_HOOK:
+                    _unmeasured(t, "the shared evidence store is unbuilt (plan.md proposes it; no type exists); set "
+                                   "LSCRUB_EVIDENCE_HOOK=<Type>.<Method> once its production-consumer fixture is")
+                typ, meth = EVIDENCE_HOOK.rsplit(".", 1)
+                store = {}
+                for arm in EVIDENCE_ARMS:
+                    r = t.bridge_call("jawa/static_call", type=typ, method=meth, args=arm)
+                    store[arm] = str((r or {}).get("result") or (r or {}).get("value") or r)[:200]
+                got["store"] = store
+                _note(t, "shared evidence store arms", store)
+                bad = [o for o in _maker_offences(dict(got, maker_pursued=True, after_reload=True,
+                                                       innocent_pursued=False, no_event_pursued=False))
+                       if "evidence store" in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "maker_checker_rejects_injections"):
+            if _live(t):
+                good = {"maker_pursued": True, "innocent_pursued": False, "after_reload": True,
+                        "no_event_pursued": False, "store": dict((a, "PASS") for a in EVIDENCE_ARMS)}
+                if _maker_offences(good):
+                    _fail("the maker checker refuses a clean reading: %s" % _maker_offences(good))
+                injected = {"nearest pawn blamed": dict(good, innocent_pursued=True),
+                            "maker unknown": dict(good, maker_pursued=False),
+                            "identity lost on reload": dict(good, after_reload=False),
+                            "omniscient pursuit of a no-event fire": dict(good, no_event_pursued=True),
+                            "fire read as taking": dict(good, store=dict(good["store"], fire_only_same_actor="FAIL")),
+                            "adapter omitted still passes": dict(good, store=dict(good["store"], no_adapter="")),
+                            "animal-only report": dict(good, store=dict(good["store"], animal_only="FAIL report"))}
+                missed = sorted(k for k, a in injected.items() if not _maker_offences(a))
+                if missed:
+                    _fail("the maker checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_maker", "immediate"):
+        try:
+            _stable(t, body)
+        finally:
+            t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(_rect(t, 48)))
+
+
+# --------------------------------------------------------------------------- scene: fuzzviper (batch 5)
+
+VIPER, VIPER_PREY = "RM_Fuzzviper", "RM_Fuzzrunner"
+VIPER_HOLD = 3             # consecutive 300-tick samples within a cell of one wall-side spot = a held run wall
+VIPER_SETTLE = 3000        # ticks allowed for the niche choice and hold (well inside the 6000 per-phase budget)
+
+
+def _wall_adjacent(p, walls):
+    return bool(p) and any(abs(p[0] - w[0]) <= 1 and abs(p[1] - w[1]) <= 1 for w in walls)
+
+
+def _ambush_credit(samples, walls):
+    """samples [{"pos", "job", "prey_hit"}] every 300 ticks -> True when the viper HELD one wall-side spot for VIPER_HOLD
+    samples and its first attack began from within a cell of that spot (a run-wall ambush); False otherwise."""
+    held, run, spot = None, 0, None
+    for s in samples:
+        p = s.get("pos")
+        if _wall_adjacent(p, walls) and spot and _dist(p, spot) <= 1.0 and not _attacking(s):
+            run += 1
+        elif _wall_adjacent(p, walls) and not _attacking(s):
+            spot, run = p, 1
+        elif not _attacking(s):
+            spot, run = None, 0
+        if run >= VIPER_HOLD:
+            held = spot
+        if _attacking(s):
+            return bool(held) and _dist(p or (9999, 9999), held) <= 2.0
+    return False
+
+
+def _attacking(s):
+    return any(k in str(s.get("job") or "") for k in ("PredatorHunt", "AttackMelee", "Ambush_Strike"))
+
+
+def _viper_offences(wall, bare, walls):
+    """The run-wall ambush checker, pure. wall/bare: the samples of the viper with a run wall and of the bare-ground
+    control; walls: the run's wall cells. -> offences."""
+    out = []
+    if not _ambush_credit(wall, walls):
+        out.append("no run-wall ambush: the viper never held a wall-side spot then struck from it (%d samples)" % len(wall))
+    elif not any(s.get("prey_hit") for s in wall):
+        out.append("the strike from the wall never reached the prey")
+    if _ambush_credit(bare, walls):     # the bare viper stands 10+ cells off the run: it has no wall to hold
+        out.append("an open-ground hunt was credited as a run-wall ambush")
+    return out
+
+
+@suite.chain("scene_fuzzviper")
+def scene_fuzzviper(t):
+    """sc_fuzzviper (fuzzviper, fuzzviper_ambush). A run is two parallel wooden walls 3 cells apart on a cleared pad;
+    a hungry fuzzviper stands in it, two fuzzrunners are the traffic. The viper gets VIPER_SETTLE ticks to choose and
+    hold a wall-side spot, then the runners are ordered down the run past it; every 300 ticks its position and job are
+    read. Credit is the hold (VIPER_HOLD samples within a cell of one wall-side spot) followed by the first attack from
+    that spot. The bare control is a second viper with runner traffic on open ground: a hunt there may happen, but
+    _ambush_credit must not credit it. RM_Fuzzviper ships as a plain predator (its run-wall behaviour is a STUB,
+    SCRUBAMBUSHERS_BUILD_EDGE_RUN_CANOPY), so this scene is expected red at Stage 6 until that lands. Hold: owner_review."""
+    _prep(t, "fuzzviper", 32)
+    x, z = t.anchor
+    walls = [(cx, z + dz) for cx in range(x - 10, x + 11) for dz in (-2, 2)]
+    bare = (x, z - 12)
+    got = {"wall": [], "bare": []}
+
+    def sample(pid, prey):
+        rows, jobs = _rows(t, health=True), _jobs(t)
+        hit = any(_hediffs(rows.get(p) or {}) for p in prey)
+        return {"pos": _xz(rows.get(pid)), "job": jobs.get(pid), "prey_hit": hit}
+
+    def body():
+        with _comp(t, "fuzzviper_staged", poison=True):
+            if _live(t):
+                t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % w for w in walls), stuff="WoodLog")
+                got["viper"] = _spawn(t, VIPER, x, z)
+                got["bare_viper"] = _spawn(t, VIPER, bare[0], bare[1])
+                for v in (got["viper"], got["bare_viper"]):
+                    t.bridge_call("jawa/pawn_need", pawn=v, action="need", need="Food", level=0.1)
+                rows = _rows(t)
+                if got["viper"] not in rows or got["bare_viper"] not in rows:
+                    _unmeasured(t, "%s did not stand" % VIPER)
+                if len(_things(t, "Wall", _rs(_rect(t, 24)), 100)) < len(walls) // 2:
+                    _unmeasured(t, "the run walls did not build (%d cells asked)" % len(walls))
+        with _comp(t, "fuzzviper_holds_run_wall"):
+            if _live(t):
+                for _ in range(VIPER_SETTLE // 300):
+                    t.wait_ticks(300)
+                    got["wall"].append(sample(got["viper"], []))
+                _note(t, "viper settling samples", got["wall"][-4:])
+                held = _ambush_credit(got["wall"] + [{"pos": got["wall"][-1]["pos"] if got["wall"] else None,
+                                                      "job": "PredatorHunt"}], walls)
+                if not held:
+                    _fail("the viper never held a wall-side spot for %d samples: %s"
+                          % (VIPER_HOLD, [s.get("pos") for s in got["wall"]][-6:]))
+        with _comp(t, "fuzzviper_strikes_from_wall"):
+            if _live(t):
+                prey = [_spawn(t, VIPER_PREY, x - 10, z), _spawn(t, VIPER_PREY, x - 11, z)]
+                for p in prey:
+                    _order_goto(t, p, x + 10, z)
+                for _ in range(10):
+                    t.wait_ticks(300)
+                    got["wall"].append(sample(got["viper"], prey))
+                _vanish(t, *prey)
+                _note(t, "viper wall arm (last samples)", got["wall"][-6:])
+                bad = [o for o in _viper_offences(got["wall"], [], walls) if "open-ground" not in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "fuzzviper_bare_not_credited"):
+            if _live(t):
+                prey = [_spawn(t, VIPER_PREY, bare[0] - 8, bare[1])]
+                _order_goto(t, prey[0], bare[0] + 8, bare[1])
+                for _ in range(10):
+                    t.wait_ticks(300)
+                    got["bare"].append(sample(got["bare_viper"], prey))
+                _vanish(t, *prey)
+                _note(t, "bare control samples", got["bare"][-6:])
+                bad = [o for o in _viper_offences([], got["bare"], walls) if "open-ground" in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "fuzzviper_checker_rejects_injections"):
+            if _live(t):
+                w = [(0, 2)]
+                hold = [{"pos": (0, 1), "job": "Wait"}] * 4
+                good = hold + [{"pos": (0, 1), "job": "PredatorHunt", "prey_hit": True}]
+                chase = [{"pos": (0, -8 + i), "job": "PredatorHunt", "prey_hit": True} for i in range(5)]
+                if _viper_offences(good, chase, w):
+                    _fail("the viper checker refuses a clean reading: %s" % _viper_offences(good, chase, w))
+                injected = {"open-ground chase passes": (chase, [], w),
+                            "never held": ([{"pos": (0, 1 - i), "job": "Wait"} for i in range(4)]
+                                           + [{"pos": (0, -3), "job": "PredatorHunt", "prey_hit": True}], [], w),
+                            "held then chased from afar": (hold + [{"pos": (0, -6), "job": "PredatorHunt",
+                                                                    "prey_hit": True}], [], w),
+                            "held, never struck": (hold * 2, [], w),
+                            "bare hunt credited": (good, [dict(s, pos=(0, 1)) for s in good], w)}
+                missed = sorted(k for k, (a, b, ww) in injected.items() if not _viper_offences(a, b, ww))
+                if missed:
+                    _fail("the viper checker passed injected reading(s) %s: it is blind there" % sorted(missed))
+    with _scene(t, "sc_fuzzviper", "owner_review"):
+        try:
+            _stable(t, body)
+        finally:
+            for k in ("viper", "bare_viper"):
+                if got.get(k):
+                    _vanish(t, got[k])
+
+
+# --------------------------------------------------------------------------- scene: floor_visual (batch 5)
+
+# The subjects the floor names (wind_plain and gale_drawing are the map and overlay: captured in sc_gale_drawing's
+# sequence and the plain shot here; tree_landmark, twitcher, rearing, quench, sleeper are things).
+VISUAL_SUBJECTS = (("tree_landmark", TREE), ("twitcher", "RM_TwitcherVenomvine"), ("rearing", "RM_RearingVenomvine"),
+                   ("quench", "RM_QuenchVenomvine"), ("sleeper", "RM_SleeperVenomvine"))
+ZOOMS = (("normal", 24.0), ("close", 11.0))     # camera rootSize: the shipping default and a close read
+# A blind reader (a judge agent that did not stage the shots) labels each capture with no captions; its answers file
+# is {"<shot path>": "<subject read>"}. Art evaluation is the art pipeline's verdict per def {"<defName>": "GREEN"|...}.
+# Unset, those rows are UNMEASURED with the recipe: a script cannot read a picture and must not pretend to.
+BLIND_READ = os.environ.get("LSCRUB_BLIND_READ", "").strip()
+ART_EVAL = os.environ.get("LSCRUB_ART_EVAL", "").strip()
+
+
+def _visual_manifest():
+    """{defName: {"texPath", "graphicClass", "size": visualSizeRange max or None}} for the floor's subjects, read off
+    the mod's Defs (the finite effective art manifest; a subject with no texPath of its own is listed with None)."""
+    out = dict((d, {"texPath": None, "graphicClass": None, "size": None}) for _s, d in VISUAL_SUBJECTS)
+    for path in sorted(glob.glob(os.path.join(HERE, "Defs", "*", "*.xml"))):
+        with open(path, encoding="utf-8") as fh:
+            txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+        for m in re.finditer(r"<ThingDef\b[^>]*>(.*?)</ThingDef>", txt, re.S):
+            d = re.search(r"<defName>(\w+)</defName>", m.group(1))
+            if d and d.group(1) in out:
+                body = m.group(1)
+                tp, gc = re.search(r"<texPath>([^<]+)</texPath>", body), re.search(r"<graphicClass>(\w+)<", body)
+                vs = re.search(r"<visualSizeRange>[\d.]+~([\d.]+)</visualSizeRange>", body)
+                out[d.group(1)] = {"texPath": tp.group(1) if tp else None, "graphicClass": gc.group(1) if gc else None,
+                                   "size": float(vs.group(1)) if vs else None}
+    return out
+
+
+def _visual_offences(manifest, live, reads, art):
+    """The floor-visual checker, pure. manifest (from _visual_manifest); live {defName: resolved graphic path from
+    jawa/thing_graphic, or None}; reads {defName: the blind reader's label for its captures}; art {defName: art-eval
+    verdict}. Each subject must resolve to ITS OWN texPath (no BadTex, no two subjects on one texture), be read
+    blind as itself, and carry a GREEN art evaluation. -> offences."""
+    out = []
+    seen = {}
+    for d, m in sorted(manifest.items()):
+        got = live.get(d)
+        if not m.get("texPath"):
+            out.append("%s has no texPath in its def: not in the art manifest" % d)
+        elif not got or "BadTex" in str(got) or m["texPath"].split("/")[-1] not in str(got):
+            out.append("%s resolves to %r, not its own %s" % (d, got, m["texPath"]))
+        elif got in seen:
+            out.append("%s and %s draw the same texture %s: the states cannot read apart" % (seen[got], d, got))
+        else:
+            seen[got] = d
+    for d in sorted(manifest):
+        if reads.get(d) != d:
+            out.append("blind read: %s's capture was read as %r" % (d, reads.get(d)))
+        if str(art.get(d) or "").upper() != "GREEN":
+            out.append("art evaluation for %s is %r, not GREEN" % (d, art.get(d)))
+    return out
+
+
+def _overhang_offences(r):
+    """r {"art_click": selected by a click on the drawn art outside the footprint, "beyond_click": selected by a click
+    beyond the drawn art, "ack": the ordered pawn's job a few ticks after the order}. -> offences."""
+    out = []
+    if not r.get("art_click"):
+        out.append("a click on the overhanging art outside its cell did not select it")
+    if r.get("beyond_click"):
+        out.append("a click beyond the drawn art still selected it: the detector is not reading the art")
+    if "Goto" not in str(r.get("ack") or ""):
+        out.append("the waiting order was not acknowledged (job %r a few ticks after it)" % r.get("ack"))
+    return out
+
+
+def _load_json(path):
+    with open(path, encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def _selected(t, tid):
+    sem = json.dumps(t.bridge_call("rimworld/get_selection_semantics") or {}, default=str)
+    return bool(tid) and (('"%s"' % tid) in sem or ("Thing_%s" % tid) in sem)
+
+
+@suite.chain("scene_floor_visual")
+def scene_floor_visual(t):
+    """floor_visual (wind_plain, gale_drawing, tree_landmark, twitcher, rearing, quench, sleeper; inherited floor
+    support, not the colony walk). Each thing subject is planted full grown on a cleared pad beside a colonist (human
+    scale) and captured at normal and close zoom with no selection; jawa/thing_graphic names the texture each resolves.
+    A blind reader labels the shots (LSCRUB_BLIND_READ) and the art pipeline's verdicts are read (LSCRUB_ART_EVAL);
+    unset, those rows are UNMEASURED with the recipe. The sweetline tree's drawn crown overhangs its cell: a click on the
+    art 3 cells above its root must select it and a click past the art must not; a colonist ordered to a cell must
+    acknowledge within 5 ticks (its job reads Goto). Still images cannot pass motion: the Gale's motion is
+    sc_gale_drawing's owner-read sequence. Hold: immediate."""
+    _prep(t, "visual", 32)
+    x, z = t.anchor
+    manifest = _visual_manifest()
+    got = {"live": {}, "shots": {}, "ids": {}}
+
+    def body():
+        with _comp(t, "visual_staged", poison=True):
+            if _live(t):
+                got["pawn"] = _spawn(t, "Colonist", x, z - 6, faction="player")
+                _full(t, got["pawn"])
+                for i, (_s, d) in enumerate(VISUAL_SUBJECTS):
+                    px = x - 12 + 6 * i
+                    t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (d, px, z), growth=1.0)
+                    found = _things(t, d, "%d,%d,1,1" % (px, z))
+                    got["ids"][d] = found[0]["id"] if found else None
+                missing = sorted(d for d, i in got["ids"].items() if not i)
+                if missing:
+                    _unmeasured(t, "subject(s) %s did not plant on the pad" % missing)
+                t.bridge_call("rimworld/clear_selection")
+        with _comp(t, "visual_textures_own_and_distinct"):
+            if _live(t):
+                for d, tid in got["ids"].items():
+                    r = t.bridge_call("jawa/thing_graphic", thingId=tid) or {}
+                    got["live"][d] = r.get("path") or r.get("mainTexture") or r.get("graphicPath")
+                _note(t, "resolved textures", got["live"])
+                bad = [o for o in _visual_offences(manifest, got["live"], dict((d, d) for d in manifest),
+                                                   dict((d, "GREEN") for d in manifest)) if "blind" not in o
+                       and "art evaluation" not in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "visual_captures_blind_read"):
+            if _live(t):
+                for zname, root in ZOOMS:
+                    t.bridge_call("rimworld/set_camera_zoom", rootSize=root)
+                    for d, tid in got["ids"].items():
+                        i = [s for s, dd in VISUAL_SUBJECTS if dd == d][0]
+                        px = x - 12 + 6 * [dd for _s, dd in VISUAL_SUBJECTS].index(d)
+                        got["shots"].setdefault(d, []).append(_shot(t, (px - 3, z - 3, 7, 9), "visual_%s_%s" % (i, zname)))
+                got["shots"]["plain"] = [_shot(t, (x - 16, z - 16, 32, 32), "visual_plain")]
+                t.bridge_call("rimworld/set_camera_zoom", rootSize=ZOOMS[0][1])
+                _note(t, "captures for the blind reader", got["shots"])
+                if any(not p for ps in got["shots"].values() for p in ps):
+                    _fail("a capture returned no path: %s" % got["shots"])
+                if not BLIND_READ:
+                    _unmeasured(t, "no blind read: a judge that did not stage these labels the shots into a JSON "
+                                   "{shot path: subject} and the scene reruns with LSCRUB_BLIND_READ=<that file>")
+                answers = _load_json(BLIND_READ)
+                reads = {}
+                for d in manifest:
+                    labels = set(answers.get(p) for p in got["shots"].get(d) or [])
+                    reads[d] = labels.pop() if len(labels) == 1 else sorted(str(l) for l in labels)
+                bad = [o for o in _visual_offences(manifest, got["live"], reads, dict((d, "GREEN") for d in manifest))
+                       if "blind" in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "visual_art_eval_green"):
+            if _live(t):
+                if not ART_EVAL:
+                    _unmeasured(t, "no art-evaluation verdicts: write {defName: verdict} from the art pipeline "
+                                   "(rimworld-art-evaluation) and rerun with LSCRUB_ART_EVAL=<that file>")
+                art = _load_json(ART_EVAL)
+                bad = [o for o in _visual_offences(manifest, got["live"], dict((d, d) for d in manifest), art)
+                       if "art evaluation" in o]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "visual_overhang_selects_and_orders_ack"):
+            if _live(t):
+                size = manifest[TREE].get("size")
+                if not size or size < 3:
+                    _unmeasured(t, "%s draws %s cells: no overhang to click" % (TREE, size))
+                tx = x - 12
+                r = {}
+                t.bridge_call("rimworld/clear_selection")
+                t.bridge_call("rimworld/click_cell", x=tx, z=z + 3)
+                r["art_click"] = _selected(t, got["ids"][TREE])
+                t.bridge_call("rimworld/clear_selection")
+                t.bridge_call("rimworld/click_cell", x=tx, z=z + int(size) + 2)
+                r["beyond_click"] = _selected(t, got["ids"][TREE])
+                t.bridge_call("rimworld/clear_selection")
+                _order_goto(t, got["pawn"], x + 10, z - 6)
+                t.wait_ticks(5)
+                r["ack"] = _jobs(t).get(got["pawn"])
+                got["shots"]["order_ack"] = [_shot(t, (x - 2, z - 10, 16, 8), "visual_order_ack")]
+                _note(t, "overhang clicks and order acknowledgement", r)
+                bad = _overhang_offences(r)
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "visual_checker_rejects_injections"):
+            if _live(t):
+                m = {"A": {"texPath": "Things/Plant/A"}, "B": {"texPath": "Things/Plant/B"}}
+                live = {"A": "Things/Plant/A", "B": "Things/Plant/B"}
+                ok = (_visual_offences(m, live, {"A": "A", "B": "B"}, {"A": "GREEN", "B": "green"})
+                      + _overhang_offences({"art_click": True, "beyond_click": False, "ack": "Goto"}))
+                if ok:
+                    _fail("the visual checker refuses a clean reading: %s" % ok)
+                injected = {"state graphics swapped": (m, {"A": "Things/Plant/B", "B": "Things/Plant/A"},
+                                                       {"A": "A", "B": "B"}, {"A": "GREEN", "B": "GREEN"}),
+                            "two states one texture": ({"A": m["A"], "B": {"texPath": "Things/Plant/A"}},
+                                                       {"A": "Things/Plant/A", "B": "Things/Plant/A"},
+                                                       {"A": "A", "B": "B"}, {"A": "GREEN", "B": "GREEN"}),
+                            "BadTex": (m, dict(live, B="BadTex"), {"A": "A", "B": "B"}, {"A": "GREEN", "B": "GREEN"}),
+                            "blind read fails, label would rescue": (m, live, {"A": "A", "B": "A"},
+                                                                     {"A": "GREEN", "B": "GREEN"}),
+                            "art eval red": (m, live, {"A": "A", "B": "B"}, {"A": "GREEN", "B": "REGEN"})}
+                missed = sorted(k for k, a in injected.items() if not _visual_offences(*a))
+                for k, r in (("overhang unselectable", {"art_click": False, "beyond_click": False, "ack": "Goto"}),
+                             ("cell-only detector", {"art_click": True, "beyond_click": True, "ack": "Goto"}),
+                             ("order ignored", {"art_click": True, "beyond_click": False, "ack": "Wait_Wander"})):
+                    if not _overhang_offences(r):
+                        missed.append(k)
+                if missed:
+                    _fail("the visual checker passed injected reading(s) %s: it is blind there" % sorted(missed))
+    with _scene(t, "floor_visual", "immediate"):
+        _stable(t, body)
+
+
 def _run_offline(name):
     """`python3 validation.py <offline scene>`: run one offline chain with no game; exit 0 when every row PASSes."""
     from suite import TestContext

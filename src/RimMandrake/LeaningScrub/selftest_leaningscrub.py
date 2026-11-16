@@ -33,6 +33,8 @@ V.SCENE_RECORD = lambda *a: None                   # a fake scene must not write
 V.OWNER_PRESENT = True                             # the eruptor arm runs here: this game is fake, nothing flies
 V.CAST_TILES = (11, 12, 13)                        # sc_native_cast's three map-free fixture tiles
 V.DRIP_STARTUP = "true"                            # sc_dripping's clean-start arm: the fake starts with regrowth saved on
+V.BLIND_READ, V.ART_EVAL = "fake:blind", "fake:art"  # floor_visual's judge files: the fake answers both
+V.EVIDENCE_HOOK = "RimMandrake.RimProperty.FakeEvidenceProof.ProofArm"   # sc_maker's store fixture (fake type)
 
 from suite import TestContext                     # noqa: E402
 
@@ -106,6 +108,9 @@ class Fake(object):
         self.crown_forgets, self.roofed, self.floors, self.zones = False, set(), set(), set()
         self.rng, self.pending_fire, self.pursuit, self.drip_applied = random.Random(7), [], None, True
         self.last_blaze, self.cut_now = (0, 0), False
+        # batch 5: the base stamper the rehome owes (a fake franchise-free kind), the Gale overlay clock, the selection
+        self.stamper_kinds = {V.STAMPER} | (set() if "no_base_stamper" in self.broken else {"RM_Thunderstep"})
+        self.gale_last, self.selected, self.shots = None, None, {}
         self.about = "A flat, wind-scoured plain." + (" Two bark-wardens sleep on every tree." if "about_promises_wardens"
                                                        in self.broken else "")
 
@@ -145,11 +150,13 @@ class Fake(object):
             d = min(250, n)
             n -= d
             self.ticks += d
+            self.last_d = d
             self.creep_tick(self.ticks - d, self.ticks)
             self.chunk(d)
             self.ripple_pass()
             self.fire_pass()
             self.route_pass()
+            self.viper_pass()
 
     def chunk(self, d):
         b = self.broken
@@ -496,7 +503,9 @@ class Fake(object):
 
     def t_site_state(self, **k):
         return {"success": True, "pawns": [
-            {"id": p["id"], "job": "Flee" if self.ticks < p.get("flee_until", 0) else p.get("job", "Wait_Wander")}
+            {"id": p["id"], "job": "Flee" if self.ticks < p.get("flee_until", 0) else
+             ("Goto" if p.get("goto") and self.ticks < p.get("moving_until", 0) and p["kind"] == "Colonist"
+              and "order_ignored" not in self.broken else p.get("job", "Wait_Wander"))}
             for p in self.pawns.values()]}
 
     def t_list_things(self, defName=None, rect=None, limit=1, **k):
@@ -511,6 +520,9 @@ class Fake(object):
         if type == "Verse.Log":
             self.log.append({"type": method, "text": args})
             return {"success": True}
+        if type == "RimMandrake.RimProperty.FakeEvidenceProof":     # sc_maker's shared-store fixture, as designed
+            bad = "store_reads_fire_as_taking" in self.broken and args == "fire_only_same_actor"
+            return {"success": True, "result": "FAIL a fire record was read as taking evidence" if bad else "PASS " + args}
         n = 0 if not args else len(args.split("|"))
         if n not in cs_arities(type, method):
             return {"success": False, "message": "No public static %s with %d params." % (method, n),
@@ -537,10 +549,18 @@ class Fake(object):
             return {"success": True, "result": "FAIL mixed lean east=3 west=37" if "lean_mixed" in self.broken
                     else "PASS east=0 west=40 rolled=12 windWest=True"}
         if method == "ProofGale":
+            if self.weather == "RM_Gale" or "gale_keeps_ticking" in self.broken:
+                self.gale_last = self.ticks
+            art = "PLACEHOLDER (vanilla fog sheet)" if "gale_art_placeholder" in self.broken else \
+                V._gale_art_expect(V._gale_files())
+            drew = self.on("galeDustOverlayEnabled") or "gale_draws_when_off" in self.broken
+            tail = " weather=%s art=%s dir=%s tickAge=%d drew=%s leanMap=True" % (
+                self.weather, art, "(0.00, 1.00)" if "gale_across_wind" in self.broken else "(1.00, 0.00)",
+                self.ticks - self.gale_last if self.gale_last is not None else -1, drew)
             if self.weather != "RM_Gale":
-                return {"success": True, "result": "UNMEASURED the Gale is not the current weather"}
+                return {"success": True, "result": "UNMEASURED the Gale is not the current weather" + tail}
             return {"success": True, "result": "FAIL RM_Gale does not carry RM_WeatherOverlay_GaleDust" if "gale_no_overlay" in self.broken
-                    else "PASS weather=RM_Gale art=PLACEHOLDER (vanilla fog sheet) drew=True"}
+                    else "PASS" + tail}
         if method == "ProofHeading":
             return {"success": True, "result": "FAIL: the wind does not point at the sun heading=10.000 want=237.500"
                     if "wind_off_sun" in self.broken else "PASS sunBearing=212.500 heading=237.500 want=237.500"}
@@ -1131,6 +1151,74 @@ class Fake(object):
         self.jobs[pawnId] = {"kind": kind, "a": targetAId, "b": targetBId, "left": 800}
         return {"success": True, "accepted": True, "nowRunningRequested": True}
 
+    # ------------------------------------------------------------ batch 5: viper, graphics, selection, shots
+    def viper_pass(self):
+        """RM_Fuzzviper's run-wall ambush as designed: a viper within 6 cells of a wall takes the wall-side cell beside
+        it and holds (Wait_Ambush); traffic passing within 3 cells is struck from there (PredatorHunt, a Bite)."""
+        walls = set((t["x"], t["z"]) for t in self.of("Wall"))
+        prey = [p for p in self.pawns.values() if p["kind"] == V.VIPER_PREY]
+        for v in [p for p in self.pawns.values() if p["kind"] == V.VIPER]:
+            near = sorted(w for w in walls if abs(w[0] - v["x"]) <= 6 and abs(w[1] - v["z"]) <= 6)
+            if near and "viper_never_holds" not in self.broken:
+                if "spot" not in v:
+                    w = min(near, key=lambda c: abs(c[0] - v["x"]) + abs(c[1] - v["z"]))
+                    v["spot"] = (w[0], w[1] + (1 if v["z"] > w[1] else -1))
+                v["x"], v["z"] = v["spot"]
+                v["job"] = "Wait_Ambush" if self.ticks >= v.get("strike_until", 0) else "PredatorHunt"
+            for q in prey:
+                gx = (q.get("goto") or (q["x"], q["z"]))[0]
+                if abs(q["z"] - v["z"]) <= 3 and min(q["x"], gx) - 3 <= v["x"] <= max(q["x"], gx) + 3 \
+                        and "viper_never_strikes" not in self.broken:
+                    v["job"], v["strike_until"] = "PredatorHunt", self.ticks + 600
+                    q["hediffs"].append("Bite")
+                    break
+
+    def t_thing_graphic(self, thingId=None, **k):
+        t = self.things.get(thingId)
+        if t is None:
+            return {"success": False, "message": "no thing"}
+        d = t["def"]
+        if "state_graphics_swapped" in self.broken and d in ("RM_RearingVenomvine", "RM_QuenchVenomvine"):
+            d = "RM_QuenchVenomvine" if d == "RM_RearingVenomvine" else "RM_RearingVenomvine"
+        return {"success": True, "path": (V._visual_manifest().get(d) or {}).get("texPath")}
+
+    def t_clear_selection(self, **k):
+        self.selected = None
+        return {"success": True}
+
+    def t_click_cell(self, x=None, z=None, **k):
+        """A plant is selected by a click on its cell or on its drawn art: half its visualSizeRange above the root."""
+        self.selected = None
+        for t in self.things.values():
+            size = (V._visual_manifest().get(t["def"]) or {}).get("size") or 0
+            reach = 0 if "overhang_unselectable" in self.broken else (99 if "click_reads_column" in self.broken
+                                                                       else int(size / 2))
+            if t["x"] == x and 0 <= z - t["z"] <= reach:
+                self.selected = t["id"]
+        return {"success": True}
+
+    def t_get_selection_semantics(self, **k):
+        return {"selection": [{"thingId": "Thing_" + self.selected}] if self.selected else []}
+
+    def t_screenshot_cell_rect(self, x=0, z=0, width=1, height=1, fileName="shot", **k):
+        path = "D:\\ClaudeWork\\fake\\%s.png" % fileName
+        self.shots[path] = fileName
+        return {"success": True, "path": path}
+
+    def blind_or_art(self, which):
+        """The judge's files: a blind reader that names each shot's subject; the art pipeline's verdicts."""
+        if which == V.ART_EVAL:
+            return dict((d, "REGEN" if "art_eval_red" in self.broken and d == V.TREE else "GREEN")
+                        for _s, d in V.VISUAL_SUBJECTS)
+        names = dict((s, d) for s, d in V.VISUAL_SUBJECTS)
+        out = {}
+        for path, name in self.shots.items():
+            m = re.match(r"lscrub_visual_(\w+?)_(normal|close)_", name)
+            if m:
+                d = names.get(m.group(1))
+                out[path] = "RM_QuenchVenomvine" if "blind_misread" in self.broken and d == "RM_SleeperVenomvine" else d
+        return out
+
     def t_order_pawn(self, pawnId=None, x=None, z=None, **k):
         self.walker_until, self.bloom_done = self.ticks + 400, False
         self.walker_z = self.pawns[pawnId]["z"]
@@ -1214,7 +1302,10 @@ class Fake(object):
 
     def blazes(self):
         """Fire clusters of 5 or more (RM_BlazeKernel.MinOpenFires 5): [(centre, instigator)]."""
-        fires = [t for t in self.things.values() if t["def"] == "Fire"]
+        fires = [t for t in self.things.values() if t["def"] == "Fire"
+                 and ((t["x"], t["z"]) not in self.roofed or "stamp_roofed_fire" in self.broken)]
+        if "stamp_subthreshold" in self.broken and fires and len(fires) < 5:
+            return [((fires[0]["x"], fires[0]["z"]), fires[0].get("instigator"))]
         out = []
         for f in fires:
             near = [g for g in fires if abs(g["x"] - f["x"]) <= 6 and abs(g["z"] - f["z"]) <= 6]
@@ -1227,7 +1318,7 @@ class Fake(object):
         self.pending_fire = [p for p in self.pending_fire if p[0] > self.ticks]
         for _t, x, z, who in due:
             self.light(x, z, who)
-        herd = [p for p in self.pawns.values() if p["kind"] == V.STAMPER]
+        herd = [p for p in self.pawns.values() if p["kind"] in self.stamper_kinds]
         if not herd:
             return
         cols = [p for p in self.pawns.values() if p["kind"] == "Colonist"]
@@ -1235,12 +1326,20 @@ class Fake(object):
             for i, p in enumerate(herd):
                 if self.pursuit and p is herd[0]:
                     continue
-                p["x"], p["z"] = centre[0] + i, centre[1]
+                gx, gz = centre[0] + i, centre[1]       # a jog: at most 8 cells a pass (a teleport is not an approach)
+                if "stamper_teleports" in self.broken:
+                    p["x"], p["z"] = gx, gz
+                else:
+                    d = max(abs(gx - p["x"]), abs(gz - p["z"]), 1)
+                    f = min(1.0, 0.05 * self.last_d / d)     # a jog of 0.05 cells a tick
+                    p["x"], p["z"] = int(round(p["x"] + (gx - p["x"]) * f)), int(round(p["z"] + (gz - p["z"]) * f))
             self.last_blaze = centre
-            for tid in [i for i, t in self.things.items() if t["def"] == "Fire" and self.ticks - t["born"] >= 300
-                        and abs(t["x"] - centre[0]) <= 6 and abs(t["z"] - centre[1]) <= 6]:
-                del self.things[tid]
-            if who and self.pursuit is None:
+            if "stamp_never_stamps" not in self.broken and any(abs(p["x"] - centre[0]) <= 6 and abs(p["z"] - centre[1]) <= 6
+                                                                 for p in herd):
+                for tid in [i for i, t in self.things.items() if t["def"] == "Fire" and self.ticks - t["born"] >= 300
+                            and abs(t["x"] - centre[0]) <= 6 and abs(t["z"] - centre[1]) <= 6]:
+                    del self.things[tid]
+            if who:     # the newest maker's blaze names the pursuit
                 self.pursuit = who
             if not who and "unwitnessed_pursues" in self.broken and cols:
                 self.pursuit = min(cols, key=lambda c: abs(c["x"] - centre[0]) + abs(c["z"] - centre[1]))["id"]
@@ -1357,6 +1456,8 @@ def run(broken=()):
     game = Fake(broken)
     V._about_text = lambda: game.about
     V._save_bytes = game.save_bytes
+    V._load_json = game.blind_or_art
+    V._stamper_kinds = lambda: {"base": sorted(game.stamper_kinds - {V.STAMPER}), "campaign": [V.STAMPER]}
     results = {}
     for name, fn in V.suite.chains:
         t = TestContext(game, anchor=(100, 100))
@@ -1470,7 +1571,7 @@ BREAKS = {
     "twin_calm": "windlean.twins_carry_wind",
     "lean_mixed": "windlean.lean_faces_wind",
     "lean_ignores_toggle": "windlean.lean_toggle_off_vanilla",
-    "gale_no_overlay": "windlean.gale_dust_overlay",
+    "gale_no_overlay": ("windlean.gale_dust_overlay", "scene_gale_drawing.gale_drawing_streams_downwind"),
 }
 # the acceptance scenes (scene_* chains, RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_MANY_BARS_LEFT)
 BREAKS.update({
@@ -1536,9 +1637,11 @@ BREAKS.update({
     # batch 4 (RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_NINETY_FIVE_BARS_LEFT)
     "fire_no_bias": "scene_fire_bias.fire_bias_downwind_lift",
     "fire_bias_ignores_zero": "scene_fire_bias.fire_bias_control_plain",
-    "blame_nearest": "scene_ix_fire_accountability.accountability_maker_not_innocent",
+    "blame_nearest": ("scene_ix_fire_accountability.accountability_maker_not_innocent",
+                      "scene_maker.maker_witnessed_identified"),
     "pursuit_forgets_on_reload": "scene_ix_fire_accountability.accountability_maker_not_innocent",
-    "unwitnessed_pursues": "scene_ix_fire_accountability.accountability_unwitnessed_no_pursuit",
+    "unwitnessed_pursues": ("scene_ix_fire_accountability.accountability_unwitnessed_no_pursuit",
+                            "scene_maker.maker_no_event_no_pursuit"),
     "regrow_ignores_write": "scene_dripping.dripping_scene_write_off_one_shot",
     "felt_no_comfort": "scene_felt_comfort.felt_scene_seat_offset",
     "felt_thought_stacks": "scene_felt_comfort.felt_scene_single_thought",
@@ -1548,6 +1651,25 @@ BREAKS.update({
     "upkeep_never_cuts": "scene_home_routes.routes_maintained_carry_work",
     "auto_work_crosses_vine": "scene_ix_route_growth.ixroutes_only_authorized_in_hazard",
     "cancel_ignored": "scene_ix_route_growth.ixroutes_cancel_stops_expedition",
+    # batch 5 (RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_EIGHTY_SIX_BARS_LEFT)
+    "gale_across_wind": "scene_gale_drawing.gale_drawing_streams_downwind",
+    "gale_draws_when_off": "scene_gale_drawing.gale_drawing_overlay_off_control",
+    "gale_keeps_ticking": "scene_gale_drawing.gale_drawing_clear_removes",
+    "gale_art_placeholder": "scene_gale_drawing.gale_drawing_art_state",
+    "stamper_teleports": "scene_stamping.stamping_campaign_binding",
+    "stamp_never_stamps": "scene_stamping.stamping_campaign_binding",
+    "stamp_roofed_fire": "scene_stamping.stamping_controls_quiet",
+    "stamp_subthreshold": ("scene_stamping.stamping_controls_quiet", "scene_ix_fire_accountability.accountability_blaze_answered"),
+    "no_base_stamper": "scene_stamping.stamping_base_binding",
+    "store_reads_fire_as_taking": "scene_maker.maker_shared_evidence_store",
+    "viper_never_holds": "scene_fuzzviper.fuzzviper_holds_run_wall",
+    "viper_never_strikes": "scene_fuzzviper.fuzzviper_strikes_from_wall",
+    "state_graphics_swapped": "scene_floor_visual.visual_textures_own_and_distinct",
+    "blind_misread": "scene_floor_visual.visual_captures_blind_read",
+    "art_eval_red": "scene_floor_visual.visual_art_eval_green",
+    "overhang_unselectable": "scene_floor_visual.visual_overhang_selects_and_orders_ack",
+    "click_reads_column": "scene_floor_visual.visual_overhang_selects_and_orders_ack",
+    "order_ignored": "scene_floor_visual.visual_overhang_selects_and_orders_ack",
 })
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form
