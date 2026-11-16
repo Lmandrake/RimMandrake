@@ -642,6 +642,53 @@
         }
       ],
       "scope_boundary": "Select showcase 1 only. Preserve the adopted root, every built/authored capability and independent acceptance scenes. Runtime delivery, art review and first-touch certification remain outstanding."
+    },
+    {
+      "id": "stage3_authored_contract",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/GelatinousSlime/root.md",
+        "design/concepts/GelatinousSlime/sheet.md",
+        "design/concepts/GelatinousSlime/tree.json",
+        "design/concepts/GelatinousSlime/plan.md",
+        "design/concepts/GelatinousSlime/scenes.json",
+        "design/concepts/GelatinousSlime/floor.json"
+      ],
+      "text": "Write 13 source-grounded core leaves, 34 planned normal-action scenes, four ordered showcases and all inherited floor applicability lines. The exact delegated root is referenced through one mechanical checklist id. Every independent promise retains its own acceptance scene. No runtime observation or owner quotation is supplied."
+    },
+    {
+      "id": "stage3_showcase_greedy_order",
+      "speaker": "agent",
+      "source": [
+        "CONDUCTOR:1794825281765620778",
+        "design/concepts/GelatinousSlime/scenes.json"
+      ],
+      "text": "Bind showcase 1 chosen_gene_friend_rescue to stage2_flagship_chosen_gene_friend_rescue and the same delegated Conductor source. Then select residents_and_outsiders, giant_harvest_and_vault and useful_body_workday for 10, 8 and 6 new capabilities with zero counted overlap. Ten remaining built capabilities retain cheaper independent scenes. The unknown rain-water service promise retains an additional explicit scene."
+    },
+    {
+      "id": "stage3_inherited_checkout_scope",
+      "speaker": "agent",
+      "source": [
+        "src/RimMandrake/rimflow/concept_floor.json",
+        "src/RimMandrake/rimflow/roles/designer_write.md",
+        "design/concepts/GelatinousSlime/floor.json"
+      ],
+      "text": "All floor lines apply with no disabled exception. Use all DLC, a minimal composed dependency closure and canonical supported list, plus actual campaign/optional contexts. Inspect existing rarity/roads/generated-content provenance read-only and use an existing authored world/map under the inherited no-generation ruling. Live Dwommo movement is owner-attended. Numeric floor values remain advisory and bounded-repeat trends identify longer-time inference."
+    },
+    {
+      "id": "stage3_filed_delivery_work",
+      "speaker": "agent",
+      "source": [
+        "ITEM:GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+        "ITEM:GELATINOUSSLIME_ARCHIVE_LAST_TOUCH_AND_SINGLE_RETURN",
+        "ITEM:GELATINOUSSLIME_SETTINGS_ACTIVE_CONSUMERS_AND_LEGACY_CONTACT",
+        "ITEM:GELATINOUSSLIME_RAIN_COLLECTION_AND_DRAINAGE_RECONCILE",
+        "ITEM:GELATINOUSSLIME_KIT_CHECK_NUMBERED_ANIMATION_FRAMES",
+        "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1",
+        "ITEM:GELATINOUSSLIME_VAULT_SEAL_BREACH_1",
+        "ITEM:GELATINOUSSLIME_VAULT_SEAL_PLUG_1"
+      ],
+      "text": "File every missing normal-action scene/control/observation/recovery in its named entry_point_item. File archive, active settings/legacy, water-service tracing and numbered-frame checker reconciliation. Preserve the existing chunk/vault delivery items. These proposed build dependencies supply no mod handoff, runtime acceptance, art verdict, waiver or first-touch certification."
     }
   ],
   "asks": [
@@ -712,7 +759,13 @@
       "proof_evidence": [
         "ITEM:UMBRA_SLIME_ROADS_VERIFY_FINALLY_DRAWN"
       ],
-      "notes": "Worldgen probability, actual map composition and road rendering require their own contextual observations. Prior item closure supplies historical road evidence."
+      "notes": "Worldgen probability, actual map composition and road rendering require their own contextual observations. Prior item closure supplies historical road evidence.",
+      "planned_coverage": {
+        "by": [
+          "package_and_floor"
+        ],
+        "why": "Read-only authored rarity/roads/package checks and an existing world are cheaper than another face scene. The inherited generation ruling remains applicable."
+      }
     },
     {
       "id": "slime_terrain",
@@ -729,7 +782,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Wet-ground slipping and drink access are FlowWorks integrations. The art checker explicitly allows vanilla terrain textures."
+      "notes": "Wet-ground slipping and drink access are FlowWorks integrations. The art checker explicitly allows vanilla terrain textures.",
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "native_body"
+        ]
+      }
     },
     {
       "id": "slime_flora",
@@ -746,7 +805,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Kit graphics exist. A complete planting, growth and harvest experience lacks a suite scene."
+      "notes": "Kit graphics exist. A complete planting, growth and harvest experience lacks a suite scene.",
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "native_body"
+        ]
+      }
     },
     {
       "id": "gelatid",
@@ -765,7 +830,13 @@
       "scope": "not_opened",
       "proof_evidence": [
         "src/RimMandrake/GelatinousSlime/northstar/titanoslime_gates.py"
-      ]
+      ],
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "native_body"
+        ]
+      }
     },
     {
       "id": "oomb_family",
@@ -782,7 +853,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "EnvironmentalHazards owns scaled explosions. VEF comps are MayRequire guarded and their behaviour needs the matching runtime configuration."
+      "notes": "EnvironmentalHazards owns scaled explosions. VEF comps are MayRequire guarded and their behaviour needs the matching runtime configuration.",
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "oomb_wuum_behaviour"
+        ]
+      }
     },
     {
       "id": "wuum",
@@ -797,7 +874,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Record optional reproduction separately from the base creature when designing controls."
+      "notes": "Record optional reproduction separately from the base creature when designing controls.",
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "oomb_wuum_behaviour"
+        ]
+      }
     },
     {
       "id": "gappo_family",
@@ -813,7 +896,13 @@
         "ITEM:GELATINOUSSLIME_GAPPO_FAMILY_1"
       ],
       "proof": "missing",
-      "scope": "not_opened"
+      "scope": "not_opened",
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "native_body"
+        ]
+      }
     },
     {
       "id": "gappo_channels",
@@ -830,7 +919,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Setting-off and liquid-ground controls are owed."
+      "notes": "Setting-off and liquid-ground controls are owed.",
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "gappo_channels"
+        ]
+      }
     },
     {
       "id": "dwommo_flight",
@@ -849,7 +944,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Suite checks flight fields. Behavioural flight-state and takeoff/landing acceptance are missing. The offline art resolver currently rejects the numbered animation prefix."
+      "notes": "Suite checks flight fields. Behavioural flight-state and takeoff/landing acceptance are missing. The offline art resolver currently rejects the numbered animation prefix.",
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "dwommo_attended"
+        ]
+      }
     },
     {
       "id": "fubbum_hunting",
@@ -868,7 +969,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Vanilla predator selection owns actual prey choice. A claim of gelatid-only prey or guaranteed night pooling needs an observed discriminating scene."
+      "notes": "Vanilla predator selection owns actual prey choice. A claim of gelatid-only prey or guaranteed night pooling needs an observed discriminating scene.",
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "fubbum_hunt"
+        ]
+      }
     },
     {
       "id": "visitor_ecology",
@@ -887,7 +994,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Suite proves registration. Generation, arrival selection, caps, toggles and never-on-load behaviour lack functional suite scenes. Initial thin-roster comments are historical."
+      "notes": "Suite proves registration. Generation, arrival selection, caps, toggles and never-on-load behaviour lack functional suite scenes. Initial thin-roster comments are historical.",
+      "planned_coverage": {
+        "showcase": "residents_and_outsiders",
+        "scenes": [
+          "visitor_arrival"
+        ]
+      }
     },
     {
       "id": "exposure",
@@ -909,7 +1022,13 @@
       "proof_evidence": [
         "ITEM:GELATINOUSSLIME_FIRST_LOAD_ERRORS_1",
         "src/RimMandrake/GelatinousSlime/validation.py:730"
-      ]
+      ],
+      "planned_coverage": {
+        "by": [
+          "contact_ladder"
+        ],
+        "why": "A controlled actual-contact comparison isolates application more cheaply than repeating the flagship."
+      }
     },
     {
       "id": "slimification_ladder",
@@ -931,7 +1050,13 @@
       "proof_evidence": [
         "src/RimMandrake/GelatinousSlime/validation.py:730"
       ],
-      "notes": "The original brief conflates the late warning stage and terminal dissolution. Source thresholds are 0, .2, .5, .9 with dissolution at 1. No conversion-created hostility is allowed."
+      "notes": "The original brief conflates the late warning stage and terminal dissolution. Source thresholds are 0, .2, .5, .9 with dissolution at 1. No conversion-created hostility is allowed.",
+      "planned_coverage": {
+        "showcase": "chosen_gene_friend_rescue",
+        "scenes": [
+          "ordered_friend_rescue"
+        ]
+      }
     },
     {
       "id": "cure_geography",
@@ -953,7 +1078,13 @@
       "proof_evidence": [
         "ITEM:GELATINOUSSLIME_FIRST_LOAD_ERRORS_1"
       ],
-      "notes": "Map rate audit is present. Actual caravan transit/ticking and drying-to-ordinary transitions are unproven by this suite."
+      "notes": "Map rate audit is present. Actual caravan transit/ticking and drying-to-ordinary transitions are unproven by this suite.",
+      "planned_coverage": {
+        "by": [
+          "geographic_exit"
+        ],
+        "why": "The finite map/caravan mode/location matrix is a focused geographic check."
+      }
     },
     {
       "id": "dissolution",
@@ -973,7 +1104,14 @@
       "proof_evidence": [
         "src/RimMandrake/GelatinousSlime/validation.py:853"
       ],
-      "notes": "Ground dissolution scene omits bedside coma failure, off-map terminal transition and equipped/inventory survival assertions."
+      "notes": "Ground dissolution scene omits bedside coma failure, off-map terminal transition and equipped/inventory survival assertions.",
+      "planned_coverage": {
+        "showcase": "chosen_gene_friend_rescue",
+        "scenes": [
+          "ordered_friend_rescue",
+          "terminal_belongings"
+        ]
+      }
     },
     {
       "id": "warnings",
@@ -993,7 +1131,13 @@
       "proof_evidence": [
         "src/RimMandrake/GelatinousSlime/validation.py:730"
       ],
-      "notes": "Suite checks the alert type. It must also prove the intended patient and truthful time context. OWNER:1794346263694156545 already resolves the UI direction."
+      "notes": "Suite checks the alert type. It must also prove the intended patient and truthful time context. OWNER:1794346263694156545 already resolves the UI direction.",
+      "planned_coverage": {
+        "showcase": "chosen_gene_friend_rescue",
+        "scenes": [
+          "ordered_friend_rescue"
+        ]
+      }
     },
     {
       "id": "raw_slime_bargain",
@@ -1013,7 +1157,13 @@
       "proof_evidence": [
         "src/RimMandrake/GelatinousSlime/validation.py:940"
       ],
-      "notes": "Resistance and campaign gene conditions require attention to the cure-before-resistance order. A paired untreated poisoned pawn is missing from the current chain."
+      "notes": "Resistance and campaign gene conditions require attention to the cure-before-resistance order. A paired untreated poisoned pawn is missing from the current chain.",
+      "planned_coverage": {
+        "showcase": "useful_body_workday",
+        "scenes": [
+          "raw_slime_fee"
+        ]
+      }
     },
     {
       "id": "antidote",
@@ -1034,7 +1184,13 @@
         "src/RimMandrake/GelatinousSlime/validation.py:887",
         "ITEM:ACC_BIOMES_FIXES_LIVE_RERUN_1"
       ],
-      "notes": "Real use jobs and untreated controls exist. A complete deadline success/failure interaction with the injected clock remains owed."
+      "notes": "Real use jobs and untreated controls exist. A complete deadline success/failure interaction with the injected clock remains owed.",
+      "planned_coverage": {
+        "showcase": "chosen_gene_friend_rescue",
+        "scenes": [
+          "ordered_friend_rescue"
+        ]
+      }
     },
     {
       "id": "compressor_economy",
@@ -1051,7 +1207,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Def resolution supplies no completed bill, ingredient consumption, work or useful-construction proof."
+      "notes": "Def resolution supplies no completed bill, ingredient consumption, work or useful-construction proof.",
+      "planned_coverage": {
+        "showcase": "useful_body_workday",
+        "scenes": [
+          "workday_products"
+        ]
+      }
     },
     {
       "id": "pit_meals",
@@ -1066,7 +1228,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Actual ingredient-to-meal production and eating require workflow acceptance."
+      "notes": "Actual ingredient-to-meal production and eating require workflow acceptance.",
+      "planned_coverage": {
+        "showcase": "useful_body_workday",
+        "scenes": [
+          "workday_products"
+        ]
+      }
     },
     {
       "id": "pit_solvent",
@@ -1085,7 +1253,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "The live-proof txt registers a def-resolution command. It supplies no successful cook/eat receipt. Recipe visibility on/off, input supply and actual drug-free ingestion need behavioural proof."
+      "notes": "The live-proof txt registers a def-resolution command. It supplies no successful cook/eat receipt. Recipe visibility on/off, input supply and actual drug-free ingestion need behavioural proof.",
+      "planned_coverage": {
+        "showcase": "useful_body_workday",
+        "scenes": [
+          "solvent_food"
+        ]
+      }
     },
     {
       "id": "farm_conversion",
@@ -1100,7 +1274,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Random sample attempts are time-based. The mechanism is gated by BiomeLaysSlimeGrass at FinalizeInit, broader than the stale walk claim that only the named biome qualifies. Unsown field and toggle-off controls are owed."
+      "notes": "Random sample attempts are time-based. The mechanism is gated by BiomeLaysSlimeGrass at FinalizeInit, broader than the stale walk claim that only the named biome qualifies. Unsown field and toggle-off controls are owed.",
+      "planned_coverage": {
+        "showcase": "useful_body_workday",
+        "scenes": [
+          "farms_and_ruins"
+        ]
+      }
     },
     {
       "id": "farm_ruins",
@@ -1121,7 +1301,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Setting is generation-affecting. Historical close explicitly left a live quicktest shot owed."
+      "notes": "Setting is generation-affecting. Historical close explicitly left a live quicktest shot owed.",
+      "planned_coverage": {
+        "showcase": "useful_body_workday",
+        "scenes": [
+          "farms_and_ruins"
+        ]
+      }
     },
     {
       "id": "slime_rain",
@@ -1141,7 +1327,13 @@
       "proof_evidence": [
         "src/RimMandrake/GelatinousSlime/validation.py:1014"
       ],
-      "notes": "Weather-ID forcing proves neither flood/drain nor potable collection/storage. Campaign ordinary-rain removal is owned by UtinniPatches."
+      "notes": "Weather-ID forcing proves neither flood/drain nor potable collection/storage. Campaign ordinary-rain removal is owned by UtinniPatches.",
+      "planned_coverage": {
+        "by": [
+          "rain_and_water_services"
+        ],
+        "why": "A bounded weather/service comparison isolates rain from generic liquid and collection mechanisms."
+      }
     },
     {
       "id": "archive_selection",
@@ -1165,7 +1357,13 @@
       "proof_evidence": [
         "ITEM:SLIME_GENE_ARCHIVE_BUILD_1"
       ],
-      "notes": "Campaign gene texts and conditions live in UtinniPatches. The generic mod owns the selection mechanism. Biotech governs gene use. Prior dialog observation is historical."
+      "notes": "Campaign gene texts and conditions live in UtinniPatches. The generic mod owns the selection mechanism. Biotech governs gene use. Prior dialog observation is historical.",
+      "planned_coverage": {
+        "showcase": "chosen_gene_friend_rescue",
+        "scenes": [
+          "archive_field_choice"
+        ]
+      }
     },
     {
       "id": "seeker_scanner",
@@ -1185,7 +1383,13 @@
       "proof_evidence": [
         "ITEM:SLIME_GENE_ARCHIVE_BUILD_1"
       ],
-      "notes": "Current implementation names a world tile in inspect text. It refreshes the map mark. The static proof bypasses dialog, navigation and mark-expiry gameplay."
+      "notes": "Current implementation names a world tile in inspect text. It refreshes the map mark. The static proof bypasses dialog, navigation and mark-expiry gameplay.",
+      "planned_coverage": {
+        "showcase": "chosen_gene_friend_rescue",
+        "scenes": [
+          "archive_field_choice"
+        ]
+      }
     },
     {
       "id": "seeker_extraction",
@@ -1208,7 +1412,13 @@
         "ITEM:SLIME_SEEKER_LOAD_TOOL_1",
         "ITEM:ACC_BIOMES_FIXES_LIVE_RERUN_1"
       ],
-      "notes": "Static helper stages the work job on liquid ground but bypasses scanner/mark validation. Expiry during travel/work and no-output cancellation need controls."
+      "notes": "Static helper stages the work job on liquid ground but bypasses scanner/mark validation. Expiry during travel/work and no-output cancellation need controls.",
+      "planned_coverage": {
+        "showcase": "chosen_gene_friend_rescue",
+        "scenes": [
+          "archive_field_choice"
+        ]
+      }
     },
     {
       "id": "gene_injection",
@@ -1229,7 +1439,13 @@
         "ITEM:GELATINOUSSLIME_SEEKER_MARK_FAILS_1",
         "ITEM:ACC_BIOMES_FIXES_LIVE_RERUN_1"
       ],
-      "notes": "Helper directly calls target effects and reads the rate. It supplies no completed friend-rescue race. Fast rate starts at elevated severity, so nominal clock days alone do not state remaining time."
+      "notes": "Helper directly calls target effects and reads the rate. It supplies no completed friend-rescue race. Fast rate starts at elevated severity, so nominal clock days alone do not state remaining time.",
+      "planned_coverage": {
+        "showcase": "chosen_gene_friend_rescue",
+        "scenes": [
+          "ordered_friend_rescue"
+        ]
+      }
     },
     {
       "id": "slime_marked",
@@ -1252,7 +1468,13 @@
         "ITEM:GELATINOUSSLIME_SEEKER_MARK_FAILS_1",
         "src/RimMandrake/GelatinousSlime/validation.py:977"
       ],
-      "notes": "Opinion stages are checked. Romance, rider visibility and inherited mark promises need separately grounded checks. Cosmetic read marks were removed."
+      "notes": "Opinion stages are checked. Romance, rider visibility and inherited mark promises need separately grounded checks. Cosmetic read marks were removed.",
+      "planned_coverage": {
+        "showcase": "chosen_gene_friend_rescue",
+        "scenes": [
+          "gene_effect_and_social"
+        ]
+      }
     },
     {
       "id": "archive_snapshot",
@@ -1273,7 +1495,13 @@
       ],
       "proof": "missing",
       "scope": "approved",
-      "notes": "Filing is limited by Files and the exposure resistance gate. Snapshot fields omit health and memories. Rain/caravan-only touch routes lack equivalent calls in inspected source. This narrows the historical item promise and requires technical reconciliation."
+      "notes": "Filing is limited by Files and the exposure resistance gate. Snapshot fields omit health and memories. Rain/caravan-only touch routes lack equivalent calls in inspected source. This narrows the historical item promise and requires technical reconciliation.",
+      "planned_coverage": {
+        "by": [
+          "archive_filing_and_return"
+        ],
+        "why": "Last-touch fidelity is an independent promise with two capabilities. Its normal paid procedure and field matrix remain mandatory acceptance."
+      }
     },
     {
       "id": "archive_growing",
@@ -1296,7 +1524,13 @@
       ],
       "proof": "missing",
       "scope": "approved",
-      "notes": "TickRare drives progress but the concrete def declares no tickerType. Begin reserves only its own vat and completion ignores returned state. Current relation restoration needs reconciliation with the November family answer. Expensive Helix placement is a campaign research integration obligation."
+      "notes": "TickRare drives progress but the concrete def declares no tickerType. Begin reserves only its own vat and completion ignores returned state. Current relation restoration needs reconciliation with the November family answer. Expensive Helix placement is a campaign research integration obligation.",
+      "planned_coverage": {
+        "by": [
+          "archive_lifecycle_and_family"
+        ],
+        "why": "The distinct two-capability return sequence needs its own normal paid completion, concurrency and family scenes. It is below the later-showcase minimum."
+      }
     },
     {
       "id": "titan_engulf",
@@ -1319,7 +1553,13 @@
         "src/RimMandrake/GelatinousSlime/northstar/titanoslime_gates.py:316",
         "ITEM:CORPSEGEAR_FIX_HATCH_AND_DISSOLVE_DESTROY"
       ],
-      "notes": "Natural melee observation and forced mechanism arms both exist. A readable player rescue story still needs acceptance."
+      "notes": "Natural melee observation and forced mechanism arms both exist. A readable player rescue story still needs acceptance.",
+      "planned_coverage": {
+        "showcase": "giant_harvest_and_vault",
+        "scenes": [
+          "titan_engulf_rescue"
+        ]
+      }
     },
     {
       "id": "titan_growth",
@@ -1342,7 +1582,13 @@
         "ITEM:TITANOSLIME_PERMANENT_GROWTH_LIVE_1",
         "src/RimMandrake/GelatinousSlime/northstar/titanoslime_gates.py:280"
       ],
-      "notes": "Historical raw-save test and specialised gates supply feeding, permanence and save/load evidence. HugeThings and Large Pawns consume size. Safe re-registration has a ghost/respawn regression gate."
+      "notes": "Historical raw-save test and specialised gates supply feeding, permanence and save/load evidence. HugeThings and Large Pawns consume size. Safe re-registration has a ghost/respawn regression gate.",
+      "planned_coverage": {
+        "showcase": "giant_harvest_and_vault",
+        "scenes": [
+          "titan_growth_shedding"
+        ]
+      }
     },
     {
       "id": "titan_shedding",
@@ -1362,7 +1608,13 @@
       "proof_evidence": [
         "src/RimMandrake/GelatinousSlime/validation.py:1134",
         "src/RimMandrake/GelatinousSlime/northstar/titanoslime_gates.py:453"
-      ]
+      ],
+      "planned_coverage": {
+        "showcase": "giant_harvest_and_vault",
+        "scenes": [
+          "titan_growth_shedding"
+        ]
+      }
     },
     {
       "id": "chunk_weapon",
@@ -1388,7 +1640,13 @@
         "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1"
       ],
       "notes": "Current film impairs movement/manipulation/sight and suppresses panic. It uses ordinary advanced film outside slime. November immediate-struggle direction is already recorded. Ally/out-of-radius/resistant controls and actual throwing are needed.",
-      "acquisition_clarification": "The inspected normal acquisition is the authored butcher-product alternative. This stage establishes no live tear-off action and no normal-throw consumption proof."
+      "acquisition_clarification": "The inspected normal acquisition is the authored butcher-product alternative. This stage establishes no live tear-off action and no normal-throw consumption proof.",
+      "planned_coverage": {
+        "showcase": "giant_harvest_and_vault",
+        "scenes": [
+          "chunk_throw"
+        ]
+      }
     },
     {
       "id": "chunk_ground",
@@ -1403,7 +1661,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Needs terrain round-trip and overlapping-burst/control scenes. Its own restoration logic does not restore a test runner map."
+      "notes": "Needs terrain round-trip and overlapping-burst/control scenes. Its own restoration logic does not restore a test runner map.",
+      "planned_coverage": {
+        "showcase": "giant_harvest_and_vault",
+        "scenes": [
+          "chunk_ground_and_age"
+        ]
+      }
     },
     {
       "id": "chunk_shelf",
@@ -1418,7 +1682,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "Carry trackers and off-map holders/caravans are outside the inspected sweep, so the short-shelf-life promise lacks full holder coverage."
+      "notes": "Carry trackers and off-map holders/caravans are outside the inspected sweep, so the short-shelf-life promise lacks full holder coverage.",
+      "planned_coverage": {
+        "showcase": "giant_harvest_and_vault",
+        "scenes": [
+          "chunk_ground_and_age"
+        ]
+      }
     },
     {
       "id": "slime_breach_api",
@@ -1435,7 +1705,13 @@
       ],
       "proof": "missing",
       "scope": "approved",
-      "notes": "This API is separate from the actual campaign plug component. End-to-end vault use remains a technical integration gap."
+      "notes": "This API is separate from the actual campaign plug component. End-to-end vault use remains a technical integration gap.",
+      "planned_coverage": {
+        "showcase": "giant_harvest_and_vault",
+        "scenes": [
+          "v5_seal_and_generic_breach"
+        ]
+      }
     },
     {
       "id": "campaign_vault_seal",
@@ -1454,7 +1730,13 @@
       ],
       "proof": "missing",
       "scope": "approved",
-      "notes": "The seal lacks RM_SlimeBreachable. Its proximity loop consumes no chunk and the thrown burst calls no DissolveAround API. Campaign owns seal and vault placement. Test real blocked path, ordinary damage rejection, chunk use and consumption."
+      "notes": "The seal lacks RM_SlimeBreachable. Its proximity loop consumes no chunk and the thrown burst calls no DissolveAround API. Campaign owns seal and vault placement. Test real blocked path, ordinary damage rejection, chunk use and consumption.",
+      "planned_coverage": {
+        "showcase": "giant_harvest_and_vault",
+        "scenes": [
+          "v5_seal_and_generic_breach"
+        ]
+      }
     },
     {
       "id": "feature_settings",
@@ -1476,7 +1758,13 @@
       "proof_evidence": [
         "src/RimMandrake/GelatinousSlime/validation.py:1197"
       ],
-      "notes": "Field round trips cover wiring. Active-job, held-prey, growing-vat and existing-film transitions need behaviour scenes. Local chain cleanup resets shipped defaults, while the current shared Suite.chain wrapper also captures readable prior settings and attempts restoration in finally. Full map recovery and independent restoration readback remain missing."
+      "notes": "Field round trips cover wiring. Active-job, held-prey, growing-vat and existing-film transitions need behaviour scenes. Local chain cleanup resets shipped defaults, while the current shared Suite.chain wrapper also captures readable prior settings and attempts restoration in finally. Full map recovery and independent restoration readback remain missing.",
+      "planned_coverage": {
+        "by": [
+          "settings_consumers"
+        ],
+        "why": "A complete consumer and active-state matrix covers the cross-cutting controls at lower staging cost."
+      }
     },
     {
       "id": "kit_art",
@@ -1500,7 +1788,13 @@
       "proof_evidence": [
         "infrastructure/state/live_proofs/GELATINOUSSLIME_KIT_ART_1.txt"
       ],
-      "notes": "The proof txt is a command registration. Historical runtime path checks are reported by the ledger. Current offline checker fails on the Dwommo numbered animation prefix. Art aesthetic acceptance and stages-one-and-five Titanoslime review remain unverified."
+      "notes": "The proof txt is a command registration. Historical runtime path checks are reported by the ledger. Current offline checker fails on the Dwommo numbered animation prefix. Art aesthetic acceptance and stages-one-and-five Titanoslime review remain unverified.",
+      "planned_coverage": {
+        "by": [
+          "kit_and_titan_review"
+        ],
+        "why": "A focused whole-kit/state check and the specifically owed owner stage-one/five review cover art without claiming the other showcases accepted it."
+      }
     },
     {
       "id": "acoustic_payload",
@@ -1515,7 +1809,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "AcousticScanner owns pulse, bands and display. A payload patch alone supplies no scanner interaction acceptance."
+      "notes": "AcousticScanner owns pulse, bands and display. A payload patch alone supplies no scanner interaction acceptance.",
+      "planned_coverage": {
+        "by": [
+          "legacy_and_optional_services"
+        ],
+        "why": "A conditional scanner-consumer check covers one opt-in payload."
+      }
     },
     {
       "id": "rain_water_services",
@@ -1533,7 +1833,13 @@
       "scope": "not_opened",
       "search_scope": "Bounded read of Slime WeatherDef, validation weather chain and directly connected FlowWorks living-slime/thirst/slippery-ground patches. No complete rain collection/flood/drain ownership trace or runtime experiment was undertaken.",
       "notes": "Agent-owned service tracing and measurement remain necessary before asserting the full water experience. This uncertainty supplies no owner question or new implementation proposal.",
-      "scope_clarification": "Authored rain collection/potability/flood-drain obligation retained from the primary brief and weather description. The unknown is delivery, not an unanswered keep/remove question; no owner approval or runtime proof is inferred."
+      "scope_clarification": "Authored rain collection/potability/flood-drain obligation retained from the primary brief and weather description. The unknown is delivery, not an unanswered keep/remove question; no owner approval or runtime proof is inferred.",
+      "planned_coverage": {
+        "by": [
+          "rain_and_water_services"
+        ],
+        "status": "additional authored obligation, impl unknown/proof missing"
+      }
     },
     {
       "id": "legacy_ground_flora",
@@ -1548,7 +1854,13 @@
       ],
       "proof": "missing",
       "scope": "not_opened",
-      "notes": "The October donor-retirement ports coexist with the primary tagged terrain suite. Their terrain tags and exposure semantics require an explicit ordinary coverage check. Historical donor-free brief text cannot describe these current packaged assets."
+      "notes": "The October donor-retirement ports coexist with the primary tagged terrain suite. Their terrain tags and exposure semantics require an explicit ordinary coverage check. Historical donor-free brief text cannot describe these current packaged assets.",
+      "planned_coverage": {
+        "by": [
+          "legacy_and_optional_services"
+        ],
+        "why": "A focused compatibility-map harvest/contact check covers shipped legacy defs without creating another ecology showcase."
+      }
     }
   ],
   "contradictions": [
@@ -1607,7 +1919,11 @@
       "text": "Snapshot omits health/memories, filing routes are narrower than item language, the vat def lacks an explicit Rare ticker, and multiple vats can target the same entry. Direct relation restoration also needs the already recorded changed-family ruling applied.",
       "next_action": "Stage 3 plan actual contact-to-vat acceptance, a snapshot field matrix retaining historical health/memories obligations, ticker inheritance verification, entry reservation/completion guard and changed-family reconciliation. Keep field-list review and campaign Helix integration unverified.",
       "classification": "implementation_and_proof_gap",
-      "design_disposition": "Settled: last-touch return, normal expensive procedure, continued family history and no concurrent duplicate return. Existing authored health/memory/contact obligations are not waived."
+      "design_disposition": "Settled: last-touch return, normal expensive procedure, continued family history and no concurrent duplicate return. Existing authored health/memory/contact obligations are not waived.",
+      "delivery_items": [
+        "GELATINOUSSLIME_ARCHIVE_LAST_TOUCH_AND_SINGLE_RETURN"
+      ],
+      "proof_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER"
     },
     {
       "id": "vault_api_mismatch",
@@ -1624,7 +1940,12 @@
       "text": "Generic targeted breach requires an extension the V5 seal lacks, burst omits the seal API, and proximity dissolution spends no piece. The requested vault use is already settled.",
       "next_action": "Stage 3 plan one compatible actual-use route with chunk consumption, damage rejection, blocked/open path and drench-cost controls.",
       "classification": "implementation_and_proof_gap",
-      "design_disposition": "Settled: actual V5 plug opens only through the supported chunk route while enabled, with material/drench cost. Internal API choice is implementation work."
+      "design_disposition": "Settled: actual V5 plug opens only through the supported chunk route while enabled, with material/drench cost. Internal API choice is implementation work.",
+      "delivery_items": [
+        "GELATINOUSSLIME_VAULT_SEAL_BREACH_1",
+        "GELATINOUSSLIME_VAULT_SEAL_PLUG_1"
+      ],
+      "proof_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER"
     },
     {
       "id": "water_service_claim",
@@ -1642,7 +1963,11 @@
       "text": "Forced weather identity does not settle the collection, potability or flood/drain promises.",
       "next_action": "Stage 3 trace the actual loaded collection/flood services and define a collector/fill/drain/potability scene with roofed/no-rain controls, in universal/campaign contexts. Keep rain_water_services impl unknown/proof missing until observed; never silently remove the authored obligation.",
       "design_disposition": "Retain the authored rain promise; do not infer collection, potability or brief flooding/drainage from weather identity or from drinking living slime. Source tracing narrows but does not close implementation coverage.",
-      "investigation": "Slime WeatherDef has rainRate 1.5, duration and descriptive promises. FlowWorks RainLevelsNow consumes generic RainRate for unroofed excavated cells with its rain-fill switch and water fluid; it is not a slime-specific barrel collector or proof of brief whole-map flood/drain. Living-slime LiquidDef is a LastResort drink with SlimeDose, distinct from rain water. Source searches of FlowWorks Source/Defs/Patches and src .cs/.xml found no dedicated slime-rain collection route. No runtime or external collector inventory was performed."
+      "investigation": "Slime WeatherDef has rainRate 1.5, duration and descriptive promises. FlowWorks RainLevelsNow consumes generic RainRate for unroofed excavated cells with its rain-fill switch and water fluid; it is not a slime-specific barrel collector or proof of brief whole-map flood/drain. Living-slime LiquidDef is a LastResort drink with SlimeDose, distinct from rain water. Source searches of FlowWorks Source/Defs/Patches and src .cs/.xml found no dedicated slime-rain collection route. No runtime or external collector inventory was performed.",
+      "delivery_items": [
+        "GELATINOUSSLIME_RAIN_COLLECTION_AND_DRAINAGE_RECONCILE"
+      ],
+      "proof_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER"
     },
     {
       "id": "animation_prefix_checker",
@@ -1656,7 +1981,11 @@
       "resolved": false,
       "owner_decision_needed": false,
       "text": "The fresh offline art check rejects flyingAnimationFramePathPrefix RM_Dwommo_Flying_. Numbered rotation files exist, while resolves_own checks only a bare path, ordinary rotation suffix or directory. This is a validation gap requiring an animation-prefix-aware resolver and planted missing-frame control.",
-      "next_action": "Carry this proof-script correction into stage 3 build planning. No art-absence claim follows from the failing resolver."
+      "next_action": "Carry this proof-script correction into stage 3 build planning. No art-absence claim follows from the failing resolver.",
+      "delivery_items": [
+        "GELATINOUSSLIME_KIT_CHECK_NUMBERED_ANIMATION_FRAMES"
+      ],
+      "proof_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER"
     },
     {
       "id": "legacy_contact_semantics",
@@ -1670,7 +1999,11 @@
       "owner_decision_needed": false,
       "text": "Packaged legacy RM_Slime/RM_RichSlime terrains omit RM_SlimeTerrain, while contact exposure reads that tag. The current biome generates its primary tagged suite. Compatibility-map contact behaviour needs a scoped coverage check before any claim that all slime-labelled ground reads pawns.",
       "next_action": "Stage 3 cover shipped legacy defs and source their intended compatibility role. Use terrain tags as the actual current exposure criterion.",
-      "design_disposition": "Retain tag-based exposure plus scoped packaged-legacy coverage. Neither every slime-labelled terrain nor arbitrary external biome is promised by inference."
+      "design_disposition": "Retain tag-based exposure plus scoped packaged-legacy coverage. Neither every slime-labelled terrain nor arbitrary external biome is promised by inference.",
+      "delivery_items": [
+        "GELATINOUSSLIME_SETTINGS_ACTIVE_CONSUMERS_AND_LEGACY_CONTACT"
+      ],
+      "proof_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER"
     },
     {
       "id": "settings_active_state_mismatch",
@@ -1687,7 +2020,11 @@
       ],
       "text": "The hazard-off UI promises no application/growth and film wipe-off, but advanced ordinary film off-body still returns zero rate, and raw ingestion/injection can still apply film directly. The archive-off UI promises the vat does nothing, while an already-growing vat TickRare does not check archiveResurrection. Source-level contradictions; actual runtime remains unobserved.",
       "design_disposition": "Advertised opt-outs must be honest across application routes and active state. Preserve paid vat state/entries while disabled rather than inventing cancellation loss.",
-      "next_action": "Stage 3 plan consumer reconciliation and controls for contact/raw dose/injection/chunk, advanced off-body film, mid-vat off/reload/on and payment/progress preservation. Distinguish hazard suppression from intended gene/coma effects; do not assume field readback settles it."
+      "next_action": "Stage 3 plan consumer reconciliation and controls for contact/raw dose/injection/chunk, advanced off-body film, mid-vat off/reload/on and payment/progress preservation. Distinguish hazard suppression from intended gene/coma effects; do not assume field readback settles it.",
+      "delivery_items": [
+        "GELATINOUSSLIME_SETTINGS_ACTIVE_CONSUMERS_AND_LEGACY_CONTACT"
+      ],
+      "proof_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER"
     },
     {
       "id": "chunk_release_accounting",
@@ -1705,7 +2042,11 @@
       ],
       "text": "Butcher product supplies a real chunk acquisition route. The equipped weapon declares a plain Verb_LaunchProjectile and the projectile burst has no explicit source-item consumption hook in the inspected member, unlike targeted seal use. The shelf sweep covers map stacks and spawned-pawn inventory/equipment, not every holder context. This identifies normal-use accounting/expiry checks, not a confirmed live exploit.",
       "design_disposition": "Use the authored butcher alternative as baseline; do not invent a live tear-off interaction. A released bursting piece and timed material must have honest accounting and expiry.",
-      "next_action": "Stage 3 observe butcher-to-equipped-throw with source-item identity/count, a second launch attempt and expiry in distinct supported holders/reload. Reconcile observed accounting with a released piece before accepting the weapon."
+      "next_action": "Stage 3 observe butcher-to-equipped-throw with source-item identity/count, a second launch attempt and expiry in distinct supported holders/reload. Reconcile observed accounting with a released piece before accepting the weapon.",
+      "delivery_items": [
+        "GELATINOUSSLIME_TITAN_CHUNK_BOMB_1"
+      ],
+      "proof_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER"
     }
   ],
   "failure_modes": [
@@ -1715,7 +2056,7 @@
   ],
   "schema": 1,
   "mod": "GelatinousSlime",
-  "run": "rm-role-designercodex-1794825203",
+  "run": "rm-role-designercodex-1794829244",
   "reading_limits": {
     "source": "src/RimMandrake/rimflow/roles/designer_grounding.md",
     "id": "bounded_grounding",
@@ -2858,7 +3199,7 @@
       "src/RimMandrake/rimflow/designer_stage.py:827",
       "design/concepts/GelatinousSlime/record.json"
     ],
-    "status": "flagship_resolved_ready_for_stage3",
+    "status": "stage3_validated_awaiting_launcher_acceptance",
     "proposed_decision": "stage3_flagship_proposal",
     "audit": {
       "record_flagship_decisions": 0,
@@ -2903,5 +3244,83 @@
     "decision": "stage2_flagship_chosen_gene_friend_rescue",
     "resolution_source": "CONDUCTOR:1794825281765620778",
     "resolved_by_run": "rm-role-designercodex-1794825203"
+  },
+  "stage3_plan": {
+    "id": "stage3_written_proposals",
+    "speaker": "agent",
+    "source": [
+      "design/concepts/GelatinousSlime/plan.md",
+      "design/concepts/GelatinousSlime/scenes.json"
+    ],
+    "author_run": "rm-role-designercodex-1794829244",
+    "leaf_count": 13,
+    "scene_count": 34,
+    "showcase_count": 4,
+    "built_or_in_scope_units": 43,
+    "coverage_rest_count": 10,
+    "new_items": [
+      {
+        "id": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+        "tsn": 1794829904028716975,
+        "ts": "2026-11-16T11:51:44Z",
+        "role_unit": "rm-role-designercodex-1794829244",
+        "for": "RELENTLESS",
+        "state": null
+      },
+      {
+        "id": "GELATINOUSSLIME_ARCHIVE_LAST_TOUCH_AND_SINGLE_RETURN",
+        "tsn": 1794830035417416700,
+        "ts": "2026-11-16T11:53:55Z",
+        "role_unit": "rm-role-designercodex-1794829244",
+        "for": "RELENTLESS",
+        "state": null
+      },
+      {
+        "id": "GELATINOUSSLIME_SETTINGS_ACTIVE_CONSUMERS_AND_LEGACY_CONTACT",
+        "tsn": 1794830041480954300,
+        "ts": "2026-11-16T11:54:01Z",
+        "role_unit": "rm-role-designercodex-1794829244",
+        "for": "RELENTLESS",
+        "state": null
+      },
+      {
+        "id": "GELATINOUSSLIME_RAIN_COLLECTION_AND_DRAINAGE_RECONCILE",
+        "tsn": 1794830047414217633,
+        "ts": "2026-11-16T11:54:07Z",
+        "role_unit": "rm-role-designercodex-1794829244",
+        "for": "RELENTLESS",
+        "state": null
+      },
+      {
+        "id": "GELATINOUSSLIME_KIT_CHECK_NUMBERED_ANIMATION_FRAMES",
+        "tsn": 1794830053236221399,
+        "ts": "2026-11-16T11:54:13Z",
+        "role_unit": "rm-role-designercodex-1794829244",
+        "for": "RELENTLESS",
+        "state": null
+      }
+    ],
+    "entry_points": "All 34 scene_<id> functions are planned and named in the filed proof item. Existing audited chains remain component probes.",
+    "root": "Exact delegated root reference in root.md. The historical validation walk remains unchanged.",
+    "delivery": "Implementation/proof gaps remain open. No inventory proof/impl/scope status is upgraded.",
+    "remaining_owner_reviews": [
+      "Titanoslime stages one and five in the in-game review save",
+      "historical archive snapshot field-list review",
+      "subsequent first-touch certification"
+    ],
+    "scene_recovery": "No live scene was begun by this run and no persistent game state was changed.",
+    "settings_field_count": 24,
+    "validation": {
+      "gate_a_lint": "pass",
+      "scene_contracts": "pass",
+      "showcases": "pass, new coverage 9/10/8/6 with zero counted overlap",
+      "floor": "pass, all 23 lines applicable",
+      "result_check": "result.json would be accepted",
+      "capability_action_mapping": "every showcase/rest capability names a scene with the corresponding exercised action",
+      "preservation": "root, all previous inventory fields, asks and failure modes equal the entry record",
+      "can_fail": "in-memory missing scene control is rejected",
+      "missing_entry_points": "all 34 planned functions are absent and carry the filed proof item",
+      "proof_item_preflight": "current pickup preflight passes after replacing a not-yet-tracked scenes reference with the existing validation script reference"
+    }
   }
 }

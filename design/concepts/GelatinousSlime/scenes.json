@@ -1,0 +1,1602 @@
+{
+  "schema_version": 1,
+  "subject": "GelatinousSlime",
+  "run": "rm-role-designercodex-1794829244",
+  "status": "planned, runtime unobserved",
+  "existing_content_walk": {
+    "id": "existing_gene_expedition_walk",
+    "source": [
+      "design/validation_walks/RimMandrake/GelatinousSlime.md",
+      "src/RimMandrake/GelatinousSlime/northstar_plan.py",
+      "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+      "OWNER:1792336679095161980"
+    ],
+    "status": "proposed_before_additional_design",
+    "offer": true,
+    "scene": "An already-built RM_GelatinousSlime review map on the composed biomes package, with a liquid current, blank seeker, two colonists and antidote. Use the archive dialog, follow the mark, complete extraction, inject and order the friend treatment through ordinary UI. A separate view can show stages-one-and-five Titanoslimes. The exact review save has not been verified in this read-only stage.",
+    "settles": [
+      "seeker_scanner",
+      "seeker_extraction",
+      "gene_injection",
+      "warnings",
+      "antidote",
+      "kit_art"
+    ],
+    "observations": "Measures current legibility of the chosen-gene journey, coma clock, real friend treatment and current art before design is extended. Technical archive reunion and chunk/vault scenes can follow with the already recorded owner answers.",
+    "recovery_requirement": "The authorised live runner records scene-begin recovery before state changes and either restores with scene-end or holds the review with scene-hold. This proposal performs no game action."
+  },
+  "protocol": {
+    "acceptance_readiness": "All new scene_<id> entry points require the filed script item before scheduling acceptance. Existing audited helpers remain component probes.",
+    "recovery": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+    "classification": "PASS, FAIL and UNMEASURED name their evidence. Missing service/identity/observer is UNMEASURED. A completed wrong outcome is FAIL.",
+    "floor": "All DLC assumed. Existing data/biome metadata is inspected read-only. The inherited no-generation rule remains applicable. Dwommo live movement is owner-attended.",
+    "settings_field_count": 24
+  },
+  "scenes": [
+    {
+      "id": "observer_recovery",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_observer_recovery",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert baseline pawn/item/terrain/archive/holder values and custom settings in a disposable scene save."
+      ],
+      "action": "Read baseline, change one observed property through a known action, remove one observation source, inject a classified failed gate row, and interrupt once after persistent mutation. Recover from the journal.",
+      "expect": "Observers distinguish changed and missing state with identity/tick provenance. Missing/stale/capped observations remain UNMEASURED, failed gate rows prevent acceptance, and interrupted recovery reproduces the baseline manifest.",
+      "control": {
+        "case": "A frozen expected-value observer, stale assembly fingerprint, zero-exit failed gate and a deliberately omitted restoration field.",
+        "expect": "Each faulty arm is rejected or remains UNMEASURED with named evidence and open recovery where appropriate.",
+        "rules_out": "Success derived from a script exit, expected literals, setter success or partial fixture cleanup."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "scene_observer"
+      ]
+    },
+    {
+      "id": "workday_products",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_workday_products",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert reachable compressor, slime pit, researched recipes, skilled workers and counted raw inputs. Finished outputs are absent."
+      ],
+      "action": "Order the normal bills, haul the inputs, finish repeated work, build with the resulting blocks and eat the cooked meal.",
+      "expect": "Normal jobs consume the authored quantities and create usable blocks/meals. Repeated bills account for each input/output and the player sees construction and ingestion complete.",
+      "control": {
+        "case": "Equivalent bills with one required ingredient missing and a counted stack of unused raw slime.",
+        "expect": "The deficient bill cannot complete and unused raw slime stays unchanged. No output is credited before completed work.",
+        "rules_out": "Spawned products or recipe-list presence masquerading as a working economy."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "compressor_economy",
+        "pit_meals"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "useful_body"
+      ]
+    },
+    {
+      "id": "raw_slime_fee",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_raw_slime_fee",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert paired susceptible poisoned pawns with equal baseline film, hunger and unrelated injury/addiction. Count the real raw-slime dose."
+      ],
+      "action": "Order one pawn to ingest raw slime and observe actual completion, dose consumption, poison-like hediffs and film in the same ingestion.",
+      "expect": "The eater receives coupled poison relief and film fee. Unrelated injury/addiction persists according to existing scope. A prepared colony can manage later contact.",
+      "control": {
+        "case": "Matched poisoned pawn receives no slime, plus a resistant/feature-off variant whose authored exception is recorded.",
+        "expect": "Untreated poison is retained. Resistance/off outcomes match the scoped consumer contract and never accept a skipped ordinary-dose charge in defaults.",
+        "rules_out": "A helper clears poison, natural recovery explains cure, or a free default cure passes."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "raw_slime_bargain"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "useful_body"
+      ]
+    },
+    {
+      "id": "solvent_food",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_solvent_food",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert normal pit solvent bills, toxipotato/twisted-meat/Rot ambrosyx supply and counted absent outputs in the declared input-mod context."
+      ],
+      "action": "Complete each normal solvent bill, then feed its actual product to a susceptible test pawn and observe health/drug outcomes.",
+      "expect": "All three input families produce their authored safe outputs. The ambrosyx lavish dish loses the drug/addiction effects as authored, with actual consumption and food benefit.",
+      "control": {
+        "case": "Matched raw-input ingestion and a solvent-disabled or missing-ingredient bill.",
+        "expect": "Raw hazards remain observable while unavailable/disabled work yields no solvent result.",
+        "rules_out": "A renamed unsafe input or spawned safe meal passes without conversion."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "pit_solvent"
+      ],
+      "variants": [
+        "toxipotato",
+        "twisted_meat",
+        "Rot_ambrosyx"
+      ],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "useful_body"
+      ]
+    },
+    {
+      "id": "farms_and_ruins",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_farms_and_ruins",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert opted-in slime-grass cultivated and untouched plots, an ordinary non-opted-in plot, and an existing generated drowned farm with ledger and counted loot."
+      ],
+      "action": "Work the cultivated plot through repeated conversion intervals, inspect ruins/channels/walls/fences and read the ledger through normal selection, then haul and use its ordinary loot.",
+      "expect": "Scoped cultivated slime grass reverts to rich slime while control plots retain their expected terrain. The farm is readable and its loot can enter normal work.",
+      "control": {
+        "case": "Untouched slime grass, cultivated non-opted-in terrain and farm-conversion/ruins setting metadata controls.",
+        "expect": "The non-target plots avoid conversion and configuration retains correct new-map labels. Existing generated ruins remain intact under an unrelated toggle.",
+        "rules_out": "A global terrain painter or decorative unreadable ledger stands in for the authored farm work."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "farm_conversion",
+        "farm_ruins"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "useful_body"
+      ]
+    },
+    {
+      "id": "contact_ladder",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_contact_ladder",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert safe contained tagged hard/rich/grass/mud/liquid pads, an off-body pad, susceptible colonist and outsider, resistant gene/native controls and baseline zero film."
+      ],
+      "action": "Order actual contact, follow stage progression and off-body movement, inspect patient-specific letters, standing alert and health info at relevant thresholds.",
+      "expect": "Susceptible flesh pawns including colonists gain film, slow/impair and expose the correct named urgency. Early ordinary film recedes off-body, advanced ordinary film holds, and the half-absorption panic suppression follows its threshold.",
+      "control": {
+        "case": "Matched off-body and resistant pawns plus a low-stage panic comparison.",
+        "expect": "Controls lack contact-applied film or threshold suppression as appropriate. Warning data describes the actual patient and actual ordinary/injected mode.",
+        "rules_out": "Pre-seeded hediffs, colonist immunity, alert-type existence or unrelated panic relief passing as contact behaviour."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "exposure",
+        "slimification_ladder",
+        "warnings"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "ordinary_absorption"
+      ]
+    },
+    {
+      "id": "geographic_exit",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_geographic_exit",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert early ordinary, advanced ordinary and injected patients with read clock flags, existing tagged drying and ordinary map/tile contexts and recorded caravan locations."
+      ],
+      "action": "Move matched patients through the finite off-body/drying contexts, include caravan transit, and save/reload a progressing arm.",
+      "expect": "Early ordinary film recedes off-body, advanced ordinary film holds in ordinary country, injected film advances there, and tagged drying reverses film in map and caravan contexts. Reload preserves identity/mode/rate.",
+      "control": {
+        "case": "Same severity/mode in ordinary non-drying country and an intentionally untagged location read.",
+        "expect": "Ordinary-country controls retain their expected hold/progression. An absent location observation stays UNMEASURED.",
+        "rules_out": "A seeded negative rate or wrong map biome claims geographic cure."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "cure_geography"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "ordinary_absorption"
+      ]
+    },
+    {
+      "id": "terminal_belongings",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_terminal_belongings",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert matched untreated and subterminal-treatable patients, a bed/coma arm, unique equipped apparel/weapon/carried inventory ids and baseline product/corpse census."
+      ],
+      "action": "Let actual untreated film progression complete dissolution, observe the exact victim and products, and finish real antidote use on the matched survivor.",
+      "expect": "Untreated terminal film kills without leaving that corpse, yields the authored slime/smear, and drops the exact gear/inventory. The treated arm survives film removal and retains its belongings. Include the supported off-map transition outcome.",
+      "control": {
+        "case": "Matched subterminal survivor and a deliberately premature observation before terminal severity.",
+        "expect": "The survivor is present, and the premature read cannot claim a terminal result. Product evidence must be attributable to the exact victim.",
+        "rules_out": "Disappearance, an unrelated corpse or unlabelled pre-existing items accepting dissolution."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "dissolution"
+      ],
+      "variants": [
+        "on_map",
+        "bed_coma",
+        "off_map_transition"
+      ],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "ordinary_absorption"
+      ]
+    },
+    {
+      "id": "archive_field_choice",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_archive_field_choice",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert reachable normal seeker fabrication/research, no loaded dose, real archive contents and a liquid current. Universal Biomes and campaign priority contexts each have recorded list identity."
+      ],
+      "action": "Craft a blank seeker, open its ordinary archive dialog, choose a target, use handheld world-tile and in-map localisation, carry it to the marked current and complete extraction work.",
+      "expect": "Blank/primed/loaded UI states expose their authored information. The chosen target survives the journey, extraction consumes the source seeker and produces exactly one perishable injectable with that target and a curated hidden-until-injection rider.",
+      "control": {
+        "case": "No eligible current, unprimed seeker, expired mark and a campaign archive priority comparison.",
+        "expect": "Ineligible routes produce no loaded dose, expired marks refuse stale extraction and priority selects the declared archive. The universal route requires no campaign gene def.",
+        "rules_out": "A helper-loaded sample or home console bypassing choice and field work."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "archive_selection",
+        "seeker_scanner",
+        "seeker_extraction"
+      ],
+      "variants": [
+        "universal_archive",
+        "campaign_archive"
+      ],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "chosen_gene_journey"
+      ]
+    },
+    {
+      "id": "seeker_lifecycle",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_seeker_lifecycle",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert identified primed seeker, mark expiry tick and loaded sample with known rot/refrigeration state. Record source/output counts and a mid-work save."
+      ],
+      "action": "Interrupt/reorder extraction, let one mark expire, spoil an unrefrigerated dose, compare refrigerated storage, and reload primed/loaded and in-work states.",
+      "expect": "No interrupted or expired job mints a duplicate/wrong sample. Shelf state is visible, rot makes the spent dose unusable, refrigeration follows existing mercy, and reload preserves chosen identity/accounting.",
+      "control": {
+        "case": "Fresh valid mark/dose completes the same route while stale/rotten samples attempt it.",
+        "expect": "Only valid samples finish their permitted action. Missing item observation is UNMEASURED.",
+        "rules_out": "Item existence after helper calls passing cancellation, spoilage or duplication."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "seeker_extraction"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "chosen_gene_journey"
+      ]
+    },
+    {
+      "id": "ordered_friend_rescue",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_ordered_friend_rescue",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert field-extracted identified dose, susceptible recipient, reachable capable friend/antidote, safe treatment path, current default deadlines and a matched untreated arm with tagged belongings."
+      ],
+      "action": "Order actual injection, inspect coma and accelerated film in existing health UI, order the friend to administer antidote and follow job uptake/travel/completion and item consumption. Run the untreated arm to dissolution.",
+      "expect": "The dose is consumed, target and rider become endogenes, coma and accelerated absorption are visible, and completed timely friend treatment consumes antidote, clears film and charges toxicity. Target/rider/mark remain. The untreated arm actually dissolves with belongings accounted for.",
+      "control": {
+        "case": "No capable friend, a too-late treatment order, and the matched untreated arm.",
+        "expect": "The existing post-injection warning identifies missing rescue capacity, late treatment cannot retroactively rescue a dissolved pawn, and untreated terminal outcome completes. Vanilla coma is observed independently after film cure.",
+        "rules_out": "Direct inject/cure helpers, an unfinished order or a comparison stopped before death."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "gene_injection",
+        "slimification_ladder",
+        "warnings",
+        "antidote",
+        "dissolution"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "friend_rescue"
+      ]
+    },
+    {
+      "id": "gene_effect_and_social",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_gene_effect_and_social",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert known target/rider possibilities, unmarked and independent baseline relationship pairs, authored mark modifiers and endogene parentage."
+      ],
+      "action": "Perform normal acquisition/rescue, observe a rider effect, inspect opinion/romance factors, repeat acquisition, save/reload, and observe an actual inherited outcome. Run campaign Reek/charm cases separately.",
+      "expect": "Target/rider remain after cure with a meaningful rider effect. Mark/opinion and romance consequences persist under their authored rules, including Reek and charm exceptions. Inheritance uses actual parental endogenes.",
+      "control": {
+        "case": "Unmodified relationship pair, acquisition without the campaign modifier, and an ineligible parental gene comparison.",
+        "expect": "Control opinions stay at baseline and the exception/inheritance outcomes distinguish their actual mechanisms.",
+        "rules_out": "Stored gene names without effect, stale opinion cache, erased social cost or an invented all-target penalty."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "slime_marked"
+      ],
+      "variants": [
+        "universal",
+        "repeat_mark",
+        "Reek",
+        "charm",
+        "inheritance"
+      ],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "lasting_gene_price"
+      ]
+    },
+    {
+      "id": "native_body",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_native_body",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert an existing authored slime map and independent terrain/plant/native census before staging. Identify tagged terrain and every authored flora family."
+      ],
+      "action": "Follow normal fauna/flora life on the map, observe growth and grazing of slime grass, harvest bellows through ordinary work and count its raw slime, and inspect growth/cut behaviour of thumbstalk and readerbloom according to their non-product defs. Let gelatids and all gappo sizes graze.",
+      "expect": "Tagged terrain provides actual movement/fertility/contact surfaces and native families remain resistant. Slime grass supports grazing, bellows yields its authored raw slime, and thumbstalk/readerbloom show their authored growth with no invented harvest product. The map reads as a shared living body at play zoom.",
+      "control": {
+        "case": "Matched susceptible outsider and ordinary ground/plant baseline with actual food demand.",
+        "expect": "Only the authored surfaces/harvests exhibit their effects, and outsider contact differs from native resistance.",
+        "rules_out": "A spawn lineup or plant texture listing accepted as ecology."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "slime_terrain",
+        "slime_flora",
+        "gelatid",
+        "gappo_family"
+      ],
+      "variants": [
+        "RM_Plant_SlimeGrass grazing/growth",
+        "RM_Plant_Bellows harvest/growth",
+        "RM_Plant_Thumbstalk growth/cut",
+        "RM_Plant_Readerbloom growth/cut",
+        "gelatid grazing/resistance",
+        "lesser/ordinary/greater gappo grazing/resistance"
+      ],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Plants/SlimeFlora.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Gelatid.xml"
+      ],
+      "requirement": [
+        "living_ecology"
+      ]
+    },
+    {
+      "id": "oomb_wuum_behaviour",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_oomb_wuum_behaviour",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert lesser/ordinary/greater oombs and wuum with the required hazard dependency, contained pads and a declared optional VEF context. Include a VEF-absent supported context."
+      ],
+      "action": "Observe authored scavenging/feeding and conditional oomb growth/fission and wuum reproduction, then controlled actual deaths with nearby susceptible/resistant sentinels.",
+      "expect": "Every family is observable and resistant. Actual death produces its authored scaled acid burst. Conditional growth/fission/reproduction works with VEF, and the ordinary supported family remains functional without that optional package.",
+      "control": {
+        "case": "No feeding opportunity, outside-burst sentinel, resistant sentinel and absent-VEF context.",
+        "expect": "No unearned feeding/growth or outside-burst damage is credited, and absent optional behaviour carries its explicit applicability result.",
+        "rules_out": "Def fields or a generic explosion passing every family-specific action."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "oomb_family",
+        "wuum"
+      ],
+      "variants": [
+        "lesser_oomb",
+        "oomb",
+        "greater_oomb",
+        "wuum",
+        "VEF_present",
+        "VEF_absent"
+      ],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "living_ecology"
+      ]
+    },
+    {
+      "id": "gappo_channels",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_gappo_channels",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert greater-gappo grazing need, eligible non-liquid slimy ground with smear, and adjacent liquid/built/ordinary control cells. Record terrain ownership."
+      ],
+      "action": "Let the greater gappo graze and inspect normal job timing and affected terrain/smear. Repeat with channel hardening disabled.",
+      "expect": "Actual grazing hardens eligible non-liquid slime ground and clears the authored smear. Ineligible cells remain intact and the disabled consumer prevents channel work.",
+      "control": {
+        "case": "Lesser/ordinary gappo and greater gappo with hardening off on matched pads.",
+        "expect": "Only eligible enabled greater-gappo work produces the terrain change.",
+        "rules_out": "A helper painting hard ground or any grazer clearing every surface."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "gappo_channels"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "living_ecology"
+      ]
+    },
+    {
+      "id": "dwommo_attended",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_dwommo_attended",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert owner attendance before live advancement, correct Dwommo frames/flight fields, safe movement pads, and paired enabled/grounded setting state."
+      ],
+      "action": "In the owner-attended session follow actual Dwommo movement and animation across directions, then observe grounded mode. Read actual movement state alongside the capture sequence.",
+      "expect": "The enabled animal visibly uses its authored movement/animation and grounded mode changes its consumer. The owner can judge the moving creature at play zoom with a human scale reference.",
+      "control": {
+        "case": "Grounded mode plus a planted missing numbered frame in an offline private checker fixture.",
+        "expect": "Grounding produces its expected state difference and the checker rejects the missing frame. Unattended live advancement remains unscheduled.",
+        "rules_out": "FlyingAnimationFramePathPrefix presence or a still proving actual motion."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "owner_review",
+      "exercises": [
+        "dwommo_flight"
+      ],
+      "variants": [],
+      "owner_attended": true,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "living_ecology"
+      ]
+    },
+    {
+      "id": "fubbum_hunt",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_fubbum_hunt",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert hungry fubbum, reachable eligible prey, safe containment and the hunting setting. Record baseline prey/predator jobs."
+      ],
+      "action": "Observe natural prey selection and completed hunting behaviour, then repeat in hunting-disabled mode.",
+      "expect": "Enabled predation uses its real job route. The disabled consumer blocks that behaviour while unrelated needs remain observable.",
+      "control": {
+        "case": "Hunting off with the same reachable prey and hunger.",
+        "expect": "No hunting job is credited in the disabled arm.",
+        "rules_out": "A predator stat field or forced damage accepting actual hunting."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "fubbum_hunting"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "living_ecology"
+      ]
+    },
+    {
+      "id": "visitor_arrival",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_visitor_arrival",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert an existing generated map with recorded visitor-seed evidence, eligible neighbouring fauna and actual counts below/at the authored cap. Record faction/manhunter/job state before film."
+      ],
+      "action": "Inspect the initial seeded outsiders, observe capped ongoing arrivals and their film course, and compare neutral susceptible outsiders to resistant natives through a stage transition.",
+      "expect": "Eligible neighbour fauna arrive partly absorbed through the authored seed/trickle. The cap and hostile filter hold, and increasing slimification itself adds no hostility or faction change.",
+      "control": {
+        "case": "Cap-full map, ineligible/hostile candidate and matched neutral off-body outsider.",
+        "expect": "The cap/filter reject extra arrivals and neutral control isolates film from predation/acid/unrelated aggression.",
+        "rules_out": "Hand-spawned animals passing arrival, or unrelated manhunting being attributed to film."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "visitor_ecology"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "living_ecology"
+      ]
+    },
+    {
+      "id": "titan_engulf_rescue",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_titan_engulf_rescue",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert disjoint safe pads, real Titanoslime stage/prey capacity, identified eligible and oversized prey, rescue capability and unique victim gear/inventory."
+      ],
+      "action": "Let ordinary melee/AI engulf eligible prey, read the visible held timer, perform supported struggle/rescue/release, and let a matched arm complete digestion.",
+      "expect": "Actual attack entry respects prey limits, the countdown identifies the held victim, a supported rescue can complete, and digestion/drop outcomes account for that exact victim and belongings. Film resistance alone supplies no engulf immunity.",
+      "control": {
+        "case": "Oversized prey, matched unrescued victim and a death/engulf-off release while prey is held.",
+        "expect": "Oversized prey is excluded by capacity and held prey is released through the authored death/off route. The matched victim completes actual digestion.",
+        "rules_out": "Forced holding, an unread timer or an unrelated corpse accepting the predator loop."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "titan_engulf"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "titan_lifecycle"
+      ]
+    },
+    {
+      "id": "titan_growth_shedding",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_titan_growth_shedding",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert actual pre-feed mass/stage, stage boundaries, shipped permanent defaults and enough reachable eligible food. Assert damage actually lands in shedding controls."
+      ],
+      "action": "Feed through normal hunting/ingestion across a stage boundary, wound for shedding, endure dry ground/starvation/wounds and reload. Run reversible, growth-off, max-stage and shedding-off variants. Read classified g1-g8 rows including corpse/footprint consumers.",
+      "expect": "Feeding changes locked stage, public size and prey limit. Default growth persists through endurance/reload. Wounding sheds gelatids only under eligible enabled cooldown conditions. HugeThings/Large Pawns size/corpse/footprint state is coherent and cleans up.",
+      "control": {
+        "case": "No-feed twin, actual landed damage with shedding off, reversible decay and growth-off/cap arms.",
+        "expect": "No unearned growth or disabled shedding is credited, and authored alternatives visibly differ without overwriting entry settings.",
+        "rules_out": "Forced mass, a missed damage event, zero process exit or factory-default cleanup passing the gates."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "titan_growth",
+        "titan_shedding"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "titan_lifecycle"
+      ]
+    },
+    {
+      "id": "chunk_throw",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_chunk_throw",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert an eligible butcherable Titanoslime corpse, no pre-spawned chunk, normal butcher/equip/target work, labelled susceptible armoured enemy and nearby ally plus resistant controls."
+      ],
+      "action": "Butcher, count the real harvested piece, equip and throw it through ordinary targeting. Observe release/source count and attempt a second launch from that same source. Order affected pawns to move/fight and follow off-body film.",
+      "expect": "Butchering yields authored material. One released bursting piece is expended once. Enemy and ally show immediate movement/fighting impairment regardless of armour, resistant controls follow the existing gate, and advanced film uses the ordinary clock off-body.",
+      "control": {
+        "case": "Resistance, outside-radius sentinel and second-launch attempt after the single piece is spent.",
+        "expect": "Resistant/outside targets avoid the authored coating and the spent source supplies no repeated piece.",
+        "rules_out": "Drench helper, enemy-only coating, armour gating or retained infinite source weapon."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "chunk_weapon"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "harvested_chunk"
+      ]
+    },
+    {
+      "id": "chunk_ground_and_age",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_chunk_ground_and_age",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert original terrain/ownership and converted cells beside water/built floors, exact chunk ages in map, equipped, inventory, caravan and nested-holder contexts, plus a mid-life save."
+      ],
+      "action": "Create the ground patch through a real throw, alter one affected cell later through a player action, reload, and follow patch/holder expiry by the configured shelf lifetime.",
+      "expect": "Only authored eligible ground converts temporarily, original terrain returns when owned by the patch, later player changes remain coherent, water/built floors stay protected and expired pieces cease to function across supported holder contexts. Saved age/terrain ownership persists.",
+      "control": {
+        "case": "Unchanged natural patch cell, later-changed cell, water/built surface and fresh-age item.",
+        "expect": "Only expired owned patch state is restored and only expired material loses usability. A moved/nested item cannot gain a fresh life by avoiding the map sweep.",
+        "rules_out": "Global terrain reset or map-stack-only expiry proving all finite material."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "chunk_ground",
+        "chunk_shelf"
+      ],
+      "variants": [
+        "ground_stack",
+        "equipment",
+        "inventory",
+        "caravan",
+        "nested_holder"
+      ],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "harvested_chunk"
+      ]
+    },
+    {
+      "id": "v5_seal_and_generic_breach",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_v5_seal_and_generic_breach",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert actual placed V5 RUT_VaultFleshSeal/layout/component, blocked path, enabled campaign seal and universal breach settings, counted harvested piece and a second actual plug."
+      ],
+      "action": "Try ordinary damage/explosives and pathing, then use the supported chunk order on the real plug and traverse the opened doorway. Repeat a separate generic extended target and each relevant disable variant.",
+      "expect": "V5 resists ordinary damage/pathing then opens from the advertised chunk route with one-piece expenditure and drench hazard. The piece cannot open another plug after expenditure. Generic extension and campaign off/open option follow their independent settings.",
+      "control": {
+        "case": "Ordinary explosive, generic unextended object, universal breach off and campaign seal off.",
+        "expect": "The enabled real plug rejects ordinary damage, unextended target rejects generic breach, and each disabled consumer has its authored result with no unconsumed proximity bypass.",
+        "rules_out": "A dummy, direct DissolveAround or a nearby unspent chunk passing actual vault integration."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "slime_breach_api",
+        "campaign_vault_seal"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "actual_vault_breach"
+      ]
+    },
+    {
+      "id": "archive_filing_and_return",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_archive_filing_and_return",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert named colony humanlike, real eligible contact routes, no synthetic snapshot, recorded fields/entry version, paid vat resources, research and power, and an unfiled/living comparison."
+      ],
+      "action": "Make two eligible contacts around known genes/skills/traits/age/backstory/relations/health/memory changes, change them again away from slime, then kill and select the actual entry through the vat menu. Pay and finish powered growth.",
+      "expect": "Per-person entries reflect the latest eligible touch and persist. The normally paid powered vat completes once and returns recorded fields against the explicit health/memory/contact-route reconciliation matrix. Death and colony history persist. Universal research and campaign expensive Helix access are independently exercised.",
+      "control": {
+        "case": "Unfiled person, still-living entry, off-body post-contact changes and insufficient resources/research.",
+        "expect": "Ineligible starts are refused with no payment/duplicate return, off-body changes do not replace the stored version and the paid eligible arm finishes.",
+        "rules_out": "Hand-built snapshot, direct Grow, death-time copy or a comment claiming the campaign research gate."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "archive_snapshot",
+        "archive_growing"
+      ],
+      "variants": [
+        "touch_routes",
+        "field_matrix",
+        "universal_research",
+        "campaign_Helix"
+      ],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "last_touch_return"
+      ]
+    },
+    {
+      "id": "archive_lifecycle_and_family",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_archive_lifecycle_and_family",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert actual filed dead person, two reachable vats, paid progress and power state, intact kin and a recorded spouse who subsequently separates/remarries before return."
+      ],
+      "action": "Start normal growth, contend from a second vat, interrupt power and save/reload, finish once, then observe reunion relations/thoughts against unchanged kin and the changed former marriage.",
+      "expect": "Only one active/completed return consumes the entry lifecycle. Paid power pause/reload preserves progress. Current marriage stays intact, old marriage stays ended, unaffected kin continuity remains and the returnee has the recorded lasting adjustment mood. No intervening life is fabricated.",
+      "control": {
+        "case": "Two-vat same-entry start and completed-entry retry, alongside an intact-family return.",
+        "expect": "Duplicate starts/returns are refused and the intact-family case distinguishes faithful recorded kin from superseded relations.",
+        "rules_out": "Name-only resurrection, free duplicate, inherited ticker assumption or blind direct-relation restoration."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "archive_snapshot",
+        "archive_growing"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "last_touch_return"
+      ]
+    },
+    {
+      "id": "settings_consumers",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_settings_consumers",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert the complete SlimeMod setting manifest and each consumer, custom prior values, active ordinary/injected film, held prey, growing giant, active solvent work, chunk/breach and a paid growing vat."
+      ],
+      "action": "Use searchable UI, change a meaningful value and each major toggle before and during its active state, save/reload, test reset, then recover exact entry settings with independent reads.",
+      "expect": "All shipped controls affect their advertised consumer, scope labels are accurate and all-off degrades safely. Hazard-off prevents its advertised application/growth and permits promised wipe-off. Archive-off pauses a paid vat preserving progress/entries and resumes once. Held prey releases safely where promised. Gene/coma effects retain their independent rules.",
+      "control": {
+        "case": "UI/setter-only changed field with consumer deliberately held unchanged, plus defaults versus custom-entry recovery.",
+        "expect": "A field-only success fails consumer acceptance, reset uses authored defaults and teardown reproduces custom entry state.",
+        "rules_out": "Successful SetField, injected/raw application bypass, continuing disabled vat or defaults-as-restoration."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "feature_settings"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs"
+      ],
+      "requirement": [
+        "settings_and_scope"
+      ],
+      "setting_matrix": [
+        {
+          "group": "hazard",
+          "fields": {
+            "slimificationEnabled": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "slimificationClockDays": {
+              "type": "float",
+              "source_default": "7f"
+            }
+          },
+          "by": [
+            "contact_ladder",
+            "geographic_exit",
+            "raw_slime_fee",
+            "ordered_friend_rescue"
+          ]
+        },
+        {
+          "group": "farm",
+          "fields": {
+            "fieldConversionEnabled": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "fieldConversionRate": {
+              "type": "float",
+              "source_default": "1f"
+            }
+          },
+          "by": [
+            "farms_and_ruins"
+          ]
+        },
+        {
+          "group": "new_map_metadata",
+          "fields": {
+            "rarityFactor": {
+              "type": "float",
+              "source_default": "1f"
+            },
+            "farmRuinsEnabled": {
+              "type": "bool",
+              "source_default": "true"
+            }
+          },
+          "by": [
+            "package_and_floor",
+            "farms_and_ruins"
+          ]
+        },
+        {
+          "group": "visitors",
+          "fields": {
+            "visitorsEnabled": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "visitorArrivalRate": {
+              "type": "float",
+              "source_default": "1f"
+            }
+          },
+          "by": [
+            "visitor_arrival"
+          ]
+        },
+        {
+          "group": "native_ecology",
+          "fields": {
+            "gappoChannels": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "fubbumHunts": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "dwommoFlies": {
+              "type": "bool",
+              "source_default": "true"
+            }
+          },
+          "by": [
+            "gappo_channels",
+            "fubbum_hunt",
+            "dwommo_attended"
+          ]
+        },
+        {
+          "group": "solvent",
+          "fields": {
+            "pitSolvent": {
+              "type": "bool",
+              "source_default": "true"
+            }
+          },
+          "by": [
+            "solvent_food"
+          ]
+        },
+        {
+          "group": "archive_selection",
+          "fields": {
+            "preferHigherPriorityArchive": {
+              "type": "bool",
+              "source_default": "true"
+            }
+          },
+          "by": [
+            "archive_field_choice"
+          ]
+        },
+        {
+          "group": "giant",
+          "fields": {
+            "titanoslimeSpawnFactor": {
+              "type": "float",
+              "source_default": "1f"
+            },
+            "titanoslimeEngulfs": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "titanoslimeGrows": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "titanoslimeReversible": {
+              "type": "bool",
+              "source_default": "false"
+            },
+            "titanoslimeMaxStage": {
+              "type": "int",
+              "source_default": "5"
+            },
+            "titanoslimeSheds": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "titanoslimePreySizeFactor": {
+              "type": "float",
+              "source_default": "1f"
+            }
+          },
+          "by": [
+            "titan_engulf_rescue",
+            "titan_growth_shedding"
+          ]
+        },
+        {
+          "group": "chunks_and_breach",
+          "fields": {
+            "sealBreach": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "chunkBomb": {
+              "type": "bool",
+              "source_default": "true"
+            },
+            "chunkShelfDays": {
+              "type": "float",
+              "source_default": "1.5f"
+            }
+          },
+          "by": [
+            "chunk_throw",
+            "chunk_ground_and_age",
+            "v5_seal_and_generic_breach"
+          ]
+        },
+        {
+          "group": "return",
+          "fields": {
+            "archiveResurrection": {
+              "type": "bool",
+              "source_default": "true"
+            }
+          },
+          "by": [
+            "archive_filing_and_return",
+            "archive_lifecycle_and_family",
+            "paid_archive_disable"
+          ]
+        }
+      ],
+      "setting_matrix_notes": [
+        "Source defaults are recorded data. Read actual defaults/values and consumer behaviour from the running context.",
+        "rarityFactor and farmRuinsEnabled retain read-only metadata/scope/source-consumer checks and existing-save evidence under the inherited no-generation floor.",
+        "titanoslimeSpawnFactor checks actual loaded BiomeDef commonality rewriting. It needs no fresh world generation.",
+        "visitorArrivalRate checks the actual admission/rate consumer with a bounded deterministic diagnostic comparison. A single random arrival cannot prove the rate multiplier.",
+        "dwommoFlies live movement remains owner-attended. Field/frame data can be read offline."
+      ]
+    },
+    {
+      "id": "rain_and_water_services",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_rain_and_water_services",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert existing biome weather pools in universal/campaign contexts, open/roofed collection containers and excavation/drainage geometry, actual FlowWorks service registry and known liquid amounts/composition. SlimeRain service implementation remains unknown."
+      ],
+      "action": "Trace the real loaded rain collection/flood/drain route, force a bounded authored SlimeRain episode only as the stimulus, collect and drink the resulting water through ordinary containers, observe flooding/draining, and separately exercise living-slime drinking under its own established rules.",
+      "expect": "SlimeRain has actual brief intense green rain behaviour and correct context pool membership. The historical potable collection and brief flood/drain promises require measured service/volume/potability results. Missing service stays UNMEASURED with a filed delivery gap. Living-slime drinking records its own coupled consequences and FlowWorks ownership.",
+      "control": {
+        "case": "Roofed/no-rain collection, matched ordinary rain, blocked/open drainage and a no-liquid baseline.",
+        "expect": "Roofed/no-rain arms gain no attributed collection, ordinary rain distinguishes generic service, and geometry explains actual flood/drain deltas.",
+        "rules_out": "Forced WeatherDef identity, rainRate or a living-slime drink row passing potable barrels and flooding."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "slime_rain",
+        "rain_water_services"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "useful_body"
+      ]
+    },
+    {
+      "id": "legacy_and_optional_services",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_legacy_and_optional_services",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert packaged legacy RM_Slime/RM_RichSlime terrain and flora defs, their local texture/harvest paths and actual contact tags. Declare FlowWorks/scanner/VEF presence and authored biome/tag scope."
+      ],
+      "action": "Read and exercise compatibility-map terrain movement/fertility/contact and flora harvesting. In the optional scanner context issue its real scan to the slime biome and observe the opt-in payload interpretation. Inspect absent-service startup offline.",
+      "expect": "Legacy shipped flora/ground preserves authored yields/art and its contact contract is explicitly reconciled with RM_SlimeTerrain consumers. Scanner resolves its real payload targets only in its declared context. No additional arbitrary foreign-biome guarantee is inferred.",
+      "control": {
+        "case": "Primary tagged terrain and untagged ordinary foreign ground, scanner absent and a deliberately missing payload target in a private static fixture.",
+        "expect": "Tagged versus legacy observations expose a genuine consumer mismatch, unsupported foreign ground carries no new promise, and missing payload is caught without a phantom scanner dependency.",
+        "rules_out": "Every slime-labelled ground declared hazardous from its name or payload XML accepted without consumption."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "legacy_ground_flora",
+        "acoustic_payload"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "settings_and_scope"
+      ]
+    },
+    {
+      "id": "kit_and_titan_review",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_kit_and_titan_review",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert owner review attendance, exact shipped art manifest and listed terrain/filth/meal/UI exceptions, human scale references, safe review save and stages one/five."
+      ],
+      "action": "Run offline local texture/dimension/numbered-animation resolution, then capture actual native/flora/building/item states/facings and Titanoslime motion/selection in game. Hold the named review save for the owner stages-one/five judgement.",
+      "expect": "Declared shipped art resolves with complete numbered frames and expected dimensions. A blind reader distinguishes visible item/building/native states at play zoom, oversized art selects on its drawn extent, and the owner can actually review moving stage-one/five giants. His verdict remains pending until recorded.",
+      "control": {
+        "case": "Private missing-numbered-frame control, obvious wrong-scale/wrong-state image and clicks outside the underlying giant cell but on its drawn art.",
+        "expect": "The checker rejects missing frames, the reader rejects wrong-state/scale and drawn-art clicks select the intended giant.",
+        "rules_out": "Crop sheet, texture existence, code draw size or a still accepting actual art/state/motion."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "owner_review",
+      "exercises": [
+        "kit_art"
+      ],
+      "variants": [],
+      "owner_attended": true,
+      "source": [
+        "OWNER:1792336679095161980",
+        "src/RimMandrake/GelatinousSlime/check_kit_art.py"
+      ],
+      "requirement": [
+        "living_ecology",
+        "titan_lifecycle",
+        "chosen_gene_journey",
+        "useful_body"
+      ]
+    },
+    {
+      "id": "package_and_floor",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_package_and_floor",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert canonical supported list, source member versus mandrake.rm.biomes shipping composition, actual old save and current inherited floor hash."
+      ],
+      "action": "Run offline package/dependency/naming/setting-scope and existing biome rarity/roads metadata checks. Inspect an existing supported authored world/map for biome labels/roads. Perform later authorised existing-save checkout, actual effects/log checks and bounded numeric floor measurements. Document removal consequences.",
+      "expect": "Shipping ids/list and authored labels/roads resolve as recorded, old fields load coherently and canonical-list effects work. Every applicable floor line has an explicit check. Numeric results retain advisory status. No new generated world or DLC-degraded mode is introduced by this plan.",
+      "control": {
+        "case": "Private missing dependency/invalid def/path fixture and old-save missing-field defaults, plus changed list/fingerprint control.",
+        "expect": "Static faults and stale identity fail their checks, while absent old fields default as specified. Read-only biome metadata gives no generation performance/runtime certificate.",
+        "rules_out": "Source-member package id, a clean log, a fabricated world or a setter success accepted as full checkout."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [
+        "biome_worldgen"
+      ],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "settings_and_scope"
+      ]
+    },
+    {
+      "id": "walk_reload_repeat",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_walk_reload_repeat",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert recovery baseline, mid-journey identified primed/loaded seeker, active patient mode and configured representative 40-colonist routine with counted inputs and workers."
+      ],
+      "action": "Save mid-way, reload, finish the gene/rescue route, repeat with fresh items and use a second order of production and expedition actions. Resume the mixed workday with competing friend treatment orders, native activity and named alerts.",
+      "expect": "Chosen state/urgency/accounting survives reload and fresh repeats. Both action orders work. Normal bills and competing rescue orders remain observable, with successes/failures attributable to actual time/capacity and captured advisory frame/tick/memory trends.",
+      "control": {
+        "case": "Fresh-only path, consumed-dose second-use attempt and missing/delayed shared friend.",
+        "expect": "The repeated fresh dose works, consumed input cannot repeat and genuine contention can lose a patient without hiding order/clock evidence.",
+        "rules_out": "A fresh two-pawn demonstration standing in for persisted, repeated and scaled play."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "requirement": [
+        "repeat_walk"
+      ]
+    },
+    {
+      "id": "flagship_sequence",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_flagship_sequence",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert one continuous ordinary route from blank seeker/archive choice to a field-extracted dose, two friends, matched untreated recipient and baseline social pair."
+      ],
+      "action": "Follow choice, scan/travel/extraction, ordered injection, visible coma/clock, completed friend treatment and retained gene/rider/social price as a continuous player sequence. Finish the matched untreated dissolution arm.",
+      "expect": "All individual feature observations agree on item/pawn identities and timing. A player can see what was chosen, what is at risk, how the friend saves the recipient and which consequences persist.",
+      "control": {
+        "case": "Identical sequence with the friend unavailable and one helper-loaded-dose diagnostic arm labelled separately.",
+        "expect": "Unavailable rescue exposes warning/terminal consequences. The helper arm supplies component evidence only and never accepts the journey.",
+        "rules_out": "Individually green helper probes stitched together while the real end-to-end order path fails."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "features": [
+        "chosen_gene_journey",
+        "friend_rescue",
+        "lasting_gene_price",
+        "ordinary_absorption"
+      ]
+    },
+    {
+      "id": "titan_to_vault",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_titan_to_vault",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert tracked giant/corpse/material provenance, actual V5 plug and separate counted pieces for normal throw and vault use."
+      ],
+      "action": "Follow feeding/giant encounter into actual butchering, one normal throw with ally danger and a separately accounted piece used at the actual vault. Verify no material is credited twice.",
+      "expect": "The giant supplies the real finite weapon material, ordinary launch and vault use each spend their own piece and the contamination/path outcomes stay coherent across the two package owners.",
+      "control": {
+        "case": "Re-use the already released piece at the second destination and repeat with breach disabled.",
+        "expect": "Spent material supplies no new effect and the disabled consumer retains its authored behaviour.",
+        "rules_out": "A spawned infinite chunk hides the missing giant-to-weapon-to-campaign connection."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "features": [
+        "titan_lifecycle",
+        "harvested_chunk",
+        "actual_vault_breach"
+      ]
+    },
+    {
+      "id": "paid_archive_disable",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/GelatinousSlime/validation.py::scene_paid_archive_disable",
+      "entry_point_item": "GELATINOUSSLIME_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "implementation_status": "planned entry point and complete scene contract",
+      "start": [
+        "Assert actual source/deployed assembly/list fingerprints, all DLC, declared optional dependencies, shipped settings or the explicitly named variant, lossless log tap and the exact scene actors/items.",
+        "Assert an actually paid growing vat with persisted entry/progress, second competing vat and custom settings."
+      ],
+      "action": "Disable archive mid-growth, advance and reload, inspect progress/resource/entry state, then re-enable and complete normally with second-vat contention.",
+      "expect": "Off safely pauses paid work and stored entries. Reload preserves the pause, on resumes once with no extra fee or duplicate person, and exact entry settings recover afterwards.",
+      "control": {
+        "case": "Powered enabled twin and a living/unpaid ineligible entry.",
+        "expect": "The enabled twin advances, paused work stays still and ineligible/duplicate starts remain refused.",
+        "rules_out": "An unused off toggle passes while already-paid work continues or disappears."
+      },
+      "restore": "Before mutation, persist scene-begin with a named recovery save and fingerprint plus exact map/global/settings snapshot. Include terrain/filth/plants, pawn ids and holders, health/genes/relations/memories, items, weather and its lock, camera/selection/time, research, archive entries/vats, campaign state and fixture ids as applicable. In finally restore the saved entry state and exact settings, remove all fixture products including corpses and held/world pawns, independently compare the manifest and only then scene-end. An interrupted or unequal recovery stays open. An owner-review scene uses scene-hold with the named save and an explicit review deadline, then recovers on release.",
+      "hold": "immediate",
+      "exercises": [],
+      "variants": [],
+      "owner_attended": false,
+      "source": [
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "features": [
+        "last_touch_return",
+        "settings_and_scope"
+      ]
+    }
+  ],
+  "showcases": [
+    {
+      "id": "chosen_gene_friend_rescue",
+      "scenes": [
+        "archive_field_choice",
+        "ordered_friend_rescue",
+        "gene_effect_and_social",
+        "terminal_belongings",
+        "flagship_sequence"
+      ],
+      "exercises": [
+        "archive_selection",
+        "seeker_scanner",
+        "seeker_extraction",
+        "gene_injection",
+        "slime_marked",
+        "slimification_ladder",
+        "warnings",
+        "antidote",
+        "dissolution"
+      ],
+      "source": [
+        "CONDUCTOR:1794825281765620778"
+      ],
+      "decision": "stage2_flagship_chosen_gene_friend_rescue"
+    },
+    {
+      "id": "residents_and_outsiders",
+      "scenes": [
+        "native_body",
+        "oomb_wuum_behaviour",
+        "gappo_channels",
+        "dwommo_attended",
+        "fubbum_hunt",
+        "visitor_arrival"
+      ],
+      "exercises": [
+        "slime_terrain",
+        "slime_flora",
+        "gelatid",
+        "oomb_family",
+        "wuum",
+        "gappo_family",
+        "gappo_channels",
+        "dwommo_flight",
+        "fubbum_hunting",
+        "visitor_ecology"
+      ],
+      "choice": "Ten new ecology capabilities. Native life and outsider arrivals supply a distinct face from the deliberate gene bargain. The attended movement scene retains its review hold."
+    },
+    {
+      "id": "giant_harvest_and_vault",
+      "scenes": [
+        "titan_engulf_rescue",
+        "titan_growth_shedding",
+        "chunk_throw",
+        "chunk_ground_and_age",
+        "v5_seal_and_generic_breach",
+        "titan_to_vault"
+      ],
+      "exercises": [
+        "titan_engulf",
+        "titan_growth",
+        "titan_shedding",
+        "chunk_weapon",
+        "chunk_ground",
+        "chunk_shelf",
+        "slime_breach_api",
+        "campaign_vault_seal"
+      ],
+      "choice": "Eight new capabilities. Predator growth, harvested weapon and the campaign doorway provide a different player sequence. The separate normal-launch and actual-vault scenes both remain."
+    },
+    {
+      "id": "useful_body_workday",
+      "scenes": [
+        "workday_products",
+        "raw_slime_fee",
+        "solvent_food",
+        "farms_and_ruins"
+      ],
+      "exercises": [
+        "raw_slime_bargain",
+        "compressor_economy",
+        "pit_meals",
+        "pit_solvent",
+        "farm_conversion",
+        "farm_ruins"
+      ],
+      "choice": "Six new capabilities through ordinary work, food, medicine and land. It demonstrates using outputs and the coupled raw-slime fee in a prepared colony."
+    }
+  ],
+  "coverage_rest": [
+    {
+      "capability": "biome_worldgen",
+      "by": [
+        "package_and_floor"
+      ],
+      "why": "Read-only authored rarity/roads/package checks and an existing world are cheaper than another face scene. The inherited generation ruling remains applicable."
+    },
+    {
+      "capability": "exposure",
+      "by": [
+        "contact_ladder"
+      ],
+      "why": "A controlled actual-contact comparison isolates application more cheaply than repeating the flagship."
+    },
+    {
+      "capability": "cure_geography",
+      "by": [
+        "geographic_exit"
+      ],
+      "why": "The finite map/caravan mode/location matrix is a focused geographic check."
+    },
+    {
+      "capability": "slime_rain",
+      "by": [
+        "rain_and_water_services"
+      ],
+      "why": "A bounded weather/service comparison isolates rain from generic liquid and collection mechanisms."
+    },
+    {
+      "capability": "archive_snapshot",
+      "by": [
+        "archive_filing_and_return"
+      ],
+      "why": "Last-touch fidelity is an independent promise with two capabilities. Its normal paid procedure and field matrix remain mandatory acceptance."
+    },
+    {
+      "capability": "archive_growing",
+      "by": [
+        "archive_lifecycle_and_family"
+      ],
+      "why": "The distinct two-capability return sequence needs its own normal paid completion, concurrency and family scenes. It is below the later-showcase minimum."
+    },
+    {
+      "capability": "feature_settings",
+      "by": [
+        "settings_consumers"
+      ],
+      "why": "A complete consumer and active-state matrix covers the cross-cutting controls at lower staging cost."
+    },
+    {
+      "capability": "kit_art",
+      "by": [
+        "kit_and_titan_review"
+      ],
+      "why": "A focused whole-kit/state check and the specifically owed owner stage-one/five review cover art without claiming the other showcases accepted it."
+    },
+    {
+      "capability": "acoustic_payload",
+      "by": [
+        "legacy_and_optional_services"
+      ],
+      "why": "A conditional scanner-consumer check covers one opt-in payload."
+    },
+    {
+      "capability": "legacy_ground_flora",
+      "by": [
+        "legacy_and_optional_services"
+      ],
+      "why": "A focused compatibility-map harvest/contact check covers shipped legacy defs without creating another ecology showcase."
+    }
+  ],
+  "additional_authored_obligations": [
+    {
+      "capability": "rain_water_services",
+      "by": [
+        "rain_and_water_services"
+      ],
+      "implementation": "unknown",
+      "why": "The historical service promise remains explicit despite being outside the built-or-approved coverage units."
+    }
+  ],
+  "candidate_disposition": [
+    {
+      "candidate": "chosen_gene_friend_rescue",
+      "status": "selected",
+      "new_capabilities": 9
+    },
+    {
+      "candidate": "residents_and_outsiders",
+      "status": "selected",
+      "new_capabilities": 10
+    },
+    {
+      "candidate": "giant_harvest_and_vault",
+      "status": "selected",
+      "new_capabilities": 8
+    },
+    {
+      "candidate": "useful_body_workday",
+      "status": "selected",
+      "new_capabilities": 6
+    },
+    {
+      "candidate": "archive_return",
+      "status": "ordinary independent scenes",
+      "new_capabilities": 2
+    },
+    {
+      "candidate": "ordinary_contact_and_exit",
+      "status": "ordinary independent scenes",
+      "new_capabilities": 2
+    },
+    {
+      "candidate": "rain_services",
+      "status": "ordinary focused comparison",
+      "new_capabilities": 1
+    },
+    {
+      "candidate": "settings_kit_legacy_scanner_package",
+      "status": "focused floor and integration checks",
+      "why": "Their remaining capabilities have unrelated observer/setup needs. Grouping them creates no coherent additional player showcase."
+    }
+  ]
+}

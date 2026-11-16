@@ -1,0 +1,178 @@
+{
+  "schema_version": 1,
+  "lines": {
+    "tick_cost": {
+      "status": "applicable",
+      "by": [
+        "walk_reload_repeat"
+      ],
+      "evidence": "Measure attributed idle/busy component timing in bounded routines and rerun a maximum sample. Extended-time behaviour stays inferred.",
+      "evidence_mode": "compressed",
+      "establishes": "Measure attributed idle/busy component timing in bounded routines and rerun a maximum sample. Extended-time behaviour stays inferred."
+    },
+    "long_stall": {
+      "status": "applicable",
+      "by": [
+        "walk_reload_repeat"
+      ],
+      "evidence": "Measure frame/log windows around ordinary jobs and transitions and attribute stalls. Unobserved longer sessions stay inferred.",
+      "evidence_mode": "compressed",
+      "establishes": "Measure frame/log windows around ordinary jobs and transitions and attribute stalls. Unobserved longer sessions stay inferred."
+    },
+    "latency": {
+      "status": "applicable",
+      "by": [
+        "ordered_friend_rescue"
+      ],
+      "evidence": "Measure order click to visible uptake on the test machine and record waiting state. Other machines stay inferred.",
+      "evidence_mode": "measured",
+      "establishes": "Measure order click to visible uptake on the test machine and record waiting state. Other machines stay inferred."
+    },
+    "memory": {
+      "status": "applicable",
+      "by": [
+        "walk_reload_repeat"
+      ],
+      "evidence": "Measure retained objects/textures across bounded repeated contacts, extractions, cleanup and reload cycles. A 30-day trend remains inferred.",
+      "evidence_mode": "compressed",
+      "establishes": "Measure retained objects/textures across bounded repeated contacts, extractions, cleanup and reload cycles. A 30-day trend remains inferred."
+    },
+    "load_time": {
+      "status": "applicable",
+      "by": [
+        "package_and_floor"
+      ],
+      "evidence": "Measure added time for three comparable cold existing-save loads in the canonical supported context. Other lists stay inferred.",
+      "evidence_mode": "measured",
+      "establishes": "Measure added time for three comparable cold existing-save loads in the canonical supported context. Other lists stay inferred."
+    },
+    "save_size": {
+      "status": "applicable",
+      "by": [
+        "walk_reload_repeat"
+      ],
+      "evidence": "Measure serialised payload size before and after bounded growing/expiry/archive/repeat cycles. Extended-time growth remains inferred.",
+      "evidence_mode": "compressed",
+      "establishes": "Measure serialised payload size before and after bounded growing/expiry/archive/repeat cycles. Extended-time growth remains inferred."
+    },
+    "save_compat": {
+      "status": "applicable",
+      "by": [
+        "package_and_floor"
+      ],
+      "evidence": "Use a real prior save and saved intermediate states. Document removal losses. Executed removal remains an extended check when requested."
+    },
+    "load_order": {
+      "status": "applicable",
+      "by": [
+        "package_and_floor"
+      ],
+      "evidence": "Check source/deployed composition and actual effects on the canonical supported list. External compatibility is extended when requested."
+    },
+    "log": {
+      "status": "applicable",
+      "by": [
+        "observer_recovery"
+      ],
+      "evidence": "Lossless log tap across each scene with missing/capped-log controls and attributable warnings/errors."
+    },
+    "mod_settings": {
+      "status": "applicable",
+      "by": [
+        "settings_consumers"
+      ],
+      "evidence": "Every major setting maps to a real consumer, before/mid-state variants, reset, labels and independently verified recovery."
+    },
+    "multiplayer": {
+      "status": "applicable",
+      "by": [
+        "package_and_floor"
+      ],
+      "evidence": "Apply the inherited no-support standing ruling. No multiplayer work or promise is introduced."
+    },
+    "art": {
+      "status": "applicable",
+      "by": [
+        "kit_and_titan_review"
+      ],
+      "evidence": "Full shipped manifest and authored exceptions, dimensions/facings/human scale, actual in-game captures and owed owner review."
+    },
+    "reads_as": {
+      "status": "applicable",
+      "by": [
+        "kit_and_titan_review"
+      ],
+      "evidence": "Blind reader distinguishes visible states at ordinary play zoom across the finite manifested facings/states."
+    },
+    "clickable": {
+      "status": "applicable",
+      "by": [
+        "kit_and_titan_review"
+      ],
+      "evidence": "Click the drawn oversized giant outside its base cell in stages one/five and relevant facings."
+    },
+    "order_taken": {
+      "status": "applicable",
+      "by": [
+        "ordered_friend_rescue"
+      ],
+      "evidence": "Capture immediate order uptake and actual waiting/job state for extraction, treatment, bills and vat start across their own scenes."
+    },
+    "motion": {
+      "status": "applicable",
+      "by": [
+        "kit_and_titan_review"
+      ],
+      "evidence": "Sequence captures across actual state/motion changes. Owner attends Dwommo live movement."
+    },
+    "text": {
+      "status": "applicable",
+      "by": [
+        "package_and_floor"
+      ],
+      "evidence": "Read normal archive, seeker, warnings, settings, ledger and return UI in English for plain spoiler-free labels/tooltips."
+    },
+    "dlc": {
+      "status": "applicable",
+      "by": [
+        "package_and_floor"
+      ],
+      "evidence": "All DLC assumed under the inherited floor. Inspect existing guards as data with no new DLC compatibility/degraded-mode work."
+    },
+    "worldgen": {
+      "status": "applicable",
+      "by": [
+        "package_and_floor"
+      ],
+      "evidence": "Apply the inherited no-generation ruling. Inspect existing rarity, road and authored-biome defs read-only and use an already-existing supported world. No generation run or generation guarantee is added."
+    },
+    "biome_scope": {
+      "status": "applicable",
+      "by": [
+        "legacy_and_optional_services"
+      ],
+      "evidence": "Support follows authored biome/tag/framework contracts. Zero generated tiles is allowed. Existing shipped legacy defs retain scoped checks."
+    },
+    "flight": {
+      "status": "applicable",
+      "by": [
+        "dwommo_attended"
+      ],
+      "evidence": "Read fields/frame data offline. Schedule actual Dwommo movement only with the owner attending under the existing ruling."
+    },
+    "naming": {
+      "status": "applicable",
+      "by": [
+        "package_and_floor"
+      ],
+      "evidence": "Check mandrake.rm.biomes composed identity, member metadata and RM_/RUT_ defs against project naming rules."
+    },
+    "test_isolation": {
+      "status": "applicable",
+      "by": [
+        "observer_recovery"
+      ],
+      "evidence": "Use minimal composed dependency closure then canonical supported list and campaign contexts. Verify exact durable recovery and independent teardown readback."
+    }
+  }
+}
