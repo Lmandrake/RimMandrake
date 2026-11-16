@@ -149,10 +149,17 @@
     "ref": "run rm-role-designer-1794819505",
     "stage": 2,
     "tokens": 250743
+   },
+   {
+    "at": "2026-11-16T09:08:25Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794819648",
+    "stage": 3,
+    "tokens": 816489
    }
   ],
   "reserve": 60000,
-  "spent": 7720372
+  "spent": 8536861
  },
  "coverage_rounds": [
   {
@@ -453,6 +460,24 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1794819505: stage 2 done"
+  },
+  {
+   "at": "2026-11-16T09:01:01Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "7720372 of 4000000 spent; run rm-role-designer-1794819648 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T09:01:01Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794819648, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-16T09:08:26Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794819648: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -749,12 +774,36 @@
    "run": "rm-role-designer-1794819505",
    "stage": 2,
    "summary": "The root-validation decision that sent the concept back is settled: the walk design/validation_walks/RimMandrake/Contagion.md is VALIDATED (db22459dac, delegated new bars under delegation_policy §2.1, grown-limb bar parked for 0.2.0 per OWNER:1794772416196929336; acceptance test PASS 3/3). No ask is sent; every contradiction carries its resolution. The gate's 'root is not VALIDATED' count is gone. What it still refuses is stage-3 work: the tree cites the old root hash, three leaves (genome_brings_tissue, limb_still_grows, walk_red_lid) cite the parked bar contagion_grown_limb_visible, and there is no coverage signature. Stage 3 re-stamps root_hash, takes limb_still_grows out of the 0.1.0 tree, fixes coverage gaps g1-g26 and g28-g31 from rm-coverage-judge-1794788108 in coverage_fixes.json, and sends g27 to the criteria fixer."
+  },
+  {
+   "at": "2026-11-16T09:08:26Z",
+   "inputs": {
+    "exam": "d7ab9110c711550d64ed89d60a09dbccba1545cf92100f6429e8288e8d95ea07",
+    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
+    "scenes": "43681c42512f4fcae010ea7d65b7c9976f8847287654c1c01efda1dd334cc81e",
+    "sheet": "44508a3b521bba651237b68dd458d8db18330177646761dbfa22d01d7937ae40",
+    "tree": "b95090b8c584a87f142359f62c4cf37a789a8b5514aca998a495bf91578961fb"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "run": "rm-role-designer-1794819648",
+   "stage": 3,
+   "summary": "Tree rewritten against the VALIDATED walk (root hash stamped; contagion_grown_limb_visible gone from every leaf). limb_still_grows left the 0.1.0 tree per OWNER:1794772416196929336; the built limbs are covered offline by limbs_stay_built. Reworked against rm-coverage-judge-1794788108: coverage_fixes.json claims 30 of 31 gaps (new offline leaves fauna_specials_declared, biome_def_declared, flora_yields_declared, limbs_stay_built; new leaf zhooliza_lives_here; new scenes sc_sunbeam_fires, sc_wombpod_hatch, sc_helix_trade, sc_coalescence_forms, sc_mulched_soil, sc_zhooliza; arms on 17 scenes; showcases re-cut). shelter_in_lead now tests the tells lead used by a player order; no colonist shelter job is assumed. Filed RIMMANDRAKE_DRAW_CONTAGION_FLIPBOOKS_TWO_FLYERS_HALF_DRAWN (acceptance test FAIL 0/4 on base, instrument probe 4/4 on Skinflap/Sparkleech). Unclaimed: g19 (legacy_placement_worker absence check: the worker is built and scoped out; removing it or writing an absence check is a removal decision, left open). Lint PASS, showcase set accepted; gate refuses only on the missing coverage signature, which stage 5 owns."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
