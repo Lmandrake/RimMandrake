@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Acceptance test for RIMMANDRAKE_BACKFILL_SLACK_AND_FLOWWORKS_LEDGERS_IN_SHADOW (plan
+"""Acceptance test for RIMMANDRAKE_BACKFILL_SLACK_LEDGER_SHADOW_BESIDE_FLOWWORKS and
+RIMMANDRAKE_BACKFILL_FLOWWORKS_LEDGER_SHADOW_BESIDE_SLACK, one mod each, run in parallel (plan
 design/plans/2026-11-15-holder-pipeline-fusion-build.md step 3). Written by the filing seat; the builder does not edit
 it (a wrong clause goes to the Conductor).
 
-    python3 src/RimMandrake/rimflow/acceptance/modledger_backfill_accept.py GimmeSomeSlack FlowWorks
+    python3 src/RimMandrake/rimflow/acceptance/modledger_backfill_accept.py GimmeSomeSlack      # PASS 7/7 when built
+    python3 src/RimMandrake/rimflow/acceptance/modledger_backfill_accept.py FlowWorks
 
 THE CONTRACT, per mod named: its mod ledger exists (design/concepts/<Mod>/ledger/) with events; every BACKFILL event
 cites a file that exists (evidence[0], a path optionally followed by #locator or :line); a version.open event names its

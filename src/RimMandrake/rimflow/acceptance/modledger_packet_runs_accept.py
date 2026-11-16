@@ -3,13 +3,15 @@
 design/plans/2026-11-15-holder-pipeline-fusion-build.md step 5; spec §3.1 "the launcher records each run", §3.3, §3.4).
 Written by the filing seat; the builder does not edit it (a wrong clause goes to the Conductor).
 
-    python3 src/RimMandrake/rimflow/acceptance/modledger_packet_runs_accept.py      # "PASS 9/9" when built
+    python3 src/RimMandrake/rimflow/acceptance/modledger_packet_runs_accept.py      # "PASS 10/10" when built
 
 THE CONTRACT (offline, on a temp root; no claude is started):
   modledger.json `pilot_mods` lists ExplosiveKnockback, GimmeSomeSlack and FlowWorks (his card 2026-11-15: all three).
   modledger.launch(root, mod, lease, role) -> {"token", "run", "brief"}: grants `lease` (its token above every earlier
     one), appends a DISPATCH `run.start` whose body names the lease, the role and packet_tokens, and returns a brief
-    that begins with the mod's packet text (the run starts from the ledger, not from ticket prose).
+    that begins with the mod's packet text (the run starts from the ledger, not from ticket prose). The run.start body
+    names the `stage` the ledger is at now (his plan change 2026-11-16T05:57:46Z: "It should roughly start where it
+    last was in the pipeline"; never a restart from stage 1).
   modledger.end_run(root, mod, run, status) -> [flags]: appends a DISPATCH `run.end` with the status and the flags; the
     flags hold "NO_CHECKPOINT" when that run's holder wrote no session.checkpoint with non-empty done, next and
     ruled_out after its run.start, and are empty when it did.
@@ -47,6 +49,7 @@ root = tempfile.mkdtemp(prefix="ml_runs_acc_")
 MOD = "AccMod"
 os.makedirs(os.path.join(root, "design", "concepts", MOD))
 M.append(root, MOD, "DISPATCH", "version.open", "version", body={"version": "0.1.0"}, version="0.1.0")
+M.append(root, MOD, "DISPATCH", "stage.enter", "stage", body={"stage": "blind_challenge"})
 M.grant(root, MOD, lease="EARLY")
 out, err = attempt(lambda: M.launch(root, MOD, "L1", "builder"))
 check("launch returns token, run and brief", isinstance(out, dict) and {"token", "run", "brief"} <= set(out), err or out)
@@ -56,6 +59,8 @@ evs = M.read(root, MOD)
 rs = [e for e in evs if e.get("kind") == "run.start" and e.get("writer") == "DISPATCH"]
 check("a DISPATCH run.start names the lease, role and packet size", rs and rs[-1]["body"].get("lease") == "L1" and
       rs[-1]["body"].get("role") == "builder" and isinstance(rs[-1]["body"].get("packet_tokens"), int), rs[-1:])
+check("the run starts at the stage the ledger is at, not stage 1", rs and rs[-1]["body"].get("stage") == "blind_challenge",
+      rs[-1:])
 check("the brief begins with the packet", str(out.get("brief", "")).startswith("# %s — mod ledger packet" % MOD),
       str(out.get("brief", ""))[:80])
 flags, err = attempt(lambda: M.end_run(root, MOD, out.get("run"), "ok"))

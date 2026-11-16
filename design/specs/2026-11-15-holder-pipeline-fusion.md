@@ -19,6 +19,8 @@ By question card, ~9:45 PM PST (the whole card is stamped on `RIMMANDRAKE_DESIGN
 
 His additions the same evening (~9:40 PM PST): "I think the key to closing many tickets for the same mod might be keeping that context and working them all together. I think a mod holder should be handing off to its next version with context of what has happened before. Even into judging phases. I think this might be very important. Almost like a conductor custom following along. I think we're on to something."
 
+His plan change the same evening (~9:57 PM PST, ledger OWNER 2026-11-16T05:57:46Z on `RIMMANDRAKE_BUILD_MOD_LEDGER_HOLDERS_THREE_PILOTS_AT_ONCE`): "I would like this tried at the same time on three mods concurrently so that we can observe different outcomes rapidly. It should roughly start where it last was in the pipeline as that is the same path it treads yes? Then start to build context and learning as it goes." So the three backfills run in parallel, and each mod's holder starts at the pipeline stage the mod is at now, with no restart from stage 1.
+
 What they change below: Option B, built as A first; three pilot mods side by side; a holder ceiling of 400k (one setting, `holder_context_ceiling_tokens` in `src/RimMandrake/rimflow/modledger.json`); every `finding.open` carries the finder's precise proposed fix and the holder applies it; the holder works all its mod's open tickets together; the holder carries across Design Versions with its context (§3.4 Lifetime); the holder stays alive and following through the judging phases while the judges stay blind.
 
 ## Five-line summary
@@ -80,7 +82,7 @@ All three share the same core, which is his two fixed points made concrete:
 
 **Combinations.** A is the first step of B (B = A + resume). C can run *on top of* A or B for the one mod he is sitting with (a window resumes the holder session instead of a timer), so "B now, C-style sitting when he is there" composes cleanly.
 
-**His pick: B, built as A first.** Build the ledger and packet (A) for the three pilot mods side by side (Explosive Knockback, the smallest, backfilled first; then Gimme Some Slack and FlowWorks), run their views beside the old files for a few days, cut over (old files archived read-only, their writers redirected), then switch each mod's holder stages to resume one session. A fix to the system that one pilot needs lands for all three. What would change this: if the pilot shows resumed sessions repeating refuted causes or costing more than about 1.5× an A run per stage, stay at A; if he would rather sit with one mod than have it run overnight, take C on top.
+**His pick: B, built as A first.** Build the ledger and packet (A) for the three pilot mods side by side (backfilled in parallel; each holder starts at the stage its mod is at now, his plan change), run their views beside the old files for a few days, cut over (old files archived read-only, their writers redirected), then switch each mod's holder stages to resume one session. A fix to the system that one pilot needs lands for all three. What would change this: if the pilot shows resumed sessions repeating refuted causes or costing more than about 1.5× an A run per stage, stay at A; if he would rather sit with one mod than have it run overnight, take C on top.
 
 His answers to the three decisions this section asked are at the top (Decisions, owner, 2026-11-15).
 
@@ -228,10 +230,10 @@ Every question is a `question.ask` event with the exact question, the mod, what 
 ### 3.8 Migration, smallest first step
 
 1. Build `modledger` (append, lint, show, packet, views) on rimflow's shard code, with its offline selftest (watch it refuse a hand-edited view, a non-append shard and a stale fencing token).
-2. Backfill the three pilot mods, Explosive Knockback first (the smallest), then Gimme Some Slack and FlowWorks: one baseline event set per mod from today's stores (stage, bars, open findings, his answers, refuted causes, open questions), each event citing the old file it came from.
+2. Backfill the three pilot mods in parallel (his plan change; Explosive Knockback was done by the build item itself): one baseline event set per mod from today's stores (stage, bars, open findings, his answers, refuted causes, open questions), each event citing the old file it came from.
 3. **Shadow first:** for a few days each mod's views are generated beside the old files and compared every tick; a judge that did not write the backfill reads the packet against the old files. Cut over only when they agree.
 4. Cut over: the old files are archived read-only with their provenance (not deleted), and every writer to them is redirected or refused, on the same day.
-5. The next stage run starts from the packet (A). Then (B) the holder session is resumed.
+5. The next stage run starts from the packet (A), at the stage the mod is at now, never a restart from stage 1. Then (B) the holder session is resumed.
 6. The three pilots advance side by side throughout (his "Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit."); a fix to the system found on one lands for all three.
 
 The build estimates in the options are for one mod; redirecting every legacy writer across all mods is the larger, unestimated part (GPT objection 17, accepted).

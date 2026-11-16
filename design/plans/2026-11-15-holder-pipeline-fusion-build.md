@@ -31,12 +31,13 @@ the base commit (no `modledger.py` there).
 
 `modledger.py backfill --mod <Mod>` reads today's stores (stage record, journal "stands", bars, coverage verdict and
 fixes, exam, results, open items naming the mod, his answers) and appends one `BACKFILL` event per fact, each citing
-its old file. Views are generated beside the old files; nothing is redirected. Explosive Knockback first (the smallest;
-done by the first item at 872a7657e2: 383 events, packet 14,980 of 15,000 tokens, `compare` 3 of 8 agree),
-then Gimme Some Slack and FlowWorks:
-`RIMMANDRAKE_BACKFILL_SLACK_AND_FLOWWORKS_LEDGERS_IN_SHADOW`.
+its old file. Views are generated beside the old files; nothing is redirected. The three run in parallel (his plan
+change, ledger OWNER 2026-11-16T05:57:46Z: "I would like this tried at the same time on three mods concurrently").
+Explosive Knockback was done by the first item (872a7657e2: 383 events; packet 14,990 of 15,000 tokens at df07a4a7de;
+`compare` 3 of 8 agree); Gimme Some Slack and FlowWorks are one item each, run side by side:
+`RIMMANDRAKE_BACKFILL_SLACK_LEDGER_SHADOW_BESIDE_FLOWWORKS` and `RIMMANDRAKE_BACKFILL_FLOWWORKS_LEDGER_SHADOW_BESIDE_SLACK`.
 
-Acceptance test: `python3 src/RimMandrake/rimflow/acceptance/modledger_backfill_accept.py GimmeSomeSlack FlowWorks`
+Acceptance test, per item: `python3 src/RimMandrake/rimflow/acceptance/modledger_backfill_accept.py <Mod>` (7/7)
 (each mod: a ledger with BACKFILL events that all cite an existing file, lint clean, views current, packet under budget
 and naming what it left out).
 
@@ -52,8 +53,9 @@ under `src/RimMandrake/` opens one of them for writing).
 
 ## Step 5 — stage runs start from the packet (Option A)
 
-The dispatcher grants the holder lease (`modledger grant`), launches the stage run with the packet as its opening
-context, records `run.start`/`run.end` itself, and flags a run that ends without a `session.checkpoint` of the fixed
+The dispatcher grants the holder lease (`modledger grant`), launches the stage run at the stage the mod is at now
+(his plan change: "It should roughly start where it last was in the pipeline"; never a restart from stage 1) with the
+packet as its opening context, records `run.start`/`run.end` itself, and flags a run that ends without a `session.checkpoint` of the fixed
 shape: `RIMMANDRAKE_START_PILOT_STAGE_RUNS_FROM_LEDGER_PACKET`.
 
 Acceptance test: `python3 src/RimMandrake/rimflow/acceptance/modledger_packet_runs_accept.py` (a dry dispatcher tick
