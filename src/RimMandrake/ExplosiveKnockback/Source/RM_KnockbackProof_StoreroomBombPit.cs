@@ -465,7 +465,12 @@ namespace RimMandrake.ExplosiveKnockback
             bool south = pS.Spawned && !pS.Dead && pS.Position.x == s0.x && s0.z - pS.Position.z >= 2 && s0.z - pS.Position.z <= 4
                 && sc.numbers.ContainsKey("pS_air");
             // ── row goods: every stack with a request moved; arc, spin, a rebound; zero despawn-spawn pairs ──
-            var unmoved = goods.Where(k => ForThing(sc, "request", sc.things[k]).Count > 0 && ForThing(sc, "item_move", sc.things[k]).Count == 0).ToList();
+            // visit 3 (2026-11-16): a stack whose kernel throw rounds to 0 cells logs skip too_weak (the rim rule, bar
+            // inv_too_weak_skip) and is not "unmoved"; the shelves' corner stacks at 2.83 cells are such stacks
+            bool TooWeak(string k) => ForThing(sc, "skip", sc.things[k]).Any(r => r.TryGetValue("reason", out object why) && (why as string) == "too_weak");
+            var unmoved = goods.Where(k => ForThing(sc, "request", sc.things[k]).Count > 0 && ForThing(sc, "item_move", sc.things[k]).Count == 0
+                && !(ForThing(sc, "skip", sc.things[k]).Count > 0 && TooWeak(k))).ToList();
+            var tooWeak = goods.Where(k => ForThing(sc, "item_move", sc.things[k]).Count == 0 && TooWeak(k)).ToList();
             var flown = goods.Where(k => ForThing(sc, "item_move", sc.things[k]).Any(r => r.TryGetValue("flying", out object fl) && fl is bool b && b)).ToList();
             var flat = flown.Where(k => !(sc.numbers.TryGetValue(k + "_maxH", out float h) && h > 0f)).ToList();
             bool spin = flown.Any(k => sc.numbers.ContainsKey(k + "_spin"));
@@ -496,7 +501,7 @@ namespace RimMandrake.ExplosiveKnockback
             return Result(sc, east && south && goodsOk && contents && boxThrown && heavy && pit && through,
                 "east=" + east + " [" + (eb.Count > 0 ? Rec(eb[0]) : "no launch") + " at " + pE.Position.x + "," + pE.Position.z + " stunned=" + sc.numbers.ContainsKey("pE_stunned") + "]"
                 + " south=" + south + " [" + Moved(sc, "pS", out Thing _, out int _) + "]"
-                + " goods=" + goodsOk + " [unmoved=" + string.Join(",", unmoved) + " flown=" + flown.Count + " flat=" + string.Join(",", flat)
+                + " goods=" + goodsOk + " [unmoved=" + string.Join(",", unmoved) + " tooWeak=" + string.Join(",", tooWeak) + " flown=" + flown.Count + " flat=" + string.Join(",", flat)
                 + " spin=" + spin + " rebounds=" + rebounds + " despawnSpawnPairs=" + tele + "]"
                 + " container=" + (contents && boxThrown) + " [contents=" + contents + " thrown=" + boxThrown + (cl.Count > 0 ? " " + Rec(cl[0]) : " no container line") + "]"
                 + " heavy=" + heavy + " [" + (hh.Count > 0 ? Rec(hh[0]) : "no heavy_hit") + "]"

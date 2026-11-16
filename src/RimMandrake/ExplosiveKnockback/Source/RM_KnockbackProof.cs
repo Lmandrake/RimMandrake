@@ -2477,6 +2477,31 @@ namespace RimMandrake.ExplosiveKnockback
                             }
                             prevHaul?.Invoke();
                         };
+                        // visit 3 (2026-11-16, SITE): after 53 scenes the map held their corpses and steel; the hauler carried
+                        // them into this scene's stockpiles, the stack merged into another and the corpse was moved off its
+                        // cell (2 FAIL of 2 there, 2 PASS of 2 on a fresh map). Every haulable that is not the scene's is
+                        // forbidden for the scene and allowed again after.
+                        var mine = new HashSet<Thing>(s.things.Values);
+                        var foreign = Map.listerThings.ThingsInGroup(ThingRequestGroup.HaulableEver)
+                            .Where(t => t.Spawned && !mine.Contains(t) && t.TryGetComp<CompForbiddable>() != null && !t.IsForbidden(Faction.OfPlayer))
+                            .ToList();
+                        foreach (Thing t in foreign)
+                        {
+                            t.SetForbidden(true, warnOnFail: false);
+                        }
+                        Action prevForbid = s.restore;
+                        s.restore = () =>
+                        {
+                            foreach (Thing t in foreign)
+                            {
+                                if (!t.Destroyed)
+                                {
+                                    t.SetForbidden(false, warnOnFail: false);
+                                }
+                            }
+                            prevForbid?.Invoke();
+                        };
+                        s.numbers["foreignForbidden"] = foreign.Count;
                         Map m0 = Map;
                         for (int d = 30; d <= 60000; d += 30)
                         {

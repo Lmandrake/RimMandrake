@@ -14,6 +14,9 @@ version/test_table.json); this proves what can be read without one:
      plan ends on the covered cell, and a heavy one crosses no colonist (visit 2: under ~17.5 kg MassScale caps at 2, so
      the old 1-24 log range threw every stack 3 cells, past the cover: INVALID in four live runs; K5 alone counted cells
      1..6 freely and passed)
+  W  a stack whose kernel throw rounds to 0 cells logs skip too_weak (the rim rule, bar inv_too_weak_skip) and is not
+     counted "unmoved": visit 3 (2026-11-16) read the shelves' four corner stacks at 2.83 cells, each with a request and a
+     too_weak skip, as unmoved, so the goods row could never pass on that layout
   T  test_table.json marks the entry present
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storeroom_bomb_pit.py [--src DIR]
 --src reads the mod's files from DIR (laid out like this folder) instead: the way it was watched red on the base commit.
@@ -144,6 +147,10 @@ def main():
                     hits.append(((x, z), cells, d))
     check("K5", bool(hits), "a floor cell within two cells throws exactly onto a near-row pit cell (%d ways, e.g. %s)"
           % (len(hits), hits[0] if hits else "none"))
+    um = re.search(r"var unmoved = goods\.Where\((.*?)\)\.ToList\(\);", scene, re.S)
+    check("W", bool(um) and '"skip"' in um.group(1) and ("too_weak" in um.group(1) or (
+          "TooWeak(" in um.group(1) and bool(re.search(r'bool TooWeak\(string k\).{0,200}"too_weak"', scene, re.S)))),
+          "the goods row's unmoved list leaves out stacks with a skip too_weak line (%s)" % ((um.group(1)[:120] + "...") if um else "unmoved not read"))
     check("K6", (-3, 0) not in WALLS and (-4, 0) in WALLS, "the locker at (-2,0) has a free cell (-3,0) behind it, then the wall")
 
     # P: the scene's own search with the kernel's throw length (RM_KnockbackProof_StoreroomBombPit.cs PlanGood / the cover loop)
