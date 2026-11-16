@@ -69,7 +69,6 @@ TARGETS = {
                                          R + "selftest_role_launch.py", R + "selftest_seat_restart.py", R + "selftest_testpilot_route.py",
                                          U + "selftest_alarm_repeat_worse.py", U + "selftest_conductor_log_guard.py", R + "selftest_designer_stage.py",
                                          R + "selftest_dispatcher_blocked_top_cursor.py", R + "selftest_ops_notes_off_shared_table.py", R + "selftest_raise_ladder.py"]),
-    "v3_vs_v2": (U + "v3_vs_v2.py", [U + "selftest_v3_vs_v2.py", U + "selftest_v3_vs_v2_props.py", U + "selftest_v3_vs_v2_mut.py"]),
     "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py", R + "selftest_delegated_digest_mut.py", R + "selftest_relentless_expedite.py",
                                                      R + "selftest_delegated_digest_owner_asks.py"]),
     # role_launch has no selftest of its own: the dispatcher's, account_pick's and the DST property tests drive it
@@ -113,7 +112,7 @@ FLAKY = {
 }
 #: measured selftest seconds per target on SteveDesktop, 2026-10-27 (sizes the shards; 3.0 for a target not here)
 BASELINE_S = {"close_evidence": 17.5, "dispatcher": 3.4,
-              "v3_vs_v2": 3.5, "delegated_digest": 2.2, "role_launch": 5.0}
+              "delegated_digest": 2.2, "role_launch": 5.0}
 STATUS = {"ok_killed": "killed", "bad_survived": "survived", "bad_timeout": "timeout",
           "ok_suspicious": "suspicious", "skipped": "skipped", "untested": "untested"}
 

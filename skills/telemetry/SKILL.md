@@ -25,7 +25,7 @@ Alarms are coarse (very low memory or TPS, disk filling) and every firing is log
 
 **Query history before re-measuring live.** A bridge call to read a number telemetry already holds is waste.
 - **The friction census `events.jsonl` truncates AskUserQuestion input at 300 chars,** so the '(Recommended)' option and most options are lost. Any agreement-with-recommendation measure must re-extract cards from the transcripts (extractor: `orch_record/delegation/extract_cards.py` under the agent storage root).
-- **A noise band built from week-to-week spread across a ramping period is trend, not noise** (v2 ran 267, 279, 773 done a week, so that band would call a fourfold drop SAME). For v3 vs v2 the band is a seeded bootstrap of the tag week's 7 daily windows (`v3_vs_v2_rules.json` band). The bands are still wide (done_wk 1.25 on the log scale; days run 5..398 done), so one reference week is a weak baseline.
+- **A noise band built from week-to-week spread across a ramping period is trend, not noise** (v2 ran 267, 279, 773 done a week, so that band would call a fourfold drop SAME). The bands from a single reference week are wide (done_wk 1.25 on the log scale; days run 5..398 done), so one reference week is a weak baseline.
 
 ## Shape
 

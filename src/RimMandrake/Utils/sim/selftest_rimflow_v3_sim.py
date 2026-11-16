@@ -169,7 +169,7 @@ spk, rpk = run("v2", seed=6)
 check("pull structure pulls from the backlog", sum(w.get("pulled_from_backlog", 0) or 0 for w in sp.m) > 0)
 check("park structure never pulls", sum(w.get("pulled_from_backlog", 0) or 0 for w in spk.m) == 0)
 
-# 12 counterfactual for v3_vs_v2.py (SIM_TWIN_BUILD_BOTTLE_GETS_A_PULSE): owner input scales, and the range is
+# 12 counterfactual (the retired v3 verdict program) (SIM_TWIN_BUILD_BOTTLE_GETS_A_PULSE): owner input scales, and the range is
 # UNMEASURED unless this structure's backtest on held-out v2 weeks passed
 pt = lambda v: {"v": v, "mark": "ESTIMATE"}  # noqa: E731
 ref_w = {"owner_msgs_wk": pt(400), "owner_active_h_wk": pt(80)}

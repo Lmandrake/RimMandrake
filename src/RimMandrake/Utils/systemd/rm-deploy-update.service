@@ -1,4 +1,4 @@
-# Fast-forwards the deploy checkout /mnt/d/ClaudeWork/rimmandrake/pulse-deploy to origin/main. rm-ops-watch, rm-v3-vs-v2,
+# Fast-forwards the deploy checkout /mnt/d/ClaudeWork/rimmandrake/pulse-deploy to origin/main. rm-ops-watch,
 # rm-streams-collect and the deadman run their code from it. Was rm-pulse-update (RimPulse retired by the owner 2026-11-03,
 # RIMPULSE_RETIRE_SUPERSEDED_BY_STATUS_PAGE); no --restart: there is no rm-pulse.service to restart (restart would START it).
 # Install:  cp rm-deploy-update.{service,timer} ~/.config/systemd/user/ && systemctl --user daemon-reload && systemctl --user enable --now rm-deploy-update.timer

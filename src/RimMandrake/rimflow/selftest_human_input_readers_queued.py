@@ -19,7 +19,6 @@ Audit 2026-11-06 of every transcript reader that keeps type=user records (grep o
   slot_allocator.owner_last_window / owner_window_times (sitting, overage)
                                                     yes                   FIXED here: _is_owner_text maps it
   slot_allocator.helper_state ("work resumed")      input after the end   FIXED here: a queued_command is input
-  Utils/v3_vs_v2.py owner_msgs                      yes (report)          FIXED here (not tested: a report)
   conductor_closeout, Utils/sim/friction_census     yes                   already read queued_command
   helper_checkpoint.first_prompt, token_census      the spawn brief       n/a: not his input
   raise_ladder, relentless_account, login_watch     the ending error      n/a: not his input

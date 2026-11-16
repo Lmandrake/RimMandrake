@@ -285,14 +285,14 @@ def main():
     names = list(M.TARGETS)
     check(M.last_shas(None) == {}, "last_shas: no last run -> nothing done")
     check(M.last_shas({"sha": "s1"}) == {n: "s1" for n in names}, "last_shas: the old one-sha form covers all")
-    check(M.last_shas({"targets": {"v3_vs_v2": {"sha": "s2"}}}) == {"v3_vs_v2": "s2"}, "last_shas: per-target form")
+    check(M.last_shas({"targets": {"delegated_digest": {"sha": "s2"}}}) == {"delegated_digest": "s2"}, "last_shas: per-target form")
     calls = []
 
     def changed(since):
         calls.append(since)
         return {"s1": ["dispatcher"], "s2": []}[since]
     shas = {n: "s1" for n in names}
-    shas["v3_vs_v2"] = "s2"
+    shas["delegated_digest"] = "s2"
     shas.pop("close_evidence")
     due = M.due_targets(shas, changed)
     check(due == [n for n in names if n in ("close_evidence", "dispatcher")],

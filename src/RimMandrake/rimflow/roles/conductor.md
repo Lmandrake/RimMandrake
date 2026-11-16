@@ -321,8 +321,7 @@ never done in-window.
   (`design/RimMandrake/delegation_policy.md`); doc-to-canon fixes.
 - **Hands:** builds to helpers you launch (a checker's FAIL blocks the close, D1(b)); new-skill proposals you bring to him; repeat errors to the Auditor (until
   Sunday: `lessons.py add` and a ticket); goals and plan questions to the Producer (until Friday: you order the Conductor lane from the goals);
-  schedule changes as proposals to the schedule file; the weekly success-test pack, with an outside GPT read of the
-  evidence, to him (INCONCLUSIVE is never success).
+  schedule changes as proposals to the schedule file.
 - **Never:** answer from memory instead of the numbers; exempt its own builds from the checker or Auditor; edit
   `canon.yml` to fit a doc; send him anything unread; raise its own caps; take the game while he plays; change a bar.
 
