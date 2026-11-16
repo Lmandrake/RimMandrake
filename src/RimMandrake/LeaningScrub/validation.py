@@ -89,6 +89,8 @@ DEFAULTS = {
     "venomvineIslandMaxCells": 200, "venomvineIslandRoomsEnabled": True, "venomvineStartClearance": 30.0,
     "venomvineCreepEnabled": True, "venomvineCreepDays": 10.0, "venomvineCreepDownwindShare": 0.75,
     "venomvineCreepCap": 0.22,
+    # RM_ShirrelGlide.cs (the shirrel's Gale glide; sc_settings' census found it missing here, 2026-11-16)
+    "shirrelGlideEnabled": True,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -2770,6 +2772,1069 @@ def scene_cuts(t):
                     _fail("the cuts checker passed injected manifest(s) %s: it is blind there" % missed)
     with _scene(t, "sc_cuts", "immediate"):
         _stable(t, body)
+
+
+# =========================================================================== scenes, batch 2 (Stage 3, 2026-11-16)
+# sc_native_cast, sc_pyre_beliefs, sc_pyre_ritual, sc_acoustic_payload, sc_concealment, sc_cane_fuel, sc_colony_walk,
+# floor_runtime, sc_settings, floor_persistence (design/concepts/LeaningScrub/scenes.json). Each scene is UNRUN in game
+# until Stage 6; each keeps its verdict in a pure checker the scene also shows refusing injected bad readings.
+
+
+def _count_all(t, defName):
+    """countMatched for defName over the whole current map (list_things, limit 1)."""
+    r = _ok(t.bridge_call("jawa/list_things", defName=defName, limit=1), "list_things(%s)" % defName)
+    if r.get("countMatched") is None:
+        _unmeasured(t, "list_things(%s) carries no countMatched" % defName)
+    return int(r["countMatched"])
+
+
+def _map_id(t):
+    r = _ok(t.bridge_call("jawa/map_info"), "map_info")
+    if r.get("mapId") is None:
+        _unmeasured(t, "map_info carries no mapId: the scene could not come back to its own map")
+    return r["mapId"]
+
+
+def _order_goto(t, pid, x, z):
+    _ok(t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=x, targetAZ=z), "ordered_job(Goto %s)" % pid)
+
+
+def _hidden(row):
+    return _has_hediff(row, "RM_RippleHidden")
+
+
+# --------------------------------------------------------------------------- scene: native_cast
+
+# Three world tiles with no map, set by the Stage 6 runner (LSCRUB_CAST_TILES=a,b,c); the scene sets their biome
+# (world_tile_map_generate biome=, test fixtures only) and drops each map after its census.
+CAST_TILES = tuple(int(x) for x in os.environ.get("LSCRUB_CAST_TILES", "").split(",") if x.strip().isdigit())
+CAST_CONTROL_BIOME = "AridShrubland"     # vanilla: the same-seed control map, carrying none of our rows
+CAST_MAP_SIZE = 150
+
+
+def _roster(row):
+    """(plants {def: commonality}, animals {kind: commonality}) from a deep get_defs BiomeDef row."""
+    def rows(key, name):
+        return dict((x.get(name), float(x.get("commonality") or 0)) for x in (row or {}).get(key) or []
+                    if isinstance(x, dict) and x.get(name))
+    return rows("wildPlants", "plant"), rows("wildAnimals", "animal")
+
+
+def _cast_offences(roster, density, maps, control):
+    """The native-cast checker, pure. roster (plants, animals) {def: commonality}; density the biome's animalDensity;
+    maps [{"plants": {def: n}, "animals": {kind: n}}] one per fresh Scrub map; control {"plants": {def: n}, "listed":
+    defs the control biome rosters itself}. Zero counts of rare species are recorded, never offences. -> offences."""
+    plants, animals = roster
+    out = []
+    if not plants:
+        out.append("the biome rosters no wild plant")
+    if animals and not density:
+        out.append("animalDensity is unset (0) with %d rostered animals: no animal ever spawns" % len(animals))
+    if len(maps) < 3:
+        out.append("%d fresh map(s) censused, the scene needs three" % len(maps))
+    for i, m in enumerate(maps):
+        if not sum((m.get("plants") or {}).get(d, 0) for d in plants):
+            out.append("fresh map %d grew none of the rostered plants" % (i + 1))
+    ws = sorted(plants.values())
+    common = [d for d, w in plants.items() if ws and w >= ws[len(ws) // 2] and w > 0]
+    absent = sorted(d for d in common if not any((m.get("plants") or {}).get(d) for m in maps))
+    if absent:
+        out.append("common rostered plant(s) absent from every fresh map: %s" % absent)
+    if animals and density and maps and not any(sum((m.get("animals") or {}).get(k, 0) for k in animals) for m in maps):
+        out.append("no rostered animal on any fresh map")
+    if control is None:
+        out.append("no same-seed control map was censused")
+    else:
+        leak = sorted(d for d in plants if d not in control.get("listed", ()) and (control.get("plants") or {}).get(d))
+        if leak:
+            out.append("the control biome (which rosters none of them) grew %s: the census does not see the roster" % leak)
+    return out
+
+
+def _census_fresh(t, tile, biome, home, plants, animals):
+    """Generate a fresh map on `tile` as `biome`, count every rostered plant and wild animal, drop it, come home."""
+    r = _ok(t.bridge_call("jawa/world_tile_map_generate", tile=tile, biome=biome, sizeX=CAST_MAP_SIZE,
+                          sizeZ=CAST_MAP_SIZE), "world_tile_map_generate(%s, %s)" % (tile, biome))
+    if r.get("wasAlreadyGenerated"):
+        _unmeasured(t, "tile %s already carried a map: not a fresh map" % tile)
+    mid = r.get("mapId")
+    try:
+        _ok(t.bridge_call("jawa/set_current_map", mapId=mid), "set_current_map(%s)" % mid)
+        cp = dict((d, _count_all(t, d)) for d in sorted(plants))
+        ca = {}
+        for p in _rows(t).values():
+            if p.get("faction") is None and p.get("kindDef") in animals and not p.get("dead"):
+                ca[p["kindDef"]] = ca.get(p["kindDef"], 0) + 1
+    finally:
+        t.bridge_call("jawa/set_current_map", mapId=home)
+        t.bridge_call("jawa/map_drop", mapIndex=mid, notifyPlayer=False)
+    return {"tile": tile, "biome": biome, "plants": cp, "animals": ca}
+
+
+@suite.chain("scene_native_cast")
+def scene_native_cast(t):
+    """sc_native_cast (native_cast, biome_cast): before any planting or clearing, the effective roster (patch-added rows
+    included: get_defs reads the live def) generates on three FRESH Scrub maps: native plants on every map, the common
+    half of the plant roster seen, a rostered animal when animalDensity > 0. Zero counts of rare species are recorded,
+    never marked proven. Control: the same first tile regenerated as vanilla AridShrubland grows none of our exclusive
+    rows (rules out a census that counts what the roster never placed). Not driven here: the view of every race,
+    life stage and facing, which is the owner's Stage 8 look; the product/egg/harvest manifest, decided by its own
+    bars' scenes. Runner: set LSCRUB_CAST_TILES to three map-free world tiles."""
+    _pad(t, "spawn")
+    got = {}
+
+    def body():
+        with _comp(t, "cast_roster_frozen", poison=True):
+            if _live(t):
+                rows, _r = _get_defs(t, "BiomeDef/RM_LeaningScrub", "wildPlants,wildAnimals,animalDensity", deep=True)
+                row = rows.get("RM_LeaningScrub")
+                if not row:
+                    _unmeasured(t, "get_defs returned no RM_LeaningScrub row")
+                ctl, _r = _get_defs(t, "BiomeDef/" + CAST_CONTROL_BIOME, "wildPlants", deep=True)
+                got.update(roster=_roster(row), density=float(row.get("animalDensity") or 0),
+                           listed=set(_roster(ctl.get(CAST_CONTROL_BIOME) or {})[0]))
+                _note(t, "effective roster", {"plants": got["roster"][0], "animals": got["roster"][1],
+                                              "animalDensity": got["density"]})
+                if not got["roster"][0]:
+                    _fail("RM_LeaningScrub rosters no wild plant (wildPlants read as %r)" % (row.get("wildPlants"),))
+        with _comp(t, "cast_fresh_maps_census"):
+            if _live(t):
+                if len(CAST_TILES) < 3:
+                    _unmeasured(t, "name three map-free world tiles: LSCRUB_CAST_TILES=a,b,c")
+                home = _map_id(t)
+                plants, animals = got["roster"]
+                got["maps"] = [_census_fresh(t, tile, "RM_LeaningScrub", home, plants, animals) for tile in CAST_TILES[:3]]
+                got["control"] = _census_fresh(t, CAST_TILES[0], CAST_CONTROL_BIOME, home, plants, animals)
+                got["control"]["listed"] = got["listed"]
+                for m in got["maps"] + [got["control"]]:
+                    _note(t, "census tile %s as %s" % (m["tile"], m["biome"]), {"plants": m["plants"], "animals": m["animals"]})
+        with _comp(t, "cast_roster_generates"):
+            if _live(t):
+                if "maps" not in got:
+                    _unmeasured(t, "no census was taken")
+                bad = _cast_offences(got["roster"], got["density"], got["maps"], got.get("control"))
+                if bad:
+                    _fail("; ".join(bad)[:600])
+        with _comp(t, "cast_checker_rejects_injections"):
+            if _live(t):
+                roster = ({"RM_Fuzz": 1.0, "RM_Salvessa": 0.5, "RM_Rare": 0.01}, {"RM_Surrik": 1.0})
+                m = {"plants": {"RM_Fuzz": 40, "RM_Salvessa": 3, "RM_Rare": 0}, "animals": {"RM_Surrik": 2}}
+                ctl = {"plants": {"RM_Fuzz": 0}, "listed": set()}
+                if _cast_offences(roster, 1.0, [m, m, m], ctl):
+                    _fail("the cast checker refuses a clean census: %s" % _cast_offences(roster, 1.0, [m, m, m], ctl))
+                bare = {"plants": {}, "animals": {}}
+                injected = {"an empty map": (roster, 1.0, [m, m, bare], ctl),
+                            "animalDensity unset": (roster, 0.0, [m, m, m], ctl),
+                            "a common plant never seen": (roster, 1.0, [dict(m, plants={"RM_Fuzz": 9})] * 3, ctl),
+                            "the control grows our rows": (roster, 1.0, [m, m, m], {"plants": {"RM_Fuzz": 40}, "listed": set()}),
+                            "two maps only": (roster, 1.0, [m, m], ctl)}
+                missed = sorted(k for k, a in injected.items() if not _cast_offences(*a))
+                if missed:
+                    _fail("the cast checker passed injected census(es) %s: it is blind there" % missed)
+    with _scene(t, "sc_native_cast", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scenes: pyre_beliefs, pyre_ritual
+
+PYRE_XML = os.path.join(HERE, "Defs", "Ideology", "RM_CallingPyre.xml")
+
+
+def _pyre_shipped():
+    """["DefType/defName"] of every concrete def RM_CallingPyre.xml ships, comments stripped."""
+    with open(PYRE_XML, encoding="utf-8") as fh:
+        txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+    out = []
+    for m in re.finditer(r"<(\w+Def)\b([^>]*)>(.*?)</\1>", txt, re.S):
+        nm = re.search(r"<defName>([^<]+)</defName>", m.group(3))
+        if nm and not re.search(r'Abstract\s*=\s*"[Tt]rue"', m.group(2)):
+            out.append("%s/%s" % (m.group(1), nm.group(1).strip()))
+    return out
+
+
+def _is_ritual_def(w):
+    typ, name = w.split("/", 1)
+    return "Ritual" in typ or "Ritual" in name or typ == "ThoughtDef" and re.search(r"_(Terrible|Poor|Good|Great)$", name)
+
+
+def _pyre_record(t, wanted, label):
+    """The characterization record: which shipped defs resolve live. A shipped def absent live was discarded by the
+    engine (a missing type or a broken parent): that, and only that, is a FAIL; the rest is recorded."""
+    defs, _r = _get_defs(t, ";".join(wanted), "label", deep=False)
+    present = sorted(w for w in wanted if w.split("/", 1)[1] in defs)
+    missing = sorted(set(wanted) - set(present))
+    _note(t, label, {"present": present, "missing": missing, "callingPyreEnabled": _get_setting(t, "callingPyreEnabled")})
+    if missing:
+        _fail("%s: shipped in RM_CallingPyre.xml but absent from the running game: %s" % (label, missing))
+
+
+@suite.chain("scene_pyre_beliefs")
+def scene_pyre_beliefs(t):
+    """sc_pyre_beliefs (exploration; a capability deferred under OWNER:1794835478275153823): a characterization record
+    of the belief half of the calling pyre as it ships -- which precepts, thoughts and history events resolve, the gate
+    hook's own answer and the toggle. No acceptance result follows; nothing deferred is implemented or required."""
+    _pad(t, "spawn")
+
+    def body():
+        with _comp(t, "pyre_beliefs_characterized"):
+            if _live(t):
+                _pyre_record(t, [w for w in _pyre_shipped() if not _is_ritual_def(w)], "pyre beliefs as shipped")
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_CallingPyreProof",
+                                  method="ProofPyre", args="defs")
+                _note(t, "pyre gate hook (record only)", str((r or {}).get("result") or r)[:300])
+    with _scene(t, "sc_pyre_beliefs", "immediate"):
+        _stable(t, body)
+
+
+@suite.chain("scene_pyre_ritual")
+def scene_pyre_ritual(t):
+    """sc_pyre_ritual (exploration; deferred under OWNER:1794835478275153823): a characterization record of the ritual
+    half (precept, pattern, behaviour, outcome and its memories) as it ships. Reads only: starting the rite waits for a
+    separately authorized sitting. No acceptance result follows."""
+    _pad(t, "spawn")
+
+    def body():
+        with _comp(t, "pyre_ritual_characterized"):
+            if _live(t):
+                _pyre_record(t, [w for w in _pyre_shipped() if _is_ritual_def(w)], "pyre ritual as shipped")
+    with _scene(t, "sc_pyre_ritual", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: acoustic_payload
+
+SCANNER_PKG = "mandrake.rm.acousticscanner"
+SCANNER_SETTINGS = "RimMandrake.AcousticScanner.RM_AcousticScannerSettings"
+SOUNDER = "RM_AcousticSounder"          # src/RimMandrake/AcousticScanner/validation.py
+PULSE_LABEL = "Sound the ground"
+PAYLOAD_XML = os.path.join(HERE, "Patches", "RM_AcousticPayload_LeaningScrub.xml")
+
+
+def _payload():
+    """(quietText, [{label, reading, pawnRaces, thingDefs}]) parsed from the shipped payload patch."""
+    import xml.etree.ElementTree as ET
+    ext = ET.parse(PAYLOAD_XML).getroot().find(".//value/li")
+    targets = []
+    for li in ext.find("targets"):
+        targets.append(dict(label=li.findtext("label"), reading=li.findtext("reading"),
+                            pawnRaces=[x.text for x in li.findall("pawnRaces/li")],
+                            thingDefs=[x.text for x in li.findall("thingDefs/li")]))
+    return ext.findtext("quietText"), targets
+
+
+def _reading_offences(staged, text, quiet, targets):
+    """The acoustic checker, pure: `staged` the target label staged alone (None for the empty site), `text` the reading
+    letter's body. The staged target's reading is there and no other target's is; the empty site reads quiet."""
+    if not text:
+        return ["no reading letter text"]
+    out = []
+    for tg in targets:
+        heard = tg["reading"] in text
+        if tg["label"] == staged and not heard:
+            out.append("staged %r alone but the reading lacks its line" % staged)
+        elif tg["label"] != staged and heard and (tg["pawnRaces"] or tg["thingDefs"]):   # a cave is the map's own
+            out.append("%r read without being staged" % tg["label"])
+    if staged is None and quiet not in text:
+        out.append("the empty site does not read quiet")
+    return out
+
+
+def _pulse_text(t, sid):
+    """Fire the sounder's gizmo as a player would and return the newest 'Sounding reading' letter's text."""
+    x, z = t.anchor
+    t.bridge_call("rimworld/set_god_mode", enabled=True)
+    try:
+        t.bridge_call("rimworld/click_cell", x=x, z=z)
+        giz = (t.bridge_call("rimworld/list_selected_gizmos") or {}).get("gizmos") or []
+        g = next((q for q in giz if (q.get("label") or "").startswith(PULSE_LABEL)), None)
+        if g is None:
+            _unmeasured(t, "no %r gizmo on the selected sounder: %r" % (PULSE_LABEL, [q.get("label") for q in giz]))
+        _ok(t.bridge_call("rimworld/execute_gizmo", gizmoId=g.get("gizmoId") or g.get("id")), "execute_gizmo")
+    finally:
+        t.bridge_call("rimworld/set_god_mode", enabled=False)
+        t.bridge_call("rimworld/clear_selection")
+    t.wait_ticks(10)
+    lets = [x for x in (t.bridge_call("rimworld/list_letters") or {}).get("letters") or []
+            if str(x.get("label") or "").startswith("Sounding reading")]
+    return str(lets[-1].get("text") or "") if lets else ""
+
+
+@suite.chain("scene_acoustic_payload")
+def scene_acoustic_payload(t):
+    """sc_acoustic_payload (acoustic_payload): with the Acoustic Scanner in the composition, real pulses over three
+    isolated targets (a buried surrik, a sweetline tree, a hollow venomvine) each read that target's banded line and no
+    other; the matched empty site reads the biome's quiet text. Without the scanner the biome carries no payload
+    extension and the log holds no unresolved AcousticScanner type. One run sees one composition; the other arm runs in
+    the other. Not staged: the hidden-cave target ('void in the rock'), which needs a map with hidden caves."""
+    _prep(t, "spawn")
+    x, z = t.anchor
+    quiet, targets = _payload()
+    got = {}
+
+    def body():
+        with _comp(t, "acoustic_composition", poison=True):
+            if _live(t):
+                rm = _ok(t.bridge_call("jawa/running_mods", assembly="", details=False), "running_mods")
+                ids = [str(i).lower() for i in rm.get("packageIds") or []]
+                if not ids:
+                    _unmeasured(t, "running_mods listed no packageIds")
+                got["scanner"] = SCANNER_PKG in ids
+                _note(t, "composition", {"scanner": got["scanner"], "mods": len(ids)})
+        with _comp(t, "acoustic_payload_attached"):
+            if _live(t):
+                rows, _r = _get_defs(t, "BiomeDef/RM_LeaningScrub", "modExtensions")
+                exts = json.dumps((rows.get("RM_LeaningScrub") or {}).get("modExtensions"))
+                has = "RM_AcousticPayloadExtension" in exts
+                if got["scanner"] and not has:
+                    _fail("the scanner is loaded but RM_LeaningScrub carries no RM_AcousticPayloadExtension: %s" % exts[:200])
+                if not got["scanner"]:
+                    if has:
+                        _fail("no scanner in the composition, yet the biome carries its payload extension")
+                    r = t.bridge_call("jawa/drain_log", contains="AcousticScanner", errorsOnly=True, limit=20)
+                    bad = [m.get("text") for m in (_ok(r, "drain_log").get("messages") or [])]
+                    if bad:
+                        _fail("scanner absent and the log names its types: %s" % [str(b)[:120] for b in bad[:3]])
+        with _comp(t, "acoustic_pulses_read_their_target"):
+            if _live(t):
+                if not got["scanner"]:
+                    _unmeasured(t, "the scanner is not in this composition: the pulse arm runs in a scanner-present one")
+                _scanner_site(t, x, z, got)
+                stage = {"something under the root crust": lambda: _spawn(t, "RM_Surrik", x + 10, z),
+                         "sweetline tree": lambda: t.bridge_call("jawa/set_plants", ops="%s:%d,%d" % (TREE, x + 10, z), growth=1.0),
+                         "hollow venomvine": lambda: t.bridge_call("jawa/set_plants", ops="RM_HollowVenomvine:%d,%d" % (x + 10, z),
+                                                                   growth=1.0)}
+                bad = {}
+                for label, put in sorted(stage.items()):
+                    _isolate(t, x, z)
+                    put()
+                    t.wait_ticks(5)
+                    txt = _pulse_text(t, got["sid"])
+                    _note(t, "reading over %s" % label, txt[:300])
+                    bad.update(dict((label, b) for b in _reading_offences(label, txt, quiet, targets)))
+                if bad:
+                    _fail("; ".join("%s: %s" % kv for kv in sorted(bad.items()))[:600])
+        with _comp(t, "acoustic_empty_site_quiet"):
+            if _live(t):
+                if not got.get("sid"):
+                    _unmeasured(t, "no sounder was staged (the pulse arm did not run)")
+                _isolate(t, x, z)
+                txt = _pulse_text(t, got["sid"])
+                _note(t, "reading over the empty site", txt[:300])
+                bad = _reading_offences(None, txt, quiet, targets)
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "acoustic_checker_rejects_injections"):
+            if _live(t):
+                lab = targets[0]["label"]
+                good = "intro\n%s\n" % targets[0]["reading"]
+                if _reading_offences(lab, good, quiet, targets) or _reading_offences(None, quiet, quiet, targets):
+                    _fail("the acoustic checker refuses clean readings")
+                injected = {"strings only, no pulse": (lab, "", quiet, targets),
+                            "target missing from its reading": (lab, quiet, quiet, targets),
+                            "another target heard": (lab, good + targets[1]["reading"], quiet, targets),
+                            "empty site not quiet": (None, targets[1]["reading"], quiet, targets)}
+                missed = sorted(k for k, a in injected.items() if not _reading_offences(*a))
+                if missed:
+                    _fail("the acoustic checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_acoustic_payload", "immediate"):
+        try:
+            _stable(t, body)
+        finally:
+            for f, v in SCANNER_RESTORE:
+                if got.get("scanner_settings"):
+                    t.bridge_call("jawa/mod_settings_field", typeName=SCANNER_SETTINGS, action="set", field=f, value=str(v))
+
+
+# the scanner's shipped values (AcousticScanner validation.py DEFAULTS), put back after the scene
+SCANNER_RESTORE = (("requireLandedShip", True), ("cooldownHours", 24.0), ("rangeCells", 60.0))
+
+
+def _isolate(t, x, z):
+    """Only the sounder stays: the target plot is cleared and every pawn on the pad vanished (a surrik wanders)."""
+    t.bridge_call("jawa/destroy_batch", rects="%d,%d,5,5" % (x + 8, z - 2), categories="All")
+    _remove_pawns_in(t.bridge_call, _rs(_rect(t, PAD_SIZE + 8)))
+
+
+def _scanner_site(t, x, z, got):
+    """A powered, player-owned sounder at the pad centre; no landed ship, no cooldown and a 14-cell range (so the map's
+    own sweetlines and hollows beyond the cleared pad stay out of the reading) for the scene; all restored."""
+    got["scanner_settings"] = True
+    for f, v in (("requireLandedShip", False), ("cooldownHours", 0.0), ("rangeCells", 14.0)):
+        _ok(t.bridge_call("jawa/mod_settings_field", typeName=SCANNER_SETTINGS, action="set", field=f, value=str(v)),
+            "scanner setting %s" % f)
+    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SOUNDER, x, z))
+    s = _things(t, SOUNDER, _rs(_rect(t)))
+    if not s:
+        _unmeasured(t, "the sounder did not spawn on the pad")
+    got["sid"] = s[0]["id"]
+    t.bridge_call("jawa/set_thing_props", thing=got["sid"], faction="Player")
+    t.bridge_call("jawa/power_net", thing=got["sid"], forcePowerOn=True)
+
+
+# --------------------------------------------------------------------------- scene: concealment
+
+RIPPLE_SMALL, RIPPLE_GALE_ONLY = "RM_Ribbonwhip", "RM_Shirrel"   # baseBodySize 0.25 (<= 0.6) and 0.7 (<= 0.6 x 2 in Gale)
+
+
+@suite.chain("scene_concealment")
+def scene_concealment(t):
+    """sc_concealment (concealment): a small wild animal standing on fuzz is hidden (RM_RippleHidden) in ordinary
+    wind while its twin on the bare lane is not; in the Stall it is hidden standing and seen the moment it moves; the
+    Gale doubles the size it can hide (a shirrel hides only then); a manhunting one is never hidden; rippleEnabled off
+    hides nobody. State reads only: the shimmer is the owner's Stage 8 look. Rules out a hediff that passes while wildlife
+    stays hidden off cover or in a mental state."""
+    _fuzz_patch(t)
+    x, z = t.anchor
+    bare = (x + FUZZ_PATCH // 2 + 4, z)
+
+    def hid(pid):
+        return _hidden(_rows(t, health=True).get(pid) or {})
+
+    def body():
+        ids = {}
+        with _comp(t, "concealment_hides_on_cover", toggle="rippleEnabled"):
+            if _live(t):
+                ids["cover"] = _spawn(t, RIPPLE_SMALL, x, z)
+                ids["bare"] = _spawn(t, RIPPLE_SMALL, *bare)
+                _lock_weather(t, "RM_ScrubWind")
+                t.wait_ticks(240)
+                if not hid(ids["cover"]):
+                    _fail("a %s standing on fuzz in ordinary wind is not hidden" % RIPPLE_SMALL)
+        with _comp(t, "concealment_bare_lane_visible"):
+            if _live(t):
+                if hid(ids["bare"]):
+                    _fail("a %s on bare ground (no cover plant) is hidden" % RIPPLE_SMALL)
+        with _comp(t, "concealment_stall_move_reveals"):
+            if _live(t):
+                _lock_weather(t, "RM_Stall")
+                t.wait_ticks(120)
+                if not hid(ids["cover"]):
+                    _unmeasured(t, "the still animal is not hidden in the Stall: nothing for movement to reveal")
+                _order_goto(t, ids["cover"], x, z + 3)
+                t.wait_ticks(60)
+                if hid(ids["cover"]):
+                    _fail("a %s moving in the Stall stays hidden" % RIPPLE_SMALL)
+        with _comp(t, "concealment_gale_extends_size"):
+            if _live(t):
+                _lock_weather(t, "RM_ScrubWind")
+                ids["big"] = _spawn(t, RIPPLE_GALE_ONLY, x - 3, z)
+                with _setting(t, "shirrelGlideEnabled", False):    # a shirrel glides on the Gale: no unattended flight
+                    t.wait_ticks(120)
+                    calm = hid(ids["big"])
+                    _lock_weather(t, "RM_Gale")
+                    t.wait_ticks(120)
+                    gale = hid(ids["big"])
+                    _lock_weather(t, "RM_ScrubWind")
+                _note(t, "shirrel hidden", {"wind": calm, "gale": gale})
+                if calm or not gale:
+                    _fail("a %s (bigger than rippleMaxBodySize, within twice it) hidden in wind=%s, in the Gale=%s: "
+                          "the Gale should be the only time it hides" % (RIPPLE_GALE_ONLY, calm, gale))
+        with _comp(t, "concealment_mental_state_not_hidden"):
+            if _live(t):
+                _lock_weather(t, "RM_ScrubWind")
+                ids["mad"] = _spawn(t, RIPPLE_SMALL, x + 3, z)
+                _ok(t.bridge_call("jawa/pawn_mental", pawn=ids["mad"], action="start", state="Manhunter"),
+                    "pawn_mental(start Manhunter)")
+                t.wait_ticks(120)
+                if hid(ids["mad"]):
+                    _fail("a manhunting %s on fuzz is hidden: it could not be shot back" % RIPPLE_SMALL)
+        with _comp(t, "concealment_toggle_off_nobody_hidden", toggle="rippleEnabled"):
+            if _live(t):
+                with _setting(t, "rippleEnabled", False):
+                    t.wait_ticks(120)
+                    still = [k for k in ("cover", "big") if hid(ids[k])]
+                    if still:
+                        _fail("rippleEnabled off but %s still hidden" % still)
+    with _scene(t, "sc_concealment", "immediate"):
+        try:
+            _stable(t, body)
+        finally:
+            _clear_fuzz_patch(t)
+
+
+# --------------------------------------------------------------------------- scene: cane_fuel
+
+CANE, WOOD = "RM_DeadVenomvine", "WoodLog"
+
+
+def _fuel(t, tid):
+    r = _ok(t.bridge_call("jawa/thing_refuel", thingId=tid, amount=0), "thing_refuel(%s)" % tid)
+    if r.get("fuelAfter") is None:
+        _unmeasured(t, "thing_refuel(%s) carries no fuelAfter" % tid)
+    return float(r["fuelAfter"])
+
+
+def _fuel_offences(arms):
+    """The cane-fuel checker, pure. arms {"cane"|"wood"|"wood2": {"per_item": fuel per item burned, "rate": fuel per
+    1000 ticks, "rise": room temperature rise}}. Cane pays more burn per equal count and heats harder per tick; the two
+    matched wood arms read alike (the control). Ratios are recorded as tuning, never a bar."""
+    out = []
+    c, w, w2 = arms.get("cane") or {}, arms.get("wood") or {}, arms.get("wood2") or {}
+    if not c.get("per_item") or not w.get("per_item"):
+        return ["an arm burned no fuel item, so no per-item credit was measured"]
+    if c["per_item"] <= w["per_item"] * 1.1:
+        out.append("cane pays %.2f fuel per item against wood's %.2f: no longer burn per equal count"
+                   % (c["per_item"], w["per_item"]))
+    if c.get("rate") and w.get("rate") and c["rate"] > w["rate"] * 1.1:
+        out.append("cane credit burns down faster (%.2f against %.2f per 1000 ticks)" % (c["rate"], w["rate"]))
+    if c.get("rise") is not None and w.get("rise") is not None and c["rise"] <= w["rise"] + 0.3:
+        out.append("the cane fire's room warmed %.1f C against wood's %.1f C: no heat bonus" % (c["rise"], w["rise"]))
+    if w2.get("per_item") and abs(w2["per_item"] - w["per_item"]) > 0.05 * w["per_item"]:
+        out.append("two matched wood fires disagree (%.2f vs %.2f per item): the meter is biased"
+                   % (w["per_item"], w2["per_item"]))
+    return out
+
+
+@suite.chain("scene_cane_fuel")
+def scene_cane_fuel(t):
+    """sc_cane_fuel (cane_fuel, premium_dead_cane): three matched campfires burn half a day down, then a colonist refuels
+    each through the real Refuel job: one with dead venomvine, two with wood logs (the control pair); then each fire is
+    walled and roofed in where it stands (a 5x5 room at ambient). Read: fuel credited per item burned, burn-down rate, the room's temperature rise, and the cane
+    fire's credit across a save and reload mid-burn. Cane must pay more burn per equal count, heat harder and keep its
+    credit across the reload; the two wood fires must read alike. The 2x / 1.25x numbers are agent tuning, recorded,
+    never a bar. A stove or generator pair is not staged; the campfire is the wood-filter consumer every colony has."""
+    _prep(t, "fuel", 24)
+    x, z = t.anchor
+    rooms = {"cane": (x - 11, z - 4), "wood": (x - 1, z - 4), "wood2": (x + 9, z - 4)}
+    fuel_of = {"cane": CANE, "wood": WOOD, "wood2": WOOD}
+    arms, ids = {}, {}
+
+    def body():
+        with _comp(t, "cane_fires_staged", poison=True):
+            if _live(t):
+                for arm, (rx, rz) in sorted(rooms.items()):
+                    t.bridge_call("jawa/spawn_batch", ops="Campfire:%d,%d" % (rx + 3, rz + 3))
+                    fire = _things(t, "Campfire", "%d,%d,7,7" % (rx, rz))
+                    if not fire:
+                        _unmeasured(t, "no campfire in the %s room" % arm)
+                    ids[arm] = fire[0]["id"]
+                _wait(t, 30000)            # half a day: each fire burns ~5 of 20 and the Refuel job will take items
+        with _comp(t, "cane_accepted_by_wood_filter"):
+            if _live(t):
+                for arm, (rx, rz) in sorted(rooms.items()):
+                    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,10" % (fuel_of[arm], rx + 1, rz + 1))
+                    stack = _things(t, fuel_of[arm], "%d,%d,7,7" % (rx, rz))
+                    col = _spawn(t, "Colonist", rx + 5, rz + 5, faction="player")
+                    _full(t, col)
+                    f0, s0 = _fuel(t, ids[arm]), sum(int(s.get("stackCount") or 0) for s in stack)
+                    t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="Refuel", targetAId=ids[arm],
+                                  targetBId=stack[0]["id"], count=10, waitTicks=60)
+                    t.wait_ticks(900)
+                    f1 = _fuel(t, ids[arm])
+                    s1 = sum(int(s.get("stackCount") or 0) for s in _things(t, fuel_of[arm], "%d,%d,7,7" % (rx, rz)))
+                    arms[arm] = {"per_item": (f1 - f0) / (s0 - s1) if s0 > s1 else 0.0, "burned": s0 - s1, "fuel": f1}
+                    _vanish(t, col)
+                _note(t, "refuel per arm", arms)
+                if not arms["cane"]["burned"]:
+                    _fail("the colonist burned no dead venomvine in the campfire (fuel filter refuses it)")
+        with _comp(t, "cane_more_burn_per_item"):
+            if _live(t):
+                bad = [b for b in _fuel_offences(dict((k, {"per_item": v.get("per_item")}) for k, v in arms.items()))
+                       if "per equal count" in b or "burned no" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "cane_heat_rate_higher"):
+            if _live(t):
+                for rx, rz in rooms.values():      # walls and roof round each burning fire now: the rooms start at ambient
+                    ring = ";".join("Wall:%d,%d" % (rx + i, rz + j) for i in range(7) for j in range(7) if i in (0, 6) or j in (0, 6))
+                    t.bridge_call("jawa/spawn_batch", ops=ring, stuff="Steel")
+                    t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,5,5" % (rx + 1, rz + 1))
+                t0 = dict((a, _temp(t, rx + 1, rz + 5)) for a, (rx, rz) in rooms.items())
+                f0 = dict((a, _fuel(t, ids[a])) for a in rooms)
+                t.wait_ticks(1000)
+                for a, (rx, rz) in rooms.items():
+                    arms[a]["rise"] = _temp(t, rx + 1, rz + 5) - t0[a]
+                    arms[a]["rate"] = f0[a] - _fuel(t, ids[a])
+                _note(t, "heat and burn rate per arm", arms)
+                if arms["wood"]["rise"] <= 0.2:
+                    _unmeasured(t, "the wood room did not warm (%.2f C): no heat signal to compare" % arms["wood"]["rise"])
+                bad = [b for b in _fuel_offences(arms) if "heat" in b or "faster" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "cane_credit_survives_reload"):
+            if _live(t):
+                before = _fuel(t, ids["cane"])
+                name = "lscrub_cane_mid_%d" % int(time.time())
+                _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game")
+                _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000), "load_game_ready")
+                after = _fuel(t, ids["cane"])
+                _note(t, "cane fire across reload", {"before": before, "after": after})
+                if abs(after - before) > 0.01:
+                    _fail("the cane fire's credit changed across a save and reload: %.3f -> %.3f" % (before, after))
+        with _comp(t, "cane_wood_control_alike"):
+            if _live(t):
+                bad = [b for b in _fuel_offences(arms) if "biased" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "cane_checker_rejects_injections"):
+            if _live(t):
+                good = {"cane": {"per_item": 2.0, "rate": 1.0, "rise": 6.0}, "wood": {"per_item": 1.0, "rate": 1.0, "rise": 4.0},
+                        "wood2": {"per_item": 1.0}}
+                if _fuel_offences(good):
+                    _fail("the fuel checker refuses a clean reading: %s" % _fuel_offences(good))
+                injected = {"premium multiplier one": dict(good, cane=dict(good["cane"], per_item=1.0)),
+                            "heat factor one": dict(good, cane=dict(good["cane"], rise=4.0)),
+                            "cane burns faster": dict(good, cane=dict(good["cane"], rate=2.0)),
+                            "biased meter": dict(good, wood2={"per_item": 1.5}),
+                            "nothing burned": dict(good, cane={"per_item": 0.0})}
+                missed = sorted(k for k, a in injected.items() if not _fuel_offences(a))
+                if missed:
+                    _fail("the fuel checker passed injected reading(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_cane_fuel", "immediate"):
+        _stable(t, body)
+
+
+def _temp(t, x, z):
+    r = _ok(t.bridge_call("jawa/cell_temperature", cell="%d,%d" % (x, z)), "cell_temperature(%d,%d)" % (x, z))
+    v = r.get("temperature", r.get("celsius"))
+    if v is None:
+        _unmeasured(t, "cell_temperature(%d,%d) carries no temperature: %r" % (x, z, r))
+    return float(v)
+
+
+# --------------------------------------------------------------------------- scene: colony_walk
+
+COLONY_SIZE = 40
+
+
+def _walk_offences(trips, census_before, census_after, hurt):
+    """The colony-walk checker, pure. trips [{"order", "out", "back", "fuel_gain"}]; the census {pawn id: True} before
+    the save and after the reload; hurt [pawn ids dead, downed or marked]. -> offences."""
+    out = []
+    for tr in trips:
+        if not tr.get("out") or not tr.get("back"):
+            out.append("order %s: the expedition did not reach its spot and come home" % tr.get("order"))
+        if not tr.get("fuel_gain") or tr["fuel_gain"] <= 0:
+            out.append("order %s: the fuel run burned nothing" % tr.get("order"))
+    if sorted(census_before or {}) != sorted(census_after or {}):
+        out.append("the reloaded colony is not the saved one (%d pawns -> %d, ids differ)"
+                   % (len(census_before or {}), len(census_after or {})))
+    if len(census_before or {}) < COLONY_SIZE:
+        out.append("only %d of %d colonists stood at the save" % (len(census_before or {}), COLONY_SIZE))
+    if hurt:
+        out.append("colonists hurt, downed or dead on ordinary work: %s" % sorted(hurt)[:6])
+    return out
+
+
+@suite.chain("scene_colony_walk")
+def scene_colony_walk(t):
+    """sc_colony_walk (colony_walk): forty fed colonists on the pad do ordinary deliberate work in two orders --
+    order A an expedition out and home, then a dead-cane fuel run; save mid-way and reload that exact save (no actor is
+    restaged); order B the fuel run first, then the expedition, by the SAME pawns. Both orders complete, the reloaded
+    colony is the saved one, nobody is hurt. The claim, felt bank and wind-power parts of the walk are decided by their
+    own scenes (smother, sweetline, gale); this scene is their ordinary-life frame."""
+    _prep(t, "spawn", 24)
+    x, z = t.anchor
+    r = _rect(t)
+    st = {"trips": []}
+
+    def trip(order, who):
+        _order_goto(t, who, x + 9, z + 9)
+        t.wait_ticks(600)
+        out = _dist(_xz(_rows(t).get(who)) or (0, 0), (x + 9, z + 9)) <= 2
+        _order_goto(t, who, x - 9, z - 9)
+        t.wait_ticks(600)
+        back = _dist(_xz(_rows(t).get(who)) or (0, 0), (x - 9, z - 9)) <= 2
+        return out, back
+
+    def fuel_run(who):
+        fire = st["fire"]
+        f0 = _fuel(t, fire)
+        stack = _things(t, CANE, _rs(r))
+        if not stack:
+            t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,10" % (CANE, x + 2, z - 9))
+            stack = _things(t, CANE, _rs(r))
+        t.bridge_call("jawa/ordered_job", pawnId=who, jobDef="Refuel", targetAId=fire, targetBId=stack[0]["id"],
+                      count=10, waitTicks=60)
+        t.wait_ticks(900)
+        return _fuel(t, fire) - f0
+
+    def body():
+        with _comp(t, "walk_colony_staged", poison=True):
+            if _live(t):
+                st["pawns"] = [_spawn(t, "Colonist", r[0] + 1 + i % 8, r[1] + 1 + i // 8, faction="player")
+                               for i in range(COLONY_SIZE)]
+                for p in st["pawns"]:
+                    _full(t, p)
+                t.bridge_call("jawa/spawn_batch", ops="Campfire:%d,%d" % (x, z - 9))
+                fire = _things(t, "Campfire", _rs(r))
+                if not fire:
+                    _unmeasured(t, "no campfire on the pad")
+                st["fire"] = fire[0]["id"]
+                _wait(t, 30000)            # the fire burns down so a Refuel job takes fuel
+        with _comp(t, "walk_order_a_trip_then_fuel"):
+            if _live(t):
+                who = st["pawns"][0]
+                out, back = trip("A", who)
+                st["trips"].append({"order": "A", "out": out, "back": back, "fuel_gain": fuel_run(who)})
+                bad = [b for b in _walk_offences(st["trips"][-1:], {}, {}, []) if "order" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "walk_save_reload_resumes"):
+            if _live(t):
+                st["before"] = dict((pid, True) for pid, p in _rows(t, rect=_rs(r)).items()
+                                    if p.get("faction") and not p.get("dead"))
+                name = "lscrub_walk_mid_%d" % int(time.time())
+                _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game")
+                _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000), "load_game_ready")
+                st["after"] = dict((pid, True) for pid, p in _rows(t, rect=_rs(r)).items()
+                                   if p.get("faction") and not p.get("dead"))
+                bad = [b for b in _walk_offences([], st["before"], st["after"], []) if "reloaded" in b or "colonists" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "walk_order_b_fuel_then_trip"):
+            if _live(t):
+                who = st["pawns"][1]
+                _wait(t, 15000)           # order A's run left the fire near full: the Refuel job ends at once on IsFull
+                gain = fuel_run(who)
+                out, back = trip("B", who)
+                st["trips"].append({"order": "B", "out": out, "back": back, "fuel_gain": gain})
+                bad = [b for b in _walk_offences(st["trips"][-1:], st["before"], st["before"], []) if "order" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "walk_nobody_hurt"):
+            if _live(t):
+                rows = _rows(t, rect=_rs(_rect(t, PAD_SIZE + 8)), health=True)
+                hurt = [pid for pid in st["pawns"] if pid not in rows or rows[pid].get("dead") or rows[pid].get("downed")
+                        or _lash_marks(rows[pid])]
+                bad = [b for b in _walk_offences([], st["before"], st["before"], hurt) if "hurt" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "walk_checker_rejects_injections"):
+            if _live(t):
+                ids = dict((i, True) for i in range(COLONY_SIZE))
+                ok_trip = [{"order": "A", "out": True, "back": True, "fuel_gain": 2.0}]
+                if _walk_offences(ok_trip, ids, ids, []):
+                    _fail("the walk checker refuses a clean walk: %s" % _walk_offences(ok_trip, ids, ids, []))
+                injected = {"stranded expedition": ([dict(ok_trip[0], back=False)], ids, ids, []),
+                            "fuel run burned nothing": ([dict(ok_trip[0], fuel_gain=0.0)], ids, ids, []),
+                            "restaged after load": (ok_trip, ids, dict((i + 100, True) for i in ids), []),
+                            "colonist downed": (ok_trip, ids, ids, [3])}
+                missed = sorted(k for k, a in injected.items() if not _walk_offences(*a))
+                if missed:
+                    _fail("the walk checker passed injected walk(s) %s: it is blind there" % missed)
+    with _scene(t, "sc_colony_walk", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: floor_runtime
+
+OUR_PACKAGES = ("mandrake.rm.leaningscrub", "mandrake.rm.biomes")    # the dev folder, and the composed biome it ships in
+
+
+def _ours(window):
+    return [c for c in (window or {}).get("components") or [] if str(c.get("packageId") or "").lower() in OUR_PACKAGES]
+
+
+def _runtime_refusals(idle, busy):
+    """The runtime checker, pure: each window a map_comp_timing answer. Refuses a window with no ticks, degraded
+    coverage, none of our components, or our components doing no work (zero calls); refuses a busy window doing no more
+    of our work than the idle one. Timings are advisory: reported, never judged here."""
+    out = []
+    for name, w in (("idle", idle), ("busy", busy)):
+        if not w or not w.get("ticksElapsed"):
+            out.append("%s window: no ticks elapsed" % name)
+            continue
+        if w.get("coverage") != "ok":
+            out.append("%s window: timer coverage %s" % (name, w.get("coverage")))
+        ours = _ours(w)
+        if not ours:
+            out.append("%s window: none of our MapComponents was timed" % name)
+        elif not sum(int(c.get("calls") or 0) for c in ours):
+            out.append("%s window: our MapComponents made no calls (the work counter is disconnected)" % name)
+    if not out and sum(int(c.get("calls") or 0) for c in _ours(busy)) < sum(int(c.get("calls") or 0) for c in _ours(idle)):
+        out.append("the busy window did less of our work than the idle one: the load was not applied")
+    return out
+
+
+def _timed(t, ticks):
+    t.bridge_call("rimworld/set_time_speed", speed="3")
+    try:
+        return _ok(t.bridge_call("jawa/map_comp_timing", ticks=ticks, maxSeconds=300, top=60), "map_comp_timing")
+    finally:
+        t.bridge_call("rimworld/set_time_speed", speed="0")
+
+
+@suite.chain("scene_floor_runtime")
+def scene_floor_runtime(t):
+    """floor_runtime (colony_walk): our MapComponents' production timers over an idle window and a busy one (armed
+    venomvine across the pad, small wildlife on fuzz, eight wind turbines, forty colonists), each with its work counter
+    (calls) and TickManager.MeanTickTime. The verdict refuses missing or disconnected counters and an empty load; the
+    timing distributions are inherited advisory numbers, reported in notes. A cold-load median of three is a separately
+    authorized measurement."""
+    _prep(t, "spawn", 24)
+    x, z = t.anchor
+    r = _rect(t)
+    win = {}
+
+    def body():
+        with _comp(t, "runtime_idle_window"):
+            if _live(t):
+                win["idle"] = _timed(t, 1200)
+                win["idle_perf"] = t.bridge_call("jawa/time_perf")
+                _note(t, "idle", {"ours": _ours(win["idle"]), "meanTickTime": (win["idle_perf"] or {}).get("meanTickTime")})
+        with _comp(t, "runtime_busy_window"):
+            if _live(t):
+                t.bridge_call("jawa/set_plants", ops="RM_VenomvineThicket:%d,%d,%d,8" % (r[0], r[1], r[2]), growth=1.0)
+                t.bridge_call("jawa/set_plants", ops="RM_Fuzz:%d,%d,%d,8" % (r[0], r[1] + 9, r[2]), growth=1.0)
+                for i in range(20):
+                    _spawn(t, RIPPLE_SMALL, r[0] + i, r[1] + 12)
+                for i in range(8):
+                    t.bridge_call("jawa/spawn_batch", ops="WindTurbine:%d,%d" % (r[0] + 2 + 3 * i, r[1] + 20))
+                for i in range(COLONY_SIZE):
+                    _full(t, _spawn(t, "Colonist", r[0] + i % 20, r[1] + 17 + i // 20, faction="player"))
+                win["busy"] = _timed(t, 1200)
+                win["busy_perf"] = t.bridge_call("jawa/time_perf")
+                _note(t, "busy", {"ours": _ours(win["busy"]), "meanTickTime": (win["busy_perf"] or {}).get("meanTickTime")})
+        with _comp(t, "runtime_work_counted"):
+            if _live(t):
+                bad = _runtime_refusals(win.get("idle"), win.get("busy"))
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "runtime_checker_refuses_missing_work"):
+            if _live(t):
+                ok = {"ticksElapsed": 1200, "coverage": "ok", "components": [{"packageId": OUR_PACKAGES[0], "calls": 40}]}
+                busy = dict(ok, components=[{"packageId": OUR_PACKAGES[0], "calls": 80}])
+                if _runtime_refusals(ok, busy):
+                    _fail("the runtime checker refuses clean windows: %s" % _runtime_refusals(ok, busy))
+                injected = {"counter disconnected": (ok, dict(ok, components=[{"packageId": OUR_PACKAGES[0], "calls": 0}])),
+                            "empty map (none of ours)": (ok, dict(ok, components=[])),
+                            "paused game": (ok, dict(busy, ticksElapsed=0)),
+                            "degraded timers": (ok, dict(busy, coverage="degraded")),
+                            "load not applied": (busy, ok)}
+                missed = sorted(k for k, a in injected.items() if not _runtime_refusals(*a))
+                if missed:
+                    _fail("the runtime checker passed injected window(s) %s: it is blind there" % missed)
+    with _scene(t, "floor_runtime", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: settings
+
+SETTINGS_CS = os.path.join(HERE, "Source", "RM_LeaningScrubMod.cs")
+
+
+def _cs_settings():
+    """{field: (type, initialiser)} of every public static bool/float/int in RM_LeaningScrubSettings, the fields it
+    serializes (Scribe_Values.Look) and the names its settings window names. -> (fields, scribed, in_ui)."""
+    with open(SETTINGS_CS, encoding="utf-8") as fh:
+        src = re.sub(r"//[^\n]*|/\*.*?\*/", "", fh.read(), flags=re.S)
+    fields = dict((n, (ty, v.strip())) for ty, n, v in re.findall(r"public static (bool|float|int) (\w+)\s*=\s*([^;]+);", src))
+    scribed = set(re.findall(r"Scribe_Values\.Look\(ref (\w+)", src))
+    ui = src[src.index("DoWindowContents"):] if "DoWindowContents" in src else ""
+    return fields, scribed, set(re.findall(r'"(\w+)"', ui)) | set(re.findall(r"nameof\((?:\w+\.)?(\w+)\)", ui))
+
+
+def _cs_value(ty, v):
+    if ty == "bool":
+        return v == "true"
+    return float(v.rstrip("fF")) if ty == "float" else int(v)
+
+
+def _census_offences(fields, scribed, ui, defaults):
+    """The settings census checker, pure. -> offences: a source field the suite's DEFAULTS lacks (or holds at another
+    value), a DEFAULTS entry the source lacks, a field never serialized, a field the settings window never shows."""
+    out = []
+    for n, (ty, v) in sorted(fields.items()):
+        if n not in defaults:
+            out.append("%s ships in the source but not in the suite's DEFAULTS" % n)
+        elif not _same(str(defaults[n]), _cs_value(ty, v)):
+            out.append("%s: source default %s, DEFAULTS %r" % (n, v, defaults[n]))
+        if n not in scribed:
+            out.append("%s is never serialized (no Scribe_Values.Look)" % n)
+        if n not in ui:
+            out.append("%s has no control in the settings window" % n)
+    out += ["%s is in DEFAULTS but not in the source" % n for n in sorted(set(defaults) - set(fields))]
+    return out
+
+
+@suite.chain("scene_settings")
+def scene_settings(t):
+    """sc_settings (colony_walk, settings): the census of every setting (source initialiser, serialization, window
+    control, the suite's DEFAULTS, the live value); each toggle off and back on, read back; then every switch off
+    together, master gate included, for 6000 ticks of ordinary colony life with a small animal on fuzz and a flyer on the
+    pad: colonists unharmed, nobody hidden, nobody airborne; then the saved configuration back and its effect returns.
+    Not driven here: writing ModSettings.xml through the real window and reloading it (jawa/mod_settings_field never
+    writes the file and rimworld/update_mod_settings cannot reach static fields); actual flight (the owner's scene)."""
+    _fuzz_patch(t)
+    x, z = t.anchor
+    fields, scribed, ui = _cs_settings()
+    toggles = sorted(n for n, (ty, _v) in fields.items() if ty == "bool")
+
+    def body():
+        ids = {}
+        with _comp(t, "settings_census"):
+            if _live(t):
+                bad = _census_offences(fields, scribed, ui, DEFAULTS)
+                live = dict((n, _get_setting(t, n)) for n in sorted(fields))
+                bad += ["%s reads %r live, ships %s" % (n, live[n], fields[n][1]) for n in sorted(fields)
+                        if not _same(live[n], _cs_value(*fields[n]))]
+                if bad:
+                    _fail("; ".join(bad)[:600])
+        with _comp(t, "settings_each_toggle_off_and_on"):
+            if _live(t):
+                stuck = []
+                for n in toggles:
+                    for want in (False, True):
+                        t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=n, value=str(want))
+                        if not _same(_get_setting(t, n), want):
+                            stuck.append("%s->%s" % (n, want))
+                    _restore(t, n)
+                if stuck:
+                    _fail("toggle(s) that did not read back: %s" % stuck[:10])
+        with _comp(t, "settings_all_off_quiet"):
+            if _live(t):
+                ids["small"] = _spawn(t, RIPPLE_SMALL, x, z)
+                ids["flyer"] = _spawn(t, "RM_Dustflutter", x + 2, z)
+                ids["cols"] = [_spawn(t, "Colonist", x - 4 + i, z - 5, faction="player") for i in range(3)]
+                for c in ids["cols"]:
+                    _full(t, c)
+                try:
+                    for n in toggles:
+                        _set(t, n, False)
+                    _wait(t, 6000)
+                    rows = _rows(t, health=True)
+                    bad = []
+                    if _hidden(rows.get(ids["small"]) or {}):
+                        bad.append("a small animal on fuzz is hidden with every switch off")
+                    fl = (t.bridge_call("jawa/pawn_flight", action="report", pawn=ids["flyer"]) or {}).get("pawns") or [{}]
+                    if fl[0].get("flying"):
+                        bad.append("a dustflutter is airborne with every switch off")
+                    bad += ["colonist %s %s" % (c, "dead" if (rows.get(c) or {}).get("dead") else "downed or marked")
+                            for c in ids["cols"] if c not in rows or rows[c].get("dead") or rows[c].get("downed")
+                            or _lash_marks(rows[c])]
+                    if bad:
+                        _fail("; ".join(bad))
+                finally:
+                    for n in toggles:
+                        _restore(t, n)
+        with _comp(t, "settings_reenabled_effect_returns"):
+            if _live(t):
+                t.wait_ticks(240)
+                if not _hidden(_rows(t, health=True).get(ids["small"]) or {}):
+                    _fail("the saved configuration is back but the ripple did not return (a small animal on fuzz is "
+                          "still seen)")
+        with _comp(t, "settings_checker_rejects_injections"):
+            if _live(t):
+                f = {"aEnabled": ("bool", "true"), "bSize": ("float", "0.5f")}
+                if _census_offences(f, {"aEnabled", "bSize"}, {"aEnabled", "bSize"}, {"aEnabled": True, "bSize": 0.5}):
+                    _fail("the census checker refuses a clean census")
+                injected = {"field missing from DEFAULTS": (f, set(f), set(f), {"aEnabled": True}),
+                            "default drift": (f, set(f), set(f), {"aEnabled": False, "bSize": 0.5}),
+                            "never serialized": (f, {"aEnabled"}, set(f), {"aEnabled": True, "bSize": 0.5}),
+                            "no window control": (f, set(f), {"bSize"}, {"aEnabled": True, "bSize": 0.5}),
+                            "stale DEFAULTS entry": (f, set(f), set(f), {"aEnabled": True, "bSize": 0.5, "gone": True})}
+                missed = sorted(k for k, a in injected.items() if not _census_offences(*a))
+                if missed:
+                    _fail("the census checker passed injected census(es) %s: it is blind there" % missed)
+    with _scene(t, "sc_settings", "immediate"):
+        try:
+            _stable(t, body)
+        finally:
+            _clear_fuzz_patch(t)
+
+
+# --------------------------------------------------------------------------- scene: floor_persistence
+
+SAVES_DIR = os.environ.get("LSCRUB_SAVES_DIR", "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
+                                               "RimWorld by Ludeon Studios/Saves")
+
+
+def _save_bytes(name):
+    p = os.path.join(SAVES_DIR, name + ".rws")
+    return os.path.getsize(p) if os.path.exists(p) else None
+
+
+def _persist_offences(cycles):
+    """The persistence checker, pure. cycles [{"bytes": save size, "census": {def or pawn id: count}, "ids": [thing
+    ids]}] -- the state before cycle 1, then after each reload. -> offences: identities or counts that change across a
+    reload, a duplicate id, an unreadable save size, and save bytes that grow on every cycle (a retained-state leak)."""
+    out = []
+    if len(cycles) < 4:
+        return ["%d readings; the scene needs the start plus three cycles" % len(cycles)]
+    base = cycles[0]
+    for i, c in enumerate(cycles[1:], 1):
+        if c.get("census") != base.get("census"):
+            out.append("cycle %d: the census changed across save/reload: %s -> %s"
+                       % (i, json.dumps(base.get("census"))[:120], json.dumps(c.get("census"))[:120]))
+        ids = c.get("ids") or []
+        if len(ids) != len(set(ids)):
+            out.append("cycle %d: a duplicated thing id after reload" % i)
+    sizes = [c.get("bytes") for c in cycles[1:]]
+    if any(s is None for s in sizes):
+        out.append("a save's size was unreadable: %s" % sizes)
+    elif all(b > a * 1.005 for a, b in zip(sizes, sizes[1:])):
+        out.append("the save grows on every cycle with an unchanged census: %s" % sizes)
+    return out
+
+
+@suite.chain("scene_floor_persistence")
+def scene_floor_persistence(t):
+    """floor_persistence (colony_walk): a mid-journey colony (colonists, a fuzz patch, a burning dead-cane fire) saved
+    and reloaded three times: identities and counts persist, no id duplicates, and the save does not grow cycle on
+    cycle. Not driven here: the 30 compressed production lifecycle cycles and texture memory (no profiler bridge tool),
+    and adding the mod to a prior unmodded save (no such fixture is staged by this suite)."""
+    _fuzz_patch(t)
+    x, z = t.anchor
+    rect = _rs(_rect(t, PAD_SIZE + 8))
+    cycles = []
+
+    def census():
+        ids, counts = [], {}
+        for d in ("RM_Fuzz", "Campfire", CANE):
+            for th in _things(t, d, rect, 2000):
+                ids.append(th.get("id"))
+                counts[d] = counts.get(d, 0) + int(th.get("stackCount") or 1)
+        for pid, p in _rows(t, rect=rect).items():
+            ids.append(pid)
+            counts[pid] = bool(p.get("dead"))
+        return counts, ids
+
+    def body():
+        with _comp(t, "persist_three_cycles"):
+            if _live(t):
+                for i in range(2):
+                    _full(t, _spawn(t, "Colonist", x - 3 + i, z - 3, faction="player"))
+                t.bridge_call("jawa/spawn_batch", ops="Campfire:%d,%d" % (x + 3, z + 3))
+                t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,5" % (CANE, x + 5, z + 3))
+                counts, ids = census()
+                cycles.append({"bytes": None, "census": counts, "ids": ids})
+                for i in range(3):
+                    name = "lscrub_persist_%d_%d" % (i, int(time.time()))
+                    _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game(%s)" % name)
+                    size = _save_bytes(name)
+                    _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000), "load_game_ready")
+                    counts, ids = census()
+                    cycles.append({"bytes": size, "census": counts, "ids": ids})
+                _note(t, "cycles", [{"bytes": c["bytes"], "things": len(c["ids"])} for c in cycles])
+                bad = [b for b in _persist_offences(cycles) if "grows" not in b and "unreadable" not in b]
+                if bad:
+                    _fail("; ".join(bad)[:600])
+        with _comp(t, "persist_no_growth"):
+            if _live(t):
+                if any(c["bytes"] is None for c in cycles[1:]):
+                    _unmeasured(t, "save sizes unreadable under %s (set LSCRUB_SAVES_DIR)" % SAVES_DIR)
+                bad = [b for b in _persist_offences(cycles) if "grows" in b]
+                if bad:
+                    _fail("; ".join(bad))
+        with _comp(t, "persist_checker_detects_leaks"):
+            if _live(t):
+                c0 = {"bytes": None, "census": {"RM_Fuzz": 4}, "ids": ["a", "b"]}
+                ok = [c0] + [dict(c0, bytes=1000)] * 3
+                if _persist_offences(ok):
+                    _fail("the persistence checker refuses clean cycles: %s" % _persist_offences(ok))
+                injected = {"retained-state leak": [c0] + [dict(c0, bytes=b) for b in (1000, 1100, 1200)],
+                            "duplicated claim": [c0] + [dict(c0, bytes=1000, ids=["a", "a"])] * 3,
+                            "lost thing": [c0] + [dict(c0, bytes=1000, census={"RM_Fuzz": 3})] * 3,
+                            "two cycles only": ok[:3]}
+                missed = sorted(k for k, a in injected.items() if not _persist_offences(a))
+                if missed:
+                    _fail("the persistence checker passed injected cycle(s) %s: it is blind there" % missed)
+    with _scene(t, "floor_persistence", "immediate"):
+        try:
+            _stable(t, body)
+        finally:
+            _clear_fuzz_patch(t)
 
 
 # --------------------------------------------------------------------------- chain: the log (last)

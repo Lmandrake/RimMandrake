@@ -30,6 +30,7 @@ spec.loader.exec_module(V)
 V.time.sleep = lambda s: None                      # the fast-wait poll loop must not really sleep
 V.SCENE_RECORD = lambda *a: None                   # a fake scene must not write designer_stage's stage.json
 V.OWNER_PRESENT = True                             # the eruptor arm runs here: this game is fake, nothing flies
+V.CAST_TILES = (11, 12, 13)                        # sc_native_cast's three map-free fixture tiles
 
 from suite import TestContext                     # noqa: E402
 
@@ -64,7 +65,7 @@ def cs_arities(type_name, method):
 
 
 BODY = {"RM_Thornhold": 0.4, "RM_Shirrel": 0.7, "RM_Dustflutter": 0.08, "RM_Crustweevil": 0.05,
-        "RM_Fuzzrunner": 0.2, "RM_Vissler": 0.15, "Colonist": 1.0}
+        "RM_Fuzzrunner": 0.2, "RM_Vissler": 0.15, "Colonist": 1.0, "RM_Ribbonwhip": 0.25}
 BLOOM = {"RM_Crustweevil", "RM_Fuzzrunner", "RM_Dustflutter", "RM_Vissler"}
 MEAT_EATERS = ("RM_Surrik", "RM_Ribbonwhip")        # ProofArmScavengers' fake answer names these two
 SMALL_SPAWN_ONLY = None
@@ -98,6 +99,8 @@ class Fake(object):
         self.paths = {}
         self.polluted = set()
         self.saves, self.walker_z = {}, None
+        self.cur_map, self.gen_maps, self.letters, self.scanner = 0, {}, [], {}
+        self.master_was_off, self.save_count = False, 0
         self.about = "A flat, wind-scoured plain." + (" Two bark-wardens sleep on every tree." if "about_promises_wardens"
                                                        in self.broken else "")
 
@@ -138,6 +141,7 @@ class Fake(object):
             n -= d
             self.ticks += d
             self.chunk(d)
+            self.ripple_pass()
 
     def chunk(self, d):
         b = self.broken
@@ -155,9 +159,13 @@ class Fake(object):
                     self.claims[st["id"]] = self.ticks
                     st["smother_start"] = self.ticks
             if job["kind"] == "refuel" and "fuel_unpatched" not in b:
-                bl = self.things.get(job["b"])
-                if bl:
-                    bl["stackCount"] = max(0, bl["stackCount"] - 10)
+                bl, fire = self.things.get(job["b"]), self.things.get(job["a"])
+                if bl and fire:
+                    c = self.credit(bl["def"])
+                    n = min(bl["stackCount"], int(-(-(20 - self.fuel(fire["id"])) // c)))
+                    bl["stackCount"] -= n
+                    fire["fuel_level"], fire["fuel_at"] = min(20.0, self.fuel(fire["id"]) + n * c), self.ticks
+                    fire["burning"] = bl["def"]
             if job["kind"] == "harvest":
                 pl = self.things.get(job["a"])
                 if pl:
@@ -339,6 +347,10 @@ class Fake(object):
         return {"success": True, "weather": {"current": self.weather}}
 
     def t_mod_settings_field(self, typeName=None, action=None, field=None, value=None, **k):
+        if typeName == V.SCANNER_SETTINGS:
+            if action == "set":
+                self.scanner[field] = str(value)
+            return {"success": True, "value": self.scanner.get(field)}
         if field not in self.settings:
             return {"success": False, "message": "no such field"}
         if action == "set":
@@ -360,9 +372,12 @@ class Fake(object):
                        "RM_HollowVenomvine", "RM_CrownVenomvine", "RM_Whipfuzz", "RM_Cruststar")
                       + V.FORM_PLANTS]
             ext = [] if "no_lean_ext" in self.broken else ["RM_LeanExtension"]
+            if "payload_not_attached" not in self.broken:
+                ext.append("RimMandrake.AcousticScanner.RM_AcousticPayloadExtension")
             return {"success": True, "foundCount": 1, "notFound": [], "defs": [{
                 "defName": "RM_LeaningScrub", "fields": {
                     "baseWeatherCommonalities": table, "animalDensity": 1.8, "wildPlants": plants,
+                    "wildAnimals": [{"animal": "RM_Surrik", "commonality": 1.0}, {"animal": "RM_Ribbonwhip", "commonality": 0.5}],
                     "modExtensions": ext}}]}
         if want and all(w.startswith("WeatherDef/RM_Scrub") for w in want):
             rows = []
@@ -370,6 +385,14 @@ class Fake(object):
                 n = w.split("/", 1)[1]
                 off = 0.0 if ("twin_calm" in self.broken and n == "RM_ScrubGrayPall") else 0.4
                 rows.append({"defName": n, "fields": {"windSpeedOffset": off, "windSpeedFactor": 1.0}})
+            return {"success": True, "foundCount": len(rows), "notFound": [], "defs": rows}
+        if want == ["BiomeDef/%s" % V.CAST_CONTROL_BIOME]:
+            return {"success": True, "foundCount": 1, "notFound": [], "defs": [{"defName": V.CAST_CONTROL_BIOME, "fields": {
+                "wildPlants": [{"plant": "Plant_Grass", "commonality": 1.0}]}}]}
+        if fields == "label" and want and all(w in V._pyre_shipped() for w in want):
+            gone = {"pyre_def_discarded": "RM_CallingPyre_LastRite", "pyre_ritual_discarded": "RM_Ritual_CallingPyre"}
+            drop = set(n for b, n in gone.items() if b in self.broken)
+            rows = [{"defName": w.split("/", 1)[1], "fields": {"label": "x"}} for w in want if w.split("/", 1)[1] not in drop]
             return {"success": True, "foundCount": len(rows), "notFound": [], "defs": rows}
         if want == ["ThingDef/%s" % V.TREE]:
             return {"success": True, "foundCount": 1, "notFound": [],
@@ -425,6 +448,10 @@ class Fake(object):
         return {"success": True, "pawns": [{"id": pid}]}
 
     def t_list_pawns(self, rect=None, includeHealth=False, limit=500, **k):
+        if self.cur_map in self.gen_maps:
+            n = 2 if self.gen_census("RM_Fuzz") and self.gen_maps[self.cur_map] == "RM_LeaningScrub" else 0
+            return {"success": True, "pawns": [{"id": "G%d" % i, "kindDef": "RM_Surrik", "faction": None, "dead": False}
+                                               for i in range(n)]}
         rr = V_rect(rect) if rect else None
         rows = []
         for p in self.pawns.values():
@@ -446,6 +473,8 @@ class Fake(object):
             for p in self.pawns.values()]}
 
     def t_list_things(self, defName=None, rect=None, limit=1, **k):
+        if self.cur_map in self.gen_maps:
+            return {"success": True, "countMatched": self.gen_census(defName), "things": []}
         rr = V_rect(rect) if rect else None
         rows = [t for t in self.of(defName) if not rr or inrect(t["x"], t["z"], rr)]
         return {"success": True, "scanned": 100, "countMatched": len(rows),
@@ -741,6 +770,11 @@ class Fake(object):
             d, nums = op.split(":")
             if d in ("None", "Clear"):
                 ROOF_STRIPS.append(tuple(int(v) for v in nums.split(",")))
+            if d == "RoofConstructed":
+                rr = tuple(int(v) for v in nums.split(","))
+                for f in self.of("Campfire"):
+                    if inrect(f["x"], f["z"], rr):
+                        f["enclosed_at"] = self.ticks
         return {"success": True}
 
     def t_get_roof_batch(self, rects=None, **k):
@@ -780,12 +814,129 @@ class Fake(object):
         n = len([p for p in self.pawns.values() if self.ticks < p.get("sway_until", 0)])
         return {"success": True, "values": {"swaying": "Count=%d" % n}}
 
+    def save_bytes(self, name):
+        self.save_count += 1
+        return 1000 + 10 * len(self.things) + (100 * self.save_count if "save_grows" in self.broken else 0)
+
+    # ------------------------------------------------------------ scenes batch 2 (native cast .. persistence)
+    def ripple_pass(self):
+        """RM_MapComponent_Ripple.ShouldHide over every pawn (RM_RippleKernel.Hidden)."""
+        b = self.broken
+        if self.settings.get("modEnabled") != "True" and self.settings.get("rippleEnabled") != "True":
+            self.master_was_off = True     # every switch off together (sc_settings' all-off arm)
+        on = self.on("rippleEnabled") or "ripple_ignores_toggles" in b
+        if "ripple_dead_after_master_off" in b and self.master_was_off:
+            on = False
+        fuzz = set((t["x"], t["z"]) for t in self.of("RM_Fuzz"))
+        limit = float(self.settings.get("rippleMaxBodySize", 0.6)) * (2 if self.weather == "RM_Gale"
+                                                                       and "ripple_gale_no_extend" not in b else 1)
+        for p in self.pawns.values():
+            if p.get("goto") and self.ticks >= p["moving_until"]:
+                p["x"], p["z"] = p["goto"]
+                p["goto"] = None
+            wild = p["faction"] == "none" and p["kind"] != "Colonist" and p["kind"] != "RM_Surrik" and (
+                not p.get("mental") or "ripple_hides_mental" in b)
+            cover = (p["x"], p["z"]) in fuzz or "ripple_bare_hides" in b
+            moving = self.ticks < p.get("moving_until", 0) and "ripple_stall_move_hidden" not in b
+            hide = (on and wild and not p["dead"] and cover and BODY.get(p["kind"], 1.0) <= limit
+                    and not (self.weather == "RM_Stall" and moving))
+            hs = p["hediffs"]
+            if hide and "RM_RippleHidden" not in hs:
+                hs.append("RM_RippleHidden")
+            elif not hide and "RM_RippleHidden" in hs:
+                hs.remove("RM_RippleHidden")
+
+    def t_map_info(self, **k):
+        return {"success": True, "mapId": self.cur_map}
+
+    def t_world_tile_map_generate(self, tile=None, biome=None, **k):
+        mid = 10 + len(self.gen_maps) + len(self.saves)
+        self.gen_maps[mid] = biome
+        return {"success": True, "mapId": mid, "wasAlreadyGenerated": False}
+
+    def t_set_current_map(self, mapId=None, **k):
+        self.cur_map = mapId
+        return {"success": True}
+
+    def t_map_drop(self, mapIndex=None, **k):
+        self.gen_maps.pop(mapIndex, None)
+        return {"success": True}
+
+    def gen_census(self, defName):
+        """countMatched of a rostered plant on a generated map: the Scrub grows its roster, the vanilla control none."""
+        scrub = self.gen_maps.get(self.cur_map) == "RM_LeaningScrub"
+        grows = scrub != ("cast_never_generates" in self.broken) if scrub else "cast_leaks_to_control" in self.broken
+        return 30 if grows and defName.startswith("RM_") else 0
+
+    def t_pawn_mental(self, pawn=None, action=None, state=None, **k):
+        self.pawns[pawn]["mental"] = action == "start"
+        return {"success": True}
+
+    def t_thing_refuel(self, thingId=None, amount=0, **k):
+        t = self.things.get(thingId)
+        if t is None or t["def"] != "Campfire":
+            return {"success": False, "message": "no CompRefuelable on %s" % thingId}
+        bias = 1.2 if "fuel_meter_biased" in self.broken and t["x"] > 110 else 1.0
+        return {"success": True, "fuelAfter": self.fuel(thingId) * bias, "capacity": 20}
+
+    def t_cell_temperature(self, cell=None, **k):
+        x, z = [int(v) for v in cell.split(",")]
+        for f in self.of("Campfire"):
+            if abs(f["x"] - x) <= 4 and abs(f["z"] - z) <= 4 and f.get("enclosed_at") is not None:
+                rate = 6.0 if f.get("burning") == "RM_DeadVenomvine" and "cane_no_heat_bonus" not in self.broken else 4.0
+                return {"success": True, "temperature": 20 + rate * (self.ticks - f["enclosed_at"]) / 1000.0}
+        return {"success": True, "temperature": 20.0}
+
+    def t_running_mods(self, **k):
+        return {"success": True, "count": 3, "packageIds": ["ludeon.rimworld", V.OUR_PACKAGES[1], V.SCANNER_PKG]}
+
+    def t_list_selected_gizmos(self, **k):
+        return {"success": True, "gizmos": [{"label": V.PULSE_LABEL + " (ready)", "gizmoId": "g1"}]}
+
+    def t_execute_gizmo(self, gizmoId=None, **k):
+        quiet, targets = V._payload()
+        snd = self.of(V.SOUNDER)[0]
+        near = lambda o: abs(o["x"] - snd["x"]) + abs(o["z"] - snd["z"]) <= 14
+        lines = []
+        for tg in targets:
+            hit = any(near(p) for p in self.pawns.values() if p["kind"] in tg["pawnRaces"] and not p["dead"]) or any(
+                near(t) for t in self.things.values() if t["def"] in tg["thingDefs"])
+            if (hit and "pulse_reads_quiet" not in self.broken) or (
+                    "pulse_reads_without_target" in self.broken and tg["label"] == "sweetline tree"):
+                lines.append(tg["reading"])
+        self.letters.append({"label": "Sounding reading", "text": "The pulse rolled out:\n" + ("\n".join(lines) or quiet)})
+        return {"success": True}
+
+    def t_list_letters(self, **k):
+        return {"success": True, "letters": list(self.letters)}
+
+    def t_map_comp_timing(self, ticks=300, **k):
+        self.advance(int(ticks))
+        calls = 0 if "timing_no_work" in self.broken else int(ticks) // 60 * (1 + len(self.pawns) // 10)
+        return {"success": True, "ticksElapsed": int(ticks), "coverage": "ok", "components": [
+            {"type": "RimMandrake.LeaningScrub.RM_MapComponent_Ripple", "packageId": V.OUR_PACKAGES[1], "calls": calls,
+             "msPerTick": 0.01}]}
+
+    def t_time_perf(self, **k):
+        return {"success": True, "meanTickTime": 4.2}
+
     def t_save_game(self, saveName=None, **k):
         self.saves[saveName] = copy.deepcopy((self.ticks, self.pawns, self.things))
         return {"success": True}
 
     def t_load_game_ready(self, saveName=None, **k):
         ticks, pawns, things = copy.deepcopy(self.saves[saveName])
+        if "cane_credit_lost_on_reload" in self.broken:
+            for t in things.values():
+                if t.get("burning") == "RM_DeadVenomvine":
+                    t["fuel_level"] = t.get("fuel_level", 20) / 2
+        if "reload_loses_pawn" in self.broken:
+            col = sorted((int(p[1:]), p) for p in pawns if pawns[p]["kind"] == "Colonist")
+            if len(col) > 30:
+                del pawns[col[-1][1]]      # the newest colonist: one of the walk's forty
+        if "reload_adds_thing" in self.broken and any(t["def"] == "RM_Fuzz" for t in things.values()):
+            self.n += 1
+            things["T%d" % self.n] = dict(id="T%d" % self.n, x=100, z=145, stackCount=1, growth=1.0, **{"def": "RM_Fuzz"})
         if "missing_lost_on_reload" in self.broken:
             for p in pawns.values():
                 p["lost"] = []
@@ -798,11 +949,22 @@ class Fake(object):
         return {"success": True, "ops": "Soil:%s" % rects + (";Sand:0,0" if dried else "")}
 
     def fuel(self, tid):
-        """Campfire fuel: spawned full (20), burns 10 per day (Core CompProperties_Refuelable)."""
+        """Campfire fuel: spawned full (20), burns 10 per day (Core CompProperties_Refuelable); a refuel resets the
+        level ("fuel_level" at "fuel_at")."""
         t = self.things.get(tid) or {}
-        return max(0.0, 20 - 10.0 * (self.ticks - t.get("born", self.ticks)) / 60000)
+        return max(0.0, t.get("fuel_level", 20) - 10.0 * (self.ticks - t.get("fuel_at", t.get("born", self.ticks))) / 60000)
 
-    def t_ordered_job(self, pawnId=None, jobDef=None, targetAId=None, targetBId=None, **k):
+    def credit(self, d):
+        """Fuel per item: wood 1, dead venomvine 2 (the scenes' designed premium)."""
+        return 2.0 if d == "RM_DeadVenomvine" and "cane_no_premium" not in self.broken else 1.0
+
+    def t_ordered_job(self, pawnId=None, jobDef=None, targetAId=None, targetBId=None, targetAX=-1, targetAZ=-1, **k):
+        if jobDef == "Goto":        # the scenes: an ordered walk arrives 300 ticks later and is "moving" until then
+            p = self.pawns[pawnId]
+            p["goto"], p["moving_until"] = (targetAX, targetAZ), self.ticks + 300
+            if "trip_never_returns" in self.broken and p["kind"] == "Colonist" and targetAX < p["x"]:
+                p["goto"] = None
+            return {"success": True, "accepted": True}
         kind = {"RM_SmotherVenomvine": "smother", "Refuel": "refuel", "Harvest": "harvest"}.get(jobDef)
         if kind == "refuel" and 20 - self.fuel(targetAId) < 1:   # JobDriver_Refuel ends on CompRefuelable.IsFull
             return {"success": False, "accepted": True, "afterJobDef": "Wait_MaintainPosture"}
@@ -865,6 +1027,7 @@ ROOF_STRIPS = []    # rects the suite opened to the sky (modcheck4 2026-10-16: u
 def run(broken=()):
     game = Fake(broken)
     V._about_text = lambda: game.about
+    V._save_bytes = game.save_bytes
     results = {}
     for name, fn in V.suite.chains:
         t = TestContext(game, anchor=(100, 100))
@@ -891,8 +1054,9 @@ BREAKS = {
     "rule_unarmed": "patches.rules_armed",
     "thicket_unpatched": "patches.thicket_smotherable",
     "arm_not_rotting": "patches.vissler_arm_is_rotting_meat",
-    "fuel_unpatched": "patches.dead_venomvine_fuels_fire",
-    "setting_missing": "settings.defaults",
+    "fuel_unpatched": ("patches.dead_venomvine_fuels_fire", "scene_cane_fuel.cane_accepted_by_wood_filter",
+                       "scene_colony_walk.walk_order_a_trip_then_fuel"),
+    "setting_missing": ("settings.defaults", "scene_settings.settings_census"),
     "set_plants_drops": "flora.flora_spawns",
     "no_pollute": "flora.flora_spawns",          # LIVE 2026-10-07: RM_Grellspine on a clean cell
     "no_fly": "fauna.dustflutter_can_fly",
@@ -997,6 +1161,30 @@ BREAKS.update({
     "about_promises_wardens": "scene_cuts.cuts_no_cut_content",
     "farmer_camps_back": "scene_cuts.cuts_no_cut_content",
     "vaporator_dries": "scene_cuts.cuts_vaporator_ground_kept",
+    # scenes batch 2 (2026-11-16)
+    "cast_never_generates": "scene_native_cast.cast_roster_generates",
+    "cast_leaks_to_control": "scene_native_cast.cast_roster_generates",
+    "pyre_def_discarded": "scene_pyre_beliefs.pyre_beliefs_characterized",
+    "pyre_ritual_discarded": "scene_pyre_ritual.pyre_ritual_characterized",
+    "payload_not_attached": "scene_acoustic_payload.acoustic_payload_attached",
+    "pulse_reads_quiet": "scene_acoustic_payload.acoustic_pulses_read_their_target",
+    "pulse_reads_without_target": "scene_acoustic_payload.acoustic_pulses_read_their_target",
+    "ripple_bare_hides": "scene_concealment.concealment_bare_lane_visible",
+    "ripple_stall_move_hidden": "scene_concealment.concealment_stall_move_reveals",
+    "ripple_gale_no_extend": "scene_concealment.concealment_gale_extends_size",
+    "ripple_hides_mental": "scene_concealment.concealment_mental_state_not_hidden",
+    "ripple_ignores_toggles": ("scene_concealment.concealment_toggle_off_nobody_hidden",
+                               "scene_settings.settings_all_off_quiet"),
+    "ripple_dead_after_master_off": "scene_settings.settings_reenabled_effect_returns",
+    "cane_no_premium": "scene_cane_fuel.cane_more_burn_per_item",
+    "cane_no_heat_bonus": "scene_cane_fuel.cane_heat_rate_higher",
+    "cane_credit_lost_on_reload": "scene_cane_fuel.cane_credit_survives_reload",
+    "fuel_meter_biased": "scene_cane_fuel.cane_wood_control_alike",
+    "trip_never_returns": "scene_colony_walk.walk_order_a_trip_then_fuel",
+    "reload_loses_pawn": "scene_colony_walk.walk_save_reload_resumes",
+    "timing_no_work": "scene_floor_runtime.runtime_work_counted",
+    "save_grows": "scene_floor_persistence.persist_no_growth",
+    "reload_adds_thing": "scene_floor_persistence.persist_three_cycles",
 })
 for _form, _plant in V.FORMS:
     BREAKS["%s_never" % _form] = "forms.%s_acts" % _form
