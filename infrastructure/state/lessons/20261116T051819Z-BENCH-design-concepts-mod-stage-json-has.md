@@ -1,0 +1,1 @@
+design/concepts/<Mod>/stage.json has a key 'stage' that is the Designer's inner step (Gimme Some Slack: 5), NOT the pipeline stage; the pipeline stage is version/stage_record.json 'stage' (e.g. blind_challenge). A cold reader of stage.json will misread a mod as at pipeline stage 5. Source: design/specs/2026-11-15-holder-pipeline-fusion/02m-remeasure.md
