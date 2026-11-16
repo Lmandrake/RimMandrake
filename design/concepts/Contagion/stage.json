@@ -58,10 +58,52 @@
     "ref": "run rm-role-designer-1794775427",
     "stage": 4,
     "tokens": 740925
+   },
+   {
+    "at": "2026-11-16T00:10:50Z",
+    "kind": "helper",
+    "ref": "exam examiner rm-judge ab1f2a220ca715453",
+    "stage": 4,
+    "tokens": 33179
+   },
+   {
+    "at": "2026-11-16T00:10:50Z",
+    "kind": "helper",
+    "ref": "exam challenger rm-judge a19389cde05763c4a",
+    "stage": 4,
+    "tokens": 31645
+   },
+   {
+    "at": "2026-11-16T00:10:50Z",
+    "kind": "helper",
+    "ref": "exam reader rm-judge a849016fd528d3644",
+    "stage": 4,
+    "tokens": 42695
+   },
+   {
+    "at": "2026-11-16T00:10:50Z",
+    "kind": "helper",
+    "ref": "exam reader rm-judge a5b6767bae007f4b3",
+    "stage": 4,
+    "tokens": 42478
+   },
+   {
+    "at": "2026-11-16T00:10:50Z",
+    "kind": "helper",
+    "ref": "exam control rm-judge a8fc83cd66c9646f7",
+    "stage": 4,
+    "tokens": 41496
+   },
+   {
+    "at": "2026-11-16T00:13:55Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794787652",
+    "stage": 4,
+    "tokens": 414672
    }
   ],
   "reserve": 60000,
-  "spent": 3984020
+  "spent": 4590185
  },
  "history": [
   {
@@ -159,6 +201,24 @@
    "stage": 4,
    "what": "unblock",
    "why": "RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS fixed at be1d652b2e: the exam's helpers now run under the Designer run's own allowance (slot_rules.json role_runs) (was blocked on RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)"
+  },
+  {
+   "at": "2026-11-16T00:07:47Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "3984020 of 4000000 spent; run rm-role-designer-1794787652 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T00:07:47Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1794787652, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T00:13:56Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794787652: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -332,12 +392,35 @@
    "run": "rm-role-designer-1794775427",
    "stage": 4,
    "summary": "The exam needs five fresh helpers (Examiner, Challenger, two Readers, Control). The slot hook counts this run's spawns as CONDUCTOR helpers: six Conductor-window helpers held N=3 from 12:45 to 13:23 PST, then the budget fell to N=0 (PAYDOWN, about 10 h). No helper ran, so no scenario exists and nothing was scored. Prepared for the retake: the control copy in exam_control/ removes the core leaf sunbeam_arrest_treats, which no other leaf or sheet line mentions (checked: zero residue). Unblock when the seat has at least 2 slots."
+  },
+  {
+   "at": "2026-11-16T00:13:56Z",
+   "inputs": {
+    "exam": "d7ab9110c711550d64ed89d60a09dbccba1545cf92100f6429e8288e8d95ea07",
+    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
+    "scenes": "0a5d99349d37cf82f302ef21ab2b771a524ac041d93bcd36cd50a4a78e989ba4",
+    "sheet": "e0e9a86330827203b114a0265ed56d80d9b1b4bc6ef4940b0144e6e5aab76cf3",
+    "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "run": "rm-role-designer-1794787652",
+   "stage": 4,
+   "summary": "Stage 4 Cold Reader exam passed against tree c70f85d1 and sheet e0e9a863: 16 frozen scenarios (12 by a fresh Examiner, 4 near-miss traps by a fresh Challenger; 10 reject cases), two fresh Readers matched expect on 16/16, accept_where_reject_core 0, no Challenger misses. Control Reader on the copy without core leaf sunbeam_arrest_treats accepted s8 (an arrest that erases mutations), the one scenario sourced on that leaf it could not see, so the set discriminates. Five helpers charged (191,493 tokens); the task is over its 4,000,000 cap (advisory, per the launcher)."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
