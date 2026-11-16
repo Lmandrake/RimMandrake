@@ -1,0 +1,1 @@
+A scene that fires its own raid must narrow B.stop_on for that wait: on the default list the raid's hostile_arrival stops safe_advance at tick 60 and site_recover vanishes every raider, so the scene reads 'nobody came' (sc_fetch_fallen, FlowWorks visit 1, 2026-11-15).
