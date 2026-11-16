@@ -243,10 +243,12 @@
     {
       "id": "d_stage5_calibrated_return",
       "speaker": "agent",
-      "text": "The calibrated full coverage review rm-coverage-judge-1794844087 found fourteen sound, attainable design-coverage gaps g1 through g14, all returning to stage 3. All checklist rows are present and no owner decision is required. Preserve the complete verdict and address its whole list in one stage-3 rework, with coverage_fixes.json against this judge, followed by the exam. The earlier advisory verdict is archived. The unchanged-advisory pre-launch defect was repaired and the current brief passed three planted calibration cases. No frozen design artifact was rewritten in stage 5. Runtime acceptance remains unrun and the gate has no coverage signature.",
+      "text": "The calibrated full coverage review rm-coverage-judge-1794844087 recorded fourteen gaps. The owner bar rule published during finalization required reconciliation and independent criterion reading. The current brief passed four planted cases. The independent reader and program retained eight sound experience gaps for Stage 3 (g1,g2,g3,g4,g7,g8,g9,g11) and made six advisory (g5,g6,g10,g12 declared-data demands, g13,g14 late misses). No owner decision is required. Preserve every finding, fix all eight blocking gaps together, write coverage_fixes.json against rm-coverage-judge-1794844087, and rerun the exam. Both original verdicts are archived. The unchanged-advisory pre-launch defect was repaired and closed. Frozen tree, sheet, scenes and floor remain intact. Runtime acceptance is unrun and the gate has no coverage signature.",
       "source": [
         "design/concepts/Cauldron/coverage_verdict.json",
-        "design/concepts/Cauldron/coverage_verdict.rm-coverage-judge-1794838039.json",
+        "design/concepts/Cauldron/coverage_reconciliation.json",
+        "design/concepts/Cauldron/coverage_verdict.rm-coverage-judge-1794844087.json",
+        "design/RimMandrake/standing_rulings.md",
         "src/RimMandrake/rimflow/coverage_judge.py"
       ]
     }

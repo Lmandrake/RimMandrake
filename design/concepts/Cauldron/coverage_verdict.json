@@ -1,2425 +1,2640 @@
 {
- "at": "2026-11-16T15:48:07Z",
- "checklist": [
-  {
-   "evidence": [
-    "record.json:294",
-    "scenes.json:36",
-    "scenes.json:917"
-   ],
-   "id": "biome_identity",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "arrival_identity",
-     "what": "owned biome reads as the Cauldron at play zoom"
-    },
-    {
-     "ok": true,
-     "scene": "arrival_identity",
-     "what": "roster weights resolve as the current roster"
-    },
-    {
-     "ok": true,
-     "scene": "legacy_floor",
-     "what": "ships through the Baroque Biomes composition"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "world-map texture resolves"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "diseases"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "foraging properties"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "travel properties"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:36"
-   ],
-   "id": "soils",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "arrival_identity",
-     "what": "own plain and rich terrain defs with distinct dark textures"
-    },
-    {
-     "ok": true,
-     "scene": "arrival_identity",
-     "what": "fertility bands agree"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:67",
-    "scenes.json:36"
-   ],
-   "id": "weather",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "weather_gardens",
-     "what": "scatter-dusk, vapour bank, dewfall and bloom give distinct sky, visibility and wind"
-    },
-    {
-     "ok": true,
-     "scene": "weather_gardens",
-     "what": "no rain or snow"
-    },
-    {
-     "ok": true,
-     "scene": "arrival_identity",
-     "what": "dry thunderstorm kept in the weather table"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:917",
-    "floor.json"
-   ],
-   "id": "placement_legacy",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "legacy_floor",
-     "what": "tile-score worker gates, checked only as an isolated legacy check (worldgen floor: no new placement)"
-    },
-    {
-     "ok": true,
-     "scene": "legacy_floor",
-     "what": "rarity setting persists; rarity-zero control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:772"
-   ],
-   "id": "settings",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "settings_effects",
-     "what": "persistent toggles and strength sliders with effects"
-    },
-    {
-     "ok": true,
-     "scene": "settings_effects",
-     "what": "scroll, search, collapse and reset UI, plus timing labels"
-    },
-    {
-     "ok": true,
-     "scene": "settings_effects",
-     "what": "Harmony failure notice"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:370",
-    "scenes.json:67",
-    "scenes.json:96",
-    "scenes.json:381"
-   ],
-   "id": "flora_base",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "arrival_identity",
-     "what": "ten-species base roster in the intact forest"
-    },
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "Xithess yields chemfuel from completed harvest"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "selected chemotrophs grow at zero light (only an 'observations' note, no expect or control)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:386",
-    "scenes.json:289"
-   ],
-   "id": "forestry",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "thornwood_harvest",
-     "what": "harvest yields growth-scaled steel beside wood"
-    },
-    {
-     "ok": true,
-     "scene": "thornwood_harvest",
-     "what": "elevated harvest work"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "vanilla smithing sound on harvest"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:404",
-    "scenes.json:296"
-   ],
-   "id": "assay",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "thornwood_harvest",
-     "what": "inspect grade and expected metal follow growth and tuning"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "all four grades (unripe, fair, rich, lode) staged and asserted"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:289"
-   ],
-   "id": "assay_flecks",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "thornwood_harvest",
-     "what": "light and heavy fleck overlays follow grade"
-    },
-    {
-     "ok": true,
-     "scene": "thornwood_harvest",
-     "what": "remesh on a settings change without a camera move"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:67"
-   ],
-   "id": "dew_beads",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "weather_gardens",
-     "what": "dew filth during dewfall outside the home area"
-    },
-    {
-     "ok": true,
-     "scene": "weather_gardens",
-     "what": "bounded density, expiry and no added dose"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:67"
-   ],
-   "id": "dew_saturation",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "weather_gardens",
-     "what": "five dew variants swap and revert with the weather"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:470",
-    "scenes.json:67",
-    "scenes.json:96"
-   ],
-   "id": "shore_gardens",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "weather_gardens",
-     "what": "nettles colonise toxic shores by slow sampling; zones respected"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "colonisation at map creation (only an observation)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:487",
-    "scenes.json:67",
-    "scenes.json:96"
-   ],
-   "id": "vent_gardens",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "weather_gardens",
-     "what": "crystal, blood bouquet and toxic flower rings follow stable, leak and blowout vents"
-    },
-    {
-     "ok": true,
-     "scene": "weather_gardens",
-     "what": "later fills empty space"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "mapgen replaces eligible wild non-trees (only an observation)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:381"
-   ],
-   "id": "tsevrix_food",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "toxic raw pulp harvested and eaten"
-    },
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "stove roast gives safe food; raw-food thought corrected"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:522",
-    "scenes.json:390"
-   ],
-   "id": "ixalith_beauty",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "beauty with no harvest yield"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "fragility (named in the action, asserted nowhere)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:381"
-   ],
-   "id": "fexxil_hazard",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "path cost"
-    },
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "contact scratch and toxic hediff, against a clean path"
-    },
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "glass-shard harvest"
-    },
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "startup venom toggle"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:381"
-   ],
-   "id": "sessarix_fuel",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "chemfuel resin from completed harvest"
-    },
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "soil blacklist and fertility bypass"
-    },
-    {
-     "ok": true,
-     "scene": "settings_effects",
-     "what": "expansion roster switch"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:381"
-   ],
-   "id": "kissaveth_gas",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "toxic gas on violence and on cutting; none untriggered"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:381"
-   ],
-   "id": "selvix_medicine",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "herbal medicine from completed harvest"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:589",
-    "scenes.json:460"
-   ],
-   "id": "suush_ecology",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "suush_burst",
-     "what": "docile and tameable"
-    },
-    {
-     "ok": true,
-     "scene": "suush_burst",
-     "what": "no food need"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "no attack tools"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "solitary native"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "directional art (facings)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:854",
-    "floor.json",
-    "tree.json"
-   ],
-   "id": "suush_flight",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "supported_integrations",
-     "what": "flight stats and race state read only (flight floor exempts unattended motion)"
-    },
-    {
-     "ok": false,
-     "scene": "supported_integrations",
-     "what": "tested by a scene whose cited requirement leaf describes it"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:450"
-   ],
-   "id": "suush_burst",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "suush_burst",
-     "what": "Bullet and Bomb hits start the wick"
-    },
-    {
-     "ok": true,
-     "scene": "suush_burst",
-     "what": "death backstop and an attributed toxic gas blast"
-    },
-    {
-     "ok": true,
-     "scene": "suush_burst",
-     "what": "melee is not a trigger"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:639",
-    "scenes.json:479",
-    "scenes.json:488"
-   ],
-   "id": "vexxiss_shear",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "vexxiss_products",
-     "what": "tame-only shear of vexxith; the animal survives"
-    },
-    {
-     "ok": true,
-     "scene": "vexxiss_products",
-     "what": "solid giant with no explosive comp"
-    },
-    {
-     "ok": true,
-     "scene": "vexxiss_products",
-     "what": "ordinary feeding and handling"
-    },
-    {
-     "ok": false,
-     "scene": "vexxiss_products",
-     "what": "native art and variant: named in the action, asserted in no expect"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:536"
-   ],
-   "id": "water_poisoning",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "water_fire_tracks",
-     "what": "clean named water converted to toxic"
-    },
-    {
-     "ok": true,
-     "scene": "water_fire_tracks",
-     "what": "warning letter with per-animal cooldown"
-    },
-    {
-     "ok": true,
-     "scene": "water_fire_tracks",
-     "what": "independent toggles"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:669",
-    "scenes.json:536",
-    "scenes.json:517"
-   ],
-   "id": "fire_warden",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "water_fire_tracks",
-     "what": "BeatFire to completion"
-    },
-    {
-     "ok": true,
-     "scene": "water_fire_tracks",
-     "what": "attacks the recorded hostile igniter, spares the same faction, bounded job"
-    },
-    {
-     "ok": false,
-     "scene": "vent_competition",
-     "what": "toggle-off cancels an already-issued retaliation melee job: observed, no pass condition"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:685",
-    "scenes.json:507",
-    "scenes.json:517"
-   ],
-   "id": "vent_drinking",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "vent_competition",
-     "what": "wild vexxiss seek and drink vents; suppression to silence and recovery"
-    },
-    {
-     "ok": true,
-     "scene": "vent_competition",
-     "what": "drinking off aborts walk and drink"
-    },
-    {
-     "ok": false,
-     "scene": "vent_competition",
-     "what": "toggle effect on an existing melee job has a pass criterion"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:536"
-   ],
-   "id": "vexxiss_tracks",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "water_fire_tracks",
-     "what": "prints written; maker on hover; expiry; saved metadata"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:716",
-    "scenes.json:133",
-    "scenes.json:96"
-   ],
-   "id": "vent_sites",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "falter_hour",
-     "what": "a live vent used for bloom and falter"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "natural vents on new maps with safe start and spacing"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "mixed stable and leaking states, recent-blowout memory at generation"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "generation idempotent and setting-gated"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:733",
-    "scenes.json:133"
-   ],
-   "id": "vent_cycle_falter",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "",
-     "what": "weather changes scale vent output"
-    },
-    {
-     "ok": true,
-     "scene": "falter_hour",
-     "what": "falter on the bloom transition; native hush jobs"
-    },
-    {
-     "ok": true,
-     "scene": "falter_hour",
-     "what": "optional warning (message-off arm)"
-    },
-    {
-     "ok": true,
-     "scene": "falter_hour",
-     "what": "hush count saved through reload"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:165"
-   ],
-   "id": "bloom_load",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "separate metal load on exposed eligible flesh"
-    },
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "roofed pawns and natives exempt"
-    },
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "resistance stats scale the dose"
-    },
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "vanilla ToxicBuildup disabled"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:165"
-   ],
-   "id": "local_exposure",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "near/far, recovering-vent, residual floor and no-vent fallback"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:788",
-    "scenes.json:566",
-    "scenes.json:575"
-   ],
-   "id": "gas_grid",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "gas_transport",
-     "what": "separate persistent grid with emission, diffusion and dissipation"
-    },
-    {
-     "ok": true,
-     "scene": "gas_transport",
-     "what": "vanilla gas storage untouched"
-    },
-    {
-     "ok": false,
-     "scene": "gas_transport",
-     "what": "section rendering: 'cloud rendering' in the action, asserted in no expect"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:566"
-   ],
-   "id": "gas_drift",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "gas_transport",
-     "what": "wind drift, daily seeded heading, diagonal-corner guard, centroid"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:597"
-   ],
-   "id": "gas_ignition",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "gas_chain",
-     "what": "cell-by-cell ignition, consumption, toxic smoke, instigator kept"
-    },
-    {
-     "ok": true,
-     "scene": "gas_chain",
-     "what": "flame front continues after a fuel-less fire and survives reload"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:686"
-   ],
-   "id": "gas_tap",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "tap_refine",
-     "what": "caps emission, banks condensate, delivers whole 200 L units to a touching tank"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:507"
-   ],
-   "id": "tap_prying",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "vent_competition",
-     "what": "ordinary scaffold takes pry damage; lined is pry-proof; prying off keeps drinking"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:657"
-   ],
-   "id": "ruin_site",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "rig_study",
-     "what": "natural corroded rig, once-only dressing, kept-clear ring, no duplicate on reload"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:657"
-   ],
-   "id": "study_research",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "rig_study",
-     "what": "in-place study unlocks research, then the prerequisite, then the build"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:686",
-    "scenes.json:715"
-   ],
-   "id": "filter_works",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "tap_refine",
-     "what": "condensate to reagent"
-    },
-    {
-     "ok": true,
-     "scene": "water_works",
-     "what": "toxic and acid water to fresh"
-    },
-    {
-     "ok": true,
-     "scene": "water_works",
-     "what": "power and cartridge pause; machine toggle"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:198"
-   ],
-   "id": "vexxith_material",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "material_routes",
-     "what": "acid immunity against steel; guarded AcidBurn and BloomAcid"
-    },
-    {
-     "ok": true,
-     "scene": "material_routes",
-     "what": "strength, heat armour, zero flammability"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:947",
-    "scenes.json:205"
-   ],
-   "id": "vexxith_door",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "material_routes",
-     "what": "acid-proof door"
-    },
-    {
-     "ok": true,
-     "scene": "material_routes",
-     "what": "startup architect-menu gate; built doors preserved"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "plate-only stuff restriction"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "normal placement and opening"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:963",
-    "scenes.json:205"
-   ],
-   "id": "containers_gates",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "",
-     "what": "bottle, bucket and barrel made by their recipes keep material identity"
-    },
-    {
-     "ok": true,
-     "scene": "material_routes",
-     "what": "FlowWorks recognizes the containers; fill and use"
-    },
-    {
-     "ok": true,
-     "scene": "material_routes",
-     "what": "canal-gate acid damage through the immunity hook"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:743"
-   ],
-   "id": "lined_machines",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "lined_stock",
-     "what": "quarter cartridge use per equal work; acid immunity"
-    },
-    {
-     "ok": true,
-     "scene": "lined_stock",
-     "what": "lined tap acid and pry protection"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:1000",
-    "scenes.json:172",
-    "scenes.json:772"
-   ],
-   "id": "vexxith_gear",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "worn sealing protects the wearer"
-    },
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "acid-proof item markers"
-    },
-    {
-     "ok": true,
-     "scene": "settings_effects",
-     "what": "startup availability switch"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "suit and helmet crafting recipes"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "heat protection"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:1018",
-    "scenes.json:172"
-   ],
-   "id": "acid_air",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "hourly AcidBurn on unroofed, unsealed non-native pawns"
-    },
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "native and condition immunity; strength toggle"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "all factions (raider or visitor, not only colonists)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:198"
-   ],
-   "id": "acid_hull",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "material_routes",
-     "what": "ship-substructure buildings burn to a 30% floor; warning once"
-    },
-    {
-     "ok": true,
-     "scene": "material_routes",
-     "what": "vexxith or one hull liner stops sampled damage"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:350"
-   ],
-   "id": "rhossak_bind",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "rhossak_cycle",
-     "what": "bind nearest thornwood, report, rebind after loss, wild tether"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:350"
-   ],
-   "id": "rhossak_sprout",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "rhossak_cycle",
-     "what": "sleeping seed-bearer seeds roster non-trees; galled excluded"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:350"
-   ],
-   "id": "rhossak_grove",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "rhossak_cycle",
-     "what": "trio accumulate, hold asleep, reset apart, root with cooldown, bind and message"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:350"
-   ],
-   "id": "galled_food",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "rhossak_cycle",
-     "what": "seedless galled animal sheds edible galls from an attributed producer"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:1112",
-    "scenes.json:423"
-   ],
-   "id": "zisska",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "animal_products",
-     "what": "toxic valued meat eaten; trace steel on butcher"
-    },
-    {
-     "ok": true,
-     "scene": "animal_products",
-     "what": "guarded VEF fire-spit"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "'Herd mineral rasper': herd behaviour asserted nowhere"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:1130",
-    "scenes.json:140",
-    "scenes.json:414"
-   ],
-   "id": "eskith",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "falter_hour",
-     "what": "native hush role observed on an eskith (start says only 'preferably eskith')"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "ground-sensing flock behaviour and art"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:414"
-   ],
-   "id": "bedbug",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "animal_products",
-     "what": "paralysis bite, eggs, hatching"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:414"
-   ],
-   "id": "crystalmit",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "animal_products",
-     "what": "guarded chunk eating and stone-block product"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:414",
-    "floor.json"
-   ],
-   "id": "garsulix",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "animal_products",
-     "what": "jelly, asexual reproduction, death explosion; floating read as state only (flight floor)"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:414"
-   ],
-   "id": "ossrith",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "animal_products",
-     "what": "milk, crystals, refinery uranium recipe"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:414"
-   ],
-   "id": "sikka",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "animal_products",
-     "what": "eggs and hatching, silk shearing, lifecycle"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:854",
-    "tree.json"
-   ],
-   "id": "shared_cast",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "supported_integrations",
-     "what": "visceral, decay drake, bileworm and mullgoth in the roster with guards"
-    },
-    {
-     "ok": false,
-     "scene": "supported_integrations",
-     "what": "tested under a requirement leaf whose text describes it"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:854",
-    "tree.json"
-   ],
-   "id": "campaign_cast",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "supported_integrations",
-     "what": "Utinni patch cast in its native role; prized-meat layer stays external"
-    },
-    {
-     "ok": false,
-     "scene": "supported_integrations",
-     "what": "tested under a requirement leaf whose text describes it"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:854",
-    "tree.json"
-   ],
-   "id": "oomo_shrine",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "supported_integrations",
-     "what": "shrine in the ruin slot; meditation use; lore"
-    },
-    {
-     "ok": false,
-     "scene": "supported_integrations",
-     "what": "tested under a requirement leaf whose text describes it"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:886",
-    "tree.json"
-   ],
-   "id": "scanner_payload",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "optional_services",
-     "what": "AcousticScanner payloads for vents, fauna, resin and cavities"
-    },
-    {
-     "ok": false,
-     "scene": "optional_services",
-     "what": "tested under a requirement leaf whose text describes it"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:886",
-    "tree.json"
-   ],
-   "id": "growth_stalled",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "optional_services",
-     "what": "ExplosiveGrowth stalled terminator band through the shared engine"
-    },
-    {
-     "ok": false,
-     "scene": "optional_services",
-     "what": "tested under a requirement leaf whose text describes it"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:886",
-    "tree.json"
-   ],
-   "id": "aerosol_neighbour",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "optional_services",
-     "what": "Scarlands aerosol screen sees the Cauldron as polluted"
-    },
-    {
-     "ok": false,
-     "scene": "optional_services",
-     "what": "tested under a requirement leaf whose text describes it"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json:1299",
-    "scenes.json:319",
-    "scenes.json:329",
-    "tree.json:210"
-   ],
-   "id": "trunk_deposit_coat",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "",
-     "what": "not a mandatory unit: impl absent, scope not_opened"
-    },
-    {
-     "ok": false,
-     "scene": "trunk_coat_check",
-     "what": "its scene is attached to in-scope leaves thornwood_work and mineral_forest, with no leaf verdict defined when UNBUILT"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:103",
-    "scenes.json:715"
-   ],
-   "id": "acid_pool_binding",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "pool_identity",
-     "what": "site pool chemistry survives fill, pump, tank and works"
-    },
-    {
-     "ok": true,
-     "scene": "water_works",
-     "what": "acid and toxic inputs processed"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:229"
-   ],
-   "id": "lasting_metal_poisoning",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "metal_purge",
-     "what": "persists through care, departure and reload; advanced purge"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:259"
-   ],
-   "id": "permanent_acid_injuries",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "acid_injuries",
-     "what": "enduring disfigurement and sensory loss after healing and reload"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "scenes.json:627"
-   ],
-   "id": "gas_knockback",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "gas_displacement",
-     "what": "clump bursts displace goods; knockback-off control"
-    },
-    {
-     "ok": true,
-     "scene": "gas_displacement",
-     "what": "eligible-pawn displacement by the shared policy"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:48",
-    "scenes.json:10",
-    "exam.json"
-   ],
-   "id": "scene_observer",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "observer_recovery",
-     "what": "independent reads, fingerprint match, UNMEASURED on a withheld read, recovery after interruption"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:58",
-    "tree.json:73",
-    "scenes.json:36",
-    "scenes.json:67",
-    "scenes.json:96",
-    "sheet.md"
-   ],
-   "id": "mineral_forest",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "arrival_identity",
-     "what": "mineral plants and animals over distinguishable soils; rainless lightning sky"
-    },
-    {
-     "ok": true,
-     "scene": "weather_gardens",
-     "what": "five weather states distinct; dew and fleck transitions"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "light-growth readbacks (oracle) with an expect and control"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "owner part 'inspect the forest at play zoom' staged as an owner_review hold"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json:103",
-    "scenes.json:715"
-   ],
-   "id": "pool_chemistry",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "pool_identity",
-     "what": "pool liquid identity through contact, fill, pump and processing"
-    },
-    {
-     "ok": true,
-     "scene": "pool_identity",
-     "what": "clean-water control on the same route"
-    },
-    {
-     "ok": true,
-     "scene": "water_works",
-     "what": "processing input"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:123",
-    "scenes.json:133"
-   ],
-   "id": "falter_warning",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "falter_hour",
-     "what": "cue about 2500 ticks before bloom; worker reaches shelter"
-    },
-    {
-     "ok": true,
-     "scene": "falter_hour",
-     "what": "hush off, message off, ordinary transition, reload"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "owner part 'judge whether cues are readable' staged as an owner_review hold"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:148",
-    "scenes.json:165",
-    "scenes.json:198"
-   ],
-   "id": "ambient_protection",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "ambient_routes",
-     "what": "roof and full seal protect against bloom and acid; exposed positive control"
-    },
-    {
-     "ok": true,
-     "scene": "material_routes",
-     "what": "material immunity tested separately"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "owner part 'inspect exposed, roofed and sealed workers' staged as an owner_review hold"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json:229"
-   ],
-   "id": "persistent_metal",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "metal_purge",
-     "what": "persistence and advanced purge, incl. a saved low trace"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json:259"
-   ],
-   "id": "permanent_acid",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "acid_injuries",
-     "what": "lasting disfigurement and sensory loss with controls"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:210",
-    "scenes.json:289",
-    "scenes.json:319",
-    "sheet.md:15"
-   ],
-   "id": "thornwood_work",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "thornwood_harvest",
-     "what": "slow work pays wood and growth-scaled metal; truthful assay and flecks"
-    },
-    {
-     "ok": false,
-     "scene": "trunk_coat_check",
-     "what": "'separately specified age coat remains distinct from assay': accepted on absent, unopened content with no defined pass when UNBUILT; the sheet line is silent on the coat"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json:350"
-   ],
-   "id": "rhossak_renewal",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "rhossak_cycle",
-     "what": "bind, seed, trio grove, seedless galls"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json:381",
-    "scenes.json:414",
-    "scenes.json:450",
-    "sheet.md:17"
-   ],
-   "id": "wildlife_livelihood",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "flora_uses",
-     "what": "flora products and dangers"
-    },
-    {
-     "ok": true,
-     "scene": "animal_products",
-     "what": "animal products and dangers"
-    },
-    {
-     "ok": true,
-     "scene": "suush_burst",
-     "what": "suush ranged burst, against melee"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json:507",
-    "scenes.json:517",
-    "scenes.json:479",
-    "scenes.json:536",
-    "sheet.md:18"
-   ],
-   "id": "vent_competition",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "vent_competition",
-     "what": "wild drink, suppress and pry; lined resists"
-    },
-    {
-     "ok": true,
-     "scene": "vexxiss_products",
-     "what": "tame shear supplies vexxith"
-    },
-    {
-     "ok": true,
-     "scene": "water_fire_tracks",
-     "what": "water poisoning, fire response, tracks"
-    },
-    {
-     "ok": false,
-     "scene": "vent_competition",
-     "what": "melee-job cancellation (oracle) has an expect and control"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "sheet line names the water poisoning, fire response and tracks the leaf tests"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:330",
-    "scenes.json:597",
-    "scenes.json:566"
-   ],
-   "id": "connected_gas",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "gas_chain",
-     "what": "connected burn over ground and water; smoke; gaps and barriers"
-    },
-    {
-     "ok": true,
-     "scene": "gas_transport",
-     "what": "transport; other gases kept separate"
-    },
-    {
-     "ok": true,
-     "scene": "gas_chain",
-     "what": "mid-chain reload keeps the instigator"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "owner part 'watch the connected over-water burn' staged as an owner_review hold"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:355",
-    "scenes.json:627"
-   ],
-   "id": "explosive_displacement",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "gas_displacement",
-     "what": "blasts throw identified goods; knockback-off control"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "owner part 'judge the visible blast and thrown goods' staged as an owner_review hold"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json:657",
-    "scenes.json:686",
-    "scenes.json:715",
-    "scenes.json:743"
-   ],
-   "id": "filter_industry",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "rig_study",
-     "what": "rig study and research"
-    },
-    {
-     "ok": true,
-     "scene": "tap_refine",
-     "what": "tap to reagent"
-    },
-    {
-     "ok": true,
-     "scene": "water_works",
-     "what": "toxic and acid detox"
-    },
-    {
-     "ok": true,
-     "scene": "lined_stock",
-     "what": "lined vessel uses a quarter cartridge"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json",
-    "scenes.json:772",
-    "scenes.json:917"
-   ],
-   "id": "settings_control",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "settings_effects",
-     "what": "every field's effect at its application point; all-off and re-enable"
-    },
-    {
-     "ok": true,
-     "scene": "legacy_floor",
-     "what": "legacy placement path only"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:433",
-    "scenes.json:800",
-    "scenes.json:1002"
-   ],
-   "id": "prepared_day",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "routine_day",
-     "what": "forty-colonist routine with prepared work and an exposed contrast"
-    },
-    {
-     "ok": true,
-     "scene": "protected_production_interaction",
-     "what": "protection and production together"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "owner part 'judge manageable daily work' staged as an owner_review hold"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "tree.json:443",
-    "tree.json:458",
-    "scenes.json:826",
-    "scenes.json:835",
-    "sheet.md"
-   ],
-   "id": "cauldron_walk",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "resume_walk",
-     "what": "resume, repeat and second order without state loss"
-    },
-    {
-     "ok": true,
-     "scene": "gas_chain",
-     "what": "mid-flame reload"
-    },
-    {
-     "ok": false,
-     "scene": "resume_walk",
-     "what": "'Returning still offers dependable work and risky expeditions': resume_walk has no expedition or risk arm"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "owner part 'perform the resumed work and second action order' staged as an owner_review hold"
-    },
-    {
-     "ok": false,
-     "scene": "",
-     "what": "stated on the sheet's 'does' list"
+  "at": "2026-11-16T15:48:07Z",
+  "checklist": [
+    {
+      "evidence": [
+        "record.json:294",
+        "scenes.json:36",
+        "scenes.json:917"
+      ],
+      "id": "biome_identity",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "arrival_identity",
+          "what": "owned biome reads as the Cauldron at play zoom"
+        },
+        {
+          "ok": true,
+          "scene": "arrival_identity",
+          "what": "roster weights resolve as the current roster"
+        },
+        {
+          "ok": true,
+          "scene": "legacy_floor",
+          "what": "ships through the Baroque Biomes composition"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "world-map texture resolves"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "diseases"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "foraging properties"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "travel properties"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:36"
+      ],
+      "id": "soils",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "arrival_identity",
+          "what": "own plain and rich terrain defs with distinct dark textures"
+        },
+        {
+          "ok": true,
+          "scene": "arrival_identity",
+          "what": "fertility bands agree"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:67",
+        "scenes.json:36"
+      ],
+      "id": "weather",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "weather_gardens",
+          "what": "scatter-dusk, vapour bank, dewfall and bloom give distinct sky, visibility and wind"
+        },
+        {
+          "ok": true,
+          "scene": "weather_gardens",
+          "what": "no rain or snow"
+        },
+        {
+          "ok": true,
+          "scene": "arrival_identity",
+          "what": "dry thunderstorm kept in the weather table"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:917",
+        "floor.json"
+      ],
+      "id": "placement_legacy",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "legacy_floor",
+          "what": "tile-score worker gates, checked only as an isolated legacy check (worldgen floor: no new placement)"
+        },
+        {
+          "ok": true,
+          "scene": "legacy_floor",
+          "what": "rarity setting persists; rarity-zero control"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:772"
+      ],
+      "id": "settings",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "settings_effects",
+          "what": "persistent toggles and strength sliders with effects"
+        },
+        {
+          "ok": true,
+          "scene": "settings_effects",
+          "what": "scroll, search, collapse and reset UI, plus timing labels"
+        },
+        {
+          "ok": true,
+          "scene": "settings_effects",
+          "what": "Harmony failure notice"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:370",
+        "scenes.json:67",
+        "scenes.json:96",
+        "scenes.json:381"
+      ],
+      "id": "flora_base",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "arrival_identity",
+          "what": "ten-species base roster in the intact forest"
+        },
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "Xithess yields chemfuel from completed harvest"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "selected chemotrophs grow at zero light (only an 'observations' note, no expect or control)"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:386",
+        "scenes.json:289"
+      ],
+      "id": "forestry",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "thornwood_harvest",
+          "what": "harvest yields growth-scaled steel beside wood"
+        },
+        {
+          "ok": true,
+          "scene": "thornwood_harvest",
+          "what": "elevated harvest work"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "vanilla smithing sound on harvest"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:404",
+        "scenes.json:296"
+      ],
+      "id": "assay",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "thornwood_harvest",
+          "what": "inspect grade and expected metal follow growth and tuning"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "all four grades (unripe, fair, rich, lode) staged and asserted"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:289"
+      ],
+      "id": "assay_flecks",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "thornwood_harvest",
+          "what": "light and heavy fleck overlays follow grade"
+        },
+        {
+          "ok": true,
+          "scene": "thornwood_harvest",
+          "what": "remesh on a settings change without a camera move"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:67"
+      ],
+      "id": "dew_beads",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "weather_gardens",
+          "what": "dew filth during dewfall outside the home area"
+        },
+        {
+          "ok": true,
+          "scene": "weather_gardens",
+          "what": "bounded density, expiry and no added dose"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:67"
+      ],
+      "id": "dew_saturation",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "weather_gardens",
+          "what": "five dew variants swap and revert with the weather"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:470",
+        "scenes.json:67",
+        "scenes.json:96"
+      ],
+      "id": "shore_gardens",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "weather_gardens",
+          "what": "nettles colonise toxic shores by slow sampling; zones respected"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "colonisation at map creation (only an observation)"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:487",
+        "scenes.json:67",
+        "scenes.json:96"
+      ],
+      "id": "vent_gardens",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "weather_gardens",
+          "what": "crystal, blood bouquet and toxic flower rings follow stable, leak and blowout vents"
+        },
+        {
+          "ok": true,
+          "scene": "weather_gardens",
+          "what": "later fills empty space"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "mapgen replaces eligible wild non-trees (only an observation)"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:381"
+      ],
+      "id": "tsevrix_food",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "toxic raw pulp harvested and eaten"
+        },
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "stove roast gives safe food; raw-food thought corrected"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:522",
+        "scenes.json:390"
+      ],
+      "id": "ixalith_beauty",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "beauty with no harvest yield"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "fragility (named in the action, asserted nowhere)"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:381"
+      ],
+      "id": "fexxil_hazard",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "path cost"
+        },
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "contact scratch and toxic hediff, against a clean path"
+        },
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "glass-shard harvest"
+        },
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "startup venom toggle"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:381"
+      ],
+      "id": "sessarix_fuel",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "chemfuel resin from completed harvest"
+        },
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "soil blacklist and fertility bypass"
+        },
+        {
+          "ok": true,
+          "scene": "settings_effects",
+          "what": "expansion roster switch"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:381"
+      ],
+      "id": "kissaveth_gas",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "toxic gas on violence and on cutting; none untriggered"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:381"
+      ],
+      "id": "selvix_medicine",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "herbal medicine from completed harvest"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:589",
+        "scenes.json:460"
+      ],
+      "id": "suush_ecology",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "suush_burst",
+          "what": "docile and tameable"
+        },
+        {
+          "ok": true,
+          "scene": "suush_burst",
+          "what": "no food need"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "no attack tools"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "solitary native"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "directional art (facings)"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:854",
+        "floor.json",
+        "tree.json"
+      ],
+      "id": "suush_flight",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "supported_integrations",
+          "what": "flight stats and race state read only (flight floor exempts unattended motion)"
+        },
+        {
+          "ok": false,
+          "scene": "supported_integrations",
+          "what": "tested by a scene whose cited requirement leaf describes it"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:450"
+      ],
+      "id": "suush_burst",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "suush_burst",
+          "what": "Bullet and Bomb hits start the wick"
+        },
+        {
+          "ok": true,
+          "scene": "suush_burst",
+          "what": "death backstop and an attributed toxic gas blast"
+        },
+        {
+          "ok": true,
+          "scene": "suush_burst",
+          "what": "melee is not a trigger"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:639",
+        "scenes.json:479",
+        "scenes.json:488"
+      ],
+      "id": "vexxiss_shear",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "vexxiss_products",
+          "what": "tame-only shear of vexxith; the animal survives"
+        },
+        {
+          "ok": true,
+          "scene": "vexxiss_products",
+          "what": "solid giant with no explosive comp"
+        },
+        {
+          "ok": true,
+          "scene": "vexxiss_products",
+          "what": "ordinary feeding and handling"
+        },
+        {
+          "ok": false,
+          "scene": "vexxiss_products",
+          "what": "native art and variant: named in the action, asserted in no expect"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:536"
+      ],
+      "id": "water_poisoning",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "water_fire_tracks",
+          "what": "clean named water converted to toxic"
+        },
+        {
+          "ok": true,
+          "scene": "water_fire_tracks",
+          "what": "warning letter with per-animal cooldown"
+        },
+        {
+          "ok": true,
+          "scene": "water_fire_tracks",
+          "what": "independent toggles"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:669",
+        "scenes.json:536",
+        "scenes.json:517"
+      ],
+      "id": "fire_warden",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "water_fire_tracks",
+          "what": "BeatFire to completion"
+        },
+        {
+          "ok": true,
+          "scene": "water_fire_tracks",
+          "what": "attacks the recorded hostile igniter, spares the same faction, bounded job"
+        },
+        {
+          "ok": false,
+          "scene": "vent_competition",
+          "what": "toggle-off cancels an already-issued retaliation melee job: observed, no pass condition"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:685",
+        "scenes.json:507",
+        "scenes.json:517"
+      ],
+      "id": "vent_drinking",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "vent_competition",
+          "what": "wild vexxiss seek and drink vents; suppression to silence and recovery"
+        },
+        {
+          "ok": true,
+          "scene": "vent_competition",
+          "what": "drinking off aborts walk and drink"
+        },
+        {
+          "ok": false,
+          "scene": "vent_competition",
+          "what": "toggle effect on an existing melee job has a pass criterion"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:536"
+      ],
+      "id": "vexxiss_tracks",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "water_fire_tracks",
+          "what": "prints written; maker on hover; expiry; saved metadata"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:716",
+        "scenes.json:133",
+        "scenes.json:96"
+      ],
+      "id": "vent_sites",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "falter_hour",
+          "what": "a live vent used for bloom and falter"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "natural vents on new maps with safe start and spacing"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "mixed stable and leaking states, recent-blowout memory at generation"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "generation idempotent and setting-gated"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:733",
+        "scenes.json:133"
+      ],
+      "id": "vent_cycle_falter",
+      "parts": [
+        {
+          "ok": false,
+          "scene": "",
+          "what": "weather changes scale vent output"
+        },
+        {
+          "ok": true,
+          "scene": "falter_hour",
+          "what": "falter on the bloom transition; native hush jobs"
+        },
+        {
+          "ok": true,
+          "scene": "falter_hour",
+          "what": "optional warning (message-off arm)"
+        },
+        {
+          "ok": true,
+          "scene": "falter_hour",
+          "what": "hush count saved through reload"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:165"
+      ],
+      "id": "bloom_load",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "separate metal load on exposed eligible flesh"
+        },
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "roofed pawns and natives exempt"
+        },
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "resistance stats scale the dose"
+        },
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "vanilla ToxicBuildup disabled"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:165"
+      ],
+      "id": "local_exposure",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "near/far, recovering-vent, residual floor and no-vent fallback"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:788",
+        "scenes.json:566",
+        "scenes.json:575"
+      ],
+      "id": "gas_grid",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "gas_transport",
+          "what": "separate persistent grid with emission, diffusion and dissipation"
+        },
+        {
+          "ok": true,
+          "scene": "gas_transport",
+          "what": "vanilla gas storage untouched"
+        },
+        {
+          "ok": false,
+          "scene": "gas_transport",
+          "what": "section rendering: 'cloud rendering' in the action, asserted in no expect"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:566"
+      ],
+      "id": "gas_drift",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "gas_transport",
+          "what": "wind drift, daily seeded heading, diagonal-corner guard, centroid"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:597"
+      ],
+      "id": "gas_ignition",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "gas_chain",
+          "what": "cell-by-cell ignition, consumption, toxic smoke, instigator kept"
+        },
+        {
+          "ok": true,
+          "scene": "gas_chain",
+          "what": "flame front continues after a fuel-less fire and survives reload"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:686"
+      ],
+      "id": "gas_tap",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "tap_refine",
+          "what": "caps emission, banks condensate, delivers whole 200 L units to a touching tank"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:507"
+      ],
+      "id": "tap_prying",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "vent_competition",
+          "what": "ordinary scaffold takes pry damage; lined is pry-proof; prying off keeps drinking"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:657"
+      ],
+      "id": "ruin_site",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "rig_study",
+          "what": "natural corroded rig, once-only dressing, kept-clear ring, no duplicate on reload"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:657"
+      ],
+      "id": "study_research",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "rig_study",
+          "what": "in-place study unlocks research, then the prerequisite, then the build"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:686",
+        "scenes.json:715"
+      ],
+      "id": "filter_works",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "tap_refine",
+          "what": "condensate to reagent"
+        },
+        {
+          "ok": true,
+          "scene": "water_works",
+          "what": "toxic and acid water to fresh"
+        },
+        {
+          "ok": true,
+          "scene": "water_works",
+          "what": "power and cartridge pause; machine toggle"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:198"
+      ],
+      "id": "vexxith_material",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "material_routes",
+          "what": "acid immunity against steel; guarded AcidBurn and BloomAcid"
+        },
+        {
+          "ok": true,
+          "scene": "material_routes",
+          "what": "strength, heat armour, zero flammability"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:947",
+        "scenes.json:205"
+      ],
+      "id": "vexxith_door",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "material_routes",
+          "what": "acid-proof door"
+        },
+        {
+          "ok": true,
+          "scene": "material_routes",
+          "what": "startup architect-menu gate; built doors preserved"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "plate-only stuff restriction"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "normal placement and opening"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:963",
+        "scenes.json:205"
+      ],
+      "id": "containers_gates",
+      "parts": [
+        {
+          "ok": false,
+          "scene": "",
+          "what": "bottle, bucket and barrel made by their recipes keep material identity"
+        },
+        {
+          "ok": true,
+          "scene": "material_routes",
+          "what": "FlowWorks recognizes the containers; fill and use"
+        },
+        {
+          "ok": true,
+          "scene": "material_routes",
+          "what": "canal-gate acid damage through the immunity hook"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:743"
+      ],
+      "id": "lined_machines",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "lined_stock",
+          "what": "quarter cartridge use per equal work; acid immunity"
+        },
+        {
+          "ok": true,
+          "scene": "lined_stock",
+          "what": "lined tap acid and pry protection"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:1000",
+        "scenes.json:172",
+        "scenes.json:772"
+      ],
+      "id": "vexxith_gear",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "worn sealing protects the wearer"
+        },
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "acid-proof item markers"
+        },
+        {
+          "ok": true,
+          "scene": "settings_effects",
+          "what": "startup availability switch"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "suit and helmet crafting recipes"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "heat protection"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:1018",
+        "scenes.json:172"
+      ],
+      "id": "acid_air",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "hourly AcidBurn on unroofed, unsealed non-native pawns"
+        },
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "native and condition immunity; strength toggle"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "all factions (raider or visitor, not only colonists)"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:198"
+      ],
+      "id": "acid_hull",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "material_routes",
+          "what": "ship-substructure buildings burn to a 30% floor; warning once"
+        },
+        {
+          "ok": true,
+          "scene": "material_routes",
+          "what": "vexxith or one hull liner stops sampled damage"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:350"
+      ],
+      "id": "rhossak_bind",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "rhossak_cycle",
+          "what": "bind nearest thornwood, report, rebind after loss, wild tether"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:350"
+      ],
+      "id": "rhossak_sprout",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "rhossak_cycle",
+          "what": "sleeping seed-bearer seeds roster non-trees; galled excluded"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:350"
+      ],
+      "id": "rhossak_grove",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "rhossak_cycle",
+          "what": "trio accumulate, hold asleep, reset apart, root with cooldown, bind and message"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:350"
+      ],
+      "id": "galled_food",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "rhossak_cycle",
+          "what": "seedless galled animal sheds edible galls from an attributed producer"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:1112",
+        "scenes.json:423"
+      ],
+      "id": "zisska",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "animal_products",
+          "what": "toxic valued meat eaten; trace steel on butcher"
+        },
+        {
+          "ok": true,
+          "scene": "animal_products",
+          "what": "guarded VEF fire-spit"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "'Herd mineral rasper': herd behaviour asserted nowhere"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:1130",
+        "scenes.json:140",
+        "scenes.json:414"
+      ],
+      "id": "eskith",
+      "parts": [
+        {
+          "ok": false,
+          "scene": "falter_hour",
+          "what": "native hush role observed on an eskith (start says only 'preferably eskith')"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "ground-sensing flock behaviour and art"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:414"
+      ],
+      "id": "bedbug",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "animal_products",
+          "what": "paralysis bite, eggs, hatching"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:414"
+      ],
+      "id": "crystalmit",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "animal_products",
+          "what": "guarded chunk eating and stone-block product"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:414",
+        "floor.json"
+      ],
+      "id": "garsulix",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "animal_products",
+          "what": "jelly, asexual reproduction, death explosion; floating read as state only (flight floor)"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:414"
+      ],
+      "id": "ossrith",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "animal_products",
+          "what": "milk, crystals, refinery uranium recipe"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:414"
+      ],
+      "id": "sikka",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "animal_products",
+          "what": "eggs and hatching, silk shearing, lifecycle"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:854",
+        "tree.json"
+      ],
+      "id": "shared_cast",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "supported_integrations",
+          "what": "visceral, decay drake, bileworm and mullgoth in the roster with guards"
+        },
+        {
+          "ok": false,
+          "scene": "supported_integrations",
+          "what": "tested under a requirement leaf whose text describes it"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:854",
+        "tree.json"
+      ],
+      "id": "campaign_cast",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "supported_integrations",
+          "what": "Utinni patch cast in its native role; prized-meat layer stays external"
+        },
+        {
+          "ok": false,
+          "scene": "supported_integrations",
+          "what": "tested under a requirement leaf whose text describes it"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:854",
+        "tree.json"
+      ],
+      "id": "oomo_shrine",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "supported_integrations",
+          "what": "shrine in the ruin slot; meditation use; lore"
+        },
+        {
+          "ok": false,
+          "scene": "supported_integrations",
+          "what": "tested under a requirement leaf whose text describes it"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:886",
+        "tree.json"
+      ],
+      "id": "scanner_payload",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "optional_services",
+          "what": "AcousticScanner payloads for vents, fauna, resin and cavities"
+        },
+        {
+          "ok": false,
+          "scene": "optional_services",
+          "what": "tested under a requirement leaf whose text describes it"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:886",
+        "tree.json"
+      ],
+      "id": "growth_stalled",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "optional_services",
+          "what": "ExplosiveGrowth stalled terminator band through the shared engine"
+        },
+        {
+          "ok": false,
+          "scene": "optional_services",
+          "what": "tested under a requirement leaf whose text describes it"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:886",
+        "tree.json"
+      ],
+      "id": "aerosol_neighbour",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "optional_services",
+          "what": "Scarlands aerosol screen sees the Cauldron as polluted"
+        },
+        {
+          "ok": false,
+          "scene": "optional_services",
+          "what": "tested under a requirement leaf whose text describes it"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json:1299",
+        "scenes.json:319",
+        "scenes.json:329",
+        "tree.json:210"
+      ],
+      "id": "trunk_deposit_coat",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "",
+          "what": "not a mandatory unit: impl absent, scope not_opened"
+        },
+        {
+          "ok": false,
+          "scene": "trunk_coat_check",
+          "what": "its scene is attached to in-scope leaves thornwood_work and mineral_forest, with no leaf verdict defined when UNBUILT"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:103",
+        "scenes.json:715"
+      ],
+      "id": "acid_pool_binding",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "pool_identity",
+          "what": "site pool chemistry survives fill, pump, tank and works"
+        },
+        {
+          "ok": true,
+          "scene": "water_works",
+          "what": "acid and toxic inputs processed"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:229"
+      ],
+      "id": "lasting_metal_poisoning",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "metal_purge",
+          "what": "persists through care, departure and reload; advanced purge"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:259"
+      ],
+      "id": "permanent_acid_injuries",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "acid_injuries",
+          "what": "enduring disfigurement and sensory loss after healing and reload"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "record.json",
+        "scenes.json:627"
+      ],
+      "id": "gas_knockback",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "gas_displacement",
+          "what": "clump bursts displace goods; knockback-off control"
+        },
+        {
+          "ok": true,
+          "scene": "gas_displacement",
+          "what": "eligible-pawn displacement by the shared policy"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json:48",
+        "scenes.json:10",
+        "exam.json"
+      ],
+      "id": "scene_observer",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "observer_recovery",
+          "what": "independent reads, fingerprint match, UNMEASURED on a withheld read, recovery after interruption"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json:58",
+        "tree.json:73",
+        "scenes.json:36",
+        "scenes.json:67",
+        "scenes.json:96",
+        "sheet.md"
+      ],
+      "id": "mineral_forest",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "arrival_identity",
+          "what": "mineral plants and animals over distinguishable soils; rainless lightning sky"
+        },
+        {
+          "ok": true,
+          "scene": "weather_gardens",
+          "what": "five weather states distinct; dew and fleck transitions"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "light-growth readbacks (oracle) with an expect and control"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "owner part 'inspect the forest at play zoom' staged as an owner_review hold"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json",
+        "scenes.json:103",
+        "scenes.json:715"
+      ],
+      "id": "pool_chemistry",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "pool_identity",
+          "what": "pool liquid identity through contact, fill, pump and processing"
+        },
+        {
+          "ok": true,
+          "scene": "pool_identity",
+          "what": "clean-water control on the same route"
+        },
+        {
+          "ok": true,
+          "scene": "water_works",
+          "what": "processing input"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json:123",
+        "scenes.json:133"
+      ],
+      "id": "falter_warning",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "falter_hour",
+          "what": "cue about 2500 ticks before bloom; worker reaches shelter"
+        },
+        {
+          "ok": true,
+          "scene": "falter_hour",
+          "what": "hush off, message off, ordinary transition, reload"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "owner part 'judge whether cues are readable' staged as an owner_review hold"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json:148",
+        "scenes.json:165",
+        "scenes.json:198"
+      ],
+      "id": "ambient_protection",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "ambient_routes",
+          "what": "roof and full seal protect against bloom and acid; exposed positive control"
+        },
+        {
+          "ok": true,
+          "scene": "material_routes",
+          "what": "material immunity tested separately"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "owner part 'inspect exposed, roofed and sealed workers' staged as an owner_review hold"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json",
+        "scenes.json:229"
+      ],
+      "id": "persistent_metal",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "metal_purge",
+          "what": "persistence and advanced purge, incl. a saved low trace"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json",
+        "scenes.json:259"
+      ],
+      "id": "permanent_acid",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "acid_injuries",
+          "what": "lasting disfigurement and sensory loss with controls"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json:210",
+        "scenes.json:289",
+        "scenes.json:319",
+        "sheet.md:15"
+      ],
+      "id": "thornwood_work",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "thornwood_harvest",
+          "what": "slow work pays wood and growth-scaled metal; truthful assay and flecks"
+        },
+        {
+          "ok": false,
+          "scene": "trunk_coat_check",
+          "what": "'separately specified age coat remains distinct from assay': accepted on absent, unopened content with no defined pass when UNBUILT; the sheet line is silent on the coat"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json",
+        "scenes.json:350"
+      ],
+      "id": "rhossak_renewal",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "rhossak_cycle",
+          "what": "bind, seed, trio grove, seedless galls"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json",
+        "scenes.json:381",
+        "scenes.json:414",
+        "scenes.json:450",
+        "sheet.md:17"
+      ],
+      "id": "wildlife_livelihood",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "flora_uses",
+          "what": "flora products and dangers"
+        },
+        {
+          "ok": true,
+          "scene": "animal_products",
+          "what": "animal products and dangers"
+        },
+        {
+          "ok": true,
+          "scene": "suush_burst",
+          "what": "suush ranged burst, against melee"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json",
+        "scenes.json:507",
+        "scenes.json:517",
+        "scenes.json:479",
+        "scenes.json:536",
+        "sheet.md:18"
+      ],
+      "id": "vent_competition",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "vent_competition",
+          "what": "wild drink, suppress and pry; lined resists"
+        },
+        {
+          "ok": true,
+          "scene": "vexxiss_products",
+          "what": "tame shear supplies vexxith"
+        },
+        {
+          "ok": true,
+          "scene": "water_fire_tracks",
+          "what": "water poisoning, fire response, tracks"
+        },
+        {
+          "ok": false,
+          "scene": "vent_competition",
+          "what": "melee-job cancellation (oracle) has an expect and control"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "sheet line names the water poisoning, fire response and tracks the leaf tests"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json:330",
+        "scenes.json:597",
+        "scenes.json:566"
+      ],
+      "id": "connected_gas",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "gas_chain",
+          "what": "connected burn over ground and water; smoke; gaps and barriers"
+        },
+        {
+          "ok": true,
+          "scene": "gas_transport",
+          "what": "transport; other gases kept separate"
+        },
+        {
+          "ok": true,
+          "scene": "gas_chain",
+          "what": "mid-chain reload keeps the instigator"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "owner part 'watch the connected over-water burn' staged as an owner_review hold"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json:355",
+        "scenes.json:627"
+      ],
+      "id": "explosive_displacement",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "gas_displacement",
+          "what": "blasts throw identified goods; knockback-off control"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "owner part 'judge the visible blast and thrown goods' staged as an owner_review hold"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json",
+        "scenes.json:657",
+        "scenes.json:686",
+        "scenes.json:715",
+        "scenes.json:743"
+      ],
+      "id": "filter_industry",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "rig_study",
+          "what": "rig study and research"
+        },
+        {
+          "ok": true,
+          "scene": "tap_refine",
+          "what": "tap to reagent"
+        },
+        {
+          "ok": true,
+          "scene": "water_works",
+          "what": "toxic and acid detox"
+        },
+        {
+          "ok": true,
+          "scene": "lined_stock",
+          "what": "lined vessel uses a quarter cartridge"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json",
+        "scenes.json:772",
+        "scenes.json:917"
+      ],
+      "id": "settings_control",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "settings_effects",
+          "what": "every field's effect at its application point; all-off and re-enable"
+        },
+        {
+          "ok": true,
+          "scene": "legacy_floor",
+          "what": "legacy placement path only"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json:433",
+        "scenes.json:800",
+        "scenes.json:1002"
+      ],
+      "id": "prepared_day",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "routine_day",
+          "what": "forty-colonist routine with prepared work and an exposed contrast"
+        },
+        {
+          "ok": true,
+          "scene": "protected_production_interaction",
+          "what": "protection and production together"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "owner part 'judge manageable daily work' staged as an owner_review hold"
+        }
+      ]
+    },
+    {
+      "evidence": [
+        "tree.json:443",
+        "tree.json:458",
+        "scenes.json:826",
+        "scenes.json:835",
+        "sheet.md"
+      ],
+      "id": "cauldron_walk",
+      "parts": [
+        {
+          "ok": true,
+          "scene": "resume_walk",
+          "what": "resume, repeat and second order without state loss"
+        },
+        {
+          "ok": true,
+          "scene": "gas_chain",
+          "what": "mid-flame reload"
+        },
+        {
+          "ok": false,
+          "scene": "resume_walk",
+          "what": "'Returning still offers dependable work and risky expeditions': resume_walk has no expedition or risk arm"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "owner part 'perform the resumed work and second action order' staged as an owner_review hold"
+        },
+        {
+          "ok": false,
+          "scene": "",
+          "what": "stated on the sheet's 'does' list"
+        }
+      ]
     }
-   ]
-  }
- ],
- "contract": {
-  "advisory": false,
-  "alarms": [
-   {
-    "family": "coverage_judge",
-    "first_at": "2026-11-15T09:32:09Z",
-    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
-    "last_at": "2026-11-16T15:53:50Z",
-    "open": true,
-    "subject": "family:coverage_judge",
-    "told_at": "2026-11-15T09:32:09Z",
-    "trips": 12,
-    "why": "refused all of its last 8 verdicts across 6 items"
-   }
   ],
-  "cached": [],
-  "calibration": "CALIBRATED",
-  "counted": true,
-  "may_judge": true,
-  "ok": true,
-  "repair_due": []
- },
- "gaps": [
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The contract defines hold as whether a scene stays up for his review, and a leaf that names his part needs a scene that stays up for it.",
-   "evidence": [
-    "tree.json:73",
-    "tree.json:123",
-    "tree.json:148",
-    "tree.json:330",
-    "tree.json:355",
-    "tree.json:433",
-    "tree.json:458",
-    "scenes.json:27"
-   ],
-   "gid": "g1",
-   "ids": [
-    "mineral_forest",
-    "falter_warning",
-    "ambient_protection",
-    "connected_gas",
-    "explosive_displacement",
-    "prepared_day",
-    "cauldron_walk"
-   ],
-   "new_since": "unfixed",
-   "observed": "tree.json gives owner_part 'yes: inspect the forest at play zoom', 'yes: watch the connected over-water burn', 'yes: perform the resumed work and second action order' and four more; all 35 scenes carry \"hold\": \"immediate\". Every entry hash matches the round-1 verdict, so this is still open.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json: set hold 'owner_review' on the seven named scenes, stating the keeper save and review end; or edit tree.json owner_part where his look is not actually wanted"
-   },
-   "what": "Seven leaves whose owner_part says he inspects, judges or performs have no scene held for his review: every scene is hold 'immediate'.",
-   "where": "scenes.json (every scene's hold field) against tree.json owner_part",
-   "would_pass": "For each of the seven leaves, at least one of its acceptance scenes (arrival_identity, falter_hour, ambient_routes, gas_chain, gas_displacement, routine_day, resume_walk) has hold 'owner_review' with a keeper save and a named review end; or the leaf's owner_part reads 'no' with a recorded reason. A script can check that every owner_part 'yes' leaf has an owner_review scene."
+  "contract": {
+    "ok": true,
+    "counted": true,
+    "cached": [
+      "falter_warning",
+      "ambient_protection",
+      "connected_gas",
+      "explosive_displacement",
+      "prepared_day",
+      "cauldron_walk"
+    ],
+    "repair_due": [
+      "mineral_forest",
+      "vent_competition",
+      "shared_cast",
+      "campaign_cast",
+      "oomo_shrine",
+      "scanner_payload",
+      "growth_stalled",
+      "aerosol_neighbour",
+      "suush_flight",
+      "vent_sites",
+      "shore_gardens",
+      "vent_gardens",
+      "eskith",
+      "vent_cycle_falter",
+      "vent_drinking",
+      "fire_warden",
+      "thornwood_work",
+      "trunk_deposit_coat",
+      "vexxith_door",
+      "containers_gates",
+      "vexxith_gear",
+      "acid_air"
+    ],
+    "alarms": [
+      {
+        "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+        "subject": "item:RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND",
+        "first_at": "2026-11-16T16:04:26Z",
+        "trips": 1,
+        "open": true,
+        "last_at": "2026-11-16T16:04:26Z",
+        "why": "clause mineral_forest, vent_competition, shared_cast, campaign_cast, oomo_shrine, scanner_payload, growth_stalled, aerosol_neighbour, suush_flight, vent_sites, shore_gardens, vent_gardens, eskith, vent_cycle_falter, vent_drinking, fire_warden, thornwood_work, trunk_deposit_coat, vexxith_door, containers_gates, vexxith_gear, acid_air refused 3 times: criteria repair due",
+        "family": "coverage_judge",
+        "detail": {
+          "clauses": {
+            "acid_air": 3,
+            "aerosol_neighbour": 3,
+            "ambient_protection": 2,
+            "assay": 2,
+            "biome_identity": 2,
+            "campaign_cast": 3,
+            "cauldron_walk": 2,
+            "connected_gas": 2,
+            "containers_gates": 3,
+            "eskith": 3,
+            "explosive_displacement": 2,
+            "falter_warning": 2,
+            "fire_warden": 3,
+            "flora_base": 2,
+            "forestry": 2,
+            "gas_grid": 1,
+            "growth_stalled": 3,
+            "ixalith_beauty": 2,
+            "mineral_forest": 3,
+            "oomo_shrine": 3,
+            "prepared_day": 2,
+            "scanner_payload": 3,
+            "shared_cast": 3,
+            "shore_gardens": 3,
+            "suush_ecology": 2,
+            "suush_flight": 3,
+            "thornwood_work": 3,
+            "trunk_deposit_coat": 3,
+            "vent_competition": 3,
+            "vent_cycle_falter": 3,
+            "vent_drinking": 3,
+            "vent_gardens": 3,
+            "vent_sites": 3,
+            "vexxiss_shear": 1,
+            "vexxith_door": 3,
+            "vexxith_gear": 3,
+            "zisska": 1
+          },
+          "repair_due": [
+            "mineral_forest",
+            "vent_competition",
+            "shared_cast",
+            "campaign_cast",
+            "oomo_shrine",
+            "scanner_payload",
+            "growth_stalled",
+            "aerosol_neighbour",
+            "suush_flight",
+            "vent_sites",
+            "shore_gardens",
+            "vent_gardens",
+            "eskith",
+            "vent_cycle_falter",
+            "vent_drinking",
+            "fire_warden",
+            "thornwood_work",
+            "trunk_deposit_coat",
+            "vexxith_door",
+            "containers_gates",
+            "vexxith_gear",
+            "acid_air"
+          ]
+        },
+        "told_at": "2026-11-16T16:04:26Z"
+      },
+      {
+        "family": "coverage_judge",
+        "first_at": "2026-11-15T09:32:09Z",
+        "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+        "last_at": "2026-11-16T16:04:26Z",
+        "open": true,
+        "subject": "family:coverage_judge",
+        "told_at": "2026-11-15T09:32:09Z",
+        "trips": 13,
+        "why": "refused 20 of its last 20 verdicts (limit 70%)"
+      }
+    ],
+    "calibration": "CALIBRATED",
+    "advisory": false,
+    "may_judge": false
   },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The judging brief requires the sheet to say what the tree tests, and a leaf missing from it is checkable.",
-   "evidence": [
-    "sheet.md:18",
-    "sheet.md",
-    "tree.json:443",
-    "scenes.json:536",
-    "exam.json"
-   ],
-   "gid": "g2",
-   "ids": [
-    "cauldron_walk",
-    "vent_competition"
-   ],
-   "new_since": "unfixed",
-   "observed": "sheet.md 'does' has 15 leaf lines and none is [leaf:cauldron_walk]; the walk appears only under 'pruning'. sheet.md:18 says only 'Wild vexxiss compete for vents and pry ordinary taps; lined taps resist, while tame shearing supplies vexxith', while the leaf adds 'Water poisoning and fire response remain distinct causal behaviors' and leaves tracks to water_fire_tracks. exam.json passed 30/30 on this sheet, so the exam did not catch the omission.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "sheet.md: add a cauldron_walk line; extend the vent_competition line"
-   },
-   "what": "The sheet a player reads omits what the tree tests: the walk leaf is missing from 'does', and the vent_competition line omits the water poisoning, fire-warden response and tracks that its leaf and scenes test.",
-   "where": "sheet.md 'does' section",
-   "would_pass": "sheet.md 'does' carries a [leaf:cauldron_walk] line stating resume, repeat and second order, and the vent_competition line names water poisoning, fire response to igniters and tracks. A script can check that every tree leaf of kind experience or walk has a 'does' line."
+  "gaps": [
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "Each of these leaves says the owner must look at what a player sees (the forest at play zoom, the warning cues, the protected workers), so asking that one of its scenes be held for his review is a fair, attainable consistency bar and not a number.",
+      "evidence": [
+        "tree.json:73",
+        "tree.json:123",
+        "tree.json:148",
+        "tree.json:330",
+        "tree.json:355",
+        "tree.json:433",
+        "tree.json:458",
+        "scenes.json:27"
+      ],
+      "gid": "g1",
+      "ids": [
+        "mineral_forest",
+        "falter_warning",
+        "ambient_protection",
+        "connected_gas",
+        "explosive_displacement",
+        "prepared_day",
+        "cauldron_walk"
+      ],
+      "new_since": "unfixed",
+      "observed": "tree.json gives owner_part 'yes: inspect the forest at play zoom', 'yes: watch the connected over-water burn', 'yes: perform the resumed work and second action order' and four more; all 35 scenes carry \"hold\": \"immediate\". Every entry hash matches the round-1 verdict, so this is still open.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json: set hold 'owner_review' on the seven named scenes, stating the keeper save and review end; or edit tree.json owner_part where his look is not actually wanted"
+      },
+      "what": "Seven leaves whose owner_part says he inspects, judges or performs have no scene held for his review: every scene is hold 'immediate'.",
+      "where": "scenes.json (every scene's hold field) against tree.json owner_part",
+      "would_pass": "For each of the seven leaves, at least one of its acceptance scenes (arrival_identity, falter_hour, ambient_routes, gas_chain, gas_displacement, routine_day, resume_walk) has hold 'owner_review' with a keeper save and a named review end; or the leaf's owner_part reads 'no' with a recorded reason. A script can check that every owner_part 'yes' leaf has an owner_review scene.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "The contract defines hold as whether a scene stays up for his review, and a leaf that names his part needs a scene that stays up for it.",
+      "criterion_by": "second_reader",
+      "bar_kind": "experience"
+    },
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "Resuming and reordering work, water poisoning, fire response to igniters and tracks are behaviours a player notices, and the sheet that states the mod's promises should name what the tree tests; adding the lines passes it.",
+      "evidence": [
+        "sheet.md:18",
+        "sheet.md",
+        "tree.json:443",
+        "scenes.json:536",
+        "exam.json"
+      ],
+      "gid": "g2",
+      "ids": [
+        "cauldron_walk",
+        "vent_competition"
+      ],
+      "new_since": "unfixed",
+      "observed": "sheet.md 'does' has 15 leaf lines and none is [leaf:cauldron_walk]; the walk appears only under 'pruning'. sheet.md:18 says only 'Wild vexxiss compete for vents and pry ordinary taps; lined taps resist, while tame shearing supplies vexxith', while the leaf adds 'Water poisoning and fire response remain distinct causal behaviors' and leaves tracks to water_fire_tracks. exam.json passed 30/30 on this sheet, so the exam did not catch the omission.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "sheet.md: add a cauldron_walk line; extend the vent_competition line"
+      },
+      "what": "The sheet a player reads omits what the tree tests: the walk leaf is missing from 'does', and the vent_competition line omits the water poisoning, fire-warden response and tracks that its leaf and scenes test.",
+      "where": "sheet.md 'does' section",
+      "would_pass": "sheet.md 'does' carries a [leaf:cauldron_walk] line stating resume, repeat and second order, and the vent_competition line names water poisoning, fire response to igniters and tracks. A script can check that every tree leaf of kind experience or walk has a 'does' line.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "The judging brief requires the sheet to say what the tree tests, and a leaf missing from it is checkable.",
+      "criterion_by": "second_reader",
+      "bar_kind": "experience"
+    },
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "Neighbour and campaign animals appearing, the Oomo shrine and the other integrations are things a player sees in play, and asking that a tested capability trace to a leaf stating its intent is fair and fixed by an edit.",
+      "evidence": [
+        "scenes.json:854",
+        "scenes.json:879",
+        "scenes.json:886",
+        "scenes.json:910",
+        "tree.json",
+        "record.json"
+      ],
+      "gid": "g3",
+      "ids": [
+        "shared_cast",
+        "campaign_cast",
+        "oomo_shrine",
+        "scanner_payload",
+        "growth_stalled",
+        "aerosol_neighbour",
+        "suush_flight"
+      ],
+      "new_since": "unfixed",
+      "observed": "supported_integrations cites requirement [wildlife_livelihood, mineral_forest] and optional_services cites [mineral_forest, settings_control]; no leaf's experience mentions the shared cast, the Utinni cast, the Oomo shrine, AcousticScanner, ExplosiveGrowth, the aerosol screen or suush flight. Unchanged since round 1.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "tree.json: add a leaf for supported and optional integrations (or extend wildlife_livelihood and mineral_forest); repoint the requirement fields of supported_integrations and optional_services; add a sheet.md line"
+      },
+      "what": "The integration and optional-service capabilities are tested by scenes whose cited requirement leaves never describe them, so no approved requirement states their intent.",
+      "where": "scenes.json supported_integrations and optional_services requirement fields; tree.json leaves",
+      "would_pass": "Each of these seven capabilities is named in the experience or scenario text of a leaf that the testing scene cites in its requirement (e.g. a new 'supported_integrations' leaf, or extended mineral_forest and wildlife_livelihood text), and the sheet carries that leaf.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "The contract says a scene's intent is the approved requirement it cites; a requirement that does not describe the capability gives the scene no stated intent.",
+      "criterion_by": "second_reader",
+      "bar_kind": "experience"
+    },
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "Vents and gardens appearing at map creation, with a safe start, mixed states, shore nettles and vent rings and no duplicates on a rerun, is what a player meets on arrival; 'vent count' must mean vents are present, never a pinned number.",
+      "evidence": [
+        "scenes.json:96",
+        "record.json:716",
+        "record.json:470",
+        "record.json:487",
+        "scenes.json:140"
+      ],
+      "gid": "g4",
+      "ids": [
+        "vent_sites",
+        "shore_gardens",
+        "vent_gardens"
+      ],
+      "new_since": "unfixed",
+      "observed": "weather_gardens 'observations' reads 'Compare natural vents and garden generation on an existing appropriate map, default spacing/safe start/idempotence'; no scene expect asserts vent safe start or spacing, mixed states, blowout memory, idempotence, the setting gate, nettle colonisation at map creation, or mapgen replacement of wild non-trees. falter_hour only uses an existing vent.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json: add a mapgen_vents_gardens scene citing mineral_forest (or move the observation into weather_gardens expect and control)"
+      },
+      "what": "Map-generation behaviour of vents and gardens appears only as an 'observations' note, with no expect or control.",
+      "where": "scenes.json weather_gardens observations; falter_hour",
+      "would_pass": "An acceptance scene (new, or weather_gardens extended) has an expect asserting vent count, spacing and safe start, mixed stable/leaking states, blowout memory, idempotence on rerun, shore nettles and vent rings at map creation, plus a control: generation off, or a second run producing no duplicates.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "An observation without a pass condition accepts nothing, and map creation on a disposable map is no worldgen.",
+      "criterion_by": "second_reader",
+      "bar_kind": "experience"
+    },
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "Showcase 1 claims eskith go still as a warning cue, and vent output weakening before a bloom is the cue the player reads, so requiring both to be observed is an attainable experience bar (provided it checks that output changes, never a pinned value).",
+      "evidence": [
+        "scenes.json:140",
+        "scenes.json:1066",
+        "record.json:733",
+        "record.json:1130",
+        "scenes.json:414"
+      ],
+      "gid": "g7",
+      "ids": [
+        "eskith",
+        "vent_cycle_falter"
+      ],
+      "new_since": "unfixed",
+      "observed": "falter_hour's start reads 'an eligible idle wild native, preferably eskith'; prepared_livelihood exercises 'eskith'. vent_cycle_falter ships 'Weather changes scale vent output', but no expect reads output per weather. animal_products names no eskith.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json falter_hour: require eskith and add per-weather output to expect; add eskith flock behaviour to animal_products"
+      },
+      "what": "falter_hour does not require eskith although showcase 1 claims it, and no scene asserts that weather changes scale vent output; eskith flock behaviour is unexercised.",
+      "where": "scenes.json falter_hour start and expect; animal_products",
+      "would_pass": "falter_hour requires an eskith among its subjects and expects measured vent output under at least two weathers; an eskith flock and its art are asserted in falter_hour or animal_products.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "A showcase may claim only the capabilities it really uses, and 'preferably' does not guarantee use.",
+      "criterion_by": "second_reader",
+      "bar_kind": "experience"
+    },
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "Turning a feature setting off should visibly stop a retaliation already in progress, which the leaf's own false_pass names and the every-mod rule on mod settings expects; it can be passed with an on/off control.",
+      "evidence": [
+        "scenes.json:517",
+        "tree.json",
+        "record.json:669",
+        "record.json:685"
+      ],
+      "gid": "g8",
+      "ids": [
+        "vent_drinking",
+        "fire_warden",
+        "vent_competition"
+      ],
+      "new_since": "unfixed",
+      "observed": "vent_competition's expect says 'report melee toggle behavior independently of old walk evidence', and the leaf oracle says 'The old walk cancellation receipt does not certify melee cancellation'; no expect or control states what melee cancellation must do.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json vent_competition (or water_fire_tracks): add the melee-cancel expect and control"
+      },
+      "what": "The melee-cancellation half of the vent-drinking and fire-warden toggles is observed with no pass condition.",
+      "where": "scenes.json vent_competition expect",
+      "would_pass": "vent_competition expects an already-issued retaliation melee job to end within N ticks when its toggle goes off, with a control in which the toggle stays on and the job continues.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "'Report' is not a pass condition.",
+      "criterion_by": "second_reader",
+      "bar_kind": "experience"
+    },
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "A leaf must not be judged partly through a check on unbuilt content that is outside scope and has no defined verdict, and either fix (drop the coat clause, or open the coat in scope) is an attainable edit.",
+      "evidence": [
+        "tree.json:210",
+        "scenes.json:319",
+        "scenes.json:329",
+        "record.json:1299",
+        "sheet.md:15"
+      ],
+      "gid": "g9",
+      "ids": [
+        "thornwood_work",
+        "trunk_deposit_coat"
+      ],
+      "new_since": "unfixed",
+      "observed": "record.json lists trunk_deposit_coat as 'absent not_opened'; thornwood_work's experience says 'the separately specified age coat remains distinct from assay'; trunk_coat_check cites [mineral_forest, thornwood_work] and expects 'If implementation remains absent report UNBUILT'. sheet.md:15 mentions only 'truthful assay and flecks'.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "tree.json thornwood_work text and scenes.json trunk_coat_check requirement (and sheet.md:15 if option b)"
+      },
+      "what": "thornwood_work and mineral_forest are accepted partly through trunk_coat_check, which tests absent, unopened content and has no defined leaf verdict when UNBUILT. The sheet is silent on the coat.",
+      "where": "tree.json thornwood_work; scenes.json trunk_coat_check; sheet.md:15",
+      "would_pass": "Either (a) the coat clause is removed from thornwood_work and trunk_coat_check cites no in-scope leaf (or is removed), or (b) the coat is opened in scope, with an implementation item, a sheet line and a defined pass/fail for the leaf.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "An in-scope leaf cannot be accepted on content the record says is absent and unopened.",
+      "criterion_by": "second_reader",
+      "bar_kind": "experience"
+    },
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "Placing and opening the plate-only door, crafting the containers and suit, and a visitor exposed to ambient acid are things a player does or sees and are owed live; only the heat-insulation stat readback should be advisory.",
+      "evidence": [
+        "record.json:947",
+        "record.json:963",
+        "record.json:1000",
+        "record.json:1018",
+        "scenes.json:205",
+        "scenes.json:172"
+      ],
+      "gid": "g11",
+      "ids": [
+        "vexxith_door",
+        "containers_gates",
+        "vexxith_gear",
+        "acid_air"
+      ],
+      "new_since": "unfixed",
+      "observed": "The door is 'Plate-only' but material_routes only stages 'Ordinary and vexxith walls/door' (no stuff restriction, placement or opening); containers ship 'Dedicated vexxith bottle, bucket and barrel recipes' but are only filled and used; gear ships 'recipes with sealing, heat protection' and no scene crafts it or reads heat; acid_air hits 'all factions', but ambient_routes uses only 'matched ordinary bodies'.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json material_routes and ambient_routes start, action and expect"
+      },
+      "what": "Vexxith door, containers, gear and acid air ship parts no scene exercises.",
+      "where": "scenes.json material_routes and ambient_routes",
+      "would_pass": "material_routes expects the door to refuse non-plate stuff, to be placed normally and to open; containers and suit/helmet are made by their recipes; ambient_routes reads gear heat insulation and includes a raider or visitor under ambient acid.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "Named built parts are units.",
+      "criterion_by": "second_reader",
+      "bar_kind": "experience"
+    }
+  ],
+  "hashes": {
+    "dec:d_flagship_prepared_livelihood": "244b6dd7e66ac32e",
+    "dec:d_historical_proof": "feac4310c2ad0327",
+    "dec:d_latest_vent_evidence": "4dbb2e928ea230eb",
+    "dec:d_no_reask_answered": "4e7f70181b96d947",
+    "dec:d_stage0_root": "3532788dfb416640",
+    "dec:d_stage1_root": "6928958367b0242a",
+    "dec:d_stage2_authority": "d05e7538c8cb7004",
+    "dec:d_stage2_no_reask": "26431c8de3d59ae0",
+    "dec:d_stage2_protection_routes": "796323a87d0bb68c",
+    "dec:d_stage2_scope_pruning": "92198e827b87457f",
+    "dec:d_stage3_artifact_resolution": "28abe277a8dcfaac",
+    "dec:d_stage3_write": "d5700d0bb73d7a15",
+    "dec:d_stage4_exam": "f545b9a130ce5438",
+    "dec:d_toggle_scope": "704dba081bd907f6",
+    "dec:d_walk_first": "c1e6e2244849720d",
+    "exam": "6cc81e850f52fa30",
+    "floor": "3e58b59bb3243973",
+    "inv:acid_air": "6f82e225fd87b37f",
+    "inv:acid_hull": "a344d400edd31241",
+    "inv:acid_pool_binding": "c9cdb1565921eb1e",
+    "inv:aerosol_neighbour": "3deef034497f89ec",
+    "inv:assay": "897caf93c93fa1da",
+    "inv:assay_flecks": "6055aebd1702e50a",
+    "inv:bedbug": "9f683aed1cd3b5fb",
+    "inv:biome_identity": "2bde919ef620c865",
+    "inv:bloom_load": "fe2be6b067a0924e",
+    "inv:campaign_cast": "99937e1a691ccf4a",
+    "inv:containers_gates": "5ce16a69d083f74f",
+    "inv:crystalmit": "bd9ae4f8550886c1",
+    "inv:dew_beads": "3243c3e4bdf3de7f",
+    "inv:dew_saturation": "5a0de57a5c4c968d",
+    "inv:eskith": "40a109fa5829194b",
+    "inv:fexxil_hazard": "3e7bef4cb54a40d2",
+    "inv:filter_works": "bda5ed3f9833a176",
+    "inv:fire_warden": "4db9ce57f6b36b20",
+    "inv:flora_base": "109bb7928ef14be6",
+    "inv:forestry": "c9d87f62432d8536",
+    "inv:galled_food": "5ba330aa5bc4eaf2",
+    "inv:garsulix": "37fb4cb3be9cb7a6",
+    "inv:gas_drift": "22769455207548ae",
+    "inv:gas_grid": "7334ff5ded3c2df5",
+    "inv:gas_ignition": "d7e5bda630bcbc56",
+    "inv:gas_knockback": "e6355c1192b69cda",
+    "inv:gas_tap": "1fad1f35c735a027",
+    "inv:growth_stalled": "9e70c74bfdcdc949",
+    "inv:ixalith_beauty": "4eb14f519a946b94",
+    "inv:kissaveth_gas": "107d90b5432ca7c8",
+    "inv:lasting_metal_poisoning": "4c991fbc9840d1b0",
+    "inv:lined_machines": "f1f913516fb03cb7",
+    "inv:local_exposure": "94287fa55edc3a22",
+    "inv:oomo_shrine": "643b8d0a33e0719a",
+    "inv:ossrith": "8f9d78b900700877",
+    "inv:permanent_acid_injuries": "13bf46b90fdc43d5",
+    "inv:placement_legacy": "ee4ba4fd7312c388",
+    "inv:rhossak_bind": "38651d9c2cb4c5c4",
+    "inv:rhossak_grove": "ad52f4dd7aa40037",
+    "inv:rhossak_sprout": "2103ed43113ad16b",
+    "inv:ruin_site": "1104162a420b5483",
+    "inv:scanner_payload": "e2141717c0c59315",
+    "inv:selvix_medicine": "8cb55f82ae6f734b",
+    "inv:sessarix_fuel": "5f54fc3eff769bf1",
+    "inv:settings": "c43c8d674baae76f",
+    "inv:shared_cast": "4dd170cf50c7120a",
+    "inv:shore_gardens": "4fb14881173df01f",
+    "inv:sikka": "cb2db8c903ee9850",
+    "inv:soils": "bbe0078400f5511c",
+    "inv:study_research": "20550aa93b9fb3f1",
+    "inv:suush_burst": "8b9d19c0f87977b0",
+    "inv:suush_ecology": "d0cc184feff35c97",
+    "inv:suush_flight": "5c82d83afc27df02",
+    "inv:tap_prying": "470d58fafecfe51f",
+    "inv:trunk_deposit_coat": "b9a46f66094a73dc",
+    "inv:tsevrix_food": "00d59d16b8f606c5",
+    "inv:vent_cycle_falter": "4b671cb12454ee9a",
+    "inv:vent_drinking": "59f6300102f9facf",
+    "inv:vent_gardens": "9c33aa8d2fe124e0",
+    "inv:vent_sites": "b9fe93fae874cb5b",
+    "inv:vexxiss_shear": "bf067099ec9bd9bd",
+    "inv:vexxiss_tracks": "172edc8658a3af4e",
+    "inv:vexxith_door": "846e670d0ba3eba5",
+    "inv:vexxith_gear": "49a8ab378bf869eb",
+    "inv:vexxith_material": "e4d620379858eed4",
+    "inv:water_poisoning": "ea7914914e967d49",
+    "inv:weather": "aaf80383556ca3f6",
+    "inv:zisska": "ddf21c6bc456e9f4",
+    "leaf:ambient_protection": "71726487024721d7",
+    "leaf:cauldron_walk": "8416cb35e3e9cdf7",
+    "leaf:connected_gas": "32a0c6ae4aaca89d",
+    "leaf:explosive_displacement": "e75001589ae72e05",
+    "leaf:falter_warning": "91976fa98f6e69cf",
+    "leaf:filter_industry": "fe130eb46ce5ad46",
+    "leaf:mineral_forest": "de094a9d9e192ddc",
+    "leaf:permanent_acid": "a93d9e29f11e568e",
+    "leaf:persistent_metal": "f0e23a841c7a87c0",
+    "leaf:pool_chemistry": "ddfa216efd68f8a3",
+    "leaf:prepared_day": "355ff6e46fa6d705",
+    "leaf:rhossak_renewal": "39c644f359df07de",
+    "leaf:scene_observer": "beae138b4ceecdc2",
+    "leaf:settings_control": "2e1809e52303380f",
+    "leaf:thornwood_work": "a25e0410d92ac2c1",
+    "leaf:vent_competition": "d7d7f232c11bfb1b",
+    "leaf:wildlife_livelihood": "9171ec5176310326",
+    "record:scope": "3a8c07007a682926",
+    "rest:aerosol_neighbour": "176364657a849679",
+    "rest:campaign_cast": "c2fe7d4e8111bac7",
+    "rest:growth_stalled": "3ef3b0d0911a7e51",
+    "rest:lasting_metal_poisoning": "1f1ee0aefb4479e7",
+    "rest:oomo_shrine": "9d053402e05f364e",
+    "rest:permanent_acid_injuries": "58aab05cbface3a7",
+    "rest:placement_legacy": "1c8afbb0ba9c9756",
+    "rest:scanner_payload": "ba560e22bcdcd929",
+    "rest:settings": "c4348a0519b521cb",
+    "rest:shared_cast": "6f53096ed641fab9",
+    "rest:suush_flight": "7e869e9a06270452",
+    "scene:acid_injuries": "e063b0d0b5563c3b",
+    "scene:ambient_routes": "6ea4d46e0afbcc28",
+    "scene:animal_products": "02463510dbebe315",
+    "scene:arrival_identity": "3f4d693f0bd5c8c4",
+    "scene:falter_hour": "9e5c3f187ee1f3fc",
+    "scene:floor_checkout": "1b24c95facaa0fae",
+    "scene:flora_uses": "409b32ca3744bad6",
+    "scene:gas_chain": "ee28e6a0a66743fb",
+    "scene:gas_displacement": "c88c8d54191f56ab",
+    "scene:gas_transport": "35547b3e87a2a06e",
+    "scene:gas_warden_interaction": "ce93cb5f52949466",
+    "scene:lasting_health_work_interaction": "66b2bf642a5e3b16",
+    "scene:legacy_floor": "66eaed3ac318b379",
+    "scene:lined_stock": "f6ccc002179036ef",
+    "scene:material_routes": "c245ab41db54cb0f",
+    "scene:metal_purge": "167974773d31e167",
+    "scene:observer_recovery": "cff0dfc2a849ce52",
+    "scene:optional_services": "ef0100505c6551ea",
+    "scene:pool_identity": "92cbd5f6df19a319",
+    "scene:protected_production_interaction": "c450045773972bae",
+    "scene:resume_walk": "50632f5cfbb6d89f",
+    "scene:rhossak_cycle": "de46f785d045c656",
+    "scene:rig_study": "863856fb8524927f",
+    "scene:routine_day": "1e194a9d26e802bb",
+    "scene:settings_effects": "a87ddfc2ce811e2f",
+    "scene:supported_integrations": "0fa14d4c402c3e71",
+    "scene:suush_burst": "bc162915291060cf",
+    "scene:tap_refine": "f25653012c18c540",
+    "scene:thornwood_harvest": "d417eeedeebb59f3",
+    "scene:trunk_coat_check": "f78cb04478081c63",
+    "scene:vent_competition": "aa979d6cbd692081",
+    "scene:vexxiss_products": "22946f773a949251",
+    "scene:water_fire_tracks": "880768a3db315e52",
+    "scene:water_works": "2713e8764d54d346",
+    "scene:weather_gardens": "0d96636e0077fce4",
+    "sheet:": "d6f23233ed1eb76b",
+    "sheet:delegated": "fe22a429880c2fe4",
+    "sheet:does": "dcc95796d7b09cd6",
+    "sheet:does not": "d0e5551c12b7f6e4",
+    "sheet:his words": "59a467ece69aadea",
+    "sheet:open": "0126b1c7db257861",
+    "sheet:pruning": "4610e8c8f930cfd4",
+    "sheet:waived": "9df423e76c9c52ca",
+    "showcase:chemical_gardens": "9fecc946fbf265b8",
+    "showcase:connected_fire": "0cbc82159845fae2",
+    "showcase:mineral_ecology": "7f301e1d5431fdd0",
+    "showcase:prepared_livelihood": "33af817d3bc88095",
+    "showcase:vexxith_frontier": "282ddf8e21e3e5ec",
+    "tree:rest": "3f1f1259aa43cc07"
   },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "The contract says a scene's intent is the approved requirement it cites; a requirement that does not describe the capability gives the scene no stated intent.",
-   "evidence": [
-    "scenes.json:854",
-    "scenes.json:879",
-    "scenes.json:886",
-    "scenes.json:910",
-    "tree.json",
-    "record.json"
-   ],
-   "gid": "g3",
-   "ids": [
-    "shared_cast",
-    "campaign_cast",
-    "oomo_shrine",
-    "scanner_payload",
-    "growth_stalled",
-    "aerosol_neighbour",
-    "suush_flight"
-   ],
-   "new_since": "unfixed",
-   "observed": "supported_integrations cites requirement [wildlife_livelihood, mineral_forest] and optional_services cites [mineral_forest, settings_control]; no leaf's experience mentions the shared cast, the Utinni cast, the Oomo shrine, AcousticScanner, ExplosiveGrowth, the aerosol screen or suush flight. Unchanged since round 1.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "tree.json: add a leaf for supported and optional integrations (or extend wildlife_livelihood and mineral_forest); repoint the requirement fields of supported_integrations and optional_services; add a sheet.md line"
-   },
-   "what": "The integration and optional-service capabilities are tested by scenes whose cited requirement leaves never describe them, so no approved requirement states their intent.",
-   "where": "scenes.json supported_integrations and optional_services requirement fields; tree.json leaves",
-   "would_pass": "Each of these seven capabilities is named in the experience or scenario text of a leaf that the testing scene cites in its requirement (e.g. a new 'supported_integrations' leaf, or extended mineral_forest and wildlife_livelihood text), and the sheet carries that leaf."
+  "inputs": {
+    "exam.json": "e17b4ae5ef61e3dfd2086fe26e923d202287985626ded802900829db0ff4e5b8",
+    "floor.json": "66359ed7392ca235e47204d7acf0624a637bf1e395cfa787ab7a9801777e82a9",
+    "record.json": "d52fc9ee218cc51ee401095d4d289d7b3cefe0b2ec3ad6defef4992bfe4237ab",
+    "scenes.json": "454f335eb2ed461a7d6fa3ce2f647dda3b889099c4bf3d891709dc523b43c56a",
+    "sheet.md": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec"
   },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "An observation without a pass condition accepts nothing, and map creation on a disposable map is no worldgen.",
-   "evidence": [
-    "scenes.json:96",
-    "record.json:716",
-    "record.json:470",
-    "record.json:487",
-    "scenes.json:140"
-   ],
-   "gid": "g4",
-   "ids": [
-    "vent_sites",
-    "shore_gardens",
-    "vent_gardens"
-   ],
-   "new_since": "unfixed",
-   "observed": "weather_gardens 'observations' reads 'Compare natural vents and garden generation on an existing appropriate map, default spacing/safe start/idempotence'; no scene expect asserts vent safe start or spacing, mixed states, blowout memory, idempotence, the setting gate, nettle colonisation at map creation, or mapgen replacement of wild non-trees. falter_hour only uses an existing vent.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json: add a mapgen_vents_gardens scene citing mineral_forest (or move the observation into weather_gardens expect and control)"
-   },
-   "what": "Map-generation behaviour of vents and gardens appears only as an 'observations' note, with no expect or control.",
-   "where": "scenes.json weather_gardens observations; falter_hour",
-   "would_pass": "An acceptance scene (new, or weather_gardens extended) has an expect asserting vent count, spacing and safe start, mixed stable/leaking states, blowout memory, idempotence on rerun, shore nettles and vent rings at map creation, plus a control: generation off, or a second run producing no duplicates."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "A shipped def property and a leaf's own oracle need a pass condition.",
-   "evidence": [
-    "record.json:370",
-    "scenes.json:96",
-    "tree.json:58"
-   ],
-   "gid": "g5",
-   "ids": [
-    "flora_base",
-    "mineral_forest"
-   ],
-   "new_since": "unfixed",
-   "observed": "record.json flora_base ships 'selected chemotrophs declare zero light requirements'; the mineral_forest oracle names 'light-growth readbacks', but weather_gardens only records an observation: 'Record low-light growth and survival ... do not infer a blanket zero-glow promise'.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json weather_gardens: move the low-light item into expect and add a light-requiring control species"
-   },
-   "what": "The flora zero-light (chemotroph) claim and the mineral_forest light-growth readback have no expect or control.",
-   "where": "scenes.json weather_gardens observations; tree.json mineral_forest oracle",
-   "would_pass": "weather_gardens (or another scene) expects named zero-light species to grow and survive at measured zero light, with a control in which a light-requiring species does not."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "Built parts named in the inventory text are units, and a def readback is cheap.",
-   "evidence": [
-    "record.json:294-296",
-    "scenes.json:36-46"
-   ],
-   "gid": "g6",
-   "ids": [
-    "biome_identity"
-   ],
-   "new_since": "unfixed",
-   "observed": "record.json:296 reads \"Owned Cauldron biome with world-map texture, roster weights, diseases, foraging and travel properties\"; arrival_identity's expect at scenes.json:46 reads \"A reader recognizes mineral bodies, wet dark distinguishable soils and rainless dusk with no placeholder art; terrain fertility, roster/appearance and current owned names agree\". It names no diseases, foraging, travel properties or world-map texture, and no other scene does either.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json: extend the arrival_identity (or floor_checkout) expect and control with these readbacks"
-   },
-   "what": "biome_identity ships diseases, foraging, travel properties and a world-map texture that no scene asserts.",
-   "where": "scenes.json arrival_identity, floor_checkout",
-   "would_pass": "arrival_identity or floor_checkout reads back the biome's disease list, foraging and travel/movement values and world-map texture path against the def, with a control (a nonexistent field fails loudly, or the values differ from a donor biome)."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "A showcase may claim only the capabilities it really uses, and 'preferably' does not guarantee use.",
-   "evidence": [
-    "scenes.json:140",
-    "scenes.json:1066",
-    "record.json:733",
-    "record.json:1130",
-    "scenes.json:414"
-   ],
-   "gid": "g7",
-   "ids": [
-    "eskith",
-    "vent_cycle_falter"
-   ],
-   "new_since": "unfixed",
-   "observed": "falter_hour's start reads 'an eligible idle wild native, preferably eskith'; prepared_livelihood exercises 'eskith'. vent_cycle_falter ships 'Weather changes scale vent output', but no expect reads output per weather. animal_products names no eskith.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json falter_hour: require eskith and add per-weather output to expect; add eskith flock behaviour to animal_products"
-   },
-   "what": "falter_hour does not require eskith although showcase 1 claims it, and no scene asserts that weather changes scale vent output; eskith flock behaviour is unexercised.",
-   "where": "scenes.json falter_hour start and expect; animal_products",
-   "would_pass": "falter_hour requires an eskith among its subjects and expects measured vent output under at least two weathers; an eskith flock and its art are asserted in falter_hour or animal_products."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "'Report' is not a pass condition.",
-   "evidence": [
-    "scenes.json:517",
-    "tree.json",
-    "record.json:669",
-    "record.json:685"
-   ],
-   "gid": "g8",
-   "ids": [
-    "vent_drinking",
-    "fire_warden",
-    "vent_competition"
-   ],
-   "new_since": "unfixed",
-   "observed": "vent_competition's expect says 'report melee toggle behavior independently of old walk evidence', and the leaf oracle says 'The old walk cancellation receipt does not certify melee cancellation'; no expect or control states what melee cancellation must do.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json vent_competition (or water_fire_tracks): add the melee-cancel expect and control"
-   },
-   "what": "The melee-cancellation half of the vent-drinking and fire-warden toggles is observed with no pass condition.",
-   "where": "scenes.json vent_competition expect",
-   "would_pass": "vent_competition expects an already-issued retaliation melee job to end within N ticks when its toggle goes off, with a control in which the toggle stays on and the job continues."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "An in-scope leaf cannot be accepted on content the record says is absent and unopened.",
-   "evidence": [
-    "tree.json:210",
-    "scenes.json:319",
-    "scenes.json:329",
-    "record.json:1299",
-    "sheet.md:15"
-   ],
-   "gid": "g9",
-   "ids": [
-    "thornwood_work",
-    "trunk_deposit_coat"
-   ],
-   "new_since": "unfixed",
-   "observed": "record.json lists trunk_deposit_coat as 'absent not_opened'; thornwood_work's experience says 'the separately specified age coat remains distinct from assay'; trunk_coat_check cites [mineral_forest, thornwood_work] and expects 'If implementation remains absent report UNBUILT'. sheet.md:15 mentions only 'truthful assay and flecks'.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "tree.json thornwood_work text and scenes.json trunk_coat_check requirement (and sheet.md:15 if option b)"
-   },
-   "what": "thornwood_work and mineral_forest are accepted partly through trunk_coat_check, which tests absent, unopened content and has no defined leaf verdict when UNBUILT. The sheet is silent on the coat.",
-   "where": "tree.json thornwood_work; scenes.json trunk_coat_check; sheet.md:15",
-   "would_pass": "Either (a) the coat clause is removed from thornwood_work and trunk_coat_check cites no in-scope leaf (or is removed), or (b) the coat is opened in scope, with an implementation item, a sheet line and a defined pass/fail for the leaf."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "Named built parts are units.",
-   "evidence": [
-    "record.json:386",
-    "record.json:404",
-    "scenes.json:296"
-   ],
-   "gid": "g10",
-   "ids": [
-    "forestry",
-    "assay"
-   ],
-   "new_since": "unfixed",
-   "observed": "assay ships 'unripe/fair/rich/lode distinctions', but thornwood_harvest's start names only 'unripe, eligible younger and full growth'; forestry ships 'the vanilla smithing sound', which nothing reads.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json thornwood_harvest start and expect"
-   },
-   "what": "Forestry and assay ship parts no scene asserts: the smithing harvest sound and all four assay grades.",
-   "where": "scenes.json thornwood_harvest start and expect",
-   "would_pass": "thornwood_harvest stages trees at all four grades and expects each grade's inspect label, and reads the harvest sound def on completion."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "Named built parts are units.",
-   "evidence": [
-    "record.json:947",
-    "record.json:963",
-    "record.json:1000",
-    "record.json:1018",
-    "scenes.json:205",
-    "scenes.json:172"
-   ],
-   "gid": "g11",
-   "ids": [
-    "vexxith_door",
-    "containers_gates",
-    "vexxith_gear",
-    "acid_air"
-   ],
-   "new_since": "unfixed",
-   "observed": "The door is 'Plate-only' but material_routes only stages 'Ordinary and vexxith walls/door' (no stuff restriction, placement or opening); containers ship 'Dedicated vexxith bottle, bucket and barrel recipes' but are only filled and used; gear ships 'recipes with sealing, heat protection' and no scene crafts it or reads heat; acid_air hits 'all factions', but ambient_routes uses only 'matched ordinary bodies'.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json material_routes and ambient_routes start, action and expect"
-   },
-   "what": "Vexxith door, containers, gear and acid air ship parts no scene exercises.",
-   "where": "scenes.json material_routes and ambient_routes",
-   "would_pass": "material_routes expects the door to refuse non-plate stuff, to be placed normally and to open; containers and suit/helmet are made by their recipes; ambient_routes reads gear heat insulation and includes a raider or visitor under ambient acid."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "Named built parts are units.",
-   "evidence": [
-    "record.json:589",
-    "record.json:522",
-    "scenes.json:460",
-    "scenes.json:390"
-   ],
-   "gid": "g12",
-   "ids": [
-    "suush_ecology",
-    "ixalith_beauty"
-   ],
-   "new_since": "unfixed",
-   "observed": "suush_ecology ships 'no attack tools, solitary native and directional art', but suush_burst expects only 'Docile tameable atmospheric feeder requires no feed'; flora_uses says 'inspect fragile ixalith', yet its expect asserts no fragility.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json suush_burst and flora_uses expect"
-   },
-   "what": "Suush ecology and ixalith ship traits no scene asserts.",
-   "where": "scenes.json suush_burst and flora_uses expect",
-   "would_pass": "suush_burst expects an empty tools list, a solitary wild group size and four-facing art; flora_uses expects ixalith's low hit points or easy destruction against a sturdier control plant."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "Each clause of a walk leaf needs a scene that asserts it.",
-   "evidence": [
-    "tree.json:443",
-    "scenes.json:826",
-    "scenes.json:835"
-   ],
-   "gid": "g13",
-   "ids": [
-    "cauldron_walk"
-   ],
-   "late_why": "The round-1 judge passed resume_walk on resume, repeat and order, but did not read the leaf's last clause against it; resume_walk is unchanged.",
-   "new_since": "late",
-   "observed": "cauldron_walk's experience ends 'Returning still offers dependable work and risky expeditions'; resume_walk's action ('Reload save, repeat ordinary thornwood harvest and tap/works conversion, then execute a second order...') and expect mention no expedition, exposure or hazard after reload.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json resume_walk: add an exposed-expedition arm to action and expect"
-   },
-   "what": "The walk leaf promises that returning still offers risky expeditions, but resume_walk has no expedition or risk arm.",
-   "where": "scenes.json resume_walk action and expect",
-   "would_pass": "resume_walk includes an exposed expedition after reload whose attributable hazard (dose or injury) appears, against a sheltered control in the same reloaded save."
-  },
-  {
-   "criterion_verdict": "sound",
-   "criterion_why": "An action with no expect accepts nothing, and the same rule was applied to sibling rows in round 1.",
-   "evidence": [
-    "record.json:1112",
-    "record.json:639",
-    "record.json:788",
-    "scenes.json:423",
-    "scenes.json:488",
-    "scenes.json:575"
-   ],
-   "gid": "g14",
-   "ids": [
+  "judge": "rm-coverage-judge-1794844087",
+  "late": [
     "zisska",
     "vexxiss_shear",
     "gas_grid"
-   ],
-   "late_why": "The round-1 judge passed these rows on the action text alone, although it refused the same pattern for ixalith fragility and eskith flock; the scenes are unchanged.",
-   "new_since": "late",
-   "observed": "zisska is a 'Herd mineral rasper', but animal_products asserts no herd; vexxiss_products' action says 'inspect native art/variant', but its expect is silent on art; gas_grid ships 'section rendering', and gas_transport only lists 'cloud rendering' in its action.",
-   "return_to": 3,
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json animal_products, vexxiss_products and gas_transport expect"
-   },
-   "what": "Three built parts appear only in a scene's action or in no scene, with no expect: zisska herd behaviour, vexxiss native art and variant, and gas section rendering.",
-   "where": "scenes.json animal_products, vexxiss_products, gas_transport",
-   "would_pass": "animal_products expects wild zisska in groups of the def's herd size; vexxiss_products expects the native texture and variant to resolve with no placeholder; gas_transport expects the gas section mesh to draw density-matching cells, with a control (no gas, no drawn cells)."
+  ],
+  "mode": "full",
+  "prompt_chars": 5344,
+  "reasons": "Reconciled the original full review under the subsequently published owner bar rule. An independent criterion reader graded all twelve earlier open criteria. Eight experience gaps remain sound and return to Stage 3. Four declared-data demands and two late misses are advisory. All original findings and checklist rows are preserved. Nothing has changed since the round-1 verdict (rm-coverage-judge-1794838039). Every per-entry hash, and the input hashes of scenes.json, record.json, sheet.md, exam.json and floor.json, match exactly, and there is no coverage_fixes.json. So all twelve round-1 gaps are still open (unfixed). Each one is still accurate when checked against the text. Structurally, coverage holds: all 67 mandatory units are in a showcase or in coverage_rest (checked by script, none uncovered). Every scene is script-staged with an entry-point item, an asserted start, a control with rules_out, and restore. The greedy order and overlap of the showcases is within the rules. The flagship was picked by the Conductor under the Evidence-for-Ask and Conductor-authority rulings, and I did not count that as a gap. Two late misses are added: the walk's 'risky expeditions' clause has no arm in resume_walk, and zisska herd, vexxiss art and gas section rendering appear only in scene actions. All 14 gaps can be fixed by the Designer at stage 3 with scenes.json, tree.json and sheet.md edits; none needs his answer. Not checked: whether the painted or delivered pool site that pool_identity requires exists yet (it is a delivery question, not coverage).",
+  "rows_reasked": [
+    [
+      "biome_identity"
+    ]
+  ],
+  "sheet": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec",
+  "signed": false,
+  "tokens": 1055715,
+  "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff",
+  "verdict": "not_covered",
+  "advisory_gaps": [
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "Each clause of a walk leaf needs a scene that asserts it.",
+      "evidence": [
+        "tree.json:443",
+        "scenes.json:826",
+        "scenes.json:835"
+      ],
+      "gid": "g13",
+      "ids": [
+        "cauldron_walk"
+      ],
+      "late_why": "The round-1 judge passed resume_walk on resume, repeat and order, but did not read the leaf's last clause against it; resume_walk is unchanged.",
+      "new_since": "late",
+      "observed": "cauldron_walk's experience ends 'Returning still offers dependable work and risky expeditions'; resume_walk's action ('Reload save, repeat ordinary thornwood harvest and tap/works conversion, then execute a second order...') and expect mention no expedition, exposure or hazard after reload.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json resume_walk: add an exposed-expedition arm to action and expect"
+      },
+      "what": "The walk leaf promises that returning still offers risky expeditions, but resume_walk has no expedition or risk arm.",
+      "where": "scenes.json resume_walk action and expect",
+      "would_pass": "resume_walk includes an exposed expedition after reload whose attributable hazard (dose or injury) appears, against a sheltered control in the same reloaded save.",
+      "miss_of": "rm-coverage-judge-1794838039",
+      "advisory_why": "late: a new gap at a later look on material that did not change is the miss of rm-coverage-judge-1794838039, which refused and had to list every gap; recorded, never a new bar"
+    },
+    {
+      "criterion_verdict": "sound",
+      "criterion_why": "An action with no expect accepts nothing, and the same rule was applied to sibling rows in round 1.",
+      "evidence": [
+        "record.json:1112",
+        "record.json:639",
+        "record.json:788",
+        "scenes.json:423",
+        "scenes.json:488",
+        "scenes.json:575"
+      ],
+      "gid": "g14",
+      "ids": [
+        "zisska",
+        "vexxiss_shear",
+        "gas_grid"
+      ],
+      "late_why": "The round-1 judge passed these rows on the action text alone, although it refused the same pattern for ixalith fragility and eskith flock; the scenes are unchanged.",
+      "new_since": "late",
+      "observed": "zisska is a 'Herd mineral rasper', but animal_products asserts no herd; vexxiss_products' action says 'inspect native art/variant', but its expect is silent on art; gas_grid ships 'section rendering', and gas_transport only lists 'cloud rendering' in its action.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json animal_products, vexxiss_products and gas_transport expect"
+      },
+      "what": "Three built parts appear only in a scene's action or in no scene, with no expect: zisska herd behaviour, vexxiss native art and variant, and gas section rendering.",
+      "where": "scenes.json animal_products, vexxiss_products, gas_transport",
+      "would_pass": "animal_products expects wild zisska in groups of the def's herd size; vexxiss_products expects the native texture and variant to resolve with no placeholder; gas_transport expects the gas section mesh to draw density-matching cells, with a control (no gas, no drawn cells).",
+      "miss_of": "rm-coverage-judge-1794838039",
+      "advisory_why": "late: a new gap at a later look on material that did not change is the miss of rm-coverage-judge-1794838039, which refused and had to list every gap; recorded, never a new bar"
+    },
+    {
+      "criterion_verdict": "flawed",
+      "criterion_why": "Which named species need no light is a declared growth threshold that a renormalization pass may change, so pinning it per species with a control fails the re-pass test; the forest growing and reading right is already mineral_forest's experience.",
+      "evidence": [
+        "record.json:370",
+        "scenes.json:96",
+        "tree.json:58"
+      ],
+      "gid": "g5",
+      "ids": [
+        "flora_base",
+        "mineral_forest"
+      ],
+      "new_since": "unfixed",
+      "observed": "record.json flora_base ships 'selected chemotrophs declare zero light requirements'; the mineral_forest oracle names 'light-growth readbacks', but weather_gardens only records an observation: 'Record low-light growth and survival ... do not infer a blanket zero-glow promise'.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json weather_gardens: move the low-light item into expect and add a light-requiring control species"
+      },
+      "what": "The flora zero-light (chemotroph) claim and the mineral_forest light-growth readback have no expect or control.",
+      "where": "scenes.json weather_gardens observations; tree.json mineral_forest oracle",
+      "would_pass": "weather_gardens (or another scene) expects named zero-light species to grow and survive at measured zero light, with a control in which a light-requiring species does not.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "A shipped def property and a leaf's own oracle need a pass condition.",
+      "criterion_by": "second_reader",
+      "bar_kind": "declared_data",
+      "advisory_why": "the judge filed it as declared_data: not a bar (bar_rule.RULE_TEXT)"
+    },
+    {
+      "criterion_verdict": "flawed",
+      "criterion_why": "Reading back the disease list, foraging and travel values and the world-map texture path against the def is a check of declared fields, and the world map is painted only at the end, so this is advisory at most.",
+      "evidence": [
+        "record.json:294-296",
+        "scenes.json:36-46"
+      ],
+      "gid": "g6",
+      "ids": [
+        "biome_identity"
+      ],
+      "new_since": "unfixed",
+      "observed": "record.json:296 reads \"Owned Cauldron biome with world-map texture, roster weights, diseases, foraging and travel properties\"; arrival_identity's expect at scenes.json:46 reads \"A reader recognizes mineral bodies, wet dark distinguishable soils and rainless dusk with no placeholder art; terrain fertility, roster/appearance and current owned names agree\". It names no diseases, foraging, travel properties or world-map texture, and no other scene does either.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json: extend the arrival_identity (or floor_checkout) expect and control with these readbacks"
+      },
+      "what": "biome_identity ships diseases, foraging, travel properties and a world-map texture that no scene asserts.",
+      "where": "scenes.json arrival_identity, floor_checkout",
+      "would_pass": "arrival_identity or floor_checkout reads back the biome's disease list, foraging and travel/movement values and world-map texture path against the def, with a control (a nonexistent field fails loudly, or the values differ from a donor biome).",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "Built parts named in the inventory text are units, and a def readback is cheap.",
+      "criterion_by": "second_reader",
+      "bar_kind": "declared_data",
+      "advisory_why": "the judge filed it as declared_data: not a bar (bar_rule.RULE_TEXT)"
+    },
+    {
+      "criterion_verdict": "flawed",
+      "criterion_why": "Listing each assay grade's label and reading the harvest sound def checks every field one by one, not a new experience; that inspect grades follow the payout is already thornwood_work's bar.",
+      "evidence": [
+        "record.json:386",
+        "record.json:404",
+        "scenes.json:296"
+      ],
+      "gid": "g10",
+      "ids": [
+        "forestry",
+        "assay"
+      ],
+      "new_since": "unfixed",
+      "observed": "assay ships 'unripe/fair/rich/lode distinctions', but thornwood_harvest's start names only 'unripe, eligible younger and full growth'; forestry ships 'the vanilla smithing sound', which nothing reads.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json thornwood_harvest start and expect"
+      },
+      "what": "Forestry and assay ship parts no scene asserts: the smithing harvest sound and all four assay grades.",
+      "where": "scenes.json thornwood_harvest start and expect",
+      "would_pass": "thornwood_harvest stages trees at all four grades and expects each grade's inspect label, and reads the harvest sound def on completion.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "Named built parts are units.",
+      "criterion_by": "second_reader",
+      "bar_kind": "declared_data",
+      "advisory_why": "the judge filed it as declared_data: not a bar (bar_rule.RULE_TEXT)"
+    },
+    {
+      "criterion_verdict": "flawed",
+      "criterion_why": "An empty tools list, a solitary group size, a count of art facings and ixalith's low hit points are declared def values, stat values and asset details that renormalizing would force to be re-passed, so none of them is a bar.",
+      "evidence": [
+        "record.json:589",
+        "record.json:522",
+        "scenes.json:460",
+        "scenes.json:390"
+      ],
+      "gid": "g12",
+      "ids": [
+        "suush_ecology",
+        "ixalith_beauty"
+      ],
+      "new_since": "unfixed",
+      "observed": "suush_ecology ships 'no attack tools, solitary native and directional art', but suush_burst expects only 'Docile tameable atmospheric feeder requires no feed'; flora_uses says 'inspect fragile ixalith', yet its expect asserts no fragility.",
+      "return_to": 3,
+      "smallest_fix": {
+        "attainable": "yes",
+        "cost": "edit",
+        "what": "scenes.json suush_burst and flora_uses expect"
+      },
+      "what": "Suush ecology and ixalith ship traits no scene asserts.",
+      "where": "scenes.json suush_burst and flora_uses expect",
+      "would_pass": "suush_burst expects an empty tools list, a solitary wild group size and four-facing art; flora_uses expects ixalith's low hit points or easy destruction against a sturdier control plant.",
+      "judge_criterion_verdict": "sound",
+      "judge_criterion_why": "Named built parts are units.",
+      "criterion_by": "second_reader",
+      "bar_kind": "declared_data",
+      "advisory_why": "the judge filed it as declared_data: not a bar (bar_rule.RULE_TEXT)"
+    }
+  ],
+  "reconciliation": {
+    "at": "2026-11-16T16:03:45Z",
+    "why": "Apply published owner bar rule and independent criterion reading from 579eb06168 after the original calibrated full review",
+    "rule": "design/RimMandrake/standing_rulings.md:606",
+    "original_judge": "rm-coverage-judge-1794844087",
+    "original_file": "design/concepts/Cauldron/coverage_verdict.rm-coverage-judge-1794844087.json",
+    "original_sha256": "d3d3cf73e02db95fc2d494372037a470fcbef2cc06a9c1a870c70a73c0c82454",
+    "current_brief_hash": "ea8f70f67a4da7e6",
+    "reader_unit": "rm-coverage-criterion-cauldron-1794843525",
+    "reader_problem": null,
+    "blocking_gaps": [
+      "g1",
+      "g2",
+      "g3",
+      "g4",
+      "g7",
+      "g8",
+      "g9",
+      "g11"
+    ],
+    "advisory_gaps": [
+      "g13",
+      "g14",
+      "g5",
+      "g6",
+      "g10",
+      "g12"
+    ]
+  },
+  "original_contract": {
+    "advisory": false,
+    "alarms": [
+      {
+        "family": "coverage_judge",
+        "first_at": "2026-11-15T09:32:09Z",
+        "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+        "last_at": "2026-11-16T15:53:50Z",
+        "open": true,
+        "subject": "family:coverage_judge",
+        "told_at": "2026-11-15T09:32:09Z",
+        "trips": 12,
+        "why": "refused all of its last 8 verdicts across 6 items"
+      }
+    ],
+    "cached": [],
+    "calibration": "CALIBRATED",
+    "counted": true,
+    "may_judge": true,
+    "ok": true,
+    "repair_due": []
   }
- ],
- "hashes": {
-  "dec:d_flagship_prepared_livelihood": "244b6dd7e66ac32e",
-  "dec:d_historical_proof": "feac4310c2ad0327",
-  "dec:d_latest_vent_evidence": "4dbb2e928ea230eb",
-  "dec:d_no_reask_answered": "4e7f70181b96d947",
-  "dec:d_stage0_root": "3532788dfb416640",
-  "dec:d_stage1_root": "6928958367b0242a",
-  "dec:d_stage2_authority": "d05e7538c8cb7004",
-  "dec:d_stage2_no_reask": "26431c8de3d59ae0",
-  "dec:d_stage2_protection_routes": "796323a87d0bb68c",
-  "dec:d_stage2_scope_pruning": "92198e827b87457f",
-  "dec:d_stage3_artifact_resolution": "28abe277a8dcfaac",
-  "dec:d_stage3_write": "d5700d0bb73d7a15",
-  "dec:d_stage4_exam": "f545b9a130ce5438",
-  "dec:d_toggle_scope": "704dba081bd907f6",
-  "dec:d_walk_first": "c1e6e2244849720d",
-  "exam": "6cc81e850f52fa30",
-  "floor": "3e58b59bb3243973",
-  "inv:acid_air": "6f82e225fd87b37f",
-  "inv:acid_hull": "a344d400edd31241",
-  "inv:acid_pool_binding": "c9cdb1565921eb1e",
-  "inv:aerosol_neighbour": "3deef034497f89ec",
-  "inv:assay": "897caf93c93fa1da",
-  "inv:assay_flecks": "6055aebd1702e50a",
-  "inv:bedbug": "9f683aed1cd3b5fb",
-  "inv:biome_identity": "2bde919ef620c865",
-  "inv:bloom_load": "fe2be6b067a0924e",
-  "inv:campaign_cast": "99937e1a691ccf4a",
-  "inv:containers_gates": "5ce16a69d083f74f",
-  "inv:crystalmit": "bd9ae4f8550886c1",
-  "inv:dew_beads": "3243c3e4bdf3de7f",
-  "inv:dew_saturation": "5a0de57a5c4c968d",
-  "inv:eskith": "40a109fa5829194b",
-  "inv:fexxil_hazard": "3e7bef4cb54a40d2",
-  "inv:filter_works": "bda5ed3f9833a176",
-  "inv:fire_warden": "4db9ce57f6b36b20",
-  "inv:flora_base": "109bb7928ef14be6",
-  "inv:forestry": "c9d87f62432d8536",
-  "inv:galled_food": "5ba330aa5bc4eaf2",
-  "inv:garsulix": "37fb4cb3be9cb7a6",
-  "inv:gas_drift": "22769455207548ae",
-  "inv:gas_grid": "7334ff5ded3c2df5",
-  "inv:gas_ignition": "d7e5bda630bcbc56",
-  "inv:gas_knockback": "e6355c1192b69cda",
-  "inv:gas_tap": "1fad1f35c735a027",
-  "inv:growth_stalled": "9e70c74bfdcdc949",
-  "inv:ixalith_beauty": "4eb14f519a946b94",
-  "inv:kissaveth_gas": "107d90b5432ca7c8",
-  "inv:lasting_metal_poisoning": "4c991fbc9840d1b0",
-  "inv:lined_machines": "f1f913516fb03cb7",
-  "inv:local_exposure": "94287fa55edc3a22",
-  "inv:oomo_shrine": "643b8d0a33e0719a",
-  "inv:ossrith": "8f9d78b900700877",
-  "inv:permanent_acid_injuries": "13bf46b90fdc43d5",
-  "inv:placement_legacy": "ee4ba4fd7312c388",
-  "inv:rhossak_bind": "38651d9c2cb4c5c4",
-  "inv:rhossak_grove": "ad52f4dd7aa40037",
-  "inv:rhossak_sprout": "2103ed43113ad16b",
-  "inv:ruin_site": "1104162a420b5483",
-  "inv:scanner_payload": "e2141717c0c59315",
-  "inv:selvix_medicine": "8cb55f82ae6f734b",
-  "inv:sessarix_fuel": "5f54fc3eff769bf1",
-  "inv:settings": "c43c8d674baae76f",
-  "inv:shared_cast": "4dd170cf50c7120a",
-  "inv:shore_gardens": "4fb14881173df01f",
-  "inv:sikka": "cb2db8c903ee9850",
-  "inv:soils": "bbe0078400f5511c",
-  "inv:study_research": "20550aa93b9fb3f1",
-  "inv:suush_burst": "8b9d19c0f87977b0",
-  "inv:suush_ecology": "d0cc184feff35c97",
-  "inv:suush_flight": "5c82d83afc27df02",
-  "inv:tap_prying": "470d58fafecfe51f",
-  "inv:trunk_deposit_coat": "b9a46f66094a73dc",
-  "inv:tsevrix_food": "00d59d16b8f606c5",
-  "inv:vent_cycle_falter": "4b671cb12454ee9a",
-  "inv:vent_drinking": "59f6300102f9facf",
-  "inv:vent_gardens": "9c33aa8d2fe124e0",
-  "inv:vent_sites": "b9fe93fae874cb5b",
-  "inv:vexxiss_shear": "bf067099ec9bd9bd",
-  "inv:vexxiss_tracks": "172edc8658a3af4e",
-  "inv:vexxith_door": "846e670d0ba3eba5",
-  "inv:vexxith_gear": "49a8ab378bf869eb",
-  "inv:vexxith_material": "e4d620379858eed4",
-  "inv:water_poisoning": "ea7914914e967d49",
-  "inv:weather": "aaf80383556ca3f6",
-  "inv:zisska": "ddf21c6bc456e9f4",
-  "leaf:ambient_protection": "71726487024721d7",
-  "leaf:cauldron_walk": "8416cb35e3e9cdf7",
-  "leaf:connected_gas": "32a0c6ae4aaca89d",
-  "leaf:explosive_displacement": "e75001589ae72e05",
-  "leaf:falter_warning": "91976fa98f6e69cf",
-  "leaf:filter_industry": "fe130eb46ce5ad46",
-  "leaf:mineral_forest": "de094a9d9e192ddc",
-  "leaf:permanent_acid": "a93d9e29f11e568e",
-  "leaf:persistent_metal": "f0e23a841c7a87c0",
-  "leaf:pool_chemistry": "ddfa216efd68f8a3",
-  "leaf:prepared_day": "355ff6e46fa6d705",
-  "leaf:rhossak_renewal": "39c644f359df07de",
-  "leaf:scene_observer": "beae138b4ceecdc2",
-  "leaf:settings_control": "2e1809e52303380f",
-  "leaf:thornwood_work": "a25e0410d92ac2c1",
-  "leaf:vent_competition": "d7d7f232c11bfb1b",
-  "leaf:wildlife_livelihood": "9171ec5176310326",
-  "record:scope": "3a8c07007a682926",
-  "rest:aerosol_neighbour": "176364657a849679",
-  "rest:campaign_cast": "c2fe7d4e8111bac7",
-  "rest:growth_stalled": "3ef3b0d0911a7e51",
-  "rest:lasting_metal_poisoning": "1f1ee0aefb4479e7",
-  "rest:oomo_shrine": "9d053402e05f364e",
-  "rest:permanent_acid_injuries": "58aab05cbface3a7",
-  "rest:placement_legacy": "1c8afbb0ba9c9756",
-  "rest:scanner_payload": "ba560e22bcdcd929",
-  "rest:settings": "c4348a0519b521cb",
-  "rest:shared_cast": "6f53096ed641fab9",
-  "rest:suush_flight": "7e869e9a06270452",
-  "scene:acid_injuries": "e063b0d0b5563c3b",
-  "scene:ambient_routes": "6ea4d46e0afbcc28",
-  "scene:animal_products": "02463510dbebe315",
-  "scene:arrival_identity": "3f4d693f0bd5c8c4",
-  "scene:falter_hour": "9e5c3f187ee1f3fc",
-  "scene:floor_checkout": "1b24c95facaa0fae",
-  "scene:flora_uses": "409b32ca3744bad6",
-  "scene:gas_chain": "ee28e6a0a66743fb",
-  "scene:gas_displacement": "c88c8d54191f56ab",
-  "scene:gas_transport": "35547b3e87a2a06e",
-  "scene:gas_warden_interaction": "ce93cb5f52949466",
-  "scene:lasting_health_work_interaction": "66b2bf642a5e3b16",
-  "scene:legacy_floor": "66eaed3ac318b379",
-  "scene:lined_stock": "f6ccc002179036ef",
-  "scene:material_routes": "c245ab41db54cb0f",
-  "scene:metal_purge": "167974773d31e167",
-  "scene:observer_recovery": "cff0dfc2a849ce52",
-  "scene:optional_services": "ef0100505c6551ea",
-  "scene:pool_identity": "92cbd5f6df19a319",
-  "scene:protected_production_interaction": "c450045773972bae",
-  "scene:resume_walk": "50632f5cfbb6d89f",
-  "scene:rhossak_cycle": "de46f785d045c656",
-  "scene:rig_study": "863856fb8524927f",
-  "scene:routine_day": "1e194a9d26e802bb",
-  "scene:settings_effects": "a87ddfc2ce811e2f",
-  "scene:supported_integrations": "0fa14d4c402c3e71",
-  "scene:suush_burst": "bc162915291060cf",
-  "scene:tap_refine": "f25653012c18c540",
-  "scene:thornwood_harvest": "d417eeedeebb59f3",
-  "scene:trunk_coat_check": "f78cb04478081c63",
-  "scene:vent_competition": "aa979d6cbd692081",
-  "scene:vexxiss_products": "22946f773a949251",
-  "scene:water_fire_tracks": "880768a3db315e52",
-  "scene:water_works": "2713e8764d54d346",
-  "scene:weather_gardens": "0d96636e0077fce4",
-  "sheet:": "d6f23233ed1eb76b",
-  "sheet:delegated": "fe22a429880c2fe4",
-  "sheet:does": "dcc95796d7b09cd6",
-  "sheet:does not": "d0e5551c12b7f6e4",
-  "sheet:his words": "59a467ece69aadea",
-  "sheet:open": "0126b1c7db257861",
-  "sheet:pruning": "4610e8c8f930cfd4",
-  "sheet:waived": "9df423e76c9c52ca",
-  "showcase:chemical_gardens": "9fecc946fbf265b8",
-  "showcase:connected_fire": "0cbc82159845fae2",
-  "showcase:mineral_ecology": "7f301e1d5431fdd0",
-  "showcase:prepared_livelihood": "33af817d3bc88095",
-  "showcase:vexxith_frontier": "282ddf8e21e3e5ec",
-  "tree:rest": "3f1f1259aa43cc07"
- },
- "inputs": {
-  "exam.json": "e17b4ae5ef61e3dfd2086fe26e923d202287985626ded802900829db0ff4e5b8",
-  "floor.json": "66359ed7392ca235e47204d7acf0624a637bf1e395cfa787ab7a9801777e82a9",
-  "record.json": "d52fc9ee218cc51ee401095d4d289d7b3cefe0b2ec3ad6defef4992bfe4237ab",
-  "scenes.json": "454f335eb2ed461a7d6fa3ce2f647dda3b889099c4bf3d891709dc523b43c56a",
-  "sheet.md": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec"
- },
- "judge": "rm-coverage-judge-1794844087",
- "late": [
-  "zisska",
-  "vexxiss_shear",
-  "gas_grid"
- ],
- "mode": "full",
- "prompt_chars": 5344,
- "reasons": "Nothing has changed since the round-1 verdict (rm-coverage-judge-1794838039). Every per-entry hash, and the input hashes of scenes.json, record.json, sheet.md, exam.json and floor.json, match exactly, and there is no coverage_fixes.json. So all twelve round-1 gaps are still open (unfixed). Each one is still accurate when checked against the text. Structurally, coverage holds: all 67 mandatory units are in a showcase or in coverage_rest (checked by script, none uncovered). Every scene is script-staged with an entry-point item, an asserted start, a control with rules_out, and restore. The greedy order and overlap of the showcases is within the rules. The flagship was picked by the Conductor under the Evidence-for-Ask and Conductor-authority rulings, and I did not count that as a gap. Two late misses are added: the walk's 'risky expeditions' clause has no arm in resume_walk, and zisska herd, vexxiss art and gas section rendering appear only in scene actions. All 14 gaps can be fixed by the Designer at stage 3 with scenes.json, tree.json and sheet.md edits; none needs his answer. Not checked: whether the painted or delivered pool site that pool_identity requires exists yet (it is a delivery question, not coverage).",
- "rows_reasked": [
-  [
-   "biome_identity"
-  ]
- ],
- "sheet": "eebcb801c9c6701a58cde69dc5d1e70507a0c8fcc11060ad8357b0a535b7beec",
- "signed": false,
- "tokens": 1055715,
- "tree": "df3cf3deca74edc45f8d2733aa8d14d46f8bcd856d45c4762a8e75384b35b7ff",
- "verdict": "not_covered"
 }

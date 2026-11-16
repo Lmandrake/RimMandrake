@@ -3,8 +3,8 @@
 owner fix D, OWNER.jsonl:1794527688430451936).
 
 After round 1 the judge is shown only the gaps the Designer claims fixed in coverage_fixes.json (with its evidence) and
-the entries whose hash changed; unclaimed gaps carry open; a new gap on unchanged material counts only tagged late with a
-why; nothing claimed and nothing changed runs no judge; a prior verdict with no hashes gets a full judge. The claude call,
+the entries whose hash changed; unclaimed gaps carry open; a late gap on unchanged material is stored as advisory under
+the owner's bar rule; nothing claimed and nothing changed runs no judge; a prior verdict with no hashes gets a full judge. The claude call,
 the signature and the exam are stubbed; every write goes to a temp dir, and the real alarm and told files are counted
 before and after."""
 import json
@@ -145,8 +145,10 @@ def main_walk(root):
           len(v2.get("claims_refused") or []) == 2 and [c["gap"] for c in v2["claims"]] == ["g1"],
           v2.get("claims_refused"))
     whats = [g["what"] for g in v2["gaps"]]
-    check("an untagged new gap on unchanged material is dropped; a late gap with its why counts",
-          "C NEW UNTAGGED" not in whats and "E MISSED" in whats
+    check("an untagged new gap on unchanged material is dropped; a later look's miss stays advisory",
+          "C NEW UNTAGGED" not in whats and "E MISSED" not in whats
+          and any(g["what"] == "E MISSED" and g.get("miss_of") == v["judge"]
+                  for g in v2.get("advisory_gaps") or [])
           and [g["what"] for g in v2.get("dropped") or []] == ["C NEW UNTAGGED"], (whats, v2.get("dropped")))
     check("unclaimed gaps carry open, tagged unfixed; the still-open claim stays; gaps renumbered",
           "B IS BROKEN" in whats and "D IS BROKEN" in whats and "A STILL HALF" in whats
@@ -157,7 +159,7 @@ def main_walk(root):
           sorted(ids) == sorted(r["id"] for r in ALL_ROWS)
           and next(r for r in v2["checklist"] if r["id"] == "inv_a")["parts"][0]["ok"] is False, v2["checklist"])
     check("the round's gap ids still name every open row", DS.load_state(d)["coverage_rounds"][-1]["ids"] == [
-        "inv_a", "inv_b", "inv_e", "leaf_d"], DS.load_state(d)["coverage_rounds"][-1])
+        "inv_a", "inv_b", "leaf_d"], DS.load_state(d)["coverage_rounds"][-1])
 
 
 def covered_cases(root):
