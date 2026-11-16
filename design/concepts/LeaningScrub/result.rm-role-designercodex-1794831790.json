@@ -1,0 +1,15 @@
+{
+  "run": "rm-role-designercodex-1794831790",
+  "stage": 2,
+  "outcome": "waiting_owner",
+  "summary": "turn_03.md: Await owner-only validation of the eight canonical DRAFT north-star observations, distinct from preserved delegated sentence approval. Fresh review passed a_root_validation_2; no later owner validation found. Live look offered first. All12 advisory coverage findings retained, unchecked=[], g12 remains neutral criteria-fixer work. No frozen artifact or game action. Park-page advisory-routing defect repaired with tests under RIMMANDRAKE_SHOW_ADVISORY_COVERAGE_WITHOUT_OWNER_FORK. Published renderer fix ae8b1f356bca; tests and fresh review pass. Owner park page prepared.",
+  "question": "Should the eight observations in Leaning Scrub’s canonical north-star checklist (turn_03.md) become the binding acceptance bar, or which observation needs correction?",
+  "quick_look": {
+    "offer": true,
+    "settles": [
+      "a_root_validation_2",
+      "root_validation"
+    ],
+    "scene": "At the next attended sitting, the bridge owner first confirms the registered RM_TestSite_leaningscrub_v3 recipe exists and matches the composed build. Show existing ordinary wind/Stall/Gale, tall vine islands and clear routes, then a routine haul with a clear detour beside a mature-vine shortcut and an explicitly ordered expedition. Compare existing behavior with the eight draft observations, naming missing or unproved behavior. The operator records recovery before mutation and restores or explicitly holds afterward. Flight observation only with the owner present. This offer is not a scene execution or a prerequisite to approving the written bar."
+  }
+}
