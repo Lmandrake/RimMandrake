@@ -516,6 +516,38 @@ namespace RimMandrake.ExplosiveKnockback
             return "STAGED " + s.name + " at " + x + "," + z + " tick=" + s.stagedTick;
         }
 
+        /// <summary>The frame probe's bridge read (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED; Begin/Stop
+        /// are internal and jawa/static_call reaches only public static). "begin" starts RM_FrameProbe (a running one is
+        /// stopped first); "stop[,loS,hiS]" stops it and returns "FRAME " + its summary (windowP99Ms over the unpaused rows
+        /// inside [loS, hiS] probe seconds) + " path=" + the CSV; "NONE" when no probe ran or it saw no frame.</summary>
+        public static string Frame(string arg)
+        {
+            string[] p = (arg ?? "").Split(',');
+            string verb = p[0].Trim().ToLowerInvariant();
+            if (verb == "begin")
+            {
+                RM_FrameProbe.Begin();
+                return "BEGUN";
+            }
+            if (verb != "stop")
+            {
+                return "ERROR Frame wants begin | stop[,loS,hiS], got '" + arg + "'";
+            }
+            float lo = 0f, hi = float.PositiveInfinity;
+            var inv = System.Globalization.CultureInfo.InvariantCulture;
+            if (p.Length >= 3 && (!float.TryParse(p[1].Trim(), System.Globalization.NumberStyles.Float, inv, out lo)
+                || !float.TryParse(p[2].Trim(), System.Globalization.NumberStyles.Float, inv, out hi)))
+            {
+                return "ERROR Frame stop window unreadable: '" + arg + "'";
+            }
+            KbFrameSummary g = RM_FrameProbe.Stop(lo, hi);
+            if (g.rows == 0)
+            {
+                return "NONE no probe running, or it saw no frame";
+            }
+            return "FRAME " + Summary(g) + " path=" + RM_FrameProbe.LastPath;
+        }
+
         public static string Verdict(string name)
         {
             if (!scenes.TryGetValue(name, out Scene s))

@@ -341,11 +341,17 @@ def mock_run():
 # the raid itself is real (jawa/fire_raid) so raiders are on the map. Orders: A mortars, mid-air save + reload, grenade,
 # gas; B (from the baseline save) gas, mortars, grenade; C the mortars with the mod off. The baseline save is reloaded at
 # the end and the player's settings put back. Exit 0 only if every row PASSes; 2 = refused (no game, no bridge); 3 = PROOF
-# BUILD REQUIRED. FRAME_BUDGET stays UNMEASURED until RM_FrameProbe has a bridge read (its Begin/Stop are internal).
+# BUILD REQUIRED. FRAME_BUDGET (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED): the walk's acts step paused
+# ticks, so they hold no real frames; at the end of order A the probe (RM_KnockbackProof.Frame) runs while the shells go
+# off again over the storeroom with the clock UNPAUSED at speed 1 for --frame-seconds real seconds, and the row is the
+# barrage bar's: the 99th-percentile unpaused frame inside 0.5 s..the end at most 50 ms (worst frame recorded, not judged).
 # What "match the kernel's plan" can read live: every request has an outcome line for the same blast and thing, a launch
 # travels at most its planned cells (fewer only with a stop reason), a goods move flies its wild cells with the kernel's
 # cells beside them. Recomputing the plan from the kernel is the offline selftest's job (selftest_explosiveknockback_kernel).
 TRIPLET_SEAMS = {}           # saveload_triplet's saves_stat / wait_saved (the offline selftest passes fakes)
+SLEEP = None                 # the frame act's real-time wait (time.sleep; the offline selftest passes a no-op)
+FRAME_BUDGET_MS = 50.0       # leaf barrage_frame_budget: at most 50 ms for the 99th-percentile frame
+FRAME_MIN_ROWS = 30          # fewer unpaused rows in the window than this is no reading
 WALK_ROWS = ("W_PRECONDITIONS", "A_IMPACTS_IN_ROOM", "A_SAVE_MIDAIR", "A_RELOAD_NO_DUP_LOST", "A_COVER_BROKEN_ONE_DESCENT",
              "A_GAS_CLUMP_BY_CLUMP", "A_GAS_GOODS_MOVED", "A_REQUESTS_MATCH_PLAN", "A_REACHED_ACCOUNTED",
              "B_GAS_CLUMP_BY_CLUMP", "B_GAS_GOODS_MOVED", "B_IMPACTS_IN_ROOM", "B_COVER_BROKEN_ONE_DESCENT",
@@ -766,6 +772,33 @@ class _Walk:
             self.judge_gas(tag, g)
             recs += g
         self.judge_plan(tag, recs)
+        if tag == "A":
+            self.frame_act()
+
+    def frame_act(self):
+        """FRAME_BUDGET: the shells again over the storeroom, the clock running at speed 1, the probe reading real frames."""
+        import time
+        wait = SLEEP or time.sleep
+        secs = float(self.a.frame_seconds)
+        b = self.kp("Frame", "begin")[1]
+        if not b.startswith("BEGUN"):
+            self.row("FRAME_BUDGET", "UNMEASURED", "Frame begin answered %r" % b[:200])
+            return
+        cx, cz = self.room[0] + self.room[2] // 2, self.room[1] + self.room[3] // 2
+        for x, z in [(cx, cz), (cx - 1, cz + 1), (cx + 1, cz - 1)][:max(1, self.a.shells)]:
+            self.c("jawa/explosion_at", at="%d,%d" % (x, z), radius=SHELL[1], damType=SHELL[0])
+        self.c("rimworld/set_time_speed", speed=1)
+        wait(secs)
+        self.c("rimworld/set_time_speed", speed=0)
+        r = self.kp("Frame", "stop,0.5,%g" % secs)[1]
+        self.ev["frame_probe"] = r
+        p99, rows = re.search(r"windowP99Ms=([0-9.]+)", r), re.search(r"windowRows=(\d+)", r)
+        if not r.startswith("FRAME") or not p99 or not rows or int(rows.group(1)) < FRAME_MIN_ROWS:
+            self.row("FRAME_BUDGET", "UNMEASURED", "no frame reading (%d s unpaused after the shells): %s" % (secs, r[:300]))
+            return
+        self.row("FRAME_BUDGET", float(p99.group(1)) <= FRAME_BUDGET_MS,
+                 "99th-percentile unpaused frame %s ms (bar %g) over %s rows, %g s at speed 1 after %d shell(s): %s"
+                 % (p99.group(1), FRAME_BUDGET_MS, rows.group(1), secs, max(1, self.a.shells), r[:240]))
 
     def control(self):
         """The mod off (run() turns it off inside its try, whose finally puts every setting back)."""
@@ -824,7 +857,7 @@ class _Walk:
         air, rest = self.ev.get("tick_air"), self.ev.get("tick_rest")
         self.row("CARRIER_TICK_COST", "PASS" if air is not None and rest is not None else "UNMEASURED",
                  "meanTickTime %s ms at rest, %s ms with carriers in the air (recorded, not judged)" % (rest, air))
-        self.row("FRAME_BUDGET", "UNMEASURED", "RM_FrameProbe.Begin/Stop are internal: no bridge read of frame time yet")
+        self.unmeasured(["FRAME_BUDGET"], "UNMEASURED: order A never reached the frame act")
         return 0
 
 
@@ -841,6 +874,7 @@ def _walk_args(argv):
     ap.add_argument("--shelf-defs", default="Shelf,ShelfSmall")
     ap.add_argument("--shells", type=int, default=3)
     ap.add_argument("--settle", type=int, default=120, help="ticks after each blast")
+    ap.add_argument("--frame-seconds", type=float, default=8.0, help="real seconds at speed 1 for FRAME_BUDGET")
     ap.add_argument("--gas-ticks", type=int, default=900)
     ap.add_argument("--raid-points", type=float, default=300.0, help="0 skips the real raid")
     ap.add_argument("--full-min", type=int, default=100, help="active mods below this are not the full list")

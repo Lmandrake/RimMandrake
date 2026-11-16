@@ -3,7 +3,8 @@
 (RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO). The fake is a tiny world: goods in a storeroom, a shelf and a
 closed locker, a covered pit cell, a vent-gas cloud; a blast requests and moves every good in its radius, a lit cloud
 bursts one cell a tick outward from the lit cell, saves and loads copy the world. Each planted break must flip ITS row:
-  W0  a sound world: every row PASS but FRAME_BUDGET (UNMEASURED: no bridge read of RM_FrameProbe), so exit 1
+  W0  a sound world: every row PASS, FRAME_BUDGET included (RM_KnockbackProof.Frame answers a p99 under 50 ms), so exit 0
+      (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED: before it the row was UNMEASURED by construction)
   W1  --live with no game (time_perf refused) refuses with exit 2, never STATIC: PASS exit 0
   W2  the release DLL ("Type not found") exits 3
   W3  no closed container in the storeroom: W_PRECONDITIONS INVALID, every other row UNMEASURED
@@ -26,6 +27,8 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
       42837 live, 43837 in both loads): A_RELOAD_NO_DUP_LOST still PASSes; ids are compared only for things the save holds
   W18 a thing born after the save is placed with the RNG, whose state a load changes (live 2026-11-16: a WoodLog leaving at
       101,42 live, 102,42 in both loads): born things are counted by def, not by cell, and the row still PASSes
+  W19 the frame probe reads a 99th-percentile frame of 75 ms in the real-time window: FRAME_BUDGET FAIL
+  W20 the frame probe saw no frame (Frame stop answers NONE): FRAME_BUDGET UNMEASURED, never PASS
   W16 the cover already gone when the grenade comes: COVER rows UNMEASURED naming it, never a mod FAIL read off an empty
       journal
 
@@ -179,6 +182,16 @@ class Fake:
                 r = "SET " + a
             elif m == "SeedCloud":
                 w["gas"] = a
+            elif m == "Frame":
+                if a == "begin":
+                    w["probe"], w["probe_speed"] = True, []
+                    r = "BEGUN"
+                elif not w.pop("probe", False) or self.brk.get("probe_blind") or 1 not in w.get("probe_speed", []):
+                    r = "NONE no probe running, or it saw no frame"
+                else:
+                    p99 = 75.0 if self.brk.get("slow_frames") else 24.0
+                    r = ("FRAME frames=480 probeRows=480 paused=12 wall=8.00s worstMs=%.1f meanMs=16.7 maxInAir=12 window=0.5-8s "
+                         "windowRows=450 windowP99Ms=%.1f path=C:/x/RM_FrameProbe_1.csv" % (p99 + 9, p99))
             return {"success": True, "result": r or "OK"}
         if tool == "jawa/list_things":
             x, z, ww, hh = (int(v) for v in kw["rect"].split(","))
@@ -224,6 +237,10 @@ class Fake:
             if self.brk.get("load_tick"):
                 self.tick()                         # Prefs.PauseOnLoad: Game.LoadGame runs one DoSingleTick
             return {"success": True}
+        if tool == "rimworld/set_time_speed":
+            if w.get("probe"):
+                w.setdefault("probe_speed", []).append(kw.get("speed"))
+            return {"success": True}
         if tool == "jawa/mod_settings_field":
             return {"success": True, "value": "True"}
         if tool == "jawa/fire_raid":
@@ -237,6 +254,7 @@ def run(**brk):
     V.active_mods = lambda path=None: list(V.MODS_NEEDED) + ["m%d" % i for i in range(300)]
     f = Fake(**brk)
     V.TRIPLET_SEAMS = {"saves_stat": lambda: dict((n + ".rws", (1, 1)) for n in f.saves), "wait_saved": lambda name: True}
+    V.SLEEP = lambda s: None                # the frame act's real-time wait
     out = io.StringIO()
     code = V.walk_storeroom_raid(list(ARGS), bridge=f, wait=lambda B: (True, 0), out=out)
     rows = {}
@@ -257,9 +275,9 @@ def main():
 
     code, rows, txt = run()
     not_pass = sorted(r for r in V.WALK_ROWS if rows.get(r) != "PASS")
-    check("W0", code == 1 and not_pass == ["FRAME_BUDGET"] and rows.get("FRAME_BUDGET") == "UNMEASURED",
-          "a sound world passes every row but FRAME_BUDGET (code %s, not PASS: %s)" % (code, not_pass))
-    if not_pass != ["FRAME_BUDGET"]:
+    check("W0", code == 0 and not_pass == [],
+          "a sound world passes every row, FRAME_BUDGET included (code %s, not PASS: %s)" % (code, not_pass))
+    if not_pass:
         print(txt)
     code, rows, _ = run(no_game=True)
     check("W1", code == 2, "no game refuses with exit 2 (got %s)" % code)
@@ -305,6 +323,12 @@ def main():
     check("W18", rows.get("A_RELOAD_NO_DUP_LOST") == "PASS",
           "a thing born after the save lands on another cell after a load (the RNG; live 2026-11-16: WoodLog 101,42 live,"
           " 102,42 loaded): still PASS: %s" % rows.get("A_RELOAD_NO_DUP_LOST"))
+    code, rows, txt = run(slow_frames=True)
+    check("W19", code == 1 and rows.get("FRAME_BUDGET") == "FAIL",
+          "a 75 ms 99th-percentile frame in the real-time window fails FRAME_BUDGET (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    code, rows, txt = run(probe_blind=True)
+    check("W20", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
+          "a probe that saw no frame leaves FRAME_BUDGET UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
     script = os.path.join(HERE, "validation.py")
     r1 = subprocess.run([sys.executable, script, "--live"], capture_output=True, text=True)
     r2 = subprocess.run([sys.executable, script, "--live", "walk_storeroom_raid"] + ARGS[:6], capture_output=True, text=True,
