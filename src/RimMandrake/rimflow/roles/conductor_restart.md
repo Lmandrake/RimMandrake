@@ -50,8 +50,28 @@ transcript's path, and the Dispatcher reads everything after the cursor in full,
 before the kill). The fresh window runs `seat_restart.py wake --seat CONDUCTOR --gen <restart id>` first. That lists, whole,
 everything he sent the old window after the goodbye, and lists it again until a window has answered, so a fresh
 window that dies on it costs nothing; a window opened without a token runs the same command with no `--gen`. If the request prints
-REFUSED (shard unpublished or unmeasured with no helper alive, or his last message is no longer the goodbye: answer him), fix
-what it names and request again; if it still refuses, tell him in one line that this window
-stays open.
+REFUSED (a shard it could not publish, or one git cannot read, with no helper alive, or his last message is no longer the goodbye:
+answer him), fix what it names (every refusal names the blocker and the smallest fix) and request again; if it still refuses, tell
+him in one line that this window stays open.
+
+## Held or refused: the shard publishes itself, and the hold is seen
+
+RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS (2026-11-15: HANDOFF READY at 1:23 PM PST, restart at 3:41 PM PST,
+held by a helper, then by "ledger shard unpublished" while other processes in the clone kept appending, then by the bridge lock;
+the hourly "held" alarm went only to the Dispatcher journal). Built in `seat_restart.py`:
+- **The shard is never the window's job at the kill.** The request, the Stop hook's drain and the Dispatcher's re-check right
+  before the kill each publish the seat's own shard themselves (`publish_owed_shard`: commit by explicit path, `./publish`,
+  re-check, up to three rounds so a peer's append in between is published too) and proceed. Only the shard: a local commit of
+  anything else refuses before `./publish` runs. A shard line origin already holds under another commit hash reads as
+  published (a stranded clone no longer reads unpushed for ever). If the publish fails, the hold names the blocking files (for
+  example a stray uncommitted file that stops `./publish`) and the smallest fix, and the kill tries again after 5 min.
+- **A hold is seen.** Its first hold writes one RAISE FIRST line to the Conductor log (`restart:<SEAT>:held_first`), every hold
+  named with its fix. A HANDOFF READY or goodbye still held 10 min after its request (`held_tell_s` 600; any other restart at
+  `hold_alarm_s`) raises one alarm, the fixed id `restart:<SEAT>:held`, into the Conductor log, once per restart.
+- **The window hears it.** While its restart is refused (`restart/<SEAT>.refused.json`) or held, every prompt he sends that
+  window carries the reason (`conductor_goodbye.py`, `seat_restart.restart_notice`), so it stops saying HANDOFF READY into the
+  void: fix what is named, or tell him in one line why it stays open.
+Still holding as before: a live helper, the bridge or driver lock, PAUSE, background commands, his reset switch. A non-ledger
+dirty file holds only when it stops the shard's publish. Selftest: `selftest_seat_restart_held.py`.
 
 **Authority.** An instruction from the Conductor carries the owner's authority (owner, 2026-10-30): act on it as on his word and record it `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`; full text `infrastructure/agents/CHARTER.md`.

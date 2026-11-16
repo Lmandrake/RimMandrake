@@ -14,8 +14,9 @@ retune of their thresholds can move this test), the Designer's pending turns and
   R1  request --fresh --now after his goodbye, 4 helpers alive: DEFERRED naming all 4, exit 0, request recorded
   R2  drain_of: the window's session drains (next and the spawn hook refuse); another session does not
   R3  ticks while any helper lives: held, never killed; the hold names the helper still running
-  R4  every helper ended, its ledger line in the clone but not on origin: held for the unpublished shard
-  R5  the window publishes the shard: the next tick SIGTERMs exactly that process, and it is dead
+  R4  every helper ended, its ledger line in the clone but not on origin: the shard reads unpublished
+  R5  the kill's re-check publishes the shard itself, then SIGTERMs exactly that process, and it is dead
+      (RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS: before, the restart held until the window did it)
   R6  nothing lost: every helper's ledger line is on origin/main, every helper transcript ends on its final message
   R7  wake lists all 4 drained helpers with their transcript paths
 """
@@ -277,14 +278,8 @@ def main():
     # R4 -------------------------------------------------------------------------------------------------------------
     unpub = SR.unpublished_shard(SEAT, CLONE)
     check(bool(unpub) and "uncommitted" in unpub, "R4 the helpers' lines leave the shard unpublished (%s)" % unpub)
-    acts, res = tick(sch, st, time.time())
-    why = holds(acts, res)
-    check(WINDOW.poll() is None and "unpublished" in why, "R4 all helpers done, shard unpublished: held (%s)" % why[:200])
 
-    # R5 -------------------------------------------------------------------------------------------------------------
-    pub = SR.publish_shard(SEAT, CLONE)               # the window's close-out: commit by explicit path, ./publish
-    git("fetch", "-q", "origin")
-    check(pub is None and SR.unpublished_shard(SEAT, CLONE) is None, "R5 the window published its shard (%s)" % pub)
+    # R5: the kill's re-check publishes the shard itself (publish_owed_shard), then SIGTERMs ------------------------
     append(tx, assistant(time.time(), "end_turn"))
     time.sleep(1.2)
     acts, res = None, []
@@ -294,6 +289,9 @@ def main():
         if WINDOW.poll() is not None:
             break
     kills = [r for d, r in res if d == "restart_kill"]
+    git("fetch", "-q", "origin")
+    check(SR.unpublished_shard(SEAT, CLONE) is None, "R5 the restart published the shard itself (%s)"
+          % SR.unpublished_shard(SEAT, CLONE))
     check(WINDOW.poll() is not None and any(r.startswith("killed pid %d" % WINDOW.pid) for r in kills),
           "R5 the shard on origin: the window process is SIGTERMed and dead (%s; state %s)"
           % (kills or holds(acts, res)[:200], session_state(st).get("state")))

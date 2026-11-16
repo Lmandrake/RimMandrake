@@ -28,7 +28,9 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              driver lock is held by the seat or unreadable (a driver lock whose holder pid is outside the window's
              process tree - a detached run - does not hold: bridge_hold), the seat's last game event is transitional, PAUSE, or a
              doorbell ring is in flight. Not quiet (idle + last record an ended assistant turn, 30 s old) for 3 ticks
-             -> failed: busy.
+             -> failed: busy. The seat's own unpublished shard lines do not hold: the kill's re-check publishes them itself
+             (publish_owed_shard); only a refused publish holds, naming its blocker and fix. A hold is seen: one Conductor-log
+             line at the first, and held_tell_s after a HANDOFF READY or goodbye one alarm restart:<seat>:held (_held_tell).
   claimed    -> restart_kill: ~/.claude/sessions/<pid>.json must name the session and the seat's window name; then
              <state>/restart/<SEAT>.killed.json is written (the relaunch argv) and the pid gets SIGTERM, SIGKILL after
              10 s. Never fleet_stop, never pkill -f. Dry run: journalled, nothing killed.
@@ -75,6 +77,7 @@ SEAT_ALIAS = {"CONDUCTOR": "BENCH"}
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+HOME_REPO = REPO                # the clone this file lives in, whatever a test points REPO at (publish_shard's guard)
 UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 for _p in (HERE, os.path.dirname(HERE), UTILS):
     if _p not in sys.path:
@@ -99,7 +102,10 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             # check stands in for grace + quiet_s; now_hold_s bounds how long rm-restart-now ticks before the timer
             "now_quiet_s": 3, "now_hold_s": 240,
             # CONDUCTOR_RESET_FIX_KILLED_MID_READ: the ceiling of `hold` (_hold_stands)
-            "hold_ceiling_tokens": 400_000, "hold_max_s": 14400}
+            "hold_ceiling_tokens": 400_000, "hold_max_s": 14400,
+            # RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS: a handoff or goodbye held this long alarms
+            # the Conductor log once (restart:<seat>:held); any other restart at hold_alarm_s
+            "held_tell_s": 600}
 HELPER_STALE_FLOOR_S = 1200
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
@@ -1997,6 +2003,33 @@ def _clone_tidy(seat, rs, ro, act):
                 seat, "; ".join("%s (%s)" % (c["path"], ", ".join(c["risks"])) for c in bad)))
 
 
+def _held_tell(seat, cfg, rs, st, now, act):
+    """A held restart is SEEN (RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS: 2 h 17 min held on
+    2026-11-15, said only in the journal). Its first hold: one Conductor-log line. Held past the bound (held_tell_s
+    from the request for a HANDOFF READY or a goodbye, else hold_alarm_s from the first hold): one alarm, the fixed id
+    restart:<seat>:held, into the Conductor log too. Once each per restart: a new restart's hold is new news, so the
+    Dispatcher's per-kind repeat limit is cleared for it, and never re-said every tick."""
+    alarms = st.setdefault("alarms", {})
+    why = rs.get("held_why") or "?"
+    if not rs.get("held_logged"):
+        rs["held_logged"] = now
+        alarms.pop("restart:%s:held_first" % seat, None)
+        act(do="alarm", kind="restart:%s:held_first" % seat, seat=seat, note=False, conductor_log=True,
+            raise_first="%s's restart (%s) is held; it goes by itself once this clears." % (
+                seat, rs.get("ticket") or rs.get("source")),
+            why="seat restart of %s held: %s" % (seat, why))
+    told = rs.get("handoff") is True or _goodbye(cfg, rs)
+    bound, start = (cfg["held_tell_s"], rs.get("ts") or now) if told else (cfg["hold_alarm_s"], rs["held_since"])
+    if rs.get("held_alarmed") or now - start < bound:
+        return
+    rs["held_alarmed"] = now
+    alarms.pop("restart:%s:held" % seat, None)
+    act(do="alarm", kind="restart:%s:held" % seat, seat=seat, ticket=rs.get("ticket"), note=True, conductor_log=True,
+        raise_first=("%s said HANDOFF READY or goodbye %d min ago and is still not restarted." % (seat, (now - start) // 60)
+                     if told else "%s's restart has been held %d min." % (seat, (now - start) // 60)),
+        why="seat restart of %s held %d s: %s" % (seat, now - rs["held_since"], why))
+
+
 def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     rec = ro["killed"](seat) if ro.get("killed") else None
     if (rec and not rec.get("aborted") and rec.get("old_alive") is False and rec.get("killed_at")
@@ -2084,10 +2117,18 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     # the refusal the deferral skipped, and the lines any window appends after its request: every source but a size
     # restart (bring-back and a goodbye never passed a refusal at all) holds until the shard is on origin (GPT review
     # 2026-11-01 #5); a size restart's lines stay in the clone for the next window there
+    # ... and the kill's re-check publishes those lines itself (publish_owed_shard), so they hold only while that
+    # cannot run (UNMEASURED) or was just refused (shard_refused, retried after SHARD_RETRY_S)
+    shard_owed = None
     if rs.get("source") not in UNCLOSED and hs is not None and not live and callable(ro.get("shard")):
         unpub = ro["shard"](seat)
-        if unpub:
-            holds.append("ledger shard unpublished: %s" % unpub)
+        ref = rs.get("shard_refused") or {}
+        if not unpub:
+            rs.pop("shard_refused", None)
+        elif unpub.startswith("UNMEASURED") or now - (ref.get("at") or -1e18) < SHARD_RETRY_S:
+            holds.append(ref.get("why") or "ledger shard unpublished: %s" % unpub)
+        else:
+            shard_owed = unpub
     bh = bridge_hold(seat, ro["bridge"](seat) or {}, cur.get("pid"), ro.get("ppid"))
     if bh:
         holds.append(bh)
@@ -2117,23 +2158,27 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     if hard:
         memo.setdefault("hard_since", rs["ts"])
     if holds:
+        if shard_owed:
+            holds.append("ledger shard unpublished: %s (the restart publishes it itself once the rest clears)" % shard_owed)
         rs.setdefault("held_since", now)
-        if now - rs["held_since"] >= cfg["hold_alarm_s"]:
-            act(do="alarm", kind="restart:%s:held" % seat, seat=seat, ticket=rs.get("ticket"), note=True,
-                why="seat restart of %s held %d s: %s" % (seat, now - rs["held_since"], "; ".join(holds)))
+        rs["held_why"] = hold_fixes(holds)
+        _held_tell(seat, cfg, rs, st, now, act)
         if hard:
             _no_boundary(seat, cfg, memo, now, act, "; ".join(holds))
         act(do="restart_hold", seat=seat, why="; ".join(holds))
         return
     rs.pop("held_since", None)
+    rs.pop("held_why", None)
     quiet = goodbye or (cur.get("status") == "idle" and tx and killable_turn(tx)
                         and now - (tx.get("last_at") or now) >= cfg["now_quiet_s" if instant else "quiet_s"])
     # a helper's last notice wakes a drain, a ring taken just before a handoff runs its turn out: neither fails the request
     if not quiet and (deferred or instant or rs.get("handoff") is True) and not hard:
         rs.setdefault("busy_since", now)
         why = "no boundary yet (status %s, last record %s)" % (cur.get("status"), (tx or {}).get("last_kind", "unreadable"))
-        if now - rs["busy_since"] >= cfg["hold_alarm_s"]:
+        if now - rs["busy_since"] >= cfg["hold_alarm_s"] and not rs.get("held_alarmed"):
+            rs["held_alarmed"] = now
             act(do="alarm", kind="restart:%s:held" % seat, seat=seat, ticket=rs.get("ticket"), note=True,
+                conductor_log=True, raise_first="%s's restart never found a quiet boundary." % seat,
                 why="deferred restart of %s never reached a boundary in %d s: %s" % (seat, now - rs["busy_since"], why))
         act(do="restart_hold", seat=seat, why=why)
         return
@@ -2632,8 +2677,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
     cfg = config(sch).get(seat) or dict(DEFAULTS)
     # the publication check first: its git calls can take minutes, and an input queued meanwhile must still meet the
     # transcript, queue and fence reads below (GPT round 3)
-    unpub = (shard or (lambda s_: unpublished_shard(s_, cfg.get("clone") or REPO)))(seat) \
-        if rs.get("source") not in UNCLOSED else None
+    unpub = (shard or (lambda s_: _kill_shard(s_, cfg, rs)))(seat) if rs.get("source") not in UNCLOSED else None
     path = transcript_for(sf, cfg)
     tx = tx_summary(path or "")
     holds = []
@@ -2688,8 +2732,18 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         if nw and rs.get("source") not in UNCLOSED and not goodbye:
             holds.append(_work_why(nw))
     if unpub:                            # an append (a helper's last, a goodbye's note) can land between verdict and kill
-        holds.append("ledger shard unpublished: %s" % unpub)
+        holds.append(unpub if unpub.startswith("ledger shard") else "ledger shard unpublished: %s" % unpub)
     return holds
+
+
+def _kill_shard(seat, cfg, rs):
+    """The kill's shard read: publish the seat's own lines (publish_owed_shard), and record a refusal for _pending."""
+    why = publish_owed_shard(seat, cfg.get("clone") or REPO)
+    if why:
+        note_shard_refused(rs, why, time.time())
+    else:
+        rs.pop("shard_refused", None)
+    return why
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -2791,12 +2845,33 @@ def check_request(seat, sf, helpers):
     return True, ("ok; retired dead helper(s): %s" % ", ".join(ret)) if ret else "ok"
 
 
+def _shard_rel(seat):
+    return "infrastructure/state/ledger/events/%s.jsonl" % seat
+
+
+def _lines_not_on_origin(clone, rel):
+    """-> how many lines of the clone's file origin/main's copy lacks, or None when either cannot be read. Content, not
+    hashes: a replay that left the clone's branch behind holds published lines under another commit hash (2026-11-15)."""
+    try:
+        with open(os.path.join(clone, rel), "rb") as f:
+            mine = f.read().splitlines()
+        r = subprocess.run(["git", "show", "origin/main:" + rel], cwd=clone, capture_output=True, timeout=60)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if r.returncode:
+        return None
+    theirs = set(r.stdout.splitlines())
+    return sum(1 for ln in mine if ln.strip() and ln not in theirs)
+
+
 def unpublished_shard(seat, clone):
     """-> None, or why the seat's ledger shard in `clone` is not on origin (uncommitted lines or commits not on origin/main),
     or "UNMEASURED: ..." when git cannot say.
     A close-out that ends with the shard only in the clone hides every event of the window from every other seat:
-    17 FOUNDRY events sat so for 3 h on 2026-10-28 (V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY). UNMEASURED -> None."""
-    rel = "infrastructure/state/ledger/events/%s.jsonl" % seat
+    17 FOUNDRY events sat so for 3 h on 2026-10-28 (V3_CUTOVER_MIGRATE_BENCH_LANE_TO_FOUNDRY). UNMEASURED -> None.
+    Every line already in origin/main's copy is published, whatever the hashes say (a stranded clone read its shard
+    as unpushed all morning on 2026-11-15)."""
+    rel = _shard_rel(seat)
     try:
         dirty = subprocess.run(["git", "status", "--porcelain", "--", rel], cwd=clone, capture_output=True,
                                text=True, timeout=60)
@@ -2807,11 +2882,120 @@ def unpublished_shard(seat, clone):
         return "UNMEASURED: git failed (%s)" % e
     if dirty.returncode != 0 or ahead.returncode != 0:
         return "UNMEASURED: %s" % ((dirty.stderr or ahead.stderr).strip().splitlines() or ["git error"])[0]
+    if not dirty.stdout.strip() and not ahead.stdout.strip():
+        return None
+    if _lines_not_on_origin(clone, rel) == 0:
+        return None
     if dirty.stdout.strip():
         return "%s has uncommitted lines" % rel
-    if ahead.stdout.strip():
-        return "%s has %d commit(s) not pushed" % (rel, len(ahead.stdout.strip().splitlines()))
-    return None
+    return "%s has %d commit(s) not pushed" % (rel, len(ahead.stdout.strip().splitlines()))
+
+
+SHARD_ROUNDS = 3        # publish, re-check; a peer's append in between is published by the next round
+SHARD_RETRY_S = 300     # a refused auto-publish holds this long before the kill tries it again
+
+
+def _git_lines(clone, *args):
+    try:
+        r = subprocess.run(["git"] + list(args), cwd=clone, capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return r.stdout.splitlines() if r.returncode == 0 else None
+
+
+def _other_unpushed(clone, rel):
+    """-> the files of local commits not on origin/main other than this shard (./publish would push them too)."""
+    out = _git_lines(clone, "log", "--format=", "--name-only", "origin/main..HEAD")
+    return sorted({p for p in out or [] if p.strip() and p != rel})
+
+
+def _other_dirt(clone, rel, cap=8):
+    """-> the clone's uncommitted paths other than ledger shards (what can stop ./publish), at most `cap` named."""
+    out = _git_lines(clone, "status", "--porcelain")
+    paths = [ln[3:] for ln in out or [] if ln[3:] and not ln[3:].startswith("infrastructure/state/ledger/events/")]
+    return paths[:cap] + (["... %d more" % (len(paths) - cap)] if len(paths) > cap else [])
+
+
+def publish_owed_shard(seat, clone, rounds=SHARD_ROUNDS, publish=None):
+    """A restart held or refused only for the seat's own unpublished shard lines publishes them itself (commit by
+    explicit path, ./publish, re-check; RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS): other processes in
+    the clone keep appending, so the window publishing once never kept it clean. -> None once every line is on origin,
+    else a refusal naming what blocks and the smallest fix. Never more than the shard: a local commit of anything else
+    refuses before ./publish (which pushes every local commit) runs."""
+    rel = _shard_rel(seat)
+    publish = publish or (lambda: publish_shard(seat, clone))
+    failed = None
+    for _ in range(rounds):
+        unpub = unpublished_shard(seat, clone)
+        if unpub is None:
+            return None
+        if unpub.startswith("UNMEASURED"):
+            return ("ledger shard %s. Smallest fix: run `git status %s` in %s; once git reads, the restart publishes it "
+                    "itself." % (unpub, rel, clone))
+        other = _other_unpushed(clone, rel)
+        if other:
+            return ("ledger shard unpublished: %s, and local commits not on origin touch %s, which the restart never "
+                    "pushes. Smallest fix: land them with ./publish in %s (or move them off main); the restart then "
+                    "publishes the shard itself." % (unpub, ", ".join(other[:8]), clone))
+        failed = publish()
+        if failed:
+            break
+    unpub = unpublished_shard(seat, clone)
+    if unpub is None:
+        return None
+    dirt = _other_dirt(clone, rel)
+    return ("ledger shard unpublished: %s; the restart's own ./publish %s. %sSmallest fix: %s, then the restart "
+            "publishes the shard and proceeds by itself." % (
+                unpub, "failed: %s" % failed if failed else "ran %d times and peers kept appending" % rounds,
+                "Uncommitted non-ledger paths in %s: %s. " % (clone, ", ".join(dirt)) if dirt else "",
+                "commit or move %s (it stops ./publish)" % ", ".join(dirt) if dirt else
+                "run ./publish in %s and read its refusal" % clone))
+
+
+def note_shard_refused(rs, why, now):
+    """The kill's auto-publish was refused: the hold stands on its words for SHARD_RETRY_S, then the kill tries again."""
+    rs["shard_refused"] = {"at": now, "why": why}
+
+
+HOLD_FIXES = (("helper(s) alive", "let them finish, or checkpoint them: seat_restart.py checkpoint --seat CONDUCTOR"),
+              ("bridge/driver lock held", "release it: rimflow bridge release"),
+              ("PAUSE", "the Dispatcher is paused; it goes when the pause is lifted"),
+              ("background command", "end the named background command (TaskStop), or let it finish"),
+              ("game action by", "wait for the game to settle (UP or DOWN)"),
+              ("helper inventory UNMEASURED", "a subagent transcript is unreadable: read it, or checkpoint the window"),
+              ("doorbell ring in flight", "nothing: the ring is read within a tick"))
+
+
+def hold_fixes(holds):
+    """-> 'hold (fix: ...)' for each hold: a refusal carries its path to pass (standing_rulings.md)."""
+    out = []
+    for h in holds:
+        fix = next((f for k, f in HOLD_FIXES if k in h), None)
+        out.append("%s (fix: %s)" % (h, fix) if fix else h)
+    return "; ".join(out)
+
+
+def restart_notice(seat, session_id, now=None, root=None):
+    """-> the lines a window must read on its next prompt about its own refused or held restart, or None. The Stop hook
+    blocks a refused handoff at most MAX_BLOCKS times, and a Dispatcher hold was only in its journal: the window went on
+    saying HANDOFF READY into the void for two hours (2026-11-15). Read by conductor_goodbye.py; fails silent."""
+    if not seat or not session_id:
+        return None
+    now = time.time() if now is None else now
+    root = root or doorbell.state_dir()
+    out = []
+    ref = _read_json(refused_path(seat, root)) or {}
+    if ref.get("session_id") == session_id:
+        out.append("HANDOFF RESTART REFUSED (since %s, %d block(s)): %s" % (
+            _iso(ref.get("ts") or now), ref.get("n") or 0, ref.get("why")))
+    rs = ((_read_json(os.path.join(root, "state.json")) or {}).get("seat_restart") or {}).get(seat) or {}
+    if rs.get("session_id") == session_id and rs.get("state") == "pending" and rs.get("held_why"):
+        out.append("RESTART HELD by the Dispatcher for %d min: %s" % (
+            (now - (rs.get("held_since") or now)) // 60, rs["held_why"]))
+    if not out:
+        return None
+    return ("[seat_restart] " + "\n[seat_restart] ".join(out) + "\nThis window was NOT restarted. Fix what is named, or "
+            "tell him in one line why it stays open; do not say HANDOFF READY again until it is fixed.")
 
 
 def drain_of(seat, session_id, root=None, now=None):
@@ -2943,12 +3127,17 @@ def kick_fresh(seat, session_id, root=None):
 
 
 def publish_shard(seat, clone=None):
-    """`request --now` step 2 of the pre-kill tidy (owner 2026-11-02): commit and publish the seat's own ledger shard, by
-    explicit path, from the window's clone. -> None on success, else why (the request then refuses as before)."""
+    """The pre-kill tidy (owner 2026-11-02): commit and publish the seat's own ledger shard, by explicit path, from the
+    window's clone (its own ./publish, else this repo's). -> None on success, else why (publish_owed_shard says it)."""
     clone = clone or REPO
-    shard = "infrastructure/state/ledger/events/%s.jsonl" % seat
+    shard = _shard_rel(seat)
+    pub = os.path.join(clone, "publish")
+    import conductor_log_guard
+    if conductor_log_guard.under_test() and os.path.realpath(clone) == os.path.realpath(HOME_REPO):
+        return "a test process never publishes the real clone %s" % clone
     try:
-        r = subprocess.run([os.path.join(clone, "publish"), "-m", "ledger: %s shard" % seat, shard], cwd=clone,
+        r = subprocess.run([pub if os.path.exists(pub) else os.path.join(REPO, "publish"), "-m",
+                            "ledger: %s shard" % seat, shard], cwd=clone,
                            capture_output=True, text=True, timeout=240)
     except (OSError, subprocess.SubprocessError) as e:
         return "./publish failed to run: %s" % e
@@ -2971,10 +3160,9 @@ def cmd_request(args):
               "restart." % seat)
         return 0
     unpub = unpublished_shard(seat, REPO)
-    if args.now and unpub and not unpub.startswith("UNMEASURED"):
-        why = publish_shard(seat)
-        unpub = unpublished_shard(seat, REPO)
-        print("seat_restart --now: shard %s" % ("published" if not unpub else "still unpublished (%s)" % why))
+    if unpub and not unpub.startswith("UNMEASURED"):   # the request publishes the window's lines itself
+        unpub = publish_owed_shard(seat, REPO)
+        print("seat_restart: ledger shard %s" % ("published by this request" if not unpub else "NOT published"))
     pid = args.pid or doorbell.claude_ancestor()
     sf = session_file(pid) if pid else None
     path = transcript_path(sf["cwd"], sf["sessionId"]) if sf and sf.get("cwd") and sf.get("sessionId") else None
@@ -2990,8 +3178,9 @@ def cmd_request(args):
               "infrastructure/state/ledger/events/%s.jsonl` and `./publish`, then request again." % (unpub, seat))
         return 3
     elif unpub:
-        print("seat_restart: REFUSED: %s. Close-out step 1: commit it by explicit path, then ./publish, then request "
-              "again (ledger-only tickets too)." % unpub)
+        print("seat_restart: REFUSED: %s%s" % (unpub, "" if "mallest fix" in unpub else
+                                                 ". Close-out step 1: commit it by explicit path, then ./publish, then "
+                                                 "request again (ledger-only tickets too)."))
         return 3
     bad = unfiled_ticket(args.ticket)
     if bad:

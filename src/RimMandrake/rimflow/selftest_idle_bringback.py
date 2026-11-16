@@ -367,10 +367,13 @@ def test_unpublished():
     w.run(LIMIT + 6 * TICK)
     holds = [a for a in w.acts if a.get("do") == "restart_hold"]
     check(w.count("restart_request") == 1 and w.kills == [], "lines not on origin: requested, not killed (kills %d)" % len(w.kills))
-    check(holds and "has uncommitted lines" in holds[-1]["why"], "the hold names the shard: %s" % str(holds[-1:])[:200])
+    # the kill tried to publish the shard itself (publish_owed_shard); this clone's origin cannot take it, so it holds
+    check(holds and "ledger shard unpublished" in holds[-1]["why"] and "mallest fix" in holds[-1]["why"],
+          "the hold names the shard and its fix: %s" % str(holds[-1:])[:200])
     for argv in (["add", "--", shard], ["-c", "user.name=selftest", "-c", "user.email=selftest@invalid", "commit", "-q", "--no-verify", "-m", "note"],
                  ["update-ref", "refs/remotes/origin/main", "HEAD"]):
-        subprocess.run(["git"] + argv, cwd=w.clone, check=True, capture_output=True, timeout=60)
+        # the kill's own publish may already have committed it locally: nothing to commit is fine
+        subprocess.run(["git"] + argv, cwd=w.clone, check="commit" not in argv, capture_output=True, timeout=60)
     w.run(4 * TICK)
     check(len(w.kills) == 1, "published: the kill lands (kills %d)" % len(w.kills))
     w.close()

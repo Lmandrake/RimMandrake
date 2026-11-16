@@ -9,7 +9,9 @@ On the turn that says it (seat_restart.says_handoff_ready):
   handoff.py --check fails     -> block with its problems; the window fixes them and says it again.
                                   With helpers alive the check waits: they hold the shard and the doing items.
   seat_restart.py request      -> --ticket HANDOFF --fresh: the Dispatcher kills after grace_s of quiet, 20 s for FOUNDRY.
-    refused (shard unpublished) -> block with the refusal.
+    refused (shard unpublished) -> block with the refusal (the request and the drain publish the shard themselves first;
+                                   only what stops that publish refuses). A standing refusal or Dispatcher hold is also
+                                   printed on the window's next prompt (conductor_goodbye.py, seat_restart.restart_notice).
 On any turn end during a deferred handoff (its helpers ran out): the same check, plus the shard; then ticks, so the wait
 is 20 s and not the 120 s timer.
 
@@ -92,7 +94,10 @@ def on_stop(hook, seat, SR, out=None):
         if live_helpers(SR, cfg, path):
             return "draining"
         unpub = SR.unpublished_shard(seat, REPO)
-        rc, txt = (1, "%s. Commit it by explicit path and ./publish." % unpub) if unpub else check(seat)
+        if unpub and not unpub.startswith("UNMEASURED"):   # the hook publishes the window's own lines itself
+            unpub = SR.publish_owed_shard(seat, REPO)
+        rc, txt = (1, unpub if "mallest fix" in unpub else "%s. Commit it by explicit path and ./publish." % unpub) \
+            if unpub else check(seat)
         if rc:
             refuse(SR, seat, sid, txt, out)
             return "refused"

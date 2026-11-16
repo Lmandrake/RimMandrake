@@ -80,8 +80,14 @@ def test_holds_stand():
     check(not kills(a) and F.state(st) == "pending", "--now with a live helper is held (%s)" % F.dos(a))
     sch, st = F.sched(), F.fresh()
     a = F.run(sch, st, nobs(request=nreq(), shard="FOUNDRY.jsonl: 2 commit(s) unpublished"), T0 + 1)
+    check(len(kills(a)) == 1, "--now with an unpublished shard goes to the kill, which publishes it (%s)" % F.dos(a))
+    sch, st = F.sched(), F.fresh()
+    F.run(sch, st, nobs(request=nreq(), tx={"last_at": T0}), T0 + 1)          # pending: under now_quiet_s
+    SR.note_shard_refused(st["seat_restart"]["FOUNDRY"], "ledger shard unpublished: x. Smallest fix: y", T0 + 1)
+    a = F.run(sch, st, nobs(request=None, shard="FOUNDRY.jsonl: 2 commit(s) unpublished"), T0 + 2 + SR.DEFAULTS["now_quiet_s"])
     holds = [x.get("why") for x in a if x["do"] == "restart_hold"]
-    check(not kills(a) and any("unpublished" in (h or "") for h in holds), "--now with an unpublished shard is held (%s)" % holds)
+    check(not kills(a) and any("unpublished" in (h or "") for h in holds),
+          "--now whose auto-publish was refused is held (%s)" % holds)
     sch, st = F.sched(), F.fresh()
     busy = [F.sess(status="busy")]
     for i in range(SR.DEFAULTS["busy_ticks"] + 2):
@@ -155,9 +161,11 @@ def test_plain_request_fenced_on_shard():
     # NEGATIVE (GPT review 2026-11-01 #5): a plain request whose window appended after its gate holds on the shard
     sch, st = F.sched(), F.fresh()
     a = F.run(sch, st, nobs(request=F.req(), shard="FOUNDRY.jsonl has uncommitted lines"), T0 + 1)
+    SR.note_shard_refused(st["seat_restart"]["FOUNDRY"], "ledger shard unpublished: x. Smallest fix: y", T0 + 1)
     a = F.run(sch, st, nobs(request=None, shard="FOUNDRY.jsonl has uncommitted lines"), T0 + SR.DEFAULTS["grace_s"] + 5)
     holds = [x.get("why") for x in a if x["do"] == "restart_hold"]
-    check(not kills(a) and any("unpublished" in (h or "") for h in holds), "a plain request is held on its shard (%s)" % holds)
+    check(not kills(a) and any("unpublished" in (h or "") for h in holds),
+          "a plain request whose auto-publish was refused is held on its shard (%s)" % holds)
     a = F.run(sch, st, nobs(request=None, shard=None), T0 + SR.DEFAULTS["grace_s"] + 10)
     check(len(kills(a)) == 1, "control: published, it is claimed (%s)" % F.dos(a))
 
@@ -351,13 +359,14 @@ def test_request_now():
     raw = {"seats": {"FOUNDRY": {"session_name": "AGENT FOUNDRY", "clone": F.CLONE}},
            "seat_restart": {"enabled": True, "seats": {"FOUNDRY": {"backstop_ctx_tokens": 110_000}}}}
     pubs = []
-    seq = iter(["FOUNDRY.jsonl: 1 commit unpublished", None])
-    saved = SR.publish_shard
+    seq = iter(["FOUNDRY.jsonl: 1 commit unpublished", "FOUNDRY.jsonl: 1 commit unpublished", None, None])
+    saved = SR.publish_shard, SR._other_unpushed
     SR.publish_shard = lambda seat, clone=None: pubs.append(seat)
+    SR._other_unpushed = lambda clone, rel: []
     try:
         rc, out, wrote = _run_request(raw, 120_000, ["--now"], lambda seat, clone: next(seq))
     finally:
-        SR.publish_shard = saved
+        SR.publish_shard, SR._other_unpushed = saved
     req = SR._read_json(SR.request_path("FOUNDRY")) or {}
     stamp = SR._read_json(SR.now_stamp_path("FOUNDRY")) or {}
     check(rc == 0 and wrote and req.get("now") is True, "--now over the backstop writes a request with now (rc %s)" % rc)

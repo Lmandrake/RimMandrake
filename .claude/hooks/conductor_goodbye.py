@@ -18,7 +18,8 @@ unreadable). A window whose session file cannot be read gets one diagnostic line
 His whole message can also be the reset switch (src/RimMandrake/rimflow/reset_mode.py: hold / ready / auto,
 CONDUCTOR_RESET_FIX_KILLED_MID_READ): the same identity gate, then the switch is written by this hook, not left to the window.
 
-Prints nothing on an ordinary prompt and on any unreadable input (exit 0 always: a hook must never block his message).
+On an ordinary prompt it prints only this window's own refused or held restart, if any (restart_notice), so a window
+whose HANDOFF READY was refused or held stops saying it into the void. Prints nothing else on an ordinary prompt and on any unreadable input (exit 0 always: a hook must never block his message).
 It only prints: the restart itself is requested by the window and acted on by the Dispatcher, which holds it while
 helpers are alive, he is typing, or the window is mid-reply.
 """
@@ -146,6 +147,16 @@ def set_reset_mode(mode, session_id, sch):
             "in ONE line, exactly: \"%s\" Then end the turn. Do not start new work." % SR.RM.said(mode, cfg))
 
 
+def restart_notice(session_id):
+    """This window's own refused or held restart, put on his next prompt (seat_restart.restart_notice;
+    RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS). Keyed on the session id, so no other window hears it."""
+    try:
+        import seat_restart as SR
+        return SR.restart_notice(SEAT, session_id)
+    except Exception:  # noqa: BLE001 - never block his message
+        return None
+
+
 def _load_schedule():
     try:
         with open(SCHEDULE, encoding="utf-8") as f:
@@ -183,6 +194,9 @@ def main():
     bye = is_goodbye(prompt, phr)
     mode = None if bye else RESET_WORDS(prompt)
     if not bye and not mode:
+        notice = restart_notice(data.get("session_id"))
+        if notice:
+            print(notice)
         return 0
     sf = _session_file()
     ok, why = is_conductor(os.environ, sf, sch)

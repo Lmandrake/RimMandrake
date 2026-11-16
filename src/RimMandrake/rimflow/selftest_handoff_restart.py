@@ -9,7 +9,7 @@ landing where kick_handoff puts them.
   rings     no ring while it is pending; a ring still in the inbox is withdrawn; a ring the window already took holds
             nothing (the live hold of 2026-11-01); a ring that lands anyway neither cancels nor fails it
   human     his own text in the window still cancels
-  deferred  helpers drain, the unpublished shard holds, then it fires once; the bring-back stays out
+  deferred  helpers drain, a shard the kill cannot publish holds, then it fires once; the bring-back stays out
   spin      a fresh window handing off with no work is refused and alarmed; with work, or past the cooldown, it fires
   fresh     a restart ends in work: the fresh window, armed, is verified and rung on one tick, backoff or no; the doorbell
             kicks that tick; an empty queue or an unarmed window is left alone
@@ -285,11 +285,15 @@ def test_deferred():
     w.shard = "shard dirty"
     w.end_turn(win)                          # the last notice woke it
     w.at(21)
-    check(not w.killed() and w.acts and any("unpublished" in str(a.get("why")) for a in w.acts if a.get("do") == "restart_hold"),
-          "the helper is done, the shard is not published: held, no gap")
+    # the kill publishes the shard itself (publish_owed_shard); here that publish cannot run, so it is refused there
+    said = [str(a.get("why")) + str(a.get("result")) for a in w.acts if a.get("do") in ("restart_hold", "restart_kill")]
+    check(win["proc"].poll() is None and any("unpublished" in x for x in said),
+          "the helper is done, the shard is not published and cannot be: held at the kill, no gap")
     w.shard = None
     w.at(10)
-    check(w.count("restart_kill") == 1, "published: it fires, once")
+    w.at(10)
+    fired = [a for a in w.acts if a.get("do") == "restart_kill" and str(a.get("result")).startswith("killed")]
+    check(len(fired) == 1, "published: it fires, once (%s)" % [a.get("result") for a in w.acts if a.get("do") == "restart_kill"])
     w.close()
 
 
@@ -417,6 +421,9 @@ class Fake:
         return [{"alive": self.live}]
 
     def unpublished_shard(self, seat, repo):
+        return self.unpub
+
+    def publish_owed_shard(self, seat, repo):     # the hook publishes first; what still stands is the refusal
         return self.unpub
 
     def kick_handoff(self, cfg):

@@ -120,6 +120,11 @@ def dos(acts):
     return [a["do"] for a in acts]
 
 
+def plain(acts):
+    """dos() without the one Conductor-log line every restart's first hold writes (_held_tell)."""
+    return [a["do"] for a in acts if not str(a.get("kind") or "").endswith(":held_first")]
+
+
 def state(st):
     return (st.get("seat_restart") or {}).get("FOUNDRY", {}).get("state")
 
@@ -678,7 +683,7 @@ def test_r3_helpers_unreadable_hold_and_never_age_out():
     sch, st = sched(), fresh()
     run(sch, st, obs(request=req()), T0 + 1)
     acts = run(sch, st, obs(helpers=None), T0 + SR.DEFAULTS["grace_s"] + 5)
-    check(dos(acts) == ["restart_hold"], "R3 helper inventory unreadable -> held (%s)" % dos(acts))
+    check(plain(acts) == ["restart_hold"], "R3 helper inventory unreadable -> held (%s)" % dos(acts))
     tdir = os.path.join(TMP, "r3")
     sub = os.path.join(tdir, "sid", "subagents")
     os.makedirs(sub, exist_ok=True)
@@ -747,7 +752,7 @@ def test_m8_recover_in_flight_holds():
     run(sch, st, obs(request=req()), T0 + 1)
     st["seats"]["FOUNDRY"] = {"recover": {"at": T0}}
     acts = run(sch, st, obs(), T0 + SR.DEFAULTS["grace_s"] + 5)
-    check(dos(acts) == ["restart_hold"], "M8 a recovery in flight holds the restart")
+    check(plain(acts) == ["restart_hold"], "M8 a recovery in flight holds the restart")
 
 
 def test_m9_fallback_argv_tokenised():
@@ -2674,9 +2679,14 @@ def test_d5_hold_for_the_shard_and_no_busy_failure():
     done = [dict(h, alive=False, last_at=T0 + 200) for h in LIVE4]
     o = obs(helpers=done)
     o["seat_restart"]["shard"] = lambda seat: "shard has uncommitted lines"
+    st0 = fresh()                    # the shard alone goes to the kill, whose re-check publishes it (_kill_shard)
+    run(sch, st0, obs(request=_defer_req(), helpers=LIVE4), T0 + 30)
+    a = run(sch, st0, o, T0 + 400)
+    check("restart_kill" in dos(a), "D5 the shard the refusal skipped goes to the kill, which publishes it (%s)" % dos(a))
+    SR.note_shard_refused(st["seat_restart"]["FOUNDRY"], "ledger shard unpublished: x. Smallest fix: y", T0 + 390)
     a = run(sch, st, o, T0 + 400)
     check("restart_kill" not in dos(a) and any("unpublished" in (x.get("why") or "") for x in a),
-          "D5 the shard the refusal skipped holds the kill (%s)" % dos(a))
+          "D5 a refused auto-publish of the shard holds the kill (%s)" % dos(a))
     # its last helper's notice wakes it: busy for many ticks is no failed request
     sb = obs(helpers=done, sessions=[sess(status="busy")], tx={"last_kind": "assistant_tool", "last_at": T0 + 500})
     for t in range(5):
