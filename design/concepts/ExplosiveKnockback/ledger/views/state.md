@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"OWNER":1207} body_sha256=edcb69511d353632c78643142cff2ed7f86aceaae549a76b62e60d076bc44e16 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6762,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"OWNER":1207} body_sha256=8d33284af60267068eab2f47fb3d1fd1247e2024f18b9a98b45b49cb4afba127 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 444 events in 6 shards · reducer 1
-holder lease run-1794830532, token 5, last active 2026-11-16T12:05:27Z
+version 0.1.0 · stage in_game · 446 events in 6 shards · reducer 1
+holder lease run-1794860741, token 6, last active 2026-11-16T20:26:24Z
 holder session 7bae3178-26bc-4b3f-9301-f14a097d4fa8, context 120337 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794830532, 2026-11-16T12:05:27Z)
@@ -312,6 +312,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - tests: 94, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 5 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 444 events (views/history.md; never read whole)
+- the full history: 446 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T13:02:57Z.1794834177850540910 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T13:02:57Z.1794834177850540910 prints what changed after this packet)
+cursor: t=2026-11-16T20:26:24Z.1794860784432115773 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T20:26:24Z.1794860784432115773 prints what changed after this packet)
