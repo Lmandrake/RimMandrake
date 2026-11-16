@@ -2666,6 +2666,9 @@ def main(argv=None):
     a.add_argument("--per-ruling", help="CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: the Conductor's instruction, carried as his words; --why holds its text")
     a.add_argument("--waits-on")
     a.add_argument("--json", action="store_true")
+    g = sub.add_parser("gate", help="read-only: exit 0 when the move refuses nothing but its hand steps (a launch check)")
+    g.add_argument("mod")
+    g.add_argument("--to", required=True, choices=WORDS)
     p = sub.add_parser("lock-bars", help="record the locked version's bar ids (version/locked_bars.json)")
     p.add_argument("mod")
     p.add_argument("--by", required=True)
@@ -2771,6 +2774,18 @@ def main(argv=None):
         else:
             print_refusal(res)
         return 0 if res["ok"] else 1
+    if o.cmd == "gate":     # GATE_FIRST (RIMMANDRAKE_RUN_LAUNCH_CHECKS_FIVE_STEWARDS_HIT_GATES): writes nothing
+        if load(root, o.mod) is None:
+            print("REFUSED: %s has no stage record; run maturation.py seed %s first" % (o.mod, o.mod))
+            return 1
+        res = evaluate(root, o.mod, o.to)
+        prog = [r for r in res["verdict"]["refusals"] if r["clause"] not in res["hand_steps"]]
+        if not prog:
+            print("GATE OPEN %s: %s to %s%s" % (o.mod, label(res["from"]), label(o.to), "; the steward supplies: %s"
+                                               % ", ".join(res["hand_steps"]) if res["hand_steps"] else ""))
+            return 0
+        print_refusal(dict(res, verdict=dict(res["verdict"], refusals=prog)))
+        return 1
     if o.cmd == "lock-bars":
         r = lock_bars(root, o.mod, o.by, o.why, o.add, o.remove, o.source)
         print(("LOCKED BARS %s: %d recorded in %s (%s)" % (o.mod, len(r["ids"]), rel(o.mod, LOCKED_BARS), r["why"]))
