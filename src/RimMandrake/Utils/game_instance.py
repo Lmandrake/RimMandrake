@@ -30,6 +30,7 @@ modset_builder builds PLAYERLOG from there. Unity does not rotate under -logfile
 
 launch refuses game a, whose launch stays where it is (steam://, rw_game.sh up), and refuses a folder with no
 steam_appid.txt: rung one is measured only where that file exists, and on Archmagi it is a separate decision.
+A running game a's INHERITED_FLAGS (Archmagi's -disable-compute-shaders, a Steam launch option) go on B's command line too.
 
 Selftest: selftest_game_instance.py (two fake games, real processes, no Windows). Planted faults:
 selftest_second_game_mutants.py.
@@ -53,6 +54,7 @@ ROOT_ENV = "RM_INSTANCES_ROOT"
 LIST_OK = "GAME-LIST-OK"            # the list's last line: without it an empty answer is a blind instrument, not "no game"
 PORT_LINE = "GABP server connected to GABS on port"     # env mode's line; there is no "Bridge token:" line in that mode
 WINDOW = (1280, 720)
+INHERITED_FLAGS = ("-disable-compute-shaders",)  # Archmagi's Steam launch option for A; B is started like A on the same GPU
 LAUNCH_SEEN_S = 15
 WAIT_S = 600
 EX_BLIND, EX_REFUSED = 2, 3
@@ -402,6 +404,8 @@ def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.ti
     game_dir = win_path(game_paths.GAME_DIR)
     args = ["-savedatafolder=%s" % wd, "-logfile", "%s\\Player.log" % wd, "-screen-fullscreen", "0",
             "-screen-width", str(WINDOW[0]), "-screen-height", str(WINDOW[1])]
+    a_cmds = [g["cmd"] or "" for g in games() if g["instance"] == DEFAULT]
+    args += [f for f in INHERITED_FLAGS if any(f in c.split() for c in a_cmds)]
     script = ("$env:GABP_SERVER_PORT='%d'; $env:GABP_TOKEN='%s'; Start-Process -FilePath '%s\\%s' -WorkingDirectory '%s' "
               "-ArgumentList %s" % (port(name), ensure_token(name), game_dir, GAME_EXE, game_dir,
                                     ",".join("'%s'" % a for a in args)))

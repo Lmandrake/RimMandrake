@@ -318,6 +318,34 @@ Gaps found offline, for whoever reruns this:
 
 Rerun when headroom is at least 12 GB at the moment of launch, read again then: for example while A runs a tier list rather than 316 mods, or after WSL's cache has gone back to Windows. Dropping WSL's page cache or closing the owner's apps to make room was not tried, because the brief's floor applies to the machine as found.
 
+## Archmagi trial rerun, 2026-11-16 afternoon: PASSED, game B left running
+
+Same item, a detached helper, 13:12 to about 13:30 PST, with the owner away from the desktop. **Rung one passes on Archmagi.** Game B is still up, pid 39464, on purpose: the brief said to leave it up on a clean pass. Evidence: `D:\ClaudeWork\rimmandrake\instances\b\trial\` (the scene script `scene_b.sh`, its output `scene_b_run2.txt`, `readings_both_up.txt`, A's file md5s, and `unity_key_before.reg`).
+
+Readings, MEASURED from `Win32_OperatingSystem` and `Get-Process`:
+
+| PST | state | commit used of limit | headroom | A private | B private | vmmemWSL private |
+|---|---|---|---|---|---|---|
+| 13:12:54 | A alone | 80.0 of 99.3 GB | 19.3 GB | 17.45 GB | | 27.56 GB |
+| 13:18:02 | A alone, just before launch | 80.3 of 99.3 GB | 19.0 GB | | | |
+| 13:22:12 | both up, B on a quicktest map | 84.3 of 99.3 GB | 15.0 GB | 17.46 GB | 3.43 GB | 27.63 GB |
+
+- **Launch.** `steam_appid.txt` (`294100`) was written to `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\` and left there, since B's next launch needs it. Then `game_instance.py launch b --wait`: pid 39464, port line after 70 s. B's log has `Save data folder overridden to D:\ClaudeWork\rimmandrake\instances\b`, no `Steamworks.NET` or `SteamAPI` line, and its bridge loaded, which on Archmagi exists only as a Workshop mod. So Steam gave B its Workshop. B ran the 27-mod `ModsConfig.MINIMAL.xml` with all five DLC, with `-disable-compute-shaders` copied from A (below).
+- **Bridges.** 5174 is A's pid 30540 and 5175 is B's pid 39464 (`Get-NetTCPConnection`). Both answered `rimbridge/ping` under Windows Python; WSL Python cannot reach either port, by design.
+- **Scene on B** (`scene_b.sh`): `start_debug_game_ready` gave a playable 250x250 Desert quicktest in 10.9 s; Hyperweave x7 spawned at (120,120) read back as 1 match on B; A read 0 Hyperweave before and after (read-only calls; A was paused at tick 13106 throughout). B at Superfast went from tick 1 to 7532 in 20 s.
+- **GPU.** 13.8 of 16.3 GB used with both up; per process UNMEASURED (`nvidia-smi` shows N/A per app on this driver).
+- **A untouched.** Its `ModsConfig.xml` and `Prefs.xml` md5 matched after B was up; its bridge lock stayed FREE; `Player-prev.log` did not move. A's `Player.log` gained one line at B's launch, 13:18:08: `Direct3D: detected that vsync is broken ... until the game window is moved`. That is B's window appearing, harmless, and the only trace of B in A's log.
+- **Red lines in B's log** are the MINIMAL list's own missing cross-references (`RM_FloodedCanyon`, a donor headband, AlienWorlds' TidallyLocked patch class), not the other game.
+
+What collided, found and fixed in this run (tests first, both filed with their acceptance tests):
+
+- `RIMMANDRAKE_PASS_GAME_B_COMPUTE_FLAG_SAME_GPU`: `launch` gave B none of A's `-disable-compute-shaders`, though `archmagi_artisan_only_2026-11-07.md` says B needs it. `launch` now copies `INHERITED_FLAGS` from a running game a's command line. Whether B runs without the flag on the RTX 5080 is still UNMEASURED.
+- `RIMMANDRAKE_STOP_EK_PILOT_KILLING_BOTH_GAMES_BY_NAME`: an ExplosiveKnockback pilot script committed today stopped SteveDesktop's game with `taskkill /IM RimWorldWin64.exe`, which takes game B too. `selftest_game_instance.py`'s repo gate caught it; the script now uses `rw_game.sh down`.
+
+When B is closed: stop it by pid (`game_instance.py stop 39464 --instance b`), then, with no game running, `reg import` `unity_key_before.reg`, because B's exit writes its window size into the Unity key A reads.
+
+**Before Dispatch can hand Stage 6 work to either game on Archmagi:** a local wrapper that runs a loop's commands with `game_instance.py env b` (Archmagi has no `ralph/steve.sh` equivalent); a game-instance choice in `src/RimMandrake/rimflow/maturation_dispatch.py`, which names no instance today (rimflow's lock already takes the key `archmagi.b`); the per-instance gate; and a deploy with two games up, which is still unmeasured, so B's writable mods stay disjoint from A's. Full-list B is not affordable here: 15 GB headroom with B on 27 mods.
+
 ## What this buys, honestly
 
 At best about 1.6 times the game-ticks per machine when both are busy, on SteveDesktop (MEASURED on small lists in short windows; full lists UNMEASURED, and the fault-limited clock leaves less headroom than the core count suggests). More exactly, it removes the queue. Graffiti's loop is sitting on `NEED_GAME` now behind two others, and a second game on SteveDesktop lets one of those proceed. So this is a real, immediate gain.

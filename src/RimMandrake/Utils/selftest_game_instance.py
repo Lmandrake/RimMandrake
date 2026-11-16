@@ -175,6 +175,7 @@ def launch(w):
     argv = saw["argv"]
     check(argv[0] == "-savedatafolder=" + w.b_dir and argv[argv.index("-logfile") + 1].replace("\\", "/") == w.b_dir + "/Player.log"
           and argv[argv.index("-screen-fullscreen") + 1] == "0" and argv[argv.index("-screen-width") + 1] == "1280", "command line: %s" % argv)
+    check(argv.count("-disable-compute-shaders") == 1, "b inherits game a's -disable-compute-shaders (Archmagi's Steam option): %s" % argv)
     prefs = open(os.path.join(w.b_dir, "Config", "Prefs.xml"), encoding="utf-8").read()
     check("<screenWidth>1280</screenWidth>" in prefs and "<screenHeight>720</screenHeight>" in prefs
           and "<fullscreen>False</fullscreen>" in prefs and "<runInBackground>True</runInBackground>" in prefs, "Prefs carries the window size")

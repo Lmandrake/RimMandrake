@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # ek_deploy_run.sh DLL OUTNAME PAIRS SAVE : cold restart Steve's game with DLL, load SAVE, run --frames-only PAIRS
+# The 2026-11-16 pilot stopped the game with taskkill /IM, which also kills a second game (game B); rw_game.sh down stops this game's pid only.
 DLL=$1; OUT=$2; PAIRS=$3; SAVE=${4:-EK_WALK_SMALL_COLONY_20261116}
 T=/mnt/d/SteamLibrary/steamapps/common/RimWorld/Mods/ExplosiveKnockback/Assemblies
-timeout 300 ssh -o BatchMode=yes mandrake@stevedesktop-wsl "cd ~/rm/runner && /mnt/c/Windows/System32/taskkill.exe /IM RimWorldWin64.exe /F >/dev/null 2>&1; for i in \$(seq 1 30); do infrastructure/stevedesktop/rw_game.sh status | grep -q stopped && break; sleep 2; done"
+timeout 300 ssh -o BatchMode=yes mandrake@stevedesktop-wsl "cd ~/rm/runner && infrastructure/stevedesktop/rw_game.sh down >/dev/null 2>&1"
 scp -q "$DLL" mandrake@stevedesktop-wsl:$T/RimMandrakeExplosiveKnockback.dll
 timeout 900 ssh -o BatchMode=yes mandrake@stevedesktop-wsl "cd ~/rm/runner && export RM_HOST_GUARD_GEN=2026; echo dll \$(md5sum $T/RimMandrakeExplosiveKnockback.dll | cut -c1-8); infrastructure/stevedesktop/rw_game.sh up --wait 2>&1 | tail -1"
 RB_TIMEOUT=200 /tmp/ek_rb.sh rimworld/load_game "{\"saveName\":\"$SAVE\"}" | grep -o '"success": *[a-z]*' | head -1
