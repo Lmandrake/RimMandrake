@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-16T12:28:55-08:00",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-16T13:43:22-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 2,
-    "total": 4
+    "visit": 1,
+    "total": 5
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -193,6 +193,27 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-16T13:43:22-08:00",
+      "by": "BENCH",
+      "why": "steward: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); the visit-3 REAL MISS RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE closed at a9eedde493 with tests added only, certificate rerun 81519824c0",
+      "unit": "rm-detached-bench-rimmandrake-advance-explosiveknockback-p-1794865353",
+      "confirmed": {
+        "steward_confirms": "read maturation.py next: no not-met reasons to sort (no RECORD GAP, CRITERION FLAW or REAL MISS); a9eedde493 adds 20 selftest lines, deletes none; verdict: advance"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
       ]
     }
   ],

@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":10842,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=da1fb0cdccd8582572e64f6622f44f09cfe394fb064657ddcb59c46da69f74a4 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":11156,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"OWNER":1207} body_sha256=5c5f48bde38e17305bfac3187857858f4f57f104cce1ef99e59ebff552e621af -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage offline_build · 459 events in 7 shards · reducer 1
-holder lease run-1794865314, token 9, last active 2026-11-16T21:42:27Z
+version 0.1.0 · stage blind_challenge · 461 events in 8 shards · reducer 1
+holder lease run-1794865314, token 9, last active 2026-11-16T21:43:27Z
 holder session 8a6ffaac-0283-49dd-90bd-8e60db244bc9, context 183409 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1794860741, 2026-11-16T20:29:02Z)
-- done: visit 3 read: 54 PASS, sc_storeroom_bomb_pit FAIL (cover half, REAL MISS), sc_walk_raid UNMEASURED (resolved later by the pilot, 18/18 PASS); filed RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE (needs offline, replaces RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY); advanced to offline_build
-- next: Fixer: build the cover break on a thrown stack landing on a covered pit cell, offline check red then green, live row UNRUN
-- ruled out: a criterion flaw in the cover half: the certified leaf thrown_into_pit_falls demands it; the goods-half harness fix 6ab864cf7e is not a weakening (too_weak skips are the inv_too_weak_skip rule, listed apart)
+## Last checkpoint (HOLDER.run-1794865314, 2026-11-16T21:43:27Z)
+- done: advanced ExplosiveKnockback from offline_build to blind_challenge: every Stage 3 exit test passed; cover-break REAL MISS closed at a9eedde493 (tests added only, no assertion weakened); certificate rerun 81519824c0
+- next: Run blind cycle 1 of this visit (Stages 4 and 5, tests first) on the files changed since the last cycle, cover break included
+- ruled out: any not-met reason to sort: maturation.py next listed none
 
 ## Open findings (56)
 (claimed fixes, awaiting a judge, on one line each with the oldest 5 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
@@ -312,6 +312,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - tests: 94, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 5 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 459 events (views/history.md; never read whole)
+- the full history: 461 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T21:42:28Z.1794865348198605123 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T21:42:28Z.1794865348198605123 prints what changed after this packet)
+cursor: t=2026-11-16T21:43:27Z.1794865407911982138 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T21:43:27Z.1794865407911982138 prints what changed after this packet)

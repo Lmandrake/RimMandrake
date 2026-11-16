@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 3, offline build, since 2026-11-16 12:28 PM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:43 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 12:28 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:43 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -368,4 +368,14 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward run: visit 3 exit not met; the one FAIL (sc_storeroom_bomb_pit cover half, REAL MISS: no code breaks a cover under a landing stack) is offline-fixable C#, filed RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE --needs offline; sc_walk_raid UNMEASURED already resolved by closed RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES (773b9baea3, 18/18 PASS), the next visit reruns it
 - Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-16 1:18 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:18 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-16 1:43 PM PST, stage change: Offline build (Stage 3) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: steward: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); the visit-3 REAL MISS RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE closed at a9eedde493 with tests added only, certificate rerun 81519824c0
+- Checks passed: order, by, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate.
+- Steward confirms: read maturation.py next: no not-met reasons to sort (no RECORD GAP, CRITERION FLAW or REAL MISS); a9eedde493 adds 20 selftest lines, deletes none; verdict: advance
+- Blind cycle 1 of this visit (5 in all).
+- Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-16 12:28 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 12:28 PM PST).
 - Record: `version/stage_record.json`.
