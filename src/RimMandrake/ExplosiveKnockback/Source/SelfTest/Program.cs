@@ -618,6 +618,19 @@ internal static class Program
                 && !RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "Thump", "Crush") && !RM_KnockbackMath.FireSwitchedOff(false, "damageDef", "ToxGas", null));
         }
 
+        // K-24 a thrown stack landing on a covered pit cell breaks the cover (RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE;
+        // certified leaf thrown_into_pit_falls: "falls through and leaves the cover broken", any stack, no mass floor). A gas
+        // burst's throw (negative id) never breaks one (gas bursts never break pit covers); a closed container lands on free cells only.
+        {
+            Check("K-24 a blast-thrown stack on a covered cell breaks it", RM_KnockbackMath.LandingBreaksCover(KbKind.Item, true, false, 7));
+            Check("K-24 a blast-thrown corpse on a covered cell breaks it", RM_KnockbackMath.LandingBreaksCover(KbKind.Corpse, true, false, 7));
+            Check("K-24 any stack, however light: explosion id 0 counts as a blast", RM_KnockbackMath.LandingBreaksCover(KbKind.Item, true, false, 0));
+            Check("K-24 no cover under the landing: nothing to break", !RM_KnockbackMath.LandingBreaksCover(KbKind.Item, false, false, 7));
+            Check("K-24 a gas burst's throw never breaks a cover", !RM_KnockbackMath.LandingBreaksCover(KbKind.Item, true, false, -3));
+            Check("K-24 a closed container's landing never breaks one", !RM_KnockbackMath.LandingBreaksCover(KbKind.Item, true, true, 7));
+            Check("K-24 a pawn's landing is not this rule (pawns fall by FlowWorks' own trap)", !RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn, true, false, 7));
+        }
+
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");
         return fail == 0 ? 0 : 1;
     }

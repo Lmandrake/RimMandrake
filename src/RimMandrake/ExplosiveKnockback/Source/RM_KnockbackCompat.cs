@@ -24,6 +24,9 @@ namespace RimMandrake.ExplosiveKnockback
         private static Func<object, IntVec3, int> climbDepthAt;
         private static Func<object, IntVec3, bool> isNaturalBed;
         private static Type coverType;
+        private static MethodInfo coverSpring;
+        private static MethodInfo coverDeck;
+        private static MethodInfo coverIsBeneath;
 
         // ── Gimme Some Slack (mandrake.rm.gimmesomeslack): a carried hose end ──
         private static Type hosesCompType;
@@ -57,6 +60,10 @@ namespace RimMandrake.ExplosiveKnockback
                     Type util = AccessTools.TypeByName("RimMandrake.FlowWorks.Pits.RM_PitCoverUtility");
                     MethodInfo ca = util == null ? null : AccessTools.Method(util, "CoverAt", new[] { typeof(Map), typeof(IntVec3) });
                     coverType = AccessTools.TypeByName("RimMandrake.FlowWorks.Pits.Building_PitCover");
+                    coverSpring = coverType == null ? null : AccessTools.Method(coverType, "Spring", new[] { typeof(List<Pawn>) });
+                    coverDeck = util == null || coverType == null ? null : AccessTools.Method(util, "Deck", new[] { coverType });
+                    Type beneath = AccessTools.TypeByName("RimMandrake.FlowWorks.Pits.RM_PitCoverBeneath");
+                    coverIsBeneath = beneath == null ? null : AccessTools.Method(beneath, "IsBeneath", new[] { typeof(Pawn) });
                     if (m == null)
                     {
                         excavationType = null;
@@ -147,6 +154,39 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         public static bool IsCover(Thing t) => coverType != null && t != null && coverType.IsInstanceOfType(t);
+
+        /// <summary>RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE: the cover at c gives way under a landed stack, through
+        /// FlowWorks' own Building_PitCover.Spring, so the whole deck goes and everyone standing on it falls, exactly as FlowWorks'
+        /// blast rule springs it (RM_Patch_ExplosionBreaksPitCover; whoever is beneath the lid stays below). FlowWorks' deck load
+        /// is not touched. True when a cover was there and sprang.</summary>
+        public static bool BreakCoverUnder(Map map, IntVec3 c, out int fallers)
+        {
+            fallers = 0;
+            Thing cover = CoverAt(map, c);
+            if (cover == null || coverSpring == null)
+            {
+                return false;
+            }
+            var riders = new List<Pawn>();
+            IEnumerable deck = coverDeck?.Invoke(null, new object[] { cover }) as IEnumerable;
+            foreach (object o in deck ?? new object[] { cover })
+            {
+                if (!(o is Thing d) || !d.Spawned)
+                {
+                    continue;
+                }
+                foreach (Thing t in d.Position.GetThingList(map))
+                {
+                    if (t is Pawn p && (coverIsBeneath == null || !(bool)coverIsBeneath.Invoke(null, new object[] { p })))
+                    {
+                        riders.Add(p);
+                    }
+                }
+            }
+            coverSpring.Invoke(cover, new object[] { riders });
+            fallers = riders.Count;
+            return CoverAt(map, c) == null;
+        }
 
         // ── Closed containers (owner 2026-11-10/11; plan step 2, dl_closed_means_hidden; thrown whole, owner 2026-11-12) ──
         // Vanilla 1.6 has no player-built closed storage: shelves (Building_Storage) show their goods, and its sealed

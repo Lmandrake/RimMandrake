@@ -17,6 +17,10 @@ version/test_table.json); this proves what can be read without one:
   W  a stack whose kernel throw rounds to 0 cells logs skip too_weak (the rim rule, bar inv_too_weak_skip) and is not
      counted "unmoved": visit 3 (2026-11-16) read the shelves' four corner stacks at 2.83 cells, each with a request and a
      too_weak skip, as unmoved, so the goods row could never pass on that layout
+  C  the shipped code breaks a cover under a landing stack (RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE; visit 3
+     read cover=False gone=False): the flyer's Land asks RM_KnockbackMath.LandingBreaksCover of the landed cell's cover and
+     calls RM_KnockbackCompat.BreakCoverUnder, which springs the deck through FlowWorks' own Building_PitCover.Spring with
+     its riders; FlowWorks' deck load is untouched (no Knockback-side edit to Building_SpanDeck)
   T  test_table.json marks the entry present
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storeroom_bomb_pit.py [--src DIR]
 --src reads the mod's files from DIR (laid out like this folder) instead: the way it was watched red on the base commit.
@@ -200,6 +204,22 @@ def main():
               % (("from %s, %d logs, onto %s" % found[:3]) if found else "none in 1..%s logs" % bound))
         check("P4", found is not None and not stops.intersection(found[3]), "that stack's path crosses no colonist: %s"
               % (found[3] if found else "none"))
+
+    # C: the cover break under a landing stack, read from the shipped sources
+    flyer = rd("Source", "RM_ThingFlyer_Knockback.cs")
+    compat = rd("Source", "RM_KnockbackCompat.cs")
+    land = re.search(r"private void Land\(Thing inner, Map map\)(.*?)\n        }\n", flyer, re.S)
+    body = land.group(1) if land else ""
+    check("C1", "public static bool LandingBreaksCover(KbKind kind, bool covered, bool container, int explosionId)" in math_src,
+          "the kernel decides a landing's cover break (RM_KnockbackMath.LandingBreaksCover)")
+    check("C2", "LandingBreaksCover(kind, " in body and "RM_KnockbackCompat.CoverAt(map, " in body,
+          "the flyer's Land asks LandingBreaksCover of the cover on the cell it landed on")
+    check("C3", "RM_KnockbackCompat.BreakCoverUnder(" in body, "the flyer's Land breaks the cover through RM_KnockbackCompat.BreakCoverUnder")
+    check("C4", body.find("PlaceLanding(") >= 0 and body.find("BreakCoverUnder(") > body.find("PlaceLanding("),
+          "the stack is placed first, then the cover under it breaks (it falls with the deck, one descent)")
+    check("C5", "public static bool BreakCoverUnder(Map map, IntVec3 c" in compat and '"Spring"' in compat and '"Deck"' in compat,
+          "BreakCoverUnder springs the whole deck through FlowWorks' own Building_PitCover.Spring (RM_PitCoverUtility.Deck)")
+    check("C6", '"cover_break"' in flyer, "the flyer journals a cover_break line")
 
     tt = json.load(open(os.path.join(CONCEPT, "version", "test_table.json"), encoding="utf-8"))["tests"].get("sc_storeroom_bomb_pit", {})
     check("T", tt.get("entry") == "storeroom_bomb_pit" and tt.get("entry_exists") is True,

@@ -350,6 +350,15 @@ namespace RimMandrake.ExplosiveKnockback
             return true;
         }
 
+        /// <summary>RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE (certified leaf thrown_into_pit_falls): a thrown stack or
+        /// corpse coming down on a covered pit cell breaks the cover and falls through, whatever its mass. A gas burst's throw
+        /// (negative explosion id) never breaks one (gas bursts never break pit covers); a closed container lands on free cells
+        /// only; a pawn is FlowWorks' own trap's business. True = break the cover under the landing.</summary>
+        public static bool LandingBreaksCover(KbKind kind, bool covered, bool container, int explosionId)
+        {
+            return covered && !container && kind != KbKind.Pawn && explosionId >= 0;
+        }
+
         /// <summary>The cell a shove may enter: only open ground with nothing on it. Never a pit (open or covered), a wall,
         /// a door, sandbags, water, the map edge or a pawn.</summary>
         public static bool ShoveCellFree(KbCell c, bool hasThings)

@@ -317,6 +317,14 @@ namespace RimMandrake.ExplosiveKnockback
             RM_KnockbackJournal.Add("item_land", explosionId, inner, "from", originCell, "to", landed.Spawned ? landed.Position : destCell,
                 "dest", destCell, "bounces", bounces, "stop", stop.ToString(), "count", count, "spawnFallback", fallback,
                 "residentsMoved", bumped, "ticks", ticksTotal);
+            // RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE (leaf thrown_into_pit_falls): a stack come down on a covered
+            // pit cell breaks the cover and falls through with it (placed first, so it sits on the pit cell when the deck goes)
+            if (landed.Spawned && RM_KnockbackMath.LandingBreaksCover(kind, RM_KnockbackCompat.CoverAt(map, landed.Position) != null, container, explosionId))
+            {
+                IntVec3 at = landed.Position;
+                bool broke = RM_KnockbackCompat.BreakCoverUnder(map, at, out int fallers);
+                RM_KnockbackJournal.Add("cover_break", explosionId, landed, "at", at, "broken", broke, "fallers", fallers, "mass", mass);
+            }
             if (SolidStop)
             {
                 RM_MapComponent_Knockback.GoodsImpact(landed, explosionId, stop, cellsLeft, impactFactor, instigator, "landed");
