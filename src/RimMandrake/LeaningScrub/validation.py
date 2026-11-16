@@ -2796,7 +2796,8 @@ def _map_id(t):
 
 
 def _order_goto(t, pid, x, z):
-    _ok(t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=x, targetAZ=z), "ordered_job(Goto %s)" % pid)
+    _ok(t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="Goto", targetAX=x, targetAZ=z, waitTicks=0),
+        "ordered_job(Goto %s)" % pid)
 
 
 def _hidden(row):
@@ -2857,7 +2858,7 @@ def _census_fresh(t, tile, biome, home, plants, animals):
                           sizeZ=CAST_MAP_SIZE), "world_tile_map_generate(%s, %s)" % (tile, biome))
     if r.get("wasAlreadyGenerated"):
         _unmeasured(t, "tile %s already carried a map: not a fresh map" % tile)
-    mid = r.get("mapId")
+    mid, idx = r.get("mapId"), r.get("mapIndex")      # set_current_map takes the uniqueID, map_drop the Index
     try:
         _ok(t.bridge_call("jawa/set_current_map", mapId=mid), "set_current_map(%s)" % mid)
         cp = dict((d, _count_all(t, d)) for d in sorted(plants))
@@ -2867,7 +2868,7 @@ def _census_fresh(t, tile, biome, home, plants, animals):
                 ca[p["kindDef"]] = ca.get(p["kindDef"], 0) + 1
     finally:
         t.bridge_call("jawa/set_current_map", mapId=home)
-        t.bridge_call("jawa/map_drop", mapIndex=mid, notifyPlayer=False)
+        _ok(t.bridge_call("jawa/map_drop", mapIndex=idx, notifyPlayer=False), "map_drop(index %s)" % idx)
     return {"tile": tile, "biome": biome, "plants": cp, "animals": ca}
 
 
@@ -2960,8 +2961,9 @@ def _is_ritual_def(w):
 def _pyre_record(t, wanted, label):
     """The characterization record: which shipped defs resolve live. A shipped def absent live was discarded by the
     engine (a missing type or a broken parent): that, and only that, is a FAIL; the rest is recorded."""
-    defs, _r = _get_defs(t, ";".join(wanted), "label", deep=False)
-    present = sorted(w for w in wanted if w.split("/", 1)[1] in defs)
+    defs, r = _get_defs(t, ";".join(wanted), "label", deep=False)
+    gone = set(str(n).split("/")[-1] for n in (r or {}).get("notFound") or [])
+    present = sorted(w for w in wanted if w.split("/", 1)[1] in defs and w.split("/", 1)[1] not in gone)
     missing = sorted(set(wanted) - set(present))
     _note(t, label, {"present": present, "missing": missing, "callingPyreEnabled": _get_setting(t, "callingPyreEnabled")})
     if missing:
@@ -3190,6 +3192,10 @@ def scene_concealment(t):
     def hid(pid):
         return _hidden(_rows(t, health=True).get(pid) or {})
 
+    def on_fuzz(pid):
+        px, pz = _xz(_rows(t).get(pid)) or (10 ** 6, 0)
+        return abs(px - x) <= FUZZ_PATCH // 2 and abs(pz - z) <= FUZZ_PATCH // 2
+
     def body():
         ids = {}
         with _comp(t, "concealment_hides_on_cover", toggle="rippleEnabled"):
@@ -3210,8 +3216,8 @@ def scene_concealment(t):
                 t.wait_ticks(120)
                 if not hid(ids["cover"]):
                     _unmeasured(t, "the still animal is not hidden in the Stall: nothing for movement to reveal")
-                _order_goto(t, ids["cover"], x, z + 3)
-                t.wait_ticks(60)
+                _order_goto(t, ids["cover"], x, z - FUZZ_PATCH // 2 + 1)   # a long walk across the fuzz, read mid-way
+                t.wait_ticks(70)          # past one ripple pass (CheckInterval 60), well short of arrival
                 if hid(ids["cover"]):
                     _fail("a %s moving in the Stall stays hidden" % RIPPLE_SMALL)
         with _comp(t, "concealment_gale_extends_size"):
@@ -3236,13 +3242,19 @@ def scene_concealment(t):
                 _ok(t.bridge_call("jawa/pawn_mental", pawn=ids["mad"], action="start", state="Manhunter"),
                     "pawn_mental(start Manhunter)")
                 t.wait_ticks(120)
+                if not on_fuzz(ids["mad"]):
+                    _unmeasured(t, "the manhunter left the fuzz before the read: nothing tested")
                 if hid(ids["mad"]):
                     _fail("a manhunting %s on fuzz is hidden: it could not be shot back" % RIPPLE_SMALL)
         with _comp(t, "concealment_toggle_off_nobody_hidden", toggle="rippleEnabled"):
             if _live(t):
+                ids["ctl"] = _spawn(t, RIPPLE_SMALL, x - 2, z + 2)
+                t.wait_ticks(120)
+                if not hid(ids["ctl"]):
+                    _unmeasured(t, "the control animal was not hidden before the toggle: nothing for it to switch off")
                 with _setting(t, "rippleEnabled", False):
                     t.wait_ticks(120)
-                    still = [k for k in ("cover", "big") if hid(ids[k])]
+                    still = [k for k in ("ctl", "cover") if hid(ids[k])]
                     if still:
                         _fail("rippleEnabled off but %s still hidden" % still)
     with _scene(t, "sc_concealment", "immediate"):
@@ -3314,6 +3326,8 @@ def scene_cane_fuel(t):
                 for arm, (rx, rz) in sorted(rooms.items()):
                     t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,10" % (fuel_of[arm], rx + 1, rz + 1))
                     stack = _things(t, fuel_of[arm], "%d,%d,7,7" % (rx, rz))
+                    if not stack:
+                        _unmeasured(t, "no %s stack spawned in the %s plot" % (fuel_of[arm], arm))
                     col = _spawn(t, "Colonist", rx + 5, rz + 5, faction="player")
                     _full(t, col)
                     f0, s0 = _fuel(t, ids[arm]), sum(int(s.get("stackCount") or 0) for s in stack)
@@ -3343,6 +3357,8 @@ def scene_cane_fuel(t):
                 f0 = dict((a, _fuel(t, ids[a])) for a in rooms)
                 t.wait_ticks(1000)
                 for a, (rx, rz) in rooms.items():
+                    if a not in arms:
+                        _unmeasured(t, "the %s arm was never refuelled" % a)
                     arms[a]["rise"] = _temp(t, rx + 1, rz + 5) - t0[a]
                     arms[a]["rate"] = f0[a] - _fuel(t, ids[a])
                 _note(t, "heat and burn rate per arm", arms)
@@ -3472,13 +3488,13 @@ def scene_colony_walk(t):
                     _fail("; ".join(bad))
         with _comp(t, "walk_save_reload_resumes"):
             if _live(t):
-                st["before"] = dict((pid, True) for pid, p in _rows(t, rect=_rs(r)).items()
-                                    if p.get("faction") and not p.get("dead"))
+                rows = _rows(t)       # whole map: forty colonists wander off the pad over a day
+                st["before"] = dict((pid, True) for pid in st["pawns"] if pid in rows and not rows[pid].get("dead"))
                 name = "lscrub_walk_mid_%d" % int(time.time())
                 _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game")
                 _ok(t.bridge_call("rimworld/load_game_ready", saveName=name, timeoutMs=240000), "load_game_ready")
-                st["after"] = dict((pid, True) for pid, p in _rows(t, rect=_rs(r)).items()
-                                   if p.get("faction") and not p.get("dead"))
+                rows = _rows(t)
+                st["after"] = dict((pid, True) for pid in st["pawns"] if pid in rows and not rows[pid].get("dead"))
                 bad = [b for b in _walk_offences([], st["before"], st["after"], []) if "reloaded" in b or "colonists" in b]
                 if bad:
                     _fail("; ".join(bad))
@@ -3494,7 +3510,7 @@ def scene_colony_walk(t):
                     _fail("; ".join(bad))
         with _comp(t, "walk_nobody_hurt"):
             if _live(t):
-                rows = _rows(t, rect=_rs(_rect(t, PAD_SIZE + 8)), health=True)
+                rows = _rows(t, health=True)
                 hurt = [pid for pid in st["pawns"] if pid not in rows or rows[pid].get("dead") or rows[pid].get("downed")
                         or _lash_marks(rows[pid])]
                 bad = [b for b in _walk_offences([], st["before"], st["before"], hurt) if "hurt" in b]
@@ -3528,8 +3544,8 @@ def _ours(window):
 
 def _runtime_refusals(idle, busy):
     """The runtime checker, pure: each window a map_comp_timing answer. Refuses a window with no ticks, degraded
-    coverage, none of our components, or our components doing no work (zero calls); refuses a busy window doing no more
-    of our work than the idle one. Timings are advisory: reported, never judged here."""
+    coverage, none of our components, or our components doing no work (zero calls; calls count ticks, so they say the
+    counter is connected, not how much load there was). Timings are advisory: reported, never judged here."""
     out = []
     for name, w in (("idle", idle), ("busy", busy)):
         if not w or not w.get("ticksElapsed"):
@@ -3542,8 +3558,6 @@ def _runtime_refusals(idle, busy):
             out.append("%s window: none of our MapComponents was timed" % name)
         elif not sum(int(c.get("calls") or 0) for c in ours):
             out.append("%s window: our MapComponents made no calls (the work counter is disconnected)" % name)
-    if not out and sum(int(c.get("calls") or 0) for c in _ours(busy)) < sum(int(c.get("calls") or 0) for c in _ours(idle)):
-        out.append("the busy window did less of our work than the idle one: the load was not applied")
     return out
 
 
@@ -3600,8 +3614,7 @@ def scene_floor_runtime(t):
                 injected = {"counter disconnected": (ok, dict(ok, components=[{"packageId": OUR_PACKAGES[0], "calls": 0}])),
                             "empty map (none of ours)": (ok, dict(ok, components=[])),
                             "paused game": (ok, dict(busy, ticksElapsed=0)),
-                            "degraded timers": (ok, dict(busy, coverage="degraded")),
-                            "load not applied": (busy, ok)}
+                            "degraded timers": (ok, dict(busy, coverage="degraded"))}
                 missed = sorted(k for k, a in injected.items() if not _runtime_refusals(*a))
                 if missed:
                     _fail("the runtime checker passed injected window(s) %s: it is blind there" % missed)
@@ -3652,8 +3665,9 @@ def _census_offences(fields, scribed, ui, defaults):
 def scene_settings(t):
     """sc_settings (colony_walk, settings): the census of every setting (source initialiser, serialization, window
     control, the suite's DEFAULTS, the live value); each toggle off and back on, read back; then every switch off
-    together, master gate included, for 6000 ticks of ordinary colony life with a small animal on fuzz and a flyer on the
-    pad: colonists unharmed, nobody hidden, nobody airborne; then the saved configuration back and its effect returns.
+    together, master gate included, for 6000 ticks of ordinary colony life with a small animal on fuzz: colonists
+    unharmed, nobody hidden; then the saved configuration back and its effect returns on a fresh animal. No flyer is
+    staged (flight is never live-tested unattended; vanilla flight is not ours to gate).
     Not driven here: writing ModSettings.xml through the real window and reloading it (jawa/mod_settings_field never
     writes the file and rimworld/update_mod_settings cannot reach static fields); actual flight (the owner's scene)."""
     _fuzz_patch(t)
@@ -3685,7 +3699,6 @@ def scene_settings(t):
         with _comp(t, "settings_all_off_quiet"):
             if _live(t):
                 ids["small"] = _spawn(t, RIPPLE_SMALL, x, z)
-                ids["flyer"] = _spawn(t, "RM_Dustflutter", x + 2, z)
                 ids["cols"] = [_spawn(t, "Colonist", x - 4 + i, z - 5, faction="player") for i in range(3)]
                 for c in ids["cols"]:
                     _full(t, c)
@@ -3697,9 +3710,6 @@ def scene_settings(t):
                     bad = []
                     if _hidden(rows.get(ids["small"]) or {}):
                         bad.append("a small animal on fuzz is hidden with every switch off")
-                    fl = (t.bridge_call("jawa/pawn_flight", action="report", pawn=ids["flyer"]) or {}).get("pawns") or [{}]
-                    if fl[0].get("flying"):
-                        bad.append("a dustflutter is airborne with every switch off")
                     bad += ["colonist %s %s" % (c, "dead" if (rows.get(c) or {}).get("dead") else "downed or marked")
                             for c in ids["cols"] if c not in rows or rows[c].get("dead") or rows[c].get("downed")
                             or _lash_marks(rows[c])]
@@ -3710,8 +3720,9 @@ def scene_settings(t):
                         _restore(t, n)
         with _comp(t, "settings_reenabled_effect_returns"):
             if _live(t):
-                t.wait_ticks(240)
-                if not _hidden(_rows(t, health=True).get(ids["small"]) or {}):
+                ids["fresh"] = _spawn(t, RIPPLE_SMALL, x + 1, z + 1)
+                t.wait_ticks(120)
+                if not _hidden(_rows(t, health=True).get(ids["fresh"]) or {}):
                     _fail("the saved configuration is back but the ripple did not return (a small animal on fuzz is "
                           "still seen)")
         with _comp(t, "settings_checker_rejects_injections"):
