@@ -1,0 +1,148 @@
+{
+  "lines": {
+    "tick_cost": {
+      "status": "applicable",
+      "by": [
+        "floor_runtime"
+      ]
+    },
+    "long_stall": {
+      "status": "applicable",
+      "by": [
+        "floor_runtime"
+      ]
+    },
+    "latency": {
+      "status": "applicable",
+      "by": [
+        "floor_runtime"
+      ]
+    },
+    "memory": {
+      "status": "applicable",
+      "evidence_mode": "compressed",
+      "establishes": "floor_persistence measures retained objects/texture MB/save bytes over 30 compressed lifecycle cycles and three real reloads. Per-cycle retention/identity is established; 30-day elapsed-time/rare-event behavior remains inferred. Uncalibrated numeric limits remain advisory.",
+      "by": [
+        "floor_persistence"
+      ]
+    },
+    "load_time": {
+      "status": "applicable",
+      "evidence_mode": "decomposed",
+      "establishes": "Attributable composition/def/assembly cost and three future authorized cold-load medians; no measurement/restart in authoring pass. Full-list/storage effects remain separate.",
+      "by": [
+        "floor_runtime"
+      ]
+    },
+    "save_size": {
+      "status": "applicable",
+      "evidence_mode": "compressed",
+      "establishes": "floor_persistence measures retained objects/texture MB/save bytes over 30 compressed lifecycle cycles and three real reloads. Per-cycle retention/identity is established; 30-day elapsed-time/rare-event behavior remains inferred. Uncalibrated numeric limits remain advisory.",
+      "by": [
+        "floor_persistence"
+      ]
+    },
+    "save_compat": {
+      "status": "applicable",
+      "by": [
+        "floor_persistence"
+      ]
+    },
+    "load_order": {
+      "status": "applicable",
+      "by": [
+        "floor_payload"
+      ]
+    },
+    "log": {
+      "status": "applicable",
+      "by": [
+        "floor_recovery"
+      ]
+    },
+    "mod_settings": {
+      "status": "applicable",
+      "by": [
+        "sc_settings"
+      ]
+    },
+    "multiplayer": {
+      "status": "applicable",
+      "by": [
+        "floor_payload"
+      ]
+    },
+    "art": {
+      "status": "applicable",
+      "by": [
+        "floor_visual"
+      ]
+    },
+    "reads_as": {
+      "status": "applicable",
+      "by": [
+        "floor_visual"
+      ]
+    },
+    "clickable": {
+      "status": "applicable",
+      "by": [
+        "floor_visual"
+      ]
+    },
+    "order_taken": {
+      "status": "applicable",
+      "by": [
+        "floor_visual"
+      ]
+    },
+    "motion": {
+      "status": "applicable",
+      "by": [
+        "floor_visual"
+      ]
+    },
+    "text": {
+      "status": "applicable",
+      "by": [
+        "floor_payload"
+      ]
+    },
+    "dlc": {
+      "status": "applicable",
+      "by": [
+        "floor_payload"
+      ]
+    },
+    "worldgen": {
+      "status": "applicable",
+      "by": [
+        "floor_payload"
+      ]
+    },
+    "biome_scope": {
+      "status": "applicable",
+      "by": [
+        "floor_payload"
+      ]
+    },
+    "flight": {
+      "status": "applicable",
+      "by": [
+        "sc_shirrel_flight"
+      ]
+    },
+    "naming": {
+      "status": "applicable",
+      "by": [
+        "floor_payload"
+      ]
+    },
+    "test_isolation": {
+      "status": "applicable",
+      "by": [
+        "floor_recovery"
+      ]
+    }
+  }
+}

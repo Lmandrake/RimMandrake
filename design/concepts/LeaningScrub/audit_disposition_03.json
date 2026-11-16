@@ -1,0 +1,620 @@
+{
+  "schema": 1,
+  "common": "All 34 old chain/auxiliary audits mapped; all require exact recovery/log/tier wrapper before mutation, even if local helper cleanup exists.",
+  "audits": [
+    {
+      "id": "audit_defs",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:593",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::defs_chain",
+      "scenes": [
+        "sc_native_cast",
+        "sc_save_aliases",
+        "floor_payload"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+        "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_windlean",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:674",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::windlean_chain",
+      "scenes": [
+        "sc_wind_plain",
+        "sc_gale_drawing"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_WIND_FIRE_AND_RITUAL"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_lean",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:725",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::lean_chain",
+      "scenes": [
+        "sc_scent",
+        "sc_fire_bias"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_WIND_FIRE_AND_RITUAL"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_patches",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:744",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::patches_chain",
+      "scenes": [
+        "sc_vine_contact",
+        "sc_cane_fuel",
+        "sc_arm_food"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_settings",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:838",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::settings_chain",
+      "scenes": [
+        "sc_settings"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_fauna",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:870",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::fauna_chain",
+      "scenes": [
+        "sc_native_cast",
+        "sc_shirrel_flight"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_flora",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:908",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::flora_chain",
+      "scenes": [
+        "sc_native_cast",
+        "sc_pillowmoss",
+        "sc_tanglefuzz",
+        "sc_cruststar"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_stall",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:979",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::stall_chain",
+      "scenes": [
+        "sc_stall_wait"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_gale",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1063",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::gale_chain",
+      "scenes": [
+        "sc_working_wind",
+        "sc_gale_exposure",
+        "sc_raid_weight"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_WIND_FIRE_AND_RITUAL"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_lash",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1187",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::lash_chain",
+      "scenes": [
+        "sc_twitcher"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_smother",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1251",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::smother_chain",
+      "scenes": [
+        "sc_smother_claim",
+        "sc_cane_fuel"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_dripping",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1335",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::dripping_chain",
+      "scenes": [
+        "sc_dripping"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_crown",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1387",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::crown_chain",
+      "scenes": [
+        "sc_crown"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_bloom",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1450",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::bloom_chain",
+      "scenes": [
+        "sc_bloom"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_stamp",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1548",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::stamp_chain",
+      "scenes": [
+        "sc_stamping",
+        "sc_maker"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_WIND_FIRE_AND_RITUAL"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_ripple",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1613",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::ripple_chain",
+      "scenes": [
+        "sc_concealment",
+        "sc_lee_reveal"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_stallhunt",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1625",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::stallhunt_chain",
+      "scenes": [
+        "sc_stall_predation",
+        "ix_conceal_hunt"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_dens",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1635",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::dens_chain",
+      "scenes": [
+        "sc_thornhold_den",
+        "sc_rollbug"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_pyre",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1748",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::pyre_chain",
+      "scenes": [
+        "sc_pyre_beliefs",
+        "sc_pyre_ritual"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_WIND_FIRE_AND_RITUAL"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_injections",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1764",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::injections_chain",
+      "scenes": [
+        "sc_ruins",
+        "sc_vaporator",
+        "sc_camps"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_forms",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1798",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::forms_chain",
+      "scenes": [
+        "sc_rearing",
+        "sc_walking",
+        "sc_hoard",
+        "sc_quench",
+        "sc_sworn",
+        "sc_shedding"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_bystanders",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1833",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::bystanders_chain",
+      "scenes": [
+        "floor_recovery"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_four_forms",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1938",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::four_forms_chain",
+      "scenes": [
+        "sc_strangler",
+        "sc_weeper",
+        "sc_sleeper",
+        "sc_lure"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_islands",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1960",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::islands_chain",
+      "scenes": [
+        "sc_island_land",
+        "sc_creep",
+        "sc_home_routes",
+        "sc_ordered_travel"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+        "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_sweetline",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:1981",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::sweetline_chain",
+      "scenes": [
+        "sc_tree_landmark",
+        "sc_tree_shed",
+        "sc_tree_scratch",
+        "sc_tree_bank",
+        "sc_felt_comfort",
+        "sc_tree_traces"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_edge_fixes",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:2151",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::edge_fixes_chain",
+      "scenes": [
+        "sc_pyre_ritual",
+        "sc_bloom",
+        "sc_island_land",
+        "sc_arm_food"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold",
+        "complete_restore"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_log",
+      "source": "src/RimMandrake/LeaningScrub/validation.py:2176",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/validation.py::log_chain",
+      "scenes": [
+        "floor_recovery"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY"
+      ],
+      "remaining_contract_work": [
+        "recovery_journal",
+        "hold"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_site_loader",
+      "source": "src/RimMandrake/LeaningScrub/live_proof.py:49",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/live_proof.py::main",
+      "scenes": [
+        "look_existing_home",
+        "floor_recovery"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+        "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY"
+      ],
+      "remaining_contract_work": [
+        "source-specific recovery/hold/control expansion"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_island_check",
+      "source": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py:110",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py::check",
+      "scenes": [
+        "sc_island_land",
+        "sc_ordered_travel",
+        "sc_home_routes"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+        "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY"
+      ],
+      "remaining_contract_work": [
+        "source-specific recovery/hold/control expansion"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_island_stage",
+      "source": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py:318",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py::stage",
+      "scenes": [
+        "look_existing_home",
+        "floor_visual"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+        "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY"
+      ],
+      "remaining_contract_work": [
+        "source-specific recovery/hold/control expansion"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_wildlife_mapgen",
+      "source": "src/RimMandrake/LeaningScrub/northstar/wildlife_mapgen_live.py:68",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/northstar/wildlife_mapgen_live.py::inner",
+      "scenes": [
+        "sc_native_cast"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "source-specific recovery/hold/control expansion"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_crown_repro",
+      "source": "src/RimMandrake/LeaningScrub/repro_crown_mob.py:149",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/repro_crown_mob.py::live",
+      "scenes": [
+        "sc_crown",
+        "ix_conceal_hunt"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "source-specific recovery/hold/control expansion"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_shed_probe",
+      "source": "src/RimMandrake/LeaningScrub/sweetline_shed_probe.py:101",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/sweetline_shed_probe.py::main",
+      "scenes": [
+        "sc_tree_shed"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "source-specific recovery/hold/control expansion"
+      ],
+      "disposition": "Carry every listed limitation into these complete scene entries; direct hooks, forced fixture state and defaults cleanup cannot accept the broader result."
+    },
+    {
+      "id": "audit_stall_diagnostic",
+      "source": "src/RimMandrake/LeaningScrub/repro_stall_move.py",
+      "legacy_entry": "src/RimMandrake/LeaningScrub/repro_stall_move.py",
+      "scenes": [
+        "sc_stall_wait"
+      ],
+      "entry_point_items": [
+        "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS"
+      ],
+      "remaining_contract_work": [
+        "source-specific recovery/hold/control expansion"
+      ],
+      "disposition": "Existing evidence remains stale/partial. New complete entry replaces shortcut acceptance; each case adds exact recovery and own discriminating controls. Retired Stall diagnostic is not revived as defect-must-reproduce acceptance."
+    }
+  ]
+}

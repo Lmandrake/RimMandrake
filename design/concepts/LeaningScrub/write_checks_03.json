@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "run": "rm-role-designercodex-1794799806",
+  "stage": 3,
+  "checked_at": "2026-11-16T04:40:23.437000+00:00",
+  "scope": "Design artifact validation only; no mod code, art, build, bridge, restart, deploy or gameplay proof.",
+  "commands": [
+    {
+      "command": "python3 src/RimMandrake/rimflow/concept_tree.py write design/concepts/LeaningScrub --draft design/concepts/LeaningScrub/tree.draft.json",
+      "result": "PASS; writer stamped tree/floor/root hashes and no signature"
+    },
+    {
+      "command": "python3 src/RimMandrake/rimflow/concept_tree.py lint design/concepts/LeaningScrub",
+      "result": "PASS Gate A"
+    },
+    {
+      "command": "python3 src/RimMandrake/rimflow/designer_stage.py showcases design/concepts/LeaningScrub",
+      "result": "PASS: 7 showcases; new counts 5,20,15,10,8,3,3; final showcase necessary overlap downwind_fire 1/4=0.25; 7 rest checks; all71 units covered"
+    },
+    {
+      "command": "python3 src/RimMandrake/rimflow/designer_stage.py check design/concepts/LeaningScrub",
+      "result": "result.json would be accepted"
+    },
+    {
+      "command": "Focused design integrity assertions on tree/scenes/item files",
+      "result": "PASS:70 unique leaves,81 unique scenes,5 filed item specs, every claimed showcase exercise supported by direct scene exercise,71 units have scenes,all complete proposed acceptance entries honestly missing,no forged signature"
+    },
+    {
+      "command": "git diff --check on authored paths",
+      "result": "PASS"
+    }
+  ],
+  "core_file_sha256": {
+    "sheet.md": "7a8a610c267422e5717865415cb926c660b3cf6432f69dadeeea3c6fdb7f6ed6",
+    "tree.json": "0c29969619ec00376c0c945730e3684cc05a4330a2c9f9608c4c914500f39cda",
+    "plan.md": "cec82e87b953171e39d25c7244e90d1413f2355493b7b6f3a47977e263b56355",
+    "scenes.json": "11dc78601a1b9fe2b36e9f65e40597de324cf5dfc485c2b2d6fadfaa61cbe02b",
+    "floor.json": "96e493e971174222b68dda98d2fbb2e4c613be69f09a988555c82954346dd4c9"
+  },
+  "not_established": [
+    "current in-game behavior",
+    "performance/balance calibration",
+    "engine years of elapsed play",
+    "implemented acceptance entry points",
+    "cold-reader exam",
+    "coverage signature",
+    "owner first-touch certification",
+    "locked version"
+  ]
+}

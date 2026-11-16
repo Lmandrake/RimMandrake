@@ -1,0 +1,33 @@
+# Stage 3 filed proof-contract work
+
+Author: BENCH DesignerCodex `rm-role-designercodex-1794799806`. Scope is implementation of missing proof entry points, controls, observations and recovery, with product/dependency work in plan.md explicit. These are no gameplay acceptance claims and assign no queue priority. Each scene names its own `entry_point_item`; exact entry names and per-case contracts are in `scenes.json`.
+
+## Shared acceptance for all five items
+
+Implement every named owned scene as a real script entry, reusing validation_core/rimdrive and production kernels. Before any mutation, capture exact original save/settings/world and call scene-begin. Assert scene-specific starting state, execute normal engine scheduling/jobs wherever promised, emit a separate result for each finite variant, run its discriminating negative control, then verify full restoration/scene-end or explicit owner_review scene-hold. A helper's direct effect never accepts a natural trigger. Same-def bystander IDs must survive. Missing preconditions/log observability/tool/list/owner for flight yield UNMEASURED, never PASS. Implement injected failures for starts/control/restoration and an exception during staging; demonstrate offline that they refuse false passes and leave recovery open. No actual bridge/restart/deploy is authorized by filing.
+
+Each item requires an offline fake-driver/contract test of start refusal, specific control failure, exact settings restoration and interrupted journal handling. It also requires later targeted actual engine evidence for its live leaves, on the declared supported list, plus owner-attended portions where required. Implementing an entry is not closing its live proof obligation. Every outstanding Stage 0 chain/auxiliary audit is mapped in `audit_disposition_03.json`; legacy helpers are never certified merely by being wrapped.
+
+## SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY
+
+Implement route_observer first, then sc_home_routes, sc_ordered_travel, sc_colony_walk, ix_route_growth and the look_existing_home extension. Reuse island stage/check as partial support. Observe every actual path cell, job origin, scoped expedition token and attributed harm; include no-detour, destination-inside-island, cancel/return/recalculation/reload and 40-colonist work controls. Implement the complete same-save mid-claim/bank/cooldown reload and second action order, not a new fixture after loading. Add exact digest restoration to the existing stage/load recipe. Product dependencies: shared developed-ground exclusion and scoped authorization from plan.md.
+
+## SCRUB_PROVE_VINE_FORMS_AND_CRAFT
+
+Implement economy_observer first; every vine-group sc_* scene assigned this item in scenes.json covers generated islands, independent capped creep/ExplosiveGrowth exclusions, actual common hazards, Dripping, Twitcher, Hollow, Crown, six/four forms and smother/fuel economy. Reuse existing forms/four_forms/islands/dripping/lash/smother/patches chains and kernels as support. Required additions include natural onset/traffic rather than direct sweeps, exact 1.5 boundary, Sleeper shared controls, young/smothered states, saved state graphics, pollution cap, autonomous Lure ingestion, Hoard identities/gear and full timing/settings migration matrix. Premium fuel compares actual rates/duration/work/energy, mixed-credit reload and capacity saturation. Crown flight portions are owner-attended. Track exact bystander IDs before cleanup, including same-form flora, pools, fruit and fires.
+
+## SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS
+
+Implement all tree/ecology sc_* and assigned interactions, retaining separate tree shed/scratch/bank/comfort/traces and native behavior obligations. Existing fauna/flora/stall/ripple/stallhunt/bloom/dens/sweetline/edge_fixes chains and wildlife-mapgen/crown/shed diagnostics are partial support. Natural generation is observed before wiping wildlife; actual wild coat growth, scheduling, coat debit and successful harvest payout replace forced helper shortcuts. Investigate pen behavior honestly. Implement ambush, canopy-route, plant ecology and finite-arm production dependencies from plan.md rather than silently skipping their scenes. Actual ingestion, real damage-triggered Thornhold behavior, progressive Rollbug bites/gear/interruption and Surrik surface strike are required. Twenty-shirrel/flipbook, Erupt bloom, Crown and any hunter flight are owner-attended; absence of owner never becomes a motion pass.
+
+## SCRUB_PROVE_WIND_FIRE_AND_RITUAL
+
+Implement witness_observer first and all assigned wind/fire sc_* plus ix_fire_accountability. Reuse windlean/lean/gale/stamp/pyre chains and production kernels, without promoting direct helper calls to natural play. Add real sound transitions, driven overlays, useful turbine/load/breakdown/repair, deterministic weight/direction controls, scent attribution, actual distant herd approach and physical maker perception/trail/loss of contact/reload. Complete actual ritual UI/participants/outcome, all belief gates/history and thin-fire cluster controls. Positive franchise-free herd/stamping depends on existing authorized thunderstep rehome and shared evidence service; no-kind diagnostic is not acceptance. No lore/canon migration is newly authorized.
+
+## SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY
+
+Implement exact full recovery/tier/log common wrapper first with the other instruments; all assigned compatibility/technology sc_* and five floor_* scenes use it. Implement every current settings field/effect and later new-field census rather than copying incomplete DEFAULTS. Add actual ruins/techprint/research/build/power/water, eligible scavenger peace-war-peace on campaign and expected base absence. Alias old-save identities, scanner four target groups, proximity/timer hatch and cut/tombstone/text controls each retain their own scene. Floor coverage includes production performance/work counters, artifact/profile memory rather than GC delta, saved-state growth under compressed cycles, real old-save addition and reload, named supported list effect checks, art/state/click/order/motion, dead-log/tap-loss controls and same-def bystander recovery. Document removal consequences; execute removal/external compatibility only when asked.
+
+## Existing product/dependency work
+
+The authorized thunderstep migration remains `SWB_INVENTED_MIGRATE_TWENTY_LEFT`, with BENCH reassignment verified from the ledger. plan.md defines the remaining shared route/evidence, state-art, years-long claim, premium fuel and commissioned ecology gaps. Proof-item implementation must name unresolved product dependencies rather than force success or close them on fake-driver evidence. This Designer run builds no mod code or art.

@@ -1,0 +1,752 @@
+{
+  "schema": 1,
+  "basis": "Current source-only census; future new fields must regenerate this manifest. It is not runtime or UI evidence.",
+  "fields": [
+    {
+      "name": "modEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:34",
+      "serialized_key": "modEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:168",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvinePassabilityEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:42",
+      "serialized_key": "venomvinePassabilityEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:169",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "stallFreezeEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:47",
+      "serialized_key": "stallFreezeEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:170",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "stallFreezeMaxBodySize",
+      "type": "float",
+      "initializer": "0.5f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:48",
+      "serialized_key": "stallFreezeMaxBodySize",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:171",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "galeDeafenEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:49",
+      "serialized_key": "galeDeafenEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:172",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "galeTurbineSurgeEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:50",
+      "serialized_key": "galeTurbineSurgeEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:173",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "galeTurbineSurgeFactor",
+      "type": "float",
+      "initializer": "1.3f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:51",
+      "serialized_key": "galeTurbineSurgeFactor",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:174",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "galeTurbineBreakdownMtbDays",
+      "type": "float",
+      "initializer": "3f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:52",
+      "serialized_key": "galeTurbineBreakdownMtbDays",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:175",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "galeRaidWeightingEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:53",
+      "serialized_key": "galeRaidWeightingEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:176",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "galeRaidWeightFactor",
+      "type": "float",
+      "initializer": "2f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:54",
+      "serialized_key": "galeRaidWeightFactor",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:177",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "twitcherLashEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:57",
+      "serialized_key": "twitcherLashEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:178",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "twitcherLashDamageFactor",
+      "type": "float",
+      "initializer": "1f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:58",
+      "serialized_key": "twitcherLashDamageFactor",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:179",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "twitcherLashRecoveryFactor",
+      "type": "float",
+      "initializer": "1f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:59",
+      "serialized_key": "twitcherLashRecoveryFactor",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:180",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "smotherCraftEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:62",
+      "serialized_key": "smotherCraftEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:181",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "smotherDays",
+      "type": "float",
+      "initializer": "30f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:63",
+      "serialized_key": "smotherDays",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:182",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "smotherYieldFactor",
+      "type": "float",
+      "initializer": "1f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:64",
+      "serialized_key": "smotherYieldFactor",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:183",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "leanEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:67",
+      "serialized_key": "leanEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:184",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "leanScentEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:68",
+      "serialized_key": "leanScentEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:185",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "leanScentRange",
+      "type": "float",
+      "initializer": "16f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:69",
+      "serialized_key": "leanScentRange",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:186",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "leanFireEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:70",
+      "serialized_key": "leanFireEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:187",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "leanFireBias",
+      "type": "float",
+      "initializer": "0.5f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:71",
+      "serialized_key": "leanFireBias",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:188",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "leanWakesEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:73",
+      "serialized_key": "leanWakesEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:208",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "leanPlantsEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:75",
+      "serialized_key": "leanPlantsEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:209",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "galeDustOverlayEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:76",
+      "serialized_key": "galeDustOverlayEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:210",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "shirrelGlideEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:78",
+      "serialized_key": "shirrelGlideEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:211",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "drippingRegrowEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:82",
+      "serialized_key": "drippingRegrowEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:189",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "crownMobEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:83",
+      "serialized_key": "crownMobEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:190",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "runwayBloomEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:84",
+      "serialized_key": "runwayBloomEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:191",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sweetlineStationsEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:85",
+      "serialized_key": "sweetlineStationsEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:192",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sweetlineVisitorsEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:86",
+      "serialized_key": "sweetlineVisitorsEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:193",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sweetlineVisitIntervalDays",
+      "type": "float",
+      "initializer": "8f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:87",
+      "serialized_key": "sweetlineVisitIntervalDays",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:194",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sweetlineScratchingEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:89",
+      "serialized_key": "sweetlineScratchingEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:195",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sweetlineCoatReady",
+      "type": "float",
+      "initializer": "0.8f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:90",
+      "serialized_key": "sweetlineCoatReady",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:196",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sweetlineFeltShare",
+      "type": "float",
+      "initializer": "0.2f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:91",
+      "serialized_key": "sweetlineFeltShare",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:197",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sweetlineTreeMapChance",
+      "type": "float",
+      "initializer": "0.25f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:93",
+      "serialized_key": "sweetlineTreeMapChance",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:198",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sweetlineFeltComfortEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:95",
+      "serialized_key": "sweetlineFeltComfortEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:199",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sweetlineFeltApparelEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:96",
+      "serialized_key": "sweetlineFeltApparelEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:200",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "visslerArmFoodEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:98",
+      "serialized_key": "visslerArmFoodEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:201",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "thornholdDenEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:100",
+      "serialized_key": "thornholdDenEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:203",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "thornholdStandEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:101",
+      "serialized_key": "thornholdStandEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:204",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "rollbugCarrionEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:102",
+      "serialized_key": "rollbugCarrionEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:205",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "rollbugTakesColonyCorpses",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:103",
+      "serialized_key": "rollbugTakesColonyCorpses",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:206",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "fireStampEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:106",
+      "serialized_key": "fireStampEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:202",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "rippleEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:109",
+      "serialized_key": "rippleEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:207",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "rippleMaxBodySize",
+      "type": "float",
+      "initializer": "0.6f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:110",
+      "serialized_key": "rippleMaxBodySize",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:212",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "stallHuntEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:112",
+      "serialized_key": "stallHuntEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:213",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "callingPyreEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:115",
+      "serialized_key": "callingPyreEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:214",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "callingPyreRadius",
+      "type": "float",
+      "initializer": "14f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:116",
+      "serialized_key": "callingPyreRadius",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:215",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "callingPyreHerdFactor",
+      "type": "float",
+      "initializer": "1f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:117",
+      "serialized_key": "callingPyreHerdFactor",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:216",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "scrubInjectionsEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:120",
+      "serialized_key": "scrubInjectionsEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:217",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "scrubRuinsPerMap",
+      "type": "int",
+      "initializer": "3",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:121",
+      "serialized_key": "scrubRuinsPerMap",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:218",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "scrubCampsEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:122",
+      "serialized_key": "scrubCampsEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:219",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "rearingEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:126",
+      "serialized_key": "rearingEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:220",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "rearingHours",
+      "type": "float",
+      "initializer": "2f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:127",
+      "serialized_key": "rearingHours",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:221",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "walkingEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:128",
+      "serialized_key": "walkingEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:222",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "walkingMaxCellsPerMap",
+      "type": "int",
+      "initializer": "120",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:129",
+      "serialized_key": "walkingMaxCellsPerMap",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:223",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "hoardEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:130",
+      "serialized_key": "hoardEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:224",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "hoardGrowInHours",
+      "type": "float",
+      "initializer": "4f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:131",
+      "serialized_key": "hoardGrowInHours",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:225",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "hoardKeepsDeadGear",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:132",
+      "serialized_key": "hoardKeepsDeadGear",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:226",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "quenchEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:133",
+      "serialized_key": "quenchEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:227",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "quenchRecoveryDays",
+      "type": "float",
+      "initializer": "3f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:134",
+      "serialized_key": "quenchRecoveryDays",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:228",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "swornSparesMarkedEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:135",
+      "serialized_key": "swornSparesMarkedEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:229",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sheddingEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:136",
+      "serialized_key": "sheddingEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:230",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "stranglerEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:138",
+      "serialized_key": "stranglerEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:232",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "stranglerDamageFactor",
+      "type": "float",
+      "initializer": "1f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:139",
+      "serialized_key": "stranglerDamageFactor",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:233",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "stranglerAutoTrim",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:140",
+      "serialized_key": "stranglerAutoTrim",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:234",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "weeperEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:141",
+      "serialized_key": "weeperEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:235",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "weeperPollutes",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:142",
+      "serialized_key": "weeperPollutes",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:236",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sleeperEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:143",
+      "serialized_key": "sleeperEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:237",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "lureEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:144",
+      "serialized_key": "lureEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:238",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "sheddingLength",
+      "type": "int",
+      "initializer": "8",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:145",
+      "serialized_key": "sheddingLength",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:231",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineIslandsEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:149",
+      "serialized_key": "venomvineIslandsEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:239",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineIslandShare",
+      "type": "float",
+      "initializer": "0.15f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:150",
+      "serialized_key": "venomvineIslandShare",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:240",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineIslandsMin",
+      "type": "int",
+      "initializer": "8",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:151",
+      "serialized_key": "venomvineIslandsMin",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:241",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineIslandsMax",
+      "type": "int",
+      "initializer": "14",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:152",
+      "serialized_key": "venomvineIslandsMax",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:242",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineIslandMaxCells",
+      "type": "int",
+      "initializer": "200",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:153",
+      "serialized_key": "venomvineIslandMaxCells",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:243",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineIslandRoomsEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:154",
+      "serialized_key": "venomvineIslandRoomsEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:244",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineStartClearance",
+      "type": "float",
+      "initializer": "30f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:155",
+      "serialized_key": "venomvineStartClearance",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:245",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineCreepEnabled",
+      "type": "bool",
+      "initializer": "true",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:157",
+      "serialized_key": "venomvineCreepEnabled",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:246",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineCreepDays",
+      "type": "float",
+      "initializer": "10f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:158",
+      "serialized_key": "venomvineCreepDays",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:247",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineCreepDownwindShare",
+      "type": "float",
+      "initializer": "0.75f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:159",
+      "serialized_key": "venomvineCreepDownwindShare",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:248",
+      "proof_status": "effect_and_persistence_not_run"
+    },
+    {
+      "name": "venomvineCreepCap",
+      "type": "float",
+      "initializer": "0.22f",
+      "source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:160",
+      "serialized_key": "venomvineCreepCap",
+      "serialize_source": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:249",
+      "proof_status": "effect_and_persistence_not_run"
+    }
+  ],
+  "planned_additions": [
+    "claim duration/due schema and legacy-override handling",
+    "premium fuel value/heat and feature gates",
+    "finite arm regrowth gates/tuning",
+    "native ecology adapter gates/rates",
+    "shared witness/trail/range/expiry/caps"
+  ],
+  "required_live_census": "All serialized/UI/consumer fields, including shared owners; this static artifact alone cannot accept all settings."
+}

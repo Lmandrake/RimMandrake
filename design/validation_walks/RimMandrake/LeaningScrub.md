@@ -114,49 +114,29 @@ Offline: `python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub.py` runs th
 state: DRAFT
 validated-hash:
 
-Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
-`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
-ruling that day: *"You are mostly seeding the field right now with reasonable
-initial guesses for refinement later through debugging needs or live feedback."*
-Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
-least certain. `### the experience` is his to dictate.
+### adopted player promise
 
-### the experience  (OWNER'S WORDS)
-"Endless leaning grass, endless motion, endless venomvine. Power is free here, but footing is not."
-(chosen by the owner from drafted options, by question card, 2026-10-20)
+Leaning Scrub lets you make a dependable wind-powered home in a restless plain, while tall, spreading venomvine makes travel beyond your maintained routes a deliberate risk.
+
+Adopted by Evidence-for-Ask delegation CONDUCTOR:1794792677711573340, author BENCH DesignerCodex.
+The sentence is approved by delegation; this distilled observation checklist is still DRAFT,
+not owner first-touch certification or current live evidence. Stage 2 boundaries and flagship:
+CONDUCTOR:1794794271528276351. Primary home/routes answer OWNER:1794327080747931066;
+ordered-trip wording is Q2 of the answer record named by OWNER:1794334503877366549,
+not a separately transcribed ownerSaid quotation. The older agent-seeded checklist and its
+secondary experience sentence are preserved in design/concepts/LeaningScrub/north_star_before_03.md.
+That sentence is not promoted into his words. Full source/proof/scope separation: record.json.
 
 ### must show
 
-**The wind is always there**
-- [ ] `scrub_lean_visible` — on a Leaning Scrub map the fuzz and scrub visibly lean
-      one way, the map's wind heading, across the whole map. (guess: depends on
-      what the Lean draws)
-- [ ] `scrub_gale_reads_as_gale` — under `RM_Gale` the map reads as a gale: driven
-      dust or fuzz, not a calm day. (guess)
-- [ ] `scrub_stall_reads_still` — under `RM_Stall` small animals hold still across
-      a short sequence of frames while big ones keep moving.
-
-**Fuzz plain flora**
-- [ ] `scrub_fuzz_plain_reads` — the ground cover reads as a soft fuzz plain,
-      dotted with venomvine and thicket, not vanilla grass.
-- [ ] `scrub_venomvine_forms_distinct` — the crown, dripping, twitcher and hollow
-      venomvine forms are distinguishable from each other at play zoom.
-- [ ] `scrub_sweetline_reads_as_landmark` — an `RM_SweetlineTree` stands out as a
-      named landmark tree, bigger than the scrub around it.
-
-**Fauna**
-- [ ] `scrub_fauna_various` — the 13 wild kinds read as distinct animals in one
-      line-up.
-- [ ] `scrub_runway_bloom_launches_dustflutters` — a runway bloom sends
-      `RM_Dustflutter` up in a visible burst. (guess; flight is never filmed
-      unattended)
-
-### cannot show
-
-- [ ] `scrub_never_windless` — an ordinary Scrub day that reads as calm, still
-      air (the biome bans calm).
-- [ ] `scrub_never_lean_mixed` — plants leaning in different directions on one
-      map. (guess)
+- [ ] `scrub_wind_home` (change) — at normal play zoom and sound, the shared plant lean, ordinary wind, quiet Stall and driven Gale are legible; wind supplies useful colony power with exposure and repair risks.
+- [ ] `scrub_routes_deliberate` (change) — routine work uses maintained safe ways or visibly waits; only an explicit prepared expedition enters dangerous vines and returns. Developed ground stays dependable under creep and Walking; upkeep of dirt routes is measured.
+- [ ] `scrub_vines_integral` (change) — abundant tall varied vine islands leave a usable actual start; each ruled form has its own readable behavior and shared hazards, with banked years-long smothering and premium useful cane fuel.
+- [ ] `scrub_tree_economy` (change) — rare ancient named canopy landmarks keep history, free post-harvest shed, autonomous coat rubbing, conserved bank harvest and felt usefulness; abstract visit traces remain honest.
+- [ ] `scrub_native_ecology` (change) — the effective native cast appears naturally and its distinct life/product, concealment, runway, den, ambush, canopy, grazing and finite arm/regrowth mechanisms actually work; flight is observed only jointly with the owner.
+- [ ] `scrub_technology` (change) — real ruins lead through recovered plans, research, construction and power to water, while eligible scavenger camps obey peace/war/peace; no farmer camps or drying scar return.
+- [ ] `scrub_fire_and_belief` (change) — franchise-free thundersteps approach/stamp open blazes, identify makers through justified witness or fresh physical trail and lose contact; actual calling-pyre beliefs/ritual produce their separate consequences.
+- [ ] `scrub_saved_use` (change) — complete settings, aliases and optional integrations retain their effects and identities; the same colony resumes after real reload, repeats its core trip and completes a different action order without duplication.
 
 ## anti-guessing notes
 - RULED OUT (live 2026-10-07): "the dead-venomvine fuel patch does not apply" — the Refuel job ended on `CompRefuelable.IsFull` (TargetFuelLevel − fuel < 1) because the 3000-tick pre-burn removed only 0.5 of the campfire's 20 fuel; the check now burns >1.5 first and refuses to judge a still-full fire.

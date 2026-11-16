@@ -1,0 +1,1056 @@
+{
+  "schema": 1,
+  "author": "BENCH DesignerCodex rm-role-designercodex-1794799806",
+  "status": "design_proposals_no_play_results",
+  "contracts": [
+    {
+      "id": "wind_plain",
+      "capabilities": [
+        "weather_calendar",
+        "lean_heading",
+        "plant_lean"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:23",
+        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_WindyTwins.xml",
+        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:151",
+        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:139",
+        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:156",
+        "src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs:95",
+        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:247"
+      ],
+      "leaf": "wind_plain",
+      "scene": "sc_wind_plain",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Shared lean and windy ordinary days. Wrong world: A wind-speed number passes graphics leaning opposite ways."
+    },
+    {
+      "id": "gale_drawing",
+      "capabilities": [
+        "gale_dust"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs:44",
+        "src/RimMandrake/LeaningScrub/Textures/Weather/RM_GaleDust_A.png",
+        "src/RimMandrake/LeaningScrub/Textures/Weather/RM_GaleDust_B.png"
+      ],
+      "leaf": "gale_drawing",
+      "scene": "sc_gale_drawing",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Gale shows driven dust and fuzz. Wrong world: A loaded-overlay flag passes a motionless fog sheet."
+    },
+    {
+      "id": "wind_audio",
+      "capabilities": [
+        "wind_sound"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:30",
+        "src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py"
+      ],
+      "leaf": "wind_audio",
+      "scene": "sc_wind_audio",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Wind and wildlife beds quiet in Stall. Wrong world: SoundDef names pass inaudible or continuously stuck ambience."
+    },
+    {
+      "id": "working_wind",
+      "capabilities": [
+        "gale_turbines"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:186",
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:101"
+      ],
+      "leaf": "working_wind",
+      "scene": "sc_working_wind",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Wind powers work while Gale risks repairs. Wrong world: A disconnected inspect number passes usable electricity."
+    },
+    {
+      "id": "gale_exposure",
+      "capabilities": [
+        "gale_exposure"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:78",
+        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Hediffs.xml"
+      ],
+      "leaf": "gale_exposure",
+      "scene": "sc_gale_exposure",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Gale penalizes exposed organic pawns. Wrong world: Heatstroke or an old hearing injury passes Gale exposure."
+    },
+    {
+      "id": "raid_weight",
+      "capabilities": [
+        "gale_raid_weight"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:200"
+      ],
+      "leaf": "raid_weight",
+      "scene": "sc_raid_weight",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Gale changes raid weighting. Wrong world: A debug raid proves a weight multiplier."
+    },
+    {
+      "id": "scent",
+      "capabilities": [
+        "upwind_scent"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:207"
+      ],
+      "leaf": "scent",
+      "scene": "sc_scent",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Upwind people alert eligible wildlife. Wrong world: An unrelated Flee job passes directional scent."
+    },
+    {
+      "id": "fire_bias",
+      "capabilities": [
+        "downwind_fire"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:254"
+      ],
+      "leaf": "fire_bias",
+      "scene": "sc_fire_bias",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Fire spread favors downwind. Wrong world: Downwind-only fuel passes directional spread."
+    },
+    {
+      "id": "stall_wait",
+      "capabilities": [
+        "stall_freeze"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:170"
+      ],
+      "leaf": "stall_wait",
+      "scene": "sc_stall_wait",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Stall holds idle small wanderers. Wrong world: Blocked animals pass Stall freezing."
+    },
+    {
+      "id": "concealment",
+      "capabilities": [
+        "ripple",
+        "ribbonwhip_wind_concealment"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:58",
+        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_RippleKernel.cs:40",
+        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Ripple.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:639",
+        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:247"
+      ],
+      "leaf": "concealment",
+      "scene": "sc_concealment",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Fuzz hides animals with a faint shimmer. Wrong world: A hediff passes absent shimmer or still-targetable wildlife."
+    },
+    {
+      "id": "lee_reveal",
+      "capabilities": [
+        "windbreak_lee"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:73"
+      ],
+      "leaf": "lee_reveal",
+      "scene": "sc_lee_reveal",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Windbreak lee reveals moving animals. Wrong world: Bare ground or global Stall passes a local windbreak."
+    },
+    {
+      "id": "stall_predation",
+      "capabilities": [
+        "stall_hunter"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:54",
+        "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:102"
+      ],
+      "leaf": "stall_predation",
+      "scene": "sc_stall_predation",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Stall hunter selects visible reachable prey. Wrong world: Direct PredatorHunt assignment passes prey choice."
+    },
+    {
+      "id": "island_land",
+      "capabilities": [
+        "vine_islands"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:140",
+        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:277",
+        "ITEM:VENOMVINE_BUILD_SCRUB_GROWS_TEETH"
+      ],
+      "leaf": "island_land",
+      "scene": "sc_island_land",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Tall varied islands leave a usable start. Wrong world: A hand-planted lineup or substitute start passes map generation."
+    },
+    {
+      "id": "creep",
+      "capabilities": [
+        "vine_creep",
+        "vine_growth_exemption"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:94",
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:444",
+        "src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml"
+      ],
+      "leaf": "creep",
+      "scene": "sc_creep",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Vines creep on an independent capped clock. Wrong world: Existing plants are counted as new runners or a second engine advances them."
+    },
+    {
+      "id": "home_routes",
+      "capabilities": [
+        "dependable_home_routes"
+      ],
+      "source": [
+        "OWNER:1794327080747931066",
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:94",
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:918"
+      ],
+      "leaf": "home_routes",
+      "scene": "sc_home_routes",
+      "entry_point_item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+      "pruning": "Reject independently: Home and maintained routes remain dependable. Wrong world: One cleared path passes while Walking invades zones or upkeep consumes all labor."
+    },
+    {
+      "id": "ordered_travel",
+      "capabilities": [
+        "ordered_crossing_policy"
+      ],
+      "source": [
+        "OWNER:1794334503877366549",
+        "design/RimMandrake/designer_codex_2026-11-09/LeaningScrub/ANSWERS_OWNER.md:4",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_BodySizeBarrierPatches.cs:37"
+      ],
+      "leaf": "ordered_travel",
+      "scene": "sc_ordered_travel",
+      "entry_point_item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+      "pruning": "Reject independently: Dangerous crossings require one explicit expedition. Wrong world: High path cost passes one detour but allows later automatic poison crossing."
+    },
+    {
+      "id": "vine_contact",
+      "capabilities": [
+        "vine_hazard"
+      ],
+      "source": [
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_BodySizeBarrier.cs:181",
+        "src/RimMandrake/EnvironmentalHazards/Source/MapComponent_ContactVenom.cs",
+        "src/RimMandrake/LeaningScrub/Patches/RM_Venomvine_TallCreepSafeRunners.xml",
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:799"
+      ],
+      "leaf": "vine_contact",
+      "scene": "sc_vine_contact",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Size and contact rules share truthful boundaries. Wrong world: All health loss is called venom or >= silently replaces >."
+    },
+    {
+      "id": "dripping",
+      "capabilities": [
+        "dripping_harvest"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:50",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:27"
+      ],
+      "leaf": "dripping",
+      "scene": "sc_dripping",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Dripping yields venom and regrows. Wrong world: Canceled harvest leaves plant standing and passes regrowth."
+    },
+    {
+      "id": "twitcher",
+      "capabilities": [
+        "twitcher"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs:61"
+      ],
+      "leaf": "twitcher",
+      "scene": "sc_twitcher",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Twitcher visibly spends and recovers its lash. Wrong world: Inspect text passes random ready/spent art."
+    },
+    {
+      "id": "hollow",
+      "capabilities": [
+        "hollow_passage"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:157"
+      ],
+      "leaf": "hollow",
+      "scene": "sc_hollow",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Hollow has a distinct blunt passage band. Wrong world: An adjacent clear cell passes Hollow travel."
+    },
+    {
+      "id": "crown",
+      "capabilities": [
+        "crown_mob"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:131",
+        "src/RimMandrake/LeaningScrub/repro_crown_mob.py",
+        "infrastructure/state/live_proofs/LEANINGSCRUB_CROWN_MOB_LIVE_1.txt"
+      ],
+      "leaf": "crown",
+      "scene": "sc_crown",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Crown gathers a capped Stall mob. Wrong world: Nearby wanderers pass gathering while second wave exceeds cap."
+    },
+    {
+      "id": "rearing",
+      "capabilities": [
+        "rearing"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:753",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
+      ],
+      "leaf": "rearing",
+      "scene": "sc_rearing",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Rearing shows its saved disturbance state. Wrong world: Random upright art passes a saved state."
+    },
+    {
+      "id": "walking",
+      "capabilities": [
+        "walking"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:880",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
+      ],
+      "leaf": "walking",
+      "scene": "sc_walking",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Walking advances on Gale and stops for connected smothering. Wrong world: Calling Walk once passes onset and weaker home protection."
+    },
+    {
+      "id": "hoard",
+      "capabilities": [
+        "hoard"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:260",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
+      ],
+      "leaf": "hoard",
+      "scene": "sc_hoard",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Hoard returns actual stored objects. Wrong world: New replacement steel hides lost unique gear."
+    },
+    {
+      "id": "quench",
+      "capabilities": [
+        "quench"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:205",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
+      ],
+      "leaf": "quench",
+      "scene": "sc_quench",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Quench visibly spends foam and recharges. Wrong world: Natural expiry and random pale art pass ready-state wiring."
+    },
+    {
+      "id": "sworn",
+      "capabilities": [
+        "sworn"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:80",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFormSupport.xml:27"
+      ],
+      "leaf": "sworn",
+      "scene": "sc_sworn",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Sap protection depends on mark rather than faction. Wrong world: Proof-injected hediff passes a broken sap recipe/use chain."
+    },
+    {
+      "id": "shedding",
+      "capabilities": [
+        "shedding"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:951",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
+      ],
+      "leaf": "shedding",
+      "scene": "sc_shedding",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Gale lays harmful downwind thorn litter. Wrong world: Hand-spawned litter passes deposition or bypasses damage controls."
+    },
+    {
+      "id": "strangler",
+      "capabilities": [
+        "strangler"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:32",
+        "ITEM:LEANINGSCRUB_STRANGLER_VINE_1"
+      ],
+      "leaf": "strangler",
+      "scene": "sc_strangler",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Strangler damages its wrapped target. Wrong world: Direct wall damage or set wrap passes selection/trim."
+    },
+    {
+      "id": "weeper",
+      "capabilities": [
+        "weeper"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:131",
+        "ITEM:LEANINGSCRUB_WEEPER_VINE_1"
+      ],
+      "leaf": "weeper",
+      "scene": "sc_weeper",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Weeper adds bounded pools and pollution. Wrong world: Disabling pollution hides unbounded output or safe text contradicts harm."
+    },
+    {
+      "id": "sleeper",
+      "capabilities": [
+        "sleeper"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:201",
+        "ITEM:LEANINGSCRUB_SLEEPER_VINE_1"
+      ],
+      "leaf": "sleeper",
+      "scene": "sc_sleeper",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Sleeper wakes once under shared hit controls. Wrong world: Only def replacement is checked while damage bypasses controls."
+    },
+    {
+      "id": "lure",
+      "capabilities": [
+        "lure"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:287",
+        "ITEM:LEANINGSCRUB_LURE_VINE_1"
+      ],
+      "leaf": "lure",
+      "scene": "sc_lure",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Lure fruit draws hungry wildlife within a supply cap. Wrong world: Spawned fruit passes unobserved attraction."
+    },
+    {
+      "id": "smother_claim",
+      "capabilities": [
+        "smother_craft"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:97",
+        "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:171",
+        "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:85",
+        "design/concepts/LeaningScrub/plan.md",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_WorldStarsMath.cs:13"
+      ],
+      "leaf": "smother_claim",
+      "scene": "sc_smother_claim",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Crafted blankets become saved years-long claims. Wrong world: Spawned blanket and forced start tick hide tailoring or retroactive timer changes."
+    },
+    {
+      "id": "cane_fuel",
+      "capabilities": [
+        "dead_cane_fuel",
+        "premium_dead_cane"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:73",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75",
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "leaf": "cane_fuel",
+      "scene": "sc_cane_fuel",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Reject independently: Cane is measurably premium useful fuel. Wrong world: Filter acceptance passes wood-equivalent duration and heat."
+    },
+    {
+      "id": "tree_landmark",
+      "capabilities": [
+        "sweetline_landmark",
+        "sweetline_canopy"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs:33",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:111",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:345",
+        "src/RimMandrake/LeaningScrub/Defs/RulePackDefs/RM_LeaningScrub_Namers.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:91",
+        "src/RimMandrake/BiomesShell/Source/RM_Canopy.cs:94"
+      ],
+      "leaf": "tree_landmark",
+      "scene": "sc_tree_landmark",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Rare sweetlines are named ancient landmarks. Wrong world: Hand-spawned tree passes rarity and matching canopy."
+    },
+    {
+      "id": "tree_shed",
+      "capabilities": [
+        "sweetline_shed"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:99",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:145",
+        "ITEM:LEANINGSCRUB_SWEETLINE_SHED_LIVE_1"
+      ],
+      "leaf": "tree_shed",
+      "scene": "sc_tree_shed",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Once-mature trees freely shed after harvest. Wrong world: Fresh mature replacement hides lost post-harvest everMature."
+    },
+    {
+      "id": "tree_scratch",
+      "capabilities": [
+        "sweetline_scratching"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:106",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:163",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:284",
+        "ITEM:SWEETLINE_SCRATCHING_TREE_BUILD_1"
+      ],
+      "leaf": "tree_scratch",
+      "scene": "sc_tree_scratch",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Ready animals choose reachable trees to rub. Wrong world: Manually filled sheep sent to trunk passes autonomous wild coats."
+    },
+    {
+      "id": "tree_bank",
+      "capabilities": [
+        "sweetline_felt_bank"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:271"
+      ],
+      "leaf": "tree_bank",
+      "scene": "sc_tree_bank",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Harvest pays the felt bank exactly once. Wrong world: Calling yield directly debits bank without delivering harvest."
+    },
+    {
+      "id": "felt_comfort",
+      "capabilities": [
+        "felt_comfort"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:39",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:81",
+        "src/RimMandrake/LeaningScrub/Defs/ThoughtDefs/RM_SweetlineFelt_Thoughts.xml"
+      ],
+      "leaf": "felt_comfort",
+      "scene": "sc_felt_comfort",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Felt gives furniture comfort and one apparel thought. Wrong world: Higher quality or stacked thoughts pass material comfort."
+    },
+    {
+      "id": "tree_traces",
+      "capabilities": [
+        "sweetline_visits"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:173"
+      ],
+      "leaf": "tree_traces",
+      "scene": "sc_tree_traces",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Tree visits are honest abstract traces. Wrong world: History text proves that actual travelers arrived."
+    },
+    {
+      "id": "native_cast",
+      "capabilities": [
+        "biome_cast"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:167",
+        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:191",
+        "src/RimMandrake/Biomes.compose.json:45",
+        "ITEM:LEANINGSCRUB_RM_MOD_BUILD_1",
+        "ITEM:LEANINGSCRUB_RULED_CONTENT_1",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "leaf": "native_cast",
+      "scene": "sc_native_cast",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Composed native cast has real lifecycles. Wrong world: Spawned lineup passes map generation and every product lifecycle."
+    },
+    {
+      "id": "bloom",
+      "capabilities": [
+        "runway_bloom"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:182"
+      ],
+      "leaf": "bloom",
+      "scene": "sc_bloom",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Moving traffic triggers distinct runway responses. Wrong world: Direct Answer or invisible persistent sway hold passes traffic/recovery."
+    },
+    {
+      "id": "arm_regrowth",
+      "capabilities": [
+        "vissler_finite_arm_regrowth"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:734",
+        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:217",
+        "CONDUCTOR:1794794271528276351",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "leaf": "arm_regrowth",
+      "scene": "sc_arm_regrowth",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Vissler arms are finite and regrow in one season. Wrong world: Every bloom spawns a limb without anatomical loss."
+    },
+    {
+      "id": "arm_food",
+      "capabilities": [
+        "vissler_arm_food"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:37",
+        "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:51"
+      ],
+      "leaf": "arm_food",
+      "scene": "sc_arm_food",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Shed arms are perishable scavenger food. Wrong world: TryFindBestFoodSource proves eating that never completes."
+    },
+    {
+      "id": "thornhold_quill",
+      "capabilities": [
+        "thornhold_quills"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:119",
+        "src/RimMandrake/LeaningScrub/Defs/DamageDefs/RM_LeaningScrub_FaunaDamage.xml",
+        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS"
+      ],
+      "leaf": "thornhold_quill",
+      "scene": "sc_thornhold_quill",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Thornhold melee carries distinct quill venom. Wrong world: Nearby vine contact is called quill damage."
+    },
+    {
+      "id": "thornhold_den",
+      "capabilities": [
+        "thornhold_den_stand"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:147",
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:216",
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:254"
+      ],
+      "leaf": "thornhold_den",
+      "scene": "sc_thornhold_den",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Thornhold defends its den against its attacker. Wrong world: Injected aggression hides broken hit trigger or endless pursuit."
+    },
+    {
+      "id": "surrik",
+      "capabilities": [
+        "surrik_crustswim"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:543",
+        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:207",
+        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:40"
+      ],
+      "leaf": "surrik",
+      "scene": "sc_surrik",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Surrik swims crust and surfaces to strike. Wrong world: Hediff/direct ForceSurface passes movement/strike."
+    },
+    {
+      "id": "shokka",
+      "capabilities": [
+        "shokka_ambush"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:243",
+        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
+        "CONDUCTOR:1794794271528276351"
+      ],
+      "leaf": "shokka",
+      "scene": "sc_shokka",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Shokka ambushes a fuzz-edge crossing. Wrong world: Ordinary PredatorHunt passes unbuilt crossing ambush."
+    },
+    {
+      "id": "fuzzviper",
+      "capabilities": [
+        "fuzzviper_ambush"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:444",
+        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
+        "CONDUCTOR:1794794271528276351"
+      ],
+      "leaf": "fuzzviper",
+      "scene": "sc_fuzzviper",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Fuzzviper holds a run wall until traffic comes. Wrong world: Open-ground chase passes run-wall ambush."
+    },
+    {
+      "id": "ribbon_route",
+      "capabilities": [
+        "ribbonwhip_canopy_route"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:642",
+        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
+        "CONDUCTOR:1794794271528276351"
+      ],
+      "leaf": "ribbon_route",
+      "scene": "sc_ribbon_route",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Ribbonwhip stays on canopy routes. Wrong world: Concealment passes ordinary ground travel as canopy confinement."
+    },
+    {
+      "id": "pillowmoss",
+      "capabilities": [
+        "pillowmoss_wet_spot"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
+        "CONDUCTOR:1794794271528276351",
+        "design/Jawa/worldbuilding/biomes/leaningscrub_bedazzle_cast_2026-09-29.md:325",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "leaf": "pillowmoss",
+      "scene": "sc_pillowmoss",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Pillowmoss condenses fog into wet ground. Wrong world: Pre-painted wet tile passes unbuilt condensation."
+    },
+    {
+      "id": "tanglefuzz",
+      "capabilities": [
+        "tanglefuzz_den_ecology"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
+        "CONDUCTOR:1794794271528276351",
+        "design/Jawa/worldbuilding/biomes/leaningscrub_bedazzle_cast_2026-09-29.md:336",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "leaf": "tanglefuzz",
+      "scene": "sc_tanglefuzz",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Tanglefuzz anchors real runway dens. Wrong world: Animals spawned near a decorative bush pass den ecology."
+    },
+    {
+      "id": "cruststar",
+      "capabilities": [
+        "cruststar_grazing_ecology"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
+        "CONDUCTOR:1794794271528276351",
+        "design/Jawa/worldbuilding/biomes/leaningscrub_bedazzle_cast_2026-09-29.md:346",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "leaf": "cruststar",
+      "scene": "sc_cruststar",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Crustweevils complete real Cruststar grazing. Wrong world: An edible def passes a relationship without grazing."
+    },
+    {
+      "id": "shirrel_flight",
+      "capabilities": [
+        "shirrel_glide",
+        "shirrel_flight_art"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:146",
+        "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:195",
+        "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:257",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:1022",
+        "src/RimMandrake/LeaningScrub/Textures/Things/Pawn/Animal/RM_Shirrel/Flying/RM_Shirrel_Flying_1_north.png"
+      ],
+      "leaf": "shirrel_flight",
+      "scene": "sc_shirrel_flight",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Shirrels really glide, animate and return home. Wrong world: CanEverFly passes no launch or static flying art."
+    },
+    {
+      "id": "rollbug",
+      "capabilities": [
+        "rollbug_carrion"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:450",
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:570",
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:675"
+      ],
+      "leaf": "rollbug",
+      "scene": "sc_rollbug",
+      "entry_point_item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "pruning": "Reject independently: Rollbug carries and eats real carrion without losing gear. Wrong world: Forced order/hunger/direct Bite passes autonomy or destroys unique gear."
+    },
+    {
+      "id": "ruins",
+      "capabilities": [
+        "ruin_injections"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:52",
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:190",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml"
+      ],
+      "leaf": "ruins",
+      "scene": "sc_ruins",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "pruning": "Reject independently: Home maps contain spaced legible ruins. Wrong world: Direct generation on cleared pad passes normal entry or impossible claim age."
+    },
+    {
+      "id": "vaporator",
+      "capabilities": [
+        "wind_vaporator"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:205",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:42",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:148"
+      ],
+      "leaf": "vaporator",
+      "scene": "sc_vaporator",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "pruning": "Reject independently: Farmstead plans lead to powered water. Wrong world: Correct defs pass an unusable learn/build/produce chain."
+    },
+    {
+      "id": "camps",
+      "capabilities": [
+        "scavenger_camps"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:248",
+        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:356",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:22",
+        "src/RimUtinni/UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml"
+      ],
+      "leaf": "camps",
+      "scene": "sc_camps",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "pruning": "Reject independently: Scavenger camps change between peace and war. Wrong world: Empty base list proves a positive faction transition."
+    },
+    {
+      "id": "stamping",
+      "capabilities": [
+        "fire_stamping"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:128",
+        "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:220",
+        "src/RimUtinni/UtinniPatches/Patches/RSW_ShrublandGiant_FireStamper.xml",
+        "OWNER:1792856115688559019",
+        "OWNER:1792859729611947407",
+        "OWNER:1793682620784395844",
+        "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShrublandGiant.xml:160"
+      ],
+      "leaf": "stamping",
+      "scene": "sc_stamping",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Base thundersteps approach and stamp open blazes. Wrong world: Teleported campaign giant passes approach and franchise-free completeness."
+    },
+    {
+      "id": "maker",
+      "capabilities": [
+        "fire_maker_witness_trail"
+      ],
+      "source": [
+        "OWNER:1794334503877366549",
+        "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:49",
+        "src/RimMandrake/RimProperty/Source/PerceptionUtility.cs:35",
+        "design/concepts/LeaningScrub/plan.md",
+        "src/RimMandrake/RimProperty/Source/PerceptionUtility.cs:30"
+      ],
+      "leaf": "maker",
+      "scene": "sc_maker",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Giants identify makers through witness or fresh trail. Wrong world: Map-wide instigator pointer or nearest pawn substitutes for knowledge."
+    },
+    {
+      "id": "pyre_beliefs",
+      "capabilities": [
+        "calling_pyre"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml",
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:141",
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192"
+      ],
+      "leaf": "pyre_beliefs",
+      "scene": "sc_pyre_beliefs",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: All three pyre beliefs have actual consequences. Wrong world: Three resolved precepts pass identical play."
+    },
+    {
+      "id": "pyre_ritual",
+      "capabilities": [
+        "calling_pyre"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml",
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:141",
+        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192"
+      ],
+      "leaf": "pyre_ritual",
+      "scene": "sc_pyre_ritual",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Reject independently: Completed rituals ignite fields and call a real herd. Wrong world: Separate debug ignition/spawn passes a ritual whose normal outcome never runs."
+    },
+    {
+      "id": "settings",
+      "capabilities": [
+        "settings"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:165",
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:804",
+        "src/RimMandrake/LeaningScrub/validation.py:58"
+      ],
+      "leaf": "settings",
+      "scene": "sc_settings",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "pruning": "Reject independently: All settings persist and control their advertised effect. Wrong world: Five-field roundtrip and incomplete DEFAULTS pass all settings."
+    },
+    {
+      "id": "cuts",
+      "capabilities": [
+        "bark_wardens_removed",
+        "farmer_camps_removed"
+      ],
+      "source": [
+        "design/RimMandrake/fluff_cuts_2026-10-23.md:86",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:33",
+        "ITEM:LEANINGSCRUB_SWEETLINE_GUARDIAN_1",
+        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:6",
+        "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml:25"
+      ],
+      "leaf": "cuts",
+      "scene": "sc_cuts",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "pruning": "Reject independently: Removed features remain absent and text truthful. Wrong world: Deleting all tree features or treating tombstones as live camps passes removal."
+    },
+    {
+      "id": "route_observer",
+      "capabilities": [],
+      "source": [
+        "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+        "design/concepts/LeaningScrub/edge_argument_02.md"
+      ],
+      "leaf": "route_observer",
+      "scene": "sc_route_observer",
+      "entry_point_item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+      "pruning": "Required to observe dependent core behavior without endpoint/debug-hook false passes."
+    },
+    {
+      "id": "witness_observer",
+      "capabilities": [],
+      "source": [
+        "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+        "design/concepts/LeaningScrub/edge_argument_02.md"
+      ],
+      "leaf": "witness_observer",
+      "scene": "sc_witness_observer",
+      "entry_point_item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+      "pruning": "Required to observe dependent core behavior without endpoint/debug-hook false passes."
+    },
+    {
+      "id": "economy_observer",
+      "capabilities": [],
+      "source": [
+        "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+        "design/concepts/LeaningScrub/edge_argument_02.md"
+      ],
+      "leaf": "economy_observer",
+      "scene": "sc_economy_observer",
+      "entry_point_item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "pruning": "Required to observe dependent core behavior without endpoint/debug-hook false passes."
+    },
+    {
+      "id": "colony_walk",
+      "capabilities": [],
+      "source": [
+        "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+        "design/concepts/LeaningScrub/edge_argument_02.md"
+      ],
+      "leaf": "colony_walk",
+      "scene": "sc_colony_walk",
+      "entry_point_item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+      "pruning": "Reject independently: A real journey survives reload and reordered actions. Wrong world: Isolated green hooks and restaged actors hide a broken saved journey."
+    },
+    {
+      "id": "save_aliases",
+      "capabilities": [
+        "save_aliases"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml"
+      ],
+      "leaf": "save_aliases",
+      "scene": "sc_save_aliases",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "pruning": "Reject independently: Saved aliases retain exact identities and products. Wrong world: An XML alias list passes an old save that loses its pawn or equipment."
+    },
+    {
+      "id": "acoustic_payload",
+      "capabilities": [
+        "acoustic_payload"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml"
+      ],
+      "leaf": "acoustic_payload",
+      "scene": "sc_acoustic_payload",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "pruning": "Reject independently: Scanner pulses return biome-specific readings. Wrong world: Correct XML payload strings pass a scanner that never uses them."
+    },
+    {
+      "id": "proximity_hatch",
+      "capabilities": [
+        "proximity_hatch"
+      ],
+      "source": [
+        "src/RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml"
+      ],
+      "leaf": "proximity_hatch",
+      "scene": "sc_proximity_hatch",
+      "entry_point_item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "pruning": "Reject independently: Protovermes eggs hatch near pawns or on their normal timer. Wrong world: Added comp text passes absent near-pawn trigger or broken vanilla fallback."
+    }
+  ],
+  "build_items": {
+    "routes": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+    "vine": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+    "tree": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+    "ecology": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+    "wind": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+    "fire": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+    "technology": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+    "compat": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY"
+  }
+}

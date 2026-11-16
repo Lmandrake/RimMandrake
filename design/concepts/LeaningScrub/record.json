@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "run": "rm-role-designercodex-1794792411",
+  "run": "rm-role-designercodex-1794799806",
   "stage_read": 1,
   "grounded_at": "2026-11-16T01:24:31.263772+00:00",
   "source_head": "0d5122eebdf0ccb43bed72633263cd8313eb7028",
@@ -239,6 +239,54 @@
         "verdict": "pass",
         "source": "design/concepts/LeaningScrub/review_02.md"
       }
+    },
+    {
+      "id": "stage3_finite_smother_migration",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/LeaningScrub/plan.md",
+        "design/concepts/LeaningScrub/scenes.json",
+        "design/concepts/LeaningScrub/build_items_03.md"
+      ],
+      "text": "Selected agent default120 engine days and normal range120–600; imported serialized legacy values are explicit preserved overrides, old start-only claims freeze their prior effective due time, and new per-claim duration never recalculates from later settings. No owner numeric quote or real-years proof inferred.",
+      "author": "rm-role-designercodex-1794799806",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage3_useful_fuel_and_ecology_tuning",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/LeaningScrub/plan.md",
+        "design/concepts/LeaningScrub/scenes.json",
+        "design/concepts/LeaningScrub/build_items_03.md"
+      ],
+      "text": "Selected agent initial cane value2 wood-equivalent units and heat rate1.25 with saved mixed-fuel credit; one-season arm regrowth15 days; finite ecology adapter/data and bounded witness/trail defaults in plan. These implementation proposals preserve adopted obligations and are not reported present or proven.",
+      "author": "rm-role-designercodex-1794799806",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage3_canonical_root_observations",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/LeaningScrub/plan.md",
+        "design/concepts/LeaningScrub/scenes.json",
+        "design/concepts/LeaningScrub/build_items_03.md"
+      ],
+      "text": "Updated existing canonical walk north star to exact adopted root plus eight distilled observation families; preserved prior draft verbatim. Checklist remains DRAFT and root sentence remains approved only by its recorded delegated source. No visual-bar validation, exam waiver or first-touch certification invented.",
+      "author": "rm-role-designercodex-1794799806",
+      "ran_by": "BENCH"
+    },
+    {
+      "id": "stage3_proof_catalog_and_floor",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/LeaningScrub/plan.md",
+        "design/concepts/LeaningScrub/scenes.json",
+        "design/concepts/LeaningScrub/build_items_03.md"
+      ],
+      "text": "Authored70 leaves including3 instruments and1 walk,81 planned scenes,7 greedy showcases and7 cheaper remainder checks; all71 built/in-scope inventory units covered. Two absent/out cuts retain explicit absence scene but are not invalid program coverage units. All23 floor lines applicable; no exception/waiver. Filed5 missing-entry/recovery work packages and mapped all34 previous audits. No game action or current proof upgrade.",
+      "author": "rm-role-designercodex-1794799806",
+      "ran_by": "BENCH"
     }
   ],
   "asks": [
@@ -3378,6 +3426,42 @@
         "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_ShrublandGiant.xml:160"
       ],
       "finding": "Draft and initial grounding omitted existing owner authority to migrate invented ShrublandGiant into RM. Current campaign-only marker does not imply an unresolved new creature/canon choice. Existing migration was skipped for technical library dependencies, independently confirmed in current XML. Preserve positive base completeness and carry authorized rehome/dependencies forward."
+    },
+    {
+      "id": "draft_stage3_legacy_clock_omission",
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:39",
+        "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:85",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "finding": "Draft lacks concrete default/range/settings/old-claim handling. Source saves only start tick and uses global duration. Stage3 adds explicit120-day normal default and idempotent legacy/per-claim migration; this is design, not a fix to code."
+    },
+    {
+      "id": "draft_stage3_acceptance_entry_gap",
+      "source": [
+        "src/RimMandrake/LeaningScrub/validation.py",
+        "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py",
+        "design/concepts/LeaningScrub/audit_disposition_03.json"
+      ],
+      "finding": "Existing chain names/recipes are not complete scene-contract entry points. No scene-begin/end/hold wiring found in the audited validation/stage scripts. All new complete entries remain explicitly missing and filed before acceptance scheduling; no source/hook result promoted."
+    },
+    {
+      "id": "draft_stage3_payoff_is_not_filter_or_integral_only",
+      "source": [
+        "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml:12",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75",
+        "design/concepts/LeaningScrub/plan.md"
+      ],
+      "finding": "Premium promise needs actual duration and heat behavior. Stage3 specifies comparative useful output plus independent heat-rate target and saved mixed-fuel accounting. Correctly accepting cane as wood is insufficient; implementation remains missing/unknown as recorded."
+    },
+    {
+      "id": "draft_stage3_full_settings_census",
+      "source": [
+        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs",
+        "src/RimMandrake/LeaningScrub/validation.py:58",
+        "design/concepts/LeaningScrub/settings_census_03.json"
+      ],
+      "finding": "Independently extracted82 current public settings fields with serialization keys. DEFAULTS remains an incomplete acceptance census, including omitted shirrel switch. Future added fields/consumer/UI effects must regenerate and expand the manifest; static extraction is not settings proof."
     }
   ],
   "live_walk_first": {
@@ -4011,6 +4095,99 @@
       ],
       "sha": "e7b76afee7f2187c536759d8b2046c6b6aef1f02",
       "reason": "Valid CONDUCTOR citations of delegated calls in OWNER shard were treated as unread new replies, causing stage2 close rejection. Focused reproduction red before fix; stage, turns and chaining suites green after."
+    }
+  },
+  "stage_3": {
+    "run": "rm-role-designercodex-1794799806",
+    "author": "BENCH DesignerCodex",
+    "source": "design/concepts/LeaningScrub/plan.md",
+    "written_at": "2026-11-16T04:37:16.744679+00:00",
+    "status": "done_checks_passed",
+    "leaf_count": 70,
+    "instrument_count": 3,
+    "walk_count": 1,
+    "scene_count": 81,
+    "acceptance_count": 75,
+    "interaction_count": 5,
+    "exploration_count": 1,
+    "showcases": 7,
+    "coverage_rest": 7,
+    "required_inventory_units": 71,
+    "removed_absence_scene": "sc_cuts",
+    "floor_lines": 23,
+    "floor_disabled": [],
+    "filed_entry_point_items": [
+      "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+      "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+      "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+      "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+      "SCRUB_PROVE_WIND_FIRE_AND_RITUAL"
+    ],
+    "legacy_audits_mapped": 34,
+    "setting_fields_source_censused": 82,
+    "primary_source_continuity": {
+      "checked": 95,
+      "unchanged": 94,
+      "intentional_changes": [
+        "design/validation_walks/RimMandrake/LeaningScrub.md"
+      ],
+      "evidence": "design/concepts/LeaningScrub/source_audit_03.json"
+    },
+    "product_code_art_changes": false,
+    "bridge_game_deploy_actions": false,
+    "current_live_proof": false,
+    "owner_questions_sent": [],
+    "waivers": [],
+    "oracle_bindings": false,
+    "exam_or_lock_claims": false,
+    "north_star_status": "DRAFT observation checklist; delegated sentence approval remains record.root",
+    "next": "Stage4 Exam only after launcher accepts this result. Live acceptance and Lock first-touch certification remain owed.",
+    "filed_events": [
+      {
+        "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+        "event_tsn": "1794803724247254509",
+        "source": "ITEM:SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+        "speaker": "agent",
+        "seat": "BENCH"
+      },
+      {
+        "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+        "event_tsn": "1794803729653013403",
+        "source": "ITEM:SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+        "speaker": "agent",
+        "seat": "BENCH"
+      },
+      {
+        "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+        "event_tsn": "1794803735056800972",
+        "source": "ITEM:SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+        "speaker": "agent",
+        "seat": "BENCH"
+      },
+      {
+        "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+        "event_tsn": "1794803740733705368",
+        "source": "ITEM:SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+        "speaker": "agent",
+        "seat": "BENCH"
+      },
+      {
+        "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+        "event_tsn": "1794803749958285002",
+        "source": "ITEM:SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+        "speaker": "agent",
+        "seat": "BENCH"
+      }
+    ],
+    "verification": "design/concepts/LeaningScrub/write_checks_03.json",
+    "showcase_overlap": {
+      "fire_and_belief": {
+        "shared": [
+          "downwind_fire"
+        ],
+        "ratio": 0.25,
+        "why": "Retained fire/accountability interaction needs actual downwind spread; staging reason explicit."
+      }
     }
   }
 }
