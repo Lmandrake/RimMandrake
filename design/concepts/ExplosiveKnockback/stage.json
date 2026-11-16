@@ -1713,6 +1713,12 @@
    "stage": 5,
    "what": "locked_change",
    "why": "his card answer 'Certify, and fix the rule' carried out (tree re-certified, exam11 refrozen and re-read 119/119); his 2026-11-13 lock pass and the post-lock proof-scene changes he ordered (Thrumbo/no creature names, tests evolve, hold the stack, thrown a short way) taken in; re-pinned stage 2 (owner); stage 3 (sheet, tree, scenes); stage 4 (sheet, tree, scenes, exam, owner); stage 5 (tree, sheet); sources OWNER:1794748823561950419@3d5eeb0e4466, OWNER:1794610188062865138, OWNER:1794636784570467650@60428da17f, OWNER:1794636784570467650@12efcb3138, OWNER:1794688782235148624@8498e2b493, OWNER:1794696195350158091@8bd7e7e715, OWNER:1794748404753740828@709c740f76"
+  },
+  {
+   "at": "2026-11-16T03:39:06Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "owner 2026-11-15 '1 agree.' (OWNER:1794799770273329641): barrage bar reworded to the p99 frame in the 0.9-8.25 s window at most 50 ms, carried out by 9c8c37aced (scenes.json, record.json, plan.md; tree/sheet held as a patch); OWNER:1794790816821560212 is the backfilled card 'Certify, and fix the rule', already carried out by 0774d3bc1a; re-pinned stage 2 (owner); stage 3 (scenes); stage 4 (scenes, owner); sources OWNER:1794799770273329641@9c8c37aced9241a11ad4d12bb3a3f390ea98e62a, OWNER:1794790816821560212"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -1811,7 +1817,7 @@
    "inputs": {
     "exam": null,
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "b26f421bffd380edad79a327e9ee40363753cc2b283570e9ca4b19fe9235976f",
+    "owner": "68d8ef5bc68be1bf579d834b4b8d95ae41bcc119cb5dd292e3c1cb8f4eec8ec5",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
     "scenes": "b539805141b4ce7de67ea63f9fd516527fbad243cdcb38ab33fe861d09c90936",
     "sheet": "a5638216a5395f359d008c4fa234972c5c520f51d2924bb2233d72f5c6f4fe35",
@@ -1823,7 +1829,8 @@
    },
    "outcome": "done",
    "owner_uncited": [
-    "1794610188062865138"
+    "1794610188062865138",
+    "1794790816821560212"
    ],
    "repinned": [
     {
@@ -1839,6 +1846,16 @@
       "OWNER:1794688782235148624@8498e2b493",
       "OWNER:1794696195350158091@8bd7e7e715",
       "OWNER:1794748404753740828@709c740f76"
+     ]
+    },
+    {
+     "at": "2026-11-16T03:39:06Z",
+     "inputs": [
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794799770273329641@9c8c37aced9241a11ad4d12bb3a3f390ea98e62a",
+      "OWNER:1794790816821560212"
      ]
     }
    ],
@@ -1984,7 +2001,7 @@
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "45d83916b7e8a1eae83ffeb4d49340cfc24e802e0a3094ed236d64d9a07b41f9",
+    "scenes": "346b20d4fdad2ccbc5cddc62b5765d2072d7137db3a741a3e8e8a2939aca59bb",
     "sheet": "c33a997273ea4ba3bdbf589bd33884d5e3558c785dc30edbe84abe5e13bc664d",
     "tree": "82b1a19515fa0b14c7d36176233baf8369de3a2c82760979c8e8a2a355b1d0c0"
    },
@@ -2012,6 +2029,16 @@
       "OWNER:1794696195350158091@8bd7e7e715",
       "OWNER:1794748404753740828@709c740f76"
      ]
+    },
+    {
+     "at": "2026-11-16T03:39:06Z",
+     "inputs": [
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794799770273329641@9c8c37aced9241a11ad4d12bb3a3f390ea98e62a",
+      "OWNER:1794790816821560212"
+     ]
     }
    ],
    "run": "bench-ek-owner-lock-st3-20261113",
@@ -2023,9 +2050,9 @@
    "inputs": {
     "exam": "ba75858ead6b1f371e4011053fe0f9b44f60ffd106bab1772fa2ca8e12a8cc6e",
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
-    "owner": "b26f421bffd380edad79a327e9ee40363753cc2b283570e9ca4b19fe9235976f",
+    "owner": "68d8ef5bc68be1bf579d834b4b8d95ae41bcc119cb5dd292e3c1cb8f4eec8ec5",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "45d83916b7e8a1eae83ffeb4d49340cfc24e802e0a3094ed236d64d9a07b41f9",
+    "scenes": "346b20d4fdad2ccbc5cddc62b5765d2072d7137db3a741a3e8e8a2939aca59bb",
     "sheet": "c33a997273ea4ba3bdbf589bd33884d5e3558c785dc30edbe84abe5e13bc664d",
     "tree": "82b1a19515fa0b14c7d36176233baf8369de3a2c82760979c8e8a2a355b1d0c0"
    },
@@ -2035,7 +2062,8 @@
    },
    "outcome": "done",
    "owner_uncited": [
-    "1794610188062865138"
+    "1794610188062865138",
+    "1794790816821560212"
    ],
    "repinned": [
     {
@@ -2055,6 +2083,17 @@
       "OWNER:1794688782235148624@8498e2b493",
       "OWNER:1794696195350158091@8bd7e7e715",
       "OWNER:1794748404753740828@709c740f76"
+     ]
+    },
+    {
+     "at": "2026-11-16T03:39:06Z",
+     "inputs": [
+      "scenes",
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794799770273329641@9c8c37aced9241a11ad4d12bb3a3f390ea98e62a",
+      "OWNER:1794790816821560212"
      ]
     }
    ],
