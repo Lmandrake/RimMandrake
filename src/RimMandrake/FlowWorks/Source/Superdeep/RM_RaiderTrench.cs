@@ -448,7 +448,7 @@ namespace RimMandrake.FlowWorks
 		/// <summary>Null when ladders cannot do this crossing (<paramref name="waiting"/> false: breach instead) or cannot do it
 		/// YET (<paramref name="waiting"/> true: the next slot is out of reach or another raider is setting it; think again later);
 		/// else the next ladder job, or the step down into the trench once every ladder stands.</summary>
-		private static Job LadderJob(Pawn p, Plan plan, int k, out bool waiting)
+		internal static Job LadderJob(Pawn p, Plan plan, int k, out bool waiting)
 		{
 			waiting = false;
 			ThingDef def = RimMandrakeFlowWorks_DefOf.RM_LadderPortable;
@@ -608,7 +608,7 @@ namespace RimMandrake.FlowWorks
 			return job;
 		}
 
-		private static void Warn(Pawn p, string key)
+		internal static void Warn(Pawn p, string key)
 		{
 			Lord lord = p.GetLord();
 			if (dryRun || lord == null || !warned.Add(lord))
@@ -901,6 +901,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>DIG_FILL_TUNE_HOURS_OF_SHOVEL_WORK: fetch fill material and tip it into a trench square.</summary>
 		public static JobDef RM_RaiderFetchFill;
 
+		/// <summary>FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN: carry a downed comrade out of a pit (RM_RaiderFetchFallen).</summary>
+		public static JobDef RM_RaiderFetchFallen;
+
 		static RM_RaiderTrenchDefOf()
 		{
 			DefOfHelper.EnsureInitializedInCtor(typeof(RM_RaiderTrenchDefOf));
@@ -1113,6 +1116,8 @@ namespace RimMandrake.FlowWorks
 		/// <summary>SHOVELS_BUILD_NO_DIGGING_BARE_HANDED, PROVISIONAL: a sapper raid's share (owner: "Sappers however would bring
 		/// shovels &amp; ladders"). A siege brings none: it is mortar-based.</summary>
 		public static float sapperShovelShare = RM_ShovelMath.DefaultSapperShovelShare;
+		/// <summary>FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN: raiders set a ladder into a pit and carry out their fallen.</summary>
+		public static bool raiderFetchFallenEnabled = true;
 
 		// FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING: shipped value of every public static bool/float/int setting above. MUST stay
 		// below the LAST public setting field (C# runs static initialisers in textual order).
@@ -1137,6 +1142,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref raiderJumpPackShare, "raiderJumpPackShare", 0.1f);
 			Scribe_Values.Look(ref raiderShovelShare, "raiderShovelShare", RM_ShovelMath.DefaultRaiderShovelShare);
 			Scribe_Values.Look(ref sapperShovelShare, "sapperShovelShare", RM_ShovelMath.DefaultSapperShovelShare);
+			Scribe_Values.Look(ref raiderFetchFallenEnabled, "raiderFetchFallenEnabled", true);
 		}
 
 		public static void DoSettingsSection(Listing_Standard list)
@@ -1164,6 +1170,10 @@ namespace RimMandrake.FlowWorks
 			list.Label("  Scaling ladder speed: x" + raiderLadderSpeed.ToString("0.00") + "  (about " + ladderSec
 			  + " s for a 2 m wall)", tooltip: "About 10 s plus 1 s a metre at x1.");
 			raiderLadderSpeed = Mathf.Round(list.Slider(raiderLadderSpeed, 0.25f, 4f) * 20f) / 20f;
+			list.CheckboxLabeled("  Raiders fetch their fallen", ref raiderFetchFallenEnabled,
+				"When your pit holds raiders, the rest of their raid sets a ladder down into it (one they carry, take, or build from "
+			  + "a tree they fell) and carries their downed up to the lip; a standing one climbs out by it. A raider under fire "
+			  + "gives it up and fights, and a raid that breaks and runs leaves its fallen behind. Off: the fallen stay in the pit.");
 			list.CheckboxLabeled("  Raiders breach by filling", ref raiderFillEnabled,
 				"When ladders cannot do it (too deep, too narrow, ladders off), raiders shovel earth into the trench until every "
 			  + "step of a one-square causeway is climbable, then walk across it. Only raiders with a shovel do (with \"Digging and "

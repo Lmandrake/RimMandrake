@@ -6,7 +6,8 @@ fake map that holds each bridge tool to its contract and models the two things t
     (the draft's raid was gone at tick 60), unless the scene narrows B.stop_on for its own raid.
 The healthy fake (raiders cross the lidded trench, two fall, the mod ladders the pit) reads every row PASS; today's mod (no
 fetch job) reads FETCH_ladder_into_pit FAIL; a raid that never reaches the trench reads every row UNMEASURED, never PASS;
-a crossing ladder in the control reads FAIL. Red on the draft at 2b4bffe212, green on the fix.
+a crossing ladder in the control reads FAIL; a ladder with nobody brought out reads FETCH_fallen_brought_out FAIL (that row
+added with RM_RaiderFetchFallen, 2026-11-16). Red on the draft at 2b4bffe212, green on the fix.
 The fake proves the scene's logic, never the game; the live half is
 `python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_fetch_fallen --out <json>`.
     python3 selftest_fetch_scene.py [path/to/concept_scenes.py]
@@ -31,14 +32,15 @@ COVER_REFUSED = 'REFUSED: arg must be x,z on a current map with FlowWorks'
 
 
 class Fake:
-    """mod: 'fetch' (raiders ladder the pit for a fallen comrade), None (today: no fetch job), 'crossing' (a ladder goes in
+    """mod: 'fetch' (raiders ladder the pit for a fallen comrade and carry one out), 'ladder_only' (the ladder goes in, nobody
+    comes out), None (today: no fetch job), 'crossing' (a ladder goes in
     whether or not anyone fell). fault: 'far' (the raid spawns 40 squares off and never comes), 'one' (one raider falls)."""
 
     def __init__(self, mod='fetch', fault=None):
         self.mod, self.fault = mod, fault
         self.stop_on = 'default'
         self.g = {'dug': {}, 'spikes': set(), 'covers': {}, 'hostile': {}, 'ladders': [], 'announced': set(), 'n': 0,
-                  'fall_poll': None, 'polls': 0}
+                  'fall_poll': None, 'polls': 0, 'ladder_poll': 0}
         self.saves, self.contract = {}, []
 
     def save(self, k):
@@ -73,10 +75,16 @@ class Fake:
                 nz = O[1] - 1                              # an open trench: they stop at its lip
             h['z'] = nz
         held = any(h['held'] for h in g['hostile'].values())
-        if (self.mod == 'fetch' and held and g['polls'] >= (g['fall_poll'] or 0) + 2) or \
+        if self.mod == 'fetch' and g['ladders'] and g['polls'] >= g['ladder_poll'] + 1:
+            for h in g['hostile'].values():
+                if h['held']:
+                    h['z'], h['held'] = O[1] - 1, False   # carried up the ladder to the lip (RM_RaiderFetchFallen)
+                    break
+        if (self.mod in ('fetch', 'ladder_only') and held and g['polls'] >= (g['fall_poll'] or 0) + 2) or \
                 (self.mod == 'crossing' and g['hostile'] and g['polls'] >= 3):
             if not g['ladders'] and trench:
                 g['ladders'] = [{'def': 'RM_LadderPortable', 'x': O[0], 'z': O[1]}]
+                g['ladder_poll'] = g['polls']
         return {'success': True, 'advanced': n}
 
     # ---- the bridge
@@ -172,7 +180,7 @@ def check(label, ok, why=''):
         FAILS.append(label)
 
 
-ROWS = ('FETCH_two_fell', 'FETCH_ladder_into_pit', 'FETCH_control_none_fallen_no_ladder')
+ROWS = ('FETCH_two_fell', 'FETCH_ladder_into_pit', 'FETCH_fallen_brought_out', 'FETCH_control_none_fallen_no_ladder')
 rows, out, F = run()
 check('every staging call keeps its tool contract (ProofCover x,z; set_plants names a def; lids rest on two banks)',
       not F.contract, F.contract)
@@ -183,6 +191,12 @@ r, o, _ = run(mod=None)
 check("today's mod (no fetch job): FETCH_ladder_into_pit FAIL, the fall and the control PASS",
       r.get('FETCH_ladder_into_pit') == 'FAIL' and r.get('FETCH_two_fell') == 'PASS'
       and r.get('FETCH_control_none_fallen_no_ladder') == 'PASS' and o['status'] != 'PASS', r)
+r, o, _ = run(mod='ladder_only')
+check('a ladder into the pit and nobody brought out: FETCH_fallen_brought_out FAILs', r.get('FETCH_fallen_brought_out') == 'FAIL'
+      and r.get('FETCH_ladder_into_pit') == 'PASS' and o['status'] != 'PASS', r)
+r, o, _ = run(mod=None)
+check("today's-mod shape (no ladder): FETCH_fallen_brought_out UNMEASURED, never PASS",
+      r.get('FETCH_fallen_brought_out') == 'UNMEASURED', r)
 r, o, _ = run(fault='far')
 check('a raid that never reaches the trench: every row UNMEASURED, none PASS',
       all(r.get(x) == 'UNMEASURED' for x in ROWS) and 'PASS' not in r.values(), r)

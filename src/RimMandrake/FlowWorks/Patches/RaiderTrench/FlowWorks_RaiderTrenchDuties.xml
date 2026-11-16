@@ -43,4 +43,14 @@
       <li Class="RimMandrake.FlowWorks.Pits.JobGiver_RM_DrawbridgeWinch" />
     </value>
   </Operation>
+  <!-- FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN: an assault raider goes for a comrade the pit holds BEFORE it fights; the giver
+       returns null when nobody of its faction is down there or it is under fire, so the fight is vanilla's. Not in the flee
+       duties: a raid that breaks leaves its fallen. -->
+  <Operation Class="PatchOperationInsert">
+    <xpath>Defs/DutyDef[defName="AssaultColony"]/thinkNode/subNodes/li[@Class="JobGiver_AIFightEnemies"]</xpath>
+    <order>Prepend</order>
+    <value>
+      <li Class="RimMandrake.FlowWorks.JobGiver_RM_FetchFallen" />
+    </value>
+  </Operation>
 </Patch>

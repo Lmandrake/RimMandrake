@@ -123,6 +123,7 @@
   <RM_DebugNoSurvey>This map has no subsurface survey component.</RM_DebugNoSurvey>
   <!-- RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: {0} = the raiding faction's name -->
   <RMFlow_RaidersSetLadders>Raiders of {0} are setting scaling ladders against your trench.</RMFlow_RaidersSetLadders>
+  <RMFlow_RaidersFetchFallen>Raiders of {0} are setting a ladder into your pit to fetch their fallen.</RMFlow_RaidersFetchFallen>
   <RMFlow_RaidersFillTrench>Raiders of {0} are shovelling a causeway into your trench.</RMFlow_RaidersFillTrench>
   <RMFlow_RaidersGiveUpTrench>Raiders of {0} cannot cross your pit and are pulling back.</RMFlow_RaidersGiveUpTrench>
 

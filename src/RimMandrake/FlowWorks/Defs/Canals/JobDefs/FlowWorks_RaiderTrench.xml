@@ -39,4 +39,12 @@
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
   </JobDef>
+  <!-- FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN: carry a downed comrade out of a pit (Superdeep/RM_RaiderFetchFallen.cs). -->
+  <JobDef>
+    <defName>RM_RaiderFetchFallen</defName>
+    <driverClass>RimMandrake.FlowWorks.JobDriver_RM_RaiderFetchFallen</driverClass>
+    <reportString>carrying TargetA out of a pit.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
 </Defs>

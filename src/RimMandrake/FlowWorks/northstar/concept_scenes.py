@@ -1466,10 +1466,35 @@ def _fetch_rows(S, seen):
           unmeasured=not seen['held'])
 
 
+def _watch_fetch(S, pit, held):
+    """After the ladder: run the raid on until one of the held raiders stands or lies OUT of the pit (carried up to the lip
+    by RM_RaiderFetchFallen, or climbed out by the ladder). -> (out ids, polls)."""
+    prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON
+    out, polls = set(), 0
+    try:
+        for _ in range(TRAP_POLLS):
+            S.ticks(TRAP_POLL)
+            polls += 1
+            for p in S.call('jawa/list_pawns', faction='hostile').get('pawns') or []:
+                if p.get('id') in held and not p.get('dead') and p.get('x') is not None and (p['x'], p['z']) not in pit:
+                    out.add(p['id'])
+            if out:
+                break
+    finally:
+        S.B.stop_on = prior
+    return out, polls
+
+
 def _fetch_fallen(S):
     pit = _pit_trap(S)
     seen = _watch_trap(S, pit)
     _fetch_rows(S, seen)
+    # FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN: the ladder is half the bar; the fallen must come out (carried if downed)
+    if seen['ladder'] and seen['held']:
+        out, polls = _watch_fetch(S, pit, seen['held'])
+        S.row('FETCH_fallen_brought_out', bool(out), 'held %s out %s after %d polls' % (sorted(seen['held']), sorted(out), polls))
+    else:
+        S.row('FETCH_fallen_brought_out', False, 'no ladder into the pit or nobody held, so nothing to bring out', unmeasured=True)
     return pit, seen
 
 

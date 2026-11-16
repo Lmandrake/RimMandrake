@@ -19,8 +19,8 @@ of each is a scene in northstar/concept_scenes.py, run at Stage 6.
   wetness_probe   T_WETNESS_PROBE_OFFLINE  a static_call probe reads a cell's wetting for the live scene (code absent)
   toss_flame      T_TOSS_FLAME_OFFLINE     an order: a colonist walks to the rim and tosses a flame onto the picked
                                            square                                                    (code present)
-  fetch_fallen    T_FETCH_FALLEN_OFFLINE   raiders climb into a pit to bring out a comrade held there (ladder jobs
-                                           exist for trenches; the fetch itself is absent)
+  fetch_fallen    T_FETCH_FALLEN_OFFLINE   raiders climb into a pit to bring out a comrade held there: a ladder down,
+                                           the downed carried to the lip, the fetch dropped under fire (code present)
   coating         T_LIQUID_COATING_OFFLINE a pawn out of a staining liquid carries a named condition that plain water
                                            washes off                                               (code absent)
 """
@@ -45,7 +45,8 @@ def cs_all():
 
 
 def xml_all():
-    return "\n".join(p.read_text(encoding="utf-8", errors="replace") for p in DEFS.rglob("*.xml"))
+    # the Patches folder too: fetch_fallen's duty insert lives there
+    return "\n".join(p.read_text(encoding="utf-8", errors="replace") for d in (DEFS, HERE / "Patches") for p in sorted(d.rglob("*.xml")))
 
 
 # ------------------------------------------------------------------------------------------------ the laws
@@ -120,6 +121,33 @@ def fetch_fallen(cs, xml):
         ("a raider job to fetch a comrade held in a pit", re.search(r"<defName>RM_Raider\w*(Fetch|Rescue|Carry)\w*(Fallen|Comrade|Ally)\w*</defName>", xml)),
         ("its target is a pawn of the raider's own faction held in a pit",
          _any(cs, r"(Fallen|Comrade)[\s\S]{0,600}?RM_SuperdeepTrap\.IsHeld\([\s\S]{0,300}?Faction")),
+        # RIMMANDRAKE_BUILD_FLOWWORKS_THREE_RED_OFFLINE_TESTS_NOBODY_OWED: the three laws above match loose text; these pin the
+        # behaviour in RM_RaiderFetchFallen.cs (each has an undo mutant in FETCH_MUTANTS)
+        ("the JobDef runs JobDriver_RM_RaiderFetchFallen and the code binds it",
+         re.search(r"<defName>RM_RaiderFetchFallen</defName>\s*<driverClass>RimMandrake\.FlowWorks\.JobDriver_RM_RaiderFetchFallen</driverClass>", xml)
+         and _any(cs, r"public static JobDef RM_RaiderFetchFallen;")),
+        ("the assault duty asks it before it fights",
+         re.search(r'DutyDef\[defName="AssaultColony"\]/thinkNode/subNodes/li\[@Class="JobGiver_AIFightEnemies"\]</xpath>\s*'
+                   r'<order>Prepend</order>\s*<value>\s*<li Class="RimMandrake\.FlowWorks\.JobGiver_RM_FetchFallen" />', xml)
+         and _any(cs, r"class JobGiver_RM_FetchFallen[\s\S]{0,300}?return RM_RaiderFetchFallen\.TryFetch\(pawn\);")),
+        ("fallen = his own faction, held in the pit, or downed down there",
+         _any(cs, r"static bool IsFallen\(Pawn p, Pawn c\)[\s\S]{0,500}?RM_SuperdeepTrap\.IsHeld\(c\) \|\| \(c\.Downed && RM_SuperdeepTrap\.StepDepthAt\(")
+         and _any(cs, r"static bool IsFallen\(Pawn p, Pawn c\)[\s\S]{0,300}?c\.Faction == p\.Faction")),
+        ("no way down yet: the rescuer plans a ladder line to him and sets it (carried, taken, or chopped wood)",
+         _any(cs, r"RM_RaiderTrench\.TryPlan\(p, k, fallen, [\s\S]{0,600}?RM_RaiderTrench\.LadderJob\(p, plan, k, out bool waiting\)")),
+        ("a reachable fallen is carried out of the pit to the lip",
+         _any(cs, r"p\.CanReach\(fallen, PathEndMode\.ClosestTouch, Danger\.Deadly\)[\s\S]{0,400}?CarryJob\(p, fallen")
+         and _any(cs, r"class JobDriver_RM_RaiderFetchFallen[\s\S]{0,2500}?Toils_Haul\.StartCarryThing\(TargetIndex\.A\)"
+                      r"[\s\S]{0,400}?Toils_Goto\.GotoCell\(TargetIndex\.B, PathEndMode\.OnCell\)[\s\S]{0,600}?TryDropCarriedThing\(")),
+        ("under fire they leave the fallen: a harmed raider neither starts nor keeps a fetch",
+         _any(cs, r"public static bool UnderFire\(Pawn p\)[\s\S]{0,300}?mindState\.lastHarmTick")
+         and _any(cs, r"if \(UnderFire\(p\)\)\s*\{\s*return null;")
+         and _any(cs, r"this\.FailOn\(\(\) => RM_RaiderFetchFallen\.UnderFire\(pawn\)\);")),
+        # a .cs the csproj does not list is never compiled: every law above would pass on code that is not in the DLL
+        ("the file is compiled: the csproj lists it",
+         re.search(r'<Compile Include="Superdeep\\RM_RaiderFetchFallen\.cs" />', CSPROJ.read_text(encoding="utf-8", errors="replace"))),
+        ("a setting switches it off", _any(cs, r"public static bool On => RM_RaiderTrenchSettings\.raiderFetchFallenEnabled")
+         and _any(cs, r'Scribe_Values\.Look\(ref raiderFetchFallenEnabled, "raiderFetchFallenEnabled", true\);')),
     ]
 
 
@@ -166,6 +194,20 @@ TOSS_MUTANTS = {
     "driver never tosses": (TOSS_FILE, "RM_TossFlame.Toss(pawn, ", "RM_TossFlame.CanLight(Map, "),
     "setting ignored": (TOSS_FILE, "=> RimMandrakeFlowWorksSettings.tossFlameOrderEnabled", "=> true"),
     "offered everywhere": (TOSS_FILE, "|| !RM_TossFlame.CanLight(context.map, c)", ""),
+}
+
+
+FETCH_FILE = SRC / "Superdeep" / "RM_RaiderFetchFallen.cs"
+CSPROJ = SRC / "RimMandrake_FlowWorks.csproj"
+FETCH_MUTANTS = {
+    "giver asks nothing": (FETCH_FILE, "return RM_RaiderFetchFallen.TryFetch(pawn);", "return null;"),
+    "a standing captive forgotten": (FETCH_FILE, "RM_SuperdeepTrap.IsHeld(c) || (c.Downed && RM_SuperdeepTrap.StepDepthAt(", "(c.Downed && RM_SuperdeepTrap.StepDepthAt("),
+    "any faction's fallen": (FETCH_FILE, "c.Faction == p.Faction", "c.Faction != null"),
+    "no ladder set": (FETCH_FILE, "RM_RaiderTrench.LadderJob(p, plan, k, out bool waiting)", "RM_RaiderTrench.GotoNothing(out bool waiting)"),
+    "never carried": (FETCH_FILE, "Toils_Haul.StartCarryThing(TargetIndex.A)", "Toils_General.Wait(1)"),
+    "dropped in the pit": (FETCH_FILE, "Toils_Goto.GotoCell(TargetIndex.B, PathEndMode.OnCell)", "Toils_General.Wait(1)"),
+    "brave under fire": (FETCH_FILE, "this.FailOn(() => RM_RaiderFetchFallen.UnderFire(pawn));", ""),
+    "setting ignored": (FETCH_FILE, "=> RM_RaiderTrenchSettings.raiderFetchFallenEnabled", "=> true"),
 }
 
 
@@ -220,6 +262,21 @@ def main():
             if bad == xml or not [w for w, ok in toss_flame(cs, bad) if not ok]:
                 faults.append("toss_flame mutant wrong driver stayed green (blind law)")
             print("  %d undo mutants checked" % (len(TOSS_MUTANTS) + 1))
+        if name == "fetch_fallen" and not [f for f in faults if f.startswith("fetch_fallen:")]:
+            for m, (p, old, new) in FETCH_MUTANTS.items():
+                if old not in cs[p]:
+                    faults.append("fetch_fallen mutant %r: its text is not in the source (the law moved)" % m)
+                    continue
+                if not [w for w, ok in fetch_fallen({**cs, p: cs[p].replace(old, new)}, xml) if not ok]:
+                    faults.append("fetch_fallen mutant %r stayed green (blind law)" % m)
+            for m, (old, new) in (("wrong driver", ("<driverClass>RimMandrake.FlowWorks.JobDriver_RM_RaiderFetchFallen</driverClass>",
+                                                    "<driverClass>JobDriver_Wait</driverClass>")),
+                                  ("asked after the fight", ("<order>Prepend</order>\n    <value>\n      <li Class=\"RimMandrake.FlowWorks.JobGiver_RM_FetchFallen\"",
+                                                             "<order>Append</order>\n    <value>\n      <li Class=\"RimMandrake.FlowWorks.JobGiver_RM_FetchFallen\""))):
+                bad = xml.replace(old, new)
+                if bad == xml or not [w for w, ok in fetch_fallen(cs, bad) if not ok]:
+                    faults.append("fetch_fallen mutant %s stayed green (blind law)" % m)
+            print("  %d undo mutants checked" % (len(FETCH_MUTANTS) + 2))
         if name == "coating" and not [f for f in faults if f.startswith("coating:")]:
             for m, (p, old, new) in COAT_MUTANTS.items():
                 if old not in cs[p]:

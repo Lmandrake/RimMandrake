@@ -247,6 +247,7 @@
     <Compile Include="Superdeep\JobDriver_RM_SoakInGeyserPool.cs" />
     <Compile Include="Superdeep\RM_WallClimb.cs" />
     <Compile Include="Superdeep\RM_RaiderTrenchMath.cs" />
+    <Compile Include="Superdeep\RM_RaiderFetchFallen.cs" />
     <Compile Include="Superdeep\RM_RaiderTrench.cs" />
     <Compile Include="Superdeep\RM_Spikes.cs" />
     <Compile Include="Superdeep\RM_UnderLiquid.cs" />
