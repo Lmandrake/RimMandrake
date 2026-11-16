@@ -1042,7 +1042,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "ullai_and_giant",
-   "observes": "live body size 6 and the giant draw sizes, the beast more than three times the ullai's 1.8",
+   "observes": "live body size 9 (twice RSW_Zeer's 4.5, his card 2026-11-15) and the giant draw sizes (3.3, 5.2, 7.5), the beast more than three times the ullai's 1.8",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"

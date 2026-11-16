@@ -355,5 +355,17 @@ so the Conductor takes it. These are Conductor decisions, not his.
 - Fixed: RIMMANDRAKE_REFUSE_EXIT_ON_OWED_SCENE_PARTS_STALE_FLAG. The clause now counts a bar as not runnable while a
   deciding scene owes parts to an open item; `maturation.py next Pyrelands` reads 28 of 42 bars not runnable and names
   both items. The Dispatch tick's builder works them; then the advance.
-- Also owed before the blind challenge reads a settled tree: the round-8 coverage look released 2026-11-16T00:11:33Z
-  (after the furnace-beast fix, 6120bb02aa) has not run yet.
+- The round-8 coverage look (released 2026-11-16T00:11:33Z after the furnace-beast fix, 6120bb02aa) ran and signed
+  covered with 0 gaps at 00:52Z (rm-coverage-judge-1794790345).
+
+## 2026-11-15 — his answer on the giant (the furnace-beast size bar): settled, do not ask again
+
+- Card, answered 3:53 PM PST: "How should the giant be made the giant?" → "Keep 'twice', raise body to 9+". The picked
+  option's own words: "overturns your ruled body size of 6, changes its health, meat and combat balance, needs bigger
+  art, and breaks again if a larger animal is ever patched in." The bar stays as written.
+- Size: body 9, twice RSW_Zeer's 4.5 (decision `d_furnace_body_nine` in record.json; built by
+  RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE, 6120bb02aa). Art: redrawn bigger by
+  RIMMANDRAKE_REDRAW_FURNACE_BEAST_BIGGER_ART_CARD_PROMISED_IT (99507bc992; in git, not deployed; the revert is in
+  infrastructure/state/art_eval/fauna_installs.jsonl).
+- He was asked it twice more after answering (6:11 and 6:42 PM PST, from a stale incident plan); the guard is
+  RIMMANDRAKE_STOP_ANSWERED_ASKS_RERAISED_THIRD_TIME_TO_HIM.

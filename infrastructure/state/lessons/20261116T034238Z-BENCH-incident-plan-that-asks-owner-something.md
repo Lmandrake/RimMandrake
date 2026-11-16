@@ -1,0 +1,1 @@
+An incident plan that asks the owner something goes stale the moment he answers, and nothing re-acks it: the next window reads the old plan from 'rimflow incidents' and asks him again (Pyrelands giant, 2026-11-15, raised twice after his card). incident.answered_since now flags it at read time; when you act on his answer, re-ack every incident whose plan asked it.

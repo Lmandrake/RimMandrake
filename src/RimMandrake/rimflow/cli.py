@@ -1835,8 +1835,28 @@ def cmd_ack(args, seat):
           % (args.id, seat, row["recover_by"]))
 
 
+def _answered(incident, inc):
+    """-> (hit or None, why it did not run or None). RIMMANDRAKE_STOP_ANSWERED_ASKS_RERAISED_THIRD_TIME_TO_HIM."""
+    try:
+        cards, evs = incident.load_answers()
+    except (OSError, ValueError, RuntimeError) as e:
+        return None, "%s: %s" % (type(e).__name__, e)
+    return incident.answered_since(inc, cards, evs), None
+
+
 def cmd_incident_line(args, seat):
     import incident
+    inc = incident.fold(incident.read_rows() or [])[0].get(args.id)
+    if inc:
+        hit, blind = _answered(incident, inc)
+        if blind:
+            print("answered-ask check did not run (%s); the line goes through" % blind)
+        elif hit and not (args.not_the_same_ask or "").strip():
+            die("refused: %s's plan asks him something he answered after it was written, by %s at %s: \"%s\" "
+                "(shared words: %s). A line written on it raises an answered question again.\n"
+                "  would pass: a plan written after his answer (rimflow ack %s --plan \"<what stands now>\"), then the line;\n"
+                "  or, if this line is about something else: --not-the-same-ask \"<why>\"\n"
+                % (args.id, hit["by"], hit["at"], hit["what"], ", ".join(hit["shared"]), args.id))
     try:
         incident.write_line(args.id, seat, args.line)
     except ValueError as e:
@@ -1847,12 +1867,20 @@ def cmd_incident_line(args, seat):
 def cmd_incidents(args, seat):
     import incident
     incs = incident.fold(incident.read_rows() or [])[0]
+    try:
+        answers, blind = incident.load_answers(), None
+    except (OSError, ValueError, RuntimeError) as e:
+        answers, blind = None, "%s: %s" % (type(e).__name__, e)
+        print("answered-ask check did not run (%s): a plan below may ask him something he has already answered" % blind)
     for x in sorted(incs.values(), key=lambda a: a["told_t"]):
         if args.all or x.get("state") == "open":
             print("%s  %s %s rung %s reader %s told %s ack_due %s recover_by %s by %s plan %s%s  %s" % (
                 x["id"], x.get("state"), x.get("class"), x.get("rung"), x.get("reader"), x.get("told_at"), x.get("ack_due"),
                 x.get("recover_by"), x.get("ack_by"), x.get("plan"),
                 " news %s" % "; ".join(x["news"]) if x.get("news") else "", ", ".join(sorted(x.get("metrics") or {}))))
+            hit = answers and x.get("state") == "open" and incident.answered_since(x, *answers)
+            if hit:
+                print("    " + incident.answered_line(x, hit))
 
 
 def prooflint(iid, it=None, root=None, rules_path=None):
@@ -4394,6 +4422,7 @@ def build_parser():
     s = add("incident-line", "write the line he sees first; not an ack", cmd_incident_line)
     s.add_argument("id")
     s.add_argument("line")
+    s.add_argument("--not-the-same-ask", metavar="WHY", help="the plan's answered ask is not what this line is about")
 
     s = add("incidents", "the told ledger's open incidents", cmd_incidents)
     s.add_argument("--all", action="store_true")

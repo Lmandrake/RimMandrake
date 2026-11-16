@@ -165,6 +165,21 @@ item and no code.
 - **Tickets:** `RIMMANDRAKE_REFUSE_MISSING_TOOL_SCENES_GRAFFITI_READS_READY`,
   `RIMMANDRAKE_DRYRUN_SCENES_ON_EMPTY_GAME_THREE_PASSED`.
 
+### 3.5 Answered ask (BUILT, `RIMMANDRAKE_STOP_ANSWERED_ASKS_RERAISED_THIRD_TIME_TO_HIM`)
+
+- **Protects against:** an incident plan that asks him something being read, after he answered it, as still open.
+- **Evidence:** the plan of `refusals-20261115061558` (22:42Z) asked him the Pyrelands giant question; he answered by
+  card at 23:52:53Z and the work was built, but nobody re-acked the plan. A fresh Conductor window read it from
+  `rimflow incidents` at 6:11 PM PST and raised it to him at 6:11 and 6:42 PM (owner: *"This is the third time this has
+  come to me."*). Cost: his attention twice, plus the Conductor's turns on it `[measured]`; dollars UNMEASURED.
+- **Guard:** at read time, zero tokens. A plan that asks him (`card`, `him`, `his`, `owner`) is checked against the cards he
+  answered and his `--owner-said` words after the plan's ack: 7+ shared subject words mean the plan is stale.
+  `rimflow incidents` prints `⛔ ANSWERED after this plan` under it, and `rimflow incident-line` refuses a line on it
+  (path to pass: re-ack with a current plan, or `--not-the-same-ask "<why>"`). A torn card store means "did not run"
+  and lets the work through. Threshold measured over every acked plan in `told.jsonl` against every card answered
+  within a day after it: all 7+ pairs were real answers. Backtest on the ledger as it stood at 6:10 PM PST: one flag,
+  this case. Test: `src/RimMandrake/rimflow/selftest_answered_asks.py`; code: `incident.answered_since`.
+
 ## 4. The pre-judgement certificate
 
 His question, answered as a program. No blind judge and no in-game driver is launched on a mod until

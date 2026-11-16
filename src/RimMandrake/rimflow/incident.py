@@ -32,10 +32,12 @@ The Dispatcher tick runs step() in decide (pure) and execute() in its execute pa
     climbs its ladder: the Conductor's quick run and his line still come.
 incidents.json is the snapshot stamped every tick: pulse reads its `owner` rows, the deadman reads its age.
 """
+import calendar
 import fnmatch
 import json
 import os
 import re
+import sys
 import time
 try:                                    # whole text, never a silent cut (RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS)
     from . import fulltext
@@ -682,3 +684,106 @@ def receiver_problem(seat, needs, sch=None, table=None, relentless=None):
                 % (seat, needs, relentless.get("pool_seats"), relentless.get("pool_needs"),
                    "" if relentless.get("enabled") else " (relentless is off)", seat, ROUTES))
     return reader_problem(seat, sch, table)
+
+
+# ------------------------------------------------------------------ an ask he has since answered
+# RIMMANDRAKE_STOP_ANSWERED_ASKS_RERAISED_THIRD_TIME_TO_HIM (2026-11-15): the plan of refusals-20261115061558 (acked
+# 22:42Z) brought "the Pyrelands giant criterion" to him by card; he answered at 23:52:53Z and the work was built, but no
+# one re-acked the plan, and a fresh Conductor window read it from `rimflow incidents` and raised it to him twice more
+# ("This is the third time this has come to me."). So a plan that asks him something is checked, at read time, against
+# the cards he answered and his --owner-said words AFTER the plan was written: enough shared subject words -> the plan is
+# stale, `rimflow incidents` says so under it and `rimflow incident-line` refuses a line on it. Re-acking with a current
+# plan clears it. The threshold is measured: over every acked plan in told.jsonl x every card answered within a day after
+# it (2026-11-15), each pair sharing 7+ words was a genuine answer to that plan (the giant case shares 9); pairs at 6
+# or fewer were mixed or unrelated.
+ASK_RE = re.compile(r"\b(card|cards|him|his|owner|owner's)\b(?!-)", re.I)   # "owner-passed" asks nothing
+ANSWER_MIN_SHARED = 7
+ANSWER_STOP = frozenset("""that this with from what when where which while their there them they then than have been
+were will would could should into onto over under only also each every other more most some such none nothing next plan
+measured owner owners card cards conductor operations reads read reading item items run runs rows row alarm alarms closes
+close closed open opened today just still about after before since until does done here your yours mandrake answer
+answers answered asked question questions option options picked recommended because same once rimmandrake rimmaster""".split())
+
+
+def subject_words(text):
+    s = (text or "").lower().replace("'", "").replace("’", "")
+    return {w for w in re.split(r"[^a-z0-9]+", s) if len(w) >= 4 and w not in ANSWER_STOP and not w.isdigit()}
+
+
+def _epoch(ts):
+    try:
+        return calendar.timegm(time.strptime(str(ts)[:19], "%Y-%m-%dT%H:%M:%S"))
+    except ValueError:
+        return None
+
+
+def _flat(text):
+    return " ".join(re.split(r"[^a-z0-9]+", (text or "").lower().replace("'", "").replace("’", ""))).strip()
+
+
+def answered_since(inc, cards, owner_events, min_shared=ANSWER_MIN_SHARED):
+    """-> the latest answer he gave AFTER this incident's plan on the plan's subject, or None:
+    {"by": "card"|"owner-said", "at", "what", "shared": [...]}. Only a plan that asks him (ASK_RE) is checked."""
+    plan = inc.get("plan") or ""
+    t0 = inc.get("acked_t") or inc.get("told_t")
+    if not plan or t0 is None or not ASK_RE.search(plan):
+        return None
+    pw, best, quoted = subject_words(plan), None, _flat(plan)
+    for card in cards or ():
+        t = _epoch(card.get("answered"))
+        if t is None or t <= t0:
+            continue
+        for q in card.get("questions") or ():
+            text = " ".join([q.get("question") or "", q.get("answer") or "", q.get("his_words") or ""]
+                            + [p.get("description") or "" for p in q.get("picked") or ()])
+            shared = pw & subject_words(text)
+            if _flat(q.get("answer")) and _flat(q.get("answer")) in quoted:     # the plan already carries his pick
+                continue
+            if len(shared) >= min_shared and (best is None or t > best[0]):
+                best = (t, {"by": "card", "at": card.get("answered"), "shared": sorted(shared),
+                            "what": "%s → %s" % (" ".join((q.get("question") or "").split()), q.get("answer") or "")})
+    for ev in owner_events or ():
+        t = _epoch(ev.get("ts"))
+        said = ev.get("ownerSaid") or ""
+        if t is None or t <= t0 or not said or _flat(said) in quoted:      # a plan quoting his words knew them
+            continue
+        shared = pw & subject_words(said + " " + (ev.get("id") or ""))   # his words, never our title (live false hit, 03:29Z)
+        if len(shared) >= min_shared and (best is None or t > best[0]):
+            best = (t, {"by": "owner-said", "at": ev.get("ts"), "shared": sorted(shared),
+                        "what": "%s (on %s)" % (said, ev.get("id"))})
+    return best[1] if best else None
+
+
+def owner_events_path():
+    env = os.environ.get("RM_OWNER_EVENTS")
+    if env:
+        return env
+    return os.path.join(HERE, "..", "..", "..", "infrastructure", "state", "ledger", "events", "OWNER.jsonl")
+
+
+def load_answers():
+    """-> (cards, owner events with his words). Raises OSError/ValueError when a store cannot be read whole: a torn
+    store may be missing the very card, so the check says it did not run rather than reading 'unanswered'."""
+    sys.path.insert(0, HERE)
+    import card_capture
+    cards, evs = [], []
+    try:
+        f = open(card_capture.store_path(), encoding="utf-8")
+    except FileNotFoundError:
+        f = None
+    if f is not None:
+        with f:
+            cards = [json.loads(x) for x in f if x.strip()]
+    try:
+        with open(owner_events_path(), encoding="utf-8") as f:
+            for x in f:
+                if '"ownerSaid"' in x:
+                    evs.append(json.loads(x))
+    except FileNotFoundError:
+        pass
+    return cards, evs
+
+
+def answered_line(inc, hit):
+    return ("⛔ ANSWERED after this plan: by %s at %s: \"%s\". Do not raise this to him again; re-read what was done and "
+            "re-ack with a current plan: rimflow ack %s --plan \"...\"" % (hit["by"], hit["at"], hit["what"], inc["id"]))
