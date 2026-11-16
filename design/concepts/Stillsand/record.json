@@ -2195,8 +2195,13 @@
     {
       "id": "s_wetting",
       "speaker": "owner",
-      "source": "OWNER:1793794389686592719",
-      "text": "Ground wetting and flood water are distinct. FlowWorks and Stillsand should share the ground-wetting technique; plants have access to that water and explosive growth consumes wetting until replenished."
+      "source": [
+        "OWNER:1793794389686592719",
+        "OWNER:1794686643633612968",
+        "OWNER:1794721673433243094",
+        "OWNER:1794790758150606113"
+      ],
+      "text": "Historical November 4 purpose: FlowWorks and Stillsand share consumable plant-accessible wetting. Later OWNER:1794686643633612968 replaces all game wetness with thin film and points to the next version; OWNER:1794721673433243094 explicitly defers FlowWorks wetting to 0.2.0. Stillsand version disposition must be reconciled at stage 2 before this historical purpose becomes a current integration bar."
     },
     {
       "id": "s_fortunes_lead",
@@ -2221,6 +2226,12 @@
       "speaker": "agent",
       "source": "src/RimMandrake/rimflow/roles/designer.md",
       "text": "Stage 2 reconciles design scope from existing evidence and records finite observation obligations. All DLC assumed. The existing-code live walk remains proposed. BENCH performs no game/bridge/deployment mutation and the launcher owns stage advancement."
+    },
+    {
+      "id": "s_thin_film_authority",
+      "speaker": "owner",
+      "source": "OWNER:1794686643633612968",
+      "text": "All game wetness migrates to a thin film. Drained natural water reveals wet mud that dries; some terrains vary wet/dry while Tile and Cement do not change. The owner places this probably in the next version of the relevant mods. This does not authorise removal of current Stillsand pour/wet-line features."
     }
   ],
   "decisions": [
@@ -2336,6 +2347,19 @@
         "design/concepts/Stillsand/stage2_edges.md"
       ],
       "text": "Fresh reviewer /root/edge_review passed authority reconciliation, corrected one overbroad body-size phrase and passed the revised E1-E8 artifacts. The prospective extra owner question was struck as redundant. Original September card transcript is unrecovered. All pictures and future acceptance observations remain unrun."
+    },
+    {
+      "id": "d_stage3_return_evidence",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794686643633612968",
+        "OWNER:1794721673433243094",
+        "OWNER:1794790758150606113",
+        "infrastructure/state/items/RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE.md",
+        "infrastructure/state/items/RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT.md",
+        "design/concepts/Stillsand/stage3_scope_return.md"
+      ],
+      "text": "Return to stage 2 before writing the final package: E7 and c_wetting omitted the later all-game thin-film ruling and explicit FlowWorks version deferral. stage3_scope_return.md proposes a current built-water/later film-integration split and an evidence-derived flagship candidate. These are proposals for reconciliation, not adopted stage-3 scope changes or an authenticated flagship pick. No owner ask is proposed or sent."
     }
   ],
   "asks": [
@@ -2413,18 +2437,21 @@
       "source": [
         "OWNER:1793794389686592719",
         "src/RimMandrake/ExplosiveGrowth/Source/RM_WetSources.cs",
-        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:276"
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:276",
+        "OWNER:1794686643633612968",
+        "OWNER:1794721673433243094",
+        "OWNER:1794790758150606113"
       ],
       "speaker": "agent",
-      "text": "Stillsand wetUntil and direct plant spawning are present; no consumption/delegation to shared growth wetting was found in Pour/MarkWet. FlowWorks spill code names ExplosiveGrowth spillFilth. The named shared-wetting promise needs interface/units/lifetime/consumption proof before claiming harmony.",
-      "status": "decided_integration_unproven",
+      "text": "Current Stillsand wetUntil and direct hourbloom spawning do not establish shared consumable growth wetting. Later all-game thin-film authority supersedes a new separate-state integration prescription; the current-versus-later version disposition must be reconciled before acceptance is drafted.",
+      "status": "historical_purpose_version_reconciliation_pending",
       "related": [
         "pour",
         "wet_line"
       ],
       "core": true,
       "resolved": true,
-      "resolution": "The OWNER event decides shared consumable wetting. Stillsand stores its own wetUntil and directly sows plants; ExplosiveGrowth RM_WetSources exposes a source/Consume seam, while FlowWorks spill uses a different wet source. No Stillsand WetSand registration/consumer was found in the bounded source search. Integration must be implemented/proven using the shared service, not reopened as preference."
+      "resolution": "The November 4 shared-consumption purpose is recorded. Its stage-2 implementation/proof disposition is incomplete because the November 14 all-game thin-film ruling and November 15 FlowWorks deferral were omitted. See c_wetting_version. No present shared integration is claimed."
     },
     {
       "id": "c_decay",
@@ -2488,6 +2515,32 @@
       "resolution": "Exclude hydration/water-content prey ranking and retention of the rejected water-appraisal fallback. Independent physical prey-size suitability and existing eligibility criteria remain technical choices. Preserve incident, warning, hunting, mirror beam, take, signs, living-body eligibility, droid immunity and vibration/moisture draws. Broad leviathan scope stays not_opened. Original proposal, historical by-card BENCH note and cast ruling establish scope without inventing an OWNER tsn.",
       "evidence_search": "Read original turn3 row 2, historical BENCH notes 663/665/666/680, cast ruling, event specification and current selection code. git show 0763d6e311 shows both conflicting documents originated together. Bounded OWNER/BENCH/FOUNDRY ledger search found no later water-ranking reversal. Original September card transcript was not recovered.",
       "resolved_in_run": "rm-role-designercodex-1794808321"
+    },
+    {
+      "id": "c_wetting_version",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794686643633612968",
+        "OWNER:1794721673433243094",
+        "OWNER:1794790758150606113",
+        "infrastructure/state/items/RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE.md",
+        "infrastructure/state/items/RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT.md",
+        "design/concepts/Stillsand/stage3_scope_return.md"
+      ],
+      "text": "Stage-2 E7 and c_wetting commission current shared agricultural wetting without accounting for later thin-film representation and next-version direction. The FlowWorks 0.2.0 card is not itself a Stillsand version decision. Reconcile the Stillsand boundary explicitly using existing authority and preserve every built water capability.",
+      "status": "return_to_stage2",
+      "core": true,
+      "resolved": false,
+      "related": [
+        "pour",
+        "wet_line",
+        "hourbloom",
+        "thumper",
+        "solar_still",
+        "ledger",
+        "return_ritual"
+      ],
+      "on": "ITEM:RIMMANDRAKE_DESIGN_SPILLED_WATER_WET_GROUND_ONE_STATE"
     }
   ],
   "grounding": {
@@ -3375,5 +3428,19 @@
         "c_appraisal"
       ]
     }
-  ]
+  ],
+  "write_return": {
+    "run": "rm-role-designercodex-1794822084",
+    "stage": 3,
+    "source": "design/concepts/Stillsand/stage3_scope_return.md",
+    "reason": "Later authority changes E7 representation/version obligations; flagship pick is also unrecorded.",
+    "missing_decisions": [
+      "d_water_version_disposition",
+      "d_flagship_pick"
+    ],
+    "owner_questions_sent": 0,
+    "proposal_status": "not_adopted",
+    "retained_scope": "All present inventory capabilities retain their impl/proof/scope fields. Exact root and E1-E8 argument files are preserved as historical input.",
+    "next": "Stage 2 reconciles the version boundary and records a flagship pick through existing Evidence-for-Ask authority before the final stage-3 package is written."
+  }
 }

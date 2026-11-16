@@ -50,3 +50,11 @@ Review also recovered the ordinary giant no-rot/species-history promise, recorde
 No owner question was proposed or sent. No waiver, enjoyment verdict, first-touch certification, flagship decision or current runtime proof is inferred. Source/proof gaps remain explicit for stage 3. The delegated reconciliation event is recorded below.
 
 Delegated resolution CONDUCTOR:1794809023340457492 records this scope reconciliation under the standing Evidence-for-Ask ruling. Its text is Conductor authority, with agent reasoning in the event why field. Original owner choices and historical path-only selections retain their own provenance.
+
+## Stage 3 return, run rm-role-designercodex-1794822084
+
+Stage-3 source reading recovered later OWNER:1794686643633612968 (all-game wetness migrates to thin film, probably next version in relevant mods), OWNER:1794721673433243094 and full-card backfill OWNER:1794790758150606113 (FlowWorks wetting explicitly moves to 0.2.0). These were not reconciled in stage-2 E7/c_wetting. The FlowWorks version card is not a Stillsand removal or version decision. Existing Stillsand pour/wet-line/bloom/attraction/accounting capabilities remain inventoried unchanged.
+
+The concrete version proposal, current/later water scene contracts, root-led flagship candidate and exact stage-2 decisions needed are in stage3_scope_return.md. The proposed boundary keeps built current water and moves shared agricultural integration into the later thin-film design, subject to explicit stage-2 reconciliation. expedition_harbour_fortune is a proposed delegated flagship derived from the three owner answers; it is not recorded as an owner pick. No new owner question is drafted or sent. Existing live walk remains offered; no scene was opened. No final tree/sheet/package, runtime proof, waiver or owner enjoyment verdict is claimed.
+
+The run returns to stage 2 through result.json. It does not advance or edit stage.json, request waiting_owner, take the bridge, restart or deploy.

@@ -1,0 +1,19 @@
+{
+  "run": "rm-role-designercodex-1794822084",
+  "stage": 3,
+  "outcome": "return",
+  "to": 2,
+  "decision": "Reconcile Stillsand E7/c_wetting current-versus-later scope with OWNER:1794686643633612968 (all wetness becomes thin film; probably next version) and OWNER:1794721673433243094 / OWNER:1794790758150606113 (FlowWorks wetting moves to 0.2.0), preserving all built water features and avoiding an unauthorised Stillsand version inference. Record the missing flagship pick; expedition_harbour_fortune is proposed from existing root/answers for an Evidence-for-Ask delegated call. No human question is proposed.",
+  "summary": "Found later water authority omitted by the adopted edge claim before freezing stage 3. Wrote stage3_scope_return.md with exact evidence, a concrete current-water/later-film proposal, discriminating water scene contracts, a root-led flagship candidate and remaining drafting obligations. Updated record/log; all inventory impl/proof/scope fields remain intact. Final package intentionally awaits stage-2 reconciliation. No bridge, restart, deploy or live scene.",
+  "quick_look": {
+    "offer": true,
+    "settles": [
+      "walk_existing_first",
+      "E1",
+      "E2",
+      "E3",
+      "existing_water_behaviour"
+    ],
+    "scene": "Existing-code proposal only: a disposable composed-tier Stillsand harbour/cave/fortune walk and actual current pour/wet-line behaviour. Prepare complete recovery first. This can show the existing experience; it cannot decide version scope or prove a missing thin-film integration."
+  }
+}
