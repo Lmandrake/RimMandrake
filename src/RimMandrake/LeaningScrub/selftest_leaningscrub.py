@@ -12,6 +12,7 @@ shapes -- those are UNPROVEN until the first live run.
     python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub.py
 """
 import copy
+import math
 import random
 import importlib.util
 import os
@@ -38,6 +39,16 @@ V.EVIDENCE_HOOK = "RimMandrake.RimProperty.FakeEvidenceProof.ProofArm"   # sc_ma
 V.RAID_WEIGHT_HOOK = "RimMandrake.LeaningScrub.FakeRaidWeight.ChanceFactorNow"   # sc_raid_weight's reader (fake type)
 V.CAPACITY_HOOK = "RimMandrake.LeaningScrub.FakeCapacity.Level"      # sc_gale_exposure's live reader (fake)
 V.HOLLOW_CRAWL_JOB = "RM_FakeHollowCrawl"           # sc_hollow's crawl job as the spec designs it (fake)
+V.WIND_TILES = (21, 22)                            # sc_wind_plain's two fixture tiles (TILE_GEO: either side of lon 0)
+V.WIND_HOOK = "RimMandrake.LeaningScrub.FakeWind.Speed"        # sc_wind_plain's live wind reader (fake type)
+V.ISLAND_TILES = (31, 32, 33)                      # sc_island_land's three fixture tiles
+V.ISLAND_START_HOOK = "RimMandrake.LeaningScrub.FakeIslandStart.Start"   # sc_island_land's start reader (fake)
+FAKE_WIND = {"RM_ScrubWind": (1.0, 0.5), "RM_ScrubWindFog": (1.0, 0.4), "RM_ScrubOvercast": (1.0, 0.5),
+             "RM_ScrubGrayPall": (1.0, 0.4), "RM_ScrubDryThunderstorm": (1.5, 1.25), "RM_Stall": (0.0, 0.0),
+             "RM_Gale": (1.5, 1.5)}       # the loaded (factor, offset) of the seven, as RM_LeaningScrub_*.xml ship them
+TILE_GEO = {21: (12.0, 35.0), 22: (-20.0, -50.0)}  # (latitude, longitude); every other map reads HOME_GEO
+HOME_GEO = (5.0, 20.0)
+ISLAND_START = (125, 125)
 
 from suite import TestContext                     # noqa: E402
 
@@ -158,6 +169,7 @@ class Fake(object):
             self.creep_tick(self.ticks - d, self.ticks)
             self.chunk(d)
             self.ripple_pass()
+            self.lure_pass(d)
             self.fire_pass()
             self.route_pass()
             self.viper_pass()
@@ -213,6 +225,8 @@ class Fake(object):
             if p["kind"] == "RM_Dustflutter" and (p.get("mob") or p.get("goto")):
                 continue      # on the crown mob's Goto, settled at the stand, or on an ordered walk: keeps its job
             if p.get("job") == "Ingest":     # the scenes: a hungry animal walking to its meal does not wander
+                continue
+            if p.get("hold"):                # an ordered wait or walk holds its own job (the lee scene)
                 continue
             p["job"] = "Wait_Wander" if frozen else "GotoWander"
             walled = any(inrect(p["x"], p["z"], r) for r in self.rooms)
@@ -416,6 +430,14 @@ class Fake(object):
                     "baseWeatherCommonalities": table, "animalDensity": 1.8, "wildPlants": plants,
                     "wildAnimals": [{"animal": "RM_Surrik", "commonality": 1.0}, {"animal": "RM_Ribbonwhip", "commonality": 0.5}],
                     "modExtensions": ext}}]}
+        if want and sorted(w.split("/", 1)[1] for w in want) == sorted(V.WIND_WEATHERS):
+            rows = dict(FAKE_WIND)
+            if "stall_blows" in self.broken:
+                rows["RM_Stall"] = (0.0, 0.3)
+            if "lean_toggle_moves_weather" in self.broken and self.settings.get("leanPlantsEnabled") == "False":
+                rows["RM_ScrubWind"] = (1.0, 0.2)
+            return {"success": True, "foundCount": 7, "notFound": [], "defs": [
+                {"defName": n, "fields": {"windSpeedFactor": f, "windSpeedOffset": o}} for n, (f, o) in sorted(rows.items())]}
         if want and all(w.startswith("WeatherDef/RM_Scrub") for w in want):
             rows = []
             for w in want:
@@ -424,8 +446,11 @@ class Fake(object):
                 rows.append({"defName": n, "fields": {"windSpeedOffset": off, "windSpeedFactor": 1.0}})
             return {"success": True, "foundCount": len(rows), "notFound": [], "defs": rows}
         if want == ["BiomeDef/%s" % V.CAST_CONTROL_BIOME]:
+            wt = [{"weather": "Clear", "commonality": 18}, {"weather": "DryThunderstorm", "commonality": 1}]
+            if "twins_global" in self.broken:
+                wt.append({"weather": "RM_ScrubOvercast", "commonality": 2})
             return {"success": True, "foundCount": 1, "notFound": [], "defs": [{"defName": V.CAST_CONTROL_BIOME, "fields": {
-                "wildPlants": [{"plant": "Plant_Grass", "commonality": 1.0}]}}]}
+                "wildPlants": [{"plant": "Plant_Grass", "commonality": 1.0}], "baseWeatherCommonalities": wt}}]}
         if fields == "label" and want and all(w in V._pyre_shipped() for w in want):
             gone = {"pyre_def_discarded": "RM_CallingPyre_LastRite", "pyre_ritual_discarded": "RM_Ritual_CallingPyre"}
             drop = set(n for b, n in gone.items() if b in self.broken)
@@ -598,10 +623,15 @@ class Fake(object):
             {"id": p["id"], "job": V.HOLLOW_CRAWL_JOB if p.get("in_hollow") and "no_crawl_job" not in self.broken else
              "Flee" if self.ticks < p.get("flee_until", 0) else
              ("Goto" if p.get("goto") and self.ticks < p.get("moving_until", 0) and p["kind"] == "Colonist"
-              and "order_ignored" not in self.broken else p.get("job", "Wait_Wander"))}
+              and "order_ignored" not in self.broken else
+              "Goto" if p.get("hold") and p.get("goto") and self.ticks < p.get("moving_until", 0) else
+              p.get("job", "Wait_Wander"))}
             for p in self.pawns.values()]}
 
     def t_list_things(self, defName=None, rect=None, limit=1, **k):
+        if self.cur_map in self.gen_maps and "," in str(defName):
+            rows = [dict(r, id="I%d" % i) for i, r in enumerate(self.island_cells()) if r["def"] in defName.split(",")]
+            return {"success": True, "countMatched": len(rows), "isCompleteList": True, "things": rows}
         if self.cur_map in self.gen_maps:
             return {"success": True, "countMatched": self.gen_census(defName), "things": []}
         rr = V_rect(rect) if rect else None
@@ -618,6 +648,13 @@ class Fake(object):
             off = {"Hearing": 0.5, "Talking": 0.35}[cap]
             deaf = "RM_GaleDeafened" in self.pawns[pid]["hediffs"] and "deafen_live_untouched" not in self.broken
             return {"success": True, "result": "%.2f" % (1.0 - off if deaf else 1.0)}
+        if type == "RimMandrake.LeaningScrub.FakeWind":           # WindManager.WindSpeed after the transition, raw 0.5
+            f, o = FAKE_WIND.get(self.weather, (1.0, 0.0))
+            if "live_stall_blows" in self.broken and self.weather == "RM_Stall":
+                o = 0.4
+            return {"success": True, "result": "%.3f" % (0.5 * f + o)}
+        if type == "RimMandrake.LeaningScrub.FakeIslandStart":     # the start the island step used
+            return {"success": True, "result": "(%d, 0, %d)" % ISLAND_START}
         if type == "RimMandrake.LeaningScrub.FakeRaidWeight":     # ChanceFactorNow after the postfix, as shipped
             d, b = args.split("|")[0], self.broken
             raid = d == "RaidEnemy" or "raid_weights_all" in b
@@ -649,6 +686,13 @@ class Fake(object):
                                                      "FAIL: a six-fire blaze sent no stamper toward it")}
             return {"success": True, "result": ("FAIL: fireStampEnabled off but the herd answered" if on
                                                  else "PASS off sent=0 stamped=0")}
+        if method == "CountOpen":
+            return {"success": True, "result": "4000"}
+        if method == "ProofLean" and self.cur_map in self.gen_maps and args == "on":
+            west = math.cos(math.radians(self.heading())) < -V.LEAN_TIE_X
+            if "lean_wrong_side" in self.broken:
+                west = not west
+            return {"success": True, "result": "PASS east=%d west=%d windWest=%s" % (0 if west else 40, 40 if west else 0, west)}
         if method == "ProofLean":
             if args == "off":
                 return {"success": True, "result": "FAIL faced with the toggle off east=0 west=40" if "lean_ignores_toggle" in self.broken
@@ -994,7 +1038,10 @@ class Fake(object):
             return {"success": True, "values": {"Applies": "True", "openCells": str(self.OPEN_CELLS),
                                                 "vineCells": str(len(self.of(V.THICKET)))}}
         if comp == "RM_MapComponent_Lean":
-            return {"success": True, "values": {"Downwind": "(1.00, 0.00)"}}
+            if self.cur_map in self.gen_maps:
+                return {"success": True, "values": {"HeadingDegrees": "%.4f" % self.heading(), "SunBearingDegrees":
+                                                    "%.4f" % ((90.0 - self.heading()) % 360.0)}}
+            return {"success": True, "values": {"Downwind": "(1.00, 0.00)", "HeadingDegrees": "0.0000"}}
         n = len([p for p in self.pawns.values() if self.ticks < p.get("sway_until", 0)])
         return {"success": True, "values": {"swaying": "Count=%d" % n}}
 
@@ -1025,8 +1072,9 @@ class Fake(object):
                 not p.get("mental") or "ripple_hides_mental" in b)
             cover = (p["x"], p["z"]) in fuzz or "ripple_bare_hides" in b
             moving = self.ticks < p.get("moving_until", 0) and "ripple_stall_move_hidden" not in b
+            still = self.weather == "RM_Stall" or (cover and self.lee(p))
             hide = (on and wild and not p["dead"] and cover and BODY.get(p["kind"], 1.0) <= limit
-                    and not (self.weather == "RM_Stall" and moving))
+                    and not (still and moving))
             hs = p["hediffs"]
             if hide and "RM_RippleHidden" not in hs:
                 hs.append("RM_RippleHidden")
@@ -1034,11 +1082,91 @@ class Fake(object):
                 hs.remove("RM_RippleHidden")
 
     def t_map_info(self, **k):
-        return {"success": True, "mapId": self.cur_map}
+        lat, lon = self.geo()
+        return {"success": True, "mapId": self.cur_map, "latitude": lat, "longitude": lon}
+
+    # ------------------------------------------------------------ batch 7: wind plain, lee, islands, ordered, lure
+    def geo(self):
+        tile = (getattr(self, "gen_tiles", {}).get(self.cur_map) or (None,))[0]
+        return TILE_GEO.get(tile, HOME_GEO)
+
+    def heading(self):
+        """RM_MapComponent_Lean.HeadingDegrees as designed: 90 - the tile's sun bearing."""
+        lat, lon = self.geo()
+        if "heading_constant" in self.broken:
+            return 90.0
+        if "heading_reversed" in self.broken:
+            return V._geo_heading(lon, lat, *V.SUBSTELLAR)
+        return V._geo_heading(lat, lon, *V.SUBSTELLAR)
+
+    def island_cells(self):
+        """A fresh Scrub map's counted venomvine: six 10x10 islands away from the start, two holding a 2-cell hollow
+        room (open ground 4000: share 0.15); none when the step was off."""
+        tile, on = getattr(self, "gen_tiles", {}).get(self.cur_map, (None, False))
+        b, out = self.broken, []
+        if not on:
+            return out
+        centres = [(40, 40), (40, 200), (200, 40), (200, 200), (125, 30), (125, 220)]
+        if "islands_share_low" in b:
+            centres = centres[:2]
+        if "islands_crowd_start" in b:
+            centres[0] = ISLAND_START
+        for k, (cx, cz) in enumerate(centres):
+            for i in range(10):
+                for j in range(10):
+                    d = V.THICKET
+                    if k < 2 and j == 0 and i < 2 or "islands_room_everywhere" in b:
+                        d = V.HOLLOW
+                    if "sworn_island" in b and k == 3 and (i, j) == (5, 5):
+                        d = V.SWORN
+                    out.append({"x": cx - 5 + i, "z": cz - 5 + j, "def": d})
+        return out
+
+    def lure_pass(self, d):
+        """RM_CompLure as shipped: on each CompTickLong (2000 ticks) a grown stand drops one fruit beside it while fewer
+        than the cap lie within reach; a hungry herbivore that can reach a fruit walks to it, then eats it."""
+        b = self.broken
+        if self.ticks // 2000 != (self.ticks - d) // 2000:
+            cap = V.LURE_CAP + (3 if "lure_over_cap" in b else 0)
+            for st in self.of(V.LURE):
+                on = self.on("lureEnabled") or "lure_ignores_toggle" in b
+                grown = st.get("growth", 1.0) >= V.LURE_MIN_GROWTH or "lure_young_drops" in b
+                near = sum(f.get("stackCount", 1) for f in self.of(V.LURE_FRUIT)
+                           if (f["x"] - st["x"]) ** 2 + (f["z"] - st["z"]) ** 2 <= V.LURE_REACH ** 2)
+                if on and grown and near < cap:
+                    self.new(V.LURE_FRUIT, st["x"], st["z"] + 1, stackCount=1)
+        for p in self.pawns.values():
+            if p["kind"] != V.LURE_EATER or p["faction"] != "none" or "lure_never_eaten" in b:
+                continue
+            if p.get("food", 0.9) >= 0.3 and "lure_fed_eats" not in b:
+                continue
+            meal = [f for f in self.of(V.LURE_FRUIT) if "lure_through_walls" in b or not any(
+                inrect(f["x"], f["z"], r) != inrect(p["x"], p["z"], r) for r in self.rooms)]
+            if meal and p.get("job") == "Ingest":
+                m = meal[0]
+                m["stackCount"] = m.get("stackCount", 1) - 1
+                if m["stackCount"] <= 0:
+                    del self.things[m["id"]]
+                p["food"], p["job"] = 0.8, "Wait_Wander"
+            elif meal:
+                p["job"] = "Ingest"
+
+    def lee(self, p):
+        """RM_MapComponent_Ripple.InWindbreakLee as shipped, for the fake's east wind: a Wall within WakeLength cells west."""
+        b = self.broken
+        if not (self.on("leanWakesEnabled") or "lee_ignores_toggle" in b) or "lee_never_reveals" in b:
+            return False
+        walls = set((t["x"], t["z"]) for t in self.of("Wall"))
+        wake = V.LEE_WAKE + (12 if "lee_too_long" in b else 0)
+        ks = range(1, wake + 1)
+        return any((p["x"] - k, p["z"]) in walls for k in ks) or (
+            "lee_reversed" in b and any((p["x"] + k, p["z"]) in walls for k in ks))
 
     def t_world_tile_map_generate(self, tile=None, biome=None, **k):
         mid = 10 + len(self.gen_maps) + len(self.saves)
         self.gen_maps[mid] = biome
+        self.gen_tiles = getattr(self, "gen_tiles", {})
+        self.gen_tiles[mid] = (tile, self.on("venomvineIslandsEnabled") or "islands_ignore_toggle" in self.broken)
         return {"success": True, "mapId": mid, "wasAlreadyGenerated": False}
 
     def t_set_current_map(self, mapId=None, **k):
@@ -1244,6 +1372,8 @@ class Fake(object):
             self.pursuit = None
             for t in things.values():
                 t.pop("instigator", None)
+        for p in pawns.values():
+            p["reloaded"] = True
         if "crown_reload_forgets" in self.broken:
             self.crown_forgets = True
         self.ticks, self.pawns, self.things = ticks, pawns, things
@@ -1265,8 +1395,22 @@ class Fake(object):
         return 2.0 if d == "RM_DeadVenomvine" and "cane_no_premium" not in self.broken else 1.0
 
     def t_ordered_job(self, pawnId=None, jobDef=None, targetAId=None, targetBId=None, targetAX=-1, targetAZ=-1, **k):
+        if jobDef == "Wait":        # an ordered wait: a wild animal holds still (no wander)
+            p = self.pawns[pawnId]
+            p["job"], p["hold"], p["goto"] = "Wait", True, None
+            return {"success": True, "accepted": True}
         if jobDef == "Goto":        # the scenes: an ordered walk arrives 300 ticks later and is "moving" until then
             p = self.pawns[pawnId]
+            if p["kind"] != "Colonist" and p.get("hold"):
+                p["job"] = "Goto"
+            vine = set((t["x"], t["z"]) for t in self.of(V.THICKET))
+            if (p["x"], p["z"]) in vine:     # the ordered return out of the vine: this pawn has made a trip
+                p["tripped"] = self.ticks
+            if (targetAX, targetAZ) in vine:
+                if BODY.get(p["kind"], 1.0) >= 1.5 and "huge_ordered_through" not in self.broken:
+                    return {"success": True, "accepted": True}      # no path: it stays put
+                if p["kind"] == "Colonist" and "ordered_trip_refused" in self.broken:
+                    return {"success": True, "accepted": True}
             p["goto"], p["moving_until"] = (targetAX, targetAZ), self.ticks + 300
             self.through_plants(p, targetAX, targetAZ)
             if p["kind"] == "RM_Dustflutter":
@@ -1359,6 +1503,9 @@ class Fake(object):
         return out
 
     def t_order_pawn(self, pawnId=None, x=None, z=None, **k):
+        if self.cur_map in self.gen_maps:      # a walk from the start: blocked east under the break
+            blocked = "start_exit_blocked" in self.broken and x > ISLAND_START[0] + 20
+            return {"success": True, "results": [{"canReach": not blocked}]}
         self.walker_until, self.bloom_done = self.ticks + 400, False
         self.walker_z = self.pawns[pawnId]["z"]
         self.pawns[pawnId]["x"] += 0
@@ -1578,6 +1725,11 @@ class Fake(object):
             cols[0]["job"] = "HaulToCell"
             if not safe:
                 cols[0]["x"], cols[0]["z"] = sorted(blocked & set(g["b"]))[0]
+        vine = sorted(blocked & set(g["b"]) - set((t["x"], t["z"]) for t in self.of("Wall")))
+        for p in cols:
+            if vine and p.get("tripped") is not None and self.ticks > p["tripped"] + 1000 and not p.get("goto") and (
+                    "completed_order_authorizes" in self.broken or p.get("reloaded") and "reload_authorizes" in self.broken):
+                p["x"], p["z"] = vine[0]
         if len(cols) > 1 and self.of("SimpleResearchBench"):
             cols[1]["job"] = "Research"
         if len(cols) > 2 and getattr(self, "cut_now", False):
@@ -1621,7 +1773,7 @@ BREAKS = {
     "genstep_tidies": "edge_fixes.map_step_refuses_pawn_cell",
     "arm_draws_none": "edge_fixes.vissler_arm_draws_meat_eaters",
     "arm_ignores_toggle": "edge_fixes.vissler_arm_off_draws_none",
-    "no_weather_entry": "defs.biome_weather_table",
+    "no_weather_entry": ("defs.biome_weather_table", "scene_wind_plain.windplain_weather_table"),
     "no_lean_ext": ("defs.biome_lean_extension", "scene_floor_payload.payload_base_effects_present"),
     "rule_unarmed": "patches.rules_armed",
     "thicket_unpatched": "patches.thicket_smotherable",
@@ -1708,10 +1860,10 @@ BREAKS = {
     "creep_ignores_toggle": ("islands.creep_toggle_off", "scene_creep.creep_scene_toggle_off_quiet"),
     "creep_ignores_cap": ("islands.creep_cap_stops", "scene_creep.creep_scene_cap_stops"),
     "no_exempt": ("islands.growth_exempt_from_explosive_growth", "scene_creep.creep_scene_explosive_growth_exempt"),
-    "stock_overcast": "defs.biome_weather_table",
+    "stock_overcast": ("defs.biome_weather_table", "scene_wind_plain.windplain_weather_table"),
     "twin_calm": "windlean.twins_carry_wind",
     "lean_mixed": "windlean.lean_faces_wind",
-    "lean_ignores_toggle": "windlean.lean_toggle_off_vanilla",
+    "lean_ignores_toggle": ("windlean.lean_toggle_off_vanilla", "scene_wind_plain.windplain_lean_off_keeps_weather"),
     "gale_no_overlay": ("windlean.gale_dust_overlay", "scene_gale_drawing.gale_drawing_streams_downwind"),
 }
 # the acceptance scenes (scene_* chains, RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_MANY_BARS_LEFT)
@@ -1742,17 +1894,20 @@ BREAKS.update({
     "pulse_reads_quiet": "scene_acoustic_payload.acoustic_pulses_read_their_target",
     "pulse_reads_without_target": "scene_acoustic_payload.acoustic_pulses_read_their_target",
     "ripple_bare_hides": "scene_concealment.concealment_bare_lane_visible",
-    "ripple_stall_move_hidden": "scene_concealment.concealment_stall_move_reveals",
+    "ripple_stall_move_hidden": ("scene_concealment.concealment_stall_move_reveals",
+                                 "scene_lee_reveal.lee_moving_in_lee_revealed"),
     "ripple_gale_no_extend": "scene_concealment.concealment_gale_extends_size",
     "ripple_hides_mental": "scene_concealment.concealment_mental_state_not_hidden",
     "ripple_ignores_toggles": ("scene_concealment.concealment_toggle_off_nobody_hidden",
                                "scene_settings.settings_all_off_quiet"),
-    "ripple_dead_after_master_off": "scene_settings.settings_reenabled_effect_returns",
+    "ripple_dead_after_master_off": ("scene_settings.settings_reenabled_effect_returns",
+                                     "scene_lee_reveal.lee_still_in_lee_hidden"),
     "cane_no_premium": "scene_cane_fuel.cane_more_burn_per_item",
     "cane_no_heat_bonus": "scene_cane_fuel.cane_heat_rate_higher",
     "cane_credit_lost_on_reload": "scene_cane_fuel.cane_credit_survives_reload",
     "fuel_meter_biased": "scene_cane_fuel.cane_wood_control_alike",
-    "trip_never_returns": "scene_colony_walk.walk_order_a_trip_then_fuel",
+    "trip_never_returns": ("scene_colony_walk.walk_order_a_trip_then_fuel",
+                           "scene_ordered_travel.ordered_trip_carried_out"),
     "reload_loses_pawn": "scene_colony_walk.walk_save_reload_resumes",
     "timing_no_work": "scene_floor_runtime.runtime_work_counted",
     "save_grows": "scene_floor_persistence.persist_no_growth",
@@ -1790,8 +1945,10 @@ BREAKS.update({
     "walking_invades_developed": ("scene_home_routes.routes_maintained_carry_work",
                                   "scene_ix_route_growth.ixroutes_only_authorized_in_hazard"),
     "upkeep_never_cuts": "scene_home_routes.routes_maintained_carry_work",
-    "auto_work_crosses_vine": "scene_ix_route_growth.ixroutes_only_authorized_in_hazard",
-    "cancel_ignored": "scene_ix_route_growth.ixroutes_cancel_stops_expedition",
+    "auto_work_crosses_vine": ("scene_ix_route_growth.ixroutes_only_authorized_in_hazard",
+                               "scene_ordered_travel.ordered_auto_work_avoids_vine"),
+    "cancel_ignored": ("scene_ix_route_growth.ixroutes_cancel_stops_expedition",
+                       "scene_ordered_travel.ordered_cancel_grants_nothing"),
     # batch 5 (RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_EIGHTY_SIX_BARS_LEFT)
     "gale_across_wind": "scene_gale_drawing.gale_drawing_streams_downwind",
     "gale_draws_when_off": "scene_gale_drawing.gale_drawing_overlay_off_control",
@@ -1850,6 +2007,37 @@ BREAKS.update({
     "hoard_takes_corpse": "scene_hoard.hoard_corpse_stays_gear_kept",
     "hoard_forgets_on_reload": "scene_hoard.hoard_survives_reload",
     "hoard_drops_twice": "scene_hoard.hoard_returns_once_on_fall",
+})
+
+# batch 7 (RIMMANDRAKE_AUTOBUILD_LEANINGSCRUB_SEVENTY_BARS_LEFT): wind_plain, lee_reveal, island_land, ordered_travel, lure
+BREAKS.update({
+    "twins_global": "scene_wind_plain.windplain_weather_table",
+    "stall_blows": "scene_wind_plain.windplain_wind_factors",
+    "live_stall_blows": "scene_wind_plain.windplain_live_wind",
+    "heading_constant": "scene_wind_plain.windplain_heading_geometry",
+    "heading_reversed": "scene_wind_plain.windplain_heading_geometry",
+    "lean_wrong_side": "scene_wind_plain.windplain_plant_facing_snap",
+    "lean_toggle_moves_weather": "scene_wind_plain.windplain_lean_off_keeps_weather",
+    "lee_never_reveals": "scene_lee_reveal.lee_moving_in_lee_revealed",
+    "lee_too_long": "scene_lee_reveal.lee_moving_beyond_hidden",
+    "lee_reversed": "scene_lee_reveal.lee_reversed_wall_no_lee",
+    "lee_ignores_toggle": "scene_lee_reveal.lee_wakes_off_no_lee",
+    "islands_share_low": "scene_island_land.island_share_meets_target",
+    "islands_room_everywhere": "scene_island_land.island_rooms_rarer_no_sworn",
+    "sworn_island": "scene_island_land.island_rooms_rarer_no_sworn",
+    "islands_crowd_start": "scene_island_land.island_start_clear_exits_walkable",
+    "start_exit_blocked": "scene_island_land.island_start_clear_exits_walkable",
+    "islands_ignore_toggle": "scene_island_land.island_toggle_off_lays_none",
+    "ordered_trip_refused": "scene_ordered_travel.ordered_trip_carried_out",
+    "completed_order_authorizes": "scene_ordered_travel.ordered_completed_grants_nothing",
+    "reload_authorizes": "scene_ordered_travel.ordered_reload_grants_nothing",
+    "huge_ordered_through": "scene_ordered_travel.ordered_blocked_body_stays_out",
+    "lure_over_cap": "scene_lure.lure_emits_to_cap",
+    "lure_fed_eats": "scene_lure.lure_fed_not_attracted",
+    "lure_through_walls": "scene_lure.lure_unreachable_uneaten",
+    "lure_never_eaten": "scene_lure.lure_hungry_herbivore_eats_fruit",
+    "lure_ignores_toggle": "scene_lure.lure_off_and_young_drop_none",
+    "lure_young_drops": "scene_lure.lure_off_and_young_drop_none",
 })
 
 

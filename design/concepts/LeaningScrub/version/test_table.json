@@ -1,7 +1,7 @@
 {
  "mod": "LeaningScrub",
  "version": "0.1.0",
- "made": "2026-11-16T21:12:49Z",
+ "made": "2026-11-16T22:10:05Z",
  "made_by": "design/concepts/LeaningScrub/version/pilot_throwaway/make_test_table.py (throwaway, no model)",
  "stages": {
   "4-5": "offline (blind)",
@@ -48,9 +48,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 123.0,
-    "last": "[lscrub] 13:12:29 log_clean PASS ",
-    "at": "2026-11-16T21:12:30Z",
+    "seconds": 238.4,
+    "last": "[lscrub] 14:09:37 log_clean PASS ",
+    "at": "2026-11-16T22:09:37Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub.txt",
     "result": "PASS"
    }
@@ -76,7 +76,7 @@
     "rc": 0,
     "seconds": 0.1,
     "last": "PASS selftest_leaningscrub_fauna_behaviours (7 rows, 35 planted breaks)",
-    "at": "2026-11-16T21:12:30Z",
+    "at": "2026-11-16T22:09:37Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_fauna_behaviours.txt",
     "result": "PASS"
    }
@@ -102,7 +102,7 @@
     "rc": 0,
     "seconds": 0.0,
     "last": "all ok",
-    "at": "2026-11-16T21:12:30Z",
+    "at": "2026-11-16T22:09:37Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_gpt_fixes.txt",
     "result": "PASS"
    }
@@ -126,9 +126,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.6,
+    "seconds": 0.7,
     "last": "PASS selftest_leaningscrub_shirrel_glide (5 rows, 23 planted breaks)",
-    "at": "2026-11-16T21:12:30Z",
+    "at": "2026-11-16T22:09:38Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_shirrel_glide.txt",
     "result": "PASS"
    }
@@ -152,9 +152,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.1,
+    "seconds": 0.2,
     "last": "  roster = [e.tag for e in (d.find(\"wildAnimals\") or []) if \"MayRequire\" not in e.attrib]",
-    "at": "2026-11-16T21:12:30Z",
+    "at": "2026-11-16T22:09:38Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_site.txt",
     "result": "PASS"
    }
@@ -178,9 +178,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 6.3,
+    "seconds": 12.5,
     "last": "0 failure(s)",
-    "at": "2026-11-16T21:12:37Z",
+    "at": "2026-11-16T22:09:51Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_scrub_soundscape.txt",
     "result": "PASS"
    }
@@ -204,9 +204,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 3.8,
+    "seconds": 3.9,
     "last": "  Z5 code: ['RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs changed since review (fingerprint ba4ab711d3e3291a, reviewed a243636a2b2fc529): re-read it']",
-    "at": "2026-11-16T21:12:41Z",
+    "at": "2026-11-16T22:09:55Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_scrub_wildlife_zero_paths.txt",
     "result": "FAIL"
    }
@@ -230,9 +230,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.3,
+    "seconds": 2.8,
     "last": "selftest scrub wind: 7 lean plants, 149 variants measured, 11 breaks -> OK",
-    "at": "2026-11-16T21:12:43Z",
+    "at": "2026-11-16T22:09:58Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_scrub_wind.txt",
     "result": "PASS"
    }
@@ -258,7 +258,7 @@
     "rc": 0,
     "seconds": 0.0,
     "last": "0 failure(s)",
-    "at": "2026-11-16T21:12:43Z",
+    "at": "2026-11-16T22:09:58Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_sweetline_shed_probe.txt",
     "result": "PASS"
    }
@@ -282,9 +282,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.6,
-    "last": "leaningscrub fuzz: 19000 cases, 637912 steps, 1.77s total -> OK",
-    "at": "2026-11-16T21:12:47Z",
+    "seconds": 5.2,
+    "last": "leaningscrub fuzz: 19000 cases, 637912 steps, 2.18s total -> OK",
+    "at": "2026-11-16T22:10:03Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_fuzz.txt",
     "result": "PASS"
    }
@@ -308,9 +308,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.7,
+    "seconds": 2.3,
     "last": "leaningscrub lint: 51 defs + 9 patch files, 119 classes, 131 class/def refs, 92 field checks, 3 drivers, 82 settings, 0 ERROR, 0 WARN",
-    "at": "2026-11-16T21:12:49Z",
+    "at": "2026-11-16T22:10:05Z",
     "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/lint_leaningscrub_defs.txt",
     "result": "PASS"
    }
@@ -361,7 +361,7 @@
    "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
    "why_game_from_leaf": "wind_plain",
    "why_full_list": "",
-   "entry_exists": false,
+   "entry_exists": true,
    "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
    "scene_status": "planned_missing_complete_entry",
    "hold": "owner_review",
@@ -373,8 +373,8 @@
    ],
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+    "entry_exists": true,
+    "why": "entry present; a scene is run at its stage"
    }
   },
   "sc_gale_drawing": {
@@ -671,7 +671,7 @@
    "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
    "why_game_from_leaf": "lee_reveal",
    "why_full_list": "",
-   "entry_exists": false,
+   "entry_exists": true,
    "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
    "scene_status": "planned_missing_complete_entry",
    "hold": "owner_review",
@@ -683,8 +683,8 @@
    ],
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+    "entry_exists": true,
+    "why": "entry present; a scene is run at its stage"
    }
   },
   "sc_stall_predation": {
@@ -733,7 +733,7 @@
    "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
    "why_game_from_leaf": "island_land",
    "why_full_list": "",
-   "entry_exists": false,
+   "entry_exists": true,
    "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
    "scene_status": "planned_missing_complete_entry",
    "hold": "owner_review",
@@ -745,8 +745,8 @@
    ],
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+    "entry_exists": true,
+    "why": "entry present; a scene is run at its stage"
    }
   },
   "sc_creep": {
@@ -826,7 +826,7 @@
    "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
    "why_game_from_leaf": "ordered_travel",
    "why_full_list": "",
-   "entry_exists": false,
+   "entry_exists": true,
    "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
    "scene_status": "planned_missing_complete_entry",
    "hold": "immediate",
@@ -838,8 +838,8 @@
    ],
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)"
+    "entry_exists": true,
+    "why": "entry present; a scene is run at its stage"
    }
   },
   "sc_vine_contact": {
@@ -1291,7 +1291,7 @@
    "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
    "why_game_from_leaf": "lure",
    "why_full_list": "",
-   "entry_exists": false,
+   "entry_exists": true,
    "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
    "scene_status": "planned_missing_complete_entry",
    "hold": "immediate",
@@ -1303,8 +1303,8 @@
    ],
    "runs_today": {
     "ran": false,
-    "entry_exists": false,
-    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+    "entry_exists": true,
+    "why": "entry present; a scene is run at its stage"
    }
   },
   "sc_smother_claim": {
@@ -2912,12 +2912,13 @@
     "sc_gale_drawing",
     "sc_wind_audio",
     "sc_gale_exposure",
-    "sc_scent"
+    "sc_scent",
+    "T_SELFTEST"
    ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2954,12 +2955,13 @@
     "sc_gale_drawing",
     "sc_wind_audio",
     "sc_gale_exposure",
-    "sc_scent"
+    "sc_scent",
+    "T_SELFTEST"
    ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -2975,12 +2977,13 @@
     "sc_gale_drawing",
     "sc_wind_audio",
     "sc_gale_exposure",
-    "sc_scent"
+    "sc_scent",
+    "T_SELFTEST"
    ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -3210,7 +3213,7 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -3272,12 +3275,13 @@
     "sc_strangler",
     "sc_weeper",
     "sc_sleeper",
-    "sc_lure"
+    "sc_lure",
+    "T_SELFTEST"
    ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -3781,12 +3785,13 @@
     "sc_shedding",
     "sc_strangler",
     "sc_weeper",
-    "sc_sleeper"
+    "sc_sleeper",
+    "T_SELFTEST"
    ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4529,7 +4534,7 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -4952,7 +4957,7 @@
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
+   "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },
   {
@@ -5101,12 +5106,14 @@
    "decides": [
     "sc_lee_reveal"
    ],
-   "supports": [],
+   "supports": [
+    "T_SELFTEST"
+   ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "stall_predation",
@@ -5133,12 +5140,14 @@
    "decides": [
     "sc_island_land"
    ],
-   "supports": [],
+   "supports": [
+    "T_SELFTEST"
+   ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "creep",
@@ -5183,12 +5192,14 @@
    "decides": [
     "sc_ordered_travel"
    ],
-   "supports": [],
+   "supports": [
+    "T_SELFTEST"
+   ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
-   "every_decider_runnable_today": false,
-   "any_test_runnable_today": false
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true
   },
   {
    "id": "vine_contact",

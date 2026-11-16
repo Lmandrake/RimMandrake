@@ -37,6 +37,7 @@ that changes one restores it in a `finally`. `jawa/mod_settings_field` never wri
 import contextlib
 import glob
 import json
+import math
 import os
 import re
 import sys
@@ -7551,6 +7552,1083 @@ def scene_hoard(t):
                         "drops twice": dict(good, fall_total=[22, 32]), "loses goods": dict(good, fall_total=[12, 12]),
                         "ignores toggle": dict(good, off_taken=True)})
     with _scene(t, "sc_hoard", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- batch 7: shared readers
+
+BIOME_XML = os.path.join(HERE, "Defs", "BiomeDefs", "RM_LeaningScrub_Biome.xml")
+
+
+def _shipped_text(path, pattern, cast=float):
+    """One value off a shipped file (XML comments stripped), `cast` applied; None when the pattern is absent."""
+    with open(path, encoding="utf-8-sig") as fh:
+        txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+    m = re.search(pattern, txt, re.S)
+    return cast(m.group(1)) if m else None
+
+
+def _fresh_map(t, tile, biome, home, fn, size=CAST_MAP_SIZE, keep=False):
+    """Generate a fresh `biome` map on `tile`, make it current, return fn(map_id); then come home and drop it (unless
+    `keep`: the caller drops it). A tile that already carried a map is no fresh map: UNMEASURED."""
+    r = _ok(t.bridge_call("jawa/world_tile_map_generate", tile=tile, biome=biome, sizeX=size, sizeZ=size),
+            "world_tile_map_generate(%s, %s)" % (tile, biome))
+    if r.get("wasAlreadyGenerated"):
+        _unmeasured(t, "tile %s already carried a map: not a fresh map" % tile)
+    mid, idx = r.get("mapId"), r.get("mapIndex")
+    try:
+        _ok(t.bridge_call("jawa/set_current_map", mapId=mid), "set_current_map(%s)" % mid)
+        return fn(mid)
+    finally:
+        t.bridge_call("jawa/set_current_map", mapId=home)
+        if not keep:
+            _ok(t.bridge_call("jawa/map_drop", mapIndex=idx, notifyPlayer=False), "map_drop(index %s)" % idx)
+
+
+def _hook_value(t, hook, args, what):
+    """A public static reader named by an env hook ("Type.Method"), its rendered result; UNMEASURED when unset."""
+    if not hook or "." not in hook:
+        _unmeasured(t, "no bridge tool reads %s" % what)
+    typ, meth = hook.rsplit(".", 1)
+    r = _ok(t.bridge_call("jawa/static_call", type=typ, method=meth, args=args), "static_call(%s)" % hook)
+    return str(r.get("result"))
+
+
+# --------------------------------------------------------------------------- scene: wind_plain
+
+# Two map-free Scrub tiles on OPPOSITE east/west sides of the substellar meridian (LSCRUB_WIND_TILES=a,b): a constant
+# or mirrored heading cannot match the geometry on both. The live wind speed has no bridge reader (WindManager.WindSpeed
+# is an instance property): LSCRUB_WIND_HOOK names a public static (Map)->float, UNMEASURED until one exists.
+WIND_TILES = tuple(int(x) for x in os.environ.get("LSCRUB_WIND_TILES", "").split(",") if x.strip().isdigit())
+WIND_HOOK = os.environ.get("LSCRUB_WIND_HOOK", "").strip()
+WIND_WEATHERS = ("RM_ScrubWind", "RM_ScrubWindFog", "RM_ScrubOvercast", "RM_ScrubGrayPall", "RM_ScrubDryThunderstorm",
+                 "RM_Stall", "RM_Gale")
+WIND_CONTROL_BIOME = CAST_CONTROL_BIOME
+HEADING_TOL = 0.1          # degrees (scenes.json sc_wind_plain expect)
+LEAN_TIE_X = 1e-4          # RM_LeanKernel.TieX: a due north/south wind resolves EAST
+WEATHER_SETTLE = 4200      # past vanilla WeatherManager's 4000-tick transition, inside the 6000-tick phase budget
+SUBSTELLAR = (_shipped_text(BIOME_XML, r"<substellarLatitude>([-\d.]+)</substellarLatitude>"),
+              _shipped_text(BIOME_XML, r"<substellarLongitude>([-\d.]+)</substellarLongitude>"))
+
+
+def _geo_heading(lat, lon, sub_lat, sub_lon):
+    """The independent heading, pure: the spherical initial bearing (degrees clockwise from north) from the tile to
+    the substellar point, turned into the map heading (degrees counter-clockwise from east) as 90 - bearing mod 360.
+    Written from the navigation formula, not from RM_MapComponent_PinnedSun.SunGeometry."""
+    p1, p2, dl = math.radians(lat), math.radians(sub_lat), math.radians(sub_lon - lon)
+    bearing = math.degrees(math.atan2(math.sin(dl) * math.cos(p2),
+                                      math.cos(p1) * math.sin(p2) - math.sin(p1) * math.cos(p2) * math.cos(dl)))
+    return (90.0 - bearing) % 360.0
+
+
+def _ang(a, b):
+    return abs((a - b + 180.0) % 360.0 - 180.0)
+
+
+def _heading_offences(readings, sub, tol=HEADING_TOL):
+    """readings [{"tile", "lat", "lon", "heading", "map"}] in read order; sub (lat, lon) the configured substellar
+    point. Every production heading within `tol` of _geo_heading; the first two tiles on opposite east/west sides of
+    the substellar meridian; every reading of one tile (a second map, a reload) agrees. -> offences."""
+    out, tiles = [], []
+    for r in readings:
+        if r["tile"] not in tiles:
+            tiles.append(r["tile"])
+        want = _geo_heading(r["lat"], r["lon"], sub[0], sub[1])
+        if _ang(r["heading"], want) > tol:
+            out.append("tile %s (%s): production heading %.2f, geometry %.2f" % (r["tile"], r.get("map"), r["heading"], want))
+    if len(tiles) < 2:
+        out.append("fewer than two tiles read: one constant heading could pass")
+    else:
+        a, b = [next(r for r in readings if r["tile"] == tl) for tl in tiles[:2]]
+        if math.sin(math.radians(a["lon"] - sub[1])) * math.sin(math.radians(b["lon"] - sub[1])) >= 0:
+            out.append("tiles %s and %s lie on one side of the substellar meridian: a degenerate pair" % (a["tile"], b["tile"]))
+    for tl in tiles:
+        hs = [r["heading"] for r in readings if r["tile"] == tl]
+        if any(_ang(h, hs[0]) > tol for h in hs):
+            out.append("tile %s: its maps and reload disagree %s" % (tl, ["%.2f" % h for h in hs]))
+    return out
+
+
+def _lean_counts(text):
+    m = re.search(r"east=(\d+) west=(\d+)", str(text or ""))
+    return (int(m.group(1)), int(m.group(2))) if m else (None, None)
+
+
+def _facing_offences(maps):
+    """maps [{"tile", "heading", "proof"}]: RM_PlantLeanProof.ProofLean's on-reading on each fresh map. One visible
+    side per map, and it is the east/west snap of the INDEPENDENT heading (tie east). -> offences."""
+    out = []
+    for m in maps:
+        e, w = _lean_counts(m.get("proof"))
+        if e is None:
+            out.append("tile %s: ProofLean unreadable: %s" % (m["tile"], str(m.get("proof"))[:120]))
+        elif e + w == 0:
+            out.append("tile %s: no listed lean plant printed" % m["tile"])
+        elif e and w:
+            out.append("tile %s: mixed lean (east %d, west %d)" % (m["tile"], e, w))
+        elif (w > 0) != (math.cos(math.radians(m["heading"])) < -LEAN_TIE_X):
+            out.append("tile %s: plants face %s, the heading %.1f snaps %s" % (
+                m["tile"], "west" if w else "east", m["heading"],
+                "west" if math.cos(math.radians(m["heading"])) < -LEAN_TIE_X else "east"))
+    return out
+
+
+def _weather_table(row):
+    """{weather: commonality} off a BiomeDef's baseWeatherCommonalities read (get_defs deep)."""
+    out = {}
+    for e in (row or {}).get("baseWeatherCommonalities") or []:
+        if isinstance(e, dict) and e.get("weather"):
+            out[e["weather"]] = float(e.get("commonality") or 0)
+    return out
+
+
+def _wind_table_offences(scrub, control):
+    """The effective weather tables, pure. The Scrub rolls no stock Overcast/GrayPall/DryThunderstorm (zero or absent),
+    each windy twin positive, its wind, Stall and Gale positive; the control biome keeps a stock row and rolls no twin
+    (the twins do not replace stock weather globally). -> offences."""
+    out = []
+    for stock, twin in sorted(TWINNED_STOCK.items()):
+        if scrub.get(stock, 0) > 0:
+            out.append("the Scrub table still rolls stock %s (%g)" % (stock, scrub[stock]))
+        if not scrub.get(twin, 0) > 0:
+            out.append("the Scrub table carries no positive %s" % twin)
+    for w in ("RM_ScrubWind", "RM_Stall", "RM_Gale"):
+        if not scrub.get(w, 0) > 0:
+            out.append("the Scrub table carries no positive %s" % w)
+    if not any(control.get(s, 0) > 0 for s in TWINNED_STOCK):
+        out.append("the control biome lost every stock row %s" % sorted(TWINNED_STOCK))
+    if any(control.get(tw, 0) > 0 for tw in TWINNED_STOCK.values()):
+        out.append("the control biome rolls a windy twin: the twins replaced stock weather globally")
+    return out
+
+
+def _wind_factor_offences(rows):
+    """rows {weather: (windSpeedFactor, windSpeedOffset)} as loaded. At one raw wind w the engine blows
+    w * factor + offset: the Stall zero at every w, the ordinary wind and every twin positive, the Gale above
+    RM_ScrubWind at the same w. -> offences."""
+    out = []
+    missing = [w for w in WIND_WEATHERS if w not in rows]
+    if missing:
+        return ["weather def(s) unread: %s" % missing]
+
+    def eff(n, w):
+        return w * rows[n][0] + rows[n][1]
+    for w in (0.0, 0.5, 1.0):
+        if abs(eff("RM_Stall", w)) > 1e-6:
+            out.append("the Stall blows %.2f at raw wind %.1f" % (eff("RM_Stall", w), w))
+        for n in WIND_WEATHERS:
+            if n not in ("RM_Stall",) and not eff(n, w) > 0:
+                out.append("%s falls calm (%.2f) at raw wind %.1f" % (n, eff(n, w), w))
+        if not eff("RM_Gale", w) > eff("RM_ScrubWind", w):
+            out.append("the Gale (%.2f) does not exceed RM_ScrubWind (%.2f) at raw wind %.1f"
+                       % (eff("RM_Gale", w), eff("RM_ScrubWind", w), w))
+    return out
+
+
+def _wind_rows(t):
+    f, _r = _get_defs(t, ";".join("WeatherDef/" + n for n in WIND_WEATHERS), "windSpeedFactor,windSpeedOffset")
+    out = {}
+    for n in WIND_WEATHERS:
+        row = f.get(n)
+        if isinstance(row, dict):
+            fac, off = row.get("windSpeedFactor"), row.get("windSpeedOffset")
+            out[n] = (float(1.0 if fac is None else fac), float(off or 0.0))
+    return out
+
+
+def _heading_read(t, tile, label):
+    mi = _ok(t.bridge_call("jawa/map_info"), "map_info")
+    lean = _ok(t.bridge_call("jawa/map_comp_read", comp="RM_MapComponent_Lean", members="HeadingDegrees,SunBearingDegrees"),
+               "map_comp_read(Lean)").get("values") or {}
+    try:
+        return {"tile": tile, "map": label, "lat": float(mi["latitude"]), "lon": float(mi["longitude"]),
+                "heading": float(lean["HeadingDegrees"]), "bearing": float(lean.get("SunBearingDegrees") or "nan")}
+    except (KeyError, TypeError, ValueError):
+        _unmeasured(t, "tile %s (%s): latitude/longitude or HeadingDegrees unreadable: %r / %r" % (tile, label, mi, lean))
+
+
+@suite.chain("scene_wind_plain")
+def scene_wind_plain(t):
+    """sc_wind_plain (wind_plain; exercises weather_calendar, lean_heading, plant_lean). The loaded weather table and
+    factors (stock Overcast/GrayPall/DryThunderstorm replaced by their windy twins in the Scrub only, the Stall still,
+    the Gale above the wind); the live wind after each transition settles (through LSCRUB_WIND_HOOK); the production
+    heading on two fresh maps of two tiles either side of the substellar meridian, a second map of the first tile and
+    its reload, each within 0.1 degree of an independently computed spherical bearing; ProofLean's facings on each map
+    snapped to the side the INDEPENDENT heading names. Controls: leanPlantsEnabled off leaves the weather factors alone;
+    the checkers refuse a constant heading, a swapped coordinate convention and a mixed lean. Held for the owner: the
+    visible lean of every variant at colony zoom is his look at the held save (numbers never stand in for it)."""
+    _pad(t, "spawn")
+    got = {"readings": [], "maps": []}
+
+    def body():
+        with _comp(t, "windplain_weather_table"):
+            if _live(t):
+                rows, _r = _get_defs(t, "BiomeDef/RM_LeaningScrub", "baseWeatherCommonalities", deep=True)
+                ctl, _r = _get_defs(t, "BiomeDef/" + WIND_CONTROL_BIOME, "baseWeatherCommonalities", deep=True)
+                scrub, control = _weather_table(rows.get("RM_LeaningScrub")), _weather_table(ctl.get(WIND_CONTROL_BIOME))
+                _note(t, "weather tables", {"scrub": scrub, "control": control})
+                if not scrub:
+                    _unmeasured(t, "RM_LeaningScrub baseWeatherCommonalities unread: %r" % rows.get("RM_LeaningScrub"))
+                _only(_wind_table_offences(scrub, control), "")
+        with _comp(t, "windplain_wind_factors"):
+            if _live(t):
+                got["factors"] = _wind_rows(t)
+                _note(t, "wind factor/offset", got["factors"])
+                _only(_wind_factor_offences(got["factors"]), "")
+        with _comp(t, "windplain_live_wind"):
+            if _live(t):
+                speeds = {}
+                for w in ("RM_ScrubWind", "RM_Stall", "RM_Gale"):
+                    _lock_weather(t, w)
+                    _wait(t, WEATHER_SETTLE)
+                    speeds[w] = float(_hook_value(t, WIND_HOOK, "current", "the live WindManager.WindSpeed "
+                                                  "(set LSCRUB_WIND_HOOK=<Type.Method>, a public static (Map)->float)"))
+                _note(t, "live wind after settling", speeds)
+                if speeds["RM_Stall"] > 0.05:
+                    _fail("the settled Stall still blows %.2f" % speeds["RM_Stall"])
+                if not speeds["RM_ScrubWind"] > 0:
+                    _fail("the settled ordinary wind is calm (%.2f)" % speeds["RM_ScrubWind"])
+                if not speeds["RM_Gale"] > speeds["RM_ScrubWind"]:
+                    _fail("the settled Gale (%.2f) does not exceed the wind (%.2f)" % (speeds["RM_Gale"], speeds["RM_ScrubWind"]))
+        with _comp(t, "windplain_heading_geometry"):
+            if _live(t):
+                if len(WIND_TILES) < 2:
+                    _unmeasured(t, "name two map-free Scrub tiles on opposite east/west sides of the substellar meridian: "
+                                   "LSCRUB_WIND_TILES=a,b")
+                if None in SUBSTELLAR:
+                    _unmeasured(t, "the shipped RM_LeanExtension carries no substellar point (%s)" % (SUBSTELLAR,))
+                home = _map_id(t)
+
+                def read(tile, label):
+                    def fn(_mid):
+                        r = _heading_read(t, tile, label)
+                        p = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_PlantLeanProof",
+                                          method="ProofLean", args="on")
+                        got["maps"].append({"tile": tile, "heading": _geo_heading(r["lat"], r["lon"], *SUBSTELLAR),
+                                            "proof": (p or {}).get("result")})
+                        got["readings"].append(r)
+                        return r
+                    return fn
+                _fresh_map(t, WIND_TILES[0], "RM_LeaningScrub", home, read(WIND_TILES[0], "first map"))
+                _fresh_map(t, WIND_TILES[1], "RM_LeaningScrub", home, read(WIND_TILES[1], "first map"))
+
+                def second_and_reload(mid):
+                    read(WIND_TILES[0], "second map")(mid)
+                    name = "lscrub_windplain_reload_%d" % int(time.time())
+                    _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game(%s)" % name)
+                    _ok(_scene_load(t, name), "load_game_ready(%s)" % name)
+                    _ok(t.bridge_call("jawa/set_current_map", mapId=mid), "set_current_map(%s) after reload" % mid)
+                    got["readings"].append(_heading_read(t, WIND_TILES[0], "reload"))
+                _fresh_map(t, WIND_TILES[0], "RM_LeaningScrub", home, second_and_reload)
+                _note(t, "headings", got["readings"])
+                _only(_heading_offences(got["readings"], SUBSTELLAR), "")
+        with _comp(t, "windplain_plant_facing_snap"):
+            if _live(t):
+                if not got["maps"]:
+                    _unmeasured(t, "no fresh map was read: nothing to face")
+                _note(t, "ProofLean on each map", got["maps"])
+                _only(_facing_offences(got["maps"]), "")
+        with _comp(t, "windplain_lean_off_keeps_weather", toggle="leanPlantsEnabled"):
+            if _live(t):
+                if not WIND_TILES:
+                    _unmeasured(t, "ProofLean needs a Scrub map: name LSCRUB_WIND_TILES")
+                before = got.get("factors") or _wind_rows(t)
+                with _setting(t, "leanPlantsEnabled", False):
+                    r = _fresh_map(t, WIND_TILES[0], "RM_LeaningScrub", _map_id(t), lambda _m: t.bridge_call(
+                        "jawa/static_call", type="RimMandrake.LeaningScrub.RM_PlantLeanProof", method="ProofLean", args="off"))
+                    after = _wind_rows(t)
+                txt = str((r or {}).get("result"))
+                _note(t, "lean off", {"proof": txt[:200], "factors_after": after})
+                if not txt.startswith(("PASS", "FAIL")):
+                    _unmeasured(t, "ProofLean(off) did not answer PASS/FAIL: %s" % txt[:200])
+                if not txt.startswith("PASS"):
+                    _fail("leanPlantsEnabled off but plants still face: %s" % txt[:200])
+                if after != before:
+                    _fail("turning the plant lean off changed the weather factors: %s -> %s" % (before, after))
+        with _comp(t, "windplain_checker_rejects_injections"):
+            if _live(t):
+                sub = (0.0, 0.0)
+                good = [dict(tile=1, lat=10.0, lon=30.0, map="a"), dict(tile=2, lat=-20.0, lon=-50.0, map="a"),
+                        dict(tile=1, lat=10.0, lon=30.0, map="reload")]
+                for g in good:
+                    g["heading"] = _geo_heading(g["lat"], g["lon"], 0.0, 0.0)
+                _rejects("heading", lambda rs: _heading_offences(rs, sub), good, {
+                    "constant heading": [dict(g, heading=90.0) for g in good],
+                    "swapped lat/lon": [dict(g, heading=_geo_heading(g["lon"], g["lat"], 0.0, 0.0)) for g in good],
+                    "one side only": [dict(g, lon=abs(g["lon"]), heading=_geo_heading(g["lat"], abs(g["lon"]), 0.0, 0.0))
+                                      for g in good],
+                    "reload drifts": good[:2] + [dict(good[2], heading=good[2]["heading"] + 1.0)]})
+                faces = [{"tile": 1, "heading": 180.0, "proof": "PASS east=0 west=9"},
+                         {"tile": 2, "heading": 0.0, "proof": "PASS east=9 west=0"}]
+                _rejects("facing", _facing_offences, faces, {
+                    "mixed": [dict(faces[0], proof="FAIL mixed lean east=2 west=7")],
+                    "against the heading": [dict(faces[0], proof="PASS east=9 west=0")],
+                    "nothing printed": [dict(faces[1], proof="UNMEASURED east=0 west=0")]})
+                table = {"RM_ScrubWind": 28, "RM_Stall": 3, "RM_Gale": 7, "RM_ScrubOvercast": 5, "RM_ScrubGrayPall": 1,
+                         "RM_ScrubDryThunderstorm": 1}
+                _rejects("weather table", lambda a: _wind_table_offences(*a), (table, {"DryThunderstorm": 1}), {
+                    "stock overcast kept": (dict(table, Overcast=5), {"DryThunderstorm": 1}),
+                    "twin missing": (dict(table, RM_ScrubGrayPall=0), {"DryThunderstorm": 1}),
+                    "twins global": (table, {"DryThunderstorm": 1, "RM_ScrubOvercast": 2})})
+    with _scene(t, "sc_wind_plain", "owner_review"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: lee_reveal
+
+LEE_WAKE = _shipped_text(os.path.join(HERE, "Source", "Kernel", "RM_RippleKernel.cs"), r"WakeLength = (\d+);", int)
+LEE_LANE = 14              # cover lane cells downwind of the wall: the wake, then open wind beyond it
+LEE_STEP = 15              # ticks between samples (the ripple pass is CheckInterval 60)
+
+
+def _round_away(v):
+    return int(math.floor(abs(v) + 0.5)) * (1 if v >= 0 else -1)
+
+
+def _in_lee(c, down, blocks, wake):
+    """RM_RippleKernel.InLee, pure: a wind-blocking cell within `wake` cells upwind along the exact heading (rounded half
+    away from zero, the step that rounds onto the cell itself skipped)."""
+    for k in range(1, wake + 1):
+        u = (c[0] + _round_away(-down[0] * k), c[1] + _round_away(-down[1] * k))
+        if u != c and u in blocks:
+            return True
+    return False
+
+
+def _lee_site(x, z, down, wake, flip=False):
+    """The windbreak site round (x, z), pure: a 9-cell wall across the wind's dominant axis one cell upwind of a 3-wide
+    fuzz lane running LEE_LANE cells downwind (`flip`: the same wall at the lane's DOWNWIND end, so no lane cell is in a
+    lee). in_lee: the lane cells the kernel calls lee for THIS wall; the walk points sit on the lane's centre line."""
+    ax = abs(down[0]) >= abs(down[1])
+    s = 1 if (down[0] if ax else down[1]) >= 0 else -1
+
+    def cell(u, p):
+        return (x + s * u, z + p) if ax else (x + p, z + s * u)
+    walls = [cell(LEE_LANE if flip else -1, p) for p in range(-4, 5)]
+    lane = [cell(u, p) for u in range(LEE_LANE) for p in (-1, 0, 1)]
+    ws = set(walls)
+    in_lee = set(c for c in lane if _in_lee(c, down, ws, wake))
+    lee_u = next((u for u in range(wake) if all(cell(u, p) in in_lee for p in (-1, 0, 1))), 0)
+    return {"walls": walls, "lane": lane, "in_lee": in_lee, "cell": cell,
+            "lee_start": cell(lee_u, 0), "pace_lee": (cell(lee_u, -1), cell(lee_u, 1)),
+            "pace_beyond": (cell(LEE_LANE - 2, -1), cell(LEE_LANE - 2, 1)), "beyond_end": cell(LEE_LANE - 2, 0)}
+
+
+def _lee_offences(samples, genuine=True):
+    """samples [{"lee", "moving", "still", "hidden"}] of one animal on the cover lane. A genuine lee: still there it
+    stays hidden, moving there it is seen, moving beyond it stays hidden. No genuine lee (reversed wall, wakes off):
+    moving in the would-be lee cells keeps its cover. Shares, not single reads: the ripple pass runs every 60 ticks.
+    An "UNMEASURED:" line names a class with fewer than two samples. -> offences."""
+    def share(sel):
+        rows = [s for s in samples if sel(s)]
+        return (sum(1 for s in rows if s["hidden"]) / float(len(rows)), len(rows)) if len(rows) >= 2 else (None, len(rows))
+    out = []
+    if genuine:
+        for name, sel, want in (("still in the lee", lambda s: s["lee"] and s["still"], True),
+                                ("moving in the lee", lambda s: s["lee"] and s["moving"], False),
+                                ("moving beyond the lee", lambda s: not s["lee"] and s["moving"], True)):
+            sh, n = share(sel)
+            if sh is None:
+                out.append("UNMEASURED: %d sample(s) %s" % (n, name))
+            elif want and sh < 2 / 3.0:
+                out.append("%s: hidden in %.0f%% of %d samples (concealment lost)" % (name, 100 * sh, n))
+            elif not want and sh > 1 / 3.0:
+                out.append("%s: hidden in %.0f%% of %d samples (never seen)" % (name, 100 * sh, n))
+    else:
+        sh, n = share(lambda s: s["lee"] and s["moving"])
+        if sh is None:
+            out.append("UNMEASURED: %d moving sample(s) in the would-be lee" % n)
+        elif sh < 2 / 3.0:
+            out.append("no genuine lee, yet moving in the would-be lee cells is seen (hidden %.0f%% of %d)" % (100 * sh, n))
+    return out
+
+
+def _lee_samples(t, pid, site, n):
+    """n samples LEE_STEP ticks apart: the animal's cell, hidden state and motion (moving: an ordered Goto job or a
+    changed cell; still: a Wait job and the same cell). lee is judged by the GENUINE site's in_lee set."""
+    out, last = [], None
+    lane = set(site["lane"])
+    for _ in range(n):
+        t.wait_ticks(LEE_STEP)
+        row = _rows(t, _rs(_rect(t, PAD_SIZE + 8)), health=True).get(pid)
+        job = str(_jobs(t).get(pid) or "")
+        c = _xz(row)
+        if c is not None and c in lane:
+            moved = last is not None and c != last
+            out.append({"cell": c, "lee": c in site["in_lee"], "hidden": _hidden(row),
+                        "moving": job == "Goto" or moved, "still": job.startswith("Wait") and not moved})
+        last = c
+    return out
+
+
+LEE_SETTLE = 6             # samples (90 ticks) dropped at the start of a pace: the ripple pass (60) catches up
+
+
+def _lee_pace(t, pid, site, ends, n):
+    """Walk the animal back and forth between the two cells `ends` (one lee class: both in, or both out of, the lee)
+    for n samples, keeping only those taken after LEE_SETTLE: a 4-cell wake is crossed faster than one ripple pass,
+    so a walk THROUGH it would read the state of the cells before."""
+    a, b = ends
+    _order_goto(t, pid, *a)
+    t.wait_ticks(300)
+    tgt, out = b, []
+    _order_goto(t, pid, *tgt)
+    for i in range(n):
+        s = _lee_samples(t, pid, site, 1)
+        if i >= LEE_SETTLE:
+            out += s
+        if s and s[-1]["cell"] == tgt:
+            tgt = a if tgt == b else b
+            _order_goto(t, pid, *tgt)
+    return out
+
+
+@suite.chain("scene_lee_reveal")
+def scene_lee_reveal(t):
+    """sc_lee_reveal (lee_reveal, windbreak_lee): a 9-cell steel wall across the Lean, one cell upwind of a 3-wide
+    mature fuzz lane running 14 cells downwind, in ordinary wind. A small wild animal held still in the wall's lee
+    stays hidden (Stall-like); walked out through the lee it is SEEN there and keeps its cover again beyond the wake
+    (RM_RippleKernel.WakeLength cells, read off the shipped kernel). Controls on the same lane: the wall moved to the
+    downwind end (no lee on the lane) and leanWakesEnabled off: a moving animal keeps its cover in the would-be lee.
+    Rules out bare ground or a global Stall passing for a local windbreak. The shimmer is the owner's look (held save)."""
+    _prep(t, "bloom")
+    x, z = t.anchor
+    got = {}
+
+    def stage(flip=False):
+        site = _lee_site(x, z, got["down"], LEE_WAKE, flip=flip)
+        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="Building")
+        t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % c for c in site["walls"]), stuff="Steel")
+        xs, zs = [c[0] for c in site["lane"]], [c[1] for c in site["lane"]]
+        t.bridge_call("jawa/set_plants", ops="RM_Fuzz:%d,%d,%d,%d" % (min(xs), min(zs), max(xs) - min(xs) + 1,
+                                                                       max(zs) - min(zs) + 1), growth=1.0)
+        return site
+
+    def animal(at):
+        """A small wild animal at `at`, held still by an ordered Wait until a walk is ordered."""
+        pid = _spawn(t, RIPPLE_SMALL, *at)
+        got.setdefault("animals", []).append(pid)
+        _ok(t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="Wait", targetAX=at[0], targetAZ=at[1], waitTicks=0),
+            "ordered_job(Wait %s)" % pid)
+        return pid
+
+    def body():
+        with _comp(t, "lee_site_staged", poison=True):
+            if _live(t):
+                if not LEE_WAKE:
+                    _unmeasured(t, "RM_RippleKernel.WakeLength unread off the shipped kernel")
+                # the full-precision heading, not Downwind's 2-decimal text: InLee rounds k-scaled components
+                v = _ok(t.bridge_call("jawa/map_comp_read", comp="RM_MapComponent_Lean", members="HeadingDegrees"),
+                        "map_comp_read(Lean)").get("values") or {}
+                try:
+                    h = math.radians(float(v["HeadingDegrees"]))
+                except (KeyError, TypeError, ValueError):
+                    _unmeasured(t, "RM_MapComponent_Lean.HeadingDegrees unreadable (%r): no wind to build a lee across" % v)
+                got["down"] = (math.cos(h), math.sin(h))
+                got["site"] = stage()
+                _lock_weather(t, "RM_ScrubWind")
+                _note(t, "lee site", {"downwind": got["down"], "wake": LEE_WAKE, "walls": got["site"]["walls"][:2],
+                                      "lee cells": len(got["site"]["in_lee"])})
+                if not got["site"]["in_lee"]:
+                    _unmeasured(t, "the kernel finds no lee cell on the lane for wind %s" % (got["down"],))
+        site = got.get("site")
+        with _comp(t, "lee_still_in_lee_hidden", toggle="leanWakesEnabled"):
+            if _live(t):
+                pid = animal(site["lee_start"])
+                got["still"] = _lee_samples(t, pid, site, 18)[LEE_SETTLE:]
+                got["walk"] = _lee_pace(t, pid, site, site["pace_lee"], 24)
+                got["beyond"] = _lee_pace(t, pid, site, site["pace_beyond"], 24)
+                samples = got["still"] + got["walk"] + got["beyond"]
+                _note(t, "lee samples (lee, moving, still, hidden)",
+                      [(s["lee"], s["moving"], s["still"], s["hidden"]) for s in samples])
+                bad = _lee_offences(samples)
+                if any(b.startswith("UNMEASURED: ") and "still in the lee" in b for b in bad):
+                    _unmeasured(t, [b for b in bad if "still in the lee" in b][0])
+                _only(bad, "still in the lee:")
+        with _comp(t, "lee_moving_in_lee_revealed", toggle="leanWakesEnabled"):
+            if _live(t):
+                bad = _lee_offences(got.get("still", []) + got.get("walk", []) + got.get("beyond", []))
+                if any(b.startswith("UNMEASURED: ") and "moving in the lee" in b for b in bad):
+                    _unmeasured(t, [b for b in bad if "moving in the lee" in b][0])
+                _only(bad, "moving in the lee:")
+        with _comp(t, "lee_moving_beyond_hidden"):
+            if _live(t):
+                bad = _lee_offences(got.get("still", []) + got.get("walk", []) + got.get("beyond", []))
+                if any(b.startswith("UNMEASURED: ") and "beyond the lee" in b for b in bad):
+                    _unmeasured(t, [b for b in bad if "beyond the lee" in b][0])
+                _only(bad, "moving beyond the lee:")
+        with _comp(t, "lee_reversed_wall_no_lee"):
+            if _live(t):
+                _vanish(t, *got.get("animals", []))
+                rev = stage(flip=True)
+                # the would-be lee: the cells a wake would cover if the wind blew the other way past this wall
+                rev["in_lee"] = set(c for c in rev["lane"] if _in_lee(c, (-got["down"][0], -got["down"][1]),
+                                                                        set(rev["walls"]), LEE_WAKE))
+                pid = animal(rev["beyond_end"])
+                s = _lee_pace(t, pid, rev, rev["pace_beyond"], 24)
+                _note(t, "reversed wall samples", [(r["lee"], r["moving"], r["hidden"]) for r in s])
+                bad = _lee_offences(s, genuine=False)
+                if bad and bad[0].startswith("UNMEASURED: "):
+                    _unmeasured(t, bad[0])
+                _only(bad, "")
+        with _comp(t, "lee_wakes_off_no_lee", toggle="leanWakesEnabled"):
+            if _live(t):
+                _vanish(t, *got.get("animals", []))
+                stage()
+                pid = animal(site["lee_start"])
+                with _setting(t, "leanWakesEnabled", False):
+                    s = _lee_pace(t, pid, site, site["pace_lee"], 24)
+                _note(t, "wakes-off samples", [(r["lee"], r["moving"], r["hidden"]) for r in s])
+                bad = _lee_offences(s, genuine=False)
+                if bad and bad[0].startswith("UNMEASURED: "):
+                    _unmeasured(t, bad[0])
+                _only(bad, "")
+        with _comp(t, "lee_checker_rejects_injections"):
+            if _live(t):
+                def smp(lee, moving, hidden, n=3):
+                    return [{"lee": lee, "moving": moving, "still": not moving, "hidden": hidden}] * n
+                good = smp(True, False, True) + smp(True, True, False) + smp(False, True, True)
+                _rejects("lee", _lee_offences, good, {
+                    "still in the lee seen": smp(True, False, False) + good[3:],
+                    "moving in the lee hidden": good[:3] + smp(True, True, True) + good[6:],
+                    "beyond the lee seen (a global Stall)": good[:6] + smp(False, True, False),
+                    "no lee samples at all": smp(False, True, True)})
+                _rejects("no-lee control", lambda s: _lee_offences(s, genuine=False), smp(True, True, True),
+                         {"a reversed wall still reveals": smp(True, True, False)})
+    with _scene(t, "sc_lee_reveal", "owner_review"):
+        try:
+            _stable(t, body)
+        finally:
+            _clear_fuzz_patch(t)
+
+
+# --------------------------------------------------------------------------- scene: island_land
+
+# Three map-free world tiles for fresh Scrub maps (LSCRUB_ISLAND_TILES=a,b,c). The start the genstep keeps clear is
+# MapGenerator.PlayerStartSpot, valid only DURING generation and never saved: LSCRUB_ISLAND_START_HOOK names a public
+# static (Map)->IntVec3 returning the start the genstep actually used; the start rows are UNMEASURED until it exists
+# (a substitute disc is exactly what the contract rules out).
+ISLAND_TILES = tuple(int(x) for x in os.environ.get("LSCRUB_ISLAND_TILES", "").split(",") if x.strip().isdigit())
+ISLAND_START_HOOK = os.environ.get("LSCRUB_ISLAND_START_HOOK", "").strip()
+ISLAND_MAP_SIZE = 250            # the default colony map
+ISLAND_SHARE_BAND = (0.5, 1.6)   # declared generator tolerance on the configured share (northstar venomvine_islands_live)
+ISLAND_MIN_CELLS = _shipped_text(os.path.join(HERE, "Source", "RM_VenomvineIslands.cs"),
+                                 r"public int minIslandCells = (\d+);", int)
+SWORN = "RM_SwornVenomvine"
+
+
+def _island_defs():
+    """(thicket, every counted def, room forms) off the shipped RM_VenomvineIslandsExtension."""
+    with open(BIOME_XML, encoding="utf-8") as fh:
+        txt = re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+    body = re.search(r'RM_VenomvineIslandsExtension">(.*?)</li>\s*</modExtensions>', txt, re.S).group(1)
+    one = lambda tag: re.search(r"<%s>(\w+)</%s>" % (tag, tag), body).group(1)
+    forms = re.findall(r"<li>(\w+)</li>", re.search(r"<countedForms>(.*?)</countedForms>", body, re.S).group(1))
+    rooms = re.findall(r"<form>(\w+)</form>", body)
+    return one("thicketDef"), sorted(set([one("thicketDef"), one("crownDef")] + forms + rooms)), rooms
+
+
+def _components(cells):
+    """8-connected components of a set of (x, z), largest first."""
+    seen, out = set(), []
+    for c in sorted(cells):
+        if c in seen:
+            continue
+        stack, mem = [c], {c}
+        seen.add(c)
+        while stack:
+            cx, cz = stack.pop()
+            for dx in (-1, 0, 1):
+                for dz in (-1, 0, 1):
+                    q = (cx + dx, cz + dz)
+                    if q in cells and q not in seen:
+                        seen.add(q)
+                        mem.add(q)
+                        stack.append(q)
+        out.append(mem)
+    return sorted(out, key=lambda m: -len(m))
+
+
+def _islands(cells, min_cells):
+    return [m for m in _components(set(cells)) if len(m) >= min_cells]
+
+
+def _island_offences(maps, off, cfg):
+    """maps [{"tile", "open", "cells" {(x, z): def}, "start" (x, z)|None, "exits" {dir: reachable}|None}] read before
+    any cleanup; off: the first tile regenerated with venomvineIslandsEnabled off (same shape); cfg {"share",
+    "min_cells", "clearance", "rooms", "thicket"}. Island share of open ground inside the declared band round the
+    configured target; abundant islands with rarer form rooms; Sworn in no island; no island cell inside the clearance
+    of the ACTUAL start; every start exit reachable; the off map lays none. An "UNMEASURED:" line names what was not
+    read. -> offences."""
+    out, lo, hi = [], ISLAND_SHARE_BAND[0] * cfg["share"], ISLAND_SHARE_BAND[1] * cfg["share"]
+    for m in maps:
+        isl = _islands(m["cells"], cfg["min_cells"])
+        cells = set().union(*isl) if isl else set()
+        share = len(cells) / float(m["open"]) if m.get("open") else None
+        tag = "tile %s" % m["tile"]
+        if share is None:
+            out.append("UNMEASURED: %s open ground unread" % tag)
+        elif not lo <= share <= hi:
+            out.append("%s share: islands cover %.3f of open ground, outside %.3f..%.3f" % (tag, share, lo, hi))
+        if len(isl) < 3:
+            out.append("%s share: only %d island(s) of %d+ cells, not abundant" % (tag, len(isl), cfg["min_cells"]))
+        room = [c for c in cells if m["cells"][c] in cfg["rooms"]]
+        body = [c for c in cells if m["cells"][c] == cfg["thicket"]]
+        if not any(any(m["cells"][c] in cfg["rooms"] for c in i) for i in isl):
+            out.append("%s rooms: no island holds a form room" % tag)
+        elif len(room) >= len(body):
+            out.append("%s rooms: form rooms (%d cells) are not rarer than the thicket (%d)" % (tag, len(room), len(body)))
+        sworn = sorted(c for c in cells if m["cells"][c] == SWORN)
+        if sworn:
+            out.append("%s rooms: Sworn grows as a wild island room at %s" % (tag, sworn[:3]))
+        st = m.get("start")
+        if st is None:
+            out.append("UNMEASURED: %s start: the generator's start was not read" % tag)
+            continue
+        near = [c for c in cells if (c[0] - st[0]) ** 2 + (c[1] - st[1]) ** 2 < cfg["clearance"] ** 2]
+        if near:
+            out.append("%s start: island cell(s) %s inside the %.0f-cell clearance of the actual start %s"
+                       % (tag, sorted(near)[:3], cfg["clearance"], st))
+        blocked = sorted(d for d, ok in (m.get("exits") or {}).items() if not ok)
+        if m.get("exits") is None:
+            out.append("UNMEASURED: %s start: no exit was walked" % tag)
+        elif blocked:
+            out.append("%s start: exit(s) %s from the actual start %s cannot be walked" % (tag, blocked, st))
+    if off is not None:
+        isl = _islands(off["cells"], cfg["min_cells"])
+        share = sum(len(i) for i in isl) / float(off["open"]) if off.get("open") else None
+        if share is None:
+            out.append("UNMEASURED: the off map's open ground unread")
+        elif share >= lo:
+            out.append("islands off: the off map still carries %.3f island share (%d islands)" % (share, len(isl)))
+    return out
+
+
+def _island_census(t, tile, defs, start_ok=True):
+    """One fresh map's reading: the counted venomvine cells, open ground (RM_VenomvineIslandsUtil.CountOpen), the
+    generator's start (ISLAND_START_HOOK) and a colonist's walk from it to the four edge midpoints."""
+    lt = _ok(t.bridge_call("jawa/list_things", defName=",".join(defs), limit=30000), "list_things(venomvine)")
+    if lt.get("isCompleteList") is False:
+        _unmeasured(t, "tile %s: the venomvine census was truncated (isCompleteList false)" % tile)
+    cells = dict(((r.get("x"), r.get("z")), r.get("def") or r.get("defName")) for r in lt.get("things") or [])
+    oc = _ok(t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_VenomvineIslandsUtil",
+                           method="CountOpen", args="current"), "CountOpen")
+    try:
+        open_n = int(str(oc.get("result")).strip())
+    except ValueError:
+        open_n = None
+    start, exits = None, None
+    if start_ok and ISLAND_START_HOOK:
+        nums = re.findall(r"-?\d+", _hook_value(t, ISLAND_START_HOOK, "current", "the generator's start"))
+        start = (int(nums[0]), int(nums[-1])) if len(nums) >= 2 else None
+    if start is not None:
+        exits = {}
+        e = ISLAND_MAP_SIZE - 6
+        for d, (tx, tz) in sorted({"north": (start[0], e), "south": (start[0], 5), "east": (e, start[1]),
+                                   "west": (5, start[1])}.items()):
+            walker = _spawn(t, "Colonist", start[0], start[1], faction="player")    # a fresh walker ON the start
+            rr = _ok(t.bridge_call("jawa/order_pawn", pawnId=walker, x=tx, z=tz, waitTicks=2500, undraftAfter=False),
+                     "order_pawn(%s)" % d)
+            res = rr.get("results") or rr.get("pawns") or [rr]
+            res = res[0] if isinstance(res, list) and res else res
+            exits[d] = (res or {}).get("canReach") is True
+            _vanish(t, walker)
+    return {"tile": tile, "open": open_n, "cells": cells, "start": start, "exits": exits}
+
+
+@suite.chain("scene_island_land")
+def scene_island_land(t):
+    """sc_island_land (island_land, vine_islands): three FRESH Scrub maps generated normally on three map-free tiles,
+    read before any cleanup: the islands (8-connected venomvine of minIslandCells+) cover the configured share of open
+    ground within the declared band, abundant, with rarer form rooms and no Sworn among them; the generator's ACTUAL
+    start (LSCRUB_ISLAND_START_HOOK) keeps its clearance and a colonist walks from it to all four edges. Control: the
+    first tile regenerated with venomvineIslandsEnabled off carries no island share; the checker refuses a blocked
+    start and never substitutes a disc. Held for the owner: tree-tall islands at ordinary zoom are his look."""
+    _pad(t, "spawn")
+    got = {}
+
+    def body():
+        with _comp(t, "island_maps_generated", poison=True):
+            if _live(t):
+                if len(ISLAND_TILES) < 3:
+                    _unmeasured(t, "name three map-free world tiles: LSCRUB_ISLAND_TILES=a,b,c")
+                if not ISLAND_MIN_CELLS:
+                    _unmeasured(t, "RM_VenomvineIslandsExtension.minIslandCells unread off the shipped source")
+                thicket, defs, rooms = _island_defs()
+                got["cfg"] = {"share": float(_get_setting(t, "venomvineIslandShare")),
+                              "clearance": float(_get_setting(t, "venomvineStartClearance")),
+                              "min_cells": ISLAND_MIN_CELLS, "rooms": rooms, "thicket": thicket}
+                home = _map_id(t)
+                got["maps"] = [_fresh_map(t, tile, "RM_LeaningScrub", home, lambda _m, tl=tile: _island_census(t, tl, defs),
+                                          size=ISLAND_MAP_SIZE) for tile in ISLAND_TILES[:3]]
+                for m in got["maps"]:
+                    _note(t, "island census tile %s" % m["tile"], {"open": m["open"], "vine": len(m["cells"]),
+                                                                   "start": m["start"], "exits": m["exits"]})
+        with _comp(t, "island_share_meets_target"):
+            if _live(t):
+                bad = _island_offences(got["maps"], None, got["cfg"])
+                if any("open ground unread" in b for b in bad):
+                    _unmeasured(t, [b for b in bad if "open ground unread" in b][0])
+                _only(bad, " share:")
+        with _comp(t, "island_rooms_rarer_no_sworn"):
+            if _live(t):
+                _only(_island_offences(got["maps"], None, got["cfg"]), " rooms:")
+        with _comp(t, "island_start_clear_exits_walkable"):
+            if _live(t):
+                bad = _island_offences(got["maps"], None, got["cfg"])
+                um = [b for b in bad if b.startswith("UNMEASURED: ") and " start:" in b]
+                if um:
+                    _unmeasured(t, um[0] + ("" if ISLAND_START_HOOK else " (no bridge tool reads the start the genstep "
+                                            "used; set LSCRUB_ISLAND_START_HOOK=<Type.Method>, a public static (Map)->IntVec3)"))
+                _only(bad, " start:")
+        with _comp(t, "island_toggle_off_lays_none", toggle="venomvineIslandsEnabled"):
+            if _live(t):
+                thicket, defs, rooms = _island_defs()
+                home = _map_id(t)
+                with _setting(t, "venomvineIslandsEnabled", False):
+                    got["off"] = _fresh_map(t, ISLAND_TILES[0], "RM_LeaningScrub", home,
+                                            lambda _m: _island_census(t, ISLAND_TILES[0], defs, start_ok=False),
+                                            size=ISLAND_MAP_SIZE)
+                _note(t, "off map census", {"open": got["off"]["open"], "vine": len(got["off"]["cells"])})
+                _only(_island_offences([], got["off"], got["cfg"]), "islands off")
+        with _comp(t, "island_checker_rejects_injections"):
+            if _live(t):
+                cfg = {"share": 0.15, "clearance": 10.0, "min_cells": 4, "rooms": ["R"], "thicket": "T"}
+
+                def isl(x0, z0, room=False, d="T"):
+                    c = dict(((x0 + i, z0 + j), d) for i in range(5) for j in range(5))
+                    if room:
+                        c[(x0, z0)] = "R"
+                    return c
+                cells = {}
+                for k, (x0, z0) in enumerate(((40, 40), (60, 40), (40, 60), (60, 60))):
+                    cells.update(isl(x0, z0, room=k < 2))
+                ok_exits = {"north": True, "south": True, "east": True, "west": True}
+                m = {"tile": 1, "open": 700, "cells": cells, "start": (10, 10), "exits": ok_exits}
+                off = {"tile": 1, "open": 700, "cells": {}}
+                fn = lambda a: _island_offences(a[0], a[1], cfg)
+                _rejects("island", fn, ([m, m, m], off), {
+                    "blocked start (an island on it)": ([dict(m, start=(42, 42))] * 3, off),
+                    "a start exit blocked": ([dict(m, exits=dict(ok_exits, east=False))] * 3, off),
+                    "start never read": ([dict(m, start=None)] * 3, off),
+                    "share far below target": ([dict(m, open=7000)] * 3, off),
+                    "Sworn in an island": ([dict(m, cells=dict(list(cells.items()) + [((41, 41), SWORN)]))] * 3, off),
+                    "rooms everywhere": ([dict(m, cells=dict((c, "R") for c in cells))] * 3, off),
+                    "the off map lays islands": ([m, m, m], dict(off, cells=cells))})
+    with _scene(t, "sc_island_land", "owner_review"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: ordered_travel
+
+ORDER_CREW = 8             # colonists doing the ordinary work (the expedition is one of them)
+
+
+def _ordered_offences(r):
+    """The ordered-travel checker, pure. r {"auto_hazard" [(pawn, cell)] automatic work in the armed vine in any phase,
+    "deliveries" while the detour stood, "closed_deliveries", "closed_waiting", "trip_reached" the ordered pawn stood at
+    its vine target, "trip_back" it came back out, "after_hazard" [(pawn, cell)] once the order completed, "cancel_hazard"
+    [cells] after the canceled order, "reload_hazard" [(pawn, cell)] after a reload, "blocked_in" [cells] a strictly
+    blocked body ordered into the vine stood on}. -> offences."""
+    out = []
+    if r.get("auto_hazard"):
+        out.append("automatic work entered the armed vine: %s" % sorted(r["auto_hazard"])[:4])
+    if not r.get("deliveries"):
+        out.append("routine hauling never used the clear detour")
+    if not r.get("closed_deliveries") and not r.get("closed_waiting"):
+        out.append("with the detour closed, supplies neither continued nor visibly waited")
+    if not r.get("trip_reached"):
+        out.append("the explicit order did not carry its pawn to the target across the vine")
+    if not r.get("trip_back"):
+        out.append("the ordered return never brought the pawn back out")
+    if r.get("after_hazard"):
+        out.append("after the completed order, automatic work entered the vine: %s" % sorted(r["after_hazard"])[:4])
+    if r.get("cancel_hazard"):
+        out.append("the canceled order still walked into the vine: %s" % sorted(r["cancel_hazard"])[:4])
+    if r.get("reload_hazard"):
+        out.append("after a reload, automatic work entered the vine: %s" % sorted(r["reload_hazard"])[:4])
+    if r.get("blocked_in"):
+        out.append("a strictly blocked body ordered into the vine stood in it: %s" % sorted(r["blocked_in"])[:4])
+    return out
+
+
+def _order_trip(t, pid, target, back, g):
+    """Order `pid` onto the vine cell `target`, then back to `back`. -> (reached, came back out)."""
+    _order_goto(t, pid, *target)
+    reached = False
+    for _ in range(8):
+        t.wait_ticks(ROUTE_SAMPLE)
+        c = _xz(_rows(t, _rs(_rect(t, ROUTE_SIZE + 8))).get(pid))
+        if c is not None and _dist(c, target) <= 1.5:
+            reached = True
+            break
+    _order_goto(t, pid, *back)
+    out = False
+    for _ in range(8):
+        t.wait_ticks(ROUTE_SAMPLE)
+        c = _xz(_rows(t, _rs(_rect(t, ROUTE_SIZE + 8))).get(pid))
+        if c is not None and c not in _vine_cells(t, _rect(t, ROUTE_SIZE + 8)) and _dist(c, back) <= 2:
+            out = True
+            break
+    return reached, out
+
+
+@suite.chain("scene_ordered_travel")
+def scene_ordered_travel(t):
+    """sc_ordered_travel (ordered_travel, ordered_crossing_policy): the route site with its shortcut (route B) armed by
+    mature thicket and the longer developed detour (route A) clear, logs to haul, a crew of 8. Phases: ordinary work
+    (hauling uses the detour, nobody enters the vine); the detour walled and paths recalculated (supplies wait,
+    nobody crosses); one EXPLICIT order onto a vine cell and back (it is carried out); after it completes, after a
+    canceled second order, and after a save and reload, automatic work never enters the vine; a strictly blocked body
+    (a player Muffalo, body 2.4 past the barrier's 1.5) ordered into the vine stays out. Rules out a high path cost
+    that passes one detour but lets later automatic work cross."""
+    _prep(t, "routes", ROUTE_SIZE)
+    x, z = t.anchor
+    g = _route_geometry(x, z)
+    r = {"auto_hazard": [], "after_hazard": [], "cancel_hazard": [], "reload_hazard": [], "blocked_in": []}
+    got = {}
+
+    def body():
+        with _comp(t, "ordered_site_staged", poison=True):
+            if _live(t):
+                g.update(_route_geometry(x, z, _route_sign(t, _lean_wind(t))))
+                got["crew"] = _route_site(t, g, ORDER_CREW)
+                t.bridge_call("jawa/set_plants", ops=";".join("%s:%d,%d,1,1" % (THICKET, cx, cz) for cx, cz in g["b"]),
+                              growth=1.0)
+                if not _vine_cells(t, _rect(t, ROUTE_SIZE + 8)) & set(g["b"]):
+                    _unmeasured(t, "no thicket took on the shortcut: nothing armed to cross")
+        with _comp(t, "ordered_auto_work_avoids_vine"):
+            if _live(t):
+                d0 = _delivered(t, g)
+                s = _route_phase(t, g, got["crew"], 3000)
+                r["auto_hazard"] += s["hazard"]
+                r["deliveries"] = _delivered(t, g) - d0
+                bx, bz = g["detour_block"][:2]
+                t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (bx, bz + k) for k in range(3)), stuff="Steel")
+                sx, sz = g["source"][:2]
+                t.bridge_call("jawa/spawn_batch", ops=";".join("WoodLog:%d,%d,1" % (sx + i % 4, sz + i // 4 % 4)
+                                                               for i in range(8)))
+                d1 = _delivered(t, g)
+                s = _route_phase(t, g, got["crew"], 3000)
+                r["auto_hazard"] += s["hazard"]
+                r["closed_deliveries"] = _delivered(t, g) - d1
+                r["closed_waiting"] = _stack_total(t, "WoodLog", _rs(g["source"])) > 0
+                _note(t, "ordinary and closed-detour work", dict(r, auto_hazard=r["auto_hazard"][:6]))
+                _only(_ordered_offences(r), "automatic work entered", "never used the clear detour", "neither continued")
+        vine_b = [c for c in g["b"] if c[0] == g["b"][len(g["b"]) // 2][0]]
+        with _comp(t, "ordered_trip_carried_out"):
+            if _live(t):
+                exp = got["crew"][0]
+                home_cell = g["crew_at"][0]
+                got["target"] = vine_b[len(vine_b) // 2]
+                r["trip_reached"], r["trip_back"] = _order_trip(t, exp, got["target"], home_cell, g)
+                _note(t, "explicit trip (reached, back out)", [r["trip_reached"], r["trip_back"]])
+                _only(_ordered_offences(r), "explicit order did not", "ordered return")
+        with _comp(t, "ordered_completed_grants_nothing"):
+            if _live(t):
+                s = _route_phase(t, g, got["crew"], 2000)
+                r["after_hazard"] += s["hazard"]
+                _only(_ordered_offences(r), "after the completed order")
+        with _comp(t, "ordered_cancel_grants_nothing"):
+            if _live(t):
+                exp = got["crew"][0]
+                _order_goto(t, exp, *got["target"])
+                t.wait_ticks(60)
+                _ok(t.bridge_call("jawa/stop_job", pawnId=exp), "stop_job(%s)" % exp)
+                for _ in range(6):
+                    t.wait_ticks(ROUTE_SAMPLE)
+                    c = _xz(_rows(t, _rs(_rect(t, ROUTE_SIZE + 8))).get(exp))
+                    if c in _vine_cells(t, _rect(t, ROUTE_SIZE + 8)):
+                        r["cancel_hazard"].append(c)
+                _only(_ordered_offences(r), "canceled order")
+        with _comp(t, "ordered_reload_grants_nothing"):
+            if _live(t):
+                name = "lscrub_ordered_reload_%d" % int(time.time())
+                _ok(t.bridge_call("rimworld/save_game", saveName=name), "save_game(%s)" % name)
+                _ok(_scene_load(t, name), "load_game_ready(%s)" % name)
+                s = _route_phase(t, g, got["crew"], 2000)
+                r["reload_hazard"] += s["hazard"]
+                _only(_ordered_offences(r), "after a reload")
+        with _comp(t, "ordered_blocked_body_stays_out"):
+            if _live(t):
+                big = _spawn(t, HUGE, g["crew_at"][1][0], g["crew_at"][1][1], faction="player")
+                free = g["crew_at"][3]
+                _order_goto(t, big, *free)           # sanity: this body takes an ordered walk at all
+                t.wait_ticks(600)
+                c = _xz(_rows(t, _rs(_rect(t, ROUTE_SIZE + 8))).get(big))
+                if c is None or _dist(c, free) > 1.5:
+                    _vanish(t, big)
+                    _unmeasured(t, "the %s never walked to a free cell (%s, at %s): staying out of the vine proves nothing"
+                                % (HUGE, free, c))
+                _order_goto(t, big, *got["target"])
+                for _ in range(6):
+                    t.wait_ticks(ROUTE_SAMPLE)
+                    c = _xz(_rows(t, _rs(_rect(t, ROUTE_SIZE + 8))).get(big))
+                    if c in _vine_cells(t, _rect(t, ROUTE_SIZE + 8)):
+                        r["blocked_in"].append(c)
+                _vanish(t, big)
+                _only(_ordered_offences(r), "strictly blocked body")
+        with _comp(t, "ordered_checker_rejects_injections"):
+            if _live(t):
+                good = {"auto_hazard": [], "deliveries": 4, "closed_deliveries": 0, "closed_waiting": True,
+                        "trip_reached": True, "trip_back": True, "after_hazard": [], "cancel_hazard": [],
+                        "reload_hazard": [], "blocked_in": []}
+                _rejects("ordered travel", _ordered_offences, good, {
+                    "automatic crossing": dict(good, auto_hazard=[("P1", (1, 1))]),
+                    "order not carried out": dict(good, trip_reached=False),
+                    "completed order authorizes later work": dict(good, after_hazard=[("P1", (2, 2))]),
+                    "cancel ignored": dict(good, cancel_hazard=[(3, 3)]),
+                    "reload authorizes": dict(good, reload_hazard=[("P2", (4, 4))]),
+                    "blocked body ordered through": dict(good, blocked_in=[(5, 5)]),
+                    "silent stall": dict(good, closed_waiting=False)})
+    with _scene(t, "sc_ordered_travel", "immediate"):
+        _stable(t, body)
+
+
+# --------------------------------------------------------------------------- scene: lure
+
+LURE, LURE_FRUIT, LURE_EATER, LURE_ALT = "RM_LureVenomvine", "RM_LureFruit", "Hare", "RawBerries"
+LURE_XML = os.path.join(HERE, "Defs", "ThingDefs_Plants", "RM_VenomvineFourForms.xml")
+LURE_BLOCK = r'RM_CompProperties_Lure">(?:(?!</li>).)*?'      # the lure comp's own block: other forms ship a minGrowth
+LURE_CAP = _shipped_text(LURE_XML, LURE_BLOCK + r"<fruitCap>(\d+)</fruitCap>", int)
+LURE_REACH = _shipped_text(LURE_XML, LURE_BLOCK + r"<reach>(\d+)</reach>", int)
+LURE_MIN_GROWTH = _shipped_text(LURE_XML, LURE_BLOCK + r"<minGrowth>([\d.]+)</minGrowth>")
+LURE_EMIT_TICKS = 8000     # four CompTickLong passes (2000 ticks): a fruit each until the cap
+
+
+def _lure_offences(r):
+    """The lure checker, pure. r {"emitted" max fruit within reach while it ran, "cap", "over_cap" [counts above the
+    cap], "eaten" fruit used up by the hungry herbivore, "ingest" an Ingest job seen on it, "food" (before, after),
+    "fed_eaten", "fed_ingest", "walled_eaten", "off_emitted", "young_emitted"}. -> offences."""
+    out = []
+    if not r.get("emitted"):
+        out.append("emission: a mature stand dropped no fruit")
+    if r.get("over_cap"):
+        out.append("emission: local supply %s exceeded the cap %s" % (r["over_cap"][:3], r.get("cap")))
+    if not r.get("eaten"):
+        out.append("eating: the hungry herbivore ate no lure fruit")
+    elif not r.get("ingest") or not (r.get("food") and r["food"][1] > r["food"][0]):
+        out.append("eating: fruit is gone but no eating was seen (Ingest %s, food %s)" % (r.get("ingest"), r.get("food")))
+    elif r.get("berries_eaten"):
+        out.append("eating: the equal berry pile fed it (%s eaten): the fruit was not what it chose" % r["berries_eaten"])
+    if r.get("fed_eaten") or r.get("fed_ingest"):
+        out.append("fed: a fed herbivore went for the fruit (eaten %s, Ingest %s)" % (r.get("fed_eaten"), r.get("fed_ingest")))
+    if r.get("walled_eaten"):
+        out.append("unreachable: a sealed-in herbivore used up %s fruit" % r["walled_eaten"])
+    if r.get("off_emitted"):
+        out.append("off/young: lureEnabled off but the stand dropped %s fruit" % r["off_emitted"])
+    if r.get("young_emitted"):
+        out.append("off/young: an immature stand dropped %s fruit" % r["young_emitted"])
+    return out
+
+
+@suite.chain("scene_lure")
+def scene_lure(t):
+    """sc_lure (lure): a mature lure venomvine with zero fruit emits on real CompTickLong passes and never holds more
+    than its shipped cap within reach; a hungry Hare with an equal RawBerries pile across the stand walks to the fruit
+    and EATS it (fruit used up, Ingest seen, food rises); a fed Hare beside it leaves it; a hungry Hare sealed in a
+    1-cell room cannot reach it; an immature stand and lureEnabled off drop none. Rules out spawned fruit standing in
+    for unobserved attraction, and a food search that never completes."""
+    _prep(t, "bloom")
+    x, z = t.anchor
+    r = {"over_cap": []}
+    reach = LURE_REACH or 3
+
+    def fruit(cx, cz):
+        return _stack_total(t, LURE_FRUIT, "%d,%d,%d,%d" % (cx - reach, cz - reach, 2 * reach + 1, 2 * reach + 1))
+
+    def stacks():
+        return dict((f.get("id"), int(f.get("stackCount") or 1)) for f in _things(t, LURE_FRUIT, _rs(_rect(t, PAD_SIZE + 8)), 500))
+
+    def watch(eater, ticks):
+        """Run the clock in 250-tick steps. -> (Ingest seen, lure fruit used up, food before, after). Used up is read
+        per fruit THING (its stack shrank or it vanished), so a fresh drop between two reads cannot mask an eat."""
+        f0, s0, ingest, used = _food(t, eater), stacks(), False, 0
+        for _ in range(ticks // 250):
+            t.wait_ticks(250)
+            ingest = ingest or str(_jobs(t).get(eater) or "").startswith("Ingest")
+            now = stacks()
+            used = sum(max(0, n - now.get(i, 0)) for i, n in s0.items())
+            if used:
+                break
+        return ingest, used, f0, _food(t, eater)
+
+    def body():
+        with _comp(t, "lure_emits_to_cap", toggle="lureEnabled"):
+            if _live(t):
+                if not LURE_CAP:
+                    _unmeasured(t, "RM_CompProperties_Lure.fruitCap unread off the shipped def")
+                r["cap"] = LURE_CAP
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (LURE, x, z), growth=1.0)
+                if _count(t, LURE, _rs((x, z, 1, 1))) < 1:
+                    _unmeasured(t, "the lure stand did not take at %d,%d" % (x, z))
+                seen = []
+                for _ in range(LURE_EMIT_TICKS // 500):
+                    t.wait_ticks(500)
+                    seen.append(fruit(x, z))
+                r["emitted"] = max(seen) if seen else 0
+                r["over_cap"] = [n for n in seen if n > LURE_CAP]
+                _note(t, "lure fruit within reach every 500 ticks (cap %s)" % LURE_CAP, seen)
+                _only(_lure_offences(r), "emission:")
+        with _comp(t, "lure_fed_not_attracted", toggle="lureEnabled"):
+            if _live(t):
+                fed = _spawn(t, LURE_EATER, x + reach + 2, z)
+                t.bridge_call("jawa/pawn_need", pawn=fed, action="need", need="Food", level=1.0)
+                r["fed_ingest"], r["fed_eaten"], _f0, _f1 = watch(fed, 2000)
+                _vanish(t, fed)
+                _only(_lure_offences(r), "fed:")
+        with _comp(t, "lure_unreachable_uneaten", toggle="lureEnabled"):
+            if _live(t):
+                ex, ez = x - reach - 4, z
+                _ok(t.bridge_call("jawa/make_empty_room", rect="%d,%d,3,3" % (ex - 1, ez - 1), stuffDef="Steel"),
+                    "make_empty_room")
+                e = _hungry(t, LURE_EATER, ex, ez)
+                _ingest, r["walled_eaten"], _f0, _f1 = watch(e, 2000)
+                _vanish(t, e)
+                t.bridge_call("jawa/destroy_batch", rects="%d,%d,3,3" % (ex - 1, ez - 1), categories="All")
+                _only(_lure_offences(r), "unreachable:")
+        with _comp(t, "lure_hungry_herbivore_eats_fruit", toggle="lureEnabled"):
+            if _live(t):
+                if fruit(x, z) < 1:
+                    _unmeasured(t, "no lure fruit lay within reach for the eater")
+                # the eater stands reach + 3 east of the stand; an equal berry pile lies reach + 3 east of the eater
+                t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,%d" % (LURE_ALT, x + 2 * (reach + 3), z, max(1, fruit(x, z))))
+                e = _hungry(t, LURE_EATER, x + reach + 3, z)
+                alt = (x + 2 * (reach + 3), z, 1, 1)
+                b0 = _stack_total(t, LURE_ALT, _rs(alt))
+                r["ingest"], r["eaten"], f0, f1 = watch(e, 6000)
+                r["food"] = (f0 or 0.0, f1 or 0.0)
+                r["berries_eaten"] = b0 - _stack_total(t, LURE_ALT, _rs(alt))
+                _note(t, "lure: hungry %s (Ingest, fruit used up, food before, after)" % LURE_EATER,
+                      [r["ingest"], r["eaten"], f0, f1])
+                _vanish(t, e)
+                _only(_lure_offences(r), "eating:")
+        with _comp(t, "lure_off_and_young_drop_none", toggle="lureEnabled"):
+            if _live(t):
+                t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="Item")
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (LURE, x, z), growth=1.0)    # the mature stand stays
+                yx = x + 3 * reach + 4
+                t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (LURE, yx, z),
+                              growth=max(0.05, (LURE_MIN_GROWTH or 0.5) / 4.0))
+                with _setting(t, "lureEnabled", False):
+                    t.wait_ticks(4500)
+                    r["off_emitted"] = fruit(x, z)
+                t.wait_ticks(4500)
+                r["young_emitted"] = fruit(yx, z)
+                _note(t, "off / young fruit", [r["off_emitted"], r["young_emitted"]])
+                _only(_lure_offences(r), "off/young:")
+        with _comp(t, "lure_checker_rejects_injections"):
+            if _live(t):
+                good = {"emitted": 3, "cap": 3, "over_cap": [], "eaten": 1, "ingest": True, "food": (0.05, 0.3),
+                        "fed_eaten": 0, "fed_ingest": False, "walled_eaten": 0, "off_emitted": 0, "young_emitted": 0}
+                _rejects("lure", _lure_offences, good, {
+                    "never emits": dict(good, emitted=0), "over the cap": dict(good, over_cap=[5]),
+                    "spawned fruit, never eaten": dict(good, eaten=0),
+                    "vanished without eating": dict(good, ingest=False),
+                    "fed from the berries": dict(good, berries_eaten=1),
+                    "fed attraction": dict(good, fed_ingest=True), "through walls": dict(good, walled_eaten=1),
+                    "off emits": dict(good, off_emitted=2), "young emits": dict(good, young_emitted=1)})
+    with _scene(t, "sc_lure", "immediate"):
         _stable(t, body)
 
 
