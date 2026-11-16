@@ -1,0 +1,17 @@
+{
+ "cycle": 5,
+ "edited": [
+  {
+   "path": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+   "why": "strengthens: scans every content root (version folders, Common/, LoadFolders.xml), every Assemblies/*.dll's names (5 shared draw-order altitudes and the legacy settings-file name allowed by name), bare hose/reel literals, and player-facing text claiming a hose or flexible pipe (port and FlowWorks text allowed); _copy now copies Assemblies, About and the version folders; mutants M16-M20 and green G3 added; nothing removed or loosened",
+   "before": {"sha": "094cd380deb87403c1f3de7c6f697f04b1a7aeb5", "sha256_16": "2c377fca26958304"},
+   "after": {"sha": "396433f04a960f26f76fc51ce82faa387a17ae9b", "sha256_16": "e530533b398b56aa"}
+  },
+  {
+   "path": "src/RimMandrake/rimflow/acceptance/guard_certificate_binds_offline_bars_accept.py",
+   "why": "new pipeline acceptance test (not a mod test): RIMMANDRAKE_BIND_CERTIFICATE_TO_OFFLINE_DECIDERS_NO_OP_PASSED, landed 094cd380de",
+   "before": null,
+   "after": {"sha": "094cd380deb87403c1f3de7c6f697f04b1a7aeb5", "sha256_16": "e68cc46d5680c023"}
+  }
+ ]
+}

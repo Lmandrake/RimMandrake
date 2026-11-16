@@ -1,0 +1,296 @@
+[
+ {
+  "id": "NH_VERSION_FOLDER_HOSE_DEF",
+  "file": "src/RimMandrake/GimmeSomeSlack/1.6/Defs/RM_PlantedHose.xml",
+  "old": null,
+  "new": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs><ThingDef><defName>RM_HoseReel</defName><thingClass>Building</thingClass></ThingDef></Defs>\n",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ],
+  "why": "RimWorld loads <mod>/1.6/Defs as well as <mod>/Defs: a hose def there ships"
+ },
+ {
+  "id": "NH_EXTRA_ASSEMBLY_HOSE_DLL",
+  "file": "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeFireHoses.dll",
+  "old": null,
+  "new": "MZ\u0090\u0000 planted: a leftover assembly whose types are Building_HoseReel CompProperties_HoseReel HoseLayQueue",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ],
+  "why": "the game loads every Assemblies/*.dll: a leftover hose assembly ships hose classes"
+ },
+ {
+  "id": "NH_ANCHOR_TEXPATH_HOSE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+  "old": "<texPath>RimMandrake/GimmeSomeSlack/Aerial/WallBracket</texPath>",
+  "new": "<texPath>RimMandrake/FlowWorks/Hose/HoseReel</texPath>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ],
+  "why": "a shipped def draws a hose texture"
+ },
+ {
+  "id": "NH_JOINED_PATH_LITERAL",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMaterials.cs",
+  "old": "            pipeMats.Clear();",
+  "new": "            pipeMats.Clear(); _ = Verse.ContentFinder<UnityEngine.Texture2D>.Get(string.Join(\"/\", \"RimMandrake\", \"FlowWorks\", \"Hose\", \"HoseSegment\"), false);",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ],
+  "why": "C# draws a hose texture from a path joined from slash-free pieces"
+ },
+ {
+  "id": "NH_HEADER_SAYS_HOSES",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",
+  "old": "public const string Header = \"Drawn flexible pipes and wires",
+  "new": "public const string Header = \"Drawn flexible hoses and wires",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ],
+  "why": "the Mod Settings header tells the player the mod draws hoses"
+ },
+ {
+  "id": "NHT_PROSE_TAKES_LABEL",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+  "old": "PROSE = {\"description\",",
+  "new": "PROSE = {\"label\", \"description\",",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE"
+  ],
+  "why": "changed file: the decider stops reading labels"
+ },
+ {
+  "id": "NHT_WORD_DROPS_PIPE",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+  "old": "WORD = re.compile(r\"hose|reel|pipe\", re.I)",
+  "new": "WORD = re.compile(r\"hose|reel\", re.I)",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE"
+  ],
+  "why": "changed file: the decider stops reading pipe"
+ },
+ {
+  "id": "TT_NO_HOSE_COMMAND_TRUE",
+  "file": "design/concepts/GimmeSomeSlack/version/test_table.json",
+  "old": "\"command\": \"python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py\"",
+  "new": "\"command\": \"true\"",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "CERT"
+  ],
+  "why": "changed file: the offline bars' decider command replaced by a no-op"
+ },
+ {
+  "id": "TT_NO_HOSE_BAR_DECIDES_NOTHING",
+  "file": "design/concepts/GimmeSomeSlack/version/test_table.json",
+  "old": "\"id\": \"no_hose\",\n   \"source\": \"record.json\",\n   \"kind\": \"inventory\",\n   \"proves_at\": \"4-5\",\n   \"decides\": [\n    \"T_NO_HOSE\"\n   ],",
+  "new": "\"id\": \"no_hose\",\n   \"source\": \"record.json\",\n   \"kind\": \"inventory\",\n   \"proves_at\": \"4-5\",\n   \"decides\": [],",
+  "bars": [
+   "no_hose"
+  ],
+  "suites": [
+   "CERT"
+  ],
+  "why": "changed file: an offline bar left with no decider"
+ },
+ {
+  "id": "C_FALLEN_SHOCK_EXTERNAL_GATED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+  "old": "            ExternalContacts(map, contacts, tips, dropped);",
+  "new": "            if (AerialSettings.enabled) ExternalContacts(map, contacts, tips, dropped);",
+  "bars": [
+   "shock_reach_setting",
+   "fallen_wire_shock"
+  ],
+  "suites": [
+   "DROPPED",
+   "BITES",
+   "OUTLIVES_B",
+   "CORE"
+  ],
+  "why": "caller: FlowWorks' dropped cords gated on the overhead master again"
+ },
+ {
+  "id": "C_FLOOR_DEAD_END_BITES",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/FloorEndShock.cs",
+  "old": "                if (g.EndLive(e.NetCell) != true) continue;",
+  "new": "                if (g.EndLive(e.NetCell) == null) continue;",
+  "bars": [
+   "floor_end_shocks_crossers",
+   "floor_end_shock"
+  ],
+  "suites": [
+   "BITES",
+   "CORE"
+  ],
+  "why": "caller: a dead floor end becomes a contact"
+ },
+ {
+  "id": "C_FLOOR_ANY_BUILDER_EXEMPT",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/FloorEndShock.cs",
+  "old": "if (!(built is ThingDef td) || !td.EverTransmitsPower) return false;",
+  "new": "if (!(built is ThingDef td)) return false;",
+  "bars": [
+   "floor_end_shocks_crossers",
+   "floor_end_shock"
+  ],
+  "suites": [
+   "BITES",
+   "CORE"
+  ],
+  "why": "caller: any construction beside the end exempts its builder"
+ },
+ {
+  "id": "C_TAP_OWN_NET_STEALS",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompPowerTap.cs",
+  "old": "                    victim == ours, AerialSettings.tapsEnabled",
+  "new": "                    false, AerialSettings.tapsEnabled",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "power_theft"
+  ],
+  "suites": [
+   "CORE"
+  ],
+  "why": "caller: a clamp on our own net counts as theft"
+ },
+ {
+  "id": "C_RESTRING_IGNORES_SPEED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RestringJob.cs",
+  "old": "workTotal = AerialMath.RestringTicks(pawn.GetStatValue(StatDefOf.ConstructionSpeed));",
+  "new": "workTotal = AerialMath.RestringTicks(1f);",
+  "bars": [
+   "restring_cut_span",
+   "restring_job"
+  ],
+  "suites": [
+   "CORE"
+  ],
+  "why": "caller: the re-string job ignores the worker's construction speed"
+ },
+ {
+  "id": "C_PATCH_SWITCH_XPATH_TYPO",
+  "file": "src/RimMandrake/GimmeSomeSlack/Patches/RM_ConduitStyleable.xml",
+  "old": "<xpath>Defs/ThingDef[defName=\"PowerSwitch\"]/comps</xpath>",
+  "new": "<xpath>Defs/ThingDef[defName=\"PowerSwich\"]/comps</xpath>",
+  "bars": [
+   "four_looks_one_run",
+   "four_styles"
+  ],
+  "suites": [
+   "CORE",
+   "SETTINGS"
+  ],
+  "why": "patch: the power switch never becomes styleable"
+ },
+ {
+  "id": "K_GOODWILL_REMAINDER_LOST",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "            drainTicks -= days * ticksPerDay;",
+  "new": "            drainTicks = 0;",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "power_theft"
+  ],
+  "suites": [
+   "CORE",
+   "LANE1"
+  ],
+  "why": "kernel: the part-day remainder is dropped (re-plant of a claimed fix)"
+ },
+ {
+  "id": "K_INRANGE_STRICT",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "            return dx * dx + dz * dz <= range * range + 1e-9;",
+  "new": "            return dx * dx + dz * dz < range * range - 1e-9;",
+  "bars": [
+   "spans_above_everything",
+   "overhead_spans"
+  ],
+  "suites": [
+   "CORE",
+   "LANE1"
+  ],
+  "why": "kernel: a mast exactly at range is refused"
+ },
+ {
+  "id": "K_CUT_SPANS_FALL_AGAIN",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "if (killed && st == SpanState.Up) plan.Fallen.Add",
+  "new": "if (killed) plan.Fallen.Add",
+  "bars": [
+   "downed_spans",
+   "fallen_span_on_ground"
+  ],
+  "suites": [
+   "CORE",
+   "LANE1"
+  ],
+  "why": "kernel: an already-cut span drops a second wire"
+ },
+ {
+  "id": "K_SHOCKRULE_FLOOR_BITES_UNDER_DOWNED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
+  "old": "kind == LineKind.FloorEnd ? reach == ShockReach.All : reach != ShockReach.None",
+  "new": "kind == LineKind.FloorEnd ? reach != ShockReach.None : reach != ShockReach.None",
+  "bars": [
+   "shock_reach_setting"
+  ],
+  "suites": [
+   "CORE",
+   "BITES"
+  ],
+  "why": "kernel: Only downed lines still shocks at a floor end"
+ },
+ {
+  "id": "NH_HEADER_SAYS_HOSES_AFTER_FIX",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",
+  "old": "public const string Header = \"Drawn wires",
+  "new": "public const string Header = \"Drawn flexible hoses and wires",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ],
+  "why": "the same fault as NH_HEADER_SAYS_HOSES, planted on the fixed header text"
+ }
+]

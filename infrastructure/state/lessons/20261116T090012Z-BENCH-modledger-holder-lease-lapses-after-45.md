@@ -1,0 +1,1 @@
+A modledger holder lease lapses after 45 minutes with no modledger append (rimflow notes do not count), and only DISPATCH can regrant it: a holder run must append a session.checkpoint at every boundary, at least every 40 minutes (GSS blind cycle 5, 2026-11-16, run-1794814806)

@@ -1,0 +1,136 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_LOAD_FOLDERS_SAID_PIPES",
+   "class": "Problem",
+   "bar": "no_hose, no_hose_in_gss",
+   "criterion": "tree.json no_hose_in_gss: 'finds no hose, reel or pipe drawing in Gimme Some Slack: it draws power cords only ... must not read as a hose def or texture left behind'; oracle 'offline scan: no ThingDef, texture or class for hoses or reels under src/RimMandrake/GimmeSomeSlack'; T_NO_HOSE is the sole decider",
+   "evidence": [
+    "lane1/lane1_rows.jsonl NH_SOURCE_NO_TEXT_SAYING_GSS_DRAWS_PIPES: GimmeSomeSlackMod.Header = 'Drawn flexible pipes and wires to better display simple circuit-like plans underneath.' (the Mod Settings header the player reads)",
+    "lane2/planted_results.jsonl NH_VERSION_FOLDER_HOSE_DEF: a hose ThingDef under 1.6/Defs (the game loads version folders beside the root): T_NO_HOSE green",
+    "NH_EXTRA_ASSEMBLY_HOSE_DLL: a leftover Assemblies/*.dll holding Building_HoseReel: T_NO_HOSE green (Assemblies never read)",
+    "NH_JOINED_PATH_LITERAL: ContentFinder path string.Join('/', ..., 'Hose', 'HoseSegment'): T_NO_HOSE green",
+    "NH_HEADER_SAYS_HOSES: the header saying 'flexible hoses': T_NO_HOSE green"
+   ],
+   "would_pass": "T_NO_HOSE goes red by name on a hose or reel shipped through any content root, assembly, path piece or settings text, and the shipped mod reads green",
+   "smallest_fix": "widen the scan to every content root and Assemblies/*.dll, bare hose/reel literals and claim text (mutants M16-M20, green G3); drop 'flexible pipes and' from the header",
+   "verdict_on_criterion": "sound: the bar's words cover these paths; the test fell short of them",
+   "status": "FIXED 396433f04a960f26f76fc51ce82faa387a17ae9b",
+   "miss_of": 4,
+   "miss_note": "the header text and the shipping paths were in material unchanged since cycle 4; the scanner itself changed"
+  },
+  {
+   "id": "RIMMANDRAKE_SPLIT_GSS_DLL_HOSE_DRAW_ORDER_SHARED_TABLE",
+   "class": "Polish",
+   "bar": "no_hose, no_hose_in_gss",
+   "criterion": "sheet: 'No hose, reel or pipe is drawn by this mod'",
+   "evidence": [
+    "lane1/lane1_rows.jsonl NH_SHIPPED_DLL_NO_HOSE_SYMBOL (FAIL; still FAIL in lane2/lane1_rows_after_fix.jsonl): HoseBaseLift, HoseFittingLift, HoseQueue, HoseTopAltitude, LayerHose in the shipped DLL, from _Shared/SlackGeometry/DrawOrder.cs; no GSS caller by grep"
+   ],
+   "would_pass": "no hose-named member compiled into the GSS DLL",
+   "smallest_fix": "move DrawOrder's hose members into a hose-only shared file FlowWorks compiles and GSS does not",
+   "verdict_on_criterion": "sound; altitudes are not a drawn hose, so Polish",
+   "status": "PENDING",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_REWORD_GSS_NO_PIPE_BAR_POLES_ON_PURPOSE",
+   "class": "Polish",
+   "bar": "no_hose_in_gss, pipe_pole_switch",
+   "criterion": "sheet: 'No hose, reel or pipe is drawn by this mod.' against record.json pipe_pole_switch and his 'Their own switch.'",
+   "evidence": [
+    "lane1/lane1_rows.jsonl NH_PIPE_POLE_SPANS_DRAWN_BY_GSS_CODE (INFO): AerialLineKind.Pipe, AerialMaterials.PipeMats, CompAerialAnchor 'Link pipe span' draw and link FlowWorks pipe-pole spans"
+   ],
+   "would_pass": "the bar's words say whose the pipe-pole spans are",
+   "smallest_fix": "the neutral fixer rewords the leaf (already filed; also RIMMANDRAKE_CLARIFY_GSS_NOHOSE_BAR_PIPE_POLES_ARE_FLOWWORKS)",
+   "verdict_on_criterion": "the words are wrong, the bar keeps its meaning",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_GSS_NORTH_SOUTH_SPAN_RULER_STRAIGHT",
+   "class": "Polish",
+   "bar": "spans_above_everything",
+   "criterion": "'It must not read as ... a ruler-straight wire'",
+   "evidence": [
+    "lane1/lane1_rows.jsonl L1_SPAN_VISIBLE_OFF_CHORD_EVERY_BEARING: seed 5150, 104 of 2000 spans at sag 0.06 leave their chord by under 0.1 cell; shrunk (0,0)->(0,8) north-south lies on its chord (the droop is screen-down)",
+    "L1_SPAN_SAG_SLIDER_ZERO_IS_STRAIGHT (INFO): the sag slider reaches 0"
+   ],
+   "would_pass": "a north-south span reads as sagging",
+   "smallest_fix": "an art call for a look judge (a sideways bow), or the steward re-pins sc_spans' expect to name the bearing",
+   "verdict_on_criterion": "sound; the fix is art",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_NEVER_IN_GAME",
+   "class": "Polish",
+   "bar": "restring_cut_span",
+   "criterion": "the re-string is a colonist's job (300 ticks at speed 1)",
+   "evidence": [
+    "lane1/lane1_rows.jsonl L1_RESTRING_TICKS_SWEEP: RestringTicks(NaN) = -2147483648, RestringTicks(+inf) = 0; RestringJob passes the ConstructionSpeed stat, never NaN or inf in play"
+   ],
+   "would_pass": "RestringTicks >= 1 for every input",
+   "smallest_fix": "treat NaN and +inf like an out-of-range speed in AerialMath.RestringTicks",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_TIGHTEN_GSS_FALLEN_WIRE_WALL_CHECK_HALF_STEP",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground",
+   "criterion": "a fallen wire lies on the ground; cords end at the wall face",
+   "evidence": [
+    "lane1/lane1_rows.jsonl L1_FALLEN_ON_GROUND_NOT_IN_WALLS: seed 4405, 7 of 2500 grounded points inside a wall cell, deepest 0.139 cell, Blocked false; first seed 1835116343 base (11.5,27.5) toward (3.39,17.48)"
+   ],
+   "would_pass": "no grounded point inside an unwalkable cell",
+   "smallest_fix": "the item's: check the lay at the draw step (0.1)",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_TRIM_GSS_FALLEN_WIRE_COILS_OUTGROW_CABLE",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground",
+   "criterion": "nothing created: a fallen wire is its own cable",
+   "evidence": [
+    "lane1/lane1_rows.jsonl L1_FALLEN_LENGTH_NOTHING_CREATED: seed 4405, 7 of 2500 over 2 x cable + 2 cells (13.9 cells for a 5.58-cell cable, unblocked, 5 wall cells)"
+   ],
+   "would_pass": "drawn ground length <= 2 x cable + 2",
+   "smallest_fix": "the item's: scale AddCoil by the cable left",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_GSS_FALLEN_TIPS_NEARLY_MEET_RARELY",
+   "class": "Polish",
+   "bar": "fallen_span_on_ground",
+   "criterion": "three wires fall as three (owner round 3, 2026-10-04)",
+   "evidence": [
+    "lane1/lane1_rows.jsonl L1_FALLEN_STRANDS_EACH_ITS_OWN: seed 8081, 32 tip pairs under 0.25 cell apart over 1000 spans (closest 0.066; first case 4, 3 wires over 10.06 cells, tips 0 and 2 0.084 apart): more often than the item's 'rarely'"
+   ],
+   "would_pass": "tips stay apart",
+   "smallest_fix": "the item's: separate tips after the lay",
+   "verdict_on_criterion": "sound",
+   "status": "PENDING",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_COVER_GSS_CALLERS_FOUR_PLANTS_WALKED_PAST",
+   "class": "Polish",
+   "bar": "shock_reach_setting, floor_end_shocks_crossers, tap_steals_and_costs_goodwill, restring_cut_span, four_looks_one_run",
+   "criterion": "stage-6 bars; offline tests support, the live scenes decide",
+   "evidence": [
+    "lane2/planted_results.jsonl: C_FALLEN_SHOCK_EXTERNAL_GATED, C_FLOOR_DEAD_END_BITES, C_FLOOR_ANY_BUILDER_EXEMPT, C_TAP_OWN_NET_STEALS, C_RESTRING_IGNORES_SPEED, C_PATCH_SWITCH_XPATH_TYPO missed by every offline suite; selftest_gss_dropped_cords_ignore_aerial_master.py reads source text and passes an if wrapped around the call"
+   ],
+   "would_pass": "each caller fault turns some offline test red where one can see it, or the stage-6 scene names it",
+   "smallest_fix": "validate_patch.py over Patches/ offline; a binding test of FloorEndShock's EndLive guard; the dropped-cords guard reads the call's control flow, not the text",
+   "verdict_on_criterion": "sound; the bars prove at stage 6",
+   "status": "PENDING",
+   "miss_of": null
+  }
+ ]
+}
