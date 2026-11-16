@@ -7624,3 +7624,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_STALLED_KHOT","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T02:46:47Z","tsn":1794797207983922058}
 {"seat":"RUNNER","event":"note","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","text":"ops_watch: cleared at 2026-11-16T02:58:41Z (disk.scratch_dirty_end now 0)","ts":"2026-11-16T02:58:50Z","tsn":1794797930440863312}
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG","text":"ops_watch: WORSE at 2026-11-16T03:12:42Z: 0.37 -> 0.5 share of jobs INVALID, 24 h, the rule's step is {\"add\": 0.1}","ts":"2026-11-16T03:12:52Z","tsn":1794798772036954213}
+{"seat":"RUNNER","event":"note","id":"OPS_STEVE_DIAGNOSE_INVALID_SHARE_UKDG","text":"ops_watch: WORSE at 2026-11-16T03:15:22Z: 0.37 -> 0.5 share of jobs INVALID, 24 h, the rule's step is {\"add\": 0.1}","ts":"2026-11-16T03:15:28Z","tsn":1794798928932898929}
