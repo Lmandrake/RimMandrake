@@ -51,11 +51,73 @@
     "ref": "stage4 control session f67fb588-0ae2-4ab9-80cd-a448cbc71eb4; exam_evidence/control.raw.json",
     "stage": 4,
     "tokens": 115659
+   },
+   {
+    "at": "2026-11-16T14:32:36Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794839164",
+    "stage": 5,
+    "tokens": 674860
+   },
+   {
+    "at": "2026-11-16T14:34:45Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794839164",
+    "stage": 5,
+    "tokens": 148999
    }
   ],
   "reserve": 60000,
-  "spent": 861027
+  "spent": 1684886
  },
+ "coverage_rounds": [
+  {
+   "at": "2026-11-16T14:26:04Z",
+   "error": null,
+   "gaps": 18,
+   "ids": [
+    "actual_vault_breach",
+    "archive_selection",
+    "chosen_gene_journey",
+    "chunk_shelf",
+    "chunk_weapon",
+    "dissolution",
+    "dwommo_flight",
+    "farm_conversion",
+    "farm_ruins",
+    "feature_settings",
+    "friend_rescue",
+    "fubbum_hunting",
+    "harvested_chunk",
+    "legacy_ground_flora",
+    "living_ecology",
+    "oomb_family",
+    "ordinary_absorption",
+    "rain_water_services",
+    "seeker_scanner",
+    "settings_and_scope",
+    "slime_breach_api",
+    "slime_marked",
+    "slime_terrain",
+    "slimification_ladder",
+    "titan_engulf",
+    "titan_lifecycle",
+    "titan_shedding",
+    "useful_body",
+    "visitor_ecology",
+    "warnings",
+    "wuum"
+   ],
+   "judge": "rm-coverage-judge-1794839164",
+   "late": [],
+   "tags": {
+    "first": 18
+   },
+   "tokens": 823859,
+   "tree": "73a427218f9b65b4ad03c58cba26b209beb2e5900ee0d48bddb25e6df9d3eac8",
+   "verdict": "not_covered"
+  }
+ ],
  "history": [
   {
    "at": "2026-11-16T01:31:20Z",
@@ -158,6 +220,18 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designercodex-1794835379: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T14:25:59Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794839147, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T14:35:16Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designercodex-1794839147 result rejected: no result.json (a closing message is not a result); Codex transport failed: no Codex transport result"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_GELATINOUSSLIME_DESIGNER_ON_CODEX_FOURTH",
@@ -415,6 +489,16 @@
    "run": "rm-role-designercodex-1794835379",
    "stage": 4,
    "summary": "Independent cross-model cold-reader exam passes the frozen current tree and sheet: 27/27 scenarios correct for both fresh Opus Readers, zero core false acceptances and no unaccounted Challenger misses. A fresh Opus Control on the program-made and paraphrase-scrubbed last_touch_return copy missed e17 and c03, both sourced on that removed leaf. All five helper session IDs, raw usage, briefs, frozen scenarios, verdicts and transcript boundary audits are retained; 764027 weighted helper tokens charged. No design input changed, runtime acceptance, owner art verdict, waiver or first-touch certification supplied."
+  },
+  {
+   "at": "2026-11-16T14:35:16Z",
+   "outcome": "rejected",
+   "run": "rm-role-designercodex-1794839147",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)",
+    "Codex transport failed: no Codex transport result"
+   ]
   }
  ],
  "runner": "codex",
@@ -482,6 +566,11 @@
     "input_tokens": 2246857,
     "output_tokens": 13127
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794839147",
+   "runner": "codex",
+   "usage": "UNMEASURED"
   }
  ],
  "running": null,

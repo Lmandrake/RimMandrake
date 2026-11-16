@@ -1,0 +1,2151 @@
+{
+ "advisory": "the coverage brief is UNTESTED: this refusal is stored and shown, the Designer is not sent back",
+ "at": "2026-11-16T14:26:04Z",
+ "checklist": [
+  {
+   "evidence": [
+    "record.json:748",
+    "scenes.json:1239",
+    "floor.json"
+   ],
+   "id": "biome_worldgen",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "package_and_floor",
+     "what": "living wet-lowland biome def loads in shipped package"
+    },
+    {
+     "ok": true,
+     "scene": "package_and_floor",
+     "what": "rare-patch worldgen tuning, checked read-only under the no-worldgen ruling (coverage_rest)"
+    },
+    {
+     "ok": true,
+     "scene": "package_and_floor",
+     "what": "allowed roads, read-only metadata plus existing world"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:781",
+    "scenes.json:446",
+    "scenes.json:457"
+   ],
+   "id": "slime_terrain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "contact_ladder",
+     "what": "hardened/rich/grass/mud/liquid tagged terrain as contact surfaces"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "movement surface (path cost on each slime terrain vs ordinary ground)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "fertility surface (growth rate on rich/grass vs ordinary ground)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:446"
+   ],
+   "id": "slime_flora",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "native_body",
+     "what": "slime grass growth/grazing"
+    },
+    {
+     "ok": true,
+     "scene": "native_body",
+     "what": "bellows harvest yields raw slime"
+    },
+    {
+     "ok": true,
+     "scene": "native_body",
+     "what": "thumbstalk and readerbloom growth/cut without invented product"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:446",
+    "scenes.json:690"
+   ],
+   "id": "gelatid",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "native_body",
+     "what": "resistant herd creature, grazing, vs susceptible outsider control"
+    },
+    {
+     "ok": true,
+     "scene": "titan_growth_shedding",
+     "what": "Titanoslime shedding product"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:852",
+    "scenes.json:490",
+    "scenes.json:501"
+   ],
+   "id": "oomb_family",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "oomb_wuum_behaviour",
+     "what": "lesser/ordinary/greater oombs observable scavenging"
+    },
+    {
+     "ok": true,
+     "scene": "oomb_wuum_behaviour",
+     "what": "acid death burst with outside/resistant sentinels"
+    },
+    {
+     "ok": true,
+     "scene": "oomb_wuum_behaviour",
+     "what": "VEF-conditional feeding/growth/fission, present and absent contexts"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "resistant to film: no film read on oombs against a matched susceptible pawn on the same pads"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:875",
+    "scenes.json:490",
+    "scenes.json:501"
+   ],
+   "id": "wuum",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "oomb_wuum_behaviour",
+     "what": "acid death burst"
+    },
+    {
+     "ok": true,
+     "scene": "oomb_wuum_behaviour",
+     "what": "optional VEF asexual reproduction"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "resists the body: no film read or susceptible control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:446"
+   ],
+   "id": "gappo_family",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "native_body",
+     "what": "lesser/ordinary/greater gappo grazing (filter-feeding)"
+    },
+    {
+     "ok": true,
+     "scene": "native_body",
+     "what": "resistance vs susceptible outsider"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "gappo_channels",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "gappo_channels",
+     "what": "greater gappo hardens eligible non-liquid slime ground"
+    },
+    {
+     "ok": true,
+     "scene": "gappo_channels",
+     "what": "clears slime smear"
+    },
+    {
+     "ok": true,
+     "scene": "gappo_channels",
+     "what": "setting-off and liquid/built/lesser-gappo controls"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:941",
+    "scenes.json:562",
+    "scenes.json:572"
+   ],
+   "id": "dwommo_flight",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "dwommo_attended",
+     "what": "animation frames resolve (offline checker with planted missing frame)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "actual flight state, takeoff and landing read deterministically from Pawn_FlightTracker"
+    },
+    {
+     "ok": false,
+     "scene": "dwommo_attended",
+     "what": "grounding setting changes a named flight-state reading"
+    },
+    {
+     "ok": false,
+     "scene": "dwommo_attended",
+     "what": "owner-attended live movement, without relying on image capture of flight"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:966",
+    "scenes.json:594"
+   ],
+   "id": "fubbum_hunting",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "fubbum_hunt",
+     "what": "predator hunting via real job route"
+    },
+    {
+     "ok": true,
+     "scene": "fubbum_hunt",
+     "what": "hunting toggle off blocks hunting"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "resistant to film: no scene reads it"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:991",
+    "scenes.json:626",
+    "scenes.json:634",
+    "scenes.json:989"
+   ],
+   "id": "visitor_ecology",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "visitor_arrival",
+     "what": "neighbour fauna arrive partly slimified (capped trickle)"
+    },
+    {
+     "ok": true,
+     "scene": "visitor_arrival",
+     "what": "cap and hostile filter"
+    },
+    {
+     "ok": true,
+     "scene": "visitor_arrival",
+     "what": "slimification adds no hostility"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "generation seed observed when the map is generated (only 'recorded visitor-seed evidence' is inspected)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "never-on-load behaviour (no reload arm)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "visitorsEnabled off and visitorArrivalRate consumers"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "exposure",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "contact_ladder",
+     "what": "contact with tagged ground applies film to flesh pawns, colonists included"
+    },
+    {
+     "ok": true,
+     "scene": "contact_ladder",
+     "what": "identity/gene resistance control"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:937"
+   ],
+   "id": "slimification_ladder",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "contact_ladder",
+     "what": "staged slow/impair"
+    },
+    {
+     "ok": true,
+     "scene": "contact_ladder",
+     "what": "half-absorption panic suppression"
+    },
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "ordinary rate / injected rate"
+    },
+    {
+     "ok": true,
+     "scene": "terminal_belongings",
+     "what": "reaches dissolution"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "configured rate (slimificationClockDays) changes progression: no scene varies it"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "cure_geography",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "geographic_exit",
+     "what": "early film wipes off off-body"
+    },
+    {
+     "ok": true,
+     "scene": "geographic_exit",
+     "what": "advanced ordinary film holds in normal country"
+    },
+    {
+     "ok": true,
+     "scene": "geographic_exit",
+     "what": "drying biomes reverse film on map and in caravan"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1100",
+    "scenes.json:278"
+   ],
+   "id": "dissolution",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "terminal_belongings",
+     "what": "kills without corpse, yields slime/smear"
+    },
+    {
+     "ok": true,
+     "scene": "terminal_belongings",
+     "what": "gear and carried inventory drop"
+    },
+    {
+     "ok": true,
+     "scene": "terminal_belongings",
+     "what": "bed/coma arm"
+    },
+    {
+     "ok": false,
+     "scene": "terminal_belongings",
+     "what": "off-map terminal transition: expect has no stated outcome"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1127",
+    "scenes.json:215",
+    "sheet.md:6"
+   ],
+   "id": "warnings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "contact_ladder",
+     "what": "stage letters, health info, standing alert"
+    },
+    {
+     "ok": true,
+     "scene": "contact_ladder",
+     "what": "names the intended patient"
+    },
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "post-injection no-capable-friend warning"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "truthful time context: displayed urgency/time compared with measured time to dissolution"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "raw_slime_bargain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "raw_slime_fee",
+     "what": "poison purge and film charge in the same dose, untreated control"
+    },
+    {
+     "ok": true,
+     "scene": "raw_slime_fee",
+     "what": "resistant/feature-off variant"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "antidote",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "friend administers through UseItem, consumed"
+    },
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "clears subterminal film during coma"
+    },
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "deadline success/failure (timely vs late)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "compressor_economy",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "workday_products",
+     "what": "raw slime to slime blocks by bill, then built with"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "pit_meals",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "workday_products",
+     "what": "pit renders raw slime into meals that are eaten"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "pit_solvent",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "solvent_food",
+     "what": "toxipotato/twisted meat to safe products"
+    },
+    {
+     "ok": true,
+     "scene": "solvent_food",
+     "what": "Rot ambrosyx lavish dish without drug/addiction effects"
+    },
+    {
+     "ok": true,
+     "scene": "solvent_food",
+     "what": "solvent setting off"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1275",
+    "scenes.json:181",
+    "scenes.json:956"
+   ],
+   "id": "farm_conversion",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "farms_and_ruins",
+     "what": "cultivated slime grass reverts to rich slime over time"
+    },
+    {
+     "ok": true,
+     "scene": "farms_and_ruins",
+     "what": "opt-in biome gate vs non-opted-in plot, unsown control"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "fieldConversionEnabled off and fieldConversionRate consumers ('setting metadata controls' only)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1296",
+    "scenes.json:181"
+   ],
+   "id": "farm_ruins",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "farms_and_ruins",
+     "what": "outlines, walls/fences, channels, readable ledger, usable loot on an existing map"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "generation places the ruins, and farmRuinsEnabled off places none (observed only after the fact, metadata only)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:1138"
+   ],
+   "id": "slime_rain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "rain_and_water_services",
+     "what": "SlimeRain weather behaviour and pool membership"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:1035"
+   ],
+   "id": "archive_selection",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "archive_field_choice",
+     "what": "universal target/rider lists"
+    },
+    {
+     "ok": true,
+     "scene": "archive_field_choice",
+     "what": "campaign archive priority override"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "preferHigherPriorityArchive toggle consumer"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1379",
+    "scenes.json:313"
+   ],
+   "id": "seeker_scanner",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "archive_field_choice",
+     "what": "blank seeker primed through archive dialog"
+    },
+    {
+     "ok": true,
+     "scene": "archive_field_choice",
+     "what": "time-limited in-map mark, expiry control"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "reports NEAREST slime world tile, checked against an independent read, on a world that has slime tiles"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "seeker_extraction",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "archive_field_choice",
+     "what": "carried to marked current, consumed by work job, one loaded perishable dose"
+    },
+    {
+     "ok": true,
+     "scene": "seeker_lifecycle",
+     "what": "interruption, expiry, spoilage/refrigeration, reload"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1434",
+    "scenes.json:380"
+   ],
+   "id": "gene_injection",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "target plus rider as endogenes, dose consumed"
+    },
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "xenogermination coma and fast slimification"
+    },
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "warning when no capable friend"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1461",
+    "scenes.json:419"
+   ],
+   "id": "slime_marked",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "gene_effect_and_social",
+     "what": "lasting social marks/opinion, repeat marks"
+    },
+    {
+     "ok": true,
+     "scene": "gene_effect_and_social",
+     "what": "campaign Reek/charm modifiers"
+    },
+    {
+     "ok": true,
+     "scene": "gene_effect_and_social",
+     "what": "romance factor"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "generic condition/forced-thought helpers for archive genes"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "inherited mark promise (notes: 'inherited mark promises need separately grounded checks'); scene checks gene inheritance only"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "archive_snapshot",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "archive_filing_and_return",
+     "what": "last-contact per-person entries, field matrix incl. health/memory reconciliation"
+    },
+    {
+     "ok": true,
+     "scene": "archive_filing_and_return",
+     "what": "off-body changes do not overwrite the entry"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "archive_growing",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "archive_filing_and_return",
+     "what": "paid powered growth completes once"
+    },
+    {
+     "ok": true,
+     "scene": "archive_lifecycle_and_family",
+     "what": "power pause/reload, two-vat contention"
+    },
+    {
+     "ok": true,
+     "scene": "archive_lifecycle_and_family",
+     "what": "return/kin thoughts, changed-family answer"
+    },
+    {
+     "ok": true,
+     "scene": "archive_filing_and_return",
+     "what": "universal research and campaign Helix gates"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:1071"
+   ],
+   "id": "titan_engulf",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "titan_engulf_rescue",
+     "what": "natural melee engulf, prey-size limit"
+    },
+    {
+     "ok": true,
+     "scene": "titan_engulf_rescue",
+     "what": "visible held timer, struggle/rescue/release"
+    },
+    {
+     "ok": true,
+     "scene": "titan_engulf_rescue",
+     "what": "digestion drops victim gear/inventory"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "titanoslimePreySizeFactor consumer"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:690",
+    "scenes.json:1047"
+   ],
+   "id": "titan_growth",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "titan_growth_shedding",
+     "what": "feeding grows locked stages, size, prey limit"
+    },
+    {
+     "ok": true,
+     "scene": "titan_growth_shedding",
+     "what": "permanent default across reload"
+    },
+    {
+     "ok": true,
+     "scene": "titan_growth_shedding",
+     "what": "reversible, max-stage, growth-off switches"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1604",
+    "scenes.json:690",
+    "scenes.json:701"
+   ],
+   "id": "titan_shedding",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "titan_growth_shedding",
+     "what": "wounds shed gelatids"
+    },
+    {
+     "ok": true,
+     "scene": "titan_growth_shedding",
+     "what": "shedding switch off"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "size threshold ('sufficiently large'): no below-threshold arm"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "cooldown: no wound-within-cooldown arm"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:1088",
+    "exam.json"
+   ],
+   "id": "chunk_weapon",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "chunk_throw",
+     "what": "butcher yields chunk, thrown by normal targeting"
+    },
+    {
+     "ok": true,
+     "scene": "chunk_throw",
+     "what": "burst coats enemy and ally without armour gate; resistance holds"
+    },
+    {
+     "ok": true,
+     "scene": "chunk_throw",
+     "what": "one piece expended once"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "chunkBomb toggle consumer"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "chunk_ground",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "chunk_ground_and_age",
+     "what": "temporary conversion and restoration of stored terrain"
+    },
+    {
+     "ok": true,
+     "scene": "chunk_ground_and_age",
+     "what": "water/built protected, later player change"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1683",
+    "scenes.json:783",
+    "scenes.json:1092"
+   ],
+   "id": "chunk_shelf",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "chunk_ground_and_age",
+     "what": "saved age, expiry in map/equipment/inventory/caravan/nested holders"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "carry-tracker holder (notes name 'Carry trackers' outside the sweep; not a variant)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "chunkShelfDays consumer"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1704",
+    "scenes.json:805"
+   ],
+   "id": "slime_breach_api",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "v5_seal_and_generic_breach",
+     "what": "RM_SlimeBreachable target dissolves; unextended target refuses"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "generic arm consumes exactly one piece and adds drench filth"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "campaign_vault_seal",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "v5_seal_and_generic_breach",
+     "what": "real V5 plug blocks path and absorbs ordinary damage"
+    },
+    {
+     "ok": true,
+     "scene": "v5_seal_and_generic_breach",
+     "what": "chunk opens it with one-piece expenditure and hazard; no proximity bypass"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1752",
+    "scenes.json:908",
+    "scenes.json:929"
+   ],
+   "id": "feature_settings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "settings_consumers",
+     "what": "searchable UI, reset to defaults, exact entry restore"
+    },
+    {
+     "ok": true,
+     "scene": "settings_consumers",
+     "what": "hazard-off, archive-off pause, held-prey release"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "every tuning float and the toggles the matrix assigns to scenes that never vary them"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json",
+    "floor.json"
+   ],
+   "id": "kit_art",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "kit_and_titan_review",
+     "what": "shipped manifest resolves incl. numbered frames, exceptions"
+    },
+    {
+     "ok": true,
+     "scene": "kit_and_titan_review",
+     "what": "in-game states/facings, scale, clickable drawn giant"
+    },
+    {
+     "ok": true,
+     "scene": "kit_and_titan_review",
+     "what": "owner stage-one/five review held (owner_review)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json"
+   ],
+   "id": "acoustic_payload",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "legacy_and_optional_services",
+     "what": "opt-in payload consumed by a real scan; missing payload fixture"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1831",
+    "scenes.json:1138"
+   ],
+   "id": "rain_water_services",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "rain_and_water_services",
+     "what": "impl unknown, not a coverage unit; kept as an additional obligation"
+    },
+    {
+     "ok": false,
+     "scene": "rain_and_water_services",
+     "what": "potable collection and brief flood/drain: scene states no pass condition"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:1855",
+    "scenes.json:1174"
+   ],
+   "id": "legacy_ground_flora",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "legacy_and_optional_services",
+     "what": "legacy flora harvest/raw-slime substitution and textures"
+    },
+    {
+     "ok": false,
+     "scene": "legacy_and_optional_services",
+     "what": "legacy hardened/rich ground contact: expected outcome unstated ('expose a genuine consumer mismatch')"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:32",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "scene_observer",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "observer_recovery",
+     "what": "identity/tick/fingerprint provenance; stale assembly control"
+    },
+    {
+     "ok": true,
+     "scene": "observer_recovery",
+     "what": "missing observation UNMEASURED; failed gate row blocks"
+    },
+    {
+     "ok": true,
+     "scene": "observer_recovery",
+     "what": "interrupted recovery restores entry snapshot with readback"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:65",
+    "scenes.json:111",
+    "sheet.md:10",
+    "exam.json"
+   ],
+   "id": "useful_body",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "workday_products",
+     "what": "make and use meals/blocks"
+    },
+    {
+     "ok": true,
+     "scene": "solvent_food",
+     "what": "solvent products"
+    },
+    {
+     "ok": true,
+     "scene": "raw_slime_fee",
+     "what": "raw-slime poison relief with film fee"
+    },
+    {
+     "ok": true,
+     "scene": "farms_and_ruins",
+     "what": "cultivated/opted-in farm rule and drowned-farm loot"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "prepared floors and resistant workers support a viable routine: no scene stages it ('A prepared colony can manage later contact' is an expect with no action)"
+    },
+    {
+     "ok": true,
+     "scene": "rain_and_water_services",
+     "what": "rain obligation in separate service scene"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:91",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "ordinary_absorption",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "contact_ladder",
+     "what": "contact film to impairment, named escalating threat"
+    },
+    {
+     "ok": true,
+     "scene": "geographic_exit",
+     "what": "early recedes/advanced holds/drying exit, caravan, reload"
+    },
+    {
+     "ok": true,
+     "scene": "terminal_belongings",
+     "what": "completed toxic treatment exit and terminal belongings"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "readable clock (truthful time), see warnings"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:117",
+    "scenes.json:313",
+    "exam.json"
+   ],
+   "id": "chosen_gene_journey",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "archive_field_choice",
+     "what": "archive dialog choice, mark, extraction to one perishable dose"
+    },
+    {
+     "ok": true,
+     "scene": "archive_field_choice",
+     "what": "universal and campaign archives"
+    },
+    {
+     "ok": true,
+     "scene": "seeker_lifecycle",
+     "what": "expired/cancelled marks, interruption, spoilage, reload"
+    },
+    {
+     "ok": true,
+     "scene": "flagship_sequence",
+     "what": "remote console/helper dose cannot accept (cannot_show)"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "world-tile localisation correctness"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:132",
+    "tree.json:144",
+    "scenes.json:380",
+    "exam.json"
+   ],
+   "id": "friend_rescue",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "ordered injection, coma, accelerated absorption"
+    },
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "friend completes antidote in time; untreated arm dissolves; late arm"
+    },
+    {
+     "ok": true,
+     "scene": "ordered_friend_rescue",
+     "what": "no-friend warning"
+    },
+    {
+     "ok": true,
+     "scene": "walk_reload_repeat",
+     "what": "shared-friend contention"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "friend at a representative travel distance, with time margin (available vs travel+work) recorded; start sets no distance"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:169",
+    "scenes.json:419",
+    "exam.json"
+   ],
+   "id": "lasting_gene_price",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "gene_effect_and_social",
+     "what": "target, rider, felt effect after rescue and reload"
+    },
+    {
+     "ok": true,
+     "scene": "gene_effect_and_social",
+     "what": "mark/opinion persists; Reek/charm exceptions"
+    },
+    {
+     "ok": true,
+     "scene": "gene_effect_and_social",
+     "what": "child inheritance of eligible endogenes"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:196",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "living_ecology",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "native_body",
+     "what": "native flora and resistant families"
+    },
+    {
+     "ok": true,
+     "scene": "gappo_channels",
+     "what": "channel hardening"
+    },
+    {
+     "ok": true,
+     "scene": "fubbum_hunt",
+     "what": "predation"
+    },
+    {
+     "ok": true,
+     "scene": "visitor_arrival",
+     "what": "absorption grants no hostility"
+    },
+    {
+     "ok": true,
+     "scene": "oomb_wuum_behaviour",
+     "what": "optional VEF behaviour in context"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "attended Dwommo movement sequence by flight-state read"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "resistance of oomb/wuum/fubbum"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:222",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "titan_lifecycle",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "titan_engulf_rescue",
+     "what": "natural engulf, visible countdown, rescue/release"
+    },
+    {
+     "ok": true,
+     "scene": "titan_growth_shedding",
+     "what": "permanent default growth, alternatives, reload"
+    },
+    {
+     "ok": false,
+     "scene": "titan_growth_shedding",
+     "what": "shedding gelatids (size/cooldown arms missing, see titan_shedding)"
+    },
+    {
+     "ok": true,
+     "scene": "kit_and_titan_review",
+     "what": "stages one/five legible and selectable, owner review owed"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:248",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "harvested_chunk",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "chunk_throw",
+     "what": "butcher route, throw, ally danger, one expenditure"
+    },
+    {
+     "ok": true,
+     "scene": "chunk_ground_and_age",
+     "what": "temporary ground and shelf life across holders, mid-life reload"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "carry-tracker holder expiry"
+    },
+    {
+     "ok": true,
+     "scene": "titan_to_vault",
+     "what": "giant-to-weapon-to-vault provenance"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:274",
+    "scenes.json:805",
+    "exam.json"
+   ],
+   "id": "actual_vault_breach",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "v5_seal_and_generic_breach",
+     "what": "actual V5 plug blocks, absorbs, opens on chunk with hazard"
+    },
+    {
+     "ok": true,
+     "scene": "v5_seal_and_generic_breach",
+     "what": "second plug exposes double use"
+    },
+    {
+     "ok": true,
+     "scene": "v5_seal_and_generic_breach",
+     "what": "generic breach and campaign settings honour scope"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "generic target consumption and drench filth asserted"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:300",
+    "scenes.json",
+    "exam.json"
+   ],
+   "id": "last_touch_return",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "archive_filing_and_return",
+     "what": "last-touch fields returned, field matrix"
+    },
+    {
+     "ok": true,
+     "scene": "archive_lifecycle_and_family",
+     "what": "paid/powered/once, pause/reload, two vats"
+    },
+    {
+     "ok": true,
+     "scene": "archive_lifecycle_and_family",
+     "what": "superseded marriage stays ended, lasting adjustment mood"
+    },
+    {
+     "ok": true,
+     "scene": "archive_filing_and_return",
+     "what": "universal research and campaign Helix gates"
+    },
+    {
+     "ok": true,
+     "scene": "paid_archive_disable",
+     "what": "archive-off pause/resume"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:326",
+    "scenes.json:908",
+    "scenes.json:929",
+    "exam.json"
+   ],
+   "id": "settings_and_scope",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "settings_consumers",
+     "what": "searchable defaults, reset, exact restore"
+    },
+    {
+     "ok": true,
+     "scene": "settings_consumers",
+     "what": "existing film, held prey, paid vat transitions"
+    },
+    {
+     "ok": true,
+     "scene": "legacy_and_optional_services",
+     "what": "no arbitrary retrofit; optional contexts explicit"
+    },
+    {
+     "ok": true,
+     "scene": "package_and_floor",
+     "what": "package composition and canonical list"
+    },
+    {
+     "ok": false,
+     "scene": "",
+     "what": "each advertised switch and tuning value affects its consumer"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:352",
+    "scenes.json:1271",
+    "exam.json"
+   ],
+   "id": "repeat_walk",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "walk_reload_repeat",
+     "what": "mid-journey save/reload completes route"
+    },
+    {
+     "ok": true,
+     "scene": "walk_reload_repeat",
+     "what": "repeat with fresh items; consumed dose refused"
+    },
+    {
+     "ok": true,
+     "scene": "walk_reload_repeat",
+     "what": "two action orders"
+    },
+    {
+     "ok": true,
+     "scene": "walk_reload_repeat",
+     "what": "40-colonist routine with contention"
+    }
+   ]
+  }
+ ],
+ "contract": {
+  "advisory": true,
+  "alarms": [
+   {
+    "family": "coverage_judge",
+    "first_at": "2026-11-15T09:32:09Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-16T14:34:45Z",
+    "open": true,
+    "subject": "family:coverage_judge",
+    "told_at": "2026-11-15T09:32:09Z",
+    "trips": 10,
+    "why": "refused all of its last 8 verdicts across 6 items"
+   }
+  ],
+  "cached": [],
+  "calibration": "UNTESTED",
+  "counted": true,
+  "may_judge": true,
+  "ok": true,
+  "repair_due": []
+ },
+ "contract_reasked": [
+  "refusal 25 (seeker_scanner): observed quotes too little of its evidence (1 distinct words shared, 2 needed)",
+  "coverage: given inputs in no passed or refused evidence: exam.json"
+ ],
+ "gaps": [
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The leaf promises that opt-outs and tuning affect their actual consumers, and a field nobody sets is not tested.",
+   "evidence": [
+    "scenes.json:908",
+    "scenes.json:929",
+    "scenes.json:937",
+    "scenes.json:956",
+    "scenes.json:989",
+    "scenes.json:1035",
+    "scenes.json:1047",
+    "scenes.json:1071",
+    "scenes.json:1088",
+    "scenes.json:1092",
+    "scenes.json:181",
+    "record.json:1752"
+   ],
+   "gid": "g1",
+   "ids": [
+    "feature_settings",
+    "settings_and_scope",
+    "slimification_ladder",
+    "farm_conversion",
+    "archive_selection",
+    "titan_engulf",
+    "chunk_weapon",
+    "chunk_shelf",
+    "visitor_ecology"
+   ],
+   "new_since": "first",
+   "observed": "settings_consumers changes only 'a meaningful value and each major toggle' (one value, 'major' undefined). The matrix's 'by' scenes for slimificationClockDays, fieldConversionEnabled/Rate, visitorsEnabled/ArrivalRate, preferHigherPriorityArchive, titanoslimeSpawnFactor, titanoslimePreySizeFactor, chunkBomb and chunkShelfDays have no arm that sets those fields. farms_and_ruins has only 'setting metadata controls'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add per-field arms (or variants) to the scenes named in setting_matrix.by, or list each field explicitly with expected consumer effect in settings_consumers; rarityFactor can stay read-only under the no-worldgen ruling with that stated as its arm."
+   },
+   "what": "Settings matrix assigns tuning values and several toggles to scenes that never change them",
+   "where": "scenes.json settings_consumers and setting_matrix",
+   "would_pass": "Every one of the 24 setting_matrix fields has at least one named scene whose action sets it to a non-default value (or off), and whose expect states the consumer change (e.g. shorter clockDays gives an earlier stage transition; chunkBomb off refuses the throw; preySizeFactor changes the oversized cutoff), checkable by a script that maps each field to an arm."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A capability whose claim is 'generation places X' needs an observed generation with a control.",
+   "evidence": [
+    "scenes.json:626",
+    "scenes.json:634",
+    "scenes.json:181",
+    "record.json:991",
+    "record.json:1296"
+   ],
+   "gid": "g2",
+   "ids": [
+    "visitor_ecology",
+    "farm_ruins"
+   ],
+   "new_since": "first",
+   "observed": "visitor_arrival starts from an 'existing generated map with recorded visitor-seed evidence', with no reload arm for the 'never-on-load behaviour' the notes require. farms_and_ruins inspects 'an existing generated drowned farm', and its control is 'farm-conversion/ruins setting metadata'. Nothing generates a colony map. Generating a test map is map generation, not the planet worldgen the ruling bans.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add generate-map arms to visitor_arrival (seed, reload, visitors off) and farms_and_ruins (ruins on/off). Keep the existing-map inspection as the readability check."
+   },
+   "what": "Visitor generation seed, never-on-load and drowned-farm generation/toggle are only inspected after the fact",
+   "where": "scenes.json visitor_arrival, farms_and_ruins",
+   "would_pass": "A scene arm generates a disposable test map (quicktest) in the slime biome and observes, with tick provenance: the visitor seed spawning partly slimified eligible fauna; a save/reload that adds no new seed; drowned-farm ruins present with farmRuinsEnabled on and absent with it off."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The owner's standing flyer ruling makes a state read the only valid flight proof.",
+   "evidence": [
+    "scenes.json:562",
+    "scenes.json:572",
+    "record.json:941",
+    "floor.json"
+   ],
+   "gid": "g3",
+   "ids": [
+    "dwommo_flight",
+    "living_ecology"
+   ],
+   "new_since": "first",
+   "observed": "The expect reads 'visibly uses its authored movement/animation'. The action reads 'Read actual movement state alongside the capture sequence', and grounding gives only 'its expected state difference'. The record notes 'Behavioural flight-state and takeoff/landing acceptance are missing'. Project rule: verify flight by a STATE read of Pawn_FlightTracker, never by images of flight.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Rewrite dwommo_attended's action, expect and control around flight-tracker state, and drop the capture sequence from acceptance."
+   },
+   "what": "Dwommo flight is accepted by visible movement and a capture sequence, not by a deterministic flight-state read",
+   "where": "scenes.json dwommo_attended",
+   "would_pass": "The expect names Pawn_FlightTracker readings: flying true during flight, plus takeoff and landing transitions logged with ticks, with dwommoFlies on. With grounding on, flying never becomes true over the same movement orders. No image capture of flight is part of acceptance; the owner attends the live look."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Each inventory text says 'resistant', and an unmeasured claim is not covered.",
+   "evidence": [
+    "scenes.json:490",
+    "scenes.json:501",
+    "scenes.json:594",
+    "record.json:852",
+    "record.json:875",
+    "record.json:966"
+   ],
+   "gid": "g4",
+   "ids": [
+    "oomb_family",
+    "wuum",
+    "fubbum_hunting",
+    "living_ecology"
+   ],
+   "new_since": "first",
+   "observed": "oomb_wuum_behaviour's expect asserts 'Every family is observable and resistant', but its sentinels are for the acid burst only. fubbum_hunt never reads film. native_body runs the susceptible-outsider control only for gelatid and gappos.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a resistance arm with a susceptible control to oomb_wuum_behaviour and fubbum_hunt, or extend native_body's control to all native families."
+   },
+   "what": "Native resistance of oombs, wuum and fubbum is claimed but never measured against a susceptible control",
+   "where": "scenes.json oomb_wuum_behaviour, fubbum_hunt",
+   "would_pass": "Oombs of each size, the wuum and the fubbum each stand on tagged slime ground beside a matched susceptible outsider for the same ticks; the natives' film stays 0 while the outsider's rises."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "These are separate shipped properties in the inventory text.",
+   "evidence": [
+    "scenes.json:446",
+    "scenes.json:457",
+    "record.json:781"
+   ],
+   "gid": "g5",
+   "ids": [
+    "slime_terrain"
+   ],
+   "new_since": "first",
+   "observed": "native_body's expect says 'Tagged terrain provides actual movement/fertility/contact surfaces', but the action reads no path cost or growth rate on any terrain kind. Only contact is measured (contact_ladder).",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a movement/fertility arm to native_body (or contact_ladder's pads)."
+   },
+   "what": "Slime terrain's movement and fertility surfaces are asserted but not observed",
+   "where": "scenes.json native_body",
+   "would_pass": "For each of hardened, rich, grass, mud and liquid slime, the scene reads the walk speed or path cost of a pawn and the growth rate of a sown plant where fertile, and compares both with ordinary soil, matching authored def values."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "'Sufficiently large' and 'cooldown' are named conditions of the capability.",
+   "evidence": [
+    "scenes.json:690",
+    "scenes.json:701",
+    "record.json:1604"
+   ],
+   "gid": "g6",
+   "ids": [
+    "titan_shedding",
+    "titan_lifecycle"
+   ],
+   "new_since": "first",
+   "observed": "The expect says gelatids shed 'only under eligible enabled cooldown conditions', but the control is only 'actual landed damage with shedding off'. No arm wounds a below-threshold titan or wounds again inside the cooldown.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add below-size and within-cooldown control cases to titan_growth_shedding."
+   },
+   "what": "Titanoslime shedding has no size-threshold or cooldown arm",
+   "where": "scenes.json titan_growth_shedding",
+   "would_pass": "A landed wound on a titan below the shedding size threshold sheds 0 gelatids. A second landed wound within the cooldown sheds 0, and one after the cooldown sheds the authored number."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The leaf promises finite life in every holder, and the record names this holder as a known hole.",
+   "evidence": [
+    "scenes.json:783",
+    "record.json:1683"
+   ],
+   "gid": "g7",
+   "ids": [
+    "chunk_shelf",
+    "harvested_chunk"
+   ],
+   "new_since": "first",
+   "observed": "The variants are ground_stack, equipment, inventory, caravan and nested_holder. The record notes 'Carry trackers and off-map holders/caravans are outside the inspected sweep'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a carry_tracker variant to chunk_ground_and_age."
+   },
+   "what": "Chunk shelf-life holders omit the carry tracker the record names as unswept",
+   "where": "scenes.json chunk_ground_and_age variants",
+   "would_pass": "A carry_tracker variant (a pawn hauling the chunk) passes its shelf age, and the chunk becomes unusable on schedule."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Consumption and filth are the API's stated effects.",
+   "evidence": [
+    "scenes.json:805",
+    "record.json:1704"
+   ],
+   "gid": "g8",
+   "ids": [
+    "slime_breach_api",
+    "actual_vault_breach"
+   ],
+   "new_since": "first",
+   "observed": "For the generic target the expect says only 'Generic extension and campaign off/open option follow their independent settings'. The capability text says it 'consumes a piece ... and adds drench filth'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Extend the generic-arm expect and control in v5_seal_and_generic_breach."
+   },
+   "what": "The generic RM_SlimeBreachable arm does not assert piece consumption or drench filth",
+   "where": "scenes.json v5_seal_and_generic_breach",
+   "would_pass": "In the generic arm, the chunk count drops by exactly 1 and drench filth appears around the dissolved building, and a second use with no piece is refused."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A variant with no stated outcome cannot pass or fail.",
+   "evidence": [
+    "scenes.json:278",
+    "record.json:1100"
+   ],
+   "gid": "g9",
+   "ids": [
+    "dissolution"
+   ],
+   "new_since": "first",
+   "observed": "Variants include off_map_transition, but the expect says only 'Include the supported off-map transition outcome'. The record notes the suite 'omits ... off-map terminal transition ... assertions'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Write the source-grounded off-map expectation into terminal_belongings."
+   },
+   "what": "The off-map dissolution variant has no expected outcome",
+   "where": "scenes.json terminal_belongings",
+   "would_pass": "The expect states, from source, what happens when a caravan pawn reaches terminal film (e.g. pawn removed from the caravan, gear and inventory added to caravan stock, a letter naming the pawn), and the scene checks those items by id."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The rescue race is only readable if the shown clock is true.",
+   "evidence": [
+    "scenes.json:215",
+    "scenes.json:380",
+    "record.json:1127",
+    "record.json:1434",
+    "sheet.md:6"
+   ],
+   "gid": "g10",
+   "ids": [
+    "warnings",
+    "ordinary_absorption"
+   ],
+   "new_since": "first",
+   "observed": "The record requires the warning to 'prove the intended patient and truthful time context' and notes 'nominal clock days alone do not state remaining time'. contact_ladder's expect checks the patient and mode ('Warning data describes the actual patient and actual ordinary/injected mode'), but no scene compares the displayed urgency/time with the measured ticks to dissolution.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a displayed-versus-measured time assertion to contact_ladder and ordered_friend_rescue."
+   },
+   "what": "No scene checks that warnings give a truthful time context",
+   "where": "scenes.json contact_ladder, ordered_friend_rescue",
+   "would_pass": "In ordinary and injected arms, the scene records the time or stage the warning and health UI show, and the measured ticks to dissolution, and they agree within a stated tolerance."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Both are named parts of a built capability.",
+   "evidence": [
+    "scenes.json:419",
+    "record.json:1461"
+   ],
+   "gid": "g11",
+   "ids": [
+    "slime_marked"
+   ],
+   "new_since": "first",
+   "observed": "The capability includes 'generic condition/forced-thought helpers for archive genes', and the notes say 'inherited mark promises need separately grounded checks'. The scene's expect covers opinions, romance, Reek/charm and 'Inheritance uses actual parental endogenes', with no helper arm and nothing about the child's mark.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a helper arm and an inherited-mark expectation to gene_effect_and_social."
+   },
+   "what": "The slime-mark generic helpers and the inherited-mark promise are untested",
+   "where": "scenes.json gene_effect_and_social",
+   "would_pass": "An archive gene carrying a condition/forced-thought helper produces its thought under the condition and not without it. The inherited child's mark or opinion state matches the authored rule (present or absent, stated)."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "'Nearest' is a checkable claim, and scenes.json existing_content_walk already cites a review save that has the biome.",
+   "evidence": [
+    "scenes.json:313",
+    "record.json:1379"
+   ],
+   "gid": "g12",
+   "ids": [
+    "seeker_scanner",
+    "chosen_gene_journey"
+   ],
+   "new_since": "first",
+   "observed": "record.json says the blank handheld seeker 'reports nearest slime world tile or a time-limited in-map extraction mark', and its notes say 'The static proof bypasses dialog, navigation and mark-expiry gameplay'. archive_field_choice's start asserts only 'real archive contents and a liquid current', and its expect says only 'Blank/primed/loaded UI states expose their authored information'. No step compares the reported world tile with the actual nearest slime world tile. Our biomes may legitimately sit on 0 planet tiles until the final paint, and the start names no world that has any.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Name the save and add the nearest-tile assertion and a no-tile control to archive_field_choice."
+   },
+   "what": "Seeker world-tile localisation is not checked for correctness or for a world with slime tiles",
+   "where": "scenes.json archive_field_choice",
+   "would_pass": "The start names a save whose world has at least 2 slime-biome tiles at known distances. The seeker's reported world tile equals an independently computed nearest slime tile, and a control world or position with none reports none."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "This is an explicit experience clause of the leaf.",
+   "evidence": [
+    "tree.json:65",
+    "scenes.json:111",
+    "sheet.md:10",
+    "exam.json"
+   ],
+   "gid": "g13",
+   "ids": [
+    "useful_body"
+   ],
+   "new_since": "first",
+   "observed": "The leaf says 'prepared floors and resistant workers support a viable routine' and lists the false pass 'Every safe prepared workday is rejected'. exam.json e03 imagines 'Resistant workers on prepared floors finish a full workday'. The only scene mention is raw_slime_fee's expect line 'A prepared colony can manage later contact', with no action or control.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add a prepared-workday arm to workday_products."
+   },
+   "what": "The prepared-floor, resistant-worker viable routine is never staged",
+   "where": "scenes.json useful_body scenes",
+   "would_pass": "A scene runs a workday on built floors over slime country with resistant and susceptible workers. Film stays 0 on built floors and for resistant workers, and rises for a susceptible worker on bare slime ground."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The leaf's point is that rescue is completable in time, which depends on distance.",
+   "evidence": [
+    "tree.json:132",
+    "scenes.json:380",
+    "exam.json"
+   ],
+   "gid": "g14",
+   "ids": [
+    "friend_rescue"
+   ],
+   "new_since": "first",
+   "observed": "The oracle says 'Compare available time with actual travel/work', but the start asserts only a 'reachable capable friend/antidote' with no distance. exam.json e09 rejects the case where 'Walking plus the treatment job's work time comes to 1.1 in-game hours' against 0.8 available, and an adjacent friend in the scene would pass where that ordinary case fails.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add the distance assertion and a margin row to ordered_friend_rescue."
+   },
+   "what": "Friend rescue does not fix the friend's travel distance or record the time margin",
+   "where": "scenes.json ordered_friend_rescue",
+   "would_pass": "The start places the friend at a stated representative path distance (e.g. another room, N cells), and the result records available ticks, travel plus work ticks and the margin; acceptance needs a positive margin under defaults."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "An acceptance scene needs a stated pass outcome.",
+   "evidence": [
+    "scenes.json:1174",
+    "record.json:1855"
+   ],
+   "gid": "g15",
+   "ids": [
+    "legacy_ground_flora"
+   ],
+   "new_since": "first",
+   "observed": "The expect says the contact contract 'is explicitly reconciled', and the control expects observations to 'expose a genuine consumer mismatch'. Neither says whether legacy hardened/rich ground should apply film.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Read the legacy tags and write the expected contact result into legacy_and_optional_services."
+   },
+   "what": "The legacy ground contact scene has no expected outcome",
+   "where": "scenes.json legacy_and_optional_services",
+   "would_pass": "The scene states, from the defs' authored tags, whether RM_Slime/RM_RichSlime contact applies film, and checks that a susceptible pawn's film matches that statement."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "Coverage needs a scene that can pass when the service works.",
+   "evidence": [
+    "scenes.json:1138",
+    "record.json:1831",
+    "tree.json:65"
+   ],
+   "gid": "g16",
+   "ids": [
+    "rain_water_services"
+   ],
+   "new_since": "first",
+   "observed": "The expect says the promises 'require measured service/volume/potability results' and 'Missing service stays UNMEASURED'. It never says what result delivers the promise, yet useful_body relies on this scene for the rain obligation.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Write qualitative/bounded pass conditions into rain_and_water_services."
+   },
+   "what": "The rain/water service scene has no pass condition",
+   "where": "scenes.json rain_and_water_services",
+   "would_pass": "The expect states observable pass values: attributable collected water above 0 marked potable under an open container during SlimeRain, 0 under a roof, and flooded cells appearing during the episode and draining within a stated window after it."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "A floor line cited to a scene that never measures it is uncovered.",
+   "evidence": [
+    "floor.json:128",
+    "floor.json:22",
+    "floor.json:114",
+    "floor.json:49",
+    "floor.json:40",
+    "scenes.json:1239",
+    "scenes.json:380",
+    "scenes.json:1271"
+   ],
+   "gid": "g17",
+   "ids": [],
+   "new_since": "first",
+   "observed": "'text' (read archive, seeker, warnings, settings, ledger and return UI) is bound to package_and_floor, whose action is package/dependency/naming checks. 'latency' and 'order_taken' are bound to ordered_friend_rescue, which measures no click-to-uptake time. 'save_size' is bound to walk_reload_repeat, whose expect captures only 'frame/tick/memory trends'. package_and_floor's load_time step is 'later authorised ... bounded numeric floor measurements'.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Add the measurement steps to the bound scenes, or rebind each line to a scene that performs it."
+   },
+   "what": "Floor lines are bound to scenes whose actions do not measure them",
+   "where": "floor.json lines text, latency, order_taken, save_size, load_time",
+   "would_pass": "Each floor line's 'by' scene has an action step that produces that line's reading (UI text capture per named surface; click-to-uptake ticks; serialised save size before and after; three cold-load timings)."
+  },
+  {
+   "criterion_verdict": "sound",
+   "criterion_why": "The sheet a player reads must say what the tree tests.",
+   "evidence": [
+    "sheet.md:10",
+    "sheet.md:12",
+    "sheet.md:16",
+    "sheet.md:18",
+    "tree.json:65",
+    "tree.json:117",
+    "tree.json:222",
+    "tree.json:274"
+   ],
+   "gid": "g18",
+   "ids": [],
+   "new_since": "first",
+   "observed": "The useful_body line says 'scoped farms' but not the drowned-farm ruins and loot. titan_lifecycle omits shedding gelatids. actual_vault_breach omits the universal generic breach target. chosen_gene_journey omits that both universal and campaign archives support the journey. The tree experiences test all four.",
+   "return_to": 3,
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Edit four sheet.md lines."
+   },
+   "what": "The player sheet omits several things the tree tests",
+   "where": "sheet.md does section",
+   "would_pass": "Each sheet 'does' line names every player-visible behaviour its leaf's experience tests: ruins and loot, shedding, generic breach and both archive contexts."
+  }
+ ],
+ "hashes": {
+  "dec:cosmetic_hooks_removed": "fd6d0fdbd757e808",
+  "dec:current_source_baseline": "450e7abf29a2bfa0",
+  "dec:glurro_removed": "c577118dff2e7b27",
+  "dec:joining_removed": "6a91daebbca08a32",
+  "dec:preserve_built_scope": "8ab84114836580b9",
+  "dec:prior_family_answer": "970b13edd130dace",
+  "dec:prior_weapon_answer": "97bd01c0998b83f6",
+  "dec:proof_policy": "c79345a282af600d",
+  "dec:root_synthesis_adopted": "47b2b88ec4b3a17b",
+  "dec:shared_settings_restore": "b35f36dcb5ee3edd",
+  "dec:stage2_edge_archive": "f104778fdbb75d47",
+  "dec:stage2_edge_body_work": "158aba77af03eb07",
+  "dec:stage2_edge_chunk": "127da172bb734738",
+  "dec:stage2_edge_friend_rescue": "155a9db8c89e0c4a",
+  "dec:stage2_edge_gene_journey": "2e079d118782abe1",
+  "dec:stage2_edge_gene_price": "48338d77b4deb3e9",
+  "dec:stage2_edge_living_ecology": "a846b4b2dbfe5487",
+  "dec:stage2_edge_ordinary_film": "061250a42d5a84fd",
+  "dec:stage2_edge_settings_scope": "65d3a1009261b510",
+  "dec:stage2_edge_titan": "fb87e6f40a05b0c9",
+  "dec:stage2_edge_vault": "5acc7a01db3d05aa",
+  "dec:stage2_edges_delegated": "22bed44a304f86d7",
+  "dec:stage2_flagship_chosen_gene_friend_rescue": "e4d4c47e16d795f4",
+  "dec:stage2_no_conversion_aggression": "ae823d710a618249",
+  "dec:stage2_no_history_rewind": "ef3c45415ccc0090",
+  "dec:stage2_no_remote_gene_factory": "1ea1e1ffea80520b",
+  "dec:stage2_no_universal_retrofit": "23e040fdaa08143b",
+  "dec:stage2_rites_later": "ef5006db4c724b73",
+  "dec:stage3_authored_contract": "ec48a2c77c73a7aa",
+  "dec:stage3_filed_delivery_work": "d79d02c44b0f3bcd",
+  "dec:stage3_flagship_proposal": "041cf8976fa34856",
+  "dec:stage3_inherited_checkout_scope": "36127141b364db9b",
+  "dec:stage3_showcase_greedy_order": "01cae3ab8038b022",
+  "dec:stage4_independent_cold_reader_exam": "abbde8f74fc31ac8",
+  "dec:vanilla_ownership": "ba5b9bc5a2fdfc61",
+  "exam": "f7bbd05d4679a189",
+  "floor": "02231b05a89eb446",
+  "inv:acoustic_payload": "84464e5fdd03ad8a",
+  "inv:antidote": "ee0235cf46423fc4",
+  "inv:archive_growing": "504e8ca261414f6c",
+  "inv:archive_selection": "d1cf9721244dbb60",
+  "inv:archive_snapshot": "615d5aabee6dc90c",
+  "inv:biome_worldgen": "efbdddede220ee1d",
+  "inv:campaign_vault_seal": "d8cfa717bca4549d",
+  "inv:chunk_ground": "7231216ce94ee9b1",
+  "inv:chunk_shelf": "202276bb48180dc7",
+  "inv:chunk_weapon": "fcd40a4be8aac482",
+  "inv:compressor_economy": "cecb3725a61a9a73",
+  "inv:cure_geography": "be7b89b8a49e4f7f",
+  "inv:dissolution": "46f2f8a1326a38bb",
+  "inv:dwommo_flight": "e61bc7701edd6b7d",
+  "inv:exposure": "591a81f236f21393",
+  "inv:farm_conversion": "2cdb6f7b7ef2f9dc",
+  "inv:farm_ruins": "d17260f52228d72f",
+  "inv:feature_settings": "08ed6d1fed402494",
+  "inv:fubbum_hunting": "76f26755ff34e5f0",
+  "inv:gappo_channels": "2986967973fbf14f",
+  "inv:gappo_family": "96647c92c2ea9c82",
+  "inv:gelatid": "e39e264aaea35d60",
+  "inv:gene_injection": "4e08abc07b3693ed",
+  "inv:kit_art": "dc7ca472f40a5885",
+  "inv:legacy_ground_flora": "e4e0d377a3b0bb18",
+  "inv:oomb_family": "da3cd69472349990",
+  "inv:pit_meals": "983c5045ab0ec3f3",
+  "inv:pit_solvent": "bbc836ac8955b733",
+  "inv:rain_water_services": "f52540b6c55c76e3",
+  "inv:raw_slime_bargain": "b8beaf4f40909cd8",
+  "inv:seeker_extraction": "cdd86862a89513ba",
+  "inv:seeker_scanner": "a1c534329dae13b6",
+  "inv:slime_breach_api": "aa0f48de37f2b32e",
+  "inv:slime_flora": "d8729f14ccb95887",
+  "inv:slime_marked": "05ac7abf3667fdd3",
+  "inv:slime_rain": "132545e6ed91fe14",
+  "inv:slime_terrain": "1d25d3b33c90e503",
+  "inv:slimification_ladder": "eb995ffa42ba0b29",
+  "inv:titan_engulf": "6b49213d0f1c804f",
+  "inv:titan_growth": "c6ff8a1107cd83e3",
+  "inv:titan_shedding": "76c8943e25be20ec",
+  "inv:visitor_ecology": "0d7531d993583096",
+  "inv:warnings": "3e7d406e26f9218e",
+  "inv:wuum": "e3f9783846094673",
+  "leaf:actual_vault_breach": "646984e3b6ccee4b",
+  "leaf:chosen_gene_journey": "eb74b61ce0548e91",
+  "leaf:friend_rescue": "faf641136abbadad",
+  "leaf:harvested_chunk": "078b035c000813bb",
+  "leaf:last_touch_return": "bdfeb842b2f5e8e0",
+  "leaf:lasting_gene_price": "703299762a9ba26b",
+  "leaf:living_ecology": "7568639222e94606",
+  "leaf:ordinary_absorption": "f77805c39d90cd76",
+  "leaf:repeat_walk": "61b50000f254af9f",
+  "leaf:scene_observer": "8b04b956a9a2bc58",
+  "leaf:settings_and_scope": "83c65bfd974d1fb0",
+  "leaf:titan_lifecycle": "cfd832a7b3e4b00d",
+  "leaf:useful_body": "991d93e509f68d5a",
+  "record:scope": "6405e29e04337d3c",
+  "rest:acoustic_payload": "13ea831c7941113e",
+  "rest:archive_growing": "36021a3b0e6b9770",
+  "rest:archive_snapshot": "f7183358b8b0909e",
+  "rest:biome_worldgen": "90642f8b15f0bdfc",
+  "rest:cure_geography": "8eac16a68481f81e",
+  "rest:exposure": "470869d990ef9afb",
+  "rest:feature_settings": "3abd9d9c60f2070b",
+  "rest:kit_art": "cdafbf92f4908be6",
+  "rest:legacy_ground_flora": "acaa0ad66598ef0b",
+  "rest:slime_rain": "096e4e120a033c29",
+  "scene:archive_field_choice": "80a9bccb352df659",
+  "scene:archive_filing_and_return": "8dde585beea12c43",
+  "scene:archive_lifecycle_and_family": "e05f82ad33edc862",
+  "scene:chunk_ground_and_age": "d150fa6ce890cf4d",
+  "scene:chunk_throw": "06a0d5d459761210",
+  "scene:contact_ladder": "4d39d61b5d1fa6fd",
+  "scene:dwommo_attended": "0607ee5977d93a7a",
+  "scene:farms_and_ruins": "0d4188f61b644569",
+  "scene:flagship_sequence": "609b3c7130b3fccb",
+  "scene:fubbum_hunt": "52c2769da0b39966",
+  "scene:gappo_channels": "81d59ad443d152a7",
+  "scene:gene_effect_and_social": "6307923b8dcd1dcb",
+  "scene:geographic_exit": "d1e57805a877591b",
+  "scene:kit_and_titan_review": "c945332f1ab2fd50",
+  "scene:legacy_and_optional_services": "1038ce438b1c5d6c",
+  "scene:native_body": "a061df6863065e65",
+  "scene:observer_recovery": "b1d43578190e1821",
+  "scene:oomb_wuum_behaviour": "fa8f52a638dfceeb",
+  "scene:ordered_friend_rescue": "9c24c0677275b82e",
+  "scene:package_and_floor": "0e9218daaa0a1bfc",
+  "scene:paid_archive_disable": "c1a281d20e386e87",
+  "scene:rain_and_water_services": "f39e703c713d6881",
+  "scene:raw_slime_fee": "57aac925dd48dc44",
+  "scene:seeker_lifecycle": "293f2b906dc73c0f",
+  "scene:settings_consumers": "24c2bb730d2ad158",
+  "scene:solvent_food": "7ad3c890968a732d",
+  "scene:terminal_belongings": "040367ba6e2afd09",
+  "scene:titan_engulf_rescue": "a984e284118c645f",
+  "scene:titan_growth_shedding": "f0739c580ed8a6e9",
+  "scene:titan_to_vault": "a6a8144436f9e778",
+  "scene:v5_seal_and_generic_breach": "5becd39bf8505b10",
+  "scene:visitor_arrival": "75c7c6937cbe4314",
+  "scene:walk_reload_repeat": "9c9e961d2d5350a1",
+  "scene:workday_products": "60cba25f079c3684",
+  "sheet:": "9726cb0c5c4a8c88",
+  "sheet:delegated": "7f6eca7465ad168a",
+  "sheet:does": "64bf77143c55c788",
+  "sheet:does not": "18753f1ceba4b9b1",
+  "sheet:his words": "ab669a7b50965487",
+  "sheet:later": "4e9b831346a30133",
+  "sheet:open": "55371d56d3d5d4f8",
+  "sheet:pruning": "d5c7ddc2e873ff40",
+  "sheet:waived": "45baa8417e2c30b3",
+  "showcase:chosen_gene_friend_rescue": "28dccbc15e2a29ac",
+  "showcase:giant_harvest_and_vault": "1b37188d459719b5",
+  "showcase:residents_and_outsiders": "1bd9c7b580b81620",
+  "showcase:useful_body_workday": "7b6fde6a29000835",
+  "tree:rest": "b21b351c08b57bf2"
+ },
+ "inputs": {
+  "exam.json": "6051e7edbbfc98219c4e9173eaa06f3709d4bc96b09366a8209d71c872161805",
+  "floor.json": "d7dacc07f1a217ec8328ff05ca30cb09f06b0c2b6147f797144835dd30238e49",
+  "record.json": "cc00c55b8bd4438ac327860d5f7f21373d6b3d2b040bd7979335270b6afdf25e",
+  "scenes.json": "9921adfea00edcc3ac0baffaafb5c88307406423959c622fad0b9e1d7f025f7e",
+  "sheet.md": "84430387dffa1e1fddd0f4f9aee16c0cf8142446c9fe0fdaf3e11ba966f5860d"
+ },
+ "judge": "rm-coverage-judge-1794839164",
+ "mode": "full",
+ "prompt_chars": 4508,
+ "reasons": "All 13 leaves have script-staged acceptance scenes with a start, control and restore. The showcases plus coverage_rest account for all 43 built units, and no leaf is accepted by an exploration scene. The exam's scenarios agree with the leaf boundaries. But 18 gaps remain, all fixable by the Designer at stage 3 with edits. Settings matrix fields are assigned to scenes that never set them. Visitor-seed and ruins generation, and their toggles, are only inspected after the fact. Dwommo flight is accepted by motion and captures instead of a flight-tracker state read. Native resistance of oombs, wuum and fubbum is unmeasured. Terrain movement and fertility are unobserved. Shedding has no size or cooldown arms. The carry-tracker chunk holder is missing. The generic breach arm asserts no consumption or filth. Off-map dissolution, legacy contact and rain services have no stated pass outcome. Nothing checks that warnings tell the true time. The slime-mark helpers and inherited mark are untested. Seeker nearest-tile correctness is unchecked. The prepared-floor routine is never staged. Friend-rescue distance and time margin are unrecorded. Five floor lines are bound to non-measuring scenes. The player sheet omits four tested behaviours.",
+ "sheet": "84430387dffa1e1fddd0f4f9aee16c0cf8142446c9fe0fdaf3e11ba966f5860d",
+ "signed": false,
+ "tokens": 823859,
+ "tree": "73a427218f9b65b4ad03c58cba26b209beb2e5900ee0d48bddb25e6df9d3eac8",
+ "verdict": "not_covered"
+}
