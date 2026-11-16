@@ -1,4 +1,4 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226641} body_sha256=0c6ca7407e030a8cd45150dc9017d4dcb61d75ad72c145090cfc45bf00ec3da8 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226641} body_sha256=ad1ae0abe1c849daf5c6dda75f2102e648aac3b2a71e559c8be96714e5f13e39 -->
 # ExplosiveKnockback — mod ledger packet
 version 0.1.0 · stage offline_build · 383 events in 1 shards · reducer 1
 
@@ -240,60 +240,64 @@ version 0.1.0 · stage offline_build · 383 events in 1 shards · reducer 1
 
 spend recorded: USD 70.74, 138207197 tokens
 
-## Decisions (50, 3 older left out)
+## Decisions (3)
+- criterion_repair:closed_containers_thrown_2026-11-15 (BACKFILL, 2026-11-16T06:08:19Z): criterion repair folder (files: tree_sheet_rewording.patch)
+- criterion_repair:sc_barrage_perf_2026-11-15 (BACKFILL, 2026-11-16T06:08:19Z): Item `RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN`, filed 2026-11-15 by the fixer of `RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO`.
 - criterion_repair:sc_storeroom_mortar_2026-11-15 (BACKFILL, 2026-11-16T06:08:19Z): criterion repair folder (files: calibrate.py, calibrate_cap6.txt, criteria_new.json, criteria_old.json, diffguard.json, refusal.json)
-- his_words:33 (BACKFILL, 2026-11-16T06:08:19Z): 2026-10-06: "You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall."
-- his_words:34 (BACKFILL, 2026-11-16T06:08:19Z): 2026-11-10: "1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly."
-- his_words:35 (BACKFILL, 2026-11-16T06:08:19Z): 2026-11-11: "(1) but the closed containers may themselves get shoved a bit" · "2 and remember the gas in the Cauldron"
-- his_words:36 (BACKFILL, 2026-11-16T06:08:19Z): 2026-11-12, the flagship: "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well."
-- his_words:38 (BACKFILL, 2026-11-16T06:08:19Z): 2026-11-12, 4:05 PM PST: "1: Anything that draws its contents is open. … 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly. No blockers."
-- his_words:40 (BACKFILL, 2026-11-16T06:08:19Z): 2026-11-13: "We really shouldn't blow back creatures beyond a certain mass, and the heavier something is, the less it should fly. That should also be a function of the explosive damage itself as well." · "with a single scene we can check ALL these things together" · "Melee shove is a great idea, but it belongs in FlowWorks, not here."
-- his_words:43 (BACKFILL, 2026-11-16T06:08:19Z): 2026-11-13, the lock: "Yes, fix it like that, and then please record this as an actual Pass." (OWNER:1794608649743135329)
-- his_words:44 (BACKFILL, 2026-11-16T06:08:19Z): 2026-11-13, on the settings sweep: "can't we actually simulate that settings check offline? That seems a gratuitous use of the game, unless that's actually a very fast check?"
-- owner:1794373318813726012 (BACKFILL, 2026-11-16T06:08:19Z): 1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly. 2:1 3:Each gas unit that ignites should create its own weak explosion that then whooshes along, detonating each gas cloud along the entire pattern. The backwash should scatter items not just in the cloud but within the radius of any of the individual explosions. Like 3:3 but I want to make sure each of the individual gas clumps gets it, not just "the centroid of the large gas cloud"
-- owner:1794378745022165965 (BACKFILL, 2026-11-16T06:08:19Z): 1:2 but don't invent new UI, there are already animal tools for this sort of thing 2:2 3:1
-- owner:1794470697182934051 (BACKFILL, 2026-11-16T06:08:19Z): Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well.
-- owner:1794470702467936205 (BACKFILL, 2026-11-16T06:08:19Z): Approve the 16 Explosive Knockback north-star bars? → Approve as written
-- owner:1794527885746395760 (BACKFILL, 2026-11-16T06:08:19Z): Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists
-- owner:1794530555364831060 (BACKFILL, 2026-11-16T06:08:19Z): We should decide if we need those other explosion mods we have or they should be absorbed into this one.
-- owner:1794533165141036707 (BACKFILL, 2026-11-16T06:08:19Z): Better Explosions and Dynamic Effects Forge -> Keep both for good; Custom Gas Types -> Keep it as a separate mod
-- owner:1794549024074656898 (BACKFILL, 2026-11-16T06:08:19Z): Extra Explosion Effects → Absorb the idea into Knockback
-- owner:1794549029062972077 (BACKFILL, 2026-11-16T06:08:19Z): explosion mods → Extra Explosion Effects: Absorb the idea into Knockback; Better Explosions, Dynamic Effects Forge: Keep both for good; Custom Gas Types: Keep it as a separate mod
-- owner:1794556366219202085 (BACKFILL, 2026-11-16T06:08:19Z): EK sign-off → One judge run
-- owner:1794592407312114138 (BACKFILL, 2026-11-16T06:08:19Z): SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation from Explosive Knockback.
-- owner:1794608649743135329 (BACKFILL, 2026-11-16T06:08:19Z): Yes, fix it like that, and then please record this as an actual Pass.
-- owner:1794608827666872544 (BACKFILL, 2026-11-16T06:08:19Z): Yes, fix it like that, and then please record this as an actual Pass.
-- owner:1794610188062865138 (BACKFILL, 2026-11-16T06:08:19Z): Yes, fix it like that, and then please record this as an actual Pass.
-- owner:1794610881684982445 (BACKFILL, 2026-11-16T06:08:19Z): Yes, we're going to do what you recommend. But we need to do much more too. This is becoming a new Pipeline, much better than Relentless Pipeline. It is a Maturation Pipeline with a work unit that's a whole versioned Mod. Relentless pipeline is done, we're not going back to that idea. But we need a pipeline.
-- owner:1794611160236416532 (BACKFILL, 2026-11-16T06:08:19Z): Yes, we're going to do what you recommend.
-- owner:1794611165682386979 (BACKFILL, 2026-11-16T06:08:19Z): Yes, we're going to do what you recommend.
-- owner:1794611171307640419 (BACKFILL, 2026-11-16T06:08:19Z): Yes, we're going to do what you recommend.
-- owner:1794611176582091058 (BACKFILL, 2026-11-16T06:08:19Z): Yes, we're going to do what you recommend.
-- owner:1794684145222248287 (BACKFILL, 2026-11-16T06:08:19Z): It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3).
-- owner:1794684151016212874 (BACKFILL, 2026-11-16T06:08:19Z): (2) and we should track CODEX quota the same way.
-- owner:1794684224649600708 (BACKFILL, 2026-11-16T06:08:19Z): How many mods should advance at once? → All four now, offline only
-- owner:1794684231976620880 (BACKFILL, 2026-11-16T06:08:19Z): How many mods should advance at once? → All four now, offline only
-- owner:1794684238949922350 (BACKFILL, 2026-11-16T06:08:19Z): How many mods should advance at once? → All four now, offline only
-- owner:1794693272920017102 (BACKFILL, 2026-11-16T06:08:19Z): When should the held look statements go into the mods' tables? -> Per mod, as it advances
-- owner:1794696195350158091 (BACKFILL, 2026-11-16T06:08:19Z): For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.
-- owner:1794696200830316763 (BACKFILL, 2026-11-16T06:08:19Z): Should a thrown pawn landing on another pawn hurt anyone? -> Bruise in the next version
-- owner:1794696650663248428 (BACKFILL, 2026-11-16T06:08:19Z): For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.
-- owner:1794696661272423650 (BACKFILL, 2026-11-16T06:08:19Z): Thrown pawn lands on another pawn → Bruise in the next version
-- owner:1794748404753740828 (BACKFILL, 2026-11-16T06:08:19Z): Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- owner:1794748415052250163 (BACKFILL, 2026-11-16T06:08:19Z): Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- owner:1794748823561950419 (BACKFILL, 2026-11-16T06:08:19Z): Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- owner:1794790774946941507 (BACKFILL, 2026-11-16T06:08:19Z): Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
-- owner:1794790800032152388 (BACKFILL, 2026-11-16T06:08:19Z): Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- owner:1794790805830479356 (BACKFILL, 2026-11-16T06:08:19Z): Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- owner:1794790816821560212 (BACKFILL, 2026-11-16T06:08:19Z): Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- owner:1794790840066819225 (BACKFILL, 2026-11-16T06:08:19Z): Which release do you want? (two mods stopped at the USD 60 stage spend guard) -> Raise the limit to $100; Who should be allowed to use the per-mod release from now on? -> Conductor, told after
-- owner:1794790846695484960 (BACKFILL, 2026-11-16T06:08:19Z): Which release do you want? → Raise the limit to $100
-- owner:1794799770273329641 (BACKFILL, 2026-11-16T06:08:19Z): 1 agree.
-- owner:1794807835796372627 (BACKFILL, 2026-11-16T06:08:19Z): Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first.
-- owner:1794808666152584814 (BACKFILL, 2026-11-16T06:08:19Z): I would like this tried at the same time on three mods concurrently so that we can observe different outcomes rapidly. It should roughly start where it last was in the pipeline as that is the same path it treads yes? Then start to build context and learning as it goes.
+
+## Tests (50, 121 older left out)
+- 2026-11-16T06:07:59Z test.run bar:heavier_flies_less: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:heavy_stack_knocks: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:hose_drops_at_takeoff: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_big_corpse_spared: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_blast_power_damage: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_caps: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_closed_guard: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_container_shove: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_creature_mass_limit: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_gas_chain: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_gas_tags: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_goods_fly: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_heavy_knock: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_hook: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_hose_drop: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_items_teleport: live 2 of 2 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_kernel: offline green today from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_killed_corpse: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_mass_limit_skip: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_pawn_flyer: live 2 of 2 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_perf_all_fly: live 0 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_pit_floor_goods_stay: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_pit_floor_haul: live 0 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_pits_receive: live 2 of 2 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_proof_scenes: offline green today from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_recovery: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_settings: live 2 of 2 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_shelf_skip: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_shield: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_too_weak_skip: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_weapon_ext_fields: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_which_blasts: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:inv_who_is_spared: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:no_careless_fall: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:no_teleport: live 2 of 2 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:only_explosions_throw: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:open_shelf_scatters: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:our_gases_burn: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:pawn_flight_arc: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:pawn_hits_pawn_stops: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:people_thrown_three_cells: live 2 of 2 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:per_weapon_tuning: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:pit_goods_fetched: live 0 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:recovery_immunity: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:settings_scale_and_switch: live 2 of 2 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:shield_belt_holds: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:the_spared: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:thrown_into_pit_falls: live 2 of 2 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:walk_storeroom_raid: live 0 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
+- 2026-11-16T06:07:59Z test.run bar:wall_stops_dead: live 1 of 1 deciding scenes PASS (visit_2) from design/concepts/ExplosiveKnockback/version/test_table.json and the visit rows
 
 ## Left out
-- decisions: 3, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
-- tests: 171, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
+- tests: 121, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - notes: 6, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - the full history: 383 events (views/history.md; never read whole)

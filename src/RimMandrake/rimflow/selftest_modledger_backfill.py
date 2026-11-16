@@ -107,6 +107,8 @@ check("compare: the stage agrees with the stage record", rows["stage (version/st
 check("compare: a journal claiming every scene UNRUN against live rows is a DIFF",
       rows["journal.md stands: in-game scenes"][3] is False, rows["journal.md stands: in-game scenes"])
 txt, info = M.packet(root, MOD)
+check("his words are printed once in the packet (his answers), not again under decisions",
+      txt.count("Shelves are open, period.") == 1, txt.count("Shelves are open, period."))
 check("the packet prints under budget and ends with what it left out", info["tokens"] <= info["budget"] and
       "## Left out" in txt, info)
 

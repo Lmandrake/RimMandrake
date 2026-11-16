@@ -631,7 +631,7 @@ def packet_from(mod, events, budget=None):
             drop.append((f["ts"], "closed findings", "- %s [verified] by %s: %s — fix was: %s"
                          % (k, f["by"], cl(f["text"], k), cl(f["proposed_fix"], k))))
     for k, d in st["decisions"].items():
-        if d["by"] != "OWNER":
+        if "decision:" + k not in st["answers"]:          # his words are printed once, under his answers
             drop.append((d["ts"], "decisions", "- %s (%s, %s): %s" % (k, d["by"], d["ts"], cl(d["text"], k))))
     for k, c in st["causes"].items():
         if c["status"] == "tried":

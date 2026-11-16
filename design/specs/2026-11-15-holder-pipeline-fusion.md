@@ -13,7 +13,7 @@ Tags: `[measured]` (how is said) · `[guess ~N%]` · `[HIS]` his words · `[PROP
 By question card, ~9:45 PM PST (the whole card is stamped on `RIMMANDRAKE_DESIGN_HOLDER_PIPELINE_FUSION_CHECKLIST_NOT_HANDOFF`). `[HIS]`
 
 1. Which do we build? → **"Resumed session per mod (Recommended)"**: "Why: keeps context as the mod progresses, unattended, which is what you asked for. The dispatcher resumes one long session per mod at every stage; built as the packet version first, falls back to it. Cost: a warm session can cling to a refuted theory; may cost more per stage; resume is untested in our detached launcher."
-2. Who fixes what a blind judge finds? → **"Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed."** (This replaces his 11-13 rule that a blind judge fixes what it finds on the spot.)
+2. Who fixes what a blind judge finds? → **"Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed."** (This replaces his 11-13 rule, under which the blind judge fixed what it found on the spot.)
 3. Which mod is the pilot? → **"Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit."** (Gimme Some Slack, FlowWorks, Explosive Knockback.)
 4. Context ceiling? → **"Try 400k first."**
 
