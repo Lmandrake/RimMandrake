@@ -1,10 +1,11 @@
 {
  "_view": {
-  "body_sha256": "3cff5804a897b73cd194af6a0fed4f9f6432cb1bef52b93927aec59d93e5d1fc",
+  "body_sha256": "8053895a511622793a3a7b2d54e0ef4f1a62bc54ae0f58e9a79f3d0ae1b82361",
   "reducer": 1,
   "shards": {
    "BACKFILL": 393359,
-   "DISPATCH": 2142
+   "DISPATCH": 2142,
+   "JUDGE.judge-1794822890": 2037
   }
  },
  "state": {
@@ -987,7 +988,7 @@
     "ts": "2026-11-16T07:11:06Z"
    }
   },
-  "events": 519,
+  "events": 521,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2387,6 +2388,23 @@
     "ts": "2026-11-16T08:21:16Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_SPEED_GOES_NEGATIVE": {
+    "accept": "LANE1_STAGE=/mnt/d/ClaudeWork/rimmandrake/scratch/gimmesomeslack_blind_c6_lane1 python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6_judge-1794822890/lane1/run_lane1.py --out /tmp/l1.jsonl: row L1_RESTRING_TICKS_SWEEP PASS",
+    "bars": [
+     "restring_cut_span",
+     "restring_job"
+    ],
+    "by": "JUDGE.judge-1794822890",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs RestringTicks: double s = double.IsNaN(constructionSpeed) || constructionSpeed < 0.1 ? 0.1 : constructionSpeed; return (int)Math.Ceiling(RestringBaseTicks / s);",
+    "status": "open",
+    "tags": [],
+    "text": "AerialMath.RestringTicks(NaN) returns int.MinValue (-2147483648): Math.Max(0.1, NaN) is NaN, so a NaN ConstructionSpeed gives a negative re-string duration. Polish (a NaN stat is a game fault elsewhere), robustness of restring_cut_span.",
+    "ts": "2026-11-16T10:10:35Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET": {
     "accept": "none, a blind judge cycle's verdict is its result (design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated)",
     "bars": [],
@@ -3197,13 +3215,24 @@
   },
   "shards": [
    "BACKFILL",
-   "DISPATCH"
+   "DISPATCH",
+   "JUDGE.judge-1794822890"
   ],
   "spend_tokens": 45795737,
   "spend_usd": 72.2783,
   "stage": "blind_challenge",
   "superseded": [],
-  "tests": [],
+  "tests": [
+   {
+    "by": "JUDGE.judge-1794822890",
+    "kind": "test.run",
+    "result": "FAIL",
+    "sha": "33d88d7163",
+    "subject": "judge",
+    "text": "lane 1 blind: 26 PASS, 1 FAIL (L1_RESTRING_TICKS_SWEEP, NaN speed), 5 UNSETTLED (not_kernel, Stage 6), 2 INFO",
+    "ts": "2026-11-16T10:10:42Z"
+   }
+  ],
   "traps": {
    "trap:47-not-48": {
     "by": "BACKFILL",

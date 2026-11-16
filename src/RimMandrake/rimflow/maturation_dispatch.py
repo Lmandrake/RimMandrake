@@ -1613,6 +1613,17 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
     return rc, "%s; %s" % (text, ledger_after(root, st, mod, led, unit, item, now, fx)), unit
 
 
+def live_units_on(root, mod):
+    """-> the units maturation_now places on `mod` that are live, or UNM when the run records cannot be read."""
+    try:
+        g = MN.gather(root, live=True)
+    except Exception as e:      # noqa: BLE001  an unreadable record is a refusal, said, never a launch
+        return "%s: %s" % (UNM, type(e).__name__)
+    m = next((x for x in g.get("mods") or [] if x.get("name") == mod), None)
+    runs = (m or {}).get("runs", [] if m is None else UNM)
+    return [r["unit"] for r in runs if r.get("live") and r.get("unit")] if isinstance(runs, list) else UNM
+
+
 def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
     """`pilot-launch MOD`: start one pilot holder run from the ledger packet at the stage the mod stands at, through
     the Dispatch step's own launches (the Conductor's act, on a mod the tick has paused or not reached). Refuses a mod
@@ -1649,6 +1660,17 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
         if owed == "build" or (stage in ("blind_challenge", "in_game") and owed in ("cycle", "run")):
             if not item:
                 return 2, "REFUSED: %s owes %s at %s; name the filed item it runs under: --item <ID>" % (mod, owed, stage)
+            if stage in ("blind_challenge", "in_game"):
+                # one judge per cycle, one driver per visit: a run the tick launched a moment ago has not written its
+                # cycle_N folder yet, so "owed" still reads open (RIMMANDRAKE_GUARD_PILOT_LAUNCH_TWO_JUDGES_ONE_CYCLE)
+                live = (fx.get("live_units") or live_units_on)(root, mod)
+                if not isinstance(live, list) or live:
+                    return 2, ("REFUSED: %s at %s: %s; a second %s on the same %s is never started (stop it first, "
+                               "or wait for its end)" % (
+                                   mod, stage, "run(s) %s are live on it" % ", ".join(live) if isinstance(live, list)
+                                   else "the run records cannot be read (%s), so nothing launches on a blind reading" % live,
+                                   "judge" if stage == "blind_challenge" else "driver",
+                                   "cycle" if stage == "blind_challenge" else "visit"))
             rc, text, unit = launch_stage(root, cfg, st, mod, cap, item, now, fx, launch=fx.get("launch"))
         elif opened:
             rc, text, unit, item = road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx)

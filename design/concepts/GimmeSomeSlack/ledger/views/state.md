@@ -1,11 +1,11 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393359,"DISPATCH":2142} body_sha256=f1c40b50aaafa8648c5d28c8b3b7d91866ecc0cf8c34964fe5323142537c4d86 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393359,"DISPATCH":2142,"JUDGE.judge-1794822890":2037} body_sha256=d2b058b47272feba1daf6820b2ae644ab2f0b2796b2d8a42d02d2d18f3a30db8 -->
 # GimmeSomeSlack — mod ledger packet
-version 0.1.0 · stage blind_challenge · 519 events in 2 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 521 events in 3 shards · reducer 1
 holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 holder session 4a28f45b-ffd0-4d0c-a8ac-ee16b8e43565, context 372469 of ceiling 400000
 
-## Open findings (93)
-(claimed fixes, awaiting a judge, on one line each with the oldest 46 open findings, named without their 'finding:': `modledger.py show --mod GimmeSomeSlack finding:<NAME>`)
+## Open findings (94)
+(claimed fixes, awaiting a judge, on one line each with the oldest 47 open findings, named without their 'finding:': `modledger.py show --mod GimmeSomeSlack finding:<NAME>`)
 - RIMMANDRAKE_WIDEN_GSS_HOSE_SCAN_ONE_TEST_TWO_BARS on 6d2aeb9c3f
 - RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER on 6d2aeb9c3f
 - RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS on 0416599c69
@@ -99,6 +99,7 @@ holder session 4a28f45b-ffd0-4d0c-a8ac-ee16b8e43565, context 372469 of ceiling 4
 - RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL [open, polish]: Look-affecting GSS leftovers remain after owner approval: S…
 - RIMMANDRAKE_BIND_CERTIFICATE_TO_OFFLINE_DECIDERS_NO_OP_PASSED [open, problem · bars no_hose]: `maturation.py certificate` stayed OK when an offline bar (…
 - RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET [open, problem]: Task: run Gimme Some Slack blind cycle 5, the first started…
+- RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_SPEED_GOES_NEGATIVE [open, polish · bars restring_cut_span, restring_job]: AerialMath.RestringTicks(NaN) returns int.MinValue (-214748…
 
 ## Traps (158) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod GimmeSomeSlack <subject>` for the whole)
 - trap:47-not-48 (VERSION.json): 47, not 48. `VERSION.json` says "47 = 22 + 26"; the sum is…
@@ -377,10 +378,11 @@ spend recorded: USD 72.28, 45795737 tokens
 
 ## Left out
 - closed findings: 38, oldest first (`modledger.py show --mod GimmeSomeSlack <subject>`)
+- tests: 1, oldest first (`modledger.py show --mod GimmeSomeSlack <subject>`)
 - claimed fixes in brief: 47 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 46 on one line, their fix and accept by `modledger.py show --mod GimmeSomeSlack <subject>`
+- open findings in brief: the oldest 47 on one line, their fix and accept by `modledger.py show --mod GimmeSomeSlack <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars)
-- the full history: 519 events (views/history.md; never read whole)
+- the full history: 521 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T09:55:03Z.1794822903747055430 (modledger.py since --mod GimmeSomeSlack t=2026-11-16T09:55:03Z.1794822903747055430 prints what changed after this packet)
+cursor: t=2026-11-16T10:10:42Z.1794823842887384623 (modledger.py since --mod GimmeSomeSlack t=2026-11-16T10:10:42Z.1794823842887384623 prints what changed after this packet)

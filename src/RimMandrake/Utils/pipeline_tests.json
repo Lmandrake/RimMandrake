@@ -37,6 +37,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_launch_checks.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/acceptance/guard_judge_certificate_accept.py", "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/acceptance/guard_certificate_binds_offline_bars_accept.py", "seconds": 0.5},
+    {"test": "src/RimMandrake/rimflow/acceptance/guard_pilot_launch_live_run_accept.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_card_capture.py", "seconds": 2.2},
     {"test": "src/RimMandrake/rimflow/selftest_answered_asks.py", "seconds": 1.4},
     {"test": "src/RimMandrake/rimflow/selftest_maturation.py", "seconds": 1.2},

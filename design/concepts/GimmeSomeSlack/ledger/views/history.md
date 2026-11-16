@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393359,"DISPATCH":2142} body_sha256=03d69e11e960cb9c0cf3eb105968226eca30a9a085c239e6104f543721f30006 -->
-# GimmeSomeSlack — mod ledger history (519 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":393359,"DISPATCH":2142,"JUDGE.judge-1794822890":2037} body_sha256=08d7eac0bc1b4ebd7ac0c23a535a69b0be8a10daa75b753b169d3c53e283d132 -->
+# GimmeSomeSlack — mod ledger history (521 events, merged across shards)
 
 - 2026-11-16T07:11:06Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 39 of 48 bars met at the lock
 - 2026-11-16T07:11:06Z BACKFILL#2 decision version v0.1.0: 
@@ -520,3 +520,5 @@
 - 2026-11-16T09:04:17Z DISPATCH#4 session.id session v0.1.0: 
 - 2026-11-16T09:54:30Z DISPATCH#5 run.start run v0.1.0: 
 - 2026-11-16T09:55:03Z DISPATCH#6 run.start run v0.1.0: 
+- 2026-11-16T10:10:35Z JUDGE.judge-1794822890#1 finding.open finding:RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_SPEED_GOES_NEGATIVE v0.1.0: AerialMath.RestringTicks(NaN) returns int.MinValue (-2147483648): Math.Max(0.1, NaN) is NaN, so a NaN ConstructionSpeed gives a negative re-string duration. Polish (a NaN stat is a game fault elsewhere), robustness of restring_cut_span.
+- 2026-11-16T10:10:42Z JUDGE.judge-1794822890#2 test.run judge v0.1.0: lane 1 blind: 26 PASS, 1 FAIL (L1_RESTRING_TICKS_SWEEP, NaN speed), 5 UNSETTLED (not_kernel, Stage 6), 2 INFO
