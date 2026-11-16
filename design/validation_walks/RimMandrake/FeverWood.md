@@ -73,23 +73,27 @@ Run the script, not the prose: `python.exe src/RimMandrake/Utils/northstar_drive
 - RULED OUT: reading `<wildAnimals>` through `jawa/get_defs` — a non-public list it cannot serialise (Pyrelands, 2026-10-01); the suite uses `jawa/biome_probe`, which reads the runtime caches.
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418
+validated-by: delegated: new north-star bars; judge verdict infrastructure/state/delegated/2026-11-16/FeverWood_north_star_bars.json
 
 ### the experience  (OWNER'S WORDS)
 "A world in the treetops above a black mirror nobody touches. You live on the branches, and the water remembers."
 (chosen by the owner from drafted options, by question card, 2026-10-20)
 
-DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned.
+The quotation above is documentary: his card choice, kept verbatim. Everything
+below it is agent-authored. The intended-function lines in `## must be true` are
+the functional script's coverage and are agent-owned; they are not these bars.
 
 ### concept root breakdown, agent-authored 2026-11-16
 
-The concept root is approved by the delegated Evidence-for-Ask call
-CONDUCTOR:1794804413045937607, recorded in
-design/concepts/FeverWood/record.json. This does not validate these visual bars,
-the older documentary quotation, or the north-star hash. The two lines below
-are the Designer's candidate breakdown for tree traceability, not owner words.
-The north-star remains DRAFT and its validated hash stays empty.
+The two lines below break the experience into bars for tree traceability. The
+Designer drafted them from the concept root (the delegated Evidence-for-Ask call
+CONDUCTOR:1794804413045937607, recorded in design/concepts/FeverWood/record.json)
+and the owner's question-card answers OWNER:1794374372850231423; they are agent
+words, not his. That root call approved the concept root only, not these bars.
+Whether they bind is read from the `state:` and `validated-by:` lines above,
+never from this prose. Neither line claims the experience already plays in game.
 
 ### must show
 

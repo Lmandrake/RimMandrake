@@ -1,0 +1,27 @@
+{
+  "subject": "design/validation_walks/RimMandrake/FeverWood.md ## north star (2 must-show, both new, never validated), round 1",
+  "section_hash": "c568d46eacf7ba06d5b50540916e2c474b7d9fc46dc6eedfb4492c5522a8b418",
+  "item": "RIMMANDRAKE_VALIDATE_FEVERWOOD_NEW_WALK_BARS",
+  "round": 1,
+  "judge": "delegated north-star judge, round 1 (did not author or reword the bars)",
+  "class": "delegated: north-star bars (new)",
+  "verdict": "PASS",
+  "bars": {
+    "feverwood_branch_home": "ok: breaks down 'You live on the branches' through the owner's card answer 1 ('Routes shape the day: the branching layout governs work and travel'), almost word for word. 'Above the black water' keeps the 'black mirror' setting and does not have anyone touching it. It is yes/no from a short sequence: do colonists' daily work trips and travel follow the branch routes? Today's build gap (fw_routes: boughways and causeways are not painted on a generated map) is a target, not a defect.",
+    "feverwood_water_memory": "ok: breaks down 'and the water remembers'. 'Sometimes reaches up to change its plans' matches the owner's write-in 'a little 3 when tentacles emerge from the water', and 'sometimes' carries his 'a little'. 'Reaches up' is the limbs, so it stays inside ordinary limb encounters and leaves the whole-body rising to the campaign. 'Rescue' follows answer 2. 'Treatment' refers to the victim and claims no removal method for the escaped young, so it does not touch answer 3 (poison is the only intervention). It is yes/no from a sequence: an action, a later consequence of it, a tentacle interruption, and the consequence still readable after rescue, treatment and a save reload. Today's build would fail the reload part (stage.json:471 says water-memory/reload behaviour cannot yet be demonstrated). That is a target, not a defect."
+  },
+  "prose": "ok",
+  "evidence": [
+    "design/validation_walks/RimMandrake/FeverWood.md:80 - the quoted experience line matches design/RimMandrake/biome_experiences_2026-10-20.md:12 word for word ('picked by card')",
+    "design/validation_walks/RimMandrake/FeverWood.md:79,83-85 - the quotation is marked OWNER'S WORDS, and everything below it is declared agent-authored",
+    "design/validation_walks/RimMandrake/FeverWood.md:89-95 - the prose calls the bars agent words, says the root call CONDUCTOR:1794804413045937607 'approved the concept root only, not these bars', leaves the binding to the state:/validated-by: header lines (northstar.py:265-296 writes validated-by: into the header when it binds), and denies that the experience already plays in game. It never claims the section binds nothing or remains DRAFT, and claims no coverage pass and no owner first touch",
+    "design/RimMandrake/designer_codex_2026-11-09/FeverWood/ANSWERS_OWNER.md:3 - 'Routes shape the day: the branching layout governs work and travel. Also a little of the water changing plans, specifically when tentacles emerge from it.' (source of both bars)",
+    "design/RimMandrake/designer_codex_2026-11-09/FeverWood/ANSWERS_OWNER.md:4-5,9 - rescue by a nearby companion; poisoning the pool is the only intervention against the young. Neither bar contradicts these",
+    "design/concepts/FeverWood/record.json scope[owner_november_routes_rescue_maturation] - speaker owner, source OWNER:1794374372850231423, the same words as the write-in. The other owner scope entries (Direct Sun heat, art accepted, native water) are not touched by either bar",
+    "design/concepts/FeverWood/record.json:262-273 - the root answer of CONDUCTOR:1794804413045937607 ('home on the branches, whose routes shape daily work and travel, above black water that remembers what you do and sometimes reaches up to change your plans'), which the two bars split",
+    "design/concepts/FeverWood/coverage_verdict.json - fw_routes painting on a generated map is ok:false. This is an implementation gap, so the bar is a target",
+    "design/concepts/FeverWood/stage.json:471 - 'Missing water-memory/reload behavior cannot be demonstrated', so water_memory would fail today. That is a target, not a defect"
+  ],
+  "would_pass": "Passes as written. Both bars are faithful splits of the owner's quoted line, through his 2026-11-10 card answers and the delegated root, and neither contradicts an owner ruling it touches (rescue distance, poison as the only intervention, limbs-only ordinary encounters). Each can be answered yes or no from a short in-game sequence. Both would probably fail on today's build (route painting, water memory across a reload). Those are targets. The prose keeps his quotation verbatim and set apart from agent text, and it makes none of the forbidden claims.",
+  "smallest_fix": null
+}
