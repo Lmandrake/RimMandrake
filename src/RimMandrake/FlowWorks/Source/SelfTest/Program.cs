@@ -2257,6 +2257,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             SheetWaterChecks.Run(Case);        // CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED stage 0: the sheet-water kernel (SheetWaterChecks.cs)
             FloodReleaseChecks.Run(Case);      // CANAL_OVERFLOW step 1: Flood_FlowWorks' four accounting faults fixed (FloodReleaseChecks.cs)
             BlindCycle1Checks.Run(Case);       // FlowWorks 0.1.0 blind challenge cycle 1: cases where a decider stayed green over a broken behaviour (BlindCycle1Checks.cs)
+            BlindCycle3Checks.Run(Case);       // FlowWorks 0.1.0 blind challenge cycle 3: cases where a decider stayed green over a planted fault (BlindCycle3Checks.cs)
             SprinklerChecks.Run(Case);         // SPRINKLER_HEADS_BUILD_PUMP_REQUIRED: sprinkler kernel, shipped defs, VFE patch (SprinklerChecks.cs)
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
