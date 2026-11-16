@@ -1,0 +1,24 @@
+ROW                          STATUS     DETAIL
+W_PRECONDITIONS              PASS       full list, FlowWorks, Cauldron gas, shelves, closed container, cover
+A_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 42 request(s) centred in the storeroom, 11 throw(s)
+A_SAVE_MIDAIR                PASS       2 carrier(s) in the air; save EK_WALK_RAID_MIDAIR_20261116T002809; triplet LOAD_NONDETERMINISTIC
+A_RELOAD_NO_DUP_LOST         UNMEASURED LOAD_NONDETERMINISTIC: at tick 13117: live 7, load 7, reload 7 things; dup {}; lost ['42826', '42830'] new ['43825', '43829'] (load vs live); two loads of one save disagree on 2 field(s)
+A_COVER_BROKEN_ONE_DESCENT   FAIL       grenade ok; cover left none; riders ['Human41802'] (killed []); 0 descent(s) {}, twice []
+A_GAS_CLUMP_BY_CLUMP         FAIL       28 bursts on 5 ticks, 24 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.2, 3.2, 3.9, 5.2]; burst again {'(100, 39)': [13644, 13674], '(100, 41)': [13644, 13674], '(101, 41)': [13674, 13704], '(99, 41)': [13614, 13644]}
+A_GAS_GOODS_MOVED            PASS       9 throw(s) from 28 burst(s)
+A_REQUESTS_MATCH_PLAN        PASS       79 requests, 0 mismatch(es): []; answered by a corpse: []
+A_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+B_GAS_CLUMP_BY_CLUMP         FAIL       35 bursts on 5 ticks, 29 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.1, 3.2, 3.7, 5.2]; burst again {'(100, 41)': [13164, 13224], '(100, 42)': [13164, 13194], '(101, 40)': [13194, 13224], '(101, 41)': [13194, 13224], '(99, 41)': [13134, 13164], '(99, 42)': [13134, 13164]}
+B_GAS_GOODS_MOVED            PASS       26 throw(s) from 35 burst(s)
+B_IMPACTS_IN_ROOM            PASS       3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 21 request(s) centred in the storeroom, 9 throw(s)
+B_COVER_BROKEN_ONE_DESCENT   FAIL       grenade ok; cover left none; riders ['Human41802'] (killed []); 0 descent(s) {}, twice []
+B_REQUESTS_MATCH_PLAN        PASS       142 requests, 0 mismatch(es): []; answered by a corpse: ['Human38762 as Corpse_Human43910', 'Human38765 as Corpse_Human43916']
+B_REACHED_ACCOUNTED          PASS       0 thing(s) inside a shell's radius with no journal line: []
+C_OFF_IMPACTS_NO_THROWS      PASS       mod off: 3 shell(s) went off (all), 0 throw line(s), 0 of 11 storeroom stack(s) moved
+CARRIER_TICK_COST            PASS       meanTickTime 0.0 ms at rest, 0.0 ms with carriers in the air (recorded, not judged)
+FRAME_BUDGET                 UNMEASURED RM_FrameProbe.Begin/Stop are internal: no bridge read of frame time yet
+evidence: design/concepts/ExplosiveKnockback/version/in_game/road_back_2026-11-16/sc_walk_raid_run3.json   throwaway saves: ['EK_WALK_RAID_BASE_20261116T002809', 'EK_WALK_RAID_MIDAIR_20261116T002809']
+[bridge split] 122.2 s wall: load 4.4 / ticks 18.2 / reads 42.3 / other 9.9 / outside calls 47.5 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (4.0 s): batch them
+[bridge split] WARN 57 calls of jawa/static_call (2.3 s): batch them
+rc=1

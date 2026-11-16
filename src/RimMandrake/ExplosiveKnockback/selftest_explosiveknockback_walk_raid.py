@@ -20,6 +20,12 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
   W13 the grenade kills the rider: COVER rows UNMEASURED, and the rider's request answered by its corpse's line keeps
       A_ and B_REQUESTS_MATCH_PLAN PASS
   W14 a living rider, the cover gone, no descent: A_ and B_COVER_BROKEN_ONE_DESCENT FAIL (the mod's row still bites)
+  W15 a storeroom shell breaks the cover (live run 3, 2026-11-16: the first shell broke it, the rider fell then, and the
+      grenade thrown after met no cover): the grenade is thrown first in each order, so the COVER rows still PASS
+  W17 a thing born after the mid-air save takes its id from the game's counter, which a load advances (live 2026-11-16:
+      42837 live, 43837 in both loads): A_RELOAD_NO_DUP_LOST still PASSes; ids are compared only for things the save holds
+  W16 the cover already gone when the grenade comes: COVER rows UNMEASURED naming it, never a mod FAIL read off an empty
+      journal
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py
 """
@@ -62,6 +68,11 @@ class Fake:
     def blast(self, at, radius, source="shell"):
         exp = self.next_exp
         self.next_exp += 1
+        if at != (13, 19) and self.brk.get("cover_broken_early") and self.w["cover"]:
+            # a shell (or a raider's blast) breaks the cover before the scripted grenade: the rider falls in then
+            self.w["cover"] = False
+            if self.w["pawns"].get("Human900"):
+                self.rec(type="descent", exp=0, thing="Human900", at=[13, 19], **{"def": "Human"})
         if at == (13, 19):
             rider = self.w["pawns"].get("Human900")
             if rider and not rider["dead"]:
@@ -69,8 +80,8 @@ class Fake:
                 if self.brk.get("rider_killed"):
                     rider["dead"] = True
             if not self.brk.get("cover_stays"):
-                self.w["cover"] = False
-                if rider and not rider["dead"] and not self.brk.get("no_descent"):
+                had, self.w["cover"] = self.w["cover"], False
+                if had and rider and not rider["dead"] and not self.brk.get("no_descent"):     # no lid, no fall
                     self.rec(type="descent", exp=0, thing="Human900", at=[13, 19], **{"def": "Human"})
             if rider and rider["dead"]:
                 self.rec(type="skip", exp=exp, thing="Corpse_Human901", reason="in_pit", **{"def": "Corpse_Human"})
@@ -102,6 +113,11 @@ class Fake:
 
     def tick(self):
         self.w["tick"] += 1
+        if self.brk.get("reid_after_save") and self.w.get("savedAt") is not None and self.w["tick"] == self.w["savedAt"] + 3:
+            # a leaving born after the save (the shell's wave breaks a shelf): its id comes from the game's counter, which a
+            # load advances (live 2026-11-16: 42837 live, 43837 after both loads)
+            self.w["goods"][str(self.w.get("nextId", 5000))] = [14, 13]
+            self.w["nextId"] = self.w.get("nextId", 5000) + 1
         if self.w["wave"]:
             self.w["goods"].pop(self.w["wave"].pop(0), None)
         for c in list(self.w["carriers"]):
@@ -190,6 +206,7 @@ class Fake:
                 self.tick()
             return {"success": True}
         if tool == "rimworld/save_game":
+            w["savedAt"] = w["tick"]
             self.saves[kw["saveName"]] = copy.deepcopy({k: v for k, v in w.items() if k != "journal"})
             return {"success": True}
         if tool == "rimworld/load_game":
@@ -198,12 +215,16 @@ class Fake:
             self.w["journal"] = j
             if self.brk.get("dup_on_reload") and self.w["carriers"]:
                 self.w["goods"][self.w["carriers"][0]["inner"]] = [12, 12]   # a spawned twin of a good still in its carrier
+            if self.brk.get("reid_after_save"):
+                self.w["nextId"] = self.w.get("nextId", 5000) + 1000
             if self.brk.get("load_tick"):
                 self.tick()                         # Prefs.PauseOnLoad: Game.LoadGame runs one DoSingleTick
             return {"success": True}
         if tool == "jawa/mod_settings_field":
             return {"success": True, "value": "True"}
         if tool == "jawa/fire_raid":
+            if self.brk.get("cover_gone_at_raid"):
+                w["cover"] = False                  # the raid broke the cover before any act of the walk
             return {"success": True, "executed": True, "pawnsArrivedTotal": 4}
         return {"success": True}
 
@@ -265,6 +286,17 @@ def main():
           "rider killed: cover %s, plan %s" % ([rows.get(r) for r in cover], [rows.get(r) for r in plan]))
     code, rows, _ = run(no_descent=True)
     check("W14", code == 1 and [rows.get(r) for r in cover] == ["FAIL"] * 2, "living rider, no descent: %s" % [rows.get(r) for r in cover])
+    code, rows, txt = run(cover_broken_early=True)
+    check("W15", [rows.get(r) for r in cover] == ["PASS"] * 2,
+          "a storeroom shell that breaks the cover cannot pre-empt the grenade, thrown first (live 2026-11-16): %s"
+          % [rows.get(r) for r in cover])
+    code, rows, txt = run(cover_gone_at_raid=True)
+    check("W16", [rows.get(r) for r in cover] == ["UNMEASURED"] * 2 and txt.count("already gone") >= 2,
+          "the cover already gone when the grenade comes: UNMEASURED naming it, not FAIL: %s" % [rows.get(r) for r in cover])
+    code, rows, txt = run(reid_after_save=True)
+    check("W17", rows.get("A_RELOAD_NO_DUP_LOST") == "PASS",
+          "a thing born after the save, re-numbered by the load, is neither lost nor new (live 2026-11-16): %s"
+          % rows.get("A_RELOAD_NO_DUP_LOST"))
     script = os.path.join(HERE, "validation.py")
     r1 = subprocess.run([sys.executable, script, "--live"], capture_output=True, text=True)
     r2 = subprocess.run([sys.executable, script, "--live", "walk_storeroom_raid"] + ARGS[:6], capture_output=True, text=True,

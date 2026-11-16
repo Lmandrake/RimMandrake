@@ -1,0 +1,845 @@
+{
+ "rows": {
+  "W_PRECONDITIONS": [
+   "PASS",
+   "full list, FlowWorks, Cauldron gas, shelves, closed container, cover"
+  ],
+  "A_SAVE_MIDAIR": [
+   "PASS",
+   "2 carrier(s) in the air; save EK_WALK_RAID_MIDAIR_20261116T002809; triplet LOAD_NONDETERMINISTIC"
+  ],
+  "A_RELOAD_NO_DUP_LOST": [
+   "UNMEASURED",
+   "LOAD_NONDETERMINISTIC: at tick 13117: live 7, load 7, reload 7 things; dup {}; lost ['42826', '42830'] new ['43825', '43829'] (load vs live); two loads of one save disagree on 2 field(s)"
+  ],
+  "A_IMPACTS_IN_ROOM": [
+   "PASS",
+   "3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 42 request(s) centred in the storeroom, 11 throw(s)"
+  ],
+  "A_REACHED_ACCOUNTED": [
+   "PASS",
+   "0 thing(s) inside a shell's radius with no journal line: []"
+  ],
+  "A_COVER_BROKEN_ONE_DESCENT": [
+   "FAIL",
+   "grenade ok; cover left none; riders ['Human41802'] (killed []); 0 descent(s) {}, twice []"
+  ],
+  "A_GAS_CLUMP_BY_CLUMP": [
+   "FAIL",
+   "28 bursts on 5 ticks, 24 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.2, 3.2, 3.9, 5.2]; burst again {'(100, 39)': [13644, 13674], '(100, 41)': [13644, 13674], '(101, 41)': [13674, 13704], '(99, 41)': [13614, 13644]}"
+  ],
+  "A_GAS_GOODS_MOVED": [
+   "PASS",
+   "9 throw(s) from 28 burst(s)"
+  ],
+  "A_REQUESTS_MATCH_PLAN": [
+   "PASS",
+   "79 requests, 0 mismatch(es): []; answered by a corpse: []"
+  ],
+  "B_GAS_CLUMP_BY_CLUMP": [
+   "FAIL",
+   "35 bursts on 5 ticks, 29 distinct cells; mean distance from lit (98, 41) by tick [1.0, 2.1, 3.2, 3.7, 5.2]; burst again {'(100, 41)': [13164, 13224], '(100, 42)': [13164, 13194], '(101, 40)': [13194, 13224], '(101, 41)': [13194, 13224], '(99, 41)': [13134, 13164], '(99, 42)': [13134, 13164]}"
+  ],
+  "B_GAS_GOODS_MOVED": [
+   "PASS",
+   "26 throw(s) from 35 burst(s)"
+  ],
+  "B_IMPACTS_IN_ROOM": [
+   "PASS",
+   "3 shell(s) at [(100, 40), (99, 41), (101, 39)]; 21 request(s) centred in the storeroom, 9 throw(s)"
+  ],
+  "B_REACHED_ACCOUNTED": [
+   "PASS",
+   "0 thing(s) inside a shell's radius with no journal line: []"
+  ],
+  "B_COVER_BROKEN_ONE_DESCENT": [
+   "FAIL",
+   "grenade ok; cover left none; riders ['Human41802'] (killed []); 0 descent(s) {}, twice []"
+  ],
+  "B_REQUESTS_MATCH_PLAN": [
+   "PASS",
+   "142 requests, 0 mismatch(es): []; answered by a corpse: ['Human38762 as Corpse_Human43910', 'Human38765 as Corpse_Human43916']"
+  ],
+  "C_OFF_IMPACTS_NO_THROWS": [
+   "PASS",
+   "mod off: 3 shell(s) went off (all), 0 throw line(s), 0 of 11 storeroom stack(s) moved"
+  ],
+  "CARRIER_TICK_COST": [
+   "PASS",
+   "meanTickTime 0.0 ms at rest, 0.0 ms with carriers in the air (recorded, not judged)"
+  ],
+  "FRAME_BUDGET": [
+   "UNMEASURED",
+   "RM_FrameProbe.Begin/Stop are internal: no bridge read of frame time yet"
+  ]
+ },
+ "ev": {
+  "args": {
+   "storeroom": "97,37,7,7",
+   "cover": "102,36",
+   "gas": "100,41",
+   "lit": null,
+   "save": "EK_WALK_RAID_BASE_20261115T173148",
+   "site": null,
+   "shelf_defs": "Shelf,ShelfSmall",
+   "shells": 3,
+   "settle": 120,
+   "gas_ticks": 900,
+   "raid_points": 300.0,
+   "full_min": 100,
+   "out": "design/concepts/ExplosiveKnockback/version/in_game/road_back_2026-11-16/sc_walk_raid_run3.json",
+   "stamp": "20261116T002809"
+  },
+  "active_mods": 316,
+  "pre": {
+   "shelves": [
+    "Shelf",
+    "ShelfSmall"
+   ],
+   "closed": [
+    "LWM_WeaponsLocker"
+   ],
+   "goods": 11,
+   "cover": "RM_PitCover_WovenScrap"
+  },
+  "saves": [
+   "EK_WALK_RAID_BASE_20261116T002809",
+   "EK_WALK_RAID_MIDAIR_20261116T002809"
+  ],
+  "tick_rest": 0.0,
+  "raid": {
+   "success": true,
+   "blockedByDialog": false,
+   "pawnsArrivedTotal": 3,
+   "exc": null
+  },
+  "tick_air": 0.0,
+  "midair_flights": [
+   "RM_ThingFlyer_Knockback42820 inner=WoodLog x8 innerId=WoodLog38776 at=99,41 dest=97,43 left=13 bounces=0",
+   "RM_ThingFlyer_Knockback42821 inner=Steel x75 innerId=Steel38761 at=101,41 dest=103,43 left=13 bounces=0"
+  ],
+  "reload_census": {
+   "verdict": "LOAD_NONDETERMINISTIC",
+   "why": "two loads of one save disagree on 2 field(s)",
+   "target": 13117,
+   "loadedAt": {
+    "A": null,
+    "B": 13108,
+    "C": 13108
+   },
+   "count": {
+    "A": 7,
+    "B": 7,
+    "C": 7
+   },
+   "dup": {
+    "A": [],
+    "B": [],
+    "C": []
+   },
+   "lost": [
+    "42826",
+    "42830"
+   ],
+   "new": [
+    "43825",
+    "43829"
+   ],
+   "BC": {
+    "ids[5]": [
+     "43825",
+     "43826"
+    ],
+    "ids[6]": [
+     "43829",
+     "43830"
+    ]
+   }
+  },
+  "grenade": {
+   "A": {
+    "riders": [
+     "Human41802"
+    ],
+    "killed": [],
+    "descents": {},
+    "riderLines": [
+     {
+      "type": "request",
+      "tick": 13478,
+      "exp": 43855,
+      "thing": "Human41802",
+      "def": "Human",
+      "from": [
+       102,
+       36
+      ],
+      "centre": [
+       102,
+       36
+      ],
+      "radius": 1.9,
+      "force": 1,
+      "damType": "Bomb",
+      "source": "damageDef",
+      "shieldAbsorbed": false,
+      "typeForce": 1,
+      "damage": 50,
+      "damageRatio": 1
+     },
+     {
+      "type": "skip",
+      "tick": 13478,
+      "exp": 43855,
+      "thing": "Human41802",
+      "def": "Human",
+      "reason": "in_pit",
+      "at": [
+       102,
+       36
+      ]
+     }
+    ]
+   },
+   "B": {
+    "riders": [
+     "Human41802"
+    ],
+    "killed": [],
+    "descents": {},
+    "riderLines": [
+     {
+      "type": "request",
+      "tick": 13767,
+      "exp": 43914,
+      "thing": "Human41802",
+      "def": "Human",
+      "from": [
+       102,
+       36
+      ],
+      "centre": [
+       102,
+       36
+      ],
+      "radius": 1.9,
+      "force": 1,
+      "damType": "Bomb",
+      "source": "damageDef",
+      "shieldAbsorbed": false,
+      "typeForce": 1,
+      "damage": 50,
+      "damageRatio": 1
+     },
+     {
+      "type": "skip",
+      "tick": 13767,
+      "exp": 43914,
+      "thing": "Human41802",
+      "def": "Human",
+      "reason": "in_pit",
+      "at": [
+       102,
+       36
+      ]
+     }
+    ]
+   }
+  },
+  "gas": [
+   {
+    "seeded": "seeded=13 total=3250",
+    "fire": {
+     "success": true,
+     "firesStarted": 1
+    }
+   },
+   {
+    "seeded": "seeded=13 total=3250",
+    "fire": {
+     "success": true,
+     "firesStarted": 1
+    }
+   }
+  ],
+  "gas_bursts": {
+   "A": [
+    [
+     13614,
+     [
+      98,
+      41
+     ],
+     -1,
+     4
+    ],
+    [
+     13614,
+     [
+      99,
+      41
+     ],
+     -2,
+     2
+    ],
+    [
+     13614,
+     [
+      99,
+      40
+     ],
+     -3,
+     2
+    ],
+    [
+     13614,
+     [
+      99,
+      42
+     ],
+     -4,
+     2
+    ],
+    [
+     13644,
+     [
+      99,
+      41
+     ],
+     -5,
+     0
+    ],
+    [
+     13644,
+     [
+      100,
+      41
+     ],
+     -6,
+     1
+    ],
+    [
+     13644,
+     [
+      100,
+      40
+     ],
+     -7,
+     1
+    ],
+    [
+     13644,
+     [
+      100,
+      42
+     ],
+     -8,
+     1
+    ],
+    [
+     13644,
+     [
+      100,
+      39
+     ],
+     -9,
+     0
+    ],
+    [
+     13644,
+     [
+      99,
+      43
+     ],
+     -10,
+     0
+    ],
+    [
+     13644,
+     [
+      100,
+      43
+     ],
+     -11,
+     0
+    ],
+    [
+     13674,
+     [
+      100,
+      41
+     ],
+     -12,
+     0
+    ],
+    [
+     13674,
+     [
+      101,
+      41
+     ],
+     -13,
+     1
+    ],
+    [
+     13674,
+     [
+      101,
+      40
+     ],
+     -14,
+     0
+    ],
+    [
+     13674,
+     [
+      101,
+      42
+     ],
+     -15,
+     1
+    ],
+    [
+     13674,
+     [
+      100,
+      39
+     ],
+     -16,
+     0
+    ],
+    [
+     13674,
+     [
+      101,
+      39
+     ],
+     -17,
+     0
+    ],
+    [
+     13674,
+     [
+      101,
+      43
+     ],
+     -18,
+     1
+    ],
+    [
+     13674,
+     [
+      101,
+      38
+     ],
+     -19,
+     0
+    ],
+    [
+     13704,
+     [
+      101,
+      41
+     ],
+     -20,
+     0
+    ],
+    [
+     13704,
+     [
+      102,
+      41
+     ],
+     -21,
+     2
+    ],
+    [
+     13704,
+     [
+      102,
+      40
+     ],
+     -22,
+     2
+    ],
+    [
+     13704,
+     [
+      102,
+      42
+     ],
+     -23,
+     4
+    ],
+    [
+     13704,
+     [
+      102,
+      43
+     ],
+     -24,
+     3
+    ],
+    [
+     13734,
+     [
+      103,
+      41
+     ],
+     -25,
+     2
+    ],
+    [
+     13734,
+     [
+      103,
+      40
+     ],
+     -26,
+     2
+    ],
+    [
+     13734,
+     [
+      103,
+      39
+     ],
+     -27,
+     1
+    ],
+    [
+     13734,
+     [
+      103,
+      43
+     ],
+     -28,
+     3
+    ]
+   ],
+   "B": [
+    [
+     13134,
+     [
+      98,
+      41
+     ],
+     -1,
+     6
+    ],
+    [
+     13134,
+     [
+      99,
+      41
+     ],
+     -2,
+     6
+    ],
+    [
+     13134,
+     [
+      98,
+      40
+     ],
+     -3,
+     4
+    ],
+    [
+     13134,
+     [
+      99,
+      40
+     ],
+     -4,
+     5
+    ],
+    [
+     13134,
+     [
+      99,
+      42
+     ],
+     -5,
+     4
+    ],
+    [
+     13164,
+     [
+      99,
+      41
+     ],
+     -6,
+     3
+    ],
+    [
+     13164,
+     [
+      99,
+      42
+     ],
+     -7,
+     2
+    ],
+    [
+     13164,
+     [
+      100,
+      41
+     ],
+     -8,
+     5
+    ],
+    [
+     13164,
+     [
+      100,
+      40
+     ],
+     -9,
+     3
+    ],
+    [
+     13164,
+     [
+      100,
+      42
+     ],
+     -10,
+     4
+    ],
+    [
+     13164,
+     [
+      99,
+      39
+     ],
+     -11,
+     3
+    ],
+    [
+     13164,
+     [
+      100,
+      39
+     ],
+     -12,
+     2
+    ],
+    [
+     13164,
+     [
+      99,
+      43
+     ],
+     -13,
+     1
+    ],
+    [
+     13164,
+     [
+      100,
+      43
+     ],
+     -14,
+     2
+    ],
+    [
+     13164,
+     [
+      98,
+      43
+     ],
+     -15,
+     2
+    ],
+    [
+     13194,
+     [
+      100,
+      42
+     ],
+     -16,
+     1
+    ],
+    [
+     13194,
+     [
+      101,
+      41
+     ],
+     -17,
+     3
+    ],
+    [
+     13194,
+     [
+      101,
+      40
+     ],
+     -18,
+     3
+    ],
+    [
+     13194,
+     [
+      101,
+      42
+     ],
+     -19,
+     5
+    ],
+    [
+     13194,
+     [
+      101,
+      39
+     ],
+     -20,
+     3
+    ],
+    [
+     13194,
+     [
+      101,
+      43
+     ],
+     -21,
+     4
+    ],
+    [
+     13194,
+     [
+      100,
+      38
+     ],
+     -22,
+     1
+    ],
+    [
+     13224,
+     [
+      100,
+      41
+     ],
+     -23,
+     1
+    ],
+    [
+     13224,
+     [
+      101,
+      41
+     ],
+     -24,
+     2
+    ],
+    [
+     13224,
+     [
+      102,
+      41
+     ],
+     -25,
+     4
+    ],
+    [
+     13224,
+     [
+      101,
+      40
+     ],
+     -26,
+     3
+    ],
+    [
+     13224,
+     [
+      102,
+      40
+     ],
+     -27,
+     4
+    ],
+    [
+     13224,
+     [
+      102,
+      42
+     ],
+     -28,
+     7
+    ],
+    [
+     13224,
+     [
+      102,
+      39
+     ],
+     -29,
+     3
+    ],
+    [
+     13224,
+     [
+      100,
+      37
+     ],
+     -30,
+     1
+    ],
+    [
+     13254,
+     [
+      103,
+      41
+     ],
+     -31,
+     4
+    ],
+    [
+     13254,
+     [
+      103,
+      40
+     ],
+     -32,
+     4
+    ],
+    [
+     13254,
+     [
+      103,
+      42
+     ],
+     -33,
+     6
+    ],
+    [
+     13254,
+     [
+      103,
+      39
+     ],
+     -34,
+     3
+    ],
+    [
+     13254,
+     [
+      103,
+      43
+     ],
+     -35,
+     4
+    ]
+   ]
+  },
+  "killed_by_blast": {
+   "B": [
+    "Human38762 as Corpse_Human43910",
+    "Human38765 as Corpse_Human43916"
+   ]
+  }
+ }
+}

@@ -949,6 +949,11 @@ namespace RimMandrake.ExplosiveKnockback
         /// explosion: nothing is damaged (so no pit cover breaks and no belt is drained), but every pawn, corpse and loose
         /// good within gasBurstRadius is queued like a blast's, at full force, goods capped at gasBurstGoodsCells and people
         /// at one cell, shield belts ignored. Each burst has its own negative id. A journal "gas_burst" line each.</summary>
+        /// <summary>A vent-gas cell bursts at most once in this many ticks (10 s), however often its fire relights drifted gas.</summary>
+        private const int GasCellOnceTicks = 600;
+
+        private readonly Dictionary<IntVec3, int> gasCellBurstTick = new Dictionary<IntVec3, int>();
+
         public static void GasBurst(Map map, IntVec3 c, Thing instigator, string source)
         {
             if (!RimMandrakeExplosiveKnockbackSettings.enabled || !RimMandrakeExplosiveKnockbackSettings.gasChain || map == null || !c.InBounds(map))
@@ -960,11 +965,21 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return;
             }
+            int now = Find.TickManager.TicksGame;
+            // RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES (live 2026-11-16, the storeroom walk): gas drifting back
+            // into a burned cell is relit by the Fire still burning there, and every Ignite was a burst, so a clump cell burst
+            // twice 30-60 ticks apart. The bar is one burst per clump cell: the Cauldron's fire still burns, the cell does not
+            // burst again inside GasCellOnceTicks. Not saved: a load mid-chain forgets it (one more burst at most).
+            if (comp.gasCellBurstTick.TryGetValue(c, out int was) && now - was < GasCellOnceTicks)
+            {
+                RM_KnockbackJournal.Add("gas_reburst_skip", 0, null, "at", c, "after", now - was);
+                return;
+            }
+            comp.gasCellBurstTick[c] = now;
             int id = -(++comp.gasBursts);
             float radius = Mathf.Max(0.9f, RimMandrakeExplosiveKnockbackSettings.gasBurstRadius);
             var cfg = new KbConfig { force = 1f, ownCap = Math.Max(1, RimMandrakeExplosiveKnockbackSettings.gasBurstGoodsCells), impactFactor = 0f, source = "gas",
                 scaleOwnCap = false };
-            int now = Find.TickManager.TicksGame;
             int n = 0;
             foreach (IntVec3 cell in GenRadial.RadialCellsAround(c, radius, true))
             {

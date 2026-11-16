@@ -531,13 +531,23 @@ class _Walk:
             self.unmeasured(["A_RELOAD_NO_DUP_LOST"], "UNMEASURED: nothing in the air to save")
             return
 
+        # A thing born after the save (a leaving of the shell's wave) takes its id from the game's counter, which a load
+        # advances (live 2026-11-16: 42837 live, 43837 in both loads; the triplet's reading must hold no per-load ids):
+        # an id above every haulable id read just before the save is keyed by def and cell, not by id.
+        hi = [0]
+
         def census(_B=None):
-            ids = [_num(t.get("id")) for t in self.haulables(self.site)]
+            ids = []
+            for t in self.haulables(self.site):
+                n = _num(t.get("id"))
+                ids.append(n if n and int(n) <= hi[0] else "born:%s@%s" % (t.get("def"), _pos(t)))
             for l in self.kp("Flights")[1].splitlines():
                 m = re.search(r"innerId=(\S+)", l)
                 if m:
                     ids.append(_num(m.group(1)))
             return {"ids": sorted(set(ids)), "dup": sorted(i for i in set(ids) if ids.count(i) > 1)}
+        hi[0] = max([int(_num(t.get("id"))) for t in self.haulables(self.site) if _num(t.get("id"))] +
+                    [int(_num(m)) for m in re.findall(r"innerId=(\S+)", self.kp("Flights")[1]) if _num(m)] + [0])
         # RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES: run 2 read "11 before, 7 after" from a census taken before
         # the save and one after the load, a tick apart (PauseOnLoad runs one DoSingleTick) while the first shell's wave was
         # still spreading: two moments, not one state. The arms are now aligned on the measured clock (saveload_triplet: live,
@@ -590,7 +600,15 @@ class _Walk:
         """RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES: run 2 read "0 descents" with nothing saying who stood on
         the cover. The riders are read before the blast (living, spawned pawns on the cover cell) and their fate after: no
         rider, or every rider killed by the grenade (a corpse never descends, FlowWorks Building_PitCover.DeSpawn), is a SITE
-        miss, UNMEASURED; a living rider without exactly one descent is the mod's FAIL."""
+        miss, UNMEASURED; a living rider without exactly one descent is the mod's FAIL.
+        RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, live run 3 (2026-11-16): the same rider fell once on a fresh
+        load of the base save, but read 0 descents in the walk: the cover was not read before the grenade, and the journal
+        was cleared first, so a cover the order's shells or raid broke earlier (its rider falling then) read as the mod's
+        FAIL. The cover is read before the grenade; gone already is a SITE miss, UNMEASURED, naming the earlier descents."""
+        before = [r.get("thing") for r in self.journal()
+                  if r.get("type") == "descent" and list(r.get("at") or []) == list(self.cover)]
+        cov0 = self.c("jawa/list_things", rect="%d,%d,1,1" % self.cover, limit=20).get("things") or []
+        lid0 = [t.get("def") for t in cov0 if str(t.get("def", "")).startswith("RM_PitCover")]
         self.kp("Clear")
         riders = [p.get("id") for p in self.pawns_at((self.cover[0], self.cover[1], 1, 1))
                   if p.get("id") and p.get("spawned", True) and not p.get("dead")]
@@ -605,13 +623,16 @@ class _Walk:
         twice = [k for k, n in per.items() if n > 1]
         alive = [i for i in riders if i not in dead]
         self.ev.setdefault("grenade", {})[tag] = {"riders": riders, "killed": sorted(set(riders) & dead),
-                                                  "descents": dict(per),
+                                                  "descents": dict(per), "coverBefore": lid0, "earlierDescents": before,
                                                   "riderLines": [r for r in recs if r.get("thing") in riders][:20]}
         det = "grenade %s; cover left %s; riders %s (killed %s); %d descent(s) %s, twice %s" % (
             "ok" if e.get("success") is not False else e, still or "none", riders, sorted(set(riders) & dead), len(desc),
             dict(per), twice)
         if e.get("success") is False:
             return recs, False, det
+        if not lid0:
+            return recs, "UNMEASURED", "SITE: the cover %d,%d was already gone before the grenade (earlier descents at it: %s); %s" % (
+                self.cover + (before or "none", det))
         if not riders:
             return recs, "UNMEASURED", "SITE: nobody living stood on the cover %d,%d when the grenade went off; %s" % (
                 self.cover + (det,))
@@ -717,7 +738,12 @@ class _Walk:
 
     # ---- the walk
     def order(self, tag, gas_first):
-        recs = []
+        # RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, live 2026-11-16: the first storeroom shell broke the cover
+        # (102,36, 4.5 cells off) within 120 ticks and its rider fell then, so a grenade thrown after the shells always met a
+        # broken cover. The scripted grenade goes first in each order; the shells and the gas follow.
+        gr, ok, det = self.grenade(tag)
+        self.row(tag + "_COVER_BROKEN_ONE_DESCENT", ok, det)
+        recs = list(gr)
         if gas_first:
             g = self.gas_act()
             self.judge_gas(tag, g)
@@ -727,9 +753,6 @@ class _Walk:
         self.row(tag + "_REACHED_ACCOUNTED", "UNMEASURED" if not cells else not miss,
                  "%d thing(s) inside a shell's radius with no journal line: %s" % (len(miss), miss[:5]))
         recs += m
-        gr, ok, det = self.grenade(tag)
-        self.row(tag + "_COVER_BROKEN_ONE_DESCENT", ok, det)
-        recs += gr
         if not gas_first:
             g = self.gas_act()
             self.judge_gas(tag, g)

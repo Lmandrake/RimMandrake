@@ -1,0 +1,68 @@
+2543 Norton: Starting job from Tick because curJob == null.
+2543 Norton: TryFindAndStartJob
+2543 Norton: JobGiver_Work produced scan Job HaulToCell (Job_328) A = Thing_Corpse_Human43875 B = (14, 0, 17) from RimWorld.WorkGiver_HaulCorpses
+2543 Norton: StartJob [HaulToCell (Job_328) A = Thing_Corpse_Human43875 B = (14, 0, 17)] lastJobEndCondition=None, jobGiver=RimWorld.JobGiver_Work, cancelBusyStances=False
+2634 Norton: EndCurrentJob HaulToCell (Job_328) A = Thing_Corpse_Human43875 B = (14, 0, 17) Giver = JobGiver_Work [workGiverDef: HaulCorpses] condition=Succeeded curToil=<end> at toils[13]
+2634 Norton: CleanupCurrentJob HaulToCell condition Succeeded
+2634 Norton: StartJob [Wait_MaintainPosture (Job_337)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=False
+2648 Norton: Job expire
+2648 Norton: EndCurrentJob Wait_MaintainPosture (Job_337) condition=Succeeded curToil=MakeNewToils at toils[0]
+2648 Norton: CleanupCurrentJob Wait_MaintainPosture condition Succeeded
+2648 Norton: TryFindAndStartJob
+2648 Norton: JobGiver_Work produced scan Job HaulToCell (Job_341) A = Thing_Steel43868 B = (12, 0, 17) from RimWorld.WorkGiver_HaulGeneral
+2648 Norton: StartJob [HaulToCell (Job_341) A = Thing_Steel43868 B = (12, 0, 17)] lastJobEndCondition=None, jobGiver=RimWorld.JobGiver_Work, cancelBusyStances=False
+3180 Norton: EndCurrentJob HaulToCell (Job_341) A = Thing_Steel43869 B = (12, 0, 17) Giver = JobGiver_Work [workGiverDef: HaulGeneral] condition=ErroredPather curToil=GotoThing at toils[4]
+3180 Norton: CleanupCurrentJob HaulToCell condition ErroredPather
+3180 Norton: StartJob [Wait (Job_393)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=True
+3473 Norton: Job expire
+3473 Norton: EndCurrentJob Wait (Job_393) condition=Succeeded curToil=MakeNewToils at toils[0]
+3473 Norton: CleanupCurrentJob Wait condition Succeeded
+3473 Norton: StartJob [Wait_MaintainPosture (Job_421)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=False
+3488 Norton: Job expire
+3488 Norton: EndCurrentJob Wait_MaintainPosture (Job_421) condition=Succeeded curToil=MakeNewToils at toils[0]
+3488 Norton: CleanupCurrentJob Wait_MaintainPosture condition Succeeded
+3488 Norton: TryFindAndStartJob
+3488 Norton: JobGiver_Work produced scan Job HaulToCell (Job_428) A = Thing_Steel43868 B = (12, 0, 17) from RimWorld.WorkGiver_HaulGeneral
+3488 Norton: StartJob [HaulToCell (Job_428) A = Thing_Steel43868 B = (12, 0, 17)] lastJobEndCondition=None, jobGiver=RimWorld.JobGiver_Work, cancelBusyStances=False
+3488 Norton: EndCurrentJob HaulToCell (Job_428) A = Thing_Steel43869 B = (12, 0, 17) Giver = JobGiver_Work [workGiverDef: HaulGeneral] condition=ErroredPather curToil=GotoThing at toils[4]
+3488 Norton: CleanupCurrentJob HaulToCell condition ErroredPather
+3488 Norton: StartJob [Wait (Job_429)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=True
+3983 Norton: Job expire
+3983 Norton: EndCurrentJob Wait (Job_429) condition=Succeeded curToil=MakeNewToils at toils[0]
+3983 Norton: CleanupCurrentJob Wait condition Succeeded
+3983 Norton: StartJob [Wait_MaintainPosture (Job_486)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=False
+3998 Norton: Job expire
+3998 Norton: EndCurrentJob Wait_MaintainPosture (Job_486) condition=Succeeded curToil=MakeNewToils at toils[0]
+3998 Norton: CleanupCurrentJob Wait_MaintainPosture condition Succeeded
+3998 Norton: TryFindAndStartJob
+3998 Norton: JobGiver_Work produced scan Job HaulToCell (Job_490) A = Thing_Steel43868 B = (12, 0, 17) from RimWorld.WorkGiver_HaulGeneral
+3998 Norton: StartJob [HaulToCell (Job_490) A = Thing_Steel43868 B = (12, 0, 17)] lastJobEndCondition=None, jobGiver=RimWorld.JobGiver_Work, cancelBusyStances=False
+3998 Norton: EndCurrentJob HaulToCell (Job_490) A = Thing_Steel43869 B = (12, 0, 17) Giver = JobGiver_Work [workGiverDef: HaulGeneral] condition=ErroredPather curToil=GotoThing at toils[4]
+3998 Norton: CleanupCurrentJob HaulToCell condition ErroredPather
+3998 Norton: StartJob [Wait (Job_491)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=True
+4478 Norton: Job expire
+4478 Norton: EndCurrentJob Wait (Job_491) condition=Succeeded curToil=MakeNewToils at toils[0]
+4478 Norton: CleanupCurrentJob Wait condition Succeeded
+4478 Norton: StartJob [Wait_MaintainPosture (Job_538)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=False
+4493 Norton: Job expire
+4493 Norton: EndCurrentJob Wait_MaintainPosture (Job_538) condition=Succeeded curToil=MakeNewToils at toils[0]
+4493 Norton: CleanupCurrentJob Wait_MaintainPosture condition Succeeded
+4493 Norton: TryFindAndStartJob
+4493 Norton: JobGiver_Work produced scan Job HaulToCell (Job_541) A = Thing_Steel43868 B = (12, 0, 17) from RimWorld.WorkGiver_HaulGeneral
+4493 Norton: StartJob [HaulToCell (Job_541) A = Thing_Steel43868 B = (12, 0, 17)] lastJobEndCondition=None, jobGiver=RimWorld.JobGiver_Work, cancelBusyStances=False
+4493 Norton: EndCurrentJob HaulToCell (Job_541) A = Thing_Steel43869 B = (12, 0, 17) Giver = JobGiver_Work [workGiverDef: HaulGeneral] condition=ErroredPather curToil=GotoThing at toils[4]
+4493 Norton: CleanupCurrentJob HaulToCell condition ErroredPather
+4493 Norton: StartJob [Wait (Job_542)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=True
+4973 Norton: Job expire
+4973 Norton: EndCurrentJob Wait (Job_542) condition=Succeeded curToil=MakeNewToils at toils[0]
+4973 Norton: CleanupCurrentJob Wait condition Succeeded
+4973 Norton: StartJob [Wait_MaintainPosture (Job_653)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=False
+4988 Norton: Job expire
+4988 Norton: EndCurrentJob Wait_MaintainPosture (Job_653) condition=Succeeded curToil=MakeNewToils at toils[0]
+4988 Norton: CleanupCurrentJob Wait_MaintainPosture condition Succeeded
+4988 Norton: TryFindAndStartJob
+4988 Norton: JobGiver_Work produced scan Job HaulToCell (Job_659) A = Thing_Steel43868 B = (12, 0, 17) from RimWorld.WorkGiver_HaulGeneral
+4988 Norton: StartJob [HaulToCell (Job_659) A = Thing_Steel43868 B = (12, 0, 17)] lastJobEndCondition=None, jobGiver=RimWorld.JobGiver_Work, cancelBusyStances=False
+4988 Norton: EndCurrentJob HaulToCell (Job_659) A = Thing_Steel43869 B = (12, 0, 17) Giver = JobGiver_Work [workGiverDef: HaulGeneral] condition=ErroredPather curToil=GotoThing at toils[4]
+4988 Norton: CleanupCurrentJob HaulToCell condition ErroredPather
+4988 Norton: StartJob [Wait (Job_660)] lastJobEndCondition=None, jobGiver=, cancelBusyStances=True

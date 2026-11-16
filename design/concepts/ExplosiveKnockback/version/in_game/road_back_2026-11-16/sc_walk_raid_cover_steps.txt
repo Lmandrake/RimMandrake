@@ -1,0 +1,12 @@
+(True, 15)
+after load | cover: ['RM_PitCover_WovenScrap'] | pawns: [('Human41802', 102, 36, False)] | journal: []
+raid {'success': True, 'pawnsArrivedTotal': 4}
+after raid call | cover: ['RM_PitCover_WovenScrap'] | pawns: [('Human41802', 102, 36, False)] | journal: []
+shell 1 at 100,40 tick0 | cover: ['RM_PitCover_WovenScrap'] | pawns: [('Human41802', 102, 36, False)] | journal: []
+shell 1 +120 | cover: ['Filth_RubbleRock', 'Filth_Blood'] | pawns: [('Human41802', 102, 36, False)] | journal: [{"type": "descent", "tick": 13125, "exp": 0, "thing": "Human38765", "def": "Human", "at": [100, 36]}, {"type": "descent", "tick": 13132, "exp": 0, "thing": "Human41802", "def": "Human", "at": [102, 36]}]
+shell 2 at 99,41 tick0 | cover: ['Filth_RubbleRock', 'Filth_Blood'] | pawns: [('Human41802', 102, 36, False)] | journal: []
+shell 2 +120 | cover: ['Filth_RubbleRock', 'Filth_Blood'] | pawns: [('Human41802', 102, 36, False)] | journal: []
+shell 3 at 101,39 tick0 | cover: ['Filth_RubbleRock', 'Filth_Blood'] | pawns: [('Human41802', 102, 36, False)] | journal: []
+shell 3 +120 | cover: ['Filth_RubbleRock', 'Filth_Blood'] | pawns: [('Human41802', 102, 36, False)] | journal: []
+(True, 16)
+[bridge split] 36.3 s wall: load 0.0 / ticks 1.5 / reads 20.2 / other 0.9 / outside calls 13.6 s

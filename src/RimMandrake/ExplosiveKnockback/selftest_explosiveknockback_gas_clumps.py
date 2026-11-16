@@ -62,6 +62,12 @@ def read_rule(t):
         raise ValueError("GasBurst radius is no longer the gasBurstRadius setting")
     if not re.search(r"ownCap = Math\.Max\(1, RimMandrakeExplosiveKnockbackSettings\.gasBurstGoodsCells\)", g):
         raise ValueError("GasBurst goods cap is no longer gasBurstGoodsCells")
+    # RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES (live 2026-11-16): gas drifting back into a burned cell was
+    # relit by the fire still on it and burst again 30-60 ticks later; a cell bursts once per GasCellOnceTicks
+    r["cell_once"] = num(t["comp"], r"const int GasCellOnceTicks\s*=\s*(\d+)", "GasCellOnceTicks")
+    if not re.search(r"gasCellBurstTick\.TryGetValue\(c, out int was\) && now - was < GasCellOnceTicks\)\s*\{\s*"
+                     r"RM_KnockbackJournal\.Add\(\"gas_reburst_skip\"[^;]*;\s*return;", g):
+        raise ValueError("GasBurst no longer refuses a second burst on a cell inside GasCellOnceTicks")
     p = t["comp"]
     if not re.search(r"pawn != null && r\.gas\)\s*\{[^}]*now - last < RimMandrakeExplosiveKnockbackSettings\.gasPawnCooldownTicks", p, re.S) \
             or "s.maxCells = Math.Min(s.maxCells, 1);" not in p:
@@ -69,9 +75,12 @@ def read_rule(t):
     return r
 
 
-def burn(cloud, fire, rule):
-    """Model of BurnScan: {cell: density}, the first Fire's cell -> [(tick, cell)] bursts in order."""
+def burn(cloud, fire, rule, drift=False):
+    """Model of BurnScan: {cell: density}, the first Fire's cell -> [(tick, cell)] bursts in order. drift: gas from an
+    unburned neighbour drifts back into a burned cell, whose Fire is still burning, so it is relit (live 2026-11-16);
+    Explosive Knockback's GasBurst then bursts a cell at most once per GasCellOnceTicks."""
     dens, fires, out, tick = dict(cloud), [fire], [], 0
+    burst_at = {}
     for _ in range(200):
         tick += int(rule["interval"])
         lit, new = 0, []
@@ -82,13 +91,19 @@ def burn(cloud, fire, rule):
                 c = (fx + dx, fz + dz)
                 if dens.get(c, 0) >= rule["ignite_min"]:
                     dens[c] = 0
-                    out.append((tick, c))
+                    if c not in burst_at or tick - burst_at[c] >= rule.get("cell_once", 0):
+                        out.append((tick, c))
+                        burst_at[c] = tick
                     new.append(c)
                     if not rule["snapshot"]:
                         fires.append(c)
                     lit += 1
         if rule["snapshot"]:
-            fires += new
+            fires += [c for c in new if c not in fires]
+        if drift:
+            for c in [c for c in cloud if dens.get(c, 0) == 0]:
+                if any(dens.get((c[0] + a, c[1] + b), 0) >= rule["ignite_min"] for a in (-1, 0, 1) for b in (-1, 0, 1)):
+                    dens[c] = rule["ignite_min"]
         if not new and tick > 600:
             break
     return out
@@ -108,6 +123,10 @@ def check(rule):
         faults.append("the cloud went off on %d ticks, not clump by clump" % len(set(t for t, _ in bursts)))
     if burn(cloud, (-3, 2), rule):
         faults.append("a fire two cells off the cloud lit it")
+    drifted = [c for _, c in burn(cloud, (-1, 2), rule, drift=True)]
+    if sorted(drifted) != sorted(cloud):
+        faults.append("with gas drifting back under the fires: %d bursts for %d cells (a cell burst twice)" % (
+            len(drifted), len(cloud)))
     if rule["radius"] < 1.9 - 1e-6 or rule["radius"] > 2.0:
         faults.append("burst radius %.2f, the bar says about 1.9 cells" % rule["radius"])
     # goods: a good 1.9 cells from a burst cell (outside the cloud) is reached, one 2.5 cells away is not
@@ -142,6 +161,7 @@ def main():
         "fires reach two cells": ("vent", "GenAdj.AdjacentCells[n]", "GenAdj.AdjacentCells[n] + GenAdj.AdjacentCells[n]"),
         "gas shoves hurt": ("comp", "impactFactor = 0f, source = \"gas\"", "impactFactor = 1f, source = \"gas\""),
         "no cooldown": ("mod", "gasPawnCooldownTicks = 120", "gasPawnCooldownTicks = 0"),
+        "a cell bursts again under its fire": ("comp", "const int GasCellOnceTicks = 600", "const int GasCellOnceTicks = 0"),
         "goods fly 6": ("mod", "gasBurstGoodsCells = 2", "gasBurstGoodsCells = 6"),
         "postfix bursts on every Ignite call": ("compat", "if (__result && VentGasRegistered", "if (VentGasRegistered"),
         "new fires burn in the same scan": ("vent", "for (int k = 0; k < firesTmp.Count", "for (int k = 0; k < fires.Count"),

@@ -2317,7 +2317,15 @@ namespace RimMandrake.ExplosiveKnockback
                     {
                         // sc_pit_fetch: a stack and a corpse on a pit floor with a lowered ladder; a stockpile and a corpse
                         // stockpile outside; one free hauler. Control: the same in a second pit whose ladder is raised.
-                        if (!RM_KnockbackCompat.FlowWorks || !Pit(O(s, 2, -1), 3, 3) || !Pit(O(s, -5, -1), 3, 3))
+                        // RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT (live 2026-11-16, the hauler's job log): with the pits
+                        // dry the hauler went down and picked the stack up, then vanilla's duplicate pickup
+                        // (Toils_Haul.CheckForGetOpportunityDuplicate: a same-def stack within 8 cells, a region search FlowWorks'
+                        // reach veto never sees) retargeted it at the control stack 6 cells off; that pit's ladder is raised, the
+                        // path errored, the stack was dropped on the ladder cell, all day. The control pit now sits in the far
+                        // corner (13+ cells), and the main pit is 5 wide so the corpse lies inside it, not on an edge row a
+                        // hauler on the rim can touch (RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE). Offline guard:
+                        // selftest_explosiveknockback_pit_fetch.py. The FlowWorks defect itself is filed for FlowWorks.
+                        if (!RM_KnockbackCompat.FlowWorks || !Pit(O(s, 3, 4), 5, 3) || !Pit(O(s, -7, -7), 3, 3))
                         {
                             return "FlowWorks not loaded / dig failed";
                         }
@@ -2360,8 +2368,8 @@ namespace RimMandrake.ExplosiveKnockback
                             }
                             return null;
                         }
-                        Thing lad = Ladder(ld, O(s, 1, 0), O(s, 2, 0));
-                        Thing ctl = Ladder(fixedLd, O(s, -6, 0), O(s, -5, 0));
+                        Thing lad = Ladder(ld, O(s, 2, 5), O(s, 3, 5));
+                        Thing ctl = Ladder(fixedLd, O(s, -6, -4), O(s, -6, -5));
                         if (lad == null || ctl == null)
                         {
                             return "no placement of RM_LadderPortable / RM_Ladder reads as a lowered ladder at the pit rim";
@@ -2374,22 +2382,25 @@ namespace RimMandrake.ExplosiveKnockback
                         }
                         // SetRaised, not a field write: it also clears reachability and bumps the climb masks.
                         setRaised.Invoke(comp, new object[] { true });
-                        if ((bool)lowered.Invoke(null, new object[] { Map, O(s, -6, 0) }) || (bool)lowered.Invoke(null, new object[] { Map, O(s, -5, 0) }))
+                        if ((bool)lowered.Invoke(null, new object[] { Map, O(s, -6, -4) }) || (bool)lowered.Invoke(null, new object[] { Map, O(s, -6, -5) }))
                         {
                             return "the raised control ladder still reads lowered (FlowWorks' ladders can be raised and lowered setting off?)";
                         }
-                        Item(s, "st", "Steel", 20, O(s, 3, 0));
-                        Item(s, "cst", "Steel", 20, O(s, -4, 0));
-                        Pawn dead = Colonist(s, "dead", O(s, 3, 1), drafted: false);
+                        Item(s, "st", "Steel", 20, O(s, 4, 5));
+                        Item(s, "cst", "Steel", 20, O(s, -6, -6));
+                        Pawn dead = Colonist(s, "dead", O(s, 6, 5), drafted: false);
                         dead.Kill(null);
+                        // live 2026-11-16: vanilla forbids a corpse that dies outside the home area (Pawn.Kill ->
+                        // SetForbiddenIfOutsideHomeArea), so no one hauled it; the scene's corpse is allowed, as the stack is
+                        dead.Corpse?.SetForbidden(false, warnOnFail: false);
                         Track(s, "corpse", dead.Corpse);
                         var zones = new List<Zone>();
                         var za = new Zone_Stockpile(StorageSettingsPreset.DefaultStockpile, Map.zoneManager);
                         Map.zoneManager.RegisterZone(za);
-                        za.AddCell(O(s, 0, 5));
+                        za.AddCell(O(s, 0, 6));
                         var zb = new Zone_Stockpile(StorageSettingsPreset.DumpingStockpile, Map.zoneManager);
                         Map.zoneManager.RegisterZone(zb);
-                        zb.AddCell(O(s, 2, 5));
+                        zb.AddCell(O(s, 0, 4));
                         zones.Add(za);
                         zones.Add(zb);
                         Action prev = s.restore;
@@ -2398,11 +2409,42 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             return "a stockpile does not accept its thing";
                         }
-                        Pawn h = Colonist(s, "h", O(s, 0, 3), drafted: false);
+                        // live 2026-11-16: a generated colonist often cannot haul (the scene went INVALID 4 runs in 7), and the
+                        // map's other colonists hauled too, so "the hauler used the ladder" read the wrong pawn. The hauler is
+                        // regenerated until it can haul, and every other colonist's hauling is off for the scene (put back after).
+                        Pawn h = null;
+                        for (int tries = 0; tries < 12 && (h == null || h.WorkTypeIsDisabled(WorkTypeDefOf.Hauling)); tries++)
+                        {
+                            if (h != null)
+                            {
+                                s.things.Remove("h");
+                                h.Destroy(DestroyMode.Vanish);
+                            }
+                            h = Colonist(s, "h", O(s, 0, 0), drafted: false);
+                        }
                         if (h.WorkTypeIsDisabled(WorkTypeDefOf.Hauling))
                         {
-                            return "the hauler cannot haul";
+                            return "the hauler cannot haul (12 colonists generated)";
                         }
+                        var others = Map.mapPawns.FreeColonistsSpawned.Where(p => p != h && p.workSettings != null
+                            && p.workSettings.EverWork && p.workSettings.GetPriority(WorkTypeDefOf.Hauling) > 0)
+                            .Select(p => new KeyValuePair<Pawn, int>(p, p.workSettings.GetPriority(WorkTypeDefOf.Hauling))).ToList();
+                        foreach (var kv in others)
+                        {
+                            kv.Key.workSettings.SetPriority(WorkTypeDefOf.Hauling, 0);
+                        }
+                        Action prevHaul = s.restore;
+                        s.restore = () =>
+                        {
+                            foreach (var kv in others)
+                            {
+                                if (!kv.Key.Destroyed && kv.Key.workSettings != null)
+                                {
+                                    kv.Key.workSettings.SetPriority(WorkTypeDefOf.Hauling, kv.Value);
+                                }
+                            }
+                            prevHaul?.Invoke();
+                        };
                         Map m0 = Map;
                         for (int d = 30; d <= 60000; d += 30)
                         {
