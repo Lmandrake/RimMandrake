@@ -3,6 +3,6 @@ closed_containers advanced 300/300 ticks in 1 s via jawa/safe_advance
 closed_containers PASS free=thrown cells=5 away=True held=True action=thrownx1; crate=thrown cells=4 away=True held=True action=thrownx1; wall=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; pawn=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; pit=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; safe=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; sec=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; panel=kept goods on its cell=1 limit=250 crateMass=1.5
 closed_containers_control advanced 300/300 ticks in 1 s via jawa/safe_advance
 closed_containers_control PASS looseFlew=5/5 untaggedPanel pg 25,9->25,3 (6 cells)
-VERDICT PASS  (2 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO.det\Transient\explosive_knockback\run_20261115T154346.jsonl
-[bridge split] 4.9 s wall: load 0.0 / ticks 1.3 / reads 0.0 / other 1.7 / outside calls 1.9 s
-[bridge split] WARN 96 calls of jawa/mod_settings_field (1.4 s): batch them
+VERDICT PASS  (2 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_VISIT_TWO.det\Transient\explosive_knockback\run_20261115T161923.jsonl
+[bridge split] 8.5 s wall: load 0.0 / ticks 2.0 / reads 0.0 / other 4.6 / outside calls 1.9 s
+[bridge split] WARN 96 calls of jawa/mod_settings_field (4.2 s): batch them
