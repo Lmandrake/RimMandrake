@@ -1,18 +1,9 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":162763,"DISPATCH":666} body_sha256=0627564e52ad6c8e299a528004ae3511c90b4a16ed166b5425632a060bd257d3 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":226529,"DISPATCH":666} body_sha256=5c850f0e4b629d7ec4db012d1b83c509c9d9a29dc016d92be98c6bd4f06dd681 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage offline_build · 251 events in 2 shards · reducer 1
+version 0.1.0 · stage offline_build · 328 events in 2 shards · reducer 1
 holder lease run-1794813483, token 1, last active 2026-11-16T07:18:18Z
 
-## Open findings (47)
-- finding:RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars goods_arc_spin_rebound: lane 1 L1_kernel_alone_goods_vs_person_distance: kernel and shipped settings carry no goods-distance factor; a 60 kg corpse beside a mortar flies 3 cells, a colonist 3 [measured]
-  accept: sheet.md: loose goods and corpses fly wild, about 1.6 times as far as a person; tree.json advisory and scenes.json sc_storeroom_mortar: each good's request line carries its kernel cells and its wild cells, every wild-to-kernel ratio […]
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (81392aea384e9105a92263aea39b2d08c844c1f4)
-- finding:RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z: RM_MapComponent_Knockback.cs GasBurst builds KbConfig{ownCap = gasBurstGoodsCells}; Execute calls Kernel(cfg) -> KbLookup.Apply -> CapFor(ownCap, maxThrowCells, ownCapScale), so the 'weapons with their own maximum' scale (slider 0.25..2) rescales the gas goods cap: at 2.0 burning gas throws goods 4 cells, at 0.25 […]
-  accept: sheet.md delegated: one gas clump burst throws goods at most 2 cells (gasBurstGoodsCells); settings_scale_and_switch oracle: each changed setting changes only its own outcome
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (81392aea384e9105a92263aea39b2d08c844c1f4)
-- finding:RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT [claimed_fixed, polish] by BACKFILL, 2026-11-16T06:51:52Z · bars goods_arc_spin_rebound: lane 1 L1_sweep_rebound_keep_slider_chain_ends: at goodsReboundKeepPercent 100 (slider top) ReboundCells(6,100) = 6, the kernel never ends the chain [measured]
-  accept: kernel comment on ReboundCells: 'rounded DOWN so a throw always runs out'
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (81392aea384e9105a92263aea39b2d08c844c1f4)
+## Open findings (76)
 - finding:RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish] by BACKFILL, 2026-11-16T06:51:52Z · bars closed_container_holds: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter named lightMassLimit) is called by no game code; ThrowContainer throws the container ThrowCells cells with its own loop [measured, grep]
   proposed fix: wait for question 12; then either call ContainerShove from ThrowContainer or delete it and kernel-test the throw
   accept: the kernel is the tested rule as shipped (RM_KnockbackMath.cs header)
@@ -31,51 +22,12 @@ holder lease run-1794813483, token 1, last active 2026-11-16T07:18:18Z
 - finding:RIMMANDRAKE_READ_WILD_CELLS_FROM_ITEM_MOVE_NOT_REQUEST [open, polish] by BACKFILL, 2026-11-16T06:51:52Z: the request line is written at Enqueue, before the good's mass and throw are known; the fix journals kernelCells and wildCells on item_move (and too_weak skips carry dist and mass) [measured, read]
   proposed fix: scene text: request line -> item_move line
   accept: scenes.json: 'each good's request line carries its kernel cells and its wild cells'
-- finding:RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: lane2/reruns.jsonl T_RESTORE FAIL
-  accept: T_RESTORE: selftest_proof_restore_check.py prints RESULT: GREEN
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
-- finding:RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars settings_scale_and_switch: RM_MapComponent_Knockback.cs Execute: flyingGoods false fell through to DeSpawn + PlaceLanding (the instant move)
-  accept: goods in the air off, goods unthrown, never the old hop
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
-- finding:RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars settings_scale_and_switch: RM_KnockbackMod.cs saved 46 settings, none switched either (journal questions 10, 14)
-  accept: closed guard off, container goods thrown loose; fire at half off, fire throws nothing
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
-- finding:RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars closed_container_holds: ThrowContainer's !flew path: a dust puff and a journal line, nothing drawn on the container
-  accept: else a jolt (sc_closed_containers: a drawn offset above zero for each jolt)
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
-- finding:RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars closed_container_holds: ContainerShove/KbShove called by nothing in the game
-  accept: the kernel tests test the rule the game runs
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
-- finding:RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars every_harmful_blast_throws: T_LINT rc 0 on a copy with Flame 0.7
-  accept: EMP, smoke, stun, extinguish and toxic gas at 0, fire at half
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
-- finding:RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars settings_scale_and_switch: validation.py, bar_lists_map.json, the walk's must-be-true list and required_checks.json carried off_is_the_instant_move
-  accept: the walk row reports against its bar
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
-- finding:RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_too_weak_skip: lane1 INFO L1_rim_band_kernel_zero_wild_one: 14 of 291 distances (70 kg, r 2.9, step 0.01) had kernel 0 and wild 1
-  accept: a thing at the rim whose kernel throw rounds to 0 cells is not thrown (skip too_weak); every_good_moves: reached = kernel throw >= 1
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
-- finding:RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_kernel: planted WildCells-ignored and scaleOwnCap-ignored passed T_KERNEL and T_FUZZ
-  accept: T_KERNEL/T_FUZZ decide inv_kernel
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (04bb4c93faca)
-- finding:RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: 6 planted faults MISSED (planted_results.jsonl)
-  accept: the offline deciders see breaks of the shipped wiring
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (04bb4c93faca)
 - finding:RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST [open, polish] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: storeroom_pit_proof.py arm(): Settings(args=kv) is invisible (py_poke_kind falls back to the tool name)
   proposed fix: in py_poke_kind fall back to call.args[-1] only when no args= keyword exists
   accept: proof_restore_check sees every settings poke
 - finding:RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER [open, polish] by BACKFILL, 2026-11-16T06:51:52Z: pump_outflow_live.py:174, tank_theft_live.py:80
   proposed fix: restore liquidPumpEnabled to its prior; make the wrapper visible
   accept: T_RESTORE baseline
-- finding:RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars settings_scale_and_switch: Anomaly/Defs/DamageDefs/Damages_Environmental.xml: <DamageDef ParentName="Flame"> ElectricalBurn, <hediff>ElectricalBurn</hediff> (game Data, read 2026-11-15)
-  accept: sheet.md: "fire at half ... the fire-half switch [is] on Mod Settings (off: fire throws nothing)"; the patch and the caller both name Anomaly's ElectricalBurn as fire
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (bace1c29cc)
-- finding:RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: planted PF_GATE_RELEASE_OR (and -> or) and PF_GATE_NO_EXIT (require_proof_build never exits) stayed green in all 23 offline suites (planted_results.jsonl)
-  accept: inv_proof_scenes: the live scenes and the runner that drives them; T_PROOFGATE G1 claims the gate reads release vs proof answers
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (f181d3b6ea)
-- finding:RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST [claimed_fixed, problem] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: storeroom_pit_proof.py's resets carry 'restore-check: ok', which the scanner takes on trust
-  accept: T_RESTORE (decider of inv_proof_scenes): a live proof undoes every Mod Settings poke on every exit path, putting back the value it found
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (f181d3b6ea)
 - finding:RIMMANDRAKE_GUARD_PROOF_VERDICTS_FIVE_WEAKENED_STAYED_GREEN [open, polish] by BACKFILL, 2026-11-16T06:51:52Z · bars inv_proof_scenes: PF_PROOF_FLYOFF_SKIP_UNCHECKED, PF_GO_WALL_POSITION_UNCHECKED, PF_GO_WATER_UNCHECKED, PF_ST3_CONTAINER_ZERO_CELLS_OK, PF_ST3_FIREHALF_LANE_NOOP: missed offline
   proposed fix: extend validation.py --mock with one wrong-journal case per scene
   accept: the proof scenes' live verdicts check what their scenes promise
@@ -112,9 +64,6 @@ holder lease run-1794813483, token 1, last active 2026-11-16T07:18:18Z
 - finding:RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD [open, problem] by BACKFILL, 2026-11-16T06:56:09Z · bars no_careless_fall: Explosive Knockback: thrown goods truly fly (wild): arc, fast spin, rebound off walls until spent at ~70%; replaces the despawn-and-replace teleport at RM_MapComponent_Knockback.cs:474
   proposed fix: Step 1 of `design/concepts/ExplosiveKnockback/plan.md` (Explosive Knockback Designer pass, owner card answers 2026-11-11 in `design/concepts/ExplosiveKnockback/record.json`). The tree leaves, scenes and acceptance bars are in `tree.json` and `scenes.json` in the same folder.
   accept: none, not written at filing
-- finding:RIMMANDRAKE_KEEP_CUT_BEASTS_OFF_TEST_TIERS [open, problem] by BACKFILL, 2026-11-16T06:56:09Z: Test tiers load the creatures the full list cuts (Thrumbo in the Knockback scene)
-  proposed fix: No test tier may load a creature the owner's full mod list cuts. Today every modset_builder tier loads Core and the DLC without Cherry Picker, so the vanilla beasts the full list removes (VANILLA_BEAST_EXCISION_1) come back on every test load. […]
-  accept: ** `python3 src/RimMandrake/Utils/tier_cut_creature_check.py` exits 0 (every tier clean). It reads the
 - finding:RIMMANDRAKE_KNOCK_PEOPLE_HEAVY_GOODS [open, problem] by BACKFILL, 2026-11-16T06:56:09Z: Explosive Knockback: a flying heavy stack that hits a person gives a small blunt hit and a stagger; light goods pass through
   proposed fix: Step 5 of `design/concepts/ExplosiveKnockback/plan.md` (Explosive Knockback Designer pass, owner card answers 2026-11-11 in `design/concepts/ExplosiveKnockback/record.json`). The tree leaves, scenes and acceptance bars are in `tree.json` and `scenes.json` in the same folder.
   accept: none, not written at filing
@@ -139,18 +88,162 @@ holder lease run-1794813483, token 1, last active 2026-11-16T07:18:18Z
 - finding:RIMMANDRAKE_REWRITE_KNOCKBACK_PROOFS_REAL_CONTROLS [open, problem] by BACKFILL, 2026-11-16T06:56:09Z: Explosive Knockback: rewrite the proof scenes so each asserts its start and runs a real control (17-row script audit)
   proposed fix: Step 8 of `design/concepts/ExplosiveKnockback/plan.md`. The 17-row `script_audit` in `design/concepts/ExplosiveKnockback/record.json` lists what each existing scene in `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` lacks and which scene in `scenes.json` it becomes. […]
   accept: none, not written at filing
-- finding:RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE [open, problem] by BACKFILL, 2026-11-16T06:56:09Z: Test queue: a proof-build job route (build -p:RmProofs=true and deploy it on SteveDesktop); Explosive Knockback's live scenes cannot run without it
-  proposed fix: Found 2026-11-12 ~22:30 PST by the detached Explosive Knockback carryover run (RIMMANDRAKE_DEPLOY_KNOCKBACK_DRAWING_STORAGE_OPEN): the test queue cannot run any proof that needs a PROOF build, so every Explosive Knockback live scene is unrunnable on SteveDesktop. […]
-  accept: (1) `python3 src/RimMandrake/Utils/testq/testq.py submit --help | grep -q -- --proof-build` exits 0 (watched failing on dd70d7b1d0: exit 1); […]
-- finding:RIMMANDRAKE_SCOPE_DISPATCH_SELFTEST_CONVERGENCE_LINES [open, problem] by BACKFILL, 2026-11-16T06:56:09Z: selftest_maturation_dispatch red on main: convergence lines break the launch-retry check's no-Needs-Conductor assertion
-  proposed fix: `selftest_maturation_dispatch.py` is RED on origin/main 2826ca6878 (and on 8586d42006), with one failing check: "a Stage 3 filing that hit a lock retries on the next tick, no stop, no Needs Conductor line". It fails with `['ExplosiveKnockback Stage 3 (Offline build) DIVERGING, open rising: open 6 -> 5 -> 6 ...']`. […]
+- finding:RIMMANDRAKE_CENSUS_KNOCKBACK_STORAGE_OPEN_CLOSED [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: Explosive Knockback: offline census selftest, every storage def closed exactly when it hides its contents (Shelf, ShelfSmall, Hopper open)
+  accept: none, not written at filing
+  holder: Closed at c20328a876 by CONDUCTOR: census selftest landed and PASS at c20328a876 and dd70d7b1d0 (fingerprint updated); watched red on 6485aafec2^ and a planted Shelf tag; it found the Armoury's four hidden smuggling panels reading open, tagged closed by Patches/RM_Knockback_HiddenStorage.xml (c20328a876)
+- finding:RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z · bars closed_container_holds, settings_scale_and_switch: ExplosiveKnockback: his card rewords the locked container bar to 'thrown a short way'; tree/sheet held because his coverage certificate is bound to the tree hash
+  accept: `git apply design/concepts/ExplosiveKnockback/version/criterion_repairs/closed_containers_thrown_2026-11-15/tree_sheet_rewording.patch && python3 src/RimMandrake/rimflow/concept_tree.py gate design/concepts/ExplosiveKnockback | tail -1`
+  holder: Closed at 0774d3bc1ac766899be71cd344fa328860f36d68 by CONDUCTOR: his card 'Certify, and fix the rule' re-recorded on the concept item (OWNER:1794748823561950419; the first recording sat on this item, which certify does not read); […] (0774d3bc1ac766899be71cd344fa328860f36d68)
+- finding:RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: Explosive Knockback: every harmful explosion throws (bombs full, fire/incendiary half, other mods' damaging blasts too; not EMP/smoke/stun)
+  accept: none, not written at filing
+  holder: Closed at bb195048ac51 by OWNER: owner look of Station 6 incendiary passed (bb195048ac51)
+- finding:RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: EK: a blast-hit closed container (crate, chest, locker) is THROWN as one unit, shorter than loose goods by mass, its contents inside and taking no blast damage; Station 5 showed the container standing still, the wrong behaviour
+  accept: none, not written at filing
+  holder: Closed at 0808c553030c by OWNER: no reason recorded (0808c553030c)
+- finding:RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: Explosive Knockback: a creature mass limit (150 kg, Mod Setting) replaces the body-size 2.5 cutoff; throw force = type force x this blast's damage / the type's defaultDamage (blastPowerFromDamage, on). Defaults and measured masses: D:\ClaudeWork\rimmandrake\conductor\ek_mass_20261113\DEFAULTS.md; […]
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER
+  accept: none, the oracle is the live scene sc_mass_and_power (rat/colonist/muffalo/thrumbo 5/3/2/0 at damage 50, 6/5/4/0 at 100) plus a kernel selftest the builder writes; a grep oracle would pass wrong code
+- finding:RIMMANDRAKE_CHALLENGE_KNOCKBACK_BLIND_TWO_FIRST_EXIT_MISSED [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: Explosive Knockback 0.1.0: blind challenge cycle 2
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_CHALLENGE_KNOCKBACK_BLIND_TWO_FIRST_EXIT_MISSED
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: Explosive Knockback first-touch Designer pass (design/concepts/ExplosiveKnockback): stages 0-5 to a locked tree; owner certifies
+  accept: none, not written at filing
+  holder: Closed at 1a5234227788cf3e9479d4ccbcf98ac2ca712b3d by OWNER: Stage 5 locked: design/concepts/ExplosiveKnockback/stage.json status locked (landed 1a52342277), coverage passed on his word by the owner-certified stamp (concept_tree certify, eab59259ec; […] (1a5234227788cf3e9479d4ccbcf98ac2ca712b3d)
+- finding:RIMMANDRAKE_DRAW_CONTAINER_JOLT_AS_MOVE_NOT_GHOST [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback container jolt draws a second copy of the graphic at the offset over the unmoved original (MapComponentUpdate b.Graphic.Draw), so a paused frame shows a doubled outline; whether it reads as a shake in motion is unjudged
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_DRAW_CONTAINER_JOLT_AS_MOVE_NOT_GHOST
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_ACCEPTANCE_FIRST [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback 0.1.0 Stage 6: in-game acceptance visit 1 (56 stage-6 checks), live driver via maturation.py launch, record in design/concepts/ExplosiveKnockback/version/in_game/visit_1
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_ACCEPTANCE_FIRST
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED [open, problem] by BACKFILL, 2026-11-16T07:19:30Z · bars walk_storeroom_raid: ExplosiveKnockback: give RM_FrameProbe a bridge read (public static string Frame("begin|stop") on RM_KnockbackProof) so walk_storeroom_raid's FRAME_BUDGET row can be measured; today it is UNMEASURED by construction, so the walk can never PASS
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_FIND_DARK_HAZE_EAST_OF_GAS_CHAIN [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback walk save: dark blotches and haze lie over the four stations east of gas_chain (open_storage, heavy_knock, spared_states, goods_obstacles)
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_FIND_DARK_HAZE_EAST_OF_GAS_CHAIN
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_gas_chain, sc_cauldron_gas, P_gas_clumps FAIL at Stage 6 visit 1 (one scene): the lit Cauldron vent cloud burns one clump and stops on 5 of 17 runs, both lists; EK bursts only where the Cauldron's Ignite fires, so trace the fire scan or the seeded cloud on a failing run
+  accept: none, not written at filing
+  holder: Closed at d1817022db35 by CONDUCTOR: detached run: offline fix landed with its fuzz guard; live 17x rerun recorded UNRUN in the note for the next EK visit (d1817022db35)
+- finding:RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_pit_fetch FAIL at visit 2: with the pits dry the hauler never climbs down the portable ladder for the stack (earlier passes were swims)
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_FIX_STOREROOM_COVER_STACK_PLAN_FOUR_RUNS_INVALID [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_storeroom_bomb_pit UNMEASURED at visit 2: no floor stack's plan ends on the covered near-row pit cell, even with the cover built first
+  accept: none, not written at filing
+  holder: Closed at ff8b4a952e08c6f7f48d54b74c01fc100caad567 by CONDUCTOR: detached run: cover-stack search fixed offline, selftest P red at base and green; live runner command UNRUN, recorded in the note (ff8b4a952e08c6f7f48d54b74c01fc100caad567)
+- finding:RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_walk_raid FAIL at visit 2: reload lost things, cover breaks with 0 descents, gas cells burst twice, one request has no outcome
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z · bars walk_storeroom_raid: ExplosiveKnockback sc_walk_raid UNMEASURED at Stage 6 visit 1: its command 'validation.py --live walk_storeroom_raid' runs STATIC only and exits 0 (no --live mode, no walk_storeroom_raid leaf); write the leaf and the --live mode (full list)
+  accept: none, not written at filing
+  holder: Closed at 3d1f9ae2ca381ef96da719877cef395f87c118c6 by CONDUCTOR: detached run: leaf + --live mode landed; acceptance watched red on 67d5c3f318 and green after (evidence 2bff108457); live run UNRUN, recorded with its command (3d1f9ae2ca381ef96da719877cef395f87c118c6)
+- finding:RIMMANDRAKE_KEEP_SPARED_SLEEPER_IN_BED_ON_FULL_LIST [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback spared_states: on the owner's full list the staged sleeper is not in its bed at the blast (INVALID), though it passes on the minimal list since a987289bca
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_KEEP_SPARED_SLEEPER_IN_BED_ON_FULL_LIST
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_LAND_KNOCKBACK_GOODS_NEVER_BUMP_RESIDENTS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: EK: a landing knockback carrier places its stack Direct on an occupied cell, so vanilla GenSpawn shoves the resident stack aside unjournaled (and would destroy it with no free cell); land beside residents instead
+  accept: none, not written at filing
+  holder: Closed at 0808c553030c by CONDUCTOR: PlaceLanding never Direct onto a cell where it would shove; land_no_bump + _pit PASS, red under Plant directfirst; look save EK_LOOK_LANDING_MATRIX_20261112 (9 cells checked) (0808c553030c)
+- finding:RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: Explosive Knockback still caps throws (40 per explosion, 60 item throws per map tick; RM_MapComponent_Knockback.cs:319 and :545) although plan step 1 (d_c_all_fly, his 'All of them fly') removes both caps and moves frame time to a proven bar. […]
+  accept: none, not written at filing
+  holder: Closed at 0808c553030c by OWNER: both caps removed (settings, code, UI); all_fly_no_cap PASS, red under Plant throwcap; perf: 25-HE blast into 195 stacks adds no slow frame at Normal speed (evidence perf2.jsonl) (0808c553030c)
+- finding:RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_pit_fetch: the corpse sits on the 3x3 pit's edge row, so a hauler on the rim touches it without descending; corpse out proves no ladder use
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback: re-certify the tree with the barrage bar as the p99 frame in the 0.9-8.25 s window (his '1 agree.'); tree/sheet words held as a patch because his certificate is bound to the tree hash
+  accept: none, not written at filing
+  holder: Closed at 0534f6c404bd93a1e2710dd66e3ea34ca1a990df by CONDUCTOR: acceptance passes (T1 today's tree 1, ALL PASS; coverage passed on the new OWNER event); rule fix 3aa7e5c15d, certify fab7999d8f, repin 5f6e2af989, evidence 0534f6c404; stage-4 exam retake filed as RIMMANDRAKE_RETAKE_KNOCKBACK_EXAM_NO_SCENARIO_READS_LEAF (0534f6c404bd93a1e2710dd66e3ea34ca1a990df)
+- finding:RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_barrage_perf FAIL at visit 2: the mod-off control's worst frame (104-151 ms) is itself over the 50 ms bar; neutral fixer for the criterion
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_RETAKE_KNOCKBACK_EXAM_NO_SCENARIO_READS_LEAF [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback: retake the Stage 4 Cold Reader exam against the re-certified tree (barrage p99 rewording); repin left stage 4 stale by its own rule
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_RETAKE_KNOCKBACK_EXAM_NO_SCENARIO_READS_LEAF
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: EK: goods the blast will throw take reduced blast damage (Mod Settings slider, default 25%, 100% = vanilla) so they scatter instead of being destroyed; a thrown stack stopped by a wall/door takes extra Blunt per cell of throw left (slider, default 10). […]
+  accept: none, not written at filing
+  holder: Closed at a593f1668f1a by CONDUCTOR: (a)+(b) built, deployed, live proof 13/13 PASS (a593f1668f1a)
+- finding:RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING [open, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_settings_sweep: decide the kernel-side settings offline as a table test (default vs each changed setting over the lane, diff = only its own row), keep a thin live check for the game-side wiring only. […]
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_SPLIT_KNOCKBACK_SWEEP_OFFLINE_TABLE_LIVE_WIRING
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_STAGE_HEAVY_LOCKER_LANE_LWM_CAPS_AT_58KG [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_closed_containers UNMEASURED at Stage 6 visit 1: its 76-249 kg closed-locker lane cannot be staged on LWM (WeaponsLocker 8 kg + 50 cap; WeaponsCabinet 8+30; Safe 500); stage a closed container on the test list that legitimately reaches the band
+  accept: none, not written at filing
+  holder: Closed at 7c910364ce62 by CONDUCTOR: heavy closed-locker lane now stageable at 76-249 kg on LWM (filter set, maxTotalMass raised for the scene); live proof UNRUN (7c910364ce62)
+- finding:RIMMANDRAKE_STAGE_KNOCKBACK_CONTAINER_SURVIVES_BLAST [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: Closed-container knockback cannot be shown in the 25-HE-shell storeroom: vanilla blast destroys every steel Hopper within r6 (measured d3.2-5.8, KB off) and both wood shelves; […]
+  accept: none, not written at filing
+  holder: Closed at bb195048ac51 by CONDUCTOR: Station 5 staged (3 HE shells, plasteel small shelf tagged closed): storage proof 10/10 incl. SA_CONTAINER_SURVIVES; SC_OFF row rewritten; save EK_SITTING_STATION5_CONTAINER_SURVIVES_20261112 (bb195048ac51)
+- finding:RIMMANDRAKE_TRACE_PIT_FETCH_CONTROL_STACK_PAST_RAISED_LADDER [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_pit_fetch FAIL at Stage 6 visit 1: main lane passed (stack and corpse out by the ladder) but the raised-ladder control's stack also left its pit within 60000 ticks; find who carried it out and how (one run, cold noisy RM_TheRot map)
+  accept: none, not written at filing
+  holder: Closed at 7c17ebc62201 by CONDUCTOR: detached run: cause found offline. The control used RM_LadderPortable; FlowWorks' RM_CompLadder.EffectivelyRaised = raised && !Props.portable && setting, so a portable ladder never reads raised and the control pit stayed open (no escape bug in the mod). […] (7c17ebc62201)
+- finding:RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:19:30Z: ExplosiveKnockback sc_gas_shove_into_pit UNMEASURED at Stage 6 visit 1: entry gas_into_pit is named by test_table.json but absent from RM_KnockbackProof.SceneNames ('unknown scene'); write the scene with its offline selftest
+  accept: none, not written at filing
+  holder: Closed at d4e34dda04ccb49c757e53ae69168be98c5596e1 by CONDUCTOR: detached run: scene and offline selftest landed; acceptance grep 2 and entry_exists true (d4e34dda04ccb49c757e53ae69168be98c5596e1)
+- finding:RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars goods_arc_spin_rebound: lane 1 L1_kernel_alone_goods_vs_person_distance: kernel and shipped settings carry no goods-distance factor; a 60 kg corpse beside a mortar flies 3 cells, a colonist 3 [measured]
+  accept: sheet.md: loose goods and corpses fly wild, about 1.6 times as far as a person; tree.json advisory and scenes.json sc_storeroom_mortar: each good's request line carries its kernel cells and its wild cells, every wild-to-kernel ratio […]
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (81392aea384e9105a92263aea39b2d08c844c1f4)
+- finding:RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z: RM_MapComponent_Knockback.cs GasBurst builds KbConfig{ownCap = gasBurstGoodsCells}; Execute calls Kernel(cfg) -> KbLookup.Apply -> CapFor(ownCap, maxThrowCells, ownCapScale), so the 'weapons with their own maximum' scale (slider 0.25..2) rescales the gas goods cap: at 2.0 burning gas throws goods 4 cells, at 0.25 […]
+  accept: sheet.md delegated: one gas clump burst throws goods at most 2 cells (gasBurstGoodsCells); settings_scale_and_switch oracle: each changed setting changes only its own outcome
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (81392aea384e9105a92263aea39b2d08c844c1f4)
+- finding:RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT [claimed_fixed, polish] by BACKFILL, 2026-11-16T07:20:06Z · bars goods_arc_spin_rebound: lane 1 L1_sweep_rebound_keep_slider_chain_ends: at goodsReboundKeepPercent 100 (slider top) ReboundCells(6,100) = 6, the kernel never ends the chain [measured]
+  accept: kernel comment on ReboundCells: 'rounded DOWN so a throw always runs out'
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (81392aea384e9105a92263aea39b2d08c844c1f4)
+- finding:RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars inv_proof_scenes: lane2/reruns.jsonl T_RESTORE FAIL
+  accept: T_RESTORE: selftest_proof_restore_check.py prints RESULT: GREEN
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
+- finding:RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars settings_scale_and_switch: RM_MapComponent_Knockback.cs Execute: flyingGoods false fell through to DeSpawn + PlaceLanding (the instant move)
+  accept: goods in the air off, goods unthrown, never the old hop
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
+- finding:RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars settings_scale_and_switch: RM_KnockbackMod.cs saved 46 settings, none switched either (journal questions 10, 14)
+  accept: closed guard off, container goods thrown loose; fire at half off, fire throws nothing
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
+- finding:RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars closed_container_holds: ThrowContainer's !flew path: a dust puff and a journal line, nothing drawn on the container
+  accept: else a jolt (sc_closed_containers: a drawn offset above zero for each jolt)
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
+- finding:RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars closed_container_holds: ContainerShove/KbShove called by nothing in the game
+  accept: the kernel tests test the rule the game runs
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
+- finding:RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars every_harmful_blast_throws: T_LINT rc 0 on a copy with Flame 0.7
+  accept: EMP, smoke, stun, extinguish and toxic gas at 0, fire at half
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
+- finding:RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars settings_scale_and_switch: validation.py, bar_lists_map.json, the walk's must-be-true list and required_checks.json carried off_is_the_instant_move
+  accept: the walk row reports against its bar
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
+- finding:RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars inv_too_weak_skip: lane1 INFO L1_rim_band_kernel_zero_wild_one: 14 of 291 distances (70 kg, r 2.9, step 0.01) had kernel 0 and wild 1
+  accept: a thing at the rim whose kernel throw rounds to 0 cells is not thrown (skip too_weak); every_good_moves: reached = kernel throw >= 1
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (587529cee173)
+- finding:RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars inv_kernel: planted WildCells-ignored and scaleOwnCap-ignored passed T_KERNEL and T_FUZZ
+  accept: T_KERNEL/T_FUZZ decide inv_kernel
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (04bb4c93faca)
+- finding:RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars inv_proof_scenes: 6 planted faults MISSED (planted_results.jsonl)
+  accept: the offline deciders see breaks of the shipped wiring
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (04bb4c93faca)
+- finding:RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars settings_scale_and_switch: Anomaly/Defs/DamageDefs/Damages_Environmental.xml: <DamageDef ParentName="Flame"> ElectricalBurn, <hediff>ElectricalBurn</hediff> (game Data, read 2026-11-15)
+  accept: sheet.md: "fire at half ... the fire-half switch [is] on Mod Settings (off: fire throws nothing)"; the patch and the caller both name Anomaly's ElectricalBurn as fire
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (bace1c29cc)
+- finding:RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars inv_proof_scenes: planted PF_GATE_RELEASE_OR (and -> or) and PF_GATE_NO_EXIT (require_proof_build never exits) stayed green in all 23 offline suites (planted_results.jsonl)
+  accept: inv_proof_scenes: the live scenes and the runner that drives them; T_PROOFGATE G1 claims the gate reads release vs proof answers
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (f181d3b6ea)
+- finding:RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:20:06Z · bars inv_proof_scenes: storeroom_pit_proof.py's resets carry 'restore-check: ok', which the scanner takes on trust
+  accept: T_RESTORE (decider of inv_proof_scenes): a live proof undoes every Mod Settings poke on every exit path, putting back the value it found
+  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (f181d3b6ea)
+- finding:RIMMANDRAKE_WRITE_GOODS_OBSTACLES_SCENE_NAMED_NEVER_BUILT [open, problem] by BACKFILL, 2026-11-16T07:20:20Z: ExplosiveKnockback sc_goods_obstacles UNMEASURED at Stage 6 visit 1: entry goods_obstacles is named by test_table.json but absent from RM_KnockbackProof.SceneNames ('unknown scene'); write the scene with its offline selftest
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_WRITE_GOODS_OBSTACLES_SCENE_NAMED_NEVER_BUILT
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_WRITE_STOREROOM_BOMB_PIT_SCENE_TABLE_NAMED_FIRST [open, problem] by BACKFILL, 2026-11-16T07:20:20Z: ExplosiveKnockback sc_storeroom_bomb_pit UNMEASURED at Stage 6 visit 1: test_table.json names entry storeroom_bomb_pit in RM_KnockbackProof.cs but no such scene exists ('unknown scene' on every build); write the scene (observes per test_table) with its offline selftest
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_WRITE_STOREROOM_BOMB_PIT_SCENE_TABLE_NAMED_FIRST
+  accept: none, not written at filing
+- finding:RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE [open, problem] by BACKFILL, 2026-11-16T07:22:45Z: Explosive Knockback 0.1.0: run the blind offline challenge (Stages 4 and 5, tests first) by hand, one cycle, and write down its record format
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE
   accept: none, not written at filing
 
-## Traps (0) — what a reader would otherwise get wrong
+## Traps (6) — what a reader would otherwise get wrong
+- trap:three-bar-sets-exist (design/validation_walks/RimMandrake/ExplosiveKnockback.md): Three bar sets exist. The 59 coverage checklist rows are the bars of 0.1.0, and Stage 6 reports against them. The 16 "north-star bars" (his card 2026-11-12, "Approve as written") and the 49 "must be true" rows of `design/validation_walks/RimMandrake/ExplosiveKnockback.md` (measured 2026-11-14; […]
+- trap:the-locked-files-moved-after-the-lock (version/bars.md): The locked files moved after the lock. `version/bars.md` pins blobs at `237b791167`; since then `scenes.json` (sc_spared, sc_mass_and_power, sc_settings_sweep), `record.json` (decisions) and `tree.json` (the owner-certify stamp only) changed. The scene edits are test text (creatures chosen by mass, never named; […]
+- trap:judge-round-count-has-three-answers (design/concepts/ExplosiveKnockback/journal.md:58): Judge round count has three answers (12 / 13 / 19); not reconciled (spec §10).
+- trap:97-2-million-tokens (version/VERSION.json): 97.2 million tokens were charged to the Designer stage, 86.5 million of them estimates (`version/VERSION.json`).
+- trap:proof-build-versus-release-build (RM_KnockbackProof.cs): Proof build versus release build. Most live scenes exist only in the proof build (`RM_KnockbackProof.cs`, `proof_build_gate.py`); the test queue cannot deploy a proof build today (RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE).
+- trap:the-scene-ids-in-scenes-json-are-not (scenes.json): The scene ids in `scenes.json` are not the scene names in the proof code. `scenes.json` entry points name 35 scenes by proof method; `RM_KnockbackProof.Names` holds 41 older names, and only some of the 35 are among them (measured in Stage 2 below).
 
 ## Causes refuted (0) — do not chase these again
 
-## His answers (22)
+## His answers (29)
 - decision:version: Yes, fix it like that, and then please record this as an actual Pass.
 - decision:q:you-can-t-fall-in-by: You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall.
 - decision:q:1-1-totally-even-better-if: 1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly.
@@ -160,19 +253,26 @@ holder lease run-1794813483, token 1, last active 2026-11-16T07:18:18Z
 - decision:q:we-really-shouldn-t-blow-back: We really shouldn't blow back creatures beyond a certain mass, and the heavier something is, the less it should fly. That should also be a function of the explosive damage itself as well. · with a single scene we can check ALL these things together · Melee shove is a great idea, but it belongs in FlowWorks, not here.
 - decision:q:can-t-we-actually-simulate-that: can't we actually simulate that settings check offline? That seems a gratuitous use of the game, unless that's actually a very fast check?
 - decision:q:rimmaster-run-codex-designer-to-questions-23-mods: 1:2 but don't invent new UI, there are already animal tools for this sort of thing 2:2 3:1
-- decision:q:rimmandrake-design-knockback-first-touch: SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation from Explosive Knockback.
 - decision:q:rimmandrake-bind-refusals-to-fixes-no-ceremony-loops: Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists
-- decision:q:rimmandrake-decide-explosion-mods-keep-absorb: Better Explosions and Dynamic Effects Forge -> Keep both for good; Custom Gas Types -> Keep it as a separate mod
-- decision:finding:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS: Extra Explosion Effects → Absorb the idea into Knockback
 - decision:q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit: Should a thrown pawn landing on another pawn hurt anyone? -> Bruise in the next version
 - decision:q:rimmandrake-advance-flowworks-offline-beside-the-pilot: How many mods should advance at once? → All four now, offline only
 - decision:finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN: Thrown pawn lands on another pawn → Bruise in the next version
-- decision:q:rimmandrake-recertify-knockback-tree-after-his-own-rewording: Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
-- decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
 - decision:q:rimmandrake-release-stage-ceiling-per-mod-only-global-knob: Which release do you want? → Raise the limit to $100
-- decision:q:rimmandrake-repair-barrage-frame-criterion-baseline-fails-too: 1 agree.
 - decision:q:rimmandrake-design-holder-pipeline-fusion-checklist-not-handoff: Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first.
 - decision:q:rimmandrake-build-mod-ledger-holders-three-pilots-at-once: I would like this tried at the same time on three mods concurrently so that we can observe different outcomes rapidly. It should roughly start where it last was in the pipeline as that is the same path it treads yes? Then start to build context and learning as it goes.
+- decision:finding:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH: EK 5 gaps → fix the 5 gaps then one more judge; gas shove onto an open pit drops the pawn in → yes, it stands
+- decision:finding:RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER: I agree with the 2nd option though, pending tuning, and worse damage if they then hit a solid object.
+- decision:finding:RIMMANDRAKE_PROVE_PIT_GOODS_RETRIEVABLE: Hauling an item from within pit to storage zone out of pit worked!
+- decision:finding:RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: the result was superb. Item scatter was exceptional, people and items flew into the pit, and more items survived the explosion than previously. Full pass I believe.
+- decision:finding:RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS: Test 1: looks great! Full pass.
+- decision:finding:RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE: I completed the requested assessment of the explosion knockback grid. It looks AWESOME. Some containers were destroyed and correctly barfed out their contents on the ground. Others were moved. Shelves lost their goods. It passed by what I knew to look for.
+- decision:finding:RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE: No caps please.
+- decision:finding:RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS: Confirmed, build the unbuilt items and bug.
+- decision:finding:RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB: Better Explosions and Dynamic Effects Forge -> Keep both for good; Custom Gas Types -> Keep it as a separate mod
+- decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER: It's fine. This doesn't need a human review. Just accept it as a pass and go on.
+- decision:finding:RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING: Do you certify ExplosiveKnockback's tree with the container now thrown a short way? → Certify, and fix the rule
+- decision:finding:RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO: 1 agree.
+- decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
 
 ## Open questions (0)
 
@@ -239,27 +339,10 @@ holder lease run-1794813483, token 1, last active 2026-11-16T07:18:18Z
 
 spend recorded: USD 70.74, 138207197 tokens
 
-## Decisions (3)
-- bar:inv_items_teleport (BACKFILL, 2026-11-16T06:51:52Z): criterion repair of sc_storeroom_mortar (files: calibrate.py, calibrate_cap6.txt, criteria_new.json, criteria_old.json, diffguard.json, refusal.json)
-- bar:inv_perf_all_fly (BACKFILL, 2026-11-16T06:51:52Z): Item `RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_BARRAGE_P99_HELD_AGAIN`, filed 2026-11-15 by the fixer of `RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO`.
-- q:criterion-repair-closed-containers-thrown (BACKFILL, 2026-11-16T06:51:52Z): criterion repair of closed_containers_thrown (files: tree_sheet_rewording.patch)
+## Closed findings (1)
+- finding:RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB withdrawn (reading) c20328a876
 
-## Tests (64)
-- 2026-11-16T06:51:51Z live.run bar:doors_and_deep_water_stop: PASS on ae820721648d visit_1 sc_door_water PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:frame_time_probe: PASS on ae820721648d visit_1 sc_frame_probe_check PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_caps: PASS on ae820721648d visit_1 sc_all_fly_no_cap PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_closed_guard: UNMEASURED on ae820721648d visit_1 sc_closed_containers UNMEASURED (runner INVALID)
-- 2026-11-16T06:51:51Z live.run bar:inv_creature_mass_limit: PASS on ae820721648d visit_1 sc_mass_and_power PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_gas_tags: FAIL on ae820721648d visit_1 sc_cauldron_gas FAIL (runner FAIL)
-- 2026-11-16T06:51:51Z live.run bar:inv_heavy_knock: PASS on ae820721648d visit_1 sc_heavy_knock PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_hose_drop: PASS on ae820721648d visit_1 sc_hose_drop PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_items_teleport: PASS on ae820721648d visit_1 sc_gas_chain PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_killed_corpse: PASS on ae820721648d visit_1 sc_killed_thrown PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_perf_all_fly: PASS on 1a593788b36d visit_1 sc_barrage_perf PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_pits_receive: PASS on ae820721648d visit_1 sc_cover_breaks PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_weapon_ext_fields: PASS on ae820721648d visit_1 sc_lookup PASS (runner PASS)
-- 2026-11-16T06:51:51Z live.run bar:inv_which_blasts: PASS on ae820721648d visit_1 sc_blast_kinds PASS (runner PASS)
-- 2026-11-16T06:51:52Z live.run bar:doors_and_deep_water_stop: PASS on 2f74ac9094e5 visit_2 sc_door_water PASS (runner PASS)
+## Tests (49, 15 older left out)
 - 2026-11-16T06:51:52Z live.run bar:frame_time_probe: PASS on 2f74ac9094e5 visit_2 sc_frame_probe_check PASS (runner PASS)
 - 2026-11-16T06:51:52Z live.run bar:inv_caps: PASS on 2f74ac9094e5 visit_2 sc_all_fly_no_cap PASS (runner PASS)
 - 2026-11-16T06:51:52Z live.run bar:inv_closed_guard: PASS on 2f74ac9094e5 visit_2 sc_closed_containers PASS (runner PASS)
@@ -311,6 +394,8 @@ spend recorded: USD 70.74, 138207197 tokens
 - 2026-11-16T06:51:52Z live.run bar:walk_storeroom_raid: UNMEASURED on 1a593788b36d visit_1 sc_walk_raid UNMEASURED (runner NO_ENTRY)
 
 ## Left out
-- the full history: 251 events (views/history.md; never read whole)
+- decisions: 3, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
+- tests: 15, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
+- the full history: 328 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T07:18:18Z.1794813498462216657 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T07:18:18Z.1794813498462216657 prints what changed after this packet)
+cursor: t=2026-11-16T07:22:45Z.1794813765874252453 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T07:22:45Z.1794813765874252453 prints what changed after this packet)
