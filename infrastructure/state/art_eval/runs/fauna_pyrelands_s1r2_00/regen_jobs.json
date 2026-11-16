@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_FurnaceBeast_s1r3",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FurnaceBeast",
+  "prompt": "A realistic, painterly vanilla RimWorld-style sprite of the furnace-beast, a colossal migratory megafauna and the largest animal on its world, an alien walking kiln of banded mineral, on a transparent background with a clean dark outline. The body plan is alien and tall-legged: a long, high-shouldered walker standing on exactly four long, thick, columnar legs with the belly raised well above the ground and broad flat round feet, one leg at each corner. The torso is a deep, narrow, kiln-like barrel whose flank is built of stacked horizontal mineral bands stepping down like terraced strata. A tapering ridge of stacked mineral bands, with a chimney-like cluster of plates rising over the shoulders, forms the back, not a domed shell and not an armoured dorsal row. A long, low neck reaches forward and ends in a broad, flat, wedge-shaped plated head with a wide scoop-like grazing mouth, a shovel-shaped muzzle made for stripping thornvine. The tiny dark deep-set eyes sit beneath a heavy plated brow. A long, whip-like banded tail ends in a stone club. The hide is mineral, not skin or fur: banded strata of cool grey, tan and ochre stone, built from irregular plates of very different sizes, some large flat slabs and some small chips. It is painted in loose, visible brushwork in the manner of vanilla RimWorld animals: simple two- or three-tone value shapes, flat gouache-like colour blocks, soft hand-painted plate edges, and only a few selective details such as a dusting of grey ash on the upper surfaces and a few fine cracks. The cracks and seams between the plates glow a warm ember orange-yellow like coals showing through gaps in a stove: narrow lines with a gentle inner light, bright yellow-orange at a few joints (shoulder, flank, haunch) and dimmer deep red elsewhere, so the beast reads as hot inside at a glance while the plates themselves stay cool stone. The underbelly shows smaller interlocking stone plates with glowing seams. The sprite reads clearly at small gameplay scale, with a clean dark silhouette and crisp plate edges against a fully transparent background, with opaque pixels right up to the dark outline and nothing floating outside it. The animal has exactly four legs. It is drawn at one fixed scale in every view: the north view shows the rear, seen from behind, with back, tail and haunches and the eyes hidden, drawn at the same body height as the east view; the south view shows the front, with eyes toward the viewer, drawn at the same body height as the east view; and in every view the feet rest on the same ground line. The east side view frames the complete animal, from tail tip to muzzle tip, within about 80 percent of the canvas width, with at least 10 percent clear transparent margin on the left and right and above and below, and every foot complete inside the canvas.",
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 3; fixes: STYLE_OFF, STYLE_EARTHLY, STYLE_OFF, STYLE_EARTHLY, X_CROP",
+  "reference": "",
+  "priority": 40,
+  "source_run": "fauna_pyrelands_s1r2_00",
+  "drawsize": 7.5,
+  "module": "walker",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant"
+ }
+]
