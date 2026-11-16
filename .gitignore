@@ -242,6 +242,16 @@ infrastructure/state/queue/REP.md
 # `rimflow queue <SEAT>`, which renders first. HUMAN.md stays tracked (hand-written).
 infrastructure/state/queue/BENCH.md
 infrastructure/state/queue/FOUNDRY.md
+# Every seat's view is rendered, runner seats included (CLAUDE_ARCHMAGI_OFFLINE1.md ...: 15 of them sat
+# untracked in the seat clone, 2026-11-16). Only the hand-written files stay tracked.
+infrastructure/state/queue/*.md
+!infrastructure/state/queue/HUMAN.md
+!infrastructure/state/queue/CHECK_CLOSED.md
+!infrastructure/state/queue/DECIDE_ARCHIVE.md
+# modset_builder's before-copies of the live mod list and its swap marker: copies of a live file, rewritten
+# on every tier swap, so a tracked one is dirt in whichever clone swapped (untracked 2026-11-16).
+deployed/config/ModsConfig.before-tier-*.xml
+deployed/config/ModsConfig.swap-active*.json
 
 # Generated health/hub data (same plan, §2.4 rows 2-4). Regenerated every 15 min by the
 # `rm-codebase-health.timer` systemd user unit in FOUNDRY's clone
