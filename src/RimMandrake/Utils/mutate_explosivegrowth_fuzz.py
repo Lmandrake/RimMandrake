@@ -6,6 +6,10 @@ runs the fuzz wrapper, demands a FAIL, restores the file byte-identical. Exit 0 
 
     python3 src/RimMandrake/Utils/mutate_explosivegrowth_fuzz.py [name-substring]
 """
+import base64
+import glob
+import hashlib
+import json
 import os
 import subprocess
 import sys
@@ -14,9 +18,65 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 
+# RIMMANDRAKE_RESTORE_KILLED_MUTANTS_SIGKILL_SKIPS_FINALLY: run_selftests' timeout is SIGKILL, so run_mutations' `finally`
+# never runs and the mutant stays in the production kernel (measured 2026-11-16: a Graffiti ReactionOf mutant left in a clone).
+# Each run journals the original bytes and the mutant it wrote; the next run_mutations restores any killed run's mutant first,
+# and only when the file still holds exactly that mutant (an edit made after the kill is never clobbered).
+JOURNAL = os.path.join(os.path.expanduser("~"), ".cache", "rm_mutation_journal")
+
+
+def _journal_path(kernel):
+    return os.path.join(JOURNAL, hashlib.sha1(os.path.abspath(kernel).encode("utf-8")).hexdigest() + ".json")
+
+
+def _journal(kernel, orig, mutant):
+    os.makedirs(JOURNAL, exist_ok=True)
+    tmp = _journal_path(kernel) + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump({"path": os.path.abspath(kernel), "pid": os.getpid(), "orig": base64.b64encode(orig).decode("ascii"),
+                   "mutant_sha": hashlib.sha1(mutant).hexdigest()}, f)
+    os.replace(tmp, _journal_path(kernel))
+
+
+def _alive(pid):
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except ProcessLookupError:
+        return False
+    except (PermissionError, TypeError, ValueError):
+        return True
+
+
+def recover_stranded():
+    """Restore every kernel a killed mutation run left mutated. -> paths restored."""
+    restored = []
+    for f in glob.glob(os.path.join(JOURNAL, "*.json")):
+        try:
+            e = json.load(open(f))
+        except (OSError, ValueError):
+            continue
+        if _alive(e.get("pid")):
+            continue                      # a live run's own entry
+        path = e.get("path", "")
+        if os.path.exists(path) and hashlib.sha1(open(path, "rb").read()).hexdigest() == e.get("mutant_sha"):
+            open(path, "wb").write(base64.b64decode(e["orig"]))
+            os.utime(path, None)
+            print("RESTORED a stranded mutant in %s (mutation run pid %s was killed before its restore)" % (path, e.get("pid")))
+            restored.append(path)
+        elif os.path.exists(path):
+            print("JOURNAL: %s changed since its mutation run was killed; left as it is" % path)
+        try:
+            os.remove(f)
+        except OSError:
+            pass
+    return restored
+
 
 def run_mutations(kernel_rel, wrapper, mutations, only=None):
     kernel = os.path.join(REPO, kernel_rel)
+    if recover_stranded():
+        time.sleep(5)            # the restore must reach the staged copy before this run's first mutation (rsync window)
     orig = open(kernel, "rb").read()
     text = orig.decode("utf-8")
     caught, missed = 0, []
@@ -28,7 +88,9 @@ def run_mutations(kernel_rel, wrapper, mutations, only=None):
                 print("MUTATION TARGET NOT FOUND:", name)
                 missed.append(name + " (target missing)")
                 continue
-            open(kernel, "wb").write(text.replace(old, new, 1).encode("utf-8"))
+            mutant = text.replace(old, new, 1).encode("utf-8")
+            _journal(kernel, orig, mutant)
+            open(kernel, "wb").write(mutant)
             time.sleep(5)
             os.utime(kernel, None)
             p = subprocess.run([sys.executable, os.path.join(HERE, wrapper)], capture_output=True, text=True, errors="replace")
@@ -43,6 +105,10 @@ def run_mutations(kernel_rel, wrapper, mutations, only=None):
                 missed.append(name)
     finally:
         open(kernel, "wb").write(orig)
+        try:
+            os.remove(_journal_path(kernel))
+        except OSError:
+            pass
         time.sleep(5)            # rsync --modify-window=2: a restore inside 2 s of the last mutation would be skipped (stale staged copy)
         os.utime(kernel, None)
     print("%d caught, %d missed; kernel restored" % (caught, len(missed)))
