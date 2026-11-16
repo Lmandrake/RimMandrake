@@ -246,6 +246,12 @@ EV2 = [
     {"seat": "OWNER", "event": "note", "id": RK, "tsn": 162, "text": "FROZEN STOP 2026-11-07: was checking",
      "ownerSaid": "Please have those Frozen items shut down their work."},
     {"seat": "OWNER", "event": "note", "id": RK, "tsn": 163, "ownerSaid": "Gas should chain through every vent."}]
+EV2 += [{"seat": "OWNER", "event": "note", "id": RK, "tsn": 164, "ownerSaid": "We're staying interactive tonight, tokens "
+         "too low."},
+        {"seat": "OWNER", "event": "note", "id": "RIMMANDRAKE_DESIGN_SOME_PIPELINE_WHOLE_MOD", "tsn": 165,
+         "text": "pipeline card; FixtureMod is a pilot", "ownerSaid": "(2) and we should track quota the same way."},
+        {"seat": "OWNER", "event": "note", "id": "RIMMANDRAKE_MEASURE_SOME_COMPLETION_HOW_DONE", "tsn": 166,
+         "ownerSaid": "Fixture Mod must score far above OtherMod on completion."}]
 for i_, t_ in enumerate((RK, RC, RT)):
     EV2.append({"seat": "OWNER", "event": "note", "id": t_, "tsn": 170 + i_, "ownerSaid": "Stop all the lanes tonight."})
 for i_ in range(4):     # the bulk re-stamp: one OWNER sha stamped on many tickets at once
@@ -469,6 +475,10 @@ for phrase in ("work that item right now", "What should happen to FOUNDRY", "Fro
     check("rule 3: his words on a needs/reassign/stop/fleet-wide event are no decision ('%s')" % phrase,
           not [e for e in DEC if phrase in json.dumps(e["body"], ensure_ascii=False)],
           [e["body"] for e in DEC if phrase in json.dumps(e["body"], ensure_ascii=False)])
+check("rule 3: his words on another ticket that only cites the mod, and do not name it, are no decision",
+      not [e for e in DEC if "track quota" in (e["body"].get("said") or "")], [e["body"] for e in DEC])
+check("rule 3: his words on another ticket that name the mod stay a decision",
+      any("score far above OtherMod" in (e["body"].get("said") or "") for e in DEC), [e["body"] for e in DEC])
 check("rule 3: his words about the mod on a plain note stay a decision",
       any("chain through every vent" in (e["body"].get("said") or "") for e in DEC), [e["body"] for e in DEC])
 FW = F.get("finding:RIMMANDRAKE_WIDEN_FIXTURE_SCAN_FIVE_SLIPPED") or {}
@@ -519,7 +529,7 @@ import modledger_reader as R                                     # noqa: E402
 CALLS = []
 
 
-def fake_call(prompt, model):
+def fake_call(prompt, model, system=None):
     CALLS.append(prompt)
     ans = {}
     for n in re.findall(r"=== TICKET (\S+)", prompt):
@@ -528,6 +538,8 @@ def fake_call(prompt, model):
                   "causes_refuted": [{"text": "Reading: the DLL was not stale for %s" % n, "depends_on":
                                       ["src/RimMandrake/NoSuchMod/X.cs"]}],
                   "traps": [{"text": "Reading: T_GEOM reads seven scenes only (%s)" % n, "where": "T_GEOM"}]}
+    for n, block in re.findall(r"=== OWNER WORDS (\S+)\n(.*?)(?=\n=== |\Z)", prompt, re.S):
+        ans[n] = [int(i) for i, w in re.findall(r"^\[(\d+)\] (.*)$", block, re.M) if "vent" in w]
     return ans, 0.5
 
 
@@ -565,6 +577,9 @@ CALLS.clear()
 rr2 = B.run(root, MOD)
 check("reader: a re-run without --read keeps every read line (no call, nothing written or deleted)",
       not CALLS and rr2["written"] == 0 and rr2["deleted"] == 0, rr2)
+DECr = [e["body"].get("said") or "" for e in M.read(root, MOD) if e["_shard"] == "BACKFILL" and e["kind"] == "decision"]
+check("owner reading: on a read ticket only his words it marks as a ruling about the mod stay decisions",
+      any("chain through every vent" in x for x in DECr) and not any("staying interactive" in x for x in DECr), DECr)
 subj_probs = [x for x in M.lint(root, MOD, None)[0] if "REFUSED subject" in str(x)]
 check("re-mine: a subject whose old first line was deleted after the new lines were written still passes the "
       "duplicate-subject check (lint clean)", not subj_probs, subj_probs[:2])

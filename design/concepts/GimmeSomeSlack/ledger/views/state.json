@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "419693b5d135b57508c77b4ffb66df8403614f3a1948f28ab1bd541b766b15fa",
+  "body_sha256": "3d4b1b87a5dbaf05f2108b63d73e78c648dcb6dcdac0f87ffd7cb3863d6d5533",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 410392,
+   "BACKFILL": 400062,
    "DISPATCH": 666
   }
  },
@@ -65,14 +65,6 @@
     "question": null,
     "ts": "2026-11-16T08:21:23Z"
    },
-   "decision:finding:GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD": {
-    "answer": "It will be very interesting to compare what the agent comes up with vs the validation checklists and northstar entries and human walk map contents we have. Let’s compare them afterwards.",
-    "authority": {
-     "owner_said": "It will be very interesting to compare what the agent comes up with vs the validation checklists and northstar entries and human walk map contents we have. Let’s compare them afterwards."
-    },
-    "question": null,
-    "ts": "2026-11-16T08:21:23Z"
-   },
    "decision:finding:GSS_WALK_HOSES_EXCISE_REELED_IN": {
     "answer": "But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! We moved the hoses into FlowWorks! Get rid of those hoses...",
     "authority": {
@@ -97,14 +89,6 @@
     "question": null,
     "ts": "2026-11-16T08:21:23Z"
    },
-   "decision:finding:RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME": {
-    "answer": "this is the generalized version of the matrix scenes... combine. It's important for \"first human look\" after the system thinks a mod is ready for the human to have a well prepared savegame like this that's dense and informative and intuitive and well labeled",
-    "authority": {
-     "owner_said": "this is the generalized version of the matrix scenes... combine. It's important for \"first human look\" after the system thinks a mod is ready for the human to have a well prepared savegame like this that's dense and informative and intuitive and well labeled"
-    },
-    "question": null,
-    "ts": "2026-11-16T08:21:23Z"
-   },
    "decision:finding:RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE": {
     "answer": "GSS grid → Wait for all green (one first-look save once every MOD row passes); GSS ids → Re-key proof rows to the tree's leaf ids and restore his 2026-11-07 'no sharp turn' bar to the tree; Short cords → exempt cords shorter than 3 cells from SC_no_two_cords_alike",
     "authority": {
@@ -120,14 +104,6 @@
     },
     "question": null,
     "ts": "2026-11-16T08:21:23Z"
-   },
-   "decision:q:concept-agent-design-argues-before-building": {
-    "answer": "The power strips (modern style art) or connectors (other art styles) should appear whenever there are three or four way junctions of conduit. They should appear to host many of the other lines plugging into the power strips and connectors, as the means to join the many cables. Cables should look messy and only loosely follow the conduit in the floor. It should not repeat patterns but appear like real messy cables strewn across the floor. […]",
-    "authority": {
-     "owner_said": "The power strips (modern style art) or connectors (other art styles) should appear whenever there are three or four way junctions of conduit. They should appear to host many of the other lines plugging into the power strips and connectors, as the means to join the many cables. Cables should look messy and only loosely follow the conduit in the floor. It should not repeat patterns but appear like real messy cables strewn across the floor. […]"
-    },
-    "question": null,
-    "ts": "2026-11-16T07:13:56Z"
    },
    "decision:q:every-sparking-end-shocks-but-settable": {
     "answer": "Every sparking end shocks, but settable in settings to those three options: None, only downed lines, or all.",
@@ -193,34 +169,10 @@
     "question": null,
     "ts": "2026-11-16T07:11:06Z"
    },
-   "decision:q:ratchet-pilot-prove-three-mods-one-loop": {
-    "answer": "For this experiment only, Bench will own everything. This is NOT a change of policy, just an experiment.",
-    "authority": {
-     "owner_said": "For this experiment only, Bench will own everything. This is NOT a change of policy, just an experiment."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:11:06Z"
-   },
    "decision:q:restate-honest-faithfully-represents-connectivity-but": {
     "answer": "Restate Honest: Faithfully represents connectivity but not precise conduit path. … if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked.",
     "authority": {
      "owner_said": "Restate Honest: Faithfully represents connectivity but not precise conduit path. … if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:11:06Z"
-   },
-   "decision:q:rimmandrake-design-holder-pipeline-fusion-checklist-not-handoff": {
-    "answer": "Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first.",
-    "authority": {
-     "owner_said": "Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:11:06Z"
-   },
-   "decision:q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit": {
-    "answer": "Four built things no bar covers (geyser hot tub, liquid coating and washing, cords under a battery and items, fire-hawk hunt letter and trophy): where do they go? -> Bars for all four now",
-    "authority": {
-     "by_card": "Four built things no bar covers (geyser hot tub, liquid coating and washing, cords under a battery and items, fire-hawk hunt letter and trophy): where do they go? -> Bars for all four now"
     },
     "question": null,
     "ts": "2026-11-16T07:11:06Z"
@@ -914,14 +866,6 @@
     "text": "GSS lamps keep their copy of the default look → Accept: lamps keep their look",
     "ts": "2026-11-16T08:21:23Z"
    },
-   "finding:GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD": {
-    "authority": {
-     "owner_said": "It will be very interesting to compare what the agent comes up with vs the validation checklists and northstar entries and human walk map contents we have. Let’s compare them afterwards."
-    },
-    "by": "BACKFILL",
-    "text": "It will be very interesting to compare what the agent comes up with vs the validation checklists and northstar entries and human walk map contents we have. Let’s compare them afterwards.",
-    "ts": "2026-11-16T08:21:23Z"
-   },
    "finding:GSS_WALK_HOSES_EXCISE_REELED_IN": {
     "authority": {
      "owner_said": "But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! We moved the hoses into FlowWorks! Get rid of those hoses..."
@@ -946,14 +890,6 @@
     "text": "Seven save-housekeeping patches belong to no setting: how should the every-patch-has-a-switch bar treat them? -> Exempt housekeeping",
     "ts": "2026-11-16T08:21:23Z"
    },
-   "finding:RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME": {
-    "authority": {
-     "owner_said": "this is the generalized version of the matrix scenes... combine. It's important for \"first human look\" after the system thinks a mod is ready for the human to have a well prepared savegame like this that's dense and informative and intuitive and well labeled"
-    },
-    "by": "BACKFILL",
-    "text": "this is the generalized version of the matrix scenes... combine. It's important for \"first human look\" after the system thinks a mod is ready for the human to have a well prepared savegame like this that's dense and informative and intuitive and well labeled",
-    "ts": "2026-11-16T08:21:23Z"
-   },
    "finding:RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE": {
     "authority": {
      "by_card": "GSS grid → Wait for all green (one first-look save once every MOD row passes); GSS ids → Re-key proof rows to the tree's leaf ids and restore his 2026-11-07 'no sharp turn' bar to the tree; Short cords → exempt cords shorter than 3 cells from SC_no_two_cords_alike"
@@ -969,14 +905,6 @@
     "by": "BACKFILL",
     "text": "Short cords (2 to 3 tiles) fail the 1.4x slack bar: what should happen? -> Loosen the short cords",
     "ts": "2026-11-16T08:21:23Z"
-   },
-   "q:concept-agent-design-argues-before-building": {
-    "authority": {
-     "owner_said": "The power strips (modern style art) or connectors (other art styles) should appear whenever there are three or four way junctions of conduit. They should appear to host many of the other lines plugging into the power strips and connectors, as the means to join the many cables. Cables should look messy and only loosely follow the conduit in the floor. It should not repeat patterns but appear like real messy cables strewn across the floor. […]"
-    },
-    "by": "BACKFILL",
-    "text": "The power strips (modern style art) or connectors (other art styles) should appear whenever there are three or four way junctions of conduit. They should appear to host many of the other lines plugging into the power strips and connectors, as the means to join the many cables. Cables should look messy and only loosely follow the conduit in the floor. It should not repeat patterns but appear like real messy cables strewn across the floor. […]",
-    "ts": "2026-11-16T07:13:56Z"
    },
    "q:every-sparking-end-shocks-but-settable": {
     "authority": {
@@ -1042,36 +970,12 @@
     "text": "Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later",
     "ts": "2026-11-16T07:11:06Z"
    },
-   "q:ratchet-pilot-prove-three-mods-one-loop": {
-    "authority": {
-     "owner_said": "For this experiment only, Bench will own everything. This is NOT a change of policy, just an experiment."
-    },
-    "by": "BACKFILL",
-    "text": "For this experiment only, Bench will own everything. This is NOT a change of policy, just an experiment.",
-    "ts": "2026-11-16T07:11:06Z"
-   },
    "q:restate-honest-faithfully-represents-connectivity-but": {
     "authority": {
      "owner_said": "Restate Honest: Faithfully represents connectivity but not precise conduit path. … if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked."
     },
     "by": "BACKFILL",
     "text": "Restate Honest: Faithfully represents connectivity but not precise conduit path. … if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked.",
-    "ts": "2026-11-16T07:11:06Z"
-   },
-   "q:rimmandrake-design-holder-pipeline-fusion-checklist-not-handoff": {
-    "authority": {
-     "owner_said": "Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first."
-    },
-    "by": "BACKFILL",
-    "text": "Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first.",
-    "ts": "2026-11-16T07:11:06Z"
-   },
-   "q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit": {
-    "authority": {
-     "by_card": "Four built things no bar covers (geyser hot tub, liquid coating and washing, cords under a battery and items, fire-hawk hunt letter and trophy): where do they go? -> Bars for all four now"
-    },
-    "by": "BACKFILL",
-    "text": "Four built things no bar covers (geyser hot tub, liquid coating and washing, cords under a battery and items, fire-hawk hunt letter and trophy): where do they go? -> Bars for all four now",
     "ts": "2026-11-16T07:11:06Z"
    },
    "q:tank-tall-build-twice-the-drink": {
@@ -1115,7 +1019,7 @@
     "ts": "2026-11-16T07:11:06Z"
    }
   },
-  "events": 539,
+  "events": 525,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2329,7 +2233,7 @@
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_BIND_CERTIFICATE_TO_OFFLINE_DECIDERS_NO_OP_PASSED": {
-    "accept": "`python3 src/RimMandrake/rimflow/acceptance/guard_certificate_binds_offline_bars_accept.py` prints",
+    "accept": "python3 src/RimMandrake/rimflow/acceptance/guard_certificate_binds_offline_bars_accept.py prints `PASS 8/8` (rc 0); it failed 2/8 (rc 1) on the base judge_certificate.py.",
     "bars": [
      "no_hose"
     ],
@@ -2337,11 +2241,11 @@
     "claim": null,
     "class": "problem",
     "code_sha": null,
-    "proposed_fix": "Fix (`src/RimMandrake/rimflow/judge_certificate.py`): clause `decided` refuses an offline bar (proves_at 2 or 4-5) with no offline decider, and an offline decider missing from the bar's `decides`",
+    "proposed_fix": "In judge_certificate.py: clause `decided` refuses an offline bar (proves_at 2 or 4-5) with no offline decider, and an offline decider missing from the bar's `decides`; run_offline records runs_today.command; ran_on_this_build refuses a differing recorded command.",
     "status": "open",
     "tags": [],
-    "text": "The pre-judgement certificate passed an offline bar with no decider and a decider command swapped for a no-op",
-    "ts": "2026-11-16T08:21:17Z",
+    "text": "`maturation.py certificate` stayed OK when an offline bar (no_hose, proves_at 4-5) had `decides: []` while offline_decides still named T_NO_HOSE, and when T_NO_HOSE's command was replaced by `true` after its green stamp. certify looped only over offline_decides; build_id hashes files, not the command.",
+    "ts": "2026-11-16T08:30:13Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO": {
@@ -2516,19 +2420,19 @@
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET": {
-    "accept": "none, a blind judge cycle's verdict is its result (cycle_5/SUMMARY.md with exit_met stated).",
+    "accept": "none, a blind judge cycle's verdict is its result (design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated)",
     "bars": [],
     "by": "BACKFILL",
     "claim": null,
     "class": "problem",
     "code_sha": null,
-    "proposed_fix": "Run the cycle and write design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated.",
+    "proposed_fix": "Run the 19 planted faults, then write faults.json and design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated.",
     "status": "open",
     "tags": [
      "test"
     ],
-    "text": "Run blind judge cycle 5 of Gimme Some Slack, the first started from its mod-ledger packet; its verdict is its result.",
-    "ts": "2026-11-16T08:21:21Z",
+    "text": "Task: run Gimme Some Slack blind cycle 5, the first started from its mod-ledger packet, and produce a verdict with exit_met stated in the cycle SUMMARY.",
+    "ts": "2026-11-16T08:30:16Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_LAND_DESIGNER_EDITS_HARVEST_TOOK_ONLY_STATE": {
@@ -3399,6 +3303,14 @@
     "version": "0.1.0",
     "where": "validation.py::scene_*"
    },
+   "trap:a-stamp-made-before-the-fix-carries-no": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "A stamp made before the fix carries no command and is read as before until its next `maturation.py certificate <Mod> --run`. A no-op command that is itself rerun and stamped still certifies, since the build does not know what a test is meant to run.",
+    "ts": "2026-11-16T08:30:13Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/rimflow/judge_certificate.py; version/test_table.json"
+   },
    "trap:a1-is-still-owed-an-earlier-live-attempt": {
     "by": "BACKFILL",
     "status": "noted",
@@ -3438,6 +3350,14 @@
     "ts": "2026-11-16T08:21:17Z",
     "version": "0.1.0",
     "where": "matrix F60 canal scene, run_live.py --scenes full --only XW (XW2, XW3)"
+   },
+   "trap:build-id-hashes-files-not-the-test-command": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "build_id hashes files, not the test command, so a swapped command does not change the build id and a green stamp stays valid.",
+    "ts": "2026-11-16T08:30:13Z",
+    "version": "0.1.0",
+    "where": "judge_certificate.py build_id"
    },
    "trap:case-3-moves-settings-and-the-wall-together": {
     "by": "BACKFILL",
@@ -3494,6 +3414,14 @@
     "ts": "2026-11-16T08:21:18Z",
     "version": "0.1.0",
     "where": "CordBuilder fold guard; CordBuilder.BlendCutRun"
+   },
+   "trap:flowworks-certificate-refusal-is-not-caused-by-this": {
+    "by": "BACKFILL",
+    "status": "noted",
+    "text": "FlowWorks' certificate refusal is not caused by this defect: it was refused before and after the fix because of stale build stamps.",
+    "ts": "2026-11-16T08:30:13Z",
+    "version": "0.1.0",
+    "where": "item:RIMMANDRAKE_BIND_CERTIFICATE_TO_OFFLINE_DECIDERS_NO_OP_PASSED"
    },
    "trap:for-a-deterministic-worker-throw-the-caller-lay": {
     "by": "BACKFILL",

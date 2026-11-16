@@ -459,6 +459,7 @@ def load_readings(root, mod):
     return d.get("tickets", {}) if isinstance(d, dict) else {}
 
 
+RECORDS_OWNER = {}  # {mod: {ticket: his words numbered}}: what the owner reader is handed
 RECORDS = {}        # {mod: {ticket: record text}}: what plan() would hand the reader (modledger_reader.record_text)
 NARRATION_RE = re.compile(r"(?i)^(?:I |We |Now |Started|Began|Working on|Looking at|Continuing)")
 
@@ -926,7 +927,11 @@ def plan(root, mod):
     mined = {s for k, s, *_ in ev if k == "finding.open"}
     mined_items = set(items)
     fleet = fleet_words(root)
-    lifecycle_words = 0
+    lifecycle_words = off_mod = not_ruling = 0
+    squash = lambda t: re.sub(r"[^a-z0-9]", "", str(t).lower())
+    name_re = re.compile(r"\b(?:%s)\b" % "|".join(re.escape(w) for w in set(
+        words + cfg.get("backfill_title_names", {}).get(mod, []) + [word])), re.I)
+    cand = []
     for sp_ in sorted(glob.glob(os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER*.jsonl"))):
         for i, e in enumerate(_jsonl(sp_), 1):
             blob = json.dumps(e, ensure_ascii=False)
@@ -942,14 +947,35 @@ def plan(root, mod):
                 lifecycle_words += 1
                 continue
             card = card if isinstance(card, str) or card is None else json.dumps(card, ensure_ascii=False)
-            words_ = fit(said, S["said"]) if said else fit(card, S["text"])
-            if not his(words_):
-                continue
             iid = e.get("id") if isinstance(e.get("id"), str) else None
-            subj = ("finding:" + iid) if iid and "finding:" + iid in mined else "q:" + slug(iid or words_, 12)
-            auth = {"owner_said": words_} if said else {"by_card": words_}
-            add("decision", subj, {"said": words_} if said else {"text": words_},
-                ["path:%s:%d" % (_rel(root, sp_), i), ("item:" + iid) if iid else None], auth)
+            # on a ticket that is not one of this mod's, his words count only when they name the mod themselves
+            if iid not in mined_items and not (squash(mod) in squash(said or card) or name_re.search(said or card)):
+                off_mod += 1
+                continue
+            cand.append((sp_, i, said, card, iid))
+    by_ticket = {}
+    for c_ in cand:
+        if c_[4] in mined_items:
+            by_ticket.setdefault(c_[4], []).append(c_[2] or c_[3])
+    RECORDS_OWNER[mod] = {t: R.owner_text(t, titles.get(t), mod, ws) for t, ws in by_ticket.items()}
+    for sp_, i, said, card, iid in cand:
+        # on a ticket the owner reader read, only the words it marked as a ruling about the mod
+        orr = raw_readings.get(iid) or {}
+        if iid in by_ticket and isinstance(orr.get("owner"), list):
+            n_ = by_ticket[iid].index(said or card) + 1
+            if n_ not in orr["owner"]:
+                not_ruling += 1
+                continue
+        words_ = fit(said, S["said"]) if said else fit(card, S["text"])
+        if not his(words_):
+            continue
+        subj = ("finding:" + iid) if iid and "finding:" + iid in mined else "q:" + slug(iid or words_, 12)
+        auth = {"owner_said": words_} if said else {"by_card": words_}
+        add("decision", subj, {"said": words_} if said else {"text": words_},
+            ["path:%s:%d" % (_rel(root, sp_), i), ("item:" + iid) if iid else None], auth)
+    if off_mod or not_ruling:
+        notes.append("left out: %d owner words on other tickets that do not name the mod, %d the owner reader found "
+                     "no ruling about it" % (off_mod, not_ruling))
     if lifecycle_words:
         notes.append("left out: %d owner words riding lifecycle or fleet-wide events (authority for an act, not a "
                      "statement about the mod)" % lifecycle_words)
@@ -996,7 +1022,14 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
                      "for the bound" % (reader["read"], reader["asked"], reader["batches"], reader["spent_usd"], bud,
                                         len(reader["failed"]), reader["skipped_for_budget"]))
         ev, notes2 = plan(root, mod)
-        notes = notes2 + notes[-1:]
+        owr = R.read_tickets(readings_path(root, mod), RECORDS_OWNER.get(mod, {}), [], max(0.0, bud - reader[
+            "spent_usd"]), cfg.get("model", "sonnet"), cfg.get("workers", 4), log, field="owner",
+            system=R.OWNER_SYSTEM)
+        ev, notes2 = plan(root, mod)
+        notes = notes2 + notes[-1:] + ["owner reader: %d of %d tickets read in %d batches, $%.2f spent, %d failed, "
+                                       "%d skipped for the bound" % (owr["read"], owr["asked"], owr["batches"],
+                                                                     owr["spent_usd"], len(owr["failed"]),
+                                                                     owr["skipped_for_budget"])]
     have_r = load_readings(root, mod)
     stale = sum(1 for n, t in RECORDS.get(mod, {}).items() if (have_r.get(n) or {}).get("hash") not in (None, R.rec_hash(t)))
     unread = sum(1 for n in RECORDS.get(mod, {}) if n not in have_r)

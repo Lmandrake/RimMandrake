@@ -54,6 +54,20 @@ Answer with ONE JSON object and nothing else: {"<TICKET_ID>": {"defect": ..., "p
 ticket given."""
 
 
+OWNER_SYSTEM = """You sort a project owner's words attached to software tickets. For each ticket you get its title and \
+his words, numbered. Return the numbers of the words that state a durable ruling about the MOD named: its behaviour, \
+scope, design, art, settings, tests or acceptance bars, or a verdict on a fix. Leave out words that only order or \
+schedule work, assign or stop agents, talk about tokens, budgets, quotas or staffing, chat, or rule on the pipeline or \
+process as a whole rather than on this mod. Answer with ONE JSON object and nothing else: {"<TICKET_ID>": [numbers]}, \
+one key per ticket given (an empty list when none qualify)."""
+
+
+def owner_text(name, title, mod, words):
+    """One ticket's owner words as the owner reader sees them: [n] numbered, verbatim."""
+    return "=== OWNER WORDS %s\nMOD: %s\nTITLE: %s\n%s" % (name, mod, title or "-", "\n".join(
+        "[%d] %s" % (i + 1, " ".join(str(w).split())) for i, w in enumerate(words)))
+
+
 def _cap(t, n):
     t = " ".join(str(t or "").split())
     return t if len(t) <= n else t[:n] + " (cut)"   # cut-ok: this is model INPUT, the ticket on disk is whole
@@ -89,10 +103,10 @@ def rec_hash(text):
     return hashlib.sha256((PROMPT_VERSION + "\n" + text).encode("utf-8")).hexdigest()[:16]
 
 
-def _call(prompt, model, timeout=600):
+def _call(prompt, model, timeout=600, system=None):
     """-> (answer dict, usd). One `claude -p` call, no tools, no settings, no MCP; run from /tmp (no project files)."""
     r = subprocess.run(["claude", "-p", "--model", model, "--output-format", "json", "--strict-mcp-config", "--tools",
-                        "", "--setting-sources", "", "--system-prompt", SYSTEM], input=prompt, capture_output=True,
+                        "", "--setting-sources", "", "--system-prompt", system or SYSTEM], input=prompt, capture_output=True,
                        text=True, timeout=timeout, cwd="/tmp")
     try:
         out = json.loads(r.stdout)
@@ -122,7 +136,7 @@ def batches(todo, limit=BATCH_CHARS):
         yield cur
 
 
-def read_tickets(path, records, bars, budget_usd, model="sonnet", workers=4, log=print):
+def read_tickets(path, records, bars, budget_usd, model="sonnet", workers=4, log=print, field="reading", system=None):
     """Read every ticket in `records` ({name: record text}) whose reading is missing or was made from another text,
     a batch per call, `workers` at once, never starting a batch once the spend reaches `budget_usd` less the costliest
     batch so far. Writes `path` after every batch (an interrupted run keeps what it paid for). -> report dict."""
@@ -132,13 +146,15 @@ def read_tickets(path, records, bars, budget_usd, model="sonnet", workers=4, log
             d = json.load(fh)
     tickets = d.setdefault("tickets", {})
     d["prompt_version"], d["model"] = PROMPT_VERSION, model
-    todo = [(n, t) for n, t in sorted(records.items()) if (tickets.get(n) or {}).get("hash") != rec_hash(t)]
+    hkey = "hash" if field == "reading" else field + "_hash"
+    todo = [(n, t) for n, t in sorted(records.items()) if (tickets.get(n) or {}).get(hkey) != rec_hash(t)]
     spent, worst, done, failed, skipped = 0.0, 0.25, 0, [], 0     # 0.25: a first guess at a batch's cost
     bl = list(batches(todo))
-    head = "BARS (the mod's locked bar ids): %s\n\n" % ", ".join(bars)
+    head = "BARS (the mod's locked bar ids): %s\n\n" % ", ".join(bars) if field == "reading" else ""
 
     def one(b):
-        return b, CALL(head + "\n\n".join(t for _, t in b), model)
+        text = head + "\n\n".join(t for _, t in b)
+        return b, (CALL(text, model) if system is None else CALL(text, model, system=system))
 
     pending = list(bl)
     with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as ex:
@@ -160,8 +176,12 @@ def read_tickets(path, records, bars, budget_usd, model="sonnet", workers=4, log
                 worst = max(worst, usd)
                 for n, t in b:
                     a = ans.get(n)
-                    if isinstance(a, dict):
-                        tickets[n] = {"hash": rec_hash(t), "reading": a, "at": time.strftime("%Y-%m-%dT%H:%M:%S")}
+                    if field == "reading" and isinstance(a, dict):
+                        tickets[n] = dict(tickets.get(n) or {}, hash=rec_hash(t), reading=a,
+                                          at=time.strftime("%Y-%m-%dT%H:%M:%S"))
+                        done += 1
+                    elif field != "reading" and isinstance(a, list):
+                        tickets[n] = dict(tickets.get(n) or {}, **{field: a, hkey: rec_hash(t)})
                         done += 1
                     else:
                         failed.append("no answer for %s" % n)

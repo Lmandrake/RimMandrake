@@ -1,7 +1,7 @@
 {
 "model": "sonnet",
 "prompt_version": "2026-11-16.1",
-"spent_usd_last_run": 1.6698,
+"spent_usd_last_run": 0.0375,
 "tickets": {
 "AERIAL_CUT_POINT_PRECISION_1": {
 "at": "2026-11-16T00:08:44",
@@ -112,6 +112,12 @@
 "GIMMESOMESLACK_NORTHSTAR_VALIDATE_1": {
 "at": "2026-11-16T00:08:44",
 "hash": "4b253447523478e5",
+"owner": [
+1,
+2,
+3
+],
+"owner_hash": "c43796e5cd73b11d",
 "reading": {
 "accept": "none, owner walkthrough: owner verified the 31-station save RM_gss_walk_20261015b in game.",
 "bars": [],
@@ -131,6 +137,10 @@
 "GIMMESOMESLACK_RENAME_1": {
 "at": "2026-11-16T00:08:44",
 "hash": "8d72055b0511c9e5",
+"owner": [
+1
+],
+"owner_hash": "ae303694ffb03bc4",
 "reading": {
 "accept": "none, selftests must stay green; recorded Northstar runs restart under the new key.",
 "bars": [
@@ -386,6 +396,10 @@
 "GSS_CORD_SILENCE_PHANTOM_SPARK": {
 "at": "2026-11-16T00:08:37",
 "hash": "1e18e41aafb0648f",
+"owner": [
+1
+],
+"owner_hash": "eabcbc69fdb319b7",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [
@@ -554,6 +568,22 @@
 "GSS_FINISH_RALPH_LOOP_WAITS_GAME_TURN": {
 "at": "2026-11-16T00:08:21",
 "hash": "4258f450b0ede3f0",
+"owner": [
+2,
+4,
+5,
+10,
+11,
+12,
+14,
+15,
+16,
+18,
+19,
+21,
+22
+],
+"owner_hash": "8654dde7b276c62c",
 "reading": {
 "accept": "none, no command filed; the owner approved the r3_11/r3_13/r3_01 125043 closeups live in game at 935cf654e8, plus run_selftests --only 14 GSS/SlackGeometry pass on main.",
 "bars": [
@@ -1081,6 +1111,10 @@
 "GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE": {
 "at": "2026-11-16T00:08:50",
 "hash": "6962d6c65ea31b86",
+"owner": [
+1
+],
+"owner_hash": "ca3b0a18fa6306e4",
 "reading": {
 "accept": "Offline rows GptPreReleaseChecks.Restring; live row M15e not run (no bridge).",
 "bars": [
@@ -1208,6 +1242,14 @@
 "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS": {
 "at": "2026-11-16T00:09:04",
 "hash": "8b9eaa894f747aef",
+"owner": [
+1,
+2,
+3,
+4,
+5
+],
+"owner_hash": "121f873ef16af42d",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [
@@ -1456,6 +1498,11 @@
 "GSS_STYLE_RUN_PROVE_MIXED_LOOKS_SUSPECTED": {
 "at": "2026-11-16T00:09:11",
 "hash": "3fc2529a90de7c44",
+"owner": [
+1,
+2
+],
+"owner_hash": "c284256901b475b0",
 "reading": {
 "accept": "validation_style.py --live rows S12a (D1), S12b (D7), S12c (D5), S12d_D4_pending_queue_save (via --save <NAME> csavenow) all PASS.",
 "bars": [
@@ -1616,6 +1663,8 @@
 "GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD": {
 "at": "2026-11-16T00:09:13",
 "hash": "acb377943c539703",
+"owner": [],
+"owner_hash": "3ec05ff3abba4961",
 "reading": {
 "accept": "none, no acceptance filed; verify offline selftest or the named live proof.",
 "bars": [],
@@ -1639,6 +1688,10 @@
 "GSS_WALK_HOSES_EXCISE_REELED_IN": {
 "at": "2026-11-16T00:09:13",
 "hash": "54904d71c2c5d3e1",
+"owner": [
+1
+],
+"owner_hash": "15f20daccd2b8d1e",
 "reading": {
 "accept": "0 RM_HoseReel in the saved .rws; live removal checked.",
 "bars": [
@@ -1779,6 +1832,12 @@
 "POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK": {
 "at": "2026-11-16T00:09:13",
 "hash": "02b040c5db98daf6",
+"owner": [
+1,
+2,
+3
+],
+"owner_hash": "cc5fb32aef509ab4",
 "reading": {
 "accept": "After one in-game day of the caught clamp draining, goodwill fell by theftGoodwillPerDay with reason 'power theft'; removing the clamp stops it (A3, L2). SelfTest TheftChecks + GptPreReleaseChecks.TapClamp green (A1).",
 "bars": [
@@ -1801,6 +1860,10 @@
 "RIMMANDRAKE_ADVANCE_GIMMESOMESLACK_OFFLINE_BESIDE_THE_PILOT": {
 "at": "2026-11-16T00:09:19",
 "hash": "efb75c64f394bdbd",
+"owner": [
+1
+],
+"owner_hash": "15c8b25ce8b705d6",
 "reading": {
 "accept": "none, the pipeline's own stages judge it (spec design/specs/2026-11-13-maturation-pipeline.md)",
 "bars": [],
@@ -1842,6 +1905,36 @@
 {
 "text": "The row and the instrument disagree: L1_CORD_BENDS_TALLY (the named instrument) PASSes on the same seeds while L1_CORD_SHARP_TURN FAILs. The row exempts only 0.75 Euclid from its window's midpoint, whereas the instrument's 'limp' is apex within LimpReach 1.0 by arc.",
 "where": "BlindLane1.cs CordSharpTurn vs CordShapeAudit.Bends; judge_the_judge/Diag.cs mode sharprow"
+}
+]
+}
+},
+"RIMMANDRAKE_BIND_CERTIFICATE_TO_OFFLINE_DECIDERS_NO_OP_PASSED": {
+"at": "2026-11-16T00:29:58",
+"hash": "60e9c8ec63d2c2ff",
+"reading": {
+"accept": "python3 src/RimMandrake/rimflow/acceptance/guard_certificate_binds_offline_bars_accept.py prints `PASS 8/8` (rc 0); it failed 2/8 (rc 1) on the base judge_certificate.py.",
+"bars": [
+"no_hose"
+],
+"causes_refuted": [
+{
+"depends_on": [],
+"text": "FlowWorks' certificate refusal is not caused by this defect: it was refused before and after the fix because of stale build stamps."
+}
+],
+"changed": "Added the `decided` clause refusing an offline bar with no offline decider (or a decider absent from the bar's `decides`), and made run_offline record the command so ran_on_this_build refuses a stamp whose command differs from the table's.",
+"class": "problem",
+"defect": "`maturation.py certificate` stayed OK when an offline bar (no_hose, proves_at 4-5) had `decides: []` while offline_decides still named T_NO_HOSE, and when T_NO_HOSE's command was replaced by `true` after its green stamp. certify looped only over offline_decides; build_id hashes files, not the command.",
+"proposed_fix": "In judge_certificate.py: clause `decided` refuses an offline bar (proves_at 2 or 4-5) with no offline decider, and an offline decider missing from the bar's `decides`; run_offline records runs_today.command; ran_on_this_build refuses a differing recorded command.",
+"traps": [
+{
+"text": "A stamp made before the fix carries no command and is read as before until its next `maturation.py certificate <Mod> --run`. A no-op command that is itself rerun and stamped still certifies, since the build does not know what a test is meant to run.",
+"where": "src/RimMandrake/rimflow/judge_certificate.py; version/test_table.json"
+},
+{
+"text": "build_id hashes files, not the test command, so a swapped command does not change the build id and a green stamp stays valid.",
+"where": "judge_certificate.py build_id"
 }
 ]
 }
@@ -2084,16 +2177,16 @@
 }
 },
 "RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET": {
-"at": "2026-11-16T00:09:39",
-"hash": "824e682494aa9a91",
+"at": "2026-11-16T00:29:58",
+"hash": "153022bb051a8589",
 "reading": {
-"accept": "none, a blind judge cycle's verdict is its result (cycle_5/SUMMARY.md with exit_met stated).",
+"accept": "none, a blind judge cycle's verdict is its result (design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated)",
 "bars": [],
 "causes_refuted": [],
 "changed": null,
 "class": "problem",
-"defect": "Run blind judge cycle 5 of Gimme Some Slack, the first started from its mod-ledger packet; its verdict is its result.",
-"proposed_fix": "Run the cycle and write design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated.",
+"defect": "Task: run Gimme Some Slack blind cycle 5, the first started from its mod-ledger packet, and produce a verdict with exit_met stated in the cycle SUMMARY.",
+"proposed_fix": "Run the 19 planted faults, then write faults.json and design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated.",
 "traps": []
 }
 },
@@ -2327,6 +2420,8 @@
 "RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME": {
 "at": "2026-11-16T00:09:38",
 "hash": "5ed786818ed619d6",
+"owner": [],
+"owner_hash": "216fac40aa0e6c87",
 "reading": {
 "accept": "none, no command filed; done when the standard is a single doc with no rival copy and one keeper save built to it is pre-looked by a judge, its key sheet naming every station and grid cell.",
 "bars": [],
@@ -2368,6 +2463,10 @@
 "RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE": {
 "at": "2026-11-16T00:09:38",
 "hash": "56960dfd12a53cb8",
+"owner": [
+1
+],
+"owner_hash": "acb90bd5c436f217",
 "reading": {
 "accept": "A1 L2: on SteveDesktop, proof_all --live --no-shots --skip-offline gives 0 FAIL rows and every UNMEASURED row id is named in an item. A2: gravship_scene on exits 0. A3: gravship_scene off exits 0.",
 "bars": [
@@ -2614,6 +2713,10 @@
 "RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR": {
 "at": "2026-11-16T00:09:41",
 "hash": "b8cb4afe155a77a6",
+"owner": [
+1
+],
+"owner_hash": "5ce563e8dd2409f8",
 "reading": {
 "accept": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry exits 0 (taut 0, flat 0, unforced bends 0).",
 "bars": [
