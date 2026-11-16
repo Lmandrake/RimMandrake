@@ -2663,6 +2663,18 @@ def report(rows: list[dict], a, sd: Path, freed: int):
     print(f"alarms: {sd / 'alarms.log'}")
 
 
+def prune_orphan_bundles() -> dict:
+    """RIMMANDRAKE_PRUNE_ORPHAN_BUNDLES_FULLY_LANDED: delete the orphan store's bundles whose every piece of work is on
+    origin/main (orphan_bundles.py; 357 had piled up, 7.7 GB, by 2026-11-16). Never raises: -> {"summary"|"error": ...}."""
+    tool = Path(__file__).resolve().parent / "orphan_bundles.py"
+    try:
+        r = subprocess.run([sys.executable, str(tool), "prune", "--apply"], capture_output=True, text=True, timeout=900)
+        lines = [ln for ln in r.stdout.splitlines() if ln.startswith(("SUMMARY", "pruned"))]
+        return {"rc": r.returncode, "summary": lines} if r.returncode == 0 else {"rc": r.returncode, "error": r.stderr[-300:]}
+    except Exception as e:  # noqa: BLE001 - the reap goes on; the record says why the prune did not
+        return {"error": str(e)[:300]}
+
+
 def run(a, sd: Path) -> int:
     start = time.time()
     stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(start))
@@ -2680,6 +2692,7 @@ def run(a, sd: Path) -> int:
         rotate(sd / "tmp_runs.jsonl")
         with open(sd / "tmp_runs.jsonl", "a") as f:
             f.write(json.dumps({"ts": stamp, "apply": a.apply, "summary": tmp, "rows": tmp_rows}) + "\n")
+    orphans = prune_orphan_bundles() if a.apply and os.environ.get("SCRATCH_REAP_ROOTS") is None else {}
     rows = judge_all(ctx)
     failures: list[str] = list(fixtures.get("failed", [])) + list(tmp.get("failed", []))   # judged gone, would not go
     freed, deferred = 0, 0
@@ -2711,7 +2724,8 @@ def run(a, sd: Path) -> int:
            "root_free_gb_after": free_gb(), "global_holds": ctx.global_holds(),
            "blind_dirs": len(ctx.borrows.blind), "other_uid_procs": ctx.live.other_uid,
            "refused_bytes": sum(r["bytes"] or 0 for r in rows if r["verdict"] == "REFUSE"),
-           "tmp": dict(tmp, errors=tmp["errors"][:5], before=tmp_before, after=tmp_reading()), "run_tmp": runs_tmp}
+           "tmp": dict(tmp, errors=tmp["errors"][:5], before=tmp_before, after=tmp_reading()), "run_tmp": runs_tmp,
+           "orphan_bundles": orphans}
     if a.apply:
         sanity_end(sd, end, rows, rec)
         record(sd, rec)
