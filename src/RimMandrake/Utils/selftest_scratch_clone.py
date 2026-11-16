@@ -562,6 +562,35 @@ def main() -> int:
         sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
         sr._MIRROR_TIPS = None
         sh("git", "-C", str(cw), "update-ref", "refs/remotes/origin/main", "HEAD")
+        # RIMMANDRAKE_EXEMPT_LANDED_PRESYNC_BACKUPS_REBASE_HID_THE_PRINT: seat_sync rebases a clone's commit onto main and keeps
+        # the original on a backup/*-pre-sync-* branch. The landed twin keeps the subject and the patch, not either time (both
+        # moved 19-40 s, measured on two real twins), so the print misses it; a same-subject commit with another patch is work.
+        # Review (gpt, 2026-11-15) caught three false clears and a crash, each planted here: a whitespace-only difference
+        # (--stable patch-ids ignore it), work main landed and then reverted, and a subject holding a splitlines() separator.
+        twins = (("rebased", "r.txt", "landed by a rebase\n", "work before the sync"),
+                 ("authortwin", "r.txt", "never landed\n", "work before the sync"),
+                 ("spacetwin", "s.txt", "a b\n", "space edit"),
+                 ("reverted", "q.txt", "reverted work\n", "work later reverted"))
+        for n, *_ in twins:
+            plant(n)
+        twin_env = {**os.environ, "GIT_AUTHOR_DATE": "1700000500 +0000", "GIT_COMMITTER_DATE": "1700000500 +0000"}
+        for n, path, text, subject in twins:
+            cb = scr / n
+            sh("git", "-C", str(cb), "checkout", "-q", "-b", "backup/%s-pre-sync-20261115_125455-0000000" % n)
+            (cb / path).write_text(text)
+            sh("git", "-C", str(cb), "add", path)
+            subprocess.run(["git", "-C", str(cb), "commit", "-q", "-m", subject], check=True, env=twin_env)
+        main_env = {**twin_env, "GIT_AUTHOR_DATE": "1700000540 +0000", "GIT_COMMITTER_DATE": "1700000900 +0000"}
+        for path, text, subject in (("r.txt", "landed by a rebase\n", "work before the sync"), ("s.txt", "ab\n", "space edit"),
+                                    ("q.txt", "reverted work\n", "work later reverted"), ("o.txt", "odd\n", "odd\u2028subject")):
+            (work / path).write_text(text)
+            sh("git", "-C", str(work), "add", path)
+            subprocess.run(["git", "-C", str(work), "commit", "-q", "-m", subject], check=True, env=main_env)
+            if path == "q.txt":
+                subprocess.run(["git", "-C", str(work), "revert", "--no-edit", "HEAD"], check=True, env=main_env,
+                               capture_output=True)
+        sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
+        sr._MIRROR_TIPS = sc._MAIN_PRINTS = None
         # SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF cause 1: a helper's shard whose every line main holds, judged against the MIRROR
         # (each clone's own origin/main is left at plant time, before the lines landed: the stale ref of a --shared clone)
         led = "infrastructure/state/ledger/events/BENCH.jsonl"
@@ -579,12 +608,19 @@ def main() -> int:
         (scr / "shardgone" / "infrastructure/state/code_review").mkdir(parents=True)
         (scr / "shardgone" / "infrastructure/state/code_review/BENCH.jsonl").write_text('{"main":"has no such file"}\n')
         check(not sc.noise_on_mirror(scr / "shardlanded", "a.txt", sr.mirror_tips()[0]), "a non-noise path is never excused")
-        for n in ("pushed", "unpushed", "dirty", "built", "held", "rewritten", "shardlanded", "shardnew", "shardgone"):
+        for n in ("pushed", "unpushed", "dirty", "built", "held", "rewritten", "shardlanded", "shardnew", "shardgone",
+                  "rebased", "authortwin", "spacetwin", "reverted"):
             idle(scr / n)
         ss = sc.scratch_stranded()
         rows = {Path(r["path"]).name: r for r in ss["rows"]}
         names = {Path(p).name for p in ss["stranded"]}
-        check(names == {"unpushed", "dirty", "held", "shardnew", "shardgone"}, f"exactly the unlanded idle clones are stranded: {sorted(names)}")
+        check(names == {"unpushed", "dirty", "held", "shardnew", "shardgone", "authortwin", "spacetwin", "reverted"},
+              f"exactly the unlanded idle clones are stranded: {sorted(names)}")
+        check("rebased" not in rows, f"a pre-sync backup whose rebased twin main holds is not work: {rows.get('rebased')}")
+        check("1 commit(s) on no remote" in rows.get("authortwin", {}).get("holds", []),
+              f"a same-subject commit with another patch is held: {rows.get('authortwin')}")
+        for n, why in (("spacetwin", "a twin differing only in whitespace"), ("reverted", "work main landed and then reverted")):
+            check("1 commit(s) on no remote" in rows.get(n, {}).get("holds", []), f"{why} is held: {rows.get(n)}")
         check("shardlanded" not in rows, f"a shard whose lines main holds is not work, stale origin ref or not: {rows.get('shardlanded')}")
         check(rows.get("shardnew", {}).get("holds") == ["1 dirty file(s)"], f"a shard line main lacks is held: {rows.get('shardnew')}")
         check("1 commit(s) on no remote" in rows.get("unpushed", {}).get("holds", []), f"the commit is named: {rows.get('unpushed')}")

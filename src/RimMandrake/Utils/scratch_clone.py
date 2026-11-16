@@ -680,6 +680,7 @@ def pool_reading(risk: bool = True) -> dict:
 # AND committer second: the rewrite changed subjects, emails and blobs (measured on 56 commits of liquidnet_shrink), never dates.
 SCRATCH_SCAN_DEPTH = 5
 _MAIN_PRINTS: set | None = None
+_MAIN_BY_SUBJECT: dict = {}     # subject -> [main sha]: a landing keeps it (RIMMANDRAKE_EXEMPT_LANDED_PRESYNC_BACKUPS_...)
 
 
 def scratch_clone_dirs() -> list[Path]:
@@ -701,14 +702,66 @@ def main_prints() -> set:
 
 
 def _main_prints() -> set:
-    global _MAIN_PRINTS
+    global _MAIN_PRINTS, _MAIN_BY_SUBJECT
     if _MAIN_PRINTS is None:
         import scratch_reap as sr
-        r = sr.git(sr.origin_mirrors()[0], "log", sr.mirror_tips()[0], "--format=%at %ct")
+        r = sr.git(sr.origin_mirrors()[0], "log", "-z", sr.mirror_tips()[0], "--format=%at %ct %H%x1f%s")
         if r.returncode:
             raise RuntimeError("cannot read main on the mirror")
-        _MAIN_PRINTS = set(r.stdout.splitlines())
+        prints, by_subject = set(), {}
+        for at, ct, h, subject in split_log(r.stdout):
+            prints.add(at + " " + ct)
+            by_subject.setdefault(subject, []).append(h)
+        _MAIN_PRINTS, _MAIN_BY_SUBJECT = prints, by_subject
     return _MAIN_PRINTS
+
+
+def split_log(out: str) -> list[tuple[str, str, str, str]]:
+    """`git log -z --format=%at %ct %H%x1f%s` -> [(at, ct, sha, subject)]. NUL-framed: a subject holding U+2028 or any other
+    splitlines() separator crashed the scan (review, 2026-11-15); the head before the first \x1f never holds one."""
+    rows = []
+    for rec in out.split("\0"):
+        head, _, subject = rec.strip("\n").partition("\x1f")
+        parts = head.split()
+        if len(parts) == 3:
+            rows.append((parts[0], parts[1], parts[2], subject))
+    return rows
+
+
+_PATCH_IDS: dict = {}
+MAX_TWINS = 20      # main commits sharing one subject asked per clone commit; past it the commit is work (fails closed)
+
+
+def patch_id(repo: Path, sha: str) -> str | None:
+    """git patch-id --verbatim of one commit, or None (a merge, an empty commit, or anything git cannot read). Verbatim:
+    --stable ignores whitespace, so `"a b"` and `"ab"` matched (review, 2026-11-15). Cached per sha."""
+    key = (str(repo), sha)
+    if key not in _PATCH_IDS:
+        _PATCH_IDS[key] = _patch_id(repo, sha)
+    return _PATCH_IDS[key]
+
+
+def _patch_id(repo: Path, sha: str) -> str | None:
+    import scratch_reap as sr
+    show = sr.git(repo, "show", "--no-color", "--format=commit %H", sha)
+    if show.returncode or not show.stdout.strip():
+        return None
+    r = sr.git(repo, "patch-id", "--verbatim", stdin=show.stdout)
+    return (r.stdout.split() or [None])[0] if r.returncode == 0 else None
+
+
+def rebased_on_main(c: Path, sha: str, subject: str) -> bool:
+    """RIMMANDRAKE_EXEMPT_LANDED_PRESYNC_BACKUPS_REBASE_HID_THE_PRINT: seat_sync rebases a clone's commit onto main and keeps
+    the original on a backup/*-pre-sync-* branch. The landed twin keeps the subject and the patch, not the author or committer
+    second (both moved 19-40 s on two real twins, 2026-11-15). Only main's commits of the same subject are asked, so a reading
+    stays a few patch-ids, not a day of main (21 s measured). A subject main has reverted, more than MAX_TWINS twins, no patch,
+    or any doubt is work."""
+    import scratch_reap as sr
+    twins = _MAIN_BY_SUBJECT.get(subject) or []
+    if not subject or 'Revert "%s"' % subject in _MAIN_BY_SUBJECT or len(twins) > MAX_TWINS:
+        return False
+    mine = patch_id(c, sha) if twins else None
+    return bool(mine) and any(patch_id(sr.origin_mirrors()[0], h) == mine for h in twins)
 
 
 def clone_unlanded(c: Path) -> tuple[list[str], float]:
@@ -724,11 +777,11 @@ def clone_unlanded(c: Path) -> tuple[list[str], float]:
         return ["unreadable: " + r.stderr.strip()[:80]], 0.0
     out = []
     if r.stdout.split():
-        d = sr.git(c, "log", "--no-walk=unsorted", "--stdin", "--format=%at %ct", stdin=r.stdout)
+        d = sr.git(c, "log", "-z", "--no-walk=unsorted", "--stdin", "--format=%at %ct %H%x1f%s", stdin=r.stdout)
         if d.returncode:
             return ["unreadable: the commits the mirror lacks"], 0.0
         prints = main_prints()
-        n = sum(x not in prints for x in d.stdout.splitlines())
+        n = sum(at + " " + ct not in prints and not rebased_on_main(c, h, subject) for at, ct, h, subject in split_log(d.stdout))
         if n:
             out.append(f"{n} commit(s) on no remote")
     st = sr.git(c, "status", "--porcelain=v1", "-z", "--untracked-files=normal")
