@@ -668,41 +668,112 @@ def _wetting(S):
     S.row('WET_never_standing_water', all(not v for v in S.dl(_line(O[0], O[1] + 1, 12))), S.dl(_line(O[0], O[1] + 1, 12)))
 
 
+# RIMMANDRAKE_REBUILD_FLOWWORKS_FETCH_SCENE_RAID_NEVER_CAME (visit 1, 2026-11-15): the draft passed '61,61;cover' to
+# ProofCover, a read-only x,z probe that refused it, so no cover was ever laid; its raid stopped the governor at tick 60 as an
+# undeclared hostile_arrival and site_recover vanished every raider (no fallen, no ladder); and the control read "no ladder"
+# off an empty map and PASSED. Now: a 1-wide trench across the passage (each lid rests on its two banks), lids built and
+# read back covered, the scene's own raid run on a narrowed governor, and every row UNMEASURED when its event never happened.
+TRAP_W = 9                                          # trench cells across the passage, x = O[0]-4 .. O[0]+4 at z = O[1]
+TRAP_COVER = 'RM_PitCover_PlankLattice'             # gives way under 120 kg on the deck: about two raiders at once
+TRAP_TREE = 'Plant_TreeOak'                         # wood the raiders could chop for a ladder (scenes.json: saplings beside it)
+RAID_STOP_ON = 'clock_discontinuity,modal_stuck,colony_loss,cancel'   # a raid hurts, downs and kills by design
+TRAP_POLL, TRAP_POLLS = 300, 40                     # 12,000 ticks: fall, chop, ladder
+
+
+def _trap_cells():
+    return _line(O[0] - TRAP_W // 2, O[1], TRAP_W)
+
+
+def _cheb(a, b):
+    return max(abs(a[0] - b[0]), abs(a[1] - b[1]))
+
+
 def _pit_trap(S, fall=True):
-    pit = [(O[0] + i, O[1] + j) for i in range(3) for j in range(3)]
+    """Stage the spiked trench (lidded when `fall`), trees beside it, two defenders across it, and fire a raid of about six
+    at its south side. -> the trench cells. Staging that does not read back is an AssertionError (the scene's _staging row)."""
+    pit = _trap_cells()
     S.dig(pit, 8)
     S.call('jawa/spawn_batch', ops=';'.join('RM_Spikes:%d,%d' % c for c in pit))
     if fall:
-        S.sc(EXC, 'ProofCover', '%d,%d;cover' % pit[4])
-    S.call('jawa/set_plants', ops='Plant_Grass:%d,%d,4,2' % (O[0] - 1, O[1] - 3), density=1.0, growth=1.0)
-    S.call('jawa/fire_raid', points=700, dryRun=False, strategy='ImmediateAttack', spawnCenter='%d,%d' % (O[0] + 1, O[1] - 20))
-    S.ticks(4000)
+        S.call('jawa/build_batch', ops=';'.join('%s:%d,%d' % ((TRAP_COVER,) + c) for c in pit), faction='player',
+               wipeExisting=False)
+        lids = [S.sc(EXC, 'ProofCover', '%d,%d' % c) for c in pit]
+        require(all('covered=True' in t for t in lids), 'the trench lids did not read back covered: %s' % lids[:3])
+    S.call('jawa/set_plants', ops='%s:%d,%d,3,2' % (TRAP_TREE, O[0] + TRAP_W, O[1] - 3), density=1.0, growth=1.0)
+    for dx in (-2, 2):
+        S.pawn('Colonist', (O[0] + dx, O[1] + 10), 'player')
+    S.call('jawa/fire_raid', points=700, dryRun=False, strategy='ImmediateAttack', spawnCenter='%d,%d' % (O[0], O[1] - 4))
     return pit
+
+
+def _watch_trap(S, pit, until_ladder=True):
+    """Run the raid in TRAP_POLL chunks on the narrowed governor; each poll reads every live raider's place and trap state
+    (ProofTrap held=), and any portable ladder in or beside the trench. -> {reached, held, ladder, raiders, polls}.
+    reached: a raider came within 2 squares of the trench (the event the rows need); held: raider ids the trench holds."""
+    prior, S.B.stop_on = S.B.stop_on, RAID_STOP_ON
+    seen = {'reached': False, 'held': set(), 'ladder': [], 'raiders': 0, 'polls': 0, 'last': []}
+    rect = '%d,%d,%d,3' % (pit[0][0] - 1, pit[0][1] - 1, len(pit) + 2)
+    try:
+        for _ in range(TRAP_POLLS):
+            S.ticks(TRAP_POLL)
+            seen['polls'] += 1
+            live = [p for p in S.call('jawa/list_pawns', faction='hostile').get('pawns') or []
+                    if not p.get('dead') and p.get('x') is not None]
+            seen['raiders'] = max(seen['raiders'], len(live))
+            seen['last'] = [(p.get('id'), p.get('x'), p.get('z')) for p in live][:8]
+            for p in live:
+                if min(_cheb((p['x'], p['z']), c) for c in pit) <= 2:
+                    seen['reached'] = True
+                if (p['x'], p['z']) in pit and 'held=True' in S.sc(NSP, 'ProofTrap', str(p['id'])):
+                    seen['held'].add(p['id'])
+            lad = S.call('jawa/list_things', defName='RM_LadderPortable', rect=rect).get('things') or []
+            if lad:
+                seen['ladder'] = lad
+                if until_ladder:
+                    break
+    finally:
+        S.B.stop_on = prior
+    if seen['held']:
+        seen['reached'] = True
+    return seen
+
+
+def _fetch_rows(S, seen):
+    no_raid = not seen['reached']
+    why = '' if not no_raid else 'the raid never came within 2 squares of the trench (raiders seen %d, last %s); ' % (
+        seen['raiders'], seen['last'])
+    S.row('FETCH_two_fell', len(seen['held']) >= 2, why + 'held %s' % sorted(seen['held']), unmeasured=no_raid)
+    S.row('FETCH_ladder_into_pit', bool(seen['ladder']),
+          ('nobody fell, so there was no one to fetch; ' if not seen['held'] else '') + why + str(seen['ladder']),
+          unmeasured=not seen['held'])
 
 
 def _fetch_fallen(S):
     pit = _pit_trap(S)
-    fallen = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,3,3' % pit[0]).get('pawns') or []
-    S.row('FETCH_two_fell', len(fallen) >= 2, fallen)
-    lad = S.call('jawa/list_things', defName='RM_LadderPortable', rect='%d,%d,5,5' % (O[0] - 1, O[1] - 1))
-    S.row('FETCH_ladder_into_pit', bool(lad.get('things')), lad.get('things'))
-    return pit
+    seen = _watch_trap(S, pit)
+    _fetch_rows(S, seen)
+    return pit, seen
 
 
 def _fetch_fallen_scene(S):
     _fetch_fallen(S)
-    S.again(); _pit_trap(S, fall=False)  # control: the cover left off, so no one falls
-    lad = S.call('jawa/list_things', defName='RM_LadderPortable', rect='%d,%d,5,5' % (O[0] - 1, O[1] - 1))
-    S.row('FETCH_control_none_fallen_no_ladder', not lad.get('things'), lad.get('things'))
+    S.again()
+    pit = _pit_trap(S, fall=False)                  # control: no lid, so no one falls; the same raid must not ladder the pit
+    seen = _watch_trap(S, pit, until_ladder=False)
+    S.row('FETCH_control_none_fallen_no_ladder', not seen['ladder'] and not seen['held'],
+          ('the raid never came within 2 squares of the trench (raiders seen %d); ' % seen['raiders'] if not seen['reached']
+           else '') + 'held %s ladder %s' % (sorted(seen['held']), seen['ladder']), unmeasured=not seen['reached'])
 
 
 def _pit_trap_raid(S):
-    pit = _fetch_fallen(S)
-    for p in (S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,3,3' % pit[0]).get('pawns') or [])[:2]:
-        S.row('PTR_fallen_become_prisoners', 'prisoner=True' in S.sc(NSP, 'ProofCaptureDown', p['id']), p['id'])
-    S.again(); _pit_trap(S, fall=False)
-    fell = S.call('jawa/list_pawns', faction='hostile', rect='%d,%d,3,3' % pit[0]).get('pawns') or []
-    S.row('PTR_control_open_pit_no_one_falls', not fell, fell)
+    pit, seen = _fetch_fallen(S)
+    for pid in sorted(seen['held'])[:2]:
+        S.row('PTR_fallen_become_prisoners', 'prisoner=True' in S.sc(NSP, 'ProofCaptureDown', pid), pid)
+    if not seen['held']:
+        S.row('PTR_fallen_become_prisoners', False, 'nobody fell', unmeasured=True)
+    S.again(); pit = _pit_trap(S, fall=False)
+    seen = _watch_trap(S, pit, until_ladder=False)
+    S.row('PTR_control_open_pit_no_one_falls', not seen['held'], sorted(seen['held']), unmeasured=not seen['reached'])
 
 
 def _islands(S):
