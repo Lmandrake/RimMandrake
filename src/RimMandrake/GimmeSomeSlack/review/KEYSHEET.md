@@ -694,6 +694,7 @@ Global settings change every station at once, so they are never faked side by si
 | `gss.tangleMin` | 9 | cells before a dense field becomes a tangle | 1-4, 16 |
 | `gss.needlessLoops` | True | needless stubs (2 cells or less) become pointless loops | 25 (the stub) |
 | `gss.diveThrough` | True | cords dive under walls and water (a plate marks the wall) | 12, 19, 24 |
+| `gss.slideUnder` | True | cords come into a building at a diagonal and slide under it, never onto a port | every station with a powered building |
 | `gss.breakReadout` | True | live ends spark, dead ends lie limp | 1-4, 13 |
 | `gss.sparkIntensity` | 1.0 | spark intensity (also clamp sparks) | 1, 13, 27, 29 |
 | `gss.whip` | True | live broken floor ends whip (also paused) | 1-4 |
@@ -713,13 +714,13 @@ Global settings change every station at once, so they are never faked side by si
 | `aerial.sag` | 0.06 | sag, share of the span | 21 |
 | `aerial.autoLink` | True | new anchors link to the nearest in range | F, 28 |
 | `aerial.maxStrands` | 3 | wires per span, 1 to this | 6, 22 |
-| `aerial.dripLoops` | True | drip loops at the insulators | 6 |
+| `aerial.dripLoops` | False | drip loops at the insulators | 6 |
 | `aerial.keepWiresOnGravship` | True | wires on a launched gravship stay strung | no station (needs a gravship launch) |
 | `aerial.sway` | Auto | wire sway: Auto / CPU (always) / Off | 6, 21 (unpause) |
 | `aerial.swayStrength` | 1.0 | wire sway strength | 6, 21 |
 | `aerial.explosionsCut` | True | explosions cut wires | 13 |
 | `aerial.kineticSway` | True | Kinetic Arms push waves swing wires, never cut | no station (needs a Kinetic Arms push wave) |
-| `aerial.fallenWireShock` | True | live fallen wires shock whoever touches them | 29 |
+| `aerial.shockReach` | All | live lines shock whoever crosses them: All (floor cord ends too) / Only downed lines / None | 29 |
 | `aerial.fallenWireKnockback` | 2 | cells a shock throws the victim | 29 |
 | `aerial.fallenWireIgnites` | True | live fallen wires light spilled fuel | 29 |
 | `aerial.wireDownAlert` | True | the 'Wire down' alert | 13, 29 |
@@ -837,7 +838,7 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
 {
  "builds": {
   "Battery/hostile": "3/3",
-  "Battery/player": "25/25",
+  "Battery/player": "28/28",
   "Cooler/player": "1/1",
   "ElectricStove/player": "3/3",
   "FlatscreenTelevision/player": "2/2",
@@ -851,23 +852,21 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   "RM_AerialLampMast/player": "3/3",
   "RM_AerialMast/player": "45/45",
   "RM_AerialWallBracket/player": "1/1",
-  "RM_HoseReel/player": "17/17",
-  "RM_LiquidTank/hostile": "1/1",
   "RM_PowerTapClamp/player": "5/5",
   "SolarGenerator/player": "2/2",
   "StandingLamp/hostile": "1/1",
   "StandingLamp/player": "45/45",
   "SunLamp/player": "2/2",
   "Turret_MiniTurret/player": "2/2",
-  "Wall/player": "317/317",
+  "Wall/player": "201/201",
   "WallLamp/player": "1/1",
   "WaterproofConduit/player": "20/20"
  },
  "default_style": "StarWarsJawa",
  "expected_refusals": {
-  "25:0-2": "Roofed (expected Roofed)",
-  "26:2-3": "OutOfRange (expected OutOfRange)",
-  "27:0-5": "FullA (expected FullA)"
+  "20:0-2": "Roofed (expected Roofed)",
+  "21:2-3": "OutOfRange (expected OutOfRange)",
+  "22:0-5": "FullA (expected FullA)"
  },
  "merge_actions": {
   "7": {
@@ -890,13 +889,10 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   }
  },
  "notes": [
-  "swept 2 hostile/non-colonist pawn(s) off the review map",
-  "2026-10-15 hoses removed IN PLACE from the 41-station walk (owner: \"Get rid of those hoses...\"): 25 reels, 10 sign books, 118 maze walls and their tank destroyed; labels and sign books re-pinned in the 31-station numbering; saved as RM_gss_walk_20261015b. The style reads above are the 41-station build's, keyed by its old numbers."
+  "swept 3 hostile/non-colonist pawn(s) off the review map"
  ],
  "pawns_in_region": [
-  "Human672",
-  "Human675",
-  "Human678"
+  "Human596"
  ],
  "peaceful": true,
  "station_roofs": true,
@@ -909,111 +905,6 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
     },
     {
      "PowerConduit_Scrapper": 2
-    }
-   ]
-  },
-  "10": {
-   "anchors": [
-    [
-     "RM_AerialMast",
-     "RM_AerialMast_Scrapper",
-     [
-      "Scrapper",
-      "AerialMast"
-     ]
-    ],
-    [
-     "RM_AerialLampMast",
-     "RM_AerialLampMast_Scrapper",
-     [
-      "Scrapper",
-      "AerialLampMast"
-     ]
-    ]
-   ],
-   "runs": [
-    {
-     "PowerConduit_Scrapper": 12,
-     "PowerSwitch_Scrapper": 1,
-     "RM_AerialLampMast_Scrapper": 1,
-     "RM_AerialMast_Scrapper": 1
-    }
-   ]
-  },
-  "11": {
-   "reels": [
-    [
-     "Futuristic",
-     "RM_HoseReel_Futuristic",
-     "deployed"
-    ],
-    [
-     "Futuristic",
-     "RM_HoseReel_Futuristic",
-     "stored"
-    ],
-    [
-     "Modern",
-     "RM_HoseReel_Modern",
-     "deployed"
-    ],
-    [
-     "Modern",
-     "RM_HoseReel_Modern",
-     "stored"
-    ],
-    [
-     "Industrial",
-     "RM_HoseReel_Industrial",
-     "deployed"
-    ],
-    [
-     "Industrial",
-     "RM_HoseReel_Industrial",
-     "stored"
-    ],
-    [
-     "Scrapper",
-     "RM_HoseReel_Scrapper",
-     "deployed"
-    ],
-    [
-     "Scrapper",
-     "RM_HoseReel_Scrapper",
-     "stored"
-    ]
-   ],
-   "runs": []
-  },
-  "12": {
-   "anchors": [
-    [
-     "RM_AerialMast",
-     null,
-     [
-      "Scrapper",
-      "AerialMast"
-     ]
-    ],
-    [
-     "RM_AerialLampMast",
-     null,
-     [
-      "Scrapper",
-      "AerialLampMast"
-     ]
-    ]
-   ],
-   "reels": [
-    [
-     "Scrapper",
-     null,
-     "deployed"
-    ]
-   ],
-   "runs": [
-    {
-     "null": 13
     }
    ]
   },
@@ -1031,31 +922,11 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
   "3": {
    "runs": [
     {
-     "PowerConduit_Modern_Blue": 16,
+     "PowerConduit_Modern_Orange": 16,
      "PowerSwitch_Modern": 1
     },
     {
-     "PowerConduit_Modern_Green": 2
-    }
-   ]
-  },
-  "34": {
-   "runs": [
-    {
-     "PowerConduit_Futuristic": 7,
-     "WaterproofConduit_Futuristic": 6
-    },
-    {
-     "PowerConduit_Modern_Yellow": 7,
-     "WaterproofConduit_Modern_Yellow": 6
-    },
-    {
-     "PowerConduit_Industrial": 7,
-     "WaterproofConduit_Industrial": 6
-    },
-    {
-     "PowerConduit_Scrapper": 7,
-     "WaterproofConduit_Scrapper": 6
+     "PowerConduit_Modern_Orange": 2
     }
    ]
   },
@@ -1070,9 +941,6 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
     }
    ]
   },
-  "41": {
-   "runs": []
-  },
   "5": {
    "mixPieces": 5,
    "mixStrands": [
@@ -1085,7 +953,7 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
      "PowerConduit_Modern_Mix": 18
     },
     {
-     "PowerConduit_Modern_Brown": 12
+     "PowerConduit_Modern_Blue": 12
     },
     {
      "PowerConduit_Modern_Orange": 12
@@ -1303,9 +1171,85 @@ Owner 2026-10-05: *"reduce the number of north Star verifications and verificati
      "PowerConduit_Industrial": 5
     }
    ]
+  },
+  "10": {
+   "anchors": [
+    [
+     "RM_AerialMast",
+     "RM_AerialMast_Scrapper",
+     [
+      "Scrapper",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     "RM_AerialLampMast_Scrapper",
+     [
+      "Scrapper",
+      "AerialLampMast"
+     ]
+    ]
+   ],
+   "runs": [
+    {
+     "PowerConduit_Scrapper": 12,
+     "PowerSwitch_Scrapper": 1,
+     "RM_AerialLampMast_Scrapper": 1,
+     "RM_AerialMast_Scrapper": 1
+    }
+   ]
+  },
+  "11": {
+   "anchors": [
+    [
+     "RM_AerialMast",
+     null,
+     [
+      "Scrapper",
+      "AerialMast"
+     ]
+    ],
+    [
+     "RM_AerialLampMast",
+     null,
+     [
+      "Scrapper",
+      "AerialLampMast"
+     ]
+    ]
+   ],
+   "runs": [
+    {
+     "null": 13
+    }
+   ]
+  },
+  "24": {
+   "runs": [
+    {
+     "PowerConduit_Futuristic": 7,
+     "WaterproofConduit_Futuristic": 6
+    },
+    {
+     "PowerConduit_Modern_Yellow": 7,
+     "WaterproofConduit_Modern_Yellow": 6
+    },
+    {
+     "PowerConduit_Industrial": 7,
+     "WaterproofConduit_Industrial": 6
+    },
+    {
+     "PowerConduit_Scrapper": 7,
+     "WaterproofConduit_Scrapper": 6
+    }
+   ]
+  },
+  "31": {
+   "runs": []
   }
  },
  "styled_refused": [],
- "wall_s": 178.5
+ "wall_s": 56.9
 }
 ```
