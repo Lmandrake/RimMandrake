@@ -59,3 +59,13 @@ Should the eight observations in Leaning Scrub’s canonical north-star checklis
 `turn_03.md` shows all eight canonical observations verbatim and offers the existing live walk before further design. This validates obligations only; no implementation, coverage or first-touch pass follows. The root sentence and flagship remain approved by their existing delegated sources. The walk is DRAFT and tree root_hash null; Lock step1 reserves checklist validation for the owner. No later owner validation event located.
 
 Fresh reviewer `/root/review_root_validation` PASS, conservative usage30000 weighted tokens charged; exact telemetry unavailable. No ask struck in this run. No reply received or fabricated. Owner presence reports away, so this ends waiting_owner and must park until his own word on the item. All12 advisory findings retained, unchecked=[], g12 remains neutral criteria-fixer work. No game action.
+
+## Stage 2 owner answer — rm-role-designercodex-1794838582
+
+Source OWNER:1794835478275153823 on the concept item, 2026-11-16T13:24:38Z. Full authoritative event summary is recorded in record.json ask a_root_validation_2.answer.
+
+His ownerSaid field, verbatim:
+
+> and the animals do it because they receive a health/healing bonus (Hediff) when they scratch their hide against it. Removes parasites and disease over time. Do we really need this? This is a universal requirement of all mods (settings work, you can save and load your game). This isn't specific to this mod at all. And the savegame stuff is simply gone, not doing that. No savegame preservation work. Why am I choosing between these? These are all important.
+
+The card recap and event bind the corrected bar. Scope reconciliation: owner_answer_04.md. No new question, waiver, first-touch certification or gameplay acceptance is inferred. Technology and calling-pyre filed for the next Design Version in later_version.md. Stage 3 rework must incorporate the amendments and all eleven fixable advisory gaps; g12 stays with the neutral criteria fixer.

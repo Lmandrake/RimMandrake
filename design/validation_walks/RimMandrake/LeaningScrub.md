@@ -111,32 +111,34 @@ Shirrel Gale glide (SHIRREL_DECIDE_GALE_GLIDE, owner by card 2026-10-26 "Real gl
 Offline: `python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub.py` runs the suite against a scripted fake game: healthy, then once per mod behaviour broken, each of which must turn exactly its own component red.
 
 ## north star
-state: DRAFT
-validated-hash:
+state: VALIDATED
+validated-hash: 3843bd7bde1a0e672fbad5c53925c8e9c83574a233ddbaaa376579817c281518
+validated-by: and the animals do it because they receive a health/healing bonus (Hediff) when they scratch their hide against it. Removes parasites and disease over time. Do we really need this? This is a universal requirement of all mods (settings work, you can save and load your game). This isn't specific to this mod at all. And the savegame stuff is simply gone, not doing that. No savegame preservation work. Why am I choosing between these? These are all important.
 
 ### adopted player promise
 
 Leaning Scrub lets you make a dependable wind-powered home in a restless plain, while tall, spreading venomvine makes travel beyond your maintained routes a deliberate risk.
 
-Adopted by Evidence-for-Ask delegation CONDUCTOR:1794792677711573340, author BENCH DesignerCodex.
-The sentence is approved by delegation; this distilled observation checklist is still DRAFT,
-not owner first-touch certification or current live evidence. Stage 2 boundaries and flagship:
-CONDUCTOR:1794794271528276351. Primary home/routes answer OWNER:1794327080747931066;
-ordered-trip wording is Q2 of the answer record named by OWNER:1794334503877366549,
-not a separately transcribed ownerSaid quotation. The older agent-seeded checklist and its
-secondary experience sentence are preserved in design/concepts/LeaningScrub/north_star_before_03.md.
-That sentence is not promoted into his words. Full source/proof/scope separation: record.json.
+Adopted sentence: CONDUCTOR:1794792677711573340 (Evidence-for-Ask delegation).
+Observation authority: OWNER:1794835478275153823, answering turn_03.md with corrections.
+Technology and calling-pyre work belong to the next Design Version. Settings and current-schema
+save/reload remain universal floor duties; aliases, legacy import and migration are excluded.
+Optional integrations retain separate coverage duties. Every retained showcase is required;
+showing order is an agent call. Removed farmer camps, guardians and drying scar remain out.
+The prior proposed observations are preserved verbatim in design/concepts/LeaningScrub/turn_03.md;
+the older checklist is in design/concepts/LeaningScrub/north_star_before_03.md.
+Primary home/routes: OWNER:1794327080747931066. Ordered-trip wording is Q2 of the answer
+record named by OWNER:1794334503877366549, not a separately transcribed owner quotation.
+Full source/proof/scope separation: record.json.
 
 ### must show
 
 - [ ] `scrub_wind_home` (change) — at normal play zoom and sound, the shared plant lean, ordinary wind, quiet Stall and driven Gale are legible; wind supplies useful colony power with exposure and repair risks.
 - [ ] `scrub_routes_deliberate` (change) — routine work uses maintained safe ways or visibly waits; only an explicit prepared expedition enters dangerous vines and returns. Developed ground stays dependable under creep and Walking; upkeep of dirt routes is measured.
 - [ ] `scrub_vines_integral` (change) — abundant tall varied vine islands leave a usable actual start; each ruled form has its own readable behavior and shared hazards, with banked years-long smothering and premium useful cane fuel.
-- [ ] `scrub_tree_economy` (change) — rare ancient named canopy landmarks keep history, free post-harvest shed, autonomous coat rubbing, conserved bank harvest and felt usefulness; abstract visit traces remain honest.
+- [ ] `scrub_tree_economy` (change) — rare ancient named canopy landmarks keep history, free post-harvest shed, autonomous coat rubbing that gives the animal a healing hediff removing parasites and disease over time, conserved bank harvest and felt usefulness; abstract visit traces remain honest.
 - [ ] `scrub_native_ecology` (change) — the effective native cast appears naturally and its distinct life/product, concealment, runway, den, ambush, canopy, grazing and finite arm/regrowth mechanisms actually work; flight is observed only jointly with the owner.
-- [ ] `scrub_technology` (change) — real ruins lead through recovered plans, research, construction and power to water, while eligible scavenger camps obey peace/war/peace; no farmer camps or drying scar return.
-- [ ] `scrub_fire_and_belief` (change) — franchise-free thundersteps approach/stamp open blazes, identify makers through justified witness or fresh physical trail and lose contact; actual calling-pyre beliefs/ritual produce their separate consequences.
-- [ ] `scrub_saved_use` (change) — complete settings, aliases and optional integrations retain their effects and identities; the same colony resumes after real reload, repeats its core trip and completes a different action order without duplication.
+- [ ] `scrub_fire_and_belief` (change) — franchise-free thundersteps approach/stamp open blazes, identify makers through justified witness or fresh physical trail and lose contact.
 
 ## anti-guessing notes
 - RULED OUT (live 2026-10-07): "the dead-venomvine fuel patch does not apply" — the Refuel job ended on `CompRefuelable.IsFull` (TargetFuelLevel − fuel < 1) because the 3000-tick pre-burn removed only 0.5 of the campfire's 20 fuel; the check now burns >1.5 first and refuses to judge a still-full fire.

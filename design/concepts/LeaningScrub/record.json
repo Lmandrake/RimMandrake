@@ -109,6 +109,12 @@
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75"
       ],
       "text": "The frozen years-long desiccation promise remains authoritative. Current 30-day default is an implementation mismatch. No specific later owner amendment located; exact finite numeric tuning is delegated detail, not an owner quotation."
+    },
+    {
+      "id": "owner_corrected_bar_20261116",
+      "speaker": "owner",
+      "source": "OWNER:1794835478275153823",
+      "text": "OWNER ANSWER to a_root_validation_2 and gap 12, three cards 5:07-5:25 AM PST 2026-11-16 (observations of turn_03.md). scrub_wind_home: BINDING as written. scrub_routes_deliberate: BINDING as written. scrub_vines_integral: BINDING as written. scrub_tree_economy: BINDING, with his addition (first owner-said sentence): animals rub the sweetline because scratching gives them a healing hediff that removes parasites and disease over time. scrub_native_ecology: BINDING as written (flight joint only). scrub_technology (ruins to water, scavenger camps): NOT THIS VERSION, file for the next Design Version; the farmer-camp and drying-scar cuts stand. scrub_fire_and_belief: thundersteps stamping plus witness/trail maker tracking BINDING now; calling-pyre beliefs and ritual move to the next version. scrub_saved_use: REMOVED as a Leaning Scrub observation (his words): settings and save/reload are the universal floor every mod owes, not a mod-specific bar; ALL savegame preservation is gone: no aliases, no legacy import, no migration (drop save_aliases, the smother legacy-import arms, and the 'imported old due dates preserved / save migration' delegated tuning). Gap 12 (flagship must be owner-picked): he declined to pick ('These are all important'): every showcase stays required; the showing order is an agent call and home_routes_expedition stays first; the contract clause demanding an owner-picked flagship is a flawed criterion for the neutral fixer. Outcome for the Designer: rework at stage 3 with these corrections and the 11 fixable coverage gaps; this is his validation of the corrected bar."
     }
   ],
   "decisions": [
@@ -193,11 +199,14 @@
       "source": [
         "CONDUCTOR:1794794271528276351",
         "design/concepts/LeaningScrub/edge_argument_02.md",
-        "design/concepts/LeaningScrub/review_02.md"
+        "design/concepts/LeaningScrub/review_02.md",
+        "OWNER:1794835478275153823"
       ],
-      "text": "Preserve independent landmark/canopy/name/history, free shedding after harvest, autonomous scratching/bank, felt effects, native lifecycle/ecology and farmstead-plan→research→vaporator→water observations. Abstract tree visits are traces, not arriving pawns. Pen gates remain an investigation, not a current guarantee. Removed guardians, farmer camps and drying scar stay out.",
+      "text": "Preserve sweetline landmark/canopy/name/history, shedding, scratching/bank, felt and native ecology. OWNER:1794835478275153823 adds healing from scratching and moves ruins-to-water and scavenger camps to the next Design Version. Cut guardians, farmer camps and drying scar remain out.",
       "author": "rm-role-designercodex-1794793155",
-      "ran_by": "BENCH"
+      "ran_by": "BENCH",
+      "superseded_in_part_by": "OWNER:1794835478275153823",
+      "historical_text": "Preserve independent landmark/canopy/name/history, free shedding after harvest, autonomous scratching/bank, felt effects, native lifecycle/ecology and farmstead-plan→research→vaporator→water observations. Abstract tree visits are traces, not arriving pawns. Pen gates remain an investigation, not a current guarantee. Removed guardians, farmer camps and drying scar stay out."
     },
     {
       "id": "stage2_shared_witness_and_base_binding",
@@ -219,26 +228,34 @@
       "source": [
         "CONDUCTOR:1794794271528276351",
         "design/concepts/LeaningScrub/edge_argument_02.md",
-        "design/concepts/LeaningScrub/review_02.md"
+        "design/concepts/LeaningScrub/review_02.md",
+        "OWNER:1794835478275153823"
       ],
-      "text": "Retain implementation/proof/scope separation. Keep independent capability scenes, finite discriminating controls, all settings, optional integration/aliases and cut-absence coverage, plus real reload and changed action-order journey at representative colony scale. No current play, performance, acceptance, waiver, version lock or first-touch certification is inferred from source review.",
+      "text": "Preserve implementation/proof/scope separation, finite independent scenes, optional integration coverage, and universal settings/current-schema reload duties. OWNER:1794835478275153823 removes aliases, legacy import and migration; no current proof, coverage pass, waiver, version lock or first-touch certification is inferred.",
       "author": "rm-role-designercodex-1794793155",
-      "ran_by": "BENCH"
+      "ran_by": "BENCH",
+      "superseded_in_part_by": "OWNER:1794835478275153823",
+      "historical_text": "Retain implementation/proof/scope separation. Keep independent capability scenes, finite discriminating controls, all settings, optional integration/aliases and cut-absence coverage, plus real reload and changed action-order journey at representative colony scale. No current play, performance, acceptance, waiver, version lock or first-touch certification is inferred from source review."
     },
     {
       "id": "stage2_flagship_home_routes",
       "speaker": "conductor",
       "delegated": "evidence-for-ask",
       "flagship": "home_routes_expedition",
-      "source": "CONDUCTOR:1794794271528276351",
-      "text": "Ordinary hauling and usable wind at a maintained home, then a deliberately ordered vine expedition and return. It directly expresses the adopted root and existing home/trip answers; no source argues for a different flagship. Independent tree/ecology/technology/fire/ritual scenes remain required.",
+      "source": [
+        "CONDUCTOR:1794794271528276351",
+        "OWNER:1794835478275153823"
+      ],
+      "text": "The delegated order remains home_routes_expedition first. OWNER:1794835478275153823 declines an owner-only flagship choice: all showcases of retained current-version scope are required; order is an agent call. Technology and calling-pyre now belong to the next Design Version.",
       "author": "rm-role-designercodex-1794793155",
       "ran_by": "BENCH",
       "review": {
         "by": "/root/review_stage2_edges",
         "verdict": "pass",
         "source": "design/concepts/LeaningScrub/review_02.md"
-      }
+      },
+      "superseded_in_part_by": "OWNER:1794835478275153823",
+      "historical_text": "Ordinary hauling and usable wind at a maintained home, then a deliberately ordered vine expedition and return. It directly expresses the adopted root and existing home/trip answers; no source argues for a different flagship. Independent tree/ecology/technology/fire/ritual scenes remain required."
     },
     {
       "id": "stage3_finite_smother_migration",
@@ -246,11 +263,14 @@
       "source": [
         "design/concepts/LeaningScrub/plan.md",
         "design/concepts/LeaningScrub/scenes.json",
-        "design/concepts/LeaningScrub/build_items_03.md"
+        "design/concepts/LeaningScrub/build_items_03.md",
+        "OWNER:1794835478275153823"
       ],
-      "text": "Selected agent default120 engine days and normal range120–600; imported serialized legacy values are explicit preserved overrides, old start-only claims freeze their prior effective due time, and new per-claim duration never recalculates from later settings. No owner numeric quote or real-years proof inferred.",
+      "text": "Agent proposed default 120 engine days and normal range 120–600, with per-claim frozen duration. OWNER:1794835478275153823 strikes all imported legacy-value overrides and old-start-only migration. Stage 3 must remove those arms from derived artifacts; current-schema settings changes and save/reload remain floor duties. Numeric tuning remains agent-selected.",
       "author": "rm-role-designercodex-1794799806",
-      "ran_by": "BENCH"
+      "ran_by": "BENCH",
+      "superseded_in_part_by": "OWNER:1794835478275153823",
+      "historical_text": "Selected agent default120 engine days and normal range120–600; imported serialized legacy values are explicit preserved overrides, old start-only claims freeze their prior effective due time, and new per-claim duration never recalculates from later settings. No owner numeric quote or real-years proof inferred."
     },
     {
       "id": "stage3_useful_fuel_and_ecology_tuning",
@@ -270,11 +290,14 @@
       "source": [
         "design/concepts/LeaningScrub/plan.md",
         "design/concepts/LeaningScrub/scenes.json",
-        "design/concepts/LeaningScrub/build_items_03.md"
+        "design/concepts/LeaningScrub/build_items_03.md",
+        "OWNER:1794835478275153823"
       ],
-      "text": "Updated existing canonical walk north star to exact adopted root plus eight distilled observation families; preserved prior draft verbatim. Checklist remains DRAFT and root sentence remains approved only by its recorded delegated source. No visual-bar validation, exam waiver or first-touch certification invented.",
+      "text": "Historical Stage 3 draft had eight observations. OWNER:1794835478275153823 validates the corrected six-family bar: add sweetline healing, defer technology and calling-pyre, and move settings/reload to floor while removing all save preservation. Canonical walk corrected in Stage 2; Stage 3 must rewrite dependent artifacts and Stage 4 re-examine.",
       "author": "rm-role-designercodex-1794799806",
-      "ran_by": "BENCH"
+      "ran_by": "BENCH",
+      "superseded_in_part_by": "OWNER:1794835478275153823",
+      "historical_text": "Updated existing canonical walk north star to exact adopted root plus eight distilled observation families; preserved prior draft verbatim. Checklist remains DRAFT and root sentence remains approved only by its recorded delegated source. No visual-bar validation, exam waiver or first-touch certification invented."
     },
     {
       "id": "stage3_proof_catalog_and_floor",
@@ -322,13 +345,16 @@
     {
       "id": "stage2_root_validation_wait",
       "speaker": "agent",
-      "text": "Preserve delegated root sentence and flagship approvals. Await owner-only validation of the eight canonical DRAFT observations; no matching later owner approval located. Root/bar and examined artifacts remain unchanged. All12 advisory coverage gaps and unchecked=[] retained, g12 remains neutral criteria-fixer work. Fresh review passes focused ask; live look offered, not run.",
+      "text": "Historical wait ended on OWNER:1794835478275153823. The ask is answered with amendments and no further owner question is required. Preserve delegated sentence approval. All twelve advisory gaps remain retained; g1–g11 are Stage 3 correction work and g12 remains neutral criteria-fixer work.",
       "source": [
         "design/concepts/LeaningScrub/turn_03.md",
         "design/concepts/LeaningScrub/review_root_validation_02.md",
         "src/RimMandrake/rimflow/roles/designer_lock.md:5",
-        "design/concepts/LeaningScrub/lock_review_05.json"
-      ]
+        "design/concepts/LeaningScrub/lock_review_05.json",
+        "OWNER:1794835478275153823"
+      ],
+      "superseded_in_part_by": "OWNER:1794835478275153823",
+      "historical_text": "Preserve delegated root sentence and flagship approvals. Await owner-only validation of the eight canonical DRAFT observations; no matching later owner approval located. Root/bar and examined artifacts remain unchanged. All12 advisory coverage gaps and unchecked=[] retained, g12 remains neutral criteria-fixer work. Fresh review passes focused ask; live look offered, not run."
     },
     {
       "id": "stage2_park_renderer_repair",
@@ -339,6 +365,13 @@
         "design/concepts/LeaningScrub/pipeline_park_repair_02.md",
         "src/RimMandrake/rimflow/selftest_designer_park_advisory.py"
       ]
+    },
+    {
+      "id": "stage2_owner_corrected_bar",
+      "speaker": "owner",
+      "source": "OWNER:1794835478275153823",
+      "text": "OWNER ANSWER to a_root_validation_2 and gap 12, three cards 5:07-5:25 AM PST 2026-11-16 (observations of turn_03.md). scrub_wind_home: BINDING as written. scrub_routes_deliberate: BINDING as written. scrub_vines_integral: BINDING as written. scrub_tree_economy: BINDING, with his addition (first owner-said sentence): animals rub the sweetline because scratching gives them a healing hediff that removes parasites and disease over time. scrub_native_ecology: BINDING as written (flight joint only). scrub_technology (ruins to water, scavenger camps): NOT THIS VERSION, file for the next Design Version; the farmer-camp and drying-scar cuts stand. scrub_fire_and_belief: thundersteps stamping plus witness/trail maker tracking BINDING now; calling-pyre beliefs and ritual move to the next version. scrub_saved_use: REMOVED as a Leaning Scrub observation (his words): settings and save/reload are the universal floor every mod owes, not a mod-specific bar; ALL savegame preservation is gone: no aliases, no legacy import, no migration (drop save_aliases, the smother legacy-import arms, and the 'imported old due dates preserved / save migration' delegated tuning). Gap 12 (flagship must be owner-picked): he declined to pick ('These are all important'): every showcase stays required; the showing order is an agent call and home_routes_expedition stays first; the contract clause demanding an owner-picked flagship is a flawed criterion for the neutral fixer. Outcome for the Designer: rework at stage 3 with these corrections and the 11 fixable coverage gaps; this is his validation of the corrected bar.",
+      "author": "rm-role-designercodex-1794838582"
     }
   ],
   "asks": [
@@ -437,7 +470,7 @@
       "owner_cites": [],
       "offers_removal": false,
       "author": "rm-role-designercodex-1794831790",
-      "status": "sent",
+      "status": "answered",
       "evidence_against": "The detailed canonical checklist was authored after sentence approval; it remains DRAFT with empty validated-hash and tree root_hash null. designer_lock.md step 1 explicitly reserves this validation for the owner’s own words. Delegated approval of the root sentence supplies no approval of these eight later observations. This authority constraint, not opposition to the adopted sentence, requires waiting. No later owner validation event found.",
       "source": [
         "design/concepts/LeaningScrub/turn_03.md",
@@ -457,7 +490,11 @@
           "root_validation"
         ],
         "scene": "At the next attended sitting, the bridge owner first confirms the registered RM_TestSite_leaningscrub_v3 recipe exists and matches the composed build. Show existing ordinary wind/Stall/Gale, tall vine islands and clear routes, then a routine haul with a clear detour beside a mature-vine shortcut and an explicitly ordered expedition. Compare existing behavior with the eight draft observations, naming missing or unproved behavior. The operator records recovery before mutation and restores or explicitly holds afterward. Flight observation only with the owner present. This offer is not a scene execution or a prerequisite to approving the written bar."
-      }
+      },
+      "answer": "OWNER ANSWER to a_root_validation_2 and gap 12, three cards 5:07-5:25 AM PST 2026-11-16 (observations of turn_03.md). scrub_wind_home: BINDING as written. scrub_routes_deliberate: BINDING as written. scrub_vines_integral: BINDING as written. scrub_tree_economy: BINDING, with his addition (first owner-said sentence): animals rub the sweetline because scratching gives them a healing hediff that removes parasites and disease over time. scrub_native_ecology: BINDING as written (flight joint only). scrub_technology (ruins to water, scavenger camps): NOT THIS VERSION, file for the next Design Version; the farmer-camp and drying-scar cuts stand. scrub_fire_and_belief: thundersteps stamping plus witness/trail maker tracking BINDING now; calling-pyre beliefs and ritual move to the next version. scrub_saved_use: REMOVED as a Leaning Scrub observation (his words): settings and save/reload are the universal floor every mod owes, not a mod-specific bar; ALL savegame preservation is gone: no aliases, no legacy import, no migration (drop save_aliases, the smother legacy-import arms, and the 'imported old due dates preserved / save migration' delegated tuning). Gap 12 (flagship must be owner-picked): he declined to pick ('These are all important'): every showcase stays required; the showing order is an agent call and home_routes_expedition stays first; the contract clause demanding an owner-picked flagship is a flawed criterion for the neutral fixer. Outcome for the Designer: rework at stage 3 with these corrections and the 11 fixable coverage gaps; this is his validation of the corrected bar.",
+      "answer_source": "OWNER:1794835478275153823",
+      "answered_by": "rm-role-designercodex-1794838582",
+      "disposition": "Owner validation with explicit amendments; no replacement ask."
     }
   ],
   "inventory": [
@@ -1453,10 +1490,13 @@
         "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml"
       ],
       "proof": "stale",
-      "scope": "not_opened",
+      "scope": "later",
       "proof_evidence": [
         "src/RimMandrake/LeaningScrub/validation.py:1764"
-      ]
+      ],
+      "previous_scope": "not_opened",
+      "scope_source": "OWNER:1794835478275153823",
+      "scope_note": "Owner moves this capability to the next Design Version; source implementation/proof classification retained."
     },
     {
       "id": "wind_vaporator",
@@ -1474,11 +1514,14 @@
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:148"
       ],
       "proof": "stale",
-      "scope": "not_opened",
+      "scope": "later",
       "proof_evidence": [
         "src/RimMandrake/LeaningScrub/validation.py:1768"
       ],
-      "proof_limits": "ProofVaporator is a def predicate, not techprint recovery, research, construction and actual water production."
+      "proof_limits": "ProofVaporator is a def predicate, not techprint recovery, research, construction and actual water production.",
+      "previous_scope": "not_opened",
+      "scope_source": "OWNER:1794835478275153823",
+      "scope_note": "Owner moves this capability to the next Design Version; source implementation/proof classification retained."
     },
     {
       "id": "scavenger_camps",
@@ -1498,7 +1541,10 @@
         "src/RimUtinni/UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml"
       ],
       "proof": "missing",
-      "scope": "not_opened"
+      "scope": "later",
+      "previous_scope": "not_opened",
+      "scope_source": "OWNER:1794835478275153823",
+      "scope_note": "Owner moves this capability to the next Design Version; source implementation/proof classification retained."
     },
     {
       "id": "fire_stamping",
@@ -1538,11 +1584,14 @@
         "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192"
       ],
       "proof": "stale",
-      "scope": "not_opened",
+      "scope": "later",
       "proof_evidence": [
         "src/RimMandrake/LeaningScrub/validation.py:1748"
       ],
-      "proof_limits": "No marked herd kind means no arrivals. Def gates plus direct Ignite/CallHerd calls do not prove an actual completed ritual."
+      "proof_limits": "No marked herd kind means no arrivals. Def gates plus direct Ignite/CallHerd calls do not prove an actual completed ritual.",
+      "previous_scope": "not_opened",
+      "scope_source": "OWNER:1794835478275153823",
+      "scope_note": "Owner moves this capability to the next Design Version; source implementation/proof classification retained."
     },
     {
       "id": "save_aliases",
@@ -1558,7 +1607,10 @@
         "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml"
       ],
       "proof": "missing",
-      "scope": "not_opened"
+      "scope": "out",
+      "previous_scope": "not_opened",
+      "scope_source": "OWNER:1794835478275153823",
+      "scope_note": "No aliases, legacy import or migration work."
     },
     {
       "id": "acoustic_payload",
@@ -1607,7 +1659,9 @@
       "scope": "not_opened",
       "proof_evidence": [
         "ITEM:SETTINGS_SCREENS_FIX_LEANINGSCRUB_GROUPS"
-      ]
+      ],
+      "acceptance_layer": "universal floor: settings and current-schema save/reload; no legacy preservation",
+      "scope_source": "OWNER:1794835478275153823"
     },
     {
       "id": "dependable_home_routes",
@@ -1820,6 +1874,23 @@
       "proof": "missing",
       "scope": "out",
       "search_scope": "rg exact feature/species names across src C#/XML; LeaningScrub Source/Defs, CreatureBehaviors Source, EnvironmentalHazards Source, RimProperty Source; design/Jawa/worldbuilding/{biome_flora_rosters.md,pawnkind_roster.md}; current biome roster. No live game queried."
+    },
+    {
+      "id": "sweetline_scratching_healing",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794835478275153823",
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:163"
+      ],
+      "text": "Owner requires a health/healing hediff from sweetline scratching that removes parasites and disease over time. Read Rub and its selection gates; no healing call found there. Full implementation ownership and disease eligibility remain Stage 3 work; no defName or tuning invented.",
+      "impl": "unknown",
+      "proof": "missing",
+      "scope": "approved",
+      "scope_source": "OWNER:1794835478275153823",
+      "search_scope": [
+        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs",
+        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml"
+      ]
     }
   ],
   "contradictions": [
@@ -2128,13 +2199,17 @@
     {
       "id": "root_validation",
       "core": true,
-      "resolved": false,
-      "text": "Canonical north star is still DRAFT and tree root_hash null. Existing delegated sentence approval does not validate the later eight-observation acceptance bar; owner words required under Lock step1. Await a_root_validation_2.",
+      "resolved": true,
+      "text": "The prior DRAFT bar/root_hash gap is resolved in design by OWNER:1794835478275153823 and canonical bar validation at 3843bd7bde1a0e672fbad5c53925c8e9c83574a233ddbaaa376579817c281518. The existing tree root_hash remains null until Stage 3 rewrites it; prior exam cannot certify the new artifacts.",
       "source": [
         "design/validation_walks/RimMandrake/LeaningScrub.md:113",
         "src/RimMandrake/rimflow/roles/designer_lock.md:5",
         "design/concepts/LeaningScrub/turn_03.md"
-      ]
+      ],
+      "status": "design_resolved",
+      "resolution": "Owner event validates the corrected bar: retain wind/home, routes, vines and ecology; add sweetline healing; defer technology and calling-pyre; settings/reload stay floor duties and no save preservation. Apply canonical correction and validation before Stage 3 rewrites derived artifacts.",
+      "resolution_source": "OWNER:1794835478275153823",
+      "remaining_work": "Stage 3 root-hash rewrite, complete scoped rework, fresh Stage 4 exam, and later Lock gates remain required."
     }
   ],
   "failure_modes": [
@@ -4323,11 +4398,11 @@
     "validator_repair_item": "RIMMANDRAKE_ACCEPT_EXAM_SESSIONS_UUIDS_ARE_IDENTITIES"
   },
   "stage_2_root_validation": {
-    "run": "rm-role-designercodex-1794831790",
-    "pending": "a_root_validation_2",
-    "owner_presence": "away: owner_away() reports no sitting, 45+ min since measured deliberate interaction; no live scene run.",
+    "run": "rm-role-designercodex-1794838582",
+    "pending": null,
+    "owner_presence": "Owner answer read from ledger; no present/away inference needed and no scene run.",
     "root_sentence_preserved": true,
-    "canonical_walk_sha256": "c7ac46a9fb070f4f45694d42aaff0d6893ead8488c336260f8635ced4bcc273d",
+    "canonical_walk_sha256": "105adc62f365645e15ab4d4abb9ca17ee64a2673a6fdda7fd30be582d3b6699c",
     "quick_look": {
       "offer": true,
       "settles": [
@@ -4343,12 +4418,43 @@
       "why": "Checklist validation is distinct from the existing delegated sentence approval and is expressly reserved for the owner by Lock step 1. Offer the look first without making attendance mandatory. Binding obligations may include unfinished behavior; no implementation acceptance or first-touch certification follows. Parent independently confirmed no later matching owner validation event.",
       "source": "design/concepts/LeaningScrub/review_root_validation_02.md"
     },
-    "bounds": "No tree/sheet/scenes/floor/exam/canonical walk edits; no stage advance, validation, sign, certify, version lock, mod code/art, bridge, restart, deploy or handoff.",
+    "bounds": "Stage 2 scope reconciliation and canonical bar validation only. Derived tree/sheet/scenes/floor/exam and lock review unchanged; no stage advance, signature, first-touch certification, mod code/art, bridge, restart or deploy.",
     "park_summary": "design/concepts/LeaningScrub/park_summary.md",
     "review_usage": {
       "weighted_tokens_estimated": 50000,
       "exact_telemetry": "unavailable",
       "charged": true
-    }
+    },
+    "previous_pending": "a_root_validation_2",
+    "status": "answered",
+    "answer_source": "OWNER:1794835478275153823",
+    "stage3_work": {
+      "owner_amendments": [
+        "sweetline healing hediff",
+        "technology and calling-pyre next Design Version",
+        "settings and current-schema reload to floor",
+        "no aliases, legacy import or migration",
+        "every retained showcase required; showing order agent-owned"
+      ],
+      "advisory_gaps": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "criterion_fixer": "g12: RIMMANDRAKE_RECONCILE_FLAGSHIP_CONTRACT_WITH_DELEGATED_PICK",
+      "unchecked": [],
+      "coverage_source": "design/concepts/LeaningScrub/lock_review_05.json"
+    },
+    "validated_root_hash": "3843bd7bde1a0e672fbad5c53925c8e9c83574a233ddbaaa376579817c281518",
+    "validation_source": "OWNER:1794835478275153823",
+    "validation_command": "python3 src/RimMandrake/Utils/modcheck/cli.py validate LeaningScrub --owner-said <exact event ownerSaid>"
   }
 }
