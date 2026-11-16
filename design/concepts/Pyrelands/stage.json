@@ -2,7 +2,6 @@
  "aliases": [
   "PYRELANDS"
  ],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: the final look (granted 2026-11-15T21:11:14Z, after RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS) at round 7 was not_covered: the owner's to decide; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -575,6 +574,11 @@
    "granted_why": "per d_fix_seventeen_round_six_gaps (OWNER:1794774724955142310, design/concepts/Pyrelands/record.json): one final look after the 17-gap fix closes and its re-pin lands",
    "rounds_at": 6,
    "why": "the chain steward's one release for the locked change of 2026-11-15T21:06:06Z (his card 2026-11-15, OWNER:1794774724955142310: fix the 17 round-6 gaps, ONE final look); applies the standing grant now that RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS is closed at c83be4813e; the exam is retaken before the look (Conductor brief, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)"
+  },
+  {
+   "at": "2026-11-16T00:11:33Z",
+   "rounds_at": 7,
+   "why": "by card 2026-11-15: How should the giant be made the giant? -> Keep 'twice', raise body to 9+; done by RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE (6120bb02aa): furnace-beast bs 9 vs Zeer 4.5, drawn 7.5 vs 6, T_DEFS_OFFLINE asserts the twice bar"
   }
  ],
  "coverage_rounds": [
@@ -740,10 +744,6 @@
    "verdict": "not_covered"
   }
  ],
- "coverage_stop": {
-  "at": "2026-11-15T22:14:24Z",
-  "why": "the final look (granted 2026-11-15T21:11:14Z, after RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS) at round 7 was not_covered: the owner's to decide"
- },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -1326,6 +1326,12 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794780609 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-16T00:11:33Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "by card 2026-11-15: How should the giant be made the giant? -> Keep 'twice', raise body to 9+; done by RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE (6120bb02aa): furnace-beast bs 9 vs Zeer 4.5, drawn 7.5 vs 6, T_DEFS_OFFLINE asserts the twice bar"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1816,6 +1822,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "blocked",
+ "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
