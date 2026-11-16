@@ -324,6 +324,12 @@
    "stage": 4,
    "what": "open",
    "why": "run rm-role-designercodex-1794849018, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T17:17:53Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794849018: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND",
@@ -591,6 +597,27 @@
    "run": "rm-role-designercodex-1794847684",
    "stage": 3,
    "summary": "Restamped the separately VALIDATED north-star hash c568d46eacf7. Reworked all ten rm-coverage-judge-1794833596 gaps and wrote coverage_fixes.json. Gate A and the seven-showcase set pass. The package holds 23 leaves, 45 unexecuted scenes, explicit existing/proposed settings controls and all inherited floor lines. Added source-backed FlowWorks native-drinking inventory and filed the missing campaign-only qualifying output against existing dangerous irradiated-wreck salvage. Existing implementation/proof/scope values are preserved. New settings names, salvage output and showcase grouping are agent planning choices. The changed artifacts require a fresh stage-4 exam and stage-5 coverage review. Runtime acceptance and owner first-touch remain pending."
+  },
+  {
+   "at": "2026-11-16T17:17:53Z",
+   "inputs": {
+    "exam": "2cb1850019cef3606230d04cc32c003a34ad30fb402c46a765837a0bde298f4a",
+    "floor": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "854d4197f2c1aa01564219e21751ab07bf20065d78e431ccca70382672ee785c",
+    "scenes": "377f659e1d044c6cce8bd450bc36a3191e90ba8988ef2711dbdc78b43d916ce3",
+    "sheet": "67da97a2873ba050304cb017790e197836bcb9d197ea117600d6c38e604912a7",
+    "tree": "150e2ceeb71c7d182b449ff62741207f4edecc720015ad6149f17b723ee0570f"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794849018",
+   "stage": 4,
+   "summary": "Fresh independent Claude Opus exam passes against the current root-restamped and coverage-reworked artifacts: both Readers match 28/28 expectations, with zero core false accepts. The program-made pool_reach Control misses both removed-rule reject cases. Five helpers are named by returned session UUID, exact-input audited and charged 312460 weighted tokens. All frozen design inputs remain unchanged. Fresh stage-5 coverage review, runtime acceptance and owner first-touch remain pending."
   }
  ],
  "runner": "codex",
@@ -687,30 +714,18 @@
     "input_tokens": 9384744,
     "output_tokens": 43294
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794849018",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 2908757,
+    "output_tokens": 12104
+   }
   }
  ],
- "running": {
-  "at": "2026-11-16T17:10:27Z",
-  "inputs": {
-   "exam": "c58d8679ee618998ae20d7a883ba7479ab4777a25fa3fa7793aaa98e48148e0e",
-   "floor": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
-   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-   "root": "854d4197f2c1aa01564219e21751ab07bf20065d78e431ccca70382672ee785c",
-   "scenes": "377f659e1d044c6cce8bd450bc36a3191e90ba8988ef2711dbdc78b43d916ce3",
-   "sheet": "67da97a2873ba050304cb017790e197836bcb9d197ea117600d6c38e604912a7",
-   "tree": "150e2ceeb71c7d182b449ff62741207f4edecc720015ad6149f17b723ee0570f"
-  },
-  "manifest": {
-   "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-   "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
-  },
-  "owner_uncited": [],
-  "reserved": 500000,
-  "run": "rm-role-designercodex-1794849018",
-  "runner": "codex",
-  "stage": 4
- },
+ "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }
