@@ -2,9 +2,17 @@
  "aliases": [],
  "budget": {
   "cap": 4000000,
-  "charges": [],
+  "charges": [
+   {
+    "at": "2026-11-16T05:09:34Z",
+    "kind": "review",
+    "ref": "rm-role-designercodex-1794805536 /root/root_review reviewer-estimated weighted usage including inherited context; stage1_review.json, actual usage unavailable",
+    "stage": 1,
+    "tokens": 39000
+   }
+  ],
   "reserve": 60000,
-  "spent": 0
+  "spent": 39000
  },
  "history": [
   {
@@ -24,6 +32,18 @@
    "stage": 1,
    "what": "close",
    "why": "run rm-role-designercodex-1794798778: stage 0 done"
+  },
+  {
+   "at": "2026-11-16T05:05:47Z",
+   "stage": 1,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794805536, stage 1, budget 500000"
+  },
+  {
+   "at": "2026-11-16T05:13:01Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794805536: stage 1 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_GELATINOUSSLIME_DESIGNER_ON_CODEX_FOURTH",
@@ -63,6 +83,39 @@
    "run": "rm-role-designercodex-1794798778",
    "stage": 0,
    "summary": "Grounded the current source and specification, accounted for every required built reference, distinguished removed Glurro/Joining Water/cosmetics, recorded existing owner answers and neighbour ownership, audited all suite chains and specialised proof gates, and named three experience failure modes. Proposed an existing-content live walk. Offline suite and live-art instrument selftests passed. Offline art path check fails on its numbered Dwommo animation-prefix resolver and is recorded for stage-3 proof planning. Runtime proof remains stale or missing."
+  },
+  {
+   "at": "2026-11-16T05:13:01Z",
+   "inputs": {
+    "exam": null,
+    "floor": null,
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "23cfc23f4265f52ff71148df4f63e96b89cf3ed38d3bd3f89f535d6ceccd05e7",
+    "scenes": null,
+    "sheet": null,
+    "tree": null
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "Existing RM_GelatinousSlime review map on the composed biomes package: ordinary archive selection, marked extraction, injection and friend-administered antidote during coma; separately view Titanoslime stages one and five. Exact review-save identity is unverified. Proposal only; this run performed no live action.",
+    "settles": [
+     "seeker_scanner",
+     "seeker_extraction",
+     "gene_injection",
+     "warnings",
+     "antidote",
+     "kit_art"
+    ]
+   },
+   "run": "rm-role-designercodex-1794805536",
+   "stage": 1,
+   "summary": "Adopted the independently reviewed existing-scope root through recorded Evidence-for-Ask delegation (CONDUCTOR:1794805789204977373). No owner question was sent: historical direction and recovered November answers support the synthesis, with no concrete contrary evidence. Offered the existing-content gene-expedition/rescue walk first. Preserved runtime, integration and art-review obligations; no flagship or first-touch certification supplied."
   }
  ],
  "runner": "codex",
@@ -74,10 +127,18 @@
     "input_tokens": 4226926,
     "output_tokens": 25548
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794805536",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 2157585,
+    "output_tokens": 10534
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 1,
+ "stage": 2,
  "status": "ready"
 }
