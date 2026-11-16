@@ -1197,17 +1197,46 @@ def packet_from(mod, events, budget=None, stale=None):
                  "- next: " + cl(C["next"], "session"), "- ruled out: " + cl(C["ruled_out"], "session")]
     opened = sorted(((k, f) for k, f in st["findings"].items() if f["status"] not in CLOSED["finding"]),
                     key=lambda t: t[1]["ts"])
-    keep += ["", "## Open findings (%d)" % len(opened)]
-    for k, f in opened:
-        keep.append("- %s [%s%s] by %s, %s%s: %s" % (k, f["status"], (", " + f["class"]) if f.get("class") else "",
-                                                      f["by"], f["ts"], (" · bars " + ", ".join(f["bars"]))
-                                                      if f.get("bars") else "", cl(f["text"], k)))
-        if f["status"] != "claimed_fixed":     # claimed done: the fix is spent; `show` keeps it, the packet shows
-            keep.append("  proposed fix: " + cl(f["proposed_fix"], k))      # the claim and the accept a judge runs
-        if f.get("accept"):
-            keep.append("  accept: " + cl(f["accept"], k))
-        if f.get("claim"):
-            keep.append("  holder: " + cl(f["claim"], k) + ((" (%s)" % f["code_sha"]) if f.get("code_sha") else ""))
+    n_open = sum(1 for _, f in opened if f["status"] != "claimed_fixed")
+    n_claimed = len(opened) - n_open
+
+    def cut(text, n):
+        t = " ".join(str(text or "").split())
+        return t if len(t) <= n else t[:n - 1].rstrip() + "…"
+
+    def findings_block(lv, K):
+        """The line rule (spec §3.3: never drop an open finding). lv 0: every finding whole. lv 1: a claimed fix (its fix
+        spent, a judge's work) on one line with its claim; lv 2: its name and sha only. lv >= 3: the K oldest open
+        findings also on one line, text cut to 120 (60 at lv 5), their fix and accept one `show` away."""
+        out, briefed = ["", "## Open findings (%d)" % len(opened)], 0
+        if lv >= 1 and n_claimed:
+            out.append("(claimed fixes, awaiting a judge, on one line each%s, named without their 'finding:': "
+                       "`modledger.py show --mod %s finding:<NAME>`)"
+                       % (" with the oldest %d open findings" % min(K, n_open) if lv >= 3 and K else "", mod))
+        for k, f in opened:
+            nm = k[len("finding:"):] if k.startswith("finding:") else k
+            sha = (" on %s" % f["code_sha"]) if f.get("code_sha") else ""
+            tags = "%s%s" % ((", " + f["class"]) if f.get("class") else "",
+                             (" · bars " + ", ".join(f["bars"])) if f.get("bars") else "")
+            if f["status"] == "claimed_fixed" and lv >= 1:
+                out.append("- %s%s" % (nm, sha) + (": " + cut(f.get("claim") or f["text"], 100) if lv == 1 else ""))
+                continue
+            if f["status"] != "claimed_fixed" and lv >= 3 and briefed < K:
+                briefed += 1
+                out.append("- %s [%s%s]: %s" % (nm, f["status"], tags, cut(f["text"], 60 if lv >= 5 else 120)))
+                continue
+            out.append("- %s [%s%s] by %s, %s%s: %s" % (k, f["status"], (", " + f["class"]) if f.get("class") else "",
+                                                         f["by"], f["ts"], (" · bars " + ", ".join(f["bars"]))
+                                                         if f.get("bars") else "", cl(f["text"], k)))
+            if f["status"] != "claimed_fixed":     # claimed done: the fix is spent; `show` keeps it, the packet shows
+                out.append("  proposed fix: " + cl(f["proposed_fix"], k))      # the claim and the accept a judge runs
+            if f.get("accept"):
+                out.append("  accept: " + cl(f["accept"], k))
+            if f.get("claim"):
+                out.append("  holder: " + cl(f["claim"], k) + ((" (%s)" % f["code_sha"]) if f.get("code_sha") else ""))
+        return out, briefed
+
+    keep.append(("FINDINGS",))
     traps = sorted(((k, t) for k, t in st["traps"].items() if t["status"] != "cleared"), key=lambda x: x[1]["ts"])
     keep += ["", "## Traps (%d) — what a reader would otherwise get wrong" % len(traps)]
     for k, t in traps:
@@ -1226,19 +1255,33 @@ def packet_from(mod, events, budget=None, stale=None):
         keep += ["", "## Causes stale (%d) — refuted on an older commit; their files changed since: re-check"
                  % len(is_stale)]
         keep += [cause_line(k, c) for k, c in refuted if k in is_stale]
-    keep += ["", "## His answers (%d)" % len(st["answers"])]
-    for k, a in sorted(st["answers"].items(), key=lambda t: t[1]["ts"]):
-        keep.append("- %s%s: %s" % (k, (" (Q: %s)" % cl(a["question"], k)) if a.get("question") else "",
-                                    cl(a["answer"], k)))
+    def answers_block(lv):
+        """His answers, every one; at lv >= 4 each cut to 160 chars (100 at lv 6), a decision named without its
+        'decision:' (the ledger keeps his words whole)."""
+        n = 100 if lv >= 6 else 160
+        out = ["", "## His answers (%d)%s" % (len(st["answers"]), " (each cut to %d chars, a decision named without "
+                                              "its 'decision:': `modledger.py show`)" % n if lv >= 4 else "")]
+        for k, a in sorted(st["answers"].items(), key=lambda t: t[1]["ts"]):
+            name = k[len("decision:"):] if lv >= 4 and k.startswith("decision:") else k
+            out.append("- %s%s: %s" % (name, (" (Q: %s)" % cl(a["question"], k)) if a.get("question") else "",
+                                       cut(a["answer"], n) if lv >= 4 else cl(a["answer"], k)))
+        return out
+
+    keep.append(("ANSWERS",))
     openq = [(k, q) for k, q in st["questions"].items() if q.get("status") == "open"]
     keep += ["", "## Open questions (%d)" % len(openq)]
     for k, q in openq:
         keep.append("- %s: %s (obvious answer: %s; against it: %s)" % (k, cl(q["text"], k), cl(q.get("obvious"), k),
                                                                       cl(q.get("against"), k)))
-    keep += ["", "## Bars (%d)" % len(st["bars"])]
-    for k, b in sorted(st["bars"].items()):
-        keep.append("- %s [%s] verdict %s%s" % (k, b.get("status") or "?", b.get("verdict") or "none",
-                                               (": " + cl(b["text"], k)) if b.get("text") else ""))
+    def bars_block(lv):
+        out = ["", "## Bars (%d)" % len(st["bars"])]
+        for k, b in sorted(st["bars"].items()):
+            out.append("- %s [%s] verdict %s%s" % (k, b.get("status") or "?", b.get("verdict") or "none",
+                                                  (": " + (cut(b["text"], 60) if lv >= 4 else cl(b["text"], k)))
+                                                  if b.get("text") else ""))
+        return out
+
+    keep.append(("BARS",))
     keep.append("")
     keep.append("spend recorded: USD %.2f, %d tokens" % (st["spend_usd"], st["spend_tokens"]))
     # droppable material: (ts, group, line)
@@ -1265,11 +1308,21 @@ def packet_from(mod, events, budget=None, stale=None):
     groups = ("decisions", "closed findings", "closed traps", "causes tried", "tests")
     cursor = cursor_of(events)
 
-    def render(k):
+    def render(k, lv=0, K=0):
         kept, gone = drop[k:], {}
         for _, g, _l in drop[:k]:
             gone[g] = gone.get(g, 0) + 1
-        out = list(keep)
+        out, briefed = [], 0
+        for x in keep:
+            if x == ("FINDINGS",):
+                lines, briefed = findings_block(lv, K)
+                out += lines
+            elif x == ("ANSWERS",):
+                out += answers_block(lv)
+            elif x == ("BARS",):
+                out += bars_block(lv)
+            else:
+                out.append(x)
         for g in groups:
             lines = [l for _, gg, l in kept if gg == g]
             if lines:
@@ -1279,6 +1332,14 @@ def packet_from(mod, events, budget=None, stale=None):
         for g in groups:
             if gone.get(g):
                 out.append("- %s: %d, oldest first (`modledger.py show --mod %s <subject>`)" % (g, gone[g], mod))
+        if lv >= 1 and n_claimed:
+            out.append("- claimed fixes in brief: %d on one line (%s), their claim, test and fix by `show`"
+                       % (n_claimed, "name, sha, claim" if lv == 1 else "name and sha"))
+        if briefed:
+            out.append("- open findings in brief: the oldest %d on one line, their fix and accept by `modledger.py show "
+                       "--mod %s <subject>`" % (briefed, mod))
+        if lv >= 4:
+            out.append("- his answers and the bars' texts in brief (cut at %d and 60 chars)" % (100 if lv >= 6 else 160))
         if st["notes"]:
             out.append("- notes: %d, never printed here (`modledger.py find --mod %s <words>`)" % (len(st["notes"]), mod))
         if st["superseded"] or st["fenced"]:
@@ -1289,20 +1350,44 @@ def packet_from(mod, events, budget=None, stale=None):
                 % (cursor, mod, cursor)]
         return "\n".join(out) + "\n", gone
 
-    lo, hi = 0, len(drop)
-    text, gone = render(0)
-    if tokens(text) > budget:
-        while lo < hi:                       # the fewest dropped lines that fit
+    def fewest(f, n):
+        """The least x in 0..n with f(x) within budget (f shrinks as x grows), or None."""
+        if tokens(f(n)[0]) > budget:
+            return None
+        lo, hi = 0, n
+        while lo < hi:
             mid = (lo + hi) // 2
-            if tokens(render(mid)[0]) <= budget:
+            if tokens(f(mid)[0]) <= budget:
                 hi = mid
             else:
                 lo = mid + 1
-        text, gone = render(lo)
+        return lo
+
+    text, gone = render(0)
+    if tokens(text) > budget:
+        k = fewest(render, len(drop))                     # the fewest dropped closed lines that fit
+        if k is not None:
+            text, gone = render(k)
+        else:                                             # all closed material gone: the line rule, never a drop
+            k, done = len(drop), False
+            for lv in (1, 2):
+                text, gone = render(k, lv)
+                if tokens(text) <= budget:
+                    done = True
+                    break
+            for lv in (3, 4, 5, 6) if not done else ():
+                K = fewest(lambda x: render(k, lv, x), n_open)
+                if K is not None:
+                    text, gone = render(k, lv, K)
+                    break
+            else:
+                if not done:
+                    text, gone = render(k, 6, n_open)
     over = tokens(text) > budget
     if over:
         text = ("OVER BUDGET: %d tokens > %d, and nothing droppable is left (open findings, traps, refuted causes, his "
-                "answers, open questions and bars are never dropped)\n" % (tokens(text), budget)) + text
+                "answers, open questions and bars are never dropped; the line rule is at its briefest)\n"
+                % (tokens(text), budget)) + text
     return text, {"tokens": tokens(text), "budget": budget, "dropped": gone, "over_budget": over,
                   "events": len(events), "cursor": cursor}
 

@@ -784,6 +784,46 @@ tiny, tinfo = M.packet(r9, MOD, budget=50)
 check("a packet whose must-keep part alone passes the budget says OVER BUDGET",
       tinfo["over_budget"] and "OVER BUDGET" in tiny, tinfo)
 
+# a backlog bigger than the budget (FlowWorks: 332 unresolved findings): the line rule lists every finding and answer,
+# claimed fixes on one line first (their fix is spent), then the oldest open findings in brief; nothing is dropped
+r10 = fresh(); roots.append(r10)
+put(r10, MOD, "DISPATCH", "version.open", "version", body={"version": "0.2.0"}, version="0.2.0", ts=ts(0))
+put(r10, MOD, "OWNER", "bar.locked", "bar:" + BAR, body=LOCK, authority={"by_card": "Lock? -> yes"}, ts=ts(0, 30))
+OPN = ["finding:RIMMANDRAKE_KEEP_OPEN_BACKLOG_" + letters(i) for i in range(40)]
+CLM = ["finding:RIMMANDRAKE_KEEP_CLAIMED_BACKLOG_" + letters(i) for i in range(40)]
+for i in range(40):
+    for nm, tag in ((OPN[i], "OPEN"), (CLM[i], "CLAIM")):
+        M.append(r10, MOD, "BACKFILL", "finding.open", nm, body=finding(
+            "%s finding %s about %s" % (tag.lower(), letters(i), " ".join(letters(i + k) for k in range(20))),
+            fix="%sFIX_%s " % (tag, letters(i)) + "y " * 60), evidence=["path:x"], ts="2026-11-15T21:%02d:00Z" % i,
+            views=False, new_subject="a fixture backlog: one finding per letter")
+    M.append(r10, MOD, "BACKFILL", "finding.claimed_fixed", CLM[i], body={"text": "closed: fixed %s" % letters(i),
+             "test": "selftest_k.py rc 0"}, evidence=["path:x"], code_sha="abc%04d" % i,
+             ts="2026-11-15T21:%02d:30Z" % i, views=False)
+put(r10, MOD, "OWNER", "question.answer", "q:backlog-answer", body={"said": "his backlog answer"},
+    authority={"by_card": "Keep? -> yes"}, ts=ts(4), views=False)
+bfull, bfi = M.packet(r10, MOD, budget=100000)
+BUD = bfi["tokens"] // 3
+bl, bli = M.packet(r10, MOD, budget=BUD)
+check("a backlog over budget fits by the line rule, not by dropping", not bli["over_budget"] and
+      bli["tokens"] <= BUD, (bli, BUD, bfi["tokens"]))
+check("every unresolved finding and his answer are still listed (a brief line drops the section's 'finding:')",
+      all(n[len("finding:"):] in bl for n in OPN + CLM) and "his backlog answer" in bl,
+      [n for n in OPN + CLM if n[len("finding:"):] not in bl][:3])
+check("claimed fixes go to one line first: name and sha, no spent fix", "CLAIMFIX_" not in bl and
+      ("- %s on abc0039" % CLM[39][len("finding:"):]) in bl, bl[:1200])
+BUD2 = M.tokens(M.packet(r10, MOD, budget=1)[0].split("\n", 1)[1])     # its briefest, without the OVER BUDGET line
+b2, b2i = M.packet(r10, MOD, budget=BUD2)
+check("at its briefest every subject is still listed, then OVER BUDGET below that", not b2i["over_budget"] and
+      all(n[len("finding:"):] in b2 for n in OPN + CLM) and M.packet(r10, MOD, budget=BUD2 - 1)[1]["over_budget"],
+      (b2i, BUD2))
+check("the newest open finding keeps its fix, the oldest is in brief", ("OPENFIX_%s" % letters(39)) in bl and
+      ("OPENFIX_%s" % letters(0)) not in bl, bl[:1500])
+check("the left-out list counts what is shown in brief", "in brief" in bl.split("## Left out")[1],
+      bl.split("## Left out")[1][:600])
+check("a packet within budget renders every open finding whole", ("OPENFIX_%s" % letters(0)) in bfull and
+      "CLAIMFIX_" not in bfull, bfi)
+
 # ---- the CLI the way it is used ------------------------------------------------------------------------------------
 env = dict(os.environ, RM_MODLEDGER_ROOT=r9)
 p = subprocess.run([sys.executable, CLI, "packet", "--mod", MOD], capture_output=True, text=True, env=env)
