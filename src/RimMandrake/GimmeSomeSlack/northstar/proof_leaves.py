@@ -184,6 +184,9 @@ ROW_LEAVES = dict(_MATRIX, **{
     "SC_under_furniture_dry": ["drawing_true_to_grid"],
     "SC_under_junction_piece_dry": ["drawing_true_to_grid"],
     "SC_under_liquid_pit": ["drawing_true_to_grid"],
+    # end_kind_and_slope (RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO, owner look 2026-11-16)
+    "SC_cord_end_one_kind": ["cords_meet_walls_at_face", "cut_live_and_dead_ends"],
+    "SC_box_stub_slope": ["strip_at_every_junction", "no_unforced_sharp_turn"],
     # determinism, save/load, log, statics blocks (the walk leaf's reload and log-clean reads, measured short)
     "D1_zero_tick_rereads_same": ["drawing_true_to_grid"],
     "D2_fresh_builder_same": ["drawing_true_to_grid"],

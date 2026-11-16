@@ -9,6 +9,7 @@
 //   args:      --fuzz-scale F   multiply every family's case count (default 1; 0 skips the whole fuzz)
 //              --fuzz-only NAME run one family (cords|aerial)
 //              --fuzz-seed N    replay one seed of the chosen family verbosely (no shrinking limit)
+//              --fuzz-slope 1   also gate the box-arm slope rule (CheckEndKinds; red today, its own item)
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,6 +25,23 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
     {
         // ------------------------------------------------------------------ plumbing
         internal sealed class Tally { public string Name; public long Cases, Steps, Failures; public double Seconds; public string Extra = ""; }
+
+        /// <summary>RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner look 2026-11-16): every end one kind and every box arm left on its line and
+        /// slope (Core/CordEndAudit), on every step of every random sequence: the fuzz judged nets and cord shape only, never a fitting against
+        /// the cord at it, so a wall end drawn plugged AND loose passed 400 random scenes a night.</summary>
+        /// <summary>--fuzz-slope 1: also gate the box-arm slope rule on random scenes. Off by default: red today on blob boxes and crowded tees
+        /// (RIMMANDRAKE_FIX_GSS_BOX_ARMS_OFF_SLOPE_IN_CROWDS carries it with this command as its acceptance test).</summary>
+        internal static bool SlopeGate;
+
+        internal static string CheckEndKinds(CordWorld w, CordGraph g, List<LaidPiece> ps)
+        {
+            CordEndAudit.EndRead e = CordEndAudit.Ends(g, ps, "fuzz");
+            if (e.Both + e.FitSparks + e.None + e.TerminalsFitted + e.WallTerminalsFitted + e.StubsLoose > 0) return e.Bad.FirstOrDefault() ?? "end kind";
+            if (!SlopeGate) return null;
+            CordEndAudit.SlopeRead sl = CordEndAudit.Slopes(w, g, ps, "fuzz");
+            if (sl.OffLine + sl.OffSlope + sl.Short + sl.Empty > 0) return sl.Bad.FirstOrDefault() ?? "slope";
+            return null;
+        }
 
         /// <summary>Delta-debugging shrink: drop chunks, then single actions, while the failure (same tag) persists.</summary>
         internal static List<T> Shrink<T>(List<T> acts, Func<List<T>, bool> fails)
@@ -375,6 +393,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 if (bad != null) return "nets: " + bad + at;
                 bad = CheckGeometry(w, last, s.Opt);
                 if (bad != null) return "geometry: " + bad + at;
+                bad = CheckEndKinds(w, incr.Graph, last);
+                if (bad != null) return "ends: " + bad + at;
                 if (everyStep || i == acts.Count)
                 {
                     var fresh = new CordBuilder();
@@ -634,6 +654,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             }
             double scale = double.Parse(Arg(args, "--fuzz-scale") ?? "1", System.Globalization.CultureInfo.InvariantCulture);
             if (scale <= 0) return;
+            SlopeGate = Arg(args, "--fuzz-slope") == "1";
             string one = Arg(args, "--fuzz-seed");
             int Cases(int n) => Math.Max(1, (int)Math.Round(n * scale));
             var all = Stopwatch.StartNew();

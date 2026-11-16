@@ -4,6 +4,7 @@ Version here must match `<modVersion>` in `About/About.xml`. Never deployed (`.m
 
 ## Unreleased
 
+- A run of conduit that ends inside a wall or rock is drawn as one loose end lying against the face, never a wall plate with a sparking wire hanging out of the same hole; power switch cords come in straight along the switch's stubs (owner 2026-11-16).
 - One connection draws one cord by default: `cordsPerConnection` ships at 1, stays a slider (owner 2026-11-07).
 - A live floor end's glow and thrown sparks follow its whipping tail (owner 2026-11-07).
 - A fallen overhead wire lies in a slack S, so a cut span reads as down.

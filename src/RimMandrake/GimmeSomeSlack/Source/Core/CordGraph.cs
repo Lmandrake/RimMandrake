@@ -150,7 +150,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private readonly ICollection<string> straightPlug;
 
         /// <summary>Does a cord into this machine slide under it (not a lamp, not a drawn connector such as the tap clamp)?</summary>
-        internal bool Slides(MachineInfo m) => slideUnder && m != null && m.Kind != MachineKind.Lamp && !m.Foot && !straightPlug.Contains(m.Id ?? "");
+        internal bool Slides(MachineInfo m) => slideUnder && m != null && m.Kind != MachineKind.Lamp && !m.Foot && !m.SidePorts && !straightPlug.Contains(m.Id ?? "");
 
         internal static CordGraph Reduce(CordWorld world, ulong seed = 1, int tangleMin = TangleMin, int spurMax = SpurMax, bool slideUnder = true,
                                          ICollection<string> straightPlug = null) =>

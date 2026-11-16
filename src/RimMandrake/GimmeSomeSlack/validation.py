@@ -1063,8 +1063,8 @@ def live_battery(B, fresh_map=False, rows=None):
 
 # ============================================================================ phase 1b lane A (live)
 # A second plot north-east of the room: battery 2, a 4x3 conduit field (a TANGLE at the default threshold 9),
-# a run east into a wall that carries one buried conduit cell (a live WALL terminal = downed wire, outdoors so
-# it sways). Run after M8 (the break), so the west end of the gap is a LIVE floor terminal (whip) on screen.
+# a run east into a wall that carries one buried conduit cell (a live WALL terminal = downed wire; since 2026-11-16 one
+# loose end at the wall's face, nothing hanging out of it to sway). Run after M8 (the break), so the west end of the gap is a LIVE floor terminal (whip) on screen.
 # BAT2 / FIELD / RUN2 / WALL2 are set by _set_origin with the rest of the scene.
 SHOTS = os.path.join(REPO, "Transient", "messy_conduit_live_20261002")
 
@@ -1246,7 +1246,9 @@ def lane_a_live(B, rows, log):
     # the frame-to-frame change needs wind; B7b/B7c already accept a calm (< 0.01) map, B7 now too (audit 2026-10-10)
     sway_ok = a.get("swayDraws", 0) > 0 and (a.get("swayHash") != b.get("swayHash") or (a.get("windSpeed") or 0) < 0.01) and \
         c.get("swayDraws") == 0 and c.get("liftedSwaying") == 0
-    row(rows, "B7_sway_cpu_two_frame", ("PASS" if sway_ok else "FAIL") if a.get("plantWindSway") else "UNMEASURED", "MOD",
+    # the WALL2 terminal's hanging wire was the only lifted strand; owner 2026-11-16 removed it (one loose end per end,
+    # RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO), so with nothing lifted B7/B7b have no subject and read UNMEASURED, not FAIL
+    row(rows, "B7_sway_cpu_two_frame", ("PASS" if sway_ok else "FAIL") if a.get("plantWindSway") and a.get("liftedStrands") else "UNMEASURED", "MOD",
         {"mode": a.get("swayMode"), "plantWindSway": a.get("plantWindSway"), "wind": a.get("windSpeed"), "amp": a.get("swayAmplitude"),
          "lifted": a.get("liftedStrands"), "swaying": a.get("liftedSwaying"), "swayDraws": a.get("swayDraws"), "swayVerts": a.get("swayVerts"),
          "hashA": a.get("swayHash"), "hashB_30ticks": b.get("swayHash"), "off_swayDraws": c.get("swayDraws"), "off_swaying": c.get("liftedSwaying")})
@@ -1753,7 +1755,7 @@ def optional_motion_live(B, rows, cpu):
              s4.get("swayMode") == "CPU" and s4.get("shaderSubMeshes") == 0 and s4.get("swayDraws", 0) > 0)
     keys = ("swayMode", "swayModeReason", "plantShader", "cutoutPlantShader", "plantRegistered", "plantSwayHead", "shaderSubMeshes",
             "shaderVerts", "shaderLiftedOpen", "shaderLiftedRoofed", "shaderAlphaMaxOpen", "shaderAlphaMaxRoofed", "swayDraws", "windSpeed")
-    row(rows, "B7b_sway_shader_path", ("PASS" if sh_ok else "FAIL") if cpu.get("plantWindSway") else "UNMEASURED", "MOD",
+    row(rows, "B7b_sway_shader_path", ("PASS" if sh_ok else "FAIL") if cpu.get("plantWindSway") and cpu.get("liftedStrands") else "UNMEASURED", "MOD",
         {"shader": {k: s1.get(k) for k in keys}, "after30": {k: s2.get(k) for k in ("plantSwayHead", "ticksGame")},
          "roofed": {k: s3.get(k) for k in keys}, "backToCpu": {k: s4.get(k) for k in keys}})
     # ---- B7c floor ripple

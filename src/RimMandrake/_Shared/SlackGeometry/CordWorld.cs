@@ -40,6 +40,11 @@ namespace RimMandrake.Shared.Slack
         /// hooked, and ends tucked just under the foot of the art, never at a side of the cell (a mast's side box, mid-height).</summary>
         public bool Foot;
 
+        /// <summary>A power switch: its art (every look, on and off) carries a stub at the middle of each side, so a cord comes in on a stub's
+        /// line and leaves its tip along it (owner 2026-11-16: "the junction box has stubby connectors that don't line up"), never sliding in
+        /// diagonally near a corner like a machine's plug.</summary>
+        public bool SidePorts;
+
         public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
     }
 

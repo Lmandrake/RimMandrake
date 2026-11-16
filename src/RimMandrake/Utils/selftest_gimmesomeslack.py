@@ -74,7 +74,7 @@ def main(argv):
         print("selftest build FAILED")
         return rc
     dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
-    args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else [])
+    args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else [])
     for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
         if a.startswith("--fuzz") and i + 1 < len(argv):
             args += [a, argv[i + 1]]

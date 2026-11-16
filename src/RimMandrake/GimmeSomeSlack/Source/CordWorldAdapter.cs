@@ -185,7 +185,8 @@ namespace RimMandrake.GimmeSomeSlack
             foreach (CompPower t in transmitterBuildings)
             {
                 Thing th = t.parent;
-                var m = new MachineInfo { Id = "t" + th.thingIDNumber, Kind = KindOf(t, true) };
+                // a power switch's art carries a stub mid each side: cords come in on those lines (owner 2026-11-16)
+                var m = new MachineInfo { Id = "t" + th.thingIDNumber, Kind = KindOf(t, true), SidePorts = th is Building_PowerSwitch && th.def.size.x == 1 && th.def.size.z == 1 };
                 CellRect r = th.OccupiedRect();
                 m.X0 = r.minX; m.Z0 = r.minZ; m.W = r.Width; m.H = r.Height;
                 touching.Clear();

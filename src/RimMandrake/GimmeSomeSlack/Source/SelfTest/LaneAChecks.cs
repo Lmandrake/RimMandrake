@@ -72,7 +72,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(deadTails == 0, $"whip: {deadTails} DEAD terminal strands carry a whip tail (dead ends lie still)");
             Check(badLen == 0, $"whip: {badLen} whip tails outside 0.7-1.15 cell");
             Check(fray > 0, "whip: no live fray decal rides the whip (OnWhip)");
-            Check(lifted > 0 && badW == 0, $"sway: {lifted} lifted (wall-hanging) strands, {badW} with bad sway weights (0 at the hole, ~1 at the tip)");
+            // the wall terminal's hanging wire was its only lifted strand; owner 2026-11-16 ("both a hanging out sparking end as well as the wire
+            // plugging into the same point on the wall. That's not ok") removed it, so none is expected now (the sway maths stays checked below)
+            Check(lifted == 0 && badW == 0, $"sway: {lifted} lifted (wall-hanging) strands, {badW} with bad sway weights (none hang out of a wall since 2026-11-16)");
             Console.WriteLine($"  whip: {liveTails} live tails, {deadTails} dead, {fray} riding fray decals; lifted strands {lifted}");
         }
 

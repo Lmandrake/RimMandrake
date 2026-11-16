@@ -4,8 +4,8 @@
 //   plates   every cord wall plate / rock hole is mounted ON its wall face (nothing on the open floor, no deeper than the
 //            face allows: the south band, a side bevel, a sliver of a hidden north face), printed without the art's own
 //            curl of cord (station 6's hook)
-//   loose    the wall terminal's loose wire leaves the socket STRAIGHT (no hook), out of a side face onto the floor,
-//            straight down the visible south face
+//   loose    (owner 2026-11-16 replaced the round-4 hanging wire) a run ending inside a wall is one loose end on the floor at the
+//            face: no plate, no wire hanging out of a hole
 //   brackets each look x facing: the plate inside its wall face; the north-face bracket shows only its insulator over the
 //            wall's top edge (the torch rule)
 //   home     a wall-mounted device's cord ends beneath its WALL's centre, not short of it in the device's cell (station 19)
@@ -75,19 +75,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             ArtFitResult rr3 = CordAudit.ArtFit(b.Graph, r3, c => true);
             Check(rr3.FlatWallPlates + rr3.FlatRockHoles == faces.Count, $"can fail: round-3 plates centred on the face line are caught ({rr3.FlatWallPlates + rr3.FlatRockHoles}/{faces.Count})");
 
-            // ---- loose: the wall terminal's loose wire (the run ending in the west wall arrives from the west: a side face)
-            List<CordStrand> tails = ps.SelectMany(p => p.Strands).Where(s => s.OverFace).ToList();
+            // ---- loose: the round-4 loose wire hanging out of the wall terminal's hole is gone (owner 2026-11-16: "both a hanging out
+            //      sparking end as well as the wire plugging into the same point on the wall. That's not ok"); the run that ends inside the
+            //      west wall is ONE loose end on the floor against the face: no plate, no tail, its fray at the face (CordEndKindChecks)
+            List<CordStrand> tails = ps.SelectMany(p => p.Strands).Where(s => s.OverFace && s.Lifted).ToList();
             CordNode wt = b.Graph.Nodes.Values.FirstOrDefault(n => n.WallTerminal);
-            bool sideStraight = wt != null && tails.Count >= 1 && tails.Any(t => StraightOut(t.Pts, -wt.Into, 3));
-            // and on the visible south face it hangs straight down
-            List<V2> south = WallMount.LooseWire(new V2(5.5, 5.18), new V2(5.5, 5.0), new V2(0, 1));
-            bool southDown = StraightOut(south, new V2(0, -1), 6);
-            Check(sideStraight && southDown, $"loose: wall terminal {(wt == null ? "MISSING" : wt.Cell.ToString())}, {tails.Count} loose wires; side face leaves straight out {sideStraight}, south face hangs straight down {southDown}");
-            // can fail: the round-3 tail (a sideways hook dropping screen-down from the hole) is not straight out of a west face
-            var hook = new List<V2>();
-            V2 hole = new V2(8.04, 11.5), into = new V2(1, 0), sideV = new V2(-into.Z, into.X), a0 = hole - sideV * 0.08;
-            for (int i = 0; i < 16; i++) { double t = i / 15.0; hook.Add(a0 - sideV * (0.14 * t + 0.03 * Math.Sin(t * 4)) + new V2(0, -1) * (0.36 * Math.Pow(t, 1.3))); }
-            Check(!StraightOut(hook, -into, 3), "can fail: the round-3 hanging hook out of a west face reads as not straight out");
+            bool frayAtFace = wt != null && ps.Any(p => p.Decals.Any(d => (d.Kind == DecalKind.FrayLive || d.Kind == DecalKind.FrayDead) && V2.Dist(d.Pos, wt.Face) < 0.35));
+            bool plate = wt != null && ps.Any(p => p.Decals.Any(d => CordMaterialsIsFace(d.Kind) && V2.Dist(d.Pos, wt.Face) < 0.35));
+            Check(wt != null && tails.Count == 0 && frayAtFace && !plate,
+                  $"loose: wall terminal {(wt == null ? "MISSING" : wt.Cell.ToString())}: {tails.Count} tails hanging out of a wall, fray at the face {frayAtFace}, plate {plate}");
 
             // ---- brackets: the generated per-look table under AerialMath's per-face inset
             Dictionary<string, P2> ins = BracketGeometryTable.Build();
@@ -149,23 +145,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         {
             CordNode nd = b.Graph.Nodes.Values.Where(x => x.Type == NodeType.StubWall || x.Type == NodeType.StubRock).OrderBy(x => V2.Dist(x.Face, d.Pos)).First();
             return nd.Face;
-        }
-
-        /// <summary>Do the first segments of a polyline (covering at least 0.12 cell) run along dir within 5 degrees?</summary>
-        private static bool StraightOut(List<V2> pts, V2 dir, int minPts)
-        {
-            if (pts.Count < minPts + 1) return false;
-            V2 dn = dir.Norm();
-            double run = 0;
-            for (int i = 1; i < pts.Count && run < 0.12; i++)
-            {
-                V2 s = pts[i] - pts[i - 1];
-                if (s.Len < 1e-9) continue;
-                double cos = (s.X * dn.X + s.Z * dn.Z) / s.Len;
-                if (cos < Math.Cos(5 * Math.PI / 180)) return false;
-                run += s.Len;
-            }
-            return run >= 0.12 - 1e-9;
         }
     }
 }

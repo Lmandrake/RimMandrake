@@ -18,7 +18,9 @@ ROWS = ["SC_doorway_run_is_one_cord", "SC_cut_never_powered_both_dead", "SC_cut_
         "SC_floor_end_bites_aerial_master_off", "SC_floor_end_every_end_over_spark_budget", "SC_floor_end_fixer_spared_other_builder_shocked",
         "SC_shock_reach_default_all", "SC_shock_reach_three_values", "SC_shock_reach_deck_cord_per_value",
         # sc_cords_under_items (bar cords_draw_under_things, owner by card 2026-11-14)
-        "SC_under_battery_dry", "SC_under_item_stack_dry", "SC_under_furniture_dry", "SC_under_junction_piece_dry", "SC_under_liquid_pit"]
+        "SC_under_battery_dry", "SC_under_item_stack_dry", "SC_under_furniture_dry", "SC_under_junction_piece_dry", "SC_under_liquid_pit",
+        # end_kind_and_slope (RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO, owner look 2026-11-16)
+        "SC_cord_end_one_kind", "SC_box_stub_slope"]
 
 
 def _site(B, V):
@@ -495,6 +497,46 @@ def cords_under_items(B, V, rows):
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
 
 
+def end_kind_and_slope(B, V, rows):
+    """RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner, live look 2026-11-16 ~5:46 AM PST): "both a hanging out sparking end as well
+    as the wire plugging into the same point on the wall. That's not ok" and "wires coming out of a junction box not honoring the "preserve
+    the right slope" rule". One powered network: a run through a wall, a live run and a dead run each ENDING inside a wall, a power switch
+    with three cords coming at it from bends, a + box and a T box; the probe's "endkind:" runs the offline instrument (Core/CordEndAudit,
+    SelfTest/CordEndKindChecks) on the live pieces. Rows: SC_cord_end_one_kind, SC_box_stub_slope."""
+    x, z = SC0
+    _site(B, V)
+    walls = (_line(x + 20, z + 4, x + 20, z + 10) + _line(x + 6, z, x + 14, z) + _line(x + 37, z + 1, x + 37, z + 5))
+    B.call("jawa/build_batch", ops=V.ops("Wall", walls), stuff="Steel", faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0;Battery:%d,%d,0" % (x + 2, z + 7, x + 43, z + 2), faction="player", wipeExisting=False)
+    B.call("jawa/build_batch", ops="PowerSwitch:%d,%d,0" % (x + 44, z + 10), faction="player", wipeExisting=False)
+    runs = (_line(x + 3, z + 7, x + 22, z + 7)                                   # east through the wall at x+20 (a through entry)
+            + _line(x + 10, z + 1, x + 10, z + 6) + [(x + 10, z)]                 # south, ENDING inside the wall at z (live)
+            + _line(x + 30, z + 3, x + 37, z + 3)                                 # no battery, ENDING inside the wall at x+37 (dead)
+            + _line(x + 43, z + 4, x + 43, z + 10)                                # the switch's west stub, from the battery (1x2 at z+2)
+            + _line(x + 45, z + 10, x + 47, z + 10) + _line(x + 47, z + 11, x + 47, z + 14)   # its east stub, then a bend
+            + _line(x + 44, z + 11, x + 44, z + 13) + _line(x + 41, z + 13, x + 43, z + 13)   # its north stub, then a bend
+            + _line(x + 50, z + 20, x + 58, z + 20) + _line(x + 54, z + 16, x + 54, z + 24)   # a + box at (x+54, z+20)
+            + _line(x + 50, z + 30, x + 58, z + 30) + _line(x + 54, z + 26, x + 54, z + 29)   # a T box at (x+54, z+30)
+            + [(x + 22, z + 8), (x + 22, z + 9), (x + 23, z + 9), (x + 24, z + 9)]   # on inside the wall, round a bend
+            + _line(x + 48, z + 14, x + 50, z + 14) + _line(x + 50, z + 15, x + 50, z + 20)   # the switch's east run feeds the + box
+            + _line(x + 58, z + 21, x + 58, z + 30))                              # and the + box feeds the T box
+    B.call("jawa/build_batch", ops=V.ops("PowerConduit", sorted(set(runs))), faction="player", wipeExisting=False)
+    B.ticks(3)
+    _fill(B, (x, z, 50, 12))
+    B.ticks(3)
+    B.probe("poll")
+    B.probe("rebuild")
+    r = B.probe("endkind:%d,%d,%d,%d" % (x - 1, z - 2, 62, 36))
+    ends_ok = bool(r.get("success")) and (r.get("ends") or 0) >= 6 and r.get("both") == 0 and r.get("fitSparks") == 0 and r.get("none") == 0 \
+        and r.get("wallTerminalsFitted") == 0 and r.get("terminalsFitted") == 0 and r.get("stubsLoose") == 0
+    V.row(rows, "SC_cord_end_one_kind", "PASS" if ends_ok else "FAIL", "MOD",
+          {k: r.get(k) for k in ("ends", "both", "fitSparks", "none", "terminalsFitted", "wallTerminalsFitted", "stubsLoose", "bad", "error")})
+    slope_ok = bool(r.get("success")) and (r.get("taken") or 0) >= 10 and r.get("offLine") == 0 and r.get("offSlope") == 0 \
+        and r.get("short") == 0 and r.get("empty") == 0
+    V.row(rows, "SC_box_stub_slope", "PASS" if slope_ok else "FAIL", "MOD",
+          {k: r.get(k) for k in ("arms", "taken", "offLine", "offSlope", "short", "empty", "emptyAllowed", "worstDeg", "worstPos", "bad", "error")})
+
+
 def run(B, V, rows):
     slack_and_shapes(B, V, rows)
     doorway(B, V, rows)
@@ -505,6 +547,7 @@ def run(B, V, rows):
     floor_end_shock(B, V, rows)
     shock_reach(B, V, rows)
     cords_under_items(B, V, rows)
+    end_kind_and_slope(B, V, rows)
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
     time.sleep(0.2)
 

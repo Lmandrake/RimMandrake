@@ -251,6 +251,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 sn++;
                 DecalKind k = nd.Type == NodeType.StubWall ? DecalKind.StubWall : DecalKind.StubRock;
+                if (nd.WallTerminal)
+                {
+                    // owner 2026-11-16: a run ending inside the wall is ONE loose end at the face, never a plate with a wire hanging out of it
+                    bool fitted = decals.Any(x => (x.Kind == k || x.Kind == DecalKind.WallOutlet || x.Kind == DecalKind.Plug) && V2.Dist(x.Pos, nd.Face) < 0.35);
+                    bool frayed = decals.Any(x => (x.Kind == DecalKind.FrayLive || x.Kind == DecalKind.FrayDead) && V2.Dist(x.Pos, nd.Face) < 0.35);
+                    if (fitted || !frayed) { sbad++; R.Messages.Add($"stub {nd.Cell} ends inside the wall: fitted {fitted}, frayed {frayed} (want one loose end)"); }
+                    continue;
+                }
                 // round 3: a Modern wall entry is an outlet with a seated plug (WallMount.OutletDecal), judged as the plate it replaces
                 CordDecal? d = decals.Where(x => x.Kind == k || (k == DecalKind.StubWall && x.Kind == DecalKind.WallOutlet)).OrderBy(x => V2.Dist(x.Pos, nd.Face)).Cast<CordDecal?>().FirstOrDefault();
                 if (d == null) { sbad++; continue; }

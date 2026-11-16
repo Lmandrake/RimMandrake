@@ -100,6 +100,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "slack") return SlackTable(comp);
             if (cmd == "statics") return Statics();
             if (cmd.StartsWith("ends:")) return EndsNear(comp, cmd.Substring(5));
+            if (cmd.StartsWith("endkind:")) return EndKind(comp, cmd.Substring(8));   // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO
             if (cmd.StartsWith("under:")) return UnderAt(map, comp, cmd.Substring(6));   // sc_cords_under_items (bar cords_draw_under_things)
             if (cmd == "motion") return Motion(map, comp);
             if (cmd == "motionreset")
@@ -687,6 +688,29 @@ namespace RimMandrake.GimmeSomeSlack
                    ",\"cord\":{\"strands\":" + strands + ",\"pieces\":" + pieces + ",\"kinds\":[" + string.Join(",", kinds) + "]" +
                    ",\"altitude\":" + J.D(AltitudeLayer.Conduits.AltitudeFor()) + ",\"strandQueue\":" + CordMaterials.StrandQueue + ",\"pieceQueue\":" + CordMaterials.PieceQueue +
                    ",\"seen\":" + J.D(CordUnderLiquid.SeenAt(map, c.x + 0.5, c.z + 0.5)) + "}}";
+        }
+
+        /// <summary>RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner look 2026-11-16): the offline instrument (Core/CordEndAudit) on the live
+        /// pieces inside x,z,w,h: every end one kind (never a fitting and a loose end at one point, no sparks off a fitting) and every box arm and
+        /// switch stub a cord takes left on its line and slope. Read only.</summary>
+        private static string EndKind(RM_MapComponent_CordGraph comp, string args)
+        {
+            if (comp.Graph == null || comp.LastWorld == null) return "{\"success\":false,\"error\":\"no graph\"}";
+            var inv = CultureInfo.InvariantCulture;
+            double[] a = args.Split(',').Select(t => double.Parse(t, inv)).ToArray();
+            bool In(V2 q) => q.X >= a[0] && q.X <= a[0] + a[2] && q.Z >= a[1] && q.Z <= a[1] + a[3];
+            List<LaidPiece> ps = comp.Pieces.ToList();
+            CordEndAudit.EndRead e = CordEndAudit.Ends(comp.Graph, ps, "live", In);
+            CordEndAudit.SlopeRead s = CordEndAudit.Slopes(comp.LastWorld, comp.Graph, ps, "live", In);
+            var sb = new StringBuilder("{\"success\":true,\"cmd\":\"endkind\"");
+            void F(string k, string v) => sb.Append(",\"").Append(k).Append("\":").Append(v);
+            F("ends", e.Ends.ToString()); F("both", e.Both.ToString()); F("fitSparks", e.FitSparks.ToString()); F("none", e.None.ToString());
+            F("terminalsFitted", e.TerminalsFitted.ToString()); F("wallTerminalsFitted", e.WallTerminalsFitted.ToString()); F("stubsLoose", e.StubsLoose.ToString());
+            F("arms", s.Arms.ToString()); F("taken", s.Taken.ToString()); F("offLine", s.OffLine.ToString()); F("offSlope", s.OffSlope.ToString());
+            F("short", s.Short.ToString()); F("empty", s.Empty.ToString()); F("emptyAllowed", s.EmptyAllowed.ToString());
+            F("worstDeg", J.D(s.WorstDeg)); F("worstPos", J.D(s.WorstPos));
+            F("bad", J.Arr(e.Bad.Concat(s.Bad).Take(8).Select(J.S)));
+            return sb.Append('}').ToString();
         }
 
         private static string ArtFit(Map map, RM_MapComponent_CordGraph comp)

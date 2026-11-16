@@ -1119,9 +1119,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 nums.Add(BitConverter.DoubleToInt64Bits(m.BaseDz));
                 if (m.HasHome) { nums.Add(1); nums.Add(m.HomeX); nums.Add(m.HomeZ); } else nums.Add(0);
                 nums.Add(m.Foot ? 1 : 0);
+                nums.Add(m.SidePorts ? 1 : 0);
                 // MachinePlugPoint reads terrain outside the conduit cells. Record its selected positions so a wall
                 // built or removed beside a machine cannot reuse a graph with the previous approach.
-                bool slides = opt.SlideUnder && m.Kind != MachineKind.Lamp && !m.Foot
+                bool slides = opt.SlideUnder && m.Kind != MachineKind.Lamp && !m.Foot && !m.SidePorts
                     && (opt.StraightPlugIds == null || !opt.StraightPlugIds.Contains(m.Id ?? ""));
                 for (int hi = 0; hi < Math.Max(1, m.Hookups.Count); hi++)
                 {
@@ -3525,6 +3526,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 arrive = IntoMachine(nd.Machine, target);
                 if (g.Slides(nd.Machine) || baseLamp) arrive = CordGraph.SlideArrive(nd.Machine, target, arrive);
                 if (baseLamp) straight = Math.Max(straight, 0.3);
+                // a power switch's stub: in on the stub's line, the cord's last bit straight along it past the stub's tip (owner 2026-11-16)
+                if (nd.Machine.SidePorts) straight = Math.Max(straight, 0.3);
+            }
+            else if (nd.WallTerminal && nd.Into.Len > 0.5)
+            {
+                // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner 2026-11-16: "both a hanging out sparking end as well as the wire plugging
+                // into the same point on the wall. That's not ok"): a run that ends inside a wall is an unfinished run, drawn as ONE loose end
+                // lying against the face (no plate, no hole, no tail hanging out of it), its fray reaching the face line
+                target = nd.Face - nd.Into * WallEndShort + Side(nd.Into) * (lat * 0.03);
+                arrive = nd.Into;
+                straight = 0.3;
             }
             else if (nd.IsStub && nd.Into.Len > 0.5)
             {
@@ -3539,6 +3551,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 target = basePos + Side(nd.Into) * (lat * 0.03);
                 arrive = nd.Into;
+                // the device stub's little box (Junctions look) sits DeviceBoxBack off the face: the cord runs straight past its arm's tip
+                // before it bends, so it leaves the arm on the arm's line (owner 2026-11-09 slope rule, 2026-11-16 junction box stubs)
+                if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) != PileArt.Strips)
+                    straight = DeviceBoxBack + DeviceBoxArm + 0.15;
             }
             else if (nd.Type == NodeType.Tangle && nd.Cells != null)
             {
@@ -4034,6 +4050,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         public const double PastFaceDepth = 0.03;
 
+        /// <summary>How far short of the face (cells) a run ending inside a wall lays its loose end: its fray (0.5 scale) reaches the face line.</summary>
+        public const double WallEndShort = 0.22;
+        /// <summary>The device stub's little box: drawn this far back from the face, at this scale; its arm reaches DeviceBoxArm from its middle
+        /// (55.5 px of 128 at the box's scale, selftest_gss_junction_necks.py).</summary>
+        public const double DeviceBoxBack = 0.2, DeviceBoxScale = 0.6, DeviceBoxArm = 55.5 / 128.0 * DeviceBoxScale;
+
         /// <summary>Round 3: under the side-view plug of a Modern cord plugged into a side or the hidden north face of a wall, the cord runs dead
         /// straight along into for the plug's whole length (head face to boot end), so nothing of a bend shows past the plug's body.</summary>
         private static List<V2> WallPlugTail(List<V2> P, bool atStart, CordNode nd, BuildOptions opt)
@@ -4113,6 +4135,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 MachineInfo mi = nd.Machine;
                 // The cord already runs into the lamp base through IntoArt; its connector is hidden by the lamp.
                 if (mi != null && mi.Kind == MachineKind.Lamp) return;
+                // a power switch's own stub is the connector the cord goes into (owner 2026-11-16): no plug of ours beside it
+                if (mi != null && mi.SidePorts) return;
                 bool atS = atStart;
                 if (mi != null)
                 {
@@ -4175,6 +4199,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 }
                 piece.Ends.Add(new CordEnd { Tip = tip, Dir = new V2(nd.Out.X, nd.Out.Z), NetCell = nd.Cell, Wall = false });
             }
+            else if (nd.IsStub && nd.WallTerminal)
+            {
+                // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO: one loose end against the face, frayed (live or dead); the downed-wire
+                // drip owns its sparks (CordEnd.Wall). It does not whip: it lies against the wall
+                bool liveEnd = isLive(nd.Cell);
+                foreach (CordStrand s in piece.Strands)
+                {
+                    if (atStart ? s.DiveA : s.DiveB) continue;
+                    V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
+                    piece.Decals.Add(new CordDecal(liveEnd ? DecalKind.FrayLive : DecalKind.FrayDead, t, EndAngle(s.Pts, atStart), 0.5));
+                }
+                piece.Ends.Add(new CordEnd { Tip = tip, Dir = nd.Into, NetCell = nd.Cell, Wall = true });
+            }
             else if (nd.IsStub)
             {
                 double ang = Math.Atan2(nd.Into.Z, nd.Into.X);
@@ -4214,18 +4251,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     piece.LiveKeys.Add(nd.Cell);
                 }
                 else if (nd.Type == NodeType.StubDevice)
-                    // no strips outside the modern look (B1/B15): the cord ends in a small junction box, an arm along it
-                    piece.Decals.Add(new CordDecal(DecalKind.JunctionTin, nd.Face - nd.Into * 0.2, ang, 0.6));
-                if (nd.WallTerminal)
-                {
-                    var tail = WallMount.LooseWire(hole, nd.Face, nd.Into);
-                    var sw = new double[tail.Count];
-                    for (int k = 0; k < sw.Length; k++) sw[k] = Math.Pow(k / (double)(sw.Length - 1), 1.3);
-                    piece.Strands.Add(new CordStrand { Pts = tail, OverFace = true, S0 = 0.3, Lifted = true, SwayW = sw });
-                    V2 tt = tail[tail.Count - 1];
-                    piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.FrayLive : DecalKind.FrayDead, tt, -Math.PI / 2, 0.5) { OnSwayTail = true });
-                    piece.Ends.Add(new CordEnd { Tip = tt, Dir = new V2(0, -1), NetCell = nd.Cell, Wall = true });
-                }
+                    // no strips outside the modern look (B1/B15): the cord ends in a small junction box, an arm along it. Its other three
+                    // arms carry no cord: there is no one-port box art (RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO keeps them, named)
+                    piece.Decals.Add(new CordDecal(DecalKind.JunctionTin, nd.Face - nd.Into * DeviceBoxBack, ang, DeviceBoxScale));
             }
         }
 

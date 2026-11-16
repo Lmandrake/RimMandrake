@@ -101,45 +101,5 @@ namespace RimMandrake.GimmeSomeSlack.Core
             DepthSpan(d, face, into, out double near, out double far);
             return near >= -tol && far <= MaxDepth(FaceOf(into)) + tol;
         }
-
-        // ---------------------------------------------------------------- the wall terminal's loose wire
-        /// <summary>Owner round 4 (station 6: "'hanging disconnected wire' doesn't look right hanging out of a perspective
-        /// west-facing wall"): the loose wire leaves the socket STRAIGHT, continuing the line of the cord, then droops onto
-        /// the floor. On the visible south face it hangs straight down the face (screen down is down that face) and curls on
-        /// the floor at its foot; on a side or the hidden north face it comes straight out of the wall and lies on the floor.
-        /// The first segment is straight along the exit direction (no hook at the socket).</summary>
-        internal static System.Collections.Generic.List<V2> LooseWire(V2 socket, V2 face, V2 into)
-        {
-            WallFaceKind f = FaceOf(into);
-            var outv = -into;
-            var side = new V2(-into.Z, into.X);
-            var o = new System.Collections.Generic.List<V2>(18);
-            if (f == WallFaceKind.South)
-            {
-                // straight down the band to its foot, then 0.16 onto the floor, the last bit curling sideways
-                double toFoot = (socket.Z - face.Z);
-                for (int i = 0; i <= 8; i++) o.Add(new V2(socket.X, socket.Z - toFoot * i / 8.0));
-                V2 foot = o[o.Count - 1];
-                for (int i = 1; i <= 8; i++)
-                {
-                    double t = i / 8.0;
-                    o.Add(foot + new V2(0, -0.16 * t) + side * (0.10 * t * t));
-                }
-                return o;
-            }
-            // straight out of the face along the cord's own line, then sagging sideways (screen-down for a side face)
-            V2 start = socket, exit = face + outv * 0.0;
-            double inWall = (start - exit).Len;
-            int k = Math.Max(2, (int)Math.Ceiling(inWall / 0.04));
-            for (int i = 0; i <= k; i++) o.Add(start + (exit - start) * (i / (double)k));
-            V2 sag = f == WallFaceKind.Side ? new V2(0, -1) : side;
-            for (int i = 1; i <= 10; i++)
-            {
-                double t = i / 10.0;
-                double droop = Math.Max(0, t - 0.35) / 0.65;          // the first third leaves dead straight, then it sags
-                o.Add(exit + outv * (0.26 * t) + sag * (0.14 * droop * droop));
-            }
-            return o;
-        }
     }
 }
