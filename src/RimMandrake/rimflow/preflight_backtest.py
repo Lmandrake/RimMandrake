@@ -55,6 +55,7 @@ WEEK = ("2026-10-31", "2026-11-08")
 
 
 def git(*a, **kw):
+    kw.setdefault("timeout", 300)
     return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, **kw)
 
 
@@ -83,7 +84,7 @@ class History(object):
         if not pairs:
             return {}
         req = "".join("%s:%s\n" % p for p in pairs).encode()
-        p = subprocess.run(["git", "-C", REPO, "cat-file", "--batch"], input=req, capture_output=True)
+        p = subprocess.run(["git", "-C", REPO, "cat-file", "--batch"], input=req, capture_output=True, timeout=600)
         out, buf, i = {}, p.stdout, 0
         for pair in pairs:
             nl = buf.index(b"\n", i)
