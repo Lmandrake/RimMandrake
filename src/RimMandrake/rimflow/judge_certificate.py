@@ -6,8 +6,10 @@ fail, right?"
 
 No blind judge and no in-game driver goes in on a mod while a program can already see one of its bars is red. For every
 bar, every offline test that decides it (bar["offline_decides"]) is read on four clauses:
+  decided            an offline bar (proves_at 2 or 4-5) names at least one offline decider, each also in its decides
   registered         the decider is in the table, with a file that exists and a command
-  ran_on_this_build  its recorded run carries build_id of the test's `reads` and its own file, and that is the hash now
+  ran_on_this_build  its recorded run carries build_id of the test's `reads` and its own file, and that is the hash now;
+                     a run that recorded its command must have run the table's command as it is now
   green              the run's rc is 0 and result PASS, and the test carries no `known_red`
   red_seen           WARN "UNPROVEN" only, never a refusal (RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN makes it
                      one)
@@ -27,6 +29,7 @@ import time
 TABLE = "version/test_table.json"
 RUN_TIMEOUT_S = 1800      # the slowest measured offline decider is FlowWorks' C# suite, 531 s
 NEXT_TICKET = "RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN"
+OFFLINE_STAGES = ("2", "4-5")   # a bar proving at one of these stages is decided offline
 
 
 def tpath(root, mod):
@@ -133,7 +136,7 @@ def run_offline(root, mod, runner=subprocess.run, now=None):
         secs = round(time.time() - t0, 2)
         at = now if now is not None else datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         t["runs_today"] = {"ran": True, "rc": rc, "seconds": secs, "last": last, "at": at,
-                           "result": "PASS" if rc == 0 else "FAIL", "build": build}
+                           "result": "PASS" if rc == 0 else "FAIL", "build": build, "command": t["command"]}
         ran += 1
         total += secs
         if rc != 0:
@@ -177,8 +180,17 @@ def certify(root, mod, to="blind_challenge"):
         if not isinstance(b, dict) or not b.get("id"):
             continue
         ds = b.get("offline_decides")
+        if str(b.get("proves_at")) in OFFLINE_STAGES and not (isinstance(ds, list) and ds):
+            # an offline bar no test decides would certify on no run at all (RIMMANDRAKE_BIND_CERTIFICATE_TO_OFFLINE_DECIDERS_NO_OP_PASSED)
+            row(b["id"], None, "decided", "REFUSED", "bar %s proves at stage %s and names no offline decider (offline_decides %s)"
+                % (b["id"], b.get("proves_at"), json.dumps(ds)), "bar %s's offline_decides names at least one offline test" % b["id"],
+                "name the bar's offline deciders in offline_decides (and decides), or build the check")
         for d in ds if isinstance(ds, list) else []:
             bid, t = b["id"], tests.get(d)
+            if d not in (b.get("decides") or []):
+                row(bid, d, "decided", "REFUSED", "bar %s names %s in offline_decides but not in decides, and the table passes a "
+                    "bar on decides" % (bid, d), "every offline decider of bar %s is also in its decides" % bid,
+                    "add %s to bar %s's decides (or drop it from offline_decides)" % (d, bid))
             if not isinstance(t, dict):
                 row(bid, d, "registered", "REFUSED", "bar %s names offline decider %s; the test table holds no such "
                     "test" % (bid, d), "a tests.%s entry with a file that exists and a command" % d,
@@ -204,6 +216,12 @@ def certify(root, mod, to="blind_challenge"):
             elif r["build"] != now:
                 obs = "the recorded run (%s) was on build %s; the test and what it reads hash to %s now" % (
                     r.get("at") or "no time", r["build"], now)
+            elif r.get("command") is not None and r["command"] != cmd:
+                # the build hashes files, not the command: a command swapped after a green run kept the stamp
+                # (RIMMANDRAKE_BIND_CERTIFICATE_TO_OFFLINE_DECIDERS_NO_OP_PASSED; a stamp from before run_offline recorded
+                # its command carries none and is read as before until its next --run)
+                obs = "the recorded run (%s) ran `%s`; the table's command is now `%s`" % (
+                    r.get("at") or "no time", str(r["command"])[:80], str(cmd)[:80])
             else:
                 obs = None
             row(bid, d, "ran_on_this_build", "PASS" if obs is None else "REFUSED",
