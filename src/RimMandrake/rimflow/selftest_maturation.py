@@ -370,6 +370,34 @@ def main():
            in json.dumps(nx["refusals"]), "next on Explosive Knockback names the failing exit test")
         nx = M.next_step(root, "SpineTestMod")
         ok("advance" in nx["next"] or "hand step" in nx["next"], "next on an offline-build mod says the move")
+        # RIMMANDRAKE_REFUSE_EXIT_ON_OWED_SCENE_PARTS_STALE_FLAG: a deciding scene whose scenes.json entry still owes
+        # script parts to an open ledger item is no check that runs, whatever the table's stored flag says
+        ok(M.load(root, "FlowWorks")["stage"] == "offline_build", "FlowWorks still sits at offline build")
+        tt = json.loads(read(root, "FlowWorks", "version/test_table.json"))
+        bar = next(b for b in tt["bars"] if b.get("decides") and b.get("every_decider_runnable_today") is True)
+        owed = "RIMMANDRAKE_BUILD_SELFTEST_SCENE_PARTS_STILL_OWED"
+        sp = os.path.join(root, "design", "concepts", "FlowWorks", "scenes.json")
+        with open(sp, "w") as f:
+            json.dump({"scenes": [{"id": bar["decides"][0], "owed_parts_item": [owed]}]}, f)
+        ev = os.path.join(root, "infrastructure", "state", "ledger", "events")
+        os.makedirs(ev, exist_ok=True)
+        with open(os.path.join(ev, "BENCH.jsonl"), "w") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "file", "id": owed, "title": "selftest"}) + "\n")
+
+        def owed_refusal():
+            return [r for r in M.next_step(root, "FlowWorks")["refusals"]
+                    if r["clause"] == "every_bar_has_a_check_that_runs"]
+        cl = owed_refusal()
+        ok(cl and owed in json.dumps(cl) and bar["id"] in json.dumps(cl),
+           "a bar whose deciding scene owes parts to an open item is not runnable (%s)" % json.dumps(cl)[:200])
+        with open(os.path.join(ev, "BENCH.jsonl"), "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "close", "id": owed}) + "\n")
+        cl = owed_refusal()
+        listed = cl[0]["observed"].split("not runnable: ", 1)[-1].split(";")[0].split(", ") if cl else []
+        ok(owed not in json.dumps(cl) and bar["id"] not in listed,
+           "once the owed item closes the bar runs again (only the table's own refusals are left)")
+        os.remove(sp)
+        shutil.rmtree(os.path.join(root, "infrastructure"))
         cli = subprocess.run([sys.executable, os.path.join(HERE, "maturation.py"), "--root", root, "advance",
                               "ExplosiveKnockback", "--to", "in_game", "--by", "BENCH", "--why", "x"],
                              capture_output=True, text=True, env=dict(os.environ), timeout=120)

@@ -362,6 +362,30 @@ def _table_runnable(tt, v=None, locked=None):
     return [b.get("id", "?") for b in bars if b.get("every_decider_runnable_today") is not True], len(bars)
 
 
+def owed_scene_parts(root, mod, tt):
+    """-> {bar id: [item ids]} for bars a scene decides whose scenes.json entry names an owed_parts_item still open on
+    the ledger (not closed, dropped or superseded): those reads are not built yet, so the table's stored
+    every_decider_runnable_today cannot say the check runs (RIMMANDRAKE_REFUSE_EXIT_ON_OWED_SCENE_PARTS_STALE_FLAG)."""
+    sc, _ = read_json(root, mod, "scenes.json")
+    scenes = sc.get("scenes") if isinstance(sc, dict) else None
+    owes = {}
+    for s in scenes if isinstance(scenes, list) else []:
+        v = s.get("owed_parts_item") if isinstance(s, dict) else None
+        ids = [v] if isinstance(v, str) else [x for x in v if isinstance(x, str)] if isinstance(v, list) else []
+        if ids and s.get("id"):
+            owes[s["id"]] = ids
+    if not owes or not isinstance(tt, dict):
+        return {}
+    ended = ledger_ended(root, {i for ids in owes.values() for i in ids})
+    out = {}
+    for b in tt.get("bars") or []:
+        if isinstance(b, dict) and b.get("id"):
+            open_ = sorted({i for d in b.get("decides") or [] for i in owes.get(d, []) if i not in ended})
+            if open_:
+                out[b["id"]] = open_
+    return out
+
+
 def bar_fingerprints(tt):
     """-> {bar id: hash of its deciders' test entries}: a refused bar that turns runnable with its checks unchanged is a
     flag flipped, not progress (RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS)."""
@@ -547,14 +571,24 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
             res = (None, lerr) if lerr else _table_runnable(tt, v, lk) if tt is not None else (None, terr)
             bad, n = res
             walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
+            owed = {}
             if isinstance(bad, list):
                 bad = [x for x in bad if x not in walk]
+                owed = {b: i for b, i in owed_scene_parts(root, mod, tt).items() if b not in bad}
+                bad += sorted(owed)
+            owed_txt = ("; the table flags these runnable but a deciding scene in scenes.json still owes script parts "
+                        "to an open item: %s" % "; ".join("%s (%s)" % (b, ", ".join(i)) for b, i in sorted(owed.items()))
+                        ) if owed else ""
             clause("every_bar_has_a_check_that_runs", "every bar has every deciding check runnable "
-                   "(an in-game scene may be UNRUN with its command)", isinstance(bad, list) and not bad,
-                   [tref], observed=("%d of %d bars not runnable: %s" % (len(bad), n, ", ".join(bad)))
+                   "(an in-game scene may be UNRUN with its command, not with its script parts still owed)",
+                   isinstance(bad, list) and not bad,
+                   [tref] + ([rel(mod, "scenes.json")] if owed else []),
+                   observed=("%d of %d bars not runnable: %s%s" % (len(bad), n, ", ".join(bad), owed_txt))
                    if isinstance(bad, list) else "test_table.json: %s" % n,
                    would_pass="a test table whose every bar reads every_decider_runnable_today true",
-                   fix="build the missing checks or scene entries for the listed bars, then remake the test table",
+                   fix="build the missing checks or scene entries for the listed bars, then remake the test table" + (
+                       "; for a scene that owes script parts, work and close the owed item (%s)"
+                       % ", ".join(sorted({i for ids in owed.values() for i in ids})) if owed else ""),
                    cost="new instrument",
                    why_sound="the lock rule (his, by agreement 2026-11-14): no mod moves past Stage 3 until every bar "
                              "has a check that runs")
@@ -2269,6 +2303,34 @@ def _section(text, head):
         return ""
     end = next((j for j in range(start + 1, len(lines)) if lines[j].startswith("## ")), len(lines))
     return "\n".join(lines[start + 1:end]).strip()
+
+
+def ledger_ended(root, ids):
+    """-> the subset of ids whose newest close, drop, supersede or reopen (a `live` event with result broken) on any
+    shard under infrastructure/state/ledger/events/ is not a reopen; ordered by tsn, file order where it is missing."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    want, last, n = set(ids), {}, 0
+    for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
+        if not f.endswith(".jsonl"):
+            continue
+        with open(os.path.join(d, f), encoding="utf-8") as fh:
+            for ln in fh:
+                if not any(k in ln for k in ('"close"', '"drop"', '"supersede"', '"live"')):
+                    continue
+                try:
+                    e = json.loads(ln)
+                except ValueError:
+                    continue
+                kind, i = e.get("event"), e.get("id")
+                if i not in want or kind not in ("close", "drop", "supersede", "live"):
+                    continue
+                if kind == "live" and e.get("result") != "broken":
+                    continue
+                n += 1
+                key = (int(e["tsn"]) if str(e.get("tsn") or "").isdigit() else 0, n)
+                if i not in last or key > last[i][0]:
+                    last[i] = (key, kind != "live")
+    return {i for i, (_, done) in last.items() if done}
 
 
 def ledger_items_caused_by(root, ids):

@@ -344,3 +344,16 @@ so the Conductor takes it. These are Conductor decisions, not his.
   its own art since adf45e2103 (2026-10-15).
 - Owed: RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN (script parts; every new or extended live read UNRUN,
   commands in scenes.json), RIMMANDRAKE_JUDGE_PYRELANDS_ART_ADDED_SINCE_HIS_SHEET, RIMMANDRAKE_DRAW_CRESTFEATHER_OWN_ART_NOT_A_THRUMBO_HORN.
+
+### 2026-11-15 4:36 PM PST, advance steward: NOT advanced to Blind challenge (BENCH, RIMMANDRAKE_ADVANCE_PYRELANDS_PAST_OFFLINE_BUILD)
+- `maturation.py next` read every Stage 3 exit test green, but `every_bar_has_a_check_that_runs` only read the test
+  table's stored `every_decider_runnable_today` (42 of 42 true). 22 deciding scenes in `scenes.json` still carry
+  `owed_parts_item` naming two open build items, RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED (no
+  claim, no commit; its NEW chains `foreign_arrivals` and `fire_sense` are absent from `validation.py`) and
+  RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN. Sorted as a REAL MISS of Stage 3 (the checks are not
+  built), and a pipeline defect (the clause trusted the stored flag).
+- Fixed: RIMMANDRAKE_REFUSE_EXIT_ON_OWED_SCENE_PARTS_STALE_FLAG. The clause now counts a bar as not runnable while a
+  deciding scene owes parts to an open item; `maturation.py next Pyrelands` reads 28 of 42 bars not runnable and names
+  both items. The Dispatch tick's builder works them; then the advance.
+- Also owed before the blind challenge reads a settled tree: the round-8 coverage look released 2026-11-16T00:11:33Z
+  (after the furnace-beast fix, 6120bb02aa) has not run yet.
