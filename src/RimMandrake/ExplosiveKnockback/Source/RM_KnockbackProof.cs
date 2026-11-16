@@ -447,10 +447,29 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 for (int x = 12; x < map.Size.x - 12 && o.Count < n; x += 15)
                 {
-                    o.Add(x + "," + z);
+                    if (!PondSite(map, new IntVec3(x, 0, z)))
+                    {
+                        o.Add(x + "," + z);
+                    }
                 }
             }
             return string.Join(";", o);
+        }
+
+        /// <summary>Visit 2 (2026-11-15, SITE): a natural pond in a scene's rect leaves FlowWorks a dry bed that Prepare's
+        /// Soil paint does not remove, and the relative climb rule then reads the takeoff cell 4 deep (sc_pit_fall: a thrown
+        /// colonist dropped one notch into the pit, no descent). Such a rect is never a scene site.</summary>
+        private static bool PondSite(Map map, IntVec3 o)
+        {
+            foreach (IntVec3 c in CellRect.CenteredOn(o, 7).ClipInsideMap(map))
+            {
+                TerrainDef td = c.GetTerrain(map);
+                if ((td != null && (td.IsWater || td.defName.StartsWith("RM_Lakebed"))) || RM_KnockbackCompat.NaturalBedAt(map, c))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static string Stage(string arg)
@@ -469,6 +488,17 @@ namespace RimMandrake.ExplosiveKnockback
             try
             {
                 Prepare(s.o, 7);
+                // the site is asserted, never hoped: a prepared rect reads no FlowWorks climb depth (a natural pond's bed outlasts
+                // the Soil paint; Origins skips such rects, a hand-given origin is refused here)
+                foreach (IntVec3 c in CellRect.CenteredOn(s.o, 7).ClipInsideMap(Map))
+                {
+                    int depth = RM_KnockbackCompat.ClimbDepthAt(Map, c);
+                    if (depth != 0)
+                    {
+                        return "INVALID " + s.name + " site: climb depth " + depth + " at " + c.x + "," + c.z
+                            + " after prepare (a natural pond bed); stage it elsewhere";
+                    }
+                }
                 string why = Build(s);
                 if (why != null)
                 {
@@ -1835,8 +1865,11 @@ namespace RimMandrake.ExplosiveKnockback
                         if (sc.name == "gas_into_pit_off")
                         {
                             // row control: fails alone when the colonist ends in the pit with the gas chain unhooked (the
-                            // fire, or a walk, put it there)
-                            return Result(sc, bursts == 0 && launch.Count == 0 && desc.Count == 0 && !inPit && cells == 0, d);
+                            // fire, or a walk, put it there). Visit 2 (2026-11-15): the lit cloud's vanilla fire sets the colonist
+                            // alight and a burning colonist runs (4 to 9 cells, 2 of 4 runs), so cells moved count only unburned.
+                            bool burned = t is Pawn bp && (bp.IsBurning() || bp.health.hediffSet.hediffs.Any(h => h.def.defName == "Burn"));
+                            return Result(sc, bursts == 0 && launch.Count == 0 && desc.Count == 0 && !inPit && (cells == 0 || burned),
+                                d + " burned=" + burned);
                         }
                         // row shove: one launch, one cell, no impact (a shove is not a throw)
                         bool shove = launch.Count == 1 && (int)launch[0]["planned"] <= 1 && Convert.ToSingle(launch[0]["impact"]) == 0f;

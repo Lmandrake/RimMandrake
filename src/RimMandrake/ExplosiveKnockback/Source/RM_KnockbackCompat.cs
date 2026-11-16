@@ -21,6 +21,8 @@ namespace RimMandrake.ExplosiveKnockback
         private static Func<object, IntVec3, byte> deepen;
         private static Func<object, IntVec3, byte> fillIn;
         private static Func<Map, IntVec3, Thing> coverAt;
+        private static Func<object, IntVec3, int> climbDepthAt;
+        private static Func<object, IntVec3, bool> isNaturalBed;
         private static Type coverType;
 
         // ── Gimme Some Slack (mandrake.rm.gimmesomeslack): a carried hose end ──
@@ -50,6 +52,8 @@ namespace RimMandrake.ExplosiveKnockback
                     MethodInfo m = AccessTools.Method(excavationType, "IsSuperdeepExcavation", new[] { typeof(IntVec3) });
                     MethodInfo d = AccessTools.Method(excavationType, "Deepen", new[] { typeof(IntVec3) });
                     MethodInfo fi = AccessTools.Method(excavationType, "FillIn", new[] { typeof(IntVec3) });
+                    MethodInfo cd = AccessTools.Method(excavationType, "ClimbDepthAt", new[] { typeof(IntVec3) });
+                    MethodInfo nb = AccessTools.Method(excavationType, "IsNaturalBed", new[] { typeof(IntVec3) });
                     Type util = AccessTools.TypeByName("RimMandrake.FlowWorks.Pits.RM_PitCoverUtility");
                     MethodInfo ca = util == null ? null : AccessTools.Method(util, "CoverAt", new[] { typeof(Map), typeof(IntVec3) });
                     coverType = AccessTools.TypeByName("RimMandrake.FlowWorks.Pits.Building_PitCover");
@@ -62,6 +66,8 @@ namespace RimMandrake.ExplosiveKnockback
                         isSuperdeep = (o, c) => (bool)m.Invoke(o, new object[] { c });
                         deepen = d == null ? null : (Func<object, IntVec3, byte>)((o, c) => (byte)d.Invoke(o, new object[] { c }));
                         fillIn = fi == null ? null : (Func<object, IntVec3, byte>)((o, c) => (byte)fi.Invoke(o, new object[] { c }));
+                        climbDepthAt = cd == null ? null : (Func<object, IntVec3, int>)((o, c) => (int)cd.Invoke(o, new object[] { c }));
+                        isNaturalBed = nb == null ? null : (Func<object, IntVec3, bool>)((o, c) => (bool)nb.Invoke(o, new object[] { c }));
                         coverAt = ca == null ? null : (Func<Map, IntVec3, Thing>)((map, c) => ca.Invoke(null, new object[] { map, c }) as Thing);
                     }
                 }
@@ -207,6 +213,23 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
 #if RM_PROOFS
+        /// <summary>The depth FlowWorks' relative climb rule reads at a cell: dug, or a dry natural pond bed (proof site checks
+        /// only; visit 2, 2026-11-15: a quicktest pond's bed under a scene origin turned a pit fall into a one-notch step).
+        /// 0 without FlowWorks.</summary>
+        public static int ClimbDepthAt(Map map, IntVec3 c)
+        {
+            object ex = Excavation(map);
+            return ex == null || climbDepthAt == null ? 0 : climbDepthAt(ex, c);
+        }
+
+        /// <summary>FlowWorks records a natural pond's bed under this cell (it outlasts the water: painting the cell over leaves
+        /// it). False without FlowWorks.</summary>
+        public static bool NaturalBedAt(Map map, IntVec3 c)
+        {
+            object ex = Excavation(map);
+            return ex != null && isNaturalBed != null && isNaturalBed(ex, c);
+        }
+
         /// <summary>Fill a dug cell back to the surface (proof scenes only: a pit an earlier scene dug at a reused origin
         /// otherwise catches the next scene's throw — live 2026-10-07, thump cannon "2 cells" was a stop in a leftover pit).
         /// True when the cell ends at the surface or FlowWorks is absent.</summary>
