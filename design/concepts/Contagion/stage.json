@@ -1,6 +1,5 @@
 {
  "aliases": [],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: judge spend 3151034 tokens (limit 3007272, 4x the p90); judging stopped on Contagion (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -246,13 +245,19 @@
   "reserve": 60000,
   "spent": 12018230
  },
- "coverage_release_granted": {
-  "after": [
-   "RIMMANDRAKE_FIX_CONTAGION_COVERAGE_GAPS_TWENTY_FIVE_ALL_SOUND"
-  ],
-  "at": "2026-11-16T09:50:47Z",
-  "why": "Conductor quick run 2026-11-16 per evidence-for-ask: all 25 gaps of rm-coverage-judge-1794821839 are sound and fixable at stage 3, 0 late; fix first, then exactly one more look"
- },
+ "coverage_releases": [
+  {
+   "after": [
+    "RIMMANDRAKE_FIX_CONTAGION_COVERAGE_GAPS_TWENTY_FIVE_ALL_SOUND"
+   ],
+   "at": "2026-11-16T16:03:15Z",
+   "final": true,
+   "granted_at": "2026-11-16T09:50:47Z",
+   "granted_why": "Conductor quick run 2026-11-16 per evidence-for-ask: all 25 gaps of rm-coverage-judge-1794821839 are sound and fixable at stage 3, 0 late; fix first, then exactly one more look",
+   "rounds_at": 3,
+   "why": "owner 2026-11-16 15:16Z: 'Yes, Judge may take one more look'; re-scope builder READY (15:40Z); hold condition met: RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS landed 579eb06168 and coverage_judge brief reads CALIBRATED (Conductor quick check 08:00 PST)"
+  }
+ ],
  "coverage_rounds": [
   {
    "at": "2026-11-16T00:15:08Z",
@@ -487,10 +492,6 @@
    "verdict": "not_covered"
   }
  ],
- "coverage_stop": {
-  "at": "2026-11-16T09:45:24Z",
-  "why": "judge spend 3151034 tokens (limit 3007272, 4x the p90)"
- },
  "history": [
   {
    "at": "2026-11-15T14:00:37Z",
@@ -767,6 +768,12 @@
    "stage": 5,
    "what": "coverage_release_granted",
    "why": "Conductor quick run 2026-11-16 per evidence-for-ask: all 25 gaps of rm-coverage-judge-1794821839 are sound and fixable at stage 3, 0 late; fix first, then exactly one more look (takes effect after RIMMANDRAKE_FIX_CONTAGION_COVERAGE_GAPS_TWENTY_FIVE_ALL_SOUND close and the re-pin lands)"
+  },
+  {
+   "at": "2026-11-16T16:03:16Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "owner 2026-11-16 15:16Z: 'Yes, Judge may take one more look'; re-scope builder READY (15:40Z); hold condition met: RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS landed 579eb06168 and coverage_judge brief reads CALIBRATED (Conductor quick check 08:00 PST)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -1138,6 +1145,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "blocked",
+ "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
