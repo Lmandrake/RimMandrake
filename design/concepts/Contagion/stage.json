@@ -240,10 +240,17 @@
     "ref": "run rm-role-designer-1794821827",
     "stage": 5,
     "tokens": 500000
+   },
+   {
+    "at": "2026-11-16T20:37:31Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1794861312",
+    "stage": 3,
+    "tokens": 500000
    }
   ],
   "reserve": 60000,
-  "spent": 12018230
+  "spent": 12518230
  },
  "coverage_releases": [
   {
@@ -774,6 +781,30 @@
    "stage": 5,
    "what": "coverage_release",
    "why": "owner 2026-11-16 15:16Z: 'Yes, Judge may take one more look'; re-scope builder READY (15:40Z); hold condition met: RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS landed 579eb06168 and coverage_judge brief reads CALIBRATED (Conductor quick check 08:00 PST)"
+  },
+  {
+   "at": "2026-11-16T20:35:16Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-16T20:35:16Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "12018230 of 4000000 spent; run rm-role-designer-1794861312 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T20:35:16Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794861312, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-16T20:37:31Z",
+   "stage": 3,
+   "what": "retry",
+   "why": "run rm-role-designer-1794861312 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -898,30 +929,6 @@
    "summary": "Stage 2 done with no ask sent. All ten contradictions resolved: c_local by his certified d_efa_q04/d_one_dash; c_canopy, c_sundash, c_dive, c_bodyprints by delegated Evidence-for-Ask calls (OWNER:1794774451598713765): Burn refuges follow the shared shade geometry, the Bloom quiets the sun dash via the existing weather factor (fix filed RIMMANDRAKE_FIX_SUNDASH_READ_WEATHER_COVER_HEAT_ALREADY_DOES), the pre-Burn Dive and Bodyprints stay in 0.1.0 per his 2026-10-16 card. The proof and doc contradictions are stage 3 work."
   },
   {
-   "at": "2026-11-15T20:41:26Z",
-   "inputs": {
-    "exam": null,
-    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
-    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
-    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
-    "scenes": "0a5d99349d37cf82f302ef21ab2b771a524ac041d93bcd36cd50a4a78e989ba4",
-    "sheet": "e0e9a86330827203b114a0265ed56d80d9b1b4bc6ef4940b0144e6e5aab76cf3",
-    "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69"
-   },
-   "manifest": {
-    "designer.md": "2e7b332764d2380de35dd3075fb4060e707d9968fa95d29c0fa53557c2fd6f29",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1794751310354805960"
-   ],
-   "run": "rm-role-designer-1794774716",
-   "stage": 3,
-   "summary": "Stage 3 Write: tree.json (26 leaves, one walk, against the DRAFT north star whose false repulsor 'cleared patch' line was corrected to his certified whole-map warning), sheet.md, plan.md, floor.json (all 23 floor lines applicable), scenes.json (24 script scenes, flagship sc_burn_dash held for review, 5 showcases: burn_dash 10 new, living_map 37, coalescence_harvest 10, genome_bench 6, helix_market 4, all at 0.00 overlap; 15 capabilities in coverage_rest, grown limbs among them per his 0.2.0 move). record.json d_q02_first_demo now carries flagship burn_dash. Filed: RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL (all 24 entry points), and four owed builds: ..._BURN_REFUGE_READS_SHARED_SHADE, ..._BATCH_ODDS_BEFORE_THE_STAB, ..._PREBURN_DIVE_NATIVES_LEAVE_FIRST, ..._BODYPRINTS_SKIN_BEFORE_PRINT. c_open_fixes resolved: the 2026-10-17 fixes are built on origin/main and owe live proof, which the scenes carry."
-  },
-  {
    "at": "2026-11-15T21:25:54Z",
    "inputs": {
     "exam": null,
@@ -948,29 +955,6 @@
    "run": "rm-role-designer-1794775427",
    "stage": 4,
    "summary": "The exam needs five fresh helpers (Examiner, Challenger, two Readers, Control). The slot hook counts this run's spawns as CONDUCTOR helpers: six Conductor-window helpers held N=3 from 12:45 to 13:23 PST, then the budget fell to N=0 (PAYDOWN, about 10 h). No helper ran, so no scenario exists and nothing was scored. Prepared for the retake: the control copy in exam_control/ removes the core leaf sunbeam_arrest_treats, which no other leaf or sheet line mentions (checked: zero residue). Unblock when the seat has at least 2 slots."
-  },
-  {
-   "at": "2026-11-16T00:13:56Z",
-   "inputs": {
-    "exam": "d7ab9110c711550d64ed89d60a09dbccba1545cf92100f6429e8288e8d95ea07",
-    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
-    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
-    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
-    "scenes": "0a5d99349d37cf82f302ef21ab2b771a524ac041d93bcd36cd50a4a78e989ba4",
-    "sheet": "e0e9a86330827203b114a0265ed56d80d9b1b4bc6ef4940b0144e6e5aab76cf3",
-    "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69"
-   },
-   "manifest": {
-    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1794751310354805960"
-   ],
-   "run": "rm-role-designer-1794787652",
-   "stage": 4,
-   "summary": "Stage 4 Cold Reader exam passed against tree c70f85d1 and sheet e0e9a863: 16 frozen scenarios (12 by a fresh Examiner, 4 near-miss traps by a fresh Challenger; 10 reject cases), two fresh Readers matched expect on 16/16, accept_where_reject_core 0, no Challenger misses. Control Reader on the copy without core leaf sunbeam_arrest_treats accepted s8 (an arrest that erases mutations), the one scenario sourced on that leaf it could not see, so the set discriminates. Five helpers charged (191,493 tokens); the task is over its 4,000,000 cap (advisory, per the launcher)."
   },
   {
    "at": "2026-11-16T00:32:08Z",
@@ -1072,57 +1056,6 @@
    "summary": "The root-validation decision that sent the concept back is settled: the walk design/validation_walks/RimMandrake/Contagion.md is VALIDATED (db22459dac, delegated new bars under delegation_policy §2.1, grown-limb bar parked for 0.2.0 per OWNER:1794772416196929336; acceptance test PASS 3/3). No ask is sent; every contradiction carries its resolution. The gate's 'root is not VALIDATED' count is gone. What it still refuses is stage-3 work: the tree cites the old root hash, three leaves (genome_brings_tissue, limb_still_grows, walk_red_lid) cite the parked bar contagion_grown_limb_visible, and there is no coverage signature. Stage 3 re-stamps root_hash, takes limb_still_grows out of the 0.1.0 tree, fixes coverage gaps g1-g26 and g28-g31 from rm-coverage-judge-1794788108 in coverage_fixes.json, and sends g27 to the criteria fixer."
   },
   {
-   "at": "2026-11-16T09:08:26Z",
-   "inputs": {
-    "exam": "d7ab9110c711550d64ed89d60a09dbccba1545cf92100f6429e8288e8d95ea07",
-    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
-    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
-    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
-    "scenes": "43681c42512f4fcae010ea7d65b7c9976f8847287654c1c01efda1dd334cc81e",
-    "sheet": "44508a3b521bba651237b68dd458d8db18330177646761dbfa22d01d7937ae40",
-    "tree": "b95090b8c584a87f142359f62c4cf37a789a8b5514aca998a495bf91578961fb"
-   },
-   "manifest": {
-    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1794751310354805960"
-   ],
-   "run": "rm-role-designer-1794819648",
-   "stage": 3,
-   "summary": "Tree rewritten against the VALIDATED walk (root hash stamped; contagion_grown_limb_visible gone from every leaf). limb_still_grows left the 0.1.0 tree per OWNER:1794772416196929336; the built limbs are covered offline by limbs_stay_built. Reworked against rm-coverage-judge-1794788108: coverage_fixes.json claims 30 of 31 gaps (new offline leaves fauna_specials_declared, biome_def_declared, flora_yields_declared, limbs_stay_built; new leaf zhooliza_lives_here; new scenes sc_sunbeam_fires, sc_wombpod_hatch, sc_helix_trade, sc_coalescence_forms, sc_mulched_soil, sc_zhooliza; arms on 17 scenes; showcases re-cut). shelter_in_lead now tests the tells lead used by a player order; no colonist shelter job is assumed. Filed RIMMANDRAKE_DRAW_CONTAGION_FLIPBOOKS_TWO_FLYERS_HALF_DRAWN (acceptance test FAIL 0/4 on base, instrument probe 4/4 on Skinflap/Sparkleech). Unclaimed: g19 (legacy_placement_worker absence check: the worker is built and scoped out; removing it or writing an absence check is a removal decision, left open). Lint PASS, showcase set accepted; gate refuses only on the missing coverage signature, which stage 5 owns."
-  },
-  {
-   "at": "2026-11-16T09:15:34Z",
-   "inputs": {
-    "exam": "d4b9f7820012d6e2184061e631cf65bf53b49f68a512034369084701bdced103",
-    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
-    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
-    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
-    "scenes": "43681c42512f4fcae010ea7d65b7c9976f8847287654c1c01efda1dd334cc81e",
-    "sheet": "44508a3b521bba651237b68dd458d8db18330177646761dbfa22d01d7937ae40",
-    "tree": "b95090b8c584a87f142359f62c4cf37a789a8b5514aca998a495bf91578961fb"
-   },
-   "manifest": {
-    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1794751310354805960"
-   ],
-   "quick_look": {
-    "offer": false,
-    "why": "stage 4 asks him nothing; the exam is a text read of the tree"
-   },
-   "run": "rm-role-designer-1794820103",
-   "stage": 4,
-   "summary": "Cold Reader exam rerun against the reworked tree (b95090b8) and sheet (44508a3b): 19 frozen scenarios (14 Examiner, 5 Challenger, 13 rejects across 12 leaves); both fresh Readers matched expect on 19/19, accept_where_reject_core 0, no Challenger miss. Control on a copy with sunbeam_arrest_treats removed missed s4 (the already-stopped-progression false pass) as it should."
-  },
-  {
    "at": "2026-11-16T09:34:35Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1794821256",
@@ -1139,12 +1072,27 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-16T20:35:16Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-16T20:37:31Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794861312",
+   "stage": 3,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
