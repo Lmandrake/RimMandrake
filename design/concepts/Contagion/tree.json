@@ -622,7 +622,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "every row of the table reads its field present with the expected value; a missing field fails by name",
+   "oracle_proposed": "every row of the table reads its field present with the expected value; a missing field fails by name; one row per inventory special, none skipped",
    "tier_reason": null,
    "cannot_show": null,
    "wall_expect_h": null,
@@ -634,7 +634,7 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "The tester reading defs sees each Contagion native carry the special its description promises: acid deaths on Bloody Mess, Scorchpod and Bulloo, slime deaths on the goo-buds, the Scorchpod leaker flag, pack and size on Gnashling and Meltgut, the Bloodlurk's pool habitat, and the Zhool's and Bulloo's custom bodies and render trees.",
-   "scenario": "Selftest over RM_ContagionFauna.xml, RM_ContagionBulloos.xml and RM_OcularJelly_Twitch.xml: read each race's death action, flags, herd and size fields and render tree against a table taken from its description.",
+   "scenario": "Selftest over RM_ContagionFauna.xml, RM_ContagionBulloos.xml and RM_OcularJelly_Twitch.xml, each race resolved through its ParentName: read the table's field per row. Table (defName: field = expected): RM_BloodyMess, RM_Scorchpod, RM_InfectedAerofleet: deathAction = DeathActionProperties_ScaledExplosion; RM_Skinflap, RM_Gorekite, RM_Danglemaw, RM_Crispling, RM_Sloshbelly, RM_Ogleknot: deathAction = DeathActionProperties_Vanish; RM_Scorchpod: listed in RM_Contagion's RM_ContagionSkyExtension leakerNatives; RM_Scaldhide, RM_Crispling: listed in armoredNatives; RM_Gnashling: herdAnimal true, baseBodySize 1; RM_Meltgut: baseBodySize 4.0, MoveSpeed 0.6; RM_Bloodlurk: predator true, MoveSpeed 3.8, and its pool-margin home is its RM_Contagion wildAnimals commonality 0.2 (no race habitat field exists, grep 2026-11-16); RM_Doublemaw: MoveSpeed 4.6; RM_Peeper: predator false, manhunterOnDamageChance 0.05; RM_Eyestinger: predator true, baseBodySize 2.5, ArmorRating_Sharp 0.4; RM_Fleshsop: manhunterOnDamageChance 1.0; RM_Danglemaw: MoveSpeed 1.0, predator true; RM_ContagionIkee: defName present and distinct from any vanilla or donor ikee defName; RM_SparkleechGrub: no MaxFlightTime, baseBodySize 0.2 below RM_Sparkleech's 0.45; RM_Blisterfloat: MaxFlightTime 15, canLeaveMapFlying true; RM_InfectedAerofleet: body RM_BullooBody, MeatAmount 0, leatherDef Leather_Light; RM_OcularJelly: body RM_ZhoolBody, renderTree RM_OcularJelly_Twitch, three lifeStageAges whose render tree scales with life stage; RM_InfectedAerofleet and RM_OcularJelly: VEF CompProperties_Floating and CompProperties_AsexualReproduction declared (a def read, run without VEF loaded; the live VEF behaviour is out of this leaf because VEF is not on the minimal list)",
    "false_pass": [
     "the fields are read from the parent def only",
     "a description that names no special is skipped silently"
@@ -647,7 +647,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "each declared field present with its value; RustPuff present with TheRot and absent without; TentacularPlant absent from wildPlants; validate_patch reports every operation matched",
+   "oracle_proposed": "each declared field present with its value on the post-patch def; every disease def resolves; RustPuff present with TheRot and absent without; TentacularPlant absent from wildPlants; validate_patch reports every operation matched; the workerClass's GetScore is -100 or less on every return and biomeRarityFactor is absent from every Contagion .cs file",
    "tier_reason": null,
    "cannot_show": null,
    "wall_expect_h": null,
@@ -658,11 +658,15 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "The tester reading defs sees RM_Contagion declare its own terrain, plant density, disease table and zero forage, keep the RustPuff row only when TheRot is loaded, leave the legacy TentacularPlant off the roster, and the Acoustic Scanner payload patch match AcousticScanner's defs.",
-   "scenario": "Selftest over RM_Contagion.xml and RM_Contagion_DonorPorts.xml, the RustPuff guard parsed with and without TheRot's packageId, and validate_patch.py over RM_AcousticPayload_Contagion.xml with --defs.",
+   "experience": "The tester reading defs sees RM_Contagion declare its own terrain, plant density, disease table and zero forage, keep the RustPuff row only when TheRot is loaded, leave the legacy TentacularPlant off the roster, and the Acoustic Scanner payload patch match AcousticScanner's defs. The scoped-out placement worker is retired: the workerClass on RM_Contagion never scores a tile and no rarity setting remains.",
+   "scenario": "Selftest over the post-patch RM_Contagion def: the fingerprinted offline def dump (refresh.py) read only when its fingerprint matches the current mod set, else UNMEASURED; the RustPuff guard parsed with and without TheRot's packageId, every disease def in the disease table resolved in that dump, and validate_patch.py over RM_AcousticPayload_Contagion.xml with --defs. Absence arm, over RM_Contagion.xml and src/RimMandrake/Contagion/Source: the workerClass named on the BiomeDef has a GetScore that returns -100 or less on every return, and biomeRarityFactor appears in no Contagion .cs file; red until RIMMANDRAKE_RETIRE_CONTAGION_BIOME_SCORER_WORLD_IS_FROZEN lands.",
    "false_pass": [
     "counting <li> instead of parsing the elements",
-    "the guard read with TheRot present only"
+    "the guard read with TheRot present only",
+    "the raw XML read instead of the patched def",
+    "a stale dump whose fingerprint does not match",
+    "a GetScore read only for its first return",
+    "the rarity setting removed from the UI but still scribed"
    ],
    "red": "a build whose biome falls back to vanilla terrain or forage, lists RustPuff without its mod, or whose scanner payload matches nothing",
    "tier_proposed": "offline",
@@ -672,7 +676,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "each plant's yield thing and amount match its row; each inedible plant has no ingestible food value",
+   "oracle_proposed": "each rostered plant's yield thing and amount match its row; each inedible plant has no ingestible food value; no rostered plant is missing from the table; the Halfmade Tree resolves two or more variants",
    "tier_reason": null,
    "cannot_show": null,
    "wall_expect_h": null,
@@ -684,7 +688,7 @@
    "leaf_kind": "experience",
    "clause_kind": "preserve",
    "experience": "The tester reading defs sees each Contagion plant yield what its description says (Eyebark and Halfmade wood, red sap, seed-fists, the Wombpod sac) and the inedible ones carry no food nutrition.",
-   "scenario": "Selftest over RM_ContagionFlora.xml: harvestedThingDef, harvestYield and ingestible fields for Eyebark, Bleedleaf, Gorestalk, Sapblister, Bloody Fist, Halfmade Tree, Meatvine, Toothmoss and Wombpod.",
+   "scenario": "Selftest over RM_ContagionFlora.xml, every plant on RM_Contagion's wildPlants parsed as elements: harvestedThingDef, harvestYield and ingestible fields for Eyebark, Lashgrass, Bleedleaf, Gorestalk, Rattlegrope, Sapblister, Bloody Fist, Halfmade Tree, Blighted Halfmade Tree (RM_HalfmadeTreeBlighted), Meatvine, Toothmoss and Wombpod; and the Halfmade Tree's Graphic_Random folder resolves more than one texture",
    "false_pass": [
     "a yield read from the abstract parent",
     "inedibility inferred from a missing tag"

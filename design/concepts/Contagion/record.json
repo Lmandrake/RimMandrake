@@ -1668,7 +1668,7 @@
     "src/RimMandrake/Contagion/Source/RM_ContagionBiome.cs"
    ],
    "proof": "missing",
-   "proof_note": "Invented placement ranges; no worldgen run or promise added.",
+   "proof_note": "Invented placement ranges; no worldgen run or promise added. GetScore returns baseScore at the shipped rarity 1 (read 2026-11-16); retirement owed by RIMMANDRAKE_RETIRE_CONTAGION_BIOME_SCORER_WORLD_IS_FROZEN.",
    "scope": "out",
    "what": "Biome scoring worker and rarity setting remain built in source; alternative-planet generation is outside project scope.",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
@@ -1717,6 +1717,28 @@
    "scope_source": "OWNER:1792850998917276023",
    "what": "Owner-commissioned new smaller Zhool'Iza and its two whole-body graphic variants; not implemented.",
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json"
+  },
+  {
+   "id": "repulsor_warning",
+   "source": "ITEM:RIMMANDRAKE_BUILD_CONTAGION_REPULSOR_WARNING_NAMES_WHOLE_MAP",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/Contagion/Source/CompCloudRepulsor.cs",
+   "search_note": "grep of CompCloudRepulsor.cs for warning, confirm and Message, 2026-11-16: no warning or confirm text",
+   "proof": "missing",
+   "scope": "approved",
+   "scope_source": "d_efa_q04",
+   "what": "Owed build: a whole-map warning shown when a Repulsor is powered on the Contagion, before warmup."
+  },
+  {
+   "id": "touched_transition_message",
+   "source": "ITEM:RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE",
+   "impl": "absent",
+   "search_scope": "src/RimMandrake/Contagion/Source/RM_ContagionTouched.cs",
+   "search_note": "grep of RM_ContagionTouched.cs for Messages.Message and ReceiveLetter, 2026-11-16: only the 'Contagion mutation:' letter (line 242) and the arrest message (line 262)",
+   "proof": "missing",
+   "scope": "approved",
+   "scope_source": "OWNER:1792114303556704085",
+   "what": "Owed build: one transition message when the touched progression reaches active change."
   }
  ],
  "built_reviewed": [

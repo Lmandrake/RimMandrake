@@ -1,125 +1,105 @@
 {
- "against": "rm-coverage-judge-1794788108",
+ "against": "rm-coverage-judge-1794821839",
  "claims": [
   {
    "gap": "g1",
-   "evidence": "tree.json shelter_in_lead oracle and false_pass; scenes.json sc_shelter_in_lead start, action, expect, control (player order in the tells lead; tells-off control)"
+   "evidence": "scenes.json sc_coalescence_grows_and_breaks: second Coalescence destroyed by colonist gunfire with no Burn (expect less mulch than the Burn collapse and zero Monstrous samples); third Coalescence collapses in a natural Burn with Monstrous samples"
   },
   {
    "gap": "g2",
-   "evidence": "scenes.json sc_coalescence_grows_and_breaks: start reads COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE; expect adds reload mass read and own-manhunter exclusion; control is a walled Unfinished outside the ring"
+   "evidence": "scenes.json sc_waiting_costs_more: a stage-3 Coalescence held through emissions until the map count reaches the comp's cap, expect count equals the cap and never exceeds it for five emissions after"
   },
   {
    "gap": "g3",
-   "evidence": "scenes.json sc_genome_brings_tissue: wanted Heart named, seeded miss, market value read on every missed-batch part"
+   "evidence": "scenes.json sc_waiting_costs_more: start asserts a three-colonist recovery party ordered to the site at each stage; action reads each worker's RM_ContagionTouched severity and nearest manhunter distance at stage 1 and stage 2"
   },
   {
    "gap": "g4",
-   "evidence": "scenes.json sc_tells_then_burn expect: per-tell reads (gawpsack offset, rattlegrope phase, puff motes, LeavesRustle) and a 60-tick frame diff"
+   "evidence": "scenes.json sc_cast_lives_here: expect every roster row spawns (by the day or the biome's own spawner, never a direct spawn) and is captured; a judge that did not stage it names each capture distinct and none as another row's"
   },
   {
    "gap": "g5",
-   "evidence": "scenes.json showcases: burn_dash now holds sc_tells_then_burn, sc_preburn_dive, sc_sunbeam_fires; living_map holds sc_zhooliza and drops rustpuff_roster (coverage_rest); coalescence_harvest holds sc_coalescence_forms and sc_mulched_soil; genome_bench sc_wombpod_hatch; helix_market sc_helix_trade"
+   "evidence": "record.json inventory repulsor_warning (impl absent, scope approved, d_efa_q04, ITEM:RIMMANDRAKE_BUILD_CONTAGION_REPULSOR_WARNING_NAMES_WHOLE_MAP); item RIMMANDRAKE_BUILD_CONTAGION_REPULSOR_WARNING_NAMES_WHOLE_MAP filed with its acceptance test; sc_repulsor_warns_and_clears start asserts that build's deployed selftest, else the warning arm records UNMEASURED"
   },
   {
    "gap": "g6",
-   "evidence": "tree.json cast_lives_here oracle (every row captured, judge names each distinct); new offline leaf fauna_specials_declared"
+   "evidence": "record.json inventory touched_transition_message (impl absent, approved, ITEM:RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE); item RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE filed; sc_touched_reads_early start asserts that build, else UNMEASURED; expect adds exactly one 'Contagion mutation:' letter when the deck mutation lands"
   },
   {
    "gap": "g7",
-   "evidence": "scenes.json new sc_sunbeam_fires; sc_sunbeam_arrest_treats expect adds reservation and reach arms"
+   "evidence": "scenes.json sc_touched_reads_early: a fourth colonist adjacent to a Coalescence ring gains the hediff; a humanlike non-flesh pawn (asserted FleshType not Normal) out in the Bloom gains none"
   },
   {
    "gap": "g8",
-   "evidence": "scenes.json sc_natives_take_burn start and expect: visitor dose open vs roofed, Scorchpod leaker exemption, sprint target reads shade on RM_MapComponent_ShadeGrid"
+   "evidence": "scenes.json sc_genome_brings_tissue: a Monstrous sample injected expects one of the five grown limb items whose art draws; with grownLimbsEnabled off the Monstrous batch is an ordinary 2 to 4 part batch (sheet.md line kept, now run)"
   },
   {
    "gap": "g9",
-   "evidence": "scenes.json sc_repulsor_warns_and_clears: start asserts no natural Burn due; expect reads the condition source and captures sky change and beam for a judge"
+   "evidence": "scenes.json sc_genome_brings_tissue: the same part installed on a non-donor gives no matched mood (non-donor control); a grown natural arm or leg from the batch installed on the donor gives the mood"
   },
   {
    "gap": "g10",
-   "evidence": "scenes.json sc_flora_flesh start and expect (baseline count, haze visible, special-plant immunity, growth kept, crop opt-in both ways, judge read); tree.json flora_flesh oracle"
+   "evidence": "scenes.json sc_genome_brings_tissue: an ineligible host (dead Bloody Mess) refused with a reason; injection setting off refuses the order; with a Monstrous and a normal sample both carried, the Monstrous one is injected"
   },
   {
    "gap": "g11",
-   "evidence": "scenes.json new sc_wombpod_hatch, in showcase genome_bench"
+   "evidence": "scenes.json gates and arms: CONTAGION_SINKERS_FIX_RESET_AFTER_LOAD in sc_tells_then_burn (mid-tell save-reload resumes phase; gawpsacks rise after the Burn); CONTAGION_CLAWS_FIX_ABSTRACT_VERB in sc_unfinished_malformed (bud melee resolves to a concrete verb); CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS in sc_natives_take_burn (sprint picks the open-sided roofed cell, not the four-walled one); CONTAGION_BURN_OFF_FIX_PAWN_WONT_WALK in sc_settings_superb (burnEnabled off, a colonist ordered across the map arrives); each UNMEASURED while open. Also corrected sc_natives_take_burn: the leaker Scorchpod takes Burn damage with no dive (RM_SkyKernel.Classify), not no injury"
   },
   {
    "gap": "g12",
-   "evidence": "scenes.json sc_genome_brings_tissue expect (no burst at birth) and control (a host killed outside gestation bursts)"
+   "evidence": "scenes.json sc_unfinished_malformed: every bud's faction read neutral; saved spawn deadline equal across a save-reload between jumps; a fourth bud forms during a forced Burn; the second bud's variation roll forced Monstrous by a logged dev seed"
   },
   {
    "gap": "g13",
-   "evidence": "scenes.json sc_genome_brings_tissue start reads the three open fix items first; expect adds extraction blood loss and sample, inject on a moving host, matched install"
+   "evidence": "scenes.json sc_zhooliza entry_point_item is RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL; the ZHOOLIZA_BUILD_FROM_JELLY_RENDERS gate stays in its start"
   },
   {
    "gap": "g14",
-   "evidence": "scenes.json new sc_helix_trade; sc_prints_pay expect adds label, inspect, market value and Contagion-home gate"
+   "evidence": "measured: RM_BiomeWorker_Contagion.GetScore returns r.baseScore at shipped biomeRarityFactor 1, so a zero-score read would fail; filed removal item RIMMANDRAKE_RETIRE_CONTAGION_BIOME_SCORER_WORLD_IS_FROZEN with its acceptance test; tree.json biome_def_declared gains an absence arm (GetScore -100 or less on every return, biomeRarityFactor in no Contagion .cs); coverage_rest legacy_placement_worker now by biome_def_declared, why names the item"
   },
   {
    "gap": "g15",
-   "evidence": "scenes.json sc_bloom_reads_sick (move and accuracy, vanilla lull), sc_tells_then_burn (frequency, long-Bloom clock), sc_unfinished_malformed (cap, Monstrous buff, unraveling, no reroll on reload)"
+   "evidence": "scenes.json sc_settings_superb: sweeps every bool in RM_ContagionSettings read by reflection from the deployed type, listing all 14 shipped bools with their feature step (both zhool toggles independent), the owed builds' bools in the same reflected list, an unnamed bool fails by name"
   },
   {
    "gap": "g16",
-   "evidence": "tree.json new offline leaf biome_def_declared (terrain, density, diseases, zero forage, RustPuff guard both ways, TentacularPlant off roster)"
+   "evidence": "tree.json fauna_specials_declared scenario: a defName/field/expected-value table with one row per inventory special (acid and slime deaths, leaker and armored lists, Gnashling, Meltgut, Bloodlurk, Doublemaw, Peeper, Eyestinger, Fleshsop, Danglemaw, RM_ContagionIkee, grub, Blisterfloat leave-map, Bulloo meat and leather, Zhool body, render tree and life stages); VEF comps a def read, live VEF marked out with its reason"
   },
   {
    "gap": "g17",
-   "evidence": "scenes.json sc_cast_lives_here start and expect: wreck fragments, own art, Wreckage deconstruction"
+   "evidence": "tree.json biome_def_declared: reads the post-patch def from the fingerprinted dump (UNMEASURED on a fingerprint mismatch), every disease def resolved; false_pass adds raw XML and a stale dump"
   },
   {
    "gap": "g18",
-   "evidence": "tree.json biome_def_declared runs validate_patch over RM_AcousticPayload_Contagion.xml; scenes.json coverage_rest scanner_payload by biome_def_declared"
+   "evidence": "tree.json flora_yields_declared: every RM_Contagion wildPlants entry, adding Lashgrass, Rattlegrope and RM_HalfmadeTreeBlighted; the Halfmade Tree's Graphic_Random resolves two or more variants"
+  },
+  {
+   "gap": "g19",
+   "evidence": "scenes.json sc_prints_pay: inspect text names rolled limbs, Monstrous status, extreme stat and failure; label unchanged after save-reload; a forced-provoke scan turns the target; the device-offering contract delivers its device by drop pod"
   },
   {
    "gap": "g20",
-   "evidence": "filed RIMMANDRAKE_DRAW_CONTAGION_FLIPBOOKS_TWO_FLYERS_HALF_DRAWN with acceptance test (FAIL 0/4 on base); tree.json airborne_stats oracle names it; record.json flight entry"
+   "evidence": "scenes.json sc_preburn_dive: start names the UV-shy natives (RM_Peeper, RM_Doublemaw) and one RM_Crispling under a roof carrying the owed build's sun-lover flag (asserted, else UNMEASURED); control: with the dive off the Crispling stays under its roof"
   },
   {
    "gap": "g21",
-   "evidence": "scenes.json sc_settings_superb action and expect: the 16 named switches, multiplier sign at 0 and 2, search and group collapse"
+   "evidence": "scenes.json sc_bodyprints_phased: start names a living RM_Sloshbelly (DeathActionProperties_Vanish) killed by the action; control kills a second Sloshbelly with Bodyprints off and expects today's slime vanish, no corpse, skin or print"
   },
   {
    "gap": "g22",
-   "evidence": "tree.json new offline leaf flora_yields_declared"
+   "evidence": "scenes.json sc_repulsor_warns_and_clears: a second map loaded (asserted two maps); a forced Burn on the Contagion map leaves no RM_ContagionBurn on the second map"
   },
   {
    "gap": "g23",
-   "evidence": "scenes.json sc_refuge_is_shade control rules_out matches its control; sc_one_dash_at_cost start defines prepared; sc_waiting_costs_more expect reads recovery workers exposure"
+   "evidence": "scenes.json sc_cast_lives_here: a wreck fragment's weathering state read at start and again after a 30-day clock jump, expected changed"
   },
   {
    "gap": "g24",
-   "evidence": "scenes.json sc_walk_red_lid restore reloads the walk start save, never the mid-way save"
+   "evidence": "scenes.json sc_coalescence_forms: a second formation-clock jump forms no second Coalescence and no second letter; its inspect string names mass and stage matching the comp (also read in sc_coalescence_grows_and_breaks)"
   },
   {
    "gap": "g25",
-   "evidence": "sheet.md does: [leaf:walk_red_lid] line"
-  },
-  {
-   "gap": "g26",
-   "evidence": "scenes.json new sc_coalescence_forms (formation by the long-Bloom clock, burnEnabled-off control)"
-  },
-  {
-   "gap": "g27",
-   "evidence": "tree.json limb_still_grows removed from the 0.1.0 tree per OWNER:1794772416196929336; sheet.md later; built limbs covered by offline leaf limbs_stay_built in coverage_rest"
-  },
-  {
-   "gap": "g28",
-   "evidence": "scenes.json sc_touched_reads_early action and expect: Burn vs Bloom rate, off-biome contact, non-humanlike excluded, active change reached and a deck mutation lands"
-  },
-  {
-   "gap": "g29",
-   "evidence": "scenes.json new sc_mulched_soil, in showcase coalescence_harvest"
-  },
-  {
-   "gap": "g30",
-   "evidence": "tree.json new leaf zhooliza_lives_here; scenes.json sc_zhooliza with entry_point_item ZHOOLIZA_BUILD_FROM_JELLY_RENDERS; sheet.md does line"
-  },
-  {
-   "gap": "g31",
-   "evidence": "scenes.json sc_preburn_dive sun-lover counter-movement; sc_bodyprints_phased ridge husks"
+   "evidence": "scenes.json sc_helix_trade start asserts mandrake.rut.patches active and HelixCurators_Contagion.xml applied (the patched faction's caravanTraderKinds holds RM_Caravan_HelixCurators), else UNMEASURED"
   }
  ]
 }

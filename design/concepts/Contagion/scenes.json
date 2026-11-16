@@ -69,10 +69,11 @@
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "standing Bloom, a gawpsack and a rattlegrope in view (asserted)",
-    "the natural Burn tick known from the saved schedule"
+    "the natural Burn tick known from the saved schedule",
+    "fix item CONTAGION_SINKERS_FIX_RESET_AFTER_LOAD read first: while it is open the save-reload tells arm records UNMEASURED, never PASS"
    ],
-   "action": "jump to one tick before the tells window and advance through Burn start, reading tell render state each 60 ticks",
-   "expect": "each tell is read on its own before the Burn condition starts by at least the configured window: gawpsack draw offset sinks, rattlegrope shake phase moves, red puff motes counted, LeavesRustle played once; two captures 60 ticks apart differ on those cells; at burnFrequency 2 the saved interval to the next Burn halves; the long-Bloom clock advances only between Burns",
+   "action": "jump to one tick before the tells window and advance through Burn start, reading tell render state each 60 ticks; save and reload mid-tell and read the tell state again; run 2500 ticks past Burn end, reading the gawpsack draw offset",
+   "expect": "each tell is read on its own before the Burn condition starts by at least the configured window: gawpsack draw offset sinks, rattlegrope shake phase moves, red puff motes counted, LeavesRustle played once; two captures 60 ticks apart differ on those cells; at burnFrequency 2 the saved interval to the next Burn halves; the long-Bloom clock advances only between Burns; after the mid-tell save-reload each tell resumes its phase, not restarted; the gawpsacks rise back to rest after the Burn ends",
    "control": {
     "case": "tells switched off in settings",
     "expect": "no tell renders and the Burn still arrives on its tick",
@@ -172,10 +173,12 @@
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "a UV-shy native, a Scaldhide and a Crispling in the open, predators removed (asserted)",
-    "a visitor in the open and one under a roof; a Scorchpod in the open"
+    "a visitor in the open and one under a roof; a Scorchpod in the open",
+    "fix item CONTAGION_DIVE_FIX_FOUR_WALLED_CELLS read first: while it is open the four-walled sprint arm records UNMEASURED, never PASS",
+    "a roofed cell enclosed by four walls nearest the hurt native, and an open-sided roofed cell farther away (asserted)"
    ],
    "action": "force a Burn and hold 2500 ticks",
-   "expect": "the UV-shy native carries a Burn injury; the Scaldhide and Crispling carry none; the open visitor gains RM_BurnDose and the roofed one none; the Scorchpod, a leaker, takes no Burn injury; a hurt native's sprint target cell reads shade on RM_MapComponent_ShadeGrid",
+   "expect": "the UV-shy native carries a Burn injury; the Scaldhide and Crispling carry none; the open visitor gains RM_BurnDose and the roofed one none; the Scorchpod, a leaker, takes a Burn injury and gets no shelter sprint job (RM_SkyKernel.Classify: leaker = Damage, no dive); a hurt native's sprint target cell reads shade on RM_MapComponent_ShadeGrid; that sprint target is the open-sided roofed cell, never the four-walled one",
    "control": {
     "case": "the same three for 2500 ticks with no Burn",
     "expect": "none carries a Burn injury",
@@ -197,15 +200,15 @@
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "owed build RIMMANDRAKE_BUILD_CONTAGION_PREBURN_DIVE_NATIVES_LEAVE_FIRST landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
-    "UV-shy natives and a sun-loving native in the open, the natural Burn tick known",
-    "a sun lover native under shade at the first tell"
+    "UV-shy natives (RM_Peeper, RM_Doublemaw: neither armored nor leaker, so RM_SkyKernel.Classify gives DamageAndDive) in the open, the natural Burn tick known",
+    "one RM_Crispling (Burn-exempt, ArmorRating_Heat 0.7) under a roof at the first tell, carrying the owed build's sun-lover flag (asserted on the deployed def, else UNMEASURED)"
    ],
    "action": "run the tells window to Burn start",
-   "expect": "the UV-shy natives are sheltered with zero dose and the sun lover is in the open at Burn start; the sun lover moves out into the open during the tells, against the UV-shy natives' movement",
+   "expect": "the UV-shy natives are sheltered with zero dose at Burn start; the Crispling leaves its roof for the open during the tells, against the UV-shy natives' movement, and is in the open at Burn start",
    "control": {
     "case": "the same with the dive switched off in settings",
-    "expect": "the UV-shy natives are in the open at Burn start",
-    "rules_out": "the reactive sprint after damage that exists today"
+    "expect": "the UV-shy natives are in the open at Burn start and the Crispling stays under its roof",
+    "rules_out": "the reactive sprint after damage that exists today, and a Crispling that wanders out by chance"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
    "hold": "immediate"
@@ -247,12 +250,14 @@
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
+    "owed build RIMMANDRAKE_BUILD_CONTAGION_REPULSOR_WARNING_NAMES_WHOLE_MAP landed and deployed (asserted by its selftest on the deployed DLL hash), else the warning arm records UNMEASURED",
     "standing Bloom, no condition (asserted)",
     "a built Repulsor unpowered; a gravship hardpoint Repulsor on a second staging",
-    "no natural Burn due within the warmup and hold span (asserted from the saved schedule)"
+    "no natural Burn due within the warmup and hold span (asserted from the saved schedule)",
+    "a second map loaded (a temperate quicktest map) for the map-local arm (asserted: two maps in Find.Maps)"
    ],
-   "action": "power the Repulsor, read the warning before warmup, run warmup, then cut power; repeat for the hardpoint variant and once on a temperate quicktest",
-   "expect": "warning names the whole map before warmup; RM_ContagionBurn after warmup; lapses within its hold time; off-biome RM_RepulsorClearSky only; the Burn condition reads the Repulsor as its source; captures before and after warmup show the sky change, and one capture shows the beam; a judge reads both",
+   "action": "power the Repulsor, read the warning before warmup, run warmup, then cut power; repeat for the hardpoint variant and once on a temperate quicktest; then force a Burn on the Contagion map with the second map loaded and read the second map's conditions",
+   "expect": "warning names the whole map before warmup; RM_ContagionBurn after warmup; lapses within its hold time; off-biome RM_RepulsorClearSky only; the Burn condition reads the Repulsor as its source; captures before and after warmup show the sky change, and one capture shows the beam; a judge reads both; the forced Burn on the Contagion map leaves no RM_ContagionBurn on the second map",
    "control": {
     "case": "the Repulsor with its setting off",
     "expect": "it never warms and no condition appears",
@@ -273,10 +278,12 @@
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "an untouched colonist with an outdoor work job under the Bloom (asserted no RM_ContagionTouched)"
+    "an untouched colonist with an outdoor work job under the Bloom (asserted no RM_ContagionTouched)",
+    "owed build RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE landed and deployed (asserted by its selftest on the deployed DLL hash), else the transition-message arm records UNMEASURED",
+    "a placed Coalescence with a fourth colonist ordered to stand adjacent to its ring; a humanlike non-flesh pawn (a mechanoid-fleshed humanlike, asserted RaceProps.FleshType is not Normal) out in the Bloom"
    ],
-   "action": "run one in-game day by clock with the colonist outdoors; read letters, messages and the hediff; a second colonist out in a forced Burn for the same span; a third adjacent to an Unfinished on a temperate map; a muffalo out in the Bloom",
-   "expect": "the touched state is visible before any mutation; one transition message at active change; no letter for sub-threshold exposure; active change is reached and one deck mutation lands on the body; the Burn colonist's severity rises faster than the Bloom one; the contact colonist off-biome gains the hediff; the muffalo gains none",
+   "action": "run one in-game day by clock with the colonist outdoors; read letters, messages and the hediff; a second colonist out in a forced Burn for the same span; a third adjacent to an Unfinished on a temperate map; a fourth adjacent to the Coalescence; the non-flesh humanlike and a muffalo out in the Bloom",
+   "expect": "the touched state is visible before any mutation; one transition message at active change; no letter for sub-threshold exposure; active change is reached and one deck mutation lands on the body, with exactly one 'Contagion mutation:' letter naming that colonist; the Burn colonist's severity rises faster than the Bloom one; the contact colonist off-biome gains the hediff; the colonist by the Coalescence gains the hediff; the non-flesh humanlike and the muffalo gain none",
    "control": {
     "case": "the same colonist kept indoors for the day",
     "expect": "no touched hediff and no message",
@@ -322,10 +329,12 @@
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "a Bloody Mess, no Unfinished on the map (asserted)"
+    "a Bloody Mess, no Unfinished on the map (asserted)",
+    "fix item CONTAGION_CLAWS_FIX_ABSTRACT_VERB read first: while it is open the melee verb arm records UNMEASURED, never PASS",
+    "the variation roll forced to Monstrous for the second bud through the dev seed the script sets and records (asserted: the seed is logged)"
    ],
-   "action": "jump the budding deadline three times; capture each Unfinished; kill one",
-   "expect": "three buds with pairwise different limb rolls; the dead one leaves slime and mulch, no corpse; no more than maxNearby (3) budded near one host; a Monstrous one reads its buff; one unravels at lethal severity; a save-reload leaves every limb roll unchanged",
+   "action": "jump the budding deadline three times, saving and reloading between the first and second jump; capture each Unfinished; kill one; force a Burn and jump the deadline a fourth time; strike a bud's melee attack at a target",
+   "expect": "three buds with pairwise different limb rolls; the dead one leaves slime and mulch, no corpse; no more than maxNearby (3) budded near one host; the seeded second bud reads Monstrous and its buff; one unravels at lethal severity; a save-reload leaves every limb roll unchanged; every bud's faction is neutral (null, not hostile); the saved spawn deadline read before and after the save-reload is equal; a fourth bud forms during the forced Burn; the struck melee attack resolves to a concrete verb, not abstract Verb_MeleeAttack",
    "control": {
     "case": "the same with budding switched off",
     "expect": "no Unfinished appears",
@@ -348,11 +357,12 @@
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "a placed Coalescence at stage 1 (asserted mass)",
     "six Unfinished within 20 cells",
-    "a second Coalescence for the control",
-    "COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE read first: if not closed, the absorption arm records UNMEASURED, never PASS"
+    "a second stage-1 Coalescence 40 cells away, placed for the gunfire arm (asserted mass)",
+    "COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE read first: if not closed, the absorption arm records UNMEASURED, never PASS",
+    "a third stage-1 Coalescence for the natural-Burn arm, the natural Burn tick known from the saved schedule (asserted)"
    ],
-   "action": "jump passive growth and let the Unfinished walk; read mass, stage and manhunters; then power a Repulsor to force a Burn and read the remains",
-   "expect": "at least one stage up with absorption counted from arrivals; manhunters within the cap; Burn collapse leaves Monstrous samples and mulch; mass read before and after a save-reload is equal; a manhunter the Coalescence emitted standing on the ring is not absorbed",
+   "action": "jump passive growth and let the Unfinished walk; read mass, stage, the inspect string and manhunters; then power a Repulsor to force a Burn and read the remains; destroy the second Coalescence by colonist gunfire with no Burn active and read its remains; jump to the natural Burn and read the third Coalescence's remains",
+   "expect": "at least one stage up with absorption counted from arrivals; the inspect string names mass and stage equal to the comp's saved values; manhunters within the cap; the Repulsor-Burn collapse leaves Monstrous samples and mulch; the gunfire-destroyed Coalescence leaves less mulch than the Burn-collapsed one and zero Monstrous samples; the third Coalescence collapses in the natural Burn with Monstrous samples; mass read before and after a save-reload is equal; a manhunter the Coalescence emitted standing on the ring is not absorbed",
    "control": {
     "case": "the same Unfinished held by a wall one cell outside the ring for the same span",
     "expect": "it is alive, mass rises only by the passive-growth amount read from the comp",
@@ -373,10 +383,12 @@
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "a placed Coalescence at stage 1, incidents off except its own emission (asserted storyteller quiet)"
+    "a placed Coalescence at stage 1, incidents off except its own emission (asserted storyteller quiet)",
+    "three colonists ordered to work the Coalescence site as the recovery party at each stage (asserted: three pawns with a job targeting a cell within 8 of the ring, untouched at stage 1)",
+    "a second placed Coalescence at stage 3 for the cap arm, the map-wide manhunter cap read from the comp (asserted)"
    ],
-   "action": "read manhunter count and spread at stage 1, jump to stage 2, read again",
-   "expect": "stage 2 emits more, within the cap, all from the Coalescence; no unrelated incident; the recovery workers sent to the stage-2 site take more touched exposure than at stage 1",
+   "action": "read manhunter count and spread at stage 1 with the recovery party working the site for 2500 ticks, reading each worker's RM_ContagionTouched severity and the nearest manhunter's distance to them; jump to stage 2, send the same party for the same span and read again; then hold the stage-3 Coalescence through emissions until the map count reaches the cap and for five emissions after",
+   "expect": "stage 2 emits more, within the cap, all from the Coalescence; no unrelated incident; the recovery workers at the stage-2 site gain more touched severity than at stage 1 and the manhunters come closer to them; the stage-3 arm reaches the map-wide cap and the count equals the cap, never above it, for five emissions after",
    "control": {
     "case": "the same span with growth held at stage 1",
     "expect": "no rise in emissions",
@@ -401,10 +413,12 @@
     "a donor colonist and a Bloody Mess host (asserted)",
     "a second Bloody Mess for the interrupt control",
     "the wanted part is a Heart, named before the injection; the gestation roll is seeded to miss it",
-    "the open fix items CONTAGION_INJECT_FIX_CANCEL_STILL_STABS, CONTAGION_INJECT_FIX_HOST_WANDERS_OFF and CONTAGION_WOMBPOD_FIX_SAC_NEVER_HATCHES are read first; an arm whose item is open records UNMEASURED"
+    "the open fix items CONTAGION_INJECT_FIX_CANCEL_STILL_STABS, CONTAGION_INJECT_FIX_HOST_WANDERS_OFF and CONTAGION_WOMBPOD_FIX_SAC_NEVER_HATCHES are read first; an arm whose item is open records UNMEASURED",
+    "a third and a fourth Bloody Mess host, a Monstrous sample from a collapsed Coalescence and a normal sample both carried by one colonist (asserted)",
+    "a non-donor colonist needing the same organ, and an ineligible host (a dead Bloody Mess corpse) (asserted)"
    ],
-   "action": "extract a sample, read the odds before ordering the injection, inject while the host walks, jump four days; install one organ on the donor; then kill a second host outside gestation",
-   "expect": "the extraction adds blood loss and a donor-labelled nonstacking sample; odds shown before the job; the batch misses the Heart and still brings 2 to 4 donor-labelled parts, each with market value above zero; the injection completes on the moving host; no acid burst at birth; matched install gives the mood and no mismatch",
+   "action": "extract a sample, read the odds before ordering the injection, inject while the host walks, jump four days; install one organ on the donor; then kill a second host outside gestation; install the same kind of part on the non-donor and a grown natural arm or leg from the batch on the donor; order an injection into the ineligible host; turn the injection setting off and order one, then back on; with the Monstrous and normal samples both carried, inject the third host and jump four days; turn grownLimbsEnabled off, inject the fourth host with a Monstrous sample and jump four days",
+   "expect": "the extraction adds blood loss and a donor-labelled nonstacking sample; odds shown before the job; the batch misses the Heart and still brings 2 to 4 donor-labelled parts, each with market value above zero; the injection completes on the moving host; no acid burst at birth; matched install gives the mood and no mismatch; the same part on the non-donor gives no matched mood; the grown arm or leg on the donor gives the mood; the ineligible host is refused with a reason; with the setting off the injection order is refused; the Monstrous sample is the one injected; the Monstrous batch yields one of the five grown limb items and its art draws; with grownLimbsEnabled off the Monstrous batch is an ordinary 2 to 4 part batch",
    "control": {
     "case": "a second injection cancelled mid-bar, and a host killed outside gestation",
     "expect": "the sample is still carried and no gestation starts; the killed host bursts acid",
@@ -425,10 +439,11 @@
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "a living Unfinished with a known roll, the colony with a Contagion home (asserted)"
+    "a living Unfinished with a known roll, the colony with a Contagion home (asserted)",
+    "a Helix contract fixture that offers a device, and a second scan target whose touch-range job is forced to provoke (asserted)"
    ],
-   "action": "scan it, fire a Helix contract for that roll, deliver; scan it again",
-   "expect": "one print whose label names the roll; the contract consumes it and pays; the second scan is refused; the print's label, inspect text and market value name the roll; the contract is offered only while the colony has a Contagion home",
+   "action": "scan it, fire a Helix contract for that roll, deliver; scan it again; save and reload with a print in storage; scan the forced-provoke target",
+   "expect": "one print whose label names the roll; its inspect text names the rolled limbs, Monstrous status, extreme stat and failure, matching the Unfinished's comp; the label is unchanged after the save-reload; the contract consumes it and pays silver, and the device-offering contract delivers the device by drop pod; the second scan is refused; the forced-provoke scan turns the target on the scanner; the print's market value is above zero; the contract is offered only while the colony has a Contagion home",
    "control": {
     "case": "a contract asking for a different roll",
     "expect": "the print is not accepted",
@@ -450,13 +465,13 @@
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "owed build RIMMANDRAKE_BUILD_CONTAGION_BODYPRINTS_SKIN_BEFORE_PRINT landed and deployed (asserted by its selftest on the deployed DLL hash), else the scene records UNMEASURED",
-    "a native corpse in the open, a Bloody Mess 10 cells away"
+    "a living RM_Sloshbelly (a slime-death goo-bud, deathAction DeathActionProperties_Vanish) in the open, a Bloody Mess 10 cells away (asserted)"
    ],
-   "action": "jump the phase clock through each stage, reading the thing; sample the final print",
+   "action": "kill the Sloshbelly; jump the phase clock through each stage, reading the thing; sample the final print",
    "expect": "corpse, collapsed skin and print in order; the Bloody Mess eats the skin; the print yields a sample; the final print leaves ridge husks on its cells",
    "control": {
-    "case": "the same corpse with Bodyprints switched off",
-    "expect": "the old slime death and no print",
+    "case": "a second living RM_Sloshbelly killed in the open with Bodyprints switched off",
+    "expect": "today's build: it vanishes in the slime death, leaving slime filth, no corpse, no skin and no print",
     "rules_out": "instant slime standing in for the phases"
    },
    "restore": "reload the site v3 save recorded by scene-begin; settings reset to shipped defaults",
@@ -501,10 +516,11 @@
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "wild animals cleared, animalDensity read from the def (asserted)",
-    "wreck and shell fragments scattered by the local-map binding (asserted by count)"
+    "wreck and shell fragments scattered by the local-map binding (asserted by count)",
+    "a wreck fragment's weathering state read at start (asserted)"
    ],
-   "action": "run one in-game day by clock; count spawns per roster row; capture each species",
-   "expect": "at least half the rows spawn; no missing texture; wreck fragments carry their own art and deconstruct to the Wreckage family yield",
+   "action": "run one in-game day by clock; count spawns per roster row; for any row that misses the day, run the biome's own wild-animal spawner for that row (never a direct spawn) and record that it did; capture each species at play zoom; hand the captures to a judge agent that did not stage them; jump the clock 30 days and read the wreck fragment again",
+   "expect": "every roster row spawns (by the day or by the biome's own spawner) and is captured; the judge names each capture as a distinct creature and none as another row's; no missing texture; wreck fragments carry their own art and deconstruct to the Wreckage family yield; after the 30-day jump the wreck fragment's weathering state has changed",
    "control": {
     "case": "the same day with the biome's animalDensity read as zero on a stock biome tile",
     "expect": "no Contagion species spawns",
@@ -525,10 +541,11 @@
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "quicktest map retiled to the Contagion"
+    "quicktest map retiled to the Contagion",
+    "fix item CONTAGION_BURN_OFF_FIX_PAWN_WONT_WALK read first: while it is open the Burn-off walk arm records UNMEASURED, never PASS"
    ],
-   "action": "flip each of the 16 switches listed in the walk's must-be-true section off in turn and run its step; set each tuning multiplier to 0 and to 2 and read the sign of its effect; type a feature name in the search box and collapse a group; reset to defaults",
-   "expect": "each switch stops its feature alone; reset restores shipped values; the scoring worker's rarity switch is labelled unsupported; each multiplier changes its effect in the right direction; search filters to the named feature; groups collapse and reopen",
+   "action": "flip each bool in RM_ContagionSettings, read by reflection from the deployed type, off in turn and run its feature step: genomeOrganGrowingEnabled (gestation), unfinishedSpawnerEnabled (budding), burnEnabled (natural and forced Burn; a colonist ordered across the map walks), burnTellsEnabled (tells), cloudRepulsorEnabled (Repulsor warmup), coalescenceEnabled (formation), grownLimbsEnabled (Monstrous batch), draftprintsEnabled (scan), zhoolHazeEnabled (haze look), zhoolConversionEnabled (plant conversion), zhoolConvertsCrops (crop conversion, shipped off), touchedEnabled (exposure), sunbeamArrestEnabled (arrest), mulchDropsEnabled (mulch); every bool the owed dive, bodyprints, sundash and odds builds add is in the same reflected list, and a bool the walk does not name fails the sweep by name; set each tuning multiplier to 0 and to 2 and read the sign of its effect; type a feature name in the search box and collapse a group; reset to defaults",
+   "expect": "each switch stops its feature alone (zhoolHazeEnabled and zhoolConversionEnabled independently of each other); with burnEnabled off a colonist ordered across the map arrives; reset restores shipped values; each multiplier changes its effect in the right direction; search filters to the named feature; groups collapse and reopen",
    "control": {
     "case": "every switch on",
     "expect": "every feature runs",
@@ -644,7 +661,7 @@
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
-    "a Helix Curators caravan called by the campaign trader attachment"
+    "mandrake.rut.patches active and HelixCurators_Contagion.xml applied (asserted: the patched faction's caravanTraderKinds holds RM_Caravan_HelixCurators), else UNMEASURED; a Helix Curators caravan called through that attachment"
    ],
    "action": "open the trade dialog; offer genome tissue and a print",
    "expect": "the curators sell Contagion devices and the ship gift, and buy the tissue at a price",
@@ -670,8 +687,8 @@
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "no Coalescence on the map; burnEnabled on; a site outside the home area"
    ],
-   "action": "jump the long-Bloom clock past its formation threshold",
-   "expect": "one Coalescence forms outside the home area, clears the plants on its cells and announces a threat letter",
+   "action": "jump the long-Bloom clock past its formation threshold; then jump it past the threshold a second time",
+   "expect": "one Coalescence forms outside the home area, clears the plants on its cells and announces a threat letter; its inspect string names mass and stage, matching the comp; the second jump forms no second Coalescence (count stays 1) and sends no second letter",
    "control": {
     "case": "the same jump with burnEnabled off",
     "expect": "no Coalescence forms",
@@ -712,7 +729,7 @@
    ],
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Contagion/validation.py::scene_zhooliza",
-   "entry_point_item": "ZHOOLIZA_BUILD_FROM_JELLY_RENDERS",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_CONTAGION_SCENES_EVERY_BURN_A_CONTROL",
    "start": [
     "saved Contagion site v3 (prep_site.py), minimal list plus all five DLC, Contagion active (asserted: map biome reads RM_Contagion, site.retile guard, else UNMEASURED)",
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
@@ -895,9 +912,9 @@
   {
    "capability": "legacy_placement_worker",
    "by": [
-    "sc_settings_superb"
+    "biome_def_declared"
    ],
-   "why": "scoped out by the standing no-worldgen ruling; no showcase may use it; the sweep checks its switch is labelled unsupported"
+   "why": "scoped out by the standing no-worldgen ruling; no showcase may use it; its absence check is the absence arm of the offline leaf biome_def_declared (the workerClass scores every tile at or below -100 and biomeRarityFactor is gone), owed by the removal item RIMMANDRAKE_RETIRE_CONTAGION_BIOME_SCORER_WORLD_IS_FROZEN"
   },
   {
    "capability": "creep_defs",
