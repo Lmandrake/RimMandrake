@@ -7862,3 +7862,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"kept","detail":"sweep: running again","ts":"2026-11-16T16:33:05Z","tsn":1794846785013084361}
 {"seat":"RUNNER","event":"note","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","text":"ops_watch: WORSE at 2026-11-16T16:36:36Z: 23 -> 71.1 min, the rule's step is {\"add\": 30}","ts":"2026-11-16T16:36:45Z","tsn":1794847005978185803}
 {"seat":"RUNNER","event":"note","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","text":"ops_watch: WORSE at 2026-11-16T16:39:06Z: 23 -> 71.1 min, the rule's step is {\"add\": 30}","ts":"2026-11-16T16:39:13Z","tsn":1794847153629570229}
+{"seat":"RUNNER","event":"note","id":"OPS_DISPATCH_CLONE_BEHIND_UNSTICK_YUYW","text":"ops_watch: WORSE at 2026-11-16T16:41:39Z: 23 -> 71.1 min, the rule's step is {\"add\": 30}","ts":"2026-11-16T16:41:46Z","tsn":1794847306287732528}
