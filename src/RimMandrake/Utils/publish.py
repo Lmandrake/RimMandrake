@@ -831,6 +831,9 @@ def main(argv=None):
     ap.add_argument("-m", "--message")
     ap.add_argument("-F", "--file", help="read the message from a file ('-' = stdin)")
     a = ap.parse_args(argv)
+    # Progress goes to stdout and REFUSED to stderr. Under a pipe stdout is block-buffered, so `2>&1 | tail` printed the
+    # progress AFTER the refusal and hid it (RIMMANDRAKE_FLUSH_PUBLISH_OUTPUT_SO_TAIL_SHOWS_REFUSAL): line-buffer it.
+    sys.stdout.reconfigure(line_buffering=True)
     msg = a.message
     if a.file:
         msg = sys.stdin.read() if a.file == "-" else open(a.file).read()

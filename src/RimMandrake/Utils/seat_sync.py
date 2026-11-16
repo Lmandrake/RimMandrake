@@ -15,7 +15,8 @@ differ between HEAD and origin/main, and REFUSES (changing nothing) rather than 
 Before it runs, every precondition is checked and the whole plan is refused if one fails:
   * on branch main, no rebase/merge/cherry-pick in progress;
   * every local commit (origin/main..HEAD) is already upstream: patch-equivalent per `git cherry`, or
-    content-equivalent (every path it touches has the same bytes AND mode at HEAD and origin/main);
+    content-equivalent (every path it touches has the same bytes AND mode at HEAD and origin/main), or its ledger
+    lines are all upstream, or it is a landed twin (landed_twin: its own patch is upstream under another sha);
   * every dirty tracked path that upstream also changes either holds upstream's bytes already (it is then
     staged, so --keep accepts it) or merges cleanly with upstream (reset_merging: a peer's live hunks and ledger
     appends stay in the working tree, on top of upstream's); only a real overlap is named and the sync refused;
@@ -391,8 +392,11 @@ def dirty_merges(g: Git, head: str, target: str, keep: list[str]) -> tuple[list[
         if p not in dirty and (not here or not there):
             continue                                    # a clean shard added or deleted upstream: plain reset is right
         if staged not in (wt_sha, here and here[1], there and there[1]) and not (
-                # `git commit -- path` reads the file twice, so a live shard leaves an older snapshot in the index
-                ours is not None and p in union and union_delta(ours, b"", _blob(g, staged)) == b""):
+                # `git commit -- path` reads the file twice, so a live shard leaves an older snapshot in the index.
+                # No index entry at all (staged None: `git rm --cached`) is no snapshot: stuck, never _blob(None)
+                # (RIMMANDRAKE_REFUSE_UNINDEXED_SHARD_NOT_CRASH_SEAT_SYNC)
+                staged is not None and ours is not None and p in union
+                and union_delta(ours, b"", _blob(g, staged)) == b""):
             stuck.append(p)                             # a third version sits in the index: not ours to drop
             continue
         it = {"path": p, "mode": there and there[0], "blob": there and there[1], "base": here and here[1],
