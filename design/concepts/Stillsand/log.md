@@ -70,3 +70,22 @@ CONDUCTOR:1794824429827934950 is the authenticated Evidence-for-Ask d_water_vers
 CONDUCTOR:1794824436177586321 is the separate authenticated d_flagship_pick: expedition_harbour_fortune is showcase 1. It follows the three existing owner choices and exact adopted root, includes practical use and empty-cave uncertainty, and certifies no natural frequency, enjoyment, runtime result or first touch.
 
 No owner question is proposed or sent. No built inventory capability or impl/proof/scope field was removed or changed; there is no waiver. The root and E1-E6/E8 remain adopted. Stage-3 acceptance/package writing remains for the launcher’s next stage; this run does not advance stage.json.
+
+
+## Stage 3 package, rm-role-designercodex-1794826273
+
+BENCH wrote sheet.md, tree.json, plan.md, scenes.json and floor.json from the adopted E1-E8 and the stage-2 return reconciliation. root.md mechanically exposes the exact delegated root for the tree writer. Its text remains CONDUCTOR:1794805294378261874. Showcase 1 remains the separately authenticated expedition_harbour_fortune pick, CONDUCTOR:1794824436177586321. Current built water and later agricultural thin-film integration follow CONDUCTOR:1794824429827934950, with no numbered Stillsand release inference.
+
+The Designer proposed 14 leaves, 33 finite scene contracts, seven greedy ordered showcases and 23 ordinary coverage assignments. All 66 automatic built/approved units are assigned, with the unknown ordinary giant-preservation capability additionally observed and all recorded cuts assigned bounded absence checks. Every inventory impl/proof/scope value remains unchanged. Methods, grouping and subsequent showcase order are agent drafting choices.
+
+Filed STILLSAND_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER for missing normal-action scenes, observers, controls, recovery and the proposed gale measurement correction. Filed STILLSAND_PREY_SELECTION_EXCLUDES_WATER_RANKING for the already-adopted targeting exclusion. Both ticket preflights pass after adding their complete specs, refs and criteria. No source implementation was written.
+
+Gate A lint passes, the showcase set is accepted and designer_stage.py check accepts result.json for stage 3. All acceptance observations and the earlier existing-code walk remain unrun. No owner ask, waiver, oracle binding, exam, signing or first-touch certification is supplied by this run. No live scene or recovery debt was opened. The launcher owns advancement.
+
+## Stage 3 rejection repair, rm-role-designercodex-1794830945
+
+The six rejected source files exist in BENCH and were unpublished. The fourteen root-id errors share the cross-clone lookup cause. Reproduced the failure in an isolated regression before changing code. result_errors resolved source, root and scene paths against the Dispatcher repository while reading the package in BENCH. The repair in DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE resolves those stage-3 artifacts in the concept clone and retains merged owner evidence. The regression passes after repair and a genuinely missing local source is still refused.
+
+The package, adopted root, separate flagship and current-water/later-film scope remain as drafted. Every inventory entry matches the prior accepted record. The six package artifacts and existing scene/target-selector item files are included in publication. Existing-code exploration and every acceptance observation remain unrun. BENCH performed file work. Stage advancement remains with the launcher.
+
+Gate A, showcase coverage and result checks pass with both BENCH and Dispatcher repository arguments. All 35 affected pipeline tests passed. selftest_maturation_dispatch.py initially detected the concurrent package write in its repository-immutability snapshot and passed on a standalone rerun after writing stopped. The stage regression was red before repair and green afterward. The package root and every inventory entry were independently compared with their adopted records.

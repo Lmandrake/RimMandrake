@@ -1276,7 +1276,10 @@ def result_errors(res, d, st, repo=REPO):
         if stage > 2 and to < 2 and res.get("question"):
             return ["an owner question returns to stage 2, not %d" % to]
         return quick_look_errors(res, rec) if CT.txt(res.get("question")) else []
-    errs = record_errors(rec, repo, owner_ev, concept_of(st, d))
+    # Dispatcher closes a package written in another clone. Resolve its artifacts beside the concept,
+    # while owner_events above continues to merge evidence from both clones.
+    artifact_repo = clone_of(d) or repo
+    errs = record_errors(rec, artifact_repo, owner_ev, concept_of(st, d))
     if out == "waiting_owner":
         if stage not in DIALOGUE:
             return ["only stages 1-2 send him questions; stage %d returns to stage 2 with the question" % stage]
@@ -1315,12 +1318,12 @@ def result_errors(res, d, st, repo=REPO):
             if isinstance(c, dict) and c.get("core") and not c.get("resolved"):
                 errs.append("stage 2: core contradiction %s is unresolved" % c.get("id"))
     elif stage == 3:
-        lint_errs, _ = CT.lint(d, repo)
+        lint_errs, _ = CT.lint(d, artifact_repo)
         errs += ["lint: %s" % e for e in lint_errs]
         tree = CT.load(d) if not lint_errs else None
-        errs += scene_errors(read_json(os.path.join(d, "scenes.json")), tree, repo)
+        errs += scene_errors(read_json(os.path.join(d, "scenes.json")), tree, artifact_repo)
         errs += ["showcases: %s" % e for e in showcase_check(read_json(os.path.join(d, "scenes.json")), rec, tree,
-                                                              owner_ev, repo, concept=concept_of(st, d))]
+                                                              owner_ev, artifact_repo, concept=concept_of(st, d))]
         errs += floor_errors(read_json(os.path.join(d, "floor.json")), tree, owner_ev=owner_ev)
     elif stage == 4:
         errs += exam_errors(read_json(os.path.join(d, "exam.json")), d, st, repo)

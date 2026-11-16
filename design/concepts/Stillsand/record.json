@@ -2422,6 +2422,30 @@
         "design/concepts/Stillsand/stage2_reconciliation.md"
       ],
       "text": "Fresh reviewer /root/water_flagship_review passed the authority reconciliation and found no concrete evidence requiring a human ask. Preserve charged-thumper wetting/draw and distinguish legacy expiry from physical film volume. Correct the historical return proposal so later shared film stays outside the current tree after split adoption. All observations remain unrun."
+    },
+    {
+      "id": "d_stage3_drafting",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/Stillsand/sheet.md",
+        "design/concepts/Stillsand/tree.json",
+        "design/concepts/Stillsand/plan.md",
+        "design/concepts/Stillsand/scenes.json",
+        "design/concepts/Stillsand/floor.json",
+        "design/concepts/Stillsand/root.md"
+      ],
+      "text": "Write the current package from E1-E8 and authenticated root, water split and flagship. Preserve every inventory impl/proof/scope field. Propose finite independent acceptance and interaction scenes, instrument-first recovery and greedy later showcases. Methods, finite variants and later showcase ordering are agent drafting choices. Existing-code exploration remains proposed. All observations are unrun and all binding/coverage/exam/owner first-touch work remains with its proper stage."
+    },
+    {
+      "id": "d_stage3_rejection_repair",
+      "speaker": "agent",
+      "source": [
+        "infrastructure/state/items/DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE.md",
+        "src/RimMandrake/rimflow/designer_stage.py",
+        "src/RimMandrake/rimflow/selftest_designer_stage.py",
+        "design/concepts/Stillsand/root.md"
+      ],
+      "text": "Reproduced the prior rejection as cross-clone artifact resolution in result_errors. The regression failed for six concept artifact sources, root binding and a scene script in a separate Dispatcher checkout. Resolve record sources and stage-3 lint/scenes/showcases in the concept clone, with the caller repository as fallback and merged owner evidence retained. The regression passes and a genuinely missing concept-local source remains refused. Publish all six package artifacts and the two existing implementation item files for durable availability. Root, flagship, water sequencing and every inventory implementation/proof/scope value retain their adopted authority. All runtime observations remain unrun."
     }
   ],
   "asks": [
@@ -3566,5 +3590,129 @@
     ],
     "resolution_run": "rm-role-designercodex-1794824250",
     "resolution_source": "design/concepts/Stillsand/stage2_reconciliation.md"
+  },
+  "write": {
+    "run": "rm-role-designercodex-1794830945",
+    "stage": 3,
+    "source": "design/concepts/Stillsand/plan.md",
+    "root_artifact": "design/concepts/Stillsand/root.md",
+    "root_authority": "CONDUCTOR:1794805294378261874",
+    "flagship_authority": "CONDUCTOR:1794824436177586321",
+    "current_later_authority": "CONDUCTOR:1794824429827934950",
+    "scene_build_item": "STILLSAND_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+    "observation_status": "all_unrun",
+    "leaves": [
+      "scene_observer",
+      "expedition_ocean",
+      "prepared_harbour",
+      "practical_fortune",
+      "direct_sun",
+      "sand_signs",
+      "giant_encounters",
+      "hydration_exclusion",
+      "gale_passage",
+      "current_water",
+      "debt_return",
+      "giant_history",
+      "ordinary_work",
+      "stillsand_walk"
+    ],
+    "scenes": [
+      "existing_code_walk",
+      "observer_controls",
+      "landscape_route",
+      "harbour_secured",
+      "fortune_supply",
+      "sun_geometry",
+      "glare_cooling_mirage",
+      "buried_signs",
+      "swim_fish_thumper",
+      "giant_visit",
+      "hydration_independence",
+      "horizon_warning",
+      "gale_phases",
+      "gale_carry_return",
+      "water_cycle",
+      "pour_expiry_thumper",
+      "debt_return",
+      "cave_rows_preservation",
+      "giant_history",
+      "shade_landmarks",
+      "workshop_jobs",
+      "settings_effects",
+      "resident_ecology",
+      "soorrak_jobs",
+      "eruption_brood",
+      "campaign_encounters",
+      "salvage_fossils_scan",
+      "package_floor",
+      "walk_accept",
+      "expedition_loop",
+      "sun_work_water",
+      "gale_signs_wet",
+      "giant_death_history"
+    ],
+    "unknown_inventory_coverage": {
+      "giant_preservation": [
+        "giant_history",
+        "giant_death_history"
+      ]
+    },
+    "excluded_scope_checks": {
+      "removed_gale_fluff": [
+        "gale_passage",
+        "gale_phases"
+      ],
+      "removed_skeleton_burial": [
+        "giant_history",
+        "shade_landmarks"
+      ],
+      "removed_cave_fluff": [
+        "cave_rows_preservation"
+      ],
+      "removed_fulgurite": [
+        "package_floor"
+      ]
+    },
+    "source_discrepancies": [
+      "c_sun",
+      "c_gale_oracle",
+      "c_decay",
+      "c_appraisal"
+    ],
+    "later_discrepancies": [
+      "c_wetting"
+    ],
+    "current_proof_claimed": false,
+    "implementation_items": [
+      "STILLSAND_ACCEPTANCE_SCENES_ASSERT_CONTROL_RECOVER",
+      "STILLSAND_PREY_SELECTION_EXCLUDES_WATER_RANKING"
+    ],
+    "coverage_counts": {
+      "inventory_entries": 71,
+      "automatic_units": 66,
+      "additional_unknown_capabilities": 1,
+      "showcases": 7,
+      "coverage_rest": 23,
+      "leaves": 14,
+      "scenes": 33
+    },
+    "validation": {
+      "gate_a": "passed",
+      "showcase_set": "accepted",
+      "result_check": "accepted",
+      "filed_item_preflight": "both passed",
+      "runtime": "unrun",
+      "cross_clone_result_check": "accepted with Dispatcher repository argument",
+      "pipeline_tests": "35 affected tests passed, maturation_dispatch rerun after concurrent package write",
+      "regression": "cross-clone source/root/scene failure red before repair and green after; missing local source still refused"
+    },
+    "draft_run": "rm-role-designercodex-1794826273",
+    "rejection_repair": {
+      "item": "DESIGNER_STAGE3_RESOLVE_ARTIFACTS_IN_CONCEPT_CLONE",
+      "regression": "selftest_designer_stage.py cross-clone stage-3 fixture",
+      "result": "red_before_green_after",
+      "runtime": "unrun"
+    }
   }
 }

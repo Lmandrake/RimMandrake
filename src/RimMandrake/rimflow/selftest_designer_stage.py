@@ -385,6 +385,41 @@ def main():
         check("stage 3: scenes.json with no showcase set is refused (the mod's face is a list, showcase 1 his pick)",
               not ok and any("names no showcases" in e for e in errs), errs)
         put(d, "scenes.json", {"scenes": [good, flood], "showcases": show})
+        # Dispatcher validates a concept written in a different clone. Its own clone may lack every new artifact.
+        dispatch_repo = os.path.join(tmp, "dispatcher-clone")
+        os.makedirs(dispatch_repo)
+        root_path = "design/concepts/Foo/root.md"
+        put(d, "root.md", "# Foo\n\n## north star\n\n### must show\n- [ ] `foo_root` - A pawn climbs out.\n")
+        put(d, "plan.md", "# Foo plan\n")
+        paths = ["design/concepts/Foo/" + name for name in
+                 ("sheet.md", "tree.json", "plan.md", "scenes.json", "floor.json", "root.md")]
+        local_rec = dict(rec, decisions=rec["decisions"] + [
+            {"id": "d_write", "speaker": "agent", "text": "Write the package", "source": paths}])
+        put(d, "record.json", local_rec)
+        seen_lint = []
+
+        def local_root_lint(dd, rr=None, ff=None):
+            seen_lint.append(rr)
+            ids = CT.walk_root(rr, root_path + "#north-star")[2]
+            return ([] if "foo_root" in ids else ["root id foo_root is not in the north star"], [])
+
+        CT.lint = local_root_lint
+        cross_state = dict(DS.load_state(d), running={"run": "cross-clone"})
+        cross_result = {"run": "cross-clone", "stage": 3, "outcome": "done"}
+        local_errors = DS.result_errors(cross_result, d, cross_state, repo.root)
+        cross_errors = DS.result_errors(cross_result, d, cross_state, dispatch_repo)
+        check("stage 3: Dispatcher and concept-clone checks accept the same package",
+              local_errors == cross_errors == [], (local_errors, cross_errors))
+        check("stage 3: cross-clone lint resolves the north star in the concept clone",
+              seen_lint[-1] == repo.root, seen_lint)
+        os.unlink(os.path.join(d, "plan.md"))
+        missing_errors = DS.result_errors(cross_result, d, cross_state, dispatch_repo)
+        check("stage 3: a source missing from the concept clone is still refused",
+              any("source path design/concepts/Foo/plan.md does not exist" in e for e in missing_errors),
+              missing_errors)
+        put(d, "plan.md", "# Foo plan\n")
+        put(d, "record.json", rec)
+        CT.lint = lambda dd, rr=None, ff=None: ([], [])
         ok, errs = run_cycle(d, repo, "run12")
         check("stage 3 done with lint, scenes and floor valid -> stage 4", ok and DS.load_state(d)["stage"] == 4, errs)
 

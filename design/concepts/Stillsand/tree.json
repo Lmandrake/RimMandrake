@@ -1,0 +1,390 @@
+{
+ "schema_version": 1,
+ "subject": "Stillsand",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": "design/concepts/Stillsand/root.md#north-star",
+ "root_state": "VALIDATED",
+ "root_hash": "a167e9293e83f822785a8970ace6c451f263a268b7bc6daeef8e7acbe7d33885",
+ "coverage": null,
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [],
+ "advisory": [
+  "Numeric inherited floor thresholds remain advisory pending calibration.",
+  "Root and flagship have separate authenticated Evidence-for-Ask delegations.",
+  "All scene observations remain unrun. Tier and observer choices are proposals for the Setter.",
+  "Shared agricultural thin-film integration is later under the all-game design item. Stillsand has no release number assigned here."
+ ],
+ "leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "Read actual producer/consumer and transition state with tick-stamped identities, independent census and captures. Known mutations change the reads, absent reads are UNMEASURED, and recovery readback matches the entry snapshot.",
+   "tier_reason": "Actual saved engine state and source/provider-independent normal targeting require composed-tier runtime reads after isolated offline can-fail checks.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "scene_observer",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "instrument",
+   "clause_kind": "change",
+   "experience": "The tester can match each observation to its scene, running list, source and deployed assembly, settings, tick and actor. Reads expose actual jobs, volumes, wet expiry, signs, incident phases and conversion ownership, and recovery is verified after success or interruption.",
+   "scenario": "Before player scenes, validate a recoverable fixture and each read-only observer against a known changed state and a missing-state control. Interrupt once after persistent mutation, recover from the durable scene journal, then compare the original map/global/settings/save manifest.",
+   "false_pass": [
+    "A hard-coded expected value is printed while the runtime state differs",
+    "Cleanup restores factory defaults over the entry settings",
+    "A capped log or missing tool prints PASS"
+   ],
+   "red": "A scene reports success after losing its log, reading a different assembly or failing to recover a held pawn.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Use route captures and a reader account of the destination, broad crossing and next undertaking, paired with the untouched pre-clear census and an explicitly crowded reject fixture. A census supports the reading. The reader judges the visible experience.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "expedition_ocean",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At ordinary play zoom, a reader following the crew sees a broad apparently empty sand crossing, a distant rock destination and a passing giant. Searching uncertain islands and caves supplies a reason for another departure. The native resident composition preserves that landscape impression.",
+   "scenario": "Compare three declared route states at shipped defaults on a disposable Stillsand map: unbuilt terrain, a route outside a working 40-colonist harbour, and the known route after a gale or emptied-cave visit. Show the destination, crossing and next departure. Label arranged giants and selected cave rows. Record natural content before fixture clearing.",
+   "false_pass": [
+    "A spawn census certifies emptiness while nearby small encounters fill every short movement",
+    "A cleared display pad is described as a naturally sparse route"
+   ],
+   "red": "Ordinary routes become a continuous creature and reward exhibit, so uncertain distant discoveries cease to organise expeditions.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: inspect the expedition route and apparent emptiness"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Track discovered threats, accessible cover, Direct Sun, actual hostile jobs and resting/resupply use before and after preparation. An unresolved-threat control retains danger. Roof-loss control increases exposure at the same air temperature.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": "Dependable rest granted solely by reaching unfamiliar rock while the demonstrated threat or exposure remains unresolved.",
+   "wall_expect_h": null,
+   "id": "prepared_harbour",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player explores an unfamiliar island, resolves its resident danger and prepares usable cover before relying on rest there. The secured refuge remains usable on return and reload, and lost cover changes exposure.",
+   "scenario": "Four grouped variants at play zoom: occupied unfamiliar cave, the same cleared and prepared refuge, that refuge after reload, and the same refuge with its roof lost. Perform exploration, ordinary combat or clearance, preparation, then real resting or resupply.",
+   "false_pass": [
+    "First contact with rock is treated as safe while a cave threat remains",
+    "A surfaced swimmer is declared harmless merely because it left sand"
+   ],
+   "red": "Travellers receive dependable refuge on first arrival despite an unresolved threat or ineffective cover.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: judge whether the prepared refuge reads as dependable"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Trace identified items from cave to hauling, normal bill or timed still, and final expedition/outpost inventory or consumption. The withheld-find control leaves the declared shortage. The previously taken row provides no guaranteed payout.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": "A guaranteed useful fortune in every cave.",
+   "wall_expect_h": null,
+   "id": "practical_fortune",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player brings a useful cave discovery into the next expedition or outpost through actual hauling, processing and use. A previously taken cave can yield no useful fortune, preserving uncertainty.",
+   "scenario": "Three outcomes: directly usable cache supplies, a processed lens/brine or clutch payoff through the harbour workshop, and an emptied cave. Declare the next undertaking and its missing supply before discovery. Record actual recipe input, work and output from loaded defs.",
+   "false_pass": [
+    "A treasure market-value label is accepted without use",
+    "Debug output replaces the real workshop lifecycle",
+    "Every cave is refilled to guarantee success"
+   ],
+   "red": "A valuable-looking discovery cannot actually provision the next undertaking.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: inspect the practical payoff and uncertainty"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Read shared intensity/exposure and ambient temperature, compare open/roof/parasol transitions, track moving shade and real consumer effects, and capture the arrival letter. Static checks reject the legacy KindFromElevation/floor and obsolete roof instructions. Shared implementation remains owed under DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "direct_sun",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees permanent sunlight governed by shared geometry-only Direct Sun, with the ruled 55 C zenith value and ordinary air heat. Roofs and parasols protect at low and high sun angles. A travelling giant updates its shade, and exposure text agrees with the same policy used by sun work.",
+   "scenario": "At matched air temperature compare representative low and high elevation with open ground, roof and parasol, then one moving giant-shadow entry/exit. Compare bare eyes, goggles and adapted gene, a real cooling-water drink, and the existing mirage onset/recovery consumer as separate effects.",
+   "false_pass": [
+    "Only the high-angle roof case is observed",
+    "A biome heat floor masks geometry",
+    "Cooling comfort is credited as roof protection"
+   ],
+   "red": "The legacy low-sun regime defeats a roof or a Stillsand heat floor overrides the shared geometry ruling.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Pair actual state with audible/visible sequences. Quiet and non-sand fishing controls remain quiet or ineligible. Drum/gale controls show uncertainty. Observe normal reachable calls, attack/kill remains and draw cancellation, including droid immunity and gale track erasure.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "sand_signs",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At play zoom with sound available, the player notices hidden movement through rumble, wake, tracks or a coarse geophone bearing and can observe the result of a fishing or thumper choice. Gale silence and drum lures preserve the signs stated uncertainty. Ordinary swimmer kills and event takes leave their respective readable consequences.",
+   "scenario": "Grouped cases are quiet ground, a submerged swimmer, a drum lure and gale suppression, followed by Sand/Gravel/deep-drift crossing, strike and re-submerge, living-body/droid targeting, a real Fish job and charged/dry thumper. Use independent captures and event state through each transition.",
+   "false_pass": [
+    "An exact species marker replaces coarse bearing",
+    "A sound counter passes while no sound is audible",
+    "A forced kill is credited as an ordinary hunt",
+    "A thumper is present but never consumes fuel or draws a swimmer"
+   ],
+   "red": "Hidden movement, fishing danger or body loss has no usable player-visible or audible sign.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "A tick-stamped visit trace and unique captures/audio connect warning, state, target, damage, remains and departure. Toggle, shaded-beam, unforced-incident and wrong-quest-target controls reject their effects. Observe actual use and kill signals in upper-tier content.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "giant_encounters",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player can follow the built giant and brood encounters from warning through arrival, attack and departure or defeat. A Muurrok beam and body take have observable consequences, and the retained horn, den and seep interactions operate in their supplying tier.",
+   "scenario": "Follow an unforced interval and a labelled forced Muurrok incident through warning, rumble, arrival, hunt, beam, take and dive. Include target death during pursuit and a hard-ground exit. Independently exercise sun-lance firing, eruption tunnel/mound/brood, and campaign horn/den/seep routes.",
+   "false_pass": [
+    "One late census misses the whole visit",
+    "A direct outcome helper stands in for horn use or quest kill",
+    "A beam animation is shown without damage or null-safe animal attribution"
+   ],
+   "red": "The giant visit arrives but its combat, take or readable departure fails, or the built event routes cannot complete.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Source and deterministic selector checks show no hydration/water-score dependency, including no-provider fallback. Paired live traces confirm retained independent eligibility and thumper draw. The worker chooses the replacement physical selection algorithm.",
+   "tier_reason": "Actual saved engine state and source/provider-independent normal targeting require composed-tier runtime reads after isolated offline can-fail checks.",
+   "cannot_show": "Prey ranked by hydration, carried water, water content, or the rejected water-appraisal fallback.",
+   "wall_expect_h": null,
+   "id": "hydration_exclusion",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The tester finds prey selection independent of hydration, carried water and the rejected water-appraisal fallback while ordinary physical eligibility, droid immunity and wet-thumper attraction remain effective.",
+   "scenario": "Hold eligible bodies and every declared non-water selection input fixed while swapping hydration and carried-water values under the same random stream. Repeat with the thirst provider absent. Inspect the replacement selector inputs and then compare live eligible/droid and charged/dry thumper cases.",
+   "false_pass": [
+    "All candidates are silently treated as fully watered but the water appraisal remains",
+    "Hydration-times-size is renamed physical suitability",
+    "Removing moisture attraction makes the negative pass"
+   ],
+   "red": "Muurrok or swimmer prey ordering still depends on hydration or a water-content proxy.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Measure per-cell displacement, bounded mass balance and declared inlet/outlet flux against quiet control. Observe phase/sense/work changes and normal carry eligibility and due-return callbacks with seeded test draws. Exactly one selected emergence occurs, with a disabled-emergence control. Dust devils, abrasion and static remain excluded.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "gale_passage",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees herald, gale and aftermath alter sunlight, listening, sand and exposed-pawn danger. Carry and return retain readable loss and recovery, and the aftermath produces the selected emergence and seeding under their feature controls.",
+   "scenario": "Pair quiet and gale intervals from equivalent declared sand state, separating conserved redistribution and external influx. Compare eligible crest traveller, roofed protection and ineligible body. Follow on-map drag, saved off-map living/dead return and unavailable-origin-map handling. Exercise each enabled aftermath row independently.",
+   "false_pass": [
+    "Ambient sand movement is attributed to gale",
+    "Conserved redistribution fails because net mass stayed constant",
+    "ForceCarryOff and ReturnGale bypass eligibility, dice and natural due return"
+   ],
+   "red": "The gale is a weather label whose claimed movement or pawn carry cannot be attributed or whose held pawn never returns correctly.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Read normal jobs and timed progress, before/after item identities and declared water-volume comps, already-booked flags and actual wet-expiry/attraction state. Verify visible fading and normal swimmer calls. Book production once, then preserve the flag across split/merge/save/use. Ground expiry is measured as time. Shared agricultural film integration remains later.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "current_water",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player produces, hauls, drinks and pours consistent quantities of current water. Pouring eligible sand leaves the visible fading wet line, hourbloom and saved attraction. A charged thumper consumes water, wets nearby ground and draws reachable swimmers. Expiry, reload and gale clearing preserve their respective consequences.",
+   "scenario": "Real sun-still cycles from each accepted feedstock, brine dipping/boiling and wringing supply water. Group split/merge/multi-unit ingestion/reload accounting, valid-sand versus roof/gravel pour, bloom/render toggles, expiry versus gale clear, charged/dry thumper and optional DBH present/absent. Declare actual item units and all replenishment.",
+   "false_pass": [
+    "ProofStillCycle replaces production",
+    "ProofDrinkHook replaces ingestion",
+    "A draw count proves a stain visible",
+    "Wet colour or direct bloom certifies shared agricultural water"
+   ],
+   "red": "Water duplicates or disappears across ordinary use, or an existing wet-line, bloom, attraction or thumper consequence is lost.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Read real input removal, ledger bands and deltas, booked flags, thoughts, faction goodwill, weighted incident inputs and actual cache/bloom/refusal. Control wrong direction or missing obligation rejects Return. Repeat/save does not duplicate reward. Each supplying tier has its own fingerprint.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "debt_return",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "In the supplying campaign tier, the player sees production and real use affect Sun-Debt once, its mood/goodwill/incident consequences and event-opened Return. A real sunward water offering produces the applicable good, great or refused outcome. Franchise-free RM remains ledger-inert.",
+   "scenario": "Separate RM-without-ledger and campaign-with-faith fixtures, with believer and outsider. Cover production/use, wringing thought, debt bands, gale/kill/debt Return opening, real offering and good/great/bad paths, debt stone and old debt cave. Compare optional DBH ingestion through its actual job.",
+   "false_pass": [
+    "An injected ritual result passes without an offering",
+    "An inert RM row is accepted as campaign proof",
+    "The same water is charged once on production and again on drinking"
+   ],
+   "red": "The tier ledger charges water twice or a real Return cannot resolve its saved obligation.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Read actual eligibility and chosen conversion owner, corpse identity/rot, prior rot/vanish restoration, species landmark/site identity and resource census before/after crowding and reload. Match titan spoilage to same-temperature ordinary meat and show arriving competitors. Ordinary giant implementation remains unknown until observed.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": "General outdoor-item or T3-resource immunity from ordinary spoilage.",
+   "wall_expect_h": null,
+   "id": "giant_history",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees ordinary eligible giant remains desiccate into species skeleton landmarks, and roofed recorded caves preserve their eligible contents until ownership releases. In T3, the classified titan instead follows its single owning corpse-site lifecycle, with harvest competition and ordinary temperature-driven meat spoilage.",
+   "scenario": "Compare ordinary outdoor eligible giant, roofed recorded cave and its exit/roof-loss/held-den/disabled cases, and a T3-classified titan. Add crowded conversion then freed space and reload. In T3 compare fresh passage/death with an older scavenged site, plus normal-temperature meat controls.",
+   "false_pass": [
+    "Cave-only rot suppression is credited as outdoor giant preservation",
+    "Stillsand and HugeThings both convert the same corpse",
+    "A flat daily titan resource loss is called vanilla meat spoilage",
+    "The original corpse is destroyed before space for its landmark is secured"
+   ],
+   "red": "A giant disappears, converts twice or loses resources, or preservation leaks onto ordinary outdoor items and T3 harvest resources.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Read accepted orders, reservations, jobs, inputs, progress and outputs through completion or explicit refusal, then repeat/reload. Pair feature-off/all-off with on at the declared application time. Record search/collapse/reset UI and exact original-settings restoration.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "ordinary_work",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player constructs and uses the retained workshop, resource and creature systems through ordinary orders. Jobs, reservations, persistent outcomes and feature controls remain usable with repeat work, interruption and a 40-colonist harbour. Settings report their actual application time and preserve prior user values after testing.",
+   "scenario": "First construction, repeated ordinary sieve/bill/still/hauling work with shared inputs and limited tools, mid-job sun loss/return and reload, and every declared feature toggle at its labelled timing. Independent resident/event/salvage checks exercise remaining built capabilities. Use actual shipped costs and research.",
+   "false_pass": [
+    "A reflection-only toggle roundtrip stands in for gameplay",
+    "Workers reserve every tool and never finish",
+    "Cleanup writes shipped defaults over custom values"
+   ],
+   "red": "Routine jobs stall or duplicate outputs under contention, or settings change their stored values while ignoring their effects.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "scene_observer",
+   "oracle_proposed": "Use ordinary player orders with an event/item census at each checkpoint, a before/reloaded/final identity comparison and a no-reload sibling. Both orders must reach their declared next undertaking with accounted costs. Unique captures establish the visible continuity.",
+   "tier_reason": "Engine jobs, saved map state and player-visible transitions require a running composed Biomes map with its dependency closure and all DLC. Source checks establish wiring only.",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "stillsand_walk",
+   "by": "concept",
+   "root": [
+    "stillsand_experience"
+   ],
+   "leaf_kind": "walk",
+   "clause_kind": "preserve",
+   "experience": "The tester can carry out the expedition and resupply loop, reload a save made midway and repeat the core action, then complete the main actions in a second order without losing work, discoveries or persistent consequences.",
+   "scenario": "Do the prepared-harbour departure, sparse crossing, island exploration/security, useful cave return, workshop provisioning and next departure. Save mid-way during return work with an active wet interval and pending warning, reload and finish. Repeat the core expedition/resupply action with the emptied-cave variant. In a second order prepare the workshop before exploration, then discover/secure/resupply. Compare resulting items, bills, reservations, wet expiry, warnings and harbour state.",
+   "false_pass": [
+    "Only a finished showcase is reloaded",
+    "The test injects completed output after load",
+    "Repeated expeditions silently regenerate the cave reward"
+   ],
+   "red": "The second expedition or mid-work reload strands a job, duplicates a reward or loses the prepared refuge and saved consequences.",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: judge the repeat expedition and practical continuation"
+  }
+ ]
+}

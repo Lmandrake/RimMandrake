@@ -1,0 +1,77 @@
+{
+  "lines": {
+    "tick_cost": {
+      "status": "applicable"
+    },
+    "long_stall": {
+      "status": "applicable"
+    },
+    "latency": {
+      "status": "applicable"
+    },
+    "memory": {
+      "status": "applicable",
+      "evidence_mode": "decomposed",
+      "establishes": "Short repeated create/use/clear/reload cycles, retained component allocations and owned texture accounting establish bounded retained state for these actions. Long-duration growth between distinct events remains inferred from ownership and cleanup, with no long soak required. Numeric thresholds remain advisory."
+    },
+    "load_time": {
+      "status": "applicable"
+    },
+    "save_size": {
+      "status": "applicable",
+      "evidence_mode": "compressed",
+      "establishes": "Serialized before/after scene save copies with repeated compressed wet/incident/corpse cycles establish these persistent-state deltas. Rare unexercised histories remain inferred. Numeric thresholds remain advisory."
+    },
+    "save_compat": {
+      "status": "applicable"
+    },
+    "load_order": {
+      "status": "applicable"
+    },
+    "log": {
+      "status": "applicable"
+    },
+    "mod_settings": {
+      "status": "applicable"
+    },
+    "multiplayer": {
+      "status": "applicable"
+    },
+    "art": {
+      "status": "applicable"
+    },
+    "reads_as": {
+      "status": "applicable"
+    },
+    "clickable": {
+      "status": "applicable"
+    },
+    "order_taken": {
+      "status": "applicable"
+    },
+    "motion": {
+      "status": "applicable"
+    },
+    "text": {
+      "status": "applicable"
+    },
+    "dlc": {
+      "status": "applicable"
+    },
+    "worldgen": {
+      "status": "applicable"
+    },
+    "biome_scope": {
+      "status": "applicable"
+    },
+    "flight": {
+      "status": "applicable"
+    },
+    "naming": {
+      "status": "applicable"
+    },
+    "test_isolation": {
+      "status": "applicable"
+    }
+  }
+}
