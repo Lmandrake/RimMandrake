@@ -3,11 +3,11 @@
  "claims": [
   {
    "gap": "g1",
-   "evidence": "scenes.json sc_coalescence_grows_and_breaks: second Coalescence destroyed by colonist gunfire with no Burn (expect less mulch than the Burn collapse and zero Monstrous samples); third Coalescence collapses in a natural Burn with Monstrous samples"
+   "evidence": "scenes.json sc_coalescence_grows_and_breaks: with no Burn active the second Coalescence (stage 1, mass M) is destroyed by colonist gunfire (zero Monstrous samples); then the Repulsor Burn collapses the first; after it lapses a third stage-1 Coalescence at mass M collapses in the natural Burn with Monstrous samples, and the gunfire mulch is less than the third's at equal stage and mass (killedMulchFactor 0.5, RM_CoalescenceKernel.Mulch). Ordered because the Burn reads one map-wide sky.BurnActive (Building_RM_Coalescence.cs:118) and collapses every Coalescence at once"
   },
   {
    "gap": "g2",
-   "evidence": "scenes.json sc_waiting_costs_more: a stage-3 Coalescence held through emissions until the map count reaches the comp's cap, expect count equals the cap and never exceeds it for five emissions after"
+   "evidence": "scenes.json sc_waiting_costs_more: after the stage-2 reads the first Coalescence is despawned and a stage-3 one placed and held through emissions until the map-wide count of its unfinishedKind manhunters reaches its stage cap (maxManhunters[2] = 6, RM_Coalescence.xml; TryEmit counts the whole map), expect the count equals the cap and never exceeds it for five emissions after; placed late so its emissions do not enter the stage-1/stage-2 comparison"
   },
   {
    "gap": "g3",
@@ -27,7 +27,7 @@
   },
   {
    "gap": "g7",
-   "evidence": "scenes.json sc_touched_reads_early: a fourth colonist adjacent to a Coalescence ring gains the hediff; a humanlike non-flesh pawn (asserted FleshType not Normal) out in the Bloom gains none"
+   "evidence": "scenes.json sc_touched_reads_early: a fourth colonist adjacent to a Coalescence ring gains the hediff; the non-flesh humanlike arm reads the loaded defs for a humanlike race with IsFlesh false and records UNMEASURED on Core plus five DLC, which hold none (measured 2026-11-16: Human and CreepJoiner only, both flesh); the guard itself is RaceProps.Humanlike && RaceProps.IsFlesh at RM_ContagionTouched.cs:271, and the muffalo (non-humanlike flesh) gains none"
   },
   {
    "gap": "g8",

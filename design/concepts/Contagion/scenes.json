@@ -280,10 +280,10 @@
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "an untouched colonist with an outdoor work job under the Bloom (asserted no RM_ContagionTouched)",
     "owed build RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE landed and deployed (asserted by its selftest on the deployed DLL hash), else the transition-message arm records UNMEASURED",
-    "a placed Coalescence with a fourth colonist ordered to stand adjacent to its ring; a humanlike non-flesh pawn (a mechanoid-fleshed humanlike, asserted RaceProps.FleshType is not Normal) out in the Bloom"
+    "a placed Coalescence with a fourth colonist ordered to stand adjacent to its ring; for the flesh-only arm, a humanlike race whose RaceProps.IsFlesh is false read from the loaded defs: Core plus all five DLC hold none (measured 2026-11-16: the only humanlike races are Human and CreepJoiner, both flesh), so on this list that arm records UNMEASURED with that reason and the flesh guard is the source read RaceProps.Humanlike && RaceProps.IsFlesh at RM_ContagionTouched.cs:271"
    ],
-   "action": "run one in-game day by clock with the colonist outdoors; read letters, messages and the hediff; a second colonist out in a forced Burn for the same span; a third adjacent to an Unfinished on a temperate map; a fourth adjacent to the Coalescence; the non-flesh humanlike and a muffalo out in the Bloom",
-   "expect": "the touched state is visible before any mutation; one transition message at active change; no letter for sub-threshold exposure; active change is reached and one deck mutation lands on the body, with exactly one 'Contagion mutation:' letter naming that colonist; the Burn colonist's severity rises faster than the Bloom one; the contact colonist off-biome gains the hediff; the colonist by the Coalescence gains the hediff; the non-flesh humanlike and the muffalo gain none",
+   "action": "run one in-game day by clock with the colonist outdoors; read letters, messages and the hediff; a second colonist out in a forced Burn for the same span; a third adjacent to an Unfinished on a temperate map; a fourth adjacent to the Coalescence; a muffalo, and a non-flesh humanlike when the load holds one, out in the Bloom",
+   "expect": "the touched state is visible before any mutation; one transition message at active change; no letter for sub-threshold exposure; active change is reached and one deck mutation lands on the body, with exactly one 'Contagion mutation:' letter naming that colonist; the Burn colonist's severity rises faster than the Bloom one; the contact colonist off-biome gains the hediff; the colonist by the Coalescence gains the hediff; the muffalo gains none, and a non-flesh humanlike gains none (UNMEASURED on Core plus five DLC, which hold no such race)",
    "control": {
     "case": "the same colonist kept indoors for the day",
     "expect": "no touched hediff and no message",
@@ -357,12 +357,12 @@
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "a placed Coalescence at stage 1 (asserted mass)",
     "six Unfinished within 20 cells",
-    "a second stage-1 Coalescence 40 cells away, placed for the gunfire arm (asserted mass)",
+    "a second stage-1 Coalescence 40 cells away, placed for the gunfire arm (asserted mass, recorded as M)",
     "COALESCENCE_STAGE_DIAGNOSE_STUCK_AT_ONE read first: if not closed, the absorption arm records UNMEASURED, never PASS",
-    "a third stage-1 Coalescence for the natural-Burn arm, the natural Burn tick known from the saved schedule (asserted)"
+    "the Burn reads one map-wide sky (Building_RM_Coalescence.cs:118, sky.BurnActive), so any Burn collapses every Coalescence on the map: the arms run in the order the action gives, and the natural Burn tick is known from the saved schedule (asserted)"
    ],
-   "action": "jump passive growth and let the Unfinished walk; read mass, stage, the inspect string and manhunters; then power a Repulsor to force a Burn and read the remains; destroy the second Coalescence by colonist gunfire with no Burn active and read its remains; jump to the natural Burn and read the third Coalescence's remains",
-   "expect": "at least one stage up with absorption counted from arrivals; the inspect string names mass and stage equal to the comp's saved values; manhunters within the cap; the Repulsor-Burn collapse leaves Monstrous samples and mulch; the gunfire-destroyed Coalescence leaves less mulch than the Burn-collapsed one and zero Monstrous samples; the third Coalescence collapses in the natural Burn with Monstrous samples; mass read before and after a save-reload is equal; a manhunter the Coalescence emitted standing on the ring is not absorbed",
+   "action": "jump passive growth and let the Unfinished walk; read mass, stage, the inspect string and manhunters; with no Burn active, destroy the second Coalescence by colonist gunfire and read its remains; then power a Repulsor to force a Burn and read the first Coalescence's remains; after the forced Burn lapses, place a third stage-1 Coalescence at the second's mass M (asserted) and jump to the natural Burn, reading its remains",
+   "expect": "at least one stage up with absorption counted from arrivals; the inspect string names mass and stage equal to the comp's saved values; manhunters within the cap; the Repulsor-Burn collapse leaves Monstrous samples and mulch; the gunfire-destroyed Coalescence leaves zero Monstrous samples and less mulch than the third Coalescence, at equal stage and mass M, leaves in the natural Burn (gunfire mulch = round(killedMulchFactor 0.5 x the Burn mulch) from RM_CoalescenceKernel.Mulch); the third Coalescence collapses in the natural Burn with Monstrous samples; mass read before and after a save-reload is equal; a manhunter the Coalescence emitted standing on the ring is not absorbed",
    "control": {
     "case": "the same Unfinished held by a wall one cell outside the ring for the same span",
     "expect": "it is alive, mass rises only by the passive-growth amount read from the comp",
@@ -385,10 +385,10 @@
     "every Contagion setting at its shipped default (asserted by preflight_contagion)",
     "a placed Coalescence at stage 1, incidents off except its own emission (asserted storyteller quiet)",
     "three colonists ordered to work the Coalescence site as the recovery party at each stage (asserted: three pawns with a job targeting a cell within 8 of the ring, untouched at stage 1)",
-    "a second placed Coalescence at stage 3 for the cap arm, the map-wide manhunter cap read from the comp (asserted)"
+    "the cap is map-wide: TryEmit counts every manhunter of the Coalescence's unfinishedKind on the map against maxManhunters at the emitter's stage (2, 4, 6 in RM_Coalescence.xml), so the cap arm's Coalescence is placed only after the stage reads"
    ],
-   "action": "read manhunter count and spread at stage 1 with the recovery party working the site for 2500 ticks, reading each worker's RM_ContagionTouched severity and the nearest manhunter's distance to them; jump to stage 2, send the same party for the same span and read again; then hold the stage-3 Coalescence through emissions until the map count reaches the cap and for five emissions after",
-   "expect": "stage 2 emits more, within the cap, all from the Coalescence; no unrelated incident; the recovery workers at the stage-2 site gain more touched severity than at stage 1 and the manhunters come closer to them; the stage-3 arm reaches the map-wide cap and the count equals the cap, never above it, for five emissions after",
+   "action": "read manhunter count and spread at stage 1 with the recovery party working the site for 2500 ticks, reading each worker's RM_ContagionTouched severity and the nearest manhunter's distance to them; jump to stage 2, send the same party for the same span and read again; after the stage-2 reads, despawn the first Coalescence, place one at stage 3 (asserted mass), and hold it through emissions until the map count reaches its stage cap (maxManhunters[2], read from the def) and for five emissions after",
+   "expect": "stage 2 emits more, within the cap, all from the Coalescence; no unrelated incident; the recovery workers at the stage-2 site gain more touched severity than at stage 1 and the manhunters come closer to them; the stage-3 arm reaches its stage cap and the count equals the cap, never above it, for five emissions after",
    "control": {
     "case": "the same span with growth held at stage 1",
     "expect": "no rise in emissions",
