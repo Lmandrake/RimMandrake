@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-15T14:33:13-08:00",
-  "since_from": "advance by BENCH",
+  "since": "2026-11-15T17:51:38-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 3,
-    "total": 3
+    "visit": 4,
+    "total": 4
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -66,6 +66,24 @@
       "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-cycle-t-1794781945",
       "confirmed": {
         "steward_confirms": "read cycle_2/SUMMARY.md, tests_edited.json and the diffs of its 3 tests: no assertion weakened, skipped or deleted (SliceGateChecks loop guard 60->600, 120 s bound and assertion kept; census RESET row added; no_hose WORD adds pipe, mutant M7). Sole not-met reason = new blind judge owed after fixes: REAL MISS (re-judgement not done), no RECORD GAP, no CRITERION FLAW in the reader. Verdict: open cycle 3, file nothing."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-15T17:51:38-08:00",
+      "by": "CONDUCTOR",
+      "why": "delegated: conductor decision after the three-cycle pause; fold: RIMMANDRAKE_FILE_OWED_WHERE_RUNS_PARK_FOR_THE_CONDUCTOR",
+      "unit": null,
+      "confirmed": {
+        "conductor_decision": "Open blind cycle 4. Cycle 3 fixed four Problems, all test gaps and no mod bug; both offline no-hose bars are green and the three lane-1 failures are Polish; a cycle's own fixes cannot pass its own exit, so a fresh blind judge is the only road to a recorded pass."
       },
       "checks_passed": [
         "order",
