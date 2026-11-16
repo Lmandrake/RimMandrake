@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "stage": 2,
-  "run": "rm-role-designercodex-1794805981",
+  "stage": 3,
+  "run": "rm-role-designercodex-1794810374",
   "grounded_at": "2026-11-16T02:22:44.174396+00:00",
   "source_revision": "95d37b04a86c8477e4c5280eaba0988bce259ac5",
   "scope": [
@@ -171,6 +171,26 @@
         "design/RimMandrake/fluff_cuts_2026-10-23.md:29",
         "CONDUCTOR:1794806166917699063"
       ]
+    },
+    {
+      "id": "stage3_written_contract",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/FeverWood/plan.md",
+        "design/concepts/FeverWood/scenes.json",
+        "design/concepts/FeverWood/tree.json"
+      ],
+      "text": "Write the approved root and stage-2 dispositions as 23 proposed leaves, 44 planned scenes, five greedy showcases and complete floor applicability. Seven filed child items include every missing full script entry point/control/recovery and documented delivery gap. Implementation, live proof, existing inventory scope and the Preflight admission ceiling are unchanged. No waiver, oracle binding, owner first-touch, exam or coverage signature is supplied."
+    },
+    {
+      "id": "stage3_root_traceability",
+      "speaker": "agent",
+      "source": [
+        "design/validation_walks/RimMandrake/FeverWood.md:87",
+        "design/concepts/FeverWood/tree.json",
+        "CONDUCTOR:1794804413045937607"
+      ],
+      "text": "Added two explicitly agent-authored candidate must-show IDs within the existing DRAFT north-star section to give every tree leaf a nonempty root reference. The approved concept root remains the delegated text already in record.root. The legacy documentary quotation is untouched, state stays DRAFT and validated-hash stays empty; neither candidate bar nor first touch is owner-certified."
     }
   ],
   "asks": [
@@ -263,7 +283,19 @@
       "history": [
         "ITEM:FEVERWOOD_RM_MOD_BUILD_1",
         "ITEM:BAROQUE_BIOMES_WAVE2_FOLD_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "package_and_tiers"
+            ],
+            "why": "Source/runtime checkout costs less than turning package identity into a showcase."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_placement",
@@ -281,7 +313,20 @@
       ],
       "history": [
         "ITEM:FEVERWOOD_NATURAL_TOGGLE_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "package_and_tiers",
+              "retired_routes"
+            ],
+            "why": "Hand-placement and inert worker are static absence/identity checks; no natural-placement demonstration."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_routes",
@@ -301,7 +346,21 @@
         "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_Boughway.xml:54",
         "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_BoughSoil.xml:44"
       ],
-      "scope_source": "OWNER:1794374372850231423"
+      "scope_source": "OWNER:1794374372850231423",
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "branches_and_shore",
+            "scenes": [
+              "branch_work",
+              "foundations",
+              "real_shore_rescue"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_foundations",
@@ -320,7 +379,21 @@
         "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:164",
         "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_StiltPlatform.xml:44",
         "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_FeverWoodMirrorPool.xml:54"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "branches_and_shore",
+            "scenes": [
+              "branch_work",
+              "foundations",
+              "real_shore_rescue"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_trunks",
@@ -337,7 +410,19 @@
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkHeartwood.xml",
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkCore.xml:77",
         "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs:248"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "living_trunk"
+            ],
+            "why": "An isolated real mining/regrowth/seal comparison is cheaper than another whole-colony showcase."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_pools",
@@ -357,7 +442,44 @@
       ],
       "history": [
         "ITEM:FEVER_WOOD_MECHANICS_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "branches_and_shore",
+            "scenes": [
+              "branch_work",
+              "foundations",
+              "real_shore_rescue"
+            ]
+          },
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "porter_and_agitation",
+              "crown_audio",
+              "mirror_snapshot",
+              "limb_ladder",
+              "eye_encounter",
+              "normal_suppression",
+              "adult_authority"
+            ]
+          },
+          {
+            "showcase": "prisoner_and_gift",
+            "scenes": [
+              "tank_upkeep",
+              "tank_exit_routes",
+              "young_establishment",
+              "brood_tally",
+              "peaceful_return",
+              "campaign_display"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_shore_rescue",
@@ -377,7 +499,21 @@
         "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:310",
         "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:185"
       ],
-      "scope_source": "OWNER:1794374372850231423"
+      "scope_source": "OWNER:1794374372850231423",
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "branches_and_shore",
+            "scenes": [
+              "branch_work",
+              "foundations",
+              "real_shore_rescue"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_mirror_break",
@@ -392,7 +528,25 @@
       "impl_evidence": [
         "src/RimMandrake/FeverWood/Defs/IncidentDefs/RM_FeverWood_MirrorBreak.xml:31",
         "src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_MirrorBreak.cs:33"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "porter_and_agitation",
+              "crown_audio",
+              "mirror_snapshot",
+              "limb_ladder",
+              "eye_encounter",
+              "normal_suppression",
+              "adult_authority"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_mirror_list",
@@ -412,7 +566,25 @@
       ],
       "gaps": [
         "gap_mirror_intel"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "porter_and_agitation",
+              "crown_audio",
+              "mirror_snapshot",
+              "limb_ladder",
+              "eye_encounter",
+              "normal_suppression",
+              "adult_authority"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_limbs",
@@ -436,7 +608,25 @@
       ],
       "history": [
         "ITEM:FEVERWOOD_TENTACLE_BESTIARY_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "porter_and_agitation",
+              "crown_audio",
+              "mirror_snapshot",
+              "limb_ladder",
+              "eye_encounter",
+              "normal_suppression",
+              "adult_authority"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_porter",
@@ -458,7 +648,25 @@
       ],
       "gaps": [
         "gap_porter_locality"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "porter_and_agitation",
+              "crown_audio",
+              "mirror_snapshot",
+              "limb_ladder",
+              "eye_encounter",
+              "normal_suppression",
+              "adult_authority"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_great_emergence",
@@ -478,7 +686,25 @@
       ],
       "history": [
         "ITEM:FEVERWOOD_TENTACLE_SETPIECE_TUNING_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "porter_and_agitation",
+              "crown_audio",
+              "mirror_snapshot",
+              "limb_ladder",
+              "eye_encounter",
+              "normal_suppression",
+              "adult_authority"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_suppression",
@@ -503,7 +729,25 @@
       "gaps": [
         "gap_suppression_locality",
         "gap_foul_proof"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "porter_and_agitation",
+              "crown_audio",
+              "mirror_snapshot",
+              "limb_ladder",
+              "eye_encounter",
+              "normal_suppression",
+              "adult_authority"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_tank",
@@ -529,7 +773,24 @@
         "ITEM:FEVERWOOD_DIANOGA_PRISON_1",
         "ITEM:FEVERWOOD_DIANOGA_TANK_TUNING_1",
         "ITEM:SEKKULAATHTANK_DECIDE_RELEASE_ON_DESTROY"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "prisoner_and_gift",
+            "scenes": [
+              "tank_upkeep",
+              "tank_exit_routes",
+              "young_establishment",
+              "brood_tally",
+              "peaceful_return",
+              "campaign_display"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_escape_install",
@@ -549,7 +810,24 @@
       ],
       "gaps": [
         "gap_maturation"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "prisoner_and_gift",
+            "scenes": [
+              "tank_upkeep",
+              "tank_exit_routes",
+              "young_establishment",
+              "brood_tally",
+              "peaceful_return",
+              "campaign_display"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_maturation",
@@ -565,7 +843,24 @@
       "search_scope": "Read the full escaped-captive tick/install/release paths and TentacleWatch state/ExposeData. Searched src for Sekkulaath maturation and pool establishment timers, and checked the FeverWood roster/spec. Found armed/released flags and immediate installation with no saved pool-specific maturity state.",
       "gaps": [
         "gap_maturation"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "prisoner_and_gift",
+            "scenes": [
+              "tank_upkeep",
+              "tank_exit_routes",
+              "young_establishment",
+              "brood_tally",
+              "peaceful_return",
+              "campaign_display"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_brood",
@@ -584,7 +879,24 @@
         "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:80",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:170",
         "src/RimMandrake/FeverWood/Source/Kernel/RM_BroodKernel.cs"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "prisoner_and_gift",
+            "scenes": [
+              "tank_upkeep",
+              "tank_exit_routes",
+              "young_establishment",
+              "brood_tally",
+              "peaceful_return",
+              "campaign_display"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_return_gift",
@@ -605,7 +917,24 @@
         "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:279",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:181",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "prisoner_and_gift",
+            "scenes": [
+              "tank_upkeep",
+              "tank_exit_routes",
+              "young_establishment",
+              "brood_tally",
+              "peaceful_return",
+              "campaign_display"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_display_campaign",
@@ -623,7 +952,24 @@
         "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:414",
         "src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml"
       ],
-      "offline_check": "offline_broodcampaign"
+      "offline_check": "offline_broodcampaign",
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "prisoner_and_gift",
+            "scenes": [
+              "tank_upkeep",
+              "tank_exit_routes",
+              "young_establishment",
+              "brood_tally",
+              "peaceful_return",
+              "campaign_display"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_lure_bait",
@@ -648,7 +994,20 @@
       "history": [
         "ITEM:FEVERWOOD_TWO_FRONT_LURE_1",
         "ITEM:FEVERWOOD_TWO_FRONT_LURE_TUNING_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "normal_bait",
+              "two_front_journey"
+            ],
+            "why": "Living-bait work and fronts form a distinct ordinary journey, but only two inventory units are new; below the later-showcase minimum of three."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_two_fronts",
@@ -671,7 +1030,19 @@
       "gaps": [
         "gap_lure_targeting",
         "gap_lure_proof"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "two_front_journey"
+            ],
+            "why": "Retain full delayed-front journey and reload controls; it adds only one unit beyond bait, so no extra showcase."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_hive_geometry",
@@ -694,7 +1065,22 @@
       "history": [
         "ITEM:FEVERWOOD_ANT_HIVE_DUNGEON_1",
         "ITEM:ANT_HIVE_REAL_GEOMETRY_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "living_and_broken_hives",
+            "scenes": [
+              "hive_geometry",
+              "hive_reaction",
+              "hive_farm_guard",
+              "mirror_side_ruin"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_hive_reaction",
@@ -711,7 +1097,22 @@
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Kurreth_Race.xml:140",
         "src/RimMandrake/FeverWood/validation.py:1732",
         "src/RimMandrake/CreatureBehaviors/Source/RM_CompReactionSource.cs"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "living_and_broken_hives",
+            "scenes": [
+              "hive_geometry",
+              "hive_reaction",
+              "hive_farm_guard",
+              "mirror_side_ruin"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_hive_farm",
@@ -726,7 +1127,22 @@
       "impl_evidence": [
         "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:388",
         "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:59"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "living_and_broken_hives",
+            "scenes": [
+              "hive_geometry",
+              "hive_reaction",
+              "hive_farm_guard",
+              "mirror_side_ruin"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_hive_guard",
@@ -748,7 +1164,22 @@
       ],
       "history": [
         "ITEM:FEVERWOOD_HIVE_GUARD_CHAMBER_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "living_and_broken_hives",
+            "scenes": [
+              "hive_geometry",
+              "hive_reaction",
+              "hive_farm_guard",
+              "mirror_side_ruin"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_hive_sealing",
@@ -766,7 +1197,22 @@
       ],
       "history": [
         "ITEM:FEVERWOOD_HIVE_SEALED_PASSAGES_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "living_and_broken_hives",
+            "scenes": [
+              "hive_geometry",
+              "hive_reaction",
+              "hive_farm_guard",
+              "mirror_side_ruin"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_theft_retired",
@@ -782,7 +1228,20 @@
       "history": [
         "ITEM:FEVERWOOD_ANT_THEFT_RAIDBACK_1",
         "ITEM:FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "retired_routes"
+            ],
+            "why": "Absent and scoped out, so excluded from built/in-scope counting but still explicitly checked for regression.",
+            "counted_unit": false
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_glomvar_residual",
@@ -802,7 +1261,19 @@
       ],
       "history": [
         "ITEM:FEVERWOOD_HIVE_PARASITE_CHAMBER_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "retired_routes"
+            ],
+            "why": "Shipped dormant race/assets load and cut feeding behavior stays absent; scoped out content is covered only here."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_nectar",
@@ -819,7 +1290,20 @@
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml:159",
         "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:90",
         "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:123"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "crown_provisions",
+            "scenes": [
+              "nectar_and_guild",
+              "flora_roles"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_guild",
@@ -843,7 +1327,20 @@
         "ITEM:FEVERWOOD_SAP_SUCKER_GUILD_1",
         "ITEM:FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1",
         "ITEM:FEVERWOOD_SAP_SUCKER_TUNING_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "crown_provisions",
+            "scenes": [
+              "nectar_and_guild",
+              "flora_roles"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_native_cast",
@@ -860,7 +1357,20 @@
         "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:213",
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml",
         "src/RimMandrake/FeverWood/Source/RM_CompSillochAmbush.cs:121"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "native_water",
+              "native_ambush_diet"
+            ],
+            "why": "Finite roster needs kind-specific drinking/targeting/diet/moving-prey checks; grouping those as another face would hide independent controls."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_borer_diet",
@@ -875,7 +1385,20 @@
       "impl_evidence": [
         "src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7",
         "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml:143"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "native_ambush_diet",
+              "borer_gallery"
+            ],
+            "why": "Existing tree diet and absent gallery extension are separately controlled in ordinary checks."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_borer_galleries",
@@ -889,7 +1412,19 @@
       "scope": "approved",
       "search_scope": "Read brathek definition, food flag settings adapter and the living-bole regrowth path. Searched src for Brathek plus gallery/boring/wall damage callers and the roster row. Found the diet adapter and no live gallery-extension mechanism.",
       "scope_source": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md",
-      "scope_resolution": "Retain existing documented obligation for planning, agent reading stage2_terrain_edges. Not a new owner quotation, waiver or claim of implementation."
+      "scope_resolution": "Retain existing documented obligation for planning, agent reading stage2_terrain_edges. Not a new owner quotation, waiver or claim of implementation.",
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "borer_gallery"
+            ],
+            "why": "A time-sequence frontier/geometry check is cheaper and clearer than another full scene group."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_birds",
@@ -909,7 +1444,20 @@
       ],
       "history": [
         "ITEM:FEVERWOOD_ALIEN_BIRD_CHORUS_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "birds_and_optional_theft",
+              "crown_audio"
+            ],
+            "why": "Ordinary shearing, calls, optional theft and owner-attended movement check cover the retained roster without a new art gate."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_chorus",
@@ -934,7 +1482,25 @@
       ],
       "gaps": [
         "gap_chorus"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "water_judgment",
+            "scenes": [
+              "porter_and_agitation",
+              "crown_audio",
+              "mirror_snapshot",
+              "limb_ladder",
+              "eye_encounter",
+              "normal_suppression",
+              "adult_authority"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_oil",
@@ -957,7 +1523,21 @@
       "history": [
         "ITEM:FEVERWOOD_OIL_BOIL_WEATHER_1",
         "ITEM:FEVERWOOD_OIL_FLASH_BARE_GROUND_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "oil_harvest",
+              "oil_ignition",
+              "oil_water_authority"
+            ],
+            "why": "Keep the complete worker-harvest and real-hook journey plus interaction; one inventory unit cannot meet later-showcase minimum."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_flora",
@@ -988,7 +1568,20 @@
       "gaps": [
         "gap_flora_roles",
         "gap_resource_plants"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "crown_provisions",
+            "scenes": [
+              "nectar_and_guild",
+              "flora_roles"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_wrecks",
@@ -1008,7 +1601,19 @@
       ],
       "history": [
         "ITEM:WRECK_ART_WIRE_RENDERS_NOBODY_POINTS_AT"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "wrecks_and_scanner"
+            ],
+            "why": "Inherited salvage and texture resolution fit a small actual-work checkout."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_scanner",
@@ -1021,7 +1626,19 @@
       "scope": "not_opened",
       "impl_evidence": [
         "src/RimMandrake/FeverWood/Patches/RM_AcousticPayload_FeverWood.xml:15"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "wrecks_and_scanner"
+            ],
+            "why": "Optional service readings require a paired integration checkout, not a biome face."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_tier_mapping",
@@ -1044,7 +1661,20 @@
       "history": [
         "ITEM:FEVERWOOD_DIANOGA_GIANT_MAP_1",
         "ITEM:FEVERWOOD_TIER_LEAKS_FIX_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "package_and_tiers",
+              "campaign_display"
+            ],
+            "why": "Paired supported-list runtime remap observations are cheaper than another showcase."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_settings",
@@ -1063,7 +1693,20 @@
         "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:36",
         "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:135",
         "src/RimMandrake/FeverWood/validation.py:999"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "settings_and_heat",
+              "floor_checkout"
+            ],
+            "why": "Real UI and each named off behavior remain floor/checkout obligations."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_proof_hooks",
@@ -1081,7 +1724,19 @@
       ],
       "history": [
         "ITEM:FEVERWOOD_LIMB_PROOF_HOOK_1"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "observation_control"
+            ],
+            "why": "Read purity and independent truth checks precede every scene rather than being showcased."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_persistence",
@@ -1107,7 +1762,21 @@
       ],
       "gaps": [
         "gap_tenant_persistence"
-      ]
+      ],
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "ordinary_reload_walk",
+              "water_rescue_reload",
+              "return_disable_reload"
+            ],
+            "why": "Persistence needs state-specific checkpoints and the single walk, not an idle-map screenshot."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_sink_mud",
@@ -1122,7 +1791,19 @@
       "scope": "approved",
       "search_scope": "Searched all src C#/XML for SinkMud, sink-mud, MudStuck, mud stuck and StuckInMud, read all local terrain definitions and GroundRefusal, and checked the flora/fauna rosters. References describe the idea but provide no weight-based sticking or mud-rescue caller.",
       "scope_source": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md",
-      "scope_resolution": "Retain existing documented obligation for planning, agent reading stage2_terrain_edges. Not a new owner quotation, waiver or claim of implementation."
+      "scope_resolution": "Retain existing documented obligation for planning, agent reading stage2_terrain_edges. Not a new owner quotation, waiver or claim of implementation.",
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "by": [
+              "sink_mud"
+            ],
+            "why": "Weight, self/assisted escape and danger-vs-mud control remain a separate ordinary scene."
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     },
     {
       "id": "fw_abandoned_hives",
@@ -1136,7 +1817,22 @@
       "scope": "approved",
       "search_scope": "Read current FeverWood hive genstep and map component, searched src filenames and C#/XML for abandoned/broken/ruined hive profiles. A generic external ruin path has not been established.",
       "scope_source": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md",
-      "scope_resolution": "Retain existing documented obligation for planning, agent reading stage2_terrain_edges. Not a new owner quotation, waiver or claim of implementation."
+      "scope_resolution": "Retain existing documented obligation for planning, agent reading stage2_terrain_edges. Not a new owner quotation, waiver or claim of implementation.",
+      "coverage_plan": {
+        "source": "design/concepts/FeverWood/scenes.json",
+        "checks": [
+          {
+            "showcase": "living_and_broken_hives",
+            "scenes": [
+              "hive_geometry",
+              "hive_reaction",
+              "hive_farm_guard",
+              "mirror_side_ruin"
+            ]
+          }
+        ],
+        "status": "planned_unexecuted"
+      }
     }
   ],
   "contradictions": [
@@ -1156,7 +1852,18 @@
       "resolution": "The November answer controls: water arrival establishes a particular pool and starts a saved several-day interval; it must not immediately revive the adult. Only the right poison delivered to that pool is the specified post-arrival intervention. Deliberate peaceful return remains a different path. Exact days and alerts are engineering/tuning work, not another scope ask.",
       "resolution_decision": "stage2_water_state_contract",
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_suppression_locality",
@@ -1175,7 +1882,19 @@
       "resolution_decision": "stage2_water_state_contract",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+          "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_tenant_authority",
@@ -1196,7 +1915,18 @@
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
       "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
-      "qualification": "Bestiary toggle independence is explicitly documented in RM_FeverWoodMod.cs; only disagreement about applicable defeat/suppression/provocation is the delivery conflict."
+      "qualification": "Bestiary toggle independence is explicitly documented in RM_FeverWoodMod.cs; only disagreement about applicable defeat/suppression/provocation is the delivery conflict.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_porter_locality",
@@ -1214,7 +1944,18 @@
       "resolution_decision": "stage2_water_state_contract",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_tenant_persistence",
@@ -1231,7 +1972,19 @@
       "resolution_decision": "stage2_water_state_contract",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY",
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_mirror_intel",
@@ -1248,7 +2001,18 @@
       "resolution_decision": "stage2_water_state_contract",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_chorus",
@@ -1267,7 +2031,18 @@
       "resolution_decision": "stage2_chorus_contract",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_heat_fields",
@@ -1285,7 +2060,18 @@
       "resolution_decision": "stage2_scope_and_proof_boundary",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_foul_proof",
@@ -1302,7 +2088,18 @@
       "resolution_decision": "stage2_scope_and_proof_boundary",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_lure_proof",
@@ -1320,7 +2117,18 @@
       "resolution_decision": "stage2_scope_and_proof_boundary",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_lure_targeting",
@@ -1338,7 +2146,18 @@
       "resolution_decision": "stage2_scope_and_proof_boundary",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_flora_roles",
@@ -1358,7 +2177,19 @@
       "resolution_decision": "stage2_terrain_edges",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD",
+          "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_resource_plants",
@@ -1379,7 +2210,19 @@
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
       "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
-      "previous_reading": "The draft misses an additional material-economy gap. Varnoth, ammeth and sodderel describe usable timber or panels but locally set harvestYield 0 and an empty harvestedThingDef. Any alternate source of those goods must be established before claiming these plants deliver them."
+      "previous_reading": "The draft misses an additional material-economy gap. Varnoth, ammeth and sodderel describe usable timber or panels but locally set harvestYield 0 and an empty harvestedThingDef. Any alternate source of those goods must be established before claiming these plants deliver them.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+          "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_native_truce",
@@ -1398,7 +2241,18 @@
       "resolution_decision": "stage2_scope_and_proof_boundary",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_pool_reach",
@@ -1417,7 +2271,18 @@
       "resolution_decision": "stage2_water_state_contract",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_cut_text",
@@ -1436,7 +2301,18 @@
       "resolution_decision": "stage2_scope_and_proof_boundary",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     },
     {
       "id": "gap_fatal_limb_yield",
@@ -1457,7 +2333,18 @@
       "resolution_decision": "stage2_scope_and_proof_boundary",
       "resolution_owner_needed": false,
       "delivery_status": "open_implementation_or_proof",
-      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed."
+      "resolved_means": "Intent/disposition is settled for stage 2; no implementation fix or live acceptance is claimed.",
+      "stage3_plan": {
+        "source": [
+          "design/concepts/FeverWood/plan.md",
+          "design/concepts/FeverWood/scenes.json"
+        ],
+        "items": [
+          "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS"
+        ],
+        "status": "intent_resolved_delivery_and_proof_unmeasured",
+        "note": "Planning accounts for this gap; no source implementation or current gameplay proof changed in stage 3."
+      }
     }
   ],
   "failure_modes": [
@@ -1705,6 +2592,42 @@
         "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:204"
       ],
       "finding": "Neither the draft nor a broad reading of the earlier gap should turn the bestiary toggle into an all-water-danger switch. Its declared boundary preserves shared mirror hazards. Unifying applicable suppression and defeat is a separate obligation."
+    },
+    {
+      "id": "draft_stage3_scene_order_corrected",
+      "source": [
+        "design/concepts/FeverWood/scenes.json",
+        "src/RimMandrake/rimflow/designer_stage.py:750"
+      ],
+      "finding": "Did not copy the draft showcase proposal. Exact inventory accounting gives 44 built/in-scope units from 45 inventory entries. The approved flagship is followed greedily by water judgment (7 new), prisoner/gift (6), live/broken hives (6), crown provisions (3). Lure adds only two units and oil one, so retain their complete ordinary scenes and interactions without making either a later showcase. Absent scoped-out theft is explicitly absence-checked; shipped scoped-out glomvar remains a counted cheaper check."
+    },
+    {
+      "id": "draft_stage3_oracles_rewritten",
+      "source": [
+        "design/concepts/FeverWood/tree.json",
+        "design/concepts/FeverWood/scenes.json",
+        "design/concepts/FeverWood/work_manifest.json"
+      ],
+      "finding": "Rewrote observer experiences, rejecting worlds and feature-specific proposed observations against current source and stage-2 rulings. Each complete accepting entry point is explicitly missing and filed with starts, controls and durable recovery. No draft function name or missing-instrument proposal is reported as implemented; no mock, kernel or source statement is called a live pass."
+    },
+    {
+      "id": "draft_stage3_campaign_supply_bounded",
+      "source": [
+        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml:5",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml:30",
+        "design/concepts/FeverWood/plan.md"
+      ],
+      "finding": "Verified free Uranium recipe and its explicit deferred-campaign-salvage comment. Bounded searches of current Utinni/Star Wars XML found no campaign suppression conversion. Did not invent a poison mapping or use free charges as campaign acquisition evidence. Actual Sporefall display/trader hooks now exist, so old mirror-item commentary is not accepted as current global proof that no campaign settlement exists. Mirror-list stocking remains a specific unbuilt supply obligation."
+    },
+    {
+      "id": "draft_stage3_no_art_or_owner_gate_invention",
+      "source": [
+        "OWNER:1792374240816575285",
+        "OWNER:1792410159136516913",
+        "OWNER:1793542983826647230",
+        "design/concepts/FeverWood/floor.json"
+      ],
+      "finding": "All floor lines remain applicable with no floor disable/waiver. Preserve current-art acceptance and later review, geometry-only sun and ordinary air, native drinking separate from truce, and the live-flight attendance rule. Source presence and planned tests do not establish current acceptance. Exact owner quotations in sheet.md were matched to their original OWNER events."
     }
   ],
   "neighbors": [
@@ -2819,5 +3742,36 @@
       "src/RimMandrake/rimflow/roles/designer_dialogue.md",
       "src/RimMandrake/rimflow/roles/designer_scene_contract.md"
     ]
+  },
+  "stage3_review": {
+    "run": "rm-role-designercodex-1794810374",
+    "source": [
+      "design/concepts/FeverWood/source_review.json",
+      "design/concepts/FeverWood/work_manifest.json",
+      "design/concepts/FeverWood/plan.md"
+    ],
+    "reviewer": "BENCH /root self-review; no delegation",
+    "at": "2026-11-16T07:42:34.573426+00:00",
+    "leaf_count": 23,
+    "scene_count": 44,
+    "inventory_entries": 45,
+    "counted_coverage_units": 44,
+    "explicit_absent_out_checks": [
+      "fw_theft_retired"
+    ],
+    "items": [
+      "FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY",
+      "FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD",
+      "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
+      "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
+      "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+      "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR"
+    ],
+    "all_live_results": "UNMEASURED",
+    "root_validation": "Existing walk DRAFT and validated hash empty; concept root approval already delegated, no new owner approval claimed.",
+    "floor": "Every inherited row applicable; no exception/waiver; current art acceptance retained.",
+    "scope": "All existing inventory impl/proof/scope fields preserved, current delivery only planned.",
+    "system_faults": "No pipeline code change required to write/validate this package; corrected authoring errors before completion."
   }
 }

@@ -1,0 +1,1453 @@
+{
+  "schema": 1,
+  "status": "planned_unexecuted",
+  "scenes": [
+    {
+      "id": "observation_control",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_observation_control",
+      "entry_point_item": "FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Independently inspect two disconnected pools, two victims and known queues with distinct values; enumerate every field required by the later scenes."
+      ],
+      "action": "Read before/after snapshots twice without advancing time; change each underlying state through its production path and compare to independent thing/job/grid/save observations; exercise missing/mapless/stale/wrong-map reads and kill the runner after a staged mutation to rehearse recovery.",
+      "expect": "Reads are pure and keyed by actual map, pool and pawn IDs, values change only with production state, unknown fields are explicit, and an interrupted run restores from the journal without another scene opening.",
+      "control": {
+        "case": "A constant, fixture-echo, wrong-map or mutating readout, plus a recovery snapshot with one changed setting or outstanding obligation omitted.",
+        "expect": "Each deceptive readout and incomplete restoration is rejected; no acceptance scene proceeds with an open unheld recovery entry.",
+        "rules_out": "The proof reports desired inputs or deletes evidence during observation; ordinary finally cleanup is mistaken for crash recovery."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "observation"
+      ]
+    },
+    {
+      "id": "branch_work",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_branch_work",
+      "entry_point_item": "FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Two actual crown destinations for crop work and stores, living-bole anchors, a marsh shortcut and alternate branch route; snapshot the local generated terrain passes before furnishing.",
+        "Assert work priorities, reservations, pawn capabilities and materials; add a matched 40-colonist arm only after the two-worker scene."
+      ],
+      "action": "Use normal harvest and haul priorities for repeated trips. Record actual paths, job completion, carried goods and detours when one branch is obstructed; allow a raider and colonist to walk on/off the same terrain. Repeat the routine with 40 colonists.",
+      "expect": "Useful goods travel by the branch network, its interruption changes actual routes or work completion, ordinary crown access works equally for hostile and friendly travellers, and crowding cannot be concealed by teleportation.",
+      "control": {
+        "case": "Restore the same site and replace only the candidate route with equal-length ordinary ground; also remove fixture walls that would force either route artificially.",
+        "expect": "Path costs/travel or job completion change in the predicted direction when the real branch advantage is lost; a route with no effect fails the branch-home claim.",
+        "rules_out": "Paint alone or a fixture corridor makes any terrain appear important."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "branch_home"
+      ]
+    },
+    {
+      "id": "foundations",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_foundations",
+      "entry_point_item": "FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Same heavy blueprint and materials tested on untreated marsh, completed stilt platform, crown and mirror pool; assert inherited affordances, reservations and actual reachable worker cells."
+      ],
+      "action": "Attempt normal blueprint placement and construction on each surface, then build the allowed stilt alternative and put the same heavy structure on it.",
+      "expect": "Marsh and deep mirror water refuse inappropriate heavy construction; the completed stilt surface admits the same building and a worker actually completes it. Crown access needs no climb point.",
+      "control": {
+        "case": "Use ordinary buildable terrain and an uncompleted stilt blueprint at matched cells.",
+        "expect": "Ordinary supported ground accepts the building, while an uncompleted platform does not masquerade as a working foundation.",
+        "rules_out": "Unavailable research, materials or unreachable workers explain refusal instead of terrain."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "branch_home"
+      ]
+    },
+    {
+      "id": "sink_mud",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_sink_mud",
+      "entry_point_item": "FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Assert real sink-mud/trapping state under skimmel, matched firm terrain, and cohorts differing only in total weight; separate mud away from danger and inside actual water reach."
+      ],
+      "action": "Send matched travellers and a heavy raider across the cells through normal pathing; record opportunity counts, actual stuck events and duration, health, self-release and normal assisted extraction with and without companion.",
+      "expect": "Weight affects production sticking risk, firm ground does not trap, trapped pawns remain unharmed by mud alone, self and assisted escape both work, and water/enemy exposure supplies the danger while held. A time sequence shows the learnable cover and stuck state.",
+      "control": {
+        "case": "Same mud/weight/exposure with the companion absent, then same travellers on firm ground; keep any random stream accounting explicit across matched trials.",
+        "expect": "No assisted extraction occurs without a helper, self-release remains possible, no mud trap occurs on firm ground and no health loss occurs in isolated mud.",
+        "rules_out": "Path delay is called trapping, forced downing is called mud, or body-size/gear changes confound weight."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "mud_escape"
+      ]
+    },
+    {
+      "id": "living_trunk",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_living_trunk",
+      "entry_point_item": "FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Actual fever-trunk heartwood and living core, cuts in equivalent trunk cells, toxin-sealed and unsealed treatments through their owning service."
+      ],
+      "action": "Mine through normal jobs, place the existing sealant floor normally on one cut, cross the saved regrowth timers and reload before one is due.",
+      "expect": "Mining produces its intended material, unsealed living wood regrows on its actual timer, sealed cuts retain the documented exclusion and a reload neither forgets nor duplicates a scheduled regrowth.",
+      "control": {
+        "case": "Equivalent mined dead/non-profile structure and an unsealed living cut at the same elapsed time.",
+        "expect": "Only actual eligible living wood regrows, and the unsealed comparison regrows where the sealed treatment does not.",
+        "rules_out": "Ordinary wall replacement or fixture-spawned wood is called living regeneration."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "living_wood"
+      ]
+    },
+    {
+      "id": "borer_gallery",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_borer_gallery",
+      "entry_point_item": "FEVERWOOD_BRANCH_MUD_AND_LIVING_WOOD",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Inhabited living trunk with an intact frontier, one living brathek and a reachable tree elsewhere; record cell structures and routes before the trial."
+      ],
+      "action": "Allow ordinary borer behavior over compressed but fully simulated intervals; capture successive frontier states and an inhabited-room route before/after. Check vanilla tree eating separately with brathekBoresWood on/off.",
+      "expect": "A slow visible gallery extends through living wood and changes real geometry, giving a player observable warning; tree eating remains its own setting-controlled behavior. No direction UI or precise pace is assumed.",
+      "control": {
+        "case": "Matched trunk with no borer, plus tree-diet off and an already-painted cave with a stationary borer.",
+        "expect": "No borer-driven frontier advance occurs without a borer; prepainted holes and tree loss do not satisfy gallery growth.",
+        "rules_out": "Deleting trees or arbitrary timer-spawned holes without a visible borer frontier fakes inhabited galleries."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "living_wood"
+      ]
+    },
+    {
+      "id": "pool_size_reach",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_pool_size_reach",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Real registered small and large disconnected clusters, asserted area and stable identities; targets at equal near, discriminating and beyond-all distances, with only one eligible target in each range arm."
+      ],
+      "action": "Through actual exposure scans and independently actual snare/lash targeting, record eligibility, effective reach and outcomes at the three distances. Repeat after controlled cluster merge/split and reload without resetting consequences.",
+      "expect": "Size changes effective danger reach at the middle distance for the intended callers; near/far controls establish working attacks and a real range limit. Pool identity migration preserves obligations through topology changes.",
+      "control": {
+        "case": "Swap the cluster sizes under identical target positions and then replace water with unregistered ordinary terrain.",
+        "expect": "The size-dependent result follows the real pool, and the unregistered control supplies no registered-pool exposure.",
+        "rules_out": "Fixed adjacency or fixed limb range is mistaken for size-scaled reach; a nonworking attack is mistaken for safe distance."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "pool_reach"
+      ]
+    },
+    {
+      "id": "real_shore_rescue",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_real_shore_rescue",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Worker performing a real shore job with an actual exposure/snare opportunity; near and far helper routes are reachable and known, identical speed/health/duty, safe destination and no competing rescue jobs.",
+        "Assert no pre-existing drowning entry or debug downing; record the production strike and its deadline at creation."
+      ],
+      "action": "Let the real caller seize the worker; issue an ordinary rescue/carry order to the near companion, and replay from the same baseline with distant and absent helper. Repeat independently for exposure and snare, then wild and player-tamed victims.",
+      "expect": "A real downing/deadline precedes rescue, near help carries before expiry and clears the entry; far help is visibly costlier and may be late, while no-help expiry really loses the victim. Wild victims use clean subtraction; tame victims retain rescue semantics.",
+      "control": {
+        "case": "No helper from the same attacked baseline, plus a no-danger shore trip and ordinary fixture-downing diagnostic clearly excluded from acceptance.",
+        "expect": "No-helper victim expires under the active clock and no-danger worker is never seized. A fixture-only downed pawn cannot establish the real caller or deadline.",
+        "rules_out": "Vanilla carrying alone passes a water-rescue claim, or the fixture blocks distant help to force its desired result."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "shore_rescue"
+      ]
+    },
+    {
+      "id": "porter_and_agitation",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_porter_and_agitation",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Two disconnected pools A/B with independently observed agitation, equal eligible porter opportunities and no adult quiet; same exposed target size and taught-warning state."
+      ],
+      "action": "Observe normal porter deposit/withdrawal without damage. Replay and hit the actual porter at A; compare A/B loot eligibility and effective strike probability/provocation through the real scanner. Reload before agitation expiry and repeat the matched exposures.",
+      "expect": "Unmolested delivery leaves real placed goods; A loses porter treasure and gains hostility, B retains baseline behavior, and grievance/agitation persist at the correct scope after reload.",
+      "control": {
+        "case": "No attack at A, attack at B instead, and expired temporary agitation with permanent porter grievance still present.",
+        "expect": "Only attacked pool loses treasure; temporary agitation expires without erasing permanent local grievance; the effective strike rule changes rather than only an overlay.",
+        "rules_out": "Map-wide porter anger, visual-only agitation or different victims explain apparent hostility."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "pool_memory"
+      ]
+    },
+    {
+      "id": "crown_audio",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_crown_audio",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Fixed listener position and volume, known live chellow/murrelith/skellick source IDs, active crown ambience and no other audio blocker; keep unrelated ambient/colony sound constant."
+      ],
+      "action": "Capture audio and source event traces with full, reduced and absent flock, then sentinel up/down, real mirror-break timed hush and two overlapping hush reasons withdrawn in both orders. Do not live-test bird movement in this unattended scene.",
+      "expect": "Bird-specific calls are emitted only by living present birds and thin with them; the working ambient bed remains when birds are absent. Water hush cuts both; removing one reason cannot resume either while another remains.",
+      "control": {
+        "case": "Absent flock and hush-reason removal before/after its overlapping partner, same listening window and camera.",
+        "expect": "No bird-source calls occur with no birds; ambience is still audible outside hush; no premature resumption under the remaining reason.",
+        "rules_out": "An independent bird recording, flag-only hush or ambient absence passes as living population sound."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "crown_warning"
+      ]
+    },
+    {
+      "id": "mirror_snapshot",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_mirror_snapshot",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "A/B pools with different agitation and expiry, reader away from both, recorded trader/loot acquisition lane and silver/resource cost; source and runtime stock checked separately for free/campaign contexts."
+      ],
+      "action": "Obtain the item through its supported lane, read via normal use job and capture the dated independent snapshot. Change one pool through real activity, reload and age out the list while observing actual danger separately.",
+      "expect": "Information distinguishes A/B at acquisition/read semantics specified by the existing snapshot promise, remains a snapshot as real state moves, expires visibly and never writes to actual agitation. Both acquisition and normal use are demonstrated.",
+      "control": {
+        "case": "Same world without reading, reader standing beside the other pool, and an expired list.",
+        "expect": "Reader position cannot change real danger or copy its local value to both pools; stale intel stops presenting itself as current.",
+        "rules_out": "Item debug availability is called acquisition or intel refresh changes water instead of information."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "mirror_intel"
+      ]
+    },
+    {
+      "id": "limb_ladder",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_limb_ladder",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Registered pool and real ordinary roll with known eligible table, cap and pressure; damage arms start from independent original limbs with known health and no loot nearby."
+      ],
+      "action": "Observe all ordinary types through production weighted selection/behavior under bounded opportunities, cap and linger. Apply moderate, severe-before-retreat and fatal hits through engine damage callbacks, and account for every resulting flesh stack and exact drop source.",
+      "expect": "Ordinary bloom exclusion, feeler/snare/lash/porter/sentinel behavior, retreat within its configured window and severe sever/respite are real. Exact fatal yield agrees with one reconciled production drop contract; duplication is investigated rather than assumed.",
+      "control": {
+        "case": "Sub-threshold damage allowed to withdraw, no-damage linger, cap already full, and bestiary-off independent start.",
+        "expect": "No sever harvest from a mild retreat, no new ambient limb above cap or while bestiary off; damaging nothing produces no harvest.",
+        "rules_out": "Presence-only output tests hide duplicated killed-leavings or debug-spawned limbs hide broken ambient selection."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "driveoff_ladder"
+      ]
+    },
+    {
+      "id": "eye_encounter",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_eye_encounter",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Large eligible connected pool with accumulated pressure and no cooldown; small disconnected pool with equal total map water as control; actual configured set-piece setting and selection seam recorded."
+      ],
+      "action": "Reach the eligibility/selection path rather than spawning a lone eye. Record multi-limb/eye positions and cluster association; moderate damage in one restored arm and severe or fatal damage before withdrawal in another, then revisit all map pools beyond the ordinary reset window.",
+      "expect": "Only an eligible large cluster yields the set-piece, moderate eye damage drives all map limbs off for the day-scale contract, severe eye damage produces durable map victory, and no ambient whole body appears. Controlled trigger proves eligibility/adapters, not natural rarity.",
+      "control": {
+        "case": "Small-pool eligibility, disabled great-emergence, damage after withdrawal and eye untouched.",
+        "expect": "No eye is eligible in the first two controls; no victory is awarded merely for time or late damage. Natural-frequency observation remains a separate bounded tuning report.",
+        "rules_out": "A debug eye or summed scattered water grants an unavailable or misplaced victory."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "driveoff_ladder"
+      ]
+    },
+    {
+      "id": "normal_suppression",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_normal_suppression",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Real registered designated pool and reachable worker, machining bill ingredients and existing free-tier RM_RadioactiveSuppressant recipe; baseline active adult at two disconnected pools.",
+        "Campaign arm must trace actual dangerous radioactive salvage and conversion/acquisition; plain Uranium is not proof of that lane. Current campaign reagent mapping is unlocated, not invented here."
+      ],
+      "action": "Craft/obtain treatment, designate normally, let the workgiver reserve/haul/dump and count exact resource deltas and adult clocks. Repeat with withdrawal on/off, cancelled designation, no charge and feature toggled off while carrying; revisit expiry.",
+      "expect": "Valid completed treatment buys documented several-day adult suppression at its existing map-wide scope. Both current limbs and future rolls match withdrawal setting. Cancellation/disable returns charges and adds no suppression; missing reagent refuses work. Suppression wears off rather than becoming victory.",
+      "control": {
+        "case": "Same work with no surviving designation, disabled in transit, ordinary non-water target and wrong material.",
+        "expect": "None of those arms spends treatment or advances quiet clocks; off/cancelled jobs return carried goods.",
+        "rules_out": "Direct jobs on concrete or messages alone stand in for normal designation and resource consumption."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "adult_quiet"
+      ]
+    },
+    {
+      "id": "adult_authority",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_adult_authority",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "A/B pools with equal real exposure opportunities in independent active, moderate-eye respite, permanent-victory and chemical-quiet snapshots; preserve chemical withdrawal setting semantics."
+      ],
+      "action": "At each restored snapshot run ordinary exposure and snare attempts, then inspect effective eligibility before the actual production rolls. Compare bestiary-only off to owning shared-hazard off. Advance across relief expiry and repeat.",
+      "expect": "Applicable adult defeat/quiet is respected by shared strikes and limbs; short relief expires while map victory remains until a valid later mature establishment. Bestiary off removes its explicit limb/ladder features without claiming to disable unrelated shared hazards.",
+      "control": {
+        "case": "Identical active unsuppressed adult and ordinary cooldown-only snapshot with an independent active shared-hazard owner.",
+        "expect": "The active case really can strike, while each relief case rejects only the applicable threat; a no-event window without a working positive is inconclusive.",
+        "rules_out": "Lucky no-strike sampling or one component flag stands in for agreement between both danger systems."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "adult_quiet"
+      ]
+    },
+    {
+      "id": "tank_upkeep",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_tank_upkeep",
+      "entry_point_item": "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Actual occupied tank, meat in reachable stockpile and enabled feed/production, no teaching yet; recorded current product defs, clocks, quantities and placement cells."
+      ],
+      "action": "Allow ordinary refuelling and elapsed production checks, count meat and placed products, then block all legitimate product cells, run the pending production seam, reload and reopen placement.",
+      "expect": "Real meat is used; flesh, spleen chemicals and cream follow their existing clocks/products, and successful placement teaches once. Blocked placement neither teaches nor loses the pending opportunity; legacy missing product clocks initialise and later produce.",
+      "control": {
+        "case": "Empty/disabled tank, unfed interval before neglect, and blocked placement with no prior successful product.",
+        "expect": "No free production or teaching occurs from empty/disabled or failed-placement cases.",
+        "rules_out": "A helper-created product or teaching flag bypasses the actual refuel and placement path."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "captive_economy"
+      ]
+    },
+    {
+      "id": "tank_exit_routes",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_tank_exit_routes",
+      "entry_point_item": "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Independent occupied tanks for neglect, below-threshold damage, forced-risk damage seam, engine fatal destruction and normal deconstruction; count all original occupant identities and routes."
+      ],
+      "action": "With actual tick, damage and destroy callbacks exercise each route, including display and player ownership, occupied/empty, feature-off and legacy-save variants. Follow the real escapee or peaceful release far enough to identify armed/released state.",
+      "expect": "Neglect and valid damage create the proper armed escapee; fatal breach creates one breach-injured survivor without vital injury/deletion; deconstruction releases quietly. No route creates duplicate occupants; existing destruction fixes are preserved.",
+      "control": {
+        "case": "Empty tank, below-threshold hit and repeat destroy/release attempt after the occupant is gone.",
+        "expect": "Those cases produce no new occupant or duplicate reward; ordinary threshold controls distinguish chance tuning from bypassed callbacks.",
+        "rules_out": "The draft’s stale fatal-release allegation leads to rewriting a working fix, or direct Escape calls hide broken callbacks."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "captive_economy"
+      ]
+    },
+    {
+      "id": "young_establishment",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_young_establishment",
+      "entry_point_item": "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Adult permanently defeated, disconnected pool identities A/B, an actual tank-armed escapee and its arrival tick; saved several-day interval and reagent mapping explicitly exposed as provisional engineering values."
+      ],
+      "action": "Let the escapee walk into A. Observe settlement without immediate adult revival, advance simulated time through the several-day interval, and compare correct poison at A, same poison at B, wrong reagent, no reagent and no intervention. Reload before maturity and in-flight treatment.",
+      "expect": "Arrival saves A and an absolute deadline, preserving existing adult victory until maturity; only correct treatment of A prevents establishment. Wrong pool/material and absence of reagent leave the obligation intact. At due time untreated young matures once and enables only its proper adult consequence.",
+      "control": {
+        "case": "Wild-born, faction-gained/tamed-before-arrival and peaceful-return young visit the same water; duplicate arrival/reload replay and unrelated-pool poison.",
+        "expect": "Those non-escape routes never install an establishing threat, unrelated poison never removes A’s young, and reload neither restarts nor skips the timer.",
+        "rules_out": "Immediate Notify_SekkulaathInstalled, map-wide youth poisoning or fixture-reset deadlines fake the November contract."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "delayed_establishment"
+      ]
+    },
+    {
+      "id": "brood_tally",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_brood_tally",
+      "entry_point_item": "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Actual occupied home tank, home cask stacks, player caravan and settlement keeper inventory observed separately; production tally cache baseline and configured pressure multipliers recorded."
+      ],
+      "action": "Move/add/remove one held-young unit through each real container/travel route, recompute by its production trigger, read global tally and effective ambient MTB plus snare/lash weighting. Reload and repeat with brood feature disabled.",
+      "expect": "Each legitimate held unit is counted once, unrelated cargo is not counted, pressure changes by the actual production kernel and is reflected in adapter selection; feature off removes its modifier, not unrelated adult behavior.",
+      "control": {
+        "case": "Empty tank, non-player caravan and unrelated stack; identical young transferred between counted containers instead of duplicated.",
+        "expect": "Transfers conserve the tally and invalid holdings add no pressure; the disabled modifier returns to baseline.",
+        "rules_out": "A fixture tally or source-only kernel check hides incorrect world container scanning."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "return_bargain"
+      ]
+    },
+    {
+      "id": "peaceful_return",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_peaceful_return",
+      "entry_point_item": "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Occupied tank and closed young cask in separate arms, nearer unreachable water and reachable registered preferred pool, no prior pending gift and known route."
+      ],
+      "action": "Use ordinary release/open gizmos and let the actual young path home. Observe pool selection and arrival, delay a due gift by disabling brood processing and separately blocking all placement, save/reload each, re-enable/unblock and count placed rewards.",
+      "expect": "Only deliberate release is peaceful and gift-earning; it selects reachable water with its stated preference. The owed rolls survive disable, failed placement and reload and eventually place exactly once, without reviving adult danger as an escape.",
+      "control": {
+        "case": "Escaped rather than released young, unreachable-only water, duplicate release command and repeat arrival callback.",
+        "expect": "Escapes earn no peaceful-return gift; invalid paths do not claim arrival, and repeated commands cannot duplicate a young or its debt.",
+        "rules_out": "Queue length alone substitutes for delivery or unreachable water traps the return forever."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "return_bargain"
+      ]
+    },
+    {
+      "id": "campaign_display",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_campaign_display",
+      "entry_point_item": "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Supported campaign list and actual display settlement/tank, faction goodwill and keeper tally, runtime juvenile/tank remaps and no prior freed-display state; free-list arm asserted separately."
+      ],
+      "action": "Through real display release and an independent breach arm free the young, let it return and observe configured enhanced gift rolls and goodwill cost. Save/reload and revisit settlement; inspect normal cask-trader hooks separately.",
+      "expect": "Campaign state persists, keeper count changes, the proper young is freed once, goodwill is actually paid and enhanced gift is delivered exactly as owed. Free tier retains its own names/young/products without campaign leakage.",
+      "control": {
+        "case": "Empty/already-freed display, foreign unrelated tank and free list without campaign patches.",
+        "expect": "No duplicate diplomatic cost/reward or campaign display injection occurs in those controls.",
+        "rules_out": "A static XML selftest is mistaken for actual campaign placement, diplomacy and revisit behavior."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "return_bargain"
+      ]
+    },
+    {
+      "id": "normal_bait",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_normal_bait",
+      "entry_point_item": "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Real lure stake, eligible living victim and capable undrafted handler; normal designation and work priorities available, with no fixture-forced downing."
+      ],
+      "action": "Designate bait, let the nonlethal workgiver down it and the haul workgiver bind it, inspect restraint and value. Release before trigger; replay until a real lure trigger locks release, then test bait loss.",
+      "expect": "Normal work produces a living restrained victim and real draw value; invalid targets are refused; allowed release returns a living pawn while triggered lock behaves as configured. Loss removes the actual lure without dangling references.",
+      "control": {
+        "case": "Corpse, forbidden/ineligible victim, disabled feature and unreachable stake; release with lock setting off.",
+        "expect": "No valid stake job is created for refused cases; lock-off does not imprison the victim merely because a draw occurred.",
+        "rules_out": "Debug downing and direct ordered haul bypass the defining player work chain."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "bait_wager"
+      ]
+    },
+    {
+      "id": "two_front_journey",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_two_front_journey",
+      "entry_point_item": "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Normal living bait from normal_bait, declared possible Kurreth and actual loaded Webwork factions including free skreth fallback, reachable competing worker target, both initial edge routes asserted."
+      ],
+      "action": "Observe either first faction through its actual draw, actual entry position and jobs to bait. In separate controlled scheduling arms take second-wave present and absent, reload pending wave, and block the preferred opposite edge before its due tick. Follow targets through approach, clash and lone-front outcome.",
+      "expect": "Second front, when scheduled, arrives later and once from a separated reachable approach, based on the first actual entry. Raiders actually converge on available bait through duty changes; unavailable edge cannot silently turn two fronts into one approach. A lone front remains a danger rather than guaranteed relief.",
+      "control": {
+        "case": "Second-wave disabled/absent arm, bait removed before arrival and alternate first faction; record actual fallback failure rather than filtering an unexpected faction.",
+        "expect": "No second wave when not scheduled, lost bait does not leave false target state, and alternate first-faction runs still receive complete observation. A failed route remains UNMEASURED/failed, never success by pawn count.",
+        "rules_out": "A first goto, faction-specific filter or two simultaneous spawns fakes the wager."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "bait_wager"
+      ]
+    },
+    {
+      "id": "hive_geometry",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_hive_geometry",
+      "entry_point_item": "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Actual real-geometry generator output on the authored FeverWood site, walled/roofed room chain and real pawn start outside entrance; painting-only setting checked in a separate arm."
+      ],
+      "action": "Walk the pawn from entrance to queen and back using real pathfinding; inspect enclosure/roof state and each room/corridor/choke. Compare kernel layout to physical cells without accepting the plan as the world.",
+      "expect": "Physical enclosure and reachability agree, the queen can be reached through actual rooms and guards sit at meaningful deeper chokes. Old painting-only setting remains explicitly labelled and tested for its narrower behavior.",
+      "control": {
+        "case": "A roofed painted outline with an open wall gap, an isolated queen room and painting-only mode.",
+        "expect": "The deceptive gaps/unreachable queen fail the real-dungeon claim; painted mode cannot certify physical enclosure.",
+        "rules_out": "A readout of intended rooms or a pad of ants substitutes for a playable hive."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "living_hive"
+      ]
+    },
+    {
+      "id": "hive_reaction",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_hive_reaction",
+      "entry_point_item": "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Generated live hive, unalerted real workers/queen and alarm tags/home tethers; intruder path passes through a meaningful corridor; no pre-existing resin."
+      ],
+      "action": "Send a real intruder into range to trigger reaction; trace hop/rally and defend/home behavior. Cross a room boundary and retreat after matching alarm, including loose loot and a pawn on candidate seal cells; wait for plug expiry.",
+      "expect": "The real alarm spreads and defenders react; correctly tagged intrusion seals behind the intruder, changing actual retreat path or requiring removal/wait, skips pawn cells and moves loose contents aside. Temporary plugs eventually expire and normal passage returns.",
+      "control": {
+        "case": "Same generated hive with no alarm, mismatched alarm tag and sealing disabled independently.",
+        "expect": "No resin route change under those controls while ordinary movement remains possible; defenders/homes are not fixture teleports.",
+        "rules_out": "Resin placement in irrelevant space or destroyed loot is hidden by a count-only success."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "living_hive"
+      ]
+    },
+    {
+      "id": "hive_farm_guard",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_hive_farm_guard",
+      "entry_point_item": "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Generated farm stock in shallow room and guards at deep chokes, baseline food needs and one actual wild feeder; fear/gather state observed rather than assumed."
+      ],
+      "action": "Let an idle thornbug stray and be herded back, test calm/fear/recovery through ordinary nectar gathering. Observe guard hunger and position over feed windows, then remove/tame the last feeder and repeat; compare farm/guard settings independently.",
+      "expect": "Farm return and nectar contract work in the generated dungeon, guards remain at real chokes and are fed while eligible workers exist; feeder removal stops refilling and actual food need falls. Tamed or removed stock is released from hive ownership.",
+      "control": {
+        "case": "No feeder, disabled guard/farm chamber and tamed stock compared with identical wild stock.",
+        "expect": "No hidden refilling without a feeder and no herding of stolen/tamed animals; no nectar collected under fear.",
+        "rules_out": "A pad guard rally test stands in for generated placement, sustenance and farm function."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "living_hive"
+      ]
+    },
+    {
+      "id": "mirror_side_ruin",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_mirror_side_ruin",
+      "entry_point_item": "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Real broken-hive staging/profile, mirror-side eligible location and separate inland live profile; no fixture-killed hive or hand-spawned loot counted as a production placement."
+      ],
+      "action": "Inspect and loot the ruin through normal jobs, revisit after reload, then enter a separately generated inland live hive to trigger its reactions.",
+      "expect": "Lootable broken structure and abandoned state occur at mirror-side exception; inland live hive remains populated and reactive. Implementation discovery may locate an existing profile, otherwise the filed item supplies the missing one.",
+      "control": {
+        "case": "Inland live placement and unsuitable non-mirror location for the ruin profile.",
+        "expect": "Live placement is not emptied by the ruin feature and the near-mirror ruin does not become a universal hive replacement.",
+        "rules_out": "Manually emptying every hive delivers ruins by deleting the existing dungeon."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "broken_hives"
+      ]
+    },
+    {
+      "id": "nectar_and_guild",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_nectar_and_guild",
+      "entry_point_item": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Actual thornbug full/calm state and gather job, separate vaulm/drommath/ollareth with no refusal cooldown, actual hostile location and fear-owning setting."
+      ],
+      "action": "Gather normally when calm, move a hostile inside/outside the configured local fear area, remove it and follow recovery, reload mid-recovery. For each guild species use actual damage and failed tame paths; probe failed training/general fear separately without pretending an unavailable hook exists.",
+      "expect": "Fear really disables vanilla gathering/fullness progression and calm recovers over the saved interval; distinct seal/swelling/alarm refusals use deterministic cooldown and actual alarm propagation. Failed-training/general-fear missing behavior is reported and reconciled under the documented contract, not waived.",
+      "control": {
+        "case": "No hostile, hostile outside local radius with local-only on, repeated trigger during cooldown and alarm species without a hediff.",
+        "expect": "No false fear at distant local-only control, no repeated refusal inside cooldown and no invented hediff required for the alarm species.",
+        "rules_out": "A private calm/refusal flag passes while normal gather or interaction bypasses it."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "crown_livelihood"
+      ]
+    },
+    {
+      "id": "flora_roles",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_flora_roles",
+      "entry_point_item": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Actual flora defs and inherited products/fertility; unmodified boughway and bough-soil controls, cistrel water need context, fed/unfed matched pool history and skimmel over real sink-mud."
+      ],
+      "action": "Use ordinary harvest jobs for existing sap, cloth, berries, medicine, clay, oil and ground tuber products; observe actual plant growth/fertility and nubrith light. Compare plennith soil creation, cistrel potable drinking, corvath fed-pool gating and skimmel trapping cover against matched absent-role starts.",
+      "expect": "Existing products and fertility/light work without fixture gifts; missing documented ecological effects are delivered through their real owners. Varnoth, ammeth and sodderel stay harvest-free under later rules and descriptions align without replacement materials.",
+      "control": {
+        "case": "No plennith on otherwise matched substrate, empty/absent cistrel, unfed pool, solid terrain beneath attempted skimmel and harvest-free material-plant orders.",
+        "expect": "No claimed role appears from the absent condition, and the three stripped plants provide neither logs nor an invented substitute product.",
+        "rules_out": "Ordinary prepainted bough-soil, any flora spawn or obsolete wood description is called delivery of the specific ecological role."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "crown_livelihood"
+      ]
+    },
+    {
+      "id": "native_water",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_native_water",
+      "entry_point_item": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Enumerate actual free and campaign native PawnKind roster from composed biome caches, with operative drinking integration and low thirst needs; non-native matched eligible victim and active adult kept as positive control."
+      ],
+      "action": "Let each native cohort drink through normal need jobs while standing in or beside its own environmental water, then exercise real shared exposure and snare target selection beside a non-native. Trace the truce attachment on actual kind defs independently of drinking availability.",
+      "expect": "Natives quench thirst rather than dehydrate and are exempt from inappropriate shared/snare grabs; the non-native positive retains real danger. All actual supported native kinds, including optional campaign additions, are accounted for; a context with no drinking need cannot claim a quenched-need pass.",
+      "control": {
+        "case": "Non-native with the same need and geometry, plus active versus explicitly disabled shared-hazard owner.",
+        "expect": "The non-native can still be targeted while eligible; blanket hazard shutdown cannot pass native integration.",
+        "rules_out": "Filling thirst by fixture or assuming the existence of a truce extension proves its XML attachment."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "native_life"
+      ]
+    },
+    {
+      "id": "native_ambush_diet",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_native_ambush_diet",
+      "entry_point_item": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Actual retained kasselith/grolth/brathek/silloch roster and appropriate prey; moving-prey lane long enough to exceed original ambush area; tame hostility states separate from mental-state aggression."
+      ],
+      "action": "Observe ordinary diet/jobs for retained cast, fixed silloch prey then continuously retreating prey; record predator and prey positions, original ambush site and all attack jobs. Repeat tame hostile/nonhostile targets and brathek tree-food flag on/off.",
+      "expect": "Native baseline behavior loads and operates, silloch attacks eligible local prey then ceases pursuit beyond the ambush contract, tame filters work, and the existing borer diet setting changes actual tree-eating without substituting for galleries.",
+      "control": {
+        "case": "Out-of-range prey, oversized prey, same-species and tame friendly targets; tree eating disabled with other food available.",
+        "expect": "No inappropriate ambush/chase or tree consumption in excluded cases; a stationary target alone cannot prove a pursuit leash.",
+        "rules_out": "A distance measured from the moving predator follows prey indefinitely yet passes a static range check."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "native_life"
+      ]
+    },
+    {
+      "id": "birds_and_optional_theft",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_birds_and_optional_theft",
+      "entry_point_item": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Retained chellow/murrelith/skellick kinds loaded with current plumage and optional RimProperty patch; deleted Thavrik absent. Owner attendance is an asserted prerequisite for any live movement that tests flight."
+      ],
+      "action": "Check composed roster, normal murrelith shearing and owning-mod theft behavior with the patch present/absent. At an owner-attended review only, compare the retained birds’ actual ground/air movement with state reads and captures.",
+      "expect": "Plumage has real resource output, optional theft follows RimProperty scope, retained bird definitions/flight wiring load and Thavrik does not return. No unattended flight acceptance is scheduled or claimed.",
+      "control": {
+        "case": "Unshearable/empty wool state, absent optional patch and no owner attendance for flight.",
+        "expect": "No duplicate plumage or optional theft without its owner; the flight portion is deferred UNMEASURED until he attends.",
+        "rules_out": "The existence of flight XML or a headless movement run is recorded as owner-attended flight proof."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "native_life"
+      ]
+    },
+    {
+      "id": "oil_harvest",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_oil_harvest",
+      "entry_point_item": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Matched mature RM_Seepril, actual weather/condition eligibility and growth settings, worker capable of normal harvest, equal free placement space and no ignition."
+      ],
+      "action": "Let an ordinary worker harvest in condition-off and condition-on arms, count actual placed RM_SeepOil, then test oil enabled/disabled, temperature eligibility and commonality setting effects via the actual weather selection adapter.",
+      "expect": "The real worker harvest follows the production multiplier relative to matched baseline; weather and condition exist only in their configured eligible context. Geometry-only ambient air temperature is input, not a forbidden per-biome heat offset.",
+      "control": {
+        "case": "Condition inactive, feature off and ambient air below configured minimum; inspect exact values as provisional settings rather than inventing new thresholds.",
+        "expect": "No oil bonus or selectable active boil in disabled/ineligible controls; a direct YieldNow helper alone does not pass worker harvesting.",
+        "rules_out": "Arithmetic-only yield proof hides a broken normal harvest or temperature gate."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "oil_opportunity"
+      ]
+    },
+    {
+      "id": "oil_ignition",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_oil_ignition",
+      "entry_point_item": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Active oil-boil and equal exposed bare-ground patches; isolated roofed, raised surface/foundation, trunk, water and disconnected ground-haze islands; real spark actor for each independent seam."
+      ],
+      "action": "Replay from baseline for shot launch, shot impact, explosive impact, ordinary fire, burning pawn and lightning. Record actual hook, flashed connected cells, started fires, weather transition and condition end; no direct ProofSpark/TrySpark call is the accepting action.",
+      "expect": "Every distinct live hook reaches production flash, exposed connected cells are affected while excluded/disconnected cells are not, and flashing ends the condition and clears its weather. Bare ground uses its real fire-start path; repeated hooks cannot flash twice.",
+      "control": {
+        "case": "Same sparks on excluded surface and with the condition absent, plus disconnected exposed island within radius but without a connected haze path.",
+        "expect": "No haze flash in absent-condition/excluded-start arms and no propagation across the disconnected barrier.",
+        "rules_out": "A direct proof spark, generic explosion or global weather clear is mistaken for the actual hook and connected ground flash."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "oil_opportunity"
+      ]
+    },
+    {
+      "id": "package_and_tiers",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_package_and_tiers",
+      "entry_point_item": "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Canonical supported minimal/full/campaign lists and all assumed DLC; expected compose membership, runtime assembly identities and local hash manifest captured independently. No bridge/install agreement assumed from source hashes."
+      ],
+      "action": "Run static build/composed-def checks, then on an authorised runner load each supported list and inspect actual biome/roster, ancient-danger suppression and conditional juvenile/tank/limb remaps. Check hand-placement worker and removed natural toggle statically without generating a world.",
+      "expect": "Loaded package and code match the claimed checkout, free tier has its own complete cast and campaign additions/remaps stay in their layer; legacy package naming is reconciled with compose identity. Worker remains inert and all DLC assumed.",
+      "control": {
+        "case": "Deliberately mismatched source/assembly manifest or campaign patch on the free composed list, and unresolved inherited def reference.",
+        "expect": "Each mismatch/leak/reference defect is detected; no absence of a crash substitutes for the intended runtime effect.",
+        "rules_out": "A correct local srchash is called proof of a different installed assembly."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "supported_checkout"
+      ]
+    },
+    {
+      "id": "wrecks_and_scanner",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_wrecks_and_scanner",
+      "entry_point_item": "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Actual registered Moderate wreck-field profile and inherited Wreckage family children; canonical list with/without Acoustic Scanner support, actual limb, core, resin and wreck states."
+      ],
+      "action": "Stage the real wreck field on the authored site, salvage through normal work and count recovered products. With optional scanner present take readings of each registered FeverWood payload and compare absent target/background; with it absent verify safe patch omission.",
+      "expect": "Wreck hull/carapace textures resolve and actual inherited salvage works; scanner distinguishes live limbs, living core, resin plugs and wrecks through its owning service. Optional absence is graceful and not falsely reported as measured integration.",
+      "control": {
+        "case": "Salvaged/dead/absent target and optional scanner mod absent with otherwise matched list.",
+        "expect": "No phantom payload remains without a target, no optional dependency error occurs when absent and no scanner result is claimed without the service.",
+        "rules_out": "Raw payload XML or inherited salvage name alone is mistaken for a working player interaction."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "supported_checkout"
+      ]
+    },
+    {
+      "id": "settings_and_heat",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_settings_and_heat",
+      "entry_point_item": "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Recorded real FeverWood settings screen and every supported major toggle in all owning mods, prior non-default values, active jobs/obligations, geometry-matched roof/shade/open cells and equal ordinary ambient air."
+      ],
+      "action": "Inspect screen labels, grouping, ranges and visible response at play zoom; roundtrip non-default settings through save/reload. For each toggle run its affected action and off control, then all relevant features off and re-enable with pending job/gift/wave/maturity. Compare direct-sun exposure under matching geometry across biome identity.",
+      "expect": "Every major toggle changes its named behavior, screens remain clear and usable, all-off creates no malformed work or lost debt, and re-enable preserves obligations. Bestiary off is explicitly narrow. Forbidden heatKind/heatOffsetC and their stale validator expectation are absent; air temperature uses normal ambient heat.",
+      "control": {
+        "case": "Identical geometry/air in a non-FeverWood authored map and each toggle off independently while other features stay on.",
+        "expect": "No FeverWood-specific sun/heat bonus survives identical geometry and air; unrelated features do not disappear through an oversized master switch.",
+        "rules_out": "Field serialization alone proves behavior or all-off silently cancels owed rewards/rescue."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "supported_checkout"
+      ]
+    },
+    {
+      "id": "retired_routes",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_retired_routes",
+      "entry_point_item": "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Current composed defs/source, cut-list references and retained RM_Glomvar race/graphics/tethers, arrival text and ambient IncidentDef/ThinkTree reachability."
+      ],
+      "action": "Search actual referenced classes/defs and production lord/generator wiring, resolve retained glomvar assets and compare current text to cuts and later heat/material rules. Run deliberate forbidden-reference mutants in a temporary copy only.",
+      "expect": "No theft/kidnapping/column quest/feeding parasite or rite route is reachable; glomvar stays loadable without a resurrected mechanic. No natural-placement or density/ascent addition, no ordinary whole-body spawn, and no stale cut promises.",
+      "control": {
+        "case": "Temporary copied input with a cut quest reference, parasite comp, stealing lord or forbidden ambient whole-body route reintroduced one at a time.",
+        "expect": "Each bad reference/wiring is detected and copied files are discarded, leaving actual source unchanged.",
+        "rules_out": "Deleted source names conceal still-reachable defs or remaining shipped content is silently omitted from coverage."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "retired_absence"
+      ]
+    },
+    {
+      "id": "floor_checkout",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_floor_checkout",
+      "entry_point_item": "FEVERWOOD_SUPPORTED_CHECKOUT_AND_FLOOR",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Current inherited concept_floor.json hash, canonical reference site and actual supported lists/machine; all floor applicability rows and evidence plans enumerated in floor.json."
+      ],
+      "action": "Execute the per-line floor checks: real prior-save/add/default-field load, declared removal consequences, supported load effects/log tap, state readability/clickability/order/motion, settings, identities and numeric measurements with attributable components. Take paired idle/busy and compressed repeated lifecycle samples without a long soak.",
+      "expect": "Every applicable row yields its intended evidence, numeric results are labelled advisory until calibrated and inferred bounds remain explicit. Existing art acceptance is applied as-is with later review, without a new art production gate. No multiplayer work, natural placement, DLC-degraded modes or unattended flight run is introduced.",
+      "control": {
+        "case": "Seed one detectable warning/error in temporary log input; wrong click hit cell, delayed order acknowledgement, retained reference or mismatched save field in controlled copy; paired baseline list/site.",
+        "expect": "Each injected observation defect is caught and attributed; current acceptance is not defeated by demanding a newly unapproved art pass or a 30-day soak.",
+        "rules_out": "No-crash, GC total-memory deltas or source-only checks are substituted for floor behaviors and measurements."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "supported_checkout"
+      ]
+    },
+    {
+      "id": "water_rescue_reload",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_water_rescue_reload",
+      "entry_point_item": "FEVERWOOD_WATER_STATE_AND_WARNING_CONTRACTS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "A real active deadline, real agitation and distinct adult quiet/grievance states exist before save, independently observed and not restaged on load."
+      ],
+      "action": "Save mid-rescue, advance a known interval, reload and finish the ordinary carry or allow expiry; repeat the post-load exposure in active versus quiet and attacked versus untouched pool contexts.",
+      "expect": "Absolute deadlines retain remaining time, agitation and local grievance keep identity, rescue clearing still works and applicable adult quiet remains authoritative after load.",
+      "control": {
+        "case": "Same saved active deadline with no rescue and an elapsed-expiry load, plus active-water positive control.",
+        "expect": "Reload never grants rescue by forgetting the entry or resets expiry; the active control can still strike.",
+        "rules_out": "Other FeverWood fields being serialized is mistaken for the shared Tenant path."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "features": [
+        "shore_rescue",
+        "pool_memory",
+        "adult_quiet"
+      ]
+    },
+    {
+      "id": "return_disable_reload",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_return_disable_reload",
+      "entry_point_item": "FEVERWOOD_CAPTIVE_ESTABLISHMENT_AND_RETURN",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Separate deliberate-return gift debt and escaped-young pool A timer, both saved with known absolute due ticks; no common fixture flags conflate them."
+      ],
+      "action": "Disable processing, reload before due, advance through due, re-enable and unblock gift placement while treating only A through its actual valid poison job. Repeat opposite order of treatment and gift delivery.",
+      "expect": "Gift debt survives and pays once, poisoned young never matures, other-pool treatment cannot intervene, and disabling processing neither converts return to escape nor forgives a timed obligation.",
+      "control": {
+        "case": "No treatment, wrong pool and blocked gift placement across the same schedule.",
+        "expect": "Untreated young still matures on schedule and gift stays owed until it can actually place; unrelated events cannot cancel each other.",
+        "rules_out": "A shared timer/disable-reset implementation silently conflates two different promises."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "features": [
+        "return_bargain",
+        "delayed_establishment"
+      ]
+    },
+    {
+      "id": "oil_water_authority",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_oil_water_authority",
+      "entry_point_item": "FEVERWOOD_CROWN_ECOLOGY_AND_OIL_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Same real exposed haze adjoining active, chemically quiet or defeated water in separate restored arms, raised safe worker route and actual ignition actor."
+      ],
+      "action": "Ignite through a real hook at the pool margin; record connected flash and forced encounter separately from natural cooldown/selection, then attempt actual shore exposure.",
+      "expect": "Active eligible water can wake beyond ordinary cooldown, applicable chemical quiet and lasting defeat still prevent adult resurgence/strike, and a raised worker is excluded from ground haze without becoming immune to genuine pool reach.",
+      "control": {
+        "case": "Disconnected flash and no registered water, plus chemical withdrawal off as its documented separate scope.",
+        "expect": "No water wake without connected registered margin; exclusions and setting semantics do not quietly change adult/pool locality.",
+        "rules_out": "A fire bypasses quiet, or raised ground is assumed to block all water danger."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "features": [
+        "oil_opportunity",
+        "adult_quiet",
+        "pool_reach"
+      ]
+    },
+    {
+      "id": "hive_alarm_farm",
+      "kind": "interaction",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_hive_alarm_farm",
+      "entry_point_item": "FEVERWOOD_LURE_AND_REACTIVE_HIVE_JOURNEYS",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Actual generated hive with functioning calm farm/guard and reachable intruder retreat before alarm."
+      ],
+      "action": "Intrude to trigger alarm, follow defender relay and guard rally, attempt normal nectar gathering as fear changes and retreat past the sealing corridor; remove the last feeder afterward.",
+      "expect": "Alarm changes retreat and farm gatherability through their real mechanisms while guard sustenance depends on surviving workers; independent feature controls from their acceptance scenes remain valid.",
+      "control": {
+        "case": "Wrong alarm tag or sealing off with the same hostile proximity, then fear local-only boundary comparison.",
+        "expect": "Fear without matching seal cannot be called a route change and sealed geometry alone cannot be called a functioning farm.",
+        "rules_out": "Pad reaction and separate farm counts are combined without their actual interaction."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "immediate",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "features": [
+        "living_hive",
+        "crown_livelihood"
+      ]
+    },
+    {
+      "id": "ordinary_reload_walk",
+      "kind": "acceptance",
+      "staged_by": "script",
+      "entry_point": "src/RimMandrake/FeverWood/validation.py::scene_ordinary_reload_walk",
+      "entry_point_item": "FEVERWOOD_PROOF_OBSERVATION_AND_RECOVERY",
+      "start": [
+        "Runner records scene-begin before mutation with baseline save hash, loaded mod/assembly identities, current map, tick, settings of every owning mod, weather and external files; recovery is executable after process interruption.",
+        "Disposable authored FeverWood site, never an unverified ready save: assert biome RM_FeverWood and each actual terrain/profile, pool, room, actor and job needed by this scene; missing prerequisites or reads are UNMEASURED, never a pass.",
+        "Record production settings and any accelerated deterministic seam separately. Clock acceleration must preserve callbacks and event ordering; no result from a forced transition proves its normal trigger or its natural frequency.",
+        "Start with the actual ordinary branch-work baseline; name and hash each mid-action save rather than claiming an existing canonical save. Keep baseline backups outside the checkpoint being reloaded."
+      ],
+      "action": "Complete branch harvest/haul, take real shore seizure, save with active deadline and reload without restaging; rescue and repeat the core trip. Independently save/reload occupied production, pool grievance/agitation, establishing young, overlapping hush, owed gift, generated hive timers and pending second wave. In a second order return a young first, then haul and rescue, then collect its gift; compare shore work before return.",
+      "expect": "Every reloaded state matches its pre-save identity and remaining absolute schedule; rescue, production, maturity/treatment, hush expiry, gift retry and pending wave finish exactly once. Repeated ordinary jobs still use the routes. Legacy absent fields default safely and old product clocks recover.",
+      "control": {
+        "case": "Idle-only reload and a deliberately dropped shared deadline/queue field in a disposable copied save; same actions run uninterrupted as reference.",
+        "expect": "Idle reload cannot pass this walk, dropped obligations are detected against the uninterrupted reference, and fixture re-creation of state is prohibited.",
+        "rules_out": "Loading an idle site or replaying fixture writes launders lost persistence."
+      },
+      "restore": "Restore the baseline save and exact prior settings of FeverWood, EnvironmentalHazards, CreatureBehaviors and other touched owners, including prior non-default values; restore current-map selection, weather, conditions, RNG if changed and external files/configs. Verify terrain, things, pawns/jobs/factions, resources, deadlines, queues and logs against the recorded baseline, then scene-end. On interruption recover from the durable journal before another run; owner_review requires scene-hold with the exact save and expiry instead of pretending restoration occurred.",
+      "hold": "owner_review",
+      "implementation_status": "missing_complete_entry_point",
+      "result": "UNMEASURED",
+      "requirement": [
+        "ordinary_walk"
+      ]
+    }
+  ],
+  "showcases": [
+    {
+      "id": "branches_and_shore",
+      "scenes": [
+        "branch_work",
+        "foundations",
+        "real_shore_rescue"
+      ],
+      "exercises": [
+        "fw_routes",
+        "fw_foundations",
+        "fw_pools",
+        "fw_shore_rescue"
+      ],
+      "source": [
+        "CONDUCTOR:1794806166917699063"
+      ],
+      "decision": "stage2_flagship"
+    },
+    {
+      "id": "water_judgment",
+      "scenes": [
+        "porter_and_agitation",
+        "crown_audio",
+        "mirror_snapshot",
+        "limb_ladder",
+        "eye_encounter",
+        "normal_suppression",
+        "adult_authority"
+      ],
+      "exercises": [
+        "fw_pools",
+        "fw_limbs",
+        "fw_porter",
+        "fw_great_emergence",
+        "fw_suppression",
+        "fw_mirror_break",
+        "fw_mirror_list",
+        "fw_chorus"
+      ],
+      "rationale": "Learning and changing the adult water threat: offered goods, warning, intelligence and the earned relief ladder. It uses actual pool registration as staging shared with the flagship."
+    },
+    {
+      "id": "prisoner_and_gift",
+      "scenes": [
+        "tank_upkeep",
+        "tank_exit_routes",
+        "young_establishment",
+        "brood_tally",
+        "peaceful_return",
+        "campaign_display"
+      ],
+      "exercises": [
+        "fw_pools",
+        "fw_tank",
+        "fw_escape_install",
+        "fw_maturation",
+        "fw_brood",
+        "fw_return_gift",
+        "fw_display_campaign"
+      ],
+      "rationale": "Captive upkeep and its two opposite consequences, delayed hostile establishment or paid peaceful return. Campaign display is a separate supported-list arm, never smuggled into the free scene."
+    },
+    {
+      "id": "living_and_broken_hives",
+      "scenes": [
+        "hive_geometry",
+        "hive_reaction",
+        "hive_farm_guard",
+        "mirror_side_ruin"
+      ],
+      "exercises": [
+        "fw_hive_geometry",
+        "fw_hive_reaction",
+        "fw_hive_farm",
+        "fw_hive_guard",
+        "fw_hive_sealing",
+        "fw_abandoned_hives"
+      ],
+      "rationale": "A real dungeon journey with its explicit dead near-mirror exception, independent of water combat and captive economy."
+    },
+    {
+      "id": "crown_provisions",
+      "scenes": [
+        "nectar_and_guild",
+        "flora_roles"
+      ],
+      "exercises": [
+        "fw_nectar",
+        "fw_guild",
+        "fw_flora"
+      ],
+      "rationale": "Ordinary crown provision work and the safety/refusal contracts it depends on; no new harvest from the stripped material plants."
+    }
+  ],
+  "coverage_rest": [
+    {
+      "capability": "fw_package",
+      "by": [
+        "package_and_tiers"
+      ],
+      "why": "Source/runtime checkout costs less than turning package identity into a showcase."
+    },
+    {
+      "capability": "fw_placement",
+      "by": [
+        "package_and_tiers",
+        "retired_routes"
+      ],
+      "why": "Hand-placement and inert worker are static absence/identity checks; no natural-placement demonstration."
+    },
+    {
+      "capability": "fw_trunks",
+      "by": [
+        "living_trunk"
+      ],
+      "why": "An isolated real mining/regrowth/seal comparison is cheaper than another whole-colony showcase."
+    },
+    {
+      "capability": "fw_lure_bait",
+      "by": [
+        "normal_bait",
+        "two_front_journey"
+      ],
+      "why": "Living-bait work and fronts form a distinct ordinary journey, but only two inventory units are new; below the later-showcase minimum of three."
+    },
+    {
+      "capability": "fw_two_fronts",
+      "by": [
+        "two_front_journey"
+      ],
+      "why": "Retain full delayed-front journey and reload controls; it adds only one unit beyond bait, so no extra showcase."
+    },
+    {
+      "capability": "fw_glomvar_residual",
+      "by": [
+        "retired_routes"
+      ],
+      "why": "Shipped dormant race/assets load and cut feeding behavior stays absent; scoped out content is covered only here."
+    },
+    {
+      "capability": "fw_native_cast",
+      "by": [
+        "native_water",
+        "native_ambush_diet"
+      ],
+      "why": "Finite roster needs kind-specific drinking/targeting/diet/moving-prey checks; grouping those as another face would hide independent controls."
+    },
+    {
+      "capability": "fw_borer_diet",
+      "by": [
+        "native_ambush_diet",
+        "borer_gallery"
+      ],
+      "why": "Existing tree diet and absent gallery extension are separately controlled in ordinary checks."
+    },
+    {
+      "capability": "fw_borer_galleries",
+      "by": [
+        "borer_gallery"
+      ],
+      "why": "A time-sequence frontier/geometry check is cheaper and clearer than another full scene group."
+    },
+    {
+      "capability": "fw_birds",
+      "by": [
+        "birds_and_optional_theft",
+        "crown_audio"
+      ],
+      "why": "Ordinary shearing, calls, optional theft and owner-attended movement check cover the retained roster without a new art gate."
+    },
+    {
+      "capability": "fw_oil",
+      "by": [
+        "oil_harvest",
+        "oil_ignition",
+        "oil_water_authority"
+      ],
+      "why": "Keep the complete worker-harvest and real-hook journey plus interaction; one inventory unit cannot meet later-showcase minimum."
+    },
+    {
+      "capability": "fw_wrecks",
+      "by": [
+        "wrecks_and_scanner"
+      ],
+      "why": "Inherited salvage and texture resolution fit a small actual-work checkout."
+    },
+    {
+      "capability": "fw_scanner",
+      "by": [
+        "wrecks_and_scanner"
+      ],
+      "why": "Optional service readings require a paired integration checkout, not a biome face."
+    },
+    {
+      "capability": "fw_tier_mapping",
+      "by": [
+        "package_and_tiers",
+        "campaign_display"
+      ],
+      "why": "Paired supported-list runtime remap observations are cheaper than another showcase."
+    },
+    {
+      "capability": "fw_settings",
+      "by": [
+        "settings_and_heat",
+        "floor_checkout"
+      ],
+      "why": "Real UI and each named off behavior remain floor/checkout obligations."
+    },
+    {
+      "capability": "fw_proof_hooks",
+      "by": [
+        "observation_control"
+      ],
+      "why": "Read purity and independent truth checks precede every scene rather than being showcased."
+    },
+    {
+      "capability": "fw_persistence",
+      "by": [
+        "ordinary_reload_walk",
+        "water_rescue_reload",
+        "return_disable_reload"
+      ],
+      "why": "Persistence needs state-specific checkpoints and the single walk, not an idle-map screenshot."
+    },
+    {
+      "capability": "fw_sink_mud",
+      "by": [
+        "sink_mud"
+      ],
+      "why": "Weight, self/assisted escape and danger-vs-mud control remain a separate ordinary scene."
+    }
+  ],
+  "absence_checks": [
+    {
+      "capability": "fw_theft_retired",
+      "by": [
+        "retired_routes"
+      ],
+      "why": "Absent and scoped out, so excluded from built/in-scope counting but still explicitly checked for regression."
+    }
+  ],
+  "first_look": {
+    "kind": "exploration",
+    "status": "offered_not_run",
+    "scene": "branch_work and real_shore_rescue in a disposable existing-code authored site; absent mechanisms labelled, no ready save claimed",
+    "source": "design/concepts/FeverWood/record.json"
+  },
+  "execution_policy": "No scene ran in this Designer stage. Future authorised runner records scene-begin before mutation, restores and scene-end, or holds explicitly for owner review. Live flight needs owner attendance."
+}

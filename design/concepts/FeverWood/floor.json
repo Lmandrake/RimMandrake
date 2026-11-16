@@ -1,0 +1,200 @@
+{
+  "schema": 1,
+  "lines": {
+    "tick_cost": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED",
+      "evidence_mode": "measured",
+      "establishes": "Future paired reference measurements on the recorded owner test machine, list and scene; no numbers measured in this run. Numeric lines remain advisory until Conductor calibration."
+    },
+    "long_stall": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED",
+      "evidence_mode": "measured",
+      "establishes": "Future paired reference measurements on the recorded owner test machine, list and scene; no numbers measured in this run. Numeric lines remain advisory until Conductor calibration."
+    },
+    "latency": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED",
+      "evidence_mode": "measured",
+      "establishes": "Future paired reference measurements on the recorded owner test machine, list and scene; no numbers measured in this run. Numeric lines remain advisory until Conductor calibration."
+    },
+    "memory": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED",
+      "evidence_mode": "decomposed",
+      "establishes": "Future repeated create/use/destroy and load/release cycles establish retained object/resource counts and texture residency in MB under bounded windows. Lifecycle attribution establishes disposal paths; long-horizon heap flatness remains inferred, not a 30-day soak or GC-total delta claim."
+    },
+    "load_time": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED",
+      "evidence_mode": "measured",
+      "establishes": "Future paired reference measurements on the recorded owner test machine, list and scene; no numbers measured in this run. Numeric lines remain advisory until Conductor calibration."
+    },
+    "save_size": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED",
+      "evidence_mode": "compressed",
+      "establishes": "Future actual saved-byte contribution across idle, agitated, rescue, establishing, owed-gift and cleared states plus repeated simulated cycles establishes bounded serialized-state growth and cleanup. Natural 30-day distribution remains inferred; no source-text length substituted."
+    },
+    "save_compat": {
+      "status": "applicable",
+      "by": [
+        "ordinary_reload_walk",
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED",
+      "evidence": "Load real prior saves with absent/default fields and current checkpoints; document removal effects and limitations. Executing removal/external-compat tests is extended work only when asked."
+    },
+    "load_order": {
+      "status": "applicable",
+      "by": [
+        "package_and_tiers",
+        "wrecks_and_scanner"
+      ],
+      "result": "UNMEASURED"
+    },
+    "log": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED"
+    },
+    "mod_settings": {
+      "status": "applicable",
+      "by": [
+        "settings_and_heat"
+      ],
+      "result": "UNMEASURED",
+      "evidence": "Check actual screen and every owning-mod toggle through behavior, all-off and non-default restoration; bestiary remains narrow."
+    },
+    "multiplayer": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED",
+      "evidence": "Standing no-support scope check only: no multiplayer testing, implementation or support promise."
+    },
+    "art": {
+      "status": "applicable",
+      "by": [
+        "package_and_tiers",
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED",
+      "evidence": "OWNER:1792374240816575285 accepts all current biome art as-is with later review. Keep reference/scale/state observations and report future findings without requiring new art or inventing a floor waiver."
+    },
+    "reads_as": {
+      "status": "applicable",
+      "by": [
+        "branch_work",
+        "real_shore_rescue",
+        "crown_audio",
+        "hive_reaction",
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED"
+    },
+    "clickable": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED"
+    },
+    "order_taken": {
+      "status": "applicable",
+      "by": [
+        "foundations",
+        "normal_bait",
+        "normal_suppression",
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED"
+    },
+    "motion": {
+      "status": "applicable",
+      "by": [
+        "borer_gallery",
+        "hive_reaction",
+        "oil_ignition",
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED"
+    },
+    "text": {
+      "status": "applicable",
+      "by": [
+        "retired_routes",
+        "settings_and_heat"
+      ],
+      "result": "UNMEASURED"
+    },
+    "dlc": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED"
+    },
+    "worldgen": {
+      "status": "applicable",
+      "by": [
+        "package_and_tiers",
+        "retired_routes"
+      ],
+      "result": "UNMEASURED",
+      "evidence": "No natural placement or world generation work. Author existing authored map/local terrain profiles for biome-scope proof; worker remains -100 and natural setting removed."
+    },
+    "biome_scope": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED"
+    },
+    "flight": {
+      "status": "applicable",
+      "by": [
+        "birds_and_optional_theft"
+      ],
+      "result": "UNMEASURED",
+      "evidence": "Owner attendance required before any live flight test; this headless run supplies only a plan, not attendance or proof."
+    },
+    "naming": {
+      "status": "applicable",
+      "by": [
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED"
+    },
+    "test_isolation": {
+      "status": "applicable",
+      "by": [
+        "observation_control",
+        "floor_checkout"
+      ],
+      "result": "UNMEASURED"
+    }
+  }
+}

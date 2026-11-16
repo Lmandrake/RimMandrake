@@ -81,3 +81,17 @@ validated-hash:
 (chosen by the owner from drafted options, by question card, 2026-10-20)
 
 DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned.
+
+### concept root breakdown, agent-authored 2026-11-16
+
+The concept root is approved by the delegated Evidence-for-Ask call
+CONDUCTOR:1794804413045937607, recorded in
+design/concepts/FeverWood/record.json. This does not validate these visual bars,
+the older documentary quotation, or the north-star hash. The two lines below
+are the Designer's candidate breakdown for tree traceability, not owner words.
+The north-star remains DRAFT and its validated hash stays empty.
+
+### must show
+
+- [ ] `feverwood_branch_home` (change) — Ordinary branch routes shape the colony's daily work and travel above the black water.
+- [ ] `feverwood_water_memory` (change) — Water remembers what the colony does and sometimes reaches up to change its plans; consequences remain legible through rescue, treatment and reload.

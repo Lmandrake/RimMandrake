@@ -1,0 +1,233 @@
+{
+  "schema": 1,
+  "run": "rm-role-designercodex-1794810374",
+  "at": "2026-11-16T07:42:34.573426+00:00",
+  "kind": "agent_self_review_no_delegation",
+  "sources": [
+    {
+      "path": "src/RimMandrake/rimflow/roles/designer.md",
+      "sha256": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6"
+    },
+    {
+      "path": "src/RimMandrake/rimflow/roles/designer_write.md",
+      "sha256": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+    },
+    {
+      "path": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+      "sha256": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7"
+    },
+    {
+      "path": "src/RimMandrake/rimflow/concept_floor.json",
+      "sha256": "71b3673010286d31e077f5b1ddb0d1786efe8367ea2168eded6231f628999052"
+    },
+    {
+      "path": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md",
+      "sha256": "4cf8a9c0a3aa7908295e99a55853a00b56a3c48c600467833e052f0c72ac5539"
+    },
+    {
+      "path": "design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md",
+      "sha256": "98dd10a4d515a0a279b5aa64c11b2fe50920f2f3b2727effd910649d34f992c4"
+    },
+    {
+      "path": "design/Jawa/worldbuilding/biomes/feverwood_bedazzle_review_2026-10-02.md",
+      "sha256": "821b46eab224c0b20384fa1b7da6d473503fa943dacdcc27321dd1a42335f782"
+    },
+    {
+      "path": "design/Jawa/worldbuilding/biomes/fever_wood_flora_roster_2026-09-23.md",
+      "sha256": "000187a27e8da99ae72d95a503617d0d881745060ff1ff533603c99ea1c58577"
+    },
+    {
+      "path": "design/RimMandrake/plant_economy_rule_2026-11-01.md",
+      "sha256": "a272fd2a9e9cab96d7ae9be6b17504c2554d625ed3a0f7b443594b439a5aacda"
+    },
+    {
+      "path": "design/RimMandrake/fluff_cuts_2026-10-23.md",
+      "sha256": "7935970d55bf7ef81cd0705eaa9afbabe03dfd7dc93f17b65e227cbb81d2f425"
+    },
+    {
+      "path": "design/RimMandrake/designer_codex_2026-11-09/FeverWood/ANSWERS_OWNER.md",
+      "sha256": "9567afbd08766733b320e8134587ea4f12d68bd67d00fad3539cc6e641d90edc"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml",
+      "sha256": "0b3b94541bb1ecd26cc0ea1ed7e609abced474133b9f7da4104dc791bc2bee19"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_StiltPlatform.xml",
+      "sha256": "5c41a64052f9d88bc8fd23d72b2dc0d220b596b875524353e7d11b4266271bf9"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_FeverWoodMirrorPool.xml",
+      "sha256": "26566a9698f250bcaf828cf9d56b315a08235321d4e5203a76d172e0d513ac82"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkCore.xml",
+      "sha256": "1635d65bf1e0d400a828965d78472412cecca708f39657e685995bebb58ca2bc"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverWoodWrecks.xml",
+      "sha256": "a62cd27c42ef712df30f0a5a025f158dd5b69ca089b1dd3f389aee4264e2b9f0"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml",
+      "sha256": "5234b608aaa10cc8d7c2429e22edd341ec87db0d433eec0f8dcb3d23809c99c6"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml",
+      "sha256": "7b04d9b34f95df65bd6ce58242fac539a276b6ea99e7152c46bc26da41c180bb"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_FeverWood_MirrorList.xml",
+      "sha256": "2c4986c117207b6b50445b09147666baf03b9c7a4fa1d6a722165a7fcc5b17b9"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml",
+      "sha256": "ba0c19bb11c59898b204c7da2e396818c2d6ca84cc11759e1b0493f44284c3b0"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml",
+      "sha256": "3e23f06fb8dce564ac0c9dcff3f95ec76718567fc83f664d5763ee1190285bbd"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Defs/SoundDefs/RM_FeverWoodSoundscape.xml",
+      "sha256": "8c97842e0e2ff0321963e61b97881cecf411488a544446cf4994252c85ae8617"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Patches/RM_AcousticPayload_FeverWood.xml",
+      "sha256": "2dda5fe86d130d87ff9a6adfb444f07cf143cb97b939dafc670446be0159073a"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs",
+      "sha256": "5c2e3021563f0a095869143e608d86eb54c998d035915a2b9a2b96d4c3de0fa1"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs",
+      "sha256": "cf6ec48399cacc23eae9a951a398949aa9e280751172b12cae7b2579e1ddc093"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs",
+      "sha256": "fca85e215d8fe3dc4f11be4a8605370b66609d740143f1fe5cb6db798f182578"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs",
+      "sha256": "e9c942aa03947c4171b51e74c8814a5cda8b880a8af00ed599b71a016603475a"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_CompTentacleEye.cs",
+      "sha256": "6b04db21a11feff8630eb07262b86c360fc18a85ae87a892d5c8482527e56a57"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs",
+      "sha256": "e1d3fc8a3297e107b89e8216f3ad7ad5de42798911524c6cff5dbad7d6b7093f"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs",
+      "sha256": "28b91f26c5d57ab29809de3c11ed1da2ce70df7d53f4f3d712d2d2a76ff290ea"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs",
+      "sha256": "8e2936ee99f523090a867d36a4240ce6e25a9e21a0686db195594b98e069776a"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/Kernel/RM_BroodKernel.cs",
+      "sha256": "670426e044ba432476426003a62b2fdbfa1e4f4d5b650bcaf6568c58b6be2eb7"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs",
+      "sha256": "6e0828e5b541cafecf50cc82ba5e66b783be898e2bd5039a7cfec95cd799f5e0"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs",
+      "sha256": "38ea2220a67568d1f855aab33c9e443601d7f21b39ca507b32cb78a36cb30fac"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs",
+      "sha256": "350e8d24217ae74bf1127c312868794f5eb7b65651d68823707065fb187721a0"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs",
+      "sha256": "24d68ae56d451068c83062defb6ff3f2ee29a8fcd133aa7211f46c428cb3baf9"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs",
+      "sha256": "7c5184de13a3ecba58f08559f60a977afb83f84b625049ea56f571593d787888"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_CompSillochAmbush.cs",
+      "sha256": "a3baff605381a8913b1e78977bec2a855d94a9345c71cdd2965ab35209fa1c9a"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs",
+      "sha256": "235cb8636d0a40d2102ce2c1f63226e9a71f457036547c6700a3cc05e459a55b"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs",
+      "sha256": "c7e681c570137bc7587b27a7790d64d31fcf24a5d970ed1f800c56066edc7557"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs",
+      "sha256": "b7f30ed124b9122b9cb6e9076357782db8fd527f02167f84377c757f0a347d1e"
+    },
+    {
+      "path": "src/RimMandrake/FeverWood/validation.py",
+      "sha256": "8d347ce695df6cbcd00df4427c0898fe09dc795bb1b7b38ddd5febdbfe0aa5fa"
+    },
+    {
+      "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs",
+      "sha256": "c753a97042a609acd7ab9285eee07de50c0ef8559ca2eed7118832277f6e3b39"
+    },
+    {
+      "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs",
+      "sha256": "0ddb514b4b0db234bdf74113686a21bdc5c609748d499d34bc37552bc8ba1db9"
+    },
+    {
+      "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs",
+      "sha256": "e41e3bb5a1deeb53c689565f6e9f108afcc4f451617d89d96ed6a1e34b0a581e"
+    },
+    {
+      "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs",
+      "sha256": "c8ba7390797938980aff846c9e221172ff823b8780a83017a2de81bcd7189b68"
+    },
+    {
+      "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs",
+      "sha256": "f5e22bf114255feed1d1d4b1f3c651cd584baf1834537f9c39c9454b241d895b"
+    },
+    {
+      "path": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs",
+      "sha256": "e088bd78d9826bec708b27d79b6848b649a1525ed25cdc9e9825d46f2f77607a"
+    },
+    {
+      "path": "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs",
+      "sha256": "f83d945c5adededfc2eb6f6fc2579948f086d295a36d6c563540c438405c443e"
+    },
+    {
+      "path": "src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml",
+      "sha256": "b0917536a2d73f0ebdd24f81250d7bbffeaa1e90568cdff5ecd4a79ccc46f405"
+    }
+  ],
+  "authoritative_events": [
+    "OWNER:1794374372850231423",
+    "OWNER:1792410159136516913",
+    "OWNER:1793542983826647230",
+    "OWNER:1792374240816575285",
+    "OWNER:1790968079652964812",
+    "OWNER:1792259531032237213",
+    "CONDUCTOR:1794804413045937607",
+    "CONDUCTOR:1794806166917699063"
+  ],
+  "owner_quotes_checked": [
+    "1794374372850231423",
+    "1793542983826647230",
+    "1790968079652964812"
+  ],
+  "limits": "Fresh targeted source/spec/event review of the claims used in this stage, building on the recorded stage-0 inventory and stage-2 intent. Hashes identify read sources, not implementation correctness or installed agreement. No acceptance scene, game, bridge, deployment, art or production-code change. No subagent or independent exam claimed.",
+  "source_finding": "Existing fatal-tank fix, normal Suite settings restoration, actual oil helper boundaries, bird roster and later harvest-free rules remain as corrected earlier; no stale draft defect is resurrected.",
+  "unresolved_delivery": [
+    "pool identity/authority/persistence and size reach",
+    "several-day establishment and matching supply/intervention",
+    "living bird calls and independent mirror intelligence/acquisition",
+    "documented mud/galleries/flora/ruins",
+    "actual normal-action scripts and interrupted recovery"
+  ],
+  "tests_this_stage": "Design validators and cross-reference/quote/coverage audit only; previous proof_runs in record retain their earlier scope and dates."
+}

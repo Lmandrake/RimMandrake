@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "run": "rm-role-designercodex-1794810374",
+  "at": "2026-11-16T07:44:31.299229+00:00",
+  "reviewer": "BENCH self-audit; no independent exam or subagent review claimed",
+  "tree_hash": "26618044eb57637847e65c0167d49ef3d356ac95c7224145e1c2965f967e259d",
+  "checks": [
+    {
+      "id": "counts_and_unique_ids",
+      "status": "PASS",
+      "evidence": "23 leaves, 44 unique script scenes, 5 showcases and 18 coverage_rest entries."
+    },
+    {
+      "id": "schemas",
+      "status": "PASS",
+      "evidence": "Tree/sheet Gate A, scene contract and complete floor applicability pass."
+    },
+    {
+      "id": "single_walk_and_instrument",
+      "status": "PASS",
+      "evidence": "Exactly one walk; all non-offline feature leaves depend on the observation instrument; specific proposed observations, no Setter bindings."
+    },
+    {
+      "id": "filed_missing_entrypoints",
+      "status": "PASS",
+      "evidence": "All 44 proposed normal accepting functions are honestly missing and name one of 7 actual filed items; each item prose exists with spec/verify/criteria/confirmed refs."
+    },
+    {
+      "id": "no_scope_or_proof_promotion",
+      "status": "PASS",
+      "evidence": "All 45 inventory impl/proof/scope triples unchanged, each has explicit planned coverage; counted units are 44 plus separate absent/out theft regression."
+    },
+    {
+      "id": "authority_boundaries",
+      "status": "PASS",
+      "evidence": "Delegated root/flagship kept separate, candidate root breakdown remains DRAFT with no validated hash; no signature, waiver, exam waiver or floor exception."
+    },
+    {
+      "id": "floor_no_art_gate",
+      "status": "PASS",
+      "evidence": "All 23 inherited floor rows applicable; current art acceptance recorded, live flight attendance retained; compressed/decomposed evidence limits stated."
+    },
+    {
+      "id": "no_runtime_scene",
+      "status": "PASS",
+      "evidence": "No scene-begin, mutation or actual recovery hold. Stage remains 3 for the launcher to close."
+    },
+    {
+      "id": "source_fingerprints",
+      "status": "PASS",
+      "evidence": "All 50 targeted read-source fingerprints still match; owner quotes already compared exactly to original events."
+    }
+  ],
+  "limits": "Design validation only. No game, installed assembly, actual scene, runtime acceptance, deployment or production code tested/changed in this stage."
+}
