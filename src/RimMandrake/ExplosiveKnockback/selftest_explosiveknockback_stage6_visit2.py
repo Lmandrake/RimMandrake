@@ -18,6 +18,9 @@ in a game:
   P1 HARNESS: storeroom_bomb_pit planned the cover stack against the uncovered pit (a pit stops a throw on its first cell),
      then re-planned with the cover built (a covered cell does not stop it), so no stack ever matched: INVALID on every run.
      The cover goes on first, and the stack is searched with it in place.
+  F1 SITE: pit_goods_fetch runs 60000 ticks; FlowWorks' rain filled both 3x3 pits to 2 m (WaterDeep, measured live), and
+     dug water 2 m deep is swum (owner R12), so the hauler swam into the raised-ladder control pit and carried its steel
+     out (sc_pit_fetch FAIL, visit 1 and visit 2). The scene turns rainFillsExcavationsEnabled off and restores it.
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit2.py [--src DIR]
 --src reads the mod's Source/ from DIR (laid out like this folder).
@@ -78,6 +81,10 @@ def main():
     blk = sb[j:sb.find("no floor stack within two cells whose planned throw ends on a covered", j)] if j >= 0 else ""
     b, pl = blk.find('Build("RM_PitCover_WovenScrap"'), blk.find("PlanGood(")
     check("P1", b >= 0 and pl > b, "storeroom_bomb_pit builds the cover before it plans the stack that must land on it")
+    pf = proof[proof.find('case "pit_goods_fetch"'):]
+    pf = pf[:pf.find("s.verdict = sc =>")]
+    check("F1", '"rainFillsExcavationsEnabled"' in pf and "SetValue(null, false)" in pf and "rfWas" in pf
+          and pf.find("s.restore") >= 0, "pit_goods_fetch keeps rain out of its pits for the run and restores the setting")
     print("explosiveknockback stage6 visit2: %d failed" % len(fails))
     return 1 if fails else 0
 

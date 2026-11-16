@@ -2321,6 +2321,18 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             return "FlowWorks not loaded / dig failed";
                         }
+                        // Visit 2 (2026-11-15, SITE): over 60000 ticks FlowWorks' rain filled both pits to 2 m, and dug water 2 m deep
+                        // is swum (owner R12): the hauler swam into the raised-ladder control and carried its steel out. Rain stays
+                        // out of the excavations for this scene; the player's value comes back at the verdict.
+                        var rf = AccessTools.Field(AccessTools.TypeByName("RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"), "rainFillsExcavationsEnabled");
+                        if (rf == null)
+                        {
+                            return "FlowWorks' rainFillsExcavationsEnabled setting not found";
+                        }
+                        object rfWas = rf.GetValue(null);
+                        rf.SetValue(null, false);
+                        Action prevRain = s.restore;
+                        s.restore = () => { rf.SetValue(null, rfWas); prevRain?.Invoke(); };
                         // The control is a fixed RM_Ladder: FlowWorks never counts a portable ladder raised
                         // (RM_CompLadder.EffectivelyRaised = raised && !Props.portable && ...), so a raised portable one left
                         // the control pit open (RIMMANDRAKE_TRACE_PIT_FETCH_CONTROL_STACK_PAST_RAISED_LADDER).

@@ -230,7 +230,12 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (!coverFrom.IsValid)
             {
-                return "no floor stack within two cells whose planned throw ends on a covered near-row pit cell";
+                // what each candidate does plan (offsets from o; 10 logs): the evidence a fix needs (visit 2: INVALID every run)
+                var plans = cand.Select(c => { IntVec3 to = PlanGood(s, c, DefMass("WoodLog", 10));
+                    return (c.x - s.o.x) + "," + (c.z - s.o.z) + "->" + (to.IsValid ? (to.x - s.o.x) + "," + (to.z - s.o.z) : "none"); });
+                return "no floor stack within two cells whose planned throw ends on a covered near-row pit cell (pit stack "
+                    + (pitFrom.x - s.o.x) + "," + (pitFrom.z - s.o.z) + "->" + (pitTo.x - s.o.x) + "," + (pitTo.z - s.o.z)
+                    + "; plans " + string.Join(" ", plans) + ")";
             }
             Item(s, "g_pit", "Cloth", 10, pitFrom);
             Item(s, "g_cover", "WoodLog", coverCount, coverFrom);
