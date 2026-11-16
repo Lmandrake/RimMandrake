@@ -1,0 +1,24 @@
+no_ordinary_rain                   ok    10 weathers; raining other than black rain: none; unknown: none; black rain rainRate 1.1
+biome_text_says_engineered         ok    description 856 chars
+flamefang_venom_tending_helps      ok    tendable true, untreated +0.35/day, tended -0.4/day, net tended -0.05
+furnace_twice_every_pyrelands_animal ok    furnace 9.0 vs largest other RSW_Zeer 4.5 (needs >= 9.0); 15 other kinds; unresolved none
+furnace_drawn_largest              ok    furnace adult drawSize 7.5 vs largest other RSW_Zeer 6.0
+furnace_heat_patch_targets_it      ok    names RM_FurnaceBeast, the Heat category, and sets absorbed = true
+sand_shovel_yields_glass_sand      ok    yield/count/leaves ('RM_GlassSand', '5', 'RM_FE_Ground_Gravel'); RM_GlassSand defined True
+mutant ordinary rain on the biome list red  no_ordinary_rain
+mutant ordinary rain patch-added      red  no_ordinary_rain
+mutant black rain dry                 red  no_ordinary_rain
+mutant ash fall rains                 red  no_ordinary_rain
+mutant not engineered                 red  biome_text_says_engineered
+mutant venom not tendable             red  flamefang_venom_tending_helps
+mutant tending too weak               red  flamefang_venom_tending_helps
+mutant furnace size 8.9               red  furnace_twice_every_pyrelands_animal
+mutant zeer outgrows half             red  furnace_twice_every_pyrelands_animal
+mutant patch-added giant              red  furnace_twice_every_pyrelands_animal,furnace_drawn_largest
+mutant roster kind unresolvable       red  furnace_twice_every_pyrelands_animal
+mutant furnace drawn as the zeer      red  furnace_drawn_largest
+mutant heat patch on wrong def        red  furnace_heat_patch_targets_it
+mutant heat patch absorbs nothing     red  furnace_heat_patch_targets_it
+mutant shovel yields 4                red  sand_shovel_yields_glass_sand
+mutant shovel leaves sand             red  sand_shovel_yields_glass_sand
+PASS: 7 def facts hold, 16 of 16 mutants red, the clean copy green
