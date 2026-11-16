@@ -810,10 +810,9 @@ def clone_unlanded(c: Path) -> tuple[list[str], float]:
 
 
 def noise_on_mirror(c: Path, path: str, tip: str) -> bool:
-    """A dirty POOL_NOISE file whose content the mirror's main (tip) already holds. A deletion, an unreadable file or blob,
-    or any doubt is not covered."""
-    if not path.startswith(POOL_NOISE):
-        return False
+    """A dirty file whose content the mirror's main (tip) already holds: a POOL_NOISE record by holds_content, any other path
+    only byte for byte (RIMMANDRAKE_EXCUSE_STRANDED_FILES_MAIN_HOLDS_BYTE_FOR_BYTE: a dead session's copy of edits main landed
+    under another hash). A deletion, an unreadable file or blob, or any doubt is not covered."""
     import scratch_reap as sr
     try:
         f = c / path
@@ -821,6 +820,8 @@ def noise_on_mirror(c: Path, path: str, tip: str) -> bool:
             return False
         r = sr.git(c, "cat-file", "blob", f"{tip}:{path}")
         theirs = r.stdout.encode("utf-8", "surrogateescape") if r.returncode == 0 else None
+        if not path.startswith(POOL_NOISE):
+            return theirs is not None and f.read_bytes() == theirs
         return holds_content(path, f.read_bytes(), theirs)
     except (OSError, subprocess.SubprocessError):
         return False

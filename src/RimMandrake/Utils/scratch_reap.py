@@ -158,7 +158,8 @@ PIN = re.compile(r"^\.reaping-\d+-")      # a path renamed aside for deletion; a
 DISPOSABLE_NAMES = {"__pycache__", ".pytest_cache", ".mypy_cache", "node_modules"}     # tool caches by definition
 DISPOSABLE_EXACT = {"Transient/codebase_health.html", "Transient/codebase_health.json", "Transient/codebase_health_artifact.html",
                     "Transient/codebase_health_hook.log", "infrastructure/state/codebase_health_last.json",
-                    "infrastructure/state/codebase_health_last.json.lock"}
+                    "infrastructure/state/codebase_health_last.json.lock",
+                    "infrastructure/state/art/sheets/flyer_gate_selftest.snapshot.json"}     # selftest_flyer_gate writes it
 DISPOSABLE_DIRS = ("infrastructure/dashboards/hub/data/", "infrastructure/state/queue/")     # rendered from the ledger
 
 

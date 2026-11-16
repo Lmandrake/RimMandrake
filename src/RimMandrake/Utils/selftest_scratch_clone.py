@@ -594,11 +594,13 @@ def main() -> int:
         # SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF cause 1: a helper's shard whose every line main holds, judged against the MIRROR
         # (each clone's own origin/main is left at plant time, before the lines landed: the stale ref of a --shared clone)
         led = "infrastructure/state/ledger/events/BENCH.jsonl"
-        for n in ("shardlanded", "shardnew", "shardgone"):
+        for n in ("shardlanded", "shardnew", "shardgone", "mainsame", "maindiff"):
             plant(n)
         (work / led).parent.mkdir(parents=True, exist_ok=True)
         (work / led).write_text('{"a":1}\n{"b":2}\n{"c":3}\n')
-        sh("git", "-C", str(work), "add", led)
+        # RIMMANDRAKE_EXCUSE_STRANDED_FILES_MAIN_HOLDS_BYTE_FOR_BYTE: a dead session's dirty copy of what main landed under another hash
+        (work / "landed.py").write_text("print('landed')\n")
+        sh("git", "-C", str(work), "add", led, "landed.py")
         sh("git", "-C", str(work), "commit", "-q", "-m", "shard lines land")
         sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
         sr._MIRROR_TIPS = None
@@ -607,14 +609,19 @@ def main() -> int:
             (scr / n / led).write_text(text)
         (scr / "shardgone" / "infrastructure/state/code_review").mkdir(parents=True)
         (scr / "shardgone" / "infrastructure/state/code_review/BENCH.jsonl").write_text('{"main":"has no such file"}\n')
-        check(not sc.noise_on_mirror(scr / "shardlanded", "a.txt", sr.mirror_tips()[0]), "a non-noise path is never excused")
+        for n, text in (("mainsame", "print('landed')\n"), ("maindiff", "print('mine')\n")):
+            (scr / n / "landed.py").write_text(text)
+        check(sr.disposable("infrastructure/state/art/sheets/flyer_gate_selftest.snapshot.json"), "selftest_flyer_gate's snapshot is disposable")
+        check(not sc.noise_on_mirror(scr / "maindiff", "landed.py", sr.mirror_tips()[0]), "a non-noise path main lacks is never excused")
         for n in ("pushed", "unpushed", "dirty", "built", "held", "rewritten", "shardlanded", "shardnew", "shardgone",
-                  "rebased", "authortwin", "spacetwin", "reverted"):
+                  "rebased", "authortwin", "spacetwin", "reverted", "mainsame", "maindiff"):
             idle(scr / n)
         ss = sc.scratch_stranded()
         rows = {Path(r["path"]).name: r for r in ss["rows"]}
         names = {Path(p).name for p in ss["stranded"]}
-        check(names == {"unpushed", "dirty", "held", "shardnew", "shardgone", "authortwin", "spacetwin", "reverted"},
+        check("mainsame" not in rows, f"a file main holds byte for byte is not work: {rows.get('mainsame')}")
+        check(rows.get("maindiff", {}).get("holds") == ["1 dirty file(s)"], f"a file main holds otherwise is: {rows.get('maindiff')}")
+        check(names == {"unpushed", "dirty", "held", "shardnew", "shardgone", "authortwin", "spacetwin", "reverted", "maindiff"},
               f"exactly the unlanded idle clones are stranded: {sorted(names)}")
         check("rebased" not in rows, f"a pre-sync backup whose rebased twin main holds is not work: {rows.get('rebased')}")
         check("1 commit(s) on no remote" in rows.get("authortwin", {}).get("holds", []),
