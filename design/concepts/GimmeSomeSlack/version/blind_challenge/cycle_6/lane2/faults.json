@@ -1,0 +1,106 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_GUARD_GSS_NOHOSE_FLEXIBLE_PIPES_CLAUSE_UNMUTATED",
+   "class": "Polish",
+   "bar": "no_hose_in_gss",
+   "criterion": "T_NO_HOSE can fail: every clause of its scan is guarded by a self-mutant that goes red when the clause is lost",
+   "evidence": [
+    "lane2/planted_results.jsonl P15_DECIDER_FORGETS_FLEXIBLE_PIPES: MISSED (dropping \\bflexible pipes?\\b from CLAIM leaves all 25 of its PASS lines PASS)",
+    "M20 plants 'Drawn flexible hoses', which \\bhoses?\\b still catches, so the 'flexible pipes' clause (cycle 5's fix for the header) has no mutant of its own",
+    "today the decider does catch the real header regression: P03_HEADER_FLEXIBLE_PIPES_BACK CAUGHT by NOHOSE"
+   ],
+   "would_pass": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py flexible_pipes exits 0 (planting P15 turns T_NO_HOSE red)",
+   "smallest_fix": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py: add mutant M21_planted_settings_text_flexible_pipes writing 'const string H = \"Drawn flexible pipes and wires to better display simple circuit-like plans underneath.\";' and expecting 'text: Drawn flexible pipes'",
+   "verdict_on_criterion": "criterion sound; the bar is met today, the test's self-check is one mutant short (Polish: no player-visible effect, no wrong verdict today)",
+   "status": "PENDING",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_SCAN_GSS_ABOUT_TEXT_HOSE_CLAIMS_UNREAD",
+   "class": "Polish",
+   "bar": "no_hose_in_gss",
+   "criterion": "no shipped text reads as a hose left behind in GSS",
+   "evidence": [
+    "lane2/planted_results.jsonl P05_ABOUT_SAYS_HOSES_SHIP_HERE: About.xml saying 'The flexible hoses and their reels still ship here' stays green under T_NO_HOSE (LANE1 row S_ABOUT_HOSE_ONLY_ELSEWHERE catches it)",
+    "the bar's scenario names defs and C# only, and today's About text says the hoses moved to FlowWorks (lane 1 S_ABOUT_HOSE_ONLY_ELSEWHERE PASS)"
+   ],
+   "would_pass": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py about exits 0",
+   "smallest_fix": "selftest_gss_no_hose.py scan(): read About/About.xml description sentences; a sentence naming a hose or reel (HOSE_PART) must also name FlowWorks, else hit 'about: <sentence>'; add the P05 text as a mutant",
+   "verdict_on_criterion": "outside the bar's scenario (defs and C#); Polish",
+   "status": "PENDING",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_SEE_GSS_DLL_HOSE_NAMES_HIDDEN_IN_TAILS",
+   "class": "Polish",
+   "bar": "no_hose",
+   "criterion": "T_NO_HOSE sees every hose-named member the shipped DLL carries",
+   "evidence": [
+    "lane1 row K_DLL_NO_HOSE_TYPES (FAIL, classed Polish here)",
+    "lane1/lane1_rows.jsonl K_DLL_NO_HOSE_TYPES FAIL: the shipped DLL's metadata holds LayParams::Hose, CordKind.Hose and the DrawOrder hose altitudes, compiled from _Shared/SlackGeometry (CordLayer.cs:75, :87; DrawOrder.cs)",
+    "T_NO_HOSE's assembly scan reads raw ASCII runs; 'Hose' is stored as the tail of 'LayerHose' in the #Strings heap, so LayParams.Hose and CordKind.Hose never appear as their own run and the scan stays green (its docstring names only the DrawOrder table)",
+    "lane2/planted_results.jsonl P09_CORDS_LAID_WITH_HOSE_PRESET: GSS's CordBuilder laying its cords with LayParams.Hose() stays green under T_NO_HOSE (LANE1 S_CS_NO_HOSE_REEL_IDENTIFIER catches it)",
+    "today no GSS source names a Hose identifier (lane 1 S_CS_NO_HOSE_REEL_IDENTIFIER PASS, 102556 tokens) and the cords draw cord art: no hose is drawn"
+   ],
+   "would_pass": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py hose_preset exits 0",
+   "smallest_fix": "selftest_gss_no_hose.py scan(): for Source/**/*.cs outside SelfTest, strip comments and strings and hit any identifier matching HOSE_PART ('identifier: <name>'); name LayParams.Hose and CordKind.Hose in the docstring as shared code GSS never calls",
+   "verdict_on_criterion": "criterion sound; the instrument is blind to tail-shared names and to identifiers, but nothing hose-shaped is used by GSS today; Polish",
+   "status": "PENDING",
+   "miss_of": null,
+   "related": "RIMMANDRAKE_SPLIT_GSS_DLL_HOSE_DRAW_ORDER_SHARED_TABLE (cycle 5: the DrawOrder hose altitudes in the DLL); noted there"
+  },
+  {
+   "id": "RIMMANDRAKE_LIFT_GSS_FALLEN_WIRE_OFF_WALL_CORNER",
+   "class": "Polish",
+   "bar": "cords_meet_walls_at_face",
+   "criterion": "a fallen wire lies on open ground and is never drawn across a wall",
+   "evidence": [
+    "lane1 row K_FALLEN_WIRE_LIES_ON_GROUND (FAIL, classed Polish here)",
+    "lane1/lane1_rows.jsonl K_FALLEN_WIRE_LIES_ON_GROUND FAIL: 23 of 2917 random lays put a ground point in a wall cell",
+    "lane1/lane1_rows.jsonl K_INFO_FALLEN_WALL_DEPTH: median 0.024, max 0.238 cell into the wall; smallest case in the row (span 4.14 through a 2-gap wall at x=7)",
+    "AerialMath.LayFallen clearTo samples ground(s,k) every 0.2 cell; the emitted polyline between and around samples (bends, hook) can cross a cell corner",
+    "ground cords draw under walls, so a 0.02-0.24 cell clip is hidden by the wall art [guess ~75%]; the bar proves at stage 6"
+   ],
+   "would_pass": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py fallen_wall exits 0",
+   "smallest_fix": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs LayFallen: after building lay.Pts, test every emitted ground point past 0.75 cell with open(); on a hit fall to the next slack level (as clearTo does), or sample clearTo at 0.1",
+   "verdict_on_criterion": "criterion sound; effect sub-cell and hidden under wall art: Polish",
+   "status": "PENDING",
+   "miss_of": null,
+   "known": "filed by blind cycle 1 (1 of 1500 lays then); cycle 6 re-measured 23 of 2917, max 0.238 cell, and noted it on the item"
+  },
+  {
+   "id": "RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_NEVER_IN_GAME",
+   "class": "Polish",
+   "bar": "restring_cut_span",
+   "criterion": "re-stringing is a colonist job that always takes positive time",
+   "evidence": [
+    "lane1 row K_RESTRING_IS_A_JOB (FAIL, classed Polish here)",
+    "lane1/lane1_rows.jsonl K_RESTRING_IS_A_JOB FAIL: RestringTicks(NaN) = -2147483648 (Math.Max(0.1, NaN) is NaN); 0 and negative speeds give 3000",
+    "the caller RestringJob.cs:125 passes pawn.GetStatValue(ConstructionSpeed), which is not NaN in vanilla [guess ~90%]"
+   ],
+   "would_pass": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py restring_nan exits 0",
+   "smallest_fix": "AerialMath.cs: RestringTicks(double s) => (int)Math.Ceiling(RestringBaseTicks / (s > 0.1 ? s : 0.1));",
+   "verdict_on_criterion": "criterion sound; unreachable input in play: Polish",
+   "status": "PENDING",
+   "miss_of": null,
+   "known": "filed by blind cycle 2; cycle 6 filed a duplicate in error and dropped it to this successor"
+  },
+  {
+   "id": "RIMMANDRAKE_KILL_GSS_ORPHAN_SELFTEST_HOLDING_BUILD_LOCK",
+   "class": "Polish",
+   "bar": "no_hose",
+   "criterion": "an offline rerun repeats its recorded verdict",
+   "evidence": [
+    "lane2/reruns.jsonl: T_GATE first rerun FAIL in 52 s (validation O3_core_selftest, O3n_selftest_can_fail red), T_CORD_GEOMETRY_OFFLINE 'selftest build FAILED' (MSB3027: SelfTest.dll locked by '.NET Host (11224)', a dotnet.exe running the SelfTest DLL from the same WINBUILD_ROOT, started 02:16:54 PST, gone ~2 min later)",
+    "both PASS when rerun alone afterwards (T_GATE 225.7 s, T_CORD_GEOMETRY_OFFLINE 4523/4523); no mod change between",
+    "cause not settled: a selftest run outliving its caller's timeout or kill (a Windows child survives its WSL parent) is the guess [guess ~60%]"
+   ],
+   "would_pass": "two back-to-back runs of `python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate` then `python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry` with one WINBUILD_ROOT both exit 0",
+   "smallest_fix": "unknown until reproduced; candidate: the selftest runner kills the Windows process tree on timeout (taskkill.exe /T /F /PID) and waits for the staging DLL to unlock before building",
+   "verdict_on_criterion": "criterion sound; a harness flake, no wrong green; Polish. Acceptance test: none, the race was not reproduced on demand",
+   "status": "PENDING",
+   "miss_of": null
+  }
+ ]
+}

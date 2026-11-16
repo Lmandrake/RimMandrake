@@ -1,0 +1,295 @@
+[
+ {
+  "id": "P01_DEF_TEXPATH_HOSE_REEL",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+  "old": "<texPath>RimMandrake/GimmeSomeSlack/Aerial/AerialMast</texPath>",
+  "new": "<texPath>RimMandrake/GimmeSomeSlack/Aerial/HoseReel</texPath>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P02_DEF_TEXPATH_PIPE_BRACKET",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+  "old": "<texPath>RimMandrake/GimmeSomeSlack/Aerial/WallBracket</texPath>",
+  "new": "<texPath>RimMandrake/GimmeSomeSlack/Aerial/PipeBracket</texPath>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P03_HEADER_FLEXIBLE_PIPES_BACK",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",
+  "old": "public const string Header = \"Drawn wires to better display simple circuit-like plans underneath.\";",
+  "new": "public const string Header = \"Drawn flexible pipes and wires to better display simple circuit-like plans underneath.\";",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss",
+   "mod_settings"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P04_SETTING_LABEL_LAID_LIKE_HOSES",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",
+  "old": "\"Cords slide under buildings at a diagonal (never onto a pipe or hose port)\"",
+  "new": "\"Cords slide under buildings at a diagonal, laid like garden hoses\"",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss",
+   "mod_settings"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P05_ABOUT_SAYS_HOSES_SHIP_HERE",
+  "file": "src/RimMandrake/GimmeSomeSlack/About/About.xml",
+  "old": "The flexible hoses that used to live here now ship in RimMandrake: FlowWorks.",
+  "new": "The flexible hoses and their reels still ship here, beside the cords.",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P06_PATCH_XPATH_INTO_HOSE_REEL",
+  "file": "src/RimMandrake/GimmeSomeSlack/Patches/RM_ConduitStyleable.xml",
+  "old": "<xpath>Defs/ThingDef[defName=\"PowerConduit\"]/comps</xpath>",
+  "new": "<xpath>Defs/ThingDef[defName=\"RM_HoseReel\"]/comps</xpath>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P07_GIZMO_LINK_HOSE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs",
+  "old": "defaultLabel = pipe ? \"Link pipe span\" : \"Link wire\",",
+  "new": "defaultLabel = pipe ? \"Link hose\" : \"Link wire\",",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P08_SETTINGS_TEXT_HOSE_REELS_HERE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs",
+  "old": "pipe poles have their own switch in the Mod Settings of the mod that adds them.",
+  "new": "hose reels have their own switch on this page.",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss",
+   "mod_settings"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P09_CORDS_LAID_WITH_HOSE_PRESET",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+  "old": "internal LayParams Lay = new LayParams { FillFlats = true, SoftPins = true, RoundExcursions = true, RoundLoops = true, ShortBow = true, FairBends = true };",
+  "new": "internal LayParams Lay = LayParams.Hose();",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss",
+   "cords_lie_slack"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P10_PIPE_SPAN_OWN_TEXTURE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMaterials.cs",
+  "old": "string contract = ext?.spanTexPath.NullOrEmpty() == false ? ext.spanTexPath.Replace(\"{look}\", look) : null;",
+  "new": "string contract = \"RimMandrake/GimmeSomeSlack/Aerial/\" + look + \"/PipeSpan\";",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P11_DLL_GIZMO_TEXT_SAYS_HOSE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll",
+  "encoding": "utf-16-le",
+  "old": "Link pipe span",
+  "new": "Link hose span",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss",
+   "mod_settings"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P12_DLL_TYPE_NAMED_HOSEREELS",
+  "file": "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll",
+  "encoding": "latin-1",
+  "old": "TipSparks\u0000",
+  "new": "HoseReels\u0000",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P13_SRCHASH_AERIALMATH_STALE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash",
+  "old": "26f58f44d9f0c49c9a2b727ced8c49fb78a2def9ec9410053a35f315b60914c3 Aerial/AerialMath.cs",
+  "new": "26f58f44d9f0c49c9a2b727ced8c49fb78a2def9ec9410053a35f315b60914c4 Aerial/AerialMath.cs",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P14_SRCHASH_DLL_LINE_STALE",
+  "file": "src/RimMandrake/GimmeSomeSlack/Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash",
+  "old": "# dll: 339c72e51543a7b1b2c2f0ecb2a74774479b967c71ee265dbeeae36506bf242f",
+  "new": "# dll: 339c72e51543a7b1b2c2f0ecb2a74774479b967c71ee265dbeeae36506bf2420",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE",
+   "LANE1"
+  ]
+ },
+ {
+  "id": "P15_DECIDER_FORGETS_FLEXIBLE_PIPES",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+  "old": "CLAIM = re.compile(r\"(?i)\\bhoses?\\b|\\breels?\\b|\\bflexible pipes?\\b\")",
+  "new": "CLAIM = re.compile(r\"(?i)\\bhoses?\\b|\\breels?\\b\")",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE"
+  ]
+ },
+ {
+  "id": "P16_DECIDER_DROPS_ASSEMBLY_SCAN",
+  "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+  "old": "hits.append(\"assembly: %s (%s)\" % (n, f.relative_to(mod)))",
+  "new": "pass",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "NOHOSE"
+  ]
+ },
+ {
+  "id": "P17_SHOCK_ONLY_DOWNED_BITES_FLOOR_END",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
+  "old": "kind == LineKind.FloorEnd ? reach == ShockReach.All : reach != ShockReach.None;",
+  "new": "kind == LineKind.FloorEnd ? reach != ShockReach.None : reach != ShockReach.None;",
+  "bars": [
+   "shock_reach_setting",
+   "floor_end_shock"
+  ],
+  "suites": [
+   "LANE1",
+   "CORE",
+   "BITES",
+   "SETTINGS"
+  ]
+ },
+ {
+  "id": "P18_TAP_CREATES_POWER",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "return Math.Min(rateW * k, avail);",
+  "new": "return rateW * k;",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "power_theft"
+  ],
+  "suites": [
+   "LANE1",
+   "CORE",
+   "BITES",
+   "SETTINGS"
+  ]
+ },
+ {
+  "id": "P19_RESTRINGER_SHOCKED",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "!alreadyOut && !restringing;",
+  "new": "!alreadyOut;",
+  "bars": [
+   "fallen_wire_shocks_crossers",
+   "fallen_wire_shock"
+  ],
+  "suites": [
+   "LANE1",
+   "CORE",
+   "BITES",
+   "SETTINGS"
+  ]
+ },
+ {
+  "id": "P20_PIPE_LINKS_TO_POWER",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "if (a.Kind != b.Kind) return LinkVerdict.WrongKind;",
+  "new": "",
+  "bars": [
+   "pipe_pole_switch",
+   "overhead_spans"
+  ],
+  "suites": [
+   "LANE1",
+   "CORE",
+   "BITES",
+   "SETTINGS"
+  ]
+ }
+]

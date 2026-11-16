@@ -1,10 +1,11 @@
 {
  "_view": {
-  "body_sha256": "83bdb56f6fd00a4d33bd301e583e3b778dd4c2487816f2772124c45966ac153e",
+  "body_sha256": "96fe08e06cf00da6b7eaff5813b4483edd5879ee679e6c46d618afdf85301c25",
   "reducer": 1,
   "shards": {
    "BACKFILL": 384722,
    "DISPATCH": 3367,
+   "JUDGE.judge-1794822790": 13753,
    "JUDGE.judge-1794822890": 2037
   }
  },
@@ -970,7 +971,7 @@
     "ts": "2026-11-16T07:11:06Z"
    }
   },
-  "events": 510,
+  "events": 529,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2212,12 +2213,12 @@
     "by": "BACKFILL",
     "claim": "Added a TheftChecks.cs check over ten uneven windows, so a lost goodwill remainder now fails T_CORE. Green at 9126ead2a4.",
     "class": "problem",
-    "code_sha": "9126ead2a413784b28f52878a466a5fdbd370101",
+    "code_sha": "c991553a4f",
     "proposed_fix": "TheftChecks.cs: add one check over ten uneven windows that do not divide a day: total = -perDay x whole days, remainder carried exactly.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_CORE's goodwill-drain checks stepped 250 ticks, which divides 60000, so the remainder was always 0 and a lost remainder (drainTicks = 0) passed. The game caller passes a window of any length, so the loss is reachable in play.",
-    "ts": "2026-11-16T08:21:16Z",
+    "ts": "2026-11-16T10:53:06Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_CLARIFY_GSS_NOHOSE_BAR_PIPE_POLES_ARE_FLOWWORKS": {
@@ -2235,6 +2236,22 @@
     "tags": [],
     "text": "Bar no_hose_in_gss says 'No hose, reel or pipe is drawn by this mod', but GSS's renderer draws FlowWorks pipe-pole spans (AerialLineKind.Pipe, AerialMaterials.PipeMats), which settings_switch_cleanly requires. The decider reads it as 'no hose, reel or pipe thing of GSS's own'.",
     "ts": "2026-11-16T08:21:16Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_CLEAR_GSS_FALLEN_WIRE_WALL_CLIP_BETWEEN_SAMPLES": {
+    "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py fallen_wall exits 0",
+    "bars": [
+     "cords_meet_walls_at_face"
+    ],
+    "by": "JUDGE.judge-1794822790",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs LayFallen: after building lay.Pts, test every emitted ground point past 0.75 cell with open(); on a hit fall to the next slack level (as clearTo does), or sample clearTo at 0.1",
+    "status": "open",
+    "tags": [],
+    "text": "Polish: 23 of 2917 random fallen-wire lays put a ground point inside a wall cell, median 0.024, max 0.238 cell deep (LayFallen checks clearance every 0.2 cell, not the emitted points).",
+    "ts": "2026-11-16T10:51:44Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_CORRECT_GSS_DRIPLOOPS_COMMENT_SAYS_ON_SHIPS_OFF": {
@@ -2305,6 +2322,22 @@
     "ts": "2026-11-16T08:21:17Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_GUARD_GSS_NOHOSE_FLEXIBLE_PIPES_CLAUSE_UNMUTATED": {
+    "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py flexible_pipes exits 0 (planting P15 turns T_NO_HOSE red)",
+    "bars": [
+     "no_hose_in_gss"
+    ],
+    "by": "JUDGE.judge-1794822790",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py: add mutant M21_planted_settings_text_flexible_pipes writing 'const string H = \"Drawn flexible pipes and wires to better display simple circuit-like plans underneath.\";' and expecting 'text: Drawn flexible pipes'",
+    "status": "open",
+    "tags": [],
+    "text": "Polish: dropping 'flexible pipes' from T_NO_HOSE's CLAIM leaves all its self-checks green (planted P15 MISSED); no mutant guards cycle 5's header clause. The real header regression is still caught (P03).",
+    "ts": "2026-11-16T10:51:43Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_NEVER_IN_GAME": {
     "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_2/lane1/run_lane1.py --out /tmp/l1.jsonl; grep L1_RESTRING_TICKS_SWEEP /tmp/l1.jsonl | grep -q '\"PASS\"'",
     "bars": [
@@ -2322,20 +2355,19 @@
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_SPEED_GOES_NEGATIVE": {
-    "accept": "LANE1_STAGE=/mnt/d/ClaudeWork/rimmandrake/scratch/gimmesomeslack_blind_c6_lane1 python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6_judge-1794822890/lane1/run_lane1.py --out /tmp/l1.jsonl: row L1_RESTRING_TICKS_SWEEP PASS",
+    "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py restring_nan exits 0",
     "bars": [
-     "restring_cut_span",
-     "restring_job"
+     "restring_cut_span"
     ],
-    "by": "JUDGE.judge-1794822890",
+    "by": "JUDGE.judge-1794822790",
     "claim": null,
     "class": "polish",
     "code_sha": null,
-    "proposed_fix": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs RestringTicks: double s = double.IsNaN(constructionSpeed) || constructionSpeed < 0.1 ? 0.1 : constructionSpeed; return (int)Math.Ceiling(RestringBaseTicks / s);",
+    "proposed_fix": "AerialMath.cs: RestringTicks(double s) => (int)Math.Ceiling(RestringBaseTicks / (s > 0.1 ? s : 0.1));",
     "status": "open",
     "tags": [],
-    "text": "AerialMath.RestringTicks(NaN) returns int.MinValue (-2147483648): Math.Max(0.1, NaN) is NaN, so a NaN ConstructionSpeed gives a negative re-string duration. Polish (a NaN stat is a game fault elsewhere), robustness of restring_cut_span.",
-    "ts": "2026-11-16T10:10:35Z",
+    "text": "Polish: AerialMath.RestringTicks(NaN) returns int.MinValue (Math.Max(0.1, NaN) is NaN); 0 and negative speeds give 3000; the caller passes a stat that is not NaN in play.",
+    "ts": "2026-11-16T10:51:37Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET": {
@@ -2370,6 +2402,22 @@
     "tags": [],
     "text": "A new blind judge must confirm cycle 5's hose fix (396433f04a), because cycle 5 fixed a real Problem.",
     "ts": "2026-11-16T10:13:22Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_KILL_GSS_ORPHAN_SELFTEST_HOLDING_BUILD_LOCK": {
+    "accept": "two back-to-back runs of `python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate` then `python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry` with one WINBUILD_ROOT both exit 0",
+    "bars": [
+     "no_hose"
+    ],
+    "by": "JUDGE.judge-1794822790",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "unknown until reproduced; candidate: the selftest runner kills the Windows process tree on timeout (taskkill.exe /T /F /PID) and waits for the staging DLL to unlock before building",
+    "status": "open",
+    "tags": [],
+    "text": "Polish: first T_GATE rerun FAIL (O3/O3n) and T_CORD_GEOMETRY build FAILED on a SelfTest.dll locked by a leftover dotnet.exe; both PASS alone. Cause unsettled.",
+    "ts": "2026-11-16T10:51:44Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_LAND_DESIGNER_EDITS_HARVEST_TOOK_ONLY_STATE": {
@@ -2661,12 +2709,12 @@
     "by": "BACKFILL",
     "claim": "GssSessionReset now clears CordBuilder.StepTrace (set to null), and the census has a RESET row pinning that call; the census passes (rc 0).",
     "class": "problem",
-    "code_sha": "164931fd9490e8d16ff61d9d604a6d08d2175bb5",
+    "code_sha": "c991553a4f",
     "proposed_fix": "In GssSessionReset set Core.CordBuilder.StepTrace = null, and add the census RESET row that pins that call.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "CordBuilder.StepTrace, a static Action<string,string,string,List<V2>> diagnostics delegate, can hold a game's objects but is neither reset in GssSessionReset.cs nor listed with a reason, so T_STATICS_CENSUS fails (rc 1).",
-    "ts": "2026-11-16T08:21:16Z",
+    "ts": "2026-11-16T10:53:05Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_REWORD_GSS_NO_HOSE_BAR_POLES_DRAW_PIPES": {
@@ -2716,6 +2764,38 @@
     "tags": [],
     "text": "The twin-lead check (CordGeometryChecks.TwinLeads) ran only under --geometry, so T_CORE, the decider of cords_never_repeat (sc_no_repeat), stayed green when the twin pass was broken. Planted C_TWIN_APART_ZERO and C_TWIN_PICKS_CLOSER went uncaught.",
     "ts": "2026-11-16T08:21:16Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_SCAN_GSS_ABOUT_TEXT_HOSE_CLAIMS_UNREAD": {
+    "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py about exits 0",
+    "bars": [
+     "no_hose_in_gss"
+    ],
+    "by": "JUDGE.judge-1794822790",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "selftest_gss_no_hose.py scan(): read About/About.xml description sentences; a sentence naming a hose or reel (HOSE_PART) must also name FlowWorks, else hit 'about: <sentence>'; add the P05 text as a mutant",
+    "status": "open",
+    "tags": [],
+    "text": "Polish: About.xml saying the hoses still ship in GSS stays green under T_NO_HOSE (planted P05); About is outside the bar's defs-and-C# scenario; today's About text is right.",
+    "ts": "2026-11-16T10:51:44Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_SEE_GSS_DLL_HOSE_NAMES_HIDDEN_IN_TAILS": {
+    "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/lane2/acceptance_polish.py hose_preset exits 0",
+    "bars": [
+     "no_hose"
+    ],
+    "by": "JUDGE.judge-1794822790",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "selftest_gss_no_hose.py scan(): for Source/**/*.cs outside SelfTest, strip comments and strings and hit any identifier matching HOSE_PART ('identifier: <name>'); name LayParams.Hose and CordKind.Hose in the docstring as shared code GSS never calls",
+    "status": "open",
+    "tags": [],
+    "text": "Polish: shipped DLL holds LayParams.Hose and CordKind.Hose (shared CordLayer.cs) hidden from T_NO_HOSE's byte scan as tails of LayerHose; GSS using LayParams.Hose (P09) stays green. GSS never calls them today.",
+    "ts": "2026-11-16T10:51:44Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_SIT_GSS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST": {
@@ -2806,14 +2886,14 @@
     "by": "BACKFILL",
     "claim": "The SliceGateChecks slice bound now holds on one of up to 3 fresh cold builds (the graph worker's rule: a load spike is transient, a regression repeats). Over 20 cold builds the old form exceeded 30 ms in 2, the new form in 0.",
     "class": "polish",
-    "code_sha": "6f8bfb47c4",
+    "code_sha": "c991553a4f",
     "proposed_fix": "Keep the nested O3 run's last lines in the GATE_JSON so a red is explainable. The slice bound was instead changed to hold on one of up to 3 fresh cold builds.",
-    "status": "claimed_fixed",
+    "status": "open",
     "tags": [
      "instrument"
     ],
-    "text": "T_GATE rc 1 (validation:O3_core_selftest red) on the first rerun, rc 0 on the second minutes later with O3 4510/4510; the first red's detail was not kept. A single-Build wall-clock slice bound of 30 ms (GC and load included) is the suspected cause.",
-    "ts": "2026-11-16T08:21:16Z",
+    "text": "T_GATE rc 1 (validation:O3_core_selftest red) on the first rerun, rc 0 on the second minutes later with O3 4510/4510; the first red's detail was not kept. A single-Build wall-clock slice bound of 30 ms (GC and load included) is the suspected cause. (reopened: Recurred at c991553a4f: T_GATE rc 1 (O3_core_selftest, O3n red, 52 s), PASS alone after; the next run's build failed MSB3027, SelfTest.dll locked by a leftover dotnet.exe. See RIMMANDRAKE_KILL_GSS_ORPHAN_SELFTEST_HOLDING_BUILD_LOCK)",
+    "ts": "2026-11-16T10:53:06Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_STRAY_GSS_CORDS_A_CELL_OFF_THEIR_LINE": {
@@ -2955,12 +3035,12 @@
     "by": "BACKFILL",
     "claim": "RebuildContacts now gates only the aerial-strand loop on the master, so ExternalContacts (FlowWorks dropped cords) runs with the master off; CheckPawns skips only DownedSpan contacts while the master is off.",
     "class": "problem",
-    "code_sha": "6d2aeb9c3f",
+    "code_sha": "c991553a4f",
     "proposed_fix": "Gate only the aerial-strand loop of RebuildContacts on the master; let ExternalContacts run; in CheckPawns skip only DownedSpan contacts while the master is off.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "RM_FallenWireShock.RebuildContacts and CheckPawns returned on !AerialSettings.enabled before ExternalContacts (the FlowWorks dropped-cord source). With the overhead-lines master off, a dropped deck cord neither shocked nor lit fuel, whatever shockReach said.",
-    "ts": "2026-11-16T08:21:16Z",
+    "ts": "2026-11-16T10:53:06Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_UNIFY_GSS_LOOP_READ_TWO_INSTRUMENTS_DISAGREE": {
@@ -3022,12 +3102,12 @@
     "by": "BACKFILL",
     "claim": "The scan now reads the texture path under Textures/ and every Class attribute in Defs/ and Patches/, and mutants M5 and M6 pin the two plants. The shipped tree reads green.",
     "class": "problem",
-    "code_sha": "6d2aeb9c3f",
+    "code_sha": "c991553a4f",
     "proposed_fix": "Scan the texture path under Textures/ (not just the file name) and every Class attribute in Defs/ and Patches/; add the two as mutants M5, M6.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_NO_HOSE, the only decider of both no_hose and no_hose_in_gss, matched texture file names and element text only, never a texture folder or a Class attribute. Planted PF_HOSE_TEXTURE_FOLDER and PF_HOSE_COMP_CLASS_ATTR both left it green.",
-    "ts": "2026-11-16T08:21:16Z",
+    "ts": "2026-11-16T10:53:04Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_FIVE_LEFTOVERS_SLIPPED": {
@@ -3039,12 +3119,12 @@
     "by": "BACKFILL",
     "claim": "The scanner now reads every non-prose element's text and its tag, and RM_/RSW_/RUT_ defName literals in shipped C#, so all 7 planted leftovers are caught. Mutants M11..M15 pin the five.",
     "class": "problem",
-    "code_sha": "69e7d7f47e34bcdb498a785f4a6164773d7903aa",
+    "code_sha": "c991553a4f",
     "proposed_fix": "Read every non-prose element's text and its tag, and RM_/RSW_/RUT_ defName literals in shipped C#; pin the five as mutants M11..M15.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_NO_HOSE stayed green on 5 planted hose/reel leftovers: hose texture in topTexPath, reel texture in texturePath, a FlowWorks hose def type under an innocent defName, an RM_HoseReel defName literal in C#, a patch xpath into RM_HoseReel. Only blind lane 1 caught them.",
-    "ts": "2026-11-16T08:21:16Z",
+    "ts": "2026-11-16T10:53:05Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_LOAD_FOLDERS_SAID_PIPES": {
@@ -3056,12 +3136,12 @@
     "by": "BACKFILL",
     "claim": "T_NO_HOSE now scans every content root (root, version folders, Common/, LoadFolders.xml), every Assemblies/*.dll's names, bare hose/reel literals and player-facing hose claims, which fixes the four missed routes; the header drops 'flexible pipes and'. Red on 094cd380de, green at 396433f04a.",
     "class": "problem",
-    "code_sha": "396433f04a960f26f76fc51ce82faa387a17ae9b",
+    "code_sha": "c991553a4f",
     "proposed_fix": "Widen the scan to every content root and Assemblies/*.dll, bare hose/reel literals and claim text (mutants M16-M20, green G3); drop 'flexible pipes and' from the header.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_NO_HOSE, the sole decider of no_hose and no_hose_in_gss, stayed green on hoses shipped via 1.6/Defs, a leftover Assemblies/*.dll, a joined path literal, and settings text. The shipped Mod Settings header said 'Drawn flexible pipes and wires ...'.",
-    "ts": "2026-11-16T10:13:19Z",
+    "ts": "2026-11-16T10:53:05Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_WIDEN_GSS_NO_HOSE_SCAN_PIPE_PLANT_PASSED": {
@@ -3073,12 +3153,12 @@
     "by": "BACKFILL",
     "claim": "The scan word was widened from hose|reel to hose|reel|pipe, and the type match now includes Pipe, so a planted pipe def, texture and class go red. Mutant M7_planted_pipe_def pins it; the clean tree stays green.",
     "class": "problem",
-    "code_sha": "349f9aa86b450efd0fbc5f77bab84d126ed2a07d",
+    "code_sha": "c991553a4f",
     "proposed_fix": "Widen the scan WORD to hose|reel|pipe, TYPE with Pipe, and add mutant M7_planted_pipe_def (done).",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_NO_HOSE scanned for hose|reel only, so a planted pipe def (ThingDef RM_WaterPipe under Defs/) passed though the bar says no pipe. check_pipe_plant.py caught 0 of 3 pipe plants (def, texture, class) at 8510908174.",
-    "ts": "2026-11-16T08:21:16Z",
+    "ts": "2026-11-16T10:53:04Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_CODE_PATHS_UNSEEN": {
@@ -3090,12 +3170,12 @@
     "by": "BACKFILL",
     "claim": "selftest_gss_no_hose.py now reads every string literal holding a '/' in comment-stripped shipped C# (Source/, SelfTest skipped) and refuses one naming hose|reel|pipe, so a path literal and a concatenated path go red. Mutants M8, M9 and green control G2 pin it.",
     "class": "problem",
-    "code_sha": "9126ead2a413784b28f52878a466a5fdbd370101",
+    "code_sha": "c991553a4f",
     "proposed_fix": "In selftest_gss_no_hose.py add a LIT regex over comment-stripped Source/*.cs (SelfTest skipped) that refuses a string literal holding a '/' and naming hose|reel|pipe; add mutants M8, M9 and green control G2.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_NO_HOSE misses a hose/pipe texture drawn from C# by a path literal or concatenation. A planted ContentFinder<Texture2D>.Get(\"RimMandrake/FlowWorks/Hose/HoseSegment\") in Source/Aerial/AerialMaterials.cs left it green, as did a GSS-owned concatenated PipeSpan path.",
-    "ts": "2026-11-16T08:21:16Z",
+    "ts": "2026-11-16T10:53:04Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_LABELLED_REEL_SLIPS": {
@@ -3107,12 +3187,12 @@
     "by": "BACKFILL",
     "claim": "Added 'label' to the tags selftest_gss_no_hose.py scans, so a ThingDef labelled as a hose reel is refused whatever its defName (NH_DEF_LABEL_HOSE_REEL now caught; 3 of 3 planted faults caught).",
     "class": "problem",
-    "code_sha": "9126ead2a413784b28f52878a466a5fdbd370101",
+    "code_sha": "c991553a4f",
     "proposed_fix": "In selftest_gss_no_hose.py add 'label' to the scanned tags (scan it like defName); add mutant M10.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "GSS T_NO_HOSE scan does not read a ThingDef's <label>, so a hose-reel ThingDef labelled 'garden hose reel' under an innocent defName (RM_CordCoil, texPath .../Aerial/Coil) passes both NOHOSE and lane 1.",
-    "ts": "2026-11-16T08:21:16Z",
+    "ts": "2026-11-16T10:53:05Z",
     "version": "0.1.0"
    },
    "finding:RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL": {
@@ -3199,6 +3279,7 @@
   "shards": [
    "BACKFILL",
    "DISPATCH",
+   "JUDGE.judge-1794822790",
    "JUDGE.judge-1794822890"
   ],
   "spend_tokens": 50251246,
@@ -3241,6 +3322,33 @@
     "subject": "bar:fallen_wire_shock",
     "text": "sc_shock_reach UNRUN, as its ticket records it",
     "ts": "2026-11-16T10:11:28Z"
+   },
+   {
+    "by": "JUDGE.judge-1794822790",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "c991553a4f",
+    "subject": "bar:no_hose",
+    "text": "T_NO_HOSE rerun PASS rc 0 (matches recorded PASS); blind lane 1 no-hose scan rows all PASS",
+    "ts": "2026-11-16T10:52:03Z"
+   },
+   {
+    "by": "JUDGE.judge-1794822790",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "c991553a4f",
+    "subject": "bar:no_hose_in_gss",
+    "text": "T_NO_HOSE rerun PASS rc 0 (matches recorded PASS); blind lane 1 no-hose scan rows all PASS",
+    "ts": "2026-11-16T10:52:04Z"
+   },
+   {
+    "by": "JUDGE.judge-1794822790",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "c991553a4f",
+    "subject": "run",
+    "text": "lane 1 85 rows 33 PASS 3 FAIL(Polish) 3 INFO 46 not_kernel; 27 offline reruns same verdict; 20 planted, 19 caught; tree clean",
+    "ts": "2026-11-16T10:52:04Z"
    }
   ],
   "traps": {
