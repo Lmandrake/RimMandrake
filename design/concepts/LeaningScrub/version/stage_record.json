@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "LeaningScrub",
   "version": "0.1.0",
-  "stage": "preflight",
-  "stage_label": "Preflight (Stage 2)",
-  "since": "2026-11-16T09:00:54-08:00",
-  "since_from": "next-version by BENCH",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-16T09:21:49-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-16T09:00:54-08:00",
@@ -28,6 +28,25 @@
       "why": "delegated: steward: the stage record was seeded 2026-11-15 before the 0.1.0 lock and reads version UNMEASURED; opening 0.1.0 (VERSION.json, locked 2026-11-16 by the pipeline per RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME); first version of a new mod, no ordering contest",
       "version_from": "UNMEASURED",
       "version_to": "0.1.0"
+    },
+    {
+      "from": "preflight",
+      "to": "offline_build",
+      "at": "2026-11-16T09:21:49-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward: Stage 2 preflight run (design/concepts/LeaningScrub/version/pilot_throwaway/preflight_leaningscrub_stage2.py, 18 checks, 10.7 s, verdict refuse with 1 refusal); planted-fault run refused 18 of 18",
+      "unit": "rm-detached-bench-rimmandrake-steward-leaningscrub-preflig-1794848541",
+      "confirmed": {
+        "steward_confirms": "Read version/preflight.json (18 checks: 17 pass, C16 refuse 1), test_table.json (123 bars = locked_bars.json, every bar with a decider, pairs read from coverage_verdict parts and scenes.json requirement/exercises/coverage_rest; 82 scene entries, 81 absent = Stage 3 work under SCRUB_PROVE_*), bars.md (9 locked files, every blob equal at lock commit 06e9b621f6), the held row (owner_look_defects_2026-11-12 row 26 placed on biome_cast). The one refusal, C16 T_WILDLIFE_ZERO_PATHS row Z5 (RM_PyrelandsGiants.cs changed since review), is offline-build work (re-read and re-pin), filed RIMMANDRAKE_REREAD_SCRUB_PINS_AFTER_PYRELANDS_GIANTS_MOVED; not a spec fault. 10 game reasons (exploration/interaction scenes) were written by the table maker from each scene's kind, marked why_game_by, for the Stage 4 challenger to judge."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "preflight_record",
+        "steward_confirms"
+      ]
     }
   ]
 }

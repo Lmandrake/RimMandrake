@@ -1,0 +1,281 @@
+{
+ "mod": "LeaningScrub",
+ "version": "0.1.0",
+ "program": "design/concepts/LeaningScrub/version/pilot_throwaway/preflight_leaningscrub_stage2.py",
+ "at": "2026-11-16T17:16:51Z",
+ "dump": {
+  "path": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite",
+  "provenance": {
+   "builder": "measure/dumpdb.py",
+   "captured_utc": "2026-11-12T08:10:06Z",
+   "collided_names": "0",
+   "collision_blind": "0",
+   "defcount_entries": "481",
+   "defcount_names": "481",
+   "defs_lost_to_collision": "0",
+   "defs_total": "59262"
+  }
+ },
+ "seconds": 10.74,
+ "verdict": "refuse",
+ "refusals": 1,
+ "known_red": {},
+ "checks": [
+  {
+   "id": "C1_bars_complete",
+   "what": "the table holds exactly the locked bars (tree leaves + record inventory)",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "123 bars, 123 locked",
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C2_bars_name_checks",
+   "what": "every bar names a deciding check and every named check is defined",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "123 bars, 94 tests",
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C3_stages_named",
+   "what": "every check names its stage and each bar's proves_at is its highest decider",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "94 tests",
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C4_test_files_real",
+   "what": "every named test file is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "94 tests",
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C5_reads_real",
+   "what": "every file a test reads is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "93 read paths",
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C6_entries_measured",
+   "what": "each scene test's entry_exists matches its code; unwritten entries are Stage 3 work, not refusals",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "81 scene entries owed to Stage 3",
+   "notes": {
+    "stage3_owed": [
+     "sc_wind_plain (src/RimMandrake/LeaningScrub/validation.py::scene_wind_plain, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_gale_drawing (src/RimMandrake/LeaningScrub/validation.py::scene_gale_drawing, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_wind_audio (src/RimMandrake/LeaningScrub/validation.py::scene_wind_audio, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_working_wind (src/RimMandrake/LeaningScrub/validation.py::scene_working_wind, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_gale_exposure (src/RimMandrake/LeaningScrub/validation.py::scene_gale_exposure, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_raid_weight (src/RimMandrake/LeaningScrub/validation.py::scene_raid_weight, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_scent (src/RimMandrake/LeaningScrub/validation.py::scene_scent, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_fire_bias (src/RimMandrake/LeaningScrub/validation.py::scene_fire_bias, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_stall_wait (src/RimMandrake/LeaningScrub/validation.py::scene_stall_wait, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_concealment (src/RimMandrake/LeaningScrub/validation.py::scene_concealment, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_lee_reveal (src/RimMandrake/LeaningScrub/validation.py::scene_lee_reveal, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_stall_predation (src/RimMandrake/LeaningScrub/validation.py::scene_stall_predation, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_island_land (src/RimMandrake/LeaningScrub/validation.py::scene_island_land, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_creep (src/RimMandrake/LeaningScrub/validation.py::scene_creep, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_home_routes (src/RimMandrake/LeaningScrub/validation.py::scene_home_routes, item SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)",
+     "sc_ordered_travel (src/RimMandrake/LeaningScrub/validation.py::scene_ordered_travel, item SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)",
+     "sc_vine_contact (src/RimMandrake/LeaningScrub/validation.py::scene_vine_contact, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_dripping (src/RimMandrake/LeaningScrub/validation.py::scene_dripping, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_twitcher (src/RimMandrake/LeaningScrub/validation.py::scene_twitcher, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_hollow (src/RimMandrake/LeaningScrub/validation.py::scene_hollow, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_crown (src/RimMandrake/LeaningScrub/validation.py::scene_crown, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_rearing (src/RimMandrake/LeaningScrub/validation.py::scene_rearing, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_walking (src/RimMandrake/LeaningScrub/validation.py::scene_walking, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_hoard (src/RimMandrake/LeaningScrub/validation.py::scene_hoard, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_quench (src/RimMandrake/LeaningScrub/validation.py::scene_quench, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_sworn (src/RimMandrake/LeaningScrub/validation.py::scene_sworn, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_shedding (src/RimMandrake/LeaningScrub/validation.py::scene_shedding, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_strangler (src/RimMandrake/LeaningScrub/validation.py::scene_strangler, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_weeper (src/RimMandrake/LeaningScrub/validation.py::scene_weeper, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_sleeper (src/RimMandrake/LeaningScrub/validation.py::scene_sleeper, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_lure (src/RimMandrake/LeaningScrub/validation.py::scene_lure, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_smother_claim (src/RimMandrake/LeaningScrub/validation.py::scene_smother_claim, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_cane_fuel (src/RimMandrake/LeaningScrub/validation.py::scene_cane_fuel, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_tree_landmark (src/RimMandrake/LeaningScrub/validation.py::scene_tree_landmark, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_tree_shed (src/RimMandrake/LeaningScrub/validation.py::scene_tree_shed, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_tree_scratch (src/RimMandrake/LeaningScrub/validation.py::scene_tree_scratch, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_tree_healing (src/RimMandrake/LeaningScrub/validation.py::scene_tree_healing, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_tree_bank (src/RimMandrake/LeaningScrub/validation.py::scene_tree_bank, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_felt_comfort (src/RimMandrake/LeaningScrub/validation.py::scene_felt_comfort, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_tree_traces (src/RimMandrake/LeaningScrub/validation.py::scene_tree_traces, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_native_cast (src/RimMandrake/LeaningScrub/validation.py::scene_native_cast, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_bloom (src/RimMandrake/LeaningScrub/validation.py::scene_bloom, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_arm_regrowth (src/RimMandrake/LeaningScrub/validation.py::scene_arm_regrowth, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_arm_food (src/RimMandrake/LeaningScrub/validation.py::scene_arm_food, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_thornhold_quill (src/RimMandrake/LeaningScrub/validation.py::scene_thornhold_quill, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_thornhold_den (src/RimMandrake/LeaningScrub/validation.py::scene_thornhold_den, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_surrik (src/RimMandrake/LeaningScrub/validation.py::scene_surrik, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_shokka (src/RimMandrake/LeaningScrub/validation.py::scene_shokka, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_fuzzviper (src/RimMandrake/LeaningScrub/validation.py::scene_fuzzviper, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_ribbon_route (src/RimMandrake/LeaningScrub/validation.py::scene_ribbon_route, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_pillowmoss (src/RimMandrake/LeaningScrub/validation.py::scene_pillowmoss, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_tanglefuzz (src/RimMandrake/LeaningScrub/validation.py::scene_tanglefuzz, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_cruststar (src/RimMandrake/LeaningScrub/validation.py::scene_cruststar, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_shirrel_flight (src/RimMandrake/LeaningScrub/validation.py::scene_shirrel_flight, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_rollbug (src/RimMandrake/LeaningScrub/validation.py::scene_rollbug, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "sc_ruins (src/RimMandrake/LeaningScrub/validation.py::scene_ruins, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "sc_vaporator (src/RimMandrake/LeaningScrub/validation.py::scene_vaporator, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "sc_camps (src/RimMandrake/LeaningScrub/validation.py::scene_camps, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "sc_stamping (src/RimMandrake/LeaningScrub/validation.py::scene_stamping, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_maker (src/RimMandrake/LeaningScrub/validation.py::scene_maker, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_pyre_beliefs (src/RimMandrake/LeaningScrub/validation.py::scene_pyre_beliefs, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_pyre_ritual (src/RimMandrake/LeaningScrub/validation.py::scene_pyre_ritual, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_settings (src/RimMandrake/LeaningScrub/validation.py::scene_settings, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "sc_cuts (src/RimMandrake/LeaningScrub/validation.py::scene_cuts, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "sc_route_observer (src/RimMandrake/LeaningScrub/validation.py::scene_route_observer, item SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)",
+     "sc_witness_observer (src/RimMandrake/LeaningScrub/validation.py::scene_witness_observer, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "sc_economy_observer (src/RimMandrake/LeaningScrub/validation.py::scene_economy_observer, item SCRUB_PROVE_VINE_FORMS_AND_CRAFT)",
+     "sc_colony_walk (src/RimMandrake/LeaningScrub/validation.py::scene_colony_walk, item SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)",
+     "sc_removed_save_preservation (src/RimMandrake/LeaningScrub/validation.py::scene_removed_save_preservation, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "sc_acoustic_payload (src/RimMandrake/LeaningScrub/validation.py::scene_acoustic_payload, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "sc_proximity_hatch (src/RimMandrake/LeaningScrub/validation.py::scene_proximity_hatch, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "ix_route_growth (src/RimMandrake/LeaningScrub/validation.py::scene_ix_route_growth, item SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)",
+     "ix_conceal_hunt (src/RimMandrake/LeaningScrub/validation.py::scene_ix_conceal_hunt, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "ix_materials (src/RimMandrake/LeaningScrub/validation.py::scene_ix_materials, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "ix_fire_accountability (src/RimMandrake/LeaningScrub/validation.py::scene_ix_fire_accountability, item SCRUB_PROVE_WIND_FIRE_AND_RITUAL)",
+     "ix_ecology_places (src/RimMandrake/LeaningScrub/validation.py::scene_ix_ecology_places, item SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)",
+     "floor_runtime (src/RimMandrake/LeaningScrub/validation.py::scene_floor_runtime, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "floor_persistence (src/RimMandrake/LeaningScrub/validation.py::scene_floor_persistence, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "floor_payload (src/RimMandrake/LeaningScrub/validation.py::scene_floor_payload, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "floor_visual (src/RimMandrake/LeaningScrub/validation.py::scene_floor_visual, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)",
+     "floor_recovery (src/RimMandrake/LeaningScrub/validation.py::scene_floor_recovery, item SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+    ]
+   },
+   "seconds": 0.034
+  },
+  {
+   "id": "C7_why_game_and_full_list",
+   "what": "every game test says why offline cannot decide it; every full-list test says why",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "79 live tests; 0 reasons written by the table maker from the scene's kind (Stage 4 judges them)",
+   "notes": {
+    "why_game_by_table_maker": []
+   },
+   "seconds": 0.0
+  },
+  {
+   "id": "C8_held_statements_placed",
+   "what": "every held look statement naming LeaningScrub in validation_holding/ is on a bar and a test",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "1 held rows found (design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md row 26)",
+   "notes": null,
+   "seconds": 0.002
+  },
+  {
+   "id": "C9_defs_real",
+   "what": "every named def is real; our RM_/RUT_/RSW_ names against the repo's current XML and C# types",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "93 names (0 family prefixes, each with >=2 current repo names: ); dump /mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite captured 2026-11-12T08:10:06Z (51081 defs); 971 dump-only defs of ours; probe: a dump-only def of ours RM_BrineEncasement_Rough: refuse; a fake name of ours RM_LeaningScrub_NoSuchProbeDef: refuse; a real def of ours RM_Segnosaurus: pass; a vanilla def Wall: pass",
+   "notes": null,
+   "seconds": 0.007
+  },
+  {
+   "id": "C10_mods_real",
+   "what": "every named mod is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "1 mods named: mandrake.rm.leaningscrub",
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C11_settings_real",
+   "what": "every named settings field is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "8 named (blockBodySize, contactVenomEnabled, drippingRegrowEnabled, galeDeafenEnabled, galeRaidWeightFactor, leanPlantsEnabled, shirrelGlideEnabled, sweetlineTreeMapChance); 87 static fields in LeaningScrub C#",
+   "notes": null,
+   "seconds": 0.047
+  },
+  {
+   "id": "C12_lock_pins_current",
+   "what": "the locked files still hash to their pins in bars.md",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "9 pins read",
+   "notes": null,
+   "seconds": 0.011
+  },
+  {
+   "id": "C13_cs_symbols_real",
+   "what": "every C# type and member a test names is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "0 symbols",
+   "notes": null,
+   "seconds": 0.001
+  },
+  {
+   "id": "C14_items_real",
+   "what": "every named ledger item is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "7173 ledger ids read",
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C15_scenes_wired",
+   "what": "every acceptance scene is a test on a bar and decides what it is required for",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "82 scenes; on no bar (exploration/interaction, not acceptance): ['look_existing_home']",
+   "notes": null,
+   "seconds": 0.0
+  },
+  {
+   "id": "C16_built_offline_green",
+   "what": "every built offline test passes today",
+   "verdict": "refuse",
+   "refusals": [
+    {
+     "line": "test T_WILDLIFE_ZERO_PATHS",
+     "evidence": "today FAIL rc=1: FAIL (1) | Z5 code: ['RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs changed since review (fingerprint ba4ab711d3e3291a, reviewed a243636a2b2fc529): re-read it']",
+     "smallest_fix": "make it green",
+     "route": "Stage 3",
+     "would_pass": "make it green"
+    }
+   ],
+   "evidence": "11 built offline tests",
+   "notes": null,
+   "seconds": 0.003
+  },
+  {
+   "id": "C17_inventory_evidence_real",
+   "what": "every record.json impl_evidence path and ITEM is real",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "136 evidence entries",
+   "notes": null,
+   "seconds": 0.004
+  },
+  {
+   "id": "C18_runnable_flags_measured",
+   "what": "each bar's every_decider_runnable_today agrees with its measured deciders",
+   "verdict": "pass",
+   "refusals": [],
+   "evidence": "0 bars runnable today",
+   "notes": null,
+   "seconds": 0.0
+  }
+ ]
+}

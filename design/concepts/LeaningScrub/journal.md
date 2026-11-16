@@ -11,7 +11,8 @@ RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF.
 
 ## The mod as it stands
 
-- **Stage now:** Stage 2, preflight, since 2026-11-16 9:00 AM PST (`version/stage_record.json`).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 9:21 AM PST).
+- **Stage now:** Stage 3, offline build, since 2026-11-16 9:21 AM PST (`version/stage_record.json`).
 - **Current work:** Designer Stage 3 rework completed against OWNER:1794835478275153823, pending launcher acceptance of this run's result. Gate A, scenes/floor and showcase structure pass; no implementation or play is certified.
 - **Next:** fresh Stage 4 exam of the rewritten artifacts, then coverage/Lock. Prior exam is historical. Owner first-touch certification remains owed.
 - **Mod:** src/RimMandrake/LeaningScrub, the RM_LeaningScrub biome in the composed package. No Design Version is locked or handed off.
@@ -60,4 +61,13 @@ The corrected validated six-family tree/sheet passed the independent Claude Opus
 - Why: delegated: steward: the stage record was seeded 2026-11-15 before the 0.1.0 lock and reads version UNMEASURED; opening 0.1.0 (VERSION.json, locked 2026-11-16 by the pipeline per RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME); first version of a new mod, no ordering contest
 - The UNMEASURED record (at Designer (Stage 1)) is kept as `version/stage_record_UNMEASURED.json`.
 - Was, "Stage now": none
+- Record: `version/stage_record.json`.
+
+### 2026-11-16 9:21 AM PST, stage change: Preflight (Stage 2) to Offline build (Stage 3) (by BENCH)
+
+- Why: delegated: steward: Stage 2 preflight run (design/concepts/LeaningScrub/version/pilot_throwaway/preflight_leaningscrub_stage2.py, 18 checks, 10.7 s, verdict refuse with 1 refusal); planted-fault run refused 18 of 18
+- Checks passed: order, by, version, hold, preflight_record, steward_confirms.
+- Steward confirms: Read version/preflight.json (18 checks: 17 pass, C16 refuse 1), test_table.json (123 bars = locked_bars.json, every bar with a decider, pairs read from coverage_verdict parts and scenes.json requirement/exercises/coverage_rest; 82 scene entries, 81 absent = Stage 3 work under SCRUB_PROVE_*), bars.md (9 locked files, every blob equal at lock commit 06e9b621f6), the held row (owner_look_defects_2026-11-12 row 26 placed on biome_cast). The one refusal, C16 T_WILDLIFE_ZERO_PATHS row Z5 (RM_PyrelandsGiants.cs changed since review), is offline-build work (re-read and re-pin), filed RIMMANDRAKE_REREAD_SCRUB_PINS_AFTER_PYRELANDS_GIANTS_MOVED; not a spec fault. 10 game reasons (exploration/interaction scenes) were written by the table maker from each scene's kind, marked why_game_by, for the Stage 4 challenger to judge.
+- Was, "Stage now": - **Stage now:** Stage 2, preflight, since 2026-11-16 9:00 AM PST (`version/stage_record.json`).
+- Was, "Waiting on": none
 - Record: `version/stage_record.json`.

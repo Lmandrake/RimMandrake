@@ -1,0 +1,5691 @@
+{
+ "mod": "LeaningScrub",
+ "version": "0.1.0",
+ "made": "2026-11-16T17:10:34Z",
+ "made_by": "design/concepts/LeaningScrub/version/pilot_throwaway/make_test_table.py (throwaway, no model)",
+ "stages": {
+  "4-5": "offline (blind)",
+  "6": "in game",
+  "8": "owner walk"
+ },
+ "rule": "a bar passes when every test in decides passes; supports adds evidence and decides nothing; proves_at is the highest stage among the deciders",
+ "pairs_from": "coverage_verdict.json checklist parts; scenes.json requirement, exercises, coverage_rest, showcases",
+ "known_red": {},
+ "held_statements": [
+  {
+   "source": "design/RimMandrake/validation_holding/owner_look_defects_2026-11-12.md row 26",
+   "row": 26,
+   "text": "\"There appears to be a dinosaur in the pit, that's surprising. Do we really have that segnosaurus in our game?\"",
+   "speaker": "owner (verbatim in the source row)",
+   "bars": [
+    "biome_cast"
+   ],
+   "tests": [
+    "sc_native_cast",
+    "LOOK_STAGE8"
+   ],
+   "note": "a question, not a defect: the dinosaur he saw in big pit BP3 is RM_Segnosaurus, LeaningScrub's absorbed fauna (RM_Absorbed_Segnosaurus.xml); the pit-site wildlife clear landed a09040a09e; the cast's presence and natural generation are what sc_native_cast decides, and he judges whether it belongs at the walk"
+  }
+ ],
+ "held_note": "validation_holding names LeaningScrub in one row (owner_look_defects_2026-11-12.md row 26); no other file or row names it",
+ "tests": {
+  "T_SELFTEST": {
+   "id": "T_SELFTEST",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/LeaningScrub/selftest_leaningscrub.py",
+   "entry": null,
+   "observes": "the mod's main offline selftest",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/selftest_leaningscrub.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.8,
+    "last": "[lscrub] 09:10:18 log_clean PASS ",
+    "at": "2026-11-16T17:10:18Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub.txt",
+    "result": "PASS"
+   }
+  },
+  "T_FAUNA_BEHAVIOURS": {
+   "id": "T_FAUNA_BEHAVIOURS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_fauna_behaviours.py",
+   "entry": null,
+   "observes": "fauna behaviour comps and defs",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/selftest_leaningscrub_fauna_behaviours.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub_fauna_behaviours.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.1,
+    "last": "PASS selftest_leaningscrub_fauna_behaviours (7 rows, 35 planted breaks)",
+    "at": "2026-11-16T17:10:18Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_fauna_behaviours.txt",
+    "result": "PASS"
+   }
+  },
+  "T_GPT_FIXES": {
+   "id": "T_GPT_FIXES",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_gpt_fixes.py",
+   "entry": null,
+   "observes": "regressions of the GPT review fixes",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/selftest_leaningscrub_gpt_fixes.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub_gpt_fixes.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "last": "all ok",
+    "at": "2026-11-16T17:10:18Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_gpt_fixes.txt",
+    "result": "PASS"
+   }
+  },
+  "T_SHIRREL_GLIDE": {
+   "id": "T_SHIRREL_GLIDE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_shirrel_glide.py",
+   "entry": null,
+   "observes": "shirrel glide flight defs",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/selftest_leaningscrub_shirrel_glide.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub_shirrel_glide.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.5,
+    "last": "PASS selftest_leaningscrub_shirrel_glide (5 rows, 23 planted breaks)",
+    "at": "2026-11-16T17:10:18Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_shirrel_glide.txt",
+    "result": "PASS"
+   }
+  },
+  "T_SITE": {
+   "id": "T_SITE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/LeaningScrub/selftest_leaningscrub_site.py",
+   "entry": null,
+   "observes": "the test-site spec and staging helpers",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/selftest_leaningscrub_site.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/selftest_leaningscrub_site.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.1,
+    "last": "  roster = [e.tag for e in (d.find(\"wildAnimals\") or []) if \"MayRequire\" not in e.attrib]",
+    "at": "2026-11-16T17:10:19Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_site.txt",
+    "result": "PASS"
+   }
+  },
+  "T_SOUNDSCAPE": {
+   "id": "T_SOUNDSCAPE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py",
+   "entry": null,
+   "observes": "wind soundscape defs",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 5.2,
+    "last": "0 failure(s)",
+    "at": "2026-11-16T17:10:24Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_scrub_soundscape.txt",
+    "result": "PASS"
+   }
+  },
+  "T_WILDLIFE_ZERO_PATHS": {
+   "id": "T_WILDLIFE_ZERO_PATHS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/LeaningScrub/selftest_scrub_wildlife_zero_paths.py",
+   "entry": null,
+   "observes": "wildlife spawn paths never zero",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/selftest_scrub_wildlife_zero_paths.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/selftest_scrub_wildlife_zero_paths.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 3.2,
+    "last": "  Z5 code: ['RimMandrake/Pyrelands/Source/RM_PyrelandsGiants.cs changed since review (fingerprint ba4ab711d3e3291a, reviewed a243636a2b2fc529): re-read it']",
+    "at": "2026-11-16T17:10:27Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_scrub_wildlife_zero_paths.txt",
+    "result": "FAIL"
+   }
+  },
+  "T_WIND": {
+   "id": "T_WIND",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/LeaningScrub/selftest_scrub_wind.py",
+   "entry": null,
+   "observes": "wind states, lean heading and gale rules",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/selftest_scrub_wind.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/selftest_scrub_wind.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.1,
+    "last": "selftest scrub wind: 7 lean plants, 149 variants measured, 11 breaks -> OK",
+    "at": "2026-11-16T17:10:29Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_scrub_wind.txt",
+    "result": "PASS"
+   }
+  },
+  "T_SHED_PROBE": {
+   "id": "T_SHED_PROBE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/LeaningScrub/selftest_sweetline_shed_probe.py",
+   "entry": null,
+   "observes": "the sweetline shed probe's verdict logic",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/selftest_sweetline_shed_probe.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/selftest_sweetline_shed_probe.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.0,
+    "last": "0 failure(s)",
+    "at": "2026-11-16T17:10:29Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_sweetline_shed_probe.txt",
+    "result": "PASS"
+   }
+  },
+  "T_FUZZ": {
+   "id": "T_FUZZ",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_leaningscrub_fuzz.py",
+   "entry": null,
+   "observes": "kernel rules by fuzz and mutation",
+   "reads": [
+    "src/RimMandrake/Utils/selftest_leaningscrub_fuzz.py"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_leaningscrub_fuzz.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 3.6,
+    "last": "leaningscrub fuzz: 19000 cases, 637912 steps, 1.91s total -> OK",
+    "at": "2026-11-16T17:10:33Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/selftest_leaningscrub_fuzz.txt",
+    "result": "PASS"
+   }
+  },
+  "T_LINT_DEFS": {
+   "id": "T_LINT_DEFS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/lint_leaningscrub_defs.py",
+   "entry": null,
+   "observes": "static clauses over the mod's defs",
+   "reads": [
+    "src/RimMandrake/Utils/lint_leaningscrub_defs.py"
+   ],
+   "command": "python3 src/RimMandrake/Utils/lint_leaningscrub_defs.py",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.8,
+    "last": "leaningscrub lint: 51 defs + 9 patch files, 119 classes, 131 class/def refs, 92 field checks, 3 drivers, 82 settings, 0 ERROR, 0 WARN",
+    "at": "2026-11-16T17:10:34Z",
+    "log": "/mnt/d/ClaudeWork/rimmandrake/leaningscrub_preflight/runs/lint_leaningscrub_defs.txt",
+    "result": "PASS"
+   }
+  },
+  "look_existing_home": {
+   "id": "look_existing_home",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "exploration",
+   "file": "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py",
+   "entry": "stage",
+   "observes": "Labelled exploration findings only, never acceptance.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/northstar/venomvine_islands_live.py stage",
+   "why_game": "an exploration of the running game, never acceptance (scenes.json scene_policy); its open question, 'What does existing ordinary home hauling, closed detour and explicit vine crossing actually do, and do current states/countdown/cane payoff communicate the rule', has no offline model to ask",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": true,
+   "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+   "scene_status": null,
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": true,
+    "why": "entry present; a scene is run at its stage"
+   }
+  },
+  "sc_wind_plain": {
+   "id": "sc_wind_plain",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_wind_plain",
+   "observes": "The tester measures the production heading within 0.1 degree of independent geometry on both different-bearing tiles; maps of the same tile and reload agree. Normal-zoom plant facings match the expected east/west snap including the documented east tie, with one shared visual lean per map. Stabilized Stall wind is zero, ordinary/twin values match their configured offsets/factors and remain positive",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_wind_plain",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "wind_plain",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_gale_drawing": {
+   "id": "sc_gale_drawing",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_gale_drawing",
+   "observes": "The player sees dust/fuzz travel with the map heading while ground remains readable; Gale looks forceful, not stationary opaque fog. Normal weather removes the overlay. With neither owned texture resolved the material is a private copy of vanilla fog, ArtState reports PLACEHOLDER (vanilla fog sheet), and no error is logged; positive and one-texture arms bind exactly the resolved owned textures. Th",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_gale_drawing",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "gale_drawing",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_wind_audio": {
+   "id": "sc_wind_audio",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_wind_audio",
+   "observes": "The player hears the appropriate wind bed and day/night insect bed in both ordinary steady wind and wind-fog, quieter Stall, and returning wind without stuck/doubled loops. No audio pass is inferred from a SoundDef or screenshot.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_wind_audio",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "wind_audio",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_working_wind": {
+   "id": "sc_working_wind",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_working_wind",
+   "observes": "The observer reads supplied load, stored energy and Gale output ratio matching the configured factor within meter precision; eligible breakdown and completed repair are separately attributed. Useful wind does not promise uninterrupted electricity.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_working_wind",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "working_wind",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_gale_exposure": {
+   "id": "sc_gale_exposure",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_gale_exposure",
+   "observes": "In the same Gale application interval the observer sees the unroofed living non-mechanoid gain RM_GaleDeafened and reduced hearing/speech, while the roofed organic and the unroofed mechanoid gain no RM_GaleDeafened; after Gale ends the deafened actor recovers.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_gale_exposure",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "gale_exposure",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_raid_weight": {
+   "id": "sc_raid_weight",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_raid_weight",
+   "observes": "The reader sees enemy raid weight multiplied by galeRaidWeightFactor only in enabled Gale, other weights unchanged and no extra incident scheduled. A raid is not guaranteed.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_raid_weight",
+   "why_game": "The production multiplier arithmetic can be checked offline, but actual Harmony arming and IncidentWorker.ChanceFactorNow results need the loaded engine. Read weights only; do not trigger a raid.",
+   "why_game_from_leaf": "raid_weight",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_scent": {
+   "id": "sc_scent",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_scent",
+   "observes": "The observer sees eligible wild non-predators choose attributed scent flee for an upwind in-range person.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_scent",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "scent",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_fire_bias": {
+   "id": "sc_fire_bias",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_fire_bias",
+   "observes": "The observer sees real downwind ignition and directional attempt counts agreeing with production bias, not a lucky single fire.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_fire_bias",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "fire_bias",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_stall_wait": {
+   "id": "sc_stall_wait",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_stall_wait",
+   "observes": "At ordinary zoom the observer sees eligible small wanderers wait in Stall while larger animals and higher-priority jobs remain active, then normal wandering returns.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_stall_wait",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "stall_wait",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_concealment": {
+   "id": "sc_concealment",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_concealment",
+   "observes": "The player sees shimmer when ripple hides an animal and target selection agrees; moving in Stall reveals it, Gale extends size range, and active crust swimmers/mental-state actors are not double-hidden.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_concealment",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "concealment",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_lee_reveal": {
+   "id": "sc_lee_reveal",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_lee_reveal",
+   "observes": "The observer sees local loss of moving concealment in lee and return beyond it; stationary animal obeys Stall-like logic.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_lee_reveal",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "lee_reveal",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_stall_predation": {
+   "id": "sc_stall_predation",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_stall_predation",
+   "observes": "The observer sees the actual Stall hunter select eligible visible reachable prey and complete approach/attack, avoiding hidden/blocked prey.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_stall_predation",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "stall_predation",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_island_land": {
+   "id": "sc_island_land",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_island_land",
+   "observes": "At ordinary zoom the player sees abundant tree-tall islands and rarer form rooms with usable clear ground. Share meets configured target within declared finite generator tolerance and real start exits remain passable. Sworn is not a wild island room.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_island_land",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "island_land",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_creep": {
+   "id": "sc_creep",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_creep",
+   "observes": "The observer sees safe young runners, downwind preference and map cap; protected cells stay unchanged. Half-growth contact can arm. Both ExplosiveGrowth paths preserve independent vine clock ownership.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_creep",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "creep",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_home_routes": {
+   "id": "sc_home_routes",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_home_routes",
+   "observes": "The observer sees maintained routes carry useful work. Creep and Walking share developed-ground exclusions; dirt-route maintenance holds at a recorded labor cost, while unmaintained wilderness can spread. Dependability is not blanket wilderness safety.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_home_routes",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "home_routes",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)"
+   }
+  },
+  "sc_ordered_travel": {
+   "id": "sc_ordered_travel",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_ordered_travel",
+   "observes": "The player sees routine work use safe routes or visibly wait/refuse when none exists. One explicit order permits only its trip and return, subject to hazards and size limits; cancellation/completion/reload cannot authorize later automatic work.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_ordered_travel",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "ordered_travel",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)"
+   }
+  },
+  "sc_vine_contact": {
+   "id": "sc_vine_contact",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_vine_contact",
+   "observes": "The observer sees per-form free/thread/blocked bands. Common blocking is strictly greater than 1.5, not equality. Hollow has wider free band and no contact venom, runners are safe until armed. Shared controls govern applicable scratches. Every named form gets a result, including absent-comp behavior for dormant forms; inherited comps are not inferred from four representative lanes. Hollow uses its",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_vine_contact",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "vine_contact",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_dripping": {
+   "id": "sc_dripping",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_dripping",
+   "observes": "The observer sees venom delivered and same retained stand reset/regrow for a second harvest when enabled. Startup false gives vanilla one-shot harvest and startup true retains/reset/regrows the same harvested stand, with completed work and delivered venom asserted. Startup Apply and write Apply have separate result rows.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_dripping",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "dripping",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_twitcher": {
+   "id": "sc_twitcher",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_twitcher",
+   "observes": "At ordinary zoom the player sees one lash, spent/drooping pose and recovery agreeing with saved clock/inspect; no repeated spent lash.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_twitcher",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "twitcher",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_hollow": {
+   "id": "sc_hollow",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_hollow",
+   "observes": "The observer recognizes hollow galleries, wider free-pass band, no contact venom and huge-body block. Existing implementation does not establish a dedicated crawl job/animation.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_hollow",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "hollow",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_crown": {
+   "id": "sc_crown",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_crown",
+   "observes": "The observer sees attributed crown arrivals; residents plus in-transit actors stay within cap and busy jobs remain intact.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_crown",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "crown",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_rearing": {
+   "id": "sc_rearing",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_rearing",
+   "observes": "The player sees rearing/reveal then rest tied to saved state. Stall extends duration; Gale masks alert rather than granting general immunity.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_rearing",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "rearing",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_walking": {
+   "id": "sc_walking",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_walking",
+   "observes": "The observer sees bounded onset-driven advance, safe young front and production-rule tail cane; one trim is not permanent control. Connected smother stops its stand, not other stands. Cap and developed exclusions hold.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_walking",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "walking",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_hoard": {
+   "id": "sc_hoard",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_hoard",
+   "observes": "The observer sees exact eligible objects stored and returned once, corpse stays outside, ownership/clocks survive reload.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_hoard",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "hoard",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_quench": {
+   "id": "sc_quench",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_quench",
+   "observes": "The player sees one foam extinguish, readable spent/ready states and saved recovery, not repeat bursts while spent.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_quench",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "quench",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_sworn": {
+   "id": "sc_sworn",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_sworn",
+   "observes": "The observer sees marked bodies spared by Sworn regardless of faction, unmarked/expired remain exposed; real research/sowing/recipe/use are included.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_sworn",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "sworn",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_shedding": {
+   "id": "sc_shedding",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_shedding",
+   "observes": "The player sees configured downwind litter and attributed shared scratch on contact; litter lifetime and appearance agree.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_shedding",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "shedding",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_strangler": {
+   "id": "sc_strangler",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_strangler",
+   "observes": "The observer sees selected target wrapped/damaged and configured nearby auto-trim; saved wrap/target persist.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_strangler",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "strangler",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_weeper": {
+   "id": "sc_weeper",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_weeper",
+   "observes": "The observer sees pools and no more than configured cumulative polluted-cell cap across reload. Shared contact/barrier remain; text no longer promises safe passage.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_weeper",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "weeper",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_sleeper": {
+   "id": "sc_sleeper",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_sleeper",
+   "observes": "The player sees one awakening preserving growth and shared-controlled grounded wake hits; saved awake stand does not wake-hit again.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_sleeper",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "sleeper",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_lure": {
+   "id": "sc_lure",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_lure",
+   "observes": "The observer sees actual fruit chosen and eaten; local supply never exceeds cap. Food-search result alone is insufficient.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_lure",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "lure",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_smother_claim": {
+   "id": "sc_smother_claim",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_smother_claim",
+   "observes": "The observer sees one finished job consume one blanket for one saved countdown. Fresh default 120 engine days is two 60-day years; ordinary range 120\u2013600 days. Per-claim duration is frozen. Off refuses new jobs/holds due claims; re-enable pays once. Compression proves boundaries without a years-long live run.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_smother_claim",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "smother_claim",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_cane_fuel": {
+   "id": "sc_cane_fuel",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_cane_fuel",
+   "observes": "The observer sees wood-filter acceptance and two wood-equivalent fuel units per cane as agent tuning: longer operation and integrated heat/work/energy per equal count. Heat-coupled consumers also emit 1.25 times their matched wood heat rate while burning cane credit, with longer useful burn and integrated heat. Count/ownership and mixed-fuel credit are conserved across reload. These ratios are age",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_cane_fuel",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "cane_fuel",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_tree_landmark": {
+   "id": "sc_tree_landmark",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_tree_landmark",
+   "observes": "The player sees a huge ancient named landmark above scrub, matching trunk/canopy at viewing scales and identical usable name/history after reload.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_tree_landmark",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "tree_landmark",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_tree_shed": {
+   "id": "sc_tree_shed",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_tree_shed",
+   "observes": "The observer sees free felt before/after harvest only from once-mature tree; saved everMature preserves it at low growth.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_tree_shed",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "tree_shed",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_tree_scratch": {
+   "id": "sc_tree_scratch",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_tree_scratch",
+   "observes": "The observer sees wild/tame coat growth and ready unrestrained actors choose/finish rubbing, lose coat, leave own product plus conserved felt share. Roped/area-excluded special trips are refused.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_tree_scratch",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "tree_scratch",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_tree_healing": {
+   "id": "sc_tree_healing",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_tree_healing",
+   "observes": "Only completed eligible rubbing grants one readable healing hediff; parasites and disease are removed over time by observed production pulses, not an instant Rub cure or only a coat/felt change. Refresh never stacks strength; active age/remaining duration survives current-schema reload and expires. The disease manifest has no silently skipped family; any distinct non-severity cure mechanism needs ",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_tree_healing",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "tree_healing",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_tree_bank": {
+   "id": "sc_tree_bank",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_tree_bank",
+   "observes": "The observer receives bank through real harvest once, retaining fraction and no duplicate on reload; failed harvest does not debit it.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_tree_bank",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "tree_bank",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_felt_comfort": {
+   "id": "sc_felt_comfort",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_felt_comfort",
+   "observes": "The observer sees configured material comfort offset and a single apparel thought regardless of garment count, gone when all felt is removed.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_felt_comfort",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "felt_comfort",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_tree_traces": {
+   "id": "sc_tree_traces",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_tree_traces",
+   "observes": "The player sees ash/token and matching saved history entry described as an abstract trace; no arriving pawn is promised or counted.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_tree_traces",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "tree_traces",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_native_cast": {
+   "id": "sc_native_cast",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_native_cast",
+   "observes": "The player sees native ground cover and scrub generate naturally as a fuzz plain, alongside distinct native animals. Every effective wildPlants entry has a per-map count/density row checked against its configured generation eligibility; no staged lineup is counted as natural generation. Base references resolve without franchise mods. Each distinct lifecycle mechanism produces its configured produc",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_native_cast",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "native_cast",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_bloom": {
+   "id": "sc_bloom",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_bloom",
+   "observes": "The player sees delayed scatter, sway with release, true submerged exit only, finite shed and attended eruption. Mental-state animals retain behavior; movement triggers this rather than direct helper calls.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_bloom",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "bloom",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_arm_regrowth": {
+   "id": "sc_arm_regrowth",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_arm_regrowth",
+   "observes": "The observer sees one available arm lost per physical shed item, no infinite bait, and a saved missing arm regrow after one 15-day engine season before shedding again. Fifteen days is agent translation of seasonal description.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_arm_regrowth",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "arm_regrowth",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_arm_food": {
+   "id": "sc_arm_food",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_arm_food",
+   "observes": "The observer sees actual meat ingestion/nutrition/debit and rot, not only a food-search result.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_arm_food",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "arm_food",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_thornhold_quill": {
+   "id": "sc_thornhold_quill",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_thornhold_quill",
+   "observes": "The observer sees attributed quill wound/venom through its damage path, distinguishing ordinary hunting setup.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_thornhold_quill",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "thornhold_quill",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_thornhold_den": {
+   "id": "sc_thornhold_den",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_thornhold_den",
+   "observes": "The observer sees den binding and scoped stand against actual attacker with bounded recovery/return; peaceful passing alone causes no attack.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_thornhold_den",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "thornhold_den",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_surrik": {
+   "id": "sc_surrik",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_surrik",
+   "observes": "The player sees crust travel/surface strike on eligible terrain, bloom exit hole only when previously under, and no double concealment.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_surrik",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "surrik",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_shokka": {
+   "id": "sc_shokka",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_shokka",
+   "observes": "At ordinary zoom the player sees motionless edge ambush react to crossing traffic, not normal predator chase.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_shokka",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "shokka",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_fuzzviper": {
+   "id": "sc_fuzzviper",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_fuzzviper",
+   "observes": "The player sees root-like wall hold and attack from the chosen run wall when traffic arrives.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_fuzzviper",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "fuzzviper",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_ribbon_route": {
+   "id": "sc_ribbon_route",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_ribbon_route",
+   "observes": "The observer sees ordinary/hunt routes stay on canopy and refuse bare gaps; concealment/sway are independently preserved.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_ribbon_route",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "ribbon_route",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_pillowmoss": {
+   "id": "sc_pillowmoss",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_pillowmoss",
+   "observes": "The player sees bounded inspectable wet ground under moss in fog versus dry matched plot, not plant art alone.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_pillowmoss",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "pillowmoss",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_tanglefuzz": {
+   "id": "sc_tanglefuzz",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_tanglefuzz",
+   "observes": "The observer sees stable root-hollow residence, not accidental nearby animals; removing anchor ends/reassigns binding.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_tanglefuzz",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "tanglefuzz",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_cruststar": {
+   "id": "sc_cruststar",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_cruststar",
+   "observes": "The observer sees chosen lichen grazing, nutrition and resource debit/recovery agree; mere ingestibility is insufficient.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_cruststar",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "cruststar",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_shirrel_flight": {
+   "id": "sc_shirrel_flight",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_shirrel_flight",
+   "observes": "At play zoom the observer beside the owner sees actual bounded downwind flight, matching directional animation, landing and sweetline return. A capability flag does not prove flight; no sweetline does not imply no eligible launch tree.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_shirrel_flight",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "shirrel_flight",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_rollbug": {
+   "id": "sc_rollbug",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_rollbug",
+   "observes": "The observer sees corpse carried to den, stripped gear conserved on ground, progressive actual consumption and safe drop on interruption. Colony dead are eligible by default but setting excludes them; exact identities survive reload.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_rollbug",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "rollbug",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "sc_ruins": {
+   "id": "sc_ruins",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "exploration",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_ruins",
+   "observes": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_ruins",
+   "why_game": "an exploration of the running game, never acceptance (scenes.json scene_policy); its open question, 'What does the still-shipping built ruins capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is characte', has no offline model to ask",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": "planned_next_version_characterization_not_executed",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "sc_vaporator": {
+   "id": "sc_vaporator",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "exploration",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_vaporator",
+   "observes": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_vaporator",
+   "why_game": "an exploration of the running game, never acceptance (scenes.json scene_policy); its open question, 'What does the still-shipping built vaporator capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is char', has no offline model to ask",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": "planned_next_version_characterization_not_executed",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "sc_camps": {
+   "id": "sc_camps",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "exploration",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_camps",
+   "observes": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_camps",
+   "why_game": "an exploration of the running game, never acceptance (scenes.json scene_policy); its open question, 'What does the still-shipping built camps capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is characte', has no offline model to ask",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": "planned_next_version_characterization_not_executed",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "sc_stamping": {
+   "id": "sc_stamping",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_stamping",
+   "observes": "The observer sees real convergence and stamping on base without SW libraries and campaign binding separately. The authorized invented-species rehome and positive base binding are required; no aliases or historical-save conversion; blaze targeting differs from maker pursuit.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_stamping",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "stamping",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_maker": {
+   "id": "sc_maker",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_maker",
+   "observes": "The observer sees actual maker identified only by witness/fresh physical trail, never innocent nearby B. Loss of contact permits escape, identities/ages persist and expire. Shared storage supports property without changing its humanlike reporting policy. The taking uses the same bounded identity/age storage as fire (consumer-specific decay policy remains distinct). The humanlike can report the tak",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_maker",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "maker",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_pyre_beliefs": {
+   "id": "sc_pyre_beliefs",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "exploration",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_pyre_beliefs",
+   "observes": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_pyre_beliefs",
+   "why_game": "an exploration of the running game, never acceptance (scenes.json scene_policy); its open question, 'What does the still-shipping built pyre_beliefs capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is c', has no offline model to ask",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_next_version_characterization_not_executed",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_pyre_ritual": {
+   "id": "sc_pyre_ritual",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "exploration",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_pyre_ritual",
+   "observes": "Characterization records only; no current tree leaf, acceptance result or version certification follows. The prior proposed recipe is retained in next_version_contracts_03.json for future design.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_pyre_ritual",
+   "why_game": "an exploration of the running game, never acceptance (scenes.json scene_policy); its open question, 'What does the still-shipping built pyre_ritual capability currently do, and what must the next Design Version verify under OWNER:1794835478275153823? This is ch', has no offline model to ask",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_next_version_characterization_not_executed",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_settings": {
+   "id": "sc_settings",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_settings",
+   "observes": "Grouped readable dependent controls control each advertised effect and persist. In the simultaneous all-off arm normal colony work continues for 6000 ticks with zero attributable errors, disabled effects absent and existing current-schema claims/banks/hoards intact and not paid twice. Re-enable restores eligible effects once. Dripping Apply/redraw execute on settings write; separate cold-start arm",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_settings",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "colony_walk",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "sc_cuts": {
+   "id": "sc_cuts",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_cuts",
+   "observes": "No active guardian/roost/rage, farmer camps or drying scar and no text promising them. Retained tree systems still work; deleting them does not pass cuts. No loadable tombstone is required.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_cuts",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "cuts",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "sc_route_observer": {
+   "id": "sc_route_observer",
+   "kind": "offline",
+   "stage": "4-5",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_route_observer",
+   "observes": "The tester reconstructs automatic/ordered trips including stale tokens; trace agrees with independent cells/IDs.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/validation.py scene_route_observer",
+   "why_game": "",
+   "why_game_from_leaf": null,
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)"
+   }
+  },
+  "sc_witness_observer": {
+   "id": "sc_witness_observer",
+   "kind": "offline",
+   "stage": "4-5",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_witness_observer",
+   "observes": "The tester distinguishes witnessed/trailed/guessed/lost makers; replay preserves ages/IDs without display granting knowledge.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/validation.py scene_witness_observer",
+   "why_game": "",
+   "why_game_from_leaf": null,
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "sc_economy_observer": {
+   "id": "sc_economy_observer",
+   "kind": "offline",
+   "stage": "4-5",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_economy_observer",
+   "observes": "The tester can account once for resources consumed/held/paid and time; missing/duplicate objects or reset clocks fail specifically.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "python3 src/RimMandrake/LeaningScrub/validation.py scene_economy_observer",
+   "why_game": "",
+   "why_game_from_leaf": null,
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_VINE_FORMS_AND_CRAFT",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_VINE_FORMS_AND_CRAFT)"
+   }
+  },
+  "sc_colony_walk": {
+   "id": "sc_colony_walk",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_colony_walk",
+   "observes": "Safe ordinary supply and deliberate trips work in both action orders. Current-schema identities/poses/clocks/bank and mixed-fuel credit resume and pay once after reload; useful wind-powered work and premium fuel are observed. Labor/time/damage/counts are recorded. No technology, ritual or historical-save conversion is needed.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_colony_walk",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "colony_walk",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)"
+   }
+  },
+  "sc_removed_save_preservation": {
+   "id": "sc_removed_save_preservation",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_removed_save_preservation",
+   "observes": "No Scrub-owned alias registrations, legacy import, historical-name conversion or save-only preservation work ships. Ordinary current-schema settings/reload still work through the floor. Preserved product/egg definitions that have real current gameplay uses are not deleted merely because they once had aliases.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_removed_save_preservation",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "cuts",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "sc_acoustic_payload": {
+   "id": "sc_acoustic_payload",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_acoustic_payload",
+   "observes": "The player reads the appropriate banded Scrub payload from actual pulses; absent targets give quiet response and absent engine leaves no unresolved extension type. Mere strings are insufficient.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_acoustic_payload",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "acoustic_payload",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "sc_proximity_hatch": {
+   "id": "sc_proximity_hatch",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_proximity_hatch",
+   "observes": "The observer sees near-pawn fertilized-egg hatch when integrated and normal timer hatch without the engine. The egg is consumed once for configured offspring; no double hatch.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_proximity_hatch",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "proximity_hatch",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": "planned_missing_complete_entry",
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "ix_route_growth": {
+   "id": "ix_route_growth",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "interaction",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_ix_route_growth",
+   "observes": "Only authorized trips enter hazards; both growers respect developed ground and routine supplies continue or visibly wait at measured upkeep cost.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_ix_route_growth",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "walking",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY",
+   "scene_status": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ROUTES_AND_SAVED_JOURNEY)"
+   }
+  },
+  "ix_conceal_hunt": {
+   "id": "ix_conceal_hunt",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "interaction",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_ix_conceal_hunt",
+   "observes": "Visible eligible prey are chosen while hidden prey are not; windbreak/moving-in-Stall reveal and target selection agree; higher-priority hunt/escape survive.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_ix_conceal_hunt",
+   "why_game": "an interaction: concealment, lee_reveal, stall_wait, stall_predation acting together on one live map; each rule alone has its own test, the joint behaviour exists only in the running game",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": null,
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "ix_materials": {
+   "id": "ix_materials",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "interaction",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_ix_materials",
+   "observes": "Finished products derive from counted inputs and pay once, with useful premium burn after saved claim.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_ix_materials",
+   "why_game": "an interaction: tree_scratch, tree_bank, tree_shed, smother_claim, cane_fuel acting together on one live map; each rule alone has its own test, the joint behaviour exists only in the running game",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "ix_fire_accountability": {
+   "id": "ix_fire_accountability",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "interaction",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_ix_fire_accountability",
+   "observes": "Blaze location and justified maker remain distinct through spread/stamping/pursuit and current-schema reload; no blanket blame or cleanup of unrelated fires. Calling-pyre is not a prerequisite.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_ix_fire_accountability",
+   "why_game": "an interaction: fire_bias, stamping, maker acting together on one live map; each rule alone has its own test, the joint behaviour exists only in the running game",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_WIND_FIRE_AND_RITUAL",
+   "scene_status": null,
+   "hold": "owner_review",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_WIND_FIRE_AND_RITUAL)"
+   }
+  },
+  "ix_ecology_places": {
+   "id": "ix_ecology_places",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "interaction",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_ix_ecology_places",
+   "observes": "Independently proven niches coexist without a global job patch replacing others or cross-plot omniscience.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_ix_ecology_places",
+   "why_game": "an interaction: shokka, fuzzviper, ribbon_route, pillowmoss, tanglefuzz, cruststar acting together on one live map; each rule alone has its own test, the joint behaviour exists only in the running game",
+   "why_game_from_leaf": "steward",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS",
+   "scene_status": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_ECOLOGY_AND_TREE_PRODUCTS)"
+   }
+  },
+  "floor_runtime": {
+   "id": "floor_runtime",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_floor_runtime",
+   "observes": "Report inherited advisory timing distributions and actual work; modeled kernel loops cannot pass production performance.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_floor_runtime",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "colony_walk",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "floor_persistence": {
+   "id": "floor_persistence",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_floor_persistence",
+   "observes": "Current-schema identities/jobs persist and ordinary absent fields initialize without errors; no monotonic per-cycle retained-state/save growth. No historical-name preservation, imported claim arithmetic, legacy fuel-credit conversion or save-only tombstone support. Compression establishes lifecycle retention only; 30-day elapsed behavior remains inferred.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_floor_persistence",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "colony_walk",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "floor_payload": {
+   "id": "floor_payload",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_floor_payload",
+   "observes": "Standing rules remain applicable: no worldgen additions, all DLC, names, biome scope and no multiplayer. New-map local content is not world tile allocation; zero naturally allocated Scrub tiles is expected.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_floor_payload",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "native_cast",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "floor_visual": {
+   "id": "floor_visual",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_floor_visual",
+   "observes": "Distinct forms/states read correctly, required art evaluation is GREEN, visible overhang selects and waiting orders acknowledge receipt. Still images cannot pass motion.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_floor_visual",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "wind_plain",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "floor_recovery": {
+   "id": "floor_recovery",
+   "kind": "live_minimal",
+   "stage": "6",
+   "scene_kind": "acceptance",
+   "file": "src/RimMandrake/LeaningScrub/validation.py",
+   "entry": "scene_floor_recovery",
+   "observes": "Exact captured state returns or explicit recoverable owner hold remains; same-form bystanders survive. Lost tap/dead log is UNMEASURED. Observable window requires zero attributable errors/warnings.",
+   "reads": [
+    "src/RimMandrake/LeaningScrub/validation.py"
+   ],
+   "command": "bridge: src/RimMandrake/LeaningScrub/validation.py scene_floor_recovery",
+   "why_game": "Actual engine AI/jobs, rendering/audio or saved identity behavior is required; source or direct helper call alone cannot establish this play result.",
+   "why_game_from_leaf": "cuts",
+   "why_full_list": "",
+   "entry_exists": false,
+   "item": "SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY",
+   "scene_status": null,
+   "hold": "immediate",
+   "new": false,
+   "defs": [],
+   "symbols": [],
+   "mods": [
+    "mandrake.rm.leaningscrub"
+   ],
+   "runs_today": {
+    "ran": false,
+    "entry_exists": false,
+    "why": "entry not written yet: Stage 3 work (SCRUB_PROVE_SETTINGS_AND_COMPATIBILITY)"
+   }
+  },
+  "LOOK_STAGE8": {
+   "id": "LOOK_STAGE8",
+   "kind": "look",
+   "stage": "8",
+   "file": null,
+   "entry": null,
+   "observes": "the owner walks the mod",
+   "reads": [],
+   "command": "owner walk",
+   "new": false,
+   "item": null,
+   "defs": [],
+   "symbols": [],
+   "mods": [],
+   "runs_today": {
+    "ran": false,
+    "why": "Stage 8: the owner's own walk"
+   }
+  }
+ },
+ "bars": [
+  {
+   "id": "biome_cast",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_native_cast"
+   ],
+   "supports": [
+    "LOOK_STAGE8"
+   ],
+   "held": [
+    26
+   ],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "weather_calendar",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_wind_plain"
+   ],
+   "supports": [
+    "sc_gale_drawing",
+    "sc_wind_audio",
+    "sc_gale_exposure",
+    "sc_scent"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "wind_sound",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_wind_audio"
+   ],
+   "supports": [
+    "sc_wind_plain",
+    "sc_gale_drawing",
+    "sc_gale_exposure",
+    "sc_scent"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "lean_heading",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_wind_plain"
+   ],
+   "supports": [
+    "sc_gale_drawing",
+    "sc_wind_audio",
+    "sc_gale_exposure",
+    "sc_scent"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "plant_lean",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_wind_plain"
+   ],
+   "supports": [
+    "sc_gale_drawing",
+    "sc_wind_audio",
+    "sc_gale_exposure",
+    "sc_scent"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "gale_dust",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_gale_drawing"
+   ],
+   "supports": [
+    "sc_wind_plain",
+    "sc_wind_audio",
+    "sc_gale_exposure",
+    "sc_scent"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "stall_freeze",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_stall_wait"
+   ],
+   "supports": [
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "gale_exposure",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_gale_exposure"
+   ],
+   "supports": [
+    "sc_wind_plain",
+    "sc_gale_drawing",
+    "sc_wind_audio",
+    "sc_scent"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "gale_turbines",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_working_wind"
+   ],
+   "supports": [
+    "sc_home_routes",
+    "sc_ordered_travel",
+    "ix_route_growth"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "gale_raid_weight",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_raid_weight"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "upwind_scent",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_scent"
+   ],
+   "supports": [
+    "sc_wind_plain",
+    "sc_gale_drawing",
+    "sc_wind_audio",
+    "sc_gale_exposure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "downwind_fire",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_fire_bias",
+    "ix_fire_accountability"
+   ],
+   "supports": [
+    "sc_stamping",
+    "sc_maker"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "ripple",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_concealment"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places",
+    "T_SELFTEST",
+    "T_FAUNA_BEHAVIOURS"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "windbreak_lee",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_lee_reveal"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "stall_hunter",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_stall_predation",
+    "ix_conceal_hunt"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "vine_islands",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_island_land"
+   ],
+   "supports": [
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "vine_creep",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_creep",
+    "ix_route_growth"
+   ],
+   "supports": [
+    "sc_working_wind",
+    "sc_home_routes",
+    "sc_ordered_travel"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "vine_growth_exemption",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_creep"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "vine_hazard",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_vine_contact"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "dripping_harvest",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_dripping"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "twitcher",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_twitcher",
+    "floor_visual"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "hollow_passage",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_hollow"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "crown_mob",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_crown"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "rearing",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_rearing",
+    "floor_visual"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "walking",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_walking",
+    "ix_route_growth"
+   ],
+   "supports": [
+    "sc_working_wind",
+    "sc_home_routes",
+    "sc_ordered_travel",
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "hoard",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_hoard"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure",
+    "T_GPT_FIXES",
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "quench",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_quench",
+    "floor_visual"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure",
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "sworn",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_sworn"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure",
+    "T_GPT_FIXES"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "shedding",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_shedding"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "strangler",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_strangler"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_weeper",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "weeper",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_weeper"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_sleeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "sleeper",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_sleeper",
+    "floor_visual"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_lure"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "lure",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_lure"
+   ],
+   "supports": [
+    "sc_island_land",
+    "sc_vine_contact",
+    "sc_dripping",
+    "sc_twitcher",
+    "sc_hollow",
+    "sc_crown",
+    "sc_rearing",
+    "sc_hoard",
+    "sc_quench",
+    "sc_sworn",
+    "sc_shedding",
+    "sc_strangler",
+    "sc_weeper",
+    "sc_sleeper"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "smother_craft",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_smother_claim",
+    "sc_cane_fuel"
+   ],
+   "supports": [
+    "sc_tree_landmark",
+    "sc_tree_shed",
+    "sc_tree_scratch",
+    "sc_tree_healing",
+    "sc_tree_bank",
+    "sc_felt_comfort",
+    "sc_tree_traces",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "dead_cane_fuel",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_cane_fuel"
+   ],
+   "supports": [
+    "sc_tree_landmark",
+    "sc_tree_shed",
+    "sc_tree_scratch",
+    "sc_tree_healing",
+    "sc_tree_bank",
+    "sc_felt_comfort",
+    "sc_tree_traces",
+    "sc_smother_claim",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "sweetline_landmark",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_landmark"
+   ],
+   "supports": [
+    "sc_tree_shed",
+    "sc_tree_scratch",
+    "sc_tree_healing",
+    "sc_tree_bank",
+    "sc_felt_comfort",
+    "sc_tree_traces",
+    "sc_smother_claim",
+    "sc_cane_fuel",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "sweetline_canopy",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_landmark"
+   ],
+   "supports": [
+    "sc_tree_shed",
+    "sc_tree_scratch",
+    "sc_tree_healing",
+    "sc_tree_bank",
+    "sc_felt_comfort",
+    "sc_tree_traces",
+    "sc_smother_claim",
+    "sc_cane_fuel",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "sweetline_shed",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_shed"
+   ],
+   "supports": [
+    "sc_tree_landmark",
+    "sc_tree_scratch",
+    "sc_tree_healing",
+    "sc_tree_bank",
+    "sc_felt_comfort",
+    "sc_tree_traces",
+    "sc_smother_claim",
+    "sc_cane_fuel",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "sweetline_scratching",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_scratch"
+   ],
+   "supports": [
+    "sc_tree_landmark",
+    "sc_tree_shed",
+    "sc_tree_healing",
+    "sc_tree_bank",
+    "sc_felt_comfort",
+    "sc_tree_traces",
+    "sc_smother_claim",
+    "sc_cane_fuel",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "sweetline_felt_bank",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_bank"
+   ],
+   "supports": [
+    "sc_tree_landmark",
+    "sc_tree_shed",
+    "sc_tree_scratch",
+    "sc_tree_healing",
+    "sc_felt_comfort",
+    "sc_tree_traces",
+    "sc_smother_claim",
+    "sc_cane_fuel",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "felt_comfort",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_felt_comfort"
+   ],
+   "supports": [
+    "sc_tree_landmark",
+    "sc_tree_shed",
+    "sc_tree_scratch",
+    "sc_tree_healing",
+    "sc_tree_bank",
+    "sc_tree_traces",
+    "sc_smother_claim",
+    "sc_cane_fuel",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "sweetline_visits",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_traces"
+   ],
+   "supports": [
+    "sc_tree_landmark",
+    "sc_tree_shed",
+    "sc_tree_scratch",
+    "sc_tree_healing",
+    "sc_tree_bank",
+    "sc_felt_comfort",
+    "sc_smother_claim",
+    "sc_cane_fuel",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "runway_bloom",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_bloom"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "vissler_arm_food",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_arm_food"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "thornhold_quills",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_thornhold_quill"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "thornhold_den_stand",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_thornhold_den"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "surrik_crustswim",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_surrik"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "ribbonwhip_wind_concealment",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_concealment",
+    "sc_bloom"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "shirrel_glide",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_shirrel_flight"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "shirrel_flight_art",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_shirrel_flight"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "rollbug_carrion",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_rollbug"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "ruin_injections",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "later",
+   "proves_at": "6",
+   "decides": [
+    "sc_ruins"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "wind_vaporator",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "later",
+   "proves_at": "6",
+   "decides": [
+    "sc_vaporator"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "scavenger_camps",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "later",
+   "proves_at": "6",
+   "decides": [
+    "sc_camps"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "fire_stamping",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_stamping",
+    "ix_fire_accountability"
+   ],
+   "supports": [
+    "sc_fire_bias",
+    "sc_maker"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "calling_pyre",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "later",
+   "proves_at": "6",
+   "decides": [
+    "sc_pyre_beliefs",
+    "sc_pyre_ritual"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "save_aliases",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "out",
+   "proves_at": "6",
+   "decides": [
+    "sc_removed_save_preservation"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "acoustic_payload",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_acoustic_payload"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "proximity_hatch",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_proximity_hatch"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "settings",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "not_opened",
+   "proves_at": "6",
+   "decides": [
+    "sc_settings"
+   ],
+   "supports": [
+    "T_SELFTEST",
+    "T_FAUNA_BEHAVIOURS",
+    "T_SHIRREL_GLIDE",
+    "T_WILDLIFE_ZERO_PATHS"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "dependable_home_routes",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_home_routes",
+    "ix_route_growth"
+   ],
+   "supports": [
+    "sc_working_wind",
+    "sc_ordered_travel"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "ordered_crossing_policy",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_ordered_travel",
+    "ix_route_growth"
+   ],
+   "supports": [
+    "sc_working_wind",
+    "sc_home_routes"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "fire_maker_witness_trail",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_maker",
+    "ix_fire_accountability"
+   ],
+   "supports": [
+    "sc_fire_bias",
+    "sc_stamping"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "premium_dead_cane",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_cane_fuel"
+   ],
+   "supports": [
+    "sc_tree_landmark",
+    "sc_tree_shed",
+    "sc_tree_scratch",
+    "sc_tree_healing",
+    "sc_tree_bank",
+    "sc_felt_comfort",
+    "sc_tree_traces",
+    "sc_smother_claim",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "shokka_ambush",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_shokka"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "fuzzviper_ambush",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_fuzzviper"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "ribbonwhip_canopy_route",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_ribbon_route"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "pillowmoss_wet_spot",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_pillowmoss"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "tanglefuzz_den_ecology",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_tanglefuzz"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "cruststar_grazing_ecology",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_cruststar"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_regrowth",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "vissler_finite_arm_regrowth",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_arm_regrowth"
+   ],
+   "supports": [
+    "sc_stall_wait",
+    "sc_concealment",
+    "sc_lee_reveal",
+    "sc_stall_predation",
+    "sc_bloom",
+    "sc_arm_food",
+    "sc_thornhold_quill",
+    "sc_thornhold_den",
+    "sc_surrik",
+    "sc_shokka",
+    "sc_fuzzviper",
+    "sc_ribbon_route",
+    "sc_pillowmoss",
+    "sc_tanglefuzz",
+    "sc_cruststar",
+    "sc_shirrel_flight",
+    "sc_rollbug",
+    "ix_ecology_places"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "bark_wardens_removed",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "out",
+   "proves_at": "6",
+   "decides": [
+    "sc_cuts"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "farmer_camps_removed",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "out",
+   "proves_at": "6",
+   "decides": [
+    "sc_cuts"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "sweetline_scratching_healing",
+   "source": "record",
+   "kind": "inventory",
+   "scope": "approved",
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_healing"
+   ],
+   "supports": [
+    "sc_tree_landmark",
+    "sc_tree_shed",
+    "sc_tree_scratch",
+    "sc_tree_bank",
+    "sc_felt_comfort",
+    "sc_tree_traces",
+    "sc_smother_claim",
+    "sc_cane_fuel",
+    "ix_materials"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "route_observer",
+   "source": "tree",
+   "kind": "offline",
+   "scope": null,
+   "proves_at": "4-5",
+   "decides": [
+    "sc_route_observer"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "sc_route_observer"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "witness_observer",
+   "source": "tree",
+   "kind": "offline",
+   "scope": null,
+   "proves_at": "4-5",
+   "decides": [
+    "sc_witness_observer"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "sc_witness_observer"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "economy_observer",
+   "source": "tree",
+   "kind": "offline",
+   "scope": null,
+   "proves_at": "4-5",
+   "decides": [
+    "sc_economy_observer"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "sc_economy_observer"
+   ],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "wind_plain",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_wind_plain",
+    "floor_visual"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "gale_drawing",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_gale_drawing",
+    "floor_visual"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "wind_audio",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_wind_audio"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "working_wind",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_working_wind"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "raid_weight",
+   "source": "tree",
+   "kind": "quicktest",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_raid_weight"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "scent",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_scent"
+   ],
+   "supports": [
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "fire_bias",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_fire_bias"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "stall_wait",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_stall_wait"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "concealment",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_concealment"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "lee_reveal",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_lee_reveal"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "stall_predation",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_stall_predation"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "island_land",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_island_land"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "creep",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_creep"
+   ],
+   "supports": [
+    "T_SELFTEST"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "home_routes",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_home_routes"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "ordered_travel",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_ordered_travel"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "vine_contact",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_vine_contact"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "dripping",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_dripping"
+   ],
+   "supports": [
+    "T_SELFTEST",
+    "T_SITE"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "hollow",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_hollow"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "crown",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_crown"
+   ],
+   "supports": [
+    "T_SELFTEST",
+    "T_GPT_FIXES"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "smother_claim",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_smother_claim"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "cane_fuel",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_cane_fuel"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "tree_landmark",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_landmark",
+    "floor_visual"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "tree_shed",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_shed"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "tree_scratch",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_scratch"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "tree_healing",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_healing"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "tree_bank",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_bank"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "tree_traces",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_tree_traces"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "native_cast",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_native_cast",
+    "floor_payload"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "bloom",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_bloom"
+   ],
+   "supports": [
+    "T_SELFTEST",
+    "T_FAUNA_BEHAVIOURS",
+    "T_FUZZ"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "arm_regrowth",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_arm_regrowth"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "arm_food",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_arm_food"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "thornhold_quill",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_thornhold_quill"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "thornhold_den",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_thornhold_den"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "surrik",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_surrik"
+   ],
+   "supports": [
+    "T_FAUNA_BEHAVIOURS"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "shokka",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_shokka"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "fuzzviper",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_fuzzviper"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "ribbon_route",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_ribbon_route"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "pillowmoss",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_pillowmoss"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "tanglefuzz",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_tanglefuzz"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "cruststar",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_cruststar"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "shirrel_flight",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_shirrel_flight"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "rollbug",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_rollbug"
+   ],
+   "supports": [
+    "T_SELFTEST",
+    "T_FAUNA_BEHAVIOURS"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": true
+  },
+  {
+   "id": "stamping",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_stamping"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "maker",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_maker"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "cuts",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_cuts",
+    "sc_removed_save_preservation",
+    "floor_payload",
+    "floor_recovery"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  },
+  {
+   "id": "colony_walk",
+   "source": "tree",
+   "kind": "live_minimal",
+   "scope": null,
+   "proves_at": "6",
+   "decides": [
+    "sc_colony_walk",
+    "floor_runtime",
+    "sc_settings",
+    "floor_persistence"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": false,
+   "any_test_runnable_today": false
+  }
+ ]
+}
