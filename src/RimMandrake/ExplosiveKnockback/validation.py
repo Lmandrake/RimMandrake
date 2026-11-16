@@ -356,6 +356,15 @@ def mock_run():
 # FRAME_BUDGET; on the full list the behaviour rows run as before, one unjudged mod-on arm reads CARRIER_TICK_COST, and
 # FRAME_BUDGET is read from `--frame-evidence <the frames-only run's json>` (UNMEASURED unless that file is a frames-only
 # run below --full-min active mods with the same deployed DLL).
+# Learned live, Test Pilot 2026-11-16 (SteveDesktop, 34 mods, visit_4/SUMMARY.md): the full-list walk save will not load on
+# the small list (World.ExposeData, its planet layers), so the storeroom is rebuilt cell for cell on a quicktest. The mod's
+# cost there was thrown PAWNS: with the 5 colonists removed the arms read +1.2%. Each landing spent 19-25 ms in vanilla
+# PawnFlyer.RespawnPawn's CheckForJobOverride (fixed 7c6cb7412a: our landing skips it, the suspended job is resumed). After
+# the fix the blast second costs 0-16 ms more than mod off (was +32). False theories, ruled out by proof timers: the request
+# flush (1-3 ms warm; 8-18 ms only on a session's first throw, cold JIT), the journal (in memory), job searches (25-28 ms
+# each on that host, but the same far colonists search at the blast in both arms, equal totals). A p99 over ~480 frames is
+# the 5th-slowest frame: mod-off arms alone spread 35-57 ms there, so 3 pairs flip and 9 pairs read +1% to +19% on one
+# build; use --frame-pairs 21 for a verdict.
 # What "match the kernel's plan" can read live: every request has an outcome line for the same blast and thing, a launch
 # travels at most its planned cells (fewer only with a stop reason), a goods move flies its wild cells with the kernel's
 # cells beside them. Recomputing the plan from the kernel is the offline selftest's job (selftest_explosiveknockback_kernel).
