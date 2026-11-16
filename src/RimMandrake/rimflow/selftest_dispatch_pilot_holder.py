@@ -172,6 +172,11 @@ def t5_judge():
               "--writer %s" % w in b and "--run %s" % run in b, b[:600])
         rec = st["mods"][PILOT].get("ledger_runs") or []
         check("5 the started judge run is remembered for its end", rec and rec[-1].get("writer") == w, rec)
+        MD._write(os.path.join(MD.sdir(), "state.json"), st)
+        rc2, t2 = MD.pilot_launch(root, CFG, PILOT, "selftest", item="RIMMANDRAKE_JUDGE_X_AGAIN", fx=dict(
+            FX, record=lambda u: {"status": "running"}, launch=fake_launch), now=NOW + 60)
+        check("5 a hand pilot-launch on a mod with a ledger run live is refused (two cycle-6 judges, 01:53 and 01:54 "
+              "PST 2026-11-16)", rc2 == 2 and "rm-detached-bench-judge-1" in t2, t2)
         sessions = []
         fx = dict(FX, record=lambda u: {"status": "finished", "result": "success"},
                   session_of=lambda u: sessions.append(u) or ("ffffffff-judge", 90000))
@@ -218,7 +223,14 @@ def t5_verify_list_and_resume():
 # ---- 4. the packet line ------------------------------------------------------------------------------------------
 
 def t4_packet_line():
-    budget = 700
+    F3 = "finding:RIMMANDRAKE_TRACE_PILOT_THIRD_OPEN_FIXTURE"
+    ML.append(root, PILOT, "JUDGE.J3", "finding.open", F3, run="J3", evidence=["run:J3"],
+              body={"class": "problem", "bars": [], "tags": ["code"], "text": "SENTINELOPENTEXT the pit floods dry",
+                    "proposed_fix": "flood the pit in Flood.cs", "accept": "python3 flood.py exits 0"})
+    t, _ = ML.packet_from(PILOT, ML.read(root, PILOT), budget=1)
+    check("4 the briefest packet names every open finding but prints none of its text (FlowWorks' 246 open findings "
+          "held the packet at 14,694 tokens)", F3[len("finding:"):] in t and "SENTINELOPENTEXT" not in t, t[-500:])
+    budget = 900
     out = ML.launch(root, PILOT, "run-fit", "builder", stage="offline_build", budget=budget)
     check("4 the ledger part of a launch (packet and holder lines) fits the line", ML.tokens(out["brief"]) <= budget,
           ML.tokens(out["brief"]))
@@ -375,6 +387,14 @@ def t3_cert_reds():
     MD.execute(root, cfg, st, rows, la, NOW + 7300, fx)
     check("3 a red decider whose item is still open is not filed again", not filed and launched[-1]["text"].count(
         names[1]) >= 1, (filed, launched[-1]["text"][:300]))
+    failed = {"mods": {"FlowWorks": {"cert_red": {"tests": ["T_FETCH_FALLEN_OFFLINE", "T_TOSS_FLAME_OFFLINE"],
+                                                 "unit": None, "at": NOW - 600, "failed": "REFUSED: packet over the line",
+                                                 "tries": 1, "code": "tree-a"}}}}
+    rows, la = MD.decide(dict(cfg, _code="tree-a"), failed, off_facts(c), NOW, (True, "ok"), releases=[])
+    check("3 a launch refused on a defect is not retried on the same code", not la and rows[0]["decision"] ==
+          "stopped", rows[0])
+    rows, la = MD.decide(dict(cfg, _code="tree-b"), failed, off_facts(c), NOW, (True, "ok"), releases=[])
+    check("3 it is retried once the pipeline's code has changed", la == ["FlowWorks"], rows[0])
     rows, la = MD.decide(cfg, {"mods": {}}, off_facts(c, live=["rm-x"]), NOW, (True, "ok"), releases=[])
     check("3 nothing while a run is live on the mod", not la and rows[0]["decision"] == "live", rows[0])
 

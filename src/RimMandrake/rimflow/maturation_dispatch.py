@@ -869,8 +869,12 @@ def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases
         put("settling", "the builder %s on red deciders %s started %d s ago" % (
             prior["unit"], ", ".join(prior.get("tests") or []), now - float(prior.get("at") or 0)))
         return "decided"
-    retry = bool(prior and not prior.get("unit") and AUT.transient(str(prior.get("failed") or ""))
-                 and int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3)))
+    # a launch that never started is tried again on a transient fault, or once the pipeline's code has changed since it
+    # failed (FlowWorks' first was refused over the packet line before the packet builder learned to fit it), within
+    # launch_tries (RIMMANDRAKE_RETRY_FAILED_LAUNCH_ONCE_CODE_CHANGES)
+    retry = bool(prior and not prior.get("unit") and int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3))
+                 and (AUT.transient(str(prior.get("failed") or "")) or (
+                     cfg.get("_code") and prior.get("code") != cfg["_code"])))
     if prior and not retry and not set(reds) < set(prior.get("tests") or []):
         why = ("the builder %s on red deciders %s ended and %s still red" % (
             prior["unit"], ", ".join(prior.get("tests") or []), ", ".join(reds)) if prior.get("unit") else
@@ -996,6 +1000,7 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
             s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap": cap,
                                                  "stage": "offline_build", "cert_reds": reds})
     s["cert_red"] = {"tests": reds, "items": chosen, "unit": unit, "at": now, "failed": None if unit else text,
+                     "code": cfg.get("_code"),
                      "tries": int(prior.get("tries") or 0) + 1 if not prior.get("unit") and prior else 1}
     if unit:
         row.update(decision="launched", unit=unit, item=sorted(set(chosen.values()))[0], why=text,
@@ -1627,6 +1632,15 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
         p = os.path.join(sdir(), "state.json")
         st = read_state(p)
         s = st.setdefault("mods", {}).setdefault(mod, {})
+        # one run per mod: the tick launched GimmeSomeSlack's cycle-6 judge at 01:53 PST 2026-11-16 and a hand
+        # pilot-launch started a second on the same cycle at 01:54 (RIMMANDRAKE_DISPATCH_PILOT_HOLDER_RUN_ITSELF_HAND_
+        # LAUNCHED_TWICE)
+        rec_of = fx.get("record") or DH.read_record
+        live = [r["unit"] for r in s.get("ledger_runs") or [] if r.get("unit") and not r.get("ended")
+                and (rec_of(r["unit"]) or {}).get("status") != "finished"]
+        if live:
+            return 2, ("REFUSED: %s already has a ledger run live (%s); one run per mod. Its end is recorded by the "
+                       "tick, which launches what is owed next" % (mod, ", ".join(live)))
         _, f = M.brief_text(root, mod, cap)
         stage, owed = f.get("stage"), f.get("owed")
         rb = s.get("road_back")

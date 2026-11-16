@@ -1235,7 +1235,8 @@ def packet_from(mod, events, budget=None, stale=None):
     def findings_block(lv, K):
         """The line rule (spec §3.3: never drop an open finding). lv 0: every finding whole. lv 1: a claimed fix (its fix
         spent, a judge's work) on one line with its claim; lv 2: its name and sha only. lv >= 3: the K oldest open
-        findings also on one line, text cut to 120 (60 at lv 5), their fix and accept one `show` away."""
+        findings also on one line, text cut to 120 (60 at lv 5, none at lv 12: name, status, class and bars), their
+        fix and accept one `show` away."""
         out, briefed = ["", "## Open findings (%d)" % len(opened)], 0
         if lv >= 1 and n_claimed:
             out.append("(claimed fixes, awaiting a judge, on one line each%s, named without their 'finding:': "
@@ -1251,7 +1252,8 @@ def packet_from(mod, events, budget=None, stale=None):
                 continue
             if f["status"] != "claimed_fixed" and lv >= 3 and briefed < K:
                 briefed += 1
-                out.append("- %s [%s%s]: %s" % (nm, f["status"], tags, cut(f["text"], 60 if lv >= 5 else 120)))
+                out.append("- %s [%s%s]" % (nm, f["status"], tags) if lv >= 12 else
+                           "- %s [%s%s]: %s" % (nm, f["status"], tags, cut(f["text"], 60 if lv >= 5 else 120)))
                 continue
             out.append("- %s [%s%s] by %s, %s%s: %s" % (k, f["status"], (", " + f["class"]) if f.get("class") else "",
                                                          f["by"], f["ts"], (" · bars " + ", ".join(f["bars"]))
@@ -1331,12 +1333,21 @@ def packet_from(mod, events, budget=None, stale=None):
         keep.append("- %s: %s (obvious answer: %s; against it: %s)" % (k, cl(q["text"], k), cl(q.get("obvious"), k),
                                                                       cl(q.get("against"), k)))
     def bars_block(lv):
-        out = ["", "## Bars (%d)" % len(st["bars"])]
-        for k, b in sorted(st["bars"].items()):
-            out.append("- %s [%s] verdict %s%s" % (k, b.get("status") or "?", b.get("verdict") or "none",
-                                                  (": " + (cut(b["text"], 60) if lv >= 4 else cl(b["text"], k)))
-                                                  if b.get("text") else ""))
-        return out
+        """Every bar; at lv >= 4 its text cut to 60 chars, at lv 13 its id, status and verdict only (when that is
+        shorter: the level never grows the packet)."""
+        def one(ids):
+            out = ["", "## Bars (%d)%s" % (len(st["bars"]), " (ids only: `modledger.py show --mod %s <bar>` for the "
+                                           "text)" % mod if ids else "")]
+            for k, b in sorted(st["bars"].items()):
+                out.append("- %s [%s] verdict %s%s" % (k, b.get("status") or "?", b.get("verdict") or "none",
+                                                      (": " + (cut(b["text"], 60) if lv >= 4 else cl(b["text"], k)))
+                                                      if b.get("text") and not ids else ""))
+            return out
+        cuts = one(False)
+        if lv < 13:
+            return cuts
+        ids = one(True)
+        return ids if tokens("\n".join(ids)) < tokens("\n".join(cuts)) else cuts
 
     keep.append(("BARS",))
     keep.append("")
@@ -1445,7 +1456,9 @@ def packet_from(mod, events, budget=None, stale=None):
                     break
             else:
                 if not done:
-                    for lv in (6, 7, 8, 9, 10, 11):       # last: the traps' and causes' texts in brief, then counted
+                    # last: the traps' and causes' texts in brief, then counted; then the open findings by name
+                    # (FlowWorks' 246 open findings held its packet at 14,694 tokens at lv 11, 2026-11-16), then bar ids
+                    for lv in (6, 7, 8, 9, 10, 11, 12, 13):
                         text, gone = render(k, lv, n_open)
                         if tokens(text) <= budget:
                             break
