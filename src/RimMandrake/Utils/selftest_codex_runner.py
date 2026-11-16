@@ -260,5 +260,21 @@ class CodexRunnerTests(unittest.TestCase):
             self.assertEqual(AR.usage_of_files(Path(home, "no-spend"), Path(home, "no-events"), home), "UNMEASURED")
 
 
+    def test_codex_stop_line(self):
+        """DesignerCodex holds a launch under its codex_stop_week_left_pct line (25% of the week left); a Claude role,
+        an unset line, or an unmeasured or degraded reading is not held by it (the quota gate handles those)."""
+        cfg = {"runner": "codex", "codex_stop_week_left_pct": 25}
+        m = lambda left, **kw: dict({"state": "MEASURED", "week_left": left}, **kw)
+        self.assertIn("under the 25% stop line", RL.codex_stop(cfg, m(24.9)))
+        self.assertIsNone(RL.codex_stop(cfg, m(25)))
+        self.assertIsNone(RL.codex_stop(dict(cfg, runner="claude"), m(1)))
+        self.assertIsNone(RL.codex_stop({"runner": "codex"}, m(1)))
+        self.assertIsNone(RL.codex_stop(cfg, {"state": "UNMEASURED"}))
+        self.assertIsNone(RL.codex_stop(cfg, m(0.0, degraded="x")))
+        sch = json.load(open(HERE.parent / "rimflow" / "dispatcher_schedule.json"))
+        dc = [r for r in sch["roles"] if r.get("name") == "DesignerCodex"][0]
+        self.assertEqual((dc["runner"], dc["sweeps_runner"], dc["codex_stop_week_left_pct"]), ("codex", "codex", 25))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -377,6 +377,20 @@ def codex_reading():
             "runway_m": p.get("codex.runway", {}).get("m", "UNMEASURED"), "week_left_m": "MEASURED"}
 
 
+def codex_stop(cfg, r):
+    """Pure. A Codex role's hard stop line: `codex_stop_week_left_pct` (DesignerCodex: 25, the brief of
+    RIMMANDRAKE_DRAFT_BIOME_DESIGNER_PASSES_WITH_CODEX_BEFORE_RESET: "stop launching drafts at 25% left"). Not a token
+    cap (those stay advisory): it keeps the week's Codex quota for the work already in the pipeline. -> why, or None."""
+    line = cfg.get("codex_stop_week_left_pct")
+    if cfg.get("runner") != "codex" or not _num(line) or r.get("state") != "MEASURED" or r.get("degraded"):
+        return None
+    left = r.get("week_left")
+    if _num(left) and left < line:
+        return "Codex week %.1f%% left, under the %g%% stop line (codex_stop_week_left_pct); held until the reset" % (
+            left, line)
+    return None
+
+
 def slot_blocked(allowed, job, role, now=None):
     """Pure. May this band's `slots` setting stop this job? "all": never. "none": every scheduled slot, every alarm
     run and every event run. "first" / "last": only the first / last scheduled slot of the day (now's weekday).
@@ -1574,6 +1588,15 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
                 why="%s %s REFUSED: %s" % (name, job["trigger"], r["why"]))
             return
+        stop = codex_stop(cfg, r)
+        if stop:
+            # the request stays pending: it launches once the weekly reset lifts the meter back over the line
+            if (rs.get("codex_stop") or [None])[0] != job["key"]:
+                act(do="alarm", kind="role:%s:codex_stop" % name, ticket=job["item"], note=True, conductor_log=True,
+                    why="%s %s HELD: %s" % (name, job["trigger"], stop))
+            rs["codex_stop"] = [job["key"], stop]
+            return
+        rs.pop("codex_stop", None)
         cv = covered_slot(rs, today, now, cfg.get("cover_window_s", COVER_WINDOW_S)) if (
             job.get("manual") or {}).get("covers_slot") else None
         if cv is not None:
