@@ -2,7 +2,7 @@
   "schema": 1,
   "mod": "Cauldron",
   "grounded_by": "rm-role-designercodex-1794796348",
-  "stage": 1,
+  "stage": 2,
   "scope": [
     {
       "id": "s_storm",
@@ -150,6 +150,53 @@
       "speaker": "conductor",
       "delegated": "evidence-for-ask",
       "text": "Adopt the reviewed expanded root from the existing owner answers and built inventory. No evidence against this direction was found. The redundant owner approval ask is answered through delegation. The existing-code walk remains proposed, and source and proof gaps carry forward."
+    },
+    {
+      "id": "d_stage2_authority",
+      "source": [
+        "OWNER:1794373071501926623",
+        "OWNER:1792108481222070856",
+        "CONDUCTOR:1794804951784038130",
+        "src/RimMandrake/rimflow/roles/designer_dialogue.md"
+      ],
+      "speaker": "agent",
+      "text": "Carry the existing root and owner edge answers into binding requirements. All core contradictions now identify their controlling requirement and service owner. Implementation defects and unmeasured behavior remain in implementation_gaps with finite acceptance cases. Stage 2 settles the design requirements while later construction and proof remain pending."
+    },
+    {
+      "id": "d_stage2_no_reask",
+      "source": [
+        "OWNER:1794373071501926623",
+        "OWNER:1793251119194850898",
+        "OWNER:1792108481222070856",
+        "src/RimMandrake/rimflow/roles/designer.md",
+        "OWNER:1794807991321995397"
+      ],
+      "speaker": "agent",
+      "delegated": "evidence-for-ask",
+      "text": "Use the already-ruled lasting health, one-hour warning, connected gas and dependable-settlement direction. No concrete evidence argues for a new owner choice. Source defects call for the existing promise to be fulfilled, and pool identity calls for site measurement. The current run sends no owner ask.",
+      "authority_note": "The note uses the standing Evidence-for-Ask ruling. Its text and why are the acting agent decision, with speaker agent. The event contains neither ownerSaid nor byCard."
+    },
+    {
+      "id": "d_stage2_protection_routes",
+      "source": [
+        "OWNER:1794373071501926623",
+        "CONDUCTOR:1794804951784038130",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml",
+        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs"
+      ],
+      "speaker": "agent",
+      "text": "Derive protection acceptance from the worker health outcome as well as item survival. Full seal, roof and exposed controls exercise bloom and acid independently. Material immunity, ambient sealing, direct contact and vent capping each retain their named source behavior and require the corresponding observations."
+    },
+    {
+      "id": "d_stage2_scope_pruning",
+      "source": [
+        "CONDUCTOR:1794804951784038130",
+        "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+        "src/RimMandrake/rimflow/roles/designer_scene_contract.md"
+      ],
+      "speaker": "agent",
+      "text": "Use eleven core argument groups drawn from the adopted root and standing settings requirement. Supporting species, integrations, visual details and legacy placement remain inventoried and receive scene coverage at later stages. Each independent promise needs its own acceptance observation when the stage-3 tree and showcases are written."
     }
   ],
   "asks": [
@@ -656,7 +703,8 @@
         "infrastructure/state/ledger/events/BENCH.jsonl"
       ],
       "scope_source": "OWNER:1792108481222070856",
-      "speaker": "agent"
+      "speaker": "agent",
+      "implementation_gap": "Source-derived falter duration is the vanilla 4000-tick transition, 1.6 in-game hours. The owner target is about 2500 ticks. Timing acceptance is pending."
     },
     {
       "id": "bloom_load",
@@ -745,7 +793,12 @@
       "proof_evidence": [
         "src/RimMandrake/Cauldron/validation.py:2230"
       ],
-      "speaker": "agent"
+      "speaker": "agent",
+      "implementation_risks": [
+        "The flame front has no save serialization in current ExposeData.",
+        "Flame-front Step and Fire-neighbour scans offer all eight neighbours without a cardinal-side corner check. Sealed diagonal compartments require a discriminating combustion scene in addition to the existing drift guard.",
+        "The offline flame-front fix and historical passes require matching deployed-build live proof."
+      ]
     },
     {
       "id": "gas_tap",
@@ -916,7 +969,8 @@
         "infrastructure/state/ledger/events/BENCH.jsonl:9630",
         "ITEM:VEXXITH_USES_1"
       ],
-      "speaker": "agent"
+      "speaker": "agent",
+      "implementation_gap": "The full set seals ambient acid via VacuumResistance. The bloom route reads different resistance stats and may retain 20 percent dose for an otherwise ordinary pawn. Worn-gear acceptance must establish actual loaded stats and remedy the mismatch."
     },
     {
       "id": "acid_air",
@@ -1217,12 +1271,13 @@
       "source": "OWNER:1793251119194850898",
       "text": "The owner-established toxic pools and acid-water experience depend on selected map terrain and FlowWorks liquid binding. Their delivered state requires a read of the intended saved site.",
       "impl": "unknown",
-      "impl_note": "FlowWorks supplies toxic and acid liquid defs, terrain forms and conversion rows. The owner says toxic pools exist. This run does not inspect a loaded save or its pool chemistry.",
+      "impl_note": "Selected-site delivery remains unknown. Shared registry consumers exist. Vexxiss writes vanilla ToxicWater forms, while the toxic LiquidDef adopts RM_WaterPoisoned forms. The shallow/deep vanilla compatibility patch supplies pH 2 and apparel corrosion. Actual liquid identity, damage and transfer require readback and normal use at the intended site.",
       "proof": "missing",
       "scope": "approved",
       "scope_source": "OWNER:1793251119194850898",
       "speaker": "agent",
-      "impl_evidence": null
+      "impl_evidence": null,
+      "search_scope": "Read Cauldron biome terrain fields and vexxiss waterSwaps, FlowWorks LiquidDef rows, LiquidBodyRegistry, world-tag shore conversion, liquid bottle lookup, fluid identity lookup and the vanilla-terrain compatibility properties. A selected live save was outside this run."
     },
     {
       "id": "lasting_metal_poisoning",
@@ -1242,7 +1297,14 @@
         "source": "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml",
         "external_source": "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/RimWorld/Recipe_RemoveHediff.cs",
         "finding": "Vanilla Recipe_RemoveHediff locates the specified visible condition and removes it after successful treatment. A persistent condition and advanced-medicine recipe can reuse this path. Later build work must specify ingredients, skills, dosing and old-save behavior."
-      }
+      },
+      "construction_cases": [
+        "Positive load after exposure ends, map departure and reload",
+        "An ordinary recovery interval and ordinary tending",
+        "A completed medical purge with advanced medicine consumed",
+        "Existing saved load, including low-severity trace that a Visible-only removal recipe could miss",
+        "An interrupted or failed medical operation under the reused treatment path"
+      ]
     },
     {
       "id": "permanent_acid_injuries",
@@ -1256,7 +1318,7 @@
       "proof": "missing",
       "scope": "approved",
       "scope_source": "OWNER:1794373071501926623",
-      "impl_note": "Ambient acid currently calls ordinary AcidBurn. The searched source contains no Cauldron-specific injury-persistence or sensory-targeting code. Vanilla injury behavior can leave scars, so ordinary damage alone does not settle the complete ruled result.",
+      "impl_note": "Ambient exposure calls generic AcidBurn with a one-point DamageInfo and no selected sensory part or permanence request. Vanilla injury machinery can produce permanent injury, so delivered permanent disfigurement and sensory damage remain unknown until a causal live scene proves them.",
       "search_scope": "Read Cauldron acid-air and acid-immunity consumers and searched src/ for acid scarring, disfigurement and metal-load treatment. Examined on-disk vanilla injury consumers.",
       "feasibility": {
         "source": "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
@@ -1295,42 +1357,81 @@
       "id": "ground_health",
       "source": [
         "OWNER:1794373071501926623",
-        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs"
+        "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml",
+        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs"
       ],
       "speaker": "agent",
-      "status": "open",
+      "status": "resolved",
       "text": "Does current source implement the owner's permanent heavy-metal poisoning and acid disfigurement ruling? Locate existing medicine and injury behavior before treating either as absent.",
-      "resolution": "The owner decision is settled. Current metal load decays and lacks a treatment recipe, so lasting_metal_poisoning is absent. Complete permanent acid-injury behavior remains unknown pending a targeted proof."
+      "resolution": "The later owner ruling determines the requirement. Positive metal load persists through ordinary recovery and leaving the biome until a real advanced-medicine purge. Acid can leave enduring disfigurement and sensory damage. Current metal-load decay is a confirmed construction gap. Ordinary AcidBurn provides a possible vanilla injury path, whose complete ruled outcome remains unverified. The health requirements are settled and their implementation and acceptance remain pending.",
+      "core": true,
+      "resolved": true,
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "resolution_kind": "requirement_and_ownership_settled",
+      "pending_gap_ids": [
+        "gap_lasting_metal",
+        "gap_acid_injuries"
+      ]
     },
     {
       "id": "ground_gas_integration",
       "source": [
+        "OWNER:1794373071501926623",
         "OWNER:1794468874358971350",
-        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs"
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs",
+        "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs"
       ],
       "speaker": "agent",
       "status": "resolved",
       "text": "Identify current ownership of connected gas ignition across water and ExplosiveKnockback displacement, including existing integration and recorded failed runs.",
-      "resolution": "Current Cauldron source contains the flame-front fix. ExplosiveKnockback hooks successful Ignite calls and owns displacement. Live combined retest and save/load continuity remain unproven."
+      "resolution": "Cauldron owns gas transport and successful cell ignition. ExplosiveKnockback owns the resulting clump bursts and displacement. The owner requires connected gas combustion across water. The current flame front addresses fuel-less ground fires, while live continuation, barrier containment and mid-combustion reload need acceptance. These are construction and proof obligations under the settled requirement.",
+      "core": true,
+      "resolved": true,
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "resolution_kind": "requirement_and_ownership_settled",
+      "pending_gap_ids": [
+        "gap_gas_continuity"
+      ]
     },
     {
       "id": "ground_changed_roster",
       "source": [
         "src/RimMandrake/Cauldron/About/About.xml",
-        "design/validation_walks/RimMandrake/Cauldron.md"
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml",
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml"
       ],
       "speaker": "agent",
       "status": "resolved",
       "text": "The walk still names martyr trees and says no required dependencies. Current About names its cut and required service mods. Reconcile current roster and source so removed features receive no scenes.",
-      "resolution": "Current About and XML require Harmony, FlowWorks, EnvironmentalHazards and CreatureBehaviors. TreeMartyr was removed in 8b2b453188. Current roster and tier patches supersede the old roster and walk counts."
+      "resolution": "Current XML, About dependencies and the Utinni patches determine the exercised roster. TreeMartyr was removed in 8b2b453188. Stage 3 will replace the obsolete walk references with current capabilities and record each dependency guard. The existing inventory retains every current capability.",
+      "core": false,
+      "resolved": true,
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "resolution_kind": "requirement_and_ownership_settled",
+      "pending_gap_ids": [
+        "gap_scene_contracts"
+      ]
     },
     {
       "id": "ground_proof_recovery",
-      "source": "src/RimMandrake/Cauldron/validation.py",
+      "source": [
+        "src/RimMandrake/Cauldron/validation.py",
+        "src/RimMandrake/Utils/modcheck/suite.py",
+        "src/RimMandrake/rimflow/roles/designer_scene_contract.md"
+      ],
       "speaker": "agent",
       "status": "resolved",
       "text": "Audit each suite chain for asserted start, a discriminating control, restoration and hold. Inspect shared suite behavior only to settle whether destructive pad preparation is recoverable.",
-      "resolution": "Every current suite chain has an audit row. Shared modcheck restores prior settings while Cauldron pad and preflight mutations lack the scene journal and original-state recovery."
+      "resolution": "The chain audit establishes the gap. Shared setting restoration covers prior settings on normal unwind. Destructive pad preparation, preflight and interrupted runs require saved-state recovery and the scene journal before acceptance. Stage 3 carries the missing entry points and recovery work into its build plan.",
+      "core": false,
+      "resolved": true,
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "resolution_kind": "requirement_and_ownership_settled",
+      "pending_gap_ids": [
+        "gap_scene_contracts"
+      ]
     },
     {
       "id": "ground_owner_context",
@@ -1342,39 +1443,135 @@
       "speaker": "agent",
       "status": "resolved",
       "text": "Recover the original numbered Cauldron question excerpt behind the owner's 1:2, 2:1, 3:1 answers before expanding the narrative or seeking another decision.",
-      "resolution": "Recovered QUESTIONS_OWNER.md and ANSWERS_OWNER.md and matched the verbatim write-in to OWNER:1794373071501926623. The earlier temporary-versus-lasting, water-boundary and successful-day questions are answered."
+      "resolution": "The original question sheet and answer sheet were read and the write-in was matched to the OWNER event. Lasting poisoning, permanent acid injury, connected gas over water with displacement, and dependable industry with risky expeditions are settled requirements. The question sheet remains a historical proposal and the approved root retains its stage-1 delegated source.",
+      "core": true,
+      "resolved": true,
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "resolution_kind": "requirement_and_ownership_settled",
+      "pending_gap_ids": []
     },
     {
       "id": "ground_trunk_deposits",
-      "source": "ITEM:CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS",
+      "source": [
+        "ITEM:CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS",
+        "design/Jawa/worldbuilding/biomes/cauldron_trunk_deposits_design_2026-11-02.md"
+      ],
       "speaker": "agent",
       "status": "resolved",
       "text": "Check whether the later trunk scab/crystal-fan design was implemented separately from existing assay flecks.",
-      "resolution": "The additive trunk coat is design-only. Assay flecks and dew variants are installed. The separate build item remains the runtime and art dependency."
+      "resolution": "The age-based scab and crystal-fan coat has its own existing design and build dependency. Current assay flecks and dew variants provide distinct implemented visual behavior. The coat remains inventoried as absent and its build dependency carries into stage 3.",
+      "core": false,
+      "resolved": true,
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "resolution_kind": "requirement_and_ownership_settled",
+      "pending_gap_ids": [
+        "gap_trunk_coat"
+      ]
     },
     {
       "id": "ground_pool_binding",
-      "source": "OWNER:1793251119194850898",
+      "source": [
+        "OWNER:1793251119194850898",
+        "CONDUCTOR:1794804951784038130",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/RM_LiquidBodyRegistry.xml",
+        "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_FluidIdentity.cs",
+        "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_LiquidProperties_CompatIndex.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+        "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_GenStep_LiquidShores.cs"
+      ],
       "speaker": "agent",
-      "status": "open",
+      "status": "resolved",
       "text": "Locate toxic pool map-generation and terrain-to-liquid binding in existing owner-approved Cauldron placement. Source absence local to the biome cannot establish absence from the campaign.",
-      "resolution": "The owner already rules that toxic pools exist. FlowWorks owns matching liquid and terrain forms, while the selected delivered site has not been inspected. acid_pool_binding remains unknown."
+      "resolution": "The owner establishes toxic pools near the terminator and the adopted root includes acid-water play. Source now identifies the shared terrain-to-liquid and terrain-to-fluid consumers and the conditional world-tag shore step. The shipped body registry lists other named bodies. Vexxiss currently creates vanilla ToxicWater terrains, while the toxic-water LiquidDef adopts RM_WaterPoisoned terrains. Compatibility properties give vanilla shallow/deep toxic water pH 2 and apparel corrosion. The selected site still needs a terrain, liquid, fluid and contact-effect read followed by actual transfer. The requirement and service ownership are settled. Delivered pool binding remains unknown and its scene is mandatory for acceptance.",
+      "core": true,
+      "resolved": true,
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "resolution_kind": "requirement_and_ownership_settled",
+      "pending_gap_ids": [
+        "gap_pool_binding"
+      ]
     },
     {
       "id": "ground_dark_growth",
-      "source": "ITEM:DARK_FLORA_FIX_WILTS_WITHOUT_A_SUN",
+      "source": [
+        "ITEM:DARK_FLORA_FIX_WILTS_WITHOUT_A_SUN",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml",
+        "design/Jawa/worldbuilding/biomes/cauldron.md"
+      ],
       "speaker": "agent",
       "status": "resolved",
       "text": "Find the current low-light override for roster plants whose own plant block lacks growMinGlow/growOptimalGlow.",
-      "resolution": "Current XML sets zero glow on declared chemotrophs. Some base plants retain inherited glow behavior and the historical sheet permits marginal phototrophs. The blanket historical fix title cannot certify species survival at the intended site."
+      "resolution": "Explicit chemotrophs carry zero glow requirements in their current XML. Inherited phototroph behavior and intended marginal light-facing plants are read against the selected site and loaded defs. A historical blanket-fix title cannot supply a new species-wide light promise. Current roster survival and appearance receive their own finite scene observations.",
+      "core": false,
+      "resolved": true,
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "resolution_kind": "requirement_and_ownership_settled",
+      "pending_gap_ids": [
+        "gap_scene_contracts"
+      ]
     },
     {
       "id": "ground_health_feasibility",
-      "source": "OWNER:1794373071501926623",
+      "source": [
+        "OWNER:1794373071501926623",
+        "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml",
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+        "src/RimMandrake/EnvironmentalHazards/Source/RM_Recipe_RemoveHediffWithByproduct.cs"
+      ],
       "speaker": "agent",
       "status": "resolved",
       "text": "Read existing vanilla treatment and permanent injury seams on disk to establish feasible construction of the already-ruled lasting health effects.",
-      "resolution": "On-disk vanilla Recipe_RemoveHediff and permanent-injury consumers provide suitable seams. These can support the already-ruled health outcomes."
+      "resolution": "Read the on-disk vanilla Recipe_RemoveHediff, DamageInfo, DamageWorker_AddInjury, Hediff_Injury and HediffComp_GetsPermanent paths. A medical bill can remove a persistent condition and ordinary body-part injury state can retain scars and sensory damage. Recipe_RemoveHediff filters on Visible, which makes low-severity trace treatment an explicit construction case. The existing generic AcidBurn call supplies neither a selected sensory part nor an explicit permanence request. The builder can use these seams to meet the settled owner outcomes.",
+      "core": false,
+      "resolved": true,
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "resolution_kind": "requirement_and_ownership_settled",
+      "pending_gap_ids": [
+        "gap_lasting_metal",
+        "gap_acid_injuries"
+      ]
+    },
+    {
+      "id": "ground_falter_duration",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1792108481222070856",
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentKernel.cs"
+      ],
+      "core": true,
+      "resolved": true,
+      "status": "resolved",
+      "text": "Reconcile the ruled hour of warning with the weather-transition implementation.",
+      "resolution": "The owner target remains about one in-game hour, nominally 2500 ticks. On-disk vanilla WeatherManager uses 4000 transition ticks, and the current falter spans that transition. The derived source duration is 1.6 hours. Construction and a timed live scene must bring the cue-to-bloom interval into the existing ruling. The first scheduled exposure tick is a separate observation from bloom onset.",
+      "resolution_kind": "owner_target_controls_construction",
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "pending_gap_ids": [
+        "gap_falter_duration"
+      ]
+    },
+    {
+      "id": "ground_sealed_bloom_protection",
+      "speaker": "agent",
+      "source": [
+        "OWNER:1794373071501926623",
+        "CONDUCTOR:1794804951784038130",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml",
+        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_AcidAirKernel.cs"
+      ],
+      "core": true,
+      "resolved": true,
+      "status": "resolved",
+      "text": "Reconcile dependable sealed clothing with the separate acid-air and bloom resistance formulas.",
+      "resolution": "The protected-work promise requires a functioning full environmental seal to prevent these ambient exposure routes. The current complete vexxith set supplies 1.01 VacuumResistance, while its helmet supplies 0.8 ToxicEnvironmentResistance. Acid air considers vacuum sealing and bloom dose considers only toxic resistance stats. For an otherwise ordinary pawn the local source therefore permits 20 percent bloom dose despite the full vacuum seal. Loaded stats and actual exposure remain to be measured. Construction must fulfill dependable sealed protection, with partial equipment receiving its actual partial protection.",
+      "resolution_kind": "approved_protection_promise_controls_construction",
+      "resolved_by": "rm-role-designercodex-1794807226",
+      "pending_gap_ids": [
+        "gap_sealed_protection"
+      ]
     }
   ],
   "built_reviewed": [
@@ -2389,6 +2586,42 @@
       "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
       "speaker": "agent",
       "text": "ExposureWeight reads vent recovery and distance without consulting IsCapped. A capped and uncapped control will measure the current safety boundary."
+    },
+    {
+      "id": "risk_falter_duration",
+      "source": "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+      "speaker": "agent",
+      "text": "Current falter follows the entire vanilla 4000-tick weather transition. On-disk engine source and the 2500-tick game hour imply 1.6 hours. The owner hour remains the target. This is a source derivation with live timing pending."
+    },
+    {
+      "id": "risk_sealed_bloom",
+      "source": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml",
+        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs"
+      ],
+      "speaker": "agent",
+      "text": "Full vexxith gear supplies VacuumResistance 1.01 and ToxicEnvironmentResistance 0.8 in local XML. For an otherwise ordinary pawn, current bloom math yields a 0.2 dose multiplier while acid air yields zero chance. Loaded stats and a worn-gear exposure scene remain pending."
+    },
+    {
+      "id": "risk_gas_corner",
+      "source": [
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs"
+      ],
+      "speaker": "agent",
+      "text": "The flame front and Fire scan offer eight neighbours without a cardinal-side passability check. Gas on diagonal cells inside sealed compartments can therefore need a distinct combustion containment check even though drift has its own corner guard."
+    },
+    {
+      "id": "risk_pool_identity",
+      "source": [
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+        "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_LiquidProperties_CompatIndex.xml",
+        "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_FluidIdentity.cs"
+      ],
+      "speaker": "agent",
+      "text": "Vexxiss writes vanilla ToxicWater forms. The registry toxic row adopts RM_WaterPoisoned forms. Vanilla shallow/deep compatibility properties add pH 2 and corrosion, while registry toxic water has pH 7. Actual source terrain and LiquidDef binding must be read before a name or appearance determines transfer chemistry."
     }
   ],
   "root_proposal": {
@@ -2412,5 +2645,857 @@
     "speaker": "conductor",
     "delegated": "evidence-for-ask",
     "answers": "a_root_synthesis"
+  },
+  "edge_review": {
+    "id": "stage2_edge_review",
+    "run": "rm-role-designercodex-1794807226",
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "speaker": "agent",
+    "at": "2026-11-16T05:46:02.070214+00:00",
+    "status": "core_requirements_settled",
+    "basis": "Existing owner answers and the stage-1 delegated root settle the direction. The five moves below identify concrete false passes and finite situations. Current construction and proof gaps remain explicit.",
+    "walk_first": "The registered RM_TestSite_cauldron_v3 quick look was proposed in stage 1 and remains offered before these written edge arguments. Its role is to measure current appearance, timing, pool identity, protection and production.",
+    "claims": [
+      {
+        "id": "edge_place",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "CONDUCTOR:1794804951784038130",
+          "OWNER:1792370870264139349",
+          "OWNER:1792525010750756319",
+          "OWNER:1793251119194850898",
+          "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml"
+        ],
+        "about": [
+          "biome_identity",
+          "soils",
+          "weather",
+          "flora_base",
+          "dew_saturation",
+          "shore_gardens",
+          "vent_gardens",
+          "acid_pool_binding"
+        ],
+        "claim": "Arrival reads as a rainless mineral forest whose dark soils, mineral bodies and chemically dangerous pools agree with their gameplay.",
+        "attack": "A fog overlay and renamed ordinary water could satisfy a feature list while the forest and chemistry remain unreadable.",
+        "picture": "A player can distinguish plain and rich dark soil, thornwood and mineral fauna under a rainless storm. A chosen pool supplies the hazardous liquid its observed terrain and effects identify.",
+        "moves": {
+          "dumb_version": "A grey generic forest with decorative green pools and ordinary fresh water in the receiving container.",
+          "counterexample": "A pool harms apparel through compatibility properties, then its pump silently treats the terrain as fresh water.",
+          "other_side": "Vanilla weather, terrain fertility and plants already supply the basic presentation. FlowWorks supplies liquid identity and transfer.",
+          "unsaid_sweep": [
+            "Read an intact site before pad preparation",
+            "Compare standing weather, dry thunderstorm, dewfall and bloom",
+            "Follow a selected pool through terrain, liquid, fluid and transferred contents"
+          ],
+          "boundary": "The delivered fixed world and owned biome are the play context. The legacy placement worker stays in the supporting inventory. The existing trunk-coat design retains its separate build dependency."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "The adopted root depends on the forest, rainless sky and dangerous chemistry being apparent during play."
+        },
+        "situations": [
+          "First arrival and close inspection of both soils and current flora/fauna",
+          "Weather transition and dew saturation with current sounds",
+          "Natural pool and vexxiss-created toxic-water forms followed by a fill or pump"
+        ],
+        "cost_assumptions": [
+          "Agent assumption that current atlas art and vanilla sound choices are the baseline",
+          "Existing soil fertility and weather tuning remain the candidate values pending observation"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_warning",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "OWNER:1792108481222070856",
+          "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+          "src/RimMandrake/Cauldron/Source/Kernel/RM_VentKernel.cs"
+        ],
+        "about": [
+          "vent_cycle_falter",
+          "vent_sites",
+          "eskith"
+        ],
+        "claim": "The vent falter and eligible native stillness give about one in-game hour of usable warning before full bloom output and exposure begin.",
+        "attack": "A message after the hazard starts, or a long transition mistaken for an hour, leaves the practical warning promise unmet.",
+        "picture": "A working colonist sees the vent lull and nearby idle natives hold still, then has time to reach shelter before full bloom.",
+        "moves": {
+          "dumb_version": "The suite reports a Faltering boolean and observes a dose sometime later without measuring the interval.",
+          "counterexample": "The first harmful sample arrives late in its 3451-tick cadence and makes an already-active bloom look like additional warning.",
+          "other_side": "Vanilla WeatherManager blends weather across 4000 ticks. Cauldron ties the warning to that transition today.",
+          "unsaid_sweep": [
+            "Measure cue onset, full-output onset and first dose separately",
+            "Read the hush through reload",
+            "Observe an eligible idle wild native beside asleep, fighting and owned animals"
+          ],
+          "boundary": "The optional message supplements vent and animal behavior. The hour is an existing owner requirement. Hush follows the current eligible-animal guards."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "The owner explicitly chose the warning interval and the root promises observable preparation time."
+        },
+        "situations": [
+          "Default timed bloom transition",
+          "Ordinary non-bloom transition",
+          "Hush and message controls plus mid-falter reload"
+        ],
+        "cost_assumptions": [
+          "Nominal timing target is 2500 ticks",
+          "Record cue polling and job-update granularity",
+          "Accelerated timing fixtures require a separate default-duration observation"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_protection",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "OWNER:1794373071501926623",
+          "CONDUCTOR:1794804951784038130",
+          "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+          "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+          "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml",
+          "src/RimMandrake/Cauldron/Source/RM_VexxithAcidImmunity.cs"
+        ],
+        "about": [
+          "bloom_load",
+          "local_exposure",
+          "acid_air",
+          "vexxith_gear",
+          "vexxith_material",
+          "acid_hull",
+          "containers_gates",
+          "lined_machines"
+        ],
+        "claim": "Roofs and a functioning complete environmental seal support safe routine ambient work while exposed eligible bodies gain the Cauldron exposure effects.",
+        "attack": "An acid-proof armour item can survive while its wearer accumulates metal. The two exposure formulas can disagree about a complete seal.",
+        "picture": "Matched workers perform the same outdoor task. A roofed worker and a fully sealed worker retain their starting health, while an exposed control receives attributable dose or acid damage.",
+        "moves": {
+          "dumb_version": "The equipment item keeps its hit points and the scene declares its wearer protected without reading health.",
+          "counterexample": "The full vexxith set reaches vacuum seal 1.01 but an ordinary pawn retains a 0.2 multiplier in the current bloom formula.",
+          "other_side": "The current bloom path uses vanilla toxic-resistance stats, acid air uses the better vacuum or toxic-environment seal, and material immunity guards the damaged Thing.",
+          "unsaid_sweep": [
+            "Read the loaded worn-stat aggregate",
+            "Exercise full set, incomplete set and roof controls over actual exposure opportunities",
+            "Compare natives and non-natives",
+            "Compare capped and uncapped vents and near/far background dose"
+          ],
+          "boundary": "Roofs and sealing govern the named ambient routes. Direct liquid contact follows its own contact/immersion rules. A tap contains vent emission while the existing bloom background and cap behavior receive explicit readback. Vexxith material protection applies to the item that receives acid damage."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "Dependable preparation and useful protective material are part of the adopted root and the successful-day answer."
+        },
+        "situations": [
+          "Ambient bloom and ambient acid on matched workers",
+          "Worn full set and individual pieces",
+          "Vexxith versus ordinary material under the same acid source",
+          "Lined versus ordinary tap, vessel and ship-hull controls"
+        ],
+        "cost_assumptions": [
+          "Current crafting, research and material costs are candidate tuning",
+          "Full seal must be demonstrated from loaded stats",
+          "Existing ship-liner protection scope requires readback on the actual ship fixture"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_metal",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "OWNER:1794373071501926623",
+          "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml",
+          "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs"
+        ],
+        "about": [
+          "lasting_metal_poisoning",
+          "bloom_load"
+        ],
+        "claim": "Heavy-metal poisoning persists after exposure and departure until advanced medicine purges it through a playable treatment route.",
+        "attack": "A slowly fading meter and a debug removal command would leave the owner health promise unfulfilled.",
+        "picture": "An exposed worker leaves the biome with the same accumulated load, retains it through ordinary recovery and reload, then receives an advanced medical purge through the Health interface.",
+        "moves": {
+          "dumb_version": "Reduce the existing natural decay rate and label it lasting.",
+          "counterexample": "A low-severity saved trace remains forever while a Visible-only medical recipe never offers the bill.",
+          "other_side": "Vanilla Recipe_RemoveHediff provides medical bill and surgery behavior. The current Cauldron hediff has severityPerDay -0.08 and tendable false.",
+          "unsaid_sweep": [
+            "Leave exposure and map, wait and reload",
+            "Use ordinary care and advanced treatment controls",
+            "Treat existing saved load and a low-severity trace",
+            "Interrupt or fail a treatment under the reused operation semantics"
+          ],
+          "boundary": "The required persistence is survival of ordinary time and care. Advanced treatment consumes medicine through the normal medical path. Ingredient quantities, work and skill tuning belong to the build plan under that requirement."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "The owner explicitly requires advanced medicine and rules out self-clearance."
+        },
+        "situations": [
+          "Visible load and low trace after exposure ends",
+          "Off-map and reload persistence",
+          "Completed advanced purge and ordinary-care control"
+        ],
+        "cost_assumptions": [
+          "Advanced-medicine treatment is an owner requirement",
+          "Exact ingredient grade, quantities, research and operation tuning remain delegated construction choices that must be recorded before acceptance"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_acid",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "OWNER:1794373071501926623",
+          "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+          "src/RimMandrake/FlowWorks/Source/LiquidTypes/LiquidCorrosion.cs"
+        ],
+        "about": [
+          "permanent_acid_injuries",
+          "acid_air",
+          "acid_pool_binding"
+        ],
+        "claim": "Cauldron acid exposure can produce permanent disfigurement and sensory-organ injury that survive ordinary wound recovery.",
+        "attack": "Temporary pain or a permanent label with restored sensory function would leave the bodily consequence promise unmet.",
+        "picture": "After a causally recorded acid injury and ordinary healing, the Health view retains the scar or injured sensory part and the corresponding enduring disfigurement or capacity loss.",
+        "moves": {
+          "dumb_version": "Attach a cosmetic acid scar label while all actual injuries heal and every capacity returns to baseline.",
+          "counterexample": "A one-point generic burn lands on a limb, heals, and is presented as proof that acid can injure sight permanently.",
+          "other_side": "Vanilla body-part injury and GetsPermanent state provide compatible seams. The current ambient DamageInfo uses generic AcidBurn with default part selection.",
+          "unsaid_sweep": [
+            "Record actual acid cause and body part",
+            "Observe disfigurement and a sensory-capacity case independently",
+            "Wait through ordinary healing and reload",
+            "Compare a protected worker and an otherwise matched ordinary wound"
+          ],
+          "boundary": "The adopted root permits permanent consequences from acid. Frequency and severity stay construction tuning. Existing exceptional healing and body-part replacement keep their own game rules."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "Permanent disfigurement and sensory harm are explicit owner words."
+        },
+        "situations": [
+          "An acid-derived disfiguring injury after ordinary healing",
+          "An acid-derived sensory injury with measured capacity loss after healing",
+          "Protected exposure and reload controls"
+        ],
+        "cost_assumptions": [
+          "Agent assumption that ordinary vanilla injury persistence is the cheapest construction path",
+          "Actual source exposure and damage attribution are necessary evidence"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_forestry",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "CONDUCTOR:1794804951784038130",
+          "ITEM:CAULDRON_TREE_METAL_YIELD_1",
+          "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs",
+          "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+        ],
+        "about": [
+          "forestry",
+          "assay",
+          "assay_flecks",
+          "trunk_deposit_coat"
+        ],
+        "claim": "Thornwood rewards completed, slow exposed harvesting with wood and growth-scaled metal whose assay and installed flecks help the player choose a tree.",
+        "attack": "A steel pile spawned beside a worker and an inspect number can hide a failed harvest or an absent work cost.",
+        "picture": "The worker completes the ordinary harvest and both resources appear. A younger eligible tree pays less metal, and assay grades and flecks follow the actual growth band.",
+        "moves": {
+          "dumb_version": "Force the plant away and spawn its advertised loot without a completed plant-work job.",
+          "counterexample": "A harvest order fails and an old steel pile lets a map-wide total satisfy the result.",
+          "other_side": "Vanilla plant work invokes additional harvest yield only on a successful harvest. Cauldron reuses that seam and a vanilla smithing sound.",
+          "unsaid_sweep": [
+            "Read starting wood and steel",
+            "Observe completed work at eligible young and full growth",
+            "Exercise failure/interruption and feature/factor controls",
+            "Distinguish installed assay flecks from the separately designed trunk coat"
+          ],
+          "boundary": "The current tree is RM_TwistingThornwood. Successful harvest, growth and settings determine the payout. The additive trunk coat retains the specified separate work."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "The root makes exposed forestry one of the reasons to stay in the Cauldron."
+        },
+        "situations": [
+          "Completed normal harvest and bounded resource deltas",
+          "Young versus mature eligible tree",
+          "Interrupted harvest and yield-off control",
+          "Assay, fleck and settings-remesh observation"
+        ],
+        "cost_assumptions": [
+          "The current candidate has harvestWork 1200 and full-growth metal count 12",
+          "Candidate values are source tuning rather than a new owner price ruling"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_grove",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "OWNER:1792460018243907000",
+          "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs",
+          "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Rhossak.xml"
+        ],
+        "about": [
+          "rhossak_bind",
+          "rhossak_sprout",
+          "rhossak_grove",
+          "galled_food"
+        ],
+        "claim": "Rhossak are ordinary grove-bound animals that can renew the forest through rest and a three-animal gathering, while galled rhossak bind and provide edible galls.",
+        "attack": "Forced sleep need and ambient plant regrowth can imitate seeding, and three spawned animals can pass a count without causing a grove.",
+        "picture": "The inspect view names a bound tree. An actual resting seed-bearer produces an attributable seedling. Three nearby seed-bearers accumulate awake time and root a young thornwood. A galled animal produces its own edible gall.",
+        "moves": {
+          "dumb_version": "Count any nearby plants after lowering Rest and count any thornwood after waiting.",
+          "counterexample": "A pawn wanders away before it sleeps, ordinary regrowth supplies a plant, and the scene attributes it to rhossak.",
+          "other_side": "CreatureBehaviors provides the home tether and vanilla animal behavior supplies the ordinary lifecycle. Cauldron owns binding, seed eligibility and accumulated grove time.",
+          "unsaid_sweep": [
+            "Lose the bound tree and observe rebind or the unbound readout",
+            "Assert actual sleep and location",
+            "Compare one/two/three seed-bearers and a galled group",
+            "Sleep holds progress, separation resets it, reload retains relevant state"
+          ],
+          "boundary": "Galled rhossak carry the existing seedless role. The wild-idle tether leaves combat and ordinary animal handling to their existing systems. Each renewal action needs its own causal observation."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "Binding is the owner mechanic and renewing rhossak are named in the root. Existing sprouting, rooting and galls remain in the inventory."
+        },
+        "situations": [
+          "Bind, tree loss and no-tree case",
+          "Actual sleeper versus awake and galled controls",
+          "Three kin versus two, separation and sleep/reload",
+          "A producer-attributed edible gall delta"
+        ],
+        "cost_assumptions": [
+          "Current rootHours, cooldown, group radius and sprout rate are candidate tuning",
+          "Accelerated proof tuning must be disclosed and default-time behavior checked separately"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_wildlife",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "CONDUCTOR:1794804951784038130",
+          "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+          "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs",
+          "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+        ],
+        "about": [
+          "suush_ecology",
+          "suush_burst",
+          "vexxiss_shear",
+          "vent_drinking",
+          "water_poisoning",
+          "fire_warden",
+          "tap_prying",
+          "vexxiss_tracks",
+          "zisska",
+          "tsevrix_food"
+        ],
+        "claim": "Mineral wildlife supplies food, danger and protective material, and wild vexxiss make vent use an observable management problem.",
+        "attack": "A roster census can pass while harvesting, food effects and vent competition fail during actual work.",
+        "picture": "A tamed vexxiss yields vexxith by shearing. A wild one drinks a working vent, can damage an ordinary scaffold and leaves readable state or tracks. Shooting a suush causes its attributed burst, with a matched melee control.",
+        "moves": {
+          "dumb_version": "Spawn every animal and read comp names as the complete wildlife experience.",
+          "counterexample": "The collector loses output because a vent has been silenced, but the scene never follows the drinking animal or proves suppression.",
+          "other_side": "Vanilla animal lifecycle, shearing, explosive wicks and jobs remain the entry points. Optional VEF and Utinni layers supply their declared additional behavior.",
+          "unsaid_sweep": [
+            "Wild and tame cases",
+            "Stable, leaking, silenced and recovering vents",
+            "Ordinary versus lined scaffold",
+            "Ranged suush trigger versus small surviving melee hit",
+            "Food preparation and ingestion with actual health/thought readback"
+          ],
+          "boundary": "Current owned and campaign rosters determine the fixtures. Optional integrations are exercised on a load set that provides them. Flight appearance retains its owner-attended observation requirement."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "Wildlife danger, food, protective supply and vent competition are core parts of the root and the settlement answer."
+        },
+        "situations": [
+          "Tame shear and attributable vexxith output",
+          "Wild drink, suppression, ordinary scaffold damage and lined control",
+          "Suush ranged detonation with explosion-specific evidence and melee control",
+          "Current food and product routes with tier guards"
+        ],
+        "cost_assumptions": [
+          "Ordinary animal needs and research/crafting costs remain in play",
+          "Current suppression, silence and regeneration timing are candidate tuning",
+          "A vent-drink toggle abort and an already-issued melee job require separate observations"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_gas",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "OWNER:1794373071501926623",
+          "OWNER:1794468874358971350",
+          "OWNER:1792114302644040420",
+          "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+          "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs",
+          "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs"
+        ],
+        "about": [
+          "gas_grid",
+          "gas_drift",
+          "gas_ignition",
+          "gas_knockback"
+        ],
+        "claim": "A connected combustible vent cloud carries fire over water and produces dramatic attributed bursts that displace nearby goods through ExplosiveKnockback.",
+        "attack": "One initial burst, independent far-bank ignition or vanilla fire damage can imitate a chain without proving gas continuity or thrown items.",
+        "picture": "A near-bank spark burns successive cells over a pool to the far bank. Identified nearby goods visibly move. Separate gas beyond a maintained clear break or sealed barrier stays outside that chain.",
+        "moves": {
+          "dumb_version": "Light a fire on each bank, read an explosion counter and compare an aggregate item total.",
+          "counterexample": "Vanilla removes the only fuel-less ground Fire before the next burn scan and combustion stops after its first clump.",
+          "other_side": "Cauldron uses its persistent separate gas grid and flame front. ExplosiveKnockback patches successful Ignite calls to create clump bursts. Vanilla and other-mod gases retain their own storage.",
+          "unsaid_sweep": [
+            "Compare connected ground and water lanes with a maintained gas-free break",
+            "Exercise sealed straight and diagonal barriers",
+            "Read gas consumption, smoke and original instigator",
+            "Reload during a chain and compare to uninterrupted continuation",
+            "Read actual item identifiers and positions before and after"
+          ],
+          "boundary": "Combustible gas is the fuel over water. Cloud breaks and sealed barriers bound propagation. The shared knockback mod owns displacement tuning and eligible-pawn behavior."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "Connected over-water burning and explosive item displacement are explicit owner rulings."
+        },
+        "situations": [
+          "One spark with connected cloud over ground and water",
+          "A maintained clear break, sealed wall and sealed diagonal corner",
+          "Mid-burn reload and ignition-off controls",
+          "Identified goods displacement with the knockback hook loaded"
+        ],
+        "cost_assumptions": [
+          "Current gas thresholds, drift, smoke and knockback tuning remain candidate values",
+          "The historical intermittent failure warrants repeated live trials on the same identified candidate",
+          "The current source front is transient and its neighbour offers require containment proof"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_industry",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "OWNER:1794373071501926623",
+          "OWNER:1792111463695647001",
+          "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+          "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+          "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml",
+          "src/RimMandrake/Cauldron/Source/RM_GasTap.cs"
+        ],
+        "about": [
+          "ruin_site",
+          "study_research",
+          "filter_works",
+          "gas_tap",
+          "lined_machines",
+          "oomo_shrine"
+        ],
+        "claim": "Studying a corroded rig and completing research enables a powered cartridge-fed Filter-Works that turns tapped condensate into reagent and toxic or acid water into useful fresh water.",
+        "attack": "A directly built machine with injected tanks can pass conversion while the playable study route or the tap-to-tank link is broken.",
+        "picture": "A colonist studies the reachable rig, the research becomes available and is completed, then an ordinarily built works consumes measured input and cartridges to produce the correct water or reagent. The touching tank receives the tap output.",
+        "moves": {
+          "dumb_version": "Unlock research and spawn a fueled machine and products, then label the station usable.",
+          "counterexample": "A full or incompatible receiving tank consumes the tap bank or a converter input while its paid output disappears.",
+          "other_side": "Vanilla analysis and research own the discovery route. FlowWorks owns the registry, tanks, network and converter. Cauldron supplies the content and touching-tank tap adapter.",
+          "unsaid_sweep": [
+            "Study/research/build normal entry points",
+            "Condensate, toxic water and acid water independently",
+            "Full, absent and incompatible output capacity",
+            "Power and cartridges exhausted",
+            "Ordinary and vexxith-lined working cartridge use",
+            "Forty-colonist routine with repeated production and exposed errands"
+          ],
+          "boundary": "The tap delivers whole 200-litre bank units into a touching tank. Its bank cap and conversion ratios are existing costs. The Oomo shrine follows its Utinni guard. Seismometer retains its owner disposition out."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "Filter-Works is owner-kept and dependable useful production is the successful-settlement answer."
+        },
+        "situations": [
+          "Rig before and after study and research",
+          "Tap, touching tank and condensate-to-reagent chain",
+          "Both water inputs with identity and volume readback",
+          "Blocked output and power/cartridge controls with resume",
+          "Ordinary versus lined cartridge consumption over equal completed work"
+        ],
+        "cost_assumptions": [
+          "Current build cost, 350 W, 16000 input litres/day and recipe ratios are candidate tuning",
+          "The lined vessel declares fuelPerDay 0.25 against the ordinary 1.0",
+          "Count spent inputs, banked fluid, tank contents and placed products at every transfer"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      },
+      {
+        "id": "edge_settings",
+        "core": true,
+        "disposition": "does",
+        "speaker": "agent",
+        "source": [
+          "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs",
+          "CLAUDE.md",
+          "CONDUCTOR:1794804951784038130"
+        ],
+        "about": [
+          "settings",
+          "placement_legacy",
+          "dew_beads",
+          "dew_saturation",
+          "assay_flecks",
+          "vexxiss_tracks"
+        ],
+        "claim": "Feature switches, tuning and timing labels let a player control the Cauldron systems while saved state and routine colony work remain coherent.",
+        "attack": "A menu full of persistent fields can hide inactive controls, a startup-only switch presented as immediate or a toggle that clears paid stock and existing health.",
+        "picture": "A player changes a major switch and its stated timing matches the observed result. A saved colony reloads with settings, banked fluid, grove state and existing load coherent. A forty-colonist protected routine still produces supplies.",
+        "moves": {
+          "dumb_version": "Read static settings fields and declare the UI, effect timing and all-off behavior accepted.",
+          "counterexample": "Turning off exposure silently clears existing lasting poisoning, or changing a startup availability switch erases a previously crafted item.",
+          "other_side": "The existing settings serializer, search/scroll/collapse/reset UI, source timing labels and shared Harmony failure notice provide the control surface.",
+          "unsaid_sweep": [
+            "Default, a named changed value and reset",
+            "Each major switch through its normal UI timing",
+            "Reload with existing content and accumulated health",
+            "All-off coherent state",
+            "Forty-colonist repeated ordinary jobs and production"
+          ],
+          "boundary": "Existing startup and map-creation switches are described at their actual application point. Persisted health requires its medical purge. Settings and loaded dependencies bound optional behavior. Existing performance floors supply numerical thresholds."
+        },
+        "pruning": {
+          "reject_if_false": true,
+          "reason": "Working feature control is a standing shipping requirement and manageable daily work belongs to the root."
+        },
+        "situations": [
+          "UI operation and effect timing",
+          "Settings and relevant state round-trip",
+          "All-off and re-enable with stock/health readback",
+          "Forty-colonist normal duty cycle with tick and job observations"
+        ],
+        "cost_assumptions": [
+          "A measured forty-colonist fixture exercises scale",
+          "Existing floor thresholds govern performance judgments",
+          "New quantitative performance limits would require their own sourced rationale"
+        ],
+        "acceptance_status": "planned",
+        "derived_from_existing_direction": true
+      }
+    ],
+    "owner_questions": [],
+    "question_disposition": "The existing root ask is answered by recorded delegation. The health, gas-boundary, warning-duration and worthwhile-settlement questions already have authoritative answers. Current source discrepancies call for construction and measurement under those answers.",
+    "review_scope": "This run performs source grounding and internal edge argument. A sent owner ask would require a fresh independent ask review. This run sends no ask and records no independent review of these edge arguments.",
+    "stage3_handoff": "Project the core claims into a compact tree and trace every built inventory capability to scenes or showcases. Preserve the pending gaps below as concrete build and acceptance work. First-touch certification remains at the owner examination and lock stages.",
+    "delegation_source": "OWNER:1794807991321995397"
+  },
+  "implementation_gaps": [
+    {
+      "id": "gap_lasting_metal",
+      "source": [
+        "OWNER:1794373071501926623",
+        "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml"
+      ],
+      "speaker": "agent",
+      "status": "pending_construction",
+      "target_stage": 3,
+      "about": [
+        "lasting_metal_poisoning"
+      ],
+      "requirement": "Persistent positive load and a playable advanced-medicine purge, including existing saved traces.",
+      "smallest_work": "Replace natural clearance with persistence and provide normal medical treatment. Account for visible and hidden traces and the reused operation failure behavior.",
+      "proof": "Observe actual exposure, recovery, departure, reload, ordinary-care control and a completed advanced purge with ingredient use."
+    },
+    {
+      "id": "gap_acid_injuries",
+      "source": [
+        "OWNER:1794373071501926623",
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs"
+      ],
+      "speaker": "agent",
+      "status": "pending_causal_proof_then_construction_as_needed",
+      "target_stage": 3,
+      "about": [
+        "permanent_acid_injuries"
+      ],
+      "requirement": "Actual acid can leave enduring disfigurement and sensory injury.",
+      "smallest_work": "Establish which current AcidBurn injuries survive ordinary healing and affect disfigurement and sensory capacity. Supply any missing permanent-injury behavior through the existing vanilla seams.",
+      "proof": "Independent acid-caused disfiguring and sensory cases, protected controls, ordinary healing and reload. Attribute the wounds to the actual exposure source."
+    },
+    {
+      "id": "gap_falter_duration",
+      "source": [
+        "OWNER:1792108481222070856",
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "speaker": "agent",
+      "status": "pending_construction_and_live_timing",
+      "target_stage": 3,
+      "about": [
+        "vent_cycle_falter"
+      ],
+      "requirement": "About one in-game hour from the readable falter to full bloom.",
+      "smallest_work": "Reconcile the 4000-tick transition-derived falter with the nominal 2500-tick owner target. Record cue timing, bloom onset and first-dose timing independently.",
+      "proof": "Default-duration run with asserted start weather, onset ticks, eligible native behavior and a normal-transition control."
+    },
+    {
+      "id": "gap_sealed_protection",
+      "source": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml",
+        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs"
+      ],
+      "speaker": "agent",
+      "status": "pending_loaded_stat_proof_and_construction",
+      "target_stage": 3,
+      "about": [
+        "vexxith_gear",
+        "bloom_load",
+        "acid_air"
+      ],
+      "requirement": "A functioning full seal provides dependable protection against ambient bloom and acid exposure.",
+      "smallest_work": "Read worn stats on the candidate and reconcile bloom resistance with complete environmental sealing. Keep incomplete-gear effects explicit.",
+      "proof": "Matched exposed, roofed, full-set and partial-set workers across actual bloom and acid exposure opportunities."
+    },
+    {
+      "id": "gap_pool_binding",
+      "source": [
+        "OWNER:1793251119194850898",
+        "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml",
+        "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_FluidIdentity.cs",
+        "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_LiquidProperties_CompatIndex.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "speaker": "agent",
+      "status": "pending_site_measurement_then_construction_as_needed",
+      "target_stage": 3,
+      "about": [
+        "acid_pool_binding"
+      ],
+      "requirement": "Dangerous site pools retain their actual chemistry through normal liquid use.",
+      "smallest_work": "Read the registered site and intended campaign location. Record selected terrain, liquid, fluid, contact effects and ordinary fill/pump output. Reconcile any vanilla-toxic versus owned-suite binding gaps found.",
+      "proof": "One real site pool and a vexxiss-converted pool followed through transfer and Filter-Works using actual input identity. Keep authored pool delivery distinct from the scratch-site fixture."
+    },
+    {
+      "id": "gap_gas_continuity",
+      "source": [
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs",
+        "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs"
+      ],
+      "speaker": "agent",
+      "status": "pending_construction_and_live_retest",
+      "target_stage": 3,
+      "about": [
+        "gas_ignition",
+        "gas_knockback"
+      ],
+      "requirement": "Connected combustion over water with contained propagation and actual goods displacement.",
+      "smallest_work": "Provide flame-front save continuity and validate sealed diagonal containment as well as straight barriers. Match the installed candidate to repeated combined live scenes after the offline chain fix.",
+      "proof": "Single-spark ground/water lanes, a maintained gas gap, straight/diagonal sealed controls, mid-chain reload, smoke/instigator readback and identified goods displacement."
+    },
+    {
+      "id": "gap_trunk_coat",
+      "source": [
+        "ITEM:CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS",
+        "design/Jawa/worldbuilding/biomes/cauldron_trunk_deposits_design_2026-11-02.md"
+      ],
+      "speaker": "agent",
+      "status": "existing_separate_build_dependency",
+      "target_stage": 3,
+      "about": [
+        "trunk_deposit_coat"
+      ],
+      "requirement": "The specified additive age-based trunk deposits retain their existing design.",
+      "smallest_work": "Carry the existing coat build dependency into the plan and give its age/readability behavior a scene distinct from installed assay flecks.",
+      "proof": "Young/old trunk deposit observation and an independent assay-grade/fleck comparison."
+    },
+    {
+      "id": "gap_scene_contracts",
+      "source": [
+        "src/RimMandrake/Cauldron/validation.py",
+        "src/RimMandrake/Cauldron/northstar_site.py",
+        "src/RimMandrake/Utils/modcheck/suite.py",
+        "src/RimMandrake/rimflow/roles/designer_scene_contract.md"
+      ],
+      "speaker": "agent",
+      "status": "pending_entry_points_and_recovery_contracts",
+      "target_stage": 3,
+      "about": [
+        "biome_identity",
+        "soils",
+        "weather",
+        "placement_legacy",
+        "settings",
+        "flora_base",
+        "forestry",
+        "assay",
+        "assay_flecks",
+        "dew_beads",
+        "dew_saturation",
+        "shore_gardens",
+        "vent_gardens",
+        "tsevrix_food",
+        "ixalith_beauty",
+        "fexxil_hazard",
+        "sessarix_fuel",
+        "kissaveth_gas",
+        "selvix_medicine",
+        "suush_ecology",
+        "suush_flight",
+        "suush_burst",
+        "vexxiss_shear",
+        "water_poisoning",
+        "fire_warden",
+        "vent_drinking",
+        "vexxiss_tracks",
+        "vent_sites",
+        "vent_cycle_falter",
+        "bloom_load",
+        "local_exposure",
+        "gas_grid",
+        "gas_drift",
+        "gas_ignition",
+        "gas_tap",
+        "tap_prying",
+        "ruin_site",
+        "study_research",
+        "filter_works",
+        "vexxith_material",
+        "vexxith_door",
+        "containers_gates",
+        "lined_machines",
+        "vexxith_gear",
+        "acid_air",
+        "acid_hull",
+        "rhossak_bind",
+        "rhossak_sprout",
+        "rhossak_grove",
+        "galled_food",
+        "zisska",
+        "eskith",
+        "bedbug",
+        "crystalmit",
+        "garsulix",
+        "ossrith",
+        "sikka",
+        "shared_cast",
+        "campaign_cast",
+        "oomo_shrine",
+        "scanner_payload",
+        "growth_stalled",
+        "aerosol_neighbour",
+        "trunk_deposit_coat",
+        "acid_pool_binding",
+        "lasting_metal_poisoning",
+        "permanent_acid_injuries",
+        "gas_knockback"
+      ],
+      "requirement": "Each acceptance experience has asserted start, causal action, discriminating control, verified recovery and explicit hold.",
+      "smallest_work": "Use the existing per-chain scene_audit and finite edge cases to file missing script work. Add the study route, actual ingestion/contact/products, causal grove and burst observations, input/output conservation, all-off behavior and forty-colonist routine. Record recovery before preflight or pad mutation and restore or hold on every exit.",
+      "proof": "Named script entry points on a fingerprinted candidate, with an intact-site checkpoint and verified normal/interrupted recovery. Historical passes retain their scoped stale status."
+    }
+  ],
+  "stage2_evidence": {
+    "id": "source_edge_audit",
+    "source": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+    "speaker": "agent",
+    "run": "rm-role-designercodex-1794807226",
+    "method": "Read owner source events, historical question and answer excerpts, current local code/defs and on-disk vanilla seams. Arithmetic below derives from those source inputs.",
+    "source_sha256": {
+      "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml": "f28427cb12cb736b4b8f3725e1b958bfec6f9a4b06867ad37fed9fe4c75f000d",
+      "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml": "b664d6a37fea056d2e35e895abfbb432bcd53be94b1a7d6b1ff324e39d786400",
+      "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml": "936e411b7b2da553174b9abac6437eb611e8ec9331a65b7869c866ef0a5e8511",
+      "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml": "3e639dfed5e39f78011235a492e2e964b2d6234afeb85c20b47c05e8145b7d14",
+      "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml": "792ebbc172c3cd795d3956a7ee96a5aeace74407677ba0055e257e06bf79a51c",
+      "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml": "9ef8b70d978be14539b9177a951d92cf5206e18d28953b16a94951ded2abd3eb",
+      "src/RimMandrake/Cauldron/Source/Kernel/RM_AcidAirKernel.cs": "3a791fd7f79b1c4e45760b5114b6c54b107e385ec35c0d7e0d0433fa9ba9f20f",
+      "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs": "c528204e6d076a7d3c7bbeb412d7298af4acc26212c2329123e6a6c98ab3c0e7",
+      "src/RimMandrake/Cauldron/Source/Kernel/RM_YieldKernel.cs": "a6b1d7eef5e70df88b2a4c49b3598fb0b79d05f26f126264a195075720ce9fa7",
+      "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs": "8be2d29a2f5eb9b8eea946d4fb0cb666b991b9e274773cdb052671c0333f2f24",
+      "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs": "c5901360084e86a905303c044f67e4d35ec3b1a0d2539eaff3abc573d5a26fe8",
+      "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs": "880119f3bf6a8298563da869fe7914ef166861ec7cde164ffc9a36d5213ec965",
+      "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs": "87b5049f8b86ec0a90ffff71aff1d3d64f3834129142df492d4ffd415ceaeb70",
+      "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs": "ba8baa40468b7f9875c28b19e2ad1838d5baa2d76f4b11bfc0aae3caec6582b0",
+      "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs": "ac564cd951be61fa99d7970857c99476dd163b547303555136e0e7637b890ec7",
+      "src/RimMandrake/Cauldron/Source/RM_VentGas.cs": "3e899477a51c864debdb3d0897f94f490000919befe6af19aad79a5360ef53f6",
+      "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidBodyDefs/RM_LiquidBodyRegistry.xml": "b2897b3c4e30b5e01e366316ac39966e6c8952e6775923aac923bab7bff1f93a",
+      "src/RimMandrake/FlowWorks/Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml": "f187a1c1b417a2f5708dd18bda249dff8b9044b5a916867004cb2e956a775d4c",
+      "src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_LiquidProperties_CompatIndex.xml": "3233015c1654439a283f436a472264d01108e9d22e78a2142f440f445ec68bba",
+      "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_LiquidBottleUtility.cs": "fad6fc10b2c0e7709e9450d7c49cb58ef1721bcd3677c26b9a4e60c38885bd38",
+      "src/RimMandrake/FlowWorks/Source/RM_FluidIdentity.cs": "42b48c0f12132a186875cb2f4f79993ddf9ae47f10458191480cfccc5835f95e"
+    },
+    "external_engine_sources": [
+      {
+        "path": "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/RimWorld/WeatherManager.cs",
+        "sha256": "7552b53e2363ac144f99851dbb6fb238b946be7ced9b5cef05ee317065bbb954"
+      },
+      {
+        "path": "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/RimWorld/Recipe_RemoveHediff.cs",
+        "sha256": "31e003a71aa1b5b7ad038ab5639eb177abe5e051f75dc69cd90552c9be5e663c"
+      },
+      {
+        "path": "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/Verse/DamageInfo.cs",
+        "sha256": "d376680f447608a564ef4c218cfa115b2542554802adb82b4ca7843d8ca375f1"
+      },
+      {
+        "path": "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/Verse/DamageWorker_AddInjury.cs",
+        "sha256": "740146541b6605d6c359b1af100a565458c0ce1d828c69f8c97e08337e203ee5"
+      },
+      {
+        "path": "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/Verse/Hediff_Injury.cs",
+        "sha256": "d618c4d25df9a2a617fb7927e25337609aaa4503573b4597c302531cb2399a50"
+      },
+      {
+        "path": "/mnt/d/ClaudeWork/rimmandrake/decomp/rw16/all/Verse/HediffComp_GetsPermanent.cs",
+        "sha256": "9aa43053391cc5fe08b39d260f3b8deda6f6ae51e4a8fe38c2faad5425759af1"
+      }
+    ],
+    "derived_values": {
+      "weather_transition_ticks": 4000,
+      "game_hour_ticks": 2500,
+      "current_source_falter_hours": 1.6,
+      "full_vexxith_vacuum_offset": 1.01,
+      "helmet_toxic_environment_offset": 0.8,
+      "bloom_dose_fraction_for_otherwise_ordinary_pawn": 0.2
+    },
+    "live_status": "Unmeasured in this run. Current loaded definitions, runtime patches, deployed assemblies, selected pool chemistry and appearance require the offered site walk and later script scenes.",
+    "recovery_status": "No scene or persistent game mutation was performed during this source-only run."
   }
 }

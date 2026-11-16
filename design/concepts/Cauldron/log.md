@@ -41,3 +41,52 @@ Actual reviewer token usage was unavailable through the collaboration tool. The 
 CONDUCTOR:1794804951784038130 records the reviewed root under `RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME`. The root is stored with speaker `conductor`, delegation `evidence-for-ask`, and `answers` set to `a_root_synthesis`. The adoption question is answered by that delegated call. The owner received no new question.
 
 The expanded root retains the existing health, gas and settlement answers. The next dialogue stage carries the current implementation and proof gaps, including persistent poisoning, permanent acid injury, selected-site pool binding and live scene recovery. The registered-site quick look remains proposed for the next owner sitting.
+
+## Stage 2, run rm-role-designercodex-1794807226
+
+### Existing-code walk offered before the edge argument
+
+**QUICK LOOK OFFERED.** Use a disposable copy of the registered `RM_TestSite_cauldron_v3` at the next owner sitting. Start with its intact forest, weather and actual pool terrain. Then compare exposed, roofed and fully suited workers through the falter and bloom. Follow a vent tap into a touching tank and a Filter-Works with a wild vexxiss nearby. A separate gas-over-water lane has a maintained clear gap, a straight sealed barrier and a sealed diagonal corner, with ExplosiveKnockback loaded for item displacement. Read the loaded candidate identity and record recovery before staging. These are proposed observations. Current visual and gameplay proof remains pending.
+
+### Claim
+
+The existing root and owner answers already determine the Cauldron's core boundaries. The remaining health, warning, protection, gas and pool discrepancies require the delivered systems to satisfy that direction.
+
+### Attack
+
+A feature list could pass with an ordinary foggy forest, temporary poisoning, a nominally sealed worker who still accumulates metal, a gas chain that stops after one clump and a machine demonstrated through injected resources. Each version would miss a named part of the intended play.
+
+### Picture as a written rehearsal
+
+These stories are agent-written projections of the existing direction. They provide scene intent for stage 3. Current implementation and proof gaps are recorded alongside the claims in `record.json`.
+
+1. A newly arrived worker sees rainless lightning, dark distinguishable soils, thornwood and mineral animals. The worker selects a tree by its assay and completes slow ordinary harvesting. Wood and a growth-appropriate steel yield appear. A nearby pool supplies the dangerous liquid its actual terrain and transfer identify.
+2. The vents falter and eligible idle natives become still. A worker returns under a roof during the ruled warning interval. A fully sealed worker continues outside. A matched exposed worker takes the bloom's metal load after bloom onset. Health and actual worn stats show what each protection route accomplishes.
+3. A colonist studies the reachable corroded filter rig, completes the unlocked research and builds a Filter-Works. A touching tank receives condensate from a tap. Powered, cartridge-fed work produces reagent, while separate toxic-water and acid-water runs produce fresh water at their registry ratios. Full output capacity, empty cartridges and missing power have readable outcomes, followed by successful resumption.
+4. A wild vexxiss drinks from a tapped vent and can damage its ordinary scaffold. The vent's state and collector output explain the interruption. A lined scaffold resists prying while drinking retains its existing effect. Elsewhere, one spark follows connected gas over water and throws identified goods. The maintained gap and sealed compartments provide the containment controls.
+5. A prepared forty-colonist base keeps routine jobs and useful production running. Exposed errands and wildlife still require choices. A worker who leaves with metal load retains it through ordinary recovery and reload, then receives an advanced medical purge. A causally recorded acid injury retains its disfigurement or sensory loss after ordinary healing.
+
+### The five moves and the pruning test
+
+`record.json` now contains eleven source-backed core argument groups. Each records the claim, attack, play picture, cheapest false pass, concrete counterexample, existing shared or vanilla alternative, transition and scale cases, boundary, costs and a rejection reason. Their subjects are place, warning, protection, lasting metal poisoning, permanent acid injury, forestry, grove renewal, wildlife, gas, industry and settings. Supporting inventory capabilities retain their later scene coverage.
+
+The independent experiences require independent acceptance observations when the tree and showcase set are written. In particular, a gas interaction scene supplies neither the machinery scene nor the wildlife scene by itself. No leaf or scene has been accepted by this internal argument.
+
+### Source findings and their limits
+
+- The original owner write-in at OWNER:1794373071501926623 matches the historical question and answer sheets. Persistent poisoning, permanent acid injury, connected gas over water with item displacement and dependable industry with risky expeditions already have answers.
+- `RM_VentMetalLoad.xml` still carries `severityPerDay -0.08`. Its positive load can clear naturally. The existing vanilla removal-recipe seam also filters conditions by visibility, which makes treatment of low-severity saved traces a concrete construction case.
+- `RM_AcidAir.cs` calls generic `AcidBurn` with default body-part selection. The on-disk vanilla damage and injury paths can retain permanent injury. The complete acid-disfigurement and sensory outcome still requires causal proof and any consequent construction work.
+- The current falter covers the weather transition. On-disk `RimWorld/WeatherManager.cs` sets that transition to 4000 ticks. The Cauldron's hourly kernel uses 2500 ticks per hour. The source-derived duration is 1.6 hours against OWNER:1792108481222070856's about-one-hour target. Cue onset, full bloom onset and the first scheduled dose require separate readings.
+- Local vexxith equipment declares a combined vacuum offset of 1.01 and a helmet toxic-environment offset of 0.8. Acid air considers vacuum sealing. Bloom dose reads the toxic-resistance stats. An otherwise ordinary pawn therefore has a source-derived bloom multiplier of 0.2 despite the complete vacuum seal. The loaded worn-stat aggregate and actual health outcome remain unmeasured.
+- The current flame front carries combustion beyond a vanished fuel-less ground Fire. Its state is transient across saves. Its neighbour offers and the Fire scan also need a diagonal sealed-compartment control alongside the existing drift guard. ExplosiveKnockback supplies bursts after successful Cauldron ignition.
+- FlowWorks owns the terrain-to-liquid and terrain-to-fluid lookup paths and conditional typed shores. Vexxiss currently writes vanilla `ToxicWater` forms, while the toxic registry row adopts `RM_WaterPoisoned` forms. The vanilla shallow/deep compatibility patch adds pH 2 and apparel corrosion. Names and colours alone cannot establish transferred chemistry. The selected delivered pool remains unmeasured.
+- The existing per-chain audit still identifies missing recovery, controls and causal observations. The trunk scab and crystal-fan design retains its separate build dependency. Current source and external engine file hashes are captured in `record.json` for this audit.
+
+### Decision and provenance
+
+The owner questions about health, water as a gas boundary, warning duration and the worthwhile settled day already have controlling answers. The source findings supply specific work under those answers. This run sends no additional owner ask.
+
+OWNER:1794807991321995397 records the Evidence-for-Ask call with `ranBy BENCH`, `perRuling` and an explicitly delegated `why`. Its decision is agent text and carries speaker `agent` in the working record. The event contains neither `ownerSaid` nor `byCard`. The stage-1 root keeps CONDUCTOR:1794804951784038130 as its authority.
+
+All core contradiction records now name their requirement resolution and their pending construction or proof dependency. Their resolution concerns the design requirement and ownership. The eight pending gap records continue into stage 3 for the build plan and acceptance scenes. Current proof flags remain stale or missing as recorded. First-touch certification remains the owner's later examination and lock work.
