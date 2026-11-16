@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":972259,"DISPATCH":1331,"HOLDER.run-1794816885":928} body_sha256=0957504e15a5503280052a99051c6cf84e5c195e922ec1b9e0428d14257c32c7 -->
-# FlowWorks — mod ledger history (1265 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":972259,"DISPATCH":1331,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=b3a5c5453ec45e92aa97cee245c1e98d0273a31e3a6c7ec9a6f5f2a4ad8c22c2 -->
+# FlowWorks — mod ledger history (1269 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1266,3 +1266,7 @@
 - 2026-11-16T08:52:06Z BACKFILL#1260 decision finding:HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS v0.1.0: 
 - 2026-11-16T08:52:12Z DISPATCH#3 run.end run v0.1.0: 
 - 2026-11-16T08:52:12Z DISPATCH#4 session.id session v0.1.0: 
+- 2026-11-16T10:13:59Z STEWARD#1 trap.cleared trap:rm-raidertrench-only-crosses-it-does-not-fetch v0.1.0: No longer the whole story at 636550d40b36: RM_RaiderFetchFallen.cs fetches fallen comrades; RM_RaiderTrench itself still only crosses.
+- 2026-11-16T10:13:59Z STEWARD#2 trap.noted trap:a-new-cs-file-not-in-the-csproj-compiles-nothing v0.1.0: RimMandrake_FlowWorks.csproj lists every .cs explicitly: a new file not added there builds green and ships nothing, while source-law selftests (selftest_stage3_owed.py) still read it and pass. fetch_fallen now has a csproj law; toss_flame and coating do not (their files are listed today).
+- 2026-11-16T10:14:11Z STEWARD#3 note finding:FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN v0.1.0: Built at 636550d40b36 (RM_RaiderFetchFallen.cs): an assault raider not under fire sets a ladder into the pit for a same-faction comrade held or downed there and carries a downed one to the lip; flee duties hold no giver. Not claimed_fixed: lease run-1794816885 is another run's.
+- 2026-11-16T10:14:11Z STEWARD#4 note finding:FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN v0.1.0: T_FETCH_FALLEN_OFFLINE: RED 9 at fc2ab0af91 (pinned laws added first), PASS at 636550d40b36, 10 undo mutants bite. Live sc_fetch_fallen gains FETCH_fallen_brought_out; recorded UNRUN in version/in_game/unrun.jsonl.

@@ -1,11 +1,12 @@
 {
  "_view": {
-  "body_sha256": "7189cfe59851d7ba7d7ac059daeb07194a9132db9b2e1ba8e65e5fc3d36cd086",
+  "body_sha256": "e10cd5f43e364fc902e6cf5bebab52cca7a5cb8293721d586cd97c9d7c80d937",
   "reducer": 1,
   "shards": {
    "BACKFILL": 972259,
    "DISPATCH": 1331,
-   "HOLDER.run-1794816885": 928
+   "HOLDER.run-1794816885": 928,
+   "STEWARD": 2597
   }
  },
  "state": {
@@ -1793,7 +1794,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1265,
+  "events": 1269,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7629,7 +7630,20 @@
    "released": false,
    "token": 1
   },
-  "notes": [],
+  "notes": [
+   {
+    "by": "STEWARD",
+    "subject": "finding:FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN",
+    "text": "Built at 636550d40b36 (RM_RaiderFetchFallen.cs): an assault raider not under fire sets a ladder into the pit for a same-faction comrade held or downed there and carries a downed one to the lip; flee duties hold no giver. Not claimed_fixed: lease run-1794816885 is another run's.",
+    "ts": "2026-11-16T10:14:11Z"
+   },
+   {
+    "by": "STEWARD",
+    "subject": "finding:FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN",
+    "text": "T_FETCH_FALLEN_OFFLINE: RED 9 at fc2ab0af91 (pinned laws added first), PASS at 636550d40b36, 10 undo mutants bite. Live sc_fetch_fallen gains FETCH_fallen_brought_out; recorded UNRUN in version/in_game/unrun.jsonl.",
+    "ts": "2026-11-16T10:14:11Z"
+   }
+  ],
   "questions": {},
   "reducer": 1,
   "session": {
@@ -7642,7 +7656,8 @@
   "shards": [
    "BACKFILL",
    "DISPATCH",
-   "HOLDER.run-1794816885"
+   "HOLDER.run-1794816885",
+   "STEWARD"
   ],
   "spend_tokens": 24322723,
   "spend_usd": 33.1927,
@@ -7965,6 +7980,14 @@
     "ts": "2026-11-16T08:32:15Z",
     "version": "0.1.0",
     "where": "deep_stone_live.py:168-177; Source/RM_DigDiscovery.cs:161"
+   },
+   "trap:a-new-cs-file-not-in-the-csproj-compiles-nothing": {
+    "by": "STEWARD",
+    "status": "noted",
+    "text": "RimMandrake_FlowWorks.csproj lists every .cs explicitly: a new file not added there builds green and ships nothing, while source-law selftests (selftest_stage3_owed.py) still read it and pass. fetch_fallen now has a csproj law; toss_flame and coating do not (their files are listed today).",
+    "ts": "2026-11-16T10:13:59Z",
+    "version": "0.1.0",
+    "where": "src/RimMandrake/FlowWorks/Source/RimMandrake_FlowWorks.csproj"
    },
    "trap:a-non-stun-flyer-launch-lands-safely-in": {
     "by": "BACKFILL",
@@ -9351,12 +9374,12 @@
     "where": "RM_LiquidStock.cs:236"
    },
    "trap:rm-raidertrench-only-crosses-it-does-not-fetch": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "RM_RaiderTrench only crosses; it does not fetch fallen comrades, so it does not satisfy this item.",
-    "ts": "2026-11-16T08:32:18Z",
+    "by": "STEWARD",
+    "status": "cleared",
+    "text": "No longer the whole story at 636550d40b36: RM_RaiderFetchFallen.cs fetches fallen comrades; RM_RaiderTrench itself still only crosses.",
+    "ts": "2026-11-16T10:13:59Z",
     "version": "0.1.0",
-    "where": "RM_RaiderTrench"
+    "where": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_RaiderFetchFallen.cs"
    },
    "trap:rm-swale-v2-brown-rippled-cracked-bank-strip": {
     "by": "BACKFILL",

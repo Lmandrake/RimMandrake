@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":972259,"DISPATCH":1331,"HOLDER.run-1794816885":928} body_sha256=faab6e596b0fa318f6ae93bbaea0bcb210bb32bec51fb020289d470d9b8af0b4 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":972259,"DISPATCH":1331,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=00d20b67a9d9588d74088ced44507627b66ec1bfde1851ebec1a84f308ee23be -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1265 events in 3 shards · reducer 1
+version 0.1.0 · stage offline_build · 1269 events in 4 shards · reducer 1
 holder lease run-1794816885, token 1, last active 2026-11-16T08:50:23Z
 holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 400000
 
@@ -302,7 +302,6 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - trap:the-core-live-rows-abort-settings-drift-harness
 - trap:the-original-plan-transient-flowworks-live-sitting-plan
 - trap:the-11-04-fail-is-a-real-measure
-- trap:rm-raidertrench-only-crosses-it-does-not-fetch
 - trap:the-live-scene-scene-fetch-fallen-is-unrun
 - trap:tar-looked-blue-and-differed-on-soil-vs
 - trap:item-11-a-fall-breaks-the-cover-was
@@ -453,6 +452,7 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - trap:the-among-0-tried-cause-settlement-left-on
 - trap:missing-style-defs-or-art-were-not-the
 - trap:an-unknown-outcome-bridge-marker-from-the-timed
+- trap:a-new-cs-file-not-in-the-csproj-compiles-nothing
 - 255 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
 ## Causes refuted (57) — do not chase these again
@@ -638,11 +638,13 @@ spend recorded: USD 33.19, 24322723 tokens
 
 ## Left out
 - closed findings: 97, oldest first (`modledger.py show --mod FlowWorks <subject>`)
+- closed traps: 1, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - tests: 27, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - claimed fixes in brief: 118 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 128 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
-- the full history: 1265 events (views/history.md; never read whole)
+- notes: 2, never printed here (`modledger.py find --mod FlowWorks <words>`)
+- the full history: 1269 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T08:52:12Z.1794819132704525614 (modledger.py since --mod FlowWorks t=2026-11-16T08:52:12Z.1794819132704525614 prints what changed after this packet)
+cursor: t=2026-11-16T10:14:11Z.1794824051396953590 (modledger.py since --mod FlowWorks t=2026-11-16T10:14:11Z.1794824051396953590 prints what changed after this packet)

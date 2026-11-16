@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":972259,"DISPATCH":1331,"HOLDER.run-1794816885":928} body_sha256=dd3423b312f45f926902010aaea76421c5e7d7c89651b1ae606b5aac7a045324 -->
-# FlowWorks — closed in Design Version 0.1.0 (97)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":972259,"DISPATCH":1331,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=6fb5d816350cdeb06ae943ab4e967526168d43814b3ed185ee2aeda56d5a87ff -->
+# FlowWorks — closed in Design Version 0.1.0 (98)
 
 - finding:DEEP_BEDS_FIX_FLOOR_STOPS_AT_FOUR verified f518e7c1987b (2026-11-16T08:32:15Z)
 - finding:DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS verified f26cc003c25f (2026-11-16T08:32:16Z)
@@ -98,3 +98,4 @@
 - finding:FW_MOCK_FIX_PULSE_FORGOT_ITS_DL withdrawn e9600b7843 (2026-11-16T08:33:02Z)
 - finding:RIMMANDRAKE_LAUNCH_FLOWWORKS_REALIGNMENT_PROMISED_NEVER_LAUNCHED withdrawn 18ad3228eb (2026-11-16T08:33:02Z)
 - finding:RIMMANDRAKE_RECONCILE_FLOWWORKS_LEDGER_OPEN_WITHOUT_ITEM_FILE withdrawn b7781d3c31 (2026-11-16T08:33:02Z)
+- trap:rm-raidertrench-only-crosses-it-does-not-fetch cleared (2026-11-16T10:13:59Z)
