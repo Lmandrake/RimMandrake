@@ -56,15 +56,16 @@
      "design/concepts/ExplosiveKnockback judge9 gaps 3 (racks) and 4 (flagship shelf): owner 2026-11-12 ruled them no blockers (conductor log 2026-11-13T00:05:11Z), so a sound brief does not refuse on them"
     ]
    },
-   "hash": "18aadb1a0e3479fc",
+   "hash": "ea8f70f67a4da7e6",
    "last_run": {
-    "at": "2026-11-16T15:46:15Z",
-    "cases": "3 planted case(s) ran and came out as planted",
+    "at": "2026-11-16T15:55:24Z",
+    "cases": "4 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "bad_scene_no_control   expect refuse got refuse Acceptance scene sc_light has no control, so nothing rules out the leaf's own false_pass (light from daylight or another lamp); sc_light's start is not an asserted state appropriate to a light test, and sc_oil_out inherits it for its 'glow 0' reading; The player sheet does not say what the light leaf tests: it says 'the cells around it' where the tree and inventory test 'within two' at 50%",
+    "out": "bad_scene_no_control   expect refuse got refuse Acceptance scene sc_light has no control, so nothing rules out the cells being lit by daylight, ambient light or another lamp rather than the lantern; the flagship showcase lantern_night rests on it; sc_light's start is not asserted and does not match the leaf's scenario: no night, no darkness, no roof and no absence of other light sources is stated or asserted",
     "results": [
      {
-      "cost_usd": 0.45140160000000007,
+      "advisory": [],
+      "cost_usd": 0.496935,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -72,24 +73,33 @@
       "verdict": "covered"
      },
      {
-      "cost_usd": 0.446103,
+      "advisory": [],
+      "cost_usd": 0.508088,
+      "expect": "pass",
+      "gaps": [],
+      "got": "pass",
+      "id": "good_lanterns_tuning",
+      "verdict": "covered"
+     },
+     {
+      "advisory": [],
+      "cost_usd": 0.5172924,
       "expect": "refuse",
       "gaps": [
-       "Leaf oil_out and inventory capability inv_oil have no acceptance scene, no showcase and no coverage_rest entry: the oil burn and go-dark behaviour is tested by nothing",
-       "The flagship showcase leaves out half of the owner's pick: he chose a lantern lighting a dark room AND then going out, but lantern_night stages and exercises only the lighting",
-       "The sheet does not say what the light leaf tests: it says the lantern lights 'the cells around it', but the tree and its scene test a radius of two cells at 50% or more"
+       "The live experience leaf oil_out, and the built, approved capability inv_oil, have no acceptance scene: nothing stages a lantern running out of oil and going dark, nor the control that rules out going",
+       "The flagship showcase lantern_night shows only the lighting half of his pick; inv_oil is exercised by no showcase and is not listed in coverage_rest, so a built, approved capability is silently uncove"
       ],
       "got": "refuse",
       "id": "bad_leaf_no_scene",
       "verdict": "not_covered"
      },
      {
-      "cost_usd": 0.4825084,
+      "advisory": [],
+      "cost_usd": 0.5154446,
       "expect": "refuse",
       "gaps": [
-       "Acceptance scene sc_light has no control, so nothing rules out the leaf's own false_pass (light from daylight or another lamp)",
-       "sc_light's start is not an asserted state appropriate to a light test, and sc_oil_out inherits it for its 'glow 0' reading",
-       "The player sheet does not say what the light leaf tests: it says 'the cells around it' where the tree and inventory test 'within two' at 50%"
+       "Acceptance scene sc_light has no control, so nothing rules out the cells being lit by daylight, ambient light or another lamp rather than the lantern; the flagship showcase lantern_night rests on it",
+       "sc_light's start is not asserted and does not match the leaf's scenario: no night, no darkness, no roof and no absence of other light sources is stated or asserted"
       ],
       "got": "refuse",
       "id": "bad_scene_no_control",
@@ -120,7 +130,7 @@
      "id": "bad_scene_no_control"
     }
    ],
-   "reset_at": "2026-11-16T15:46:15Z",
+   "reset_at": "2026-11-16T15:55:18Z",
    "status": "CALIBRATED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
