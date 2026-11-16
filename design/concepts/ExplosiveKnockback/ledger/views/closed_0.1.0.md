@@ -1,4 +1,4 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":9101,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=8e6868a808a2fc8f91bdc3fcb35798d255f7bf2f4f0dd81128c8bbefd8cc9a7b -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":9458,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"OWNER":1207} body_sha256=8e6868a808a2fc8f91bdc3fcb35798d255f7bf2f4f0dd81128c8bbefd8cc9a7b -->
 # ExplosiveKnockback — closed in Design Version 0.1.0 (23)
 
 - finding:RIMMANDRAKE_CENSUS_KNOCKBACK_STORAGE_OPEN_CLOSED verified c20328a876 (2026-11-16T11:37:18Z)
