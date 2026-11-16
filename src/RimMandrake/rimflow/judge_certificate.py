@@ -258,10 +258,18 @@ def summary(v):
 
 
 def first_fix(v):
-    """-> the smallest fix of the certificate's first refusal (a stale build first: one command passes it)."""
+    """-> the smallest fix of the certificate's first refusal (a stale build first: one command passes it), and when
+    deciders are also recorded red, those named after it: a rerun alone does not pass a red test (FlowWorks,
+    2026-11-16: three red records, one still red when rerun)."""
     ref = [r for r in v.get("rows") or [] if r["status"] == "REFUSED"]
     ref.sort(key=lambda r: {"ran_on_this_build": 0, "registered": 1, "green": 2}.get(r["clause"], 3))
-    return ref[0]["smallest_fix"] if ref else None
+    if not ref:
+        return None
+    red = sorted({r["test"] for r in ref if r["clause"] == "green"})
+    if ref[0]["clause"] == "green" or not red:
+        return ref[0]["smallest_fix"]
+    return "%s; then the deciders recorded red (%s): fix the mod or the test, or work the item that owes it" % (
+        ref[0]["smallest_fix"], ", ".join(red[:6]) + (" ..." if len(red) > 6 else ""))
 
 
 def print_certificate(v, out=print):
