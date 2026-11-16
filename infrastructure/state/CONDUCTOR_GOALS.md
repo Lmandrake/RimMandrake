@@ -8,7 +8,17 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
-## From Fri 2026-11-06, 1:53 PM PST: fix Relentless by subtracting (block 7, on top)
+## From Sun 2026-11-15, 5:30 PM PST: cheap guards first, no sleeper tickets (block 8, on top)
+
+His words (ledger, owner-said on `RIMMANDRAKE_GUARD_PIPELINE_DOORS_CHEAPLY_NO_CEREMONY`): *"Once you have the built design, building this is your #1 priority, ok? Even more important than getting game work done. No more sleeper tickets."*
+
+1. **Cheap guards at every pipeline door**: build the tickets `RIMMANDRAKE_GUARD_PIPELINE_DOORS_CHEAPLY_NO_CEREMONY`'s design files, in its order, ahead of game work.
+2. **No sleeper tickets**: `RIMMANDRAKE_SCAN_PIPELINE_SLEEPER_TICKETS_ANYWHERE_THEY_HIDE` (scan every place pipeline work can hide; each sleeper is built, merged or dropped) and `RIMMANDRAKE_STOP_CONDUCTOR_RESTARTS_LOSING_ITEMS_ASK_GPT` (what a window restart loses, and where owed work is written so it is seen).
+3. **One small mod to a recorded 0.1.0 pass**: Gimme Some Slack, then ExplosiveKnockback (the Conductor's ordering, delegated; he has not ruled on it).
+
+---
+
+## From Fri 2026-11-06, 1:53 PM PST: fix Relentless by subtracting (block 7)
 
 His card (ledger, by-card on `RELENTLESS_MEASURE_THREE_DAY_CHECK_NOV9`): *"How do we fix Relentless? → Subtract; exam gets one last test: no new rules or layers; do the redesign's filed deletions, ship core fixes in one daily release with rollback, fix the proof causes, crash-test closing; ..."* No new rules, layers or judging machinery until the 3-day check is read.
 
