@@ -370,8 +370,10 @@ def _in_rect(c, r):
 
 
 def _pos(t):
-    p = t.get("position") or {}
-    return (p.get("x"), p.get("z")) if isinstance(p, dict) else None
+    """A thing's cell: jawa/list_things answers top-level x/z (visit 2, measured live); older payloads a position dict."""
+    p = t.get("position") if isinstance(t.get("position"), dict) else t
+    x, z = p.get("x"), p.get("z")
+    return (x, z) if x is not None and z is not None else None
 
 
 def _num(s):
@@ -569,6 +571,11 @@ class _Walk:
         self.kp("Clear")
         seeded = self.kp("SeedCloud", "current|%d,%d|2|250" % self.gas, type_=VENTGAS)[1]
         f = self.c("jawa/map_fire", action="start", rect="%d,%d,1,1" % self.lit, fireSize=1.0)
+        if not f.get("firesStarted"):
+            # visit 2: bare soil takes no fire (firesStarted 0): one log of kindling, then once more
+            self.c("rimworld/spawn_thing", defName="WoodLog", x=self.lit[0], z=self.lit[1])
+            f = self.c("jawa/map_fire", action="start", rect="%d,%d,1,1" % self.lit, fireSize=1.0)
+        self.fire_ok = bool(f.get("firesStarted"))
         quiet, last = 0, 0
         for _ in range(self.a.gas_ticks // 60):
             self.step(60)
@@ -584,6 +591,10 @@ class _Walk:
 
     # ---- judging a window of journal records
     def judge_gas(self, tag, recs):
+        if not getattr(self, "fire_ok", True):
+            self.unmeasured([tag + "_GAS_CLUMP_BY_CLUMP", tag + "_GAS_GOODS_MOVED"],
+                            "UNMEASURED: no fire started on the lit cell %s (jawa/map_fire firesStarted 0, kindling too)" % (self.lit,))
+            return
         b = [r for r in recs if r.get("type") == "gas_burst"]
         cells = [tuple(r.get("at") or ()) for r in b]
         ticks = sorted(set(r.get("tick") for r in b))
@@ -753,8 +764,11 @@ def walk_storeroom_raid(argv=None, bridge=None, wait=None, out=sys.stdout):
         print("REFUSED walk_storeroom_raid: %s" % e, file=out)
         return 2
     except Exception as e:  # noqa: BLE001 - no bridge is a refusal, never STATIC: PASS
-        print("REFUSED walk_storeroom_raid: no game reachable over the bridge (%s: %s). Run with python.exe, a game Playing, "
-              "the bridge held." % (type(e).__name__, str(e)[:200]), file=out)
+        import traceback
+        tb = traceback.extract_tb(e.__traceback__)
+        where = "%s:%d %s" % (os.path.basename(tb[-1].filename), tb[-1].lineno, tb[-1].name) if tb else "?"
+        print("REFUSED walk_storeroom_raid: no game reachable over the bridge (%s: %s, at %s). Run with python.exe, a game "
+              "Playing, the bridge held." % (type(e).__name__, str(e)[:200], where), file=out)
         return 2
     finally:
         if close is not None:

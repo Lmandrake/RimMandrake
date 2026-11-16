@@ -24,6 +24,12 @@ in a game:
   R1 HARNESS: validation.py's walk (sc_walk_raid) required mandrake.rm.cauldron in activeMods, but the Cauldron is folded
      into mandrake.rm.biomes (Biomes.compose.json) and the owner's full list has no mandrake.rm.cauldron: W_PRECONDITIONS
      could never pass. MODS_NEEDED names no folded member's packageId and names the composite.
+  R2 HARNESS: the walk's _pos read a thing's cell from a `position` dict, but jawa/list_things answers top-level x/z
+     (measured live), so every pre-shell census crashed (NoneType - int) and the walk read "no game reachable". _pos
+     reads both shapes and returns None when neither is there.
+  R3 HARNESS: the walk lit its gas with jawa/map_fire on the --lit cell; on bare soil it answered firesStarted 0 (measured
+     twice), so the gas rows read FAIL "0 bursts" when the walk never lit anything. A refused fire gets one wood log of
+     kindling and a second try; a gas act whose fire never started is UNMEASURED, not FAIL.
 
     python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit2.py [--src DIR]
 --src reads the mod's Source/ from DIR (laid out like this folder).
@@ -105,6 +111,17 @@ def main():
     check("R1", bool(needed) and bool(folded) and not (set(n.lower() for n in needed) & folded)
           and "mandrake.rm.biomes" in needed, "the walk's MODS_NEEDED %s names no folded member (%d read) and the composite"
           % (needed, len(folded)))
+    sys.path.insert(0, root)
+    try:
+        import validation as V
+        got = (V._pos({"x": 3, "z": 4}), V._pos({"position": {"x": 5, "z": 6}}), V._pos({"def": "Steel"}))
+    except Exception as ex:  # noqa: BLE001
+        got = ("raised %s" % ex,)
+    check("R2", got == ((3, 4), (5, 6), None), "the walk's _pos reads top-level x/z and position{x,z}, None otherwise: %r" % (got,))
+    ga = val[val.find("def gas_act("):val.find("def judge_gas(")]
+    jg = val[val.find("def judge_gas("):val.find("def judge_gas(") + 2500]
+    check("R3", "firesStarted" in ga and "WoodLog" in ga and "self.fire_ok" in ga and "fire_ok" in jg and "UNMEASURED" in jg,
+          "the walk's gas act retries a refused fire with kindling and its judge reads UNMEASURED when no fire started")
     print("explosiveknockback stage6 visit2: %d failed" % len(fails))
     return 1 if fails else 0
 
