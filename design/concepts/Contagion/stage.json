@@ -156,10 +156,73 @@
     "ref": "run rm-role-designer-1794819648",
     "stage": 3,
     "tokens": 816489
+   },
+   {
+    "at": "2026-11-16T09:12:49Z",
+    "kind": "helper",
+    "ref": "exam-examiner",
+    "stage": 4,
+    "tokens": 34205
+   },
+   {
+    "at": "2026-11-16T09:12:49Z",
+    "kind": "helper",
+    "ref": "exam-challenger",
+    "stage": 4,
+    "tokens": 44878
+   },
+   {
+    "at": "2026-11-16T09:12:49Z",
+    "kind": "helper",
+    "ref": "exam-readerA",
+    "stage": 4,
+    "tokens": 46468
+   },
+   {
+    "at": "2026-11-16T09:12:49Z",
+    "kind": "helper",
+    "ref": "exam-readerB",
+    "stage": 4,
+    "tokens": 34615
+   },
+   {
+    "at": "2026-11-16T09:12:49Z",
+    "kind": "helper",
+    "ref": "exam-control",
+    "stage": 4,
+    "tokens": 46259
+   },
+   {
+    "at": "2026-11-16T09:15:34Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794820103",
+    "stage": 4,
+    "tokens": 557134
+   },
+   {
+    "at": "2026-11-16T09:32:21Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794821268",
+    "stage": 5,
+    "tokens": 469553
+   },
+   {
+    "at": "2026-11-16T09:33:59Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794821268",
+    "stage": 5,
+    "tokens": 128469
+   },
+   {
+    "at": "2026-11-16T09:34:35Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1794821256",
+    "stage": 5,
+    "tokens": 500000
    }
   ],
   "reserve": 60000,
-  "spent": 8536861
+  "spent": 10398442
  },
  "coverage_rounds": [
   {
@@ -266,6 +329,51 @@
    "tokens": 1433224,
    "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-16T09:27:48Z",
+   "error": null,
+   "gaps": 6,
+   "ids": [
+    "cast_lives_here",
+    "fauna_blisterfloat",
+    "fauna_bloodlurk",
+    "fauna_contagion_ikee",
+    "fauna_crispling",
+    "fauna_danglemaw",
+    "fauna_doublemaw",
+    "fauna_eyestinger",
+    "fauna_fleshsop",
+    "fauna_gnashling",
+    "fauna_gorekite",
+    "fauna_meltgut",
+    "fauna_ogleknot",
+    "fauna_peeper",
+    "fauna_scaldhide",
+    "fauna_scorchpod",
+    "fauna_skinflap",
+    "fauna_sloshbelly",
+    "fauna_sparkleech",
+    "fauna_sparkleech_grub",
+    "helix_trade",
+    "legacy_placement_worker",
+    "unfinished_budding",
+    "unfinished_malformed",
+    "unfinished_variation",
+    "walk_red_lid",
+    "wrecks",
+    "zhooliza",
+    "zhooliza_lives_here"
+   ],
+   "judge": "rm-coverage-judge-1794821268",
+   "late": [],
+   "tags": {
+    "changed": 2,
+    "unfixed": 4
+   },
+   "tokens": 598022,
+   "tree": "b95090b8c584a87f142359f62c4cf37a789a8b5514aca998a495bf91578961fb",
+   "verdict": "malformed"
   }
  ],
  "history": [
@@ -478,6 +586,42 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1794819648: stage 3 done"
+  },
+  {
+   "at": "2026-11-16T09:08:37Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "8536861 of 4000000 spent; run rm-role-designer-1794820103 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T09:08:37Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1794820103, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T09:15:34Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794820103: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T09:27:47Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "9300420 of 4000000 spent; run rm-role-designer-1794821256 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T09:27:48Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794821256, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T09:34:35Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designer-1794821256 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
@@ -798,12 +942,48 @@
    "run": "rm-role-designer-1794819648",
    "stage": 3,
    "summary": "Tree rewritten against the VALIDATED walk (root hash stamped; contagion_grown_limb_visible gone from every leaf). limb_still_grows left the 0.1.0 tree per OWNER:1794772416196929336; the built limbs are covered offline by limbs_stay_built. Reworked against rm-coverage-judge-1794788108: coverage_fixes.json claims 30 of 31 gaps (new offline leaves fauna_specials_declared, biome_def_declared, flora_yields_declared, limbs_stay_built; new leaf zhooliza_lives_here; new scenes sc_sunbeam_fires, sc_wombpod_hatch, sc_helix_trade, sc_coalescence_forms, sc_mulched_soil, sc_zhooliza; arms on 17 scenes; showcases re-cut). shelter_in_lead now tests the tells lead used by a player order; no colonist shelter job is assumed. Filed RIMMANDRAKE_DRAW_CONTAGION_FLIPBOOKS_TWO_FLYERS_HALF_DRAWN (acceptance test FAIL 0/4 on base, instrument probe 4/4 on Skinflap/Sparkleech). Unclaimed: g19 (legacy_placement_worker absence check: the worker is built and scoped out; removing it or writing an absence check is a removal decision, left open). Lint PASS, showcase set accepted; gate refuses only on the missing coverage signature, which stage 5 owns."
+  },
+  {
+   "at": "2026-11-16T09:15:34Z",
+   "inputs": {
+    "exam": "d4b9f7820012d6e2184061e631cf65bf53b49f68a512034369084701bdced103",
+    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
+    "scenes": "43681c42512f4fcae010ea7d65b7c9976f8847287654c1c01efda1dd334cc81e",
+    "sheet": "44508a3b521bba651237b68dd458d8db18330177646761dbfa22d01d7937ae40",
+    "tree": "b95090b8c584a87f142359f62c4cf37a789a8b5514aca998a495bf91578961fb"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "quick_look": {
+    "offer": false,
+    "why": "stage 4 asks him nothing; the exam is a text read of the tree"
+   },
+   "run": "rm-role-designer-1794820103",
+   "stage": 4,
+   "summary": "Cold Reader exam rerun against the reworked tree (b95090b8) and sheet (44508a3b): 19 frozen scenarios (14 Examiner, 5 Challenger, 13 rejects across 12 leaves); both fresh Readers matched expect on 19/19, accept_where_reject_core 0, no Challenger miss. Control on a copy with sunbeam_arrest_treats removed missed s4 (the already-stopped-progression false pass) as it should."
+  },
+  {
+   "at": "2026-11-16T09:34:35Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794821256",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
