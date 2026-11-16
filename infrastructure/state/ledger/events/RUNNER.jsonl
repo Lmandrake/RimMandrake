@@ -7896,3 +7896,4 @@
 {"seat":"RUNNER","event":"note","id":"OPS_MATURATION_IDLE_ADVANCING_MOD_CBFQ","text":"ops_watch: cleared at 2026-11-16T17:55:42Z (maturation.idle_owed_max_min now 0)","ts":"2026-11-16T17:55:50Z","tsn":1794851750916917126}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_STALLED_KHOT","result":"broken","detail":"Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0","ts":"2026-11-16T17:57:09Z","tsn":1794851829269741136}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_STALLED_KHOT","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T17:57:14Z","tsn":1794851834990732437}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_STALLED_KHOT","result":"broken","detail":"Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0","ts":"2026-11-16T17:59:51Z","tsn":1794851991695587191}
