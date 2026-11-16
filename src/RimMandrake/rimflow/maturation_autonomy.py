@@ -1020,7 +1020,10 @@ def steward_brief(root, mod, row):
     kind = row.get("steward_kind")
     task = {
         "exit_not_met": "The %s ended NOT met. Read its SUMMARY.md and rows. File EACH failed or UNMEASURED line as a "
-                        "named item (caused by this item), then send the mod down its road back (%s). If the reading says "
+                        "named item (caused by this item); when a line's check is an OFFLINE command (a selftest or offline check "
+                        "that runs in under 120 s, never a bridge, game or live run), its item's prose (items/<ID>.md) "
+                        "carries `## launch-checks` then `must-fail: <that command>`, so a fixer whose red already passes "
+                        "is refused at launch. Then send the mod down its road back (%s). If the reading says "
                         "a new blind judge is owed (its Problems were FIXED in the cycle), file nothing new: advance "
                         "--to blind_challenge, so a judge who did not see the fixes judges them. The tick launches "
                         "one fixer per item, and the next visit or cycle when they close." % (
