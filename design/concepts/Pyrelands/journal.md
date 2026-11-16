@@ -363,6 +363,12 @@ so the Conductor takes it. These are Conductor decisions, not his.
   RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN. The table was not remade: make_test_table.py refuses
   because tree.json and record.json now hold 44 bars and the maker lacks firehawk_hunt_rewards and
   ullai_cross_the_map_as_vanilla_herds.
+- 2026-11-16 (RIMMANDRAKE_AUTOBUILD_PYRELANDS_ZERO_LEFT): the round-6 scenes' owed parts were built offline (34b6b83c05;
+  selftest_pyrelands_round6_parts) and RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN closed; `certificate
+  --run` re-stamped the offline deciders. `maturation.py next` reads 0 of 42 bars not runnable and every exit test
+  passing. Live halves UNRUN. The table is still not remade (the same 44-vs-42 refusal), now filed for the Conductor as
+  RIMMANDRAKE_LOCK_PYRELANDS_TWO_LEAVES_THE_TABLE_MAKER_REFUSES; T_BURN_COST (a supporting test) is red, filed as
+  RIMMANDRAKE_FIX_PYRELANDS_BURN_COST_TEST_RED_TWICE_TODAY.
 
 ## 2026-11-15 — his answer on the giant (the furnace-beast size bar): settled, do not ask again
 
