@@ -24,11 +24,13 @@ sys.path.insert(0, GSS)
 sys.path.insert(0, os.path.join(GSS, "..", "Utils"))
 import validation_aerial as VA  # noqa: E402
 from modcheck import reviewmap as RMH  # noqa: E402
+import rmpaths  # noqa: E402
 
 LOOKS = ("Pendulum", "Rope", "Gust")
 SPANS = (("short", 5), ("medium", 10), ("long", 18))
 WINDS = (("calm", 0.15), ("breezy", 0.9), ("storm", 2.2))
-SHOW = "/mnt/d/ClaudeWork/rimmandrake/showings/RIMMANDRAKE_CLEAN_SLACK_SWAY_POLE_WIRES_ONLY_NOT_CONDUIT"
+# from the storage helper, spelled for the Python running this (python.exe got a WSL path and died after saving, 2026-11-16)
+SHOW = rmpaths.rm_str("showings", "RIMMANDRAKE_CLEAN_SLACK_SWAY_POLE_WIRES_ONLY_NOT_CONDUIT")
 COL_W, ROW_H = 24, 6        # 18-cell long span + masts + gap; rows far enough apart that sags never overlap
 
 
@@ -44,6 +46,12 @@ def layout(x0, z0):
                 st.append(dict(n=n, look=look, span=sname, cells=L, wind=wname, windSpeed=w, a=a, b=b,
                                mid=((a[0] + b[0] + 1) // 2, z)))
     return st
+
+
+def sign_cell(s):
+    """Two cells west of mast A, one north of its base: clear of the mast (drawn ~3 cells tall above its base cell, where a sign
+    book hid the mast art in the first live capture, 2026-11-16) and of the previous column's span (COL_W leaves 6 cells)."""
+    return (s["a"][0] - 2, s["a"][1] + 1)
 
 
 def main():
@@ -76,7 +84,7 @@ def main():
     B.ap("set:autoLink=True")
     spec = ";".join("%d,%d,%s,%s" % (s["mid"][0], s["mid"][1], s["look"], s["windSpeed"]) for s in st)
     reg = B.ap("swaystation:" + spec)
-    signs = [RMH.sign_book(s["a"][0], s["a"][1] + 2, str(s["n"]), "%s %s span, %s" % (s["look"], s["span"], s["wind"]),
+    signs = [RMH.sign_book(sign_cell(s)[0], sign_cell(s)[1], str(s["n"]), "%s %s span, %s" % (s["look"], s["span"], s["wind"]),
                            clause="%d-cell span, wind %.2f fixed for this station" % (s["cells"], s["windSpeed"]),
                            look="does the wire swing like a hanging wire, ends fixed, belly moving most?",
                            do="unpause and watch a few swings at 1x", decide="keep this look / too much / too little")
