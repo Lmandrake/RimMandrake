@@ -1221,8 +1221,9 @@ def scene_temperament(t):
             _cast(t, "Recruit", "%s//%d" % (nick, art))
             _settle_painter(t, nick)
         _no_cleaning(t)
-        for key, painter, cell in (("good", "GrfFine", good), ("bad", "GrfClumsy", bad)):
-            mid, m = _order_mark(t, painter, VANDAL_DEF, "", *cell)
+        # the good mark is a stencil: a Scrawl (Vandal) is capped at poor craft (CraftCeiling, RM_GraffitiKernel.cs:999), so it never comes out good
+        for key, painter, defn, cell in (("good", "GrfFine", ART_DEF, good), ("bad", "GrfClumsy", VANDAL_DEF, bad)):
+            mid, m = _order_mark(t, painter, defn, "", *cell)
             if t._guard():
                 craft, line = _craft_at(t, *cell)
                 marks[key] = (mid, craft, line)
@@ -2249,3 +2250,332 @@ def scene_visitors(t):
             if not all("none of theirs, goodwill 0" in l for l in read) or g1 != g0.get(other["name"]):
                 raise ExpectationFailed("the insult to %s, read by %s: %s; %s goodwill %s -> %s" % (other["name"], trader["name"], read, other["name"], g0.get(other["name"]), g1))
             t._current.detail = "%s; %s goodwill %s unchanged" % (read[0], other["name"], g1)
+
+
+# ------------------------------- wall close-up, spree variety, art skill (scenes.json: sc_wall_closeup, sc_spree_variety, sc_art_skill)
+
+ART_DEF = "RM_Graffiti_Stencil_Crown"   # Stencil, no minArtistic, designatorEligible (Defs/ThingDefs_Graffiti.xml): CraftCeiling Legendary
+POOL_PICK_ITEM = "RIMMANDRAKE_PROBE_GRAFFITI_POOL_PICK_UNREADABLE_AT_A_CELL"
+_SIDE_LINE = re.compile(r" side (-?\d+) room ")
+
+
+def _side_at(t, cell):
+    """The recorded wallSide of the mark at `cell` off RM_GraffitiSocialProof.Marks (' side N room ', RM_GraffitiSocialProof.cs:186); None if no mark."""
+    line = _mark_line(t, cell)
+    m = _SIDE_LINE.search(line or "")
+    return (int(m.group(1)) if m else None), line
+
+
+def _trace_lines(t):
+    """New lines of RM_GraffitiSocialProof.Ledger('trace') (the ring empties on each read, GraffitiSocial.cs:1067)."""
+    acc = []
+    _story(t, acc)
+    return acc
+
+
+@suite.chain("wall_closeup")
+def wall_closeup(t):
+    """sc_wall_closeup (sits_on_wall, inv_mark_on_wall): an ordered lane of marks on a wall's front face (each wall north of its cell, side 0)
+    is shot close up at play zoom, so a judge can see each mark lie on the face and climb over the crease onto the top (option D), the face
+    bolder than the top. Controls: a mark with no wall recorded (spawned on open floor, wallSide NoWall) draws on the floor and is counted
+    by RM_GraffitiStage.Count's noWall; an ordered paint on a cell whose only wall is east of it (seen edge-on, a stub) leaves no mark and the
+    brush traces "found no wall to paint" (Filth_Mark.cs:349); the south-only cell is RM_GraffitiProof.FarSideSetup/FarSideRead (A9 of
+    graffiti_v1_live_proof.py, RM_GraffitiProof.cs:433): a painter's-pick order whose north wall came down leaves no Filth_Mark and
+    ProbeWallFaces reads s=0. The pool's own answer at a cell has no reader (POOL_PICK_ITEM). FarSideSetup clears its own site at the map's
+    centre, so it runs last. Restore: the runner destroys the quicktest map."""
+    x, z = t.anchor
+    painter = "GrfFace"
+    lane = [(x - 6 + 4 * i, z) for i in range(4)]       # floor cells south of the wall row z + 1: the wall is north of each (side 0)
+    edge, stub = (x + 12, z - 8), (x + 13, z - 8)       # one lone wall cell east of `edge`, nothing else within reach
+    loose = (x - 12, z - 8)                             # open floor, no wall anywhere beside it
+    with t.component("site_ready_wall_closeup"):
+        _site_start(t)
+        _prep_site(t, 40)
+        _wall_run(t, x - 9, z + 1, 17)
+        _walls(t, [stub])
+        t.bridge_call("jawa/map_commit")                # FIXTURE write (walls/terrain), never marks
+        _recruit(t, painter, PLAIN, 10)
+        _no_cleaning(t)
+        rows = []
+        for cell in lane:
+            _order_mark(t, painter, ART_DEF, "", *cell)
+            side, line = _side_at(t, cell)
+            rows.append((cell, side))
+            if t._guard() and side != 0:
+                raise ExpectationFailed("SITE: the lane mark at %s records wallSide %r, not 0 (its wall north of it): %r" % (cell, side, line))
+        t.bridge_call("jawa/set_draft", pawnId=painter, drafted=True)
+        t.bridge_call("jawa/order_pawn", pawnId=painter, x=x, z=z - 14, waitTicks=0)
+        t.wait_ticks(600)                                 # the painter out of frame before any shutter
+        if t._guard():
+            t._current.detail = "lane (cell, side): %s" % rows
+
+    with t.component("lane_marks_on_their_front_face", shows=["mark_sits_on_the_wall"]):
+        if t._guard():
+            faces, _ = _static(t, "RimMandrake.Graffiti.Filth_Mark", "ProbeWallFaces")
+            mm = re.search(r"mismatch=(\d+)", faces)
+            if not mm or int(mm.group(1)) != 0:
+                raise ExpectationFailed("Filth_Mark.ProbeWallFaces: %r (a mark records a side with no wall behind it)" % faces)
+            t._current.detail = faces
+        for cell in lane:
+            t.screenshot(rect=(cell[0] - 2, cell[1] - 1, 5, 4), padding=0, ppc=PLAY_PPC)
+
+    with t.component("control_no_wall_mark_on_floor_flagged"):
+        before, _ = _static(t, STAGE, "Count")
+        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (ART_DEF, loose[0], loose[1]))
+        if t._guard():
+            side, line = _side_at(t, loose)
+            after, _ = _static(t, STAGE, "Count")
+            nb = re.search(r"noWall (\d+)", before)
+            na = re.search(r"noWall (\d+)", after)
+            if side != -1 or not (nb and na) or int(na.group(1)) != int(nb.group(1)) + 1:
+                raise ExpectationFailed("a mark spawned on open floor at %s reads side %r (want -1, NoWall); Count before %r after %r"
+                                        % (loose, side, before, after))
+            t._current.detail = "%s; %s" % (line, after)
+        t.screenshot(rect=(loose[0] - 2, loose[1] - 2, 5, 5), padding=0, ppc=PLAY_PPC)
+
+    with t.component("control_edge_on_cell_gets_no_mark"):
+        if t._guard():
+            _trace_lines(t)                               # empty the ring: only this order's lines below
+            _recruit(t, "GrfEdge", PLAIN, 10)
+            _no_cleaning(t)
+            _static(t, SOCIAL_PROOF, "Order", "GrfEdge/%s//%d,%d" % (ART_DEF, edge[0], edge[1]))
+            waited, said = 0, []
+            while waited < 3000 and t._guard():
+                t.wait_ticks(500)
+                waited += 500
+                said += [ln for ln in _trace_lines(t) if "found no wall to paint at (%d, 0, %d)" % edge in ln]
+                if _all_marks(t, "%d,%d,1,1" % edge):
+                    raise ExpectationFailed("an ordered %s stands at %s, whose only wall (east) is seen edge-on" % (ART_DEF, edge))
+                if said:
+                    break
+            if not said:
+                raise ExpectationFailed("no mark at %s, but the brush never traced refusing it in %d ticks: the order may simply not have run"
+                                        % (edge, waited))
+            t._current.detail = said[0]
+            raise ExpectationFailed("MISSING TOOL: no probe asks GraffitiPool.WeightedPick (private) for a pick at %s, so 'the pool returns none' "
+                                    "is unread; filed as %s" % (edge, POOL_PICK_ITEM))
+
+    with t.component("control_south_only_cell_holds_no_mark"):
+        if t._guard():
+            _trace_lines(t)
+            setup, _ = _static(t, PROOF, "FarSideSetup")
+            f = _probe_fields(setup)
+            if f.get("accepted") != "True" or f.get("sideBefore") != "0" or f.get("sideAfter") != "2" or f.get("ordered") != "True":
+                raise ExpectationFailed("SITE: FarSideSetup %r (want accepted True, sideBefore 0, sideAfter 2, ordered True)" % setup)
+            read, waited, said = "", 0, []
+            while waited < 3000 and t._guard():
+                t.wait_ticks(250)
+                waited += 250
+                said += [ln for ln in _trace_lines(t) if "no face in view" in ln and "side 2" in ln]
+                read, _ = _static(t, PROOF, "FarSideRead")
+                if _probe_fields(read).get("pending") == "False":
+                    break
+            r = _probe_fields(read)
+            sides = re.search(r"sides=\d+,\d+,(\d+),\d+", read)
+            if r.get("mark") != "none" or not sides or sides.group(1) != "0":
+                raise ExpectationFailed("the south-only cell after its order: %r (want mark none and s=0; a build without the fix reads a mark, s=1)" % read)
+            if r.get("pending") != "False" or not said:
+                raise ExpectationFailed("the south-only order was not spent with the brush's trace line in %d ticks: %r; trace %s" % (waited, read, said))
+            t._current.detail = "%s; %s; %s" % (setup, read, said[0])
+            raise ExpectationFailed("MISSING TOOL: the pool pick at the south-only cell (GraffitiPool.WeightedPick) has no reader; filed as %s" % POOL_PICK_ITEM)
+
+
+def _spree_lanes(t):
+    """sc_spree_wall's six lanes: walls, a painter each on a forced RM_GraffitiPaintingSpreeBreak, 3000 ticks, painters vanished.
+    -> (lanes, [marks per lane], [spree started per painter]). The same staging as spree_wall, without its components."""
+    lanes, painters, started = _lanes(t), [], []
+    _prep_site(t, 70)
+    for ln in lanes:
+        _wall_run(t, ln["x0"], ln["wall_z"], LANE_LEN)
+    t.bridge_call("jawa/map_commit")
+    for ln in lanes:
+        r = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=ln["x0"] + LANE_LEN // 2, z=ln["wall_z"] + 2, faction="player", count=1)
+        painters.append((((r or {}).get("pawns") or [{}])[0]).get("id"))
+    _no_cleaning(t)
+    for pid in painters:
+        if pid:
+            _settle_painter(t, pid)
+            r = t.bridge_call("jawa/pawn_force_mental_break", pawn=pid, breakDef=SPREE_BREAK)
+            started.append(bool((r or {}).get("started")))
+    with _own_spree(painters):
+        t.wait_ticks(3000)
+    for ln in lanes:
+        _remove_pawns_in(t.bridge_call, ln["rect"])
+    per = [_marks_in(t, ln["rect"]) for ln in lanes] if t._guard() else []
+    return lanes, per, started
+
+
+@suite.chain("spree_variety")
+def spree_variety(t):
+    """sc_spree_variety (marks_various, inv_mark_art_set): after sc_spree_wall's six lanes, read the def and variant of every mark; at least 3
+    defs and 5 def-variant pairs. The variant (Filth_Mark.variant, Filth_Mark.cs:44) is saved but no probe prints it (VARIANT_ITEM). Control:
+    the pool gated to one def gives one def only (rules out variety from tint alone); no setting or probe gates the pool (RM_GraffitiMod.cs:41-48
+    are the eight settings), so it waits on POOL_PICK_ITEM. Restore: the runner destroys the quicktest map."""
+    lanes, per, started = [], [], []
+    with t.component("site_ready_spree_variety"):
+        _site_start(t)
+        lanes, per, started = _spree_lanes(t)
+        if t._guard():
+            if not (started and all(started)):
+                raise ExpectationFailed("not every painter entered the spree: %r" % started)
+            empty = [i for i, m in enumerate(per) if not m]
+            if empty:
+                raise ExpectationFailed("SITE: lane(s) %s hold no mark after 3000 ticks (counts %s)" % (empty, [len(m) for m in per]))
+
+    with t.component("variety_three_defs", shows=["marks_visibly_various"]):
+        if t._guard():
+            allm = [m for lane in per for m in lane]
+            hist = {}
+            for m in allm:
+                hist[m["def"]] = hist.get(m["def"], 0) + 1
+            if len(hist) < 3:
+                raise ExpectationFailed("%d mark(s) of %d def(s) over six lanes, want >= 3 defs: %s" % (len(allm), len(hist), hist))
+            t._current.detail = "%d marks, %d defs: %s" % (len(allm), len(hist), hist)
+        for ln in lanes:                                  # lane by lane at play zoom: one lane fits a 64 px/cell screen, all six do not
+            t.screenshot(rect=(ln["x0"], ln["wall_z"] - 3, LANE_LEN, 7), ppc=PLAY_PPC)
+
+    with t.component("variety_five_def_variant_pairs"):
+        if t._guard():
+            raise ExpectationFailed("MISSING TOOL: no probe prints a mark's variant (RM_GraffitiSocialProof.Marks prints def, craft, side; "
+                                    "Filth_Mark.variant is unread), so def-variant pairs cannot be counted; filed as %s" % VARIANT_ITEM)
+
+    with t.component("control_pool_gated_to_one_def"):
+        if t._guard():
+            raise ExpectationFailed("MISSING TOOL: nothing gates GraffitiPool to one def (no setting, no probe), so 'one def only' cannot be "
+                                    "staged; filed as %s" % POOL_PICK_ITEM)
+
+
+def _room(t, x0, z0, w=9, h=7):
+    """A closed, roofed w x h room (walls on its edge, a door mid-south). -> (interior centre, front-face cell under the north wall)."""
+    _walls(t, _box(x0, z0, x0 + w - 1, z0 + h - 1), door=(x0 + w // 2, z0))
+    t.bridge_call("jawa/set_roof_batch", ops="%d,%d,%d,%d" % (x0, z0, w, h), roofDef="RoofConstructed")
+    return (x0 + w // 2, z0 + h // 2), (x0 + w // 2, z0 + h - 2)
+
+
+def _room_beauty(t, cell):
+    """Room Beauty at `cell` (jawa/room_get rooms[0].stats.Beauty, JawaBenchStatTools.cs:215); an outdoor or unread room fails."""
+    r = t.bridge_call("jawa/room_get", x=cell[0], z=cell[1]) or {}
+    if not t._guard():
+        return 0.0
+    rooms = r.get("rooms") or []
+    val = ((rooms[0].get("stats") or {}).get("Beauty")) if rooms else None
+    if not isinstance(val, (int, float)):
+        raise ExpectationFailed("jawa/room_get at %s gave no indoor room Beauty: %s" % (cell, str(r)[:300]))
+    return float(val)
+
+
+def _held(t, nick, defs):
+    return [x for x in _graffiti_thoughts(t, nick) if x.get("def") in defs] if t._guard() else []
+
+
+@suite.chain("scene_art_skill")
+def scene_art_skill(t):
+    """sc_art_skill (art_skill, inv_beauty_and_craft): in two identical closed rooms painters of Artistic 2 and 16 each paint ART_DEF on the
+    front face; room Beauty falls for the skill-2 hand and rises for the skill-16 one (a crafted mark's Beauty is CraftBeauty(craft),
+    RM_GraffitiKernel.cs:1029, through StatPart_GraffitiCraft); the skill-2 room's viewer holds RM_Graffiti_UglyMark (negative), the skill-16
+    room's RM_Graffiti_FineArt (positive) (GraffitiSocial.cs:436). A third pair: a skilled feuding painter's mockery of a named colonist; its
+    subject holds anger (RM_Graffiti_Humiliated, as in scene_mockery) and beauty (RM_Graffiti_FineArt) together. Control: the same def with
+    craft at Normal (spawned with no maker: hasCraft false, Filth_Mark.cs:422) in a second identical pair gives equal Beauty and no
+    skill-signed thought. The raider-pressure settings join the start once PRESSURE_ITEM lands. Restore: the runner destroys the quicktest map."""
+    x, z = t.anchor
+    rooms = {"low": (x - 13, z - 3), "high": (x + 5, z - 3), "ctl_a": (x - 13, z - 14), "ctl_b": (x + 5, z - 14)}
+    cells, base, marks = {}, {}, {}
+    cast = {"low": ("GrfArt2", 2, "GrfSeeLow"), "high": ("GrfArt16", 16, "GrfSeeHigh")}
+    mock_painter, mock_subject = "GrfMockArt", "GrfMockSubj"
+    mock_at = (x, z + 9)
+    craft_defs = ("RM_Graffiti_FineArt", "RM_Graffiti_UglyMark")
+    with t.component("site_ready_art_skill"):
+        _site_start(t)
+        if _pressure_built():
+            _need_pressure("the 3 raider-pressure settings at shipped defaults")
+        _prep_site(t, 40)
+        for key, (rx, rz) in sorted(rooms.items()):
+            cells[key] = _room(t, rx, rz)
+        _wall_run(t, x - 6, z + 10, 13)                   # the mockery's wall; its front face is row z + 9
+        t.bridge_call("jawa/map_commit")
+        base = {k: _room_beauty(t, c[0]) for k, c in cells.items()}
+        if t._guard() and len({round(v, 2) for v in base.values()}) != 1:
+            raise ExpectationFailed("SITE: the four empty rooms differ in Beauty before any mark: %s" % base)
+        for key, (painter, art, viewer) in sorted(cast.items()):
+            _recruit(t, painter, PLAIN, art)
+            _recruit(t, viewer)
+        for viewer in ("GrfSeeCtlA", "GrfSeeCtlB"):
+            _recruit(t, viewer)
+        _no_cleaning(t)
+        for key, (painter, art, viewer) in sorted(cast.items()):
+            mid, m = _order_mark(t, painter, ART_DEF, "", *cells[key][1])
+            if t._guard():
+                craft, line = _craft_at(t, *cells[key][1])
+                marks[key] = (mid, craft, line)
+            t.bridge_call("jawa/set_draft", pawnId=painter, drafted=True)
+            t.bridge_call("jawa/order_pawn", pawnId=painter, x=x + 18, z=z + 16, waitTicks=0)
+        if t._guard():
+            lo, hi = marks["low"][1], marks["high"][1]
+            if lo > 1 or hi < 3:              # CraftStage (RM_GraffitiKernel.cs:1059): poor or worse is ugly, good or better is fine art
+                raise ExpectationFailed("SITE: the crafts came out skill 2 %s, skill 16 %s (want poor or worse, good or better); re-stage: %s"
+                                        % (CRAFTS[lo], CRAFTS[hi], [marks[k][2] for k in marks]))
+            t._current.detail = "empty rooms %s; skill 2 %s, skill 16 %s" % (base, CRAFTS[lo], CRAFTS[hi])
+
+    with t.component("room_beauty_follows_skill", shows=["mark_ugliness_is_visible"]):
+        if t._guard():
+            after = {k: _room_beauty(t, cells[k][0]) for k in ("low", "high")}
+            if not (after["low"] < base["low"] and after["high"] > base["high"]):
+                raise ExpectationFailed("room Beauty (before -> after): skill 2 %.2f -> %.2f (want lower), skill 16 %.2f -> %.2f (want higher)"
+                                        % (base["low"], after["low"], base["high"], after["high"]))
+            t._current.detail = "skill 2 %.2f -> %.2f; skill 16 %.2f -> %.2f" % (base["low"], after["low"], base["high"], after["high"])
+        for key in ("low", "high"):
+            fx, fz = cells[key][1]
+            t.screenshot(rect=(fx - 4, fz - 4, 9, 7), padding=0, ppc=PLAY_PPC)
+
+    with t.component("viewers_take_the_skill_signed_thought"):
+        for key in ("low", "high"):
+            _hold_at(t, cast[key][2], *cells[key][0])
+        t.wait_ticks(2500)
+        if t._guard():
+            ugly = _held(t, "GrfSeeLow", ("RM_Graffiti_UglyMark",))
+            fine = _held(t, "GrfSeeHigh", ("RM_Graffiti_FineArt",))
+            if not ugly or float(ugly[0].get("moodOffset") or 0) >= 0:
+                raise ExpectationFailed("the skill-2 room's viewer holds no negative UglyMark: %s" % _graffiti_thoughts(t, "GrfSeeLow"))
+            if not fine or float(fine[0].get("moodOffset") or 0) <= 0:
+                raise ExpectationFailed("the skill-16 room's viewer holds no positive FineArt: %s" % _graffiti_thoughts(t, "GrfSeeHigh"))
+            t._current.detail = "UglyMark %+.1f; FineArt %+.1f" % (float(ugly[0]["moodOffset"]), float(fine[0]["moodOffset"]))
+
+    with t.component("skilled_mockery_hurts_and_pleases"):
+        if t._guard():
+            _recruit(t, mock_painter, PLAIN, 16)
+            _recruit(t, mock_subject)
+            _no_cleaning(t)
+            _static(t, SOCIAL_PROOF, "Feud", "%s/%s" % (mock_painter, mock_subject))
+            _hold_at(t, mock_subject, mock_at[0], mock_at[1] - 3, ticks=300)
+            _order_mark(t, mock_painter, MOCKERY_DEF, mock_subject, *mock_at)
+            craft, line = _craft_at(t, *mock_at)
+            if craft < 3:
+                raise ExpectationFailed("SITE: the skilled mockery came out %s (want good: Mockery is a Tag, ceiling good); re-stage: %s" % (CRAFTS[craft], line))
+            t.bridge_call("jawa/set_draft", pawnId=mock_painter, drafted=True)
+            t.bridge_call("jawa/order_pawn", pawnId=mock_painter, x=x + 18, z=z + 16, waitTicks=0)
+            t.wait_ticks(2000)
+            have = {th.get("def"): th for th in _graffiti_thoughts(t, mock_subject)}
+            if "RM_Graffiti_Humiliated" not in have or "RM_Graffiti_FineArt" not in have:
+                raise ExpectationFailed("the mockery's subject holds %s; want RM_Graffiti_Humiliated and RM_Graffiti_FineArt together (%s)"
+                                        % (sorted(have), line))
+            t._current.detail = "%s; Humiliated %+.1f, FineArt %+.1f" % (line, float(have["RM_Graffiti_Humiliated"].get("moodOffset") or 0),
+                                                                          float(have["RM_Graffiti_FineArt"].get("moodOffset") or 0))
+
+    with t.component("control_normal_craft_equal_beauty_no_thought"):
+        if t._guard():
+            for key in ("ctl_a", "ctl_b"):
+                fx, fz = cells[key][1]
+                t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (ART_DEF, fx, fz))
+            for key, viewer in (("ctl_a", "GrfSeeCtlA"), ("ctl_b", "GrfSeeCtlB")):
+                _hold_at(t, viewer, *cells[key][0], ticks=0)
+            t.wait_ticks(2500)
+            lines = [_mark_line(t, cells[k][1]) for k in ("ctl_a", "ctl_b")]
+            if not all(ln and " craft - " in ln for ln in lines):
+                raise ExpectationFailed("SITE: the control marks are not at Normal with no maker's craft: %s" % lines)
+            ba, bb = _room_beauty(t, cells["ctl_a"][0]), _room_beauty(t, cells["ctl_b"][0])
+            if abs(ba - bb) > 0.01:
+                raise ExpectationFailed("the same def at Normal craft in two identical rooms: Beauty %.2f vs %.2f" % (ba, bb))
+            signed = _held(t, "GrfSeeCtlA", craft_defs) + _held(t, "GrfSeeCtlB", craft_defs)
+            if signed:
+                raise ExpectationFailed("a Normal-craft mark gave a skill-signed thought: %s" % signed)
+            t._current.detail = "Beauty %.2f = %.2f; %s" % (ba, bb, lines)
