@@ -7691,3 +7691,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_GAME_HEALTH_DEBUG_PXQI","result":"kept","detail":"sweep: running again","ts":"2026-11-16T09:18:05Z","tsn":1794820685326065398}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"broken","detail":"Ops alarm WRAPUP_DEBRIS: wrapup.debris_standing = 1 filed wrap-up rows still standing (MEASURED), line > 0","ts":"2026-11-16T09:20:14Z","tsn":1794820814988049263}
 {"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T09:20:20Z","tsn":1794820820815637233}
+{"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"broken","detail":"Ops alarm WRAPUP_DEBRIS: wrapup.debris_standing = 1 filed wrap-up rows still standing (MEASURED), line > 0","ts":"2026-11-16T09:21:33Z","tsn":1794820893339722919}
+{"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-16T09:21:39Z","tsn":1794820899236972303}
