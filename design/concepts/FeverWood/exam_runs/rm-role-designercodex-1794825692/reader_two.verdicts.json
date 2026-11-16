@@ -1,0 +1,214 @@
+{
+  "verdicts": [
+    {
+      "id": "examiner_marsh_base_shortcut",
+      "verdict": "reject",
+      "leaves": [
+        "branch_home"
+      ],
+      "reason": "The heavy base is built on untreated marsh and ordinary jobs finish without using branch routes. This matches branch_home's stated failure exactly."
+    },
+    {
+      "id": "examiner_heavy_pawn_mud",
+      "verdict": "accept",
+      "leaves": [
+        "mud_escape"
+      ],
+      "reason": "Mud holds by weight, causes no injury and allows both self-release and companion extraction, as mud_escape requires."
+    },
+    {
+      "id": "examiner_static_trunk",
+      "verdict": "reject",
+      "leaves": [
+        "living_wood"
+      ],
+      "reason": "The excavated trunk never changes and the borer extends no visible gallery. This is living_wood's stated failure."
+    },
+    {
+      "id": "examiner_great_pool_reach",
+      "verdict": "accept",
+      "leaves": [
+        "pool_reach"
+      ],
+      "reason": "Reach grows with pool size at matched distances, and large-pool encounter eligibility is checked separately rather than inferred from reach."
+    },
+    {
+      "id": "examiner_distant_helper_late",
+      "verdict": "accept",
+      "leaves": [
+        "shore_rescue"
+      ],
+      "reason": "A real seizure creates a nonlethal timed obligation. Nearby carrying clears the deadline, and distant help arrives too late, which is permitted because it is not guaranteed."
+    },
+    {
+      "id": "examiner_porter_mapwide_loss",
+      "verdict": "reject",
+      "leaves": [
+        "pool_memory"
+      ],
+      "reason": "One attack removes treasure service at every pool while danger at the attacked pool is unchanged. This is pool_memory's stated failure."
+    },
+    {
+      "id": "examiner_double_hush",
+      "verdict": "reject",
+      "leaves": [
+        "crown_warning"
+      ],
+      "reason": "Crown sound ignores the living bird population and resumes while a second hush is still active."
+    },
+    {
+      "id": "examiner_mirror_list_trader",
+      "verdict": "accept",
+      "leaves": [
+        "mirror_intel"
+      ],
+      "reason": "The list is obtained through a supplied trader lane and shows an independent dated snapshot. Reading it leaves danger unchanged."
+    },
+    {
+      "id": "examiner_ambient_body",
+      "verdict": "reject",
+      "leaves": [
+        "driveoff_ladder",
+        "retired_absence"
+      ],
+      "reason": "Ambient whole-body emergence must stay excluded and is reserved for plot material. Limbs and the eye do not license a routine ambient whole body."
+    },
+    {
+      "id": "examiner_disabled_foul_haul",
+      "verdict": "accept",
+      "leaves": [
+        "adult_quiet"
+      ],
+      "reason": "Disabling the feature mid-transit returns the treatment intact, and the defeated adult makes no shared Tenant strikes."
+    },
+    {
+      "id": "examiner_tank_failed_place",
+      "verdict": "reject",
+      "leaves": [
+        "captive_economy"
+      ],
+      "reason": "The tank teaches despite failed placement, and a fatal hit silently deletes the captive. Both are captive_economy's stated failures."
+    },
+    {
+      "id": "examiner_wrong_pool_poison",
+      "verdict": "accept",
+      "leaves": [
+        "delayed_establishment"
+      ],
+      "reason": "Establishment lasts several days and is unaffected by poisoning another pool. The right poison at the young's own pool stops it, and the adult does not revive immediately."
+    },
+    {
+      "id": "examiner_display_double_pay",
+      "verdict": "reject",
+      "leaves": [
+        "return_bargain"
+      ],
+      "reason": "A repeated display release pays the reward twice, which is return_bargain's stated failure."
+    },
+    {
+      "id": "examiner_bait_converge",
+      "verdict": "accept",
+      "leaves": [
+        "bait_wager"
+      ],
+      "reason": "Normal bait work produces a delayed raid from separate edges. Raiders keep converging on the available bait after their first actions."
+    },
+    {
+      "id": "examiner_hive_alarm_noop",
+      "verdict": "reject",
+      "leaves": [
+        "living_hive"
+      ],
+      "reason": "The rooms are navigable, but the alarm never changes the retreat route, which living_hive's altered-retreat requirement forbids."
+    },
+    {
+      "id": "examiner_ambusher_chase",
+      "verdict": "reject",
+      "leaves": [
+        "native_life"
+      ],
+      "reason": "Home-water drinking is correct, but the ambusher pursues escaping prey across the map. This violates the ambush contract in native_life."
+    },
+    {
+      "id": "examiner_spark_haze",
+      "verdict": "accept",
+      "leaves": [
+        "oil_opportunity"
+      ],
+      "reason": "A real harvest pays out and a real spark flashes eligible haze, while the permanently defeated adult stays inactive."
+    },
+    {
+      "id": "examiner_lure_kidnap",
+      "verdict": "reject",
+      "leaves": [
+        "retired_absence"
+      ],
+      "reason": "Theft and raid-back must stay absent, yet a normal lure raid steals a colonist and carries them off."
+    },
+    {
+      "id": "challenger_reload_rescue_clock",
+      "verdict": "reject",
+      "leaves": [
+        "ordinary_walk",
+        "shore_rescue"
+      ],
+      "reason": "Reload cancels the active rescue deadline, so the victim can never be lost. This is ordinary_walk's stated failure and breaks the timed rescue obligation."
+    },
+    {
+      "id": "challenger_poison_wrong_pool",
+      "verdict": "reject",
+      "leaves": [
+        "delayed_establishment"
+      ],
+      "reason": "Only the right poison at the young's own pool A may stop maturity. Poisoning disconnected pool B must not stop A's countdown."
+    },
+    {
+      "id": "challenger_mirror_list_reader_bleed",
+      "verdict": "reject",
+      "leaves": [
+        "mirror_intel"
+      ],
+      "reason": "Reading the list raises actual agitation and strike chance at the reader's pool. The intel must report a snapshot without editing danger."
+    },
+    {
+      "id": "challenger_overlapping_hush_order",
+      "verdict": "reject",
+      "leaves": [
+        "crown_warning"
+      ],
+      "reason": "Ambience and calls resume while the sentinel hush reason is still active. Neither may resume until all hush reasons end."
+    },
+    {
+      "id": "challenger_disabled_mid_haul",
+      "verdict": "reject",
+      "leaves": [
+        "adult_quiet"
+      ],
+      "reason": "Disabling the feature in transit consumed the charges. Disabled treatment must be returned."
+    },
+    {
+      "id": "challenger_second_front_same_edge",
+      "verdict": "reject",
+      "leaves": [
+        "bait_wager"
+      ],
+      "reason": "The second front enters beside the first even though a separate reachable approach exists. This is bait_wager's stated failure."
+    },
+    {
+      "id": "challenger_porter_grievance_global",
+      "verdict": "reject",
+      "leaves": [
+        "pool_memory"
+      ],
+      "reason": "Grievance must belong only to pool A and raise A's danger. Here service stops at both pools and A's hostility is unchanged."
+    },
+    {
+      "id": "challenger_lone_mud_selfrelease",
+      "verdict": "accept",
+      "leaves": [
+        "mud_escape"
+      ],
+      "reason": "Weight-scaled trapping holds without injury and allows self-release. A lighter traveller passing freely is consistent with weight scaling."
+    }
+  ]
+}

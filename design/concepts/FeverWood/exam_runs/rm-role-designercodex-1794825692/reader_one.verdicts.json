@@ -1,0 +1,216 @@
+{
+  "verdicts": [
+    {
+      "id": "examiner_marsh_base_shortcut",
+      "verdict": "reject",
+      "leaves": [
+        "branch_home"
+      ],
+      "reason": "The heavy base is built on untreated marsh and ordinary jobs finish without the branch routes. This is the stated red failure."
+    },
+    {
+      "id": "examiner_heavy_pawn_mud",
+      "verdict": "accept",
+      "leaves": [
+        "mud_escape"
+      ],
+      "reason": "Mud holds by weight, the stuck pawn takes no injury, self-release works and a companion pulls another pawn free."
+    },
+    {
+      "id": "examiner_static_trunk",
+      "verdict": "reject",
+      "leaves": [
+        "living_wood"
+      ],
+      "reason": "The trunk never changes after excavation and the borer opens no visible gallery. This matches the red failure."
+    },
+    {
+      "id": "examiner_great_pool_reach",
+      "verdict": "accept",
+      "leaves": [
+        "pool_reach"
+      ],
+      "reason": "Reach grows with pool size, and large-pool encounter eligibility is checked separately rather than inferred from reach."
+    },
+    {
+      "id": "examiner_distant_helper_late",
+      "verdict": "accept",
+      "leaves": [
+        "shore_rescue"
+      ],
+      "reason": "A real seizure leaves the colonist alive under a deadline. Nearby carrying clears the deadline, and distant help is not guaranteed."
+    },
+    {
+      "id": "examiner_porter_mapwide_loss",
+      "verdict": "reject",
+      "leaves": [
+        "pool_memory"
+      ],
+      "reason": "One attack removes treasure service at every pool and changes no local danger. This is the red failure."
+    },
+    {
+      "id": "examiner_double_hush",
+      "verdict": "reject",
+      "leaves": [
+        "crown_warning"
+      ],
+      "reason": "The sound resumes while a second hush still holds it and ignores the living bird population."
+    },
+    {
+      "id": "examiner_mirror_list_trader",
+      "verdict": "accept",
+      "leaves": [
+        "mirror_intel"
+      ],
+      "reason": "The list comes through a supported supply lane and shows an independent dated snapshot. Reading leaves danger unchanged."
+    },
+    {
+      "id": "examiner_ambient_body",
+      "verdict": "reject",
+      "leaves": [
+        "driveoff_ladder",
+        "retired_absence"
+      ],
+      "reason": "Whole-body emergence occurs as a routine ambient event, but it must stay excluded from ambient play as plot-reserved material."
+    },
+    {
+      "id": "examiner_disabled_foul_haul",
+      "verdict": "accept",
+      "leaves": [
+        "adult_quiet",
+        "supported_checkout"
+      ],
+      "reason": "Treatment disabled in transit is returned intact, and the defeated adult agrees with the shared Tenant by making no strikes."
+    },
+    {
+      "id": "examiner_tank_failed_place",
+      "verdict": "reject",
+      "leaves": [
+        "captive_economy"
+      ],
+      "reason": "The tank teaches on failed placement and a fatal hit silently deletes the captive. Both are red failures."
+    },
+    {
+      "id": "examiner_wrong_pool_poison",
+      "verdict": "accept",
+      "leaves": [
+        "delayed_establishment"
+      ],
+      "reason": "The young establishes over several days without immediate revival. Wrong-pool poison fails, and the right poison at its own pool stops it."
+    },
+    {
+      "id": "examiner_display_double_pay",
+      "verdict": "reject",
+      "leaves": [
+        "return_bargain"
+      ],
+      "reason": "A repeated display release pays the reward twice. This is the stated red failure."
+    },
+    {
+      "id": "examiner_bait_converge",
+      "verdict": "accept",
+      "leaves": [
+        "bait_wager"
+      ],
+      "reason": "Normal bait work produces a delayed two-front wager from separate edges. Raiders keep converging on the bait while it is available."
+    },
+    {
+      "id": "examiner_hive_alarm_noop",
+      "verdict": "reject",
+      "leaves": [
+        "living_hive"
+      ],
+      "reason": "The alarm never changes the intruder retreat route, which the contract requires to be altered."
+    },
+    {
+      "id": "examiner_ambusher_chase",
+      "verdict": "reject",
+      "leaves": [
+        "native_life"
+      ],
+      "reason": "The ambusher pursues escaping prey across the map, violating its ambush contract, even though drinking is correct."
+    },
+    {
+      "id": "examiner_spark_haze",
+      "verdict": "accept",
+      "leaves": [
+        "oil_opportunity"
+      ],
+      "reason": "A real harvest yields product, and a real spark flashes eligible haze without waking the permanently defeated adult."
+    },
+    {
+      "id": "examiner_lure_kidnap",
+      "verdict": "reject",
+      "leaves": [
+        "retired_absence"
+      ],
+      "reason": "A normal lure raid steals a colonist, but theft must stay absent. This is the red failure."
+    },
+    {
+      "id": "challenger_reload_rescue_clock",
+      "verdict": "reject",
+      "leaves": [
+        "ordinary_walk",
+        "shore_rescue"
+      ],
+      "reason": "Reload cancels the active rescue deadline, so the obligation is forgiven instead of surviving the mid-consequence save."
+    },
+    {
+      "id": "challenger_poison_wrong_pool",
+      "verdict": "reject",
+      "leaves": [
+        "delayed_establishment"
+      ],
+      "reason": "Poison at disconnected pool B stops A's establishment, but only the right poison at that particular pool may do so."
+    },
+    {
+      "id": "challenger_mirror_list_reader_bleed",
+      "verdict": "reject",
+      "leaves": [
+        "mirror_intel"
+      ],
+      "reason": "Reading raises pool A's actual agitation and strike chance. The list must not edit danger, and its snapshot is not independent."
+    },
+    {
+      "id": "challenger_overlapping_hush_order",
+      "verdict": "reject",
+      "leaves": [
+        "crown_warning"
+      ],
+      "reason": "Ambience and calls resume while the sentinel hush is still active, but neither may resume until all hush reasons end."
+    },
+    {
+      "id": "challenger_disabled_mid_haul",
+      "verdict": "reject",
+      "leaves": [
+        "adult_quiet",
+        "supported_checkout"
+      ],
+      "reason": "Disabling the feature in transit consumes the treatment charges instead of returning them."
+    },
+    {
+      "id": "challenger_second_front_same_edge",
+      "verdict": "reject",
+      "leaves": [
+        "bait_wager"
+      ],
+      "reason": "The second front enters beside the first even though a separate reachable approach exists. This is the red failure."
+    },
+    {
+      "id": "challenger_porter_grievance_global",
+      "verdict": "reject",
+      "leaves": [
+        "pool_memory"
+      ],
+      "reason": "The grievance stops porters at both pools and raises no danger at A, but it belongs to the attacked pool and must raise its danger."
+    },
+    {
+      "id": "challenger_lone_mud_selfrelease",
+      "verdict": "accept",
+      "leaves": [
+        "mud_escape"
+      ],
+      "reason": "Weight-scaled mud holds the heavy pawn without injury and allows self-escape, while the light pawn crosses freely."
+    }
+  ]
+}

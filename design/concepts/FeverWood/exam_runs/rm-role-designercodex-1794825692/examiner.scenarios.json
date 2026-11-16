@@ -1,0 +1,130 @@
+{
+  "scenarios": [
+    {
+      "id": "examiner_marsh_base_shortcut",
+      "text": "A tester starts a FeverWood colony and orders a heavy stone workshop and bedroom block placed directly on untreated marsh. The build goes ahead normally. Over the next days the colonists haul, cook and harvest using only ground paths. They never set foot on the branch routes, and no job is slower or harder for skipping them.",
+      "expect": "reject: Branch routes must govern ordinary work. Marsh must refuse heavy building unless stilts are used. Here the colony ignores the routes and builds heavily on untreated marsh.",
+      "expect_source": "leaf:branch_home",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_heavy_pawn_mud",
+      "text": "A heavily loaded hauler and a light child both walk into sink-mud. The hauler is held fast while the child only wades. The hauler takes no injury while stuck. After a while the hauler struggles free alone. Later another colonist is held, and a nearby companion walks over and pulls them out.",
+      "expect": "accept: The mud's hold scales with weight and causes no injury. The scenario shows both a self escape and a companion-assisted escape.",
+      "expect_source": "leaf:mud_escape",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_static_trunk",
+      "text": "A colonist hollows out a living trunk to make a shelter. Many days pass and the excavated trunk looks and behaves exactly the same as when the digging finished. A borer creature sits against the living wood but never makes any visible tunnel.",
+      "expect": "reject: Living trunks must regrow and borers must extend slow, visible galleries. Here the trunk never changes and the borer makes no gallery.",
+      "expect_source": "leaf:living_wood",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_great_pool_reach",
+      "text": "A tester stands colonists at matching distances from a small pool and from a great pool. Limbs from the great pool reach colonists that the small pool cannot reach. Separately, the tester confirms that the encounter which only large pools can host is checked through its own eligibility. That eligibility is not inferred from the reach difference.",
+      "expect": "accept: Danger reach grows with pool size, and large-pool encounter eligibility is handled separately from reach.",
+      "expect_source": "leaf:pool_reach",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_distant_helper_late",
+      "text": "A limb rising from the water seizes a colonist on the shore. The colonist is alive and held under an active rescue deadline. In one trial, a companion working a few steps away runs over, breaks the hold, and carries the colonist away before the deadline, which then clears. In a second trial, the only companion is across the map and arrives after the deadline has passed.",
+      "expect": "accept: The seizure is real and does not kill instantly. Nearby help succeeds and the carry clears the deadline. Distant help is not guaranteed to work in time.",
+      "expect_source": "leaf:shore_rescue",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_porter_mapwide_loss",
+      "text": "A colonist attacks a porter at the north pool. Immediately, every pool on the map stops offering treasure service. The danger level at the north pool stays exactly where it was before the attack.",
+      "expect": "reject: The grievance and the raised danger should belong to the attacked pool. Here service is removed everywhere and local hostility does not change.",
+      "expect_source": "leaf:pool_memory",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_double_hush",
+      "text": "Two separate water hushes begin at overlapping times, and the crown ambience goes silent. The first hush ends while the second is still active, and the crown birdsong resumes at once. Killing most of the living crown birds earlier did not change the crown sound in any way.",
+      "expect": "reject: The crown sound must reflect the living bird population and stay silent while any shared hush still holds. Both requirements fail here.",
+      "expect_source": "leaf:crown_warning",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_mirror_list_trader",
+      "text": "A player buys a mirror list from a trader stock entry that the mod supplies. When a colonist reads it, it shows a dated snapshot of the pools' hazards that was taken independently of the reading. The pools' danger values are unchanged before and after the reading.",
+      "expect": "accept: The intelligence comes through a supported supply lane and reports an independent dated snapshot. Reading it does not edit danger.",
+      "expect_source": "leaf:mirror_intel",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_ambient_body",
+      "text": "Colonists drive off several ordinary limbs and receive small periods of relief. They then drive off the large-pool eye and receive a longer relief. A few days later, with no plot or campaign event involved, the whole body of the creature emerges from the water as a routine ambient event.",
+      "expect": "reject: The relief ladder itself works, but ambient whole-body emergence must stay excluded. It is reserved for plot and campaign material.",
+      "expect_source": "leaf:driveoff_ladder",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_disabled_foul_haul",
+      "text": "A colonist is carrying a pool-fouling treatment toward a pool when the player turns that feature off in settings. The haul job stops, and the treatment item is dropped back intact, with its full count still in the colony's stock. Elsewhere, an adult defeated earlier makes no further strikes through the shared Tenant.",
+      "expect": "accept: The disabled treatment is returned rather than consumed, and the adult's defeat agrees with the shared strikes.",
+      "expect_source": "leaf:adult_quiet",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_tank_failed_place",
+      "text": "A player tries to place a captive tank, but the placement fails and no tank is installed. The colonist still receives the tank's teaching bonus. Later, a working tank takes a fatal hit, and its captive disappears with no corpse, no escape and no message.",
+      "expect": "reject: Teaching should come only after placement, and damage must preserve a distinct outcome for the occupant. Here teaching happens on a failed placement and the captive is silently deleted.",
+      "expect_source": "leaf:captive_economy",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_wrong_pool_poison",
+      "text": "A young escapes into the east pool and begins establishing there over several in-game days. The player first poisons the west pool, and the establishment continues. The player then uses the correct poison on the east pool before the interval ends, and the establishment stops. The adult never revived immediately when the young escaped.",
+      "expect": "accept: The young establishes over several days and is not revived immediately. Only the right poison at its own pool stops it, which matches the sole specified intervention.",
+      "expect_source": "leaf:delayed_establishment",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_display_double_pay",
+      "text": "A player keeps a held young on display for the campaign bargain and then releases it, receiving the reward. Through a repeated display release of the same bargain, the player receives the full reward a second time.",
+      "expect": "reject: The display bargain must stay real and persistent, and a repeated display release must not pay rewards twice.",
+      "expect_source": "leaf:return_bargain",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_bait_converge",
+      "text": "The colony sets out living bait through its normal bait work. After a delay, two raid groups arrive from clearly separate map edges. Both groups head for the bait and keep targeting it after their first actions, while it remains available.",
+      "expect": "accept: This is a delayed two-front wager. The fronts are distinct and the raiders actually converge on the bait.",
+      "expect_source": "leaf:bait_wager",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_hive_alarm_noop",
+      "text": "A party enters the live inland hive. Its generated interior has walkable rooms, a farm chamber and guarded deeper rooms. When the colonists trigger the hive alarm, they retreat along exactly the same path they used to enter, and nothing about the exit route has changed.",
+      "expect": "reject: The live hive must give an altered retreat when reacting to intruders. Here the alarm never changes the intruders' retreat route.",
+      "expect_source": "leaf:living_hive",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_ambusher_chase",
+      "text": "A native ambusher creature lies in wait and strikes at a passing deer. The deer escapes, and the ambusher leaves its spot and pursues the deer all the way across the map. Native animals drink from their home pools without dehydrating.",
+      "expect": "reject: Natives must respect their ambush contracts. Following escaping prey across the map breaks that contract, even though the home-water drinking is correct.",
+      "expect_source": "leaf:native_life",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_spark_haze",
+      "text": "A colonist harvests from an oil-boil and receives its product. Later, a real spark near eligible ground haze makes the haze flash. A permanently defeated adult in a pool next to the flash stays inactive.",
+      "expect": "accept: Harvesting gives a real reward, a real ignition flashes eligible haze, and the flash does not wake a permanently defeated adult.",
+      "expect_source": "leaf:oil_opportunity",
+      "by": "examiner"
+    },
+    {
+      "id": "examiner_lure_kidnap",
+      "text": "A normal lure raid arrives. One raider grabs a colonist and leaves the map carrying them. The raiders then take the colonist back to the raiders' own base as a captive.",
+      "expect": "reject: Theft and raid-back must stay absent. Here a normal lure raid steals a colonist.",
+      "expect_source": "leaf:retired_absence",
+      "by": "examiner"
+    }
+  ]
+}

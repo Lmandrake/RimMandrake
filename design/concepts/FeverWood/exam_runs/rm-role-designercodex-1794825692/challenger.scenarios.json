@@ -1,0 +1,60 @@
+{
+  "scenarios": [
+    {
+      "id": "challenger_reload_rescue_clock",
+      "text": "A colonist hauling along the shore is seized by a real water snare, downed and given a rescue timer with a short time left. The player saves, then reloads. After the reload the colonist is still downed at the shore, but no timer is attached any more. A companion walks over slowly and carries them clear, and the colonist is never lost no matter how long the walk takes. Everything else in the save loads correctly.",
+      "expect": "reject: reload must keep the active rescue deadline rather than forgive it; here the reload cancelled the deadline",
+      "expect_source": "leaf:ordinary_walk",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_poison_wrong_pool",
+      "text": "A neglected tank breaks and its armed young escapes into registered pool A, starting a countdown of several days. The player has the correct poison and completes a normal poisoning job at disconnected pool B, which is closer to the base. A's countdown stops, and the adult never returns to the map.",
+      "expect": "reject: only the right poison applied at the young's particular pool may prevent maturity; treating another pool must not",
+      "expect_source": "leaf:delayed_establishment",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_mirror_list_reader_bleed",
+      "text": "The player buys a mirror list from a trader in the supported campaign context. A colonist reads it through the normal item job while standing on the shore of calm pool A. The list shows a dated snapshot. Right after the reading, pool A's actual agitation and strike chance rise above their values before the reading, and the list reports the new raised value.",
+      "expect": "reject: reading must not edit danger; here reading the list manufactured agitation",
+      "expect_source": "leaf:mirror_intel",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_overlapping_hush_order",
+      "text": "A colonist works at a fixed crown position while a live flock is calling. A sentinel limb rises and the crown ambience and bird calls go silent. While the sentinel is still up, a mirror breaks and starts its own timed hush. The sentinel's hush reason stays active, but the mirror-break hush times out. Both the ambience and the individual bird calls resume at once, while the sentinel is still standing.",
+      "expect": "reject: neither sound source may resume until every applicable hush reason has ended; here they resumed while the sentinel still held the hush",
+      "expect_source": "leaf:crown_warning",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_disabled_mid_haul",
+      "text": "The player designates a normal suppression job at the adult's pool. A colonist picks up the treatment charges and starts carrying them. Partway there, the player turns the withdrawal feature off in the settings screen. The job ends, the colonist's inventory shows the charges gone, and no quiet clock starts.",
+      "expect": "reject: disabling during transit must return the treatment and spend none; here it was consumed",
+      "expect_source": "leaf:adult_quiet",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_second_front_same_edge",
+      "text": "The player designates a living animal as bait, has it subdued without killing it, hauled and staked through normal work. A first raider faction arrives and keeps closing on the stake throughout the fight. A few hours later the second faction enters from the same map edge, a few cells from where the first group came in, even though a separate reachable approach exists.",
+      "expect": "reject: the second front must come later from a separated reachable approach; here it entered beside the first",
+      "expect_source": "leaf:bait_wager",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_porter_grievance_global",
+      "text": "Two disconnected registered pools, A and B, each have a porter that delivers goods and withdraws. A colonist shoots and wounds A's porter. Afterwards neither pool's porter delivers again. The strike chance and strike selection at A stay exactly at their pre-attack baseline, and so do B's. Reloading keeps this state.",
+      "expect": "reject: the grievance and raised danger must belong to the attacked pool only; here service stopped map-wide and local hostility did not change",
+      "expect_source": "leaf:pool_memory",
+      "by": "challenger"
+    },
+    {
+      "id": "challenger_lone_mud_selfrelease",
+      "text": "A heavily loaded colonist steps onto skimmel-covered sink-mud far from any pool, with no enemies on the map and no companion nearby. The colonist becomes stuck and stays stuck for a while. Their health never changes. Then they work free on their own and walk on. A lightly loaded colonist crosses the same patch earlier without getting stuck.",
+      "expect": "accept: weight-scaled holding with no mud injury and self-escape meets the leaf; a helper or a nearby danger is not required for this case",
+      "expect_source": "leaf:mud_escape",
+      "by": "challenger"
+    }
+  ]
+}

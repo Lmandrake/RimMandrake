@@ -1,0 +1,72 @@
+{
+  "run": "rm-role-designercodex-1794825692",
+  "author": "rm-role-designercodex-1794810374",
+  "frozen_inputs": {
+    "exam": null,
+    "floor": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "854d4197f2c1aa01564219e21751ab07bf20065d78e431ccca70382672ee785c",
+    "scenes": "92a9acc19a47073553cc2f082f1cd5b03d038093a0bb9ea7d854363a1d0cd6ff",
+    "sheet": "76035605f9e4f8631d54424a48ddc5761ff32f1bde91b4dab7c35277810ce48f",
+    "tree": "26618044eb57637847e65c0167d49ef3d356ac95c7224145e1c2965f967e259d"
+  },
+  "model": "opus",
+  "process": "fresh claude_bounded.sh -p --model opus --output-format json",
+  "boundary": "All helpers receive embedded permitted content. Built-in tools, MCP servers, project configuration, hooks, skills and memory loading are disabled for each process.",
+  "roles": {
+    "examiner": {
+      "inputs": [
+        "sheet.md"
+      ],
+      "output": "18 source-backed scenarios"
+    },
+    "challenger": {
+      "inputs": [
+        "sheet.md",
+        "tree.json"
+      ],
+      "output": "8 adversarial source-backed scenarios"
+    },
+    "reader_one": {
+      "inputs": [
+        "sheet.md",
+        "tree.json",
+        "scenario id and text"
+      ],
+      "output": "independent verdicts with leaf citations"
+    },
+    "reader_two": {
+      "inputs": [
+        "sheet.md",
+        "tree.json",
+        "scenario id and text"
+      ],
+      "output": "independent verdicts with leaf citations"
+    },
+    "control": {
+      "inputs": [
+        "exam_control/sheet.md",
+        "exam_control/tree.json",
+        "scenario id and text"
+      ],
+      "output": "independent verdicts with leaf citations"
+    }
+  },
+  "held_out": "Scenario expectations and sources are withheld from both Readers and the Control. Reader predictions are withheld from other helpers. Frozen scenarios are validation-only for this tree. Input edits require a new stage and fresh exam.",
+  "independence_axis": "Fresh-process and cross-model independence from the Codex maker. Both Readers interpret the same published contract, so agreement establishes contract readability.",
+  "scenarios_hash": "d3cf8e67489ae3b338844bf4fc425811e05f3d75f3dcf81cc52649eafac93255",
+  "control_copy_review": {
+    "removed_leaf": "mirror_intel",
+    "paraphrases_reviewed": "All surviving tree fields and sheet lines reviewed. Remaining mirror references concern mirror-break hush and mirror-side ruins. Remaining snapshots concern proof adapters, gallery observation and reload obligations. No surviving clause describes mirror-list supply, dated intelligence, reading-side danger mutation, independent per-pool intel or snapshot ageing.",
+    "manual_scrubs_required": false,
+    "tree_sha256": "b61bafc9cb666ec9a81db15aac2bc709f335976faaad12f47b73041287f44a17",
+    "sheet_sha256": "d2931eddca0194ad84748e7e2e1eb84bc44d9e190bfdad75566d4115ad34b906"
+  },
+  "prompt_sha256": {
+    "examiner": "b903139b5462fc45de3f206dfb7b275abc05e4a7a1d99382f25de7b6e8e55a54",
+    "challenger": "a621194707a1792dcf84f479218e53e7aae65ecb6fb78e1b0edb6416883abf84",
+    "reader_one": "a59853266393e0f3bd28a13302d2f89363ea5e9c13b37798cc4def16569d0bc0",
+    "reader_two": "a59853266393e0f3bd28a13302d2f89363ea5e9c13b37798cc4def16569d0bc0",
+    "control": "3fc8e2d5189092e94c4dd5c118abd44662c7fdba575571891e8984b21a1ee806"
+  }
+}

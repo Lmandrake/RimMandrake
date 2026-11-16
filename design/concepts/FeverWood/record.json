@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "stage": 3,
-  "run": "rm-role-designercodex-1794810374",
+  "stage": 4,
+  "run": "rm-role-designercodex-1794830510",
   "grounded_at": "2026-11-16T02:22:44.174396+00:00",
   "source_revision": "95d37b04a86c8477e4c5280eaba0988bce259ac5",
   "scope": [
@@ -191,6 +191,15 @@
         "CONDUCTOR:1794804413045937607"
       ],
       "text": "Added two explicitly agent-authored candidate must-show IDs within the existing DRAFT north-star section to give every tree leaf a nonempty root reference. The approved concept root remains the delegated text already in record.root. The legacy documentary quotation is untouched, state stays DRAFT and validated-hash stays empty; neither candidate bar nor first touch is owner-certified."
+    },
+    {
+      "id": "stage4_independent_exam",
+      "speaker": "agent",
+      "text": "Frozen tree and sheet passed the cold-reader exam. Fresh Claude Opus Examiner and Challenger produced 26 scenarios, including 17 core reject cases. Two fresh Claude Opus Readers both matched all 26 expectations, with zero accepts against core rejection. A separate fresh Control on the program-made mirror_intel removal copy missed challenger_mirror_list_reader_bleed. All five helpers are named by returned session UUID and charged 301165 weighted tokens. This establishes contract readability under the frozen scenarios. Runtime experience, coverage signature, validated north star and owner first-touch certification remain pending.",
+      "source": [
+        "design/concepts/FeverWood/exam.json",
+        "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794825692/protocol.json"
+      ]
     }
   ],
   "asks": [
@@ -3773,5 +3782,39 @@
     "floor": "Every inherited row applicable; no exception/waiver; current art acceptance retained.",
     "scope": "All existing inventory impl/proof/scope fields preserved, current delivery only planned.",
     "system_faults": "No pipeline code change required to write/validate this package; corrected authoring errors before completion."
+  },
+  "stage3_retry_review": {
+    "run": "rm-role-designercodex-1794823184",
+    "at": "2026-11-16T10:01:41.477592+00:00",
+    "source": [
+      "design/concepts/FeverWood/stage.json",
+      "design/concepts/FeverWood/source_review.json",
+      "design/concepts/FeverWood/write_checks.json",
+      "design/concepts/FeverWood/work_manifest.json"
+    ],
+    "reviewer": "BENCH self-audit",
+    "rejection": "The previous run was rejected for a Codex websocket idle timeout after writing its stage-3 package.",
+    "recovery": "Retained the persisted stage-3 design and reran offline validation for the current run.",
+    "sources": "All 50 recorded source fingerprints match current files. Sheet quotations were reread in the original OWNER events.",
+    "coverage": "23 leaves, 44 planned scenes, five showcases and 44 built/in-scope coverage units. All 44 missing full scene entry points map to seven filed items with spec, verify, criteria and refs sections.",
+    "floor": "All 23 inherited lines remain applicable.",
+    "choices": "Retained the prior agent-authored grouping, scene designs and later-showcase order.",
+    "runtime_acceptance": "UNMEASURED",
+    "transport": "Current result validation can verify the files. Final transport completion is observed by the launcher when this run ends."
+  },
+  "stage4_retry_review": {
+    "run": "rm-role-designercodex-1794830510",
+    "at": "2026-11-16T12:03:58.497624+00:00",
+    "source": [
+      "design/concepts/FeverWood/stage.json",
+      "design/concepts/FeverWood/exam.json",
+      "design/concepts/FeverWood/exam_runs/rm-role-designercodex-1794825692/protocol.json"
+    ],
+    "rejection": "The prior result cited exam.json and protocol.json that existed only in the BENCH working tree and were absent from origin/main.",
+    "recovery": "Reuse the persisted cross-model exam against its unchanged frozen design inputs and publish its full evidence bundle plus this working record for Dispatcher validation.",
+    "verification": "Checked current exam_errors, frozen input hashes, scenario hash, every prompt hash, blinded Reader and Control inputs, raw response extraction, five distinct returned helper session UUIDs and their recorded helper charges. Independently recomputed both-Reader score 26/26 and the removed-leaf Control miss.",
+    "helpers": "All five Claude Opus processes ran fresh during rm-role-designercodex-1794825692 and were charged there. This retry starts zero new helpers.",
+    "agent_decisions": "Retain the existing frozen scenario set and mirror_intel removal Control because the dependent inputs still match.",
+    "runtime_acceptance": "UNMEASURED"
   }
 }
