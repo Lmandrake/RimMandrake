@@ -1,0 +1,19 @@
+{
+  "run": "rm-role-designercodex-1794835379",
+  "stage": 4,
+  "outcome": "done",
+  "summary": "Independent cross-model cold-reader exam passes the frozen current tree and sheet: 27/27 scenarios correct for both fresh Opus Readers, zero core false acceptances and no unaccounted Challenger misses. A fresh Opus Control on the program-made and paraphrase-scrubbed last_touch_return copy missed e17 and c03, both sourced on that removed leaf. All five helper session IDs, raw usage, briefs, frozen scenarios, verdicts and transcript boundary audits are retained; 764027 weighted helper tokens charged. No design input changed, runtime acceptance, owner art verdict, waiver or first-touch certification supplied.",
+  "exam": "design/concepts/GelatinousSlime/exam.json",
+  "validation": {
+    "score": {
+      "right": 27,
+      "total": 27
+    },
+    "accept_where_reject_core": 0,
+    "challenger_misses": [],
+    "control_missed_ids": [
+      "e17",
+      "c03"
+    ]
+  }
+}

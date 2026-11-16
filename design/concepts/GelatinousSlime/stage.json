@@ -16,10 +16,45 @@
     "ref": "rm-role-designercodex-1794809122 /root/edge_review; stage2_review.json; conservative reviewer estimate (50000 input + 1600 output x5), actual usage unavailable",
     "stage": 2,
     "tokens": 58000
+   },
+   {
+    "at": "2026-11-16T13:26:44Z",
+    "kind": "helper",
+    "ref": "stage4 challenger session b1d30312-9d7f-4997-9c46-274f0e3f11e9; exam_evidence/challenger.raw.json",
+    "stage": 4,
+    "tokens": 195545
+   },
+   {
+    "at": "2026-11-16T13:27:18Z",
+    "kind": "helper",
+    "ref": "stage4 examiner session d91f047c-588e-488e-8f5d-865751dba090; exam_evidence/examiner.raw.json",
+    "stage": 4,
+    "tokens": 218995
+   },
+   {
+    "at": "2026-11-16T13:28:58Z",
+    "kind": "helper",
+    "ref": "stage4 reader_one session 504a1786-73ae-48d4-9142-19881f1bdcdb; exam_evidence/reader_one.raw.json",
+    "stage": 4,
+    "tokens": 117194
+   },
+   {
+    "at": "2026-11-16T13:28:58Z",
+    "kind": "helper",
+    "ref": "stage4 reader_two session 1aba8f10-fa5d-471e-b1c9-c16e7389f2ce; exam_evidence/reader_two.raw.json",
+    "stage": 4,
+    "tokens": 116634
+   },
+   {
+    "at": "2026-11-16T13:28:59Z",
+    "kind": "helper",
+    "ref": "stage4 control session f67fb588-0ae2-4ab9-80cd-a448cbc71eb4; exam_evidence/control.raw.json",
+    "stage": 4,
+    "tokens": 115659
    }
   ],
   "reserve": 60000,
-  "spent": 97000
+  "spent": 861027
  },
  "history": [
   {
@@ -111,6 +146,18 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designercodex-1794835212: stage 3 done"
+  },
+  {
+   "at": "2026-11-16T13:23:06Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794835379, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T13:42:42Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794835379: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_GELATINOUSSLIME_DESIGNER_ON_CODEX_FOURTH",
@@ -347,6 +394,27 @@
    "run": "rm-role-designercodex-1794835212",
    "stage": 3,
    "summary": "Revalidated the published Stage-3 package after the prior cross-clone artifact-visibility rejection. All 20 rejection reasons are resolved: all six authored files exist locally and match origin/main, and the VALIDATED root supplies living_body_bargain for every leaf. Gate A, record provenance, all 34 planned scene contracts, four ordered showcases, all 23 floor lines and the full result check pass. Showcase 1 remains chosen_gene_friend_rescue under stage2_flagship_chosen_gene_friend_rescue and CONDUCTOR:1794825281765620778. All 43 built/in-scope capabilities retain planned coverage. No design scope, implementation or runtime proof changed."
+  },
+  {
+   "at": "2026-11-16T13:42:42Z",
+   "inputs": {
+    "exam": "6051e7edbbfc98219c4e9173eaa06f3709d4bc96b09366a8209d71c872161805",
+    "floor": "d7dacc07f1a217ec8328ff05ca30cb09f06b0c2b6147f797144835dd30238e49",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "23cfc23f4265f52ff71148df4f63e96b89cf3ed38d3bd3f89f535d6ceccd05e7",
+    "scenes": "9921adfea00edcc3ac0baffaafb5c88307406423959c622fad0b9e1d7f025f7e",
+    "sheet": "84430387dffa1e1fddd0f4f9aee16c0cf8142446c9fe0fdaf3e11ba966f5860d",
+    "tree": "73a427218f9b65b4ad03c58cba26b209beb2e5900ee0d48bddb25e6df9d3eac8"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794835379",
+   "stage": 4,
+   "summary": "Independent cross-model cold-reader exam passes the frozen current tree and sheet: 27/27 scenarios correct for both fresh Opus Readers, zero core false acceptances and no unaccounted Challenger misses. A fresh Opus Control on the program-made and paraphrase-scrubbed last_touch_return copy missed e17 and c03, both sourced on that removed leaf. All five helper session IDs, raw usage, briefs, frozen scenarios, verdicts and transcript boundary audits are retained; 764027 weighted helper tokens charged. No design input changed, runtime acceptance, owner art verdict, waiver or first-touch certification supplied."
   }
  ],
  "runner": "codex",
@@ -406,10 +474,18 @@
     "input_tokens": 572176,
     "output_tokens": 3963
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794835379",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 2246857,
+    "output_tokens": 13127
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready"
 }
