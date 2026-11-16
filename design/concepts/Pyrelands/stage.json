@@ -543,10 +543,17 @@
     "ref": "run rm-role-designer-1794780609",
     "stage": 5,
     "tokens": 500000
+   },
+   {
+    "at": "2026-11-16T00:41:57Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794789422",
+    "stage": 3,
+    "tokens": 350599
    }
   ],
   "reserve": 60000,
-  "spent": 15622681
+  "spent": 15973280
  },
  "coverage_releases": [
   {
@@ -1332,6 +1339,30 @@
    "stage": 5,
    "what": "coverage_release",
    "why": "by card 2026-11-15: How should the giant be made the giant? -> Keep 'twice', raise body to 9+; done by RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE (6120bb02aa): furnace-beast bs 9 vs Zeer 4.5, drawn 7.5 vs 6, T_DEFS_OFFLINE asserts the twice bar"
+  },
+  {
+   "at": "2026-11-16T00:37:09Z",
+   "stage": 3,
+   "what": "invalidated",
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-16T00:37:09Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "15622681 of 4000000 spent; run rm-role-designer-1794789422 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T00:37:09Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794789422, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-16T00:41:57Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794789422: stage 3 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1691,83 +1722,6 @@
    "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
   },
   {
-   "at": "2026-11-13T19:03:33Z",
-   "inputs": {
-    "exam": "911ff719d1919b3309ba328af029ab1434c11aaf183249280fb7b4b08d61839c",
-    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0",
-    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "c171dc000d7ccef7b4ce500242afac6462be44870f16017be0c1c81cd68d8e62",
-    "sheet": "e40ff569c78f875927bbd1388bb56b009ec840b5a12d3b0d6e25e536bd0931b5",
-    "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21"
-   },
-   "manifest": {
-    "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834"
-   ],
-   "repinned": [
-    {
-     "at": "2026-11-15T05:59:36Z",
-     "inputs": [
-      "root",
-      "sheet",
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794695014598425560@f71693d77a",
-      "OWNER:1794684238949922350@08d917c12a",
-      "OWNER:1794611171307640419",
-      "OWNER:1794721773574845016"
-     ]
-    },
-    {
-     "at": "2026-11-15T13:23:41Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794748469904049550@91a7c61989e3eefbe6afb1c316477eb3a06a3d98"
-     ]
-    },
-    {
-     "at": "2026-11-15T13:54:40Z",
-     "inputs": [
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794748469904049550@75a13036d3"
-     ]
-    },
-    {
-     "at": "2026-11-15T21:06:06Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes",
-      "floor"
-     ],
-     "sources": [
-      "OWNER:1794774724955142310@6a4318a295",
-      "OWNER:1794774724955142310@6d8f7fe94c",
-      "OWNER:1794774724955142310@4a7b2faf61",
-      "OWNER:1794774724955142310@5b463ff0f9",
-      "OWNER:1794774895716093173"
-     ]
-    }
-   ],
-   "run": "rm-role-designer-1794596464",
-   "stage": 3,
-   "summary": "Stage 3 rewritten after the stage-5 run's edits reopened it. Gate A lint passes; scenes.json showcases accepted (burn_line 7, fire_cast 3, sky_and_shelter 3, every unit covered). Worldgen: sheet floor:worldgen reads no worldgen of our own, the vanilla new-world switch outside the promise and shipped off and labelled unsupported per his card 2026-11-13 (OWNER:1794594166295378777, built e36d2374af), now cited on the sheet and recorded as d_worldswitch_off_by_card; floor.json worldgen stays applicable. The 2026-11-13 coverage verdict is advisory (uncalibrated brief) and does not send this run back."
-  },
-  {
    "at": "2026-11-15T13:36:55Z",
    "outcome": "invalidated",
    "stage": 4,
@@ -1780,35 +1734,6 @@
    "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes, floor, owner; back to stage 4 (his new words to take in: OWNER:1794774895716093173)"
   },
   {
-   "at": "2026-11-15T21:54:39Z",
-   "inputs": {
-    "exam": "a65757c2436fbac4ede517e5bc3bd2b2816770d5ef9f599393afc0aea302883e",
-    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
-    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "c171dc000d7ccef7b4ce500242afac6462be44870f16017be0c1c81cd68d8e62",
-    "sheet": "e40ff569c78f875927bbd1388bb56b009ec840b5a12d3b0d6e25e536bd0931b5",
-    "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21"
-   },
-   "manifest": {
-    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-    "designer_exam.md": "9e46f4dbb52985f581b7ae4ed845434513370ee8f3e34d91e1848be937acb8fc"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834",
-    "1794611171307640419",
-    "1794774895716093173"
-   ],
-   "quick_look": {
-    "offer": false,
-    "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
-   },
-   "run": "bench-pyre-exam-st4-r7-20261115",
-   "stage": 4,
-   "summary": "Cold Reader exam retaken on the tree and sheet as fixed for his card 'Fix the 17 gaps, one final look' (OWNER:1794774724955142310; re-pinned 26fe15df8b): 20 frozen scenarios (Examiner acb2fc4b90d20583a e1-e14, Challenger ae68e818cd2467415 c1-c6; 14 rejects), Readers a0a6cefdb8905cb32 and ae5e34c4f2c315238 agree on all 20, 20/20, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with three_skies removed (a4f78ec3cdccb9529) accepted e2, a three_skies reject both Readers caught, so the set discriminates. exam.json carries it."
-  },
-  {
    "at": "2026-11-15T22:15:42Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1794780609",
@@ -1816,12 +1741,44 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-16T00:37:09Z",
+   "outcome": "invalidated",
+   "stage": 3,
+   "why": "inputs changed since stage 3 was accepted: sheet, tree, scenes; back to stage 3"
+  },
+  {
+   "at": "2026-11-16T00:41:57Z",
+   "inputs": {
+    "exam": "a65757c2436fbac4ede517e5bc3bd2b2816770d5ef9f599393afc0aea302883e",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "094f6b143492b2d130b01b3a4ca7ced20d06e5384fd4559173a5d7fa35b2133f",
+    "sheet": "c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab",
+    "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834",
+    "1794611171307640419",
+    "1794774895716093173"
+   ],
+   "run": "rm-role-designer-1794789422",
+   "stage": 3,
+   "summary": "Stage 3 re-accepted after the furnace-beast enlargement (6120bb02aa, his card 2026-11-15 'Keep twice, raise body to 9+', OWNER:1794786804170379047) edited sheet, tree and scenes. The one open round-7 gap g1 (rm-coverage-judge-1794779751: the x2 bar unattainable against RSW_Zeer 4.5 at body 6) is closed by the build, not the criterion: body 9, draw 7.5; claimed in coverage_fixes.json; recorded as d_furnace_body_nine. The older 'five coverage gaps (2026-11-06)' were claimed and judged in rounds 4-6. Gate A lint PASS, showcase set accepted (burn_line 6 new, fire_cast 3, sky_and_shelter 3, fire_solace 3 at overlap 0.25), selftest_pyrelands_defs_offline PASS 16/16 mutants red. The sc_furnace_giant live read stays UNRUN."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
