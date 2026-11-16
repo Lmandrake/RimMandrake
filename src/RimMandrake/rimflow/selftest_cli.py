@@ -1284,9 +1284,13 @@ def t_note_with_an_owner_flag_is_his_and_help_says_so():
     says so, the place the trap was hit."""
     fresh()
     ok("file", "NOTE_RULING_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
-    ok("note", "NOTE_RULING_PROBE_FIXTURE", "--text", "cited", "--per-ruling", "NOTE_RULING_PROBE_FIXTURE",
-       env=env(seat=None))
-    ok("note", "NOTE_RULING_PROBE_FIXTURE", "--text", "mine", "--why", "my own reason")
+    cited = ok("note", "NOTE_RULING_PROBE_FIXTURE", "--text", "cited", "--per-ruling", "NOTE_RULING_PROBE_FIXTURE",
+               env=env(seat=None))
+    mine = ok("note", "NOTE_RULING_PROBE_FIXTURE", "--text", "mine", "--why", "my own reason")
+    # and the write says so at once: a helper briefed to add --per-ruling read the help and still landed in OWNER.jsonl
+    # (2026-11-15, the finisher of RIMMANDRAKE_SAY_NOTE_OWNER_FLAGS_LAND_OWNER)
+    assert "OWNER.jsonl" in cited and "--why alone" in cited, cited
+    assert "OWNER.jsonl" not in mine, mine
     notes = {e.get("text"): e for e in _ledger_events() if e.get("event") == "note"
              and e.get("id") == "NOTE_RULING_PROBE_FIXTURE"}
     assert notes["cited"].get("seat") == "OWNER", notes

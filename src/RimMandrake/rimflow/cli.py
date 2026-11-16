@@ -2303,6 +2303,10 @@ def _simple(verb, extra=()):
         _emit(ev, w, quiet=True)
         it = _replay_now().items.get(args.id)
         print("%s %s -> %s" % (verb, args.id, it.state if it else "?"))
+        if seat == "OWNER" and any(getattr(args, f, None) for f in ("owner_said", "by_card", "per_ruling")):
+            # owner card 2026-10-11: an owner flag makes the event his; say so at the write, not only in --help
+            print("landed as seat OWNER in infrastructure/state/ledger/events/OWNER.jsonl (an owner flag): publish that "
+                  "shard; a helper's own %s takes --why alone." % verb)
         # `drop` and `supersede` end an item just as `close` does, and anything waiting on
         # it is just as stranded — more so, since a dropped blocker will never deliver.
         if verb in ("drop", "supersede"):
