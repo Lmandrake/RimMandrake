@@ -120,6 +120,8 @@ def reading_of(points, sli):
     if isinstance(p, dict):
         if p.get("m") != "MEASURED" or p.get("unit") == sli["unit"]:
             return p
+        if p.get("unit") == "nightly held":  # a planned hold (ops_watch.held_nightly), not a changed meaning
+            return {"m": "UNMEASURED", "v": None, "why": "%s is held: %s" % (sli["key"], (p.get("x") or {}).get("said") or "nightly held")}
         return {"m": "UNMEASURED", "v": None, "drifted": True,
                 "why": "%s now says %r; this SLI's line was written against %r" % (sli["key"], p.get("unit"), sli["unit"])}
     for w in sli.get("was") or ():

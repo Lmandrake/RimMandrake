@@ -144,6 +144,8 @@ ok("drift: the very SLI that went blind now reads UNMEASURED, not ok", b["now"] 
 hist = {"testing": [{"t": NOW - h * H_, "points": {"testing.nightly_news": PT(0, NARROW)}} for h in range(30)]}
 b = H.budget({"testing.nightly_news": PT(84, NARROW)}, hist, cb, NOW)["reds"]
 ok("drift: another unit neither spends nor earns", b["bad_h"] == 0 and b["measured_h"] == 0 and not b["spent"], b)
+b = H.budget({"testing.nightly_news": PT(0, "nightly held")}, {}, cb, NOW)["reds"]
+ok("drift: a planned nightly hold is UNMEASURED but not drifted", b["now"] == "UNMEASURED" and not b.get("drifted"), b)
 ok("drift: an SLI with no unit is refused", any("unit" in p for p in H.sli_problems(dict(cb, slis=[{"name": "n", "key": "k", "op": ">", "x": 1}]))))
 ok("drift: a bad was is refused", H.sli_problems(dict(cb, slis=[dict(blind, was=[{"key": "k"}])])))
 dv = H.verdict({"testing.nightly_news": PT(0, NARROW)}, {}, None, dict(RULES, health=dict(RULES["health"], slis=[blind])), root, NOW)
