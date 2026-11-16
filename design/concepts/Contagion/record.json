@@ -229,6 +229,17 @@
     "ITEM:CONTAGION_GPT_ENRICHMENT_1"
    ],
    "what": "The anticipatory pre-Burn Dive and the phased Bodyprints are current Design Version 0.1.0 work (owed builds), per his card 2026-10-16 'keep both in'. He moved only the grown limbs out of 0.1.0, by name."
+  },
+  {
+   "id": "d_walk_bars_delegated",
+   "text": "The walk's north-star bars (never validated, so all NEW) are validated as written under delegation_policy §2.1, except contagion_grown_limb_visible, which moves to Design Version 0.2.0 with the grown-limb work he moved there. The act is the Conductor's or the Arbiter's, not the Designer's: RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS, acceptance test infrastructure/state/acceptance/RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS.py (FAIL 3/3 on base). Why nothing argues against: his limb ruling settles the one line in doubt; the guess marks are what NEW bars are seeded with; the fresh review struck the ask to him.",
+   "speaker": "conductor",
+   "delegated": "evidence-for-ask",
+   "source": "OWNER:1794816612487799110",
+   "cites": [
+    "OWNER:1794772416196929336",
+    "design/RimMandrake/delegation_policy.md"
+   ]
   }
  ],
  "asks": [
@@ -575,6 +586,30 @@
    "carried_from": "design/RimMandrake/designer_codex_2026-11-09/Contagion/record.json",
    "answer": "d_efa_q08",
    "answer_source": "CONDUCTOR:1794771853877273515"
+  },
+  {
+   "id": "a_walk_bars",
+   "text": "Validate the Contagion walk's ten north-star lines: (a) with the grown-limb line moved to 0.2.0; (b) all as written; or (c) correct a line first?",
+   "decision": "root validation (Lock refused: walk root DRAFT)",
+   "about": [
+    "pillar_arm",
+    "visible_tells",
+    "repulsor",
+    "sunbeam_weapon",
+    "coalescence_growth"
+   ],
+   "owner_cites": [
+    "OWNER:1794772416196929336"
+   ],
+   "offers_removal": false,
+   "author": "rm-role-designer-1794816366",
+   "status": "struck",
+   "review": {
+    "by": "gpt_consult consult-20261116-000816-1238325-fb6c9d",
+    "verdict": "struck",
+    "why": "Obvious answer is (a): his limb ruling covers the grown-limb line, the bars are NEW and delegable (§2.1, validate --delegated); guess labels are no concrete evidence against. Route the act through the Conductor/Arbiter."
+   },
+   "source": "design/concepts/Contagion/result.rm-role-designer-1794816061.json"
   }
  ],
  "inventory": [

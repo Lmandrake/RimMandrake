@@ -25,3 +25,7 @@ Every contradiction settled from his words and the source, under the Evidence-fo
 - c_sundash -> d_bloom_quiets_sundash: the sun-escape trigger reads the weather factor heat already reads; fix filed RIMMANDRAKE_FIX_SUNDASH_READ_WEATHER_COVER_HEAT_ALREADY_DOES.
 - c_dive, c_bodyprints -> d_dive_bodyprints_stay: both stay in 0.1.0 per his 2026-10-16 card.
 - c_proof, c_readability, c_coalescence_reach, c_open_fixes, c_docs: proof and doc work for stage 3, not design.
+
+## 2026-11-16, run rm-role-designer-1794816366, stage 2: no ask sent (root validation)
+
+Drafted a_walk_bars (validate the walk's ten north-star lines, grown-limb line to 0.2.0). Struck by a fresh Codex review: the bars are NEW (never validated), so delegation_policy §2.1 and `modcheck validate --delegated` cover them, and his 2026-11-15 limb ruling settles the one line in doubt. Taken as a delegated call (OWNER:1794816612487799110, per-ruling RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME): d_walk_bars_delegated. The Designer may not bind bars, so the act is RIMMANDRAKE_VALIDATE_CONTAGION_WALK_BARS_LIMB_LINE_WAITS (for the Conductor); the concept is blocked on it, and stage 3 then reworks the 31 coverage gaps against the validated root.
