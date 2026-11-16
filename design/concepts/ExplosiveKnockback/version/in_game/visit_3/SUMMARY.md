@@ -107,3 +107,23 @@ strange_open: 0
 savegame: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\EK_VISIT3_WALK_CLEAR_20261116.rws
 exit_met: false
 ```
+
+## Runs 5-7 under his card (2026-11-16 5:08-5:26 AM PST, item RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES)
+
+His card (OWNER:1794834159094900561, "Compare to mod-off"): the walk's frame row passes when mod-on p99 is within 10% of the
+same run's mod-off arm. Same game, list (316) and DLL (cca4f0d4) as run 4. The acceptance command still exits 1.
+
+- Run 5: 17 rows PASS; FRAME_BUDGET FAIL, on 91.3 / off 37.1 ms. HARNESS: the off arm ran uncapped (~7 ms a frame) from 5 s,
+  863 window frames against 498, and a p99 over frames falls as the count rises (it stalled more often: 8 frames over 50 ms
+  against 5). Fixed: arms whose window frame counts differ by more than x1.25 are UNMEASURED (selftest W29).
+- Run 6: 17 PASS; FRAME_BUDGET FAIL +44.9%, on 55.2 / off 38.1 ms, like-for-like (509 / 517 frames).
+- Run 7, three interleaved pairs, medians (selftest W30): UNMEASURED, the third on arm uncapped (1284 frames); on p99s
+  43.0 / 93.8 / 15.1, off 35.6 / 38.6 / 27.3 (medians +21%; pooled like arms 87.4 / 38.6). The raid refused to fire
+  and the grenade killed the cover rider in order B: SITE, both rows PASS in runs 5 and 6.
+
+What the frames say (`evidence/frame_stalls_runs4-7.txt`): every arm stalls 4-13 times over 40 ms; most stalls fall at the
+same seconds in both arms (about 1.5, 3.8, 4.3, 8.3 s: the list's own), and the on arms carry one to three more after the
+flight (run 6: 6.0, 6.8, 8.4 s; run 7: 7.4, 8.0, 8.1, 9.9 s). With about 500 frames an arm's p99 is its 5th-6th slowest
+frame, so those extra stalls decide the row. [guess ~60%] the mod costs a stall or two after a blast (a mod finding to
+chase live); [guess ~40%] list noise that run 4 (+3.6%) happened to miss. Two arms also went uncapped mid-window (~140 fps):
+the cause is unknown (the game window occluded or unfocused is a guess).

@@ -345,7 +345,8 @@ def mock_run():
 # ticks, so they hold no real frames; two more arms reload the baseline, run the clock at speed 1 and set the shells off over
 # the stocked storeroom while RM_KnockbackProof.Frame reads real frames, once with the mod on and once off. The row is
 # relative (owner, by card 2026-11-16, "Compare to mod-off"): PASS when the on arm's p99 unpaused frame is within 10% of
-# the off arm's in the same run, FAIL over it; UNMEASURED unless both arms are read and nothing-in-the-air is ruled out. The
+# the off arm's in the same run, FAIL over it; UNMEASURED unless both arms are read, something flew, and the arms ran at
+# like frame counts (a p99 over frames falls as the frame rate rises; live run 5 2026-11-16, an uncapped off arm). The
 # 50 ms barrage bar is sc_barrage_perf's, not the walk's. CARRIER_TICK_COST is read in the on arm on a running clock.
 # What "match the kernel's plan" can read live: every request has an outcome line for the same blast and thing, a launch
 # travels at most its planned cells (fewer only with a stop reason), a goods move flies its wild cells with the kernel's
@@ -354,6 +355,7 @@ TRIPLET_SEAMS = {}           # saveload_triplet's saves_stat / wait_saved (the o
 SLEEP = None                 # the frame act's real-time wait (time.sleep; the offline selftest passes a no-op)
 FRAME_OVER_OFF = 0.10        # the walk's frame row: mod-on p99 at most 10% over the same run's mod-off p99 (owner card 2026-11-16)
 FRAME_MIN_ROWS = 30          # fewer unpaused rows in the window than this is no reading
+FRAME_ROWS_LIKE = 1.25       # arms whose window frame counts differ by more than this ratio are not like for like
 WALK_ROWS = ("W_PRECONDITIONS", "A_IMPACTS_IN_ROOM", "A_SAVE_MIDAIR", "A_RELOAD_NO_DUP_LOST", "A_COVER_BROKEN_ONE_DESCENT",
              "A_GAS_CLUMP_BY_CLUMP", "A_GAS_GOODS_MOVED", "A_REQUESTS_MATCH_PLAN", "A_REACHED_ACCOUNTED",
              "B_GAS_CLUMP_BY_CLUMP", "B_GAS_GOODS_MOVED", "B_IMPACTS_IN_ROOM", "B_COVER_BROKEN_ONE_DESCENT",
@@ -398,6 +400,21 @@ def active_mods(path=None):
     if not os.path.isfile(path):
         return None
     return [li.text.strip().lower() for li in ET.parse(path).find("activeMods") if li.text]
+
+
+def pool_arms(readings):
+    """One side's frame arms -> one reading: p99 the median of the arms' p99s, rows the smallest arm's, inAir the
+    fewest any arm saw. Any unread arm (no p99, too few frames, no reading at all) makes the side unread: both sides
+    MEASURED or the row is UNMEASURED (owner card 2026-11-16)."""
+    import statistics
+    ok = [r for r in readings if isinstance(r.get("p99"), (int, float)) and (r.get("rows") or 0) >= FRAME_MIN_ROWS]
+    text = " | ".join(r.get("text") or r.get("why") or "?" for r in readings)[:600]
+    if not readings or len(ok) < len(readings):
+        return {"p99": None, "rows": 0, "inAir": 0, "text": "%d of %d arm(s) read: %s" % (len(ok), len(readings), text)}
+    return {"p99": statistics.median(r["p99"] for r in ok), "rows": min(r["rows"] for r in ok),
+            "rows_each": [r["rows"] for r in ok], "p99_each": [r["p99"] for r in ok],
+            "inAir": min(r.get("inAir") or 0 for r in ok), "text": "%d arm(s), p99s %s: %s" % (
+                len(ok), [r["p99"] for r in ok], text)}
 
 
 class _Walk:
@@ -783,22 +800,23 @@ class _Walk:
         import time
         wait = SLEEP or time.sleep
         secs = float(self.a.frame_seconds)
+        readings = self.ev.setdefault("frame_arms", {}).setdefault(arm, [])
         b = self.kp("Frame", "begin")[1]
         if not b.startswith("BEGUN"):
-            self.ev["frame_" + arm] = {"why": "Frame begin answered %r" % b[:200]}
+            readings.append({"why": "Frame begin answered %r" % b[:200]})
             return
         # CARRIER_TICK_COST is read in the `on` arm, on a running clock: jawa/time_perf's meanTickTime reads 0.0 on a
         # paused one (live, visit 3: every walk on record read "0.0 ms at rest, 0.0 ms with carriers in the air", PASS)
         moving = self.run_clock(wait)
         self.ev.setdefault("frame_clock", {})[arm] = moving
         wait(2.0)
-        if arm == "on":
+        if arm == "on" and "tick_rest_running" not in self.ev:
             self.ev["tick_rest_running"] = self.perf()
         cx, cz = self.room[0] + self.room[2] // 2, self.room[1] + self.room[3] // 2
         for x, z in [(cx, cz), (cx - 1, cz + 1), (cx + 1, cz - 1)][:max(1, self.a.shells)]:
             self.c("jawa/explosion_at", at="%d,%d" % (x, z), radius=SHELL[1], damType=SHELL[0])
         wait(1.0)
-        if arm == "on":
+        if arm == "on" and "tick_air_running" not in self.ev:
             self.ev["tick_air_running"] = self.perf()
             self.ev["in_air_at_tick_read"] = len([l for l in self.kp("Flights")[1].splitlines() if l and not l.startswith("NONE")])
         wait(max(0.0, secs - 1.0))
@@ -806,8 +824,8 @@ class _Walk:
         r = self.kp("Frame", "stop,0.5,%g" % (secs + 2.0))[1]
         num = lambda k: re.search(k + r"=([0-9.]+)", r)  # noqa: E731
         p99, rows, air = num("windowP99Ms"), num("windowRows"), num("maxInAir")
-        self.ev["frame_" + arm] = {"text": r[:400], "p99": float(p99.group(1)) if p99 else None,
-                                   "rows": int(rows.group(1)) if rows else 0, "inAir": int(air.group(1)) if air else 0}
+        readings.append({"text": r[:400], "p99": float(p99.group(1)) if p99 else None,
+                         "rows": int(rows.group(1)) if rows else 0, "inAir": int(air.group(1)) if air else 0})
 
     def run_clock(self, wait, tries=6):
         """Unpause at speed 1 until the clock is seen moving -> the tries it took, or 0 if it never moved. Live, visit 3
@@ -827,13 +845,18 @@ class _Walk:
         """FRAME_BUDGET, judged against its own mod-off arm (owner, by card 2026-11-16, "Compare to mod-off": "Pass if
         mod-on is within 10% of the same colony's mod-off run"): PASS when the `on` arm's 99th-percentile unpaused frame is
         at most 10% over the `off` arm's, FAIL over it. UNMEASURED, never PASS, when either arm has no reading (no p99, too
-        few frames), the off arm reads 0 ms or less (nothing to compare to), or nothing flew in the on arm's window. Live,
+        few frames), the off arm reads 0 ms or less (nothing to compare to), nothing flew in the on arm's window, or the
+        arms' frame counts are not like for like. Each side is the median of its interleaved arms (pool_arms). Live,
         visit 3 run 4: the walk colony's mod-off floor alone was p99 80.2 ms, so the 50 ms barrage bar could not decide it."""
+        arms = self.ev.get("frame_arms")
+        if arms is not None:
+            self.ev["frame_on"], self.ev["frame_off"] = pool_arms(arms.get("on") or []), pool_arms(arms.get("off") or [])
         on, off = self.ev.get("frame_on") or {}, self.ev.get("frame_off") or {}
         det = "on p99 %s ms (%s rows, %s in the air), mod off p99 %s ms (%s rows), PASS at most +%d%%; on: %s; off: %s" % (
             on.get("p99"), on.get("rows"), on.get("inAir"), off.get("p99"), off.get("rows"), round(FRAME_OVER_OFF * 100),
             on.get("text") or on.get("why") or "no on arm", off.get("text") or off.get("why") or "no off arm")
         read = lambda a: isinstance(a.get("p99"), (int, float)) and (a.get("rows") or 0) >= FRAME_MIN_ROWS  # noqa: E731
+        each = (on.get("rows_each") or [on.get("rows") or 0]) + (off.get("rows_each") or [off.get("rows") or 0])
         if not read(on):
             self.row("FRAME_BUDGET", "UNMEASURED", "no mod-on frame reading: " + det)
         elif not read(off):
@@ -842,6 +865,13 @@ class _Walk:
             self.row("FRAME_BUDGET", "UNMEASURED", "mod-off p99 is not above 0, nothing to compare to: " + det)
         elif not on.get("inAir"):
             self.row("FRAME_BUDGET", "UNMEASURED", "nothing in the air in the window: " + det)
+        elif max(each) > FRAME_ROWS_LIKE * min(each):
+            # a p99 over frames is diluted by frame count: live, run 5 (2026-11-16), the off arm ran uncapped from 5 s
+            # (863 window frames at ~7 ms against the on arm's 498 at 60 fps) and read 37.1 ms against 91.3 though it
+            # stalled more often (8 frames over 50 ms, against 5). Rerun; the two arms must run at the same frame cap.
+            self.row("FRAME_BUDGET", "UNMEASURED", "arms not like for like (window frames %s on, %s off, over x%g; a p99 "
+                     "over frames falls as the frame rate rises): %s" % (on.get("rows_each") or on["rows"],
+                                                                         off.get("rows_each") or off["rows"], FRAME_ROWS_LIKE, det))
         else:
             over = on["p99"] / off["p99"] - 1.0
             self.row("FRAME_BUDGET", "PASS" if over <= FRAME_OVER_OFF else "FAIL", "%+.1f%% over mod off; %s" % (over * 100, det))
@@ -884,12 +914,16 @@ class _Walk:
                 rr = self.c("jawa/fire_raid", points=float(self.a.raid_points), dryRun=False)
                 self.ev["raid"] = {k: rr.get(k) for k in ("success", "blockedByDialog", "pawnsArrivedTotal", "exc")}
             self.order("A", gas_first=False)
-            for tag, fn in (("B", lambda: self.order("B", gas_first=True)), ("C", self.control),
-                            ("FRAME_ON", lambda: self.frame_act("on")), ("FRAME_OFF", lambda: self.frame_act("off"))):
+            # the frame arms run as interleaved pairs (on, off, on, off, ...): one pair's p99 is decided by one random
+            # stall (live 2026-11-16, runs 4-6: the off arm alone read 80.2, 37.1 and 38.1 ms); frame_row takes medians
+            arms = [("FRAME_ON", lambda: self.frame_act("on")), ("FRAME_OFF", lambda: self.frame_act("off"))]
+            for tag, fn in [("B", lambda: self.order("B", gas_first=True)), ("C", self.control)] + arms * max(1, self.a.frame_pairs):
                 ok, why = self.load(base)
                 if not ok:
                     self.unmeasured([r for r in WALK_ROWS if r.startswith(tag)], "UNMEASURED: baseline reload failed (%s)" % why)
-                    self.ev.setdefault("frame_" + tag[6:].lower(), {"why": "baseline reload failed (%s)" % why}) if tag.startswith("FRAME") else None
+                    if tag.startswith("FRAME"):
+                        self.ev.setdefault("frame_arms", {}).setdefault(tag[6:].lower(), []).append(
+                            {"why": "baseline reload failed (%s)" % why})
                     continue
                 self.kp("Settings", "reset")
                 if self.a.raid_points > 0:                  # B and the control C face the same raid
@@ -926,6 +960,7 @@ def _walk_args(argv):
     ap.add_argument("--shells", type=int, default=3)
     ap.add_argument("--settle", type=int, default=120, help="ticks after each blast")
     ap.add_argument("--frame-seconds", type=float, default=8.0, help="real seconds at speed 1 for FRAME_BUDGET")
+    ap.add_argument("--frame-pairs", type=int, default=3, help="interleaved mod-on/mod-off frame arm pairs for FRAME_BUDGET")
     ap.add_argument("--gas-ticks", type=int, default=900)
     ap.add_argument("--raid-points", type=float, default=300.0, help="0 skips the real raid")
     ap.add_argument("--full-min", type=int, default=100, help="active mods below this are not the full list")

@@ -36,6 +36,15 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
   W26 mod on 88.3 ms against mod off 80.2 ms (+10.1%): FRAME_BUDGET FAIL (over 10% of the mod-off arm)
   W27 the mod-off arm unread (its probe saw no frame): FRAME_BUDGET UNMEASURED, never PASS on the on arm alone
   W28 a mod-off arm that reads 0 ms, or a negative one handed to frame_row: FRAME_BUDGET UNMEASURED, no division by it
+  W29 live run 5 (2026-11-16): the off arm ran uncapped from 5 s (863 window frames, ~7 ms each) against the on arm's 498
+      at 60 fps, and its p99 fell to 37.1 ms though it stalled more often (8 frames over 50 ms, against 5); p99 over frames
+      is diluted by frame count, so arms whose window frame counts differ by more than 25% are not like for like:
+      FRAME_BUDGET UNMEASURED, never FAIL (on 91.3 / off 37.1 ms) and never PASS (the mirror: the on arm uncapped)
+  W30 live run 6 (2026-11-16): like-for-like arms read on 55.2 / off 38.1 ms, the off arm alone 80.2, 37.1 and 38.1 ms
+      across runs 4-6: one pair's p99 (the 6th-slowest of ~500 frames) is decided by one random stall. The arms run as
+      interleaved pairs (on, off, on, off, on, off by default) and the row compares the median p99 of each side: one
+      55.2 ms outlier among on arms of 40-41 ms against off arms of 38-40 ms PASSes; a mod that is slow in every on arm
+      (on 50-52 against off 38-40) still FAILs; one unread off arm leaves the row UNMEASURED
   W23 nothing in the air in the frame window (the shells threw nothing): FRAME_BUDGET UNMEASURED
   W24 the first two unpauses after a load do not hold (live, visit 3 run 3: both frame arms read every frame paused,
       paused=621): the arm unpauses until the clock moves, and FRAME_BUDGET and CARRIER_TICK_COST still PASS
@@ -66,6 +75,7 @@ ARGS = ["--storeroom", "10,10,7,7", "--cover", "13,19", "--gas", "26,13", "--lit
 class Fake:
     def __init__(self, **brk):
         self.brk = brk
+        self.frame_order = []
         self.saves = {}
         self.w = {"tick": 0, "enabled": True, "cover": True, "goods": {}, "carriers": [], "journal": [], "gas": None,
                   "burn": [], "wave": [], "pawns": {} if brk.get("no_rider") else {"Human900": {"pos": [13, 19], "dead": False}}}
@@ -205,15 +215,21 @@ class Fake:
                     w["probe"], w["probe_speed"] = True, []
                     r = "BEGUN"
                 elif (not w.pop("probe", False) or self.brk.get("probe_blind") or 1 not in w.get("probe_speed", [])
-                      or (self.brk.get("probe_blind_off") and not w.get("enabled", True))):
+                      or (self.brk.get("probe_blind_off") and not w.get("enabled", True))
+                      or (not w.get("enabled", True) and self.brk.pop("probe_blind_off_once", False))):
                     r = "NONE no probe running, or it saw no frame"
                 else:
                     on = w.get("enabled", True)
                     slow = self.brk.get("slow_noise") or (self.brk.get("slow_frames") and on)
                     p99 = self.brk.get("p99_on" if on else "p99_off", 75.0 if slow else 24.0)
+                    self.frame_order.append("on" if on else "off")
+                    seq = self.brk.get("p99_seq_on" if on else "p99_seq_off")
+                    if seq:
+                        p99 = seq[(self.frame_order.count("on" if on else "off") - 1) % len(seq)]
                     air = 12 if on and not self.brk.get("nothing_flies") else 0
                     r = ("FRAME frames=480 probeRows=480 paused=12 wall=8.00s worstMs=%.1f meanMs=16.7 maxInAir=%d window=0.5-8s "
-                         "windowRows=450 windowP99Ms=%.1f path=C:/x/RM_FrameProbe_1.csv" % (p99 + 9, air, p99))
+                         "windowRows=%d windowP99Ms=%.1f path=C:/x/RM_FrameProbe_1.csv"
+                         % (p99 + 9, air, self.brk.get("rows_on" if on else "rows_off", 450), p99))
             return {"success": True, "result": r or "OK"}
         if tool == "jawa/list_things":
             x, z, ww, hh = (int(v) for v in kw["rect"].split(","))
@@ -382,6 +398,32 @@ def main():
         except Exception as e:  # noqa: BLE001
             got.append("raised %s" % type(e).__name__)
     check("W28", got == ["UNMEASURED"] * 3, "a mod-off arm of 0 or below is UNMEASURED, never divided by (got %s)" % got)
+    got = []
+    for brk in ({"p99_on": 91.3, "p99_off": 37.1, "rows_on": 498, "rows_off": 863},
+                {"p99_on": 37.1, "p99_off": 40.0, "rows_on": 863, "rows_off": 498}):
+        code, rows, txt = run(**brk)
+        got.append((code, rows.get("FRAME_BUDGET")))
+    check("W29", got == [(1, "UNMEASURED")] * 2,
+          "arms with 498 and 863 window frames are not like for like, either way round (got %s)" % got)
+    order = []
+    orig = Fake.__init__
+
+    def keep(self, *a, **k):
+        orig(self, *a, **k)
+        order.append(self)
+    Fake.__init__ = keep
+    try:
+        code, rows, txt = run(p99_seq_on=[55.2, 40.0, 41.0], p99_seq_off=[38.1, 39.0, 40.0])
+        seen = order[-1].frame_order if order else []
+        r1 = (code, rows.get("FRAME_BUDGET"))
+        code, rows, txt = run(p99_seq_on=[50.0, 51.0, 52.0], p99_seq_off=[38.1, 39.0, 40.0])
+        r2 = (code, rows.get("FRAME_BUDGET"))
+        code, rows, txt = run(p99_seq_off=[38.1, 39.0, 40.0], probe_blind_off_once=True)
+        r3 = (code, rows.get("FRAME_BUDGET"))
+    finally:
+        Fake.__init__ = orig
+    check("W30", seen == ["on", "off"] * 3 and r1 == (0, "PASS") and r2 == (1, "FAIL") and r3 == (1, "UNMEASURED"),
+          "interleaved pairs %s; one on outlier %s; slow in every on arm %s; one off arm unread %s" % (seen, r1, r2, r3))
     code, rows, txt = run(nothing_flies=True)
     check("W23", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
           "a frame window with nothing in the air is UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
