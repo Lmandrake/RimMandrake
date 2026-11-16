@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-15T14:51:13-08:00",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-16T04:14:04-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -16,7 +16,7 @@
   },
   "cycles": {
     "visit": 1,
-    "total": 1
+    "total": 2
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -68,6 +68,28 @@
         "by",
         "version",
         "hold"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-16T04:14:04-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward advance: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); certificate OK (55 bars, red_seen unproven warn only); gate open; opens blind cycle 2 (visit total 1 so far)",
+      "unit": "rm-detached-bench-rimmandrake-advance-flowworks-past-offli-1794831151",
+      "confirmed": {
+        "steward_confirms": "Read maturation next/show/certificate/gate (all pass, no not-met reasons to sort) and cycle_1 tests_edited.json: the only judge-loosened test, lane1 BlindLane1.cs d8f6162->17d2a9d, widens conv budget tolerance to the kernel's own floor(accrued/inU+1e-4) slack (RM_ConversionMath.cs:34) and counts a held part-batch as not lost; both rows still FAIL on the old kernel and PASS on the fix per SUMMARY: CRITERION FLAW repaired, meaning kept, not a REAL MISS. Verdict: advance.",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward advance: every Stage 3 exit test passes (order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate); certificate OK (55 bars, red_seen unproven warn only); gate open; opens blind cycle 2 (visit total 1 so far)"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
       ]
     }
   ],

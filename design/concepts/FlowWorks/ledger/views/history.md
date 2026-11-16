@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":1331,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=1c21270688d1690f71decb2acdd56634580de8738499d369ff3dd7d584778011 -->
-# FlowWorks — mod ledger history (1106 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":1636,"HOLDER.run-1794816885":928,"STEWARD":2597} body_sha256=71b6391ffb9207d23bfa3609bd1907f2e2dedd9a7eca3c557b653c073717c886 -->
+# FlowWorks — mod ledger history (1107 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1107,3 +1107,4 @@
 - 2026-11-16T11:47:29Z BACKFILL#1095 trap.noted trap:it-is-owned-by-the-live-pit-work v0.1.0: It is owned by the live pit work.
 - 2026-11-16T11:47:56Z BACKFILL#1096 trap.noted trap:zeros-here-came-from-the-lip-clamp-on v0.1.0: Zeros here came from the lip clamp on one-row pads, not from the pawn being unable to reach them.
 - 2026-11-16T11:47:57Z BACKFILL#1097 cause.refuted cause:the-12-24-half-full-backup-came-from v0.1.0: The 12/24 half-full backup came from the old test's per-square model; with the game's canal-wide walk the old pour held 22.5/24, so in game the backup was probably never real (offline twin, not live).
+- 2026-11-16T12:14:04Z DISPATCH#5 stage.accepted stage v0.1.0: 
