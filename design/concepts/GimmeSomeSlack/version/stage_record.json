@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-15T17:51:38-08:00",
+  "since": "2026-11-15T23:33:31-08:00",
   "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 4,
-    "total": 4
+    "visit": 5,
+    "total": 5
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -92,6 +92,46 @@
         "hold",
         "fourth_cycle"
       ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-15T19:20:57-08:00",
+      "by": "CONDUCTOR",
+      "why": "delegated: evidence-for-ask: open blind cycle 5; hand act folded by RIMMANDRAKE_OPEN_NEXT_BLIND_CYCLE_WHEN_PROBLEMS_CLOSED_INSIDE",
+      "unit": null,
+      "confirmed": {
+        "conductor_decision": "Open blind cycle 5. Evidence: cycle 4's one Problem (the no-hose test read only 7 def fields) was fixed and closed inside the cycle at 69e7d7f47e, bars no_hose and no_hose_in_gss are green, 27 of 27 offline tests rerun PASS, the 3 remaining findings are Polish; the rule owes a fresh blind judge after a fix. No evidence for another road.",
+        "owner_said": "per-ruling RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME: delegated: evidence-for-ask: open blind cycle 5; hand act folded by RIMMANDRAKE_OPEN_NEXT_BLIND_CYCLE_WHEN_PROBLEMS_CLOSED_INSIDE"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-15T23:33:31-08:00",
+      "by": "CONDUCTOR",
+      "why": "Allowed by the Conductor 11:35 PM PST 2026-11-15 under the owner's overnight order (these mods DO start in this new process tonight). Evidence for a fourth cycle after three fails: the process differs now (run starts from the mod-ledger packet, 235 entries, acceptance 7/7), and 17 blind faults stand claimed-fixed with no judge verdict, which only a blind cycle can confirm or refute.",
+      "unit": null,
+      "confirmed": {
+        "conductor_decision": "Allowed by the Conductor 11:35 PM PST 2026-11-15 under the owner's overnight order (these mods DO start in this new process tonight). Evidence for a fourth cycle after three fails: the process differs now (run starts from the mod-ledger packet, 235 entries, acceptance 7/7), and 17 blind faults stand claimed-fixed with no judge verdict, which only a blind cycle can confirm or refute.",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Allowed by the Conductor 11:35 PM PST 2026-11-15 under the owner's overnight order (these mods DO start in this new process tonight). Evidence for a fourth cycle after three fails: the process differs now (run starts from the mod-ledger packet, 235 entries, acceptance 7/7), and 17 blind faults stand claimed-fixed with no judge verdict, which only a blind cycle can confirm or refute."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle",
+        "judge_certificate"
+      ],
+      "cycle_not_counted": "cycle 5 has no record (no judge ran it), so the cycle counter stays at 5"
     }
   ],
   "spend": [

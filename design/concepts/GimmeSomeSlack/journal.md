@@ -13,12 +13,12 @@ mods read alike.
 - **Design Version 0.1.0, locked** on his word 2026-11-13 ~3:40 PM PST (`version/VERSION.json`); the lock record pins the text
   at that word, `bf33322d77` (re-pinned 2026-11-14, steward's decision). Code: `src/RimMandrake/GimmeSomeSlack/` (C#, 62
   sources; C# SelfTest 4515 checks; `validation.py`; `northstar/proof_all.py`, the one dense live proof).
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-15 5:51 PM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-15 11:33 PM PST (`version/stage_record.json`).
 - **Bars:** 48 (23 inventory rows of `record.json` + 26 leaves of `tree.json`; `shock_reach_setting` is both, so 49 rows
   name 48 ids; `cords_draw_under_things` added by his card 2026-11-14). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`), made by the throwaway `version/make_test_table.py`. Of 48
   bars: 48 have a deciding test runnable today (counts as of now: "Waiting on").
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 5:51 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 11:33 PM PST).
 - **Open questions for him:** "Questions for him", the last part of this top section.
 
 ### The vision (his root paragraph, `record.json` root, OWNER:1793895896496551063)
@@ -99,6 +99,8 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 3:20 PM PST, kind decision): bar `settings_switch_cleanly` eased with his approval: every feature patch maps to exactly one setting; the seven save-housekeeping patches are listed by name and always on; a patch neither mapped nor listed fails. Was "maps each one to exactly one switch, none unmapped". Reworded in tree.json (oracle, scenario), scenes.json (`sc_settings` expect) and record.json (inventory `what`); `T_SETTINGS_SWEEP_OFFLINE` now also refuses a listed name with no patch class and a list that is not seven, and was watched failing on a real unlisted ungated patch. Source: owner by card 2026-11-14, "Exempt housekeeping" (question 5); run RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR.
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 3:20 PM PST, kind re-pin): tree.json, scenes.json and record.json re-pinned in `version/bars.md` for that easing (tree `5fa03c7a8e`, scenes `dd8be4a7f2`, record `5286159164`; tree hash `e80c7f93`). The exam's 26 of 26 was read on the earlier tree text. Source: owner by card 2026-11-14, "Exempt housekeeping"; run RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR.
 - CONDUCTOR INTERVENED (stage 4+5, 2026-11-15 5:51 PM PST, kind decision): Open blind cycle 4. Cycle 3 fixed four Problems, all test gaps and no mod bug; both offline no-hose bars are green and the three lane-1 failures are Polish; a cycle's own fixes cannot pass its own exit, so a fresh blind judge is the only road to a recorded pass. Source: maturation.py advance by CONDUCTOR, cycle 4.
+- CONDUCTOR INTERVENED (stage 4+5, 2026-11-15 7:20 PM PST, kind decision): Open blind cycle 5. Evidence: cycle 4's one Problem (the no-hose test read only 7 def fields) was fixed and closed inside the cycle at 69e7d7f47e, bars no_hose and no_hose_in_gss are green, 27 of 27 offline tests rerun PASS, the 3 remaining findings are Polish; the rule owes a fresh blind judge after a fix. No evidence for another road. Source: maturation.py advance by CONDUCTOR, cycle 5.
+- CONDUCTOR INTERVENED (stage 4+5, 2026-11-15 11:33 PM PST, kind decision): Allowed by the Conductor 11:35 PM PST 2026-11-15 under the owner's overnight order (these mods DO start in this new process tonight). Evidence for a fourth cycle after three fails: the process differs now (run starts from the mod-ledger packet, 235 entries, acceptance 7/7), and 17 blind faults stand claimed-fixed with no judge verdict, which only a blind cycle can confirm or refute. Source: maturation.py advance by CONDUCTOR, cycle 5.
 
 ### 2026-11-14 11:25 PST, run begins (rm-builder, detached, offline only)
 
@@ -293,4 +295,26 @@ row 2; Stage 3 about $10.3 and 50 minutes (12:15 to 13:05 PST). No helpers, no g
 - Blind cycle 4 of this visit (4 in all).
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-15 2:33 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 2:33 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-15 7:20 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to Blind challenge, tests first (Stages 4 and 5) (by CONDUCTOR)
+
+- Why: delegated: evidence-for-ask: open blind cycle 5; hand act folded by RIMMANDRAKE_OPEN_NEXT_BLIND_CYCLE_WHEN_PROBLEMS_CLOSED_INSIDE
+- Checks passed: order, by, version, hold, fourth_cycle.
+- Conductor decision: Open blind cycle 5. Evidence: cycle 4's one Problem (the no-hose test read only 7 def fields) was fixed and closed inside the cycle at 69e7d7f47e, bars no_hose and no_hose_in_gss are green, 27 of 27 offline tests rerun PASS, the 3 remaining findings are Polish; the rule owes a fresh blind judge after a fix. No evidence for another road.
+- Owner said: per-ruling RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME: delegated: evidence-for-ask: open blind cycle 5; hand act folded by RIMMANDRAKE_OPEN_NEXT_BLIND_CYCLE_WHEN_PROBLEMS_CLOSED_INSIDE
+- Blind cycle 5 of this visit (5 in all).
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-15 5:51 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 5:51 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-15 11:33 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to Blind challenge, tests first (Stages 4 and 5) (by CONDUCTOR)
+
+- Why: Allowed by the Conductor 11:35 PM PST 2026-11-15 under the owner's overnight order (these mods DO start in this new process tonight). Evidence for a fourth cycle after three fails: the process differs now (run starts from the mod-ledger packet, 235 entries, acceptance 7/7), and 17 blind faults stand claimed-fixed with no judge verdict, which only a blind cycle can confirm or refute.
+- Checks passed: order, by, version, hold, fourth_cycle, judge_certificate.
+- Conductor decision: Allowed by the Conductor 11:35 PM PST 2026-11-15 under the owner's overnight order (these mods DO start in this new process tonight). Evidence for a fourth cycle after three fails: the process differs now (run starts from the mod-ledger packet, 235 entries, acceptance 7/7), and 17 blind faults stand claimed-fixed with no judge verdict, which only a blind cycle can confirm or refute.
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: Allowed by the Conductor 11:35 PM PST 2026-11-15 under the owner's overnight order (these mods DO start in this new process tonight). Evidence for a fourth cycle after three fails: the process differs now (run starts from the mod-ledger packet, 235 entries, acceptance 7/7), and 17 blind faults stand claimed-fixed with no judge verdict, which only a blind cycle can confirm or refute.
+- Blind cycle 5 of this visit (5 in all).
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-15 7:20 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 7:20 PM PST).
 - Record: `version/stage_record.json`.
