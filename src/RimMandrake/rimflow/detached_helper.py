@@ -579,6 +579,7 @@ def launch_argv(rec, msg, claude):
             "--setenv", "CLAUDE_SCOPE_UNIT=" + scope_name(seat, unit)[:-len(".scope")],
             "--setenv", "RM_ROLE_UNIT=" + unit, "--setenv", "RM_DETACHED_UNIT=" + unit,
             "--setenv", "RM_DISPATCHER_STATE=" + rec["state"],
+            *sum((["--setenv", "%s=%s" % kv] for kv in sorted((rec.get("env") or {}).items())), []),
             *(["--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound, "-p", "RuntimeMaxSec=%d" % bound] if bound else []),
             # the ExecStopPost steps run inside this bound: finish's note (120 s) and publish (300 s), wrapup and the
             # return start; 30 s killed ten finishes in a week, measured 2026-11-15 (RIMMANDRAKE_COVER_FINISH_IN_TIMEOUTSTOPSEC_TEN_KILLED)
@@ -689,7 +690,7 @@ def _refusal(res):
 
 
 def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None, sleep=time.sleep,
-           events_dir=None, skip_launch_checks=None):
+           events_dir=None, skip_launch_checks=None, env=None):
     """-> (exit code, text). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
     a clone another run still holds (after waiting for one that is being given back).
     The ticket preflight runs here IN SHADOW (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS): its new checks in
@@ -704,7 +705,7 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     code, text = 1, ""
     try:
         code, text = _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir,
-                             skip_launch_checks, pf)
+                             skip_launch_checks, pf, env)
     finally:
         try:
             tail = pf.finish()
@@ -714,7 +715,8 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     return code, (text + "\n" + tail) if tail and code == 0 else text
 
 
-def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir, skip_launch_checks, pf):
+def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir, skip_launch_checks, pf,
+            env=None):
     now = now or time.time()
     bad = pf.gate("I1", lambda: None if seat in SEATS else "refused: seat %r is not one of %s" % (seat, ", ".join(SEATS)),
                   judge=_refusal)
@@ -747,10 +749,12 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
     if held:
         return 2, held
     with clone_lock(dest):
-        return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks, pf)
+        return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks, pf,
+                              env)
 
 
-def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks=None, pf=None):
+def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks=None, pf=None,
+                   env=None):
     pf = pf or _NoShadow("no preflight handed in")
     held = clone_holders(dest, runner, now, kept_ok=bool(clone))     # again, under the lock: no waiting now
     if held:
@@ -776,6 +780,8 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
            "budget_usd": float(budget), "at": now, "state": root, "status": "launching", "clone_how": how}
     if skip_launch_checks:
         rec["launch_checks_skipped"] = skip_launch_checks
+    if env:
+        rec["env"] = dict(env)
     if notes:
         rec["launch_checks_did_not_run"] = notes
     if getattr(pf, "run_id", None):
@@ -1155,6 +1161,8 @@ def main(argv=None):
     a.add_argument("--max-s", default=DEFAULT_MAX_S, help="seconds, or none/0 for no wall-time limit (default)")
     a.add_argument("--budget-usd", type=float, default=DEFAULT_BUDGET_USD)
     a.add_argument("--clone", help="an existing clone to run in (default: a pool clone <ITEM>.det)")
+    a.add_argument("--env", action="append", default=[], metavar="RM_KEY=VALUE",
+                   help="an RM_ variable the run's unit carries (a pilot holder's RM_MODLEDGER_WRITER, say)")
     a.add_argument("--skip-launch-checks", metavar="WHY",
                    help="the Conductor's bypass of the item's ## launch-checks block; WHY is recorded on the run record")
     f = sub.add_parser("finish")
@@ -1176,8 +1184,14 @@ def main(argv=None):
         if args.brief_file:
             with open(args.brief_file, encoding="utf-8") as fh:
                 brief = fh.read()
-        rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model, args.max_s, args.budget_usd,
-                          clone=args.clone, skip_launch_checks=args.skip_launch_checks)
+        env = dict(kv.partition("=")[::2] for kv in args.env)
+        bad = [k for k in env if not re.match(r"^RM_[A-Z0-9_]+$", k)]
+        if bad:
+            rc, text = 2, "REFUSED: --env takes RM_ variables only, not %s" % ", ".join(bad)
+        else:
+            rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model,
+                              args.max_s, args.budget_usd, clone=args.clone, skip_launch_checks=args.skip_launch_checks,
+                              env=env)
     elif args.cmd == "finish":
         keep_off_result(args.unit)      # before anything prints: never into claude's result or error file
         rc, text = finish(args.unit)

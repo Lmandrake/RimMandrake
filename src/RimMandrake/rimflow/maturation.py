@@ -1277,7 +1277,7 @@ def resume_text(f, unit):
 
 
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
-               resume=None, bars=None):
+               resume=None, bars=None, preface=None, env=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -1286,7 +1286,9 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     never retries; it never takes the bridge itself (the launched driver does, with --idle-ok). resume (a killed run's
     unit, from the Dispatch step's retry): the cycle or visit that run began may already have a record with no exit
     block; it is resumed, the brief opening with resume_text. bars: an offline build's batch of its refused bars (the
-    Dispatch step's split); a bar not refused now is refused."""
+    Dispatch step's split); a bar not refused now is refused. preface (a pilot mod's ledger packet and holder lines,
+    modledger.launch): the brief opens with it, then the stage's own brief; env: RM_ variables the run's unit carries
+    (the holder's RM_MODLEDGER_WRITER)."""
     if not isinstance(budget_usd, (int, float)) or isinstance(budget_usd, bool) or budget_usd <= 0:
         return 2, "REFUSED: a spend cap is required (--budget-usd > 0); there is no default", None
     if not item:
@@ -1322,11 +1324,15 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     elif bars and set(bars) - set(f.get("refused_bars") or []):
         return 2, "REFUSED: the batch names bars %s is not refusing: %s" % (
             mod, ", ".join(sorted(set(bars) - set(f.get("refused_bars") or []))[:6])), None
+    if preface:
+        text = preface.rstrip("\n") + "\n\n---\n\n" + text
     path = os.path.join(brief_dir(), "%s-%d.md" % (mod, int(now_ts())))
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
     argv = [sys.executable, detached_helper_path(), "launch", "--seat", seat, "--item", item, "--brief-file", path,
             "--model", model, "--budget-usd", "%g" % budget_usd]
+    for k, v in sorted((env or {}).items()):
+        argv += ["--env", "%s=%s" % (k, v)]
     r = runner(argv, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
     out = ((r.stdout or "") + (r.stderr or "")).strip()
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)

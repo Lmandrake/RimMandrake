@@ -765,6 +765,75 @@ def seal(root, mod, run, ts=None, views=True):
     return eid
 
 
+def holder_brief(mod, lease, token, role, stage):
+    """-> the lines that follow the packet in a holder's brief: who it writes as and how it checkpoints."""
+    me = "python3 src/RimMandrake/rimflow/modledger.py"
+    w = "HOLDER.%s" % lease
+    return "\n".join([
+        "## You hold %s's ledger: run %s, role %s, stage %s" % (mod, lease, role, stage or UNM_STAGE),
+        "",
+        "The packet above is where this mod stands; start from it, not from ticket prose, and resume at stage %s "
+        "(never stage 1). You write as `%s` with fencing token %d (RM_MODLEDGER_WRITER is set to it; any other shard "
+        "refuses you). Every append carries `--writer %s --token %d`." % (stage or UNM_STAGE, w, token, w, token),
+        "",
+        "Before you stop, and at each natural boundary, write a checkpoint of the fixed shape; a run that ends "
+        "without one is flagged NO_CHECKPOINT:",
+        "",
+        "    %s append --mod %s --writer %s --token %d --kind session.checkpoint --subject session \\"
+        % (me, mod, w, token),
+        "      --body '{\"done\": \"<what landed>\", \"next\": \"<one imperative>\", \"ruled_out\": \"<what you refuted>\"}'",
+        "",
+        "Findings, causes tried and refuted, traps and tests go in as their own kinds (`%s append --help`); "
+        "`%s find --mod %s <words>` before you mint a subject." % (me, me, mod),
+    ])
+
+
+UNM_STAGE = "UNMEASURED"
+
+
+def launch(root, mod, lease, role, stage=None, ts=None, views=True):
+    """DISPATCH starts a holder's stage run from the packet (spec §3.1, §3.3): grants `lease` (the next fencing token),
+    records run.start naming the lease, the role, the stage the ledger stands at now (`stage` only when the ledger
+    names none) and the packet's size, and -> {"token", "run", "brief", "stage", "writer"}; the brief begins with the
+    packet text, then how the holder writes and checkpoints. The run is named for its lease."""
+    _check_mod(mod)
+    tok = grant(root, mod, lease, ts=ts, views=False)
+    events = read(root, mod)
+    at = reduce(events).get("stage") or stage
+    try:
+        text, _info = packet_from(mod, events, stale=stale_check(root))
+    except Exception:                               # noqa: BLE001 — the git staleness check is a nicety, not the packet
+        text, _info = packet_from(mod, events)
+    append(root, mod, "DISPATCH", "run.start", "run", run=lease, ts=ts, views=views,
+           body={"run": lease, "lease": lease, "token": tok, "role": role, "stage": at, "packet_tokens": tokens(text)})
+    brief = text.rstrip("\n") + "\n\n" + holder_brief(mod, lease, tok, role, at) + "\n"
+    return {"token": tok, "run": lease, "brief": brief, "stage": at, "writer": "HOLDER.%s" % lease}
+
+
+def end_run(root, mod, run, status, ts=None, views=True):
+    """DISPATCH records run.end with its status and -> its flags: NO_CHECKPOINT when that run's holder (not fenced)
+    wrote no session.checkpoint with non-empty done, next and ruled_out after its run.start."""
+    events = read(root, mod)
+    starts = [e for e in events if e.get("writer") == "DISPATCH" and e.get("kind") == "run.start"
+              and (e.get("body") or {}).get("run", e.get("run")) == run]
+    if not isinstance(run, str) or not starts:
+        raise ModLedgerError("run %r has no run.start in %s's ledger (modledger.launch records it)" % (run, mod))
+    st = starts[-1]
+    lease = (st.get("body") or {}).get("lease") or run
+    by, _ = leases(events)
+    ok = False
+    for e in events:
+        if (e.get("writer") == "HOLDER.%s" % lease and e.get("kind") == "session.checkpoint"
+                and _when(e) >= _when(st) and not fenced(e, by)):
+            b = e.get("body") or {}
+            if all(isinstance(b.get(k), str) and b[k].strip() for k in ("done", "next", "ruled_out")):
+                ok = True
+    flags = [] if ok else ["NO_CHECKPOINT"]
+    append(root, mod, "DISPATCH", "run.end", "run", run=run, ts=ts, views=views,
+           body={"run": run, "lease": lease, "status": str(status), "flags": flags})
+    return flags
+
+
 def _line_sha(line):
     return hashlib.sha256(line.strip()).hexdigest()[:12]
 

@@ -127,6 +127,7 @@ import judge_certificate as JC  # noqa: E402  the pre-judgement certificate, rea
 import maturation_now as MN     # noqa: E402
 import maturation_autonomy as AUT   # noqa: E402
 import detached_helper as DH    # noqa: E402
+import modledger                # noqa: E402  a pilot mod's stage runs start from its ledger packet
 
 UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
@@ -1208,14 +1209,99 @@ def launch_counted(cfg, s, row, now, book, where, new_item, do_file, do_publish,
     return ok, item, unit, text, entry
 
 
+ROLE_OF_STAGE = {"offline_build": "builder", "blind_challenge": "blind_judge", "in_game": "live_driver"}
+
+
+def pilot_ledger(root, mod):
+    """-> True for a pilot mod (modledger.json pilot_mods) that has a ledger: its stage runs start from the packet."""
+    try:
+        return mod in (modledger.config().get("pilot_mods") or []) and bool(modledger.read(root, mod))
+    except Exception:       # noqa: BLE001  an unreadable ledger launches the old way, never not at all
+        return False
+
+
+def ledger_paths(root, mods):
+    """-> the DISPATCH shard and the views of each mod's ledger, repo-relative, that exist."""
+    out = []
+    for mod in mods:
+        d = modledger.ledger_dir(root, mod)
+        for rel in ["DISPATCH.jsonl"] + ["views/" + v for v in modledger.VIEWS]:
+            if os.path.exists(os.path.join(d, rel)):
+                out.append(os.path.relpath(os.path.join(d, rel), root))
+    return out
+
+
+def land_ledger(root, mods, what, fx=None):
+    """Land the DISPATCH shard and views of these mods' ledgers (land.sh, as land_spend does)."""
+    paths = ledger_paths(root, mods)
+    if not paths:
+        return "nothing to land"
+    if (fx or {}).get("land_ledger"):
+        return fx["land_ledger"](paths)
+    return land_spend(root, paths, dict(fx or {}, land_msg="modledger: %s (Dispatch step)" % what))
+
+
+def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, **kw):
+    """The Dispatch step's stage launch. A pilot mod's run starts from its ledger (plan step 5): modledger.launch grants
+    the holder lease and records run.start at the stage the mod stands at, the brief opens with the packet, then the
+    stage's own brief, and the unit carries RM_MODLEDGER_WRITER=HOLDER.<lease>; a launch that never started records
+    its run.end at once. Any other mod launches as before. -> (rc, text, unit)."""
+    launch = launch or M.launch_mod
+    stage = (M.load(root, mod) or {}).get("stage")
+    model = cfg.get("ingame_model", "opus") if stage == "in_game" else cfg.get("model", "opus")
+    if not pilot_ledger(root, mod):
+        return launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, **kw)
+    now = now or time.time()
+    lease = "run-%d" % int(now)
+    try:
+        out = modledger.launch(root, mod, lease, ROLE_OF_STAGE.get(stage, "holder"), stage=stage)
+    except Exception as e:      # noqa: BLE001  a refused grant is a launch that never started, said in its words
+        return 2, "REFUSED: %s's ledger launch failed: %s: %s" % (mod, type(e).__name__, e), None
+    rc, text, unit = launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, preface=out["brief"],
+                            env={"RM_MODLEDGER_WRITER": out["writer"], "RM_MODLEDGER_TOKEN": str(out["token"])}, **kw)
+    runs = st.setdefault("mods", {}).setdefault(mod, {}).setdefault("ledger_runs", [])
+    if rc == 0 and unit:
+        runs.append({"run": lease, "unit": unit, "item": item, "at": now, "stage": out["stage"]})
+    else:
+        modledger.end_run(root, mod, lease, "never_started")
+    text = "%s; ledger run %s (packet %d tokens)" % (text, lease, modledger.tokens(out["brief"]))
+    land_ledger(root, [mod], "run %s on %s %s" % (lease, mod, "started" if unit else "never started"), fx)
+    return rc, text, unit
+
+
+def end_ledger_runs(root, st, facts, now, fx=None):
+    """A pilot run whose unit has ended -> its run.end, with the run record's result and the flags
+    (modledger.end_run: NO_CHECKPOINT when its holder wrote none). -> {mod: ["<run> <status> <flags>"]}."""
+    fx = fx or {}
+    rec_of = fx.get("record") or DH.read_record
+    out, mods = {}, []
+    for mod, s in (st.get("mods") or {}).items():
+        for r in s.get("ledger_runs") or []:
+            if r.get("ended"):
+                continue
+            rec = rec_of(r["unit"]) or {}
+            done = {x.get("unit") for x in (facts.get(mod) or {}).get("ended_runs") or []}
+            if rec.get("status") != "finished" and r["unit"] not in done:
+                continue
+            status = rec.get("result") or rec.get("status") or "ended"
+            try:
+                flags = modledger.end_run(root, mod, r["run"], status)
+            except Exception as e:      # noqa: BLE001  said in the reading; the next tick tries again
+                out.setdefault(mod, []).append("%s: run.end failed: %s: %s" % (r["run"], type(e).__name__, e))
+                continue
+            r.update(ended=now, status=status, flags=flags)
+            out.setdefault(mod, []).append("%s %s %s" % (r["run"], status, ",".join(flags) or "checkpointed"))
+            mods.append(mod)
+    if mods:
+        out["_land"] = land_ledger(root, sorted(set(mods)), "run.end of ended pilot runs", fx)
+    return out
+
+
 def execute(root, cfg, st, rows, launches, now, fx=None):
     fx = fx or {}
     do_file = fx.get("file", file_and_publish)
     do_publish = fx.get("publish", publish_filed)
-    do_launch = fx.get("launch", lambda mod, cap, item, **kw: M.launch_mod(
-        root, mod, cap, item, seat=cfg.get("seat", "BENCH"),
-        model=cfg.get("ingame_model", "opus") if (M.load(root, mod) or {}).get("stage") == "in_game"
-        else cfg.get("model", "opus"), **kw))
+    do_launch = fx.get("launch", lambda mod, cap, item, **kw: launch_stage(root, cfg, st, mod, cap, item, now, fx, **kw))
     known = fx["known"]() if "known" in fx else known_items()
     done = []
     for row in rows:
@@ -1380,7 +1466,8 @@ def land_spend(root, paths, fx=None):
         if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
             return "skipped: %s is not a clone's top" % root
         import designer_stage as DS
-        p = subprocess.run([DS.LAND, "-m", "maturation: spend rows of ended runs (Dispatch step)"] + paths, cwd=root,
+        p = subprocess.run([DS.LAND, "-m", (fx or {}).get("land_msg") or "maturation: spend rows of ended runs (Dispatch step)"]
+                           + paths, cwd=root,
                            capture_output=True, text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
     except (OSError, subprocess.SubprocessError) as e:
         return "land failed: %s: %s" % (type(e).__name__, e)
@@ -1616,6 +1703,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     if apply:
         rd["clone"] = clone_reading(st, now, (fx.get("clone") or (lambda: clone_counts(root)))())
         rd["spend_rows"] = record_spend(root, facts, fx)
+        rd["ledger_runs"] = end_ledger_runs(root, st, facts, now, fx)
         if aut:
             rd["chores"] = slow_chores(st, facts, now, fx)
         try:        # every hand act on the pipeline, recorded; one left a day with no follow-up alarms
