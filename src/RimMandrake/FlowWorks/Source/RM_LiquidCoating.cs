@@ -22,6 +22,9 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>The coating liquid each pawn (thingIDNumber) is wading now; not saved (a reload mid-wade loses one coat).</summary>
 		private static readonly Dictionary<int, FluidDef> wading = new Dictionary<int, FluidDef>();
+		/// <summary>The Game <see cref="wading"/> belongs to: a new or reloaded game re-issues thing ids, so the table is
+		/// cleared whenever Current.Game differs (else a stale entry coats a stranger in the next game).</summary>
+		private static readonly System.WeakReference<Game> wadingGame = new System.WeakReference<Game>(null);
 		private static Dictionary<TerrainDef, FluidDef> byFillTerrain;
 		private static HediffDef coatDef;
 
@@ -36,6 +39,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			WadingForThisGame();
 			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
 			for (int i = 0; i < pawns.Count; i++)
 			{
@@ -60,6 +64,15 @@ namespace RimMandrake.FlowWorks
 				{
 					Wash(p, f);
 				}
+			}
+		}
+
+		private static void WadingForThisGame()
+		{
+			if (!wadingGame.TryGetTarget(out Game g) || g != Current.Game)
+			{
+				wading.Clear();
+				wadingGame.SetTarget(Current.Game);
 			}
 		}
 
@@ -156,6 +169,7 @@ namespace RimMandrake.FlowWorks
 			{
 				only = new IntVec3(x, 0, z);
 			}
+			WadingForThisGame();
 			var rows = new List<string>();
 			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
 			{

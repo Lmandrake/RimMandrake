@@ -171,6 +171,7 @@ REVIEWED = {
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::ctxThing": "print-split context: nulled by Begin and End around each TakePrintFrom, read only between them and only while Spawned",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::rtThing": "realtime-draw context: written by the prefix that sets rtOn immediately before the draw that reads it; never read without a fresh write",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::sliceMeshes": "Mesh cache keyed by a numeric size key; holds no game object",
+    "src/RimMandrake/FlowWorks/Source/RM_LiquidCoating.cs::wading": "cleared when Current.Game changes (wadingGame weak reference), checked by Tick and ProofReport before any read",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::tintedOverlays": "Material cache keyed by a numeric look key; holds no game object",
     "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs::underSheet": "Material cache keyed by a liquid id; holds no game object",
     "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs::drinkableCells": "keyed by map.uniqueID but each entry holds a WeakReference<Map> and is used only when it is the same Map (ids repeat across games)",
