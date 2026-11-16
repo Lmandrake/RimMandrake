@@ -1,28 +1,42 @@
 # Holder–pipeline fusion: the pipeline as a long-term holder's checklist
 
-Item: `RIMMANDRAKE_DESIGN_HOLDER_PIPELINE_FUSION_CHECKLIST_NOT_HANDOFF` · for Mandrake to choose, design helper, Sun 2026-11-15
-~9:20 PM PST (measured, GPT blind + critique, starred claims re-measured, merged). Design only: nothing here is built, and nothing is built until he picks.
+Item: `RIMMANDRAKE_DESIGN_HOLDER_PIPELINE_FUSION_CHECKLIST_NOT_HANDOFF` · design helper, Sun 2026-11-15
+~9:20 PM PST (measured, GPT blind + critique, starred claims re-measured, merged). He chose by card the same evening (below);
+the build is `RIMMANDRAKE_BUILD_MOD_LEDGER_HOLDERS_THREE_PILOTS_AT_ONCE`, its plan `design/plans/2026-11-15-holder-pipeline-fusion-build.md`.
 Run files (measurement, outside sources, GPT's blind answer and critique, status): `design/specs/2026-11-15-holder-pipeline-fusion/`.
 GPT's critique, verbatim: `design/specs/2026-11-15-holder-pipeline-fusion.gpt.md`.
 
 Tags: `[measured]` (how is said) · `[guess ~N%]` · `[HIS]` his words · `[PROPOSAL]` ours.
+
+## Decisions (owner, 2026-11-15)
+
+By question card, ~9:45 PM PST (the whole card is stamped on `RIMMANDRAKE_DESIGN_HOLDER_PIPELINE_FUSION_CHECKLIST_NOT_HANDOFF`). `[HIS]`
+
+1. Which do we build? → **"Resumed session per mod (Recommended)"**: "Why: keeps context as the mod progresses, unattended, which is what you asked for. The dispatcher resumes one long session per mod at every stage; built as the packet version first, falls back to it. Cost: a warm session can cling to a refuted theory; may cost more per stage; resume is untested in our detached launcher."
+2. Who fixes what a blind judge finds? → **"Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed."** (This replaces his 11-13 rule that a blind judge fixes what it finds on the spot.)
+3. Which mod is the pilot? → **"Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit."** (Gimme Some Slack, FlowWorks, Explosive Knockback.)
+4. Context ceiling? → **"Try 400k first."**
+
+His additions the same evening (~9:40 PM PST): "I think the key to closing many tickets for the same mod might be keeping that context and working them all together. I think a mod holder should be handing off to its next version with context of what has happened before. Even into judging phases. I think this might be very important. Almost like a conductor custom following along. I think we're on to something."
+
+What they change below: Option B, built as A first; three pilot mods side by side; a holder ceiling of 400k (one setting, `holder_context_ceiling_tokens` in `src/RimMandrake/rimflow/modledger.json`); every `finding.open` carries the finder's precise proposed fix and the holder applies it; the holder works all its mod's open tickets together; the holder carries across Design Versions with its context (§3.4 Lifetime); the holder stays alive and following through the judging phases while the judges stay blind.
 
 ## Five-line summary
 
 1. He is right about the store problem `[measured]`: one mod (Gimme Some Slack) has its state in about 17 stores, its current stage copied in 3 places (and a second file using the same key for a different numbering), 413 ledger items and 126 agent runs touching it; a fresh agent cannot read all of it (≈297k tokens, more than a window).
 2. He is also right that the pipeline turned ownership into handoffs; Anthropic's own published guidance names exactly our shape (separate planning, build and review agents) as the one that "lost context at each handoff".
 3. "Foundry/Bench proved more live work" cannot be settled `[measured]`: the ledger's live-verified items fell from 15.2 to 3.7 a day, but the pipeline now writes its live results into the mod folders instead (four in-game visits in three days, 34–47 passing rows each). Live evidence moving to another store is the same sprawl. What clearly rose is churn: 161 items filed a day.
-4. The design: one append-only **mod ledger** per mod (one shard per writer, so a holder cannot edit a judge's findings or his words), every other per-mod file becomes a generated view, and a named **holder** that every stage run *is*, starting from a bounded packet the ledger prints. Blind judges write sealed findings, the holder must answer each one, and only a judge can turn one green. The dispatcher alone grants the holder's lease and accepts stage moves.
-5. The three options differ in what carries the context between stages: the record alone (A), a resumed per-mod session (B), or a long-lived seat window (C). Recommendation: **B, built as A first, piloted on one mod with two mods advancing at once.** All three need the ledger; B keeps warm context without needing a window kept open, our dispatcher already resumes sessions, and the evidence from Relentless says long sessions do much of their landing late (84% of the landings in sessions that passed 200k came after 200k), so a holder is let grow to ~600k before it rotates.
+4. The design: one append-only **mod ledger** per mod (one shard per writer, so a holder cannot edit a judge's findings or his words), every other per-mod file becomes a generated view, and a named **holder** that every stage run *is*, starting from a bounded packet the ledger prints. Anyone who finds something (a blind judge, a checker, the steward) writes the finding with the precise fix they would make; it goes back to the holder, who applies it or disputes it, and only a judge can turn one green. The dispatcher alone grants the holder's lease and accepts stage moves.
+5. The three options differ in what carries the context between stages: the record alone (A), a resumed per-mod session (B), or a long-lived seat window (C). His pick: **B, built as A first, piloted on three mods side by side.** All three need the ledger; B keeps warm context without needing a window kept open, our dispatcher already resumes sessions, and the evidence from Relentless says long sessions do much of their landing late (84% of the landings in sessions that passed 200k came after 200k), so a holder is let grow to 400k (his "Try 400k first.") before it rotates.
 
 ## The three options (read this section alone)
 
 All three share the same core, which is his two fixed points made concrete:
 
 - **One mod ledger per mod, append-only, stored nowhere else.** Everything a run learns about the mod (stage moves, bars, tests run, findings, causes tried and refuted, questions and his answers, decisions, spend) is one event in it. `stage.json`, `journal.md`, `log.md`, the status page row and the mod's handoff text stop being written by hand and are printed from the ledger.
-- **Blind judges stay.** A judge sees the candidate (a commit), the locked bars and the test entry point, never the holder's story. Its findings go into the ledger and to the holder; the holder fixes; a new blind judge looks again. Only a judge event turns a finding green.
+- **Blind judges stay.** A judge sees the candidate (a commit), the locked bars and the test entry point, never the holder's story. Each finding goes into the ledger with the precise fix the judge would make, and back to the holder fully informed; the holder applies it (or disputes it); a new blind judge looks again. Only a judge event turns a finding green.
 - **Questions to him are ledger events** with an asked / answered / superseded state, checked against his past answers before anyone asks.
-- **Two mods advance at a time**, and pipeline-machinery work is capped (it was close to half the runs tonight).
+- **Three pilot mods advance side by side** (Gimme Some Slack, FlowWorks, Explosive Knockback); a fix to the system found on one lands for all three. Other pipeline-machinery work is capped (it was close to half the runs tonight).
 
 ### Option A — "The record is the holder"
 
@@ -30,17 +44,17 @@ All three share the same core, which is his two fixed points made concrete:
 
 - **Pros.** Smallest change to what runs today; survives every restart by design; cheapest per run; the dispatcher, caps and timers stay. Restarting is a non-event.
 - **Cons.** Every run is still a new mind: what the packet leaves out is lost (Cognition: "Actions carry implicit decisions"); this is the shape that already loses context, made better rather than removed. Does not give him "context is kept as it progresses", and it cuts every holder at each stage, where the Relentless transcripts say long sessions did most of their landing late (§1.4).
-- **Build effort.** About 3–4 helper runs (ledger writer and lint, views for one mod, packet, dispatcher reads packet) `[guess ~60%]`. **Test effort:** offline selftests plus a one-mod pilot of about a week.
+- **Build effort.** About 3–4 helper runs (ledger writer and lint, views for one mod, packet, dispatcher reads packet) `[guess ~60%]`. **Test effort:** offline selftests plus a pilot of about a week.
 - **Risk.** Medium-low. The ledger becomes one more store if any writer keeps its old file; the fix is that at cutover the old files are archived read-only and their writers redirected, all at once.
 - **Retired.** Hand-written `journal.md`, `stage.json` as a source, the steward's journal lines, per-mod handoff prose, per-mod rimflow items (findings become ledger events).
 
-### Option B — "The holder is a resumed session" (recommended)
+### Option B — "The holder is a resumed session" (his pick)
 
-**What it is.** Option A's ledger, plus: each advancing mod has one holder session that the dispatcher *resumes* (`claude -p --resume <session>`) for every stage it does itself, instead of starting a stranger. It is allowed to build context well past today's 200k window backstop (his correction, 2026-11-15 ~9:08 PM, via the Conductor: "You're going to have to let them build up more context... Significant numbers of fixes happened after around 250k context."): it runs to about **600k**, then at its next natural boundary writes a checkpoint and a new session of the same holder starts from the packet, before the 1M window's auto-compaction (~750k) can cut it. Rehydrating from the ledger is the fallback after a forced restart, not the normal mode (§1.4). The holder does preflight, build, fixing the judges' findings, and the in-game acceptance; blind judges and the pre-human check stay independent.
+**What it is.** Option A's ledger, plus: each advancing mod has one holder session that the dispatcher *resumes* (`claude -p --resume <session>`) for every stage it does itself, instead of starting a stranger. It is allowed to build context well past today's 200k window backstop (his correction, 2026-11-15 ~9:08 PM, via the Conductor: "You're going to have to let them build up more context... Significant numbers of fixes happened after around 250k context."): it runs to **400k** (his "Try 400k first."), then at its next natural boundary writes a checkpoint and a new session of the same holder starts from the packet, before the 1M window's auto-compaction (~750k) can cut it. Rehydrating from the ledger is the fallback after a forced restart, not the normal mode (§1.4). The holder does preflight, build, applying the fixes the judges' findings propose, and the in-game acceptance, working all of its mod's open tickets together in one context; it carries into the mod's next Design Version and follows the judging phases; blind judges and the pre-human check stay independent.
 
 - **Pros.** Keeps context as the mod progresses, unattended (C keeps it too, but only while a window is up); one mind reads every blind finding about its own code; the ledger makes rotation safe, so a lost session costs one packet, not the mod; matches Anthropic's guidance that "an agent handling a feature should also handle its tests"; the resume path already exists in our dispatcher (`dispatcher.py` resumes seat windows with `claude_bounded.sh --bg --resume`) `[measured: grep]`.
-- **Cons.** Resuming gives back the conversation, not certainty: a warm session anchors on its own beliefs and can carry a refuted cause, so the packet is re-read at every resume and the ledger wins any disagreement; B may cost more than A per stage `[guess ~50%]`; a resume that fails after the session had already edited code or driven the bridge must first reconcile (unpublished commits, the clone, the bridge) before anything restarts, or it repeats the damage; a long context degrades ("context rot", cited in `design/RimMandrake/perpetual_orchestrator_context_2026-10-26.md`), so the blind judges and the packet re-read matter more the longer it runs; a resume after the one-hour prompt cache has expired re-writes and pays for the whole context (about $4 at 500k by that doc's rates `[guess ~60%]`), so the dispatcher resumes a holder promptly when a judge's findings land.
-- **Build effort.** Option A plus a session-id event, the resume launch, the reconcile step, the rotation rule, and a spend cap per mod and stage in place of today's USD 15 per run (a holder running to 600k will pass a per-run cap; the per-stage ceiling he set, USD 100, stays) `[guess ~55%]`. **Test effort:** A's tests plus a kill-and-resume test: kill a holder mid-stage; the next one must reconcile, avoid a refuted cause and respect an answered question.
+- **Cons.** Resuming gives back the conversation, not certainty: a warm session anchors on its own beliefs and can carry a refuted cause, so the packet is re-read at every resume and the ledger wins any disagreement; B may cost more than A per stage `[guess ~50%]`; a resume that fails after the session had already edited code or driven the bridge must first reconcile (unpublished commits, the clone, the bridge) before anything restarts, or it repeats the damage; a long context degrades ("context rot", cited in `design/RimMandrake/perpetual_orchestrator_context_2026-10-26.md`), so the blind judges and the packet re-read matter more the longer it runs; a resume after the one-hour prompt cache has expired re-writes and pays for the whole context (about $3 at the 400k ceiling, scaled from that doc's rates `[guess ~55%]`), so the dispatcher resumes a holder promptly when a judge's findings land.
+- **Build effort.** Option A plus a session-id event, the resume launch, the reconcile step, the rotation rule, and a spend cap per mod and stage in place of today's USD 15 per run (a holder running to 400k will pass a per-run cap; the per-stage ceiling he set, USD 100, stays) `[guess ~55%]`. **Test effort:** A's tests plus a kill-and-resume test: kill a holder mid-stage; the next one must reconcile, avoid a refuted cause and respect an answered question.
 - **Risk.** Medium. Mitigated because A is built first and B falls back to A (after the reconcile) when a resume fails.
 - **Retired.** Everything A retires, plus "new stage, new builder" launches for the holder's own stages.
 
@@ -66,12 +80,9 @@ All three share the same core, which is his two fixed points made concrete:
 
 **Combinations.** A is the first step of B (B = A + resume). C can run *on top of* A or B for the one mod he is sitting with (a window resumes the holder session instead of a timer), so "B now, C-style sitting when he is there" composes cleanly.
 
-**Recommendation: B, built as A first.** Build the ledger and packet (A) for one mod, Gimme Some Slack, run its views beside the old files for a few days, cut over (old files archived read-only, their writers redirected), then switch that mod's holder stages to resume one session. Keep two mods advancing at once. What would change this: if the one-mod pilot shows resumed sessions repeating refuted causes or costing more than about 1.5× an A run per stage, stay at A; if he would rather sit with one mod than have it run overnight, take C on top.
+**His pick: B, built as A first.** Build the ledger and packet (A) for the three pilot mods side by side (Explosive Knockback, the smallest, backfilled first; then Gimme Some Slack and FlowWorks), run their views beside the old files for a few days, cut over (old files archived read-only, their writers redirected), then switch each mod's holder stages to resume one session. A fix to the system that one pilot needs lands for all three. What would change this: if the pilot shows resumed sessions repeating refuted causes or costing more than about 1.5× an A run per stage, stay at A; if he would rather sit with one mod than have it run overnight, take C on top.
 
-**Decisions for him.**
-1. Which option (A, B, C, or B-with-C-sittings).
-2. His 11-13 rule says a blind judge "should FIX THEM RIGHT THERE". Tonight's says their feedback "should come to that same builder". The design follows tonight's (judges find, the holder fixes, a new judge re-judges). Confirm that tonight's words replace the 11-13 rule.
-3. Pilot mod: Gimme Some Slack (most stores, most history) or FlowWorks.
+His answers to the three decisions this section asked are at the top (Decisions, owner, 2026-11-15).
 
 ---
 
@@ -121,7 +132,7 @@ Rule: an item closed in the window that also carries a passing `verify` at L1 or
 
 So he is right for the case that matters: a session that is allowed to run long does most of its landing late, and our 200k cap would have ended most of those before their first landing. (Limits: a landing is any publish, not a verified fix; hard problems make long sessions, so this shows late work happens, not that a packet restart would have failed.)
 
-**What follows for the holder.** It is allowed to grow to about 600k, then rotates at its next natural boundary, before the 1M window's auto-compaction (~750k by the 10-26 simulation). Warm turns are cheap while the one-hour cache holds (that doc: 150k cached ≈ $0.03 a turn); the expensive moment is a resume after the cache has gone cold, so the dispatcher resumes a holder promptly. **Rehydration from the ledger is the fallback after a forced restart, not the normal mode.** The record still has to be complete, because the mod's history (~297k) is already more than any one rotation will see, and because a forced restart can come at any time.
+**What follows for the holder.** It is allowed to grow to 400k (his pick, "Try 400k first."; one setting, `holder_context_ceiling_tokens` in `src/RimMandrake/rimflow/modledger.json`), then rotates at its next natural boundary, before the 1M window's auto-compaction (~750k by the 10-26 simulation). Warm turns are cheap while the one-hour cache holds (that doc: 150k cached ≈ $0.03 a turn); the expensive moment is a resume after the cache has gone cold, so the dispatcher resumes a holder promptly. **Rehydration from the ledger is the fallback after a forced restart, not the normal mode.** The record still has to be complete, because the mod's history (~297k) is already more than any one rotation will see, and because a forced restart can come at any time.
 
 ## 2. Outside practice, and where we violate it
 
@@ -131,7 +142,7 @@ Sources read on the page, quotes verbatim (fetched 2026-11-15):
 |---|---|---|---|
 | **One agent keeps a feature and its tests; handoffs lose context** | Anthropic, "Building multi-agent systems: when and how to use them", Jan 2026, https://claude.com/resources/articles/building-multi-agent-systems-when-and-how-to-use-them | "Each handoff loses context." · teams with separate planning, execution and review agents "lost context at each handoff and spent more tokens coordinating than executing." · "an agent handling a feature should also handle its tests, because it already possesses the necessary context." | Our stages are exactly planning (Designer), execution (builder) and review (judge) agents, each a stranger; ~126 runs on one mod (§1.2). |
 | **Verification by a fresh agent works** | same article; Cognition, "Multi-Agents: What's Actually Working", Apr 2026, https://cognition.com/blog/multi-agents-working | "Verification subagents succeed because they sidestep the telephone game problem." · review works "best when the coding and review agents do not share any context beforehand." | We keep this, rightly: it is his fixed point. |
-| **Writes stay single-threaded; others contribute intelligence** | Cognition, same 2026 piece; and "Don't Build Multi-Agents", Jun 2025, https://cognition.com/blog/dont-build-multi-agents | "multi-agent systems work best today when writes stay single-threaded and the additional agents contribute intelligence rather than actions." · "Actions carry implicit decisions, and conflicting decisions carry bad results" | Today a blind judge "fixes it right there" (his 11-13 rule), so the mod's code has several writers in turn; `stage.json` has at least four writer modules (§1.1). |
+| **Writes stay single-threaded; others contribute intelligence** | Cognition, same 2026 piece; and "Don't Build Multi-Agents", Jun 2025, https://cognition.com/blog/dont-build-multi-agents | "multi-agent systems work best today when writes stay single-threaded and the additional agents contribute intelligence rather than actions." · "Actions carry implicit decisions, and conflicting decisions carry bad results" | Until his 2026-11-15 answer, his 11-13 rule had a blind judge fix what it found on the spot, so the mod's code had several writers in turn (now replaced: the finder writes the fix, the holder applies it); `stage.json` has at least four writer modules (§1.1). |
 | **Progress file + git + feature list; each new session rehydrates from them** | Anthropic, "Effective harnesses for long-running agents", Nov 2025, https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents | "each new session begins with no memory of what came before." · "Read the git logs and progress files to get up to speed on what was recently worked on." · agents were "asked to work on only one feature at a time." · warns of "Claude's tendency to mark a feature as complete without proper testing." | We have a journal meant for this, but it is one of ~17 stores, partly hand-written and stale (§1.1), and runs start from ticket prose and a brief, not from one progress record. |
 | **Structured notes outside the window** | Anthropic, "Effective context engineering for AI agents", Sep 2025, https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents | "the agent regularly writes notes persisted to memory outside of the context window." · "overly aggressive compaction can result in the loss of subtle but critical context" | Notes exist but are scattered; the cause-already-refuted that sent a helper out twice was in a note no brief carried. |
 | **Event sourcing: the log is the truth, everything else is a projection** | Martin Fowler, "Event Sourcing", https://martinfowler.com/eaaDev/EventSourcing.html (page not re-read in this run; the pattern is standard) | state is rebuilt from the stored sequence of events; views are disposable | Our per-mod state files are edited in place; the ledger exists but mod state is not derived from it. |
@@ -148,7 +159,7 @@ Sources read on the page, quotes verbatim (fetched 2026-11-15):
 
 **Where.** `design/concepts/<Mod>/ledger/<WRITER>.jsonl`, one file per writer, in git like the rimflow shards and for the same reason: many clones publish, and one file per writer cannot conflict at merge. The mod's state is the merge-ordered read of all its shards. It reuses rimflow's model and lint code `[PROPOSAL]`; it is not the global ledger.
 
-**Writers (one shard per producer, never per role).** `HOLDER.<lease>` (each holder lease gets its own shard, so a stale holder and its successor never share a file), `JUDGE.<run>` (one per blind run, sealed when the run ends: the dispatcher records the shard's hash in its own shard, so a later edit is detectable), `OWNER` (his words, cards and answers, written by the card capture and `--owner-said` paths), `DISPATCH` (launches, leases, stage acceptances, stops, spend; written only by the one dispatcher tick), `STEWARD` (the Conductor's decisions). Every event has a unique id and an idempotency key, so a re-published or duplicated append is harmless. A writer can only append to its own shard: the holder cannot edit or drop a judge's finding or his answer. This is GPT's point that the holder owns the mod but not the evidence.
+**Writers (one shard per producer, never per role).** `HOLDER.<lease>` (each holder lease gets its own shard, so a stale holder and its successor never share a file), `JUDGE.<run>` (one per blind run, sealed when the run ends: the dispatcher records the shard's hash in its own shard, so a later edit is detectable), `OWNER` (his words, cards and answers, written by the card capture and `--owner-said` paths), `DISPATCH` (launches, leases, stage acceptances, stops, spend; written only by the one dispatcher tick), `STEWARD` (the Conductor's decisions), `BACKFILL` (the one-time import from today's stores; every one of its events cites the old file it came from). Every event has a unique id and an idempotency key, so a re-published or duplicated append is harmless. A writer can only append to its own shard: the holder cannot edit or drop a judge's finding or his answer. This is GPT's point that the holder owns the mod but not the evidence.
 
 **Monotonic** means history only grows. A conclusion can be overturned (a refuted cause, a pass invalidated by a new commit), by a later event that names the one it supersedes; nothing is ever edited or deleted. Publish refuses a shard that is not a strict extension of its last published form (the existing `NOT_APPEND` check). A refuted cause carries what it was refuted *on* (the commit and the files it depends on) and reopens by itself when those change, so history does not preserve a stale verdict forever.
 
@@ -157,10 +168,12 @@ Sources read on the page, quotes verbatim (fetched 2026-11-15):
 **Event shape.**
 
 ```
-{seq, ts, mod, version, writer, run, kind, subject, supersedes?, code_sha?, body, evidence: [path or sha], authority?}
+{id, key, ts, tsn, mod, version, writer, run, kind, subject, supersedes?, code_sha?, token?, body, evidence: [path or sha], authority?}
 ```
 
-Kinds: `lease.take|renew|release`, `session.checkpoint` (B), `stage.enter`, `stage.exit_claimed` (holder), `stage.exit_confirmed` (judge or steward), `bar.locked|added|eased|deferred` (OWNER or STEWARD with his authority), `test.run` (result, sha), `live.run`, `finding.open` (JUDGE), `finding.claimed_fixed` (HOLDER), `finding.verified|reopened` (a later JUDGE), `finding.disputed` (HOLDER, goes to the neutral fixer per the refusal ruling), `cause.tried|refuted`, `question.ask`, `question.answer` (OWNER), `question.withdrawn`, `decision` (with `--owner-said`/`--by-card`/`--per-ruling`/`--why` provenance as today), `spend`, `note`.
+`seq` is the event's line number in its shard, assigned on read (a shard only grows, so it never moves), not stored. `id` is derived from the writer and the idempotency `key`; `token` is the holder's fencing token, required on every `HOLDER` event.
+
+Kinds: `lease.grant` (DISPATCH; the fencing token), `lease.renew|release` (HOLDER), `judge.sealed` (DISPATCH; the judge shard's hash), `run.start|end` (DISPATCH), `version.open` (the mod's Design Version moves on; the holder carries over), `session.id` (B: the holder's resumable session and its context size), `session.checkpoint` (B), `stage.enter`, `stage.exit_claimed` (holder), `stage.exit_confirmed` (judge or steward), `bar.locked|added|eased|deferred` (OWNER or STEWARD with his authority), `test.run` (result, sha), `live.run`, `finding.open` (any finder: JUDGE, STEWARD, OWNER; its body must carry `proposed_fix`, the precise fix the finder would make, or the append and the lint refuse it), `finding.claimed_fixed` (HOLDER, having applied the proposed fix or a better one it names, with a test), `finding.verified|reopened` (a later JUDGE), `finding.disputed` (HOLDER, goes to the neutral fixer per the refusal ruling), `cause.tried|refuted`, `question.ask`, `question.answer` (OWNER), `question.withdrawn`, `decision` (with `--owner-said`/`--by-card`/`--per-ruling`/`--why` provenance as today), `spend`, `note`.
 
 **The single-writer rule, enforced.** One command appends (`modledger append`), checks the writer against the shard and, for `HOLDER`, the live lease token. Views carry the offset of every shard they were built from and the reducer's version, and publish refuses a hand-edited or stale view. The launcher records each run's start, end, commits and test commands as events itself, so a run that dies still leaves its trace; a run that ends without a `session.checkpoint` of the fixed shape (what was done, with evidence; what is next; what was ruled out) is a flagged run. This is tamper-evidence and discipline, not prevention: an agent with a shell can still write a file by hand, and the lint is what catches it. (GPT objection 10, accepted as a limit.)
 
@@ -183,28 +196,30 @@ Printed from the ledger on demand, bounded (target ≤ 15k tokens; today's minim
 
 ### 3.4 The holder
 
-- **Identity:** `HOLDER/<Mod>/<version>`, one per advancing mod version. It is a role with a lease, not a process.
+- **Identity:** `HOLDER/<Mod>`, one per mod, carried across its Design Versions; each lease names the version it works on. It is a role with a lease, not a process.
 - **Lease:** granted by the dispatcher at launch with a fencing token, renewed while running, lapses after 45 minutes idle (borrowed from the bridge rule; a starting number). A run without the current lease cannot append to a `HOLDER` shard that counts. A stuck holder's lease lapses and the next launch takes over from the packet: one stuck run never sticks the mod.
-- **Lifetime:** from preflight to his live walk of that version; a new version gets a new holder that starts from the old one's ledger.
+- **Lifetime (his addition, 2026-11-15: "a mod holder should be handing off to its next version with context of what has happened before. Even into judging phases."):** from the first version's preflight onward, across versions. When the mod's Design Version moves on (`version.open`), the same holder carries on: its session (B) or, after a rotation, its successor started from the packet, which lists what the earlier versions decided, refuted and were told. It stays alive and following through the judging phases, like a per-mod Conductor: it reads each sealed finding as it lands and applies the fix, while the judges stay blind (they never read a `HOLDER` shard).
+- **All its tickets together:** the holder works every open finding, question and ticket of its mod in one context (his: "the key to closing many tickets for the same mod might be keeping that context and working them all together"), not one fresh run per ticket.
+- **Context ceiling:** 400k tokens (his "Try 400k first."), then a checkpoint and rotation at the next natural boundary. One setting, `holder_context_ceiling_tokens` in `src/RimMandrake/rimflow/modledger.json`; nothing else names the number.
 - **Rehydration:** A, every run from the packet; B, resume the last session while under the rotation threshold, otherwise the packet; C, the seat's window, with the packet after each handoff.
 
 ### 3.5 The pipeline as the holder's checklist
 
 | stage | who | why |
 |---|---|---|
-| 1 Designer | the Designer with him; the coverage judge stays blind | design is argued with him; the holder does not exist until the version locks (the holder may be started at lock and read the design history) |
+| 1 Designer | the Designer with him; the coverage judge stays blind | design is argued with him; on a mod's first version the holder starts at lock and reads the design history; on a later version the holder carried from the previous one follows the Designer stage |
 | 2 Preflight | holder | its own plan, its own context |
 | 3 Offline build | holder | |
-| 4/5 Blind challenge | **blind judge finds; holder fixes; a new blind judge re-judges** | judge stays blind; one writer of code |
+| 4/5 Blind challenge | **blind judge finds and writes the precise fix it would make; the holder, following along, applies it; a new blind judge re-judges** | judge stays blind; one writer of code |
 | 6 In-game acceptance | holder drives the scripted live checks | it owns its tests, as Foundry did |
-| 7 Pre-human check | independent fresh agent | a holder must not certify its own evidence |
+| 7 Pre-human check | independent fresh agent; the holder follows and applies what it finds | a holder must not certify its own evidence |
 | 8 His walk | him; the holder prepares the sitting and takes his findings | |
 
 The stage exits are checklist items in the ledger. The holder can only *claim* an exit; a judge, the pre-human checker or the steward confirms the evidence, and the dispatcher accepts the move. The dispatcher's question per mod becomes "what is the next unchecked item, and is the holder already on it?".
 
 ### 3.6 Blind feedback reaches the holder, the judge stays blind
 
-A judge run has two phases. **Discovery, blind:** its brief is the candidate commit, the locked bars and the test entry point only: no `HOLDER` shard, no history, no earlier verdicts. It writes its findings to its sealed `JUDGE` shard. **Then verification, targeted:** only after discovery is sealed, it is given the earlier judges' open findings that the holder claims fixed (the finding text and its reproduction, never the holder's story) and rules on each. The holder must answer every finding (`claimed_fixed` with a test, or `disputed`, which goes to the neutral fixer under the refusal ruling); it cannot mark one verified. Cycles are counted from the shards. The exit is today's: every bar's test run green on the candidate commit, and no finding open; we drop the "two passing judges in a row" idea (GPT objection 14: two judges share models and bars, so the second adds cost more than certainty).
+A judge run has two phases. **Discovery, blind:** its brief is the candidate commit, the locked bars and the test entry point only: no `HOLDER` shard, no history, no earlier verdicts. It writes its findings to its sealed `JUDGE` shard. **Then verification, targeted:** only after discovery is sealed, it is given the earlier judges' open findings that the holder claims fixed (the finding text and its reproduction, never the holder's story) and rules on each. Every finding carries the finder's precise proposed fix, so it reaches the holder fully informed. The holder must answer every finding (`claimed_fixed` with a test, having applied that fix or a better one it names, or `disputed`, which goes to the neutral fixer under the refusal ruling); it cannot mark one verified. Cycles are counted from the shards. The exit is today's: every bar's test run green on the candidate commit, and no finding open; we drop the "two passing judges in a row" idea (GPT objection 14: two judges share models and bars, so the second adds cost more than certainty).
 
 ### 3.7 Questions to him: one register
 
@@ -213,15 +228,15 @@ Every question is a `question.ask` event with the exact question, the mod, what 
 ### 3.8 Migration, smallest first step
 
 1. Build `modledger` (append, lint, show, packet, views) on rimflow's shard code, with its offline selftest (watch it refuse a hand-edited view, a non-append shard and a stale fencing token).
-2. Backfill Gimme Some Slack: one baseline event set from today's stores (stage, bars, open findings, his answers, refuted causes, open questions), each event citing the old file it came from.
-3. **Shadow first:** for a few days the views are generated beside the old files and compared every tick; a judge that did not write the backfill reads the packet against the old files. Cut over only when they agree.
+2. Backfill the three pilot mods, Explosive Knockback first (the smallest), then Gimme Some Slack and FlowWorks: one baseline event set per mod from today's stores (stage, bars, open findings, his answers, refuted causes, open questions), each event citing the old file it came from.
+3. **Shadow first:** for a few days each mod's views are generated beside the old files and compared every tick; a judge that did not write the backfill reads the packet against the old files. Cut over only when they agree.
 4. Cut over: the old files are archived read-only with their provenance (not deleted), and every writer to them is redirected or refused, on the same day.
 5. The next stage run starts from the packet (A). Then (B) the holder session is resumed.
-6. A second mod only after the falsifiers below have been read.
+6. The three pilots advance side by side throughout (his "Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit."); a fix to the system found on one lands for all three.
 
-The build estimates in the options are for this one mod; redirecting every legacy writer across all mods is the larger, unestimated part (GPT objection 17, accepted).
+The build estimates in the options are for one mod; redirecting every legacy writer across all mods is the larger, unestimated part (GPT objection 17, accepted).
 
-**Cap while piloting:** two mods advancing, and machinery work only where it blocks one of them (his "pipeline fixes its own defects" still holds for a blocking defect).
+**Cap while piloting:** the three pilot mods advancing, and machinery work only where it blocks one of them (his "pipeline fixes its own defects" still holds for a blocking defect).
 
 ## 4. Critique
 
@@ -232,17 +247,17 @@ The build estimates in the options are for this one mod; redirecting every legac
 
 **Where it fails, or needs a guard.**
 1. **A holder marks its own homework.** Guard: a holder can claim, never confirm; only a judge, the pre-human checker or the steward confirms (§3.5–3.6). Anthropic's harness post names the exact risk ("mark a feature as complete without proper testing").
-2. **Context limits.** No holder holds the whole mod (its history is already ~297k tokens and growing), but a holder can hold far more than our 200k backstop allows: the window is 1M, and long Relentless sessions landed 84% of their work after 200k (§1.4). So the ceiling is set from that evidence (~600k, rotate at a boundary before auto-compaction), and the ledger stays the truth: warm context is how the holder works, never what it cites.
+2. **Context limits.** No holder holds the whole mod (its history is already ~297k tokens and growing), but a holder can hold far more than our 200k backstop allows: the window is 1M, and long Relentless sessions landed 84% of their work after 200k (§1.4). So the ceiling is set from that evidence and his pick (400k, rotate at a boundary before auto-compaction), and the ledger stays the truth: warm context is how the holder works, never what it cites.
 3. **Anchoring.** A long-lived holder keeps its first theory. Blind judges are the counterweight; a holder whose finding count does not fall for two cycles is rotated (a fresh holder from the packet).
-4. **One holder stuck, one mod stuck.** The lease lapses; a takeover costs one packet. With two mods in flight, one stuck mod halves throughput; that is the price of WIP limits and it is worth it if finishing rises.
+4. **One holder stuck, one mod stuck.** The lease lapses; a takeover costs one packet. With three mods in flight, one stuck mod costs a third of the throughput; that is the price of WIP limits and it is worth it if finishing rises.
 5. **Concurrency on a monotonic log.** One shard per writer and a lease on `HOLDER` remove write races; merge order across shards is the existing rimflow problem, already solved there.
 6. **The ledger outgrows a holder.** It will (Gimme Some Slack's history is already past one window). The packet is the bounded read; full history is searched, never read.
 7. **Cost.** Resumed sessions re-read a large context every turn; cheaper per step than a stranger reading 23–52k tokens of briefs and files and re-deriving, or not `[guess ~50%]`. The pilot measures it.
 8. **It does not fix churn by itself.** Close to half the evening's runs were the pipeline fixing itself, each filing more tickets. Perfect memory does not stop that; the WIP and machinery caps do. This is the part of the Conductor's earlier "total fix" that the fusion still needs.
-9. **It changes one of his own rules.** On 11-13 he said a judge "should FIX THEM RIGHT THERE"; the single-writer rule moves fixing to the holder. His tonight's words point that way, but it is his to confirm (decision 2).
+9. **It changes one of his own rules, and he changed it.** His 11-13 rule had the blind judge fix on the spot; his 2026-11-15 answer replaces it: "Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed." The finder's work is the precise fix written down; the holder is the one writer of code.
 10. **Migration is the dangerous part.** A ledger plus old files still written is store number 18. The old files must become views on the pilot mod the same day, or the pilot proves nothing.
 
-**What would falsify it** (on the pilot mod, against its own last week; one mod cannot separate the ledger's effect from the WIP cap's, so only the first two lines are clean tests of the ledger, and A versus B is read stage by stage, not as a controlled trial):
+**What would falsify it** (on each pilot mod, against its own last week; the pilots run together, so they cannot separate the ledger's effect from the WIP cap's, so only the first two lines are clean tests of the ledger, and A versus B is read stage by stage, not as a controlled trial):
 - a refuted cause chased again, or an answered question asked again (target 0; either one falsifies the "single source" claim);
 - the mod's stage readable from more than one hand-written place (target 1);
 - blind finding to holder fix, median time (should fall);
@@ -257,7 +272,7 @@ GPT (model `gpt-6.1-sol` via Codex) reviewed the design blind of authorship; its
 |---|---|---|
 | 1 | A's "cheapest per run" ignores rediscovery and retries | **Accepted.** Cost is now read to an accepted stage, retries and judges included (§4 falsifiers). |
 | 2 | A moves the memory problem into the packet | **Accepted.** The packet lists what it left out, has an overflow rule, and every miss becomes a packet regression test (§3.3). |
-| 3 | B oversells "one mind"; 120k unproven | **Accepted.** B's wording changed; the packet is re-read at each resume. The 120k number is gone: on his correction the ceiling is ~600k, set from the Relentless landing measure (§1.4), with a rotation before auto-compaction. |
+| 3 | B oversells "one mind"; 120k unproven | **Accepted.** B's wording changed; the packet is re-read at each resume. The 120k number is gone: on his correction and his pick the ceiling is 400k, set from the Relentless landing measure (§1.4), with a rotation before auto-compaction. |
 | 4 | B's fallback can repeat damage | **Accepted.** A reconcile step (clone, unpublished commits, bridge) runs before any retry. |
 | 5 | C's disadvantages partly invented | **Accepted.** C's cons rewritten: timers can wake a seat; the real cost is a window kept healthy and restarts through handoffs. |
 | 6 | the options mix independent decisions; C also keeps warm context | **Partly accepted.** The options now differ on one axis only (what carries context between stages); storage is shared core. Rejected that "sequential judge edits are single-threaded writes, so fine": they are, but they split *ownership* of the code, which is his point. |
@@ -273,14 +288,14 @@ GPT (model `gpt-6.1-sol` via Codex) reviewed the design blind of authorship; its
 | 16 | cross-mod coordination unresolved | **Accepted.** One generated answer index; cross-mod rulings, the bridge and tooling stay in rimflow (§3.7). |
 | 17 | migration estimate is fantasy | **Accepted.** Shadow mode before cutover; legacy files archived with provenance, not deleted; the estimate now covers one mod only and says the rest is unestimated. |
 | 18, 25 | consider D: one transactional coordinator | **Partly accepted.** Its main benefit (one authority for transitions) is taken by the dispatcher; the database is not, because ledger writers run on two machines through git today (`02m-remeasure.md`). D is the named fallback if the pilot shows conflicting transitions. |
-| 19 | the pilot confounds everything; "items filed per day" improves by renaming | **Accepted.** That falsifier is removed; the falsifiers now say which are clean tests of the ledger and that A versus B is read stage by stage, not as a trial. We cannot run a controlled experiment with two advancing mods; said plainly. |
+| 19 | the pilot confounds everything; "items filed per day" improves by renaming | **Accepted.** That falsifier is removed; the falsifiers now say which are clean tests of the ledger and that A versus B is read stage by stage, not as a trial. We cannot run a controlled experiment with three pilot mods advancing together; said plainly. |
 | 20–22 | star claims: 17 stores not reproducible; ★4 over-read; ★6 conditional | **Accepted.** ★4 re-measured and withdrawn (§1.3); ★2 re-measured down to 3 copies plus a homonym; ★1 kept with its census as sole source. |
 | 23 | `--resume` documented for headless use | **Accepted;** and our dispatcher already uses it for windows (`dispatcher.py`). Detached systemd use is still untested. |
 | 24 | resumed-session cost depends on cache hits | **Accepted.** Stages hours apart mean cache misses; B's cost is the pilot's to measure. |
 
 **The two strongest objections**, in our reading: **7–9** (who decides which state transition is valid, and what stops a stale holder), which changed the core (the dispatcher as sole authority, fencing tokens); and **13** (a blind judge cannot check fixes to findings it was not shown), which changed the judge into two phases.
 
-**Where the passes still disagree.** GPT would build the coordinator database first (D); this design keeps git-sharded files with the dispatcher as the authority. Both agree: stabilise durable state before testing resume, and pilot one mod first.
+**Where the passes still disagree.** GPT would build the coordinator database first (D); this design keeps git-sharded files with the dispatcher as the authority. Both agree: stabilise durable state before testing resume. GPT also advised piloting one mod; he chose three side by side.
 
 
 ## Claims table
