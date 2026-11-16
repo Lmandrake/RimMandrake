@@ -575,6 +575,38 @@ def main():
     rp = P.deterministic_regen_prompt({"subject": "RM_Test", "description": "a beast", "departures": ["six legs"]},
                                       [{"code": "STYLE_EARTHLY", "fix": "six legs, three per side"}])
     check("anatomy regen drops the reference", rp["reference"] == "none" and "six legs" in rp["prompt"], rp)
+    # a facing-truth FLAG faults geometry only: the round's own prompt (the design) is kept, plus the fix
+    # (RIMMANDRAKE_FIX_FACING_REGEN_KEEPS_PROMPT_GIANT_WENT_GENERIC: the furnace-beast's giant redraw came back
+    # as a description-only prompt and lost its proportions, palette and seams)
+    import cards as C
+    import runner as R
+    saved = (C.build_card, C.source_files, P.load_template, P.card_facts, P.checklist_for, P.pre_route,
+             R.banned_candidates, R.facing_truth)
+    try:
+        C.build_card = lambda spec, d: {"subject": "RM_Test", "label": "test beast", "description": "a beast",
+                                        "card_sha": "x", "image_sha256": {}, "gates": {}, "panels": {}}
+        C.source_files = lambda spec: {}
+        P.load_template = lambda t: {}
+        P.card_facts = lambda card: {}
+        P.checklist_for = lambda tpl, mod, facts: []
+        P.pre_route = lambda card, tpl, living: None
+        R.banned_candidates = lambda spec: []
+        R.facing_truth = lambda spec: {"verdict": "FLAG", "plan": "quadruped",
+                                       "flags": [{"facing": "south", "key": "d_south", "value": 1.6, "band": [0.64, 1.35]}],
+                                       "fixes": {"south": {"action": "rescale", "why": "rescale"}}}
+        spec = {"subject": "RM_Test", "template": "creature", "previous_prompt": "A COLOSSAL STONE GIANT, four column legs."}
+        rec = R.evaluate(spec, Path(tempfile.mkdtemp()), None, {}, {"max_regen_rounds": 3}, {}, {})
+        got = ((rec.get("regen") or {}).get("request") or {}).get("prompt", "")
+        check("facing-truth regen keeps the round's prompt and adds the fix",
+              rec.get("decision") == "REGEN" and got.startswith("A COLOSSAL STONE GIANT") and "south view" in got
+              and "a beast" not in got, got)
+        spec.pop("previous_prompt")
+        rec = R.evaluate(spec, Path(tempfile.mkdtemp()), None, {}, {"max_regen_rounds": 3}, {}, {})
+        got = ((rec.get("regen") or {}).get("request") or {}).get("prompt", "")
+        check("facing-truth regen with no round prompt falls back to the description", "a beast" in got, got)
+    finally:
+        (C.build_card, C.source_files, P.load_template, P.card_facts, P.checklist_for, P.pre_route,
+         R.banned_candidates, R.facing_truth) = saved
 
     # --- shadow streaks
     s = json.loads(json.dumps(P.DEFAULT_SETTINGS)); s["shadow"]["creature"]["off_after_consecutive_clean"] = 3

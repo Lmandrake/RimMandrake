@@ -469,7 +469,8 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
                 fix = " ".join(f"The {f} view {FACING_TRUTH_FIX.get(x.get('action'), 'matches the east view')} "
                                f"(measured: {x.get('why') or x.get('action')})." for f, x in sorted(ft["fixes"].items()))
                 fs = [{"code": "F_FACING_TRUTH", "fix": fix or "Every view matches the east view's height and feet row."}]
-                rec["regen"] = {"findings": ["F_FACING_TRUTH"], "request": P.deterministic_regen_prompt(card, fs)}
+                rec["regen"] = {"findings": ["F_FACING_TRUTH"],
+                                "request": P.deterministic_regen_prompt(card, fs, spec.get("previous_prompt"))}
             return rec
 
     # 1. Opus first pass

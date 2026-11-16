@@ -374,15 +374,20 @@ def regen_findings(opus_detail: dict, gpt_detail: dict | None, gpt_reply: dict |
     return out
 
 
-def deterministic_regen_prompt(card: dict, findings: list) -> dict:
-    """The fallback next prompt when the regen-prompt model call fails: description + every fix, positive."""
+def deterministic_regen_prompt(card: dict, findings: list, previous_prompt: str | None = None) -> dict:
+    """The fallback next prompt when the regen-prompt model call fails: description + every fix, positive.
+    previous_prompt: for a finding that faults only geometry (a facing-truth FLAG), the round's own prompt is the
+    design and is kept, with the fixes appended; rebuilding from the description alone throws the design away."""
     fixes = [f.get("fix") for f in findings if f.get("fix")]
     anatomy = any(f["code"] in ("STYLE_EARTHLY", "DEPARTURE_MISSING", "X_WRONG", "CATCH_WRONG") for f in findings)
-    body = [f"{card.get('label') or card['subject']}: {card.get('description', '').strip()}"]
-    if card.get("departures"):
-        body.append("It is NOT an Earth animal: " + "; ".join(card["departures"]) + ".")
-    body += fixes
-    body.append("Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.")
+    if previous_prompt and previous_prompt.strip():
+        body = [previous_prompt.strip()] + fixes
+    else:
+        body = [f"{card.get('label') or card['subject']}: {card.get('description', '').strip()}"]
+        if card.get("departures"):
+            body.append("It is NOT an Earth animal: " + "; ".join(card["departures"]) + ".")
+        body += fixes
+        body.append("Painterly vanilla RimWorld style, realistic, clean dark outline, transparent background.")
     return {"schema": "rm-art-eval/regen@v1", "subject": card["subject"],
             "edits": [{"finding": f["code"], "change": f.get("fix", "")} for f in findings],
             "invariants": [], "reference": "none" if anatomy else "keep", "prompt": " ".join(body),
