@@ -4771,7 +4771,8 @@ LEAN_DX = (0, 1, 1, 1, 0, -1, -1, -1)    # RM_LeanKernel.NeighbourDx / Neighbour
 LEAN_DZ = (1, 1, 0, -1, -1, -1, 0, 1)
 FIRE_ALIGNMENT = 0.3                      # RM_LeanKernel.FireAlignment: a neighbour above this counts as downwind
 FIRE_GRID, FIRE_STEP, FIRE_ROUNDS = 4, 7, 4   # 16 beds a round, 4 rounds: 64 spread opportunities per arm
-FIRE_WINDOW = 300                         # ticks a lit bed is watched for its first neighbour ignitions
+FIRE_WINDOW = 1200                        # ticks a lit bed is watched for its first neighbour ignitions
+FIRE_SIZE = 1.5                           # vanilla Fire spreads only above size 1 (jawa/map_fire; ProofFire lights at 1)
 GRASS = "Plant_Grass"
 
 
@@ -4841,9 +4842,11 @@ def scene_fire_bias(t):
         t.bridge_call("jawa/set_plants", ops=";".join("%s:%d,%d,3,3" % (GRASS, bx - 1, bz - 1) for bx, bz in beds),
                       growth=1.0)
         for bx, bz in beds:
-            t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (bx, bz), fireSize=0.5)
+            t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (bx, bz), fireSize=FIRE_SIZE)
         first = {}
         for _ in range(FIRE_WINDOW // 30):
+            if len(first) == len(beds):
+                break
             t.wait_ticks(30)
             cells = _fire_cells(t, _rect(t, 32))
             for b in beds:
@@ -4957,7 +4960,7 @@ def scene_ix_fire_accountability(t):
     is. Needs the composed list (the thunderstep comes from UtinniPatches). Hold: owner_review."""
     _prep(t, "fireacct", 32)
     x, z = t.anchor
-    field, ctrl, unrelated = (x - 12, z - 4, 9, 9), (x + 4, z - 14, 7, 7), (x + 14, z + 14)
+    field, ctrl, unrelated = (x - 12, z - 4, 9, 9), (x + 4, z - 14, 7, 7), (x + 12, z + 12, 2, 2)
     got = {"w": {}, "u": {}}
 
     def stampers():
@@ -4966,12 +4969,11 @@ def scene_ix_fire_accountability(t):
     def body():
         with _comp(t, "accountability_staged", poison=True):
             if _live(t):
-                t.bridge_call("jawa/set_plants", ops="%s:%s;%s:%s;%s:%d,%d,1,1" % (GRASS, _rs(field), GRASS, _rs(ctrl),
-                                                                                  GRASS, unrelated[0], unrelated[1]),
-                              growth=1.0)
-                t.bridge_call("jawa/map_fire", action="start", rect="%d,%d,1,1" % unrelated, fireSize=0.1)
+                t.bridge_call("jawa/set_plants", ops="%s:%s;%s:%s;%s:%s" % (GRASS, _rs(field), GRASS, _rs(ctrl),
+                                                                         GRASS, _rs(unrelated)), growth=1.0)
                 got["maker"] = _spawn(t, "Colonist", field[0] - 2, field[1] + 4, faction="player")
-                got["innocent"] = _spawn(t, "Colonist", field[0] - 3, field[1] + 6, faction="player")
+                # 9 cells off the fuel: a stamper working the west edge (StampRadius 2.9) never comes within reach of him
+                got["innocent"] = _spawn(t, "Colonist", field[0] - 9, field[1] + 4, faction="player")
                 for p in (got["maker"], got["innocent"]):
                     _full(t, p)
                 got["herd"] = [_spawn(t, STAMPER, x - 8 + 2 * i, z + 14) for i in range(3)]
@@ -4991,27 +4993,28 @@ def scene_ix_fire_accountability(t):
                 fires = set()
                 for _ in range(10):
                     t.wait_ticks(60)
-                    fires = _fire_cells(t, _rect(t, 32))
+                    fires = _fire_cells(t, field)
                     if fires:
                         break
                 if not fires:
                     _unmeasured(t, "the Ignite job lit nothing in 600 ticks")
                 got["lit_at"] = lit_at
                 cells = set(fires)
-                for _ in range(10):      # the union: the herd may stamp a cell before a later read sees it
-                    t.wait_ticks(60)
+                for _ in range(20):      # the union over the herd's wait: a stamped cell is gone from a later read
+                    t.wait_ticks(150)
                     cells |= _fire_cells(t, field)
-                got["w"]["spread_downwind"] = len([c for c in cells if (c[0] - lit_at[0]) * got["wind"][0]
-                                                   + (c[1] - lit_at[1]) * got["wind"][1] > 0.5])
-                for _ in range(10):
-                    t.wait_ticks(300)
                     rows = stampers()
                     if any(_xz(r) and _dist(_xz(r), lit_at) <= STAMP_REACH + 4 for r in rows.values()):
                         break
+                got["w"]["spread_downwind"] = len([c for c in cells if (c[0] - lit_at[0]) * got["wind"][0]
+                                                   + (c[1] - lit_at[1]) * got["wind"][1] > 0.5])
+                # the unrelated fire: four cells, under RM_BlazeKernel.MinOpenFires 5, lit once the herd is at the blaze
+                t.bridge_call("jawa/map_fire", action="start", rect=_rs(unrelated), fireSize=1.0)
+                t.wait_ticks(300)
                 rows = stampers()
                 got["w"]["stampers_at_blaze"] = len([1 for r in rows.values()
                                                      if _xz(r) and _dist(_xz(r), lit_at) <= STAMP_REACH + 4])
-                got["w"]["unrelated_visited"] = any(_xz(r) and _dist(_xz(r), unrelated) <= STAMP_REACH
+                got["w"]["unrelated_visited"] = any(_xz(r) and _dist(_xz(r), unrelated[:2]) <= STAMP_REACH
                                                     for r in rows.values())
                 _note(t, "witnessed blaze", got["w"])
                 bad = [b for b in _accountability_offences(got["w"], {"stampers_at_blaze": 1})
@@ -5055,7 +5058,7 @@ def scene_ix_fire_accountability(t):
         with _comp(t, "accountability_unwitnessed_no_pursuit"):
             if _live(t):
                 t.bridge_call("jawa/map_fire", action="extinguish", rect=_rs(field))    # the control blaze stands alone
-                watcher = _spawn(t, "Colonist", ctrl[0] - 3, ctrl[1] + 3, faction="player")
+                watcher = _spawn(t, "Colonist", ctrl[0] - 9, ctrl[1] + 3, faction="player")     # off the fuel
                 _full(t, watcher)
                 cpos = (ctrl[0] + 3, ctrl[1] + 3)
                 t.bridge_call("jawa/map_fire", action="start", rect=_rs(ctrl), fireSize=1.0)
@@ -5151,6 +5154,7 @@ def scene_dripping(t):
             _unmeasured(t, "no dripping stand at %s to harvest" % (at,))
         col = _spawn(t, "Colonist", at[0] - 3, at[1], faction="player")
         _full(t, col)
+        t.bridge_call("jawa/set_pawn_skill", pawn=col, skill="Plants", level=20)    # vanilla harvests can fail at low skill
         v0 = _stack_total(t, VENOM, _rs(_rect(t)))
         t.bridge_call("jawa/designate_batch", action="add", designation="HarvestPlant", rect="%d,%d,1,1" % at)
         t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="Harvest", targetAId=plant[0]["id"], queue=True,
@@ -5381,6 +5385,9 @@ def scene_felt_comfort(t):
                     t.bridge_call("jawa/ordered_job", pawnId=got["col"], jobDef="RemoveApparel", targetAId=aid,
                                   waitTicks=60)
                     t.wait_ticks(400)
+                    for d in FELT_GARMENTS:      # gone from the map, or a naked pawn's outfit puts it straight back on
+                        for g_ in _things(t, d, _rs(_rect(t, 24))):
+                            t.bridge_call("jawa/destroy_batch", rects="%d,%d,1,1" % (g_["x"], g_["z"]), categories="All")
                 r["thoughts"][0] = felt_thoughts()
                 _note(t, "felt thoughts by garment count / controls", {"thoughts": r["thoughts"],
                                                                         "off_furniture": r["off_furniture"],
@@ -5423,20 +5430,48 @@ ROUTE_SAMPLE = 250        # ticks between job / position samples
 GALE = "RM_Gale"
 
 
-def _route_geometry(x, z):
-    """The route site round anchor (x, z), pure (the selftest's fake reads the same cells). West to east: the source
-    pile, two 3-cell-wide routes 12 cells apart (A developed: floored, roofed and zoned; B dirt, kept by cutting),
-    the stockpile at the east end; emitters (mature thicket and walking stands) along the west edge of a wilderness
-    band north of B, upwind of everything when the wind blows east."""
+def _route_geometry(x, z, sign=1):
+    """The route site round anchor (x, z), pure (the selftest's fake reads the same cells). Upwind to downwind (east
+    when `sign` is 1; -1 mirrors it for a west wind): the source pile, two 3-cell-wide routes 12 cells apart (A
+    developed: floored, roofed and zoned; B dirt, kept by cutting), the stockpile at the far end; emitters (mature
+    thicket and walking stands) at the upwind edge of a wilderness band beside B. A wall ring and a cross wall with
+    gaps only at A and B make the two routes the only corridors from the source to the stockpile."""
     w = ROUTE_SIZE // 2
-    a = [(cx, cz) for cx in range(x - w + 6, x + w - 6) for cz in range(z - 8, z - 5)]
-    b = [(cx, cz) for cx in range(x - w + 6, x + w - 6) for cz in range(z + 4, z + 7)]
-    wild = [(cx, cz) for cx in range(x - w + 6, x + w - 6) for cz in range(z + 9, z + 15)]
-    return {"source": (x - w + 2, z - 3, 4, 4), "stock": (x + w - 6, z - 3, 4, 4), "a": a, "b": b, "wild": wild,
-            "a_rect": (x - w + 6, z - 8, 2 * w - 12, 3), "b_rect": (x - w + 6, z + 4, 2 * w - 12, 3),
-            "emit_thicket": [(x - w + 3, cz) for cz in range(z + 3, z + 15, 2)],
-            "emit_walker": [(x - w + 4, cz) for cz in range(z + 4, z + 15, 3)],
-            "detour_block": (x, z - 8, 1, 3), "inject_block": (x + 4, z + 5)}
+
+    def X(dx):
+        return x + sign * dx
+
+    def rect(dx0, dz0, wd, h):
+        return (X(dx0) if sign > 0 else X(dx0) - wd + 1, z + dz0, wd, h)
+
+    def cells(r):
+        return [(cx, cz) for cx in range(r[0], r[0] + r[2]) for cz in range(r[1], r[1] + r[3])]
+
+    a_rect, b_rect = rect(-w + 6, -8, 2 * w - 12, 3), rect(-w + 6, 4, 2 * w - 12, 3)
+    edge = w + 2
+    ring = set((x + d, z + e) for d in range(-edge, edge + 1) for e in (-edge, edge)) | \
+        set((x + e, z + d) for d in range(-edge, edge + 1) for e in (-edge, edge))
+    gaps = set(range(z - 8, z - 5)) | set(range(z + 4, z + 7))
+    cross = set((X(0), cz) for cz in range(z - edge + 1, z + edge) if cz not in gaps)
+    return {"source": rect(-w + 2, -3, 4, 4), "stock": rect(w - 6, -3, 4, 4), "a": cells(a_rect), "b": cells(b_rect),
+            "wild": cells(rect(-w + 6, 9, 2 * w - 12, 6)), "a_rect": a_rect, "b_rect": b_rect,
+            "emit_thicket": [(X(-w + 3), cz) for cz in range(z + 3, z + 15, 2)],
+            "emit_walker": [(X(-w + 4), cz) for cz in range(z + 4, z + 15, 3)],
+            "crew_at": [(X(4 + i % 6), z - 2 + i // 6 % 4) for i in range(ROUTE_CREW)],
+            "walls": sorted(ring | cross), "detour_block": rect(0, -8, 1, 3), "inject_block": (X(4), z + 5)}
+
+
+def _route_sign(t, wind):
+    """+1 / -1: the site faces the wind's east-west sense; UNMEASURED when the wind runs too close to north-south for
+    upwind emitters to reach the routes."""
+    if not wind or abs(wind[0]) < 0.3:
+        _unmeasured(t, "the wind %s runs north-south: no site orientation puts the emitters upwind of both routes" % (wind,))
+    return 1 if wind[0] > 0 else -1
+
+
+def _delivered(t, g):
+    """Logs that reached storage: the stockpile and route A's own zone (haulers may store on the nearer zone)."""
+    return _stack_total(t, "WoodLog", _rs(g["stock"])) + _stack_total(t, "WoodLog", _rs(g["a_rect"]))
 
 
 def _route_offences(r):
@@ -5486,8 +5521,9 @@ def _vine_cells(t, rect):
 
 
 def _route_site(t, g, crew):
-    """Lay the route site: floors, roof and zone on route A, the stockpile, the source pile, the emitters, a research
-    bench and `crew` fed colonists at the east end. -> [colonist ids]."""
+    """Lay the route site: the walls, floors, roof and zone on route A, the stockpile, the source pile, the emitters, a
+    research bench and `crew` fed colonists at the stockpile end. -> [colonist ids]."""
+    t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % c for c in g["walls"]), stuff="Steel")
     t.bridge_call("jawa/set_terrain_batch", ops="WoodPlankFloor:%s" % _rs(g["a_rect"]))
     t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%s" % _rs(g["a_rect"]))
     t.bridge_call("jawa/map_zones", action="createZone", zoneType="stockpile", rect=_rs(g["a_rect"]))
@@ -5503,7 +5539,7 @@ def _route_site(t, g, crew):
     t.bridge_call("jawa/spawn_batch", ops="SimpleResearchBench:%d,%d" % (g["stock"][0], g["stock"][1] - 4), stuff="WoodLog")
     crew_ids = []
     for i in range(crew):
-        pid = _spawn(t, "Colonist", g["stock"][0] + i % 6, g["stock"][1] + 5 + i // 6 % 4, faction="player")
+        pid = _spawn(t, "Colonist", g["crew_at"][i][0], g["crew_at"][i][1], faction="player")
         _full(t, pid)
         crew_ids.append(pid)
     return crew_ids
@@ -5539,8 +5575,8 @@ def _route_phase(t, g, crew, ticks, cut=False, gale=False, ordered=None):
 
 def _route_readings(t, g):
     vine = _vine_cells(t, _rect(t, ROUTE_SIZE + 8))
-    walls = set((w.get("x"), w.get("z")) for w in _things(t, "Wall", _rs(_rect(t, ROUTE_SIZE + 8)), 200))
-    return {"deliveries": _stack_total(t, "WoodLog", _rs(g["stock"])), "developed_invaded": sorted(vine & set(g["a"])),
+    walls = set((w.get("x"), w.get("z")) for w in _things(t, "Wall", _rs(_rect(t, ROUTE_SIZE + 8)), 500))
+    return {"deliveries": _delivered(t, g), "developed_invaded": sorted(vine & set(g["a"])),
             "dirt_invaded": sorted(vine & set(g["b"])), "wild_growth": len(vine & set(g["wild"])),
             "blocked": sorted((walls | vine) & set(g["b"]))}
 
@@ -5563,13 +5599,11 @@ def scene_home_routes(t):
     def body():
         with _comp(t, "routes_site_staged", poison=True):
             if _live(t):
+                got["wind"] = _lean_wind(t)
+                g.update(_route_geometry(x, z, _route_sign(t, got["wind"])))
                 got["crew"] = _route_site(t, g, ROUTE_CREW)
                 if len(_things(t, WALKER, _rs(_rect(t, ROUTE_SIZE + 8)))) < len(g["emit_walker"]):
                     _unmeasured(t, "the walking stands did not stand after set_plants")
-                got["wind"] = _lean_wind(t)
-                if not got["wind"] or got["wind"][0] <= 0:
-                    _unmeasured(t, "the wind %s does not blow east across the site: the emitters are not upwind"
-                                   % (got["wind"],))
         with _comp(t, "routes_maintained_carry_work", toggle="venomvineCreepEnabled"):
             if _live(t):
                 with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0):
@@ -5580,6 +5614,9 @@ def scene_home_routes(t):
                          other_samples=s1["other"] + s2["other"])
                 got["maintained"] = r
                 _note(t, "maintained routes", r)
+                if not r["other_samples"]:
+                    _unmeasured(t, "no research or bill work ran beside the upkeep (no project selected?): the "
+                                   "independent workload the contract names never started")
                 bad = _route_offences(r)
                 if bad:
                     _fail("; ".join(bad))
@@ -5591,6 +5628,8 @@ def scene_home_routes(t):
                     _route_phase(t, g, got["crew"], 6000, cut=False, gale=True)
                 r = dict(_route_readings(t, g), requested=ROUTE_DELIVERIES, maintained=False)
                 _note(t, "withheld maintenance, one wall injected", r)
+                if not r["dirt_invaded"]:
+                    _unmeasured(t, "withheld upkeep but no growth reached route B: the control's invasion is unproven")
                 if not r["blocked"]:
                     _fail("the injected wall and withheld upkeep left route B reading clear: the checker cannot see a "
                           "blocked route")
@@ -5633,10 +5672,9 @@ def scene_ix_route_growth(t):
     def body():
         with _comp(t, "ixroutes_site_staged", poison=True):
             if _live(t):
-                got["crew"] = _route_site(t, g, ROUTE_CREW)
                 got["wind"] = _lean_wind(t)
-                if not got["wind"] or got["wind"][0] <= 0:
-                    _unmeasured(t, "the wind %s does not blow east across the site" % (got["wind"],))
+                g.update(_route_geometry(x, z, _route_sign(t, got["wind"])))
+                got["crew"] = _route_site(t, g, ROUTE_CREW)
         with _comp(t, "ixroutes_only_authorized_in_hazard", toggle="venomvineCreepEnabled"):
             if _live(t):
                 with _setting(t, "venomvineCreepDays", 0.01), _setting(t, "venomvineCreepCap", 1.0):
@@ -5645,20 +5683,20 @@ def scene_ix_route_growth(t):
                     sx, sz = g["source"][:2]
                     t.bridge_call("jawa/spawn_batch", ops=";".join("WoodLog:%d,%d,1" % (sx + i % 4, sz + i // 4 % 4)
                                                                    for i in range(ROUTE_DELIVERIES)))
-                    d0 = _stack_total(t, "WoodLog", _rs(g["stock"]))
+                    d0 = _delivered(t, g)
                     bx, bz = g["detour_block"][:2]
                     t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % (bx, bz + k) for k in range(3)),
                                   stuff="WoodLog")
                     s = _route_phase(t, g, got["crew"], 6000, cut=False, gale=True)
                     r["unauthorized"] += s["hazard"]
-                    d1 = _stack_total(t, "WoodLog", _rs(g["stock"]))
+                    d1 = _delivered(t, g)
                     r["closed_deliveries"] = d1 - d0
                     r["closed_waiting"] = _stack_total(t, "WoodLog", _rs(g["source"])) > 0
                     r["lane_blocked_by_growth"] = bool(_vine_cells(t, _rect(t, ROUTE_SIZE + 8)) & set(g["b"]))
                     t.bridge_call("jawa/destroy_batch", rects=_rs(g["detour_block"]), categories="Building")
                     s = _route_phase(t, g, got["crew"], 6000, cut=True)
                     r["unauthorized"] += s["hazard"]
-                    r["reopened_deliveries"] = _stack_total(t, "WoodLog", _rs(g["stock"])) - d1
+                    r["reopened_deliveries"] = _delivered(t, g) - d1
                 r["developed_invaded"] = sorted(_vine_cells(t, _rect(t, ROUTE_SIZE + 8)) & set(g["a"]))
                 _note(t, "route growth phases", dict(r, unauthorized=r["unauthorized"][:6]))
                 bad = [b for b in _route_growth_offences(r) if "canceled" not in b]
@@ -5706,10 +5744,11 @@ def scene_ix_route_growth(t):
 
 def _economy_offences(before, after, events, reload=False):
     """The economy observer, pure: accounts ONCE for every held object between two snapshots. A snapshot is
-    {"tick", "objects": [{"id", "def", "count", "owner", "due", "fraction", "fields": [saved field names]}]}; events
-    [{"kind": "consume" | "produce" | "pay", "id", "count"}] are the production events read between them (a payout is
-    a produce with its own payout id). `reload`: the second snapshot is the first one saved and loaded. It never
-    writes; it names each mismatch. -> offences."""
+    {"tick", "objects": [{"id", "def", "count", "owner", "due", "fraction", "fields": [saved field names]}]}; events are
+    the production events read between them: consume / produce {"id", "count"}; pay {"id" (its own payout id),
+    "count", "from" (the payer), "debit" (fraction the payer spent)}; accrue {"id", "delta"} (a fraction grown with
+    time); transfer {"id", "owner"}. `reload`: the second snapshot is the first one saved and loaded. It never writes;
+    it names each mismatch. -> offences."""
     out = []
     for name, snap in (("before", before), ("after", after)):
         ids = [o["id"] for o in snap.get("objects") or []]
@@ -5720,8 +5759,16 @@ def _economy_offences(before, after, events, reload=False):
         out.append("payout %s paid twice" % i)
     b = dict((o["id"], o) for o in before.get("objects") or [])
     a = dict((o["id"], o) for o in after.get("objects") or [])
-    flow = {}
+    flow, frac, owner = {}, {}, {}
     for e in events:
+        if e.get("kind") == "accrue":
+            frac[e["id"]] = frac.get(e["id"], 0) + float(e.get("delta", 0))
+            continue
+        if e.get("kind") == "transfer":
+            owner[e["id"]] = e.get("owner")
+            continue
+        if e.get("kind") == "pay" and e.get("from"):
+            frac[e["from"]] = frac.get(e["from"], 0) - float(e.get("debit", 0))
         if e.get("id") not in b and e.get("kind") == "consume":
             out.append("event consumes %s, which no snapshot held" % e.get("id"))
         sign = -1 if e.get("kind") == "consume" else 1
@@ -5735,13 +5782,14 @@ def _economy_offences(before, after, events, reload=False):
         n = a[i]
         if abs(float(n.get("count", 0)) - want) > 1e-6:
             out.append("%s count %g, accounted %g" % (i, float(n.get("count", 0)), want))
-        if n.get("owner") != o.get("owner"):
-            out.append("%s changed owner %s -> %s with no event" % (i, o.get("owner"), n.get("owner")))
+        if n.get("owner") != owner.get(i, o.get("owner")):
+            out.append("%s changed owner %s -> %s with no transfer" % (i, o.get("owner"), n.get("owner")))
         for f in ("due", "fraction"):
+            want_f = None if o.get(f) is None else float(o[f]) + (frac.get(i, 0) if f == "fraction" else 0)
             if o.get(f) is not None and n.get(f) is None:
                 out.append("%s lost its saved %s field" % (i, f))
-            elif o.get(f) is not None and abs(float(n[f]) - float(o[f])) > 1e-6:
-                out.append("%s %s moved %s -> %s (a clock or fraction write)" % (i, f, o[f], n[f]))
+            elif want_f is not None and abs(float(n[f]) - want_f) > 1e-6:
+                out.append("%s %s moved %s -> %s, accounted %s (a clock or fraction write)" % (i, f, o[f], n[f], want_f))
         lost = sorted(set(o.get("fields") or []) - set(n.get("fields") or []))
         if lost:
             out.append("%s dropped saved field(s) %s" % (i, lost))
@@ -5758,8 +5806,9 @@ def _economy_offences(before, after, events, reload=False):
 
 def _economy_fixture():
     """A clean stream over the held kinds the scene names: a smother claim (due tick), a sweetline coat (fraction), a
-    vissler arm stack and the felt bank (fraction). Between the snapshots one arm is eaten and the coat pays one felt
-    (payout W1); the reload copy is identical."""
+    vissler arm stack and the felt bank (fraction). Between the snapshots the coat grows 0.15 and pays one felt (payout
+    W1, debiting 1.0), the bank accrues 0.5, one arm is eaten and the claim passes to the colony's other faction
+    holder by a transfer; the reload copy is identical."""
     before = {"tick": 120000, "objects": [
         {"id": "Claim_H1", "def": "RM_HollowVenomvine", "count": 1, "owner": "Colony", "due": 240000, "fraction": None,
          "fields": ["claimTick", "dueTick", "blanket"]},
@@ -5770,10 +5819,16 @@ def _economy_fixture():
         {"id": "Bank_M", "def": "RM_SweetlineFeltBank", "count": 1, "owner": "Colony", "due": None, "fraction": 2.5,
          "fields": ["banked"]}]}
     after = {"tick": 126000, "objects": [dict(o) for o in before["objects"]]}
+    after["objects"][0] = dict(after["objects"][0], owner="Colony2")
+    after["objects"][1] = dict(after["objects"][1], fraction=0.0)
     after["objects"][2] = dict(after["objects"][2], count=2)
+    after["objects"][3] = dict(after["objects"][3], fraction=3.0)
     after["objects"].append({"id": "W1", "def": "RM_SweetlineWool", "count": 1, "owner": None, "due": None,
                              "fraction": None, "fields": ["stackCount"]})
-    events = [{"kind": "consume", "id": "Arm_7", "count": 1}, {"kind": "pay", "id": "W1", "count": 1}]
+    events = [{"kind": "accrue", "id": "Coat_T1", "delta": 0.15}, {"kind": "accrue", "id": "Bank_M", "delta": 0.5},
+              {"kind": "consume", "id": "Arm_7", "count": 1},
+              {"kind": "pay", "id": "W1", "count": 1, "from": "Coat_T1", "debit": 1.0},
+              {"kind": "transfer", "id": "Claim_H1", "owner": "Colony2"}]
     return before, after, events
 
 
@@ -5800,11 +5855,12 @@ def scene_economy_observer(t):
                                                    for o in after["objects"]]}
         cases = {"deleted claim field": ((before, edit(0, due=None), events, False), "lost its saved due"),
                  "dropped saved field": ((before, edit(0, fields=["claimTick"]), events, False), "dropped saved field"),
-                 "duplicated payout": ((before, after, events + [dict(events[1])], False), "paid twice"),
+                 "duplicated payout": ((before, after, events + [dict(events[3])], False), "paid twice"),
                  "duplicated object": ((before, dup, events, False), "duplicate object"),
                  "reset clock": ((before, edit(0, due=126000 + 120000), events, False), "due moved"),
                  "replacement item": ((before, swap, events, False), "appeared with no production event"),
                  "swapped owner": ((before, edit(3, owner="Visitors"), events, False), "changed owner"),
+                 "fraction written, not accrued": ((before, edit(3, fraction=3.4), events, False), "fraction moved"),
                  "clock moved across reload": ((before, dict(before, tick=before["tick"] + 1), [], True), "across a save"),
                  "lost fraction": ((before, edit(1, fraction=None), events, False), "lost its saved fraction")}
         blind = []

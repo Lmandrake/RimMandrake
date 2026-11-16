@@ -1185,9 +1185,10 @@ class Fake(object):
         bias = float(self.settings.get("leanFireBias", 0))
         return 0.5 if bias == 0 and "fire_bias_ignores_zero" in self.broken else bias
 
-    def light(self, x, z, instigator=None):
-        """A fire on a grass cell; it spreads to two neighbours 60 ticks later (RM_TheLean.TrySpread_Prefix: the
-        bias share picks a downwind neighbour of the fake's east wind, the rest is vanilla's uniform eight)."""
+    def light(self, x, z, instigator=None, size=1.0):
+        """A fire on a grass cell; it spreads to two neighbours once above size 1 (vanilla Fire): 60 ticks later at
+        size >= 1, 600 (growing first) below. RM_TheLean.TrySpread_Prefix: the bias share picks a downwind neighbour of
+        the fake's east wind, the rest is vanilla's uniform eight."""
         if any(t["def"] == "Fire" and (t["x"], t["z"]) == (x, z) for t in self.things.values()):
             return
         if not any(t["def"] == V.GRASS and (t["x"], t["z"]) == (x, z) for t in self.things.values()):
@@ -1197,7 +1198,7 @@ class Fake(object):
         for _ in range(2):
             dx, dz = (self.rng.choice(down) if self.rng.random() < self.lean_bias()
                       else self.rng.choice(list(zip(V.LEAN_DX, V.LEAN_DZ))))
-            self.pending_fire.append((self.ticks + 60, x + dx, z + dz, instigator))
+            self.pending_fire.append((self.ticks + (60 if size >= 1.0 else 600), x + dx, z + dz, instigator))
 
     def t_map_fire(self, action="start", rect=None, fireSize=0.5, **k):
         rr = V_rect(rect)
@@ -1208,16 +1209,16 @@ class Fake(object):
             return {"success": True}
         for cx in range(rr[0], rr[0] + rr[2]):
             for cz in range(rr[1], rr[1] + rr[3]):
-                self.light(cx, cz)
+                self.light(cx, cz, size=float(fireSize))
         return {"success": True}
 
     def blazes(self):
-        """Fire clusters of 3 or more (RM_BlazeKernel.MinOpenFires): [(centre, instigator)]."""
+        """Fire clusters of 5 or more (RM_BlazeKernel.MinOpenFires 5): [(centre, instigator)]."""
         fires = [t for t in self.things.values() if t["def"] == "Fire"]
         out = []
         for f in fires:
             near = [g for g in fires if abs(g["x"] - f["x"]) <= 6 and abs(g["z"] - f["z"]) <= 6]
-            if len(near) >= 3 and not any(abs(c[0] - f["x"]) <= 6 and abs(c[1] - f["z"]) <= 6 for c, _i in out):
+            if len(near) >= 5 and not any(abs(c[0] - f["x"]) <= 6 and abs(c[1] - f["z"]) <= 6 for c, _i in out):
                 out.append(((f["x"], f["z"]), next((g.get("instigator") for g in near if g.get("instigator")), None)))
         return out
 
@@ -1255,7 +1256,7 @@ class Fake(object):
         if p is None or (t is None and job != "RemoveApparel"):
             return {"success": False, "message": "no pawn %s or thing %s" % (pid, target)}
         if job == "Ignite":
-            self.light(t["x"], t["z"], pid)
+            self.light(t["x"], t["z"], pid, size=0.1)      # an Ignite job's fire starts small
         elif job == "Wear":
             p.setdefault("worn", []).append(t)
             del self.things[target]
