@@ -82,7 +82,7 @@ def filed_on_origin(clone, ids, ref="origin/main"):
 
 def on_origin(clone, path, ref="origin/main"):
     return subprocess.run(["git", "-C", clone, "cat-file", "-e", "%s:%s" % (ref, path)],
-                          capture_output=True).returncode == 0
+                          capture_output=True, timeout=60).returncode == 0
 
 
 def classify(clone, now=None):
