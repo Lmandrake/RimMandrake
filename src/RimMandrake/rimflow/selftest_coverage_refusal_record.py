@@ -29,12 +29,12 @@ def check(name, ok, got=""):
         FAILS.append(name)
 
 
-def concept(root):
+def concept(root, item="FOO_ITEM"):
     d = os.path.join(root, "design", "concepts", "Foo")
     os.makedirs(d, exist_ok=True)
     os.makedirs(os.path.join(root, os.path.dirname(CT.OWNER_SHARD)), exist_ok=True)
     files = {
-        "stage.json": {"stage": 5, "status": "open", "item": "FOO_ITEM",
+        "stage.json": {"stage": 5, "status": "open", "item": item,
                        "budget": {"cap": 4000000, "reserve": 60000, "spent": 0, "charges": []}},
         "record.json": {"inventory": [{"id": "inv_throw", "what": "an explosion throws loose items outward"}]},
         "tree.json": {"kind": "mod", "leaves": [{"id": "leaf_wall", "what": "a wall stops a thrown item"}]},
@@ -153,8 +153,9 @@ def main():
 
             # A fresh concept: on the one above, a gap on new ids at a later look over unchanged material is `late` and
             # advisory (bar_rule.blocks, RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS), so it never reaches
-            # the record check these cases test.
-            d = concept(os.path.join(root, "rows"))
+            # the record check these cases test. It has its own item too: the contract counts refusals per item, and
+            # this first look's `first` gaps were refused after FOO_ITEM's two counted ones.
+            d = concept(os.path.join(root, "rows"), item="FOO_ROWS_ITEM")
             # RIMMANDRAKE_SPEND_PYRELANDS_LOOK_ON_MALFORMED_REFUSAL: one broken record must not void a whole look.
             # The re-ask names only the broken records (the gaps schema), with the checker's complaint and the text
             # the record cites; the well-formed rows stand.
@@ -175,7 +176,7 @@ def main():
             check("bad row fixed on re-ask: both refusals stand, the contract accepts the whole look",
                   rec["verdict"] == "not_covered" and rec["contract"]["ok"] and not rec.get("malformed_rows")
                   and sorted(i for g in rec["gaps"] for i in g["ids"]) == ["inv_throw", "leaf_wall"],
-                  (rec.get("verdict"), rec.get("malformed"), [g["ids"] for g in rec.get("gaps") or []]))
+                  (rec.get("verdict"), rec.get("malformed"), [g["ids"] for g in rec.get("gaps") or []], rec.get("contract"), rec.get("malformed_rows")))
 
             # One bad row that stays bad: bounded re-asks, then the well-formed row is the stored verdict and the
             # broken one is kept on file marked malformed (the evidence rule is not loosened: it is not submitted).
