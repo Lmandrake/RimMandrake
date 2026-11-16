@@ -271,6 +271,18 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designercodex-1794845723: stage 2 done"
+  },
+  {
+   "at": "2026-11-16T16:48:15Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794847684, stage 3, budget 500000"
+  },
+  {
+   "at": "2026-11-16T17:07:47Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794847684: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_FEVERWOOD_DESIGNER_ON_CODEX_DRAFT_IN_HAND",
@@ -516,6 +528,28 @@
    "run": "rm-role-designercodex-1794845723",
    "stage": 2,
    "summary": "Verified the published delegated NEW-bar validation: FeverWood north star is VALIDATED with matching hash c568d46eacf7 and both approved bar IDs. No unanswered asks or unresolved core intent remain. Carry all ten coverage gaps unchanged to stage 3 for root restamping and full rework, followed by a fresh exam and coverage review. Runtime acceptance and owner first-touch remain pending."
+  },
+  {
+   "at": "2026-11-16T17:07:46Z",
+   "inputs": {
+    "exam": "c58d8679ee618998ae20d7a883ba7479ab4777a25fa3fa7793aaa98e48148e0e",
+    "floor": "f98dec58fc7ee6bb9aa9bd2bd874cec5c9a69b65875c3b7a6f44ab9800a7f1ea",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "854d4197f2c1aa01564219e21751ab07bf20065d78e431ccca70382672ee785c",
+    "scenes": "377f659e1d044c6cce8bd450bc36a3191e90ba8988ef2711dbdc78b43d916ce3",
+    "sheet": "67da97a2873ba050304cb017790e197836bcb9d197ea117600d6c38e604912a7",
+    "tree": "150e2ceeb71c7d182b449ff62741207f4edecc720015ad6149f17b723ee0570f"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "84139dc63d0722043e1523968bdd6c8222d64684c0613e0e1f0acf1911d20941"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794847684",
+   "stage": 3,
+   "summary": "Restamped the separately VALIDATED north-star hash c568d46eacf7. Reworked all ten rm-coverage-judge-1794833596 gaps and wrote coverage_fixes.json. Gate A and the seven-showcase set pass. The package holds 23 leaves, 45 unexecuted scenes, explicit existing/proposed settings controls and all inherited floor lines. Added source-backed FlowWorks native-drinking inventory and filed the missing campaign-only qualifying output against existing dangerous irradiated-wreck salvage. Existing implementation/proof/scope values are preserved. New settings names, salvage output and showcase grouping are agent planning choices. The changed artifacts require a fresh stage-4 exam and stage-5 coverage review. Runtime acceptance and owner first-touch remain pending."
   }
  ],
  "runner": "codex",
@@ -604,10 +638,18 @@
     "input_tokens": 1671406,
     "output_tokens": 5893
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794847684",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 9384744,
+    "output_tokens": 43294
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready"
 }
