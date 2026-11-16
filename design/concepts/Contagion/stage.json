@@ -100,11 +100,146 @@
     "ref": "run rm-role-designer-1794787652",
     "stage": 4,
     "tokens": 414672
+   },
+   {
+    "at": "2026-11-16T00:24:09Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794788108",
+    "stage": 5,
+    "tokens": 734550
+   },
+   {
+    "at": "2026-11-16T00:29:10Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794788108",
+    "stage": 5,
+    "tokens": 698674
+   },
+   {
+    "at": "2026-11-16T00:32:08Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1794788090",
+    "stage": 5,
+    "tokens": 500000
+   },
+   {
+    "at": "2026-11-16T08:03:45Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794816061",
+    "stage": 5,
+    "tokens": 294220
    }
   ],
   "reserve": 60000,
-  "spent": 4590185
+  "spent": 6817629
  },
+ "coverage_rounds": [
+  {
+   "at": "2026-11-16T00:15:08Z",
+   "error": null,
+   "gaps": 31,
+   "ids": [
+    "airborne_stats",
+    "bellows",
+    "biome_roster",
+    "birth_safety",
+    "bloom",
+    "bodyprints",
+    "bulloo",
+    "burn_clock",
+    "burn_pressure_dive",
+    "cast_lives_here",
+    "caudal_spring",
+    "coalescence_formation",
+    "coalescence_grows_and_breaks",
+    "coalescence_growth",
+    "coalescence_threat",
+    "draftprints",
+    "eyeburst",
+    "fauna_blisterfloat",
+    "fauna_bloodlurk",
+    "fauna_bloody_mess",
+    "fauna_contagion_ikee",
+    "fauna_crispling",
+    "fauna_danglemaw",
+    "fauna_doublemaw",
+    "fauna_eyestinger",
+    "fauna_fleshsop",
+    "fauna_gawpsack",
+    "fauna_gnashling",
+    "fauna_gorekite",
+    "fauna_meltgut",
+    "fauna_ogleknot",
+    "fauna_peeper",
+    "fauna_scaldhide",
+    "fauna_scorchpod",
+    "fauna_skinflap",
+    "fauna_sloshbelly",
+    "fauna_sparkleech",
+    "fauna_sparkleech_grub",
+    "flight",
+    "flora_bleedleaf",
+    "flora_bloody_fist",
+    "flora_eyebark",
+    "flora_flesh",
+    "flora_gorestalk",
+    "flora_halfmade_tree",
+    "flora_lashgrass",
+    "flora_meatvine",
+    "flora_rattlegrope",
+    "flora_sapblister",
+    "flora_toothmoss",
+    "flora_wombpod",
+    "genome_brings_tissue",
+    "genome_extract",
+    "genome_inject",
+    "gestation",
+    "helix_contracts",
+    "helix_trade",
+    "lash",
+    "legacy_flora_terrain",
+    "legacy_placement_worker",
+    "limb_still_grows",
+    "mulched_soil",
+    "mutation_deck",
+    "natural_match",
+    "one_dash_at_cost",
+    "pillar_arm",
+    "preburn_dive",
+    "refuge_is_shade",
+    "repulsor",
+    "repulsor_warns_and_clears",
+    "rustpuff_roster",
+    "scanner_payload",
+    "settings",
+    "settings_superb",
+    "shelter_in_lead",
+    "sunbeam_arrest",
+    "sunbeam_weapon",
+    "tells_then_burn",
+    "touched_exposure",
+    "touched_reads_early",
+    "unfinished_budding",
+    "unfinished_variation",
+    "visible_tells",
+    "waiting_costs_more",
+    "walk_red_lid",
+    "wombpod_hatch",
+    "wrecks",
+    "zhool_haze",
+    "zhool_render",
+    "zhooliza"
+   ],
+   "judge": "rm-coverage-judge-1794788108",
+   "late": [],
+   "tags": {
+    "first": 31
+   },
+   "tokens": 1433224,
+   "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69",
+   "verdict": "not_covered"
+  }
+ ],
  "history": [
   {
    "at": "2026-11-15T14:00:37Z",
@@ -219,10 +354,47 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1794787652: stage 4 done"
+  },
+  {
+   "at": "2026-11-16T00:15:08Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "4590185 of 4000000 spent; run rm-role-designer-1794788090 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T00:15:08Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794788090, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T00:32:08Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designer-1794788090 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-16T08:01:30Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "6523409 of 4000000 spent; run rm-role-designer-1794816061 goes on with 500000 (advisory)"
+  },
+  {
+   "at": "2026-11-16T08:01:30Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794816061, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T08:03:45Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designer-1794816061: stage 5 return"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME",
  "mod": "Contagion",
+ "pending_decision": "root validation: concept_tree.py gate refuses on two counts, 'root is not VALIDATED (state: is DRAFT)' and 'no coverage signature'. The walk design/validation_walks/RimMandrake/Contagion.md was never validated before stage 3 wrote the tree, so the write that stamps root_hash must reopen stages 3 and 4 (designer_lock.md step 1); validating binds north-star bars, which is his word only. Carried for the stage-3 rework in the same pass: coverage verdict rm-coverage-judge-1794788108 (not_covered, advisory: uncalibrated brief) lists 31 gaps g1-g31, every one return_to 3. 30 call their criterion sound and are Designer fixes: g1 shelter_in_lead has no colonist-shelter behaviour behind it; g2 Coalescence absorption control; g3 genome_brings_tissue stages no wanted part or miss; g4 tells control; g5 showcases claim capabilities their scenes never touch; g6 cast_lives_here passes with half the cast absent; g7 sunbeam_weapon firing; g8 visitor dose, leaker exemption, reactive sprint target; g9 Repulsor sky and beam capture; g10 flora flesh and haze baseline; g11 wombpod_hatch; g12 birth_safety; g13 genome extract/inject/gestation/natural_match parts, c_open_fixes asserted first; g14 helix_trade, draftprint and contract parts; g15 bloom, burn_clock, unfinished parts; g16 biome-def parts and RustPuff guard; g17 wrecks; g18 scanner_payload coverage_rest; g19 legacy_placement_worker coverage_rest; g20 flyer flip-book claim for four flyers; g21 settings switch list; g22 flora yields and inedibility; g23 refuge_is_shade and one_dash_at_cost contract defects; g24 walk restore reloads the wrong save; g25 sheet does-list lacks the walk leaf; g26 coalescence_formation is only ever placed by hand; g28 touched exposure beyond open Bloom and touched_reads_early; g29 mulched_soil never built into soil; g30 zhooliza has no leaf, scene or owed build item; g31 preburn_dive counter-movement and bodyprints ridge husks. g27 (limb_still_grows and the five limbs) calls its criterion flawed and goes to the criteria fixer; it also collides with his 2026-11-15 ruling (OWNER:1794772416196929336) that the grown-limb work is not in 0.1.0, so stage 3 should take limb_still_grows out of the 0.1.0 tree rather than repair it. Stage 3 writes coverage_fixes.json against rm-coverage-judge-1794788108 claiming each gap it fixes.",
  "recovery": [],
  "results": [
   {
@@ -415,12 +587,56 @@
    "run": "rm-role-designer-1794787652",
    "stage": 4,
    "summary": "Stage 4 Cold Reader exam passed against tree c70f85d1 and sheet e0e9a863: 16 frozen scenarios (12 by a fresh Examiner, 4 near-miss traps by a fresh Challenger; 10 reject cases), two fresh Readers matched expect on 16/16, accept_where_reject_core 0, no Challenger misses. Control Reader on the copy without core leaf sunbeam_arrest_treats accepted s8 (an arrest that erases mutations), the one scenario sourced on that leaf it could not see, so the set discriminates. Five helpers charged (191,493 tokens); the task is over its 4,000,000 cap (advisory, per the launcher)."
+  },
+  {
+   "at": "2026-11-16T00:32:08Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794788090",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
+  },
+  {
+   "at": "2026-11-16T08:03:45Z",
+   "decision": "root validation: concept_tree.py gate refuses on two counts, 'root is not VALIDATED (state: is DRAFT)' and 'no coverage signature'. The walk design/validation_walks/RimMandrake/Contagion.md was never validated before stage 3 wrote the tree, so the write that stamps root_hash must reopen stages 3 and 4 (designer_lock.md step 1); validating binds north-star bars, which is his word only. Carried for the stage-3 rework in the same pass: coverage verdict rm-coverage-judge-1794788108 (not_covered, advisory: uncalibrated brief) lists 31 gaps g1-g31, every one return_to 3. 30 call their criterion sound and are Designer fixes: g1 shelter_in_lead has no colonist-shelter behaviour behind it; g2 Coalescence absorption control; g3 genome_brings_tissue stages no wanted part or miss; g4 tells control; g5 showcases claim capabilities their scenes never touch; g6 cast_lives_here passes with half the cast absent; g7 sunbeam_weapon firing; g8 visitor dose, leaker exemption, reactive sprint target; g9 Repulsor sky and beam capture; g10 flora flesh and haze baseline; g11 wombpod_hatch; g12 birth_safety; g13 genome extract/inject/gestation/natural_match parts, c_open_fixes asserted first; g14 helix_trade, draftprint and contract parts; g15 bloom, burn_clock, unfinished parts; g16 biome-def parts and RustPuff guard; g17 wrecks; g18 scanner_payload coverage_rest; g19 legacy_placement_worker coverage_rest; g20 flyer flip-book claim for four flyers; g21 settings switch list; g22 flora yields and inedibility; g23 refuge_is_shade and one_dash_at_cost contract defects; g24 walk restore reloads the wrong save; g25 sheet does-list lacks the walk leaf; g26 coalescence_formation is only ever placed by hand; g28 touched exposure beyond open Bloom and touched_reads_early; g29 mulched_soil never built into soil; g30 zhooliza has no leaf, scene or owed build item; g31 preburn_dive counter-movement and bodyprints ridge husks. g27 (limb_still_grows and the five limbs) calls its criterion flawed and goes to the criteria fixer; it also collides with his 2026-11-15 ruling (OWNER:1794772416196929336) that the grown-limb work is not in 0.1.0, so stage 3 should take limb_still_grows out of the 0.1.0 tree rather than repair it. Stage 3 writes coverage_fixes.json against rm-coverage-judge-1794788108 claiming each gap it fixes.",
+   "inputs": {
+    "exam": "d7ab9110c711550d64ed89d60a09dbccba1545cf92100f6429e8288e8d95ea07",
+    "floor": "14197c616ad93a950cfc3b16b42cc3f215447a6548bcc469b17c107ea16f1020",
+    "owner": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a",
+    "root": "a1386331d57d10d6c0bdfa2fa6383cd5589c9a8dd667c4377e60066bd01a9b6e",
+    "scenes": "0a5d99349d37cf82f302ef21ab2b771a524ac041d93bcd36cd50a4a78e989ba4",
+    "sheet": "e0e9a86330827203b114a0265ed56d80d9b1b4bc6ef4940b0144e6e5aab76cf3",
+    "tree": "c70f85d18e377f8aefee5015757c13698c75a8e0fccd7be5cb7659b889988f69"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+   },
+   "outcome": "return",
+   "owner_uncited": [
+    "1794751310354805960"
+   ],
+   "question": "The Contagion walk's bars are still DRAFT, and the Lock cannot pass until you validate them in your own words. Eight must-show and two cannot-show lines would bind (python3 src/RimMandrake/Utils/modcheck/cli.py validate Contagion prints them): a sick storm-roofed Bloom sky; the Burn's light change with its tells before it; the Repulsor's honest whole-map warning and then a cleared sky (your 2026-11-15 wording); the Sunbeam reading as a beam; flesh-like flora; malformed, visibly different Unfinished; the Coalescence reading as a living source; never a plain recoloured vanilla forest; never a magenta square. Evidence against just validating them as written: one bar, 'a colonist with a Monstrous grown limb looks different from one with a natural arm', is grown-limb work you moved to Design Version 0.2.0 on 2026-11-15, and five of the others are still marked as guesses. Which do you want: (a) validate them with the grown-limb bar moved to 0.2.0; (b) validate them all as written; or (c) correct a line first (say which)?",
+   "quick_look": {
+    "offer": true,
+    "scene": "The saved Contagion site (prep_site.py, site v3), paused for you: the standing Bloom sky, then a Repulsor-forced Burn with its warning, the cleared sky and a native in the open, a Coalescence, and a Sunbeam strike. Each of the five bars marked as a guess is either confirmed or corrected by looking at it, before you validate.",
+    "settles": [
+     "root validation",
+     "c_readability",
+     "c_local"
+    ]
+   },
+   "run": "rm-role-designer-1794816061",
+   "stage": 5,
+   "summary": "Stage 5 Lock cannot pass. The gate refuses on two counts. The walk root is DRAFT, and validating it binds north-star bars, which only he can do; it was never validated before stage 3 wrote the tree, so the Lock packet returns to stage 2. There is no coverage signature: the judge's advisory not_covered lists 31 gaps, all stage-3 fixes, one of which (the grown limbs) contradicts his ruling that moves limbs to 0.2.0. The showcase set is accepted (5 showcases, no overlap). The question asks him to validate the walk bars, with the grown-limb bar moved to 0.2.0, and offers a quick look at the staged site.",
+   "to": 2
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 2,
  "status": "ready",
  "waiting_owner_feed": "11f8ddf168f37f378f3ed2eb3a3deda533f69de76d7432413045f45270ee576a"
 }
