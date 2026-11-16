@@ -1,0 +1,3 @@
+A Designer role run committed d8ec09c870 in the seat clone, and the harvest also landed the same change upstream under another sha (761dea3bda). A later harvest (b0228e90e7) then renamed result.json and rewrote stage.json. git cherry no longer matched, and seat_sync's content check compares touched paths at HEAD vs origin, so ./publish refused on a stage.json conflict and ./sync refused with 'NOT on origin/main'. The fix was to prove each tree equal to the twin (git diff <local> <twin> -- paths, and check the ledger lines are upstream), then ./sync --superseded <full sha>. The backup branch keeps the commit. Hand-merging stage.json would have replayed duplicate OWNER.jsonl lines.
+item: NONE
+home: clone-landing-commits
