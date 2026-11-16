@@ -81,7 +81,7 @@ def main():
     check(v == [("scene_vac", "V_ok")], "only the row that passes on nothing is vacuous (%s)" % (v,))
     check(len(rows) == 1 and rows[0].get("status") == "ERROR", "a scene that cannot parse an empty answer is one ERROR row, not a pass")
     old_src = subprocess.run(["git", "-C", REPO, "show", "%s:src/RimMandrake/FlowWorks/northstar/concept_scenes.py" % OLD],
-                             capture_output=True, text=True).stdout
+                             capture_output=True, text=True, timeout=60).stdout
     check(len(old_src) > 1000, "the visit-1 scene file is readable from git (%s)" % OLD)
     try:
         old = sorted(SE.vacuous(load(old_src, "cs_visit1").STAGE3_SCENES))

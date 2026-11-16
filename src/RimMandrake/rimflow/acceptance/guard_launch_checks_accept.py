@@ -123,7 +123,7 @@ def main():
     src = attempt(lambda: open(os.path.join(RIMFLOW, "detached_helper.py"), encoding="utf-8").read(), "")
     check("--skip-launch-checks" in src and "launch_check_refusal(" in src.split("def launch(", 1)[-1],
           "launch() calls the check and takes --skip-launch-checks")
-    r = subprocess.run([sys.executable, os.path.join(RIMFLOW, "maturation.py"), "gate", "--help"], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, os.path.join(RIMFLOW, "maturation.py"), "gate", "--help"], capture_output=True, text=True, timeout=60)
     check(r.returncode == 0, "maturation.py has the gate verb")
     agree, seen = True, 0
     try:
@@ -137,7 +137,7 @@ def main():
             res = M.evaluate(REPO, mod, to)
             want = 0 if all(x.get("clause") in res["hand_steps"] for x in res["verdict"]["refusals"]) else 1
             got = subprocess.run([sys.executable, os.path.join(RIMFLOW, "maturation.py"), "gate", mod, "--to", to],
-                                 capture_output=True, text=True).returncode
+                                 capture_output=True, text=True, timeout=120).returncode
             seen += 1
             agree = agree and got == want
     except Exception as e:  # noqa: BLE001

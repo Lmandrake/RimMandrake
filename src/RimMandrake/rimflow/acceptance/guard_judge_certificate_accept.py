@@ -61,7 +61,7 @@ def attempt(fn, default):
 
 
 def git(root, *a):
-    return subprocess.run(["git", "-C", root] + list(a), capture_output=True, text=True)
+    return subprocess.run(["git", "-C", root] + list(a), capture_output=True, text=True, timeout=60)
 
 
 def fixture(root):
@@ -112,7 +112,7 @@ def refused(v, clause, test=None):
 
 def cli(root, *a):
     return subprocess.run([sys.executable, os.path.join(RIMFLOW, "maturation.py"), "--root", root] + list(a),
-                          capture_output=True, text=True)
+                          capture_output=True, text=True, timeout=300)
 
 
 def main():
