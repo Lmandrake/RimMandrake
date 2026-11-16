@@ -1,7 +1,7 @@
 {
  "mod": "GimmeSomeSlack",
  "version": "0.1.0",
- "made": "2026-11-14T22:09:53-08:00",
+ "made": "2026-11-16T07:39:13-08:00",
  "made_by": "rm-builder, Maturation hand run beside the pilot, row 2 (throwaway version/make_test_table.py)",
  "stages": {
   "2": "preflight (a program)",
@@ -111,6 +111,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
@@ -126,6 +127,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialDefOf.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialLineProfiles.cs",
@@ -160,6 +162,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/AStarHeapChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/AerialSelfTest.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/BatchedLinkStyleMergeChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordEndKindChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordScaleBench.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordShapeChecks.cs",
@@ -192,6 +195,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SittingChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SnapshotPoolChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StubJoinChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage1Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage2Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
@@ -214,6 +218,47 @@
     "result": "PASS",
     "build": "54a4f02a7bbebafd21aa",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py"
+   }
+  },
+  "T_STUB_JOINS": {
+   "id": "T_STUB_JOINS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+   "observes": "Core/StubJoinAudit over 524 generated scenes (four looks x boxes, switches with 1-4 cords, wall/rock faces through and dead-ending, his stations 12 and 25): each cord on a stub passes its tip on its line and heading, no bare stub, the live end continues its cord over 90 frames, no loose end on a wall or rock dead end; planted kink, bare arm and pinched tail go red",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StubJoinChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 9.81,
+    "last": "3/6 checks passed (stub joins only)",
+    "at": "2026-11-16T07:39:13-08:00",
+    "result": "FAIL"
+   }
+  },
+  "T_STUB_ART_CENSUS": {
+   "id": "T_STUB_ART_CENSUS",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py",
+   "observes": "every texture under Textures/ is classed in StubArt.Census (stubbed, position only, loose end, cord); a planted unknown texture goes red",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
+    "src/RimMandrake/GimmeSomeSlack/Textures"
+   ],
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS",
+    "at": "2026-11-16T07:39:13-08:00",
+    "result": "PASS"
    }
   },
   "T_GATE": {
@@ -454,6 +499,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
@@ -469,6 +515,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs"
    ],
    "command": "python3 src/RimMandrake/Utils/selftest_gss_end_heap_budget.py",
@@ -931,6 +978,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
@@ -946,6 +994,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/LabWorld.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/oracle_scenes.json"
@@ -963,7 +1012,7 @@
     "build": "2888a1046f41c04ae75b",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry"
    },
-   "known_red_cleared": "2026-11-16 by RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN: its item RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR is done and the test ran green on build 2888a1046f41c04ae75b (4523/4523 checks passed)"
+   "known_red": "RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR"
   },
   "T_STATICS_CENSUS": {
    "id": "T_STATICS_CENSUS",
@@ -1011,6 +1060,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/ConduitTargets.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/CordEndAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordGraph.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordMotion.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/CordPlugExit.cs",
@@ -1026,6 +1076,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SliceWindow.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotBlock.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/SnapshotPool.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/Core/WallMount.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackDefOf.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackMod.cs",
@@ -1037,6 +1088,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/AStarHeapChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/AerialSelfTest.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/BatchedLinkStyleMergeChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordEndKindChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordGeometryChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordScaleBench.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/CordShapeChecks.cs",
@@ -1069,6 +1121,7 @@
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SittingChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SliceGateChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/SnapshotPoolChecks.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StubJoinChecks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage1Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyleStage2Checks.cs",
     "src/RimMandrake/GimmeSomeSlack/Source/SelfTest/StyledWinnerLegacyBridgeChecks.cs",
@@ -1664,6 +1717,27 @@
     "why": "live: this run is offline only; entry exists in the code"
    },
    "tier": "gimmesomeslack"
+  },
+  "sc_stub_joins": {
+   "id": "sc_stub_joins",
+   "kind": "live_minimal",
+   "stage": "6",
+   "tier": "gimmesomeslack",
+   "file": "src/RimMandrake/GimmeSomeSlack/northstar/live_stub_joins.py",
+   "entry": "main",
+   "entry_exists": true,
+   "new": true,
+   "observes": "on his review map (save GSS_OWNER_LOOK_20261116) the probe joins: runs Core/StubJoinAudit on the live pieces of every station: stubs off line or slope, bare stubs, live ends turning or pinched at the join, wall/rock dead ends drawn loose",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/Source/GimmeSomeSlackProbe.cs",
+    "src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs"
+   ],
+   "why_game": "the drawn pieces come from the running map's graph, looks and settings, not a generated scene",
+   "command": "python.exe src\\RimMandrake\\GimmeSomeSlack\\northstar\\live_stub_joins.py (game up on the gimmesomeslack tier, bridge held)",
+   "runs_today": {
+    "ran": false,
+    "why": "live: see the item's notes for its last run"
+   }
   },
   "LOOK_STAGE8": {
    "id": "LOOK_STAGE8",
@@ -2988,73 +3062,21 @@
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
    }
   },
-  "P_B7_sway_cpu_two_frame": {
-   "id": "P_B7_sway_cpu_two_frame",
+  "P_B7_ground_cords_never_sway": {
+   "id": "P_B7_ground_cords_never_sway",
    "kind": "live_minimal",
    "stage": "6",
    "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
-   "entry": "B7_sway_cpu_two_frame",
+   "entry": "B7_ground_cords_never_sway",
    "entry_exists": true,
-   "observes": "older proof row, evidence for settings_switch_cleanly, no_stall_on_rewire (proof_leaves.ROW_LEAVES), not the scene contract",
+   "observes": "older proof row, evidence for cords_lie_slack, drawing_true_to_grid (proof_leaves.ROW_LEAVES), not the scene contract",
    "reads": [
-    "src/RimMandrake/GimmeSomeSlack/validation.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
+    "src/RimMandrake/GimmeSomeSlack/validation.py"
    ],
    "support_only": true,
    "leaves": [
-    "settings_switch_cleanly",
-    "no_stall_on_rewire"
-   ],
-   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
-   "why_game": "a live state read through the bridge on the gimmesomeslack tier",
-   "runs_today": {
-    "ran": false,
-    "why": "live: offline-only run",
-    "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
-   }
-  },
-  "P_B7b_sway_shader_path": {
-   "id": "P_B7b_sway_shader_path",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/GimmeSomeSlack/shader_sway_look.py",
-   "entry": "B7b_sway_shader_path",
-   "entry_exists": true,
-   "observes": "older proof row, evidence for settings_switch_cleanly (proof_leaves.ROW_LEAVES), not the scene contract",
-   "reads": [
-    "src/RimMandrake/GimmeSomeSlack/shader_sway_look.py",
-    "src/RimMandrake/GimmeSomeSlack/validation.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py"
-   ],
-   "support_only": true,
-   "leaves": [
-    "settings_switch_cleanly"
-   ],
-   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
-   "why_game": "a live state read through the bridge on the gimmesomeslack tier",
-   "runs_today": {
-    "ran": false,
-    "why": "live: offline-only run",
-    "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
-   }
-  },
-  "P_B7c_floor_ripple": {
-   "id": "P_B7c_floor_ripple",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
-   "entry": "B7c_floor_ripple",
-   "entry_exists": true,
-   "observes": "older proof row, evidence for settings_switch_cleanly (proof_leaves.ROW_LEAVES), not the scene contract",
-   "reads": [
-    "src/RimMandrake/GimmeSomeSlack/validation.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
-   ],
-   "support_only": true,
-   "leaves": [
-    "settings_switch_cleanly"
+    "cords_lie_slack",
+    "drawing_true_to_grid"
    ],
    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
    "why_game": "a live state read through the bridge on the gimmesomeslack tier",
@@ -3385,31 +3407,6 @@
    "leaves": [
     "settings_switch_cleanly",
     "cords_lie_slack"
-   ],
-   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
-   "why_game": "a live state read through the bridge on the gimmesomeslack tier",
-   "runs_today": {
-    "ran": false,
-    "why": "live: offline-only run",
-    "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
-   }
-  },
-  "P_B12_shader_sway_far_zoom_drawn_once": {
-   "id": "P_B12_shader_sway_far_zoom_drawn_once",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
-   "entry": "B12_shader_sway_far_zoom_drawn_once",
-   "entry_exists": true,
-   "observes": "older proof row, evidence for no_stall_on_rewire, settings_switch_cleanly (proof_leaves.ROW_LEAVES), not the scene contract",
-   "reads": [
-    "src/RimMandrake/GimmeSomeSlack/validation.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py"
-   ],
-   "support_only": true,
-   "leaves": [
-    "no_stall_on_rewire",
-    "settings_switch_cleanly"
    ],
    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
    "why_game": "a live state read through the bridge on the gimmesomeslack tier",
@@ -5731,6 +5728,54 @@
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
    }
   },
+  "P_SC_cord_end_one_kind": {
+   "id": "P_SC_cord_end_one_kind",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py",
+   "entry": "SC_cord_end_one_kind",
+   "entry_exists": true,
+   "observes": "older proof row, evidence for cords_meet_walls_at_face, cut_live_and_dead_ends (proof_leaves.ROW_LEAVES), not the scene contract",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py"
+   ],
+   "support_only": true,
+   "leaves": [
+    "cords_meet_walls_at_face",
+    "cut_live_and_dead_ends"
+   ],
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
+   "why_game": "a live state read through the bridge on the gimmesomeslack tier",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run",
+    "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   }
+  },
+  "P_SC_box_stub_slope": {
+   "id": "P_SC_box_stub_slope",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py",
+   "entry": "SC_box_stub_slope",
+   "entry_exists": true,
+   "observes": "older proof row, evidence for strip_at_every_junction, no_unforced_sharp_turn (proof_leaves.ROW_LEAVES), not the scene contract",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/northstar/scene_rows.py"
+   ],
+   "support_only": true,
+   "leaves": [
+    "strip_at_every_junction",
+    "no_unforced_sharp_turn"
+   ],
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
+   "why_game": "a live state read through the bridge on the gimmesomeslack tier",
+   "runs_today": {
+    "ran": false,
+    "why": "live: offline-only run",
+    "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
+   }
+  },
   "P_D1_zero_tick_rereads_same": {
    "id": "P_D1_zero_tick_rereads_same",
    "kind": "live_minimal",
@@ -6006,6 +6051,7 @@
     "P_MX_F56_T14_S0",
     "P_MX_F60_T15_S0",
     "P_B1_rope_settle",
+    "P_B7_ground_cords_never_sway",
     "P_SW6_needless_loops_off_reaches_builder",
     "P_SC_cords_all_slack"
    ],
@@ -6041,7 +6087,8 @@
     "P_M10_tangle_threshold_setting",
     "P_SC_sparse_room_no_tangle",
     "P_M1c_end_pieces",
-    "P_SC_bend_draws_no_joint_tee_draws_one"
+    "P_SC_bend_draws_no_joint_tee_draws_one",
+    "P_SC_box_stub_slope"
    ],
    "held": [],
    "offline_decides": [
@@ -6096,6 +6143,7 @@
     "P_M1_cords_exist",
     "P_M1_node_census",
     "P_M2_cords_only_within_net",
+    "P_B7_ground_cords_never_sway",
     "P_B5_selection_highlight",
     "P_M12a_slide_under_off_plug_on_cell_centre",
     "P_M12b_slide_under_on_plug_off_centre",
@@ -6154,7 +6202,8 @@
     "P_SC_cut_never_powered_both_dead",
     "P_SC_cut_battery_each_side_both_live",
     "P_SC_dead_wire_shocks_nobody",
-    "P_SC_floor_end_dead_spares"
+    "P_SC_floor_end_dead_spares",
+    "P_SC_cord_end_one_kind"
    ],
    "held": [],
    "offline_decides": [
@@ -6177,9 +6226,7 @@
     "T_CORE",
     "P_M5_local_invalidation",
     "P_B4d_spark_budget_shared_visible_first",
-    "P_B7_sway_cpu_two_frame",
     "P_B8_lod_far_zoom",
-    "P_B12_shader_sway_far_zoom_drawn_once",
     "P_P1B_perf_rebuild",
     "P_A8_same_frame_dirty_not_dropped",
     "P_S12b_D7_bulk_spawn_cost",
@@ -6425,9 +6472,6 @@
     "P_M21b_cut_wires_on_owner_change_on_cuts_link",
     "P_SW3_break_readout_off_no_glow_no_whip",
     "P_SW4_sparks_only_overlay_shut_no_glow",
-    "P_B7_sway_cpu_two_frame",
-    "P_B7b_sway_shader_path",
-    "P_B7c_floor_ripple",
     "P_B5_selection_highlight",
     "P_SW1_highlight_off_draws_no_ring",
     "P_SW2_lod_off_far_zoom_draws_full",
@@ -6438,7 +6482,6 @@
     "P_M12b_slide_under_on_plug_off_centre",
     "P_SW5_hide_hookup_off_leaves_vanilla_wire",
     "P_SW6_needless_loops_off_reaches_builder",
-    "P_B12_shader_sway_far_zoom_drawn_once",
     "P_ST2_switch_changes_textures",
     "P_ST3_extcord_colour_modes",
     "P_ST4_settings_roundtrip",
@@ -6477,9 +6520,6 @@
    "supports": [
     "P_SW3_break_readout_off_no_glow_no_whip",
     "P_SW4_sparks_only_overlay_shut_no_glow",
-    "P_B7_sway_cpu_two_frame",
-    "P_B7b_sway_shader_path",
-    "P_B7c_floor_ripple",
     "P_B5_selection_highlight",
     "P_SW1_highlight_off_draws_no_ring",
     "P_SW2_lod_off_far_zoom_draws_full",
@@ -6490,7 +6530,6 @@
     "P_M12b_slide_under_on_plug_off_centre",
     "P_SW5_hide_hookup_off_leaves_vanilla_wire",
     "P_SW6_needless_loops_off_reaches_builder",
-    "P_B12_shader_sway_far_zoom_drawn_once",
     "P_ST2_switch_changes_textures",
     "P_ST3_extcord_colour_modes",
     "P_ST4_settings_roundtrip",
@@ -6720,6 +6759,7 @@
     "P_M1_cords_exist",
     "P_M1_node_census",
     "P_M2_cords_only_within_net",
+    "P_B7_ground_cords_never_sway",
     "P_B5_selection_highlight",
     "P_M12a_slide_under_off_plug_on_cell_centre",
     "P_M12b_slide_under_on_plug_off_centre",
@@ -6751,6 +6791,27 @@
     "T_CORE"
    ],
    "offline_green_today": true,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "any_decider_runnable_today": true
+  },
+  {
+   "id": "cords_join_stubs_on_position_and_slope",
+   "source": "record.json",
+   "kind": "inventory",
+   "proves_at": "6",
+   "decides": [
+    "T_STUB_JOINS",
+    "T_STUB_ART_CENSUS",
+    "sc_stub_joins"
+   ],
+   "supports": [],
+   "held": [],
+   "offline_decides": [
+    "T_STUB_JOINS",
+    "T_STUB_ART_CENSUS"
+   ],
+   "offline_green_today": false,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true,
    "any_decider_runnable_today": true
@@ -6810,6 +6871,7 @@
     "P_MX_F56_T14_S0",
     "P_MX_F60_T15_S0",
     "P_B1_rope_settle",
+    "P_B7_ground_cords_never_sway",
     "P_SW6_needless_loops_off_reaches_builder",
     "P_SC_cords_all_slack"
    ],
@@ -6833,7 +6895,8 @@
     "sc_no_sharp_turn"
    ],
    "supports": [
-    "P_M2c_no_sharp_bends"
+    "P_M2c_no_sharp_bends",
+    "P_SC_box_stub_slope"
    ],
    "held": [],
    "offline_decides": [
@@ -6859,7 +6922,8 @@
     "P_M1c_end_pieces",
     "P_M2b_no_vertex_unwalkable",
     "P_M1e_machine_on_inwall_run_draws_a_cord",
-    "P_M11_dive_through_setting"
+    "P_M11_dive_through_setting",
+    "P_SC_cord_end_one_kind"
    ],
    "held": [],
    "offline_decides": [],
@@ -6881,7 +6945,8 @@
     "T_JUNCTION_ART",
     "T_STRIP_ART",
     "P_M1c_end_pieces",
-    "P_SC_bend_draws_no_joint_tee_draws_one"
+    "P_SC_bend_draws_no_joint_tee_draws_one",
+    "P_SC_box_stub_slope"
    ],
    "held": [],
    "offline_decides": [
@@ -7009,6 +7074,7 @@
     "P_M1_cords_exist",
     "P_M1_node_census",
     "P_M2_cords_only_within_net",
+    "P_B7_ground_cords_never_sway",
     "P_B5_selection_highlight",
     "P_M12a_slide_under_off_plug_on_cell_centre",
     "P_M12b_slide_under_on_plug_off_centre",
@@ -7067,7 +7133,8 @@
     "P_SC_cut_never_powered_both_dead",
     "P_SC_cut_battery_each_side_both_live",
     "P_SC_dead_wire_shocks_nobody",
-    "P_SC_floor_end_dead_spares"
+    "P_SC_floor_end_dead_spares",
+    "P_SC_cord_end_one_kind"
    ],
    "held": [],
    "offline_decides": [
@@ -7117,9 +7184,7 @@
     "T_CORE",
     "P_M5_local_invalidation",
     "P_B4d_spark_budget_shared_visible_first",
-    "P_B7_sway_cpu_two_frame",
     "P_B8_lod_far_zoom",
-    "P_B12_shader_sway_far_zoom_drawn_once",
     "P_P1B_perf_rebuild",
     "P_A8_same_frame_dirty_not_dropped",
     "P_S12b_D7_bulk_spawn_cost",
@@ -7348,9 +7413,6 @@
     "T_H_AERIAL_PROBE_BATCH",
     "P_SW3_break_readout_off_no_glow_no_whip",
     "P_SW4_sparks_only_overlay_shut_no_glow",
-    "P_B7_sway_cpu_two_frame",
-    "P_B7b_sway_shader_path",
-    "P_B7c_floor_ripple",
     "P_B5_selection_highlight",
     "P_SW1_highlight_off_draws_no_ring",
     "P_SW2_lod_off_far_zoom_draws_full",
@@ -7361,7 +7423,6 @@
     "P_M12b_slide_under_on_plug_off_centre",
     "P_SW5_hide_hookup_off_leaves_vanilla_wire",
     "P_SW6_needless_loops_off_reaches_builder",
-    "P_B12_shader_sway_far_zoom_drawn_once",
     "P_ST2_switch_changes_textures",
     "P_ST3_extcord_colour_modes",
     "P_ST4_settings_roundtrip",
