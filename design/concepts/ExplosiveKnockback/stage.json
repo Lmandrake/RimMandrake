@@ -1731,6 +1731,12 @@
    "stage": 5,
    "what": "locked_change",
    "why": "his card 2026-11-16 'Compare to mod-off': the walk's frame row is judged against the same run's mod-off arm (+10% max); tree.json walk_storeroom_raid and scenes.json sc_walk_raid reworded, tree re-certified on that card; the 50 ms barrage bar is unchanged (the two older sources are cited again only because stage 4 stays void from the last re-pin); re-pinned stage 3 (tree, scenes); stage 5 (tree); stage 4 left stale, its exam void (sheet, tree, scenes, owner changed): the next open retakes it; sources OWNER:1794834159094900561@65eb8bf28a, OWNER:1794799770273329641@3aa7e5c15d, OWNER:1794748823561950419"
+  },
+  {
+   "at": "2026-11-16T13:59:26Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "his words 2026-11-16 5:43 AM PST ('the smallest list to observe it is the best idea'): the walk's frame arms run on the Explosive Knockback tier list (--frames-only), the full list reads them by --frame-evidence; his 10% card rule unchanged; tree.json walk_storeroom_raid and scenes.json sc_walk_raid reworded, tree re-certified on that event; re-pinned stage 3 (tree, scenes); stage 5 (tree); stage 4 left stale, its exam void (sheet, tree, scenes, owner changed): the next open retakes it; sources OWNER:1794836946186553250@1dd790af20, OWNER:1794834159094900561@65eb8bf28a, OWNER:1794799770273329641@3aa7e5c15d, OWNER:1794748823561950419"
   }
  ],
  "item": "RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH",
@@ -2024,9 +2030,9 @@
     "floor": "339c3a521643f4eceaa477551cf8c04dfedc92468c4f82f7bae33889479f2428",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
-    "scenes": "4d0d4c0c23f21edf6040ce346d447259bb3f3be277dce0652466fafef20cb2c1",
+    "scenes": "ef3b05ca446288b1b373dec19626c58f958884d4abe65009bbf94fd0c678c654",
     "sheet": "def5f528b8e8416c73147d1242ac7b23f54a34454a7c0b502077b233e6d2e3cc",
-    "tree": "743e234b354db00c93dba97b007884bf113774384b7e99ac1135bea55c0fe94a"
+    "tree": "77a9613f91e2ef1b49cd2144db4eb49467ec3f0165186b7898904994b5d49eb5"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -2081,6 +2087,19 @@
       "scenes"
      ],
      "sources": [
+      "OWNER:1794834159094900561@65eb8bf28a",
+      "OWNER:1794799770273329641@3aa7e5c15d",
+      "OWNER:1794748823561950419"
+     ]
+    },
+    {
+     "at": "2026-11-16T13:59:26Z",
+     "inputs": [
+      "tree",
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794836946186553250@1dd790af20",
       "OWNER:1794834159094900561@65eb8bf28a",
       "OWNER:1794799770273329641@3aa7e5c15d",
       "OWNER:1794748823561950419"
@@ -2174,6 +2193,22 @@
       "OWNER:1794748823561950419"
      ],
      "why": "its exam ran against another tree or sheet: retake it"
+    },
+    {
+     "at": "2026-11-16T13:59:26Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes",
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794836946186553250@1dd790af20",
+      "OWNER:1794834159094900561@65eb8bf28a",
+      "OWNER:1794799770273329641@3aa7e5c15d",
+      "OWNER:1794748823561950419"
+     ],
+     "why": "its exam ran against another tree or sheet: retake it"
     }
    ]
   },
@@ -2186,7 +2221,7 @@
     "root": "c96b469460e693be6ecc11b1e19311668fa91e79c6b7ecf1faf06dd2970f99ce",
     "scenes": "d16a2aec414a6dd250a9036c95005753f87ae1bf29dcd1e00986d4ed8753baba",
     "sheet": "def5f528b8e8416c73147d1242ac7b23f54a34454a7c0b502077b233e6d2e3cc",
-    "tree": "743e234b354db00c93dba97b007884bf113774384b7e99ac1135bea55c0fe94a"
+    "tree": "77a9613f91e2ef1b49cd2144db4eb49467ec3f0165186b7898904994b5d49eb5"
    },
    "manifest": {
     "designer.md": "1f1863730eb1164e1bd006371660e450caf9957a0491d58e631b125c971df841",
@@ -2228,6 +2263,18 @@
       "tree"
      ],
      "sources": [
+      "OWNER:1794834159094900561@65eb8bf28a",
+      "OWNER:1794799770273329641@3aa7e5c15d",
+      "OWNER:1794748823561950419"
+     ]
+    },
+    {
+     "at": "2026-11-16T13:59:26Z",
+     "inputs": [
+      "tree"
+     ],
+     "sources": [
+      "OWNER:1794836946186553250@1dd790af20",
       "OWNER:1794834159094900561@65eb8bf28a",
       "OWNER:1794799770273329641@3aa7e5c15d",
       "OWNER:1794748823561950419"
