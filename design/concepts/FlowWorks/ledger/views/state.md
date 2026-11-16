@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":3980,"HOLDER.run-1794816885":928,"JUDGE.judge-1794833810":53964,"STEWARD":2597} body_sha256=0c740803d6ad7815605f325f399f999d9526441fa8620af8ae68408250a9b87c -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":881268,"DISPATCH":4287,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"JUDGE.judge-1794833810":53964,"STEWARD":2597} body_sha256=78672094a2c2c59ca48d49874651adb4b33a20673d1ba1d64c0ba816e3a9c38f -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1210 events in 5 shards · reducer 1
-holder lease run-1794848129, token 3, last active 2026-11-16T16:56:03Z
+version 0.1.0 · stage blind_challenge · 1213 events in 6 shards · reducer 1
+holder lease run-1794848129, token 3, last active 2026-11-16T17:08:01Z
 holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1794816885, 2026-11-16T08:50:23Z)
-- done: All 9 road-back items have their offline half landed: pit-trap, source-pays, trench scenes and OL shadow judge at e9f2f50fd215; walk swimmer + chemfuel-first second order at f1e06be47a88. Filed RIMMANDRAKE_REPORT_SUBMERGE_SHADOW_QUEUE_JUDGE_CANNOT_SEE_ORDER. None closed: every acceptance test is live.
-- next: Hold the bridge on the calm site and run the live rerun named in each item LEFT OPEN note (Int64 companion deploy at game-down first); close each on its sha.
-- ruled out: OL FAILs are not a mod defect: dry shadow alpha drawn at UnderSheetQueue 2448 < SheetQueue 2449 is the owner 11-13 design; no bar wording changes.
+## Last checkpoint (HOLDER.run-1794848129, 2026-11-16T17:08:01Z)
+- done: Steward read blind cycle 2: 5 Problems fixed and closed at 4b33b22f00, 4 Polish filed; 11 certificate refusals were RECORD GAP (stale ran_on_this_build), redone by maturation.py certificate --run (8 reruns, OK on 55 bars); test edits only add or tighten; advanced to blind cycle 3
+- next: Run blind cycle 3 judge on FlowWorks 0.1.0 at origin/main so a judge who did not make the fixes judges them
+- ruled out: No CRITERION FLAW and no REAL MISS in cycle 2: every not-met reason was the fixes themselves (new judge owed) or stale run stamps
 
 ## Open findings (174)
 (claimed fixes, awaiting a judge, on one line each with the oldest 130 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -494,6 +494,6 @@ spend recorded: USD 33.19, 24322723 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1210 events (views/history.md; never read whole)
+- the full history: 1213 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T16:56:34Z.1794848194288817600 (modledger.py since --mod FlowWorks t=2026-11-16T16:56:34Z.1794848194288817600 prints what changed after this packet)
+cursor: t=2026-11-16T17:08:01Z.1794848881037415083 (modledger.py since --mod FlowWorks t=2026-11-16T17:08:01Z.1794848881037415083 prints what changed after this packet)
