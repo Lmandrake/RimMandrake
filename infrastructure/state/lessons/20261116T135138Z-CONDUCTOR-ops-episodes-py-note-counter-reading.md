@@ -1,0 +1,2 @@
+ops_episodes.py note on a COUNTER reading (memory.json kind=counter, e.g. plan.days_since_advance) is graded on its per-hour RATE, not its level: --value must be a rate (days_since_advance flat reads ~0.042/h; 14.86 is 'level'). The printed '(now X)' is that rate. A level-valued note (> 15) on it can never hold. Read readings[key].kind before writing --value.
+home: src/RimMandrake/rimflow/roles/operations.md
