@@ -1,0 +1,9 @@
+CAUGHT  NH1_hose_in_toptexpath  decider rc 2
+CAUGHT  NH2_reel_in_texturepath  decider rc 2
+CAUGHT  NH3_hose_def_type_tag  decider rc 2
+CAUGHT  NH4_reel_defname_literal_in_code  decider rc 2
+CAUGHT  NH5_patch_on_hose_def  decider rc 2
+CAUGHT  NH6_label_hose_control  decider rc 2
+CAUGHT  NH7_texpath_hose_control  decider rc 2
+clean tree decider rc 0
+RESULT: 7 of 7 planted hose leftovers caught

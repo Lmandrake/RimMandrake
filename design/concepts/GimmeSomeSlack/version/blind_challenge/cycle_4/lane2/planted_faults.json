@@ -1,0 +1,314 @@
+[
+ {
+  "id": "NH1_hose_in_toptexpath",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+  "old": "RimMandrake/GimmeSomeSlack/Aerial/AerialMastTop</topTexPath>",
+  "new": "RimMandrake/FlowWorks/Hose/HoseReelTop</topTexPath>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "T_NO_HOSE",
+   "LANE1"
+  ],
+  "why": "a hose texture in a texture field the scan's tag list does not name (topTexPath)"
+ },
+ {
+  "id": "NH2_reel_in_texturepath",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialRestring.xml",
+  "old": "<texturePath>Designations/Flick</texturePath>",
+  "new": "<texturePath>RimMandrake/FlowWorks/Hose/ReelOverlay</texturePath>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "T_NO_HOSE",
+   "LANE1"
+  ],
+  "why": "a reel texture in texturePath"
+ },
+ {
+  "id": "NH3_hose_def_type_tag",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_PowerTheft.xml",
+  "old": "<Defs>",
+  "new": "<Defs>\n  <RimMandrake.FlowWorks.HoseLookDef><defName>RM_Look_Scrapper</defName></RimMandrake.FlowWorks.HoseLookDef>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "T_NO_HOSE",
+   "LANE1"
+  ],
+  "why": "a hose def left behind under an innocent defName: only its def type (the element tag) names it"
+ },
+ {
+  "id": "NH4_reel_defname_literal_in_code",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialDefOf.cs",
+  "old": "        public static ThingDef RM_AerialMast;",
+  "new": "        public static ThingDef RM_AerialMast;\n        public const string LegacyReelDef = \"RM_HoseReel\";",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "T_NO_HOSE",
+   "LANE1"
+  ],
+  "why": "a hose-reel defName literal in shipped C# (no '/' in it)"
+ },
+ {
+  "id": "NH5_patch_on_hose_def",
+  "file": "src/RimMandrake/GimmeSomeSlack/Patches/RM_ConduitStyleable.xml",
+  "old": "<Patch>",
+  "new": "<Patch>\n  <Operation Class=\"PatchOperationAdd\"><xpath>Defs/ThingDef[defName=\"RM_HoseReel\"]/graphicData</xpath><value><drawSize>(2,2)</drawSize></value></Operation>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "T_NO_HOSE",
+   "LANE1"
+  ],
+  "why": "a patch reaching into a hose reel's drawing (xpath only names it)"
+ },
+ {
+  "id": "NH6_label_hose_control",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_PowerTheft.xml",
+  "old": "<label>power theft</label>",
+  "new": "<label>hose reel theft</label>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "T_NO_HOSE",
+   "LANE1"
+  ],
+  "why": "control: a label the scan reads"
+ },
+ {
+  "id": "NH7_texpath_hose_control",
+  "file": "src/RimMandrake/GimmeSomeSlack/Defs/Aerial/RM_AerialAnchors.xml",
+  "old": "<texPath>RimMandrake/GimmeSomeSlack/Aerial/AerialMast</texPath>",
+  "new": "<texPath>RimMandrake/GimmeSomeSlack/Aerial/HoseReel</texPath>",
+  "bars": [
+   "no_hose",
+   "no_hose_in_gss"
+  ],
+  "suites": [
+   "T_NO_HOSE",
+   "LANE1"
+  ],
+  "why": "control: a texPath the scan reads"
+ },
+ {
+  "id": "K1_goodwill_drops_carry",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "drainTicks -= days * ticksPerDay;",
+  "new": "drainTicks = 0;",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "power_theft"
+  ],
+  "suites": [
+   "T_CORE",
+   "LANE1"
+  ],
+  "why": "TheftChecks (changed): the part of a window past the day is lost"
+ },
+ {
+  "id": "K2_goodwill_counts_window_not_total",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "int days = drainTicks / ticksPerDay;",
+  "new": "int days = ticks / ticksPerDay;",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "power_theft"
+  ],
+  "suites": [
+   "T_CORE",
+   "LANE1"
+  ],
+  "why": "TheftChecks (changed): days counted per window, the carried ticks never charged"
+ },
+ {
+  "id": "K3_tap_takes_rate_regardless",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "return Math.Min(rateW * k, avail);",
+  "new": "return rateW * k;",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "power_theft"
+  ],
+  "suites": [
+   "T_CORE",
+   "LANE1"
+  ],
+  "why": "taps create power the victim did not have"
+ },
+ {
+  "id": "K4_cut_span_falls_again",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "if (killed && st == SpanState.Up)",
+  "new": "if (killed)",
+  "bars": [
+   "fallen_span_on_ground",
+   "downed_spans"
+  ],
+  "suites": [
+   "T_CORE",
+   "LANE1"
+  ],
+  "why": "a cut span already lying falls a second time"
+ },
+ {
+  "id": "K5_pipe_obeys_power_master",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialMath.cs",
+  "old": "CarriesPower(k) ? powerOn : pipeOn;",
+  "new": "CarriesPower(k) ? powerOn : pipeOn && powerOn;",
+  "bars": [
+   "settings_switch_cleanly",
+   "pipe_pole_switch"
+  ],
+  "suites": [
+   "T_CORE",
+   "LANE1"
+  ],
+  "why": "pipe poles hostage to the power-lines master"
+ },
+ {
+  "id": "C1_idle_clamp_accrues",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/PowerTheftConsequences.cs",
+  "old": "comp.drainTicksSinceEvent, wd > 0f,",
+  "new": "comp.drainTicksSinceEvent, true,",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "power_theft"
+  ],
+  "suites": [
+   "T_CORE",
+   "T_SETTINGS_SWEEP_OFFLINE",
+   "LANE1"
+  ],
+  "why": "caller: an idle caught clamp still drains goodwill"
+ },
+ {
+  "id": "C2_downed_span_ignores_master",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/RM_FallenWireShock.cs",
+  "old": "if (kind == LineKind.DownedSpan && !AerialSettings.enabled) continue;",
+  "new": "",
+  "bars": [
+   "fallen_wire_shocks_crossers",
+   "settings_switch_cleanly"
+  ],
+  "suites": [
+   "T_CORE",
+   "T_SETTINGS_SWEEP_OFFLINE",
+   "LANE1"
+  ],
+  "why": "caller: our fallen spans bite with the overhead-lines master off"
+ },
+ {
+  "id": "C3_floor_end_bites_under_only_downed",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/ShockRule.cs",
+  "old": "kind == LineKind.FloorEnd ? reach == ShockReach.All : reach != ShockReach.None;",
+  "new": "kind == LineKind.FloorEnd ? reach != ShockReach.None : reach != ShockReach.None;",
+  "bars": [
+   "shock_reach_setting",
+   "floor_end_shocks_crossers"
+  ],
+  "suites": [
+   "T_CORE",
+   "T_SETTINGS_SWEEP_OFFLINE",
+   "LANE1"
+  ],
+  "why": "the shock setting: Only downed lines still lets floor ends bite"
+ },
+ {
+  "id": "C4_range_doubled",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialLineProfiles.cs",
+  "old": "AerialKinds.RangeFor(k, AerialSettings.maxSpan, k ==",
+  "new": "AerialKinds.RangeFor(k, AerialSettings.maxSpan * 2, k ==",
+  "bars": [
+   "overhead_spans",
+   "mod_settings"
+  ],
+  "suites": [
+   "T_CORE",
+   "T_SETTINGS_SWEEP_OFFLINE",
+   "LANE1"
+  ],
+  "why": "caller: the max-span slider means twice what it says"
+ },
+ {
+  "id": "C5_tap_rate_x10",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompPowerTap.cs",
+  "old": "TapStolenPerTick(AerialSettings.tapRate,",
+  "new": "TapStolenPerTick(AerialSettings.tapRate * 10,",
+  "bars": [
+   "tap_steals_and_costs_goodwill",
+   "mod_settings"
+  ],
+  "suites": [
+   "T_CORE",
+   "T_SETTINGS_SWEEP_OFFLINE",
+   "LANE1"
+  ],
+  "why": "caller: the tap-rate setting means ten times what it says"
+ },
+ {
+  "id": "T1_twin_pass_picks_closer",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+  "old": "if (d > bestD) { bestD = d; bestT = ti; bestS = s; }",
+  "new": "if (d < bestD) { bestD = d; bestT = ti; bestS = s; }",
+  "bars": [
+   "cords_never_repeat"
+  ],
+  "suites": [
+   "T_CORE"
+  ],
+  "why": "CordGeometryChecks (changed): the twin pass keeps the closer twin"
+ },
+ {
+  "id": "T2_twin_apart_zero",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+  "old": "internal const double TwinApart = 0.15;",
+  "new": "internal const double TwinApart = 0.0;",
+  "bars": [
+   "cords_never_repeat"
+  ],
+  "suites": [
+   "T_CORE"
+  ],
+  "why": "CordGeometryChecks (changed): the twin pass never fires"
+ },
+ {
+  "id": "T3_twin_tries_zero",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+  "old": "internal const int TwinTries = 2;",
+  "new": "internal const int TwinTries = 0;",
+  "bars": [
+   "cords_never_repeat"
+  ],
+  "suites": [
+   "T_CORE"
+  ],
+  "why": "Program.cs (changed: default run calls TwinLeads): no alternative shape is ever tried"
+ },
+ {
+  "id": "T4_twin_not_settled",
+  "file": "src/RimMandrake/GimmeSomeSlack/Source/Core/CordBuilder.cs",
+  "old": "                        settled.Add(bestS);\n",
+  "new": "",
+  "bars": [
+   "cords_never_repeat"
+  ],
+  "suites": [
+   "T_CORE"
+  ],
+  "why": "Program.cs (changed): a varied lead is not added to the settled set, so later twins are not compared to it"
+ }
+]
