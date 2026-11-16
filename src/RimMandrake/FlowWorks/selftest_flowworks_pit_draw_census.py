@@ -18,14 +18,15 @@ only what SectionLayer_ThingsGeneral prints. Round 2 applies it by LAYER:
                sheet, tinted as the floor; a sprite bigger than its cell is clipped to the pit's rim (~10:10 PM: "the chunks don't
                honor the pit, they overlap its edges unphysically");
   * cords      Gimme Some Slack's floor cords on a pit floor are faded by RM_SubmergeDraw.FloorSeen (found by name) and do
-               not ripple per frame under liquid.
+               not ripple per frame under liquid: since GSS b560ff91e8 (owner 2026-11-16) no ground cord ripples or
+               sways anywhere, so the old guard (a cord under liquid skips the ripple) is pinned ABSENT as a whole.
 Every C# file in our mods that draws per frame (Graphics.DrawMesh, DrawMeshNow, a draw batch, or a Thing / comp / Graphic draw
 override) must be in SITES below, ROUTED (which layer covers it) or LISTED (why the law does not apply, or the open gap). A new
 draw site fails this test until it is classified; a classified file that no longer draws fails as stale. Vanilla's per-frame
 drawers (RimSage census, decompiled 1.6) are pinned in VANILLA the same way.
 
 Can-fail: --base REV reads the route pins from git REV (before round 2 they are absent: red); the built-in plants (an
-unclassified site, a removed route) must go red every run.
+unclassified site, a removed route, a returned ripple) must go red every run.
 """
 import os
 import re
@@ -47,7 +48,7 @@ SITES = {
     "FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs": "ROUTED: the law itself (prints, pawns, realtime gate, overlays)",
     "FlowWorks/Source/Superdeep/RM_FlowDoors.cs": "ROUTED: DrawUnder (gates draw their own cut)",
     "FlowWorks/Source/Superdeep/RM_Spikes.cs": "ROUTED: DrawUnder (stakes draw their own cut)",
-    "GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs": "ROUTED in part: a floor cord under liquid does not ripple, so it is "
+    "GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs": "ROUTED in part: no ground cord ripples (GSS b560ff91e8), so one under liquid is "
         "printed and faded (CordUnderLiquid). LISTED gap: a lifted cord swaying per frame, the live glow, highlight and sparks",
     # above the liquid by design
     "FlowWorks/Source/RM_LiquidSurface.cs": "LISTED: the liquid's own surface (ripples, bubbles); it is the liquid",
@@ -166,7 +167,15 @@ ROUTES = [  # (file, pattern, what)
     ("GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs", r"verts \+= WetRibbon\(CordMaterials\.Shadow", "its shadow is faded"),
     ("GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs", r"m = CordUnderLiquid\.Faded\(m, CordUnderLiquid\.StepAt\(Map, d\.Pos\.X, d\.Pos\.Z\)\)",
      "plugs and connectors are faded"),
-    ("GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs", r"CordUnderLiquid\.SeenAt\(map, c\.x, c\.z\) >= 1f", "a cord under liquid does not ripple"),
+]
+
+# Pinned ABSENT: (file, pattern, what). Owner 2026-11-16 (GSS b560ff91e8: "ground sway, shader sway and floor ripple
+# removed"): no ground cord ripples at all, so the route that kept a cord under liquid out of the ripple (pinned until then
+# on `CordUnderLiquid.SeenAt(map, c.x, c.z) >= 1f`) is now the stronger law that the ripple itself is gone.
+ABSENT = [
+    ("GimmeSomeSlack/Source/RM_MapComponent_CordGraph.cs", r"(?i)ripple", "no ground cord ripples, under liquid or not"),
+    ("GimmeSomeSlack/Source/Core/CordMotion.cs", r"(?i)ripple", "the ground cords' motion kernel has no ripple"),
+    ("GimmeSomeSlack/Source/GimmeSomeSlackMod.cs", r"floorRipple", "no floor ripple setting can turn it back on"),
 ]
 
 
@@ -193,7 +202,7 @@ def hits():
     return sorted(out)
 
 
-def check(found, sites, routes, rev=None):
+def check(found, sites, routes, rev=None, absent=None):
     bad = []
     if len(found) < 10:
         bad.append("the census saw only %d draw sites (blind instrument?)" % len(found))
@@ -206,6 +215,12 @@ def check(found, sites, routes, rev=None):
     for f, pat, what in routes:
         if not re.search(pat, read(f, rev)):
             bad.append("ROUTE MISSING (%s): %s  [%s]" % (what, f, pat))
+    for f, pat, what in (ABSENT if absent is None else absent):
+        src = read(f, rev)
+        if not src:
+            bad.append("ABSENT PIN READS NOTHING (%s): %s (moved? re-point the pin)" % (what, f))
+        elif re.search(pat, src):
+            bad.append("RETURNED (%s): %s  [%s]" % (what, f, pat))
     for k, v in VANILLA.items():
         if not (v.startswith("ROUTED") or v.startswith("LISTED")):
             bad.append("vanilla row without a class: " + k)
@@ -285,14 +300,16 @@ def main(argv):
         "an unclassified draw site": check(found + ["Planted/Source/RM_NewOverlay.cs"], SITES, ROUTES),
         "a removed route": check(found, SITES, ROUTES + [("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs", r"NO_SUCH_ROUTE_PLANTED", "planted")]),
         "a stale row": check(found, dict(SITES, **{"Gone/Source/RM_Gone.cs": GATE}), ROUTES),
+        "a returned ripple": check(found, SITES, ROUTES, absent=ABSENT + [("FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs",
+                                                                           r"FloorSeen", "planted")]),
     }
     for name, res in plants.items():
         if not res:
             bad.append("CAN-FAIL: the plant (%s) stayed green" % name)
     routed = sum(1 for v in list(SITES.values()) + list(VANILLA.values()) if v.startswith("ROUTED"))
     listed = sum(1 for v in list(SITES.values()) + list(VANILLA.values()) if not v.startswith("ROUTED"))
-    print("pit draw census: %d draw sites in our mods, %d vanilla rows; %d routed, %d listed; %d route pins; %d overlay paths; "
-          "%d thing classes%s" % (len(found), len(VANILLA), routed, listed, len(ROUTES), len(OVERLAY_PATHS), len(THING_CLASSES),
+    print("pit draw census: %d draw sites in our mods, %d vanilla rows; %d routed, %d listed; %d route pins, %d absent; %d overlay paths; "
+          "%d thing classes%s" % (len(found), len(VANILLA), routed, listed, len(ROUTES), len(ABSENT), len(OVERLAY_PATHS), len(THING_CLASSES),
                                   " (base " + rev + ")" if rev else ""))
     for k, v in THING_CLASSES.items():
         if not v.startswith("ROUTED: ") or "LISTED" in v:
