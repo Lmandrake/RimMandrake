@@ -1,6 +1,6 @@
 # Two RimWorld instances on one machine (design, 2026-11-07)
 
-Status: rung one passed on SteveDesktop on 2026-11-07; see "Trial result, 2026-11-07" below. Archmagi is untested. Parts 1 and 2 were written before the trial, from disk and the running system. The first list of tooling changes is built and proven offline (see "How a loop goes on game B"); no loop has run on B yet.
+Status: rung one passed on SteveDesktop on 2026-11-07; see "Trial result, 2026-11-07" below. Archmagi is untested: its trial on 2026-11-16 did not launch, on commit headroom (see "Archmagi trial, 2026-11-16"). Parts 1 and 2 were written before the trial, from disk and the running system. The first list of tooling changes is built and proven offline (see "How a loop goes on game B"); no loop has run on B yet.
 
 Owner's words, 2026-11-07: "design a way to have two instances of Rimworld running. It would likely require running Steam in a protected environment without access to the Web. This might not be required though, so we should try it simply first. Just be prepared that we may have to do so. I'm not sure Steam will be happy with us launching two versions otherwise, so a one-two research punch. Fingers crossed it's easy."
 
@@ -292,6 +292,31 @@ Still unmeasured: two games on full lists, Archmagi, a deploy with two games up,
 **What it means for a loop on B.** The game side is ready on SteveDesktop, and the tools are not. The trial held the whole machine and used only pid-based stops. A loop's `rw_game.sh`, `modset_builder` and `taskkill /IM` would still act on the wrong game, so do tooling items 1 and 2 first, then the rest of the first list, then put one loop on B. Keep the writable mods of the two lists disjoint until a deploy with two up has been tried.
 
 **What it means for Archmagi.** This result does not transfer directly. Archmagi launches through Steam, its folder has no `steam_appid.txt`, its bridge is Workshop only, and it had 7.3 GB free at the design reading. B on a small list needs about 4 GB private. Trial it only as a separate decision, with the same checks.
+
+## Archmagi trial, 2026-11-16: UNRUN, commit headroom under the 12 GB floor
+
+Item `RIMMANDRAKE_TRIAL_SECOND_GAME_ON_ARCHMAGI_STEAM_LINK_UNTESTED`, a detached helper, 04:16 to 04:25 PST. The brief's gate was: read commit headroom before launching B, and under 12 GB do not launch. **Game B was not launched.** Nothing of game A's was touched. Its bridge and driver lock were not taken and stayed FREE across the readings, and no ModsConfig, Prefs or game-folder file was written. `steam_appid.txt` is still absent.
+
+Readings, all MEASURED from `Win32_OperatingSystem` and `Get-Process`:
+
+| PST | commit used of limit | headroom | free RAM of 63.3 GB | A private | vmmemWSL private |
+|---|---|---|---|---|---|
+| 04:17:24 | 94.8 of 99.3 GB | 4.5 GB | 3.4 GB | 20.74 GB | 27.14 GB |
+| 04:18:04 | 95.2 of 99.3 GB | 4.1 GB | 3.0 GB | 20.74 GB | 27.35 GB |
+| 04:19:34 | 94.9 of 99.3 GB | 4.4 GB | 3.3 GB | 20.74 GB | 27.51 GB |
+| 04:21:05 | 94.6 of 99.3 GB | 4.7 GB | 3.8 GB | 20.74 GB | 27.18 GB |
+
+- Game A is pid 8752, started 03:22:01 PST through Steam with `-disable-compute-shaders`, and has 316 active mods in ModsConfig (MEASURED). Its working set is 11.13 GB. Its bridge was listening on 5174.
+- The other large holders are Plaud at 9.01 GB private and an svchost at 4.54 GB. WSL is capped at `memory=28GB` with `autoMemoryReclaim=gradual` in `C:\Users\Mandrake\.wslconfig`, and `free` inside WSL showed 21 GB of buff/cache.
+- The filing reading (12:59 AM PST, 75.4 of 99.3 GB, so 23.9 GB headroom) no longer held at launch time: commit had risen about 20 GB since then. How much of that rise is A's relaunch at 03:22 is UNMEASURED, because A's private memory at 12:59 was not recorded.
+- B's need: 3.9 to 4.4 GB private on the 27-mod MINIMAL list, from the SteveDesktop trial. That would have taken the 4.1 to 4.7 GB of headroom to nothing.
+
+Gaps found offline, for whoever reruns this:
+
+- `game_instance.py launch` refuses a game folder with no `steam_appid.txt`, which is deliberate. On Archmagi the rerun must first write `294100` to `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\steam_appid.txt`. Game A's launch through Steam is untouched by the file [guess ~85%: per the Steamworks page cited in Part 1, the file only changes `RestartAppIfNecessary`].
+- `launch` passes none of A's `-disable-compute-shaders`. Searching `localconfig.vdf`'s `LaunchOptions` found no entry for it (MEASURED), so where Steam gets the flag is UNMEASURED, and so is whether B needs it on the RTX 5080. The fix is unknown until one B launch with the flag and one without, so this run did not change the tool.
+
+Rerun when headroom is at least 12 GB at the moment of launch, read again then: for example while A runs a tier list rather than 316 mods, or after WSL's cache has gone back to Windows. Dropping WSL's page cache or closing the owner's apps to make room was not tried, because the brief's floor applies to the machine as found.
 
 ## What this buys, honestly
 
