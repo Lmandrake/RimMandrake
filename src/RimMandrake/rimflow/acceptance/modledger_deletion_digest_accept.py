@@ -55,7 +55,7 @@ check("deletion is a digest source in both the contract and the digest",
       BL is not None and "deletion" in BL.SOURCES and "deletion" in DD.SOURCES and "deletion" in DD.LATER_SOURCES)
 root = tempfile.mkdtemp(prefix="ml_deldigest_")
 MOD = "FlowWorks"
-g = lambda *a: subprocess.run(["git", "-C", root, *a], capture_output=True, check=True)  # noqa: E731
+g = lambda *a: subprocess.run(["git", "-C", root, *a], capture_output=True, check=True, timeout=60)  # noqa: E731
 g("init", "-q", "-b", "main"); g("config", "user.email", "t@t"); g("config", "user.name", "t")
 os.makedirs(os.path.join(root, "design", "concepts", MOD))
 M.append(root, MOD, "DISPATCH", "version.open", "version", body={"version": "0.1.0"}, version="0.1.0")
