@@ -356,7 +356,7 @@ def mock_run():
 # FRAME_BUDGET; on the full list the behaviour rows run as before, one unjudged mod-on arm reads CARRIER_TICK_COST, and
 # FRAME_BUDGET is read from `--frame-evidence <the frames-only run's json>` (UNMEASURED unless that file is a frames-only
 # run below --full-min active mods with the same deployed DLL).
-# Learned live, Test Pilot 2026-11-16 (SteveDesktop, 34 mods, visit_4/SUMMARY.md): the full-list walk save will not load on
+# Learned live, Test Pilot 2026-11-16 (SteveDesktop, 34 mods, visit_3/pilot_walk_raid_20261116/SUMMARY.md): the full-list walk save will not load on
 # the small list (World.ExposeData, its planet layers), so the storeroom is rebuilt cell for cell on a quicktest. The mod's
 # cost there was thrown PAWNS: with the 5 colonists removed the arms read +1.2%. Each landing spent 19-25 ms in vanilla
 # PawnFlyer.RespawnPawn's CheckForJobOverride (fixed 7c6cb7412a: our landing skips it, the suspended job is resumed). After

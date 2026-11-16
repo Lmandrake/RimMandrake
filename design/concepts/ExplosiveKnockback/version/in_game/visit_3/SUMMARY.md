@@ -127,3 +127,7 @@ flight (run 6: 6.0, 6.8, 8.4 s; run 7: 7.4, 8.0, 8.1, 9.9 s). With about 500 fra
 frame, so those extra stalls decide the row. [guess ~60%] the mod costs a stall or two after a blast (a mod finding to
 chase live); [guess ~40%] list noise that run 4 (+3.6%) happened to miss. Two arms also went uncapped mid-window (~140 fps):
 the cause is unknown (the game window occluded or unfocused is a guess).
+
+## Later in this visit
+
+- The walk row's Test Pilot sitting (RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, closed 773b9baea3): `pilot_walk_raid_20261116/SUMMARY.md`, sc_walk_raid 18 of 18 rows PASS on the full list. The Exit block above is this visit's driver record and is not rewritten.

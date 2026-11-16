@@ -1,0 +1,131 @@
+{
+ "rows": {
+  "W_PRECONDITIONS": [
+   "PASS",
+   "small list, 34 active mods, storeroom stocked (frame arms only)"
+  ],
+  "FRAME_BUDGET": [
+   "PASS",
+   "+1.5% over mod off; on p99 46.4 ms (470 rows, 8 in the air), mod off p99 45.7 ms (479 rows), PASS at most +10%; on: 3 arm(s), p99s [67.0, 43.5, 46.4]: FRAME frames=706 probeRows=706 paused=68 wall=13.01s worstMs=139.3 meanMs=18.4 maxInAir=8 window=0.5-10s windowRows=470 windowP99Ms=67.0 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T064909.c"
+  ]
+ },
+ "ev": {
+  "args": {
+   "storeroom": "97,37,7,7",
+   "cover": "102,36",
+   "gas": "100,41",
+   "lit": null,
+   "save": null,
+   "site": null,
+   "shelf_defs": "Shelf,ShelfSmall",
+   "shells": 3,
+   "settle": 120,
+   "frame_seconds": 8.0,
+   "frame_pairs": 3,
+   "frames_only": true,
+   "frame_evidence": null,
+   "gas_ticks": 900,
+   "raid_points": 300.0,
+   "full_min": 100,
+   "out": "D:\\RimTest\\data\\scratch\\ek_frames_small_run4_cold.json",
+   "stamp": "20261116T064841"
+  },
+  "active_mods": 34,
+  "mode": "frames_only",
+  "dll_md5": "cca4f0d4",
+  "pre": {
+   "goods": 11
+  },
+  "saves": [
+   "EK_WALK_RAID_BASE_20261116T064841"
+  ],
+  "tick_rest": 0.0,
+  "raid": {
+   "success": true,
+   "blockedByDialog": false,
+   "pawnsArrivedTotal": 4,
+   "exc": null
+  },
+  "frame_arms": {
+   "on": [
+    {
+     "text": "FRAME frames=706 probeRows=706 paused=68 wall=13.01s worstMs=139.3 meanMs=18.4 maxInAir=8 window=0.5-10s windowRows=470 windowP99Ms=67.0 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T064909.csv",
+     "p99": 67.0,
+     "rows": 470,
+     "inAir": 8
+    },
+    {
+     "text": "FRAME frames=708 probeRows=708 paused=70 wall=12.67s worstMs=64.6 meanMs=17.9 maxInAir=11 window=0.5-10s windowRows=490 windowP99Ms=43.5 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T064951.csv",
+     "p99": 43.5,
+     "rows": 490,
+     "inAir": 11
+    },
+    {
+     "text": "FRAME frames=703 probeRows=703 paused=70 wall=12.73s worstMs=99.3 meanMs=18.1 maxInAir=10 window=0.5-10s windowRows=480 windowP99Ms=46.4 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T065034.csv",
+     "p99": 46.4,
+     "rows": 480,
+     "inAir": 10
+    }
+   ],
+   "off": [
+    {
+     "text": "FRAME frames=699 probeRows=699 paused=70 wall=12.71s worstMs=78.5 meanMs=18.2 maxInAir=0 window=0.5-10s windowRows=479 windowP99Ms=46.4 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T064930.csv",
+     "p99": 46.4,
+     "rows": 479,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=703 probeRows=703 paused=72 wall=12.70s worstMs=66.0 meanMs=18.1 maxInAir=0 window=0.5-10s windowRows=484 windowP99Ms=45.1 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T065013.csv",
+     "p99": 45.1,
+     "rows": 484,
+     "inAir": 0
+    },
+    {
+     "text": "FRAME frames=704 probeRows=704 paused=70 wall=12.73s worstMs=75.7 meanMs=18.1 maxInAir=0 window=0.5-10s windowRows=481 windowP99Ms=45.7 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T065055.csv",
+     "p99": 45.7,
+     "rows": 481,
+     "inAir": 0
+    }
+   ]
+  },
+  "frame_clock": {
+   "on": 2,
+   "off": 2
+  },
+  "tick_rest_running": 4.45997429,
+  "tick_air_running": 4.66412926,
+  "in_air_at_tick_read": 0,
+  "frame_on": {
+   "p99": 46.4,
+   "rows": 470,
+   "rows_each": [
+    470,
+    490,
+    480
+   ],
+   "p99_each": [
+    67.0,
+    43.5,
+    46.4
+   ],
+   "inAir": 8,
+   "text": "3 arm(s), p99s [67.0, 43.5, 46.4]: FRAME frames=706 probeRows=706 paused=68 wall=13.01s worstMs=139.3 meanMs=18.4 maxInAir=8 window=0.5-10s windowRows=470 windowP99Ms=67.0 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T064909.csv | FRAME frames=708 probeRows=708 paused=70 wall=12.67s worstMs=64.6 meanMs=17.9 maxInAir=11 window=0.5-10s windowRows=490 windowP99Ms=43.5 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T064951.csv | FRAME frames=703 probeRows=703 paused=70 wall=12.73s worstMs=99.3 meanMs=18.1 maxInAir=10 wi"
+  },
+  "frame_off": {
+   "p99": 45.7,
+   "rows": 479,
+   "rows_each": [
+    479,
+    484,
+    481
+   ],
+   "p99_each": [
+    46.4,
+    45.1,
+    45.7
+   ],
+   "inAir": 0,
+   "text": "3 arm(s), p99s [46.4, 45.1, 45.7]: FRAME frames=699 probeRows=699 paused=70 wall=12.71s worstMs=78.5 meanMs=18.2 maxInAir=0 window=0.5-10s windowRows=479 windowP99Ms=46.4 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T064930.csv | FRAME frames=703 probeRows=703 paused=72 wall=12.70s worstMs=66.0 meanMs=18.1 maxInAir=0 window=0.5-10s windowRows=484 windowP99Ms=45.1 path=C:/Users/sjlewis/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\RM_FrameProbe_20261116T065013.csv | FRAME frames=704 probeRows=704 paused=70 wall=12.73s worstMs=75.7 meanMs=18.1 maxInAir=0 windo"
+  }
+ }
+}
