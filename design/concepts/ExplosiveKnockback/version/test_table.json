@@ -111,11 +111,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.24,
-    "last": "explosive knockback kernel: 184/184 passed",
-    "at": "2026-11-16T21:19:36Z",
+    "seconds": 2.5,
+    "last": "explosive knockback kernel: 191/191 passed",
+    "at": "2026-11-16T21:40:11Z",
     "result": "PASS",
-    "build": "e0d07267eef7970c6465",
+    "build": "c7742f142417b05e7c16",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
    }
   },
@@ -134,11 +134,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.67,
-    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.44s total -> OK",
-    "at": "2026-11-16T21:19:43Z",
+    "seconds": 6.25,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.63s total -> OK",
+    "at": "2026-11-16T21:40:18Z",
     "result": "PASS",
-    "build": "4aa82b6001e4be838fb6",
+    "build": "5cc3294cac65de27f237",
     "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py"
    }
   },
@@ -158,11 +158,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.63,
+    "seconds": 6.12,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-16T21:19:47Z",
+    "at": "2026-11-16T21:40:24Z",
     "result": "PASS",
-    "build": "361bed14413a29e22c66",
+    "build": "cd8ddbb9b689d68ee5ee",
     "command": "python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py"
    }
   },
@@ -249,11 +249,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 17.09,
+    "seconds": 13.67,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-16T21:21:16Z",
+    "at": "2026-11-16T21:40:37Z",
     "result": "PASS",
-    "build": "04611381143a920f9dd2",
+    "build": "ac14a1f5bdc168feadd9",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py"
    }
   },
@@ -340,11 +340,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.02,
+    "seconds": 1.91,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 4/4 switch faults caught | PASS",
-    "at": "2026-11-16T21:21:37Z",
+    "at": "2026-11-16T21:40:39Z",
     "result": "PASS",
-    "build": "15da4f1fb7444589975e",
+    "build": "1c6c2cc3ead98c7efae1",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py"
    }
   },
@@ -412,11 +412,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.83,
-    "last": "explosive knockback kernel: 184/184 passed",
-    "at": "2026-11-16T21:21:41Z",
+    "seconds": 1.87,
+    "last": "explosive knockback kernel: 191/191 passed",
+    "at": "2026-11-16T21:40:41Z",
     "result": "PASS",
-    "build": "e0d07267eef7970c6465",
+    "build": "c7742f142417b05e7c16",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
    }
   },
