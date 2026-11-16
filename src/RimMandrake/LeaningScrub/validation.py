@@ -3736,12 +3736,13 @@ def scene_settings(t):
 
 # --------------------------------------------------------------------------- scene: floor_persistence
 
-SAVES_DIR = os.environ.get("LSCRUB_SAVES_DIR", "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                                               "RimWorld by Ludeon Studios/Saves")
+def _saves_dir():
+    from game_paths import LOCALLOW     # the one path seam (selftest_one_path_seam.py)
+    return os.path.join(LOCALLOW, "Saves")
 
 
 def _save_bytes(name):
-    p = os.path.join(SAVES_DIR, name + ".rws")
+    p = os.path.join(_saves_dir(), name + ".rws")
     return os.path.getsize(p) if os.path.exists(p) else None
 
 
@@ -3813,7 +3814,7 @@ def scene_floor_persistence(t):
         with _comp(t, "persist_no_growth"):
             if _live(t):
                 if any(c["bytes"] is None for c in cycles[1:]):
-                    _unmeasured(t, "save sizes unreadable under %s (set LSCRUB_SAVES_DIR)" % SAVES_DIR)
+                    _unmeasured(t, "save sizes unreadable under %s" % _saves_dir())
                 bad = [b for b in _persist_offences(cycles) if "grows" in b]
                 if bad:
                     _fail("; ".join(bad))
