@@ -1,0 +1,24 @@
+{
+  "mod": "LeaningScrub",
+  "version": "0.1.0",
+  "state": "locked",
+  "locked_on": "2026-11-16",
+  "locked_by": "pipeline",
+  "per_ruling": "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME",
+  "why": "the concept tree is locked and no recorded evidence says 0.1.0 is wrong: a new mod's first Design Version is 0.1.0 (his Evidence-for-Ask ruling, 2026-11-15)",
+  "bars_total": 123,
+  "bars_met": "UNMEASURED",
+  "judge_rounds": 4,
+  "tokens_spent": 4042498,
+  "locked_from_commit": "06e9b621f6ac7b9ab2bd2401b4e5f0e1278a7718",
+  "measured_from": {
+    "bars_total": "coverage_judge.required_ids(record.json inventory + tree.json leaves)",
+    "judge_rounds": "coverage_judge.rounds(stage.json)",
+    "tokens_spent": "stage.json budget.spent",
+    "bars_met": "not measured at the lock: the preflight and judges measure it"
+  },
+  "caveats": [
+    "stage.json `locked` is the concept tree's gate; this file is the Design Version lock",
+    "locked by the pipeline under his Evidence-for-Ask ruling, not on his card: version_evidence() read no recorded evidence against 0.1.0"
+  ]
+}

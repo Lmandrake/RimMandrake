@@ -1,0 +1,9 @@
+{
+  "item": "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME",
+  "subject": "LeaningScrub Design Version 0.1.0",
+  "class": "design",
+  "decision": "locked 0.1.0 (the pipeline, Evidence-for-Ask ruling: no recorded evidence against it)",
+  "reasons": "the concept tree is locked and no recorded evidence says 0.1.0 is wrong: a new mod's first Design Version is 0.1.0 (his Evidence-for-Ask ruling, 2026-11-15)",
+  "evidence": "design/concepts/LeaningScrub/version/VERSION.json",
+  "at": "2026-11-16T16:58:52Z"
+}
