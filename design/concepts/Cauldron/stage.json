@@ -1,6 +1,5 @@
 {
  "aliases": [],
- "blocked_on": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -282,6 +281,12 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designercodex-1794840444: stage 5 blocked"
+  },
+  {
+   "at": "2026-11-16T15:04:25Z",
+   "stage": 5,
+   "what": "unblock",
+   "why": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS fixed at 34237790bd8d (code 8655da17bc; coverage_judge CALIBRATED) (was blocked on RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_CAULDRON_DESIGNER_ON_CODEX_RANKED_SECOND",
@@ -589,5 +594,5 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "blocked"
+ "status": "ready"
 }
