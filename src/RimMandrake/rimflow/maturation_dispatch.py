@@ -123,6 +123,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation as M          # noqa: E402
+import judge_certificate as JC  # noqa: E402  the pre-judgement certificate, read before a judge or visit launch
 import maturation_now as MN     # noqa: E402
 import maturation_autonomy as AUT   # noqa: E402
 import detached_helper as DH    # noqa: E402
@@ -134,7 +135,7 @@ CFG_PATH = os.path.join(HERE, "maturation_dispatch.json")
 ALARM_NAME = "OPS_MATURATION_IDLE_ADVANCING_MOD"
 CLONE_ALARM_NAME = "OPS_DISPATCH_CLONE_BEHIND_UNSTICK"     # ops_watch_rules.json: maturation.clone_behind_min > 5
 ITEM = "RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE"
-OWED = ("build", "hand step", "ready to advance")
+OWED = ("build", "certificate", "hand step", "ready to advance")
 ONES = ("ZERO ONE TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE TEN ELEVEN TWELVE THIRTEEN FOURTEEN FIFTEEN SIXTEEN "
         "SEVENTEEN EIGHTEEN NINETEEN").split()
 TENS = "_ _ TWENTY THIRTY FORTY FIFTY SIXTY SEVENTY EIGHTY NINETY".split()
@@ -331,6 +332,7 @@ def add_ingame(root, mod, f, runs):
     if f.get("stage") != "in_game":
         return f
     f.update(M.ingame_facts(root, mod))
+    f["certificate"] = M.certificate(root, mod, "in_game")
     t0 = _ts(f.get("opened"))
     f["ingame_runs"] = [r.get("unit") for r in runs or [] if _is_ingame_item(r.get("item"))
                         and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
@@ -344,6 +346,7 @@ def add_blind(root, mod, f, runs):
     if f.get("stage") != "blind_challenge":
         return f
     f.update(M.blind_facts(root, mod))
+    f["certificate"] = M.certificate(root, mod, "blind_challenge")
     t0 = _ts(f.get("opened"))
     f["blind_runs"] = [r.get("unit") for r in runs or [] if "BLIND" in str(r.get("item") or "").upper()
                        and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
@@ -703,6 +706,10 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             what = ", ".join(f.get("other_refusals") or [])
             put("held" if "hold" in (f.get("other_refusals") or []) else "blocked", "refused by %s, not build work" % what)
             continue
+        if owed == "certificate":
+            cert_put(put, mod, "blind_challenge", f.get("certificate_why"), f.get("certificate_fix"),
+                     "the move into the blind challenge")
+            continue
         if owed == "ready to advance":
             put("ready", "every exit test passes", "ready to advance: every Stage 3 exit test passes "
                 "(maturation.py advance %s --to blind_challenge, a Conductor step)" % mod)
@@ -855,6 +862,27 @@ def retried(cfg, retry):
         else "a launch that never started on a transient fault")) if retry else ""
 
 
+def cert_put(put, mod, to, why, fix, what):
+    if getattr(put, "row", None) is not None:
+        put.row["waits_on"] = "its certificate (smallest fix: %s)" % fix
+    put("certificate", "waiting on its certificate: %s" % why,
+        "%s: waiting on its certificate, which refuses (%s); nothing goes in until `maturation.py certificate %s --to %s` "
+        "exits 0. Smallest fix: %s" % (what, why, mod, to, fix))
+
+
+def cert_wait(f, put, mod, to, what):
+    """PRE_JUDGEMENT_CERTIFICATE (RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN): True (the row put) when the
+    certificate refuses; read before every judge or visit launch, since a mod can go red between cycles. A certificate
+    that did not run lets the launch through."""
+    cv = f.get("certificate")
+    if not isinstance(cv, dict) or cv.get("ok", True):
+        return False
+    ref = [r for r in cv.get("rows") or [] if r.get("status") == "REFUSED"]
+    why = JC.summary(cv) + "".join("; %s/%s %s: %s" % (r["bar"], r["test"], r["clause"], r["observed"]) for r in ref[:2])
+    cert_put(put, mod, to, why, JC.first_fix(cv), what)
+    return True
+
+
 def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
     """One decision for an advancing mod at the blind challenge -> True to launch its judge. The owner's condition, 2026-11-14
     ~9 PM PST: "As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble."
@@ -931,6 +959,8 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
             "reads what it left" % (", ".join(hand), n))
         return False
     if reap_wait(f, retry, put, n, "blind cycle"):
+        return False
+    if cert_wait(f, put, mod, "blind_challenge", "blind cycle %s" % n):
         return False
     if not cfg.get("blind_enabled"):
         put("blind_off", "blind_enabled is off in maturation_dispatch.json",
@@ -1029,6 +1059,8 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
             "reads what it left (and checks the game was left closed or healthy)" % (", ".join(hand), n))
         return False
     if reap_wait(f, retry, put, n, "in-game visit"):
+        return False
+    if cert_wait(f, put, mod, "in_game", "in-game visit %s" % n):
         return False
     if not cfg.get("ingame_enabled"):
         put("ingame_off", "ingame_enabled is off in maturation_dispatch.json",

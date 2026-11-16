@@ -52,7 +52,7 @@ import maturation as M          # noqa: E402
 UNM = "UNMEASURED"
 EXCLUDE_MARKER = ".maturation-exclude"      # a concept folder holding it is never discovered (test fixtures)
 WAIT = {"live", "settling", "driver_busy", "bridge_held", "slots_full", "slots_unknown", "account_hold", "designer_wait",
-        "queued", "launch_retry", "upstream_wait"}
+        "queued", "launch_retry", "upstream_wait", "certificate"}
 # a launch that never started on one of these is retried (measured 2026-11-15: a git index.lock at publish, then the
 # launcher's "not on origin/main" refusal, read as a spent steward run)
 TRANSIENT = re.compile(r"index\.lock|is not on origin/main|ingest\.lock stayed busy|publish stopped|another "

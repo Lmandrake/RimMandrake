@@ -63,6 +63,7 @@ import json
 import os
 import re
 import subprocess
+import time
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -71,6 +72,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation_now as MN     # noqa: E402  the journal readers: one parser, never a second one
 import refusal_contract as RC   # noqa: E402
+import judge_certificate as JC   # noqa: E402  the pre-judgement certificate (PRE_JUDGEMENT_CERTIFICATE)
 
 UNM = "UNMEASURED"
 RECORD = "version/stage_record.json"
@@ -445,6 +447,16 @@ def owner_event(root, owner):
     return ev, "OWNER:%s: %s" % (m.group(1), words[:80])
 
 
+def certificate(root, mod, to="blind_challenge"):
+    """judge_certificate.certify, never raising: a guard that cannot look says did not run and lets the work through."""
+    try:
+        return JC.certify(root, mod, to)
+    except Exception as e:  # noqa: BLE001
+        return {"ok": True, "rows": [], "to": to, "mod": mod,
+                "did_not_run": ["the certificate did not run: %s: %s; the mod goes through on this guard" % (
+                    type(e).__name__, e)]}
+
+
 def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, why=None, check_by=False):
     """-> {"ok", "verdict", "hand_steps"}: every clause of the move, passed or refused, as a refusal-contract verdict."""
     rec = load(root, mod) or {}
@@ -638,6 +650,19 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                           "a design fault, or one more cycle)",
                fix="bring the Conductor the three cycles' findings and pass its decision", cost="owner",
                why_sound="his words of 2026-11-13: after three cycles the Conductor is brought in")
+    if forward and cur in ("offline_build", "blind_challenge") or (back and cur == to == "blind_challenge"):
+        # PRE_JUDGEMENT_CERTIFICATE (RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN): no judge or visit goes in
+        # while a program can see a bar's offline decider unregistered, run on another build, or red
+        cv = certificate(root, mod, to)
+        ref = [r for r in cv["rows"] if r["status"] == "REFUSED"]
+        clause("judge_certificate", "every bar's offline deciders are registered, ran on this build and are green "
+               "(maturation.py certificate)", cv["ok"], [rel(mod, "version/test_table.json")],
+               observed="%s%s" % (JC.summary(cv), "".join("; %s/%s %s: %s" % (r["bar"], r["test"], r["clause"],
+                                                                               r["observed"]) for r in ref[:3])),
+               would_pass="maturation.py certificate %s --to %s exits 0" % (mod, to),
+               fix=JC.first_fix(cv), cost="rerun",
+               why_sound="his question of 2026-11-15: no reason to send it in knowing it will fail (spec "
+                         "2026-11-15-cheap-guards-at-every-door.md section 4)")
     sha = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True,
                          timeout=60).stdout.strip()
     verdict = {"item": "%s@%s" % (mod, rec.get("version")), "family": "maturation_advance:%s->%s" % (cur, to),
@@ -1122,10 +1147,14 @@ def build_facts(root, mod):
         "build_refusals": [r["clause"] for r in refs if r["clause"] in BUILD_CLAUSES],
         "hand_steps": [r["clause"] for r in refs if r["clause"] in res["hand_steps"]],
         "other_refusals": [r["clause"] for r in refs if r["clause"] not in BUILD_CLAUSES
-                           and r["clause"] not in res["hand_steps"]],
+                           and r["clause"] not in res["hand_steps"] and r["clause"] != "judge_certificate"],
         "observed": {r["clause"]: r["observed"] for r in refs}})
+    cert = [r for r in refs if r["clause"] == "judge_certificate"]
+    if cert:    # PRE_JUDGEMENT_CERTIFICATE: its own wait, with its path to pass (a stale build is one command away)
+        out["certificate_why"] = cert[0]["observed"]
+        out["certificate_fix"] = cert[0]["smallest_fix"]["what"]
     out["owed"] = ("blocked" if out["other_refusals"] else "build" if out["build_refusals"] else
-                   "hand step" if out["hand_steps"] else "ready to advance")
+                   "certificate" if cert else "hand step" if out["hand_steps"] else "ready to advance")
     return out
 
 
@@ -2691,6 +2720,12 @@ def main(argv=None):
     b = sub.add_parser("brief")
     b.add_argument("mod")
     b.add_argument("--out", help="write the brief here (default: print it)")
+    c = sub.add_parser("certificate", help="read-only unless --run: exit 0 when every bar's offline deciders are "
+                       "registered, ran on this build and green (PRE_JUDGEMENT_CERTIFICATE)")
+    c.add_argument("mod")
+    c.add_argument("--to", default="blind_challenge", choices=WORDS)
+    c.add_argument("--run", action="store_true", help="rerun the offline deciders first and stamp their build (no tokens)")
+    c.add_argument("--json", action="store_true")
     la = sub.add_parser("launch")
     la.add_argument("mod")
     la.add_argument("--budget-usd", type=float, required=True, help="the spend cap; required, no default")
@@ -2786,6 +2821,22 @@ def main(argv=None):
             return 0
         print_refusal(dict(res, verdict=dict(res["verdict"], refusals=prog)))
         return 1
+    if o.cmd == "certificate":
+        ran = None
+        if o.run:
+            t0 = time.time()
+            ran = JC.run_offline(root, o.mod)
+            ran["wall_s"] = round(time.time() - t0, 1)
+        cv = certificate(root, o.mod, o.to)
+        if o.json:
+            print(json.dumps(dict(cv, run=ran), indent=2, ensure_ascii=False))
+        else:
+            if ran is not None:
+                print("RAN %s: %d offline tests in %.1f s%s" % (o.mod, ran["ran"], ran["wall_s"], (
+                    "; failed: %s" % ", ".join(ran["failed"])) if ran["failed"] else "") + (
+                    "; %s" % ran["error"] if ran.get("error") else ""))
+            JC.print_certificate(cv)
+        return 0 if cv["ok"] else 1
     if o.cmd == "lock-bars":
         r = lock_bars(root, o.mod, o.by, o.why, o.add, o.remove, o.source)
         print(("LOCKED BARS %s: %d recorded in %s (%s)" % (o.mod, len(r["ids"]), rel(o.mod, LOCKED_BARS), r["why"]))

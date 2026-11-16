@@ -104,6 +104,24 @@ def no_convergence(root, rd):
     return rd
 
 
+def redden(root, mod, last="3 of 3 runs failed"):
+    """PRE_JUDGEMENT_CERTIFICATE cases: turn the mod's first offline bar decider red on its fixture build.
+    -> (the table's saved text, that test's id, its file's path)."""
+    tp = os.path.join(root, "design", "concepts", mod, "version", "test_table.json")
+    saved = open(tp).read()
+    tt = json.loads(saved)
+    tid = next(d for b in tt["bars"] for d in b.get("offline_decides") or [] if d in tt["tests"])
+    tt["tests"][tid]["runs_today"].update(rc=1, result="FAIL", last=last)
+    with open(tp, "w") as f:
+        json.dump(tt, f, indent=1)
+    return saved, tid, os.path.join(root, tt["tests"][tid]["file"])
+
+
+def restore(root, mod, saved):
+    with open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json"), "w") as f:
+        f.write(saved)
+
+
 def ok(cond, what):
     print("%s  %s" % ("PASS" if cond else "FAIL", what))
     if not cond:
@@ -116,6 +134,7 @@ def git_status():
 
 
 def main():
+    import selftest_maturation as SM
     before = git_status()
     root = tempfile.mkdtemp(prefix="maturation_dispatch_")
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
@@ -130,6 +149,7 @@ def main():
                     os.makedirs(os.path.dirname(dst), exist_ok=True)
                     with open(dst, "wb") as f:
                         f.write(data)
+        SM.certify_fixture(root, FOUR + ("PyrelandsMechanics",))
         fake, log =os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
         with open(fake, "w") as f:
             f.write(FAKE_DH)
@@ -198,6 +218,15 @@ def main():
            "Gimme Some Slack owes a hand step: a Needs Conductor line, no launch")
         ok(d["Pyrelands"] == "ready" and any("ready to advance" in x for x in rd["needs_conductor"]),
            "Pyrelands passes every exit test: 'ready to advance' for the Conductor, never an advance")
+        # PRE_JUDGEMENT_CERTIFICATE: an offline build whose exit tests pass but whose certificate refuses waits on it
+        saved, tid, _ = redden(root, "Pyrelands")
+        rdx = MD.tick(root, cfg, False, fx=fx, now=CLOCK, page=False)
+        ok(rdx["mods"]["Pyrelands"]["decision"] == "certificate" and "3 of 3" in " ".join(
+            x for x in rdx["needs_conductor"] if x.startswith("Pyrelands:"))
+           and "its certificate" in str(rdx["mods"]["Pyrelands"].get("waits_on")),
+           "a red offline decider: Pyrelands waits on its certificate (the test's own last line), not 'ready to "
+           "advance' (%s)" % rdx["mods"]["Pyrelands"]["decision"])
+        restore(root, "Pyrelands", saved)
         ok(d["Graffiti"] == "not_offline" and d["PyrelandsMechanics"] == "not_offline",
            "Graffiti (no record, the Designer) and Pyrelands Mechanics (intake) launch nothing")
         ok(len(filed) == 1 and filed[0][0] == "RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT",
@@ -746,6 +775,7 @@ def blind_main():
                     os.makedirs(os.path.dirname(dst), exist_ok=True)
                     with open(dst, "wb") as f:
                         f.write(r.stdout)
+        SM.certify_fixture(root, FOUR)
         fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
         with open(fake, "w") as f:
             f.write(FAKE_DH)
@@ -799,6 +829,24 @@ def blind_main():
                real.get("blind_enabled"), real.get("blind_cap_usd"), real.get("blind_auto_cycles_per_visit")))
         gss = dict(base, advancing=["GimmeSomeSlack"], blind_auto_cycles_per_visit=1)   # the spent-visit mechanism, at 1
         cap = "%g" % base.get("blind_cap_usd", 0)
+
+        # ---- PRE_JUDGEMENT_CERTIFICATE: no judge goes in while a program can see a bar red or run on another build --
+        saved, tid, tfile = redden(root, "GimmeSomeSlack")
+        rd = tick(gss)
+        d = rd["mods"]["GimmeSomeSlack"]
+        ok(d["decision"] == "certificate" and not launches() and not filed and "3 of 3" in need(rd, "GimmeSomeSlack")
+           and "certificate GimmeSomeSlack --to blind_challenge" in need(rd, "GimmeSomeSlack"),
+           "cycle 1 owed but a deciding test is red: no judge, a Needs Conductor line with the test's last line and the "
+           "certificate command (%s: %s)" % (d["decision"], d["why"][:80]))
+        restore(root, "GimmeSomeSlack", saved)
+        with open(tfile, "a") as f:
+            f.write("# edited after its recorded run\n")
+        rd = tick(gss, at=60)
+        ok(rd["mods"]["GimmeSomeSlack"]["decision"] == "certificate" and not launches()
+           and "--run" in need(rd, "GimmeSomeSlack"),
+           "a deciding test edited after its recorded run: no judge, the fix is `certificate --run`")
+        SM.certify_fixture(root, ["GimmeSomeSlack"])
+        reset()
 
         # ---- no cycle, nothing live: one automatic cycle, then never a second in the visit --------------------------
         rd = tick(gss)
@@ -1308,6 +1356,19 @@ def ingame_main():
                     and "by hand" in need(rd[0], "Pyrelands"))
         chk(t_off, "off (ingame_enabled false), visit 1 owed: no launch, the bridge not even asked, a Needs "
                    "Conductor line saying run it by hand")
+
+        # ---- PRE_JUDGEMENT_CERTIFICATE: no visit goes in while a deciding test is red -----------------------------
+        def t_cert():
+            saved, _, _ = redden(root, "Pyrelands")
+            try:
+                r = tick(on)
+                return (dec(r) == "certificate" and not launches() and not filed and not asked
+                        and "3 of 3" in need(r, "Pyrelands") and "--to in_game" in need(r, "Pyrelands"))
+            finally:
+                restore(root, "Pyrelands", saved)
+                reset()
+        chk(t_cert, "on, visit 1 owed, a deciding test red: no live driver, the bridge not even asked, the certificate's "
+                    "path to pass on a Needs Conductor line")
 
         # ---- on: one launch, then never a second automatic try -------------------------------------------------------
         def t_on():

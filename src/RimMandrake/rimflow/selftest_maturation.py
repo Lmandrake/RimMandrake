@@ -81,6 +81,43 @@ def copy_mods(root):
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 with open(dst, "wb") as f:
                     f.write(data)
+    certify_fixture(root, FOUR + ("PyrelandsMechanics",))
+
+
+def certify_fixture(root, mods=None):
+    """Stamp each fixture mod's offline bar deciders as run green on the fixture's build (a stub file where the scratch
+    root has none, the command kept, known_red cleared), so a test of another clause is not refused by the
+    pre-judgement certificate; the certificate's own cases un-stamp one test (certificate_cases)."""
+    import judge_certificate as JC
+    croot = os.path.join(root, "design", "concepts")
+    for mod in mods or sorted(os.listdir(croot)):
+        tt, _ = JC.read_table(root, mod)
+        if tt is None:
+            continue
+        dec = {d for b in tt["bars"] if isinstance(b, dict) for d in b.get("offline_decides") or []}
+        for d in sorted(dec):
+            t = tt["tests"].get(d)
+            if not isinstance(t, dict):
+                tt["bars"] = [dict(b, offline_decides=[x for x in b.get("offline_decides") or [] if x != d])
+                              if isinstance(b, dict) else b for b in tt["bars"]]
+                continue
+            t.setdefault("file", "src/fixture/%s.py" % d)
+            t.setdefault("command", "true")
+            fp = os.path.join(root, t["file"])
+            if t["file"].endswith("/"):
+                os.makedirs(fp, exist_ok=True)
+            elif not os.path.isfile(fp):
+                os.makedirs(os.path.dirname(fp), exist_ok=True)
+                with open(fp, "w") as f:
+                    f.write("# fixture stub of %s\n" % d)
+            t.pop("known_red", None)
+        for d in sorted(dec):       # stamped after every stub exists: one test's file can be another's read
+            t = tt["tests"].get(d)
+            if isinstance(t, dict):
+                t["runs_today"] = {"ran": True, "rc": 0, "seconds": 0.1, "last": "fixture: passed", "at": "fixture",
+                                   "result": "PASS", "build": JC.test_build(root, t)}
+        with open(JC.tpath(root, mod), "w", encoding="utf-8") as f:
+            json.dump(tt, f, indent=1)
 
 
 def synthetic(root, state="drafting", locked_by=None, **more):
@@ -94,6 +131,23 @@ def synthetic(root, state="drafting", locked_by=None, **more):
                 "- **Stage now:** Stage 1 (Designer), drafting the bars.\n- **Waiting on:** nothing.\n\n"
                 "## History (dated, added to only)\n\n### Conductor interventions (one line each)\n\n"
                 "### 2026-11-14 9:00 AM PST, journal started\n\nA test mod.\n")
+
+
+def redden_table(root, mod, last="T_CORE: 3 of 3 runs failed"):
+    """-> the table's saved text, after turning its first offline bar decider red (PRE_JUDGEMENT_CERTIFICATE cases)."""
+    tp = os.path.join(root, "design", "concepts", mod, "version", "test_table.json")
+    saved = open(tp).read()
+    tt = json.loads(saved)
+    tid = next(d for b in tt["bars"] for d in b.get("offline_decides") or [] if d in tt["tests"])
+    tt["tests"][tid]["runs_today"].update(rc=1, result="FAIL", last=last)
+    with open(tp, "w") as f:
+        json.dump(tt, f, indent=1)
+    return saved
+
+
+def restore_table(root, mod, saved):
+    with open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json"), "w") as f:
+        f.write(saved)
 
 
 def read(root, mod, rel):
@@ -187,9 +241,32 @@ def main():
         refused(res, "walk_bars_confirmed", "a bar his walk decides, without the steward's word")
         ok("every_bar_has_a_check_that_runs" not in [r["clause"] for r in res["verdict"]["refusals"]],
            "that bar is not counted as a missing check")
-        ok(M.advance(root, "GimmeSomeSlack", "blind_challenge", by="BENCH", why="x",
-                     steward="walk_scavenger_base: sc_walk's entry exists; only his look waits")["ok"],
+        # PRE_JUDGEMENT_CERTIFICATE (RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN): a red deciding test
+        # refuses the move into the blind challenge with its path to pass, and writes nothing
+        gw = "walk_scavenger_base: sc_walk's entry exists; only his look waits"
+        tsaved = redden_table(root, "GimmeSomeSlack")
+        j0, r0 = read(root, "GimmeSomeSlack", "journal.md"), read(root, "GimmeSomeSlack", M.RECORD)
+        res = M.advance(root, "GimmeSomeSlack", "blind_challenge", by="BENCH", why="x", steward=gw)
+        refused(res, "judge_certificate", "a red deciding test at the move into the blind challenge")
+        jc = [r for r in res["verdict"]["refusals"] if r["clause"] == "judge_certificate"]
+        ok(jc and "3 of 3" in str(jc[0]["observed"]) and "--run" in str(jc[0]["smallest_fix"]["what"]),
+           "the certificate refusal quotes the test's own last line and names the rerun that passes it")
+        ok(read(root, "GimmeSomeSlack", "journal.md") == j0 and read(root, "GimmeSomeSlack", M.RECORD) == r0,
+           "a certificate refusal writes nothing")
+        restore_table(root, "GimmeSomeSlack", tsaved)
+        ok(M.advance(root, "GimmeSomeSlack", "blind_challenge", by="BENCH", why="x", steward=gw)["ok"],
            "with the steward's word Gimme Some Slack enters the blind challenge")
+        tsaved = redden_table(root, "GimmeSomeSlack")
+        e = M.evaluate(root, "GimmeSomeSlack", "in_game", steward="the cycle read")
+        ok("judge_certificate" in [r["clause"] for r in e["verdict"]["refusals"]],
+           "a red deciding test refuses the move into the in-game stage too (%s)" % [
+               r["clause"] for r in e["verdict"]["refusals"]])
+        with open(os.path.join(root, "design", "concepts", "GimmeSomeSlack", "version", "test_table.json"), "w") as f:
+            f.write("{ not json")
+        e = M.evaluate(root, "GimmeSomeSlack", "in_game", steward="the cycle read")
+        ok("judge_certificate" in [p["clause"] for p in e["verdict"]["passed"]],
+           "an unreadable table: the certificate did not run and lets the move through")
+        restore_table(root, "GimmeSomeSlack", tsaved)
 
         # a hold: FlowWorks' real hold was released, so it is not held; a new hold line holds it
         ok(not M.held(read(root, "FlowWorks", "journal.md"), "offline_build"), "FlowWorks' released hold no longer holds")
@@ -661,6 +738,7 @@ def copy_blind(root):
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 with open(dst, "wb") as f:
                     f.write(data)
+    certify_fixture(root, FOUR)
 
 
 def write_cycle(root, mod, n, exit_met=True, problems_open=0, red_bar=None, drop_bar=None, rerun_fail=None,
@@ -1015,6 +1093,7 @@ def copy_ingame(root, mod="Pyrelands", as_mod=None):
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             with open(dst, "wb") as f:
                 f.write(r.stdout)
+    certify_fixture(root, [as_mod or mod])
 
 
 def write_ledger(root):
