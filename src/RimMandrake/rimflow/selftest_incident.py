@@ -1635,6 +1635,10 @@ def test_seat_relapse_kinds_do_not_reopen():
     table = IN.load_table()
     r = IN.route_of(table, "restart:BENCH:hard_no_boundary")
     check("restart:*:hard_no_boundary routes program", r is not None and r.get("route") == "program", r)
+    # RIMMANDRAKE_ROUTE_HELD_FIRST_AWAY_FOUR_HOLDS_NO_FAULT: the first-hold courtesy note re-opened seats-20261115234127
+    # four times on 2026-11-16, each a restart waiting on a background command; its Conductor-log line is the tell.
+    r = IN.route_of(table, "restart:BENCH:held_first")
+    check("restart:*:held_first routes program", r is not None and r.get("route") == "program", r)
     for kind in ("restart:BENCH:hard_stuck", "restart:BENCH:orphan", "restart:BENCH:clone_unlanded"):
         r = IN.route_of(table, kind)
         check("%s still reaches a seats incident" % kind, r is not None and r.get("route") == "role"
