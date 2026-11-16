@@ -1603,7 +1603,68 @@ def ingame_main():
     return 1 if FAILS else 0
 
 
+def land_views_main():
+    """RIMMANDRAKE_FIX_DISPATCH_VIEWS_LANDED_BLIND_TO_PEER_SHARDS: a peer clone lands a HOLDER shard (and its views) on
+    origin after the Dispatch root was cloned; the Dispatch appends to its DISPATCH shard and lands through land_ledger
+    with the real land.sh against a local bare origin. Origin's views must still list the peer shard (no VIEW_STALE)."""
+    import modledger as ML
+    tmp = tempfile.mkdtemp(prefix="dispatch_land_views_")
+    mod = "LandViewsFixture"
+    rel = "design/concepts/%s/ledger" % mod
+
+    def git(repo, *a):
+        r = subprocess.run(["git", "-C", repo, *a], capture_output=True, text=True, timeout=120)
+        return r.stdout.strip() if r.returncode == 0 else None
+
+    def clone(name):
+        d = os.path.join(tmp, name)
+        subprocess.run(["git", "clone", "-q", origin, d], check=True, capture_output=True, timeout=120)
+        for k, v in (("user.name", "selftest"), ("user.email", "selftest@example.invalid"), ("commit.gpgsign", "false")):
+            git(d, "config", k, v)
+        return d
+
+    saved = os.environ.get("RM_STAGE_LAND")
+    os.environ.pop("RM_STAGE_LAND", None)
+    try:
+        origin = os.path.join(tmp, "origin.git")
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "main", origin], check=True, timeout=120)
+        peer = clone("peer")
+        ML.grant(peer, mod, "L1", version="1")                          # DISPATCH#1: the lease the holder runs under
+        git(peer, "add", rel)
+        git(peer, "commit", "-q", "-m", "fixture: lease granted")
+        git(peer, "push", "-q", "origin", "HEAD:main")
+        root = clone("dispatch")                                        # the Dispatch root, cloned now
+        ML.append(peer, mod, "HOLDER.L1", "session.id", "session",
+                  body={"session_id": "s-1", "context_tokens": 1000}, token=1)
+        git(peer, "add", rel)
+        git(peer, "commit", "-q", "-m", "fixture: the holder's shard lands from another clone")
+        ok(git(peer, "push", "-q", "origin", "HEAD:main") is not None, "land-views fixture: the peer shard is on origin")
+        ML.grant(root, mod, "L2")                                       # the Dispatch appends, blind to the peer shard
+        got = MD.land_ledger(root, [mod], "run L2 on %s granted" % mod)
+        print("     land_ledger -> %s" % got)
+        check = clone("check")
+        hist = open(os.path.join(check, rel, "views", "history.md"), encoding="utf-8").read() \
+            if os.path.exists(os.path.join(check, rel, "views", "history.md")) else ""
+        ok("HOLDER.L1#1" in hist and "DISPATCH#2" in hist,
+           "land-views: origin's history view lists the peer HOLDER.L1 shard and the Dispatch's new grant")
+        stale = [f for f in ML._lint_views(check, mod) if f[0] == "VIEW_STALE"]
+        ok(not stale, "land-views: origin's views are not VIEW_STALE (got %s)" % (stale[:1],))
+        ok(os.path.exists(os.path.join(check, rel, "HOLDER.L1.jsonl")), "land-views: the peer shard is still on origin")
+        ok(not os.path.exists(os.path.join(root, rel, "HOLDER.L1.jsonl"))
+           or git(root, "ls-files", rel + "/HOLDER.L1.jsonl"),
+           "land-views: no peer file was written untracked into the Dispatch root's worktree")
+    finally:
+        if saved is not None:
+            os.environ["RM_STAGE_LAND"] = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
+
 if __name__ == "__main__":
+    if "--land-views" in sys.argv[1:]:
+        sys.exit(land_views_main())
     if "--ingame" in sys.argv[1:]:
         sys.exit(ingame_main())
     if "--release" in sys.argv[1:]:
@@ -1612,4 +1673,5 @@ if __name__ == "__main__":
     rc = clone_status_main() or rc
     rc = release_main() or rc
     rc = blind_main() or rc
+    rc = land_views_main() or rc
     sys.exit(ingame_main() or rc)

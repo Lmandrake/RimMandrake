@@ -1470,13 +1470,88 @@ def ledger_paths(root, mods):
     return out
 
 
+def origin_views(root, mods):
+    """Rebuild these mods' views in the root's worktree from origin/main's shards (fetched now) plus the root's own
+    DISPATCH shard, so a landed view never drops a peer's shard the root has not pulled
+    (RIMMANDRAKE_FIX_DISPATCH_VIEWS_LANDED_BLIND_TO_PEER_SHARDS). No peer shard is written into the root: the shards
+    are assembled in a temp dir; only the derived views are rewritten. -> None, or the refusal line (nothing landed).
+    A root that is not a clone's top (a selftest) or RM_STAGE_LAND=0 is left as is. A peer landing between this fetch
+    and land.sh's push still races (land.sh retries the push but re-lands these views); the next landing repairs it."""
+    import shutil
+    import tempfile
+    if os.environ.get("RM_STAGE_LAND") == "0":
+        return None
+    try:
+        r = subprocess.run(["git", "-C", root, "rev-parse", "--show-toplevel"], capture_output=True, text=True,
+                           timeout=120)
+        if r.returncode != 0 or os.path.realpath(r.stdout.strip()) != os.path.realpath(root):
+            return None
+        f = subprocess.run(["git", "-C", root, "fetch", "-q", "origin", "main"], capture_output=True, text=True,
+                           timeout=180)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "views not landed: fetch failed: %s: %s" % (type(e).__name__, e)
+    if f.returncode:
+        return "views not landed: git fetch origin main exited %d: %s" % (f.returncode, f.stderr.strip())
+    tmp = tempfile.mkdtemp(prefix="dispatch_views_")
+    try:
+        for mod in mods:
+            d = modledger.ledger_dir(root, mod)
+            rel = os.path.relpath(d, root).replace(os.sep, "/")
+            ls = subprocess.run(["git", "-C", root, "ls-tree", "--name-only", "origin/main", rel + "/"],
+                                capture_output=True, text=True, timeout=120)
+            td = modledger.ledger_dir(tmp, mod)
+            os.makedirs(td)
+            for name in ls.stdout.split():
+                name = name.rsplit("/", 1)[-1]
+                if not name.endswith(".jsonl"):
+                    continue
+                g = subprocess.run(["git", "-C", root, "show", "origin/main:%s/%s" % (rel, name)],
+                                   capture_output=True, timeout=120)
+                if g.returncode:
+                    return "views not landed: cannot read origin/main:%s/%s" % (rel, name)
+                with open(os.path.join(td, name), "wb") as fh:
+                    fh.write(g.stdout)
+            mine = os.path.join(d, "DISPATCH.jsonl")
+            if os.path.exists(mine):
+                with open(mine, "rb") as fh:
+                    data = fh.read()
+                theirs = os.path.join(td, "DISPATCH.jsonl")
+                if os.path.exists(theirs):
+                    with open(theirs, "rb") as fh:
+                        if not data.startswith(fh.read()):
+                            return ("views not landed: origin/main's %s/DISPATCH.jsonl is not a prefix of this root's "
+                                    "(another Dispatch wrote it): pull before landing" % rel)
+                with open(theirs, "wb") as fh:
+                    fh.write(data)
+            if not modledger.shard_names(tmp, mod):
+                continue
+            vd = modledger.views_dir(root, mod)
+            os.makedirs(vd, exist_ok=True)
+            for name, text in modledger.render_views(tmp, mod).items():
+                p = os.path.join(vd, name)
+                with open(p + ".tmp%d" % os.getpid(), "w", encoding="utf-8") as fh:
+                    fh.write(text)
+                os.replace(p + ".tmp%d" % os.getpid(), p)
+    except (OSError, subprocess.SubprocessError, modledger.ModLedgerError) as e:
+        return "views not landed: %s: %s" % (type(e).__name__, e)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    return None
+
+
 def land_ledger(root, mods, what, fx=None):
-    """Land the DISPATCH shard and views of these mods' ledgers (land.sh, as land_spend does)."""
+    """Land the DISPATCH shard and views of these mods' ledgers (land.sh, as land_spend does). The views landed are
+    rebuilt from origin/main's shards plus this root's DISPATCH shard first (origin_views)."""
+    if (fx or {}).get("land_ledger"):
+        paths = ledger_paths(root, mods)
+        return fx["land_ledger"](paths) if paths else "nothing to land"
+    if not (fx or {}).get("land_spend"):
+        refused = origin_views(root, mods)
+        if refused:
+            return refused
     paths = ledger_paths(root, mods)
     if not paths:
         return "nothing to land"
-    if (fx or {}).get("land_ledger"):
-        return fx["land_ledger"](paths)
     return land_spend(root, paths, dict(fx or {}, land_msg="modledger: %s (Dispatch step)" % what))
 
 
