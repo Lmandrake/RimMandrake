@@ -1,60 +1,37 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":180146,"DISPATCH":666} body_sha256=06f57b1202609c17f89bc1367944079df72c3890f0c782f15c838dd1cdabe16d -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod GimmeSomeSlack) reducer=1 shards={"BACKFILL":286036,"DISPATCH":666} body_sha256=e71b78abffb1549b8c410772538f7217f0b495cb182dda032b685923f30387f0 -->
 # GimmeSomeSlack — mod ledger packet
-version 0.1.0 · stage blind_challenge · 237 events in 2 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 371 events in 2 shards · reducer 1
 holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 
-## Open findings (69)
-- finding:RIMMANDRAKE_WIDEN_GSS_HOSE_SCAN_ONE_TEST_TWO_BARS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: T_NO_HOSE is the only decider of both proves_at 4-5 bars (test_table.json bars no_hose, no_hose_in_gss: decides [T_NO_HOSE])
-  accept: oracle: offline scan finds no ThingDef, texture or class for hoses or reels under src/RimMandrake/GimmeSomeSlack; false pass named by the leaf: 'the scan matching only def names, missing a texture folder'
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (6d2aeb9c3f)
-- finding:RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: RM_FallenWireShock.RebuildContacts returned on !AerialSettings.enabled BEFORE ExternalContacts (the FlowWorks dropped-cord source), and CheckPawns returned on the same switch (source at 67ddc758e5, lines 65 and 148)
-  accept: shock_reach_setting: under Only downed lines and All the live cord a collapsed FlowWorks bridge deck dropped bites (sheet, delegated: 'Only downed lines keeps FlowWorks' dropped bridge-deck cords biting'); […]
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (6d2aeb9c3f)
-- finding:RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars cords_never_repeat: lane 1 L1_NO_REPEAT (written blind): two 4-cell generator->lamp runs side by side, 4 cells apart, build seed 6, draw cords whose mean point gap in their own frames is 0.01 cell (shrunk from 8 runs to 2)
-  accept: every pair of same-class edges above a minimum shape distance (cord_shape_variation_probe); cords of the same length do not repeat one shape across a room. Owner card 2026-11-13 exempts only cords shorter than 3 cells
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (0416599c69)
-- finding:RIMMANDRAKE_UNBEND_GSS_RANDOM_BASES_SEVEN_SCENES_HID_IT [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars no_unforced_sharp_turn: lane 1 L1_CORD_BENDS_TALLY: the bar's named instrument CordShapeAudit.BendTally over 80 random scenes (seeds 6000..6039 open floor, 6500..6539 with walls): 82 unforced of 1381 bends in 728 strands
-  accept: the bends probe (CordShapeAudit.Bends) over every strand, ends included: tally unforced == 0
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (6f8bfb47c4)
-- finding:RIMMANDRAKE_SLACKEN_GSS_CUT_END_LEADS_WHIP_STEALS_SLACK [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars cords_lie_slack: lane 1 L1_CORD_SLACK_RATIO and L1_CORD_SLACK_RATE: 4 of 434 strands under 1.4 (worst 1.206: seed 3000, terminal:38,19 -> battery:42,19, chord 4.47, the kernel's own LaidRatio 1.32), all cut-routed leads carrying a live whip tail
-  accept: per edge: drawn length / chord at least 1.4
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (0416599c69)
-- finding:RIMMANDRAKE_STRAY_GSS_CORDS_A_CELL_OFF_THEIR_LINE [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars cords_lie_slack: lane 1 L1_CORD_EXCURSION and L1_CORD_EXCURSION_RATE: 5 of 139 edges of more than four conduit cells never leave their own conduit line by a full cell (lowest 0.56: a 6-cell junction-junction routed+slack edge; 3 cut-routed, 1 routed+slack, 1 hop+slack)
-  accept: at least one excursion of a cell or more off the conduit line per edge longer than four cells
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (0416599c69)
+## Open findings (123)
+(claimed fixes, awaiting a judge, on one line each, named without their 'finding:': `modledger.py show --mod GimmeSomeSlack finding:<NAME>`)
+- RIMMANDRAKE_WIDEN_GSS_HOSE_SCAN_ONE_TEST_TWO_BARS on 6d2aeb9c3f: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER on 6d2aeb9c3f: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS on 0416599c69: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_UNBEND_GSS_RANDOM_BASES_SEVEN_SCENES_HID_IT on 6f8bfb47c4: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_SLACKEN_GSS_CUT_END_LEADS_WHIP_STEALS_SLACK on 0416599c69: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_STRAY_GSS_CORDS_A_CELL_OFF_THEIR_LINE on 0416599c69: fixed by the blind cycle's fixer; no later judge verdict is recorded
 - finding:RIMMANDRAKE_LIFT_GSS_FALLEN_WIRE_OFF_WALL_CORNER [open, polish] by BACKFILL, 2026-11-16T07:11:06Z · bars fallen_span_on_ground: lane 1 L1_FALLEN_LAY_GROUND: seed 97531 trial 117 (1 of 1500), base (8,31) toward (2.53,30.91): a grounded point 0.044 cell inside wall cell (6,31), the lay not Blocked
   proposed fix: test the bends of the ground path against walls at sub-cell steps, not only the bare line
   accept: fallen wire present at ground layer; LayFallen's own contract: slack crossing an unwalkable cell is halved, then the first unwalkable cell stops the wire (Blocked)
-- finding:RIMMANDRAKE_STEADY_GSS_GATE_RED_ONCE_THEN_GREEN [claimed_fixed, polish] by BACKFILL, 2026-11-16T07:11:06Z: reruns.jsonl: T_GATE rc 1 (validation:O3_core_selftest red) on the first rerun, rc 0 on the second minutes later with O3 4510/4510; the first red's detail was not kept
-  accept: a rerun repeats the recorded result
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (6f8bfb47c4)
+- RIMMANDRAKE_STEADY_GSS_GATE_RED_ONCE_THEN_GREEN on 6f8bfb47c4: fixed by the blind cycle's fixer; no later judge verdict is recorded
 - finding:RIMMANDRAKE_REWORD_GSS_NO_HOSE_BAR_POLES_DRAW_PIPES [open, polish] by BACKFILL, 2026-11-16T07:11:06Z · bars no_hose_in_gss: GSS draws FlowWorks pipe-pole spans (AerialLineKind.Pipe, AerialMaterials.PipeMats), owner-sanctioned (pipe poles 'Their own switch', 2026-10-22; leaf settings_switch_cleanly names the pipe-pole switch)
   proposed fix: the neutral fixer rewords the leaf's experience and sheet line; no code change
   accept: sheet: 'No hose, reel or pipe is drawn by this mod'; experience: 'it draws power cords only'; oracle: hoses or reels only
 - finding:RIMMANDRAKE_COVER_GSS_CALLERS_FOUR_PLANTS_WALKED_PAST [open, polish] by BACKFILL, 2026-11-16T07:11:06Z: missed by every offline suite: PF_GAME_FLOOR_DEAD_ENDS_BITE (FloorEndShock lists dead ends as contacts), PF_GAME_ANY_BUILDER_EXEMPT (any construction job beside an end exempt), PF_PATCH_SWITCH_NOT_STYLED (patch xpath typo), PF_MOTION_LIVE_END_LIMP (WhipAmp 0): […]
   proposed fix: a binding test of FloorEndShock's EndLive and EverTransmitsPower guards; run validate_patch.py on Patches/ offline; a kernel row that WhipAmp > 0
   accept: planted faults in game-side callers and patches should turn some offline test red where an offline test can see them
-- finding:RIMMANDRAKE_SWEEP_GSS_WALLED_RESIDUE_TWO_THOUSAND_SCENES [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: judge_the_judge/diag.py all 1000 (2000 seeded scenes, lane 1's scene maker, open and walled) at 6f8bfb47c4: unforced bends 115 in 83 of 17821 strands (all 115 outside lane 1's 80 seeds; […]
-  accept: the same bars' oracles over a wider sample than lane 1's: the bends probe tally unforced == 0; drawn length >= 1.4 x chord; an excursion of a cell on edges over four cells; no same-class pair under 0.1
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (a264e7b55d)
+- RIMMANDRAKE_SWEEP_GSS_WALLED_RESIDUE_TWO_THOUSAND_SCENES on a264e7b55d: fixed by the blind cycle's fixer; no later judge verdict is recorded
 - finding:RIMMANDRAKE_ALIGN_GSS_SHARP_ROW_READS_CUT_END_CELL [open, polish] by BACKFILL, 2026-11-16T07:11:06Z: after the loop repair, lane 1 L1_CORD_SHARP_TURN still FAILs: 21 windows over its 40 scenes (Diag.cs sharprow), none a bend the bar's named instrument counts: 15 inside a cut end's first cell (the instrument's 'limp': apex within LimpReach 1.0 by arc; […]
   proposed fix: two lines in BlindLane1.cs CordSharpTurn: the cut-end reach by arc from a terminal end (LimpReach), the window as 20 samples
   accept: lane 1's coarser row L1_CORD_SHARP_TURN against the bar's named instrument CordShapeAudit.Bends
-- finding:RIMMANDRAKE_REPIN_GSS_GATE_O7_ON_SUPERSEDED_SHAPE [claimed_fixed, polish] by BACKFILL, 2026-11-16T07:11:06Z: T_GATE rc 1 at 8f1338a19a: red [validation:O7_gpt_read_fixes], missing 'C2 aerial master gates the shock check': the pinned shape '!AerialSettings.enabled || AerialSettings.shockReach == ShockReach.None' was replaced on purpose by cycle 1's UNGATE fix 6d2aeb9c3f, so the gate read red from that fix on (not a flake)
-  accept: the offline gate reads the build as it is ruled: validation O7 pins each GPT pre-release fix's source shape
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (ffe1a381b8)
+- RIMMANDRAKE_REPIN_GSS_GATE_O7_ON_SUPERSEDED_SHAPE on ffe1a381b8: fixed by the blind cycle's fixer; no later judge verdict is recorded
 - finding:RIMMANDRAKE_PART_GSS_TWIN_LEADS_EACH_DRAWN_ALONE [open, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars cords_never_repeat: diag.py repeat 1000 --base at a264e7b55d: under0.1 2/2/2/0/0/0 at L3/L4/L5/L6/L9/L12 (6 of 33600 pairs), every twin routed+vary(+loop); the same 6 at 3f9fbc811
   proposed fix: a cross-piece pass in Build over same-class short leads that re-varies the later of a too-alike pair from a ~twin stream and restores the base lay when the pair parts (cold build = incremental), memoised on the class's piece keys, checked against game-side mesh reuse
   accept: no same-class pair of equal short leads side by side under a mean point gap of 0.1 (diag.py repeat, the lane-1 Frame/Gap)
-- finding:RIMMANDRAKE_RESET_GSS_STEPTRACE_STATIC_CENSUS_CAUGHT_IT [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: rerun 2026-11-15: T_STATICS_CENSUS FAIL rc 1 (recorded PASS 2026-11-14): 'FAIL Core/CordBuilder.cs::StepTrace (Action<string, string, string, List<V2>>): can hold a game's objects; neither reset in GssSessionReset.cs nor listed with a reason' (lane2/red_statics.txt)
-  accept: T_STATICS_CENSUS: every mutable static that can hold a game's objects is reset in GssSessionReset.cs or listed with a reason
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (164931fd9490e8d16ff61d9d604a6d08d2175bb5)
-- finding:RIMMANDRAKE_WIDEN_GSS_FAULT_GUARD_LAY_NEEDED_SIXTY_THREE [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: T_CORE FAIL rc 1 on 3 of 3 full runs at 8d03656883 (4509/4510; recorded 4508/4508 PASS): 'FAIL graph worker: after a job fault the Builds did not end equal to one unbudgeted Build (60 Builds)'; T_GATE red through its O3 (lane2/reruns.jsonl, red_core.txt)
-  accept: T_CORE: SliceGateChecks.GraphWorker (2): after a graph-job fault the Builds end equal to one unbudgeted Build
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (164931fd9490e8d16ff61d9d604a6d08d2175bb5)
-- finding:RIMMANDRAKE_WIDEN_GSS_NO_HOSE_SCAN_PIPE_PLANT_PASSED [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: planted NH_PLANT_PIPE_DEF (a ThingDef RM_WaterPipe 'water pipe' under Defs/) MISSED by T_NO_HOSE and lane 1 (lane2/planted_results.jsonl)
-  accept: T_NO_HOSE (observes: 'the mod ships no hose, reel or pipe def, texture or class; a planted hose goes red')
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (349f9aa86b450efd0fbc5f77bab84d126ed2a07d)
+- RIMMANDRAKE_RESET_GSS_STEPTRACE_STATIC_CENSUS_CAUGHT_IT on 164931fd9490e8d16ff61d9d604a6d08d2175bb5: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_WIDEN_GSS_FAULT_GUARD_LAY_NEEDED_SIXTY_THREE on 164931fd9490e8d16ff61d9d604a6d08d2175bb5: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_WIDEN_GSS_NO_HOSE_SCAN_PIPE_PLANT_PASSED on 349f9aa86b450efd0fbc5f77bab84d126ed2a07d: fixed by the blind cycle's fixer; no later judge verdict is recorded
 - finding:RIMMANDRAKE_REWORD_GSS_NO_PIPE_BAR_POLES_ON_PURPOSE [open, polish] by BACKFILL, 2026-11-16T07:11:06Z: lane-1 row L1_NOHOSE_PIPE_WORDS (INFO): the kernel carries AerialLineKind.Pipe (one stiff strand, its own span and sag)
   proposed fix: the neutral fixer rewords the leaf (e.g. 'No hose, reel or pipe of its own is shipped by this mod; FlowWorks' pipe-pole spans use its line engine'), or the steward rules the spans out
   accept: sheet.md leaf no_hose_in_gss: 'No hose, reel or pipe is drawn by this mod.'
@@ -73,18 +50,10 @@ holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 - finding:RIMMANDRAKE_REPIN_GSS_ASYNC_FAULT_CAP_FIFTY_SEVEN_USED [open, polish] by BACKFILL, 2026-11-16T07:11:06Z · bars no_stall_on_rewire: the same full run reports 'async: cold E=248 over 57 Builds'; check (2)'s guard of 60 failed 3 of 3 at 57-63 Builds before this cycle's fix
   proposed fix: the steward re-pins builds5 < 60 to a bound derived from the scene's cold lay (e.g. 2x the async Build count)
   accept: SliceGateChecks (5): 'async: a faulted key stayed pending after {builds5} Builds' asserts builds5 < 60
-- finding:RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_CODE_PATHS_UNSEEN [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: lane2/planted_results.jsonl NH_CALLER_HOSE_TEXTURE_LITERAL: a ContentFinder<Texture2D>.Get("RimMandrake/FlowWorks/Hose/HoseSegment") added to Source/Aerial/AerialMaterials.cs: NOHOSE new failing [] (green); lane-1 row NH_SOURCE_NO_PIPE_TEXTURE_LITERALS caught it
-  accept: T_NO_HOSE (sole decider) must see any hose, reel or pipe GSS ships or draws (tree oracle: 'no ThingDef, texture or class for hoses or reels'; sheet: 'No hose, reel or pipe is drawn by this mod'; […]
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (9126ead2a413784b28f52878a466a5fdbd370101)
-- finding:RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_LABELLED_REEL_SLIPS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: lane2/planted_results.jsonl NH_DEF_LABEL_HOSE_REEL: a ThingDef RM_CordCoil labelled 'garden hose reel', texPath .../Aerial/Coil, in Defs/MapMeshFlagDefs.xml: NOHOSE green, lane 1 green (my scan also took the label as prose)
-  accept: as above: a ThingDef for a hose reel is refused whatever its defName
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (9126ead2a413784b28f52878a466a5fdbd370101)
-- finding:RIMMANDRAKE_RUN_GSS_TWIN_CHECK_IN_ITS_OWN_DECIDER [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars cords_never_repeat: lane2/planted_results.jsonl C_TWIN_APART_ZERO and C_TWIN_PICKS_CLOSER (CordBuilder.cs, changed since cycle 2): CORE new failing [], GEOM ('--geometry-only') caught both
-  accept: an offline decider of cords_never_repeat (test_table: T_CORE, sc_no_repeat) must go red when the twin pass that keeps equal leads apart is broken
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (9126ead2a413784b28f52878a466a5fdbd370101)
-- finding:RIMMANDRAKE_CARRY_GSS_GOODWILL_REMAINDER_TEST_DIVIDES_DAY [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars tap_steals_and_costs_goodwill: lane2/planted_results.jsonl K_GOODWILL_REMAINDER_LOST (drainTicks -= days*ticksPerDay -> drainTicks = 0): CORE green; lane-1 row L1_GOODWILL_STEADY_CONSERVED caught it
-  accept: goodwill drains steadily: perDay for each whole day drained, the remainder carried (AerialMath.TheftGoodwillAccrue's own contract); T_CORE decides the bar offline
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (9126ead2a413784b28f52878a466a5fdbd370101)
+- RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_CODE_PATHS_UNSEEN on 9126ead2a413784b28f52878a466a5fdbd370101: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_WIDEN_NO_HOSE_SCAN_LABELLED_REEL_SLIPS on 9126ead2a413784b28f52878a466a5fdbd370101: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_RUN_GSS_TWIN_CHECK_IN_ITS_OWN_DECIDER on 9126ead2a413784b28f52878a466a5fdbd370101: fixed by the blind cycle's fixer; no later judge verdict is recorded
+- RIMMANDRAKE_CARRY_GSS_GOODWILL_REMAINDER_TEST_DIVIDES_DAY on 9126ead2a413784b28f52878a466a5fdbd370101: fixed by the blind cycle's fixer; no later judge verdict is recorded
 - finding:RIMMANDRAKE_NOTE_GSS_NORTH_SOUTH_SPAN_RULER_STRAIGHT [open, polish] by BACKFILL, 2026-11-16T07:11:06Z · bars spans_above_everything: lane-1 row L1_SPAN_VISIBLE_SAG_EVERY_BEARING: 124 of 2000 random spans at the default sag 0.06 show under 0.1 cell off their chord; shrunk: (0,0)->(0,8) draws every point on its chord
   proposed fix: for the steward: re-pin sc_spans' expect to name the bearing; any sideways bow is an art change for a judge
   accept: 'It must not read as ... a ruler-straight wire'; scene sc_spans expects 'sag above zero'
@@ -103,9 +72,7 @@ holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 - finding:RIMMANDRAKE_NOTE_GSS_TWIN_GUARD_NEVER_EXERCISED [open, polish] by BACKFILL, 2026-11-16T07:11:06Z: lane2/planted_results.jsonl C_TWIN_MAY_ADD_FAULTS (<= own + 99): CORE and GEOM green; C_STRANDFAULTS_OVERFACE_ZERO (over-face strands score 0): CORE and GEOM green
   proposed fix: a TwinLeads case with a candidate the guard must refuse
   accept: a twin must not add a fault (CordBuilder: StrandFaults(twin) <= own)
-- finding:RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_FIVE_LEFTOVERS_SLIPPED [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: lane2/planted_results.jsonl: NH1 (hose texture in topTexPath), NH2 (reel texture in texturePath), NH3 (FlowWorks hose def type under defName RM_Look_Scrapper), NH4 (RM_HoseReel defName literal in AerialDefOf.cs), NH5 (patch xpath into RM_HoseReel's graphicData) each left T_NO_HOSE green; […]
-  accept: tree.json no_hose_in_gss oracle: offline scan, no ThingDef, texture or class for hoses or reels under src/RimMandrake/GimmeSomeSlack; false pass: the scan matching only def names, missing a texture folder
-  holder: fixed by the blind cycle's fixer; no later judge verdict is recorded (69e7d7f47e34bcdb498a785f4a6164773d7903aa)
+- RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_FIVE_LEFTOVERS_SLIPPED on 69e7d7f47e34bcdb498a785f4a6164773d7903aa: fixed by the blind cycle's fixer; no later judge verdict is recorded
 - finding:RIMMANDRAKE_TIGHTEN_GSS_FALLEN_WIRE_WALL_CHECK_HALF_STEP [open, polish] by BACKFILL, 2026-11-16T07:11:06Z: lane1/lane1_rows.jsonl row fallen_random_lies_on_ground: seed 4405, 22 of 2500 fallen wires put a grounded point inside an unwalkable cell, deepest 0.114 cell inside the edge, Blocked false; shrunk to one wall cell (26,35)
   proposed fix: clearTo steps 0.1 (the draw step)
   accept: sheet: cords end at the wall face, never drawn across a wall or rock; a killed mast's wire lies on the ground
@@ -115,24 +82,15 @@ holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 - finding:RIMMANDRAKE_CORRECT_GSS_DRIPLOOPS_COMMENT_SAYS_ON_SHIPS_OFF [open, polish] by BACKFILL, 2026-11-16T07:11:06Z · bars settings_switch_cleanly: Source/Aerial/AerialSettings.cs:74 says 'Default ON (owner by card 2026-10-15...)'; the default is AerialMath.DripLoopsDefault = false (AerialMath.cs:283, off since the owner's 2026-11-08 sitting); behaviour is right, the comment is stale
   proposed fix: correct the comment
   accept: Mod Settings defaults = shipped behaviour (floor mod_settings)
-- finding:GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC [open, problem] by BACKFILL, 2026-11-16T07:11:06Z: [MINOR] Default CPU sway still allocates per visible strand every frame
-  proposed fix: found-by: GPT review, verified (BENCH, 2026-10-23, FlowWorks + GSS high-depth review; gpt_consult default model, high effort). Report: `Transient/flowworks_takeover_20261023/GPT_REVIEW.md` (finding ids FB_hose_gss_3.6). Raw GPT reply: `D:\ClaudeWork\rimmandrake\scratch\gpt_fw_review\raw\<part>.md`. […]
-  accept: - Written by the Producer, Producer weekly re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0507Z_weekly), goal 3 (GSS part kineticSway). […]
-- finding:GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: colonists downed by fallen-wire shock beside a lone mast with 0 links/0 fallen wires in census
-  accept: Prove it where the title says (offline selftest, or the live proof named in the owed criterion); then `rimflow verify GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE --sha <sha> --level <L> --result pass --config <what ran> --evidence <path>` […]
-  holder: Implemented at c29007b6b66e (RELENTLESS); not closed. Criteria: A1 with GimmeSomeSlack deployed from the fix sha, on a quicktest map (all five DLC), validation_aerial --flips row M20e_shock_cells_die_with_wire PASS: the census (c29007b6b66e)
+- GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE on c29007b6b66e: Implemented at c29007b6b66e (RELENTLESS); not closed. Criteria: A1 with GimmeSomeSlack deployed fro…
 - finding:GSS_FRAME_GARBAGE_SHRINK_HALF_MEG_LEFT [open, problem] by BACKFILL, 2026-11-16T07:11:06Z: MOD: with the snapshot world pooled (d4b91bc62e), CordBuilder.Build itself still allocates a mean 452 KB and up to 1.4 MB per AsyncLay frame at 8 lattices (55 KB at 0), garbage Unity's incremental collector charges to the frame
   proposed fix: MOD: with the snapshot world pooled (d4b91bc62e), CordBuilder.Build itself still allocates a mean 452 KB and up to 1.4 MB per AsyncLay frame at 8 lattices (55 KB at 0), garbage Unity's incremental collector charges to the frame
   accept: Prove it where the title says (offline selftest, or the live proof named in the owed criterion); then `rimflow verify GSS_FRAME_GARBAGE_SHRINK_HALF_MEG_LEFT --sha <sha> --level <L> --result pass --config <what ran> --evidence <path>` […]
 - finding:GSS_MODERN_STRIP_BUILD_PLUGS_AT_LAST [open, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS Modern look: 3/4-way junctions draw the long PowerStrip art with every cord plugged in (a 3-way takes two cords plus its own lead); Industrial keeps Junction_T/X; Scrapper and Futuristic unchanged
   proposed fix: GSS Modern look: 3/4-way junctions draw the long PowerStrip art with every cord plugged in (a 3-way takes two cords plus its own lead); Industrial keeps Junction_T/X; Scrapper and Futuristic unchanged
   accept: Prove it where the title says (offline selftest, or the live proof named in the owed criterion); then `rimflow verify GSS_MODERN_STRIP_BUILD_PLUGS_AT_LAST --sha <sha> --level <L> --result pass --config <what ran> --evidence <path>` and […]
-- finding:GSS_PLAN_FIX_SECOND_PER_FULL_BUILD [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS build that plans cords (not reused) now takes ~1 s on the 325-map lattice (E=248): lattice placed 1026 ms, 84 lamps placed 1009 ms, bEdges 997 ms of it. The same scene under the pre-round-2 DLL (wave 3, 06:40) built in 13.6 ms, so round 2 (b60a1526a4) regressed full planning ~70x while making the all-reused […]
-  accept: Prove it where the title says (offline selftest, or the live proof named in the owed criterion); then `rimflow verify GSS_PLAN_FIX_SECOND_PER_FULL_BUILD --sha <sha> --level <L> --result pass --config <what ran> --evidence <path>` and […]
-  holder: Implemented at 903ba19f5d7c (RELENTLESS); not closed. Criteria: A1 with GimmeSomeSlack deployed from the fix sha, on a quicktest map >= 160x160 (all five DLC), four 37x37 PowerConduit lattices (469 conduits, the 325-map scene t (903ba19f5d7c)
-- finding:GSS_POWER_THEFT_FIX_WRONG_VICTIM [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: [MINOR] Theft windows are attributed entirely to the current victim
-  accept: - Written by the Producer, Producer weekly re-plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0507Z_weekly), goal 3 (GSS part theftGoodwill). […]
-  holder: Implemented at c29007b6b66e (OWNER); not closed. Criteria: A1 selftest: drain faction A, switch the clamp to faction B before the event fires: A is charged only A's drained energy, B only B's; […] (c29007b6b66e)
+- GSS_PLAN_FIX_SECOND_PER_FULL_BUILD on 903ba19f5d7c: Implemented at 903ba19f5d7c (RELENTLESS); not closed. Criteria: A1 with GimmeSomeSlack deployed fro…
+- GSS_POWER_THEFT_FIX_WRONG_VICTIM on c29007b6b66e: Implemented at c29007b6b66e (OWNER); not closed. Criteria: A1 selftest: drain faction A, switch the…
 - finding:GSS_SCENES_BUILD_EVERY_CORD_A_FOIL [open, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS proof scenes: named entry points in validation.py (and scene_walk in gss_playtest_runner.py) for every scenes.json scene, each with its asserted start, discriminating control, scene-begin/end snapshot restore, plus the two showcase stagings
   proposed fix: GSS proof scenes: named entry points in validation.py (and scene_walk in gss_playtest_runner.py) for every scenes.json scene, each with its asserted start, discriminating control, scene-begin/end snapshot restore, plus the two showcase stagings
   accept: Prove it where the title says (offline selftest, or the live proof named in the owed criterion); then `rimflow verify GSS_SCENES_BUILD_EVERY_CORD_A_FOIL --sha <sha> --level <L> --result pass --config <what ran> --evidence <path>` and […]
@@ -142,15 +100,11 @@ holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 - finding:GSS_SHAPE_PROBE_MEASURE_NO_TWO_ALIKE [open, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars cord_shape_variation_probe, cords_never_repeat: GSS cord shape-variation probe: a bridge read dumping sampled cord curves per edge, and an offline pairwise shape-distance table per length class (instrument leaf cord_shape_variation_probe, needed by cords_never_repeat)
   proposed fix: GSS cord shape-variation probe: a bridge read dumping sampled cord curves per edge, and an offline pairwise shape-distance table per length class (instrument leaf cord_shape_variation_probe, needed by cords_never_repeat)
   accept: Prove it where the title says (offline selftest, or the live proof named in the owed criterion); then `rimflow verify GSS_SHAPE_PROBE_MEASURE_NO_TWO_ALIKE --sha <sha> --level <L> --result pass --config <what ran> --evidence <path>` and […]
-- finding:GSS_SWITCHES_PROVE_LAST_FOUR_STANDING [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS goal 3: prove the four unverified switches with no item (keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops, slideUnder), then re-run proof_all on the current build
-  accept: - L2: one MOD-class proof row per switch, on and off, on the current build: keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops, slideUnder. […]
-  holder: Implemented at c29007b6b66e (OWNER); not closed. Criteria: A1 one MOD-class proof row per switch, on and off, on the current build: keepWiresOnGravship, cutWiresOnOwnerChange, dripLoops, slideUnder; A2 `proof_all` re-run on the current build: 0 FAIL, every UNMEASURED row measured or named on an item; […] (c29007b6b66e)
+- GSS_SWITCHES_PROVE_LAST_FOUR_STANDING on c29007b6b66e: Implemented at c29007b6b66e (OWNER); not closed. Criteria: A1 one MOD-class proof row per switch, o…
 - finding:GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD [open, problem] by BACKFILL, 2026-11-16T07:11:06Z: After the Designer drafts the GSS acceptance tree, compare it against the existing GSS northstar entries, validation checklists and human walk-map contents: what each has that the other lacks; bring the comparison to him
   proposed fix: After the Designer drafts the GSS acceptance tree, compare it against the existing GSS northstar entries, validation checklists and human walk-map contents: what each has that the other lacks; bring the comparison to him
   accept: Prove it where the title says (offline selftest, or the live proof named in the owed criterion); then `rimflow verify GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD --sha <sha> --level <L> --result pass --config <what ran> --evidence <path>` and […]
-- finding:JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: Captain's 8 RM_PitDrowning downs on the GSS theft run: natural brine + Jawa H=0.5 m, not pit pathing; prove the cell live
-  accept: none, not written at filing
-  holder: Implemented at 60acb5106985 (RELENTLESS); not closed. Criteria: A1 on a quicktest map, a Jawa colonist (RUT_Jawa_Colonist) drafted mid-pool in a 5x5 RM_WaterBrineShallow patch at 120,120 reads ProofDrown H=0.50, water > 0.45 m (60acb5106985)
+- JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS on 60acb5106985: Implemented at 60acb5106985 (RELENTLESS); not closed. Criteria: A1 on a quicktest map, a Jawa colon…
 - finding:RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO [open, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars shock_reach_setting, floor_end_shocks_crossers: GSS: every sparking floor-cord end shocks crossers, with a None/Only downed lines/All shock-reach setting (default All), and proof rows for both tree leaves
   proposed fix: Build the two GSS tree leaves the Designer added on 2026-11-13 (stage 3), `floor_end_shocks_crossers` and `shock_reach_setting` in `design/concepts/GimmeSomeSlack/tree.json`. […]
   accept: none, not written at filing
@@ -163,9 +117,7 @@ holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 - finding:RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME [open, problem] by BACKFILL, 2026-11-16T07:11:06Z: First-human-look savegame standard: merge the review map rulebook with matrix scenes (one prepared cell replicated over the variables, labelled) into one dense, labelled keeper save per ready mod
   proposed fix: One standard for the savegame the owner opens at his first human look at a mod, after the system judges the mod ready. It merges two things that are one idea (owner pick 12, 2026-11-12, OWNER.jsonl tsn 1794524114165680240): - the "for the human" review map, `design/RimMandrake/northstar_human_review.md` […]
   accept: none, not written at filing
-- finding:RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars no_unforced_sharp_turn: GSS dense proofs 2026-11-12: switchboard rows SW1-SW6 in proof_all core (highlight, lod, breakReadout, sparksOnlyOverlay, hideHookupWires, needlessLoops, each against a shared all-on control), gravship_scene on/off GS1 rows, offline selftest_gss_no_hose with planted faults
-  accept: none, not written at filing
-  holder: Implemented at 35aaf354ea6c (CONDUCTOR); not closed. Criteria: A1 on SteveDesktop (tier gimmesomeslack), proof_all --live --no-shots --skip-offline gives rows with 0 FAIL, and every UNMEASURED row id is named in an item; […] (35aaf354ea6c)
+- RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE on 35aaf354ea6c: Implemented at 35aaf354ea6c (CONDUCTOR); not closed. Criteria: A1 on SteveDesktop (tier gimmesomesl…
 - finding:RIMMANDRAKE_REFUSE_GSS_GATE_UNDER_PYTHON_EXE_ALWAYS_RED [open, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS proof_all's offline gate under python.exe is always red: O3's C# SelfTest dies on 'No module named fcntl', charged as MOD; refuse as HARNESS or run it under WSL python3
   proposed fix: found-by: BENCH detached helper on RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE, 2026-11-12, SteveDesktop. **HARNESS.** `python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live` (no --skip-offline) runs the offline gate under Windows Python. […]
   accept: on SteveDesktop, `cd ~/rm/runner && python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate`
@@ -175,42 +127,93 @@ holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 - finding:RIMMANDRAKE_UNBEND_GSS_LEAD_AT_JUNCTION_BATTERY_TWICE [open, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS M2c: one unforced 235-degree bend on the core site's junction:163,153 to battery:153,153 lead, same in both 2026-11-12 Steve runs; planner kink or audit misnaming a loop
   proposed fix: found-by: BENCH detached helper on RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE, 2026-11-12, reading the two speed_20261112 GSS proof_all runs on SteveDesktop (tier gimmesomeslack; evidence `D:\ClaudeWork\rimmandrake\conductor\carryover_20261112\gss\steve\gss_before.json` and `gss_after.json`, row M2c_no_sharp_bends). […]
   accept: live only. `proof_all.py --live --no-shots` on SteveDesktop (testq, tier gimmesomeslack): M2c_no_sharp_bends
-- finding:GSS_ART_MANIFEST_FIX_OVERLAY_SIZES [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: gss_art_manifest sizes wrong for mast tops (2x1) and hose Mouth/Binding
+- GSS_ART_MANIFEST_FIX_OVERLAY_SIZES on 6247fa669d4982a0699d780911eb4556aa591ee1: Closed at 6247fa669d4982a0699d780911eb4556aa591ee1 by RELENTLESS: relentless: blind PASS at f5323f4…
+- GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS on 7bc25dede9f835d305d5fe26da94246dcf4c27a8: Closed at 7bc25dede9f835d305d5fe26da94246dcf4c27a8 by RELENTLESS: relentless: blind PASS at 7bc25de…
+- GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET on 890c85d02952f344e8b738a0329d657c36791950: Closed at 890c85d02952f344e8b738a0329d657c36791950 by RELENTLESS: relentless: blind PASS at ab81c22…
+- GSS_FUZZ_ONLY_FIX_UNKNOWN_FAMILY_PASSES on a2da2f65881f8f331c21c6a343cf3b94c8756d77: Closed at a2da2f65881f8f331c21c6a343cf3b94c8756d77 by OWNER: no reason recorded
+- GSS_JUNCTION_REDRAW_BODY_WIDER_THAN_CORD on 9bb5b6eaadf52390dca3f99b4332624e2ede24eb: Closed at 9bb5b6eaadf52390dca3f99b4332624e2ede24eb by RELENTLESS: relentless: blind PASS at 93b5194…
+- GSS_RECOLOR_CHECK_FIX_NECKED_JUNCTIONS on a6b1f4e427e0718cffc98349040db4f7222576bc: Closed at a6b1f4e427e0718cffc98349040db4f7222576bc by OWNER: no reason recorded
+- GSS_RESTRING_FIX_STYLES_UNRECONCILED on 2a4d23fb8e4b: Implemented at 2a4d23fb8e4b (CODEX_ARCHMAGI_FWDRAIN); not closed. Criteria: A1 cut the only span jo…
+- GSS_RESTRING_PROVE_ONE_STYLE_AFTER_JOIN on 0d57472bb6697d51ee68b693c7a8844f064fb55f: Closed at 0d57472bb6697d51ee68b693c7a8844f064fb55f by CODEX_ARCHMAGI_FWDRAIN: Both L0 criteria sati…
+- GSS_STRIP_LED_FIX_MISSED_REPAINT on a47aef70c74ec929321d34453b68f1b324d6186c: Closed at a47aef70c74ec929321d34453b68f1b324d6186c by OWNER: no reason recorded
+- GSS_SWAY_PROVE_KINETIC_LIVE_ROW on 732415605fcea4c88e8e67c9a5e30c787e08a2cd: Closed at 732415605fcea4c88e8e67c9a5e30c787e08a2cd by CODEX_ARCHMAGI_FWDRAIN: All three L0 tooling…
+- GSS_WATER_STUB_FIX_PASSED_LAST_WEEK on c29007b6b66e: Implemented at c29007b6b66e (OWNER); not closed. Criteria: O1 GSS SelfTest WaterStubChecks green (7…
+- RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR on fabb3697c533: Closed at fabb3697c533 by CONDUCTOR: acceptance test measured: selftest_gimmesomeslack.py --geometr…
+- GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC on 78b889b875c3: Implemented at ff3e91d6de90 (pre-landing; landed as 78b889b875c3) (FOUNDRY); not closed. Criteria:…
+- CORD_GRAPH_TOPOLOGY_REVISION_1 on 6f1a0f53e81d: Implemented at 2c5974430623 (pre-landing; landed as 6f1a0f53e81d) (BENCH); not closed. Criteria: A1…
+- GIMMESOMESLACK_HOSE_BEND_TRACE_1 on 8ad79de445f4: Implemented at fd820f96fd06 (pre-landing; landed as 8ad79de445f4) (FOUNDRY); not closed. Criteria:…
+- GSS_DETERMINISM_FIX_IGNORES_STALE_PIECES on 048bac1edcc7: Implemented at bf3fa018509b (pre-landing; landed as 048bac1edcc7) (BENCH); not closed. Criteria: no…
+- GSS_INTO_FULL_LIST_1 on acd282e8ce4c: Closed at 73409a0c5 (pre-landing; landed as acd282e8ce4c) by BENCH: GSS active in ModsConfig (ET pa…
+- GSS_PROOF_DRIVERS_FIX_FALSE_PASS on 863dff20ea52: Closed at 6cbfcdfc0ddb (pre-landing; landed as 863dff20ea52) by BENCH: published; selftest green
+- AERIAL_CUT_POINT_PRECISION_1 on 928cdf70097c: Implemented at 21600855c3b1 (pre-landing; landed as 928cdf70097c) (FOUNDRY); not closed. Criteria:…
+- COMPANION_STATIC_LAMBDAS_UNBLOCK_WITHOUT_GSS on f046be76e952: Closed at 0f40db2abe54 (pre-landing; landed as f046be76e952) by BENCH: 8 GSS-typed delegate fields…
+- CORD_STATIC_DYNAMIC_HANDOFF_1 on 998badacd5c3: Implemented at 8c59a2cac4c6 (pre-landing; landed as 998badacd5c3) (FOUNDRY); not closed. Criteria:…
+- GIMMESOMESLACK_NORTHSTAR_VALIDATE_1 on 1a3eab084141: Closed at 9540b08e23 (pre-landing; landed as 1a3eab084141) by OWNER: North star VALIDATED by modche…
+- GIMMESOMESLACK_RENAME_1 on a0b26bf470c3: Closed at 37a7f8dbb (pre-landing; landed as a0b26bf470c3) by FOUNDRY: no reason recorded
+- GSS_AERIAL_HINTS_FIX_SMALL_FIBS on 40711b1f720d: Closed at 946156859f (pre-landing; landed as 40711b1f720d) by BENCH: C10 alert culprits on every ma…
+- GSS_ASYNC_TEST_FIX_STALE_CORRIDOR_GAP on bc99e34c8b31: Closed at 2987f99d6e98 (pre-landing; landed as bc99e34c8b31) by BENCH: stale-corridor (3b) and work…
+- GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS on f47b3f71f908: Implemented at f47b3f71f908 (BENCH); not closed. Criteria: A1 with GimmeSomeSlack deployed from the…
+- GSS_CORD_LAY_FIX_HEAPS_IN_DOORWAYS on a16dce9c9c93: Closed at 146e2a6be2 (pre-landing; landed as a16dce9c9c93) by BENCH: A9 end heaps skip doorways and…
+- finding:GSS_CORD_SILENCE_PHANTOM_SPARK [open, problem] by BACKFILL, 2026-11-16T07:50:31Z: GSS draws a second, dangling sparking cord at a pump fed by an adjacent conduit (vanilla adjacency): only the one real connection should draw; also FW station carry_tanks battery starts empty (needs charge or a generator)
+  proposed fix: not written by its filer: read item:GSS_CORD_SILENCE_PHANTOM_SPARK
   accept: none, not written at filing
-  holder: Closed at 6247fa669d4982a0699d780911eb4556aa591ee1 by RELENTLESS: relentless: blind PASS at f5323f49b8f1bd9b7a6013fb87ec42ffecd6ff0c after 0 return(s): Ran run_selftests.py --only selftest_gss_art_manifest_sizes: GREEN; direct run 52 PASS 0 FAIL. […] (6247fa669d4982a0699d780911eb4556aa591ee1)
-- finding:GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: [MINOR] Ordinary loops and heaps can spread into doorways
+- GSS_FALLEN_LINE_FIX_SHOCKS_THIN_AIR on 2b09493e3bd0: Closed at f70ee930b8 (pre-landing; landed as 2b09493e3bd0) by BENCH: C3 contacts from the grounded…
+- GSS_FALLEN_LINE_REDRAW_FLOATS_OVER_PAWNS on f414c5454a16: Closed at ef8f5e72a5 (pre-landing; landed as f414c5454a16) by BENCH: C4: fallen-wire mesh vertices…
+- GSS_FALLEN_WIRE_FIX_SHOCK_HOTSPOT on bee5f70a245f5a765d1f49445b9ad84569b131c7: Closed at bee5f70a245f5a765d1f49445b9ad84569b131c7 by RELENTLESS: relentless: blind PASS at bee5f70…
+- GSS_FINISH_RALPH_LOOP_WAITS_GAME_TURN on a148b06ad47d984ca2bb60c3a09ce68534449fea: Closed at a148b06ad47d984ca2bb60c3a09ce68534449fea by OWNER: no reason recorded
+- GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE on 91d999fcf5ce599eb1fc45247a935ee27eb86bc1: Closed at 91d999fcf5ce599eb1fc45247a935ee27eb86bc1 by RELENTLESS: relentless: blind PASS at 91d999f…
+- GSS_HOOKUP_CABLE_PROBE_HIDDEN_CONDUIT on b54a4ee7a0df: Closed at 1f37da7100a87d07809817dffbf9f1bdaff4b71c (pre-landing; landed as b54a4ee7a0df) by BENCH:…
+- GSS_LAMP_RUN_FIX_NEIGHBOUR_PAINTS_IT on 28f38c2bbd35: Closed at e4030582ac (pre-landing; landed as 28f38c2bbd35) by BENCH: D2: LampsOf/RunOfLamp use the…
+- GSS_LAMP_STYLE_FIX_OFF_STILL_STYLED on 517cd3b1e515: Closed at 4173e9556f (pre-landing; landed as 517cd3b1e515) by BENCH: D3: Thing.Graphic postfix draw…
+- GSS_PATCHES_FIX_TWENTY_THREE_UNLABELLED on e6411b3520f4: Closed at 52a6a44d20ff (pre-landing; landed as e6411b3520f4) by BENCH: L1 live PASS: deployed copy…
+- GSS_PROOF_ALL_RETRY_AFTER_THIRTY_FIXES on 92b8a1b770f7: Closed at 8cb2e0c86 (pre-landing; landed as 92b8a1b770f7) by BENCH: proof_all re-run 2026-10-10: 13…
+- GSS_PROOF_FIX_THREE_STALE_GATE_CHECKS on 64bcbe0c5c34: Implemented at 64bcbe0c5c34 (FOUNDRY); not closed. Criteria: A1 proof_all offline gate exits 0 with…
+- GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE on 0bac01111ace: Closed at 0b491a254c (pre-landing; landed as 0bac01111ace) by BENCH: C12: gizmo now places designat…
+- GSS_SESSION_RESET_REPAIR_SNEAKS_INTO_SAVES on 809d88531d71: Closed at 4f470f7c57 (pre-landing; landed as 809d88531d71) by BENCH: MOD: GssSessionReset (a GameCo…
+- GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET on 00e51ffb6275: Implemented at 00e51ffb6275 (BENCH); not closed. Criteria: A1 with GimmeSomeSlack deployed from the…
+- GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS on c29007b6b66e: Implemented at c29007b6b66e (RELENTLESS); not closed. Criteria: A1 with GimmeSomeSlack deployed fro…
+- GSS_STATICS_FIX_OUTLIVE_THE_SAVE on 976bde259d83: Closed at e42ac437f0 (pre-landing; landed as 976bde259d83) by BENCH: GameComponent GssSessionReset…
+- GSS_STYLE_RUN_PROVE_MIXED_LOOKS_SUSPECTED on b54a4ee7a0df: Closed at 1f37da7100a87d07809817dffbf9f1bdaff4b71c (pre-landing; landed as b54a4ee7a0df) by BENCH:…
+- GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED on 308c5e3c4359: Closed at 6d19ccfa49a0 (pre-landing; landed as 308c5e3c4359) by BENCH: M20a-d live 5/5 PASS run5; M…
+- GSS_TAP_CLAMP_FIX_NO_OFF_SWITCH on cb7ab069e50f: Closed at b6241f9758 (pre-landing; landed as cb7ab069e50f) by BENCH: C5: letter text fixed (StopAdv…
+- GSS_TOGGLES_FIX_OFF_MEANS_OFF on 45b1639b3548: Closed at beb156527 (pre-landing; landed as 45b1639b3548) by FOUNDRY: beb156527 audited each named…
+- GSS_WALK_HOSES_EXCISE_REELED_IN on df89a17560a5: Closed at b805ca93d9 (pre-landing; landed as df89a17560a5) by BENCH: code b805ca93d9, live save b w…
+- finding:LIGHTSPEED_WIRE_GSS_FIRST_NO_LLM_PATH [open, problem] by BACKFILL, 2026-11-16T07:50:31Z: Lightspeed, GSS first (spec §3): GimmeSomeSlack in wired_mods.json; an exact-tier tier:gimmesomeslack testq job running northstar/proof_all.py --live on SteveDesktop only; worker reads ROWS_JSON <path> rows; proof_all returns 2 (not 1) when nothing FAILed but a row is UNMEASURED; S12d gets its own clause; […]
+  proposed fix: not written by its filer: read item:LIGHTSPEED_WIRE_GSS_FIRST_NO_LLM_PATH
   accept: none, not written at filing
-  holder: Closed at 7bc25dede9f835d305d5fe26da94246dcf4c27a8 by RELENTLESS: relentless: blind PASS at 7bc25dede9f835d305d5fe26da94246dcf4c27a8 after 0 return(s): Built and ran the GSS selftest from this tree. […] (7bc25dede9f835d305d5fe26da94246dcf4c27a8)
-- finding:GSS_END_HEAPS_FIX_BYPASS_LOOP_BUDGET [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: [MINOR] Mandatory end heaps bypass the loop budget
+- LIVEROUND_FIX_GSS_LESS_SELFTEST_RED_ALONE on 2f870c1f9f24fad1a1fbde4315ea2a34e4183475: Closed at 2f870c1f9f24fad1a1fbde4315ea2a34e4183475 by RELENTLESS: relentless: blind PASS at 2f870c1…
+- POWER_TAP_MIXED_NET_CONNECT_1 on 928cdf70097c: Implemented at 21600855c3b1 (pre-landing; landed as 928cdf70097c) (FOUNDRY); not closed. Criteria:…
+- POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK on ec0859af3260: Implemented at 81f59db409b6 (pre-landing; landed as ec0859af3260) (FOUNDRY); not closed. Criteria:…
+- finding:RIMMANDRAKE_ADVANCE_GIMMESOMESLACK_OFFLINE_BESIDE_THE_PILOT [open, problem] by BACKFILL, 2026-11-16T07:50:31Z: Maturation Pipeline: take GimmeSomeSlack 0.1.0 (locked) through the offline stages by hand beside the Explosive Knockback pilot, to stage 5 at most; no game. First run: journal, bars-to-tests table with stages, throwaway preflight. […]
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_ADVANCE_GIMMESOMESLACK_OFFLINE_BESIDE_THE_PILOT
+  accept: none, the pipeline's own stages judge it (spec design/specs/2026-11-13-maturation-pipeline.md).
+- finding:RIMMANDRAKE_CHALLENGE_GSS_BLIND_RESTS_ON_ONE_TEST [open, problem] by BACKFILL, 2026-11-16T07:50:31Z: Gimme Some Slack 0.1.0: blind challenge cycle 1
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_CHALLENGE_GSS_BLIND_RESTS_ON_ONE_TEST
   accept: none, not written at filing
-  holder: Closed at 890c85d02952f344e8b738a0329d657c36791950 by RELENTLESS: relentless: blind PASS at ab81c22d41cfb5b45c9ede67cc75545ad7c3f614 after 0 return(s): Ran contract proof selftest_gss_end_heap_budget.py: exit 0, both static can-fails caught. […] (890c85d02952f344e8b738a0329d657c36791950)
-- finding:GSS_FUZZ_ONLY_FIX_UNKNOWN_FAMILY_PASSES [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: [MINOR] Unknown fuzz-family names silently run zero checks successfully
+- finding:RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET [open, problem] by BACKFILL, 2026-11-16T07:50:31Z: Gimme Some Slack blind cycle 5, the first run started from its mod-ledger packet. Acceptance test: none, a blind judge cycle's verdict is its result (design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated)
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET
+  accept: none, a blind judge cycle's verdict is its result (design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/SUMMARY.md with exit_met stated)
+- finding:RIMMANDRAKE_LAND_DESIGNER_EDITS_HARVEST_TOOK_ONLY_STATE [open, problem] by BACKFILL, 2026-11-16T07:50:31Z: GimmeSomeSlack's stage-3 fix of 5 coverage gaps and its stage-4 exam pass (tree 5e3aa0d4, sheet 33b1cddc; 7 files, +1983/-509) exist only uncommitted in /home/mandrake/rm/bench: designer_stage.land_state lands stage.json and result files only, so origin/main still holds the pre-fix tree eb1981b8 and stage.json […]
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_LAND_DESIGNER_EDITS_HARVEST_TOOK_ONLY_STATE
   accept: none, not written at filing
-  holder: Closed at a2da2f65881f8f331c21c6a343cf3b94c8756d77 by OWNER: no reason recorded (a2da2f65881f8f331c21c6a343cf3b94c8756d77)
-- finding:GSS_JUNCTION_REDRAW_BODY_WIDER_THAN_CORD [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS Modern/Futuristic junctions body-wide with sleeves far wider than cord
+- RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX on 47f2dac1eb03cece67533c8ff81ad90a375c3772: Closed at 47f2dac1eb03cece67533c8ff81ad90a375c3772 by CONDUCTOR: detached run: acceptance diag.py r…
+- RIMMANDRAKE_REPIN_PIT_COVER_CHECK_PAST_GSS_NEW_PARAMETER on cf6efc3055: Closed at cf6efc3055 by CONDUCTOR: detached run: fixed red-first in FlowWorks blind cycle 1 (lane2/…
+- finding:RIMMANDRAKE_SIT_GSS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST [open, problem] by BACKFILL, 2026-11-16T07:50:31Z · bars cords_draw_under_things: Gimme Some Slack 0.1.0: scene for cords_draw_under_things, then the one exam and one coverage judge pass its lock still owes
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_SIT_GSS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST
   accept: none, not written at filing
-  holder: Closed at 9bb5b6eaadf52390dca3f99b4332624e2ede24eb by RELENTLESS: relentless: blind PASS at 93b51941957924d9786824778cb6ece28aac064b after 0 return(s): Ran selftest_gss_junction_necks.py on the commit: exit 0, 12/12 (ExtCord + 4 colours T/X, Cybertek T/X). […] (9bb5b6eaadf52390dca3f99b4332624e2ede24eb)
-- finding:GSS_RECOLOR_CHECK_FIX_NECKED_JUNCTIONS [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS B14 recolour check reads the re-necked junction variants as stale; every proof_all refuses
+- finding:RIMMANDRAKE_STEADY_GSS_FAULTED_GRAPH_JOB_NEVER_SETTLES [open, problem] by BACKFILL, 2026-11-16T07:50:31Z: GSS T_CORE SliceGateChecks: 'graph worker: after a job fault the Builds did not end equal to one unbudgeted Build (60 Builds)' is red on the base 3f9fbc811 in 2 of 2 --perdig-only runs (and 1 of 2 with the walled-residue redraw fix): after a thrown graph job the async Builds hit the 60-Build cap without […]
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_STEADY_GSS_FAULTED_GRAPH_JOB_NEVER_SETTLES
+  accept: python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --perdig-only --no-export exits 0 in 5 of 5 runs (base: 0 of 2)
+- finding:RIMMANDRAKE_TRIM_GSS_LAY_COST_SLICES_ROSE_A_THIRD [open, problem] by BACKFILL, 2026-11-16T07:50:31Z: GSS: fix 0416599c69 costs lay time: SliceGateChecks cold live scene planned over 77 Builds (base 57; the job-fault check caps 60 and waits between Builds, so it passes), lattice scene fresh Build ~715 vs ~587 ms. Cost: bundle-strand hops on real bends, the vary lobe and loops on every short lead. […]
+  proposed fix: not written by its filer: read item:RIMMANDRAKE_TRIM_GSS_LAY_COST_SLICES_ROSE_A_THIRD
+  accept: python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --perdig-only --no-export prints 'planned over N Builds' with N <= 60 and rc 0 (reads 77 at 0416599c69)
+- RIMMANDRAKE_UNIFY_GSS_LOOP_READ_TWO_INSTRUMENTS_DISAGREE on 28b3041500: Closed at 28b3041500 by CONDUCTOR: detached run gss_last: red-first record in design/concepts/Gimme…
+- finding:RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL [open, problem] by BACKFILL, 2026-11-16T07:50:31Z: GSS cord leftovers after the owner's approval: Scrapper lead S-bend, plug-join slope, r3_13 crossing, faded wall plug, deferred Codex findings
+  proposed fix: not written by its filer: read item:RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL
   accept: none, not written at filing
-  holder: Closed at a6b1f4e427e0718cffc98349040db4f7222576bc by OWNER: no reason recorded (a6b1f4e427e0718cffc98349040db4f7222576bc)
-- finding:GSS_RESTRING_FIX_STYLES_UNRECONCILED [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: [MINOR] Re-stringing reconnects electrical runs without reconciling their styles
-  accept: - Written by the Producer, Producer weekly plan 2026-10-29 (run folder D:\ClaudeWork\rimmandrake\producer\2026-10-29T0045Z_weekly), goal 3. Unverified part: RM_RestringSpan. […]
-  holder: Implemented at 2a4d23fb8e4b (CODEX_ARCHMAGI_FWDRAIN); not closed. Criteria: A1 cut the only span joining two runs, restyle the sides differently, re-string: the joined run carries one style; A2 a MOD-class proof row for RM_RestringSpan PASS on the current build; […] (2a4d23fb8e4b)
-- finding:GSS_RESTRING_PROVE_ONE_STYLE_AFTER_JOIN [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS restring: no live row checks the joined run carries one style
-  accept: none, not written at filing
-  holder: Closed at 0d57472bb6697d51ee68b693c7a8844f064fb55f by CODEX_ARCHMAGI_FWDRAIN: Both L0 criteria satisfied by production-path colonist-job M15f and registered fresh-row A1 command. Final focused tests PASS 2/2, independent judge yes and full Whittle validation 0; actual live gameplay not claimed. (0d57472bb6697d51ee68b693c7a8844f064fb55f)
-- finding:GSS_STRIP_LED_FIX_MISSED_REPAINT [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: [MINOR] Rebuilding can consume a power-state change without repainting strip LEDs
-  accept: none, not written at filing
-  holder: Closed at a47aef70c74ec929321d34453b68f1b324d6186c by OWNER: no reason recorded (a47aef70c74ec929321d34453b68f1b324d6186c)
-- finding:GSS_SWAY_PROVE_KINETIC_LIVE_ROW [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS kineticSway has no live row: the probe can only explode with Bomb
-  accept: none, not written at filing
-  holder: Closed at 732415605fcea4c88e8e67c9a5e30c787e08a2cd by CODEX_ARCHMAGI_FWDRAIN: All three L0 tooling criteria proved by recorded production-linked red/green runs, matching shipping build and fresh independent acceptance; artifact and complete evidence published. […] (732415605fcea4c88e8e67c9a5e30c787e08a2cd)
-- finding:GSS_WATER_STUB_FIX_PASSED_LAST_WEEK [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z: GSS matrix MX_F60_T15_S0: waterproof-conduit water stubs not detected (0/2) on the fw_gss list; PASSed 2026-10-16
-  accept: none, not written at filing
-  holder: Implemented at c29007b6b66e (OWNER); not closed. Criteria: O1 GSS SelfTest WaterStubChecks green (772/772): old rule with swim reads 0 water stubs (can-fail), SnapshotBlock.Of reads 2; […] (c29007b6b66e)
-- finding:RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR [claimed_fixed, problem] by BACKFILL, 2026-11-16T07:11:06Z · bars cords_lie_slack, no_unforced_sharp_turn: GSS offline geometry red: 25 short strands under 1.4x chord, 1 flat long strand, 7 unforced bends on the oracle scenes
-  accept: `python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry` exits 0 (its geometry line reads taut 0,
-  holder: Closed at fabb3697c533 by CONDUCTOR: acceptance test measured: selftest_gimmesomeslack.py --geometry rc 0, 4515/4515, taut 0 flat 0 bends 0 (red with --no-slacken: 25/1/7); mod fix per owner card 2026-11-14 'Loosen the short cords', bar unchanged; live rows sc_cords_slack and sc_no_sharp_turn UNRUN until Stage 6 (fabb3697c533)
+- RIMMASTER_POLISH_GSS_STYLED_WINNER_BRIDGE_NEIGHBOUR_REOPEN on b24ec8298803: Closed at b24ec8298803 by OWNER: no reason recorded
+- SPARK_EFFECT_BUDGET_REWORK_1 on 998badacd5c3: Implemented at 8c59a2cac4c6 (pre-landing; landed as 998badacd5c3) (FOUNDRY); not closed. Criteria:…
+- UNROUTABLE_CORD_BUILD_DIVE_THROUGH_WALLS on 63b0c8dff58c: Implemented at fc932419a783 (pre-landing; landed as 63b0c8dff58c) (BENCH); not closed. Criteria: A1…
 
 ## Traps (8) — what a reader would otherwise get wrong
 - trap:47-not-48 (VERSION.json): 47, not 48. `VERSION.json` says "47 = 22 + 26"; the sum is 48 because `shock_reach_setting` is an inventory row and a leaf at once. `coverage_judge.required_ids()` de-duplicates. [measured 2026-11-14]
@@ -222,9 +225,12 @@ holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 - trap:older-bar-lists-still-exist (design/validation_walks/RimMandrake/GimmeSomeSlack.md): Older bar lists still exist. The walk bars M1 to M22 (`design/validation_walks/RimMandrake/GimmeSomeSlack.md`) and the north-star must-show ids (`validation.ROW_SHOWS`) are read by `modcheck floor`; they are not the 47.
 - trap:the-held-statements-are-about-flowworks-pits (src/RimMandrake/GimmeSomeSlack/Source/CordUnderLiquid.cs): The held statements are about FlowWorks pits. All three GSS statements were said during FlowWorks under-liquid looks; the cords' draw order under liquid lives in `src/RimMandrake/GimmeSomeSlack/Source/CordUnderLiquid.cs`, the liquid in FlowWorks.
 
-## Causes refuted (0) — do not chase these again
+## Causes refuted (3) — do not chase these again
+- cause:the-pool-fix-still-breaks-20-ms-untested: False theory: the pool fix still breaks 20 ms (untested, proof never reached GSS). (on f47b3f71f908, depends on src/RimMandrake/GimmeSomeSlack)
+- cause:a6-refuted-offline-incremental-fresh: A6 refuted offline (incremental == fresh); (on a16dce9c9c93, depends on src/RimMandrake/GimmeSomeSlack)
+- cause:s12b-d7-pass-d7-refuted: S12b_D7 PASS (D7 refuted). (on 84537f418eda, depends on src/RimMandrake/GimmeSomeSlack)
 
-## His answers (34)
+## His answers (37)
 - decision:version: Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of FlowWorks, Gimme Some Slack, Pyrelands, Pyrelands Mechanics)
 - decision:q:we-need-to-move-the-gimmesomeslack: We need to move the GimmeSomeSlack hose code/functionality over to FlowWorks. That's the right home, and it allows GimmeSomeSlack to be entirely about cables and conduits and electricity.
 - decision:q:if-caught-steady-goodwill-drain-like: If caught, steady goodwill drain (like living too close to a settlement)
@@ -235,30 +241,33 @@ holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 - decision:q:every-sparking-end-shocks-but-settable: Every sparking end shocks, but settable in settings to those three options: None, only downed lines, or all.
 - decision:q:i-do-agree-that-cords-take: I do agree that cords take slowly curving paths rather than straight lines often: what they avoid are sharp curves unless they must.
 - decision:q:here-is-a-screenshot-of-a: Here is a screenshot of a GSS connector unfortunately showing up through the battery it should be beneath in a pit. · The wires are also above the items and furniture otherwise, likely all the same problem. · [Image #8] Also, the GSS cables are now correctly below the items.
-- decision:q:gimmesomeslack-rename-1: Let's call it Gimme Some Slack. RimMandrake level mod.
 - decision:q:ratchet-pilot-prove-three-mods-one-loop: For this experiment only, Bench will own everything. This is NOT a change of policy, just an experiment.
 - decision:q:tank-tall-build-twice-the-drink: I like the new ones much better. They should have the same four variant styles as Gimme Some Slack. And yes regen the short ones too to match.
-- decision:q:gss-walk-hoses-excise-reeled-in: But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! We moved the hoses into FlowWorks! Get rid of those hoses...
-- decision:q:unroutable-cord-build-dive-through-walls: GimmeSomeSlack all looks great! Verified.
-- decision:q:gimmesomeslack-northstar-validate-1: Does your 'Verified' also validate GimmeSomeSlack's north star, so it stops being a draft? → Yes, validate it now
 - decision:q:hose-route-fix-tunnels-under-walls: No, I meant for connections, we could just have hoses "go under" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the "goes under walls" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed.
 - decision:q:fallen-wire-shock-1: Does 'all FlowWorks' include Gimme Some Slack? → Yes, take GSS too (Recommended)
 - decision:q:mod-completion-measure-how-done-is-done: Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong.
-- decision:finding:GSS_ART_MANIFEST_FIX_OVERLAY_SIZES: Once we switch over to Conductor + ispatch + Foundry, all bench items get reassigned to Dispatch-> Foundry
 - decision:q:planning-build-days-of-orders-no-home: Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later
 - decision:finding:GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD: You should work that item right now so we can keep going together.
-- decision:finding:GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE: What should happen to FOUNDRY? → Retire it (Recommended)
 - decision:finding:GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS: Yes, we're going to do what you recommend.
-- decision:q:lightspeed-wire-gss-first-no-llm-path: For the One test lane with no LLM in it, that's awesome! We should call this Lightspeed. I wonder how much we could write up to be tested this way? How much of Northstar could be wired with no LLM in the mix? Write this up with GSS as the test case and Expedite it.
-- decision:q:gss-finish-ralph-loop-waits-game-turn: If so start a second one just like this but with the appropriate guidance to complete the remaining work on GSS. I authorize the spend. I am going to bed now, AFK. Proceed and ensure it doesn't go off the rails too far. Pause it if too much live game contention proceeds, it can wait its turn too. Don't spend on waiting, just pause it.
 - decision:finding:GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE: Please have those Frozen Relentless items shut down their work and record where they were, then release. Do that now, across the board.
 - decision:finding:RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME: this is the generalized version of the matrix scenes... combine. It's important for "first human look" after the system thinks a mod is ready for the human to have a well prepared savegame like this that's dense and informative and intuitive and well labeled
 - decision:finding:RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE: GSS grid → Wait for all green (one first-look save once every MOD row passes); GSS ids → Re-key proof rows to the tree's leaf ids and restore his 2026-11-07 'no sharp turn' bar to the tree; Short cords → exempt cords shorter than 3 cells from SC_no_two_cords_alike
 - decision:q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit: Four built things no bar covers (geyser hot tub, liquid coating and washing, cords under a battery and items, fire-hawk hunt letter and trophy): where do they go? -> Bars for all four now
-- decision:q:rimmandrake-advance-gimmesomeslack-offline-beside-the-pilot: Does 'lock the other four' also pass the Exam and coverage judge for Gimme Some Slack and Pyrelands? → They still owe it: one exam and one coverage judge pass each on the locked tree, no loop; the cords bar gets a scene
 - decision:finding:RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR: Short cords (2 to 3 tiles) fail the 1.4x slack bar: what should happen? -> Loosen the short cords
 - decision:q:rimmandrake-design-holder-pipeline-fusion-checklist-not-handoff: Anyone finding anything documents precisely how they would fix it but it goes back to the holder fully informed. Do all three side by side as a deeper test. When one reveals a needed fix to the system all three benefit. Try 400k first.
 - decision:q:concept-agent-design-argues-before-building: The power strips (modern style art) or connectors (other art styles) should appear whenever there are three or four way junctions of conduit. They should appear to host many of the other lines plugging into the power strips and connectors, as the means to join the many cables. Cables should look messy and only loosely follow the conduit in the floor. It should not repeat patterns but appear like real messy cables strewn across the floor. […]
+- decision:finding:GIMMESOMESLACK_RENAME_1: Let's call it Gimme Some Slack. RimMandrake level mod.
+- decision:finding:GIMMESOMESLACK_NORTHSTAR_VALIDATE_1: Does your 'Verified' also validate GimmeSomeSlack's north star, so it stops being a draft? → Yes, validate it now
+- decision:finding:POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK: Power theft numbers → keep 2 goodwill/day, 12-cell notice
+- decision:finding:GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE: Re-stringing a cut power line is instant and free... What ships? → Make it a colonist job
+- decision:finding:GSS_STYLE_RUN_PROVE_MIXED_LOOKS_SUSPECTED: GSS finish → Done after one live pass
+- decision:finding:GSS_WALK_HOSES_EXCISE_REELED_IN: But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! We moved the hoses into FlowWorks! Get rid of those hoses...
+- decision:finding:UNROUTABLE_CORD_BUILD_DIVE_THROUGH_WALLS: GimmeSomeSlack all looks great! Verified.
+- decision:finding:GSS_CORD_SILENCE_PHANTOM_SPARK: I think it's because the conduit doesn't go physically under the pump. That's ok my Rimworld rules, and so you show one cable going all the way. But then you draw a second cable that acts disconnected as well.
+- decision:finding:CORD_GRAPH_TOPOLOGY_REVISION_1: What should happen to FOUNDRY? → Retire it (Recommended)
+- decision:finding:LIGHTSPEED_WIRE_GSS_FIRST_NO_LLM_PATH: For the One test lane with no LLM in it, that's awesome! We should call this Lightspeed. I wonder how much we could write up to be tested this way? How much of Northstar could be wired with no LLM in the mix? Write this up with GSS as the test case and Expedite it.
+- decision:finding:GSS_FINISH_RALPH_LOOP_WAITS_GAME_TURN: Those three closeups look fantastic! Approve!
+- decision:finding:RIMMANDRAKE_ADVANCE_GIMMESOMESLACK_OFFLINE_BESIDE_THE_PILOT: Does 'lock the other four' also pass the Exam and coverage judge for Gimme Some Slack and Pyrelands? → They still owe it: one exam and one coverage judge pass each on the locked tree, no loop; the cords bar gets a scene
 
 ## Open questions (0)
 
@@ -314,16 +323,9 @@ holder lease run-1794814806, token 1, last active 2026-11-16T07:40:19Z
 
 spend recorded: USD 72.28, 45795737 tokens
 
-## Closed findings (7)
-- finding:GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE withdrawn (reading) a47aef70c7
-- finding:GSS_COLOUR_SEED_FIX_HIDDEN_CONDUIT_SPLIT withdrawn (reading+test) a47aef70c7
-- finding:GSS_CORD_ADAPTER_FIX_NO_LAMP_GEOMETRY withdrawn (reading) 2f860812e0
-- finding:GSS_CORD_AUDIT_FIX_REJECTS_WALL_PLUGS withdrawn (reading) 2f860812e0
-- finding:GSS_FRESH_BUILD_ORACLE_FIX_TAP_CLAMPS withdrawn (reading) a47aef70c7
-- finding:GSS_MULTILINK_FIX_PIPE_POLE_RANGE withdrawn (reading) a47aef70c7
-- finding:GSS_STYLED_WINNER_FIX_KEEPS_LEGACY_LOOK withdrawn (reading) a47aef70c7
-
 ## Left out
-- the full history: 237 events (views/history.md; never read whole)
+- closed findings: 7, oldest first (`modledger.py show --mod GimmeSomeSlack <subject>`)
+- claimed fixes in brief: 80 on one line (name, sha, claim), their claim, test and fix by `show`
+- the full history: 371 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T07:40:19Z.1794814819768024051 (modledger.py since --mod GimmeSomeSlack t=2026-11-16T07:40:19Z.1794814819768024051 prints what changed after this packet)
+cursor: t=2026-11-16T07:50:32Z.1794815432473953989 (modledger.py since --mod GimmeSomeSlack t=2026-11-16T07:50:32Z.1794815432473953989 prints what changed after this packet)
