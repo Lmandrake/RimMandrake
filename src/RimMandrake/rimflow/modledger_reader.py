@@ -57,9 +57,29 @@ ticket given."""
 OWNER_SYSTEM = """You sort a project owner's words attached to software tickets. For each ticket you get its title and \
 his words, numbered. Return the numbers of the words that state a durable ruling about the MOD named: its behaviour, \
 scope, design, art, settings, tests or acceptance bars, or a verdict on a fix. Leave out words that only order or \
-schedule work, assign or stop agents, talk about tokens, budgets, quotas or staffing, chat, or rule on the pipeline or \
-process as a whole rather than on this mod. Answer with ONE JSON object and nothing else: {"<TICKET_ID>": [numbers]}, \
+schedule work (including which mod goes first), assign or stop agents, talk about tokens, budgets, quotas or staffing, \
+chat, rule on the pipeline or process as a whole rather than on this mod, or mean nothing without the question they \
+answer ("1 agree.", "Yes all", "(2)"). Answer with ONE JSON object and nothing else: {"<TICKET_ID>": [numbers]}, \
 one key per ticket given (an empty list when none qualify)."""
+
+
+KEEP_SYSTEM = """You prune a per-mod ledger. A holder picks the mod up in a month and reads these entries before \
+working on it. For each ticket you get its title, its defect and its candidate entries, numbered (T = a trap: what a \
+reader would get wrong; C = a ruled-out cause). KEEP every entry that would make that holder read a result, a test or \
+the code differently: an instrument, test, proof or harness that reads green or red for the wrong reason (a live FAIL \
+that is not a mod defect, a degraded or partial test run, a check that reads less than it claims), a sha that no longer \
+resolves or a close that was wrong, a misleading name or setting, a mechanism a reader would misjudge, a cause already \
+ruled out. DROP only: agent workflow trivia (which helper, branch, clone, queue window or machine slot ran it, who may \
+certify, how screenshots were captured, design-process rules for agents), bare status lines (UNRUN, still owed, not yet \
+built, waits for X) that hold no reading a holder could get wrong, and restatements of the ticket's own defect or fix. \
+When unsure, keep. Answer with ONE JSON object and nothing else: {"<TICKET_ID>": [kept numbers]}, one key per ticket."""
+
+
+def keep_text(name, title, defect, items):
+    """One ticket's candidate traps and causes as the keep reader sees them: [n] T|C text (where)."""
+    return "=== KEEP %s\nTITLE: %s\nDEFECT: %s\n%s" % (name, title or "-", defect or "-", "\n".join(
+        "[%d] %s %s%s" % (i + 1, k, " ".join(str(t).split()), (" (%s)" % w) if w else "")
+        for i, (k, t, w) in enumerate(items)))
 
 
 def owner_text(name, title, mod, words):
@@ -99,8 +119,12 @@ def record_text(name, title, state, prose, evs, fault=None, fixrec=None, prose_p
     return "\n".join(out)
 
 
-def rec_hash(text):
-    return hashlib.sha256((PROMPT_VERSION + "\n" + text).encode("utf-8")).hexdigest()[:16]
+FIELD_VERSION = {"reading": PROMPT_VERSION, "owner": "owner-2026-11-16.2", "keep": "keep-2026-11-16.2"}
+
+
+def rec_hash(text, field="reading"):
+    """The record's hash under its field's prompt version (a changed prompt re-reads only that field)."""
+    return hashlib.sha256((FIELD_VERSION[field] + "\n" + text).encode("utf-8")).hexdigest()[:16]
 
 
 def _call(prompt, model, timeout=600, system=None):
@@ -147,7 +171,7 @@ def read_tickets(path, records, bars, budget_usd, model="sonnet", workers=4, log
     tickets = d.setdefault("tickets", {})
     d["prompt_version"], d["model"] = PROMPT_VERSION, model
     hkey = "hash" if field == "reading" else field + "_hash"
-    todo = [(n, t) for n, t in sorted(records.items()) if (tickets.get(n) or {}).get(hkey) != rec_hash(t)]
+    todo = [(n, t) for n, t in sorted(records.items()) if (tickets.get(n) or {}).get(hkey) != rec_hash(t, field)]
     spent, worst, done, failed, skipped = 0.0, 0.25, 0, [], 0     # 0.25: a first guess at a batch's cost
     bl = list(batches(todo))
     head = "BARS (the mod's locked bar ids): %s\n\n" % ", ".join(bars) if field == "reading" else ""
@@ -181,7 +205,7 @@ def read_tickets(path, records, bars, budget_usd, model="sonnet", workers=4, log
                                           at=time.strftime("%Y-%m-%dT%H:%M:%S"))
                         done += 1
                     elif field != "reading" and isinstance(a, list):
-                        tickets[n] = dict(tickets.get(n) or {}, **{field: a, hkey: rec_hash(t)})
+                        tickets[n] = dict(tickets.get(n) or {}, **{field: a, hkey: rec_hash(t, field)})
                         done += 1
                     else:
                         failed.append("no answer for %s" % n)

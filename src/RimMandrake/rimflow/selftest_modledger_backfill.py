@@ -537,7 +537,10 @@ def fake_call(prompt, model, system=None):
                   "selftest_read.py exit 0", "class": "problem", "bars": ["bar_a", "not_a_bar"], "changed": None,
                   "causes_refuted": [{"text": "Reading: the DLL was not stale for %s" % n, "depends_on":
                                       ["src/RimMandrake/NoSuchMod/X.cs"]}],
-                  "traps": [{"text": "Reading: T_GEOM reads seven scenes only (%s)" % n, "where": "T_GEOM"}]}
+                  "traps": [{"text": "Reading: T_GEOM reads seven scenes only (%s)" % n, "where": "T_GEOM"},
+                            {"text": "Reading: helper notes sit on branch ralph (%s)" % n, "where": "branch ralph"}]}
+    for n, block in re.findall(r"=== KEEP (\S+)\n(.*?)(?=\n=== |\Z)", prompt, re.S):
+        ans[n] = [int(i) for i, w in re.findall(r"^\[(\d+)\] (.*)$", block, re.M) if "branch ralph" not in w]
     for n, block in re.findall(r"=== OWNER WORDS (\S+)\n(.*?)(?=\n=== |\Z)", prompt, re.S):
         ans[n] = [int(i) for i, w in re.findall(r"^\[(\d+)\] (.*)$", block, re.M) if "vent" in w]
     return ans, 0.5
@@ -577,6 +580,10 @@ CALLS.clear()
 rr2 = B.run(root, MOD)
 check("reader: a re-run without --read keeps every read line (no call, nothing written or deleted)",
       not CALLS and rr2["written"] == 0 and rr2["deleted"] == 0, rr2)
+TRr = [e["body"]["text"] for e in M.read(root, MOD) if e["_shard"] == "BACKFILL" and e["kind"] == "trap.noted"]
+check("keep reading: a trap it finds would change nothing a holder does (agent-process trivia) is not mined; the "
+      "instrument trap is", not [t for t in TRr if "branch ralph" in t] and [t for t in TRr if "T_GEOM reads" in t],
+      [t for t in TRr if "Reading" in t][:4])
 DECr = [e["body"].get("said") or "" for e in M.read(root, MOD) if e["_shard"] == "BACKFILL" and e["kind"] == "decision"]
 check("owner reading: on a read ticket only his words it marks as a ruling about the mod stay decisions",
       any("chain through every vent" in x for x in DECr) and not any("staying interactive" in x for x in DECr), DECr)

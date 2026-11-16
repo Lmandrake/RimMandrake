@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":309557,"DISPATCH":3051,"HOLDER.run-1794813483":1382} body_sha256=5da37bb132f6aa5600ccdc93df8ed02309740f22cc10220d90f9c855049dd1ca -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":305856,"DISPATCH":3051,"HOLDER.run-1794813483":1382} body_sha256=735d05720c0dd320d3850030bf15f111d6d926ebe075ce46f28796e919255dc0 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage offline_build · 440 events in 3 shards · reducer 1
+version 0.1.0 · stage offline_build · 435 events in 3 shards · reducer 1
 holder lease run-1794816087, token 3, last active 2026-11-16T08:01:28Z
 holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 400000
 
@@ -10,7 +10,7 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - ruled out: RM_PitPathing TryPlan/OutsiderBarredFromFloor and portable-ladder Reaches as the dry-pit cause (read)
 
 ## Open findings (59)
-(claimed fixes, awaiting a judge, on one line each with the oldest 39 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
+(claimed fixes, awaiting a judge, on one line each with the oldest 36 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
 - RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED on 81392aea384e9105a92263aea39b2d08c844c1f4
 - RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE on 81392aea384e9105a92263aea39b2d08c844c1f4
 - RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT on 81392aea384e9105a92263aea39b2d08c844c1f4
@@ -63,9 +63,15 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED [open, problem · bars walk_storeroom_raid, barrage_frame_budget, frame_time_probe]: walk_storeroom_raid's FRAME_BUDGET row is UNMEASURED by construction: RM_FrameProbe.Begin/Stop are internal and jawa/st…
 - RIMMANDRAKE_FIND_DARK_HAZE_EAST_OF_GAS_CHAIN [open, problem]: In the ExplosiveKnockback walk save EK_VISIT2_WALK_20261115, dark blotches and haze lie over the four stations east of…
 - RIMMANDRAKE_FIX_DRY_PIT_HAULER_DESCENT_SWIMS_HID_IT [open, problem · bars pit_goods_fetched, inv_pit_floor_haul]: sc_pit_fetch FAIL with dry pits (AridShrubland, DLL 2d0685e9e6, rain off, 60000 ticks): the hauler never climbs down th…
-- RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES [open, problem · bars walk_storeroom_raid]: sc_walk_raid FAIL at visit 2 (10 PASS 6 FAIL, FRAME_BUDGET UNMEASURED): A_RELOAD_NO_DUP_LOST 11 before save, 7 after re…
-- RIMMANDRAKE_KEEP_SPARED_SLEEPER_IN_BED_ON_FULL_LIST [open, problem · bars the_spared]: On the owner's full mod list the staged sleeper is not in its bed at the blast, so spared_states is INVALID. It passes…
-- RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE [open, problem · bars pit_goods_fetched, inv_pit_floor_haul]: In sc_pit_fetch the corpse at O(3,1) sits on the 3x3 pit's edge row, so a hauler on the rim can touch it without descen…
+- finding:RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES [open, problem] by BACKFILL, 2026-11-16T08:26:05Z · bars walk_storeroom_raid: sc_walk_raid FAIL at visit 2 (10 PASS 6 FAIL, FRAME_BUDGET UNMEASURED): A_RELOAD_NO_DUP_LOST 11 before save, 7 after reload; cover gone with 0 descents; gas cells burst twice; Human38765 has no outcome.
+  proposed fix: Re-run sc_walk_raid live with the proof build; classify the cover and gas rows from ev.grenade and ev.gas_bursts; each MOD cause found gets an offline selftest red before its fix.
+  accept: Live: the command in the sc_walk_raid row of visit_2/rows.jsonl exits 0 (exit 1 on 61567a7b75); each MOD cause also gets an offline selftest red before its fix.
+- finding:RIMMANDRAKE_KEEP_SPARED_SLEEPER_IN_BED_ON_FULL_LIST [open, problem] by BACKFILL, 2026-11-16T08:26:05Z · bars the_spared: On the owner's full mod list the staged sleeper is not in its bed at the blast, so spared_states is INVALID. It passes on the minimal list since a987289bca.
+  proposed fix: Trace the sleeper with set_colonist_job_logging to find which full-list mod gets it up or stops LayDown, and keep it in bed.
+  accept: none, live staging.
+- finding:RIMMANDRAKE_MOVE_PIT_FETCH_CORPSE_OFF_RIM_TOUCHED_ABOVE [open, problem] by BACKFILL, 2026-11-16T08:26:06Z · bars pit_goods_fetched, inv_pit_floor_haul: In sc_pit_fetch the corpse at O(3,1) sits on the 3x3 pit's edge row, so a hauler on the rim can touch it without descending. 'Corpse out' therefore does not prove ladder use.
+  proposed fix: Dig the main pit 3x4 (Pit(O(s,2,-1),3,4)) so O(3,1) is interior; stockpiles at z=5 and the hauler at z=3 stay outside.
+  accept: Offline selftest parsing the pit_goods_fetch block asserting all 8 touch neighbours of the corpse and stack cells lie inside the main Pit rect (not yet written; watch it red on base 1e4264f663 first)
 - finding:RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE [open, problem] by BACKFILL, 2026-11-16T08:26:06Z · bars inv_proof_scenes: Run the blind offline challenge (Stages 4 and 5, tests first) by hand on Explosive Knockback 0.1.0, one cycle, and write down its record format.
   proposed fix: Run lane 1 (rows), lane 2 (code review, planted faults, reruns), fix Problems red-first, then rule on the NOTED_FOR_CONDUCTOR faults and start cycle 2.
   accept: none, the exit condition is: inv_proof_scenes green and no Problems found.
@@ -79,7 +85,7 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
   proposed fix: (1) Add a kernel selftest beside selftest_explosiveknockback_kernel.py running the sweep lane at default and per kernel-side setting, asserting each changes only its own outcomes, red on a coupling mutant
   accept: (1) selftest asserts each setting changes only its own row and a coupled-settings mutant (strength also scaling the cap) turns it red
 
-## Traps (117) — what a reader would otherwise get wrong
+## Traps (115) — what a reader would otherwise get wrong
 - trap:three-bar-sets-exist (design/validation_walks/RimMandrake/ExplosiveKnockback.md): Three bar sets exist. The 59 coverage checklist rows are the bars of 0.1.0, and Stage 6 reports against them. The 16 "north-star bars" (his card 2026-11-12, "Approve as written") and the 49 "must be true" rows of `design/validation_walks/RimMandrake/ExplosiveKnockback.md` (measured 2026-11-14; […]
 - trap:the-locked-files-moved-after-the-lock (version/bars.md): The locked files moved after the lock. `version/bars.md` pins blobs at `237b791167`; since then `scenes.json` (sc_spared, sc_mass_and_power, sc_settings_sweep), `record.json` (decisions) and `tree.json` (the owner-certify stamp only) changed. The scene edits are test text (creatures chosen by mass, never named; […]
 - trap:judge-round-count-has-three-answers (design/concepts/ExplosiveKnockback/journal.md:58): Judge round count has three answers (12 / 13 / 19); not reconciled (spec §10).
@@ -167,11 +173,9 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - trap:the-cover-rows-may-be-unmeasurable-by-scene (walk_storeroom_raid A/B_COVER_BROKEN_ONE_DESCENT): The cover rows may be unmeasurable by scene design: [guess ~70%] the drafted colonist was killed by the frag grenade on his own cell (Bomb 50), and a corpse never descends (Building_PitCover.DeSpawn takes Pawn things only). If confirmed, the scene goes to the Designer.
 - trap:b-requests-match-plan-human38765-is-guessed-70 (walk_storeroom_raid B_REQUESTS_MATCH_PLAN): B_REQUESTS_MATCH_PLAN Human38765 is guessed (~70%) a blast-killed pawn requested by name but executed as its corpse (Corpse_<race><id>); a harness pairing issue, not confirmed.
 - trap:the-live-walk-is-unrun-it-needs-a (validation.py --live walk_storeroom_raid --storeroom x,z,w,h --cover x,z --gas x,z [--save NAME]): The live walk is UNRUN. It needs a staged full-list colony (storeroom, covered pit, vent cell). FRAME_BUDGET is unmeasured by construction (filed RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED). Closing does not mean the raid passed.
-- trap:the-work-was-left-in-a-detached-clone (relentless restore_bundle): The work was left in a detached clone bundled at /home/mandrake/rm/relentless/store/orphans/bundles/20261115T165757Z-RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO.det; restore it if the work is wanted.
 - trap:a-correct-mod-still-passes-these-weakened-checks (PF_PROOF_FLYOFF_SKIP_UNCHECKED, PF_GO_WALL_POSITION_UNCHECKED, PF_GO_WATER_UNCHECKED, PF_ST3_CONTAINER_ZERO_CELLS_OK, PF_ST3_FIREHALF_LANE_NOOP): A correct mod still passes these weakened checks; only a broken mod plus a weakened check would slip through, so green offline suites do not show the verdicts check what the scenes promise.
 - trap:visit-2-s-corpse-out-true-with-hauler (RM_KnockbackProof.cs pit_goods_fetch): Visit 2's 'corpse out=True with hauler in pit=False' reads as a pass but fits a rim pickup: Pit(O(2,-1),3,3) digs x2..4 z-1..1 and O(3,2), the corpse's north neighbour, is undug rim. Only the steel at O(3,0) has all eight neighbours in the pit.
 - trap:cycle-1-exit-is-not-met-inv-proof (design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_1/): Cycle 1 exit is NOT met: inv_proof_scenes is red (T_RESTORE known red) and Problems were found. One scene criterion, sc_storeroom_mortar's per-good 1.3-2.0 ratio, is impossible in whole cells. Planted faults caught 39 of 43 by builder offline tests.
-- trap:the-detached-run-s-work-is-held-in (relentless restore_bundle): The detached run's work is held in a bundle, not on a remote: /home/mandrake/rm/relentless/store/orphans/bundles/20261115T060653Z-RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE.det.
 - trap:the-judge-s-original-check-ran-with-the (cycle_2/lane2/plant_faults.py --expect-caught): The judge's original check ran with the failing direction as rc 0. It was rerun as a test whose rc 0 means the fix holds: red on ecd0b23322, green on 587529cee1.
 - trap:the-green-run-s-clone-carried-uncommitted-k (cycle_3/lane2/fix_evidence/ek_c3_green_gate.jsonl): The green run's clone carried uncommitted K-23 kernel edits in other files (T_KERNEL was red in that baseline); the catching suite is T_PROOFGATE.
 - trap:the-held-patch-failed-lint-as-written-because (ExplosiveKnockback tree.json barrage leaf; selftest_explosiveknockback_barrage_p99.py): The held patch failed lint as written because a constraint leaf must start with its limit; the leaf now reads 'at most 50 ms for the 99th-percentile frame ... on Archmagi', and the acceptance test checks the three facts in any order.
@@ -207,7 +211,7 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - cause:the-container-s-movement-was-not-the-mod: The container's movement was not the mod: the SC journal was empty, so it was vanilla building destruction. (on bb195048ac51, depends on src/RimMandrake/ExplosiveKnockback)
 - cause:no-escape-bug-in-the-mod-the-control: No escape bug in the mod: the control used RM_LadderPortable, and FlowWorks' RM_CompLadder.EffectivelyRaised = raised && !Props.portable && setting, so a portable ladder never reads raised and the control pit stayed open. The fault was in the test setup. (on 7c17ebc62201, depends on src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs)
 
-## His answers (23)
+## His answers (20)
 - decision:version: Yes, fix it like that, and then please record this as an actual Pass.
 - decision:q:you-can-t-fall-in-by: You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall.
 - decision:q:1-1-totally-even-better-if: 1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly.
@@ -216,8 +220,6 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - decision:q:1-anything-that-draws-its-contents: 1: Anything that draws its contents is open. … 4: I am confused. Items should be blown off a shelf, and a shelf should be ruled as open, period. So the scene is staged misleadingly. No blockers.
 - decision:q:we-really-shouldn-t-blow-back: We really shouldn't blow back creatures beyond a certain mass, and the heavier something is, the less it should fly. That should also be a function of the explosive damage itself as well. · with a single scene we can check ALL these things together · Melee shove is a great idea, but it belongs in FlowWorks, not here.
 - decision:q:can-t-we-actually-simulate-that: can't we actually simulate that settings check offline? That seems a gratuitous use of the game, unless that's actually a very fast check?
-- decision:q:rimmandrake-bind-refusals-to-fixes-no-ceremony-loops: Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists
-- decision:q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit: It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3).
 - decision:finding:RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS: Test 1: looks great! Full pass.
 - decision:finding:RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: the result was superb. Item scatter was exceptional, people and items flew into the pit, and more items survived the explosion than previously. Full pass I believe.
 - decision:finding:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH: EK 5 gaps → fix the 5 gaps then one more judge; gas shove onto an open pit drops the pawn in → yes, it stands
@@ -229,7 +231,6 @@ holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 4
 - decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER: It's fine. This doesn't need a human review. Just accept it as a pass and go on.
 - decision:finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN: Thrown pawn lands on another pawn → Bruise in the next version
 - decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
-- decision:finding:RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO: 1 agree.
 - decision:finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC: For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.
 
 ## Open questions (0)
@@ -302,7 +303,7 @@ spend recorded: USD 70.74, 138207197 tokens
 - closed findings: 19, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 64, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 39 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 440 events (views/history.md; never read whole)
+- open findings in brief: the oldest 36 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
+- the full history: 435 events (views/history.md; never read whole)
 
 cursor: t=2026-11-16T08:32:10Z.1794817930184734874 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T08:32:10Z.1794817930184734874 prints what changed after this packet)

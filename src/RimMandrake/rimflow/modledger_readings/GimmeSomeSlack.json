@@ -1,7 +1,7 @@
 {
 "model": "sonnet",
 "prompt_version": "2026-11-16.1",
-"spent_usd_last_run": 0.0375,
+"spent_usd_last_run": 0.2352,
 "tickets": {
 "AERIAL_CUT_POINT_PRECISION_1": {
 "at": "2026-11-16T00:08:44",
@@ -51,6 +51,11 @@
 "CORD_GRAPH_TOPOLOGY_REVISION_1": {
 "at": "2026-11-16T00:08:44",
 "hash": "005d42902b3653ac",
+"keep": [
+1,
+2
+],
+"keep_hash": "9469ae78e94ebe02",
 "reading": {
 "accept": "A2 (L2, still owed): live on a busy map with floorRipple + CPU sway on, SwayHash/RippleHash and draw counters match before/after, and MotionBucketBuilds rises only on rebuilds.",
 "bars": [],
@@ -91,6 +96,10 @@
 "GIMMESOMESLACK_HOSE_BEND_TRACE_1": {
 "at": "2026-11-16T00:08:44",
 "hash": "f6bc24b50c2e0811",
+"keep": [
+1
+],
+"keep_hash": "24bd81e2ca1d0b13",
 "reading": {
 "accept": "A1 (L1): HoseProbe minBendFlat/Plump >= 1.14 on H00-H08 with new scene maxLength; A2 (L2): matrix rerun H0-H8 all green.",
 "bars": [
@@ -112,12 +121,15 @@
 "GIMMESOMESLACK_NORTHSTAR_VALIDATE_1": {
 "at": "2026-11-16T00:08:44",
 "hash": "4b253447523478e5",
+"keep": [
+1
+],
+"keep_hash": "a3c5e0336a970d70",
 "owner": [
-1,
 2,
 3
 ],
-"owner_hash": "c43796e5cd73b11d",
+"owner_hash": "4f24cdbd2b7ccff3",
 "reading": {
 "accept": "none, owner walkthrough: owner verified the 31-station save RM_gss_walk_20261015b in game.",
 "bars": [],
@@ -140,7 +152,7 @@
 "owner": [
 1
 ],
-"owner_hash": "ae303694ffb03bc4",
+"owner_hash": "be303291b81020c3",
 "reading": {
 "accept": "none, selftests must stay green; recorded Northstar runs restart under the new key.",
 "bars": [
@@ -158,6 +170,10 @@
 "GSS_AERIAL_HINTS_FIX_SMALL_FIBS": {
 "at": "2026-11-16T00:08:44",
 "hash": "65a38d79c9777f6f",
+"keep": [
+1
+],
+"keep_hash": "19bf163c37ce12af",
 "reading": {
 "accept": "none, Verse-bound: shape rows in validation.py O7.",
 "bars": [
@@ -179,6 +195,10 @@
 "GSS_ART_MANIFEST_FIX_OVERLAY_SIZES": {
 "at": "2026-11-16T00:08:44",
 "hash": "705ef561b547f651",
+"keep": [
+1
+],
+"keep_hash": "5d7305d6239f9eb7",
 "reading": {
 "accept": "run_selftests.py --only selftest_gss_art_manifest_sizes green (52 PASS 0 FAIL).",
 "bars": [],
@@ -198,6 +218,11 @@
 "GSS_ASYNC_TEST_FIX_STALE_CORRIDOR_GAP": {
 "at": "2026-11-16T00:08:44",
 "hash": "090bc7b2022cb86c",
+"keep": [
+1,
+2
+],
+"keep_hash": "f8b6cb496fcf441f",
 "reading": {
 "accept": "none filed as a command; new cases must go red when the guards are deleted.",
 "bars": [],
@@ -221,6 +246,11 @@
 "GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE": {
 "at": "2026-11-16T00:08:44",
 "hash": "5c0ecb2d4f1512f0",
+"keep": [
+1,
+2
+],
+"keep_hash": "0b7cd439202ece3f",
 "reading": {
 "accept": "none filed; regression test BatchedLinkStyleMergeChecks, mutation-checked.",
 "bars": [],
@@ -247,6 +277,15 @@
 "GSS_BUILD_FIX_SLICE_GROWS_WITH_CORDS": {
 "at": "2026-11-16T00:08:44",
 "hash": "4331cf40be093b5d",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6
+],
+"keep_hash": "deede27dcd624ab5",
 "reading": {
 "accept": "A1 (L2): GSS deployed from fix sha, quicktest map >=160x160, four 37x37 lattices (469 conduits) plus lamps; gss_slice_window_proof.py under python.exe; window max slice < 20 ms, GC excluded.",
 "bars": [
@@ -287,6 +326,11 @@
 "GSS_COLOUR_SEED_FIX_HIDDEN_CONDUIT_SPLIT": {
 "at": "2026-11-16T00:08:44",
 "hash": "eca4e1e28fd02716",
+"keep": [
+1,
+2
+],
+"keep_hash": "df4507d9fe21cc5a",
 "reading": {
 "accept": "none filed; regression test HiddenConduitSeedChecks, mutation-checked.",
 "bars": [],
@@ -313,6 +357,10 @@
 "GSS_CORD_ADAPTER_FIX_NO_LAMP_GEOMETRY": {
 "at": "2026-11-16T00:08:44",
 "hash": "23ac4aad59718388",
+"keep": [
+1
+],
+"keep_hash": "0762ebd13a30998c",
 "reading": {
 "accept": "none, closed as intentional behaviour.",
 "bars": [],
@@ -332,6 +380,10 @@
 "GSS_CORD_AUDIT_FIX_REJECTS_WALL_PLUGS": {
 "at": "2026-11-16T00:08:37",
 "hash": "fa59995c3bacaabc",
+"keep": [
+1
+],
+"keep_hash": "59b6af52c250eb6a",
 "reading": {
 "accept": "none, no command filed; closed on a GPT re-read of current ArtFit that found a HasHome wall-cell plug already accepted.",
 "bars": [],
@@ -351,6 +403,12 @@
 "GSS_CORD_LAY_FIX_HEAPS_IN_DOORWAYS": {
 "at": "2026-11-16T00:08:37",
 "hash": "13c063f9216dc280",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "fe5dbb801a5678ba",
 "reading": {
 "accept": "none, no command filed; offline rows GptPreReleaseChecks.CordLay; A8 left as an UNMEASURED live row in validation.py.",
 "bars": [
@@ -377,6 +435,10 @@
 "GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS": {
 "at": "2026-11-16T00:08:37",
 "hash": "e77cdd4a8f411456",
+"keep": [
+1
+],
+"keep_hash": "2e04da52e02bd4e6",
 "reading": {
 "accept": "none, no command filed; closed on a blind check pass at 7bc25dede9f8.",
 "bars": [],
@@ -396,10 +458,14 @@
 "GSS_CORD_SILENCE_PHANTOM_SPARK": {
 "at": "2026-11-16T00:08:37",
 "hash": "1e18e41aafb0648f",
+"keep": [
+1
+],
+"keep_hash": "7a9d3758b0ac7247",
 "owner": [
 1
 ],
-"owner_hash": "eabcbc69fdb319b7",
+"owner_hash": "701b1524b6a58261",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [
@@ -422,6 +488,10 @@
 "GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC": {
 "at": "2026-11-16T00:08:37",
 "hash": "79a9ae5a63b5f2bb",
+"keep": [
+1
+],
+"keep_hash": "4834047cfaf110b3",
 "reading": {
 "accept": "Zero-allocation test or GC-alloc over 600 frames with 20+ swaying tails reads 0 B/frame; one live row: kineticSway on tails sway, off they hang still.",
 "bars": [],
@@ -469,6 +539,10 @@
 "GSS_FALLEN_LINE_FIX_SHOCKS_THIN_AIR": {
 "at": "2026-11-16T00:08:37",
 "hash": "6e9897ce62aba74f",
+"keep": [
+1
+],
+"keep_hash": "f2cdd9fd6af0c62d",
 "reading": {
 "accept": "offline rows GptPreReleaseChecks.FallenShock; the live check (TRIAGE C3/C2 rows) was not run.",
 "bars": [
@@ -522,6 +596,11 @@
 "GSS_FALLEN_WIRE_FIX_SHOCK_OUTLIVES_WIRE": {
 "at": "2026-11-16T00:08:37",
 "hash": "c870e5cb9cb5fdf8",
+"keep": [
+1,
+2
+],
+"keep_hash": "65ba25818fbac62f",
 "reading": {
 "accept": "With GimmeSomeSlack deployed from the fix sha on a quicktest map (all five DLC), validation_aerial --flips row M20e_shock_cells_die_with_wire PASSes (L2, A1).",
 "bars": [
@@ -568,6 +647,17 @@
 "GSS_FINISH_RALPH_LOOP_WAITS_GAME_TURN": {
 "at": "2026-11-16T00:08:21",
 "hash": "4258f450b0ede3f0",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+7,
+8,
+9
+],
+"keep_hash": "f4d23d09650d05e2",
 "owner": [
 2,
 4,
@@ -583,7 +673,7 @@
 21,
 22
 ],
-"owner_hash": "8654dde7b276c62c",
+"owner_hash": "3b918f51bde5def1",
 "reading": {
 "accept": "none, no command filed; the owner approved the r3_11/r3_13/r3_01 125043 closeups live in game at 935cf654e8, plus run_selftests --only 14 GSS/SlackGeometry pass on main.",
 "bars": [
@@ -691,6 +781,11 @@
 "GSS_FRESH_BUILD_ORACLE_FIX_TAP_CLAMPS": {
 "at": "2026-11-16T00:08:43",
 "hash": "857b17010b4cacd2",
+"keep": [
+1,
+2
+],
+"keep_hash": "220507a5c54c5d65",
 "reading": {
 "accept": "none, no test filed; closed on a source re-read, later covered by source-shape guard selftest_gss_weakclose_guards.py.",
 "bars": [],
@@ -717,6 +812,10 @@
 "GSS_FUZZ_ONLY_FIX_UNKNOWN_FAMILY_PASSES": {
 "at": "2026-11-16T00:08:43",
 "hash": "1f7229183be5fce0",
+"keep": [
+1
+],
+"keep_hash": "4f2d3280f8caa424",
 "reading": {
 "accept": "none filed; verified by winbuild GimmeSomeSlack plus selftest_gimmesomeslack.py 1220/1220 passing.",
 "bars": [],
@@ -736,6 +835,10 @@
 "GSS_GRAPH_JOB_PROVE_SUSTAINED_CHANGE": {
 "at": "2026-11-16T00:08:43",
 "hash": "57a9cf91297ad54a",
+"keep": [
+1
+],
+"keep_hash": "b5764d9da5786cc9",
 "reading": {
 "accept": "none, no command filed in the ticket; the blind check passed at 91d999fcf5.",
 "bars": [
@@ -757,6 +860,11 @@
 "GSS_HOOKUP_CABLE_PROBE_HIDDEN_CONDUIT": {
 "at": "2026-11-16T00:08:43",
 "hash": "71f81cbcea094785",
+"keep": [
+1,
+2
+],
+"keep_hash": "afe7c3d7ff40e326",
 "reading": {
 "accept": "proof_all core block rows B13_hidden_conduit_hookup_not_drawn and B12_shader_sway_far_zoom_drawn_once both PASS.",
 "bars": [
@@ -806,6 +914,10 @@
 "GSS_INTO_FULL_LIST_1": {
 "at": "2026-11-16T00:08:43",
 "hash": "ba593bf66e25d152",
+"keep": [
+1
+],
+"keep_hash": "3f2f4797fd8ff0e0",
 "reading": {
 "accept": "GSS active in ModsConfig (ElementTree parse), loaded clean in Player.log, cords visible in the campaign.",
 "bars": [],
@@ -841,6 +953,10 @@
 "GSS_LAMP_RUN_FIX_NEIGHBOUR_PAINTS_IT": {
 "at": "2026-11-16T00:08:43",
 "hash": "1c2362745d80cf9b",
+"keep": [
+1
+],
+"keep_hash": "514b3218c4c03674",
 "reading": {
 "accept": "none filed; offline rows GptPreReleaseChecks.LampRun. The live check (restyle B, lamp wired to A) was not run.",
 "bars": [
@@ -862,6 +978,10 @@
 "GSS_LAMP_STYLE_FIX_OFF_STILL_STYLED": {
 "at": "2026-11-16T00:08:43",
 "hash": "cb84d98b54b5b167",
+"keep": [
+1
+],
+"keep_hash": "c455364a0fd512c7",
 "reading": {
 "accept": "none filed; live row S11 (validation_style.py) was not run, no bridge.",
 "bars": [
@@ -902,6 +1022,11 @@
 "GSS_MULTILINK_FIX_PIPE_POLE_RANGE": {
 "at": "2026-11-16T00:08:43",
 "hash": "a25e062ab83b4e43",
+"keep": [
+1,
+2
+],
+"keep_hash": "405347ff4a95dc32",
 "reading": {
 "accept": "none, no test filed; closed on a source re-read, later covered by source-shape guard selftest_gss_weakclose_guards.py.",
 "bars": [
@@ -931,6 +1056,10 @@
 "GSS_PATCHES_FIX_TWENTY_THREE_UNLABELLED": {
 "at": "2026-11-16T00:08:43",
 "hash": "d6ac25d15b4308b3",
+"keep": [
+1
+],
+"keep_hash": "a2bd08cdc2601373",
 "reading": {
 "accept": "lint_harmony_targets GSS feature-findings 0, winbuild clean, GSS selftests 5/5 green; live settings all-off then all-on shows census 'patched 23, missing 0', no red line, masters revert art.",
 "bars": [
@@ -953,6 +1082,15 @@
 "GSS_PLAN_FIX_SECOND_PER_FULL_BUILD": {
 "at": "2026-11-16T00:08:50",
 "hash": "cbd52dd1867da577",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6
+],
+"keep_hash": "dbfa05fda78846b2",
 "reading": {
 "accept": "Live: place or toggle the lattice, read the probe. maxSliceMs < 20, pending reaches 0, slicedBuilds > 0, fresh different=0 once pending=0. Run via gss_slice_window_proof.py --fresh.",
 "bars": [
@@ -999,6 +1137,10 @@
 "GSS_POWER_THEFT_FIX_WRONG_VICTIM": {
 "at": "2026-11-16T00:08:50",
 "hash": "3bca9a4ce0b308e7",
+"keep": [
+1
+],
+"keep_hash": "9f8464ae2b9c804c",
 "reading": {
 "accept": "Selftest (L0): drain faction A, switch the clamp to B before the event fires; A is charged only A's energy, B only B's. Live L2 row on a foreign transmitter. mod_completion.py GimmeSomeSlack drops theftGoodwill.",
 "bars": [
@@ -1052,6 +1194,10 @@
 "GSS_PROOF_DRIVERS_FIX_FALSE_PASS": {
 "at": "2026-11-16T00:08:50",
 "hash": "bdfd395f6ef8d83a",
+"keep": [
+1
+],
+"keep_hash": "1467fde01e5c4a2f",
 "reading": {
 "accept": "Each fix needs a selftest that fails before and passes after (pattern: FlowWorks/northstar/selftest_gptfw_review_fixes.py).",
 "bars": [],
@@ -1071,6 +1217,10 @@
 "GSS_PROOF_FIX_THREE_STALE_GATE_CHECKS": {
 "at": "2026-11-16T00:08:50",
 "hash": "efb0c3794eef4dc4",
+"keep": [
+1
+],
+"keep_hash": "52c600b8d68d0a01",
 "reading": {
 "accept": "proof_all offline gate exits 0 with O7, C2 and O3 fixed (selftests green).",
 "bars": [],
@@ -1090,6 +1240,10 @@
 "GSS_RECOLOR_CHECK_FIX_NECKED_JUNCTIONS": {
 "at": "2026-11-16T00:08:50",
 "hash": "5aeb53cf6aabd5c9",
+"keep": [
+1
+],
+"keep_hash": "a21651b4fdad2e17",
 "reading": {
 "accept": "recolor_extcord_pieces.py --check exits 0 and O6_review_round1 PASSes; drop --allow-red O6_review_round1 from the two live_proofs files.",
 "bars": [
@@ -1111,10 +1265,14 @@
 "GSS_RESTRING_DECIDE_FREE_INSTANT_SPLICE": {
 "at": "2026-11-16T00:08:50",
 "hash": "6962d6c65ea31b86",
+"keep": [
+1
+],
+"keep_hash": "92d5b0b3341363ee",
 "owner": [
 1
 ],
-"owner_hash": "ca3b0a18fa6306e4",
+"owner_hash": "e2ef79e7f61bd435",
 "reading": {
 "accept": "Offline rows GptPreReleaseChecks.Restring; live row M15e not run (no bridge).",
 "bars": [
@@ -1164,6 +1322,11 @@
 "GSS_RESTRING_FIX_STYLES_UNRECONCILED": {
 "at": "2026-11-16T00:08:50",
 "hash": "7aa3d4eae6100561",
+"keep": [
+1,
+2
+],
+"keep_hash": "008d96853fbec9fc",
 "reading": {
 "accept": "L2: cut the only span joining two runs, restyle the sides differently, re-string: the joined run carries one style. Also an RM_RestringSpan MOD proof row PASS, and mod_completion no longer lists it unverified.",
 "bars": [
@@ -1190,6 +1353,11 @@
 "GSS_RESTRING_PROVE_ONE_STYLE_AFTER_JOIN": {
 "at": "2026-11-16T00:09:04",
 "hash": "655f9045171ada2a",
+"keep": [
+1,
+2
+],
+"keep_hash": "c33388d7d0373ea9",
 "reading": {
 "accept": "Row PASS = one style on the joined run after the restring job; the A1 launcher rejects stale, wrong, duplicate or old-schema rows and a failed whole-driver exit.",
 "bars": [
@@ -1217,6 +1385,11 @@
 "GSS_SCENES_BUILD_EVERY_CORD_A_FOIL": {
 "at": "2026-11-16T00:09:04",
 "hash": "797dca41653af643",
+"keep": [
+1,
+2
+],
+"keep_hash": "fdfeb90746fa5c6e",
 "reading": {
 "accept": "none, no command filed; each scene is decided by its rows in one dense proof_all.py --live run (validation.scene_verdict), replayed with validation.py --scenes-from <result json>.",
 "bars": [
@@ -1242,14 +1415,15 @@
 "GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS": {
 "at": "2026-11-16T00:09:04",
 "hash": "8b9eaa894f747aef",
+"keep": [],
+"keep_hash": "3fca47934b5f7b98",
 "owner": [
 1,
 2,
 3,
-4,
 5
 ],
-"owner_hash": "121f873ef16af42d",
+"owner_hash": "93a7baa255889626",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [
@@ -1289,6 +1463,10 @@
 "GSS_SHAPE_PROBE_MEASURE_NO_TWO_ALIKE": {
 "at": "2026-11-16T00:09:04",
 "hash": "103d88912fc62191",
+"keep": [
+1
+],
+"keep_hash": "e370debb398f9277",
 "reading": {
 "accept": "none, no acceptance test filed; the live signal is SC_no_two_cords_alike in proof_all (tooAlike 0).",
 "bars": [
@@ -1311,6 +1489,14 @@
 "GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET": {
 "at": "2026-11-16T00:09:04",
 "hash": "94355512869fce88",
+"keep": [
+1,
+2,
+3,
+4,
+5
+],
+"keep_hash": "e6280e266ee40ad5",
 "reading": {
 "accept": "With GSS deployed from the fix sha on a quicktest map >= 160x160, four 37x37 PowerConduit lattices then each lattice's 84 StandingLamps; run python.exe src/RimMandrake/GimmeSomeSlack/live_probes/gss_slice_window_proof.py D:/ClaudeWork/rimmandrake/scratch/gss_edge_budget/proof.json. Result: pass.",
 "bars": [
@@ -1349,6 +1535,15 @@
 "GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS": {
 "at": "2026-11-16T00:09:04",
 "hash": "3215e579f53a1181",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6
+],
+"keep_hash": "8ff139f78ca514e7",
 "reading": {
 "accept": "With GSS deployed from the fix sha on a quicktest map >= 160x160, four 37x37 PowerConduit lattices then 84 StandingLamps each; run python.exe src/RimMandrake/GimmeSomeSlack/live_probes/gss_slice_window_proof.py D:/ClaudeWork/rimmandrake/scratch/gss_lone_rebuild/proof.json. Bar maxSlice < 20.",
 "bars": [
@@ -1434,6 +1629,10 @@
 "GSS_STATICS_FIX_OUTLIVE_THE_SAVE": {
 "at": "2026-11-16T00:09:11",
 "hash": "4235135d5b1df937",
+"keep": [
+1
+],
+"keep_hash": "8b6bd587e99d6679",
 "reading": {
 "accept": "none, no command filed; live check (TapRegistry.Count 0 after load) was not run for lack of a bridge. Shape rows in validation.py O7.",
 "bars": [
@@ -1456,6 +1655,10 @@
 "GSS_STRIP_LED_FIX_MISSED_REPAINT": {
 "at": "2026-11-16T00:09:11",
 "hash": "a66de84c87284d1a",
+"keep": [
+1
+],
+"keep_hash": "6e244b350ebcc6ae",
 "reading": {
 "accept": "none, no acceptance filed beyond the later winbuild and strip_art selftest.",
 "bars": [
@@ -1477,6 +1680,10 @@
 "GSS_STYLED_WINNER_FIX_KEEPS_LEGACY_LOOK": {
 "at": "2026-11-16T00:09:11",
 "hash": "29872be573e79b67",
+"keep": [
+1
+],
+"keep_hash": "149e92a78993616a",
 "reading": {
 "accept": "none, no acceptance filed. Scenario: Industrial default, join a legacy run to a styled Industrial run, change default to Modern; all members must stay Industrial.",
 "bars": [
@@ -1498,11 +1705,18 @@
 "GSS_STYLE_RUN_PROVE_MIXED_LOOKS_SUSPECTED": {
 "at": "2026-11-16T00:09:11",
 "hash": "3fc2529a90de7c44",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "a5a9944b12264008",
 "owner": [
 1,
 2
 ],
-"owner_hash": "c284256901b475b0",
+"owner_hash": "3d954f595b15d01a",
 "reading": {
 "accept": "validation_style.py --live rows S12a (D1), S12b (D7), S12c (D5), S12d_D4_pending_queue_save (via --save <NAME> csavenow) all PASS.",
 "bars": [
@@ -1534,6 +1748,11 @@
 "GSS_SWAY_PROVE_KINETIC_LIVE_ROW": {
 "at": "2026-11-16T00:09:11",
 "hash": "4f7fb02ebf61f9bc",
+"keep": [
+1,
+2
+],
+"keep_hash": "a3bfd706f9c2c37d",
 "reading": {
 "accept": "Focused runner passes 4/4: the launcher with --kinetic-damage RM_Repulse_Palm needs fresh MOD on/off census-delta rows and driver success. Offline selftest covers the parse.",
 "bars": [
@@ -1559,6 +1778,12 @@
 "GSS_SWITCHES_PROVE_LAST_FOUR_STANDING": {
 "at": "2026-11-16T00:09:11",
 "hash": "43203a3cf7723e59",
+"keep": [
+1,
+2,
+4
+],
+"keep_hash": "689ca31d3881601f",
 "reading": {
 "accept": "L2: one MOD-class on/off row per switch; proof_all 0 FAIL with every UNMEASURED row measured or named on an item; mod_completion.py GimmeSomeSlack lists none of the four as unverified.",
 "bars": [
@@ -1595,6 +1820,10 @@
 "GSS_SWITCHES_PROVE_TWENTY_UNFLIPPED": {
 "at": "2026-11-16T00:09:11",
 "hash": "1f1640fffd201f90",
+"keep": [
+1
+],
+"keep_hash": "8c656fd997f7448a",
 "reading": {
 "accept": "GSS SelfTest SwitchFlipChecks green (885/885); python.exe src/RimMandrake/GimmeSomeSlack/validation_aerial.py --flips passes M20a-d on a quicktest map.",
 "bars": [
@@ -1619,6 +1848,10 @@
 "GSS_TAP_CLAMP_FIX_NO_OFF_SWITCH": {
 "at": "2026-11-16T00:09:13",
 "hash": "3422fce746a92e05",
+"keep": [
+1
+],
+"keep_hash": "86095747f73b7fe9",
 "reading": {
 "accept": "none, no command filed; offline rows GptPreReleaseChecks.TapClamp and O7 (letter vs def) check it.",
 "bars": [
@@ -1641,6 +1874,10 @@
 "GSS_TOGGLES_FIX_OFF_MEANS_OFF": {
 "at": "2026-11-16T00:09:13",
 "hash": "b396e0252ba1d66d",
+"keep": [
+1
+],
+"keep_hash": "500dc2d187f1e46f",
 "reading": {
 "accept": "none, no command filed; closing check was the GSS DLL srchash matching source (dll_source_stamp check).",
 "bars": [
@@ -1663,8 +1900,12 @@
 "GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD": {
 "at": "2026-11-16T00:09:13",
 "hash": "acb377943c539703",
+"keep": [
+1
+],
+"keep_hash": "f507f091cb9741ba",
 "owner": [],
-"owner_hash": "3ec05ff3abba4961",
+"owner_hash": "753d0414ce535f7b",
 "reading": {
 "accept": "none, no acceptance filed; verify offline selftest or the named live proof.",
 "bars": [],
@@ -1688,10 +1929,14 @@
 "GSS_WALK_HOSES_EXCISE_REELED_IN": {
 "at": "2026-11-16T00:09:13",
 "hash": "54904d71c2c5d3e1",
+"keep": [
+1
+],
+"keep_hash": "7a465530feff2749",
 "owner": [
 1
 ],
-"owner_hash": "15f20daccd2b8d1e",
+"owner_hash": "6507ee3fb3d7564d",
 "reading": {
 "accept": "0 RM_HoseReel in the saved .rws; live removal checked.",
 "bars": [
@@ -1713,6 +1958,13 @@
 "GSS_WATER_STUB_FIX_PASSED_LAST_WEEK": {
 "at": "2026-11-16T00:09:13",
 "hash": "5de1e6a4467ac9f1",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "40f9fdc0d3075972",
 "reading": {
 "accept": "On fw_gss list, `proof_all.py --live --only matrix`: MX_F60_T15_S0 PASSes with stubs 2, cord_edges 2, node_types {battery 1, consumer 1, stub_water 2}.",
 "bars": [
@@ -1744,9 +1996,29 @@
 ]
 }
 },
+"HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST": {
+"owner": [
+1,
+2
+],
+"owner_hash": "52e2338881185a20"
+},
+"HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS": {
+"owner": [
+1
+],
+"owner_hash": "26df525de6973a79"
+},
 "JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS": {
 "at": "2026-11-16T00:09:13",
 "hash": "4147bc891e89ef91",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "74780e2a6eb72f5d",
 "reading": {
 "accept": "A live read of the Jawa at the brine cell reports water depth vs H=0.5 m and whether RM_PitDrowning fires there, recorded as a verify event with the cell coordinates.",
 "bars": [],
@@ -1783,6 +2055,10 @@
 "LIGHTSPEED_WIRE_GSS_FIRST_NO_LLM_PATH": {
 "at": "2026-11-16T00:09:13",
 "hash": "050317a889ae1695",
+"keep": [
+1
+],
+"keep_hash": "26617d7d6a16f639",
 "reading": {
 "accept": "A dated GSS proof_all result on the current sha with no LLM in the path, then one per GSS commit.",
 "bars": [],
@@ -1813,6 +2089,14 @@
 "traps": []
 }
 },
+"MOD_COMPLETION_MEASURE_HOW_DONE_IS_DONE": {
+"owner": [],
+"owner_hash": "90497f87dc8828ed"
+},
+"PLANNING_BUILD_DAYS_OF_ORDERS_NO_HOME": {
+"owner": [],
+"owner_hash": "d1dcd780fdbc2bcc"
+},
 "POWER_TAP_MIXED_NET_CONNECT_1": {
 "at": "2026-11-16T00:09:13",
 "hash": "cfea4efb7db519fd",
@@ -1832,12 +2116,16 @@
 "POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK": {
 "at": "2026-11-16T00:09:13",
 "hash": "02b040c5db98daf6",
+"keep": [
+1
+],
+"keep_hash": "39a58e676f3b94bf",
 "owner": [
 1,
 2,
 3
 ],
-"owner_hash": "cc5fb32aef509ab4",
+"owner_hash": "a2249867531f3eb2",
 "reading": {
 "accept": "After one in-game day of the caught clamp draining, goodwill fell by theftGoodwillPerDay with reason 'power theft'; removing the clamp stops it (A3, L2). SelfTest TheftChecks + GptPreReleaseChecks.TapClamp green (A1).",
 "bars": [
@@ -1860,10 +2148,16 @@
 "RIMMANDRAKE_ADVANCE_GIMMESOMESLACK_OFFLINE_BESIDE_THE_PILOT": {
 "at": "2026-11-16T00:09:19",
 "hash": "efb75c64f394bdbd",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "9969915438d71c6d",
 "owner": [
 1
 ],
-"owner_hash": "15c8b25ce8b705d6",
+"owner_hash": "e1fd262449a7e60b",
 "reading": {
 "accept": "none, the pipeline's own stages judge it (spec design/specs/2026-11-13-maturation-pipeline.md)",
 "bars": [],
@@ -1891,6 +2185,10 @@
 "RIMMANDRAKE_ALIGN_GSS_SHARP_ROW_READS_CUT_END_CELL": {
 "at": "2026-11-16T00:09:19",
 "hash": "403ee1cf4b78a52d",
+"keep": [
+1
+],
+"keep_hash": "dc6ab5fdf7bd7e97",
 "reading": {
 "accept": "none, a definition ruling (would pass: the row defers to the instrument on a cut end's first cell and on window length)",
 "bars": [
@@ -1912,6 +2210,12 @@
 "RIMMANDRAKE_BIND_CERTIFICATE_TO_OFFLINE_DECIDERS_NO_OP_PASSED": {
 "at": "2026-11-16T00:29:58",
 "hash": "60e9c8ec63d2c2ff",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "35d23398ecd6e24f",
 "reading": {
 "accept": "python3 src/RimMandrake/rimflow/acceptance/guard_certificate_binds_offline_bars_accept.py prints `PASS 8/8` (rc 0); it failed 2/8 (rc 1) on the base judge_certificate.py.",
 "bars": [
@@ -1942,6 +2246,10 @@
 "RIMMANDRAKE_BUILD_GSS_FLOOR_END_SHOCK_ANSWERED_WEEK_AGO": {
 "at": "2026-11-16T00:09:19",
 "hash": "b794dbcb07f022d9",
+"keep": [
+1
+],
+"keep_hash": "c74615093c3382e1",
 "reading": {
 "accept": "Delete the two OWED entries, run python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py: exit 0 (exit 1 before). Live: proof_all.py --live --no-shots on SteveDesktop (testq, tier gimmesomeslack) gives the new rows PASS.",
 "bars": [
@@ -1964,6 +2272,12 @@
 "RIMMANDRAKE_BURY_GSS_CORDS_IN_FW_SUPERDEEP_PIT_WATER": {
 "at": "2026-11-16T00:09:19",
 "hash": "20d03a68c166739a",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "2ed8964f20d058b0",
 "reading": {
 "accept": "none, a Designer decision is needed first; a matrix scene with RM_Fill_Water_Superdeep would guard it",
 "bars": [],
@@ -1994,6 +2308,10 @@
 "RIMMANDRAKE_CARRY_GSS_GOODWILL_REMAINDER_TEST_DIVIDES_DAY": {
 "at": "2026-11-16T00:09:19",
 "hash": "6117ce0d98bf9416",
+"keep": [
+1
+],
+"keep_hash": "a0571fa73629befd",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_3/lane2/check_core_catches.py --only K_GOODWILL_REMAINDER_LOST --match theft: rc 0 (rc 1 at 8e6c67eba7)",
 "bars": [
@@ -2015,6 +2333,13 @@
 "RIMMANDRAKE_CHALLENGE_GSS_BLIND_RESTS_ON_ONE_TEST": {
 "at": "2026-11-16T00:09:19",
 "hash": "97bae8688a4ea045",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "33079f16002f0a6a",
 "reading": {
 "accept": "none, the brief states the exit that maturation.py next reads",
 "bars": [
@@ -2050,6 +2375,10 @@
 "RIMMANDRAKE_CLARIFY_GSS_NOHOSE_BAR_PIPE_POLES_ARE_FLOWWORKS": {
 "at": "2026-11-16T00:09:19",
 "hash": "badde295743fb7e9",
+"keep": [
+1
+],
+"keep_hash": "7c8ec0512ce9f46a",
 "reading": {
 "accept": "none, bar wording is the neutral fixer's call",
 "bars": [
@@ -2072,6 +2401,10 @@
 "RIMMANDRAKE_CORRECT_GSS_DRIPLOOPS_COMMENT_SAYS_ON_SHIPS_OFF": {
 "at": "2026-11-16T00:09:19",
 "hash": "15ff3528dd091f29",
+"keep": [
+1
+],
+"keep_hash": "9e7d6c8277a4d4f7",
 "reading": {
 "accept": "grep -c 'Default ON' src/RimMandrake/GimmeSomeSlack/Source/Aerial/AerialSettings.cs -> 0 (watched: 1 on 69e7d7f47e)",
 "bars": [
@@ -2093,6 +2426,10 @@
 "RIMMANDRAKE_COVER_GSS_CALLERS_FOUR_PLANTS_WALKED_PAST": {
 "at": "2026-11-16T00:09:39",
 "hash": "0c5d594aaac156cb",
+"keep": [
+1
+],
+"keep_hash": "d645dd1f7d227b3b",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane2/plant_faults.py --ids PF_GAME_FLOOR_DEAD_ENDS_BITE,PF_GAME_ANY_BUILDER_EXEMPT,PF_PATCH_SWITCH_NOT_STYLED,PF_MOTION_LIVE_END_LIMP --out /tmp/pf.jsonl prints CAUGHT 4 times (watched MISSED x4).",
 "bars": [
@@ -2116,6 +2453,10 @@
 "RIMMANDRAKE_EXERCISE_GSS_CORD_GUARDS_THREE_PLANTS_SURVIVE": {
 "at": "2026-11-16T00:09:39",
 "hash": "9bdb4fbd8f3e1b3e",
+"keep": [
+1
+],
+"keep_hash": "2d3dafc1a0fa3762",
 "reading": {
 "accept": "none, the record filed no command; would_pass is a seeded case where each guard is the last line of defence, or the redundant guard removed.",
 "bars": [
@@ -2138,6 +2479,10 @@
 "RIMMANDRAKE_EXPLAIN_GSS_D2_SPLIT_ONCE_IN_TWELVE": {
 "at": "2026-11-16T00:09:39",
 "hash": "e730faf1bcc2b1dc",
+"keep": [
+1
+],
+"keep_hash": "4339694e1396c46a",
 "reading": {
 "accept": "none, the ticket filed no acceptance test; it asks only that the next occurrence names the edge.",
 "bars": [],
@@ -2157,6 +2502,10 @@
 "RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_NEVER_IN_GAME": {
 "at": "2026-11-16T00:09:39",
 "hash": "24a1d89e17bce4b9",
+"keep": [
+1
+],
+"keep_hash": "8fb89036c10a6b84",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_2/lane1/run_lane1.py --out /tmp/l1.jsonl; grep L1_RESTRING_TICKS_SWEEP /tmp/l1.jsonl | grep -q '\"PASS\"' (watched FAIL on 8d03656883).",
 "bars": [
@@ -2193,6 +2542,10 @@
 "RIMMANDRAKE_LAND_DESIGNER_EDITS_HARVEST_TOOK_ONLY_STATE": {
 "at": "2026-11-16T00:09:39",
 "hash": "9670433a1c907146",
+"keep": [
+1
+],
+"keep_hash": "44602fea8cebb643",
 "reading": {
 "accept": "Landing: python3 src/RimMandrake/rimflow/concept_tree.py hash design/concepts/GimmeSomeSlack | tail -1 | grep -q ^5e3aa0d412bb46c2 on a clean origin/main checkout (watched FAIL on e56fe439ca). Mechanism: none, needs a choice of paths.",
 "bars": [],
@@ -2228,6 +2581,10 @@
 "RIMMANDRAKE_NOTE_GSS_FALLEN_TIPS_NEARLY_MEET_RARELY": {
 "at": "2026-11-16T00:09:39",
 "hash": "aff3e43a6b1746fa",
+"keep": [
+1
+],
+"keep_hash": "0b3544072beb8100",
 "reading": {
 "accept": "none, no acceptance test filed; would_pass is no two tips of one drop within ~0.3 cell.",
 "bars": [
@@ -2265,6 +2622,10 @@
 "RIMMANDRAKE_NOTE_GSS_NORTH_SOUTH_SPAN_RULER_STRAIGHT": {
 "at": "2026-11-16T00:09:39",
 "hash": "12c286ebe671b921",
+"keep": [
+1
+],
+"keep_hash": "3a4a1366f2d4b91b",
 "reading": {
 "accept": "none, no acceptance test filed; would_pass is sc_spans also measuring off-chord distance on a north-south span, or the look accepted as the projection.",
 "bars": [
@@ -2286,6 +2647,10 @@
 "RIMMANDRAKE_NOTE_GSS_PIPE_SPANS_DRAWN_BY_GSS_CODE": {
 "at": "2026-11-16T00:09:39",
 "hash": "dfdfe7f380fbe3bd",
+"keep": [
+1
+],
+"keep_hash": "eb5738d02e36b665",
 "reading": {
 "accept": "none, no acceptance test filed; would_pass is the reworded sheet line.",
 "bars": [
@@ -2308,6 +2673,10 @@
 "RIMMANDRAKE_NOTE_GSS_STATICS_CENSUS_READS_TEXT_ONLY": {
 "at": "2026-11-16T00:09:39",
 "hash": "e9c98afc8c875a84",
+"keep": [
+1
+],
+"keep_hash": "49de67f11acdb3b3",
 "reading": {
 "accept": "none, the live scene sc_statics_new_game decides at Stage 6.",
 "bars": [
@@ -2330,6 +2699,10 @@
 "RIMMANDRAKE_NOTE_GSS_TWIN_GUARD_NEVER_EXERCISED": {
 "at": "2026-11-16T00:09:39",
 "hash": "83bae84521de01da",
+"keep": [
+1
+],
+"keep_hash": "e4974910e80f4cb3",
 "reading": {
 "accept": "none, no acceptance test filed; would_pass is a case whose twin candidate adds a sharp bend, refused by the guard.",
 "bars": [
@@ -2391,6 +2764,12 @@
 "RIMMANDRAKE_PART_GSS_TWIN_LEADS_THIRD_FILING_SAME_SIX": {
 "at": "2026-11-16T00:09:38",
 "hash": "9d602b85c701dd29",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "74fb8aa81e4c0a55",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane2/judge_the_judge/diag.py repeat 1000 --base reads under0.1 0 on every REPEAT line (base read 2/2/2/0/0/0 at L3/L4/L5/L6/L9/L12).",
 "bars": [
@@ -2420,8 +2799,10 @@
 "RIMMANDRAKE_PREPARE_FIRST_LOOK_MATRIX_SAVEGAME": {
 "at": "2026-11-16T00:09:38",
 "hash": "5ed786818ed619d6",
+"keep": [],
+"keep_hash": "7d2e6dcf752fe394",
 "owner": [],
-"owner_hash": "216fac40aa0e6c87",
+"owner_hash": "346e19f8ebfff1ca",
 "reading": {
 "accept": "none, no command filed; done when the standard is a single doc with no rival copy and one keeper save built to it is pre-looked by a judge, its key sheet naming every station and grid cell.",
 "bars": [],
@@ -2441,6 +2822,10 @@
 "RIMMANDRAKE_PROVE_GSS_GEOMETRY_RAN_COUNT_IS_ONLY_TELL": {
 "at": "2026-11-16T00:09:38",
 "hash": "e2f4a28fa4b7258d",
+"keep": [
+1
+],
+"keep_hash": "22881602f03c70cd",
 "reading": {
 "accept": "A --geometry run without the geometry checks goes red (e.g. Program.cs fails when --geometry is given and CordGeometryChecks ran 0 checks).",
 "bars": [
@@ -2463,10 +2848,17 @@
 "RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE": {
 "at": "2026-11-16T00:09:38",
 "hash": "56960dfd12a53cb8",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "329d00e98266ecb5",
 "owner": [
 1
 ],
-"owner_hash": "acb90bd5c436f217",
+"owner_hash": "6ce3d59061019032",
 "reading": {
 "accept": "A1 L2: on SteveDesktop, proof_all --live --no-shots --skip-offline gives 0 FAIL rows and every UNMEASURED row id is named in an item. A2: gravship_scene on exits 0. A3: gravship_scene off exits 0.",
 "bars": [
@@ -2502,6 +2894,11 @@
 "RIMMANDRAKE_REFUSE_GSS_GATE_UNDER_PYTHON_EXE_ALWAYS_RED": {
 "at": "2026-11-16T00:09:38",
 "hash": "1f4d7ecdadb14fe8",
+"keep": [
+1,
+2
+],
+"keep_hash": "a16fef624a5fba15",
 "reading": {
 "accept": "On SteveDesktop, cd ~/rm/runner && python.exe src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate reports O3 as HARNESS/UNMEASURED with the python3 hint (or PASS through WSL), never O3_core_selftest FAIL MOD.",
 "bars": [],
@@ -2525,6 +2922,10 @@
 "RIMMANDRAKE_REPIN_GSS_ASYNC_FAULT_CAP_FIFTY_SEVEN_USED": {
 "at": "2026-11-16T00:09:38",
 "hash": "a98aa18bc6ac578a",
+"keep": [
+1
+],
+"keep_hash": "ba09b40a1b2e3641",
 "reading": {
 "accept": "none, no test filed; would pass with a bound that has headroom over the scene's measured async lay, chosen by the steward.",
 "bars": [
@@ -2546,6 +2947,10 @@
 "RIMMANDRAKE_REPIN_GSS_GATE_O7_ON_SUPERSEDED_SHAPE": {
 "at": "2026-11-16T00:09:38",
 "hash": "5a5501823449e2d6",
+"keep": [
+1
+],
+"keep_hash": "1e3e420e73028368",
 "reading": {
 "accept": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate rc 0 (rc 1 at 8f1338a19a, rc 0 at ffe1a381b8).",
 "bars": [
@@ -2581,6 +2986,10 @@
 "RIMMANDRAKE_RESET_GSS_STEPTRACE_STATIC_CENSUS_CAUGHT_IT": {
 "at": "2026-11-16T00:09:41",
 "hash": "623b369a81205bd2",
+"keep": [
+1
+],
+"keep_hash": "620b536bf73d5872",
 "reading": {
 "accept": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py exits 0 (PASS); its planted controls still go red.",
 "bars": [
@@ -2603,6 +3012,10 @@
 "RIMMANDRAKE_REWORD_GSS_NO_HOSE_BAR_POLES_DRAW_PIPES": {
 "at": "2026-11-16T00:09:41",
 "hash": "c1980c2383091edb",
+"keep": [
+1
+],
+"keep_hash": "2e41d6483bfdfe4f",
 "reading": {
 "accept": "none, a bar-wording decision for the neutral fixer",
 "bars": [
@@ -2624,6 +3037,10 @@
 "RIMMANDRAKE_REWORD_GSS_NO_PIPE_BAR_POLES_ON_PURPOSE": {
 "at": "2026-11-16T00:09:41",
 "hash": "5a0bab6c674aaf84",
+"keep": [
+1
+],
+"keep_hash": "2b59f840c490ddbe",
 "reading": {
 "accept": "none, a bar-wording decision for the neutral fixer",
 "bars": [
@@ -2646,6 +3063,10 @@
 "RIMMANDRAKE_RUN_GSS_TWIN_CHECK_IN_ITS_OWN_DECIDER": {
 "at": "2026-11-16T00:09:41",
 "hash": "b58585081b7698eb",
+"keep": [
+1
+],
+"keep_hash": "2e1bda923465b6e1",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_3/lane2/check_core_catches_twins.py exits 0 (T_CORE caught 2 of 2).",
 "bars": [
@@ -2667,6 +3088,10 @@
 "RIMMANDRAKE_SIT_GSS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST": {
 "at": "2026-11-16T00:09:41",
 "hash": "7607eb4ea63fe233",
+"keep": [
+2
+],
+"keep_hash": "3d4e7490f371b5c8",
 "reading": {
 "accept": "none, no command filed; the record reads exam 24/24 with accept_where_reject_core 0, and the coverage judge covered with 0 gaps.",
 "bars": [
@@ -2692,6 +3117,10 @@
 "RIMMANDRAKE_SLACKEN_GSS_CUT_END_LEADS_WHIP_STEALS_SLACK": {
 "at": "2026-11-16T00:09:41",
 "hash": "7d9133fbaa6b5543",
+"keep": [
+1
+],
+"keep_hash": "29d1d4c8b4f03ddd",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane1/run_lane1.py then row L1_CORD_SLACK_RATIO reads PASS (green over seeds 3000..3049).",
 "bars": [
@@ -2713,10 +3142,16 @@
 "RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR": {
 "at": "2026-11-16T00:09:41",
 "hash": "b8cb4afe155a77a6",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "7ce27df622d8283e",
 "owner": [
 1
 ],
-"owner_hash": "5ce563e8dd2409f8",
+"owner_hash": "d212a27bdfcf0e21",
 "reading": {
 "accept": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry exits 0 (taut 0, flat 0, unforced bends 0).",
 "bars": [
@@ -2748,6 +3183,10 @@
 "RIMMANDRAKE_STEADY_GSS_FAULTED_GRAPH_JOB_NEVER_SETTLES": {
 "at": "2026-11-16T00:09:41",
 "hash": "a92e8ccaf455696f",
+"keep": [
+1
+],
+"keep_hash": "5a1af275f667bba5",
 "reading": {
 "accept": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --perdig-only --no-export exits 0 in 5 of 5 runs (base: 0 of 2).",
 "bars": [],
@@ -2767,6 +3206,11 @@
 "RIMMANDRAKE_STEADY_GSS_GATE_RED_ONCE_THEN_GREEN": {
 "at": "2026-11-16T00:09:41",
 "hash": "95e6ba9914bb9063",
+"keep": [
+1,
+2
+],
+"keep_hash": "4ba983b8bf14fe23",
 "reading": {
 "accept": "none, a flake seen once; the fix is a diagnostic, judged by reading the next red.",
 "bars": [],
@@ -2793,6 +3237,11 @@
 "RIMMANDRAKE_STRAY_GSS_CORDS_A_CELL_OFF_THEIR_LINE": {
 "at": "2026-11-16T00:09:49",
 "hash": "2d1023a9f83867cb",
+"keep": [
+1,
+2
+],
+"keep_hash": "8477c886409742d8",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane1/run_lane1.py: row L1_CORD_EXCURSION reads PASS (1 row); green over seeds 4000..4039.",
 "bars": [
@@ -2818,6 +3267,13 @@
 "RIMMANDRAKE_SWEEP_GSS_WALLED_RESIDUE_TWO_THOUSAND_SCENES": {
 "at": "2026-11-16T00:09:49",
 "hash": "6e319e46de7a01ef",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "5079f3d492c8a11a",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane2/judge_the_judge/diag.py all 1000 --base reads 0 under, 0 miss, 0 unforced, 0 twins.",
 "bars": [
@@ -2857,6 +3313,10 @@
 "RIMMANDRAKE_TIGHTEN_GSS_FALLEN_WIRE_WALL_CHECK_HALF_STEP": {
 "at": "2026-11-16T00:09:49",
 "hash": "eaa13ce359c9cdf8",
+"keep": [
+1
+],
+"keep_hash": "0d0c4b781adcffc3",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_4/lane1/run_lane1.py: row fallen_random_lies_on_ground PASS (fails on 69e7d7f47e: 22 of 2500).",
 "bars": [
@@ -2879,6 +3339,11 @@
 "RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIRST_START": {
 "at": "2026-11-16T00:09:49",
 "hash": "9237af05db8b43f5",
+"keep": [
+1,
+2
+],
+"keep_hash": "93ddd996b30d8765",
 "reading": {
 "accept": "none, the failing call is not identified (intermittent, 1 of 2 starts); once named, a selftest feeding that call the bad path.",
 "bars": [],
@@ -2902,6 +3367,10 @@
 "RIMMANDRAKE_TRIM_GSS_FALLEN_WIRE_COILS_OUTGROW_CABLE": {
 "at": "2026-11-16T00:09:49",
 "hash": "59f18bbf2760a787",
+"keep": [
+1
+],
+"keep_hash": "6a4717b2ce877c09",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_2/lane1 run (seed 4202): row L1_DOWNED_LAY_ON_GROUND_RANDOM PASS (fails on 8d03656883); contingent on the 2x+2 bound being accepted.",
 "bars": [
@@ -2924,6 +3393,10 @@
 "RIMMANDRAKE_TRIM_GSS_LAY_COST_SLICES_ROSE_A_THIRD": {
 "at": "2026-11-16T00:09:49",
 "hash": "d3fe9e95b1f51810",
+"keep": [
+1
+],
+"keep_hash": "26fdf985d789f4ae",
 "reading": {
 "accept": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --perdig-only --no-export prints 'planned over N Builds' with N <= 60 and rc 0 (reads 77 at 0416599c69).",
 "bars": [
@@ -2945,6 +3418,10 @@
 "RIMMANDRAKE_UNBEND_GSS_LEAD_AT_JUNCTION_BATTERY_TWICE": {
 "at": "2026-11-16T00:09:49",
 "hash": "856add194c02c546",
+"keep": [
+1
+],
+"keep_hash": "e79f923cd8923abe",
 "reading": {
 "accept": "proof_all.py --live --no-shots on SteveDesktop (testq, tier gimmesomeslack): M2c_no_sharp_bends PASS with unforced 0 and the piece absent from 'where'. Fails on 4ff9d1df8b.",
 "bars": [
@@ -2966,6 +3443,11 @@
 "RIMMANDRAKE_UNBEND_GSS_RANDOM_BASES_SEVEN_SCENES_HID_IT": {
 "at": "2026-11-16T00:09:49",
 "hash": "ebc14d5a7b734cab",
+"keep": [
+1,
+2
+],
+"keep_hash": "6c14f301cfd25ebf",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane1/run_lane1.py: rows L1_CORD_BENDS_TALLY and L1_CORD_SHARP_TURN read PASS (2 rows); unforced 0 over the same 80 seeds.",
 "bars": [
@@ -2991,6 +3473,10 @@
 "RIMMANDRAKE_UNGATE_GSS_DROPPED_CORDS_FROM_OVERHEAD_MASTER": {
 "at": "2026-11-16T00:10:05",
 "hash": "dd964d8677615880",
+"keep": [
+1
+],
+"keep_hash": "dcbf51f7dbd009cf",
 "reading": {
 "accept": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py exits 0 (6 rows); watched fail rc 1 on 67ddc758e5.",
 "bars": [
@@ -3013,6 +3499,10 @@
 "RIMMANDRAKE_UNIFY_GSS_LOOP_READ_TWO_INSTRUMENTS_DISAGREE": {
 "at": "2026-11-16T00:10:05",
 "hash": "845e455e0b21fd27",
+"keep": [
+1
+],
+"keep_hash": "be2a589bfe07656b",
 "reading": {
 "accept": "none, which reading is the bar's is a judge decision (cycle 2).",
 "bars": [
@@ -3034,6 +3524,11 @@
 "RIMMANDRAKE_VARY_GSS_SHORT_CORDS_TWINS_AT_FOUR_CELLS": {
 "at": "2026-11-16T00:10:05",
 "hash": "02d314a548f01156",
+"keep": [
+1,
+2
+],
+"keep_hash": "4f7b455b376d01e1",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/lane1/run_lane1.py, then row L1_NO_REPEAT in lane1/lane1_rows.jsonl reads PASS (1 row). Watched fail on 67ddc758e5 (gap 0.01).",
 "bars": [
@@ -3060,6 +3555,10 @@
 "RIMMANDRAKE_WIDEN_GSS_FAULT_GUARD_LAY_NEEDED_SIXTY_THREE": {
 "at": "2026-11-16T00:10:05",
 "hash": "f35ecb8def9800d4",
+"keep": [
+1
+],
+"keep_hash": "a63838e61c4c65ae",
 "reading": {
 "accept": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py exits 0 with 4510/4510 checks passed (rc 1 at the parent).",
 "bars": [
@@ -3082,6 +3581,10 @@
 "RIMMANDRAKE_WIDEN_GSS_HOSE_SCAN_ONE_TEST_TWO_BARS": {
 "at": "2026-11-16T00:10:05",
 "hash": "e6bb4acbc358738d",
+"keep": [
+1
+],
+"keep_hash": "f51b932fb4b6e083",
 "reading": {
 "accept": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py exits 0 with M5 and M6 PASS; watched fail (rc 1) against the parent's scanner.",
 "bars": [
@@ -3104,6 +3607,11 @@
 "RIMMANDRAKE_WIDEN_GSS_NOHOSE_SCAN_FIVE_LEFTOVERS_SLIPPED": {
 "at": "2026-11-16T00:10:05",
 "hash": "5f87835ded0c79fd",
+"keep": [
+1,
+2
+],
+"keep_hash": "df6e3604425d8ac2",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_4/lane2/check_nohose_catches.py exits 0, RESULT 7 of 7 caught, clean tree rc 0 (watched fail on c1aa831c41: 2 of 7, rc 1).",
 "bars": [
@@ -3130,6 +3638,10 @@
 "RIMMANDRAKE_WIDEN_GSS_NO_HOSE_SCAN_PIPE_PLANT_PASSED": {
 "at": "2026-11-16T00:10:05",
 "hash": "fb84277b4588814f",
+"keep": [
+1
+],
+"keep_hash": "64ff359a309a43bc",
 "reading": {
 "accept": "python3 design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_2/lane2/check_pipe_plant.py <sha> exits 0, 3 of 3 pipe plants caught (rc 1, 0 of 3 at 8510908174).",
 "bars": [
@@ -3196,6 +3708,13 @@
 "RIMMASTER_POLISH_GSS_CORD_LEFTOVERS_AFTER_APPROVAL": {
 "at": "2026-11-16T00:09:56",
 "hash": "a40c107842fe08de",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "f1601f8cdad0eb5a",
 "reading": {
 "accept": "none, no acceptance filed; the look-change items need a later re-shoot against the approved crops",
 "bars": [],
@@ -3254,9 +3773,19 @@
 "traps": []
 }
 },
+"TANK_TALL_BUILD_TWICE_THE_DRINK": {
+"owner": [
+1
+],
+"owner_hash": "f29f50aa81dfbd50"
+},
 "UNROUTABLE_CORD_BUILD_DIVE_THROUGH_WALLS": {
 "at": "2026-11-16T00:09:56",
 "hash": "28cd8eb86c482cc2",
+"keep": [
+1
+],
+"keep_hash": "7709487e7672bf8f",
 "reading": {
 "accept": "Owner looks at a cord diving through a wall in game and rules the look (A2, L4).",
 "bars": [],

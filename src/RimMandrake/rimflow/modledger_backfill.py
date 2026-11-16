@@ -460,6 +460,7 @@ def load_readings(root, mod):
 
 
 RECORDS_OWNER = {}  # {mod: {ticket: his words numbered}}: what the owner reader is handed
+RECORDS_KEEP = {}   # {mod: {ticket: its candidate traps and causes numbered}}: what the keep reader is handed
 RECORDS = {}        # {mod: {ticket: record text}}: what plan() would hand the reader (modledger_reader.record_text)
 NARRATION_RE = re.compile(r"(?i)^(?:I |We |Now |Started|Began|Working on|Looking at|Continuing)")
 
@@ -552,6 +553,8 @@ def plan(root, mod):
     ev, notes, said_seen = [], [], []
     raw_readings = load_readings(root, mod)
     RECORDS[mod] = {}
+    RECORDS_KEEP[mod] = {}
+    dropped_keep = 0
     titles = item_titles(root)
 
     def add(kind, subject, body, evidence, authority=None, code_sha=None):
@@ -880,6 +883,16 @@ def plan(root, mod):
                     continue              # the reading read these lines with judgement; only an explicit 'X refuted'
                     #                       or 'False theory:' sentence is added beside its list
                 found.append(("cause" if is_cause else "trap", sen, PATH_RE.findall(sen), None, t, txt))
+        # the keep pass: a reader that sees the ticket's candidates together keeps only those that would change what
+        # a holder does to the mod (process trivia, status lines and restatements leave)
+        if found:
+            ktext = R.keep_text(name, titles.get(name), rd.get("defect"), [
+                ("C" if f_[0] == "cause" else "T", f_[1], f_[3]) for f_ in found])
+            RECORDS_KEEP[mod][name] = ktext
+            kr = raw_readings.get(name) or {}
+            if isinstance(kr.get("keep"), list) and kr.get("keep_hash") == R.rec_hash(ktext, "keep"):
+                dropped_keep += len(found) - len([f_ for i_, f_ in enumerate(found) if i_ + 1 in kr["keep"]])
+                found = [f_ for i_, f_ in enumerate(found) if i_ + 1 in kr["keep"]]
         for f_ in found:
             kind_, sen, deps, where = f_[:4]
             t, txt = (f_[4], f_[5]) if len(f_) > 4 else (None, sen)
@@ -957,13 +970,14 @@ def plan(root, mod):
             cand.append((sp_, i, said, card, iid))
     by_ticket = {}
     for c_ in cand:
-        if c_[4] in mined_items:
+        if c_[4]:
             by_ticket.setdefault(c_[4], []).append(c_[2] or c_[3])
     RECORDS_OWNER[mod] = {t: R.owner_text(t, titles.get(t), mod, ws) for t, ws in by_ticket.items()}
     for sp_, i, said, card, iid in cand:
         # on a ticket the owner reader read, only the words it marked as a ruling about the mod
         orr = raw_readings.get(iid) or {}
-        if iid in by_ticket and isinstance(orr.get("owner"), list):
+        if iid in by_ticket and isinstance(orr.get("owner"), list) and orr.get("owner_hash") == R.rec_hash(
+                RECORDS_OWNER[mod][iid], "owner"):
             n_ = by_ticket[iid].index(said or card) + 1
             if n_ not in orr["owner"]:
                 not_ruling += 1
@@ -975,6 +989,9 @@ def plan(root, mod):
         auth = {"owner_said": words_} if said else {"by_card": words_}
         add("decision", subj, {"said": words_} if said else {"text": words_},
             ["path:%s:%d" % (_rel(root, sp_), i), ("item:" + iid) if iid else None], auth)
+    if dropped_keep:
+        notes.append("left out: %d traps and ruled-out causes the keep reader found would change nothing a holder "
+                     "does" % dropped_keep)
     if off_mod or not_ruling:
         notes.append("left out: %d owner words on other tickets that do not name the mod, %d the owner reader found "
                      "no ruling about it" % (off_mod, not_ruling))
@@ -1028,12 +1045,20 @@ def run(root, mod, dry=False, read=False, budget_usd=None, log=print):
             "spent_usd"]), cfg.get("model", "sonnet"), cfg.get("workers", 4), log, field="owner",
             system=R.OWNER_SYSTEM)
         ev, notes2 = plan(root, mod)
-        notes = notes2 + notes[-1:] + ["owner reader: %d of %d tickets read in %d batches, $%.2f spent, %d failed, "
+        kpr = R.read_tickets(readings_path(root, mod), RECORDS_KEEP.get(mod, {}), [], max(0.0, bud - reader[
+            "spent_usd"] - owr["spent_usd"]), cfg.get("model", "sonnet"), cfg.get("workers", 4), log, field="keep",
+            system=R.KEEP_SYSTEM)
+        ev, notes2 = plan(root, mod)
+        notes = notes2 + notes[-1:] + ["keep reader: %d of %d tickets read in %d batches, $%.2f spent, %d failed, "
+                                       "%d skipped for the bound" % (kpr["read"], kpr["asked"], kpr["batches"],
+                                                                     kpr["spent_usd"], len(kpr["failed"]),
+                                                                     kpr["skipped_for_budget"])] + ["owner reader: %d of %d tickets read in %d batches, $%.2f spent, %d failed, "
                                        "%d skipped for the bound" % (owr["read"], owr["asked"], owr["batches"],
                                                                      owr["spent_usd"], len(owr["failed"]),
                                                                      owr["skipped_for_budget"])]
     have_r = load_readings(root, mod)
-    stale = sum(1 for n, t in RECORDS.get(mod, {}).items() if (have_r.get(n) or {}).get("hash") not in (None, R.rec_hash(t)))
+    stale = sum(1 for n, t in RECORDS.get(mod, {}).items() if (have_r.get(n) or {}).get("hash") not in (None,
+                                                                                         R.rec_hash(t)))
     unread = sum(1 for n in RECORDS.get(mod, {}) if n not in have_r)
     notes.append("readings: %d tickets unread (mined by the sentence rules), %d read from an older record (re-read "
                  "with --read)" % (unread, stale))

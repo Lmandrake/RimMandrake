@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "3d4b1b87a5dbaf05f2108b63d73e78c648dcb6dcdac0f87ffd7cb3863d6d5533",
+  "body_sha256": "2c1c6be6476a1f2da94ddc698ea2d46b2e93f175e406aff52d2e63b9cf1bc013",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 400062,
+   "BACKFILL": 393359,
    "DISPATCH": 666
   }
  },
@@ -50,9 +50,9 @@
     "ts": "2026-11-16T08:21:22Z"
    },
    "decision:finding:GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS": {
-    "answer": "Which scene is the one you judge Gimme Some Slack by first? → Workshop floor",
+    "answer": "The right power strip is better for modern look. Junctions work better for industrial.",
     "authority": {
-     "by_card": "Which scene is the one you judge Gimme Some Slack by first? → Workshop floor"
+     "owner_said": "The right power strip is better for modern look. Junctions work better for industrial."
     },
     "question": null,
     "ts": "2026-11-16T08:21:23Z"
@@ -149,22 +149,6 @@
     "answer": "If caught, steady goodwill drain (like living too close to a settlement)",
     "authority": {
      "owner_said": "If caught, steady goodwill drain (like living too close to a settlement)"
-    },
-    "question": null,
-    "ts": "2026-11-16T07:11:06Z"
-   },
-   "decision:q:mod-completion-measure-how-done-is-done": {
-    "answer": "Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong.",
-    "authority": {
-     "owner_said": "Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:11:06Z"
-   },
-   "decision:q:planning-build-days-of-orders-no-home": {
-    "answer": "Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later",
-    "authority": {
-     "by_card": "Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later"
     },
     "question": null,
     "ts": "2026-11-16T07:11:06Z"
@@ -852,10 +836,10 @@
    },
    "finding:GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS": {
     "authority": {
-     "by_card": "Which scene is the one you judge Gimme Some Slack by first? → Workshop floor"
+     "owner_said": "The right power strip is better for modern look. Junctions work better for industrial."
     },
     "by": "BACKFILL",
-    "text": "Which scene is the one you judge Gimme Some Slack by first? → Workshop floor",
+    "text": "The right power strip is better for modern look. Junctions work better for industrial.",
     "ts": "2026-11-16T08:21:23Z"
    },
    "finding:GSS_STYLE_RUN_PROVE_MIXED_LOOKS_SUSPECTED": {
@@ -954,22 +938,6 @@
     "text": "If caught, steady goodwill drain (like living too close to a settlement)",
     "ts": "2026-11-16T07:11:06Z"
    },
-   "q:mod-completion-measure-how-done-is-done": {
-    "authority": {
-     "owner_said": "Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong."
-    },
-    "by": "BACKFILL",
-    "text": "Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong.",
-    "ts": "2026-11-16T07:11:06Z"
-   },
-   "q:planning-build-days-of-orders-no-home": {
-    "authority": {
-     "by_card": "Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later"
-    },
-    "by": "BACKFILL",
-    "text": "Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later",
-    "ts": "2026-11-16T07:11:06Z"
-   },
    "q:restate-honest-faithfully-represents-connectivity-but": {
     "authority": {
      "owner_said": "Restate Honest: Faithfully represents connectivity but not precise conduit path. … if they approach intending to fix it, they are safe. If they incidentally go over the sparking end with a different job, they (or anyone else) gets shocked."
@@ -1019,7 +987,7 @@
     "ts": "2026-11-16T07:11:06Z"
    }
   },
-  "events": 525,
+  "events": 515,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -3463,14 +3431,6 @@
     "version": "0.1.0",
     "where": "SliceGateChecks.cs GraphWorker (1) and (3)"
    },
-   "trap:gss-s-first-look-save-must-not-be": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "GSS's first-look save must not be built yet: it waits until a full proof_all --live on SteveDesktop reads 0 FAIL on MOD rows (every UNMEASURED row named in an item). Then one save holds everything, including the pit.",
-    "ts": "2026-11-16T08:21:17Z",
-    "version": "0.1.0",
-    "where": "GSS first-look save; RIMMANDRAKE_PROVE_GSS_SWITCHBOARD_DENSE"
-   },
    "trap:l1-cord-sharp-turn-fails-on-the-base": {
     "by": "BACKFILL",
     "status": "noted",
@@ -3534,14 +3494,6 @@
     "ts": "2026-11-16T08:21:18Z",
     "version": "0.1.0",
     "where": "scenes sc_cords_slack, sc_no_sharp_turn; nodal_lead8.png"
-   },
-   "trap:live-runs-need-the-gimmesomeslack-tier-10-mods": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Live runs need the gimmesomeslack tier (10 mods), not the 26-mod minimal list. Run only when 'rimflow bridge idle' says TAKEABLE, as an earlier run closed the game after the owner returned.",
-    "ts": "2026-11-16T08:21:17Z",
-    "version": "0.1.0",
-    "where": "modset_builder.py --tier gimmesomeslack"
    },
    "trap:m20d-is-wiring-only-the-keepwiresongravship-behavior-was": {
     "by": "BACKFILL",
@@ -3654,14 +3606,6 @@
     "ts": "2026-11-16T08:21:20Z",
     "version": "0.1.0",
     "where": "GSS patches: run queueing, anchor looks, power scope, tap debit"
-   },
-   "trap:only-the-owner-s-onedrive-windows-captures-count": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Only the owner's OneDrive Windows captures count as evidence; his two F10 shots were cursor-pointing attempts.",
-    "ts": "2026-11-16T08:21:19Z",
-    "version": "0.1.0",
-    "where": "gss_sitting captures"
    },
    "trap:probe-rebuild-and-sameframe-use-rebuild-true-which": {
     "by": "BACKFILL",
@@ -4070,30 +4014,6 @@
     "ts": "2026-11-16T08:21:17Z",
     "version": "0.1.0",
     "where": "L1_RESTRING_TICKS_SWEEP, AerialMath.RestringTicks"
-   },
-   "trap:the-designer-drafting-the-tree-must-not-read": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The Designer drafting the tree must not read the old northstar entries, checklists or walk maps; it works only from sheet.md and log.md.",
-    "ts": "2026-11-16T08:21:17Z",
-    "version": "0.1.0",
-    "where": "design/concepts/GimmeSomeSlack/{sheet,log}.md"
-   },
-   "trap:the-designer-loop-on-design-concepts-gimmesomeslack-is": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The Designer loop on design/concepts/GimmeSomeSlack is held pending the Design Version 0.1.0 lock. Only one exam and one coverage judge pass on the locked tree were allowed, with no rework loop.",
-    "ts": "2026-11-16T08:21:17Z",
-    "version": "0.1.0",
-    "where": "design/concepts/GimmeSomeSlack stage.json (coverage_judge.hold)"
-   },
-   "trap:the-detached-run-s-clone-held-work-no": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The detached run's clone held work no remote had; it is bundled at /home/mandrake/rm/relentless/store/orphans/bundles/20261115T061232Z-RIMMANDRAKE_SIT_GSS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST.det and must be restored with relentless restore_bundle if wanted.",
-    "ts": "2026-11-16T08:21:21Z",
-    "version": "0.1.0",
-    "where": "/home/mandrake/rm/relentless/store/orphans/bundles/20261115T061232Z-RIMMANDRAKE_SIT_GSS_OWED_EXAM_AND_JUDGE_LOCKED_FIRST.det"
    },
    "trap:the-dll-was-rebuilt-at-landing-95a5c927e2-but": {
     "by": "BACKFILL",

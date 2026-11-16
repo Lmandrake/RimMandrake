@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "d5d01ba06cfc081c6a107649730d59a7a972f1a4f9e07cb07425b81bde0f5e10",
+  "body_sha256": "e00b24192bb1ab56c7d9ed193f26bac827615658dce3a1e27052d931f1a5cbca",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 309557,
+   "BACKFILL": 305856,
    "DISPATCH": 3051,
    "HOLDER.run-1794813483": 1382
   }
@@ -82,14 +82,6 @@
     "question": null,
     "ts": "2026-11-16T08:26:07Z"
    },
-   "decision:finding:RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO": {
-    "answer": "1 agree.",
-    "authority": {
-     "owner_said": "1 agree."
-    },
-    "question": null,
-    "ts": "2026-11-16T08:26:08Z"
-   },
    "decision:finding:RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER": {
     "answer": "I agree with the 2nd option though, pending tuning, and worse damage if they then hit a solid object.",
     "authority": {
@@ -150,22 +142,6 @@
     "answer": "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well.",
     "authority": {
      "owner_said": "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well."
-    },
-    "question": null,
-    "ts": "2026-11-16T06:51:52Z"
-   },
-   "decision:q:rimmandrake-bind-refusals-to-fixes-no-ceremony-loops": {
-    "answer": "Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists",
-    "authority": {
-     "by_card": "Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists"
-    },
-    "question": null,
-    "ts": "2026-11-16T06:51:52Z"
-   },
-   "decision:q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit": {
-    "answer": "It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3).",
-    "authority": {
-     "owner_said": "It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3)."
     },
     "question": null,
     "ts": "2026-11-16T06:51:52Z"
@@ -712,14 +688,6 @@
     "text": "Hauling an item from within pit to storage zone out of pit worked!",
     "ts": "2026-11-16T08:26:07Z"
    },
-   "finding:RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO": {
-    "authority": {
-     "owner_said": "1 agree."
-    },
-    "by": "BACKFILL",
-    "text": "1 agree.",
-    "ts": "2026-11-16T08:26:08Z"
-   },
    "finding:RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER": {
     "authority": {
      "owner_said": "I agree with the 2nd option though, pending tuning, and worse damage if they then hit a solid object."
@@ -792,22 +760,6 @@
     "text": "Just put a bomb into a storeroom with people in it beside a pit. Shows some items falling into the pit and some people as well.",
     "ts": "2026-11-16T06:51:52Z"
    },
-   "q:rimmandrake-bind-refusals-to-fixes-no-ceremony-loops": {
-    "authority": {
-     "by_card": "Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists"
-    },
-    "by": "BACKFILL",
-    "text": "Designer fixes: loop ceiling -> twice the item's cap then park; EK certification -> show me the 4 gaps then I certify; Designer path -> light path when code exists",
-    "ts": "2026-11-16T06:51:52Z"
-   },
-   "q:rimmandrake-design-maturation-pipeline-whole-mod-is-the-unit": {
-    "authority": {
-     "owner_said": "It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3)."
-    },
-    "by": "BACKFILL",
-    "text": "It's a bit strange to take Explosive Knockback through, since usually the pipeline will take a totally new idea through, but sure I guess we can pilot it on a basically done mod. That means it should go through VERY quickly, I would hope, and mostly test the existing acceptance tests. I select (3).",
-    "ts": "2026-11-16T06:51:52Z"
-   },
    "q:we-really-shouldn-t-blow-back": {
     "authority": {
      "owner_said": "We really shouldn't blow back creatures beyond a certain mass, and the heavier something is, the less it should fly. That should also be a function of the explosive damage itself as well. · with a single scene we can check ALL these things together · Melee shove is a great idea, but it belongs in FlowWorks, not here."
@@ -833,7 +785,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 440,
+  "events": 435,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -3240,14 +3192,6 @@
     "version": "0.1.0",
     "where": "walk_storeroom_raid A/B_COVER_BROKEN_ONE_DESCENT"
    },
-   "trap:the-detached-run-s-work-is-held-in": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The detached run's work is held in a bundle, not on a remote: /home/mandrake/rm/relentless/store/orphans/bundles/20261115T060653Z-RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE.det.",
-    "ts": "2026-11-16T08:26:06Z",
-    "version": "0.1.0",
-    "where": "relentless restore_bundle"
-   },
    "trap:the-failing-run-signature-is-bursts-1-burstticks": {
     "by": "BACKFILL",
     "status": "noted",
@@ -3615,14 +3559,6 @@
     "ts": "2026-11-16T08:26:04Z",
     "version": "0.1.0",
     "where": "design/concepts/ExplosiveKnockback tree.json coverage stamp"
-   },
-   "trap:the-work-was-left-in-a-detached-clone": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The work was left in a detached clone bundled at /home/mandrake/rm/relentless/store/orphans/bundles/20261115T165757Z-RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO.det; restore it if the work is wanted.",
-    "ts": "2026-11-16T08:26:05Z",
-    "version": "0.1.0",
-    "where": "relentless restore_bundle"
    },
    "trap:this-build-lacks-the-1-6x-goods-distance": {
     "by": "BACKFILL",

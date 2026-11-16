@@ -1,7 +1,7 @@
 {
 "model": "sonnet",
 "prompt_version": "2026-11-16.1",
-"spent_usd_last_run": 0.078,
+"spent_usd_last_run": 0.5495,
 "tickets": {
 "ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE": {
 "at": "2026-11-16T00:27:47",
@@ -20,6 +20,10 @@
 "ALL_OFF_FIX_DEPTH_ENGINE_STAYS_ON": {
 "at": "2026-11-16T00:27:47",
 "hash": "8203c62da20c1a07",
+"keep": [
+1
+],
+"keep_hash": "386010097ed138da",
 "reading": {
 "accept": "none, ticket filed no acceptance test",
 "bars": [],
@@ -39,6 +43,10 @@
 "AUTO_SPLICE_FIX_SKIPS_OBSTACLE_CHECK": {
 "at": "2026-11-16T00:27:47",
 "hash": "f5da50ff09560378",
+"keep": [
+1
+],
+"keep_hash": "16846be233159819",
 "reading": {
 "accept": "none, ticket filed no acceptance test",
 "bars": [
@@ -61,6 +69,10 @@
 "BIGNET_PROOF_FIX_SIZE_NOT_RESTORED": {
 "at": "2026-11-16T00:27:47",
 "hash": "6215aea51594962f",
+"keep": [
+1
+],
+"keep_hash": "f6328e77d3296302",
 "reading": {
 "accept": "none, ticket filed no acceptance test",
 "bars": [],
@@ -77,9 +89,17 @@
 ]
 }
 },
+"BIOME_SPRINT_PROVE_SCRUB_SETS_PACE": {
+"owner": [],
+"owner_hash": "778c3bf5dff217a3"
+},
 "BODY_CLASSIFY_FIX_STICKY_OFF_NEVER_FORMS": {
 "at": "2026-11-16T00:27:47",
 "hash": "b195d06d36607266",
+"keep": [
+1
+],
+"keep_hash": "b877a60fe1c3cfa8",
 "reading": {
 "accept": "validation_v2 --live --fresh-map shows S5_sticky_limitless PASS (W6 sticky OFF limitless=False; twin W7 ON limitless=True).",
 "bars": [],
@@ -127,6 +147,10 @@
 "BOTTLE_STOCK_MEND_FREE_REFILLS": {
 "at": "2026-11-16T00:27:47",
 "hash": "81eb840201583ba3",
+"keep": [
+1
+],
+"keep_hash": "0fc2897ab4d6c743",
 "reading": {
 "accept": "A SelfTest/python case that goes red on old code and green with the fix; filed as GptFixesAChecks (selftest_flowworks_stock.py).",
 "bars": [
@@ -150,10 +174,14 @@
 "CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
 "at": "2026-11-16T00:27:47",
 "hash": "8c91c1bc6445572b",
+"keep": [
+1
+],
+"keep_hash": "490ce1a876614335",
 "owner": [
 1
 ],
-"owner_hash": "a122d59221c53f2f",
+"owner_hash": "92aee77c7490380d",
 "reading": {
 "accept": "extension_proof.py --live --site dry --chains plot_C_limitless_canal: canal_fill_front PASS (mouth wet, far<=3).",
 "bars": [
@@ -175,6 +203,11 @@
 "CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY": {
 "at": "2026-11-16T00:27:47",
 "hash": "6426cd1240a136bb",
+"keep": [
+1,
+2
+],
+"keep_hash": "b7dace2ef46f7497",
 "reading": {
 "accept": "validation_v2 --live on calm: 61 PASS / 0 FAIL / 0 UNMEASURED, with the 5 canal fill rows PASS.",
 "bars": [
@@ -199,9 +232,25 @@
 ]
 }
 },
+"CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED": {
+"owner": [
+1
+],
+"owner_hash": "e42b9e45eb1b6383"
+},
+"CANAL_SPILL_WIRE_GARDEN_GROWS_DOWNHILL": {
+"owner": [
+1
+],
+"owner_hash": "860d946586c25b4c"
+},
 "CANAL_SWIM_VERIFY_POISON_POOL_PARTY": {
 "at": "2026-11-16T00:27:47",
 "hash": "880b3354fcb28bd4",
+"keep": [
+1
+],
+"keep_hash": "71895694e56ba79f",
 "reading": {
 "accept": "Live: warm map, low-joy colonist beside a shallow poison canal with no other water; read the GoSwimming job target.",
 "bars": [
@@ -223,10 +272,14 @@
 "CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL": {
 "at": "2026-11-16T00:27:47",
 "hash": "1449e5611fc0960d",
+"keep": [
+1
+],
+"keep_hash": "9dc88b6b486d5d10",
 "owner": [
 1
 ],
-"owner_hash": "68c775026aee7c57",
+"owner_hash": "4810a93464395e03",
 "reading": {
 "accept": "selftest_flowworks_fuel_moat.py case chemfuel_registry_names_canal_fluid: red on the old registry, green with the fix.",
 "bars": [
@@ -249,6 +302,10 @@
 "CONCEALED_COVER_FIX_SHIELDS_FROM_LIQUID": {
 "at": "2026-11-16T00:27:47",
 "hash": "a10d801740b862d9",
+"keep": [
+1
+],
+"keep_hash": "c2a2f2fdc5ca6f26",
 "reading": {
 "accept": "Selftest Concealed_cover_does_not_shield_the_pawn_beneath_it_from_the_fill passes (L0); live: a pawn beneath a concealed lid in a toxic or deep-filled pit gains toxic buildup or drowns as an uncovered pawn would (L1).",
 "bars": [
@@ -266,6 +323,10 @@
 }
 ]
 }
+},
+"CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING": {
+"owner": [],
+"owner_hash": "80d9015db32c2ebd"
 },
 "COVER_BLAST_FIX_DECK_LEFT_INTACT": {
 "at": "2026-11-16T00:27:47",
@@ -302,6 +363,10 @@
 "DBH_WATER_MEND_ACID_ON_TAP": {
 "at": "2026-11-16T00:27:47",
 "hash": "fbf87bb9a02acddf",
+"keep": [
+1
+],
+"keep_hash": "d964f502001bd4f5",
 "reading": {
 "accept": "A SelfTest/python case red on old code and green with the fix (GptFixesAChecks, selftest_flowworks_stock.py).",
 "bars": [
@@ -324,6 +389,12 @@
 "DEEP_BEDS_FIX_FLOOR_STOPS_AT_FOUR": {
 "at": "2026-11-16T00:27:47",
 "hash": "7f2147ce7954e142",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "ea252ba4a203c1a1",
 "reading": {
 "accept": "deep_lake_proof.py <out> --fresh-map on DLL dbc55e224cd8 or later: DL_lake_over_4000_is_limited passes; DL_drained_reads_gradual_hollow PASS (deepestDry > 4, lakebedAbyss > 0) with both colonist rows measured.",
 "bars": [
@@ -356,6 +427,10 @@
 "DEEP_SAND_FIX_READS_AS_FRESHWATER": {
 "at": "2026-11-16T00:27:47",
 "hash": "1c465bc2b0718c65",
+"keep": [
+1
+],
+"keep_hash": "c75c4e31282e50fe",
 "reading": {
 "accept": "Live: a thirsty pawn beside deep sand does not drink it (L1).",
 "bars": [],
@@ -375,6 +450,11 @@
 "DEEP_STONE_FIX_NOBODY_PICKS_UP_SHOVEL": {
 "at": "2026-11-16T00:27:33",
 "hash": "b322a4ad630f0673",
+"keep": [
+1,
+2
+],
+"keep_hash": "e168d66908c0347f",
 "reading": {
 "accept": "deep_stone_live.py --fresh-map logs a job_probe hasJobOnCell RM_DigCanalJob plus an accepted order, depth 3->4, and scores DS_superdeep_cut.",
 "bars": [],
@@ -398,6 +478,11 @@
 "DEEP_STONE_FIX_PROBE_NEVER_NAMES_PAWN": {
 "at": "2026-11-16T00:27:33",
 "hash": "a628c0b9545c7a4a",
+"keep": [
+1,
+2
+],
+"keep_hash": "af41542344c3a326",
 "reading": {
 "accept": "Rerun deep_stone_live.py --fresh-map live: job_probe reply carries workGiver and pawn blocks, dig accepted, depth 3->4.",
 "bars": [],
@@ -421,6 +506,10 @@
 "DEEP_STONE_PROOF_FIX_RERUN_LETTER_FAILS": {
 "at": "2026-11-16T00:27:33",
 "hash": "749768346e39857a",
+"keep": [
+1
+],
+"keep_hash": "8d29768ff5099978",
 "reading": {
 "accept": "none, the ticket filed no acceptance test (it only records the defect).",
 "bars": [],
@@ -440,6 +529,10 @@
 "DEPTH_PROOFS_FIX_EXIT_ZERO_ON_FAIL": {
 "at": "2026-11-16T00:27:33",
 "hash": "1c8e8f35c284cfc5",
+"keep": [
+1
+],
+"keep_hash": "f5700a6d8c262c48",
 "reading": {
 "accept": "none, the ticket filed no acceptance test (it only records the defect).",
 "bars": [],
@@ -459,6 +552,16 @@
 "DIG_FINDS_PROVE_NEVER_FINISHES_ON_STEVE": {
 "at": "2026-11-16T00:27:33",
 "hash": "17906d76c73365eb",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6,
+7
+],
+"keep_hash": "571e1e5b623d084d",
 "reading": {
 "accept": "`modcheck FlowWorks dig_finds` via the testq lane steve-targeted on SteveDesktop (dry site): finds_off_none, cut_turns_up_local_find and first_find_sends_letter must each PASS. Standalone: quarry_find_live.py row QUARRY_FIND_DROPS_ON_LIP.",
 "bars": [
@@ -510,12 +613,19 @@
 "DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS": {
 "at": "2026-11-16T00:27:33",
 "hash": "469eeed3b507b7ca",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "ed5964a6dcab3f7e",
 "owner": [
 1,
 2,
 4
 ],
-"owner_hash": "994b7e7916c970ca",
+"owner_hash": "7081ac3f78ecb637",
 "reading": {
 "accept": "drawbridge_proof.py --fresh-map: all R13 live rows PASS (12/12 at 41fb948b5e). Plus the FlowWorks SelfTest DrawbridgeChecks, and an owner in-game look at timber and steel bridges.",
 "bars": [
@@ -553,6 +663,10 @@
 "DRAWBRIDGE_LOWER_FIX_LIFTS_OCCUPANTS_BENEATH": {
 "at": "2026-11-16T00:27:33",
 "hash": "a541456e394f98ed",
+"keep": [
+1
+],
+"keep_hash": "efd5d7c8433e8b68",
 "reading": {
 "accept": "none, the ticket filed no acceptance test (it only records the defect).",
 "bars": [
@@ -575,6 +689,10 @@
 "DRILL_SURVEY_EXPLAIN_BEFORE_STEEL_IS_SPENT": {
 "at": "2026-11-16T00:27:42",
 "hash": "0cdd88bde06f344c",
+"keep": [
+1
+],
+"keep_hash": "bbf23b0f26c36ad8",
 "reading": {
 "accept": "Live: pick the drill in Architect on a map with and without a yield and read the mouse text (live look owed). Offline: SelfTest 773/773, py 51/51.",
 "bars": [],
@@ -594,6 +712,8 @@
 "DROWNING_ESCAPE_FIX_READS_DECK_ABOVE": {
 "at": "2026-11-16T00:27:42",
 "hash": "0ea04ffaad8f1f22",
+"keep": [],
+"keep_hash": "7764753ab4213dfc",
 "reading": {
 "accept": "none, the ticket filed no acceptance test (it only records the defect).",
 "bars": [],
@@ -613,6 +733,10 @@
 "EXCAVATION_LEGACY_MIGRATION_FLAG_1": {
 "at": "2026-11-16T00:27:42",
 "hash": "2e923b6d6a924901",
+"keep": [
+1
+],
+"keep_hash": "89ef55cb6550cf65",
 "reading": {
 "accept": "python.exe src/RimMandrake/FlowWorks/northstar/legacy_fill_live.py --fresh-map: LF_fallback_hands_back_ground PASS, LF_fallback_off_leaves_trench PASS, LF_reload_trench_not_reread PASS.",
 "bars": [],
@@ -632,6 +756,11 @@
 "FERRY_ROPE_FIX_BUILT_ONLY_WHEN_ASKED": {
 "at": "2026-11-16T00:27:42",
 "hash": "5e97846536ace2a8",
+"keep": [
+1,
+2
+],
+"keep_hash": "8f72a580918d4256",
 "reading": {
 "accept": "A SelfTest/python case or live state read that is red on old code and green with the fix: pair a ferry with the river empty, read RopeIndicesNoRebuild.Count and an undrafted path before any RopeCellCount read.",
 "bars": [],
@@ -674,6 +803,10 @@
 "FILL_TERRAIN_FIX_HAZARDS_DRUNK_AS_WATER": {
 "at": "2026-11-16T00:27:42",
 "hash": "fdfde390851a251f",
+"keep": [
+1
+],
+"keep_hash": "6201f0c5c74ef376",
 "reading": {
 "accept": "Live: a thirsty pawn beside a chemfuel, oil or poison canal fill does not drink it.",
 "bars": [
@@ -695,6 +828,10 @@
 "FIRE_BURN_PULSE_PROVE_REFILL_RACE": {
 "at": "2026-11-16T00:27:42",
 "hash": "4a64264ef8ed37cc",
+"keep": [
+1
+],
+"keep_hash": "9db75dd965ca2966",
 "reading": {
 "accept": "PrePortFixChecks P8, old-path can-fail: burn pulse consumes a canal level only when the cell liquid burns now.",
 "bars": [
@@ -716,6 +853,11 @@
 "FLOOD_DEBIT_MEND_DEEP_CELL_ONE_LEVEL": {
 "at": "2026-11-16T00:27:42",
 "hash": "2f5b8abb1a5b2a5e",
+"keep": [
+1,
+2
+],
+"keep_hash": "17b6f5acb4f4915d",
 "reading": {
 "accept": "PrePortFixChecks P5 (old rule 36 vs 9); live: a release into a dug D4 channel spends 4 x volumePerTile per cell on the debug report.",
 "bars": [],
@@ -739,6 +881,11 @@
 "FLOOD_DRIVER_OWNERSHIP_CONTRACT_1": {
 "at": "2026-11-16T00:27:42",
 "hash": "e4da63e4b2685414",
+"keep": [
+1,
+2
+],
+"keep_hash": "c8be7cbb01eee6bd",
 "reading": {
 "accept": "A release into a dry dug channel leaves FillAt>0, no flood temp terrain, and nothing strips it at recede.",
 "bars": [],
@@ -762,6 +909,11 @@
 "FLOOD_RELEASE_PROBE_FORGOTTEN_REFUSALS": {
 "at": "2026-11-16T00:27:42",
 "hash": "0398bb7cecde6aa0",
+"keep": [
+1,
+2
+],
+"keep_hash": "fdf2846c8cea21f0",
 "reading": {
 "accept": "A SelfTest/python case or live read red on old code, green with the fix; for PLAUSIBLE findings, run the check in the row first (kernel scene compare, round-trip, release beside wet vs dry inlet).",
 "bars": [],
@@ -789,6 +941,11 @@
 "FLOOD_SWITCH_RACE_MEND_ENGINE_OFF": {
 "at": "2026-11-16T00:27:42",
 "hash": "96c36de74b6b91d7",
+"keep": [
+1,
+2
+],
+"keep_hash": "ed21d952870e259d",
 "reading": {
 "accept": "PrePortFixChecks P6a old-guard can-fail; live: switch off, release into a dug channel leaves channel terrain and fill unchanged past the recede tick.",
 "bars": [],
@@ -812,6 +969,10 @@
 "FLOWPINS_FIX_PASS_ON_REGRESSION": {
 "at": "2026-11-16T00:27:42",
 "hash": "0f0617ede85e87c2",
+"keep": [
+1
+],
+"keep_hash": "e74440828a93d36b",
 "reading": {
 "accept": "Each fixed pin red on its mutant and green on source.",
 "bars": [],
@@ -873,10 +1034,15 @@
 "FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING": {
 "at": "2026-11-16T00:27:42",
 "hash": "efd3d81b0db3a5d1",
+"keep": [
+1,
+2
+],
+"keep_hash": "61707272032b16b4",
 "owner": [
 2
 ],
-"owner_hash": "6ca0711771ba9bb5",
+"owner_hash": "729053a3c154da2e",
 "reading": {
 "accept": "L4: `modcheck floor --all` shows FlowWorks' north star validated at the new hash.",
 "bars": [],
@@ -949,6 +1115,10 @@
 "FLOWWORKS_BRIDGES_DESIGN_SPAN_ANYTHING": {
 "at": "2026-11-16T00:27:23",
 "hash": "58252cfbe50ad23d",
+"owner": [
+1
+],
+"owner_hash": "ffdf90fea2849db0",
 "reading": {
 "accept": "none, design ticket; no command filed. Children carry the build criteria.",
 "bars": [
@@ -1013,7 +1183,7 @@
 "at": "2026-11-16T00:27:23",
 "hash": "b1c7fa7aa1afc670",
 "owner": [],
-"owner_hash": "777f3163c0d09473",
+"owner_hash": "f0b0a3ef65dfbb9b",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [
@@ -1030,6 +1200,14 @@
 "FLOWWORKS_CHECKOUT_SCOPE_1": {
 "at": "2026-11-16T00:27:38",
 "hash": "07db0de485e64ab5",
+"keep": [
+1,
+2,
+3,
+4,
+5
+],
+"keep_hash": "9dfbd46dea6a1ca9",
 "reading": {
 "accept": "L2: a live checkout runs extension_proof.py --live right after validation_v2 --live and both results are recorded. L0: selftest_extensions check (7) red on old walk, green on new.",
 "bars": [],
@@ -1066,6 +1244,10 @@
 "FLOWWORKS_CLIMBERS_REWIRE_NAMES_THAT_LEFT": {
 "at": "2026-11-16T00:27:38",
 "hash": "6fad85e3b40d37ad",
+"keep": [
+1
+],
+"keep_hash": "565e6654dad12db2",
 "reading": {
 "accept": "none, no command filed; the spec says only to prove it offline (selftest) and verify with a sha.",
 "bars": [],
@@ -1125,10 +1307,19 @@
 "FLOWWORKS_CONTAINER_MATERIALS_1": {
 "at": "2026-11-16T00:27:58",
 "hash": "c295e299bcd28c20",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6
+],
+"keep_hash": "27aeea9c61bf58b4",
 "owner": [
 1
 ],
-"owner_hash": "8eecfe46549a2858",
+"owner_hash": "0c0a36910b9ece71",
 "reading": {
 "accept": "A1 (L1): minimal-list read finds the stuffable defs and per-material recipes loading clean. A2 (L2): material survives fill, wash and tank pour; metal and wood refuse acid, plasteel holds it; stone reads as glass. A3 (L4): owner judges the art.",
 "bars": [
@@ -1171,6 +1362,11 @@
 "FLOWWORKS_CONVERTER_FIX_BLOCKED_STARVES_REST": {
 "at": "2026-11-16T00:27:58",
 "hash": "42a54cc7d3fed588",
+"keep": [
+1,
+2
+],
+"keep_hash": "602835f6f2fdfaef",
 "reading": {
 "accept": "O1: Gpt1016_converter_blocked_small_recipe_does_not_starve_big_one passes and its old-rule probe stays at 0. A1: sitting_gaps_proof.py --fresh-map --only CONVERTER_BIG_RECIPE_RUNS; salt drop x 0.5 = product, icy tank untouched.",
 "bars": [],
@@ -1194,6 +1390,10 @@
 "FLOWWORKS_CONVERTER_FIX_CAP_EATS_CHANGE": {
 "at": "2026-11-16T00:27:58",
 "hash": "4f629b51bd82befd",
+"keep": [
+1
+],
+"keep_hash": "37e1df091af6cc07",
 "reading": {
 "accept": "none, no acceptance test filed",
 "bars": [],
@@ -1227,8 +1427,16 @@
 "FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG": {
 "at": "2026-11-16T00:27:59",
 "hash": "ab911b01c324de75",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "15cd991004c0098b",
 "owner": [
 1,
+2,
 3,
 4,
 5,
@@ -1239,7 +1447,7 @@
 10,
 12
 ],
-"owner_hash": "566fd6584c7b09d5",
+"owner_hash": "7fe596137b2248ca",
 "reading": {
 "accept": "L2: every connected still body reads one surface height within 1 cm via level_surface_bar.py live; 4/7/7/4 square digs, fills level, reloads identically; S2, S5, S6 of water_scenes_walk.py match. L4: owner review.",
 "bars": [
@@ -1273,6 +1481,10 @@
 "FLOWWORKS_DIAGNOSE_FREEZE_AFTER_DRAWBRIDGE": {
 "at": "2026-11-16T00:27:59",
 "hash": "ae8adb012c8399f5",
+"keep": [
+1
+],
+"keep_hash": "a90a89b22ad01cf2",
 "reading": {
 "accept": "Blind check: run_selftests.py --only infrastructure/stevedesktop/selftest_steve_worker.py exits 0; a hung run keeps Player.log before the restart.",
 "bars": [],
@@ -1306,6 +1518,11 @@
 "FLOWWORKS_DONOR_AFFORDANCE_GAP_1": {
 "at": "2026-11-16T00:27:59",
 "hash": "ad894947f67ab7ed",
+"keep": [
+1,
+2
+],
+"keep_hash": "2cbbdb559ee9d73a",
 "reading": {
 "accept": "validate_patch.py on Defs/LiquidTypes/TerrainDefs/ gives 0 errors, 0 warnings with --live and with --defs.",
 "bars": [],
@@ -1332,6 +1549,11 @@
 "FLOWWORKS_DOOR_FAMILY_1": {
 "at": "2026-11-16T00:27:59",
 "hash": "be22b6f2866d3dbe",
+"keep": [
+1,
+2
+],
+"keep_hash": "83068d0e04b39fb2",
 "reading": {
 "accept": "Liquid passes both while closed, proven in game; neither openable by a pawn in a superdeep cell; a wooden one burns; two defs only, both stuffable.",
 "bars": [
@@ -1361,7 +1583,7 @@
 "owner": [
 1
 ],
-"owner_hash": "05cd8b3009f539fb",
+"owner_hash": "d220f4049c630e15",
 "reading": {
 "accept": "live_session.py B2 rows B2_readout_sea_never_dry and B2_readout_drainable_not_endless PASS: edge sea reads Endless; dug square, canal and pond do not.",
 "bars": [],
@@ -1392,10 +1614,16 @@
 "FLOWWORKS_FINISH_ARTISAN_LOOP_DREAD_FOURTH": {
 "at": "2026-11-16T00:28:17",
 "hash": "5c1f7c57ddadab5e",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "9060dcbe6307a69a",
 "owner": [
 6
 ],
-"owner_hash": "ef05333c82bc15a5",
+"owner_hash": "9c74eeca52fe2ef7",
 "reading": {
 "accept": "none, no acceptance command filed; the item names only the offline selftest or the live proof, and closure waits for the owner to say the mod is done.",
 "bars": [],
@@ -1583,6 +1811,12 @@
 "FLOWWORKS_HOTPATH_MEASURE_EVERY_FRAME": {
 "at": "2026-11-16T00:28:17",
 "hash": "9daa649601f17810",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "004c00fdb24b7166",
 "reading": {
 "accept": "Each CONFIRMED finding: a selftest case red on old code, green on the fix. Each PLAUSIBLE finding: its row's check run first. Evidence selftest_flowworks_gpt_c.py.",
 "bars": [
@@ -1668,6 +1902,11 @@
 "FLOWWORKS_LIQUID_FACES_1": {
 "at": "2026-11-16T00:28:13",
 "hash": "31fd28cb5a9e2e60",
+"keep": [
+1,
+2
+],
+"keep_hash": "7d9c984985e62b3e",
 "reading": {
 "accept": "Matrix exists, every registry row has all cells answered, owner ruled the review, each YES names its hosting mod/biome.",
 "bars": [],
@@ -1691,6 +1930,10 @@
 "FLOWWORKS_LIQUID_KITS_WIRE_NO_REVIEW_ROW": {
 "at": "2026-11-16T00:28:13",
 "hash": "95d862dae2e71bb0",
+"keep": [
+1
+],
+"keep_hash": "24d05666f71bc815",
 "reading": {
 "accept": "none, no acceptance test filed; record cites selftests green.",
 "bars": [],
@@ -1710,6 +1953,12 @@
 "FLOWWORKS_LIVE_ROWS_REMEASURE_STALE_HASH": {
 "at": "2026-11-16T00:28:13",
 "hash": "68f0b299f03ec414",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "de83ae592f1ce84a",
 "reading": {
 "accept": "none filed as a command; the rows must read measured at the current hash after rerun and modcheck record FlowWorks.",
 "bars": [],
@@ -1738,6 +1987,12 @@
 "FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS": {
 "at": "2026-11-16T00:28:13",
 "hash": "0cbe30866cd7aa8b",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "00bff0cbdf1adac8",
 "reading": {
 "accept": "A1: each row classed with evidence, MOD rows fixed or filed. A2: modcheck status FlowWorks shows a run on the current build: GREEN, or RED with every failing row named and filed.",
 "bars": [],
@@ -1765,6 +2020,11 @@
 "FLOWWORKS_NORTHSTAR_BASELINE_RUN_1": {
 "at": "2026-11-16T00:28:13",
 "hash": "2c636a213323a549",
+"keep": [
+1,
+2
+],
+"keep_hash": "fa9f64893203a31f",
 "reading": {
 "accept": "rimflow verify FLOWWORKS_NORTHSTAR_BASELINE_RUN_1 --result <real> --config flowworks-minimal --evidence <sheet>; sheet has every bar with frame, verdict, predicates.",
 "bars": [],
@@ -1789,6 +2049,10 @@
 "FLOWWORKS_NORTHSTAR_GREEN_FULL_1": {
 "at": "2026-11-16T00:28:13",
 "hash": "14717c807b493e33",
+"owner": [
+1
+],
+"owner_hash": "e5d6d03e08575deb",
 "reading": {
 "accept": "modcheck status FlowWorks = GREEN after a cold load on the full list (~15 min measured on 599 mods), list restored byte-identical.",
 "bars": [],
@@ -1808,6 +2072,11 @@
 "FLOWWORKS_NORTHSTAR_GREEN_MINIMAL_1": {
 "at": "2026-11-16T00:28:13",
 "hash": "92407330bac998f6",
+"keep": [
+1,
+2
+],
+"keep_hash": "36571b46ef641361",
 "reading": {
 "accept": "A passing run on the flowworks tier, preflight clean, modcheck status FlowWorks = GREEN; owner reviewed the sheet once (record_owner_review).",
 "bars": [],
@@ -1832,6 +2101,10 @@
 "FLOWWORKS_NORTHSTAR_REVALIDATE_1": {
 "at": "2026-11-16T00:28:13",
 "hash": "6fedf937b4005853",
+"keep": [
+1
+],
+"keep_hash": "d47dc18281235a49",
 "reading": {
 "accept": "modcheck/cli.py validate FlowWorks --owner-said recorded; northstar.parse(FlowWorks.md) gives VALIDATED with pit bars; Pits.md deleted; doctor shows no ORPHAN_WALK for Pits.",
 "bars": [],
@@ -1851,8 +2124,15 @@
 "FLOWWORKS_NORTHSTAR_SHIP_1": {
 "at": "2026-11-16T00:28:40",
 "hash": "821e621a0eed64b8",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "220396c15ad14dd9",
 "owner": [],
-"owner_hash": "f379612b63971d12",
+"owner_hash": "590fe7d62d568b64",
 "reading": {
 "accept": "code_review_status.py check over git ls-files src/RimMandrake/FlowWorks gives 0 DIRTY; deploy_custom_mods.py --mod FlowWorks in sync with DLL .srchash matching; no def on TrapSpikeArmed.",
 "bars": [],
@@ -1898,6 +2178,12 @@
 "FLOWWORKS_NORTHSTAR_TRIAL_1": {
 "at": "2026-11-16T00:28:40",
 "hash": "84787b06b3c68333",
+"keep": [
+1,
+3,
+4
+],
+"keep_hash": "a356c9e80bc4e86f",
 "reading": {
 "accept": "python3 -m modcheck.cli status FlowWorks (from src/RimMandrake/Utils) prints GREEN, re-derived, on the full list.",
 "bars": [],
@@ -1929,6 +2215,11 @@
 "FLOWWORKS_NORTHSTAR_WIRE_1": {
 "at": "2026-11-16T00:28:40",
 "hash": "9f00009efd1220b7",
+"keep": [
+1,
+2
+],
+"keep_hash": "17764f19a47ed828",
 "reading": {
 "accept": "python3 -m modcheck.cli floor --all FlowWorks row: 0 uncovered must-show, 0 orphan shows=, toggle floor met; run_selftests.py green.",
 "bars": [],
@@ -1966,6 +2257,10 @@
 "FLOWWORKS_OWNER_RECONCILE_CUTOVER_STALE": {
 "at": "2026-11-16T00:28:40",
 "hash": "e190cc188fa50ad7",
+"keep": [
+1
+],
+"keep_hash": "08c5ee2e73c0a1a1",
 "reading": {
 "accept": "none, no command filed; routing flowworks_seat() -> FOUNDRY for HOSE_/FLOWWORKS_/GSS_ was verified live.",
 "bars": [],
@@ -1985,6 +2280,10 @@
 "FLOWWORKS_PINS_FIX_EXCISED_SHAS": {
 "at": "2026-11-16T00:28:40",
 "hash": "463ca10e0f80ef23",
+"keep": [
+1
+],
+"keep_hash": "6374c1faafa97215",
 "reading": {
 "accept": "none, no command filed (found by nightly selftest triage).",
 "bars": [],
@@ -2004,6 +2303,10 @@
 "FLOWWORKS_PITCOVER_FIX_BURNS_PAWN_UNHARMED": {
 "at": "2026-11-16T00:28:40",
 "hash": "47bc55e07f8712ca",
+"keep": [
+1
+],
+"keep_hash": "7a87af42a56dddc3",
 "reading": {
 "accept": "Live: pawn on a cover, kill the cover by damage, read fall/hediff.",
 "bars": [],
@@ -2023,6 +2326,10 @@
 "FLOWWORKS_PITFALL_FIX_HISTORY_NOT_SAVED": {
 "at": "2026-11-16T00:28:40",
 "hash": "6a244148f19e42da",
+"keep": [
+1
+],
+"keep_hash": "4ac28d33e336b7df",
 "reading": {
 "accept": "Live lines_proof PITFALL_SAVED_ARRIVAL_FALLS: forced shove into 4 m pit, save, load, tick -> fall on (32,132).",
 "bars": [],
@@ -2042,10 +2349,14 @@
 "FLOWWORKS_PIT_FALL_ONLY_FORCED_1": {
 "at": "2026-11-16T00:28:40",
 "hash": "80b0bf7d5d293397",
+"keep": [
+1
+],
+"keep_hash": "1cd962ea049ce638",
 "owner": [
 1
 ],
-"owner_hash": "1de3d17160ebed39",
+"owner_hash": "6386af1277fd49b1",
 "reading": {
 "accept": "Forced or blown colonist falls via OnForcedDescent on a quicktest map; enemy under concealed cover falls in (chain pit_cover_fall).",
 "bars": [],
@@ -2084,6 +2395,10 @@
 "FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1": {
 "at": "2026-11-16T00:28:40",
 "hash": "7b0903ad05371c1d",
+"keep": [
+1
+],
+"keep_hash": "4804303e3bff4ca9",
 "reading": {
 "accept": "Screenshot of occupied D1-D4 pits shows the occupant through a window in the near-lip cover; unoccupied pit unchanged.",
 "bars": [],
@@ -2103,6 +2418,11 @@
 "FLOWWORKS_PIT_PAWN_ROWS_RED_1": {
 "at": "2026-11-16T00:28:40",
 "hash": "ece2bce640693daa",
+"keep": [
+1,
+2
+],
+"keep_hash": "decc026d622ea752",
 "reading": {
 "accept": "validation_v2 live rerun with P rows passing (63P/0F).",
 "bars": [],
@@ -2129,8 +2449,13 @@
 "FLOWWORKS_PIT_TRAVEL_BUILD_FLY_JUMP_FLOAT": {
 "at": "2026-11-16T00:28:40",
 "hash": "5db19f48c9684aa9",
+"keep": [
+1,
+2
+],
+"keep_hash": "975013ded641e99e",
 "owner": [],
-"owner_hash": "f9d8c8a3d33be369",
+"owner_hash": "30a9c03ccddf2f85",
 "reading": {
 "accept": "State reads: jump-packed and skipped colonists land in a 3 m pit unhurt; marked jumper and flyer animals cross free.",
 "bars": [],
@@ -2154,8 +2479,13 @@
 "FLOWWORKS_PLAYTEST_CAMPAIGN_1": {
 "at": "2026-11-16T00:28:40",
 "hash": "c113cec5c66566ca",
+"keep": [
+1,
+2
+],
+"keep_hash": "54e727f3c9ccf6ed",
 "owner": [],
-"owner_hash": "58dd0cb739e77fa2",
+"owner_hash": "51f65fbb2394d13a",
 "reading": {
 "accept": "The campaign log holds the table and verdict line.",
 "bars": [],
@@ -2202,6 +2532,10 @@
 "FLOWWORKS_PRISON_BUILD_NO_BED_REQUIRED": {
 "at": "2026-11-16T00:28:23",
 "hash": "70322dcfbe9c7b5a",
+"keep": [
+1
+],
+"keep_hash": "98ba5bb71b667e2b",
 "reading": {
 "accept": "On a real RimWorld map, scene_hole_prison proves bedless capture and care/ingestion in the hole, remote-bed retention, disabled and ordinary-bed controls; fresh independent judge verdict fully true.",
 "bars": [
@@ -2224,6 +2558,10 @@
 "FLOWWORKS_PROBES_MEND_HOOK_HAZARDS": {
 "at": "2026-11-16T00:28:23",
 "hash": "883c9b58af998273",
+"keep": [
+1
+],
+"keep_hash": "1054d51235e99648",
 "reading": {
 "accept": "Each CONFIRMED finding: a SelfTest/python case red on old code and green with the fix; each PLAUSIBLE finding: run its row's check first (selftest_flowworks_gpt_c.py).",
 "bars": [],
@@ -2245,6 +2583,11 @@
 "FLOWWORKS_PROOF_POKES_RESTORE_PRIOR": {
 "at": "2026-11-16T00:28:23",
 "hash": "201c13ccb560a53e",
+"keep": [
+1,
+3
+],
+"keep_hash": "9fe7047ed1be71a2",
 "reading": {
 "accept": "proof_restore_check.py --all reports 0 hits; lower or remove the count under its BASELINE key in selftest_proof_restore_check.py.",
 "bars": [],
@@ -2272,6 +2615,10 @@
 "FLOWWORKS_PROVE_OWED_LIVE_CHECKS_ONE_SITTING": {
 "at": "2026-11-16T00:28:23",
 "hash": "96e2f94f2b88409b",
+"keep": [
+1
+],
+"keep_hash": "2e0d5bd13e250ef3",
 "reading": {
 "accept": "L2: every owed FlowWorks criterion in the plan is PASS, MOD-FAIL (filed as an item) or explicitly UNMEASURED with a reason.",
 "bars": [],
@@ -2307,6 +2654,10 @@
 "FLOWWORKS_PUMP_FIX_POURS_BACK_STILL_THREE": {
 "at": "2026-11-16T00:28:23",
 "hash": "cfd641fb4b05cccc",
+"keep": [
+1
+],
+"keep_hash": "09e0027f538adee2",
 "reading": {
 "accept": "none, no acceptance test filed beyond a live measure of pump_pours_back.",
 "bars": [],
@@ -2326,11 +2677,17 @@
 "FLOWWORKS_PUMP_PORTS_REBUILD_ONE_PER_SIDE": {
 "at": "2026-11-16T00:28:23",
 "hash": "67f091d4648b1355",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "74ca14327aef88c1",
 "owner": [
 1,
 2
 ],
-"owner_hash": "a58cf8431b341c08",
+"owner_hash": "f8c4f5e7ee6c35b7",
 "reading": {
 "accept": "Live: a piped side plus a reel on another side both carry; a second reel on a taken side and a hose end on the piped side read uncoupled; a diagonal pipe is off. Selftest PumpPorts_net_and_hose_couplings_ask_the_rule.",
 "bars": [],
@@ -2396,6 +2753,11 @@
 "FLOWWORKS_RAIDERS_BUILD_LADDER_FOR_FALLEN": {
 "at": "2026-11-16T00:28:29",
 "hash": "d6beb314811e14a7",
+"keep": [
+1,
+2
+],
+"keep_hash": "8b5126fbffcf5dc0",
 "reading": {
 "accept": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only fetch_fallen: 3 of 3 laws ok, rc 0. Live: concept_scenes.py --scene scene_fetch_fallen --out <json>, unrun.",
 "bars": [
@@ -2422,10 +2784,15 @@
 "FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE": {
 "at": "2026-11-16T00:28:29",
 "hash": "888ba5701dd3d40c",
+"keep": [
+1,
+2
+],
+"keep_hash": "fe6dfa1e31e97b89",
 "owner": [
 1
 ],
-"owner_hash": "6deab982463ecafe",
+"owner_hash": "1ddef1611248fd71",
 "reading": {
 "accept": "Live: with the only colonist in the pit, ordering up raises it from below; ordering down from the pit gives no job; a rim colonist lowers it from the top square. Offline: SelfTest LadderRails_raise_either_side_lower_only_from_above.",
 "bars": [],
@@ -2463,6 +2830,10 @@
 "FLOWWORKS_RAIN_SETTING_CALLSITES_FIX_DRIFT": {
 "at": "2026-11-16T00:28:48",
 "hash": "910eeb39eb3177cd",
+"keep": [
+1
+],
+"keep_hash": "9a428fe7c8d50a77",
 "reading": {
 "accept": "none, no command filed; closed on northstar, extensions, review_map, call_sites and kernel_oracle selftests reading green",
 "bars": [],
@@ -2484,6 +2855,11 @@
 "FLOWWORKS_REACTOR_FIX_STUCK_ENDS_SHIFT": {
 "at": "2026-11-16T00:28:48",
 "hash": "ed72bc31741f9633",
+"keep": [
+1,
+2
+],
+"keep_hash": "599eafe4161bbf82",
 "reading": {
 "accept": "L0: call-site pin Gpt1016_reactor_stalled_reaction_does_not_end_the_shift passes and fails on the old file. L1 A1 (reactor with A+B blocked runs a supplied C+D in game) was dropped as unreachable.",
 "bars": [],
@@ -2507,6 +2883,11 @@
 "FLOWWORKS_REDROWS_PROVE_FIXED_STILL_FROWN": {
 "at": "2026-11-16T00:28:48",
 "hash": "f144b933d992e6f8",
+"keep": [
+1,
+2
+],
+"keep_hash": "4ec1db0db105a661",
 "reading": {
 "accept": "L2: each row re-run on the current build reads PASS, or MOD-FAIL filed as its own item, or UNMEASURED with a reason. L0: mod_completion.py FlowWorks no longer lists any part whose row passed as broken.",
 "bars": [],
@@ -2530,6 +2911,10 @@
 "FLOWWORKS_RESET_BUILD_TWELVE_SCREENS_MISSING": {
 "at": "2026-11-16T00:28:48",
 "hash": "0171163072a828e9",
+"keep": [
+1
+],
+"keep_hash": "ce15fe3b1186cb30",
 "reading": {
 "accept": "A1 (L4, owner): open FlowWorks Mod Settings in game and check every screen has Reset (Kit, Quarry, Sprinkler, Thirst, Drawbridge, Suspension, WallClimb, RaiderTrench, Swim, MapControl, Rivers x2).",
 "bars": [
@@ -2551,10 +2936,16 @@
 "FLOWWORKS_REVIEW_LOOKS_ROUND_1": {
 "at": "2026-11-16T00:28:48",
 "hash": "18d90c4c12783b89",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "cae3583b18644d63",
 "owner": [
 1
 ],
-"owner_hash": "41e242cd5184f856",
+"owner_hash": "4482cbf0a5f486bc",
 "reading": {
 "accept": "none as a command; step 6: deploy, rebuild the review map, screenshot and check it live, save a new keeper, then show the owner",
 "bars": [
@@ -2648,7 +3039,7 @@
 6,
 7
 ],
-"owner_hash": "b4e94d63cbb673f7",
+"owner_hash": "55d72c2b0cc3fec0",
 "reading": {
 "accept": "none, no acceptance test filed",
 "bars": [
@@ -2687,6 +3078,11 @@
 "FLOWWORKS_SELFTEST_FIX_FOUR_RED_AT_BASE": {
 "at": "2026-11-16T00:28:48",
 "hash": "79b2db10a886ec5b",
+"keep": [
+1,
+2
+],
+"keep_hash": "09d75cdd9dabe7e7",
 "reading": {
 "accept": "selftest_flowworks_stock.py exits 0 (exit 1 at a94330aa35).",
 "bars": [
@@ -2715,6 +3111,12 @@
 "FLOWWORKS_SELFTEST_FIX_TWO_STRAY_REDS": {
 "at": "2026-11-16T00:29:00",
 "hash": "47c4076e89a0f473",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "1cd0f71054b87f21",
 "reading": {
 "accept": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only Pond_capacity_dug_out_and_back_in_any_order,PipeTankRiser_wiring_link_stops_layer_prints_flange_follows passes.",
 "bars": [],
@@ -2776,6 +3178,10 @@
 "FLOWWORKS_SETTINGS_POLISH_SUPERDEEP_LEAKS": {
 "at": "2026-11-16T00:29:00",
 "hash": "c6b885b216395495",
+"keep": [
+1
+],
+"keep_hash": "bcfedc47e63838e2",
 "reading": {
 "accept": "Grep finds the old confusing text gone; FlowWorks selftests stay as green as before.",
 "bars": [
@@ -2815,6 +3221,10 @@
 "FLOWWORKS_SETTINGS_UNTANGLE_THE_JUNK_DRAWER": {
 "at": "2026-11-16T00:29:00",
 "hash": "7ba8e7845508b2eb",
+"keep": [
+1
+],
+"keep_hash": "35be0e52f8c33e42",
 "reading": {
 "accept": "A new player can read the changed UI; old text gone (grep); FlowWorks selftests as green as before. Live: every section opens, per-section Reset works, search finds 'ladder'.",
 "bars": [
@@ -2836,6 +3246,10 @@
 "FLOWWORKS_SETTINGS_WIRE_AFTER_TANKS": {
 "at": "2026-11-16T00:29:00",
 "hash": "870bfbc003e768f7",
+"keep": [
+1
+],
+"keep_hash": "5321634739d2307e",
 "reading": {
 "accept": "A1 L0: settings_audit.py shows FlowWorks masters 'declared'; selftest_settings_screens.py all ok; DLL stamp MATCH. A2 L1: a master off shades dependents and keeps values; Reset all asks first.",
 "bars": [
@@ -2873,6 +3287,12 @@
 "FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES": {
 "at": "2026-11-16T00:29:00",
 "hash": "26c0502bc109ddc3",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "96e1b20292166778",
 "reading": {
 "accept": "Live sheet_overflow_proof row SAVE_LOAD_CONTINUES_IDENTICAL passes with the rebuilt DLL deployed; offline selftest_flowworks_sheet 40/40.",
 "bars": [
@@ -2933,10 +3353,14 @@
 "FLOWWORKS_SLUICE_TWO_DOORS_1": {
 "at": "2026-11-16T00:29:00",
 "hash": "6a2051ee0513d43e",
+"keep": [
+1
+],
+"keep_hash": "4f744218946e618c",
 "owner": [
 1
 ],
-"owner_hash": "3267516a2b807210",
+"owner_hash": "cf0874057e323d85",
 "reading": {
 "accept": "C# selftest Sluice_shut_seals_grate_passes; JawaBench ScnSluice passes all three cases (grate_closed passes, sluice_shut holds, sluice_open passes); extension chain flow_doors grate_passes_sluice_seals PASS.",
 "bars": [
@@ -2959,6 +3383,12 @@
 "FLOWWORKS_STOCK_BISECT_RED_CHECK": {
 "at": "2026-11-16T00:29:00",
 "hash": "1338d1efd0f714d1",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "64bf145fb7149f5c",
 "reading": {
 "accept": "none, no acceptance filed beyond rerunning selftest_flowworks_stock alone.",
 "bars": [],
@@ -3001,6 +3431,11 @@
 "FLOWWORKS_TABS_RECONCILE_PIPES_WITH_PIPES": {
 "at": "2026-11-16T00:29:07",
 "hash": "0e9af20784d0e29f",
+"keep": [
+1,
+2
+],
+"keep_hash": "e84abf8ac7b8e17f",
 "reading": {
 "accept": "SelfTest case BuildMenu_pipes_and_tanks_in_the_pipe_networks_tab ok; in game the 'pipe networks' tab lists the pipes, tanks, hose reel, and no duplicate-def error for VCHE_PipeNetworks in Player.log.",
 "bars": [
@@ -3026,6 +3461,12 @@
 "FLOWWORKS_TANK_LOOP_ROW_WRONG_1": {
 "at": "2026-11-16T00:29:07",
 "hash": "89d6e24a08589888",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "4068396266145dce",
 "reading": {
 "accept": "Live extensions run: tank_loop_on shows tank units rise then fall within 6000 ticks; tank_loop_off keeps the tank Empty for 3000 ticks with tankLoopEnabled off.",
 "bars": [
@@ -3056,6 +3497,10 @@
 "FLOWWORKS_TOGGLES_BUILD_SIX_PREDICATES_OWED": {
 "at": "2026-11-16T00:29:07",
 "hash": "6aa78cfc1f428027",
+"keep": [
+1
+],
+"keep_hash": "06a95d3b7d20ce2e",
 "reading": {
 "accept": "none, the ticket filed no acceptance test.",
 "bars": [],
@@ -3075,6 +3520,11 @@
 "FLOWWORKS_TOGGLE_MEND_MIDGAME_LEFTOVERS": {
 "at": "2026-11-16T00:29:07",
 "hash": "01974eea3960380a",
+"keep": [
+1,
+2
+],
+"keep_hash": "9d207e3c11c3becd",
 "reading": {
 "accept": "For each confirmed finding a SelfTest/python case (or live state read) red on the old code and green with the fix.",
 "bars": [],
@@ -3098,6 +3548,12 @@
 "FLOWWORKS_V2_DIAGNOSE_THREE_NEW_REDS": {
 "at": "2026-11-16T00:29:07",
 "hash": "bd25c6b5e512d117",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "a852d7efe0d27592",
 "reading": {
 "accept": "validation_v2 61/0/0 again on the shipped DLL, or each red traced to SITE/HARNESS with the check that proves it.",
 "bars": [],
@@ -3130,6 +3586,11 @@
 "FLOWWORKS_V2_FIX_PIT_ROWS_RESCUE_LADDER": {
 "at": "2026-11-16T00:29:07",
 "hash": "3f9ffbbda7a12d48",
+"keep": [
+1,
+2
+],
+"keep_hash": "2c8b671f280a6929",
 "reading": {
 "accept": "Live re-proof of rows P3f/P4b (chain core_live_rows): both PASS.",
 "bars": [
@@ -3156,6 +3617,10 @@
 "FLOWWORKS_VERYSHALLOW_FIX_RESIDUE_GAP": {
 "at": "2026-11-16T00:29:07",
 "hash": "5c5b6024ada8843a",
+"keep": [
+1
+],
+"keep_hash": "b7e5f1ebf95afce1",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
@@ -3175,6 +3640,12 @@
 "FLOWWORKS_VISUAL_PRINCIPLES_1": {
 "at": "2026-11-16T00:29:07",
 "hash": "d8594c90870f9c51",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "42c37258c93a192b",
 "reading": {
 "accept": "jawa/get_defs resolves surfaceLook; state-read rows show the components active on a quicktest map; an Opus evaluation of captures, then the owner judges the look on a live map.",
 "bars": [
@@ -3205,6 +3676,12 @@
 "FLOWWORKS_WATERBODY_DIAGNOSE_SOIL_THROW": {
 "at": "2026-11-16T00:29:07",
 "hash": "642770009f4dfa61",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "243a9df4bfd3ab11",
 "reading": {
 "accept": "Repro: WaterShallow 3x3, one cell WaterOceanShallow, then Soil over the 3x3 applies clean, with 0 WaterBodyTracker lines in Player.log.",
 "bars": [],
@@ -3235,6 +3712,10 @@
 "FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST": {
 "at": "2026-11-16T00:29:07",
 "hash": "b35d48e460874a7a",
+"keep": [
+1
+],
+"keep_hash": "c8771f9951dd3f9f",
 "reading": {
 "accept": "none, the ticket filed no acceptance test.",
 "bars": [],
@@ -3254,6 +3735,11 @@
 "FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP": {
 "at": "2026-11-16T00:29:07",
 "hash": "395366448b1d9364",
+"keep": [
+1,
+2
+],
+"keep_hash": "6bc3668c34211d58",
 "reading": {
 "accept": "python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only wetting and --only wetness_probe (red on 507b8cb3d); live concept_scenes.py --scene scene_wetting --out <json>, unrun.",
 "bars": [],
@@ -3277,6 +3763,12 @@
 "FLOW_ORDER_EXTERNAL_INPUT_1": {
 "at": "2026-11-16T00:29:07",
 "hash": "25144062436a77c7",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "e89c36fed07ca804",
 "reading": {
 "accept": "selftest_flowworks_stock.py cases FLOW_ORDER_EXTERNAL_INPUT_1_pump_fed_channel_spreads_and_settles and ..._part2_oversized_network_exchanges_across_seams pass; a dug network over 6000 cells wets end to end off one source.",
 "bars": [
@@ -3308,10 +3800,15 @@
 "FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS": {
 "at": "2026-11-16T00:29:13",
 "hash": "79cbb0074e1b1148",
+"keep": [
+1,
+2
+],
+"keep_hash": "bc4642b7014dde61",
 "owner": [
 1
 ],
-"owner_hash": "e0587ec25accd3bc",
+"owner_hash": "6f6342c821e22c43",
 "reading": {
 "accept": "Live: place via PlaceSource/PlaceSink static_call on a dug channel; level changes, L0 ledger flowSources/flowSinks show them, no conservation warning, save/reload keeps them.",
 "bars": [
@@ -3353,6 +3850,11 @@
 "FLUID_PALETTE_EXHAUSTION_MEND_KEY_ZERO": {
 "at": "2026-11-16T00:29:13",
 "hash": "806ddac0b64a7a64",
+"keep": [
+1,
+2
+],
+"keep_hash": "cddd4ec9d34661d3",
 "reading": {
 "accept": "A1 (L1): full palette compacts keeping identity, all-in-use palette refuses, kernel refuses dry claim before debit. A2 (L2) live: pump/driver/rain write into a dry cut never re-stamps an unkeyable liquid as map ActiveFluid.",
 "bars": [
@@ -3378,10 +3880,14 @@
 "FOUNTAIN_LOOP_BUILD_PUMPS_ITS_OWN_RAIN": {
 "at": "2026-11-16T00:29:13",
 "hash": "1d973dc13b8f78cd",
+"keep": [
+2
+],
+"keep_hash": "f59685de6d46c7e1",
 "owner": [
 1
 ],
-"owner_hash": "2c4459ce2c3795e7",
+"owner_hash": "7bfc97bdad9ae217",
 "reading": {
 "accept": "Offline: RM_FountainMath exact over a day, refused spill moves 0, settings off moves 0. Live: northstar/fountain_loop_proof.py F1-F8, with F3 conserving to the dL.",
 "bars": [
@@ -3406,9 +3912,19 @@
 ]
 }
 },
+"FOUNTAIN_SCULPTURES_DESIGN_WATER_MEETS_ART": {
+"owner": [
+1
+],
+"owner_hash": "89ab16379a3328b9"
+},
 "FROZEN_OVERFLOW_DIG_FIX_ICE_POURS_LIQUID": {
 "at": "2026-11-16T00:29:13",
 "hash": "b8ab250eaafb6c77",
+"keep": [
+1
+],
+"keep_hash": "144aff5d5db7ff16",
 "reading": {
 "accept": "none, the item only records the defect and filed no test.",
 "bars": [
@@ -3431,6 +3947,10 @@
 "FUEL_FIRE_SELFTEST_FIX_SQUARE_COVERAGE": {
 "at": "2026-11-16T00:29:13",
 "hash": "0b2a531d421d52b1",
+"keep": [
+1
+],
+"keep_hash": "c0ad39b293978b9c",
 "reading": {
 "accept": "none, the item only records the defect and filed no test.",
 "bars": [
@@ -3453,7 +3973,7 @@
 "at": "2026-11-16T00:29:13",
 "hash": "1a45df1ce3c4625d",
 "owner": [],
-"owner_hash": "bb89df4b6ffecd50",
+"owner_hash": "4e03a9022f8edf37",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
@@ -3469,7 +3989,7 @@
 "at": "2026-11-16T00:29:13",
 "hash": "f061608684c3b7c2",
 "owner": [],
-"owner_hash": "5a1cc7b2a74f4154",
+"owner_hash": "978af1fc72031035",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
@@ -3484,6 +4004,10 @@
 "FW_ART_POLISH_REDRAW_FOUR_SMALL_MISSES": {
 "at": "2026-11-16T00:29:13",
 "hash": "5e6755706db1e0ba",
+"keep": [
+1
+],
+"keep_hash": "196c284bcfc0aab8",
 "reading": {
 "accept": "Each of the four redrawn or fixed and judged on a true-scale sheet; selftest_fw_art_four_misses thresholds reject the originals.",
 "bars": [
@@ -3505,6 +4029,10 @@
 "FW_MOCK_FIX_PULSE_FORGOT_ITS_DL": {
 "at": "2026-11-16T00:29:13",
 "hash": "0a35f7d720bd396a",
+"keep": [
+1
+],
+"keep_hash": "2c96fb4327848f1d",
 "reading": {
 "accept": "selftest_extensions.py passes: run_selftests --only selftest_extensions.",
 "bars": [],
@@ -3524,6 +4052,11 @@
 "FW_PROOF_DRIVERS_FIX_EARLY_FALSE_PASS": {
 "at": "2026-11-16T00:29:13",
 "hash": "44169b661c7a8d14",
+"keep": [
+1,
+2
+],
+"keep_hash": "b202e5925ee422d7",
 "reading": {
 "accept": "Guard FlowWorks/northstar/selftest_falsepass_early.py: red on the old tree, green now.",
 "bars": [],
@@ -3547,6 +4080,11 @@
 "FW_PROOF_DRIVERS_FIX_LATE_FALSE_PASS": {
 "at": "2026-11-16T00:29:13",
 "hash": "d0e4b2f248794d49",
+"keep": [
+1,
+2
+],
+"keep_hash": "83243ff498a50bb1",
 "reading": {
 "accept": "selftest_falsepass_late red on the old tree, green after; northstar_matrix selftest 57/57.",
 "bars": [],
@@ -3570,6 +4108,12 @@
 "FW_PROOF_TOOLS_HARDEN_READ_GAPS": {
 "at": "2026-11-16T00:29:13",
 "hash": "12b5305dd350e42b",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "a539a9b58b8e17ff",
 "reading": {
 "accept": "A1 (L1): jawa/flowworks_excavation_rect over a 4x4 rect returns rows each carrying dl (non-negative int, decilitres) and fluid; run via bridgetools/prove_excavation_rect_fields.py.",
 "bars": [],
@@ -3600,6 +4144,13 @@
 "FW_RIVER_SITE_DIAGNOSE_NOBODY_SWEPT_AWAY": {
 "at": "2026-11-16T00:29:14",
 "hash": "062d67c25c6e6347",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "51609dcd4966692c",
 "reading": {
 "accept": "Live river site run: returns_home PASS (pending rises, swept ids return home) and panning_draws_stock PASS (panned += n, stock -= n), settings restored afterward.",
 "bars": [
@@ -3650,6 +4201,10 @@
 "FW_SELFTEST_REPAIR_TWO_PATTERNS_ADRIFT": {
 "at": "2026-11-16T00:29:14",
 "hash": "861f5d92098c68e3",
+"keep": [
+1
+],
+"keep_hash": "f66aebec7a4f53b3",
 "reading": {
 "accept": "none, no acceptance test filed; the title implies the full SelfTest reading 1217/1217.",
 "bars": [],
@@ -3666,9 +4221,17 @@
 ]
 }
 },
+"GIMMESOMESLACK_NORTHSTAR_VALIDATE_1": {
+"owner": [],
+"owner_hash": "83bcee6239f7caee"
+},
 "GLOWTANK_SALT_FIX_ONE_PINCH_ONLY": {
 "at": "2026-11-16T00:29:14",
 "hash": "9da5e558de22f071",
+"keep": [
+1
+],
+"keep_hash": "4e464b604f721ef6",
 "reading": {
 "accept": "glow_tank_live.py on the current build: GLOWTANK_SALT_DRAWN_ONE_UNIT PASS, every row MOD-class PASS or named; GLOW_TANK_LIQUID_FEED_1 A2 PASS; mod_completion.py FlowWorks lists none of the four as broken.",
 "bars": [],
@@ -3688,6 +4251,10 @@
 "GLOW_TANK_PROOF_FIX_BLIND_READ_PASSES": {
 "at": "2026-11-16T00:29:14",
 "hash": "fb280c7bad29be1f",
+"keep": [
+1
+],
+"keep_hash": "468bd11d559a9b01",
 "reading": {
 "accept": "none, no acceptance test filed (item only records the defect).",
 "bars": [],
@@ -3726,6 +4293,12 @@
 "GRATE_FIRE_FIX_SOLID_DECK_BURNS_TOO": {
 "at": "2026-11-16T00:29:14",
 "hash": "0a12417f7c47b3d1",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "9eb93e586afe46b4",
 "reading": {
 "accept": "suspension_bridge_proof.py --fresh-map: GRATE_fire_burns_people_above PASS (grate riders burn, solid-deck control does not); SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP A1 PASS.",
 "bars": [
@@ -3772,6 +4345,10 @@
 "GSS_POWER_THEFT_FIX_WRONG_VICTIM": {
 "at": "2026-11-16T00:29:14",
 "hash": "3bca9a4ce0b308e7",
+"keep": [
+1
+],
+"keep_hash": "95fed0964bcd81fe",
 "reading": {
 "accept": "Selftest: drain faction A, switch to B before the event fires: A charged only A's energy, B only B's. Live row: a clamp on a foreign transmitter raises goodwill loss against that faction.",
 "bars": [],
@@ -3788,9 +4365,19 @@
 ]
 }
 },
+"GSS_WALK_HOSES_EXCISE_REELED_IN": {
+"owner": [
+1
+],
+"owner_hash": "f66718e45b45fc90"
+},
 "HAZARD_TAR_TERRAIN_FROM_LIQUIDS_1": {
 "at": "2026-11-16T00:29:32",
 "hash": "30c00c3262b57f54",
+"keep": [
+1
+],
+"keep_hash": "6ab4fc47ea71b2e8",
 "reading": {
 "accept": "Offline: build clean; SumpLivingMap.TarShallow/TarDeep resolve from RM_Liquid_Tar.terrainSuite. L2 (owed): a tar-beast bulge and a belch still fire on the Sump map.",
 "bars": [],
@@ -3810,6 +4397,11 @@
 "HEAT_BUDGET_PREFIX_MEND_LATE_CELLS_STARVE": {
 "at": "2026-11-16T00:29:32",
 "hash": "c5c15150a86fdf9f",
+"keep": [
+1,
+2
+],
+"keep_hash": "be24e815795f3802",
 "reading": {
 "accept": "A1 L1: HeatBudgetChecks.cs, can-fail against the old prefix rule. A2 L2: live, a room over a late-listed excavated hot cell on a map past the budget warms (proof_heat visited/energy read).",
 "bars": [],
@@ -3833,6 +4425,11 @@
 "HOSE_BUILDINGS_FIX_BATTERY_HIDE_AND_SEEK": {
 "at": "2026-11-16T00:29:32",
 "hash": "c4f74c6400ab42ea",
+"keep": [
+1,
+2
+],
+"keep_hash": "58ac59d3ae61db7c",
 "reading": {
 "accept": "A1 L0: SelfTest `joints:` over-draw rows green. A2 L2: joint_check.py --all-maps shows no over_building or under_rig FAIL, and a hose across a battery draws above it in a zoomed capture.",
 "bars": [
@@ -3858,6 +4455,11 @@
 "HOSE_CLEAR_FIX_WALL_SEAM_LOOPHOLE": {
 "at": "2026-11-16T00:29:32",
 "hash": "e76f793c2ecca95d",
+"keep": [
+1,
+2
+],
+"keep_hash": "69ca716243964fb3",
 "reading": {
 "accept": "A1 L0: HoseWall_S1 and S3 red on the per-cell rule, green after. A2 L0: HoseWall_S4 no pose sample deeper than 0.12 in a wall. A3 L2: o1 re-lays through gap (22,42)-(22,43); proof_hose.py --live --only walls HW1 PASS.",
 "bars": [],
@@ -3881,6 +4483,10 @@
 "HOSE_CROSSING_FIX_FLAT_AS_A_PANCAKE": {
 "at": "2026-11-16T00:29:32",
 "hash": "df0b5f2ee9fe086b",
+"keep": [
+1
+],
+"keep_hash": "7e1c50a6863bb82c",
 "reading": {
 "accept": "A1 L0: SelfTest `joints:` CrossSpans rows green; selftest_joint_check.py crossing rows. A2 L2: joint_check.py --all-maps reports every crossing `lifts over` and a zoomed map R crop shows the crossing shadow, judged by a second agent.",
 "bars": [
@@ -3902,6 +4508,10 @@
 "HOSE_IMPORT_MEND_ONE_SHOT_MISS": {
 "at": "2026-11-16T00:29:32",
 "hash": "23589245575341c6",
+"keep": [
+1
+],
+"keep_hash": "398f52b8c0d3a813",
 "reading": {
 "accept": "A SelfTest/python case that is red on the old code and green with the fix.",
 "bars": [],
@@ -3921,11 +4531,17 @@
 "HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES": {
 "at": "2026-11-16T00:29:32",
 "hash": "56317afad2da32ca",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "dfd8d3746447eb96",
 "owner": [
 2,
 3
 ],
-"owner_hash": "d839b26a4d327de5",
+"owner_hash": "a71371d577a2ff5c",
 "reading": {
 "accept": "Every joint in the audit's defect table re-captured zoomed shows hose meeting nozzle/flange/port with no gap, no floating collar, no stub, judged by a second agent. Also joint_check.py --all-maps JOINT CHECK: PASS.",
 "bars": [
@@ -3956,6 +4572,11 @@
 "HOSE_LAY_POLISH_CENTRE_VS_MOUTH": {
 "at": "2026-11-16T00:29:32",
 "hash": "d79660987c9b3d19",
+"keep": [
+1,
+2
+],
+"keep_hash": "ce3f05abcb644bce",
 "reading": {
 "accept": "Live check: obstruct A so its lay is null, rebuild B, compare B's geometry with A removed.",
 "bars": [],
@@ -3985,7 +4606,7 @@
 "owner": [
 2
 ],
-"owner_hash": "3509d59655c98fa0",
+"owner_hash": "6ef51bae50799bf6",
 "reading": {
 "accept": "none, a decision ticket; fallback: if the joint gate cannot go green on both walkthrough maps in one sitting, reconsider the under-pipe option (§5(b)).",
 "bars": [
@@ -4002,6 +4623,10 @@
 "HOSE_OFF_MEND_SLEEPWALKING_RETRACT": {
 "at": "2026-11-16T00:29:32",
 "hash": "da0490c447a72880",
+"keep": [
+1
+],
+"keep_hash": "7743be9e48ecd9a0",
 "reading": {
 "accept": "A SelfTest/python case that is red on the old code and green with the fix.",
 "bars": [],
@@ -4021,6 +4646,11 @@
 "HOSE_ORDERS_MEND_WAITING_FOREVER": {
 "at": "2026-11-16T00:29:32",
 "hash": "3c62345dc83c4320",
+"keep": [
+1,
+2
+],
+"keep_hash": "0e03b297292eae62",
 "reading": {
 "accept": "A SelfTest/python case per confirmed finding, red on the old code and green with the fix.",
 "bars": [],
@@ -4047,12 +4677,16 @@
 "HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST": {
 "at": "2026-11-16T00:29:37",
 "hash": "6be221aef78b1bc7",
+"keep": [
+1
+],
+"keep_hash": "6b49d282156d02b1",
 "owner": [
 1,
 2,
 3
 ],
-"owner_hash": "ccc4326214cbdbc5",
+"owner_hash": "cf55cc3d54e40668",
 "reading": {
 "accept": "Live `northstar/proof_hose.py --live` on the flowworks tier; GSS holds no hose source (only cross-mod review stations in GimmeSomeSlack/human_review.py).",
 "bars": [
@@ -4074,10 +4708,18 @@
 "HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS": {
 "at": "2026-11-16T00:29:37",
 "hash": "86f6123d495dbae8",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "015601082a6396c5",
 "owner": [
+1,
 2
 ],
-"owner_hash": "4a813ed3f95e5f7b",
+"owner_hash": "8ef27dff217f75d0",
 "reading": {
 "accept": "`proof_hose.py --live --no-fresh-map --only walls` on RM_fw_walkthrough_20261022b reads HW1_no_laid_hose_crosses_a_wall PASS on map C and map R (wallCross = 0); SelfTest HoseWall_S1-S4 green.",
 "bars": [
@@ -4129,10 +4771,16 @@
 "HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD": {
 "at": "2026-11-16T00:29:37",
 "hash": "66ac857bc79a5023",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "29140dab6b6e6e78",
 "owner": [
 1
 ],
-"owner_hash": "d52c4b290032a82a",
+"owner_hash": "8f09b608acb29d40",
 "reading": {
 "accept": "SelfTest cases `PipeStyles_*`, `HoseText_*` ok; bridge map: pipe build button opens the four-look menu and a picked look survives blueprint -> frame -> building -> save/load.",
 "bars": [
@@ -4164,6 +4812,10 @@
 "HOSE_SELFTESTS_FIX_MISPLACED_DOC_NAMES": {
 "at": "2026-11-16T00:29:37",
 "hash": "676aebda36490508",
+"keep": [
+1
+],
+"keep_hash": "d929f00d4c5afd4d",
 "reading": {
 "accept": "In-game FlowWorks SelfTest still passes HoseCarryChecks row6 and NozzleCouplerOnTop (offline HoseCarryChecks 41/41).",
 "bars": [],
@@ -4183,6 +4835,11 @@
 "HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS": {
 "at": "2026-11-16T00:29:37",
 "hash": "77472a9c0d4f10f0",
+"keep": [
+1,
+2
+],
+"keep_hash": "388df242ca3e66b7",
 "reading": {
 "accept": "`fw_live_checks.py` L5_switched_off_hose_spills PASS; TANK_DEBUG_BUILD_FILL_AT_WILL A1 PASS; `mod_completion.py FlowWorks` no longer lists RM_Liquid_FreshWater as broken.",
 "bars": [
@@ -4209,6 +4866,10 @@
 "HOSE_SPILL_MEND_POND_GETS_NOTHING": {
 "at": "2026-11-16T00:29:37",
 "hash": "4dd545b894a5dc9d",
+"keep": [
+1
+],
+"keep_hash": "26482bbe03741afe",
 "reading": {
 "accept": "Each CONFIRMED finding: a SelfTest/python case red on old code, green with the fix; PLAUSIBLE F12: run its row's live check first, close as not-a-bug if green.",
 "bars": [
@@ -4266,6 +4927,10 @@
 "INDUSTRIAL_RUINS_FIX_HIDDEN_EH_DEPENDENCY": {
 "at": "2026-11-16T00:29:37",
 "hash": "79f761e1a0ae3ef2",
+"keep": [
+1
+],
+"keep_hash": "7ceb06d0511147fe",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
@@ -4299,6 +4964,12 @@
 "JOINT_GATE_HARDEN_TRUST_THE_DRAWN_BOX": {
 "at": "2026-11-16T00:29:47",
 "hash": "1b3a5cd0d509b4d8",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "f16107d6c268294d",
 "reading": {
 "accept": "`joint_check.py --all-maps --crops Transient/joint_gate/<stamp>` prints JOINT CHECK: PASS with a crop per joint on maps C and R; `scenarios_map.py --save` refuses while red and saves when green.",
 "bars": [
@@ -4328,6 +4999,10 @@
 "LADDER_PARITY_FIX_RAIDERS_SKIP_LEANING": {
 "at": "2026-11-16T00:29:47",
 "hash": "64e50cbdfdda7d5c",
+"keep": [
+1
+],
+"keep_hash": "4d6448b47d2c6adf",
 "reading": {
 "accept": "none, ticket filed no acceptance test",
 "bars": [
@@ -4349,6 +5024,11 @@
 "LADDER_ROWS_WIDEN_STILL_COUNT_TO_TWO": {
 "at": "2026-11-16T00:29:47",
 "hash": "541b32704d80043b",
+"keep": [
+1,
+2
+],
+"keep_hash": "dc538e510530ab1b",
 "reading": {
 "accept": "L0: selftest_extensions.py / selftest_flowworks_northstar.py carry the widened ladders and a planted 2 m ladder reads red. L2: next live v2 + extension_proof run reads the rows on the bars' metres.",
 "bars": [
@@ -4376,6 +5056,10 @@
 "LAKE_FLOOR_SELFTEST_FIX_WET_SKIPS_HEIGHT": {
 "at": "2026-11-16T00:29:47",
 "hash": "954b3b297f79da82",
+"keep": [
+1
+],
+"keep_hash": "42158c946bec8487",
 "reading": {
 "accept": "none, ticket filed no acceptance test",
 "bars": [],
@@ -4409,6 +5093,10 @@
 "LAVA_LIQUID_BUILD_PROMISED_BY_CARD": {
 "at": "2026-11-16T00:29:47",
 "hash": "f59ece960b5b55cf",
+"keep": [
+1
+],
+"keep_hash": "2e7ef2b312a8e340",
 "reading": {
 "accept": "A4 (L2): on a Forge map, RM_PumpingStation_Wrecked never spawns with lava as its only liquid within 10 cells. A3 (L1): a load with FlowWorks+Odyssey logs no ConfigError for RM_Liquid_Lava and no excludeLiquids cross-ref error.",
 "bars": [
@@ -4430,6 +5118,10 @@
 "LEVELLING_BUDGET_FIX_STARVES_LATER_HOSES": {
 "at": "2026-11-16T00:29:47",
 "hash": "9cace1d6444f5fb4",
+"keep": [
+1
+],
+"keep_hash": "c65b320b4b8ba338",
 "reading": {
 "accept": "A SelfTest with 3 early components + 1 late shows the late one resolves within N cycles.",
 "bars": [
@@ -4452,6 +5144,12 @@
 "LEVELSET_DIAGNOSE_SHALLOW_RIM_STAYS_DRY": {
 "at": "2026-11-16T00:29:47",
 "hash": "0158b464b0113609",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "b1b50cbd8fa3405c",
 "reading": {
 "accept": "FillsFromLimitless at shipped flags 0 failures in 10000 runs (was 194/2000); 428/428 selftests; oracle 3000x3 PASS; v2 offline+mock green.",
 "bars": [
@@ -4482,6 +5180,10 @@
 "LEVEL_SET_SELFTEST_FIX_IDLE_PULSE_SETTLES": {
 "at": "2026-11-16T00:29:47",
 "hash": "b35e92849276eea9",
+"keep": [
+1
+],
+"keep_hash": "ac1f7531c56955ad",
 "reading": {
 "accept": "A red-first selftest with an alternating stub fails before the fix and passes after.",
 "bars": [],
@@ -4501,6 +5203,10 @@
 "LEVEL_WATER_FIX_POND_SPLITS_ARMS": {
 "at": "2026-11-16T00:29:47",
 "hash": "57f0ce3b244b4283",
+"keep": [
+1
+],
+"keep_hash": "dc925fb33f22cef2",
 "reading": {
 "accept": "A unit case with two arms joined by a pond scores one body.",
 "bars": [
@@ -4522,6 +5228,11 @@
 "LIQUID_CONVERTER_FIX_PICKS_CRUDE_FIRST": {
 "at": "2026-11-16T00:29:47",
 "hash": "7d64762df0c37245",
+"keep": [
+1,
+2
+],
+"keep_hash": "045281730e0507be",
 "reading": {
 "accept": "Live: a desal plant on salt water yields 400 L from 600 L (industrial recipe).",
 "bars": [
@@ -4547,10 +5258,16 @@
 "LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD": {
 "at": "2026-11-16T00:29:47",
 "hash": "a4d316ceb03a6b30",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "a4272705384df7fa",
 "owner": [
 1
 ],
-"owner_hash": "4e18a22aea00ce43",
+"owner_hash": "36580bb59b55faba",
 "reading": {
 "accept": "L1: no 'five' in FlowWorks code, defs, settings or strings, and sourceBudgetMultiplier deleted. L2: mouseover and settings show metres and litres in game, and a pre-litres save loads with the same liquid.",
 "bars": [
@@ -4582,6 +5299,10 @@
 "LIQUID_FIRE_MEND_COVER_AND_SAVE": {
 "at": "2026-11-16T00:29:47",
 "hash": "73d0620a6705839b",
+"keep": [
+1
+],
+"keep_hash": "d5286ae8bc7e72b3",
 "reading": {
 "accept": "A SelfTest/python case per CONFIRMED finding that goes red on the old code and green with the fix.",
 "bars": [
@@ -4604,6 +5325,12 @@
 "LIQUID_FIRE_QUEUE_ORIGIN_1": {
 "at": "2026-11-16T00:29:47",
 "hash": "b58d604a12796d04",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "eedcf636175f2b26",
 "reading": {
 "accept": "python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py --live --chains fire_queue_origin (~4 min); rows fire_torch_advances_pending, fire_front_survives_save, fire_reach_capped_at_source must PASS.",
 "bars": [
@@ -4634,6 +5361,10 @@
 "LIQUID_KIT_COMMENTS_CORRECT_GHOST_PATCHES": {
 "at": "2026-11-16T00:29:47",
 "hash": "8274bf958217106b",
+"keep": [
+1
+],
+"keep_hash": "321b26fa68db0a6d",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
@@ -4653,6 +5384,15 @@
 "LIQUID_LEDGER_BUILD_NO_UNIT_LOST": {
 "at": "2026-11-16T00:29:47",
 "hash": "c31c54c8213cdf3f",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6
+],
+"keep_hash": "a2c905234092a444",
 "reading": {
 "accept": "A1: C# SelfTest 267/267 + hose 342/342 + 16/16 FlowWorks python selftests at a341da28fa; A2-A8 live rows (e.g. NS_canal_from_lake_no_tank, NS_dump_tank_drains_without_pump, worst tick <= 1 ms).",
 "bars": [
@@ -4700,6 +5440,11 @@
 "LIQUID_LOOK_MATERIAL_OWNERSHIP_1": {
 "at": "2026-11-16T00:29:47",
 "hash": "8e54c50627035165",
+"keep": [
+1,
+2
+],
+"keep_hash": "51153acea34c0a59",
 "reading": {
 "accept": "With tar+propane+water channels, toggle liquid looks off/on x3 and read materials: distinct colours, off identical to vanilla, no bleed.",
 "bars": [
@@ -4748,6 +5493,10 @@
 "LIQUID_PUMP_REDRAW_PLAN_VIEW_HUB": {
 "at": "2026-11-16T00:29:47",
 "hash": "af0905f2bac066a1",
+"keep": [
+1
+],
+"keep_hash": "09962af562ed5ade",
 "reading": {
 "accept": "none, no command filed; done when pump art is oblique and port registration is within 0.02 cell for every look.",
 "bars": [
@@ -4770,6 +5519,10 @@
 "LIQUID_RECESSION_TOPOLOGY_1": {
 "at": "2026-11-16T00:29:47",
 "hash": "345978a5c56190a0",
+"keep": [
+1
+],
+"keep_hash": "f8ad09c9cc0b042a",
 "reading": {
 "accept": "A limited pond drawn down in game recedes from its outer edge and never leaves two separate wet patches; a pond below one cell of stock keeps one wet cell a pump can still draw from.",
 "bars": [
@@ -4792,6 +5545,10 @@
 "LIQUID_ROTATION_FIX_STARVED_STRANGER": {
 "at": "2026-11-16T00:29:47",
 "hash": "25ab0b707b7112ed",
+"keep": [
+1
+],
+"keep_hash": "c8b215dde1f05b49",
 "reading": {
 "accept": "A SelfTest/python case per CONFIRMED finding that goes red on the old code and green with the fix.",
 "bars": [
@@ -4814,6 +5571,11 @@
 "LIQUID_THEFT_FIX_TANK_HIDES_ITSELF": {
 "at": "2026-11-16T00:29:47",
 "hash": "d2ebfb3622e21f69",
+"keep": [
+1,
+2
+],
+"keep_hash": "8643369c73417563",
 "reading": {
 "accept": "Selftest Theft_witness_sees_a_2x2_tank_from_every_side passes; live fw_live_checks L6_theft_spotted_letter PASS with DLL e8860a76 (caught 0 -> 1 with NE witnesses).",
 "bars": [
@@ -4840,6 +5602,10 @@
 "LIQUID_THEFT_VERIFY_FALSE_ACCUSATION": {
 "at": "2026-11-16T00:29:47",
 "hash": "1da4189cb8c3ef2d",
+"keep": [
+1
+],
+"keep_hash": "068cbf93d9caf7aa",
 "reading": {
 "accept": "Live check owed: foreign tank with no player link, change stock via static_call, read RM_LiquidTheft.caught/charges stay 0.",
 "bars": [
@@ -4861,6 +5627,14 @@
 "LIQUID_WAKES_FIX_FOOTPRINTS_GONE_QUIET": {
 "at": "2026-11-16T00:30:04",
 "hash": "9d94b956b600b3ee",
+"keep": [
+1,
+2,
+3,
+4,
+5
+],
+"keep_hash": "9d7db6f6c52015f2",
 "reading": {
 "accept": "fw_live_checks.py W1_wakes_terrain_walked PASS on the current build (wake on each of three terrains with liquidWakesEnabled on, none when off); mod_completion.py FlowWorks no longer lists the four parts as broken.",
 "bars": [],
@@ -4896,9 +5670,17 @@
 ]
 }
 },
+"LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE": {
+"owner": [],
+"owner_hash": "54d722d0210ba61b"
+},
 "MAP_STATICS_PRUNE_GHOST_MAPS": {
 "at": "2026-11-16T00:30:04",
 "hash": "378d41f43b03888d",
+"keep": [
+1
+],
+"keep_hash": "335a20e31045e388",
 "reading": {
 "accept": "Each CONFIRMED finding: a SelfTest/python case (or live state read) red on old code, green with fix; C5-F4 row: count RM_LiquidSurface meshes across 3 reloads.",
 "bars": [],
@@ -4921,7 +5703,7 @@
 "owner": [
 1
 ],
-"owner_hash": "7798b6dbebfa01e0",
+"owner_hash": "a2c5df8d625fbfa2",
 "reading": {
 "accept": "none, no acceptance test filed",
 "bars": [],
@@ -4936,6 +5718,10 @@
 "MISSION_TANK_GOAL_REWIRE_TO_DEST": {
 "at": "2026-11-16T00:30:04",
 "hash": "b9103203010e2bd0",
+"keep": [
+1
+],
+"keep_hash": "59a0442745a555f1",
 "reading": {
 "accept": "A1 L0: selftest_player_missions.py passes with chain-goal checks (full tank outside dest rect and pre-filled tank gaining < min_units no longer PASS). A2 L1: live chain mission report reads dest tank units by ThingID from inspect line.",
 "bars": [],
@@ -4955,6 +5741,15 @@
 "MODCHECK_SUITE_CORRECTIONS_1": {
 "at": "2026-11-16T00:30:04",
 "hash": "17af9feef9fd4759",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6
+],
+"keep_hash": "31d70bc52fa09267",
 "reading": {
 "accept": "Each corrected suite re-run on the min16 list with verify events recorded; every remaining RED is a filed mod-defect finding or a registered environment gap.",
 "bars": [],
@@ -4995,6 +5790,12 @@
 "MODERN_PUMP_REDRAW_SAME_RED_DIFFERENT_DAY": {
 "at": "2026-11-16T00:30:04",
 "hash": "41258090cac4e36a",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "67f5ff0809a9f883",
 "reading": {
 "accept": "Each piece reads as a real modern product class at game zoom (brief M1-M4); options shown to the owner.",
 "bars": [],
@@ -5023,6 +5824,12 @@
 "MODERN_RED_LEFTOVERS_REDRAW_TODAYS_LOOK": {
 "at": "2026-11-16T00:30:04",
 "hash": "62c03a0b76e03b6c",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "905e9991bd4b4864",
 "reading": {
 "accept": "Census re-run reports none of the 21 at 10% or more bright red.",
 "bars": [],
@@ -5047,9 +5854,18 @@
 ]
 }
 },
+"MOD_COMPLETION_MEASURE_HOW_DONE_IS_DONE": {
+"owner": [],
+"owner_hash": "b160809bf14c9b97"
+},
 "NATURAL_HEAT_CACHE_PROVE_STALE_DAYS": {
 "at": "2026-11-16T00:30:04",
 "hash": "a5d158d3cde43750",
+"keep": [
+1,
+2
+],
+"keep_hash": "d969b27075d8eba8",
 "reading": {
 "accept": "A1 L1: PrePortFixChecks P9b case marks list stale (can-fail). A2 L2: live, draining a roofed hot pool stops the room warming within one 250-tick interval and the patch is logged as applied.",
 "bars": [],
@@ -5073,6 +5889,10 @@
 "NATURAL_LIQUID_FIX_PUMPS_AS_FRESH_WATER": {
 "at": "2026-11-16T00:30:04",
 "hash": "91e0766d56a09b29",
+"keep": [
+1
+],
+"keep_hash": "ee52679ce930e1cd",
 "reading": {
 "accept": "A1 L1 live: a pump at a poisoned pond yields toxic water, not fresh; canal shows the poison ladder.",
 "bars": [
@@ -5094,8 +5914,14 @@
 "NORTH_STAR_WALK_AUTHORING_1": {
 "at": "2026-11-16T00:30:04",
 "hash": "aa0d771d18156088",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "3ab786e5a3497c50",
 "owner": [],
-"owner_hash": "8dacc1b81ec99d64",
+"owner_hash": "b8e2ada5e116614e",
 "reading": {
 "accept": "Triage covers exactly the 72 walks, none dropped, 6 authored walks untouched, counts stated MEASURED; no must-show line written until step 4 is answered.",
 "bars": [],
@@ -5123,6 +5949,10 @@
 "OUTFLOW_REGRESSION_FIX_HARDCODED_CAP": {
 "at": "2026-11-16T00:30:08",
 "hash": "6ed7084b508b274d",
+"keep": [
+1
+],
+"keep_hash": "16455c92a00453d5",
 "reading": {
 "accept": "A known-drain case reads correctly; fw_pond_outflow_regression derives capacity from bed levels x volumePerTile and asserts channel fills.",
 "bars": [],
@@ -5142,6 +5972,10 @@
 "P5_SITE_FIX_RERUN_DIGS_DEEPER": {
 "at": "2026-11-16T00:30:08",
 "hash": "038a814653436a61",
+"keep": [
+1
+],
+"keep_hash": "eb193b518b34992b",
 "reading": {
 "accept": "Running P5 twice on one map gives the same depth.",
 "bars": [],
@@ -5175,6 +6009,10 @@
 "PIPE_ADAPTER_FIX_DEBT_NEVER_PAID": {
 "at": "2026-11-16T00:30:08",
 "hash": "1cdbfb6df84fa668",
+"keep": [
+1
+],
+"keep_hash": "772893fa623e0e26",
 "reading": {
 "accept": "A SelfTest/python case red on old code, green with the fix.",
 "bars": [
@@ -5193,9 +6031,20 @@
 ]
 }
 },
+"PIPE_FITTINGS_REDRAW_NO_MORE_LADDERS": {
+"owner": [
+1
+],
+"owner_hash": "60504e1e9b9026a0"
+},
 "PIT_CHAINS_REPAIR_STALE_SINCE_RULING": {
 "at": "2026-11-16T00:30:08",
 "hash": "0a25978fee9607c6",
+"keep": [
+1,
+2
+],
+"keep_hash": "4a51b31c88d71a6b",
 "reading": {
 "accept": "none, no acceptance filed; close note says the next live extension run must confirm.",
 "bars": [],
@@ -5220,10 +6069,14 @@
 "PIT_COVER_BUILD_DECONSTRUCT_DROPS_TOO": {
 "at": "2026-11-16T00:30:08",
 "hash": "96453990923a507a",
+"keep": [
+1
+],
+"keep_hash": "ede39efad997a444",
 "owner": [
 1
 ],
-"owner_hash": "196a83588d64ba3f",
+"owner_hash": "dd6cacdf58e3ee25",
 "reading": {
 "accept": "Selftest SpanBase_cover_is_the_trap_tier_of_the_base asserts DeSpawn drops riders on Deconstruct; live row: pawn on a cover falls into the superdeep trap when it is deconstructed.",
 "bars": [
@@ -5245,6 +6098,10 @@
 "PIT_ENTRY_PROVE_DONE_BUT_STILL_RED": {
 "at": "2026-11-16T00:30:08",
 "hash": "95e5e165eff3268b",
+"keep": [
+1
+],
+"keep_hash": "f87cbefd161c43c5",
 "reading": {
 "accept": "L2: a pawn enters and leaves a watered pit by ladder and ramp (path state read); ramp and lowered-ladder rows PASS; `mod_completion.py FlowWorks` no longer lists RM_Ladder or RM_PitRamp as broken.",
 "bars": [
@@ -5280,11 +6137,15 @@
 "PIT_PRISON_JUDGE_D3_ROOMS": {
 "at": "2026-11-16T00:30:08",
 "hash": "68b774dcea51ebdc",
+"keep": [
+1
+],
+"keep_hash": "7b088c2fd3d7253a",
 "owner": [
 1,
 2
 ],
-"owner_hash": "d400d45e3807de18",
+"owner_hash": "6bad34eb330570a6",
 "reading": {
 "accept": "SelfTest PitRooms_pit_prison_room_is_superdeep_only (source-level, runs in-game); no live D3 check filed.",
 "bars": [
@@ -5322,6 +6183,10 @@
 "PIT_RAMP_FIX_WALKER_TAKES_FALL": {
 "at": "2026-11-16T00:30:08",
 "hash": "bc4a4ea828f312c7",
+"keep": [
+1
+],
+"keep_hash": "292162d8de3d4212",
 "reading": {
 "accept": "Selftest PitRamp_walked_step_down_a_ramp_is_no_fall passes; L1: a raider walking down a 3-notch pit ramp takes no fall damage and no fall message.",
 "bars": [
@@ -5343,6 +6208,10 @@
 "PIT_REACH_VERIFY_FLYERS_AND_GIANTS": {
 "at": "2026-11-16T00:30:08",
 "hash": "dadf36f36176aed7",
+"keep": [
+1
+],
+"keep_hash": "d609f63e0a22592d",
 "reading": {
 "accept": "Live: flyer ordered from surface onto a ladderless D4 floor; K3 animal up a sheer D3 step; K2 width-2 pawn in a 1-cell D4 hole, read IsHeld and a path to the surface.",
 "bars": [
@@ -5378,6 +6247,10 @@
 "PIT_RESCUE_FIX_COUNTS_DOCTOR_OFF": {
 "at": "2026-11-16T00:30:08",
 "hash": "6f402494b4c3cc67",
+"keep": [
+1
+],
+"keep_hash": "f7fe528eb96248a6",
 "reading": {
 "accept": "Selftest PitRescue_only_a_colonist_assigned_Doctor_counts_as_a_rescuer passes; L1: a downed pawn in a pit whose only reachable colonist has Doctor unticked still gets the rescue ladder.",
 "bars": [
@@ -5415,6 +6288,10 @@
 "PIT_SHOT_PROOF_FIX_OTHER_TARGET_PASSES": {
 "at": "2026-11-16T00:30:08",
 "hash": "5f5e9cf8cfc0166f",
+"keep": [
+1
+],
+"keep_hash": "4c2030deb640979a",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
@@ -5434,6 +6311,11 @@
 "PIT_TRAVEL_SELFTEST_FIX_DOUBLE_COUNT": {
 "at": "2026-11-16T00:30:17",
 "hash": "c73af266208da1e1",
+"keep": [
+1,
+2
+],
+"keep_hash": "113f5a4f2f51266d",
 "reading": {
 "accept": "In-game FlowWorks selftest PitTravel_every_trap_mask_reach_and_fall_read_asks_it passes with the one-pattern count (>=2) on the shipped RM_SuperdeepTrap.",
 "bars": [],
@@ -5482,9 +6364,17 @@
 "traps": []
 }
 },
+"PLANNING_BUILD_DAYS_OF_ORDERS_NO_HOME": {
+"owner": [],
+"owner_hash": "889e4e3b9f18bd30"
+},
 "POCKET_TRAP_FIX_LADDER_TO_SEALED_POCKET": {
 "at": "2026-11-16T00:30:17",
 "hash": "4d05bb9f8e080c18",
+"keep": [
+1
+],
+"keep_hash": "541d926c526874ab",
 "reading": {
 "accept": "none, the ticket filed no acceptance test.",
 "bars": [
@@ -5524,7 +6414,7 @@
 "owner": [
 1
 ],
-"owner_hash": "5dbb732d28e682d5",
+"owner_hash": "ea66809aa18b3d3f",
 "reading": {
 "accept": "TransferChecks Transfer_site_pump_draw_pond_to_the_last_decilitre passes; live pond_pump.py --drain: POND_PUMP_drains_to_last_dl and POND_PUMP_dry_squares_stage pass.",
 "bars": [],
@@ -5576,6 +6466,10 @@
 "PUMP_FED_CHANNEL_STALL_PROVE_AFTER_RELOAD": {
 "at": "2026-11-16T00:30:17",
 "hash": "13beb7bc782b792c",
+"keep": [
+1
+],
+"keep_hash": "87066ad06d938a9e",
 "reading": {
 "accept": "Production RM_DriverInputs + kernel: after reload a brimming pump outlet re-marks and the dug-on channel fills (selftest_flowworks_stock.py). Live: pump against a saved brimming outlet, reloaded and dug on, spreads into the extension.",
 "bars": [
@@ -5597,6 +6491,10 @@
 "PUMP_POUR_TUNE_NO_FASTER_THAN_GRAVITY": {
 "at": "2026-11-16T00:30:17",
 "hash": "0263ccb9ee653a46",
+"keep": [
+1
+],
+"keep_hash": "60d55dc264df6869",
 "reading": {
 "accept": "Selftest Pump_pour_is_faster_than_gravity; live fw_live_checks L2_pump_pour_drains_dump_fast PASS (L2b drainedPer1000 > L2a).",
 "bars": [],
@@ -5613,13 +6511,24 @@
 "traps": []
 }
 },
+"PYRELANDS_FINISH_ARTISAN_THIRD_TIME_WISER": {
+"owner": [],
+"owner_hash": "e331be8688beb37f"
+},
 "RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP": {
 "at": "2026-11-16T00:30:17",
 "hash": "31b573465af676aa",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "aa0b2afa2f381ead",
 "owner": [
 1
 ],
-"owner_hash": "8577c02769c31f5b",
+"owner_hash": "b7b24c9f472c715c",
 "reading": {
 "accept": "RaiderTrenchChecks 6/6 offline; live raid_trench_proof rows RAID_SHALLOW_FILLED_IN_RAID, RAID_DEEP_NOT_FILLED, RAID_NO_MELEE_GOES_AROUND, plus ladder, siege, and jump rows A2-A7.",
 "bars": [
@@ -5654,6 +6563,10 @@
 "RAIDER_CHOP_FIX_AXE_NEVER_LANDS": {
 "at": "2026-11-16T00:30:17",
 "hash": "a1b25c8af9ed7408",
+"keep": [
+1
+],
+"keep_hash": "edc52e8ad4b545f1",
 "reading": {
 "accept": "LADDER_PARITY_RAIDER_FELLS_TREE reads PASS (no acceptance test filed beyond this row).",
 "bars": [],
@@ -5777,6 +6690,10 @@
 "REVIEW_MAP_FIX_COVER_NEW_DEFS": {
 "at": "2026-11-16T00:30:17",
 "hash": "9a4250ef6d6d1afa",
+"keep": [
+1
+],
+"keep_hash": "55a05cb6ecc35386",
 "reading": {
 "accept": "selftest_review_map and selftest_extensions pass.",
 "bars": [],
@@ -5812,6 +6729,11 @@
 "REVIEW_STAGE_FIX_SMALL_MAPS_HELD_GATES": {
 "at": "2026-11-16T00:30:17",
 "hash": "a4f63f5ecf2a149c",
+"keep": [
+1,
+2
+],
+"keep_hash": "dadf874ef59ba9e2",
 "reading": {
 "accept": "The held gate reads open=True in the stage's own log; the stage refuses or fits on a 250 map before staging; the shooter is armed or the row says it cannot be.",
 "bars": [
@@ -5862,6 +6784,14 @@
 "RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT": {
 "at": "2026-11-16T00:30:17",
 "hash": "3af6d9146961703c",
+"keep": [
+1,
+2,
+3,
+4,
+5
+],
+"keep_hash": "9cfc80c32126a788",
 "owner": [
 1,
 2,
@@ -5870,7 +6800,7 @@
 5,
 6
 ],
-"owner_hash": "8d011e31c91e0e89",
+"owner_hash": "bdf8c7a1968fadf4",
 "reading": {
 "accept": "none, the pipeline's own stages judge it.",
 "bars": [],
@@ -5925,6 +6855,10 @@
 "RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY": {
 "at": "2026-11-16T00:30:39",
 "hash": "498d68011484c706",
+"keep": [
+1
+],
+"keep_hash": "906327aafda5179f",
 "reading": {
 "accept": "Live: the cover row of `knockback_runner.py --scenes storeroom_bomb_pit --ticks 900` reads cover=True. Plus an offline check that a stack landing on a covered cell destroys the cover and descends once; watch it fail on the base.",
 "bars": [],
@@ -5944,6 +6878,11 @@
 "RIMMANDRAKE_BUILD_FLOWWORKS_COATING_WASH_PASSED_ON_NOTHING": {
 "at": "2026-11-16T00:30:39",
 "hash": "4b37c2782ab7bd0d",
+"keep": [
+1,
+2
+],
+"keep_hash": "8865a9dca7a1556f",
 "reading": {
 "accept": "`python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only coating` red on base, green on the build; live `concept_scenes.py --scene scene_coating_wash --out <json>` with COAT_named_condition PASS and COAT_water_washes_it refusing to pass with no coat.",
 "bars": [
@@ -5969,6 +6908,12 @@
 "RIMMANDRAKE_BUILD_FLOWWORKS_TOSS_FLAME_JOBDEF_STILL_UNKNOWN": {
 "at": "2026-11-16T00:30:39",
 "hash": "dbf83a8caf086279",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "bf736951bb9ef340",
 "reading": {
 "accept": "`python3 src/RimMandrake/FlowWorks/selftest_stage3_owed.py --only toss_flame` red on base, green on the build; live `concept_scenes.py --scene scene_toss_flame --out <json>` with both rows PASS.",
 "bars": [
@@ -6002,6 +6947,12 @@
 "RIMMANDRAKE_BURY_GSS_CORDS_IN_FW_SUPERDEEP_PIT_WATER": {
 "at": "2026-11-16T00:30:39",
 "hash": "20d03a68c166739a",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "f1a183807b4ba141",
 "reading": {
 "accept": "none filed; the record suggests a matrix scene with RM_Fill_Water_Superdeep to guard it.",
 "bars": [],
@@ -6033,6 +6984,13 @@
 "RIMMANDRAKE_CHALLENGE_FLOWWORKS_BLIND_CYCLE_ONE_FIFTY_SEVEN_BARS": {
 "at": "2026-11-16T00:30:39",
 "hash": "5eea457bcbd0e8d5",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "99a9d55c7961a95a",
 "reading": {
 "accept": "`maturation.py next FlowWorks` reads exit met: five offline bars green, 8 deciders PASS, problems_open 0.",
 "bars": [],
@@ -6068,6 +7026,10 @@
 "RIMMANDRAKE_CHECK_SHOOTING_RULE_OFF_PICKS_FARTHER_PIT_FOE": {
 "at": "2026-11-16T00:30:39",
 "hash": "92d0dc5295c45df1",
+"keep": [
+1
+],
+"keep_hash": "9e8a6f6ce8e17541",
 "reading": {
 "accept": "Live: live-proof A1 of RIMMANDRAKE_PROVE_FLOWWORKS_TOGGLES_DENSE reads shooting_rule_off and shooting_rule_on_pit_only PASS, or the row is rewritten to vanilla's rule and a mutant (rule forced on) fails it. Offline: none.",
 "bars": [],
@@ -6087,6 +7049,10 @@
 "RIMMANDRAKE_CLARIFY_GSS_NOHOSE_BAR_PIPE_POLES_ARE_FLOWWORKS": {
 "at": "2026-11-16T00:30:39",
 "hash": "ba8aa620fff5dfe8",
+"keep": [
+1
+],
+"keep_hash": "fb7573cc807a0da4",
 "reading": {
 "accept": "none, bar wording is the neutral fixer's call.",
 "bars": [],
@@ -6122,11 +7088,17 @@
 "RIMMANDRAKE_DECIDE_FIVE_WATER_SWITCHES_THAT_FEED_NOTHING": {
 "at": "2026-11-16T00:30:39",
 "hash": "539f6a5ba09869b2",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "701b2564a5574116",
 "owner": [
 1,
 2
 ],
-"owner_hash": "d9f93b30fb3f0ac2",
+"owner_hash": "0a919b0812b2efbf",
 "reading": {
 "accept": "none filed (owner decision); the fix added check test_every_setting_is_read, red on base (5 dead) and green after.",
 "bars": [
@@ -6159,10 +7131,16 @@
 "RIMMANDRAKE_DECIDE_SIXTH_WATER_SWITCH_THE_FIVE_MISSED": {
 "at": "2026-11-16T00:30:28",
 "hash": "f4d1f01c38791124",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "d4272c99977a0752",
 "owner": [
 1
 ],
-"owner_hash": "1d9b4bf53cbedc94",
+"owner_hash": "80fdf623f8b6a361",
 "reading": {
 "accept": "python3 src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py after deleting its KNOWN_UNREAD entry; fails today on 'every Mod Settings field is read by live code', passes once removed or read.",
 "bars": [],
@@ -6190,10 +7168,24 @@
 "RIMMANDRAKE_DELETE_FILL_N_ONE_WATER_NUMBER_SEVEN_FIXES": {
 "at": "2026-11-16T00:30:28",
 "hash": "ca51c7a30c248c0f",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6,
+7,
+8,
+9,
+10,
+11
+],
+"keep_hash": "674249f6a3f6dd84",
 "owner": [
 1
 ],
-"owner_hash": "3fd8145cbc20058d",
+"owner_hash": "2aa88c7748012fd0",
 "reading": {
 "accept": "none, no acceptance test filed on the ticket; live probes fw_slime_slip_exact.py and fw_one_water_grid_exact.py were added during the work.",
 "bars": [
@@ -6256,11 +7248,15 @@
 "RIMMANDRAKE_DESIGN_FLOWWORKS_DIG_INTERFACE_CONSOLIDATION": {
 "at": "2026-11-16T00:30:28",
 "hash": "eca7d818889344ae",
+"keep": [
+1
+],
+"keep_hash": "94b56cf4ef793d61",
 "owner": [
 1,
 3
 ],
-"owner_hash": "80f6b4c9a6035421",
+"owner_hash": "ad937cb5259c1a93",
 "reading": {
 "accept": "none, design with the owner.",
 "bars": [],
@@ -6277,6 +7273,12 @@
 ]
 }
 },
+"RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH": {
+"owner": [
+1
+],
+"owner_hash": "dc9088f9f228318e"
+},
 "RIMMANDRAKE_DESIGN_MELEE_SHOVE_INTO_PIT_CONTEST_FLOWWORKS": {
 "at": "2026-11-16T00:30:28",
 "hash": "9748354abef97c67",
@@ -6284,7 +7286,7 @@
 1,
 2
 ],
-"owner_hash": "67b52974461487d6",
+"owner_hash": "2bfcb9f638ecc53e",
 "reading": {
 "accept": "none, design not yet argued",
 "bars": [],
@@ -6299,6 +7301,11 @@
 "RIMMANDRAKE_DRYRUN_SCENES_ON_EMPTY_GAME_THREE_PASSED": {
 "at": "2026-11-16T00:30:50",
 "hash": "3df98d4ebc039926",
+"keep": [
+1,
+2
+],
+"keep_hash": "9ddde1eb24aa17ab",
 "reading": {
 "accept": "python3 src/RimMandrake/rimflow/acceptance/guard_empty_game_accept.py exits 0 printing PASS 8/8 (watched FAIL 1/8, exit 1, at ed7e3b5389).",
 "bars": [
@@ -6325,6 +7332,11 @@
 "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS": {
 "at": "2026-11-16T00:30:50",
 "hash": "bd8a503f27006173",
+"keep": [
+1,
+2
+],
+"keep_hash": "d43513cd713707d6",
 "reading": {
 "accept": "python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/rimflow/selftest_judge_calibration.py src/RimMandrake/rimflow/selftest_refusal_contract.py, with new cases: covered under UNTESTED does not sign; case not run stays UNTESTED; --no-run leaves registry bytes unchanged; advisory refusal raises no repair.",
 "bars": [],
@@ -6348,6 +7360,11 @@
 "RIMMANDRAKE_ENACT_FLOWWORKS_THREE_CARDS_WETTING_SINK_SWALE": {
 "at": "2026-11-16T00:30:50",
 "hash": "7a8b4a05d15ed059",
+"keep": [
+1,
+2
+],
+"keep_hash": "d717faa9fca42336",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
@@ -6371,6 +7388,13 @@
 "RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED": {
 "at": "2026-11-16T00:30:50",
 "hash": "4e18e92319450203",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "07d5c8d9ad9bb531",
 "reading": {
 "accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_walk_moat_season --out <json> on the calm site exits 0 with every row PASS on his full list; offline selftest red at 2b4bffe212, green on the fix.",
 "bars": [
@@ -6407,6 +7431,10 @@
 "RIMMANDRAKE_FIT_SENSE_V3_WRAPUP_NEVER_FINISHED_IN_FIFTEEN": {
 "at": "2026-11-16T00:30:50",
 "hash": "e83e79083d6ac2d9",
+"keep": [
+1
+],
+"keep_hash": "cf5416f905c8a1a9",
 "reading": {
 "accept": "Script reading /mnt/d/ClaudeWork/rimmandrake/metronome/shadow/beats.jsonl: exits 0 with one PASS line (v3 and wrapup each finishing at least once in 2h); watched FAIL at c1751a43ff: 'FAIL never finished in 2h: [v3, wrapup]'.",
 "bars": [],
@@ -6430,7 +7458,7 @@
 1,
 2
 ],
-"owner_hash": "ed390b4b0f40406e",
+"owner_hash": "70c8de5c93b295de",
 "reading": {
 "accept": "climb_proof.py --require CLIMB_ladder_span_D1_up,CLIMB_ladder_span_D1_down,CLIMB_ladder_span_D4_up,CLIMB_ladder_span_D4_down after deploying FlowWorks.",
 "bars": [
@@ -6468,6 +7496,11 @@
 "RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START": {
 "at": "2026-11-16T00:30:50",
 "hash": "15bfab6c94a207e0",
+"keep": [
+1,
+2
+],
+"keep_hash": "5be0f7822c4945ed",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
@@ -6513,6 +7546,10 @@
 "RIMMANDRAKE_FIX_STRANDED_COLONIST_READS_UNTRAPPED_NO_RESCUE": {
 "at": "2026-11-16T00:30:50",
 "hash": "8c66217f8bee7c31",
+"keep": [
+1
+],
+"keep_hash": "3287f0d13f8f1eb2",
 "reading": {
 "accept": "Load the review save; ProofClimb on the stranded colonist reads trapped (or he is rescued / climbs out within a game day); a fresh idle colony beside open and roofed 4 m pits keeps every colonist out over a day.",
 "bars": [
@@ -6549,6 +7586,13 @@
 "RIMMANDRAKE_JUDGE_FLOWWORKS_REVIEW_SAVE_FOUR_LOOK_QUESTIONS": {
 "at": "2026-11-16T00:30:53",
 "hash": "7a134a72c159abb6",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "4a539c60b7f9e452",
 "reading": {
 "accept": "none, taste (a judge's or his verdict per question)",
 "bars": [
@@ -6585,6 +7629,12 @@
 "RIMMANDRAKE_KEEP_DIG_PROGRESS_ACROSS_MEALS_AND_NAPS": {
 "at": "2026-11-16T00:30:53",
 "hash": "15cc4610e6dc00c4",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "9bc911f248c6ef99",
 "reading": {
 "accept": "python.exe D:\\ClaudeWork\\rimmandrake\\conductor\\evening_20261113\\tools\\digreset.py 125 0.6 must print ratio <= 1.2 (base 1.61); baseline digreset.py <z> 0 stays ~1.0.",
 "bars": [],
@@ -6613,8 +7663,15 @@
 "RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES": {
 "at": "2026-11-16T00:30:53",
 "hash": "5e3dec6fa2f07505",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "8f573da677299c4f",
 "owner": [],
-"owner_hash": "1fffe1140997271b",
+"owner_hash": "b57ff6662fd9f156",
 "reading": {
 "accept": "Per feature, the branch's named SelfTest checks pass on main in RimMandrakeFlowWorks.SelfTest; none for raid-stall fixes and rain rate (needs a live raid).",
 "bars": [
@@ -6669,6 +7726,10 @@
 "RIMMANDRAKE_LIGHT_FUEL_SAP_TERRAIN_FIRES_STARTED_ZERO": {
 "at": "2026-11-16T00:30:53",
 "hash": "ab9d0e5a58e0f0e6",
+"keep": [
+1
+],
+"keep_hash": "a1eb06676456e80d",
 "reading": {
 "accept": "Live: live-proof A2 in RIMMANDRAKE_PROVE_FLOWWORKS_TOGGLES_DENSE.txt reads liquid_ignition_on PASS. Offline: none, only a live fire shows it.",
 "bars": [
@@ -6704,6 +7765,10 @@
 "RIMMANDRAKE_LIST_TOSS_FLAME_TOGGLE_MOCK_RED_ON_LANDING": {
 "at": "2026-11-16T00:30:53",
 "hash": "b62ff38b3186106c",
+"keep": [
+1
+],
+"keep_hash": "1b1739481412e11d",
 "reading": {
 "accept": "python3 src/RimMandrake/FlowWorks/northstar/selftest_extensions.py exits 0 with no '- clean mock run not green'; red at 6120bb02aa.",
 "bars": [
@@ -6785,6 +7850,11 @@
 "RIMMANDRAKE_PIN_FLOWWORKS_FILL_SCENE_FIXES_RED_BEFORE_GREEN": {
 "at": "2026-11-16T00:30:53",
 "hash": "431a53bc2fd99c0c",
+"keep": [
+1,
+2
+],
+"keep_hash": "048b6e436bb5b1b3",
 "reading": {
 "accept": "Offline selftest red at 8caccd561c, green at HEAD; visit 2 reruns sc_fill_front and sc_fill_tiers live, each a single PASS row.",
 "bars": [
@@ -6856,7 +7926,7 @@
 2,
 3
 ],
-"owner_hash": "83ba90819a09ce4c",
+"owner_hash": "54d885a239e26c87",
 "reading": {
 "accept": "none, no acceptance test filed",
 "bars": [
@@ -6873,6 +7943,12 @@
 "RIMMANDRAKE_PROVE_FLOWWORKS_TOGGLES_DENSE": {
 "at": "2026-11-16T00:30:58",
 "hash": "39c39f2bb611d19b",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "57c2f93c2dc36cfd",
 "reading": {
 "accept": "none, the ticket filed no pass command; live clauses are in infrastructure/state/live_proofs/RIMMANDRAKE_PROVE_FLOWWORKS_TOGGLES_DENSE.txt (A1, A2, A3).",
 "bars": [],
@@ -6900,6 +7976,11 @@
 "RIMMANDRAKE_REALIGN_FLOWWORKS_PROOFS_AFTER_UNDER_LIQUID_LAW": {
 "at": "2026-11-16T00:30:58",
 "hash": "6420fa1b94d11240",
+"keep": [
+1,
+2
+],
+"keep_hash": "fe93d8198b78b397",
 "reading": {
 "accept": "python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py src/RimMandrake/FlowWorks/northstar/selftest_lines_proof.py src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py src/RimMandrake/Utils/selftest_static_game_state.py prints 'RESULT: GREEN'",
 "bars": [],
@@ -6923,6 +8004,12 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_FETCH_SCENE_RAID_NEVER_CAME": {
 "at": "2026-11-16T00:30:58",
 "hash": "77dc6a5cc1349141",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "133426eb33eb09c2",
 "reading": {
 "accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_fetch_fallen --out <json> on the calm site exits 0 with every row PASS, and vacuous reads give UNMEASURED, never PASS (live, UNRUN). Offline: selftest_fetch_scene.py.",
 "bars": [
@@ -6952,6 +8039,12 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_GARDEN_SCENE_MACHINES_NEVER_PIPED": {
 "at": "2026-11-16T00:30:58",
 "hash": "385b8079eb54d0b2",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "c8fbd032078b6ecc",
 "reading": {
 "accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_garden --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED, never PASS (live, UNRUN). Offline: selftest_garden_scene.py.",
 "bars": [
@@ -6983,6 +8076,11 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_HOSE_SCENE_PUMP_HAD_NO_SOURCE": {
 "at": "2026-11-16T00:30:58",
 "hash": "8d8facff01840b69",
+"keep": [
+1,
+2
+],
+"keep_hash": "108cb429fbacc8d2",
 "reading": {
 "accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_hose_look --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED, never PASS (live, UNRUN). Offline: selftest_hose_look_scene.py.",
 "bars": [
@@ -7008,6 +8106,12 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_ICE_SCENE_BASIN_NEVER_FROZE": {
 "at": "2026-11-16T00:30:58",
 "hash": "43ee75f3759382c2",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "547103a2b2462790",
 "reading": {
 "accept": "python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_ice --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED, never PASS (live, UNRUN). Offline: selftest_ice_scene.py.",
 "bars": [
@@ -7040,6 +8144,12 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_ISLANDS_SCENE_SPAWNED_A_DRAW_STYLE": {
 "at": "2026-11-16T00:31:19",
 "hash": "3c457513c62e8b55",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "92a019737c3b8f62",
 "reading": {
 "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_islands --out <json> on the calm site exits 0 with every row PASS. Offline: selftest_islands_scene.py.",
 "bars": [
@@ -7070,6 +8180,12 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_MOAT_SCENE_PASSED_ON_REFUSED": {
 "at": "2026-11-16T00:31:19",
 "hash": "8168b01946be767d",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "76cb77a7f75efc9a",
 "reading": {
 "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_moat_raid --out <json> on the calm site exits 0 with every row PASS (MOAT_moat_burns after the toss-flame order lands).",
 "bars": [
@@ -7100,6 +8216,12 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_PAWN_HEIGHT_SCENE_ZEROS_PASSED": {
 "at": "2026-11-16T00:31:19",
 "hash": "a9b01894d433d7ac",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "5396f2d33945e9ea",
 "reading": {
 "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_pawn_height --out <json> on the calm site exits 0 with every row PASS; vacuous reads read UNMEASURED.",
 "bars": [
@@ -7146,6 +8268,10 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_SOURCE_PAYS_SCENE_POND_NEVER_THERE": {
 "at": "2026-11-16T00:31:19",
 "hash": "1dd41b56a8cd3ba8",
+"keep": [
+1
+],
+"keep_hash": "819be017f87327f4",
 "reading": {
 "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_source_pays --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED. Offline: a selftest red at 2b4bffe212, green on the fix.",
 "bars": [
@@ -7190,6 +8316,10 @@
 "RIMMANDRAKE_REBUILD_FLOWWORKS_TRENCH_SCENE_READ_LID_PROOF": {
 "at": "2026-11-16T00:31:19",
 "hash": "4f2dcbca92513254",
+"keep": [
+1
+],
+"keep_hash": "0624148cdf1eb382",
 "reading": {
 "accept": "Live, UNRUN: python.exe src/RimMandrake/FlowWorks/northstar/concept_scenes.py --scene scene_trench_cover --out <json> on the calm site exits 0 with every row PASS; vacuous reads UNMEASURED. Offline: a selftest red at 2b4bffe212, green on the fix.",
 "bars": [
@@ -7225,6 +8355,10 @@
 "RIMMANDRAKE_REPAIR_DECK_COLLAPSE_SEAM_CHECK_LOST_ITS_ANCHOR": {
 "at": "2026-11-16T00:31:19",
 "hash": "7c4ff91e6ff627f8",
+"keep": [
+1
+],
+"keep_hash": "bf15964e87c6cb2f",
 "reading": {
 "accept": "python3 src/RimMandrake/Utils/selftest_flowworks_stock.py --only DeckCollapse_GSS_shock_seam_is_soft_and_load_safe exits 0 with 1 case ok; fails today.",
 "bars": [],
@@ -7244,6 +8378,10 @@
 "RIMMANDRAKE_REPAIR_FLOWWORKS_OL_SHADOW_JUDGE_PRESUMED_STALE": {
 "at": "2026-11-16T00:31:19",
 "hash": "8944544c49a4fd3f",
+"keep": [
+1
+],
+"keep_hash": "40010698677e177a",
 "reading": {
 "accept": "The owner_look_regressions command of row 63 on a freshly staged big pit reads 0 FAIL, 0 UNMEASURED, and a planted shadow-over-the-sheet build reads FAIL.",
 "bars": [
@@ -7287,6 +8425,10 @@
 "RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER": {
 "at": "2026-11-16T00:31:19",
 "hash": "115eec4e880f367e",
+"keep": [
+1
+],
+"keep_hash": "7e3690b721761028",
 "reading": {
 "accept": "Remove both baseline keys from proof_restore_check.BASELINE and selftest_proof_restore_check.py stays GREEN.",
 "bars": [
@@ -7308,6 +8450,10 @@
 "RIMMANDRAKE_RESUME_SWEPT_PAWN_STUCK_MID_RIVER": {
 "at": "2026-11-16T00:31:19",
 "hash": "667b97cdb6bd0229",
+"keep": [
+1
+],
+"keep_hash": "6861a4bd5283e4fb",
 "reading": {
 "accept": "none offline (pather and job behaviour exist only in the running game). Live, UNRUN: after the first downstream shove an undrafted Goto pawn shows pather.Moving true within 60 ticks, and an edge-lane pawn reaches the bank.",
 "bars": [
@@ -7330,13 +8476,19 @@
 "RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL": {
 "at": "2026-11-16T00:31:09",
 "hash": "b5bfb14541952e60",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "b239ebeedf70d63f",
 "owner": [
 1,
 2,
 3,
 4
 ],
-"owner_hash": "f9ff0e48aca2e9df",
+"owner_hash": "0d19666b71aa20f3",
 "reading": {
 "accept": "python.exe src/RimMandrake/FlowWorks/northstar/pit_fittings_matrix.py <repo_win> <out_win> all: 44 pits (D1-D6, D8 x every fill, + tar), 0 FAIL, then the owner's look.",
 "bars": [
@@ -7368,12 +8520,23 @@
 "RIMMANDRAKE_SWEEP_WATER_SOLVERS_ON_BIG_MAPS": {
 "at": "2026-11-16T00:31:09",
 "hash": "3d20c6f61503eac1",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6,
+7,
+8
+],
+"keep_hash": "e601dcd3fd879dd3",
 "owner": [
 2,
 4,
 5
 ],
-"owner_hash": "ec8792ce64771d7b",
+"owner_hash": "44549bcc3928751b",
 "reading": {
 "accept": "A report names winner and runner-up with the cost table at 250/325/400 (Python ms measured, C# projected) and every plan 5.4 pass bar scored per arm, frames judged blind.",
 "bars": [
@@ -7447,6 +8610,10 @@
 "RIMMANDRAKE_UNBLOCK_CONCEPTS_WHOSE_BLOCKER_CLOSED_DAYS_AGO": {
 "at": "2026-11-16T00:31:09",
 "hash": "622df41b8dc4320a",
+"keep": [
+1
+],
+"keep_hash": "46a55a3a3922038f",
 "reading": {
 "accept": "The ticket's python3 -c one-liner over ledger close/drop/supersede events and design/concepts/*/stage.json: exit 0 passes; watched FAIL on e56fe439ca listing both.",
 "bars": [],
@@ -7466,10 +8633,15 @@
 "RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL": {
 "at": "2026-11-16T00:31:23",
 "hash": "027186321cc8751a",
+"keep": [
+1,
+2
+],
+"keep_hash": "5d3b87ce66e24d1c",
 "owner": [
 1
 ],
-"owner_hash": "7fe44c798b2c636a",
+"owner_hash": "38af86a9a3609b20",
 "reading": {
 "accept": "none, an owner decision on wanted behaviour; owner chose 'Pour whatever fits'. Gate: MapControl_source_and_sink_conserve_through_the_kernel (>= 20 of 24, conservation exact in dL).",
 "bars": [
@@ -7499,6 +8671,10 @@
 "RIMMASTER_MOVE_IMAGE_SKILLS_OUT_PAST_CODE_PATHS": {
 "at": "2026-11-16T00:31:23",
 "hash": "7025361e6834bcef",
+"keep": [
+1
+],
+"keep_hash": "0d8e03ef498e53ee",
 "reading": {
 "accept": "Art pipeline selftests pass and one real job runs; every code reference uses the resolver (find with git grep -n \"skills/generating-images\\|skills/editing-images\" -- '*.py' '*.sh' '*.json').",
 "bars": [],
@@ -7515,13 +8691,27 @@
 ]
 }
 },
-"RIVER_COLORS_WIDEN_RED_BLUE_GREEN_DEATH": {
-"at": "2026-11-16T00:31:23",
-"hash": "6405bf487afc1130",
+"RIMMASTER_TRY_CODEX_WHITTLE_ON_ONE_MOD_INTRIGUING": {
+"owner": [],
+"owner_hash": "3dcf6029ece0c6fd"
+},
+"RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW": {
 "owner": [
 1
 ],
-"owner_hash": "e048f1f14cfac44b",
+"owner_hash": "bef4b38aa1bef36a"
+},
+"RIVER_COLORS_WIDEN_RED_BLUE_GREEN_DEATH": {
+"at": "2026-11-16T00:31:23",
+"hash": "6405bf487afc1130",
+"keep": [
+1
+],
+"keep_hash": "bc229aa6a00cd076",
+"owner": [
+1
+],
+"owner_hash": "437961cb355e3bfc",
 "reading": {
 "accept": "Offline render of the ramp along a real Ash'karr river (links CSV) at three zooms, then an owner look in game.",
 "bars": [],
@@ -7541,6 +8731,10 @@
 "RIVER_CURRENT_PROBE_LATE_GRAB": {
 "at": "2026-11-16T00:31:23",
 "hash": "602d6488472d3daf",
+"keep": [
+1
+],
+"keep_hash": "2f9945f47c700e23",
 "reading": {
 "accept": "A SelfTest/python case red on old code and green with the fix for the confirmed vent finding; for the plausible gap, the row's live check, closed as not-a-bug if green.",
 "bars": [],
@@ -7560,6 +8754,10 @@
 "RIVER_SITE_FIX_MAPS_OUTLIVE_THEIR_RUN": {
 "at": "2026-11-16T00:31:23",
 "hash": "8d70a2432ae24128",
+"keep": [
+1
+],
+"keep_hash": "26a51540ff66cbbd",
 "reading": {
 "accept": "none, no acceptance test filed.",
 "bars": [],
@@ -7579,6 +8777,10 @@
 "RIVER_TOGGLE_PROOFS_BUILD_ELEVEN_UNCLAIMED": {
 "at": "2026-11-16T00:31:23",
 "hash": "e34dea5444739098",
+"keep": [
+1
+],
+"keep_hash": "6f92ab5ab42f3026",
 "reading": {
 "accept": "L2: each river toggle flipped off removes its effect on a quicktest river map; SeasonalFlood spawn gives ProofGrid flood=True; stake-line holds a flood and a gap leaks; A7 (L4) flyer never moved, owner present.",
 "bars": [],
@@ -7598,6 +8800,10 @@
 "SCENARIO_REELS_FIX_STILL_FACING_WEST": {
 "at": "2026-11-16T00:31:23",
 "hash": "1d5abc0fef17087d",
+"keep": [
+1
+],
+"keep_hash": "5da9529b48e6d829",
 "reading": {
 "accept": "Each staged reel is built facing its free end/port; a rebuilt walkthrough shows no 180-degree loop out of any reel (capture per reel).",
 "bars": [
@@ -7633,6 +8839,10 @@
 "SELFTEST_ASSERT_CLOSE_FIX_ACCEPTS_NAN": {
 "at": "2026-11-16T00:31:23",
 "hash": "896d8337068c3d9a",
+"keep": [
+1
+],
+"keep_hash": "03289cc0afb08d1f",
 "reading": {
 "accept": "none, item only records the defect.",
 "bars": [],
@@ -7694,6 +8904,10 @@
 "SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ": {
 "at": "2026-11-16T00:31:23",
 "hash": "01b381a26d877092",
+"keep": [
+1
+],
+"keep_hash": "bebf7158a60c55d6",
 "reading": {
 "accept": "Re-run offline: flow_map_controls, flow_map_controls_six, hose_switch_flips (tank_feed_refused_add_puts_back), pump_ports_one_per_side (5 SelfTest rows).",
 "bars": [],
@@ -7713,6 +8927,14 @@
 "SESSION_HURT_DIAGNOSE_BRUISED_AT_THE_BELL": {
 "at": "2026-11-16T00:31:33",
 "hash": "f3ae788a2a3c68b9",
+"keep": [
+1,
+2,
+3,
+4,
+5
+],
+"keep_hash": "acce3b02a4881400",
 "reading": {
 "accept": "A1 (L2): the next live_session.py run's B3 sub-scripts end with no GovernorStop hurt/downed on a parked bystander; timing.bystanders names the source of any hurt. O1 (L0): selftest_live_session.py 8e.",
 "bars": [],
@@ -7754,6 +8976,10 @@
 "SETTINGS_SEARCH_FIX_LABELS_NOT_FOUND": {
 "at": "2026-11-16T00:31:33",
 "hash": "bccda09fad9fc7b5",
+"keep": [
+1
+],
+"keep_hash": "845aada6e0b1883a",
 "reading": {
 "accept": "In FlowWorks Mod Settings, typing 'Liquid crosses', 'huge network' or 'pieces' shows the Water engine section; 'zzqx' reads No setting matches.",
 "bars": [
@@ -7775,6 +9001,10 @@
 "SHOWCASE_RULES_TUNE_AWAITING_STAGE_THREE": {
 "at": "2026-11-16T00:31:33",
 "hash": "544bbed8602bafa2",
+"keep": [
+1
+],
+"keep_hash": "22aaf35d0c2a79fa",
 "reading": {
 "accept": "python3 src/RimMandrake/rimflow/designer_stage.py showcases design/concepts/<Mod> on each of the first two stage-3 concepts (FlowWorks first); the numbers are adjusted and status records the measurement. Waits on concepts: none at stage 3 on 2026-11-05.",
 "bars": [],
@@ -7794,6 +9024,10 @@
 "SLUICE_GATE_SETTINGS_EXCISE_KNOBS_ON_NOTHING": {
 "at": "2026-11-16T00:31:33",
 "hash": "fef75124996cbe94",
+"keep": [
+1
+],
+"keep_hash": "4e3bc3cac9b06dff",
 "reading": {
 "accept": "A new player can read the changed UI and know what to do next; the old confusing text is gone (grep). FlowWorks selftests stay as green as before.",
 "bars": [
@@ -7815,6 +9049,10 @@
 "SMALL_PUMP_HOSE_FIX_LAYS_UNCONNECTED": {
 "at": "2026-11-16T00:31:33",
 "hash": "c77a6680fb8db94b",
+"keep": [
+1
+],
+"keep_hash": "f8e20d864f121411",
 "reading": {
 "accept": "none, the ticket only records the defect and filed no acceptance test.",
 "bars": [
@@ -7837,6 +9075,10 @@
 "STATION_REACH_CENTRE_RETHINK_FOOTPRINT": {
 "at": "2026-11-16T00:31:33",
 "hash": "ed815cedbe7756da",
+"keep": [
+1
+],
+"keep_hash": "0e9a7eb1eddf214c",
 "reading": {
 "accept": "Selftest: PrePortFixChecks P11 case with can-fail probe in selftest_flowworks_stock.py. Live: a pumping station draws from water 4 cells off its long side and not 5 (station_reach_live.py).",
 "bars": [],
@@ -7856,6 +9098,10 @@
 "SUNKEN_DRAWBRIDGE_FIX_REJECTS_HINGE_BANK": {
 "at": "2026-11-16T00:31:33",
 "hash": "231606cdec5d6fe6",
+"keep": [
+1
+],
+"keep_hash": "95f1fb10406d501e",
 "reading": {
 "accept": "none, the ticket only records the defect and filed no acceptance test.",
 "bars": [
@@ -7892,6 +9138,12 @@
 "SUSPENSION_BASE_REWIRE_COVERS_STEP_OUT": {
 "at": "2026-11-16T00:31:33",
 "hash": "89c58dbd575e8719",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "35f0b2e86fdca18e",
 "reading": {
 "accept": "L1: existing pit-cover selftests pass unchanged; DeckedAt on a cover cell is true, height 0, floor band false, and false on an open dug cell. L1: code_review_status.py check CLEAN on every touched file. L2: a cover holds 40/120/220 kg and drops a pawn when exceeded.",
 "bars": [
@@ -7923,6 +9175,10 @@
 "SWALE_CANAL_ART_REFERENCE_1": {
 "at": "2026-11-16T00:31:33",
 "hash": "9c75632c652d149a",
+"keep": [
+1
+],
+"keep_hash": "e80ff3bc88ad7583",
 "reading": {
 "accept": "Shots committed, art spec written, regen job queued, and the placeholder note removed from the sheet manifest when the new art passes.",
 "bars": [
@@ -7967,6 +9223,10 @@
 "SWIM_WARNING_FIX_ANY_PAWN_MESSAGE": {
 "at": "2026-11-16T00:31:33",
 "hash": "6bb0fb8535e9d1ad",
+"keep": [
+1
+],
+"keep_hash": "7ebb7db34d20a666",
 "reading": {
 "accept": "none, the ticket only records the defect and filed no acceptance test.",
 "bars": [
@@ -7988,6 +9248,11 @@
 "TAKEN_BY_LAND_SERVICE_1": {
 "at": "2026-11-16T00:31:36",
 "hash": "2f7309cf7fbc8e9b",
+"keep": [
+1,
+2
+],
+"keep_hash": "02d33bf7b6a6a943",
 "reading": {
 "accept": "jawa/static_call RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof ProofTaken args \"-\" returns `TAKEN river=True gale=<B> traceSetting=<True|False> traces=<N> pending=<N>` with pending>=0; UNMEASURED without a loaded world is not a pass.",
 "bars": [],
@@ -8011,6 +9276,10 @@
 "TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT": {
 "at": "2026-11-16T00:31:36",
 "hash": "6f8307ea2e1c0d8e",
+"keep": [
+1
+],
+"keep_hash": "2b9133de9729a95c",
 "reading": {
 "accept": "Offline selftest GptFixesAChecks in selftest_flowworks_stock.py: red on the old code, green with the fix. No live proof was run.",
 "bars": [],
@@ -8030,10 +9299,14 @@
 "TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH": {
 "at": "2026-11-16T00:31:36",
 "hash": "5840f6309dc238c3",
+"keep": [
+1
+],
+"keep_hash": "e5e1826b9411e938",
 "owner": [
 1
 ],
-"owner_hash": "906b7af5bc3ecbda",
+"owner_hash": "8073b51ec1da545f",
 "reading": {
 "accept": "Selftest TankStyles_choose_style_gizmo ok (401/401); live row pipe_looks.tank_choose_style_live at review-map station tank_styles, still to run after deploying FlowWorks.",
 "bars": [
@@ -8057,6 +9330,10 @@
 "TANK_SETTLE_FIX_DOUBLE_DIPPED": {
 "at": "2026-11-16T00:31:36",
 "hash": "02ad443462f2a8b6",
+"keep": [
+1
+],
+"keep_hash": "f0459e41f0f466d7",
 "reading": {
 "accept": "Offline selftest GptFixesAChecks in selftest_flowworks_stock.py: red on the old code, green with the fix. No live proof was run.",
 "bars": [
@@ -8078,6 +9355,11 @@
 "TANK_STUB_HUNT_POINTS_AT_NOTHING": {
 "at": "2026-11-16T00:31:36",
 "hash": "594de60ce329f5ba",
+"keep": [
+1,
+2
+],
+"keep_hash": "562b08e00a42d678",
 "reading": {
 "accept": "On the deployed HEAD DLL, a zoomed capture of map C C3 north shows the pipe-to-reel link ending under the reel; judged by the naive visual judge on live captures.",
 "bars": [
@@ -8106,6 +9388,11 @@
 "TAR_COOLING_GLASS_MEND_ENGINE_CELLS": {
 "at": "2026-11-16T00:31:36",
 "hash": "6af15c2dfe7f2ee6",
+"keep": [
+1,
+2
+],
+"keep_hash": "a41287a127ac0bb9",
 "reading": {
 "accept": "L1: PrePortFixChecks P6b (old-loop can-fail). Owed A2 (L2, live): a tar release into a dug channel leaves its base depth terrain intact after it finishes.",
 "bars": [],
@@ -8148,6 +9435,10 @@
 "TAR_LAG_FIX_NO_WATER_CONTROL": {
 "at": "2026-11-16T00:31:36",
 "hash": "f94dd9b8682db3dc",
+"keep": [
+1
+],
+"keep_hash": "1dc01736bd977976",
 "reading": {
 "accept": "none, item only records the defect; no check filed.",
 "bars": [],
@@ -8167,6 +9458,11 @@
 "TAR_REFINERY_FIX_CAN_FALLBACK_DEAD": {
 "at": "2026-11-16T00:31:36",
 "hash": "d62847b36553fc62",
+"keep": [
+1,
+2
+],
+"keep_hash": "6acf82f07988a020",
 "reading": {
 "accept": "L0: descriptions no longer promise cans, XML parses, RM_Liquid_Tar refine row has no productThing, 7 FlowWorks liquid selftests PASS. L1 owed: in game a tar refinery with no chemfuel tank shows the no-output status and its description reads true.",
 "bars": [],
@@ -8190,6 +9486,13 @@
 "TESTENV_BUMBLEDRONE_HARDEN_UNINVITED_BUZZ": {
 "at": "2026-11-16T00:31:36",
 "hash": "7b900f621dc00428",
+"keep": [
+1,
+2,
+3,
+4
+],
+"keep_hash": "e83d02bcbcba554d",
 "reading": {
 "accept": "Run river_site.py then extension_proof --live --site river twice: 'loaded maps:' lists only home and site, quiet receipt clean, no hostile_arrival GOVERNOR_STOP.",
 "bars": [],
@@ -8224,6 +9527,11 @@
 "TESTENV_HIVES_HARDEN_RIVER_MAP_SQUATTERS": {
 "at": "2026-11-16T00:31:40",
 "hash": "f504d7fcf0c5a99e",
+"keep": [
+1,
+2
+],
+"keep_hash": "e27f8c52b022cfd3",
 "reading": {
 "accept": "Rebuild the river_site, then jawa/quiet_site status reads 0 threat structures (in-game, level L1, criterion A1).",
 "bars": [],
@@ -8307,6 +9615,10 @@
 "TESTQ_MODS_WIRE_BEYOND_FLOWWORKS": {
 "at": "2026-11-16T00:31:40",
 "hash": "dd845d5b0b99855d",
+"keep": [
+1
+],
+"keep_hash": "bc9186b3b672278c",
 "reading": {
 "accept": "coverage.py check --min-wired 6 exits 0: testq selects at least 6 of the harnessed mods, each with a passing bad_selection probe.",
 "bars": [],
@@ -8354,6 +9666,10 @@
 "TEST_SWITCH_FIX_NO_SCRIBE_NO_PEACE": {
 "at": "2026-11-16T00:31:40",
 "hash": "6ba83de0ebb16f0d",
+"keep": [
+1
+],
+"keep_hash": "48e08642775ce2ff",
 "reading": {
 "accept": "selftest_extensions and selftest_settings_registry PASS, and validation_v2 O2 PASS.",
 "bars": [
@@ -8375,6 +9691,15 @@
 "THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY": {
 "at": "2026-11-16T00:31:32",
 "hash": "672d40e283b12dd6",
+"keep": [
+1,
+2,
+3,
+4,
+5,
+6
+],
+"keep_hash": "d64cb5ffc591e163",
 "owner": [
 1,
 2,
@@ -8385,7 +9710,7 @@
 7,
 8
 ],
-"owner_hash": "0831b80a8d93c329",
+"owner_hash": "e7911eb122bc152b",
 "reading": {
 "accept": "thirst_live rows T1-T7, T9, T10 pass live; T6 (B4_dehydration_rate, drafted, held at thirst 0) projects 0.30 +/- 0.03 severity per 60k ticks; caravan water readout shows days of water; HW1 carries the RM bottles.",
 "bars": [
@@ -8428,6 +9753,10 @@
 "THIRST_CHAIN_UNSTICK_STILL_SIPPING": {
 "at": "2026-11-16T00:32:08",
 "hash": "bd3b8cd12c40541a",
+"keep": [
+1
+],
+"keep_hash": "759ada2bed6aa463",
 "reading": {
 "accept": "none, ticket filed no acceptance test",
 "bars": [],
@@ -8447,6 +9776,14 @@
 "THIRST_STORE_TANK_DIAGNOSE_LATE_BRINE": {
 "at": "2026-11-16T00:32:08",
 "hash": "d9abda11cbfb67ab",
+"keep": [
+1,
+2,
+3,
+4,
+5
+],
+"keep_hash": "5c7d03dcd35ff11c",
 "reading": {
 "accept": "Live T23 on SteveDesktop: draftRearms>0 and othersInSettle empty, landedInSettle empty.",
 "bars": [],
@@ -8500,6 +9837,10 @@
 "TRANSFER_AUDIT_FIX_FAILED_MOVE_COUNTS": {
 "at": "2026-11-16T00:32:08",
 "hash": "c8504e7c7dae3c58",
+"keep": [
+1
+],
+"keep_hash": "1ad3ec2d6a60a014",
 "reading": {
 "accept": "none, ticket filed no acceptance test",
 "bars": [
@@ -8521,6 +9862,10 @@
 "TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG": {
 "at": "2026-11-16T00:32:08",
 "hash": "9de2e1806372f2f7",
+"keep": [
+1
+],
+"keep_hash": "7931fcebf2eb0750",
 "reading": {
 "accept": "none, no acceptance command filed; live rows (in-game swap) owed",
 "bars": [
@@ -8542,6 +9887,10 @@
 "UNDERPASS_SHOT_FIX_OVERRIDES_VANILLA_REJECT": {
 "at": "2026-11-16T00:32:08",
 "hash": "b8fd31deaffee274",
+"keep": [
+1
+],
+"keep_hash": "a626bfa10edfd9f8",
 "reading": {
 "accept": "selftest Underpass_shot_reopens_only_a_cliff_rejection_and_reasks_vanilla passes (FlowWorks SelfTest); live: under a deck a floor-band shot through a wall stays refused, a cliff-only refusal is allowed.",
 "bars": [
@@ -8563,6 +9912,11 @@
 "UNIVERSAL_PIPE_FIX_LAST_RULING_STILL_RED": {
 "at": "2026-11-16T00:32:08",
 "hash": "d6c053f9a9cebdd2",
+"keep": [
+1,
+2
+],
+"keep_hash": "abc2e2f72adcdfd2",
 "reading": {
 "accept": "HOSE_RULINGS A5 re-verified PASS on the current build by a live read; `mod_completion.py FlowWorks` no longer lists RM_UniversalPipe as broken.",
 "bars": [
@@ -8585,9 +9939,22 @@
 ]
 }
 },
+"V3_JUDGMENT_DATE_DECIDE_KEEP_OR_KILL": {
+"owner": [],
+"owner_hash": "c9449b7595d3dd6c"
+},
+"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE": {
+"owner": [],
+"owner_hash": "a980dd828a4f25d2"
+},
 "VALIDATION_HOSE_REELS_FIX_STILL_WEST": {
 "at": "2026-11-16T00:32:08",
 "hash": "de75468a90f39796",
+"keep": [
+1,
+2
+],
+"keep_hash": "f7d8876f66d44e48",
 "reading": {
 "accept": "Fresh map: proof_hose --only relay RL4 PASS, and each fixed proof runs live keeping its staged animals/prisoners.",
 "bars": [
@@ -8616,6 +9983,10 @@
 "VV_MATRIX_FIX_SURFACE_FAILURES_UNDERCOUNT": {
 "at": "2026-11-16T00:32:08",
 "hash": "22f20aebf68057af",
+"keep": [
+1
+],
+"keep_hash": "d1e73d0fb5078cd9",
 "reading": {
 "accept": "none, ticket filed no acceptance test",
 "bars": [],
@@ -8635,6 +10006,10 @@
 "WALKS3_OUTFLOW_FIX_HOSE_WONT_JUMP_DITCH": {
 "at": "2026-11-16T00:32:08",
 "hash": "82d249b613aef1a3",
+"keep": [
+1
+],
+"keep_hash": "70afdc807759a44c",
 "reading": {
 "accept": "The walk's S3 stage lays hose B (no 'outflow hose not laid' staging note) and S3.a/S3.b read on a fresh run.",
 "bars": [
@@ -8720,6 +10095,14 @@
 "WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE": {
 "at": "2026-11-16T00:32:08",
 "hash": "c06d1d32e5479efd",
+"keep": [
+1,
+2,
+3,
+4,
+5
+],
+"keep_hash": "41e665212691f276",
 "reading": {
 "accept": "`python.exe src/RimMandrake/FlowWorks/northstar/extension_proof.py --live --site river` with FlowWorks deployed: works.weir_arrest_and_pool PASS (cells>0, dropped>0); SelfTest WeirPoolChecks (5 cases) green.",
 "bars": [
@@ -8760,6 +10143,12 @@
 "WEIR_WASH_ITEM_LOSS_MEND_PLACE_FIRST": {
 "at": "2026-11-16T00:31:42",
 "hash": "3bb4e95a61e33330",
+"keep": [
+1,
+2,
+3
+],
+"keep_hash": "a0fe8216b9dab4ab",
 "reading": {
 "accept": "Live breach with no placeable strand room leaves the held catch spawned on the map: ProofBreachNoRoom PASS bar asked>0, spawned=atOld=held>0, unitsAfter=unitsBefore, breaching=True; list_things shows the catch.",
 "bars": [],

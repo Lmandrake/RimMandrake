@@ -1,7 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":984216,"DISPATCH":1331,"HOLDER.run-1794816885":928} body_sha256=978f9c2afbc6788e3b6a9c19f9fc2e518cd7dc6a87644718f1e4b8381609b8b5 -->
-OVER BUDGET: 15102 tokens > 15000, and nothing droppable is left (open findings, traps, refuted causes, his answers, open questions and bars are never dropped; the line rule is at its briefest)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":972259,"DISPATCH":1331,"HOLDER.run-1794816885":928} body_sha256=faab6e596b0fa318f6ae93bbaea0bcb210bb32bec51fb020289d470d9b8af0b4 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1280 events in 3 shards · reducer 1
+version 0.1.0 · stage offline_build · 1265 events in 3 shards · reducer 1
 holder lease run-1794816885, token 1, last active 2026-11-16T08:50:23Z
 holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 400000
 
@@ -259,7 +258,7 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG on c22de8bf0b58
 - RIMMANDRAKE_LIGHT_FUEL_SAP_TERRAIN_FIRES_STARTED_ZERO [open, problem · bars inv_fire]: With liquidIgnitionEnabled ON, a burning log beside RM_Fuel…
 
-## Traps (454) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
+## Traps (449) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:three-bar-vocabularies
 - trap:the-inventory-s-proof-field-reads-stale-20
 - trap:three-inventory-rows-are-impl-absent
@@ -280,7 +279,6 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - trap:passing-shas-ee9fa61fbc-and-the-lesson-s-13ba79077b
 - trap:do-not-count-the-invalid-harness-runs-modcheck
 - trap:while-the-leaf-is-raised-there-is-no
-- trap:gpt-rated-this-major-but-the-verification-verdict
 - trap:the-ticket-reads-as-if-it-still-needs
 - trap:the-ladder-bars-rows-still-stop-at-2
 - trap:the-stale-rsw-names-raise-no-error-the
@@ -301,7 +299,6 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - trap:ladder-art-candidates-rut-ladder-a-b-png
 - trap:only-3-of-100-def-texture-references-are
 - trap:of-the-48-python-hits-31-were-false
-- trap:the-file-event-s-spec-path-is-session
 - trap:the-core-live-rows-abort-settings-drift-harness
 - trap:the-original-plan-transient-flowworks-live-sitting-plan
 - trap:the-11-04-fail-is-a-real-measure
@@ -316,7 +313,6 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - trap:re-targeted-to-flowworks-0-2-0-and
 - trap:the-owner-ruled-all-wetness-migrates-to-a
 - trap:the-wetting-selftests-are-red-on-507b8cb3d-3
-- trap:do-not-write-the-c-until-the-flowworks
 - trap:water-lost-to-soak-on-the-soil-pad
 - trap:enginepulse-calls-the-handover-before-the-kernel-s
 - trap:the-coverage-check-reads-less-than-it-claims
@@ -408,7 +404,6 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - trap:the-recorded-fail-verify-of-2026-10-19
 - trap:a2-is-only-partial-code-review-status-check
 - trap:rm-swale-v2-brown-rippled-cracked-bank-strip
-- trap:rimworld-screenshot-cell-rect-cropped-the-wrong-screen
 - trap:swim-armour-warned-before-under-can-pass-with
 - trap:tar-front-lags-water-does-not-compare-against
 - trap:the-harnessed-mod-count-is-132-in-the
@@ -458,7 +453,7 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - trap:the-among-0-tried-cause-settlement-left-on
 - trap:missing-style-defs-or-art-were-not-the
 - trap:an-unknown-outcome-bridge-marker-from-the-timed
-- 256 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
+- 255 traps on closed or claimed findings (verified, withdrawn, claimed_fixed), not listed: `modledger.py find --mod FlowWorks --class trap <words>`
 
 ## Causes refuted (57) — do not chase these again
 - cause:undecided-site-vs-mod-only-by-one-live: Undecided SITE-vs-MOD only by one live print. - The "weir at the map edge" read… (on 25e8af1c727b)
@@ -519,7 +514,7 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - cause:a-mod-side-cause-drain-refuses-unordered-brine: A mod-side cause: drain refuses unordered brine, StandingOrders is Fill-only, a… (on 3f4004d8e557)
 - cause:rl4-fail-on-west-inlet-was-a-mod: RL4 FAIL on west_inlet was a mod hose fault: the capture showed the coupler on… (on c7019b9f29b9)
 
-## His answers (67) (each cut to 100 chars, a decision named without its 'decision:': `modledger.py show`)
+## His answers (57) (each cut to 100 chars, a decision named without its 'decision:': `modledger.py show`)
 - version: Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of Flow…
 - q:filled-water-moat-has-raiders-swimming: Filled water moat has raiders swimming across it (getting tired swimming in deep water), then water…
 - q:two-squares-away-from-the-canal: Two squares away from the canal should become · … This isn't the same as flood water … Wetted groun…
@@ -529,24 +524,14 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - q:tar-is-not-nearly-dark-enough: Tar is not nearly dark enough (fix) · It's as though each case is independently set in these variab…
 - q:melee-shove-is-a-great-idea: Melee shove is a great idea, but it belongs in FlowWorks, not here. · Next FlowWorks version
 - q:the-vast-grid-of-options-when: The vast grid of options when I selected Digging was... daunting and not how the game usually is. ·…
-- q:gimmesomeslack-northstar-validate-1: Mark this mod as conditionally accepted. I don't have any evidence it's broken. We should move to F…
 - q:gss-walk-hoses-excise-reeled-in: But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! W…
-- q:biome-sprint-prove-scrub-sets-pace: We are going to simply accept all art for the Biomes at this time and review them later, so there i…
 - q:rivercolors-merge-rainbow-joins-the-flow: Add river colors into flowworks as part of adding liquids to the world.
 - q:flowworks-bridges-design-span-anything: make a ticket to add bridges to the redesign of FlowWorks, generalized over water or non-water, or…
 - q:flowworks-northstar-green-full-1: Must FlowWorks pass on the full mod list before complete? → Small list is enough
 - q:canal-overflow-build-every-puddle-audited: Build for all flowworks liquids.
 - q:fountain-sculptures-design-water-meets-art: Now that we're building the ability for water to flow over the ground (overspill), We can do some r…
 - finding:RIVER_COLORS_WIDEN_RED_BLUE_GREEN_DEATH: Rivers/roads order → 1 AND FlowWorks is supposed to allow world rivers to be in any color as well.…
-- q:mod-completion-measure-how-done-is-done: Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong.
-- q:live-fixer-design-one-seat-no-shuttle: May FlowWorks bugs be handed to a Live Fixer? → Yes, Foundry may take them too
-- q:v3-roles-build-eight-chairs-one-table: What should FlowWorks aim for this week? → Fix the 14 broken, then prove more (Recommended)
-- q:v3-judgment-date-decide-keep-or-kill: Not yet, write them as a tentative plan. We need to have several well-codified new concepts to intr…
-- q:planning-build-days-of-orders-no-home: Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks o…
-- q:concept-agent-design-argues-before-building: I think the human should be able to provide guidance for the mod using any mixture of A, B, and C t…
 - q:canal-spill-wire-garden-grows-downhill: At some point, I'd really like to see a demo of "spill out of a FlowWorks canal" running along the…
-- q:pyrelands-finish-artisan-third-time-wiser: Now let's try a third experiment on Pyrelands, another nearly done Mod. See if we can't advance it…
-- q:rimmaster-try-codex-whittle-on-one-mod-intriguing: Which mod should the Whittle trial use? -> FlowWorks (his write-in); How far? -> Through a live test
 - q:rimmandrake-design-knockback-first-touch: SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation…
 - q:pipe-fittings-redraw-no-more-ladders: May we draft replacements for FlowWorks pipe art (real 3- and 4-way fittings, one coupling per join…
 - finding:HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD: You'll find this might not predict how they'll look in the game when connected in various ways
@@ -555,7 +540,6 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - finding:FLOWWORKS_REVIEW_LOOKS_ROUND_1: Yes, that looks great!
 - finding:FLOWWORKS_CONTAINER_MATERIALS_1: Player can set what kinds of bottles they use (leather, glass(any stone), metal) depending on what…
 - finding:HOSE_REEL_MIGRATE_TO_FLOWWORKS_AT_LAST: Yes, a tank would pass liquid on to a hose screwed into it, without a pump needed.
-- finding:FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG: Who goes down into a pit to tend or rescue → Anyone who can climb out
 - finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST: Flat dead-end channel fills far end first — the look you want? → No: wet front moves out from the m…
 - finding:CHEMFUEL_MOAT_WIRE_MISSING_CHANNEL: Connect it today and make it tremendous. ... a powerful, intense fire that should feel like you lit…
 - finding:PIT_PRISON_JUDGE_D3_ROOMS: Should 3-deep pits work as prisons → Superdeep only, as designed
@@ -570,7 +554,6 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - finding:FLOWWORKS_RAIL_LADDER_BUILD_LOWER_FROM_ABOVE: Ladder: colonist job or instant? → a colonist walks over to do it
 - finding:FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING: Make the pipes half as thick. Flexible hoses need to be much thinner too
 - finding:POND_PUMP_FIX_LAST_DROP_COUNTS: GPT review Q6 → ponds pump to last dL
-- finding:HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS: No, I meant for connections, we could just have hoses "go under" things like pipes, tanks etc just…
 - finding:HOSE_JOINTS_REPAIR_ENDS_MISS_THE_NOZZLES: We also had the connectors working in GImmeSomeSlack. Somehow we've regressed both items. I believe…
 - finding:HOSE_LOOK_DECIDE_OVERGROUND_OR_UNDERPIPE: FlowWorks hoses: keep over-ground or under like pipes? → Keep over-ground, add a joint check (Recom…
 - finding:FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS: What lights your moat? → New 'toss a flame' order (Recommended)
@@ -587,6 +570,8 @@ holder session e846338a-22ec-428a-82ef-d351d135d4e1, context 210433 of ceiling 4
 - finding:RIMMANDRAKE_WEIGH_TAP_BACKS_UP_AT_HALF_FULL_CHANNEL: A tap backs up and leaves its channel half full under the new water engine: which behaviour do you…
 - finding:RIMMANDRAKE_DECIDE_SIXTH_WATER_SWITCH_THE_FIVE_MISSED: What should happen to the dead setting 'Connected water levels to one surface' → Remove it now
 - finding:RIMMANDRAKE_ADVANCE_FLOWWORKS_OFFLINE_BESIDE_THE_PILOT: Which version does the swale rebuild (a soaking floor tile, not furniture) belong to? → Next versio…
+- finding:FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG: Build order → everything in one big rebuild: exactly-level water, metres/litres rewiring (LIQUID_DE…
+- finding:HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS: And the hose is going under the battery and wall... we used to be better than this.
 
 ## Open questions (0)
 
@@ -658,6 +643,6 @@ spend recorded: USD 33.19, 24322723 tokens
 - open findings in brief: the oldest 128 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
-- the full history: 1280 events (views/history.md; never read whole)
+- the full history: 1265 events (views/history.md; never read whole)
 
 cursor: t=2026-11-16T08:52:12Z.1794819132704525614 (modledger.py since --mod FlowWorks t=2026-11-16T08:52:12Z.1794819132704525614 prints what changed after this packet)

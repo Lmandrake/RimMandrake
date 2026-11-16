@@ -1,9 +1,9 @@
 {
  "_view": {
-  "body_sha256": "893ee552f047948dcc0d38159bd9a99e1c9369ba0f556bdca4e197f612ec50e0",
+  "body_sha256": "7189cfe59851d7ba7d7ac059daeb07194a9132db9b2e1ba8e65e5fc3d36cd086",
   "reducer": 1,
   "shards": {
-   "BACKFILL": 984216,
+   "BACKFILL": 972259,
    "DISPATCH": 1331,
    "HOLDER.run-1794816885": 928
   }
@@ -51,12 +51,12 @@
     "ts": "2026-11-16T08:33:02Z"
    },
    "decision:finding:FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG": {
-    "answer": "Who goes down into a pit to tend or rescue → Anyone who can climb out",
+    "answer": "Build order → everything in one big rebuild: exactly-level water, metres/litres rewiring (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD), very-shallow look under 25 cm, deeper digs (T1), relative-depth rules",
     "authority": {
-     "by_card": "Who goes down into a pit to tend or rescue → Anyone who can climb out"
+     "by_card": "Build order → everything in one big rebuild: exactly-level water, metres/litres rewiring (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD), very-shallow look under 25 cm, deeper digs (T1), relative-depth rules"
     },
     "question": null,
-    "ts": "2026-11-16T08:33:03Z"
+    "ts": "2026-11-16T08:52:05Z"
    },
    "decision:finding:FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY": {
     "answer": "Endless readout: keep the depth? → keep \"Endless (about 2 m deep)\"",
@@ -155,12 +155,12 @@
     "ts": "2026-11-16T08:33:02Z"
    },
    "decision:finding:HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS": {
-    "answer": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed.",
+    "answer": "And the hose is going under the battery and wall... we used to be better than this.",
     "authority": {
-     "owner_said": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed."
+     "owner_said": "And the hose is going under the battery and wall... we used to be better than this."
     },
     "question": null,
-    "ts": "2026-11-16T08:33:04Z"
+    "ts": "2026-11-16T08:52:06Z"
    },
    "decision:finding:HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD": {
     "answer": "You'll find this might not predict how they'll look in the game when connected in various ways",
@@ -338,14 +338,6 @@
     "question": null,
     "ts": "2026-11-16T07:16:23Z"
    },
-   "decision:q:biome-sprint-prove-scrub-sets-pace": {
-    "answer": "We are going to simply accept all art for the Biomes at this time and review them later, so there is no blocking. Art review is now a secondary priority. Instead, please handoff at this time and set notes to prepare for finishing FlowWorks in Bench. We will be force advancing it as quickly as possible to get that mod finished.",
-    "authority": {
-     "owner_said": "We are going to simply accept all art for the Biomes at this time and review them later, so there is no blocking. Art review is now a secondary priority. Instead, please handoff at this time and set notes to prepare for finishing FlowWorks in Bench. We will be force advancing it as quickly as possible to get that mod finished."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:29Z"
-   },
    "decision:q:canal-overflow-build-every-puddle-audited": {
     "answer": "Build for all flowworks liquids.",
     "authority": {
@@ -358,14 +350,6 @@
     "answer": "At some point, I'd really like to see a demo of \"spill out of a FlowWorks canal\" running along the ground. That too should leave behind wet terrain, with implications for explosive plant growth and the like.",
     "authority": {
      "owner_said": "At some point, I'd really like to see a demo of \"spill out of a FlowWorks canal\" running along the ground. That too should leave behind wet terrain, with implications for explosive plant growth and the like."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:31Z"
-   },
-   "decision:q:concept-agent-design-argues-before-building": {
-    "answer": "I think the human should be able to provide guidance for the mod using any mixture of A, B, and C that make sense. Some concepts will be more easily expressed in one, some in others. They should all be solicited and combined together. FlowWorks is an excellent example of just such a heterogeneous set.",
-    "authority": {
-     "owner_said": "I think the human should be able to provide guidance for the mod using any mixture of A, B, and C that make sense. Some concepts will be more easily expressed in one, some in others. They should all be solicited and combined together. FlowWorks is an excellent example of just such a heterogeneous set."
     },
     "question": null,
     "ts": "2026-11-16T07:16:31Z"
@@ -402,14 +386,6 @@
     "question": null,
     "ts": "2026-11-16T07:16:30Z"
    },
-   "decision:q:gimmesomeslack-northstar-validate-1": {
-    "answer": "Mark this mod as conditionally accepted. I don't have any evidence it's broken. We should move to FlowWorks.",
-    "authority": {
-     "owner_said": "Mark this mod as conditionally accepted. I don't have any evidence it's broken. We should move to FlowWorks."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:28Z"
-   },
    "decision:q:gss-walk-hoses-excise-reeled-in": {
     "answer": "But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! We moved the hoses into FlowWorks! Get rid of those hoses...",
     "authority": {
@@ -418,14 +394,6 @@
     "question": null,
     "ts": "2026-11-16T07:16:29Z"
    },
-   "decision:q:live-fixer-design-one-seat-no-shuttle": {
-    "answer": "May FlowWorks bugs be handed to a Live Fixer? → Yes, Foundry may take them too",
-    "authority": {
-     "by_card": "May FlowWorks bugs be handed to a Live Fixer? → Yes, Foundry may take them too"
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:30Z"
-   },
    "decision:q:melee-shove-is-a-great-idea": {
     "answer": "Melee shove is a great idea, but it belongs in FlowWorks, not here. · Next FlowWorks version",
     "authority": {
@@ -433,14 +401,6 @@
     },
     "question": null,
     "ts": "2026-11-16T07:16:23Z"
-   },
-   "decision:q:mod-completion-measure-how-done-is-done": {
-    "answer": "Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong.",
-    "authority": {
-     "owner_said": "Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:30Z"
    },
    "decision:q:not-today": {
     "answer": "Not today",
@@ -458,34 +418,10 @@
     "question": null,
     "ts": "2026-11-16T07:29:25Z"
    },
-   "decision:q:planning-build-days-of-orders-no-home": {
-    "answer": "Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later",
-    "authority": {
-     "by_card": "Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later"
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:30Z"
-   },
-   "decision:q:pyrelands-finish-artisan-third-time-wiser": {
-    "answer": "Now let's try a third experiment on Pyrelands, another nearly done Mod. See if we can't advance it closer to done in the same way. Then the fourth experiment afterwards: the dread FlowWorks itself. Each experiment should be set up learning the mistakes/suggestions from the last one so we are building skill in setting up the Artisan loop usefully and productively. We may even need to break FlowWorks up into several sequential Artisan passes focused on different aspects of FlowWorks to give it more coherent, but that remains to be seen.",
-    "authority": {
-     "owner_said": "Now let's try a third experiment on Pyrelands, another nearly done Mod. See if we can't advance it closer to done in the same way. Then the fourth experiment afterwards: the dread FlowWorks itself. Each experiment should be set up learning the mistakes/suggestions from the last one so we are building skill in setting up the Artisan loop usefully and productively. We may even need to break FlowWorks up into several sequential Artisan passes focused on different aspects of FlowWorks to give it more coherent, but that remains to be seen."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:31Z"
-   },
    "decision:q:rimmandrake-design-knockback-first-touch": {
     "answer": "SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation from Explosive Knockback.",
     "authority": {
      "owner_said": "SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation from Explosive Knockback."
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:31Z"
-   },
-   "decision:q:rimmaster-try-codex-whittle-on-one-mod-intriguing": {
-    "answer": "Which mod should the Whittle trial use? -> FlowWorks (his write-in); How far? -> Through a live test",
-    "authority": {
-     "by_card": "Which mod should the Whittle trial use? -> FlowWorks (his write-in); How far? -> Through a live test"
     },
     "question": null,
     "ts": "2026-11-16T07:16:31Z"
@@ -521,22 +457,6 @@
     },
     "question": null,
     "ts": "2026-11-16T07:16:23Z"
-   },
-   "decision:q:v3-judgment-date-decide-keep-or-kill": {
-    "answer": "Not yet, write them as a tentative plan. We need to have several well-codified new concepts to introduce here before I just go back to v2-style work. v2 had several failures. One of them was thinking it was done when it wasn't. But that wasn't just because \"no one checked.\" The items would be worked on at Bench and Foundry again and again. Bench was working FlowWorks aggressively for days. Foundry had some biomes and GSS and Solar. Days, they focussed like that. That's similar to relentless. I would constantly find them stuck in selftest.py. […]",
-    "authority": {
-     "owner_said": "Not yet, write them as a tentative plan. We need to have several well-codified new concepts to introduce here before I just go back to v2-style work. v2 had several failures. One of them was thinking it was done when it wasn't. But that wasn't just because \"no one checked.\" The items would be worked on at Bench and Foundry again and again. Bench was working FlowWorks aggressively for days. Foundry had some biomes and GSS and Solar. Days, they focussed like that. That's similar to relentless. I would constantly find them stuck in selftest.py. […]"
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:30Z"
-   },
-   "decision:q:v3-roles-build-eight-chairs-one-table": {
-    "answer": "What should FlowWorks aim for this week? → Fix the 14 broken, then prove more (Recommended)",
-    "authority": {
-     "by_card": "What should FlowWorks aim for this week? → Fix the 14 broken, then prove more (Recommended)"
-    },
-    "question": null,
-    "ts": "2026-11-16T07:16:30Z"
    },
    "decision:version": {
     "answer": "Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of FlowWorks, Gimme Some Slack, Pyrelands, Pyrelands Mechanics)",
@@ -1458,11 +1378,11 @@
    },
    "finding:FLOWWORKS_DEPTH_REBUILD_ONE_BIG_DIG": {
     "authority": {
-     "by_card": "Who goes down into a pit to tend or rescue → Anyone who can climb out"
+     "by_card": "Build order → everything in one big rebuild: exactly-level water, metres/litres rewiring (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD), very-shallow look under 25 cm, deeper digs (T1), relative-depth rules"
     },
     "by": "BACKFILL",
-    "text": "Who goes down into a pit to tend or rescue → Anyone who can climb out",
-    "ts": "2026-11-16T08:33:03Z"
+    "text": "Build order → everything in one big rebuild: exactly-level water, metres/litres rewiring (LIQUID_DEPTH_REWIRE_FIVE_IS_DEAD), very-shallow look under 25 cm, deeper digs (T1), relative-depth rules",
+    "ts": "2026-11-16T08:52:05Z"
    },
    "finding:FLOWWORKS_ENDLESS_LABEL_WIRE_READOUT_PLAINLY": {
     "authority": {
@@ -1562,11 +1482,11 @@
    },
    "finding:HOSE_ROUTE_FIX_TUNNELS_UNDER_WALLS": {
     "authority": {
-     "owner_said": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed."
+     "owner_said": "And the hose is going under the battery and wall... we used to be better than this."
     },
     "by": "BACKFILL",
-    "text": "No, I meant for connections, we could just have hoses \"go under\" things like pipes, tanks etc just like solid pipes already do. But let's not do that yet, let's try to fix the connectors. We MUST fix the \"goes under walls\" problem however. We already had that working when it was part of Gimme Some Slack! Look at that code and see how we did it then... something has regressed.",
-    "ts": "2026-11-16T08:33:04Z"
+    "text": "And the hose is going under the battery and wall... we used to be better than this.",
+    "ts": "2026-11-16T08:52:06Z"
    },
    "finding:HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD": {
     "authority": {
@@ -1744,14 +1664,6 @@
     "text": "(b) you click 'capture' from the rim as now, but a drained moat (or pit) counts as a prison without a bed. · a new order where a colonist walks to the rim and tosses a flame onto the square the player picks.",
     "ts": "2026-11-16T07:16:23Z"
    },
-   "q:biome-sprint-prove-scrub-sets-pace": {
-    "authority": {
-     "owner_said": "We are going to simply accept all art for the Biomes at this time and review them later, so there is no blocking. Art review is now a secondary priority. Instead, please handoff at this time and set notes to prepare for finishing FlowWorks in Bench. We will be force advancing it as quickly as possible to get that mod finished."
-    },
-    "by": "BACKFILL",
-    "text": "We are going to simply accept all art for the Biomes at this time and review them later, so there is no blocking. Art review is now a secondary priority. Instead, please handoff at this time and set notes to prepare for finishing FlowWorks in Bench. We will be force advancing it as quickly as possible to get that mod finished.",
-    "ts": "2026-11-16T07:16:29Z"
-   },
    "q:canal-overflow-build-every-puddle-audited": {
     "authority": {
      "owner_said": "Build for all flowworks liquids."
@@ -1766,14 +1678,6 @@
     },
     "by": "BACKFILL",
     "text": "At some point, I'd really like to see a demo of \"spill out of a FlowWorks canal\" running along the ground. That too should leave behind wet terrain, with implications for explosive plant growth and the like.",
-    "ts": "2026-11-16T07:16:31Z"
-   },
-   "q:concept-agent-design-argues-before-building": {
-    "authority": {
-     "owner_said": "I think the human should be able to provide guidance for the mod using any mixture of A, B, and C that make sense. Some concepts will be more easily expressed in one, some in others. They should all be solicited and combined together. FlowWorks is an excellent example of just such a heterogeneous set."
-    },
-    "by": "BACKFILL",
-    "text": "I think the human should be able to provide guidance for the mod using any mixture of A, B, and C that make sense. Some concepts will be more easily expressed in one, some in others. They should all be solicited and combined together. FlowWorks is an excellent example of just such a heterogeneous set.",
     "ts": "2026-11-16T07:16:31Z"
    },
    "q:filled-water-moat-has-raiders-swimming": {
@@ -1808,14 +1712,6 @@
     "text": "Now that we're building the ability for water to flow over the ground (overspill), We can do some really neat stuff fairly cheaply! We can make fountains! Beautiful artistic sculptures with water spewing out of them, the counterpart to the fire sculptures we had already invented or the glow sculptures. That's pretty spectacular! Please document this brainstorm idea for v2 development. In the meantime, we can do a small simple version in FlowWorks itself: simple fountains that allow their water to fall out and flow over the ground. […]",
     "ts": "2026-11-16T07:16:30Z"
    },
-   "q:gimmesomeslack-northstar-validate-1": {
-    "authority": {
-     "owner_said": "Mark this mod as conditionally accepted. I don't have any evidence it's broken. We should move to FlowWorks."
-    },
-    "by": "BACKFILL",
-    "text": "Mark this mod as conditionally accepted. I don't have any evidence it's broken. We should move to FlowWorks.",
-    "ts": "2026-11-16T07:16:28Z"
-   },
    "q:gss-walk-hoses-excise-reeled-in": {
     "authority": {
      "owner_said": "But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! We moved the hoses into FlowWorks! Get rid of those hoses..."
@@ -1824,14 +1720,6 @@
     "text": "But wait! GimmeSomeSlack shouldn't even have hoses in it anymore! It should just have the cables! We moved the hoses into FlowWorks! Get rid of those hoses...",
     "ts": "2026-11-16T07:16:29Z"
    },
-   "q:live-fixer-design-one-seat-no-shuttle": {
-    "authority": {
-     "by_card": "May FlowWorks bugs be handed to a Live Fixer? → Yes, Foundry may take them too"
-    },
-    "by": "BACKFILL",
-    "text": "May FlowWorks bugs be handed to a Live Fixer? → Yes, Foundry may take them too",
-    "ts": "2026-11-16T07:16:30Z"
-   },
    "q:melee-shove-is-a-great-idea": {
     "authority": {
      "owner_said": "Melee shove is a great idea, but it belongs in FlowWorks, not here. · Next FlowWorks version"
@@ -1839,14 +1727,6 @@
     "by": "BACKFILL",
     "text": "Melee shove is a great idea, but it belongs in FlowWorks, not here. · Next FlowWorks version",
     "ts": "2026-11-16T07:16:23Z"
-   },
-   "q:mod-completion-measure-how-done-is-done": {
-    "authority": {
-     "owner_said": "Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong."
-    },
-    "by": "BACKFILL",
-    "text": "Flow Works as well as Gimme some Slack. sanity check: GSS >> FlowWorks or we did it wrong.",
-    "ts": "2026-11-16T07:16:30Z"
    },
    "q:not-today": {
     "authority": {
@@ -1864,36 +1744,12 @@
     "text": "May we draft replacements for FlowWorks pipe art (real 3- and 4-way fittings, one coupling per joint, a matched end cap per look, three more pump looks)? → Draft all of it",
     "ts": "2026-11-16T07:29:25Z"
    },
-   "q:planning-build-days-of-orders-no-home": {
-    "authority": {
-     "by_card": "Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later"
-    },
-    "by": "BACKFILL",
-    "text": "Alarms → Keep alarms first; Live proof → Relentless learns live testing; First design → FlowWorks or Gimme Some Slack; Player role → Design it later",
-    "ts": "2026-11-16T07:16:30Z"
-   },
-   "q:pyrelands-finish-artisan-third-time-wiser": {
-    "authority": {
-     "owner_said": "Now let's try a third experiment on Pyrelands, another nearly done Mod. See if we can't advance it closer to done in the same way. Then the fourth experiment afterwards: the dread FlowWorks itself. Each experiment should be set up learning the mistakes/suggestions from the last one so we are building skill in setting up the Artisan loop usefully and productively. We may even need to break FlowWorks up into several sequential Artisan passes focused on different aspects of FlowWorks to give it more coherent, but that remains to be seen."
-    },
-    "by": "BACKFILL",
-    "text": "Now let's try a third experiment on Pyrelands, another nearly done Mod. See if we can't advance it closer to done in the same way. Then the fourth experiment afterwards: the dread FlowWorks itself. Each experiment should be set up learning the mistakes/suggestions from the last one so we are building skill in setting up the Artisan loop usefully and productively. We may even need to break FlowWorks up into several sequential Artisan passes focused on different aspects of FlowWorks to give it more coherent, but that remains to be seen.",
-    "ts": "2026-11-16T07:16:31Z"
-   },
    "q:rimmandrake-design-knockback-first-touch": {
     "authority": {
      "owner_said": "SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation from Explosive Knockback."
     },
     "by": "BACKFILL",
     "text": "SORRY! Melee shove is a great idea, but it belongs in FlowWorks, not here. Drop this recommendation from Explosive Knockback.",
-    "ts": "2026-11-16T07:16:31Z"
-   },
-   "q:rimmaster-try-codex-whittle-on-one-mod-intriguing": {
-    "authority": {
-     "by_card": "Which mod should the Whittle trial use? -> FlowWorks (his write-in); How far? -> Through a live test"
-    },
-    "by": "BACKFILL",
-    "text": "Which mod should the Whittle trial use? -> FlowWorks (his write-in); How far? -> Through a live test",
     "ts": "2026-11-16T07:16:31Z"
    },
    "q:rivercolors-merge-rainbow-joins-the-flow": {
@@ -1928,22 +1784,6 @@
     "text": "Two squares away from the canal should become · … This isn't the same as flood water … Wetted ground means the plants have access to water.",
     "ts": "2026-11-16T07:16:23Z"
    },
-   "q:v3-judgment-date-decide-keep-or-kill": {
-    "authority": {
-     "owner_said": "Not yet, write them as a tentative plan. We need to have several well-codified new concepts to introduce here before I just go back to v2-style work. v2 had several failures. One of them was thinking it was done when it wasn't. But that wasn't just because \"no one checked.\" The items would be worked on at Bench and Foundry again and again. Bench was working FlowWorks aggressively for days. Foundry had some biomes and GSS and Solar. Days, they focussed like that. That's similar to relentless. I would constantly find them stuck in selftest.py. […]"
-    },
-    "by": "BACKFILL",
-    "text": "Not yet, write them as a tentative plan. We need to have several well-codified new concepts to introduce here before I just go back to v2-style work. v2 had several failures. One of them was thinking it was done when it wasn't. But that wasn't just because \"no one checked.\" The items would be worked on at Bench and Foundry again and again. Bench was working FlowWorks aggressively for days. Foundry had some biomes and GSS and Solar. Days, they focussed like that. That's similar to relentless. I would constantly find them stuck in selftest.py. […]",
-    "ts": "2026-11-16T07:16:30Z"
-   },
-   "q:v3-roles-build-eight-chairs-one-table": {
-    "authority": {
-     "by_card": "What should FlowWorks aim for this week? → Fix the 14 broken, then prove more (Recommended)"
-    },
-    "by": "BACKFILL",
-    "text": "What should FlowWorks aim for this week? → Fix the 14 broken, then prove more (Recommended)",
-    "ts": "2026-11-16T07:16:30Z"
-   },
    "version": {
     "authority": {
      "owner_said": "Yes, lock the other four mods (owner, 2026-11-13 ~3:40 PM PST, typed to the Conductor; said of FlowWorks, Gimme Some Slack, Pyrelands, Pyrelands Mechanics)"
@@ -1953,7 +1793,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1280,
+  "events": 1265,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -8558,14 +8398,6 @@
     "version": "0.1.0",
     "where": "design/validation_walks north star sections (Pits, Graffiti, WreckedMachines, FlowWorks)"
    },
-   "trap:do-not-write-the-c-until-the-flowworks": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "Do not write the C# until the FlowWorks C# holder releases it. Art install blockers: stone tint must be masked so painted water is not tinted; spilling water must be a separate draw layer so a dry fountain shows no water.",
-    "ts": "2026-11-16T08:32:19Z",
-    "version": "0.1.0",
-    "where": "infrastructure/state/delegated/2026-10-23/fountain_v1_art.json"
-   },
    "trap:drafted-pump-sprinkler-variants-are-registered-in-the": {
     "by": "BACKFILL",
     "status": "noted",
@@ -8757,14 +8589,6 @@
     "ts": "2026-11-16T08:32:20Z",
     "version": "0.1.0",
     "where": "RM_LiquidWorksScatter.xml:14; RM_MachinerySettings.cs:42"
-   },
-   "trap:gpt-rated-this-major-but-the-verification-verdict": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "GPT rated this MAJOR, but the verification verdict is CONFIRMED MINOR; the ticket severity is MINOR.",
-    "ts": "2026-11-16T08:32:16Z",
-    "version": "0.1.0",
-    "where": "RM_PitFillEffects.cs:222,232 RM_Drowning.ExitInReach"
    },
    "trap:graffiti-s-poisoned-socket-reconnect-pattern-is-not": {
     "by": "BACKFILL",
@@ -9045,14 +8869,6 @@
     "ts": "2026-11-16T08:32:40Z",
     "version": "0.1.0",
     "where": "modcheck record, validation_v2 live"
-   },
-   "trap:modcheck-run-rewrites-the-live-modsconfig-xml-only": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "modcheck run rewrites the live ModsConfig.xml; only the bridge holder may run it, with the §3.1 backups.",
-    "ts": "2026-11-16T08:32:18Z",
-    "version": "0.1.0",
-    "where": "modcheck run / ModsConfig.xml"
    },
    "trap:modern-containers-blue-drum-soda-bottle-blue-bucket": {
     "by": "BACKFILL",
@@ -9501,14 +9317,6 @@
     "ts": "2026-11-16T08:32:21Z",
     "version": "0.1.0",
     "where": "item:MODCHECK_SUITE_CORRECTIONS_1"
-   },
-   "trap:rimworld-screenshot-cell-rect-cropped-the-wrong-screen": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "rimworld/screenshot_cell_rect cropped the wrong screen region at far zoom (captured a log overlay). The full frame it saves beside the crop is correct, so crop from that.",
-    "ts": "2026-11-16T08:32:27Z",
-    "version": "0.1.0",
-    "where": "rimworld/screenshot_cell_rect"
    },
    "trap:river-avoidance-cost-is-added-once-in-the": {
     "by": "BACKFILL",
@@ -10373,14 +10181,6 @@
     "ts": "2026-11-16T08:32:16Z",
     "version": "0.1.0",
     "where": "item:DIG_FINDS_PROVE_NEVER_FINISHES_ON_STEVE"
-   },
-   "trap:the-file-event-s-spec-path-is-session": {
-    "by": "BACKFILL",
-    "status": "noted",
-    "text": "The file event's spec path is session scratch; the spec is the item file.",
-    "ts": "2026-11-16T08:32:18Z",
-    "version": "0.1.0",
-    "where": "infrastructure/state/items/FLOWWORKS_PROOF_POKES_RESTORE_PRIOR.md"
    },
    "trap:the-findings-fold-retire-notes-are-unreliable-s3ecf35aa14": {
     "by": "BACKFILL",
