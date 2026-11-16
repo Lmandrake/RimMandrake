@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":305856,"DISPATCH":3357,"HOLDER.run-1794813483":1382} body_sha256=18d6131b46ab44670eaac0604a97b880f4cbc8ac66610410fb554cd7fcaed5e1 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":305856,"DISPATCH":4073,"HOLDER.run-1794813483":1382} body_sha256=3225d53cab4dad263e70f3305a779f0ff0e9e27ba9d8350103cb1baea28693f5 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 436 events in 3 shards · reducer 1
+version 0.1.0 · stage in_game · 438 events in 3 shards · reducer 1
 holder lease run-1794816087, token 3, last active 2026-11-16T08:01:28Z
-holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 177606 of ceiling 400000
+holder session 4b1a2409-4e0e-4572-b1d6-89ca03762637, context 504298 of ceiling 400000 — ROTATE DUE
 
 ## Last checkpoint (HOLDER.run-1794813483, 2026-11-16T07:33:24Z)
 - done: 3 road-back items LEFT OPEN (live tests only); pipeline fixes 0c763edd9f (grant lands before launch) and 0ed7ae5001 (door tests drop holder env)
@@ -304,6 +304,6 @@ spend recorded: USD 70.74, 138207197 tokens
 - tests: 64, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 36 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 436 events (views/history.md; never read whole)
+- the full history: 438 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T09:34:22Z.1794821662467078475 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T09:34:22Z.1794821662467078475 prints what changed after this packet)
+cursor: t=2026-11-16T10:01:10Z.1794823270747186631 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T10:01:10Z.1794823270747186631 prints what changed after this packet)
