@@ -1,0 +1,14 @@
+ok   files: 3 files
+ok   budget: every canvas >= 960 px
+ok   alpha: real alpha
+ok   fits: inside the quad
+ok   facings: ok
+ok   giant: adult 7.35x4.28 cells; Zeer length 5.44; human mesh 1.5
+ok   judged: installed = ACCEPTed
+ok   mutant no_alpha: red on ['alpha', 'facings']
+ok   mutant clipped: red on ['fits']
+ok   mutant south_too_big: red on ['alpha', 'fits', 'facings']
+ok   mutant missing_north: red on ['files']
+ok   mutant small_canvas: red on ['budget']
+ok   mutant dwarf: red on ['alpha', 'giant']
+PASS
