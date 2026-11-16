@@ -1335,7 +1335,7 @@ def land_spend(root, paths, fx=None):
     except (OSError, subprocess.SubprocessError) as e:
         return "land failed: %s: %s" % (type(e).__name__, e)
     if p.returncode and "nothing to land" not in p.stderr:
-        return "land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:])
+        return "land.sh exited %d: %s" % (p.returncode, p.stderr.strip())
     return (p.stdout.strip().splitlines() or ["nothing to land"])[-1]
 
 
@@ -1427,13 +1427,13 @@ def clone_counts(root):
                 age = None
             if age is None or age > CLONE_BLIND_S:
                 return None, "fetch refused and origin/main %s: %s" % (
-                    "has no reflog" if age is None else "unmoved for %d min" % (age // 60), got.stderr.strip()[-160:])
+                    "has no reflog" if age is None else "unmoved for %d min" % (age // 60), got.stderr.strip())
         r = git("rev-list", "--left-right", "--count", "HEAD...origin/main")
     except (OSError, subprocess.SubprocessError) as e:
         return None, "clone unreadable: %s" % e
     n = r.stdout.split()
     if r.returncode or len(n) != 2:
-        return None, "clone unreadable: %s" % (r.stderr.strip()[-160:] or r.stdout.strip())
+        return None, "clone unreadable: %s" % (r.stderr.strip() or r.stdout.strip())
     return int(n[1]), int(n[0])
 
 
@@ -1496,7 +1496,7 @@ def status_lines(rd, now, unit_state=None):
         out.append("%-20s %-7s %-13s %s (%s min)" % (mod, r.get("klass"), r["decision"], txt, r.get("for_min", "?")))
     for k in ("paused", "owner", "stalled"):
         if rd.get(k):
-            out.append("%s: %s" % (k, "; ".join(rd[k])[:600]))
+            out.append("%s: %s" % (k, "; ".join(rd[k])))
     return out
 
 
@@ -1559,7 +1559,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
             conv = MC.annotate_reading
         conv(root, rd)
     except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
-        rd["convergence_error"] = "%s: %s" % (e.__class__.__name__, str(e)[:120])
+        rd["convergence_error"] = "%s: %s" % (e.__class__.__name__, str(e))
     for mod, c in (rd.get("convergence") or {}).items():    # the next tick's refund rule reads the word per stage
         if mod in st.get("mods", {}) and isinstance(c, dict):
             st["mods"][mod]["convergence"] = {k: (v or {}).get("verdict") for k, v in c.items()}

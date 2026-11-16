@@ -687,7 +687,7 @@ def row_reask_text(rows, cv, given, gaps):
     by = {r["clause"]: r for r in cv.get("refusals") or []}
     for g in gaps:
         cs = [c for c in g.get("ids") or [REST_CLAUSE] if c in rows]
-        out.append("- gap on %s (%s):" % (", ".join(g.get("ids") or [REST_CLAUSE]), CT.txt(g.get("what"))[:160]))
+        out.append("- gap on %s (%s):" % (", ".join(g.get("ids") or [REST_CLAUSE]), CT.txt(g.get("what"))))
         out += ["  complaint: %s" % e for c in cs for e in rows[c]]
         for ev in (by.get(cs[0]) or {}).get("evidence") or [] if cs else []:
             ref, a, b = RC._split(ev)
@@ -696,7 +696,7 @@ def row_reask_text(rows, cv, given, gaps):
                 continue
             if a is not None:
                 txt = "\n".join(txt.splitlines()[a - 1:b])
-            out.append("  %s reads: %s" % (ev, " ".join(txt.split())[:400] or "(nothing: no such lines)"))
+            out.append("  %s reads: %s" % (ev, " ".join(txt.split()) or "(nothing: no such lines)"))
     out.append("Answer with `gaps`: one corrected record for each gap listed here, the same ids, nothing else. "
                "`observed` quotes words that stand in the lines its evidence cites; cite `file:a-b` spanning them.")
     return "\n".join(out)

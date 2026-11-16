@@ -133,7 +133,7 @@ def seed_and_land(root, mod):
             os.remove(os.path.join(M.mod_dir(root, mod), M.RECORD))
         except OSError:
             pass
-        raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:]))
+        raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
     return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
 
 
@@ -399,7 +399,7 @@ def version_evidence(root, mod):
         ev.append("version/VERSION.json names version %r, not 0.1.0" % v.get("version"))
     state = str(v.get("state") or "")
     if state and not re.match(r"^(open|locked)\b", state):
-        ev.append("version/VERSION.json state reads %r" % state[:300])
+        ev.append("version/VERSION.json state reads %r" % state)
     rec, _ = M.read_json(root, mod, M.RECORD)
     rec = rec if isinstance(rec, dict) else {}
     rv = str(rec.get("version") or "")
@@ -414,7 +414,7 @@ def version_evidence(root, mod):
             ev.append("version/%s exists (an earlier Design Version's record)" % fn)
     r, _ = M.read_json(root, mod, "record.json")
     if isinstance(r, dict) and r.get("version_objection"):
-        ev.append("record.json version_objection reads %r" % str(r["version_objection"])[:300])
+        ev.append("record.json version_objection reads %r" % str(r["version_objection"]))
     return ev
 
 
@@ -477,7 +477,7 @@ def autolock_and_land(root, mod, now=None, land=None):
         p = subprocess.run([DS.LAND, "-m", subject, vrel, drel], cwd=root, capture_output=True, text=True, timeout=300,
                            env=dict(os.environ, LAND_REPO=root))
         if p.returncode:
-            raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()[-300:]))
+            raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
         return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
     except Exception:
         # an unlanded lock is no lock: put both files back, so the next tick reads the version unlocked and the
@@ -534,18 +534,18 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             row.update(decision="owner", aut=None,
                        why="judging stopped %s after the final look he granted (%s): %s" % (
                            stop.get("at"), rel.get("granted_at") or rel.get("at"),
-                           str(stop.get("why") or "no reason written")[:300]),
+                           str(stop.get("why") or "no reason written")),
                        card="%s: the final look (granted %s, after %s) ran at %s and judging stopped %s: %s. Judging "
                             "stays stopped; the next step is his. Evidence: design/concepts/%s/coverage_verdict.json "
                             "and stage.json." % (mod, rel.get("granted_at") or "-", ", ".join(rel.get("after") or [])
                                                  or "nothing", rel.get("at"), stop.get("at"),
-                                                 str(stop.get("why") or "no reason written")[:400], mod))
+                                                 str(stop.get("why") or "no reason written"), mod))
             row["need"] = "%s: OWNER, judging stopped after the final look; the next step is his" % mod
             launches = [m for m in launches if m != mod]
         elif cs:
             row.update(decision="coverage_stop", aut=None, why="judging stopped %s: %s; `coverage_judge.py release "
                        "design/concepts/%s --why ...` (one more look, on his word) un-pauses it" % (
-                           cs.get("at"), str(cs.get("why") or "no reason written")[:300], mod))
+                           cs.get("at"), str(cs.get("why") or "no reason written"), mod))
             # its Needs Conductor line says the pause, not decide's stage reading (Pyrelands read "ready to advance")
             row["need"] = ("%s: PAUSED, coverage judging stopped %s; nothing moves on it until `coverage_judge.py "
                            "release design/concepts/%s --why ...` (one more look, on his word)" % (mod, cs.get("at"), mod))
@@ -576,7 +576,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                 row.update(decision="launch_failed", aut=None,
                            why="the pipeline's 0.1.0 lock of %s was tried (%s) and VERSION.json still reads unlocked; "
                                "`maturation_dispatch.py clear %s --why ...` un-pauses it" % (
-                                   mod, str(x.get("failed") or x.get("landed") or "ended")[:300], mod))
+                                   mod, str(x.get("failed") or x.get("landed") or "ended"), mod))
             else:
                 row["retry_of"] = dict(x or {})
                 launches = [m for m in launches if m != mod] + [mod]
@@ -592,7 +592,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                     row["waits_on"] = "a free slot for the %s run on %s" % (
                         row["aut"], row.get("fix_item") or row.get("steward_kind"))
                 row.update(decision=why[0], aut=None, why=why[1] + (
-                    "; it was for: %s" % str(row["steward_why"])[:300] if row.get("steward_why") else ""))
+                    "; it was for: %s" % str(row["steward_why"]) if row.get("steward_why") else ""))
     return rows, launches
 
 
@@ -722,7 +722,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                  "the judge applies that grant itself once its `after` items close: release nothing by hand, and close "
                  "an `after` item whose notes say its work landed, with its published sha, after checking that sha is "
                  "on origin/main). Never a second look." % (
-                     lc.get("at"), str(lc.get("why"))[:300]))
+                     lc.get("at"), str(lc.get("why"))))
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
     if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now):
@@ -795,7 +795,7 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None,
         row.update(decision="owner", why="a Designer turn waits on him (stage %s)" % stg,
                    card="%s, Designer stage %s, waits on you: %s Pending: %s Its asks: %s. Evidence: "
                         "design/concepts/%s/record.json (asks), park_summary.md and stage.json." % (
-                            mod, stg, str(last.get("why") or "")[:400], str(dst.get("pending_decision") or "none")[:400],
+                            mod, stg, str(last.get("why") or ""), str(dst.get("pending_decision") or "none"),
                             "; ".join(str(x) for x in (dst.get("_asks") or [])[:6]) or "none written", mod))
     elif stt == "blocked" and "OWNER HOLD" in str(dst.get("blocked_on") or "") and root and upstream_wait(root, mod):
         # the hold's own condition is met; what it waits for is another mod's version (the hold stays, nothing launches)
@@ -806,10 +806,10 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None,
     elif stt == "blocked" and "OWNER HOLD" in str(dst.get("blocked_on") or ""):
         row.update(decision="owner", why="an owner hold stands on the Designer (stage %s)" % stg,
                    card="%s, Designer stage %s, is held for you: %s Evidence: design/concepts/%s/stage.json." % (
-                       mod, stg, str(dst.get("blocked_on"))[:500], mod))
+                       mod, stg, str(dst.get("blocked_on")), mod))
     elif stt == "blocked":
         row.update(decision="designer_blocked", why="%s (designer_stage.py unblock or the named release un-pauses "
-                   "it)" % str(dst.get("blocked_on") or "no reason written")[:300])
+                   "it)" % str(dst.get("blocked_on") or "no reason written"))
     elif (stt == "locked" or stg == 5) and locked(mod):
         # RIMMANDRAKE_GATE_DESIGNER_LOCKED_ON_VERSION_FILE_NOT_TREE: the Design Version lock is VERSION.json (his word),
         # never stage.json's `locked` (the concept tree passed its gate)
@@ -828,7 +828,7 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None,
                        why="the concept tree is locked and no Design Version is: the pipeline locks 0.1.0 (his "
                            "Evidence-for-Ask ruling, %s); no recorded evidence says 0.1.0 is wrong" % M.EVIDENCE_FOR_ASK)
         else:
-            q = "; ".join(ev)[:900]
+            q = "; ".join(ev)
             row.update(decision="owner", why="the concept tree is locked, and recorded evidence says 0.1.0 may not be "
                        "its Design Version: %s" % q,
                        card="Which Design Version is %s? The Designer finished Lock (stage.json reads locked, stage %s). "
@@ -850,7 +850,7 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None,
             # RIMMANDRAKE_RETAKE_FAILING_EXAM_NOT_SILENT: coverage_judge skips a stage-5 concept whose exam fails its
             # gate, so nothing ever moved it; the retake is owed work, once per tree
             _steward(row, "exam_retake", "%s|exam_retake|%s" % (ver, str(th)[:12]),
-                     "exam fails its gate: %s" % "; ".join(errs)[:400], "; ".join(errs))
+                     "exam fails its gate: %s" % "; ".join(errs), "; ".join(errs))
             return
         row.update(decision="designer_wait", waits_on=unit,
                    why="the Designer stands at stage %s (%s): %s" % (stg, stt, "its run %s is live" % unit if unit else
@@ -923,7 +923,7 @@ def _klass(cfg, s, row, now, queue):
         if row.get("fix_item") and row["fix_item"] not in txt:
             txt = "%s on %s" % (txt.rstrip(), row["fix_item"])
         if row.get("steward_why"):
-            txt = "%s for: %s" % (txt.rstrip(), str(row["steward_why"])[:200])
+            txt = "%s for: %s" % (txt.rstrip(), str(row["steward_why"]))
     elif dec in WAIT:
         on = row.get("waits_on")
         if on is None and dec != "designer_wait":
@@ -1188,7 +1188,7 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
             item = item_name(row, known)
             title = "%s: maturation steward run, %s at %s (launched by the Dispatch step)" % (
                 mod, row.get("steward_kind"), row.get("stage"))
-            why = "delegated: maturation_autonomy.py; %s; measured %s" % (str(row.get("why"))[:300], MD.pac(now))
+            why = "delegated: maturation_autonomy.py; %s; measured %s" % (str(row.get("why")), MD.pac(now))
             ok, text = do_file(item, title, why) if item else (False, "no free item name")
         filed = ok
         brief = (steward_brief(root, mod, row).replace("%(item)s", str(item)).replace("%(cap)s", str(row["cap"]))

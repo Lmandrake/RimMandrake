@@ -304,7 +304,7 @@ def annotate_reading(root, rd):
     try:
         d = read_all(root)
     except Exception as e:      # noqa: BLE001
-        rd["convergence_error"] = "%s: %s" % (e.__class__.__name__, str(e)[:120])
+        rd["convergence_error"] = "%s: %s" % (e.__class__.__name__, str(e))
         return rd
     rd["convergence"] = {m: {k: {"verdict": s["verdict"], "because": s["because"], "missing": s["missing"],
                                  "open": [r["open"] for r in s["rounds"]], "new": [r["new"] for r in s["rounds"]]}

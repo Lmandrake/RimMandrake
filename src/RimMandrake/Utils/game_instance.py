@@ -295,7 +295,7 @@ def bridge_refusal(name, purpose=None, timeout=120):
     if rc == 0 and re.search(r"^TAKEABLE  ", out, re.M):
         return None
     if rc not in (0, 1):
-        text = "UNMEASURED: `rimflow bridge idle` gave no verdict (exit %s): %s" % (rc, text[-400:] or "no output")
+        text = "UNMEASURED: `rimflow bridge idle` gave no verdict (exit %s): %s" % (rc, text or "no output")
     return ("the bridge does not let this seat stop game %s: %s\n  what passes: hold it yourself, then stop again  "
             "rimflow bridge take%s --for \"%s\"  (another seat's live hold needs --force; his OWNER hold is takeable "
             "only 45 min after his last interaction, --force included)"
