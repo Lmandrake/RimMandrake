@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "Graffiti",
   "version": "0.1.0",
-  "stage": "offline_build",
-  "stage_label": "Offline build (Stage 3)",
-  "since": "2026-11-15T13:01:25-08:00",
+  "stage": "blind_challenge",
+  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
+  "since": "2026-11-16T13:37:29-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -14,8 +14,8 @@
     "previous": "version/stage_record_UNMEASURED.json"
   },
   "cycles": {
-    "visit": 0,
-    "total": 0
+    "visit": 1,
+    "total": 1
   },
   "pre_human_arrivals": 0,
   "spend": [],
@@ -45,6 +45,27 @@
         "hold",
         "preflight_record",
         "steward_confirms"
+      ]
+    },
+    {
+      "from": "offline_build",
+      "to": "blind_challenge",
+      "at": "2026-11-16T13:37:29-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward run RIMMANDRAKE_ADVANCE_GRAFFITI_PAST_OFFLINE_BUILD, every Stage 3 exit test passes",
+      "unit": "rm-detached-bench-rimmandrake-advance-graffiti-past-offlin-1794864815",
+      "confirmed": {
+        "steward_confirms": "Read maturation.py next (exit tests order, version, hold, every_bar_has_a_check_that_runs, table_version, fourth_cycle, judge_certificate all pass; no not-met reason to sort, so no RECORD GAP/CRITERION FLAW/REAL MISS), certificate OK (6 bars' offline deciders registered, run on this build, green; red_seen UNPROVEN warning only, tracked by RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN), gate OPEN. No blind cycle yet, so no tests_edited.json to judge. Open carry-forward: T_SHIP_CHECK (stage 4-5 test, FAIL rc1 2026-11-16 21:22Z: deploy drift plus the clauses in RIMMANDRAKE_MEND_GRAFFITI_SHIPCHECK_STALE_LABEL_BLIND_BUNDLE) and RIMMANDRAKE_REVIEW_GRAFFITI_SOURCE_THIRTY_SEVEN_FILES_DIRTY (Stage 3 Output 'review status clean', not an exit criterion); both stay open for the blind challenge. Verdict: advance."
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "every_bar_has_a_check_that_runs",
+        "table_version",
+        "fourth_cycle",
+        "judge_certificate"
       ]
     }
   ]
