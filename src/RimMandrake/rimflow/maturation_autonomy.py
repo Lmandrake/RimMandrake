@@ -546,6 +546,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             queue.setdefault(mod, now)
         elif dec in LAUNCH or f.get("owed") != "run":
             queue.pop(mod, None)
+        _mark_worked(s, ver, row.get("stage"), f.get("live_units"), now)
         dst = None if dec in ("live", "settling") else dstate(mod)
         fs, cs = final_stop(dst), coverage_stopped(dst)
         if fs:
@@ -729,12 +730,30 @@ def _road_back(s, row, open_items, now=None, moved=False):
 
 def _after_road_backs(s, key):
     """-> (key, [items]): a steward key whose run opened a road back now closed names a new state (its fixers ran and
-    closed what it filed), so the key grows `|after:<item>` once per closed road back. Unmarked keys are unchanged."""
+    closed what it filed), so the key grows `|after:<item>` once per closed road back; one whose state another run
+    worked after it ended (_mark_worked) grows `|worked:<t>`. Unmarked keys are unchanged."""
     book, after = s.get("steward") or {}, []
-    while isinstance(book.get(key), dict) and book[key].get("road_back_closed"):
-        after.append(book[key].get("item"))
-        key = "%s|after:%s" % (key, book[key].get("item"))
+    while isinstance(book.get(key), dict) and (book[key].get("road_back_closed") or book[key].get("worked_after")):
+        if book[key].get("road_back_closed"):
+            after.append(book[key].get("item"))
+            key = "%s|after:%s" % (key, book[key].get("item"))
+        else:
+            key = "%s|worked:%d" % (key, int(book[key]["worked_after"]))
     return key, after
+
+
+def _mark_worked(s, ver, stage, live, now):
+    """A steward run that ended on an unmoved state is spent for that state, but a run of another unit (a builder, a
+    fixer) live on the mod at the same stage after it ended is new work: the next reading of that state is a new state.
+    Pyrelands 2026-11-16: its 'ready' steward refused a false pass, builders closed the owed tickets, and the same
+    'every exit test passes' key read steward_spent for good (RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING)."""
+    live = [u for u in live or [] if u]
+    if not live:
+        return
+    for k, v in (s.get("steward") or {}).items():
+        if (isinstance(v, dict) and v.get("unit") and not v.get("worked_after") and v["unit"] not in live
+                and str(k).startswith("%s|%s|" % (ver, stage))):
+            v["worked_after"] = now
 
 
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,

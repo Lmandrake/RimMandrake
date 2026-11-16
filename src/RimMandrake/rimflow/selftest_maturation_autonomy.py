@@ -587,6 +587,34 @@ def exam_gate_checks(root):
        r.get("decision"))
 
 
+def worked_after_checks(root):
+    """Pyrelands 2026-11-16: its 'ready' steward refused a false pass (owed scene parts), builders then closed the owed
+    tickets and the reading came back 'every exit test passes', the same key: paused steward_spent for good. A run
+    that works the mod after its steward ended makes the next reading a new state; nothing else does
+    (RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING)."""
+    fresh_state()
+    w = World({"P": offline("P", "ready to advance")})
+    rd, g = run(w, ["P"], root)
+    briefs = lambda: [x for x in w.launched if x[0] == "brief"]  # noqa: E731
+    ok(g("P").get("klass") == "launch" and len(briefs()) == 1, "worked-after: a ready mod gets one steward run")
+    own = briefs() and "rm-fake-%d" % len(w.launched)
+    w.facts = {"P": dict(offline("P", "ready to advance"), live_units=[own])}
+    rd, g = run(w, ["P"], root, now=CLOCK + 300)
+    w.facts = {"P": offline("P", "ready to advance")}
+    rd, g = run(w, ["P"], root, now=CLOCK + 900)
+    ok(g("P").get("klass") == "paused" and len(briefs()) == 1,
+       "worked-after: the steward's own run live then ended, state unmoved: paused, no second steward")
+    w.facts = {"P": dict(offline("P", "ready to advance"), live_units=["rm-detached-bench-autobuild-p-1"])}
+    rd, g = run(w, ["P"], root, now=CLOCK + 1200)
+    w.facts = {"P": offline("P", "ready to advance")}
+    rd, g = run(w, ["P"], root, now=CLOCK + 1800)
+    ok(g("P").get("klass") == "launch" and len(briefs()) == 2,
+       "worked-after: a builder worked it after the steward ended: the same reading is a new state, one more steward")
+    rd, g = run(w, ["P"], root, now=CLOCK + 2400)
+    ok(g("P").get("klass") == "paused" and len(briefs()) == 2,
+       "worked-after: that second steward is spent too: paused, never a third without new work")
+
+
 def main():
     if os.environ.get("MAT_AUT_BASE_DIR"):
         print("against the base dispatcher in %s" % os.path.dirname(MD.__file__))
@@ -800,6 +828,7 @@ def main():
         paused_fix_checks(root)
         final_look_checks(root)
         exam_gate_checks(root)
+        worked_after_checks(root)
         designer_lock_checks(root)
         launch_retry_checks(root)
     finally:
