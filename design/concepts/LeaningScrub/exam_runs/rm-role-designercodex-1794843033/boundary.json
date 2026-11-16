@@ -1,0 +1,37 @@
+{
+  "run": "rm-role-designercodex-1794843033",
+  "author": "rm-role-designercodex-1794840775",
+  "inputs": {
+    "exam": "54b7ea2102d1a07359e2e062361ad8893c44af4e1466e84518eb5e872101db1b",
+    "floor": "53fa8d74b4bf609d0cf94f70de53c2adf1a292aebbc0815ac21266aee5a69484",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "706aa26e5a5bf03dcce05b37fd3bd4a67b1f20f8c077115fa6e65055285e8705",
+    "scenes": "f2aa27f1e7d5a81a596d0f008c8384ba760b25209153fe3c2959a0e7ce608497",
+    "sheet": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
+    "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9"
+  },
+  "procedure": "src/RimMandrake/rimflow/roles/designer_exam.md",
+  "skill": "/home/mandrake/mw/augur-wsl/skills/evaluation-independence/SKILL.md",
+  "non_inputs": "Previous exam material, record, log, plan, scenes and author notes are NON-INPUTS to all helpers. Full design frozen before independent scenario creation. Expected answers structurally absent from reader prompts. Helpers have no tools and safe-mode disables inherited customization. No design edits from held-out results in this run.",
+  "allowed": {
+    "examiner": [
+      "sheet.md",
+      "tree.json"
+    ],
+    "challenger": [
+      "sheet.md",
+      "tree.json"
+    ],
+    "readers": [
+      "sheet.md",
+      "tree.json",
+      "scenarios_text.json"
+    ],
+    "control": [
+      "exam_control/sheet.md",
+      "exam_control/tree.json",
+      "scenarios_text.json"
+    ]
+  },
+  "run_allowance": 500000
+}

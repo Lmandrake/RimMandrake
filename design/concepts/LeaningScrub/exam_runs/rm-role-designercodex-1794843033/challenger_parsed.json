@@ -1,0 +1,46 @@
+{
+  "scenarios": [
+    {
+      "id": "challenge_gale_multiplier_spillover",
+      "text": "A loaded-engine quicktest reads IncidentWorker.ChanceFactorNow for one enemy-raid worker and two non-raid workers, all with equal input weights. The Harmony patch binding is confirmed on the declared target. In enabled Gale, the enemy-raid worker's weight equals input times galeRaidWeightFactor. One non-raid worker, a trader caravan arrival, also reads input times galeRaidWeightFactor. The second non-raid worker reads its unchanged input. In non-Gale weather and with the feature disabled, all three workers equal their inputs. No raid or other incident is triggered or queued during any arm, and the storyteller queue is identical before and after.",
+      "expect": "reject: raid_weight requires enemy raid weight multiplied only in enabled Gale with other weights unchanged; a non-raid worker receiving the Gale multiplier violates 'other weights unchanged' even though on/off, weather gating and the no-incident requirement all hold.",
+      "expect_source": "leaf:raid_weight",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_threshold_equality_body",
+      "text": "Loaded per-form lanes resolve effective thresholds after inheritance for all sixteen named forms, including dormant and awakened Sleeper. Bodies of 0.79, 0.8, 1.0, 1.5 and 1.51 are each ordered across each lane with contact and passability on. Body 0.79 passes freely. Bodies 0.8 and 1.0 thread with attributed venom scratches. Bodies 1.5 and 1.51 are both refused at the common Thicket lane and path around. Hollow shows its wider free band and no contact venom. Contact-off removes scratches while the barrier remains, and passability-off removes only the barrier.",
+      "expect": "reject: vine_contact states common blocking is strictly greater than 1.5, not equality; a 1.5 body being blocked shows >= silently replacing >, which is the named false pass.",
+      "expect_source": "leaf:vine_contact",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_healing_refresh_strength",
+      "text": "A wild shearable animal with an asserted parasite and a separate infectious disease completes a natural rub through ordinary scheduling. It gains one readable healing hediff, and every 250 ticks each eligible condition's severity drops by 0.01. Partway through, the same animal completes a second permitted rub. Its hediff duration refreshes to one day, and each pulse now reduces severity by 0.02 per condition. Both conditions are removed earlier than in the single-rub cohort. The untreated cohort shows no accelerated cure. Reload preserves the remaining duration, and the effect-off arm shows no pulse.",
+      "expect": "reject: tree_healing requires that refresh never stacks strength; doubling the per-pulse reduction after a second rub is strength stacking, even though removal over time, untreated controls and reload all work.",
+      "expect_source": "leaf:tree_healing",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_claim_retroactive_retune",
+      "text": "A colonist crafts a blanket at the tailoring bench from 40 fiber and 15 felt, then completes one use job on a reachable stand. The job consumes one identified blanket and creates one saved claim with the default 120-day duration. The observer then changes claim tuning to 300 days. The existing claim's saved duration and due tick update to 300 days, and a newly started claim also uses 300 days. After reload, both claims show 300 days. With the feature disabled while a claim is due, payout is held, and re-enabling pays exactly once.",
+      "expect": "reject: smother_claim and delegated tuning require per-claim duration frozen and current-schema active claims keeping their saved duration/due after tuning changes; only later claims may use new tuning, so a retroactive rewrite of the existing claim fails.",
+      "expect_source": "leaf:smother_claim",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_expedition_token_reload_leak",
+      "text": "Ordinary hauling uses a longer clear detour and avoids an armed island shortcut. The detour is then closed, and routine haulers visibly wait. The player explicitly orders one expedition through the island; the colonist crosses, takes vine contact appropriate to body size, and returns. The game is saved and reloaded. After reload, the same colonist's next automatic haul job paths through the armed island shortcut, while other colonists continue waiting. The route trace agrees with independent cell IDs throughout.",
+      "expect": "reject: ordered_travel requires one explicit order to permit only its trip and return, with cancellation, completion or reload unable to authorize later automatic work; an automatic haul entering armed hazards after reload is the forbidden leak.",
+      "expect_source": "leaf:ordered_travel",
+      "by": "challenger"
+    },
+    {
+      "id": "challenge_cane_duration_without_heat",
+      "text": "Two identical campfire/stove/generator pairs start empty, with equal capacity, demand and ambient temperature. Through real haul and refuel jobs, one pair receives cane and the other an equal count of wood. Cane accepts through the wood filter and burns twice as long, with completed work and generator energy doubled per equal count. Heat-coupled consumers burning cane emit the same heat rate as matched wood while burning, so integrated heating comes only from the longer burn. A mixed wood/cane burn reloaded partway conserves item count and credit.",
+      "expect": "reject: cane_fuel requires heat-coupled consumers to emit 1.25 times their matched wood heat rate while burning cane credit; emitting only the wood heat rate fails the promised premium heat even though duration, filter and reload conservation pass.",
+      "expect_source": "leaf:cane_fuel",
+      "by": "challenger"
+    }
+  ]
+}

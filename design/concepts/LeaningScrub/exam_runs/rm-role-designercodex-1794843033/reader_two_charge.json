@@ -1,0 +1,7 @@
+{
+  "agent": "ecfbbbeb-d278-4d4b-bd9a-c54f39e45afa",
+  "weighted_tokens": 17279,
+  "charge_exit": 0,
+  "stdout": "charged 17279; spent 2360620 of 4000000\n",
+  "stderr": ""
+}

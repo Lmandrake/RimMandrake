@@ -387,6 +387,16 @@
         "design/concepts/LeaningScrub/plan.md"
       ],
       "text": "Rewrote derived Stage 3 artifacts to the validated six-family bar, preserved delegated sentence/showing order, added independent sweetline healing contract and selected finite initial pulse tuning. Corrected advisory g1–g11 with evidence; retained g12 as neutral-fixer work and unchecked=[]. Settings/current-schema reload are floor duties. Deferred built capabilities retain characterization, aliases retain removal coverage; prior exam is historical, not current."
+    },
+    {
+      "id": "stage4_corrected_bar_cold_reader_exam",
+      "speaker": "agent",
+      "source": [
+        "design/concepts/LeaningScrub/exam.json",
+        "design/concepts/LeaningScrub/exam_runs/rm-role-designercodex-1794843033/boundary.json",
+        "design/concepts/LeaningScrub/exam_runs/rm-role-designercodex-1794843033/score.json"
+      ],
+      "text": "Fresh independent Claude Opus exam of the corrected validated six-family tree/sheet: both Readers matched 18/18, zero core false accepts; all six Challenger cases matched. Program-created raid_weight control missed its non-raid spillover case after all rule mentions were removed. Five actual CLI session UUIDs and raw usage retained; helper usage 468259 weighted tokens fully charged. Delegated sentence approval and owner corrections preserved. Historical exam archived; no design edits, live acceptance, coverage signature, version lock or owner first-touch certification."
     }
   ],
   "asks": [
@@ -4440,19 +4450,32 @@
     "primary_source_freshness": "Fresh changed-contract source excerpts plus 94/95 prior hash continuity; canonical bar change is authorized. No claim all source lines were reread or any scene executed."
   },
   "stage_4": {
-    "run": "rm-role-designercodex-1794815494",
-    "exam": "design/concepts/LeaningScrub/exam.json",
+    "run": "rm-role-designercodex-1794843033",
+    "author": "rm-role-designercodex-1794840775",
+    "status": "fresh_exam_passed_only",
+    "inputs": {
+      "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9",
+      "sheet": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1"
+    },
+    "root_state": "VALIDATED",
     "score": {
       "right": 18,
       "total": 18
     },
-    "control_missed": [
-      "challenge_gale_multiplier_leaks_to_nonraid"
-    ],
-    "helper_weighted_tokens": 580949,
-    "helper_allowance_overrun": 80949,
-    "validator_repair_item": "RIMMANDRAKE_ACCEPT_EXAM_SESSIONS_UUIDS_ARE_IDENTITIES",
-    "current_status": "Historical old-version exam only; invalidated by this Stage 3 rewrite. Fresh Stage 4 exam required."
+    "accept_where_reject_core": 0,
+    "control": {
+      "agent": "8773ad09-4f13-4cb6-828e-fccb11c88f2d",
+      "broken_leaf": "raid_weight",
+      "missed": true,
+      "missed_ids": [
+        "challenge_gale_multiplier_spillover"
+      ],
+      "copy": "exam_control/copy.json",
+      "paraphrase_audit": "design/concepts/LeaningScrub/exam_runs/rm-role-designercodex-1794843033/control_paraphrase_audit.json"
+    },
+    "helper_weighted_tokens": 468259,
+    "evidence": "design/concepts/LeaningScrub/exam.json",
+    "no_live_acceptance_or_lock": true
   },
   "stage_2_root_validation": {
     "run": "rm-role-designercodex-1794838582",
@@ -4631,6 +4654,23 @@
         "north_star_hash": "787d3f37799dd51480095df641fcbb8fa8c2c8c9c0083fd261b8b0a666c377e5",
         "text": "All reported leaf/root pairs resolve in both BENCH and Dispatcher checkouts. Each checkout passes Gate A and rejects a deliberately missing root. Source continuity matches all 95 previously verified files. The retry revalidates existing design artifacts."
       }
+    }
+  ],
+  "stage_4_history": [
+    {
+      "run": "rm-role-designercodex-1794815494",
+      "exam": "design/concepts/LeaningScrub/exam.json",
+      "score": {
+        "right": 18,
+        "total": 18
+      },
+      "control_missed": [
+        "challenge_gale_multiplier_leaks_to_nonraid"
+      ],
+      "helper_weighted_tokens": 580949,
+      "helper_allowance_overrun": 80949,
+      "validator_repair_item": "RIMMANDRAKE_ACCEPT_EXAM_SESSIONS_UUIDS_ARE_IDENTITIES",
+      "current_status": "Historical old-version exam only; invalidated by this Stage 3 rewrite. Fresh Stage 4 exam required."
     }
   ]
 }

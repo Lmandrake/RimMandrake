@@ -1,0 +1,8 @@
+{
+  "at": "2026-11-16T15:33:54.878327+00:00",
+  "scenarios_hash": "f53a887b66a8fb7f8ba4c7f8400be317079e874a5fe326f6cf0b5899230a9296",
+  "count": 18,
+  "rejects": 13,
+  "frozen_before_readers": true,
+  "author_did_not_edit_scenarios": true
+}

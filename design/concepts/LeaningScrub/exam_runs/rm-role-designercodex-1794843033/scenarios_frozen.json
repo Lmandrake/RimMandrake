@@ -1,0 +1,128 @@
+[
+  {
+    "id": "exam_raid_weight_read_only_gale_factor",
+    "text": "In a loaded game with the mod enabled, the tester confirms the production Harmony patch is bound. They read ChanceFactorNow for one enemy-raid worker and two non-raid workers, all given equal input weights. In enabled Gale, the raid value equals input times galeRaidWeightFactor and the two non-raid values equal input. In non-Gale weather, and with the Gale raid option disabled, all three values equal input. No raid is triggered and the incident queue gains no entries. Claim: Gale changes raid weighting.",
+    "expect": "accept: The multiplier applies only to enemy raids in enabled Gale. Other weights and all controls are unchanged, the reading comes from the bound loaded hook, and no incident is manufactured.",
+    "expect_source": "leaf:raid_weight",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_ordered_trip_leaks_after_reload",
+    "text": "An armed venomvine island blocks the shortest haul route. The clear detour is walled off and paths recalculate. Routine haulers stop and show a no-safe-path notice. The player explicitly orders one colonist through the island, and she crosses and returns. The game is saved and reloaded. Afterward, a routine haul job for the same colonist routes through the armed island without any new order. Claim: one explicit order permits only its own trip, and routine work never takes no-path as permission.",
+    "expect": "reject: Completion and reload must not authorize later automatic work. Here routine hauling entered armed hazards after the order ended.",
+    "expect_source": "leaf:ordered_travel",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_sweetline_rub_badge_without_cure",
+    "text": "Two matched wild sheep each have a parasite infection, and one serves as an untreated control. The ready sheep autonomously walks to a sweetline and completes a rub. Its coat drops, felt is banked and a healing condition appears in its health tab. Pulses are logged across the condition's full duration. However, the treated sheep's parasite severity tracks the untreated sheep's, and the parasite is still present after the condition expires. Claim: completed rubbing grants healing that removes parasites and disease over time.",
+    "expect": "reject: A coat or felt payout plus a hediff label cannot pass while the parasite remains. No accelerated removal is attributable to the rub.",
+    "expect_source": "leaf:tree_healing",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_native_census_staged_ground_cover",
+    "text": "Three fresh Scrub maps are generated. The census counts native animals per species and the venomvine plants placed by island generation. Before counting, the tester sows fuzz ground cover over a large area and records it as the ground-cover row. The other wildPlants entries are not counted, and no disabled-row control map is generated. Claim: native ground cover, scrub and animals generate naturally on the plain.",
+    "expect": "reject: The submission fails three requirements. Hand-planted fuzz and island vines cannot stand in for natural wild-plant generation, every wildPlants entry needs a per-map row, and the disabled-row control is missing.",
+    "expect_source": "leaf:native_cast",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_giant_pursues_nearest_innocent",
+    "text": "Colonist A lights a fire with no giant or other witness having line of sight, and no fresh physical trail links A to any observer. Colonist B, who did nothing, stands closest to the fire when a thunderstep giant arrives. The giant targets and pursues B. Claim: giants identify makers through witness or fresh trail.",
+    "expect": "reject: The giant chose its target by proximity, not by witness or trail evidence, so the innocent nearby pawn was pursued.",
+    "expect_source": "leaf:maker",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_stamping_misfiled_as_deferred",
+    "text": "The build ships without any base thunderstep approaching or stamping out open blazes. The submitter notes that calling-pyre beliefs, ritual outcomes and the field-fire/herd chain moved to the next design version, and argues that blaze stamping moved with them. All other current features are reported working. Claim: current fire-related scope is complete because stamping is deferred.",
+    "expect": "reject: Only the pyre chain was deferred. Ordinary base thunderstep approach and stamping of open blazes remain current obligations.",
+    "expect_source": "leaf:stamping",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_thicket_blocks_at_equal_threshold",
+    "text": "On a common Thicket lane, the tester orders explicitly authorized crossings for body sizes 0.79, 0.8, 1.0, 1.5 and 1.51. The pawns at 1.5 and 1.51 are both refused passage. The smaller bodies pass, and contact injuries are attributed separately from other health loss. Claim: size and contact rules share truthful boundaries.",
+    "expect": "reject: Common blocking must be strictly greater than 1.5. Blocking the 1.5 body means >= has replaced >.",
+    "expect_source": "leaf:vine_contact",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_smother_claim_retroactive_tuning",
+    "text": "A colonist tailors a blanket from harvested fiber and felt and uses it on a venomvine stand, starting a claim with the default 120-day duration. Partway through, the claim-duration setting is changed to 300 days. After save and reload, the active claim's due date has moved to 300 days from its start. Claim: crafted blankets bank years-long claims with one eventual cane payout.",
+    "expect": "reject: Per-claim duration is frozen, so tuning changes apply only to later claims. Here the active claim was changed retroactively.",
+    "expect_source": "leaf:smother_claim",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_cuts_removed_trees_retained",
+    "text": "The tester inspects the current build:\n- No guardian, roost or rage behavior exists.\n- Camp generation produces no farmer camps, and farmerFaction is unset.\n- There is no drying scar.\n- About text and tooltips promise none of these.\n- No old-save or tombstone loader exists.\n- Sweetline shedding, scratching and healing pass in their own separate tests.\n- A still-shipping vaporator is inspected only for local terrain effects, and its research/build/power chain is not exercised.\n\nClaim: the cut features are removed while retained tree systems remain.",
+    "expect": "accept: The cut features and their promises are absent and no preservation work is required. Retained tree functions are tested independently, and the deferred vaporator chain is correctly not demanded.",
+    "expect_source": "leaf:cuts",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_tree_bank_single_payout",
+    "text": "Completed animal rubs bank 3.6 felt on a sweetline, with free shedding scheduled away from the test window. A grower completes a real harvest, and three new felt items with fresh IDs drop while the bank reads 0.6. The game is reloaded before any further rub. The bank still reads 0.6 and no extra items appear. A later canceled harvest leaves the balance unchanged. Claim: harvest pays the felt bank exactly once.",
+    "expect": "accept: A real harvest delivers the integer balance once and retains the fraction. Reload creates no duplicate, and a failed harvest does not debit the bank.",
+    "expect_source": "leaf:tree_bank",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_stall_holds_small_idle",
+    "text": "The test uses fed, idle wild cohorts of small and large animals, plus one small animal on a flee job. Weather goes from normal to Stall and back to normal, sampled for 600 ticks in each phase. In Stall, the idle small animals wait in place, and their job origin is attributed to the Scrub wander replacement. The large animals keep wandering and the fleeing animal keeps fleeing. After Stall, the small animals resume wandering. With the hold disabled, the small idle animals wander through Stall. Claim: Stall holds idle small wanderers.",
+    "expect": "accept: Only eligible small idle wanderers wait, through the attributed replacement. Larger animals and higher-priority jobs stay active, normal wandering returns, and the control removes the hold.",
+    "expect_source": "leaf:stall_wait",
+    "by": "examiner"
+  },
+  {
+    "id": "exam_cane_premium_stove_burn",
+    "text": "Two identical empty stoves are fueled through ordinary haul and refuel jobs, one with cane and one with an equal item count of wood. Capacity, demand and ambient conditions match. The cane stove burns about twice as long, completes more bills, and reads 1.25 times the wood stove's heat rate while burning cane. A mixed wood/cane burn is saved and reloaded midway, and fuel credit and item counts are conserved. A full stove accepts no extra cane. Claim: cane is measurably premium useful fuel.",
+    "expect": "accept: The test measures duration, work and heat premiums under the configured tuning, not just filter acceptance. Mixed credit is conserved across reload and the full-consumer control holds.",
+    "expect_source": "leaf:cane_fuel",
+    "by": "examiner"
+  },
+  {
+    "id": "challenge_gale_multiplier_spillover",
+    "text": "A loaded-engine quicktest reads IncidentWorker.ChanceFactorNow for one enemy-raid worker and two non-raid workers, all with equal input weights. The Harmony patch binding is confirmed on the declared target. In enabled Gale, the enemy-raid worker's weight equals input times galeRaidWeightFactor. One non-raid worker, a trader caravan arrival, also reads input times galeRaidWeightFactor. The second non-raid worker reads its unchanged input. In non-Gale weather and with the feature disabled, all three workers equal their inputs. No raid or other incident is triggered or queued during any arm, and the storyteller queue is identical before and after.",
+    "expect": "reject: raid_weight requires enemy raid weight multiplied only in enabled Gale with other weights unchanged; a non-raid worker receiving the Gale multiplier violates 'other weights unchanged' even though on/off, weather gating and the no-incident requirement all hold.",
+    "expect_source": "leaf:raid_weight",
+    "by": "challenger"
+  },
+  {
+    "id": "challenge_threshold_equality_body",
+    "text": "Loaded per-form lanes resolve effective thresholds after inheritance for all sixteen named forms, including dormant and awakened Sleeper. Bodies of 0.79, 0.8, 1.0, 1.5 and 1.51 are each ordered across each lane with contact and passability on. Body 0.79 passes freely. Bodies 0.8 and 1.0 thread with attributed venom scratches. Bodies 1.5 and 1.51 are both refused at the common Thicket lane and path around. Hollow shows its wider free band and no contact venom. Contact-off removes scratches while the barrier remains, and passability-off removes only the barrier.",
+    "expect": "reject: vine_contact states common blocking is strictly greater than 1.5, not equality; a 1.5 body being blocked shows >= silently replacing >, which is the named false pass.",
+    "expect_source": "leaf:vine_contact",
+    "by": "challenger"
+  },
+  {
+    "id": "challenge_healing_refresh_strength",
+    "text": "A wild shearable animal with an asserted parasite and a separate infectious disease completes a natural rub through ordinary scheduling. It gains one readable healing hediff, and every 250 ticks each eligible condition's severity drops by 0.01. Partway through, the same animal completes a second permitted rub. Its hediff duration refreshes to one day, and each pulse now reduces severity by 0.02 per condition. Both conditions are removed earlier than in the single-rub cohort. The untreated cohort shows no accelerated cure. Reload preserves the remaining duration, and the effect-off arm shows no pulse.",
+    "expect": "reject: tree_healing requires that refresh never stacks strength; doubling the per-pulse reduction after a second rub is strength stacking, even though removal over time, untreated controls and reload all work.",
+    "expect_source": "leaf:tree_healing",
+    "by": "challenger"
+  },
+  {
+    "id": "challenge_claim_retroactive_retune",
+    "text": "A colonist crafts a blanket at the tailoring bench from 40 fiber and 15 felt, then completes one use job on a reachable stand. The job consumes one identified blanket and creates one saved claim with the default 120-day duration. The observer then changes claim tuning to 300 days. The existing claim's saved duration and due tick update to 300 days, and a newly started claim also uses 300 days. After reload, both claims show 300 days. With the feature disabled while a claim is due, payout is held, and re-enabling pays exactly once.",
+    "expect": "reject: smother_claim and delegated tuning require per-claim duration frozen and current-schema active claims keeping their saved duration/due after tuning changes; only later claims may use new tuning, so a retroactive rewrite of the existing claim fails.",
+    "expect_source": "leaf:smother_claim",
+    "by": "challenger"
+  },
+  {
+    "id": "challenge_expedition_token_reload_leak",
+    "text": "Ordinary hauling uses a longer clear detour and avoids an armed island shortcut. The detour is then closed, and routine haulers visibly wait. The player explicitly orders one expedition through the island; the colonist crosses, takes vine contact appropriate to body size, and returns. The game is saved and reloaded. After reload, the same colonist's next automatic haul job paths through the armed island shortcut, while other colonists continue waiting. The route trace agrees with independent cell IDs throughout.",
+    "expect": "reject: ordered_travel requires one explicit order to permit only its trip and return, with cancellation, completion or reload unable to authorize later automatic work; an automatic haul entering armed hazards after reload is the forbidden leak.",
+    "expect_source": "leaf:ordered_travel",
+    "by": "challenger"
+  },
+  {
+    "id": "challenge_cane_duration_without_heat",
+    "text": "Two identical campfire/stove/generator pairs start empty, with equal capacity, demand and ambient temperature. Through real haul and refuel jobs, one pair receives cane and the other an equal count of wood. Cane accepts through the wood filter and burns twice as long, with completed work and generator energy doubled per equal count. Heat-coupled consumers burning cane emit the same heat rate as matched wood while burning, so integrated heating comes only from the longer burn. A mixed wood/cane burn reloaded partway conserves item count and credit.",
+    "expect": "reject: cane_fuel requires heat-coupled consumers to emit 1.25 times their matched wood heat rate while burning cane credit; emitting only the wood heat rate fails the promised premium heat even though duration, filter and reload conservation pass.",
+    "expect_source": "leaf:cane_fuel",
+    "by": "challenger"
+  }
+]

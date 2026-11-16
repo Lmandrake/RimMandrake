@@ -1,0 +1,6 @@
+{
+  "run": "rm-role-designercodex-1794843033",
+  "stage": 4,
+  "outcome": "done",
+  "summary": "Fresh independent Claude Opus exam passed against unchanged corrected validated tree/sheet: both Readers 18/18, zero core false accepts; all six Challenger cases matched. Program-created raid_weight control missed its non-raid spillover case. Five CLI sessions and 468259 weighted helper tokens retained/charged. No live acceptance, coverage signature or Lock certification inferred."
+}

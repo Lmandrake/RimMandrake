@@ -4,6 +4,7 @@
 
 - 2026-10-16: "Venomvine was supposed to be integral to the Leaning Scrub... the one plant that grows abundantly tall and dangerous. I think we need it in there. And there were many variants to consider too..." OWNER:1792167263801507527
 - 2026-11-10: "Witness and trail. We will need this later for the ownership mod anyway. So worth investing on a robust witness violator relationship tracking system." OWNER:1794334503877366549
+- 2026-11-16: "and the animals do it because they receive a health/healing bonus (Hediff) when they scratch their hide against it. Removes parasites and disease over time." OWNER:1794835478275153823
 
 ## does
 
@@ -36,15 +37,16 @@
 - [leaf:weeper] Weeper adds bounded pools and pollution.
 - [leaf:sleeper] Sleeper wakes once under shared hit controls.
 - [leaf:lure] Lure fruit draws hungry wildlife within a supply cap.
-- [leaf:smother_claim] Crafted blankets become saved years-long claims.
+- [leaf:smother_claim] Crafted blankets bank years-long claims with one eventual cane payout.
 - [leaf:cane_fuel] Cane is measurably premium useful fuel.
 - [leaf:tree_landmark] Rare sweetlines are named ancient landmarks.
 - [leaf:tree_shed] Once-mature trees freely shed after harvest.
 - [leaf:tree_scratch] Ready animals choose reachable trees to rub.
+- [leaf:tree_healing] Completed rubbing grants a healing hediff that removes parasites and disease over time. OWNER:1794835478275153823
 - [leaf:tree_bank] Harvest pays the felt bank exactly once.
 - [leaf:felt_comfort] Felt gives furniture comfort and one apparel thought.
 - [leaf:tree_traces] Tree visits are honest abstract traces.
-- [leaf:native_cast] Composed native cast has real lifecycles.
+- [leaf:native_cast] Native ground cover, scrub and animals generate naturally and complete their lifecycles.
 - [leaf:bloom] Moving traffic triggers distinct runway responses.
 - [leaf:arm_regrowth] Vissler arms are finite and regrow in one season.
 - [leaf:arm_food] Shed arms are perishable scavenger food.
@@ -59,26 +61,20 @@
 - [leaf:cruststar] Crustweevils complete real Cruststar grazing.
 - [leaf:shirrel_flight] Shirrels really glide, animate and return home.
 - [leaf:rollbug] Rollbug carries and eats real carrion without losing gear.
-- [leaf:ruins] Home maps contain spaced legible ruins.
-- [leaf:vaporator] Farmstead plans lead to powered water.
-- [leaf:camps] Scavenger camps change between peace and war.
 - [leaf:stamping] Base thundersteps approach and stamp open blazes.
 - [leaf:maker] Giants identify makers through witness or fresh trail.
-- [leaf:pyre_beliefs] All three pyre beliefs have actual consequences.
-- [leaf:pyre_ritual] Completed rituals ignite fields and call a real herd.
-- [leaf:settings] All settings persist and control their advertised effect.
-- [leaf:colony_walk] A real journey survives reload and reordered actions.
-- [leaf:save_aliases] Saved aliases retain exact identities and products.
+- [leaf:colony_walk] Repeat the core trip across a current-schema reload and a second order of main actions.
 - [leaf:acoustic_payload] Scanner pulses return biome-specific readings.
 - [leaf:proximity_hatch] Protovermes eggs hatch near pawns or on their normal timer.
-- [floor:mod_settings] Useful complete settings with checked effects.
+- [floor:mod_settings] Complete useful settings, individual toggles and all features off together.
+- [floor:save_compat] Ordinary add-to-save defaults and current-schema save/reload; documented removal consequences.
 - [floor:test_isolation] Proofs recover exact prior state or explicitly hold it.
 
 ## does not
 
 - [leaf:ordered_travel] Routine work never treats no safe path as expedition permission.
-- [leaf:cuts] No active guardians, farmer camps or drying scar; tombstones remain save-only.
-- [floor:worldgen] No world generation additions or guaranteed world-tile allocation.
+- [leaf:cuts] No active guardians, farmer camps or drying scar, and no old-save preservation work.
+- [floor:worldgen] No world generation additions or guaranteed tile allocation.
 - [floor:multiplayer] No multiplayer support.
 - [floor:flight] No actual flight testing without the owner.
 
@@ -88,22 +84,23 @@
 
 ## open
 
-- No unresolved core scope choice; implementation and play proof remain outstanding.
-- First live look is existing home haul, closed detour and ordered crossing at registered RM TestSite leaningscrub v3 after save/build verification; no scene ran here.
-- Exam, north-star validation, coverage judgment and Lock first-touch certification pending.
+- No unresolved core owner choice. Product gaps and actual play remain unproved.
+- Existing live look remains offered from registered RM TestSite leaningscrub v3 after operator checks its save/build and recovery; no scene ran here.
+- Corrected six-family bar is validated. This revised tree needs a fresh exam, coverage signature and owner Lock first-touch certification.
+- g12 is filed for neutral criteria repair; no repeated flagship question.
 
 ## delegated
 
 - Root: Leaning Scrub lets you make a dependable wind-powered home in a restless plain, while tall, spreading venomvine makes travel beyond your maintained routes a deliberate risk. CONDUCTOR:1794792677711573340
-- Flagship home routes expedition: useful wind and routine work, then ordered dangerous trip/return. CONDUCTOR:1794794271528276351
-- Preserve separate vine, tree, ecology, technology, fire and ritual obligations. CONDUCTOR:1794794271528276351
-- Agent tuning: 120-day fresh claim, range 120 to 600, duration frozen per claim and imported old due dates preserved. Full settings/save migration in plan.md.
-- Agent tuning: two wood-equivalent fuel units per cane and 1.25 heat rate, measured duration and useful heat/work/energy; seasonal arm regrowth is 15 engine days.
-- No owner quote, waiver, current live pass or locked version inferred.
+- Home routes expedition stays first under CONDUCTOR:1794794271528276351. All six current showcases and their ordinary remainder checks are required; showing order is an agent call under OWNER:1794835478275153823.
+- Agent tuning: fresh claim 120 engine days, normal range 120 to 600, duration frozen per current-schema claim. Tuning changes apply to later claims. No legacy imports or aliases.
+- Agent tuning: two wood-equivalent fuel units per cane, 1.25 heat rate and 15-day arm regrowth.
+- Agent healing tuning: one-day nonstacking refreshed condition, 250-tick pulse, 0.01 normalized severity reduction per eligible condition per pulse, with explicit mechanism adapters and off/zero controls. This is proposed work, not source behavior or owner-selected numbers.
+- Settings and current-schema reload are universal floor duties. Historical-name mapping, old-debug conversion and save-only tombstone support are excluded. OWNER:1794835478275153823
 
 ## pruning
 
-- wind_plain: src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:23; reject the wrong world: A wind-speed number passes graphics leaning opposite ways.
+- wind_plain: src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:139; a constant heading or weather-table label cannot pass independent geometry and wind observations.
 - gale_drawing: src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs:44; reject the wrong world: A loaded-overlay flag passes a motionless fog sheet.
 - wind_audio: src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:30; reject the wrong world: SoundDef names pass inaudible or continuously stuck ambience.
 - working_wind: src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:186; reject the wrong world: A disconnected inspect number passes usable electricity.
@@ -138,10 +135,11 @@
 - tree_landmark: src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs:33; reject the wrong world: Hand-spawned tree passes rarity and matching canopy.
 - tree_shed: src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:99; reject the wrong world: Fresh mature replacement hides lost post-harvest everMature.
 - tree_scratch: src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:106; reject the wrong world: Manually filled sheep sent to trunk passes autonomous wild coats.
+- tree_healing: OWNER:1794835478275153823; coat/felt payout or a hediff label cannot pass while parasites and disease remain. src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:163
 - tree_bank: src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:271; reject the wrong world: Calling yield directly debits bank without delivering harvest.
 - felt_comfort: src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:39; reject the wrong world: Higher quality or stacked thoughts pass material comfort.
 - tree_traces: src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:173; reject the wrong world: History text proves that actual travelers arrived.
-- native_cast: src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:167; reject the wrong world: Spawned lineup passes map generation and every product lifecycle.
+- native_cast: src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:167; natural animal and wild-plant rosters need separate census/control rows.
 - bloom: src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:182; reject the wrong world: Direct Answer or invisible persistent sway hold passes traffic/recovery.
 - arm_regrowth: CONDUCTOR:1794794271528276351; reject the wrong world: Every bloom spawns a limb without anatomical loss.
 - arm_food: src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:37; reject the wrong world: TryFindBestFoodSource proves eating that never completes.
@@ -156,16 +154,15 @@
 - cruststar: CONDUCTOR:1794794271528276351; reject the wrong world: An edible def passes a relationship without grazing.
 - shirrel_flight: src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:146; reject the wrong world: CanEverFly passes no launch or static flying art.
 - rollbug: src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:450; reject the wrong world: Forced order/hunger/direct Bite passes autonomy or destroys unique gear.
-- ruins: src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:52; reject the wrong world: Direct generation on cleared pad passes normal entry or impossible claim age.
-- vaporator: src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:205; reject the wrong world: Correct defs pass an unusable learn/build/produce chain.
-- camps: src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:248; reject the wrong world: Empty base list proves a positive faction transition.
 - stamping: OWNER:1792856115688559019; reject the wrong world: Teleported campaign giant passes approach and franchise-free completeness.
 - maker: OWNER:1794334503877366549; reject the wrong world: Map-wide instigator pointer or nearest pawn substitutes for knowledge.
-- pyre_beliefs: src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml; reject the wrong world: Three resolved precepts pass identical play.
-- pyre_ritual: src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml; reject the wrong world: Separate debug ignition/spawn passes a ritual whose normal outcome never runs.
-- settings: src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:165; reject the wrong world: Five-field roundtrip and incomplete DEFAULTS pass all settings.
 - cuts: design/RimMandrake/fluff_cuts_2026-10-23.md:86; reject the wrong world: Deleting all tree features or treating tombstones as live camps passes removal.
 - colony_walk: src/RimMandrake/rimflow/roles/designer_scene_contract.md; reject the wrong world: Isolated green hooks and restaged actors hide a broken saved journey.
-- save_aliases: src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml; reject the wrong world: An XML alias list passes an old save that loses its pawn or equipment.
 - acoustic_payload: src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml; reject the wrong world: Correct XML payload strings pass a scanner that never uses them.
 - proximity_hatch: src/RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml; reject the wrong world: Added comp text passes absent near-pawn trigger or broken vanilla fallback.
+
+## later
+
+- Ruin injections, recovered plans, vaporator research/build/power/water and scavenger camps move to the next Design Version. OWNER:1794835478275153823
+- Calling-pyre beliefs, ritual/outcomes and its field-fire/herd chain move to the next Design Version. Ordinary thunderstep stamping and maker witness/trail tracking remain current. OWNER:1794835478275153823
+- Deferred built code stays inventoried with characterization checks until its implementation changes. Removed guardians, farmer camps, drying scar and save preservation are not later promises.

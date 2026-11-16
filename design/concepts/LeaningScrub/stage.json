@@ -79,10 +79,45 @@
     "ref": "/root/review_root_validation final-page-and-renderer follow-up",
     "stage": 2,
     "tokens": 20000
+   },
+   {
+    "at": "2026-11-16T15:33:04Z",
+    "kind": "helper",
+    "ref": "960d147f-7a2b-4e9a-8bb3-f08c7f15da3f",
+    "stage": 4,
+    "tokens": 104423
+   },
+   {
+    "at": "2026-11-16T15:33:40Z",
+    "kind": "helper",
+    "ref": "c76d4e7c-863b-412f-bd72-3df1edaa3dbd",
+    "stage": 4,
+    "tokens": 124605
+   },
+   {
+    "at": "2026-11-16T15:34:16Z",
+    "kind": "helper",
+    "ref": "8241b25f-b07d-4ea4-bff2-43f6642f498e",
+    "stage": 4,
+    "tokens": 111669
+   },
+   {
+    "at": "2026-11-16T15:34:43Z",
+    "kind": "helper",
+    "ref": "8773ad09-4f13-4cb6-828e-fccb11c88f2d",
+    "stage": 4,
+    "tokens": 110283
+   },
+   {
+    "at": "2026-11-16T15:34:49Z",
+    "kind": "helper",
+    "ref": "ecfbbbeb-d278-4d4b-bd9a-c54f39e45afa",
+    "stage": 4,
+    "tokens": 17279
    }
   ],
   "reserve": 60000,
-  "spent": 1892361
+  "spent": 2360620
  },
  "coverage_rounds": [
   {
@@ -276,6 +311,18 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designercodex-1794840775: stage 3 done"
+  },
+  {
+   "at": "2026-11-16T15:30:44Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794843033, stage 4, budget 500000"
+  },
+  {
+   "at": "2026-11-16T15:35:58Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794843033: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF",
@@ -573,6 +620,27 @@
    "run": "rm-role-designercodex-1794840775",
    "stage": 3,
    "summary": "Rewrote Stage 3 against OWNER:1794835478275153823 and validated canonical root hash, preserving delegated sentence approval and first showing. Added independent sweetline healing; technology/pyre deferred, settings/current-schema reload moved to floor, all alias/legacy-import/save-migration acceptance removed. Corrected advisory g1–g11 with coverage_fixes.json; retained g12 for neutral criteria repair and unchecked=[]. Catalog: 64 leaves (3 instruments, 1 walk), 82 planned scenes, 6 showcases, 11 remainder checks, all 72 built/in-scope units and 23 applicable floor lines. Prior exam is historical; fresh Stage 4 exam, coverage signature, actual play and owner Lock first-touch certification remain owed. No mod code/art, bridge, game, restart, deploy, gate bypass or handoff."
+  },
+  {
+   "at": "2026-11-16T15:35:58Z",
+   "inputs": {
+    "exam": "c14b912af881803f5a5a08a6605df0d251dd26f78482e6c269c61c95d1780d91",
+    "floor": "53fa8d74b4bf609d0cf94f70de53c2adf1a292aebbc0815ac21266aee5a69484",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "706aa26e5a5bf03dcce05b37fd3bd4a67b1f20f8c077115fa6e65055285e8705",
+    "scenes": "f2aa27f1e7d5a81a596d0f008c8384ba760b25209153fe3c2959a0e7ce608497",
+    "sheet": "d7dff6d47c28fbd67e05ef82957a9c810cd4473696f555253d02563ea938e5f1",
+    "tree": "c9fed9a9dd5fb849cdfa2d6d96247300e588d1efd45af8d1873e4eb10855cda9"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designercodex-1794843033",
+   "stage": 4,
+   "summary": "Fresh independent Claude Opus exam passed against unchanged corrected validated tree/sheet: both Readers 18/18, zero core false accepts; all six Challenger cases matched. Program-created raid_weight control missed its non-raid spillover case. Five CLI sessions and 468259 weighted helper tokens retained/charged. No live acceptance, coverage signature or Lock certification inferred."
   }
  ],
  "runner": "codex",
@@ -661,11 +729,19 @@
     "input_tokens": 5717157,
     "output_tokens": 36600
    }
+  },
+  {
+   "run": "rm-role-designercodex-1794843033",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 1560018,
+    "output_tokens": 10073
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

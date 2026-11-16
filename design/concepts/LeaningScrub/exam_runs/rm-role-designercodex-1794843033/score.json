@@ -1,0 +1,14 @@
+{
+  "right": 18,
+  "total": 18,
+  "accept_where_reject_core": 0,
+  "misses": {
+    "reader_one": [],
+    "reader_two": [],
+    "control": [
+      "challenge_gale_multiplier_spillover"
+    ]
+  },
+  "exam_validation_errors": [],
+  "helper_weighted_tokens": 468259
+}

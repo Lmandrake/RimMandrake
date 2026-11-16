@@ -1,0 +1,11 @@
+{
+  "removed_leaf": "raid_weight",
+  "copy_created_by": "designer_stage.py exam-control",
+  "manual_paraphrase_removals": [],
+  "audit": "Program removal eliminated every statement of the removed raid-weight rule in tree and sheet. Weather-table weighting, plant-roster weights and incidental crown wandering are unrelated and retained. No raid, incident scheduling, enemy weighting or Gale multiplier policy remains.",
+  "hashes": {
+    "tree.json": "02bd12ffc3a312c4041bd60b77f40caa68dd07e516a907dc1024c374f08c0814",
+    "sheet.md": "c60da6b292512f4f32ee994df236bcee9f4b3262783566d8cc53acd4792614a3",
+    "copy.json": "25e3088bb2fb4c4bcda261bc032115ec3d3b823f4bfc5b11545a8c1fcd84fade"
+  }
+}
