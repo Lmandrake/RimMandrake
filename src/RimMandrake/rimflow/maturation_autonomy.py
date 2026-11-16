@@ -1186,7 +1186,7 @@ def M_word(n):
     return MD.word(n or 0) if isinstance(n, int) else "ONE"
 
 
-def launch_brief(item, text, model, cap, seat="BENCH", runner=subprocess.run, env=None):
+def launch_brief(item, text, model, cap, seat="BENCH", runner=subprocess.run, env=None, session=None):
     path = os.path.join(M.brief_dir(), "%s-%d.md" % (item, int(time.time())))
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
@@ -1194,6 +1194,8 @@ def launch_brief(item, text, model, cap, seat="BENCH", runner=subprocess.run, en
             "--model", model, "--budget-usd", "%g" % cap]
     for k, v in sorted((env or {}).items()):        # a pilot holder's RM_MODLEDGER_WRITER (maturation_dispatch.ledger_open)
         argv += ["--env", "%s=%s" % (k, v)]
+    if session:     # a pilot holder's recorded session (modledger.resume_plan), resumed
+        argv += ["--resume", session]
     r = runner(argv, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
     m = re.search(r"^DETACHED (\S+)", r.stdout or "", re.M)
     return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip(), (m.group(1) if m and not r.returncode else None)

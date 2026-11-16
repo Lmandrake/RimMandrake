@@ -1347,16 +1347,20 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
                 if not ok:
                     return 2, ("REFUSED: %s's open items all need the live game and the bridge is not takeable (%s); "
                                "one bridge holder at a time" % (mod, why_b))
+            plan = modledger.resume_plan(root, mod)     # the holder's recorded session is resumed, not restarted
+            rkw = {"session": plan["session_id"]} if plan.get("action") == "resume" and plan.get("session_id") else {}
             led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap, live=live) + (
+                "\nReconcile first: %s.\n" % plan["why"] if plan.get("reconcile") else "") + (
                 "\nThis is the mod's %sholder run: work every open road-back item together, from the packet above: %s. "
                 "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
                 % ("live " if live else "", ", ".join(ids))), stage=stage, now=now, fx=fx)
             rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
-                item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"), env=led["env"])
+                item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"), env=led["env"], **rkw)
             unit = unit if rc == 0 else None
-            text = "%s%s; %s" % ("live holder (bridge and game allowed): " if live else "",
-                                 (text or "").splitlines()[0] if text else rc, ledger_after(root, st, mod, led, unit,
-                                                                                            item, now, fx))
+            text = "%s%s%s; %s" % ("live holder (bridge and game allowed): " if live else "",
+                                   "%s; " % plan["why"] if rkw else "",
+                                   (text or "").splitlines()[0] if text else rc,
+                                   ledger_after(root, st, mod, led, unit, item, now, fx))
         else:
             return 2, "REFUSED: %s owes nothing launchable at %s (%s) and has no open road-back item" % (mod, stage, owed)
         s.setdefault("pilot_launches", []).append({"at": now, "item": item, "unit": unit, "why": why, "stage": stage})

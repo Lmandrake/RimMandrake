@@ -75,11 +75,12 @@ ok_ready = {"ready": lambda r, m: (True, "PASS 7/7"), "land_ledger": lambda path
             "bridge": lambda purpose: (True, "TAKEABLE")}
 M.brief_text = lambda r, m, cap, **k: ("", {"stage": "in_game", "owed": "exit_not_met"})
 D.ledger_ready = lambda r, m: (True, "PASS 7/7")
-sent = []
+sent, kws = [], []
 
 
-def launch_brief(item, text, model, cap, seat, env=None):
+def launch_brief(item, text, model, cap, seat, env=None, **kw):
     sent.append((item, text))
+    kws.append(kw)
     return 0, "DETACHED u%d" % len(sent), "u%d" % len(sent)
 
 
@@ -106,6 +107,13 @@ check("pilot-launch: a live-only holder with the bridge not takeable is refused,
 rc, text = pilot([{"id": "RIMMANDRAKE_FIX_LIVE_ONE_A"}])
 check("pilot-launch: open items without needs read from the ledger (a test's open_items may omit it)",
       rc == 0 and TAKE in sent[-1][1], (rc, text))
+
+check("no holder session recorded: the road-back holder starts from the packet (no --resume)",
+      "session" not in kws[-1], kws[-1])
+L.record_session(root, PILOT, "sess-abc", 1234, views=False)
+rc, text = pilot([{"id": "RIMMANDRAKE_FIX_LIVE_ONE_A", "needs": "game-up"}])
+check("a recorded holder session is resumed by the next road-back holder run (modledger.resume_plan)",
+      rc == 0 and kws[-1].get("session") == "sess-abc" and "resume" in text, (rc, text, kws[-1]))
 
 # the Dispatch step's own fixer launch on a pilot (maturation_autonomy._execute_one): the fix item's needs decide
 st = {"mods": {PILOT: {}}}
