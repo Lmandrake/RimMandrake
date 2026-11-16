@@ -1,0 +1,16 @@
+{
+  "run": "rm-role-designercodex-1794828804",
+  "stage": 5,
+  "outcome": "return",
+  "to": 2,
+  "decision": "root validation: the canonical LeaningScrub north star remains DRAFT and tree root_hash is null. designer_lock.md step 1 requires owner-only validation before a subsequent Stage 3 write and Stage 4 exam. Preserve the existing delegated sentence approval. All 12 coverage findings and unchecked=[] are retained in lock_review_05.json: g1-g11 are advisory Stage 3 corrections; g12 is a flawed-criterion conflict for the neutral criteria fixer. The UNTESTED coverage brief makes its not_covered refusal advisory, not a basis for this return.",
+  "summary": "Lock refused independently by DRAFT root and absent coverage signature. Returning to Stage 2 for root validation, not rewriting frozen artifacts or handing off a mod. Seven showcases pass structural checks. Complete advisory coverage gaps and prior rejection retained; this exact run now has result.json. No game, bridge, restart or deploy.",
+  "evidence": "design/concepts/LeaningScrub/lock_review_05.json",
+  "quick_look": {
+    "offer": true,
+    "settles": [
+      "root_validation"
+    ],
+    "scene": "At the next attended sitting with the bridge owner, confirm registered RM_TestSite_leaningscrub_v3 exists and matches the composed build. Begin with existing ordinary wind/Stall/Gale, tall vine islands and maintained routes, then a routine haul beside a vine shortcut and an explicitly ordered crossing. Compare what currently exists with the eight DRAFT north-star observation families, clearly identifying missing or unproved behavior. Before any mutation, the operator records recovery; restore or explicitly hold for review afterward. This is an offer only: Designer takes no bridge or game action, and the look does not automatically validate the root."
+  }
+}

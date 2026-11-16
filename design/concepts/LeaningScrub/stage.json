@@ -202,10 +202,23 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designercodex-1794823475 result rejected: no result.json (a closing message is not a result); Codex transport failed: no Codex transport result"
+  },
+  {
+   "at": "2026-11-16T11:33:33Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designercodex-1794828804, stage 5, budget 500000"
+  },
+  {
+   "at": "2026-11-16T11:38:10Z",
+   "stage": 2,
+   "what": "close",
+   "why": "run rm-role-designercodex-1794828804: stage 5 return"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_LEANINGSCRUB_DESIGNER_ON_CODEX_FIRST_PROOF",
  "mod": "LeaningScrub",
+ "pending_decision": "root validation: the canonical LeaningScrub north star remains DRAFT and tree root_hash is null. designer_lock.md step 1 requires owner-only validation before a subsequent Stage 3 write and Stage 4 exam. Preserve the existing delegated sentence approval. All 12 coverage findings and unchecked=[] are retained in lock_review_05.json: g1-g11 are advisory Stage 3 corrections; g12 is a flawed-criterion conflict for the neutral criteria fixer. The UNTESTED coverage brief makes its not_covered refusal advisory, not a basis for this return.",
  "recovery": [],
  "results": [
   {
@@ -375,6 +388,36 @@
     "no result.json (a closing message is not a result)",
     "Codex transport failed: no Codex transport result"
    ]
+  },
+  {
+   "at": "2026-11-16T11:38:10Z",
+   "decision": "root validation: the canonical LeaningScrub north star remains DRAFT and tree root_hash is null. designer_lock.md step 1 requires owner-only validation before a subsequent Stage 3 write and Stage 4 exam. Preserve the existing delegated sentence approval. All 12 coverage findings and unchecked=[] are retained in lock_review_05.json: g1-g11 are advisory Stage 3 corrections; g12 is a flawed-criterion conflict for the neutral criteria fixer. The UNTESTED coverage brief makes its not_covered refusal advisory, not a basis for this return.",
+   "inputs": {
+    "exam": "54b7ea2102d1a07359e2e062361ad8893c44af4e1466e84518eb5e872101db1b",
+    "floor": "96e493e971174222b68dda98d2fbb2e4c613be69f09a988555c82954346dd4c9",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "706aa26e5a5bf03dcce05b37fd3bd4a67b1f20f8c077115fa6e65055285e8705",
+    "scenes": "11dc78601a1b9fe2b36e9f65e40597de324cf5dfc485c2b2d6fadfaa61cbe02b",
+    "sheet": "7a8a610c267422e5717865415cb926c660b3cf6432f69dadeeea3c6fdb7f6ed6",
+    "tree": "e3e3f2aa7fb4feba4babd1c994112a067021f10756936e842ca95164dccf6de8"
+   },
+   "manifest": {
+    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+   },
+   "outcome": "return",
+   "owner_uncited": [],
+   "quick_look": {
+    "offer": true,
+    "scene": "At the next attended sitting with the bridge owner, confirm registered RM_TestSite_leaningscrub_v3 exists and matches the composed build. Begin with existing ordinary wind/Stall/Gale, tall vine islands and maintained routes, then a routine haul beside a vine shortcut and an explicitly ordered crossing. Compare what currently exists with the eight DRAFT north-star observation families, clearly identifying missing or unproved behavior. Before any mutation, the operator records recovery; restore or explicitly hold for review afterward. This is an offer only: Designer takes no bridge or game action, and the look does not automatically validate the root.",
+    "settles": [
+     "root_validation"
+    ]
+   },
+   "run": "rm-role-designercodex-1794828804",
+   "stage": 5,
+   "summary": "Lock refused independently by DRAFT root and absent coverage signature. Returning to Stage 2 for root validation, not rewriting frozen artifacts or handing off a mod. Seven showcases pass structural checks. Complete advisory coverage gaps and prior rejection retained; this exact run now has result.json. No game, bridge, restart or deploy.",
+   "to": 2
   }
  ],
  "runner": "codex",
@@ -431,10 +474,18 @@
    "run": "rm-role-designercodex-1794823475",
    "runner": "codex",
    "usage": "UNMEASURED"
+  },
+  {
+   "run": "rm-role-designercodex-1794828804",
+   "runner": "codex",
+   "usage": {
+    "input_tokens": 795394,
+    "output_tokens": 5409
+   }
   }
  ],
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 2,
  "status": "ready"
 }
