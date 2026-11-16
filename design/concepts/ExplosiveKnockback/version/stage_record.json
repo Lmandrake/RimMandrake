@@ -2,9 +2,9 @@
   "schema": 1,
   "mod": "ExplosiveKnockback",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-15T15:13:51-08:00",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-15T17:50:11-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -139,6 +139,24 @@
         "version",
         "hold",
         "steward_confirms"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-15T17:50:11-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward road back: in-game visit 2 exit not met (52 PASS, 3 FAIL, 1 UNMEASURED of 56); 4 lines filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES; offline_build because pit_fetch and walk_raid may be mod defects, not only blind-lane checks",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-vis-1794793602",
+      "confirmed": {
+        "steward_confirms": "read design/concepts/ExplosiveKnockback/version/in_game/visit_2/SUMMARY.md and rows.jsonl: sc_storeroom_bomb_pit UNMEASURED (REAL MISS, harness never staged), sc_pit_fetch FAIL (REAL MISS), sc_walk_raid FAIL (REAL MISS), sc_barrage_perf FAIL (CRITERION FLAW suspected: mod-off control fails the 50 ms bar too; neutral fixer + refusal record); no RECORD GAP; cycle 4 tests_edited.json empty; verdict: road back to offline_build",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: in-game visit 2 exit not met (52 PASS, 3 FAIL, 1 UNMEASURED of 56); 4 lines filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES; offline_build because pit_fetch and walk_raid may be mod defects, not only blind-lane checks"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],

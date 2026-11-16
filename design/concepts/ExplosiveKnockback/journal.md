@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stage 6, in-game acceptance, since 2026-11-15 3:13 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 3, offline build, since 2026-11-15 5:50 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 3:13 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 5:50 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -338,4 +338,14 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward advance: blind cycle 4 exit met, verified against its own files; Polish call on L1_PATH_RANDOM_CONSERVATION concurred (his confirmation of the Polish-list move asked by card)
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-15 2:08 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 2:08 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-15 5:50 PM PST, stage change: In-game acceptance (Stage 6) to Offline build (Stage 3) (by BENCH)
+
+- Why: delegated: steward road back: in-game visit 2 exit not met (52 PASS, 3 FAIL, 1 UNMEASURED of 56); 4 lines filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES; offline_build because pit_fetch and walk_raid may be mod defects, not only blind-lane checks
+- Checks passed: order, by, version, hold.
+- Steward confirms: read design/concepts/ExplosiveKnockback/version/in_game/visit_2/SUMMARY.md and rows.jsonl: sc_storeroom_bomb_pit UNMEASURED (REAL MISS, harness never staged), sc_pit_fetch FAIL (REAL MISS), sc_walk_raid FAIL (REAL MISS), sc_barrage_perf FAIL (CRITERION FLAW suspected: mod-off control fails the 50 ms bar too; neutral fixer + refusal record); no RECORD GAP; cycle 4 tests_edited.json empty; verdict: road back to offline_build
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: in-game visit 2 exit not met (52 PASS, 3 FAIL, 1 UNMEASURED of 56); 4 lines filed caused by RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES; offline_build because pit_fetch and walk_raid may be mod defects, not only blind-lane checks
+- Was, "Stage now": - **Stage now:** Stage 6, in-game acceptance, since 2026-11-15 3:13 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-15 3:13 PM PST).
 - Record: `version/stage_record.json`.

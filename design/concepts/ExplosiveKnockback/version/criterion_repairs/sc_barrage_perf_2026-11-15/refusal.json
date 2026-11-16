@@ -1,0 +1,32 @@
+{
+ "item": "RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_VISIT_TWO_FAILURES",
+ "family": "neutral fixer: a scene criterion no correct build may be able to meet (steward, Stage 6 visit 2, 2026-11-15)",
+ "given": {
+  "inputs": [
+   "design/concepts/ExplosiveKnockback/scenes.json (sc_barrage_perf)",
+   "design/concepts/ExplosiveKnockback/tree.json (barrage_frame_budget)",
+   "design/concepts/ExplosiveKnockback/version/in_game/visit_2/rows.jsonl",
+   "design/concepts/ExplosiveKnockback/version/in_game/visit_2/evidence/sc_barrage_perf.txt",
+   "design/concepts/ExplosiveKnockback/version/in_game/visit_2/evidence/sc_barrage_perf_settled.txt",
+   "design/concepts/ExplosiveKnockback/version/in_game/visit_2/evidence/sc_barrage_perf_third.txt"
+  ],
+  "criteria": {
+   "sc_barrage_perf.expect": "the worst frame across both events is at most 50 ms",
+   "barrage_frame_budget.experience": "at most 50 ms per frame on Archmagi, the full mod list, through a 6-shell mortar barrage into a full 10x10 stockpile and a 40-cell gas chain"
+  }
+ },
+ "passed": [],
+ "refusals": [
+  {
+   "clause": "sc_barrage_perf.expect",
+   "evidence": [
+    "3 runs, owner's 316-mod list, Archmagi, DLL be2260268606 (source 250539584b): barrage worst 153.9 / 65.3 / 155.2 ms, mean 16.7-16.9 ms",
+    "the control (same events, mod off) worst 151.3 / 144.4 / 104.6 ms, mean 9.8-10.1 ms",
+    "visit 1 read 46.8 ms once"
+   ],
+   "verdict_on_criterion": "CRITERION FLAW suspected: the control case, mod off, itself fails the 50 ms worst-frame bar in 3 of 3 runs, so the worst-frame statistic as written cannot separate the mod's cost from the full list's own spikes; whether the spikes fall inside the event window (the barrage's vanilla cost) or are list noise outside it is UNMEASURED",
+   "would_pass": "a run where the worst frame inside the barrage-and-chain window, mod on, is at most 50 ms, read by an instrument whose mod-off control reads under 50 ms in that same window",
+   "smallest_fix": "record per-frame times with timestamps against the barrage and chain events (frame probe already runs); first measure whether the mod-off spikes land inside the event window. If they land outside it (list noise: autosave, other mods' rare ticks), restrict the statistic to the event window: the bar keeps its words and meaning, re-pin per the 2026-11-14 rule. If the vanilla barrage itself (mod off) spikes over 50 ms inside the window, no build can meet the bar's words: that is the owner's card (text in the steward's ledger note), not a fixer's edit"
+  }
+ ]
+}
