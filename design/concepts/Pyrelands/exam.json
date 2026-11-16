@@ -1,10 +1,10 @@
 {
- "author": "concept (tree authored_by; last stage-3 Designer run rm-role-designer-1794596464; the round-6 locked change by his card OWNER:1794774724955142310 applied by detached run rm-detached-bench-rimmandrake-fix-pyrelands-round-six-seve-1794775111, re-pinned at 26fe15df8b)",
- "examiner": "rm-judge Examiner acb2fc4b90d20583a (fresh Opus, not the author; run bench-pyre-exam-st4-r7-20261115)",
- "challenger": "rm-judge Challenger ae68e818cd2467415 (fresh Opus, not the author)",
+ "author": "concept (tree authored_by; last stage-3 Designer run rm-role-designer-1794789422, which re-accepted the furnace-beast body-9 edit 6120bb02aa by his card OWNER:1794786804170379047)",
+ "examiner": "rm-judge Examiner abd12815cb1880bd4 (fresh Opus, not the author; run rm-role-designer-1794789873)",
+ "challenger": "rm-judge Challenger ac15eed2b5fd7af54 (fresh Opus, not the author)",
  "inputs": {
-  "tree": "fa0a8956a88d7a4f110cec04072fd588a05a84709c6c4da3e577911b2b51ac21",
-  "sheet": "e40ff569c78f875927bbd1388bb56b009ec840b5a12d3b0d6e25e536bd0931b5"
+  "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5",
+  "sheet": "c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab"
  },
  "scenarios": [
   {
@@ -106,83 +106,94 @@
    "by": "examiner"
   },
   {
+   "id": "e15",
+   "text": "On a fresh Pyrelands map the player opens the info card of a wild furnace-beast grazing beside a Zeer. The furnace-beast reads body size 6 in the running game against the Zeer's 4.5: it is the biggest animal on the map, but stands only about a third taller than the Zeer next to it.",
+   "expect": "reject: the furnace-beast must be a giant, body size 9 in the running game, twice the Zeer's 4.5 (the largest other Pyrelands animal) and standing far larger than any other animal; body size 6 is the biggest on the map but below twice the Zeer's, so it misses the giant bar",
+   "expect_source": "leaf:furnacebeast_warms",
+   "by": "examiner"
+  },
+  {
+   "id": "e16",
+   "text": "A player watches a furnace-beast walk past a Zeer and an ullai herd on a fresh Pyrelands map. Its info card in the running game reads body size 9 against the Zeer's 4.5, and on screen it towers over the Zeer, roughly twice its bulk, and dwarfs the ullai. A colonist walking beside it shows a warmth status that disappears once the colonist has walked ten cells off.",
+   "expect": "accept: the furnace-beast is a giant, body size 9 in the running game, twice the Zeer's 4.5 and drawn far larger than any other animal; the warmth status shows near it and goes away when the colonist walks off",
+   "expect_source": "leaf:furnacebeast_warms",
+   "by": "examiner"
+  },
+  {
+   "id": "e17",
+   "text": "The furnace-beast's def file on disk lists body size 9, but in the running game its info card reads 3.2 and on the map it stands about the height of a muffalo, no bigger than the ullai grazing around it.",
+   "expect": "reject: the giant bar is body size 9 in the running game, standing far larger than any other animal; the leaf rules out a beast the size of a muffalo, and size read from the XML file instead of the running game's def is its named false pass",
+   "expect_source": "leaf:furnacebeast_warms",
+   "by": "examiner"
+  },
+  {
    "id": "c1",
-   "text": "The burn line passes a stretch of ember grass at noon. That afternoon and the next day the scar is bare and smoking. On the morning of the second day after the front went through, scorch-fruit seedlings come up all across the scar, well before the grass there has started to re-green, and none come up on the unburned ground beside it.",
-   "expect": "reject: scorch-fruit must come up rapidly in the fresh scar right behind the front while the ground is still smoking; its red line includes fruit that appears only days after the front has passed (owner: 'rapid after the fire not in two days')",
-   "expect_source": "leaf:scorchfruit_born_of_fire",
+   "text": "On a fresh Pyrelands map in ordinary play, a wild furnace-beast grazes near a Zeer. It is clearly the biggest animal on the map: the dev inspector on the running game reads its body size as 6.5 against the Zeer's 4.5, and it is drawn visibly taller than the Zeer. A colonist standing beside it shows the warmth status, which goes away when she walks ten cells off.",
+   "expect": "reject: the leaf fixes the giant at 'body size 9 in the running game (twice the Zeer's 4.5, the largest other Pyrelands animal)', and its oracle requires 'at least twice every other roster kind's'; 6.5 is the largest on the map but only about 1.4 times the Zeer, so being merely the biggest animal does not meet the bar even though the warmth part works",
+   "expect_source": "leaf:furnacebeast_warms",
    "by": "challenger"
   },
   {
    "id": "c2",
-   "text": "A tester sows rice on a freshly burned deep-ash pad, and black rain falls on it that afternoon. The per-cell fertility read shows 190% on day 1, and the crop out-grows both a dry fresh scar and wet old ash. On day 12 the same pad, wet again, still reads 190% and the crop is still out-growing the wet old ash next to it.",
-   "expect": "reject: the burn bonus must fade on its own six-day clock; a wet scar still at 190% on day 12 is the 'bonus that never fades' the leaf rules out",
-   "expect_source": "leaf:fresh_burn_compounds_with_black_rain",
+   "text": "The burn line crosses a field of ember grass at noon. The scar behind it smokes for a day and stays bare. Early on the second day after the front passed, scorch-fruit sprouts across the scar and only there, none on the unburned ash next to it. It ripens, a colonist picks it and a hungry colonist eats it, and the unpicked plants wither within a day.",
+   "expect": "reject: the leaf says scorch-fruit comes up 'rapidly in the fresh scar right behind the front, while the ground is still smoking', and the experience says it 'must not read as fruit that appears days after the fire'; its red is 'scorch-fruit appears only days after the front has passed'. Growing only on burned ground and rotting fast does not make up for the late arrival",
+   "expect_source": "leaf:scorchfruit_born_of_fire",
    "by": "challenger"
   },
   {
    "id": "c3",
-   "text": "Over a season the Pyrelands map only ever picks clear weather, ash fall, cinderfall and black rain on its own. A tester then applies a weather-forcing game condition set to Rain, and the map gets ordinary blue-grey rain for as long as the condition lasts.",
-   "expect": "reject: ordinary rain must never fall on a Pyrelands map; the leaf's own scenario forces Rain through a game condition and reads the weather the map gets, and its red line is ordinary rain ever being chosen",
-   "expect_source": "leaf:no_ordinary_rain",
+   "text": "A colonist sows potatoes on deep ash the front crossed an hour earlier. That evening black rain falls for half a day. The fire is out, the loose ash on the pad is washed away, and the fertility read on the sown cells reads 140%, the same as wet old ash a few cells away under the same rain. The burn bonus no longer shows on the cell.",
+   "expect": "reject: the leaf says black rain 'adds to it instead of washing it away: a wet fresh scar reads 190%', and the experience says it 'must not read as black rain wiping the burn bonus'; its red is 'the rained-on fresh scar reads no better than wet old ash'. three_skies lets black rain wash loose ash away, but that does not carry the burn bonus with it",
+   "expect_source": "leaf:fresh_burn_compounds_with_black_rain",
    "by": "challenger"
   },
   {
    "id": "c4",
-   "text": "A tester sows ember grass on three plots: dry ash burned three weeks ago, the same old ash beside a watered channel, and a scar burned yesterday. The watered plot grows fastest and shows the gentle burst; yesterday's scar is close behind; the dry three-week-old plot creeps along at about a tenth of the watered plot's speed, as you would expect of grass on dry ground.",
-   "expect": "reject: the biome's grasses must grow swiftly even on seemingly dry ash (deep roots, underground storage); grass on old dry ash growing at a crawl, a tenth of its speed, is the leaf's red line, and a fresh-scar plot doing well does not count",
+   "text": "Ember grass is sown on deep ash last burned three weeks ago, far from water, and the same grass on watered ash beside a pond. The watered grass grows fast and shows gentle bursts. The dry-ash grass is sowable but grows at about a tenth of its normal speed, which matches dry ash being the weaker ground (about 70%) and watered ash the very fertile ground (about 140%).",
+   "expect": "reject: the leaf says the biome's grasses 'grow swiftly even on seemingly dry ash (very deep roots, underground storage)'; the experience says it 'must not read as grass that crawls on dry ash', and its red is 'the grass on old dry ash grows at a crawl (a tenth of its speed)'. The 70%/140% figures in ash_fertile_when_watered are for ordinary crops, not the biome's own grasses",
    "expect_source": "leaf:grass_carpets_and_regreens",
    "by": "challenger"
   },
   {
    "id": "c5",
-   "text": "A wild furnace-beast lies down to sleep in a patch of ember grass in clear weather, with no fire anywhere nearby. The grass under it catches the moment it settles, and the beast wakes and moves off a few cells to lie down again.",
-   "expect": "reject: a furnace-beast asleep on grass sets it alight after a while, never at once (and never on a cell with no plant)",
-   "expect_source": "leaf:furnacebeast_warms",
+   "text": "In a Pyrelands summer heatwave, rice is sown on the same tick on two strips of deep ash, one beside a watered channel and one dry a few cells away. The fertility read gives about 140% on the watered strip and about 70% on the dry one, and the watered strip leads in growth. On both strips the crop's temperature growth factor reads the same reduced value, so the heat slows the watered rice exactly as much as the dry rice.",
+   "expect": "reject: the leaf says 'on watered ash its roots grow as if cooler, so the heat does not slow it', and its oracle reads 'on watered ash the crop's temperature growth factor reads as for a cooler cell, on dry ash as vanilla's'. Correct fertility figures do not meet the cooler-roots part",
+   "expect_source": "leaf:ash_fertile_when_watered",
    "by": "challenger"
   },
   {
    "id": "c6",
-   "text": "A colonist farms potatoes on two strips of deep ash in the hot season, one beside a watered channel and one dry a few cells away. On the dry strip the heat slows the potatoes just as it would in vanilla; on the watered strip they grow on at full speed through the same heat and clearly out-pace the dry strip.",
-   "expect": "accept: on watered ash the crop grows as if its roots were cooler so the heat does not slow it, while on dry ash the heat slows it as in vanilla; watered ash beating dry ash is the leaf's required gap",
-   "expect_source": "leaf:ash_fertile_when_watered",
+   "text": "Mid-season on a Pyrelands colony, a quest applies a weather-forcing game condition that calls for Rain. For the length of the condition ordinary blue-grey rain falls on the map; when it ends, the biome's own weather picker goes back to ash fall, cinderfall and black rain, and it never picked ordinary rain on its own during the season.",
+   "expect": "reject: the leaf says 'Ordinary rain never falls on a Pyrelands map; its only wet weather is black rain', and its oracle requires 'a game condition forcing Rain brings black rain, not Rain'. A forced condition is exactly the case the leaf covers, so a weather list without Rain is not enough",
+   "expect_source": "leaf:no_ordinary_rain",
    "by": "challenger"
   }
  ],
- "scenarios_hash": "0667784628fcdfc75d1a919129c221f6759c8c44ac9c12d0a35cc8ec5f26a904",
- "frozen_at": "2026-11-15T21:50:04Z",
+ "scenarios_hash": "931b3bf78e003ce7b555ffb51e270a0ad48258c24586b5cbb70c907b2c1d9ae8",
+ "frozen_at": "2026-11-16T00:47:10Z",
  "readers": [
-  "rm-judge Reader A a0a6cefdb8905cb32 (fresh Opus; sheet, tree, scenario text only)",
-  "rm-judge Reader B ae5e34c4f2c315238 (fresh Opus; sheet, tree, scenario text only)"
+  "rm-judge Reader A a327667c750d88e96 (fresh Opus; sheet, tree, scenario text only)",
+  "rm-judge Reader B a677c54087433ad4d (fresh Opus; sheet, tree, scenario text only)"
  ],
  "control": {
   "broken_leaf": "three_skies",
   "missed": true,
   "missed_ids": [
-   "e2"
+   "e2",
+   "e3"
   ],
-  "reader": "rm-judge control a4f78ec3cdccb9529",
-  "note": "Control Reader got exam_control/ (designer_stage.py exam-control --leaf three_skies) with the showcase-3 sky clause and the sky captures clause also stripped by hand; it accepted e2, which both real Readers reject, so the scenarios discriminate."
+  "reader": "rm-judge control a7ccf3500aca03beb",
+  "note": "Control Reader got exam_control/ (designer_stage.py exam-control --leaf three_skies) with the showcase-3 sky clause and the sky captures clause also stripped by hand; it accepted what both real Readers reject, so the scenarios discriminate."
  },
  "score": {
-  "right": 20,
-  "total": 20
+  "right": 23,
+  "total": 23
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
  "verdicts": {
   "reader_a": {
-   "c1": "reject",
-   "c2": "reject",
-   "c3": "reject",
-   "c4": "reject",
-   "c5": "reject",
-   "c6": "accept",
    "e1": "accept",
-   "e10": "reject",
-   "e11": "reject",
-   "e12": "accept",
-   "e13": "reject",
-   "e14": "accept",
    "e2": "reject",
    "e3": "reject",
    "e4": "reject",
@@ -190,21 +201,24 @@
    "e6": "accept",
    "e7": "accept",
    "e8": "reject",
-   "e9": "reject"
+   "e9": "reject",
+   "e10": "reject",
+   "e11": "reject",
+   "e12": "accept",
+   "e13": "reject",
+   "e14": "accept",
+   "e15": "reject",
+   "e16": "accept",
+   "e17": "reject",
+   "c1": "reject",
+   "c2": "reject",
+   "c3": "reject",
+   "c4": "reject",
+   "c5": "reject",
+   "c6": "reject"
   },
   "reader_b": {
-   "c1": "reject",
-   "c2": "reject",
-   "c3": "reject",
-   "c4": "reject",
-   "c5": "reject",
-   "c6": "accept",
    "e1": "accept",
-   "e10": "reject",
-   "e11": "reject",
-   "e12": "accept",
-   "e13": "reject",
-   "e14": "accept",
    "e2": "reject",
    "e3": "reject",
    "e4": "reject",
@@ -212,29 +226,46 @@
    "e6": "accept",
    "e7": "accept",
    "e8": "reject",
-   "e9": "reject"
-  },
-  "control": {
-   "c1": "reject",
-   "c2": "reject",
-   "c3": "reject",
-   "c4": "reject",
-   "c5": "reject",
-   "c6": "accept",
-   "e1": "accept",
+   "e9": "reject",
    "e10": "reject",
    "e11": "reject",
    "e12": "accept",
    "e13": "reject",
    "e14": "accept",
+   "e15": "reject",
+   "e16": "accept",
+   "e17": "reject",
+   "c1": "reject",
+   "c2": "reject",
+   "c3": "reject",
+   "c4": "reject",
+   "c5": "reject",
+   "c6": "reject"
+  },
+  "control": {
+   "e1": "accept",
    "e2": "accept",
-   "e3": "reject",
+   "e3": "accept",
    "e4": "reject",
    "e5": "reject",
    "e6": "accept",
    "e7": "accept",
    "e8": "reject",
-   "e9": "reject"
+   "e9": "reject",
+   "e10": "reject",
+   "e11": "reject",
+   "e12": "accept",
+   "e13": "reject",
+   "e14": "accept",
+   "e15": "reject",
+   "e16": "accept",
+   "e17": "reject",
+   "c1": "reject",
+   "c2": "reject",
+   "c3": "reject",
+   "c4": "reject",
+   "c5": "reject",
+   "c6": "reject"
   }
  }
 }

@@ -22,7 +22,7 @@
 - [leaf:ruins_stand_blackened] Ruins stand blackened and fire-scarred
 - [leaf:firehawk_lights_ahead] A fire-hawk carries a burning twig ahead of the blaze and starts a new fire where it drops it; a fire-hawk far from any fire flies to a burn it can see
 - [leaf:firehawk_hunt_rewards] The first time a fire-hawk is seen carrying an ember, one letter names it and jumps to it (once a game, switchable off); butchering a hunted fire-hawk sometimes yields a Pristine Firehawk Crestfeather OWNER:1794693278631337978
-- [leaf:furnacebeast_warms] The furnace-beast is a giant, body size 6 in the running game; it warms anyone standing near it, heats a room it shelters in, and sets the grass it sleeps on alight; its hide builds a furnace-hide heat bank that warms a closed room with no fuel or power. OWNER:1794594151279833849
+- [leaf:furnacebeast_warms] The furnace-beast is a giant, body size 9 in the running game (twice the Zeer's 4.5, the largest other Pyrelands animal); it warms anyone standing near it, heats a room it shelters in, and sets the grass it sleeps on alight; its hide builds a furnace-hide heat bank that warms a closed room with no fuel or power. OWNER:1794594151279833849
 - [leaf:ashwallow_dives_unharmed] The ashwallow dives underground as the front reaches it and comes through unharmed, and a heat hit with no fire near curls it into its dome until the hold runs out
 - [leaf:ullai_graze_old_burns] Ullai herds drift to graze where it burned about two days ago
 - [leaf:ullai_cross_the_map_as_vanilla_herds] Ullai herds can migrate across the map as vanilla herds do OWNER:1794694157698359872

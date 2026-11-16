@@ -253,7 +253,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "live RM_FurnaceBeast body size 6, at least twice every other roster kind's, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours; fire on the grass bed after sleep (about two hours on average) and none on the bare-soil control (CompFurnaceBedIgnition.ProbeSleep); butchering yields RM_FurnaceHide, and a RM_FurnaceHideBank built from it holds its closed room at least 5 C above the twin room without a bank from hour 6, never above 21 C, with no fuel or power",
+   "oracle_proposed": "live RM_FurnaceBeast body size 9, at least twice every other roster kind's, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours; fire on the grass bed after sleep (about two hours on average) and none on the bare-soil control (CompFurnaceBedIgnition.ProbeSleep); butchering yields RM_FurnaceHide, and a RM_FurnaceHideBank built from it holds its closed room at least 5 C above the twin room without a bank from hour 6, never above 21 C, with no fuel or power",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
