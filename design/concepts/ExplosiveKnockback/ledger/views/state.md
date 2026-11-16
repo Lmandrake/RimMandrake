@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304} body_sha256=7720a5c93fb912c9dafbf0eb183e9cc6fb83cb109468f014486543b45e2eeaf1 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"OWNER":1207} body_sha256=edcb69511d353632c78643142cff2ed7f86aceaae549a76b62e60d076bc44e16 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage in_game · 443 events in 5 shards · reducer 1
+version 0.1.0 · stage in_game · 444 events in 6 shards · reducer 1
 holder lease run-1794830532, token 5, last active 2026-11-16T12:05:27Z
 holder session 7bae3178-26bc-4b3f-9301-f14a097d4fa8, context 120337 of ceiling 400000
 
@@ -218,7 +218,7 @@ holder session 7bae3178-26bc-4b3f-9301-f14a097d4fa8, context 120337 of ceiling 4
 - cause:colonist-weight-band-60-76-kg-suggested-by: Colonist weight band 60-76 kg suggested by the judge was wrong: 60-63 kg throws 6 cells at the higher damage and ties the capped rat, so the band was set to 64-76 kg. (on 1a5234227788cf3e9479d4ccbcf98ac2ca712b3d, depends on src/RimMandrake/ExplosiveKnockback)
 - cause:the-melee-shove-into-pit-contest-masses-and: The melee shove-into-pit contest (masses and melee skills) does not belong in Explosive Knockback; it goes to FlowWorks as its own item. (on 1a5234227788cf3e9479d4ccbcf98ac2ca712b3d, depends on src/RimMandrake/ExplosiveKnockback)
 
-## His answers (20)
+## His answers (21)
 - decision:version: Yes, fix it like that, and then please record this as an actual Pass.
 - decision:q:you-can-t-fall-in-by: You can't fall in by careless colonist pathing. Only if they get blown/forced in do they fall.
 - decision:q:1-1-totally-even-better-if: 1:1 totally. Even better if they can bounce inelastically off walls and rotate while they fly.
@@ -239,9 +239,9 @@ holder session 7bae3178-26bc-4b3f-9301-f14a097d4fa8, context 120337 of ceiling 4
 - decision:finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC: For today have them hold it. Next version it should go flying independently of the person holding it. Different trajectories.
 - decision:finding:RIMMANDRAKE_BRUISE_KNOCKBACK_LANDING_ON_PAWN: Thrown pawn lands on another pawn → Bruise in the next version
 - decision:finding:RIMMANDRAKE_BUILD_KNOCKBACK_STAGE_THREE_ELEVEN_BARS_UNRUN: Closed container near a blast: slide one cell as the locked bar says, or thrown as built? → Throw it, as built; the locked bar's wording changes by his word from 'slides one cell' to 'thrown a short way', and the test follows
+- q:walk-frame-clause-list-floor-already-eighty (Q: Walk frame clause: on the walk colony the mod-off arm alone is p99 80.2 ms (mod on 83.1, visit 3 run 4), over the 50 ms barrage bar the harness uses, so FRAME_BUDGET is UNMEASURED and the walk never exits 0. Judge it against its own mod-off arm with a margin, or lighten the walk colony?): Compare to mod-off (Recommended): Why: the question is what the mod costs, not what 316 mods cost. Pass if mod-on is within 10% of the same colony's mod-off run (today: +3.6%). Buys an honest, passable row today with no rebuild. Costs: the bar becomes relative, so a slow colony no longer fails by itself. Recommended: it measures the thing the bar was written to protect.
 
-## Open questions (1)
-- q:walk-frame-clause-list-floor-already-eighty: Walk frame clause: on the walk colony the mod-off arm alone is p99 80.2 ms (mod on 83.1, visit 3 run 4), over the 50 ms barrage bar the harness uses, so FRAME_BUDGET is UNMEASURED and the walk never exits 0. Judge it against its own mod-off arm with a margin, or lighten the walk colony? (obvious answer: judge the walk frame clause against its own mod-off arm (FAIL when mod-on p99 exceeds mod-off p99 by more than a stated margin, e.g. 10 ms); the walk leaf says only frame budget held, the 50 ms number belongs to barrage_frame_budget, which already PASSes live; against it: this loosens how a locked bar is judged (frames over 50 ms would pass), and loosening a bar stays the owner s (CLAUDE.md north-star; delegation_policy 2.1); lightening the colony instead would strip the full-list played raid the walk tier exists for (tier_reason: the walk is the full list, played))
+## Open questions (0)
 
 ## Bars (59)
 - bar:barrage_frame_budget [locked] verdict none: constraint bar from tree.json, proves at stage 6
@@ -312,6 +312,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - tests: 94, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 5 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 443 events (views/history.md; never read whole)
+- the full history: 444 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T12:07:18Z.1794830838533084089 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T12:07:18Z.1794830838533084089 prints what changed after this packet)
+cursor: t=2026-11-16T13:02:57Z.1794834177850540910 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T13:02:57Z.1794834177850540910 prints what changed after this packet)

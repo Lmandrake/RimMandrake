@@ -28,10 +28,14 @@ bursts one cell a tick outward from the lit cell, saves and loads copy the world
   W18 a thing born after the save is placed with the RNG, whose state a load changes (live 2026-11-16: a WoodLog leaving at
       101,42 live, 102,42 in both loads): born things are counted by def, not by cell, and the row still PASSes
   W19 the frame probe reads a 99th-percentile frame of 75 ms in the real-time window with the mod on, 24 ms with it off:
-      FRAME_BUDGET FAIL
+      FRAME_BUDGET FAIL (more than 10% over the mod-off arm)
   W20 the frame probe saw no frame (Frame stop answers NONE): FRAME_BUDGET UNMEASURED, never PASS
-  W22 the frame window over the bar with the mod OFF too (full-list noise; live, visit 3 run 2 read 59.3 ms with nothing in
-      the air): FRAME_BUDGET UNMEASURED naming both arms, never a mod FAIL
+  W22 both arms over 50 ms by the same amount (the colony's own floor; live, visit 3 run 4 read 80.2 ms with the mod off):
+      FRAME_BUDGET PASS, the row is relative to its own mod-off arm (owner, by card 2026-11-16, "Compare to mod-off")
+  W25 the visit-3 run-4 arms, mod on 83.1 ms and mod off 80.2 ms (+3.6%): FRAME_BUDGET PASS, exit 0
+  W26 mod on 88.3 ms against mod off 80.2 ms (+10.1%): FRAME_BUDGET FAIL (over 10% of the mod-off arm)
+  W27 the mod-off arm unread (its probe saw no frame): FRAME_BUDGET UNMEASURED, never PASS on the on arm alone
+  W28 a mod-off arm that reads 0 ms, or a negative one handed to frame_row: FRAME_BUDGET UNMEASURED, no division by it
   W23 nothing in the air in the frame window (the shells threw nothing): FRAME_BUDGET UNMEASURED
   W24 the first two unpauses after a load do not hold (live, visit 3 run 3: both frame arms read every frame paused,
       paused=621): the arm unpauses until the clock moves, and FRAME_BUDGET and CARRIER_TICK_COST still PASS
@@ -200,12 +204,13 @@ class Fake:
                 if a == "begin":
                     w["probe"], w["probe_speed"] = True, []
                     r = "BEGUN"
-                elif not w.pop("probe", False) or self.brk.get("probe_blind") or 1 not in w.get("probe_speed", []):
+                elif (not w.pop("probe", False) or self.brk.get("probe_blind") or 1 not in w.get("probe_speed", [])
+                      or (self.brk.get("probe_blind_off") and not w.get("enabled", True))):
                     r = "NONE no probe running, or it saw no frame"
                 else:
                     on = w.get("enabled", True)
                     slow = self.brk.get("slow_noise") or (self.brk.get("slow_frames") and on)
-                    p99 = 75.0 if slow else 24.0
+                    p99 = self.brk.get("p99_on" if on else "p99_off", 75.0 if slow else 24.0)
                     air = 12 if on and not self.brk.get("nothing_flies") else 0
                     r = ("FRAME frames=480 probeRows=480 paused=12 wall=8.00s worstMs=%.1f meanMs=16.7 maxInAir=%d window=0.5-8s "
                          "windowRows=450 windowP99Ms=%.1f path=C:/x/RM_FrameProbe_1.csv" % (p99 + 9, air, p99))
@@ -353,8 +358,30 @@ def main():
     check("W20", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
           "a probe that saw no frame leaves FRAME_BUDGET UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
     code, rows, txt = run(slow_noise=True)
-    check("W22", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
-          "a frame window over the bar with the mod off too is UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    check("W22", rows.get("FRAME_BUDGET") == "PASS",
+          "both arms 75 ms (the colony's own floor over 50 ms) PASS against the mod-off arm (got %s)" % rows.get("FRAME_BUDGET"))
+    code, rows, txt = run(p99_on=83.1, p99_off=80.2)
+    check("W25", code == 0 and rows.get("FRAME_BUDGET") == "PASS",
+          "visit 3 run 4's arms, on 83.1 / off 80.2 ms (+3.6%%), PASS (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    code, rows, txt = run(p99_on=88.3, p99_off=80.2)
+    check("W26", code == 1 and rows.get("FRAME_BUDGET") == "FAIL",
+          "on 88.3 / off 80.2 ms (+10.1%%) FAILs (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    code, rows, txt = run(probe_blind_off=True)
+    check("W27", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
+          "no mod-off reading leaves FRAME_BUDGET UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))
+    code, rows, txt = run(p99_on=24.0, p99_off=0.0)
+    got = [rows.get("FRAME_BUDGET")]
+    for off_p99 in (-5.0, 0.0):
+        fw = object.__new__(V._Walk)
+        fw.rows = {}
+        fw.ev = {"frame_on": {"p99": 24.0, "rows": 450, "inAir": 12, "text": "x"},
+                 "frame_off": {"p99": off_p99, "rows": 450, "inAir": 0, "text": "y"}}
+        try:
+            fw.frame_row()
+            got.append(fw.rows.get("FRAME_BUDGET", ("missing",))[0])
+        except Exception as e:  # noqa: BLE001
+            got.append("raised %s" % type(e).__name__)
+    check("W28", got == ["UNMEASURED"] * 3, "a mod-off arm of 0 or below is UNMEASURED, never divided by (got %s)" % got)
     code, rows, txt = run(nothing_flies=True)
     check("W23", code == 1 and rows.get("FRAME_BUDGET") == "UNMEASURED",
           "a frame window with nothing in the air is UNMEASURED (code %s, got %s)" % (code, rows.get("FRAME_BUDGET")))

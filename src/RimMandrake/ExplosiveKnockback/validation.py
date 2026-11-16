@@ -343,15 +343,16 @@ def mock_run():
 # the end and the player's settings put back. Exit 0 only if every row PASSes; 2 = refused (no game, no bridge); 3 = PROOF
 # BUILD REQUIRED. FRAME_BUDGET (RIMMANDRAKE_EXPOSE_FRAME_PROBE_TO_BRIDGE_WALK_STUCK_UNMEASURED): the orders step paused
 # ticks, so they hold no real frames; two more arms reload the baseline, run the clock at speed 1 and set the shells off over
-# the stocked storeroom while RM_KnockbackProof.Frame reads real frames, once with the mod on and once off. The row is the
-# barrage bar (p99 unpaused frame at most 50 ms); over it is FAIL only when the mod-off arm holds the bar, UNMEASURED when
-# nothing flew or the list's own noise is over the bar too. CARRIER_TICK_COST is read in the on arm on a running clock.
+# the stocked storeroom while RM_KnockbackProof.Frame reads real frames, once with the mod on and once off. The row is
+# relative (owner, by card 2026-11-16, "Compare to mod-off"): PASS when the on arm's p99 unpaused frame is within 10% of
+# the off arm's in the same run, FAIL over it; UNMEASURED unless both arms are read and nothing-in-the-air is ruled out. The
+# 50 ms barrage bar is sc_barrage_perf's, not the walk's. CARRIER_TICK_COST is read in the on arm on a running clock.
 # What "match the kernel's plan" can read live: every request has an outcome line for the same blast and thing, a launch
 # travels at most its planned cells (fewer only with a stop reason), a goods move flies its wild cells with the kernel's
 # cells beside them. Recomputing the plan from the kernel is the offline selftest's job (selftest_explosiveknockback_kernel).
 TRIPLET_SEAMS = {}           # saveload_triplet's saves_stat / wait_saved (the offline selftest passes fakes)
 SLEEP = None                 # the frame act's real-time wait (time.sleep; the offline selftest passes a no-op)
-FRAME_BUDGET_MS = 50.0       # leaf barrage_frame_budget: at most 50 ms for the 99th-percentile frame
+FRAME_OVER_OFF = 0.10        # the walk's frame row: mod-on p99 at most 10% over the same run's mod-off p99 (owner card 2026-11-16)
 FRAME_MIN_ROWS = 30          # fewer unpaused rows in the window than this is no reading
 WALK_ROWS = ("W_PRECONDITIONS", "A_IMPACTS_IN_ROOM", "A_SAVE_MIDAIR", "A_RELOAD_NO_DUP_LOST", "A_COVER_BROKEN_ONE_DESCENT",
              "A_GAS_CLUMP_BY_CLUMP", "A_GAS_GOODS_MOVED", "A_REQUESTS_MATCH_PLAN", "A_REACHED_ACCOUNTED",
@@ -823,23 +824,27 @@ class _Walk:
         return 0
 
     def frame_row(self):
-        """FRAME_BUDGET: PASS when the `on` arm's 99th-percentile unpaused frame is within the bar; FAIL when it is over
-        and the mod-off arm is within (the mod's cost); UNMEASURED when nothing flew, the probe saw too few frames, or
-        the mod-off arm is over the bar too (the list's own noise; barrage_perf's p99 bar has the same control)."""
+        """FRAME_BUDGET, judged against its own mod-off arm (owner, by card 2026-11-16, "Compare to mod-off": "Pass if
+        mod-on is within 10% of the same colony's mod-off run"): PASS when the `on` arm's 99th-percentile unpaused frame is
+        at most 10% over the `off` arm's, FAIL over it. UNMEASURED, never PASS, when either arm has no reading (no p99, too
+        few frames), the off arm reads 0 ms or less (nothing to compare to), or nothing flew in the on arm's window. Live,
+        visit 3 run 4: the walk colony's mod-off floor alone was p99 80.2 ms, so the 50 ms barrage bar could not decide it."""
         on, off = self.ev.get("frame_on") or {}, self.ev.get("frame_off") or {}
-        det = "on p99 %s ms (%s rows, %s in the air), mod off p99 %s ms (%s rows), bar %g; %s" % (
-            on.get("p99"), on.get("rows"), on.get("inAir"), off.get("p99"), off.get("rows"), FRAME_BUDGET_MS,
-            on.get("text") or on.get("why") or "no on arm")
-        if on.get("p99") is None or on.get("rows", 0) < FRAME_MIN_ROWS:
-            self.row("FRAME_BUDGET", "UNMEASURED", "no frame reading: " + det)
+        det = "on p99 %s ms (%s rows, %s in the air), mod off p99 %s ms (%s rows), PASS at most +%d%%; on: %s; off: %s" % (
+            on.get("p99"), on.get("rows"), on.get("inAir"), off.get("p99"), off.get("rows"), round(FRAME_OVER_OFF * 100),
+            on.get("text") or on.get("why") or "no on arm", off.get("text") or off.get("why") or "no off arm")
+        read = lambda a: isinstance(a.get("p99"), (int, float)) and (a.get("rows") or 0) >= FRAME_MIN_ROWS  # noqa: E731
+        if not read(on):
+            self.row("FRAME_BUDGET", "UNMEASURED", "no mod-on frame reading: " + det)
+        elif not read(off):
+            self.row("FRAME_BUDGET", "UNMEASURED", "no mod-off frame reading: " + det)
+        elif off["p99"] <= 0:
+            self.row("FRAME_BUDGET", "UNMEASURED", "mod-off p99 is not above 0, nothing to compare to: " + det)
         elif not on.get("inAir"):
             self.row("FRAME_BUDGET", "UNMEASURED", "nothing in the air in the window: " + det)
-        elif on["p99"] <= FRAME_BUDGET_MS:
-            self.row("FRAME_BUDGET", "PASS", det)
-        elif off.get("p99") is not None and off.get("rows", 0) >= FRAME_MIN_ROWS and off["p99"] <= FRAME_BUDGET_MS:
-            self.row("FRAME_BUDGET", "FAIL", det)
         else:
-            self.row("FRAME_BUDGET", "UNMEASURED", "over the bar with the mod off too (list noise): " + det)
+            over = on["p99"] / off["p99"] - 1.0
+            self.row("FRAME_BUDGET", "PASS" if over <= FRAME_OVER_OFF else "FAIL", "%+.1f%% over mod off; %s" % (over * 100, det))
 
     def control(self):
         """The mod off (run() turns it off inside its try, whose finally puts every setting back)."""

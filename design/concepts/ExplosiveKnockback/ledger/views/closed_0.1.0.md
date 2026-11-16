@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304} body_sha256=693ca94fb77f2b0ae1cd43f58919e7a917cbe7adbb557de0ff1165e2d54346e9 -->
-# ExplosiveKnockback — closed in Design Version 0.1.0 (22)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"OWNER":1207} body_sha256=8e6868a808a2fc8f91bdc3fcb35798d255f7bf2f4f0dd81128c8bbefd8cc9a7b -->
+# ExplosiveKnockback — closed in Design Version 0.1.0 (23)
 
 - finding:RIMMANDRAKE_CENSUS_KNOCKBACK_STORAGE_OPEN_CLOSED verified c20328a876 (2026-11-16T11:37:18Z)
 - finding:RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING verified 0774d3bc1ac766899be71cd344fa328860f36d68 (2026-11-16T11:37:18Z)
@@ -23,3 +23,4 @@
 - finding:RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH verified 1a5234227788cf3e9479d4ccbcf98ac2ca712b3d (2026-11-16T11:37:22Z)
 - finding:RIMMANDRAKE_LIFT_KNOCKBACK_THROW_CAPS_PLAN_SAYS_GONE verified 0808c553030c (2026-11-16T11:37:22Z)
 - finding:RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER verified a593f1668f1a (2026-11-16T11:37:22Z)
+- q:walk-frame-clause-list-floor-already-eighty answered

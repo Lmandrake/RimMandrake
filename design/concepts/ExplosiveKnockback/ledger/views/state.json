@@ -1,13 +1,14 @@
 {
  "_view": {
-  "body_sha256": "f9cc26843c08c68e71629feb4ea8cee60a51152845c2d32b69d7ae657cf74ce7",
+  "body_sha256": "926b2556a7b8f9a729dcb4a7a4461af1c6ddb37b9618b56194c573588bf18aba",
   "reducer": 1,
   "shards": {
    "BACKFILL": 302988,
    "DISPATCH": 6100,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
-   "HOLDER.run-1794830532": 2304
+   "HOLDER.run-1794830532": 2304,
+   "OWNER": 1207
   }
  },
  "state": {
@@ -171,6 +172,14 @@
     },
     "question": null,
     "ts": "2026-11-16T06:51:51Z"
+   },
+   "q:walk-frame-clause-list-floor-already-eighty": {
+    "answer": "Compare to mod-off (Recommended): Why: the question is what the mod costs, not what 316 mods cost. Pass if mod-on is within 10% of the same colony's mod-off run (today: +3.6%). Buys an honest, passable row today with no rebuild. Costs: the bar becomes relative, so a slow colony no longer fails by itself. Recommended: it measures the thing the bar was written to protect.",
+    "authority": {
+     "by_card": "How should the walk's frame row be judged? → Compare to mod-off (Recommended)"
+    },
+    "question": "Walk frame clause: on the walk colony the mod-off arm alone is p99 80.2 ms (mod on 83.1, visit 3 run 4), over the 50 ms barrage bar the harness uses, so FRAME_BUDGET is UNMEASURED and the walk never exits 0. Judge it against its own mod-off arm with a margin, or lighten the walk colony?",
+    "ts": "2026-11-16T13:02:57Z"
    }
   },
   "bars": {
@@ -823,7 +832,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 443,
+  "events": 444,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2148,11 +2157,13 @@
   "questions": {
    "q:walk-frame-clause-list-floor-already-eighty": {
     "against": "this loosens how a locked bar is judged (frames over 50 ms would pass), and loosening a bar stays the owner s (CLAUDE.md north-star; delegation_policy 2.1); lightening the colony instead would strip the full-list played raid the walk tier exists for (tier_reason: the walk is the full list, played)",
+    "answer": "Compare to mod-off (Recommended): Why: the question is what the mod costs, not what 316 mods cost. Pass if mod-on is within 10% of the same colony's mod-off run (today: +3.6%). Buys an honest, passable row today with no rebuild. Costs: the bar becomes relative, so a slow colony no longer fails by itself. Recommended: it measures the thing the bar was written to protect.",
     "by": "HOLDER.run-1794830532",
     "obvious": "judge the walk frame clause against its own mod-off arm (FAIL when mod-on p99 exceeds mod-off p99 by more than a stated margin, e.g. 10 ms); the walk leaf says only frame budget held, the 50 ms number belongs to barrage_frame_budget, which already PASSes live",
-    "status": "open",
+    "status": "answered",
     "text": "Walk frame clause: on the walk colony the mod-off arm alone is p99 80.2 ms (mod on 83.1, visit 3 run 4), over the 50 ms barrage bar the harness uses, so FRAME_BUDGET is UNMEASURED and the walk never exits 0. Judge it against its own mod-off arm with a margin, or lighten the walk colony?",
-    "ts": "2026-11-16T12:05:07Z"
+    "ts": "2026-11-16T12:05:07Z",
+    "version": "0.1.0"
    }
   },
   "reducer": 1,
@@ -2168,7 +2179,8 @@
    "DISPATCH",
    "HOLDER.run-1794813483",
    "HOLDER.run-1794824768",
-   "HOLDER.run-1794830532"
+   "HOLDER.run-1794830532",
+   "OWNER"
   ],
   "spend_tokens": 140077376,
   "spend_usd": 98.2416,

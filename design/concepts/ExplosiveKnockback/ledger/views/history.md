@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304} body_sha256=dad848bfbe5692629e32aa4da24f4e7d88dc511e0a6a064cd70bdba82a082779 -->
-# ExplosiveKnockback — mod ledger history (443 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":6100,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"OWNER":1207} body_sha256=1d8dd6e4633eab47351555b6e3ebbb211452a094b6798a6b569ee09ee9580f26 -->
+# ExplosiveKnockback — mod ledger history (444 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -444,3 +444,4 @@
 - 2026-11-16T12:05:27Z HOLDER.run-1794830532#2 session.checkpoint session v0.1.0: 
 - 2026-11-16T12:07:18Z DISPATCH#17 run.end run v0.1.0: 
 - 2026-11-16T12:07:18Z DISPATCH#18 session.id session v0.1.0: 
+- 2026-11-16T13:02:57Z OWNER#1 question.answer q:walk-frame-clause-list-floor-already-eighty v0.1.0: Compare to mod-off: the walk's frame row (FRAME_BUDGET, walk_storeroom_raid) passes when mod-on p99 frame time is within 10% of the same colony's mod-off arm measured in the same run; both arms must be MEASURED or the row is UNMEASURED (never a pass). The 50 ms barrage bar (barrage_frame_budget) is unchanged.
