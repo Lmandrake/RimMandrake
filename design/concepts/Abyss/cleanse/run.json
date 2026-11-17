@@ -1,0 +1,36 @@
+{
+ "mod": "Abyss",
+ "state": "proposed",
+ "why": "check passes (8 bars, 95 census rows, 790 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-17T00:20:01",
+ "seconds": 1844,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 790,
+  "page_limit": 950,
+  "census_rows": 95,
+  "bars": 8,
+  "bar_numbers": "none",
+  "shared_things": 11,
+  "meetings": 11,
+  "old_bars": "0 mapped of 0 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 6766452,
+    "output_tokens": 43271
+   }
+  }
+ ],
+ "agent_errors": []
+}

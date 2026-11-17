@@ -1,0 +1,22 @@
+{
+  "mod": "Abyss",
+  "run": "2026-11-17-designer-cleanse",
+  "outcome": "proposed",
+  "signature": "The Dark makes the colony depend on living light and warmth, threatens that light through its native feeders, and settles into corrosive grain that can be recovered as heater fuel.",
+  "counts": {
+    "capabilities": 95,
+    "kept": 56,
+    "next_version": 36,
+    "recommend_retire": 3,
+    "old_bars": 0,
+    "bars": 8,
+    "live_only_bars": 3,
+    "checks": 15,
+    "rules": 12,
+    "unknown_pairs": 7,
+    "models": 4,
+    "tickets": 47,
+    "questions": 0
+  },
+  "blocked_on": []
+}

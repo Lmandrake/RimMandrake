@@ -1,0 +1,85 @@
+# The Abyss — proposed Design Version 0.1.0
+
+Designer proposal, 2026-11-17. No game, bridge, art, source, roster or standing ruling is changed. Nothing here is an owner quotation unless explicitly sourced. This proposal replaces neither `## his words` nor a frozen sheet; it proposes a smaller release schedule under the cleanse delegation. Enjoyment is a prediction: maintaining small islands of working light should make shelter feel earned and a clearing worth watching. It is not a passing bar.
+
+## Say the mod
+
+You settle among obsidian crags where the air itself hides the country, nearby predators and your own lights. You cultivate living lamps, warm a shelter and roof exposed work while the same Dark settles into corrosive grain that can feed your heaters. When the air clears you can read the country around you; when it closes, the light you tended is your way home.
+
+Land: black etched highlands, dark buildable sand, still air interrupted by gusts, chemical grain and brief Unveilings, with the existing near-black swirling world face.
+
+Life: the current owned native roster and campaign additions, feeding and breeding without sky dependence, with edible berries/fungus, grazing cover, timber, fiber, pack animals, milk, ordinary predation and actual moth flight.
+
+Signature: **The Dark makes the colony depend on living light and warmth, threatens that light through its native feeders, and settles into corrosive grain that can be recovered as heater fuel.**
+
+Runner-up: the hidden gravship tested by searching probes. It loses because a cover clock, trade isolation and scout/report encounters are an independent stealth system, while ordinary optical shelter and the existing campaign survey shadow already express protection. The brood-and-rescue-wreck expedition is another independent reward/risk chain. Both move intact to the next version, off. No species is removed.
+
+## Why a player reaches for it
+
+This is refuge with restricted information and a build/maintenance cost, on Ash'karr's fixed world. Dark is a material condition, not ordinary night or a universal invisibility buff. You can keep a workshop usable by warmth, a farm productive by cultivated light and exposed steel intact by roofing. A defended light can fail locally when krizzaks feed, allowing an ishvarith closer. Etchfall turns a long stay into roof and repair choices, with useful residue rather than a punishment clock. This makes the owner's 2026-10-20 protection/nearby terror/brief beauty sentence concrete without requiring a ritual, dream or mandatory monster incident.
+
+## Using it
+
+First hour: land or enter the existing authored biome. Ground and clear/Dark edges must be visible without selecting a hidden debug field. Inspect tells you that local temperature, grain exposure and light matter. Bring food and fuel, find berries and a native lamp, put ordinary shelter/heating in service. There is no fold-lamp research gate and no promised harvest before crops have actually grown. A new colony is not assumed to own a refinery. Ordinary campfire/heater mechanics remain the first warmth source.
+
+Routine: roof exposed work, harvest berries and hollow fungus, transplant wickwood using vanilla actions, manage crop temperature and light, herd or hunt native stock and use pack animals. Wind is not continuous generation capacity: stillness and pulses are shared by visible wind, feeding and sound. Grain is a normal haulable stack with a vanilla refinery bill, not a new cleaning designation/job. Its existence does not mean unlimited free fuel. A working farm needs warmth as well as light; an Unveiling is not a new star, a temperature change or a free crop season.
+
+At forty colonists: the same rules operate across dispersed farms and shelters. No map-wide lamp count determines first-version safety. No per-lamp custom tending job or discovery letter is required. Krizzak pressure remains local; an intact lit refuge and a reachable withdrawal route remain a feasible response with ordinary colony tools. Forty pawns gathering at a lamp do not multiply sight penalties, grain production, ambient temperature or audio events. Population/food/light/repair pressure must remain recoverable with normal work; the whole-map model decides tuning rather than an invented numeric balance verdict here.
+
+## What changes in the colony's story
+
+The crew chooses imperfect cover over open visibility. The threatening boundary is light and usable air, not a proven cryptid faction or an expedition quest. The Unveiling exposes already unfogged country, gives an opportunity to scout/haul under ordinary sight and restores the ambient air's optical clarity; it does not reveal unexplored fog or guarantee a predator attack. Returning Dark closes that opportunity. Wind-torn ordinary wreckage provides familiar salvage and evidence of the building cost. The existing campaign pursuit slowdown remains real, but is not immunity, an active concealment meter, or proof that dynamic cover suppresses trade.
+
+## The costs
+
+Roofing, fuel, growing time, animal food, crop warmth, the loss of artificial lamp reach, restricted long sight and exposed steel/rock deterioration. Deepfire keeps its ruled exemption from ambient Dark dimming (`RM_AbyssMod.cs`, owner card comment of 2026-10-08); this is not immunity to physical walls or a claim that an animal cannot feed on its light. Living lamps resist ambient Dark, not feeding krizzaks. Killing native stock gives ordinary meat/hide/bone via the shared engines. Great SummBone and rescue-ship fittings are off. Giant fibre stalk is ordinary old plant matter, not a source of newly invented premium fiber; resolve inherited harvest against its explicit unworkable-fiber description.
+
+## When it goes wrong and its readable sign
+
+A lamp contracts while a visible light-feeder settles beside it; inspect names the feeder contribution and sound/text supplies an alternative cue. There is no feeding through a wall or a sealed room. Removing the feeder or excluding it restores its contribution without erasing ambient Dark or another mod's light share. Heat stops feeding only through actual ordinary temperature; the setting is not a new heat type.
+
+An ishvarith already in usable light breaks toward reachable darkness. It is deterrence, not a magic impassable lit border; a trapped or committed attacking animal may still be dangerous. Its state is inspectable, not advertised as a guaranteed safe camp. Ombrathia's quill rattle/text precedes an actionable close attack, rather than being exhausted on a distant hunt job; it is not a projectile ability. Saevitha's grip/drain is its primary attack and leaves a health/log cause. Ordinary killing/downing leaves corpses and combat evidence. No pawn/animal is deleted as scenery, a timer expiration, a weather transition or a disabled feature.
+
+Grain falls on exposed surfaces, with inspectable deterioration and tholin residue. Roofed controls are spared. Natural rock eaten away leaves the hollow; etchcap admits that actual substrate, not any fertile soil. This does not erode all stone-stuff furniture, damage pawns with acid rain, raise water wetness or trigger an ExplosiveGrowth soak.
+
+Nevarithia carries a local trailing knot of Dark even in air that cannot make it. The knot has the same sight/light/sound consumers as ambient Dark and is visible; on death its released material visibly disperses locally according to ambient conditions. It does not cause a global eclipse, spawn a cryptid or resurrect a donor death ability.
+
+## Physical boundaries and transitions
+
+Ambient Dark density follows ordinary local air temperature, with a transition band recorded as tunable checks, not a new heat exposure rule. The current outdoor Perlin offset is not evidence of a real warm pocket. A naturally clear pocket must agree with the temperature the player can read; outdoor drifting warm air must use the ordinary temperature consumers. If that integration is infeasible, report that conflict before implementation rather than silently retaining a false thermometer. Cold maps need not open unheated natural pockets; warmth must still be usable there.
+
+Unveiling clears ambient particles everywhere, then ambient Dark returns. A carried nevarithia knot persists because it stabilizes/carries particles rather than relying on their ambient formation (Designer interpretation of the frozen halo ruling). On death the unbound release fades promptly in clear/warm air and can merge into surrounding cold Dark; no permanent black footprint. Exact radius/tail/lifetime are tuning rules, not new acceptance numbers. No detection ray gains clean targeting merely because its shooter stands inside warm air: the intervening Dark matters. Ordinary walls remain occluders. A common density query must feed view, targeting, glowers and muffling; the geometry model must expose any contradictory exception.
+
+Unveiling's apparent brightness is presentation, not solar elevation or UV. Direct Sun is the standing world-geometry rule; a weather lightening must not move the sun. The existing Summ UV/regen mechanics are deferred, with their rules intact. No fantasy-dragon tells are introduced. Native finite age stages stay but do not satisfy the deferred continuous lifelong growth promise.
+
+Leaving the map clears visitor murk, including caravans and carried/world pawns. Native dead/downed/despawned feeders cease to affect lamps; a mid-feeding reload may restore the krizzak share as the existing documented safe-reset rule, then only a still-present feeder can dim again. Ambient Dark must reapply independently. Old maps/settings load without silently opting players into deferred features. The one whole bar repeats main actions in another order and includes a save made mid-cycle.
+
+## Edges: deliberate exclusions
+
+No worldgen in any version, no new planet, paint pass, tile assignment, new planetary layer or bridge work. Local-map placement of content on an existing authored tile is distinct from planet generation. Zero painted Abyss tiles is expected and irrelevant to capability proof. No geothermal, steady laminar wind, water rain, permanent Clear, clean long-range sensing or sun-dependent resident ecology. No confirmed Nhaleth pawn/faction/structure. No new rites, cryptid signs/exchanges/dreams, sorter ring/caches, fold-lamp discovery, scheduled Summ call, active cover/probe loop or brood/egg/wreck/bond mechanics at shipped defaults. No new corpse-processing, spine spray, plant turning, spore hazard or mobile berry lights. Original natural stock and neighbour-owned Taozin remain rostered.
+
+The older world documents say the nightside never becomes farmable; the later explicit lamp-crop ruling permits maintained localized warm/light farms. It does not authorize naturally sun-fed fields or a nightside greenbelt. The older donor roster/cut history is not a present casting instruction: the later owned sheet controls, and evictions are stopped. `RM_Lirrith` is also referenced in `UtinniPatches/Patches/WildAnimals_CrackedLands.xml`; note multi-homing, do not evict it. Aspirational `Alien_Bestiary.md` names do not create a roster. The owner already cut the gust-turbine echo and several old species; they are not proposed again.
+
+## Neighbours
+
+All DLC are assumed. The RM section stays invented/franchise-free inside composed `mandrake.rm.biomes`. Canon Taozin and probe identity/Sith whisper belong to their existing SW/Utinni patches; the latter cannot activate off features. The Taozin wild row and nest remain a neighbour dependency, not a new Abyss design. Lightfall remains the campaign's authored clear scar even when the expedition is off.
+
+CreatureBehaviors supplies the sorter's opt-in cleanable-food behavior, native shared behaviors and existing sun geometry, not a new cleanup job. ExplosiveGrowth has no Abyss wetness/burst call found; chemical grain must remain non-water, with no new growth-engine opt-in. EnvironmentalHazards retains its existing exposure machinery; this proposal adds no corrosive pawn hazard. Wreckage supplies storm-torn family children, placement/weathering and normal salvage loot. Bones supplies normal butcher bone, separate from deferred great-bone imprinting. Shared LightLedger owns composing/restoring light contributions; no rival ledger. BiomesShell `RM_WorldLook.cs` owns the world swirls (the older inventory incorrectly attributed them to TerminalBiomes). HugeThings owns existing large trunk/body integration; no new giant collision engine is specified here.
+
+Vanilla supplies temperature, roofing, growth, transplants, training, combat, corpses, bills, fuel refining and ordinary wreck deconstruction. The Acoustic Scanner's existing payload remains banded/ambiguous under its all-biome ruling. Deferred sorter targets do not justify spawning rings to satisfy a scanner. EmpirePursuit supplies the existing survey-shadow multiplier; its actual timer consumer must be read, not inferred from Abyss's unused dynamic cover API. A static slowdown is not the future engine-start/probe/temporary-cover game.
+
+## Settings
+
+Shipped on: ambient Dark and its strength, Unveiling, grain erosion/recovery, lamp crops, krizzak feeding, light aversion, gharrek pulse feeding, readable native attack warnings, land soundscape, Dark muffling including placed map sounds, and the ruled deepfire exemption. Shared engines retain their shipped defaults and their own settings. Missing halo/physical presentation pieces require major-feature controls as well. Feature off must clean its effect or let it decay with a stated scope; all-off remains terrain/life/weather without scripted penalties, not an error or deleted animal.
+
+Every extra is under a labelled next-version switch, off, including Scribe/load defaults, reset and composed defaults. Lair/wreck/eggs/bane, cover/probes, cryptid subfeatures and discovery/research/build affordances inherit parent gates. Existing toggles that only stop placement are insufficient. New maps/restart/now scope is honest. No worldgen or rarity option is shipped. Muffling remains on by the owner's recorded ship-on card; no new listening question. Settings themselves are inherited floor obligations, not another gameplay bar.
+
+## Four short stories
+
+First hour: the crew spots a berry lamp at the edge of black sand. The builder roofs a work nook and lights an ordinary heat source. Its air clears; outside, the lamp they brought cannot reach as far. They gather food rather than wait for a research letter.
+
+An ordinary week: a transplanted wickwood farm supplies food when warmed. Gharreks open at gusts; grazing and predation continue between them. Tholin from exposed work goes to the refinery. A light-feeder settles on the approach lamp, the caretaker excludes it and the light recovers without a new recurring job.
+
+The worst day: Witchfire lightning threatens an exposed roof edge while an eaten lamp gives an ishvarith an approach. The crew retreats toward an intact lit room. The ombrathia rattles before its close attack; combat leaves a cause, not vanished stock. They repair, roof and restore light. No obligatory boss, probe or egg storm is secretly adding pressure.
+
+The season's turn: an Unveiling exposes etched black relief and the living-light country already explored. Workers move a haul while the air is clear; grain still settles, faster under the shipped rule. They save midway, reload, and complete the same work with heating and planting in another order. Dark returns, the roofed work and tended farms remain usable, native life continues, and the country has not become an empty quarry or free-fuel carpet.
