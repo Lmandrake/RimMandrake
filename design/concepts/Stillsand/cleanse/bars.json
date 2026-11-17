@@ -142,7 +142,7 @@
       ],
       "reject": [
         "A letter announces a harbour but the carved mouth is blocked, the roof is only dark art or the chamber cannot be reached by the intended party.",
-        "A saved quest-cleared flag grants permanent safety or preservation in a reoccupied den; stepping on bare rock suppresses an attacker without a physical cause."
+        "A saved quest-cleared flag grants permanent safety in a reoccupied den or preservation despite a giant-size unowned wild animal on recorded cave cells; stepping on bare rock suppresses an attacker without a physical cause."
       ],
       "lazy": "none: Reachable shaded refuge, physical securing and current danger exclude the fake-letter and magic-safe-rock builds; calibrated path and occupancy geometry can discriminate these states without an aesthetic live judgement.",
       "range": {
@@ -261,24 +261,24 @@
     },
     {
       "id": "B_PRESERVE",
-      "says": "After a cave is physically secured, the player can keep eligible contents preserved in its recorded roofed space and sees them return to ordinary decay when that protection is lost.",
+      "says": "While no giant-size unowned wild animal holds a roofed cave, its eligible contents stay preserved in the recorded roofed cells, before and after exploration, and the player sees them return to ordinary decay when that protection is lost.",
       "meant": {
         "intent": "An old practical discovery/store that silently rots before use, or preservation leaking outside its actual space, defeats the scoped useful-cave promise; preserving other owners’ objects by overwriting their state would also be refused.",
         "source": "delegated from useful old cave discovery, record.json cave_preservation and RM_CavePlace ownership/release; OWNER:1792759874733672738 retains cave preservation while cutting cave fluff; titan spoilage constrained by OWNER:1793738707492209767.",
         "figurative": []
       },
       "accept": [
-        "A discovered eligible object stays preserved in the secured roofed chamber; after it is hauled or carried outside, or its roof is removed, ordinary decay and its readable status resume.",
-        "A stockpile crosses the cave edge: only contents actually in its protected recorded cells receive this feature’s effect, and a qualifying den occupant suspends the cave’s claim."
+        "Before first exploration and after discovery, an eligible object stays preserved in the recorded roofed cells while no giant-size unowned wild animal stands on any recorded cave cell, even if a smaller threat leaves the refuge unsecured; after the object is hauled or carried outside, or its roof is removed, ordinary decay and its readable status resume.",
+        "A stockpile crosses the cave edge: only contents actually in its protected recorded cells receive this feature’s effect; a live giant-size unowned wild animal standing on any recorded cave cell, including a harmless grazer, suspends the cave’s claim until it leaves, dies or becomes owned."
       ],
       "reject": [
-        "Everything near the cave or in a straddling storage building stays fresh outdoors, or a secured roofed cave silently loses its eligible contents to ordinary decay.",
-        "Removing this feature turns another system’s already-disabled rot back on, reload forgets who owns a corpse timer, or a stale den-cleared flag preserves a reoccupied cave."
+        "Everything near the cave or in a straddling storage building stays fresh outdoors, or eligible contents in recorded roofed cells decay merely because exploration or physical securing has not occurred, despite no giant-size unowned wild animal standing on the cave cells.",
+        "Removing this feature turns another system’s already-disabled rot back on, reload forgets who owns a corpse timer, or a stale den-cleared flag preserves a cave reoccupied by a giant-size unowned wild animal."
       ],
-      "lazy": "none: Recorded roofed space, physical security and release to ordinary decay exclude a global freshness aura or quest bypass; calibrated owned-state transitions can distinguish the contract offline.",
+      "lazy": "none: Recorded roofed space, current giant-size unowned wild-animal occupancy, preservation before and after exploration, and release to ordinary decay exclude a global freshness aura, security gate or quest bypass; calibrated owned-state transitions can distinguish the contract offline.",
       "range": {
-        "varies": "M_STATES enumerates ordinary rot-capable item, ordinary animal corpse, titan-owned site/resource and nonrottable item; recorded inside/outside/edge cells, roof intact/lost/rebuilt, carried/stored/held parent, den live/dead/left/tamed/reoccupied, already disabled externally vs owned by cave, toggle off/on, reload before/after each transition and blocked placement. Initial fresh and long-lived cave, 1/6/40 workers using shared stockpiles. Status reports ownership; do not infer ambient refrigeration. The preserved-den predicate is the existing unowned-giant/current-cell eligibility (threshold tracked as a check); a smaller threatening resident still prevents a secured refuge, but does not acquire a new rot-suppression rule.",
-        "left_out": "No global outdoor no-rot, no titan-resource spoilage override or promise of preserving contents while a live unowned dangerous den occupant remains. Corpses subject to another owner are not also converted by Stillsand."
+        "varies": "M_STATES enumerates ordinary rot-capable item, ordinary animal corpse, titan-owned site/resource and nonrottable item; recorded inside/outside/edge cells, roof intact/lost/rebuilt, carried/stored/held parent, den live/dead/left/tamed/reoccupied, already disabled externally vs owned by cave, toggle off/on, reload before/after each transition and blocked placement. Initial fresh and long-lived cave, 1/6/40 workers using shared stockpiles. Status reports ownership; do not infer ambient refrigeration. Preservation runs before and after exploration, independently of physical securing, with the feature enabled and no live unowned wild animal of giant size standing on any recorded cave cell, harmless grazers included. The existing BodySize >= 3 threshold is tracked in C_LAYOUT; a smaller threatening resident still prevents a secured refuge without suspending preservation. Sweep absent/harmless-giant/threatening-giant/small-threat occupants, inside/outside cave cells and below/at/above the size threshold.",
+        "left_out": "No global outdoor no-rot, no titan-resource spoilage override or promise of preserving contents while a live giant-size unowned wild animal stands on a recorded cave cell, harmless grazers included. Corpses subject to another owner are not also converted by Stillsand."
       },
       "sees": {
         "instrument": "Calibrated M_STATES ownership/state-machine walk through the actual Stillsand preservation transition adapter, with engine rot/vanish/status samples and save records establishing agreement. T_CAVE and T_STATES.",
@@ -381,7 +381,7 @@
     },
     {
       "id": "C_LAYOUT",
-      "what": "Coverage of geometry/footprint/bearing/roof/depth boundary classes and exact calibrated path/exposure reads. Existing synthetic cave/kernel fuzz rows are regression evidence only."
+      "what": "Coverage of geometry/footprint/bearing/roof/depth boundary classes and exact calibrated path/exposure reads. Preservation occupancy uses a live animal with Faction == null, BodySize >= 3 and Position in recorded caveCells, regardless of threat; check below/at/above the threshold. Existing synthetic cave/kernel fuzz rows are regression evidence only."
     },
     {
       "id": "C_SIGN",
@@ -423,7 +423,7 @@
     },
     {
       "id": "R_REFUGE",
-      "rule": "delegated: physical current occupancy, accepted paths and shared geometry determine shelter, never quest denCleared. A returning dangerous unowned occupant suspends cave preservation; taming/leaving/death is assessed from present state. This is not immunity from ordinary later attacks.",
+      "rule": "delegated: physical current occupancy, accepted paths and shared geometry determine shelter, never quest denCleared. Independently of exploration or physical securing, a live giant-size unowned wild animal standing on any recorded cave cell suspends cave preservation, including a harmless grazer; taming/leaving/death is assessed from present state. A smaller actual threat makes the refuge unsecured without suspending preservation. This is not immunity from ordinary later attacks.",
       "touches": [
         "refuge_geometry",
         "wildlife_state",
@@ -434,7 +434,7 @@
     },
     {
       "id": "R_PRESERVE",
-      "rule": "delegated: claim only eligible rot-capable things actually on recorded roofed cave cells, not carried by pawns, and not already disabled by another owner; release exactly this claim on roof/position/occupancy/toggle change and preserve its ownership through reload. Status names the cave effect; no global fresh aura or second titan owner.",
+      "rule": "delegated: with preservation enabled, before and after exploration and independently of physical securing, claim only eligible rot-capable things actually on recorded roofed cave cells, not carried by pawns, and not already disabled by another owner, while no live giant-size unowned wild animal stands on any recorded cave cell, harmless grazers included. Smaller threats do not suspend preservation. Release exactly this claim on roof/position/qualifying-occupancy/toggle change and preserve its ownership through reload. Status names the cave effect; no global fresh aura or second titan owner.",
       "touches": [
         "refuge_geometry",
         "supply",

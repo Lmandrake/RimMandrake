@@ -1,0 +1,9 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Accepted reading (a): preservation runs with its setting enabled in recorded roofed cells before and after exploration, independently of refuge security, unless a live giant-size unowned wild animal stands on any recorded cave cell, including harmless grazers. Small threats can make a refuge unsecured without suspending preservation. Aligned the bar pictures/range, rules, census deletion argument, ticket acceptance and supporting definition/ambiguity/model; recorded the existing numeric predicate in C_LAYOUT. No entries or counts were added or removed.",
+      "where": "bars.json B_PRESERVE, B_REFUGE reject, R_REFUGE, R_PRESERVE, C_LAYOUT; census.json cave_preservation; tickets.md T_CAVE; definition.md failure/edge preservation paragraph; ambiguities.md cave-preservation row; models.md M_STATES inputs/range"
+    }
+  ]
+}

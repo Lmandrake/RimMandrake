@@ -470,14 +470,14 @@
     },
     {
       "id": "cave_preservation",
-      "what": "Roofed recorded cave cells disable rotting and animal-corpse vanish timer; leaving or lost roof releases owned preservation; held den gates it.",
+      "what": "With preservation enabled, recorded roofed cave cells disable eligible rotting and animal-corpse vanish timing before and after exploration, independently of physical securing, unless a live giant-size unowned wild animal stands on any recorded cave cell, harmless grazers included; leaving or lost roof releases owned preservation.",
       "built": "present",
       "evidence": "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs:17; src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs:325",
       "proven": "stale",
       "called_by": "RM_MapComponent_PreciousCave.MapComponentTick -> RM_CavePreservation.Scan; den quest must be decoupled",
       "serves": "signature / useful old caves",
       "fate": "needed_by",
-      "why": "delegated: Scoped preservation makes old roofed discoveries and the secured cave store usable after a long absence. Deleting it can rot the intended practical discovery before first exploration. It must release its owned effects outside the cave and cannot bypass an occupied den.",
+      "why": "delegated: Scoped preservation makes old roofed discoveries and the secured cave store usable after a long absence. Deleting it can rot the intended practical discovery before first exploration. It must release its owned effects outside the cave and whenever a live giant-size unowned wild animal stands on any recorded cave cell, even a harmless grazer. A smaller threat can make the refuge unsecured without suspending preservation.",
       "needed_by": "signature / useful old caves",
       "ticket": "T_CAVE"
     },

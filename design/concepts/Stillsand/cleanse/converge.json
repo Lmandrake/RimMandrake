@@ -1,0 +1,95 @@
+{
+ "mod": "Stillsand",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "cannot_hold_together",
+     "where": "design/concepts/Stillsand/cleanse/bars.json B_PRESERVE (says, range) vs rule R_REFUGE vs census.json row cave_preservation vs tickets.md T_CAVE",
+     "evidence": "B_PRESERVE says: \"After a cave is physically secured, the player can keep eligible contents preserved\". Its range then sets the gate as \"the existing unowned-giant/current-cell eligibility ... a smaller threatening resident still prevents a secured refuge, but does not acquire a new rot-suppression rule\". The code matches the range, not the says: RM_PreciousCaves.cs:424-437 DenHeld() is true only for `p.Faction == null && p.RaceProps.Animal && p.BodySize >= 3f && caveCells.Contains(p.Position)`, and RM_CavePlace.cs:29 runs preservation whenever `preservationEnabled && !comp.DenHeld()`. That includes before first exploration and in caves that are not secured. census.json cave_preservation argues the feature is needed because \"Deleting it can rot the intended practical discovery before first exploration\", so preservation must run before the cave is secured, against the bar's own words. R_REFUGE says \"A returning dangerous unowned occupant suspends cave preservation\". That is a danger test, but the predicate is a size test: a harmless wild grazer of giant size (e.g. Aurrok) standing on a cave cell suspends it, and a dangerous small resident (Drazzik/guzzka class) does not. T_CAVE calls the same size test \"dangerous held-den occupancy\". A builder who gates preservation on 'secured' fails the census argument. A builder who keeps the code passes the range and breaks the says and R_REFUGE.",
+     "would_pass": "One gate for preservation, stated the same way in B_PRESERVE says/accept, R_REFUGE, R_PRESERVE, T_CAVE and the census row. Either (a) preservation is on in any roofed recorded cave not held by a qualifying occupant, including before exploration, with 'qualifying' named as a giant-size unowned wild animal on cave cells, harmless grazers included, and kept apart from 'secured refuge'. Or (b) preservation is gated on the same physical 'secured' state B_REFUGE uses, and the census deletion argument is rewritten so it no longer relies on preservation before exploration.",
+     "smallest_fix": "Take reading (a), which matches the code. Change B_PRESERVE says to: \"While no giant-size wild animal holds a roofed cave, its eligible contents stay preserved in the recorded roofed cells, before and after exploration, and return to ordinary decay when that protection is lost.\" Reword R_REFUGE's preservation clause and T_CAVE's \"dangerous held-den occupancy\" to the size test. State in B_REFUGE or R_REFUGE that a small threat makes a cave unsecured without suspending preservation."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Accepted reading (a): preservation runs with its setting enabled in recorded roofed cells before and after exploration, independently of refuge security, unless a live giant-size unowned wild animal stands on any recorded cave cell, including harmless grazers. Small threats can make a refuge unsecured without suspending preservation. Aligned the bar pictures/range, rules, census deletion argument, ticket acceptance and supporting definition/ambiguity/model; recorded the existing numeric predicate in C_LAYOUT. No entries or counts were added or removed.",
+      "where": "bars.json B_PRESERVE, B_REFUGE reject, R_REFUGE, R_PRESERVE, C_LAYOUT; census.json cave_preservation; tickets.md T_CAVE; definition.md failure/edge preservation paragraph; ambiguities.md cave-preservation row; models.md M_STATES inputs/range"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "Every place R1 named now uses reading (a), the same gate the code uses (RM_PreciousCaves.cs:432: `!p.Dead && p.Faction == null && p.RaceProps.Animal && p.BodySize >= 3f && caveCells.Contains(p.Position)`; RM_CavePlace.cs:29). bars.json B_PRESERVE says now reads: \"While no giant-size unowned wild animal holds a roofed cave, its eligible contents stay preserved in the recorded roofed cells, before and after exploration\". Its first accept line adds \"Before first exploration and after discovery ... even if a smaller threat leaves the refuge unsecured\", and its second says \"including a harmless grazer, suspends the cave's claim\". The range says \"Preservation runs before and after exploration, independently of physical securing ... harmless grazers included\". R_REFUGE: \"Independently of exploration or physical securing, a live giant-size unowned wild animal standing on any recorded cave cell suspends cave preservation, including a harmless grazer ... A smaller actual threat makes the refuge unsecured without suspending preservation.\" R_PRESERVE: \"before and after exploration and independently of physical securing ... Smaller threats do not suspend preservation.\" T_CAVE no longer says \"dangerous held-den occupancy\". It now says \"Preservation is enabled before and after exploration, independently of physical securing, while no live giant-size unowned wild animal stands on any recorded cave cell\", and its acceptance test covers \"unexplored, explored, secured and reoccupied caves\" and \"both sides of the size threshold\". The census cave_preservation 'what' and 'why' use the same gate, so the argument \"Deleting it can rot the intended practical discovery before first exploration\" now agrees with the bar. The definition.md, ambiguities.md (row 22) and models.md M_STATES entries say the same."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Ambiguities settled by this Designer",
+    "bars.json bars/B_PRESERVE",
+    "bars.json bars/B_REFUGE",
+    "bars.json checks/C_LAYOUT",
+    "bars.json rules/R_PRESERVE",
+    "bars.json rules/R_REFUGE",
+    "census.json rows/cave_preservation",
+    "definition.md When it goes wrong and the readable sign",
+    "models.md M_STATES: generated situations and ownership walks",
+    "tickets.md T_CAVE: current physical security, scoped preservation and readable status"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 366107,
+     "output_tokens": 4361
+    }
+   },
+   "author_error": null,
+   "open_after": [
+    {
+     "id": "G1.1",
+     "head": "regression",
+     "where": "bars.json bars/B_PRESERVE",
+     "evidence": "range.varies now contains the tuning number itself: \"The existing BodySize >= 3 threshold is tracked in C_LAYOUT\". The old range said only \"threshold tracked as a check\". If the size threshold is ever renormalized, this bar's text becomes false and has to be edited and passed again, which the 'a passing bar is an experience, never a tuning number' ruling forbids. R1's own fix placed the number in C_LAYOUT, which now holds it, so the copy in the bar is not needed.",
+     "would_pass": "B_PRESERVE names the threshold only by reference to C_LAYOUT. No numeric size value appears in the bar.",
+     "smallest_fix": "In B_PRESERVE range.varies, replace \"The existing BodySize >= 3 threshold is tracked in C_LAYOUT\" with \"The existing giant-size threshold is tracked in C_LAYOUT\"."
+    }
+   ]
+  }
+ ],
+ "open": [
+  {
+   "id": "G1.1",
+   "head": "regression",
+   "where": "bars.json bars/B_PRESERVE",
+   "evidence": "range.varies now contains the tuning number itself: \"The existing BodySize >= 3 threshold is tracked in C_LAYOUT\". The old range said only \"threshold tracked as a check\". If the size threshold is ever renormalized, this bar's text becomes false and has to be edited and passed again, which the 'a passing bar is an experience, never a tuning number' ruling forbids. R1's own fix placed the number in C_LAYOUT, which now holds it, so the copy in the bar is not needed.",
+   "would_pass": "B_PRESERVE names the threshold only by reference to C_LAYOUT. No numeric size value appears in the bar.",
+   "smallest_fix": "In B_PRESERVE range.varies, replace \"The existing BodySize >= 3 threshold is tracked in C_LAYOUT\" with \"The existing giant-size threshold is tracked in C_LAYOUT\"."
+  }
+ ],
+ "advisory_late": [
+  {
+   "what": "The shipped Mod Setting tooltip (RM_StillsandMod.cs:180, \"Corpses and food lying on a roofed cave cell do not rot ... Acts live, on existing caves too\") does not mention the giant-occupant suspension.",
+   "reason": "This is not a changed entry and it is code, not the proposal. T_CAVE's readable-status work should cover the tooltip so the player-facing text matches the gate.",
+   "round": 1
+  },
+  {
+   "what": "definition.md signature line 11 still reads \"uncertain caves which, once explored and physically secured, supply refuge and practical discoveries\".",
+   "reason": "It is unchanged and can be read as consistent, since refuge is the secured part. A reader could still take it to mean discoveries also wait for securing, which preservation no longer requires.",
+   "round": 1
+  }
+ ],
+ "applyable": false,
+ "digest": "e9e04cf213e2b26aa597ce9a23d37b2f750f0a81123f2f4e2882012fb0a3d692",
+ "seconds": 160,
+ "at": "2026-11-17T06:37:13"
+}
