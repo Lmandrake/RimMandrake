@@ -1,0 +1,36 @@
+{
+ "mod": "WeepingStones",
+ "state": "proposed",
+ "why": "check passes (9 bars, 68 census rows, 822 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-17T02:41:38",
+ "seconds": 1491,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 822,
+  "page_limit": 950,
+  "census_rows": 68,
+  "bars": 9,
+  "bar_numbers": "none",
+  "shared_things": 16,
+  "meetings": 16,
+  "old_bars": "0 mapped of 0 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 5958725,
+    "output_tokens": 45134
+   }
+  }
+ ],
+ "agent_errors": []
+}

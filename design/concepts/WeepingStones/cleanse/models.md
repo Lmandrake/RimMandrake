@@ -1,0 +1,63 @@
+# Instruments to specify before building
+
+These are specifications, not built models or game measurements. The listed sizes are design estimates. Use existing pure kernels and scripts where their assumptions fit. An uncalibrated model reports predictions and UNKNOWN game agreement. Building order follows information value: first establish whether a renewable farm exists at all, then close transition/geometry holes. No model creates or varies a planet.
+
+## Whole-map husbandry season
+
+**Question:** Can ordinary care and selective harvest maintain a viable food-producing farm within a living, spatially bounded desert oasis when all kept systems run together?
+
+**Informs:** B2, B3, B5, B6, B7, B8, B9; R3–R8,R10–R13. Unknown meetings `stock_population`, `feed_clock`, `animal_population`, `plant_growth`, plus their three-way feedback into warning/work time and recovery. This is built first because a farm that cannot reproduce cannot pass through cosmetic fixes or a better net fixture.
+
+**Inputs/range:** Import fingerprinted effective defs, current pulse and birth/needs parameters, map water/habitat masks, actual species age/sex/reproduction eligibility, residence transitions, forage/crop growth and soak state, predator/prey, feed policy/reserve/harvest intent, food stocks, workers and job costs. Colonies 1,3,10,40; 1,2,4,16 pens with eligible water areas 1–400; populations empty/below reserve/at reserve/surplus/crowded; every stock species alone and compatible mixes. Dew shade and hot open seep; normal clear/fog/dry storm sequences; shared growth and Direct Sun active. Simulate 15 days and carry worst stressed schedules to day 100. Sweep both action orders, fed/neglected, under/overdrawn and cull/restock. Sweep actual configured parameter endpoints and values either side of each branching threshold, not new hypothetical owner tuning targets.
+
+**Assumptions:** No forced stock replacement after founding; actual needs and compatible breeding govern births. Worker approximation must include actual reachable bank distance, competing jobs and reservations. The existing kernel's feed-clock and probabilistic mutations are reused as code; neither proves reproduction. Model normal truce and measured predator-pressure transitions, never assume herd death or immortality. If real vanilla neutral stock cannot breed or stay resident, stop and expose that missing integration rather than inserting an invented fecundity coefficient.
+
+**Leaves out:** Detailed rendered art, human strategic choices, raids/next-version quests, custom social mood scheduling and engine internals not calibrated. Mood/output routing can be checked discretely; pleasure is not a model quantity. Full AI/pathing cannot be credibly reproduced offline: job delays and residence must be imported/calibrated or that region remains UNKNOWN and B9's live run resolves it.
+
+**Real-game agreement before belief:** On a disposable authored-map save with recorded current build/settings, read complete identified stock, sex/age/needs, births/deaths/exit causes, feed delivery/consumption, chosen jobs/finish times, soil/plant/crop counts, emergence/cull/escape events and gauge causes. Compare paired tended/no-feed/no-harvest and mixed pens, including normal work competition and reload. Deterministic accounting must match event by event. For stochastic kernels, compare at least 200 independent pen-day windows for each stressed/healthy regime: observed event incidence must fall within the model's predeclared 95% predictive interval with a matched common schedule, and the direction of tended-vs-neglected outcomes must agree. Births and residency must match the real causal path, not just the final population. If a key event never occurs in calibration, that region stays uncalibrated. These sampling values are instrument design estimates, not bars. Shared RNG order differences require marginal distribution checks, not fabricated exact seeds.
+
+**Produces:** Per-pen and full-map stock/food/plant/workload timelines; source/sink identity ledger; warning-to-first-loss and response-opportunity table; time to viable recovery; worst flood/desert/stall per bar; uncertainty intervals and a calibration status for every swept regime. Bounded means no self-amplifying animal/food growth after available habitat/work/feed is exhausted; it is not a pinned population cap.
+
+**Rough size:** Medium: roughly a few thousand schedules/mixtures and hundreds of replications of the worst stochastic schedules; event-driven seconds/minutes per batch after inputs exist. Existing pool fuzz supplies pulse branches, not this model. Actual integration is the dominant work, not simulation arithmetic.
+
+**Build trigger/decision changed:** The unknown seasonal meetings trigger it immediately, before retuning growth, feed amounts or birth/escape/emergence rates. It chooses whether vanilla mating/needs/residency integration suffices, whether reserve/feeding rules need repair and whether warning cadence can coexist with reproduction. A constant changed twice to chase a green check is an additional trigger; it is not a reason to relax an experience bar.
+
+## Situation and transaction generator
+
+**Question:** Do all reachable pen, job, damage and save transitions conserve readable state and respect the same truce and farm intent?
+
+**Informs:** B2–B9; R3–R9,R11,R12; unknown meetings `pen_geometry`, `job_transactions`, `net_geometry`, `persistence`, `truce_field`. In particular: injury attribution→wildlife retaliation→interrupted cull→lost stock; edit→carry→load→duplicate release; decay and emergence selecting the same animal within a pulse. Enumerate the whole touching group, not just friendly pairs.
+
+**Inputs/range:** Pen identity/eligible cells and feed history, sex/age/health-bearing resident records, stock item/carry state, output blockage, two workers/reservations, target/handler alive/downed/dead/despawned, forbidden targets, setting transitions and every legal save boundary. Generate pen creation, connected addition, refused disconnected addition, shrink/delete, terrain dry/restore/bridge, feed, chosen harvest/overdraw, net aim/landing/miss/bag/release, escape, neglect/death/emergence/cull/restock. Use zero/one/multiple residents, vhorrin present/absent and mixed species. Net stationary/moving/fleeing at all supported throw ranges, aim spread boundaries and map edges. Truce cases vary attacker faction/guilt/damage, victim/source cell, eligible wildlife, current hunt and cooldown/reload; invoke real handler injury damage callbacks too.
+
+**Assumptions:** Pure extracted transition code is the production mechanism, or every adapter is compared to production. No hand-authored happy mock substitutes for it. Generate only reachable sequences: record why a nominal state is impossible. Race/kind/breeder naming is loaded from the actual mapping, not guessed by suffix when the runtime uses something else. DamageInfo guilt is an input whose production value must be captured, not inferred from the generator's moral story.
+
+**Leaves out:** True rendering/glance legibility, scheduler performance, long-term mating balance and pathfinder implementation. For arbitrary maps use the game's actual path/field mask as an oracle; an offline BFS is only credible for the explicit cell model after calibration. Live-only flight looks remain owner-present.
+
+**Real-game agreement before belief:** For every distinct branch class, export an actual before/action/after trace from the same deployed build and its scribed mid-action save. Compare target and carried identities, input/output quantities, committed state, failed-job reason, field membership, actual guilty bit and mental-state target faction exactly. Net tests compare real launch/landing tick and cell, intended target cell and coverage, including a miss. Pair reload and uninterrupted traces; compare equivalent committed state, not unstable raw object pointers. Any unknown serializer/bridge field is an instrument gap, never zero. Calibration requires exact branch results and conservation; no tolerance can excuse a lost animal. T20 must provide the missing fields before the generator's outputs count.
+
+**Produces:** Reachability/coverage table; shortest counterexample sequence per bar/rule; spatial boundary diagrams; reasoned impossible states; input/output conservation and save-continuity matrix; hostile-callback graph. Each passing sample cites calibration class and fingerprint.
+
+**Rough size:** Medium: thousands of boundary representatives and a bounded state walk of length up to 12 transitions, with pairwise input reduction only where branch equivalence is demonstrated. Full Cartesian product is not claimed. Exhaust distinct transaction save boundaries; use adversarial longer sequences for failures discovered by the season model.
+
+**Build trigger/decision changed:** Existing unknown meetings trigger it now; any handler/animal disappearance, duplicate output, wrong-faction retaliation or successful forced job with failed autonomous work also triggers the relevant branch. Output decides whether to repair R3 identity, R7 transaction ownership or adapters; it never changes the shared truce guilt law. A real shared-engine conflict with no compliant local adapter is reported to the owner with its trace.
+
+## Wet land and shade geometry
+
+**Question:** Does the existing landmark/biome handoff make readable wet native habitat and usable dry ground in both dew-shade and open-seep regimes without changing shared sun geometry?
+
+**Informs:** B1,B2,B3,B5,B8,B9; R1–R4,R12,R13 and unknown `habitat` meeting. Checks land bands versus pen bank access, exposed cold faces versus constructed roof shade, and native growth/animal concentration versus dry building ground. It is a habitat model, not a dew water-budget model.
+
+**Inputs/range:** Fingerprinted existing authored tile and mutator records, local map terrain/rock/roof/plant/water masks, sun elevation 0–90 and bearing 0–359, map sizes 150–400, hilliness flat through mountainous; convex/concave/edge pools, exposed rock and open hot seep exceptions, roofs, bridge water, inhabited banks. Sample real generated local maps on existing tiles; sweep object placement/bearing and sizes within those cell masks. Do not generate world alternatives. Import the actual shared shade result rather than reimplementing the sun rule.
+
+**Assumptions:** Wet face eligibility is exposed wind-moisture habitat or a seep, not all cells marked shaded. Habitat bands follow actual irregular boundaries; exact circles/widths are not assumed. Existing Oasis supplies water where authored. Plant location adapters must be validated before the model claims a cause. Existing installed art can express wet/green contrast without new art variants; failure of that assumption is a specific B1 visual finding, not a mandate for a new art catalogue.
+
+**Leaves out:** Condensation fluid mechanics, evaporation budget, custom weather clock, human art taste, biome world-placement scores and canonical planet repaint. It cannot certify a pretty or recognisable map from counts alone.
+
+**Real-game agreement before belief:** Export the fixture's own terrain/plant/roof/water and shared shade membership before and after map creation/use/reload. Geometry/membership must agree cell for cell with actual state, including map boundaries and roofs/bridges. Cross-check visual views over both source regimes, with an ordinary desert Oasis control and without debug scenery. Species habitat/commonality claims require actual generated census, not just AdditionalWildPlants results. Acceptance of band readability remains B1's live look; a cell-exact mask is not visual approval.
+
+**Produces:** Labelled wet/dry/shade/green/bank-access maps, disconnected or unbuildable shoulder counterexamples, native-on-ineligible-ground list, source-regime comparison and the worst layout for each affected bar. It yields no fixed mandated percent green or pool width.
+
+**Rough size:** Small/medium: a few dozen real cell masks and thousands of cheap placement/ray tests. One whole-map look per actual distinct failure geometry, not one screenshot per seed. Offline calculations follow actual map export; no state can be assumed from an unavailable save.
+
+**Build trigger/decision changed:** Unknown habitat meeting triggers it before committing local habitat dress. A first map that is uniform sand, uniformly green or has inaccessible banks prioritises that case. Output decides whether map-side dressing/native placement needs repair, whether bank geometry is valid and where a visual fixture must look. It does not justify changing Direct Sun or requiring a cliff at open seep oases.

@@ -1,0 +1,86 @@
+# Weeping Stones — proposed Design Version 0.1.0
+
+This is the Designer's proposal, dated 2026-11-17. Every new scope choice, boundary and rule below is delegated design judgment, not a new statement by the owner. Nothing here changes a standing ruling or the running mod. The proposal needs the separate fresh review and the owner's reading before application. No game, bridge, deployment, source modification or art production occurred during this pass.
+
+The Weeping Stones is bright stone country where black wet faces and green pools interrupt the dry ground. Native animals gather at protected water, while colonists forage, raise keeping crops and use the dry shoulders for their settlement. Its moisture farmers raise active, troublesome pool stock for food: tending preserves the breeders, neglect or crowding can produce a vhorrin, and a deliberate cull lets the farm recover.
+
+**Land:** pale dry shoulders, readable wet shade and native green at reliable pools; hot open seep oases are the explicit exception to cliff-fed water. Ordinary clear/fog/dry weather belongs here; a scheduled fog hour does not.
+
+**Life:** the current alien flora and animal cast, ordinary food/medicine/timber, live wild catches and tame/caravan utility. Keep the ordinary gorrask, Colossia, mirrik and dewglider; do not evict any animal. Native silhouettes follow the existing comb language and installed art remains accepted under the standing ruling.
+
+**Signature:** Tending stocked pools preserves a renewable food source; neglected or crowded stock can become a farm-eating vhorrin that the player must cull before rebuilding the stock.
+
+**Runner-up:** the walking condenser, a unique crab that grows and moves an oasis. It loses because terrain creation, migration, guiding, sale, extraction and competing quests form an independent player story. A fixed pool works without it. Its previous approval is preserved in the next-version design; moving its implementation out of these defaults is my scope decision under this cleansing brief, not a claim that he disliked it or a repeal of the October choice.
+
+## Why a player reaches for it
+
+For a settlement around dependable fresh water in a desert, and a farming profession with a visible cost of care. Vanilla angling is still an ordinary food option. The distinct promise is raising a stock that can feed the colony repeatedly, instead of fishing an abstract table or repeatedly converting wild animals to meat. The Scald's shore fishing and the Cathedral's industrial line already supply those neighbouring experiences. This biome need not add another salvage economy or a second portable-water machine to distinguish itself.
+
+Enjoyment is a prediction: the dry/wet contrast, the decision to keep or eat an unsettling beast, and the recoverable farm failure should make a small settlement memorable. No enjoyment score is a passing bar.
+
+## Using it
+
+**First hour.** On an existing authored Oasis tile the player can locate its pool, wet faces or open seep, green margin and dry building ground. A non-landmark tile remains stone country and need not manufacture a landmark. Forage and ordinary angling cover immediate food choices. The player draws a named water-only pen, selects it as the destination for captured breeders and sees whether the pen is empty, viable or unsuitable. The setting and normal Zone tab expose this without a research quest. Roofs and parasols use the shared geometric Direct Sun rule; wet greenery is no promise of cooler air.
+
+**Routine.** NET is a thrown projectile aimed at a launch-time cell: a moving target can leave the landing spread. A covered animal becomes visibly entangled; bagging makes a carryable breeder, STOCK releases it into the selected pen. The transfer retains the species and breeding-relevant state or an explicitly accounted replacement, rather than rerolling sex/age to undermine a breeding group. Failed release preserves or drops the carried stock readably. The handler never disappears as part of this action.
+
+The farmer chooses a viable reserve and requests surplus harvest. Feed comes from ordinary suitable food allowed by the player's policy, delivered from an accessible bank; no new scrap commodity is needed. Feeding must support the animals' real nutrition and saved care clock. It is not enough to make the inspect string say healthy while animals starve. The existing meat/food items and modest stove preparations complete production. Ordinary fish has no doubt penalty; loomu, huldu and ivvol have actual ingredient/direct ingestion memories and callous-trait exceptions. The existing cull dish belongs to eaters, not to an automatic colony ceremony.
+
+**At forty colonists.** Pens retain their own identities, destinations, feed debt and breeder reserves. Multiple workers reserve inputs and outputs, avoid duplicate conversion and keep one busy pen from consuming another's stock. The player manages production intent per pen, not every fish as a recurring manual task. Normal work priorities must maintain a viable farm with sufficient staffing, food and access. The version does not promise that an arbitrarily small pool feeds everyone. The whole-map model must test work competition and the wild ecosystem as well as pen arithmetic.
+
+## What changes in the colony's story
+
+The colony establishes, maintains and sometimes overdraws a living food supply. The productive pool becomes recognisable; a thin or crowded one calls for a change in work before a loss. On the worst day a vhorrin replaces stock and consumes more of the farm, a handler culls it, and the player must feed surviving breeders or restock an empty pen. The remaining food and meal choice have meaning because a working farm preceded them. A positive cull message cannot by itself claim recovery.
+
+The truce remains an existing law of this place. Hungry wild and tame predators do not start or continue hunts with either participant at protected water. An actual guilty hit at a protected victim turns eligible nearby wildlife against the aggressor faction. The engine's guilt flag governs; the biome does not simulate moral responsibility or guarantee raid victory. Ordinary farm conversions are designated husbandry jobs, not a secret exception for player gunfire. Their injury callbacks must be tested with the shared engine running.
+
+## The costs
+
+Food and work sustain the farm; keeping breeders means leaving edible stock alive. Active animals can escape and create recapture work. Aggressive catches can cause readable minor injuries; feeding at the bank has no handling-injury roll. Deliberate overdraw sacrifices future production and can empty the pen. Doubtful food trades nutrition for an actual memory in its eater. Sparse timber, slow native crops and ordinary desert heat make building and provisioning choices matter. Exact quantities, odds, treatment duration and market values remain checks/tuning, never bars.
+
+## When it goes wrong and its readable sign
+
+The water display distinguishes empty, productive, hungry/thin, crowded and vhorrin conditions; shape and inspect text identify cause as well as colour. A fed but crowded pool cannot display unqualified healthy reassurance. Update from the committed census after feeding, death, emergence, harvest and cull. Warn early enough for an ordinary due care job before an avoidable loss; the season model will test whether the scheduler gives that opportunity. Empty also needs a visible marker, because missing animation alone is ambiguous.
+
+Starvation leaves normal death evidence; vhorrin emergence has an ordinary player cue and an accounted input/output, not just a dev log. The vhorrin imposes actual additional stock loss until deliberately culled. Escapes follow visible traversable moist bank/water routes; a blocked route leaves the animal where it is. The player can locate and net the traveller. No wall-crossing teleport, invisible deletion or disappearance of handler/carried stock is acceptable.
+
+Zone edits preserve debt and history for the surviving named pen. Disconnected additions are refused; separated zones in the same natural pool remain separate farms. Dry or covered/bridged water cells cease being eligible and the change is shown. Removing the zone frees living residents rather than killing them or resetting another pen. A reload restores pending work, feed history, reserves and current display without replaying a committed conversion. A removed destination produces a safe failure and a readable reason.
+
+## The edges
+
+The full-water truce means standing environmental water, not a healthy fish-stock gauge. A starving pen is not a dying natural oasis. There is no water budget, dynamic oasis depletion/rebirth, rainfall dependence, annual farm lockout or scheduled wind-hour. The owner already killed the born-and-dying-water and wind-hour proposals; they are not in the next-version parking lot.
+
+The land needs visible wet/green distribution and the ordinary landmark/mutator handoff. It does not need humidity simulation, rain-collection credits, animated plant comb deployment, vertical animal climbing or a new physiology engine. Steamfrond identifies the warm seep habitat and supplies korrim; it does not warm the map with a local heat kind. Dewgourd is an ordinary slow keeping crop under the existing growth system. Rockfinger/talvessar timber, salvecomb medicine, bladder-fruit, huldu leather and pack carriers remain ordinary life rewards. Each removes an ordinary use if deleted; none gets a new independent mechanic.
+
+No new terrain-generating burrak behaviour, special catch verbs per species, cooperative cull choreography, visitor ritual, research lesson, dewsilk manufacture, fat-quality feature, rare-loot lottery, tale quest or unique moving oasis runs by default. Roster presence, ordinary taming/breeding and passive species identity stay. Legendary scale in gorrask fiction does not require multi-cell collision geometry in this version. The mirror of an optional feature in a source caller is coupling to decouple, not a reason to retain it.
+
+## The neighbours
+
+- **The fixed world and naming:** Ash'karr is one authored desert planet; local maps use its authored biome/landmark/mutator data. The old scoring worker is inert with `generatesNaturally=false` and is not a capability to prove. Zero world tiles is expected and never a defect. All DLC are assumed. Invented names stay RM tier; canon animals enter through additive Utinni patches. Nothing here changes painting, campaign labels or authored claims.
+- **CreatureBehaviors:** require its existing geometric Direct Sun/shade and applicable creature/flight infrastructure. Real flight is checked as flight-tracker state; no unattended flight visual session. Optional swarm/climbing/aura behaviours are not silently added.
+- **ExplosiveGrowth:** keep the existing everyday and soaking rules. Its growth must run during plant and whole-map tests; do not reset it to vanilla speed to stage a tidy farm. No new rainfall source, water-income loop or engine redesign is commissioned.
+- **EnvironmentalHazards:** require the existing truce, suppression, attribution, warning and settings infrastructure. Local dripfringe/shadefern study hooks are extras and must be gated locally, without disabling the shared research engine elsewhere. Guilt/AI incompatibility is measured and raised rather than hidden with a local law.
+- **Wreckage:** ordinary salvage of existing authored wrecks remains available. No new condenser treasure route or WeepingStones wreck-spawning system is necessary.
+- **Bones:** applicable vanilla butchery yields bone; direct pen meat conversion is a separate route and must not double-pay bone/leather. This pass does not redesign that engine or demand identical yield from different actions.
+- **Vanilla/other mods:** normal animal AI, reproduction, needs, diet, projectile, zone, recipe and thought machinery are reused and must be shown actually integrated. Ordinary wild fishing and live breeder species are separate data paths; catching a fish item does not conjure a breeder. No third-party cuisine mod is required. FlowWorks is a bookkeeping precedent, not proof of a natural pool water budget. OasisMaker remains the separate redirected machine system. Its scope is not reopened here.
+- **AcousticScanner and existing art:** keep the owner-mandated all-biome scanner interface as a dependency. It reports actually present targets and creates none; its deferred condenser target stays silent by default. Keep the expressly retained global reeds art patch. Neither retention authorises new scanner minigames or art variants. The duplicate-then-diverge plant ruling still applies to the currently shared dewshrooms; fix its content ownership without cutting its placement.
+
+The campaign patch includes Bantha as an annotated pilgrim with another primary home. Other placements are retained. A current roster-membership read, required by the proof ticket, will record further multi-homing rather than enforce evictions. The present inline biome list omits mirrik despite its native def and earlier inventory claim; its actual spawn route is unproven, so retain the species and settle the wiring instead of claiming it already lives there.
+
+## The settings
+
+Stocked pools, native flora replacement, warning/display and the shared truce features are on by default. Keep feature-level on/off controls, ordinary odds/range tuning, search/reset and truthful scope labels. The display can degrade to explanatory inspect text only when its feature is deliberately disabled; default passing still requires the live glance bar. Optional warning disable does not turn its absence into an acceptable shipped default.
+
+Walking condenser, terrain cycle, guide/sale/extraction, flask production, both quests/claims, dewsilk, fat, rare loot and local study callbacks are labelled **Next version** and off. Parent/child dependencies are explicit; turning on a quest without its old crab cannot create a broken offer. Gates must cover actual callbacks, generated recipes, player orders and load behaviour, not merely hide a checkbox. Definitions and code remain resolvable. An old save with a unique animal must not silently delete it on disabling; show suspended content/legacy state and handle reversible cleanup explicitly. Fresh-map absence is the switch-off acceptance baseline, not a destructive migration claim.
+
+Timing labels distinguish immediate safe transaction boundaries, next pulse, next launch and new local maps. Replace the misleading local `WORLDGEN-AFFECTING` label with its actual local-map effect; no option can roll a planet. All-off leaves ordinary land, flora/fauna/fishing and a clean log without orphan jobs. Defaults restore this proposal's experience. Shared Direct Sun/truce controls retain their owner engine; no new cross-biome opt-in is added.
+
+## Four short stories
+
+**First hour:** The new settlers cross bright sand and find dark streaks above a green pool. They build on its dry shoulder, gather bladder-fruit, and draw a pen where their farmer can reach the bank. A net misses a moving breeder; the next covered landing entangles it. The carried stock is released into the named pool and its empty cue becomes living stock. Nobody needs to find an ancient crab first.
+
+**Ordinary week:** Work priorities deliver suitable food, dewgourds grow under the real shared growth rules, and surplus harvest leaves the breeders alive. Murrin broth is easy to serve; an alien beast meal leaves an uneasy memory in its eater. A native pack animal carries the stores. A predator approaching the pool abandons its hunt, but the ridge outside remains dangerous.
+
+**Worst day:** Harvest was pushed too far in one pen and feed missed in another. Their cues differ from the productive pool. A vhorrin emerges in the failing farm and consumes more stock. The handler's deliberate cull produces meat and a visible end to the threat; it does not instantly restore lost breeders. An escaped fan eel is still traceable outside the pen. Saving during recovery preserves the trouble as well as the food already taken.
+
+**Season's turn:** The colony still has dry building ground and native life around the wet margins. The carefully tended pens have produced repeated food; the failed pen has returned to production after care and restocking. The colony reloads its mid-season save, feeds and harvests in the other order, and the same causal rules hold. No moving oasis, quest hunters or cocoon industry has entered through a default-on callback.
