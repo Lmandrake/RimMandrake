@@ -1,0 +1,19 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Defined RM_Muttavaq as the native flood-adapted wader class with no flood impact or drowning. Added B4 comparisons and B6 living wake/wade/seal pictures. The pawn_contact meeting argues the muttavaq case explicitly while retaining M2 for remaining runtime transitions and implementation verification.",
+      "where": "bars.json B4, B6, R6/R6a and shared meetings, definition.md running contract, ambiguities.md 7/17, tickets.md T25/T27, models.md M2, owner_pages.md page two"
+    },
+    {
+      "id": "R2",
+      "changed": "Moved the missing invented free-tier feeding flier to retained 0.1.0 life. Defined RM_Qevrit and turned T31 into its build ticket with B6 actual-flight acceptance in both tiers. Removed conditional/no-flier passing and the next-version deferral. Updated counts.",
+      "where": "census.json free_tier_flier_hole, bars.json B6/C6 and production_defaults, definition.md life/neighbours, ambiguities.md 30, tickets.md T29/T31, models.md M2, next_version.md, owner_pages.md, result.json"
+    },
+    {
+      "id": "R3",
+      "changed": "Classified every kept wild plant, including passive donor ports, as shade-bound in R3a. Marked B1 green figurative across living vegetation pigments with an accept picture. Extended C7, T29 and M4 to all retained defs and their placement/load/shade-loss cases. Updated rule count.",
+      "where": "bars.json B1/C7/R3a and shared meetings, definition.md kept flora siting, census.json kept flora rows, ambiguities.md 19, models.md M4, tickets.md T29, owner_pages.md page two, result.json"
+    }
+  ]
+}

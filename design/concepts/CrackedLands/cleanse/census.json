@@ -347,7 +347,7 @@
       "called_by": "wildPlants -> RM_Plant_FloraLaw; placement patch -> RM_FloraLaws.Broken",
       "serves": "ordinary native life",
       "fate": "life",
-      "why": "Delegated: Wild shade-line herb is ordinary life; keep def-wide glow law plus shared geometric shade. Dynamic water tint is a separate deferred feature.",
+      "why": "Delegated: Wild shade-line herb is ordinary life; keep def-wide glow law plus shared geometric shade. Dynamic water tint is a separate deferred feature. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
       "ticket": "T29"
     },
@@ -360,7 +360,7 @@
       "called_by": "wildPlants; RM_Plant_FloraLaw placement/dieback; RM_GenStep_FossilStrata currently calls SeedClasps",
       "serves": "ordinary native life",
       "fate": "life",
-      "why": "Delegated: Passive pale wall-rooted plants supply the crag flora band; keep wall siting while decoupling all fossil actions and seam-dependent extra seeding.",
+      "why": "Delegated: Passive pale wall-rooted plants supply the crag flora band; keep wall siting while decoupling all fossil actions and seam-dependent extra seeding. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
       "ticket": "T29"
     },
@@ -386,7 +386,7 @@
       "called_by": "Biome wildPlants; Cauldron historical sharing (current ownership must be checked)",
       "serves": "ordinary native life",
       "fate": "life",
-      "why": "Delegated: Ordinary alien ground cover and twisted vegetation supply shade-edge life; no eviction or guaranteed timber amount.",
+      "why": "Delegated: Ordinary alien ground cover and twisted vegetation supply shade-edge life; no eviction or guaranteed timber amount. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
       "ticket": "T29"
     },
@@ -399,7 +399,7 @@
       "called_by": "wildPlants, sow menu, vanilla plant harvest -> RM_NabbuqBladder",
       "serves": "ordinary native life",
       "fate": "life",
-      "why": "Delegated: Native gatherable food is an ordinary forage role; deleting its food behaviour would defeat the stated first-visit foraging use.",
+      "why": "Delegated: Native gatherable food is an ordinary forage role; deleting its food behaviour would defeat the stated first-visit foraging use. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
       "ticket": "T29"
     },
@@ -412,9 +412,9 @@
       "called_by": "wildPlants/sow menu/harvest -> RM_RuqqalFibre Fabric stuff",
       "serves": "ordinary native life",
       "fate": "life",
-      "why": "Delegated: Ordinary harvestable textile is the native material supply; no extra recipe chain or pinned yield.",
+      "why": "Delegated: Ordinary harvestable textile is the native material supply; no extra recipe chain or pinned yield. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
-      "ticket": ""
+      "ticket": "T29"
     },
     {
       "id": "sevvuq_dye",
@@ -425,9 +425,9 @@
       "called_by": "wildPlants -> vanilla Plant harvest Dye",
       "serves": "ordinary native life",
       "fate": "life",
-      "why": "Delegated: Ordinary minor dye harvest, not a custom interaction; no high-water-only spawner is required.",
+      "why": "Delegated: Ordinary minor dye harvest, not a custom interaction; no high-water-only spawner is required. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
-      "ticket": ""
+      "ticket": "T29"
     },
     {
       "id": "zennaq_filament",
@@ -451,7 +451,7 @@
       "called_by": "Biome wildPlants -> RM_Luqqim; vanilla harvest Hay",
       "serves": "ordinary native life",
       "fate": "life",
-      "why": "Delegated: Passive dark-slot cups and ordinary minor plant matter remain life. The separate glower behaviour is moved; shape does not justify a lighting mechanic.",
+      "why": "Delegated: Passive dark-slot cups and ordinary minor plant matter remain life. The separate glower behaviour is moved; shape does not justify a lighting mechanic. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
       "ticket": "T29"
     },
@@ -464,7 +464,7 @@
       "called_by": "Biome wildPlants -> RM_Harrovaq; no wood harvest in current def",
       "serves": "ordinary native life",
       "fate": "life",
-      "why": "Delegated: Ordinary twisted tree form and habitat belong to life; do not restore wood removed by later plant-economy ruling.",
+      "why": "Delegated: Ordinary twisted tree form and habitat belong to life; do not restore wood removed by later plant-economy ruling. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
       "ticket": "T29"
     },
@@ -477,7 +477,7 @@
       "called_by": "Defs/RM_CrackedLands_DonorPorts.xml; no inline wild row in this biome for either port",
       "serves": "ordinary native life",
       "fate": "life",
-      "why": "Delegated: Passive retained owned plants remain available and no current roster member is evicted. Metal/secondary output is separately recommended out.",
+      "why": "Delegated: Passive retained owned plants remain available and no current roster member is evicted. Metal/secondary output is separately recommended out. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
       "ticket": "T29"
     },
@@ -789,9 +789,9 @@
       "called_by": "wildPlants -> RM_Zennaq",
       "serves": "Ordinary zennaq plant shape, habitat and flammability",
       "fate": "life",
-      "why": "Delegated: Retain roster member and normal fire susceptibility; no special lightning code or commodity needed.",
+      "why": "Delegated: Retain roster member and normal fire susceptibility; no special lightning code or commodity needed. R3a classifies its retained plants as shade-bound under shared geometry.",
       "needed_by": "",
-      "ticket": ""
+      "ticket": "T29"
     },
     {
       "id": "luqqim_glower",
@@ -1042,15 +1042,15 @@
     },
     {
       "id": "free_tier_flier_hole",
-      "what": "A new invented RM feeding flier to fill the current free-tier roster hole, without importing canon or a neighbour species.",
+      "what": "New invented RM_Qevrit (qevrit), an ordinary feeding flier required in the free and campaign rosters.",
       "built": "absent",
       "evidence": "src/RimMandrake/CrackedLands/Defs/BiomeDefs/RM_CrackedLands_Biome.xml wildAnimals contains RM_Muttavaq, RM_Uttaqar, RM_Tarruq only; no MaxFlightTime in CrackedLands race defs; src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml Op 2 gates RSW_CanCell/RSW_Convor/RUT_EmperorVulture on SW Bestiary.",
       "proven": "missing",
-      "called_by": "none: no free-tier flier definition or roster member found; later parity proposal only",
-      "serves": "later free-tier airborne-feeder roster parity",
-      "fate": "next_version",
-      "why": "Delegated: Ordinary free-tier life and the flood cycle work without adding a species. Apply flight to present fliers only in this version; a new creature would require its own later definition, not an implied T29 build or an eviction.",
-      "needed_by": "",
+      "called_by": "Required BiomeDef wildAnimals and campaign roster preservation under T31; currently absent.",
+      "serves": "ordinary airborne feeding life in both tiers",
+      "fate": "life",
+      "why": "Delegated correction from the_cracked_lands.md §§4/5/9 and CLAUDE.md Q11a: deleting feeding flight removes the owner-ruled fliers’ country and leaves the free roster incomplete. A new invented RM creature fills this hole.",
+      "needed_by": "life: the fliers’ country (lore §4 owner ruling, §5 feeding here/nesting elsewhere, Q11a complete free roster)",
       "ticket": "T31"
     }
   ]

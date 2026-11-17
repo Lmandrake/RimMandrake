@@ -1,0 +1,136 @@
+{
+ "mod": "CrackedLands",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "cannot_hold_together",
+     "where": "bars.json B4 and R6 against B6 and R9; definition.md 'Living, grounded pawns contacted by the front receive an impact consequence...' and 'Muttavaq remains a pawn ... wet contact wakes it'",
+     "evidence": "B4 says 'Grounded people and animals caught by the flood suffer impact and continued immersion danger that can kill'. R6 exempts only nonbreathers, real airborne creatures and unnamed 'shared trait' immunities. The muttavaq sleeps in the low pans, which are flood bed, and B6/R9 say water wakes it there. So under B4 every woken muttavaq is a grounded breathing animal standing in the front, and each flood can injure or drown it. The lore says the opposite. design/Jawa/worldbuilding/biomes/the_cracked_lands.md §4: 'The admission test: lives in the shade line, survives the flood'. cracked_lands_bedazzle_cast_2026-09-28.md: 'The flood wakes it wherever the water reaches ... Awake, it spends the flood-weeks feeding ... wading the wet canyon floor'. B6's 'seal again at the dry' relies on sleepers outliving the flood, while B4 and R6 make that a matter of chance. No file defines which native kinds are flood-adapted. The pawn_contact meeting is marked 'unknown' and sent to M2, but this is a missing definition, not a missing measurement.",
+     "would_pass": "A rule that names which native canyon-floor kinds are flood-adapted (at least the muttavaq woken by water) and what the flood does to them, consistent with the lore's admission test. B4's range and pictures distinguish flood-adapted natives from colonists, visitors and non-native animals. B6 gets an accept picture of a woken muttavaq standing in the front and later sealing alive, and a reject picture of the flood killing the pan sleepers it woke.",
+     "smallest_fix": "Add rule R6a: 'Native flood-adapted kinds (muttavaq; any other roster native the lore admits as flood survivors) take no flood impact or drowning; everyone else follows R6.' Add that class to B4.range.varies, add one accept and one reject picture to B6, and move the pawn_contact meeting's muttavaq case from unknown to argued."
+    },
+    {
+     "id": "R2",
+     "head": "core_promise_weakened",
+     "where": "owner_pages.md page one 'A new invented free-tier flier' under Next version; definition.md 'The current free roster has no flier ... recorded for next version'; census.json free_tier_flier_hole fate next_version; B6 'feeding fliers, wherever present'",
+     "evidence": "the_cracked_lands.md §4: '⭐ The fliers live here (owner's ruling): ... this is the fliers' country'. §5 Always true: 'The fliers feed here and nest elsewhere'. §9: 'Motion: none, then the flood; fliers as the only daily movement'. CLAUDE.md (Q11a): 'A RM_ roster is rich enough to stand alone — never a thin fallback' and 'A hole in a roster is filled with a NEW creature'. In the proposal the free RM tier's 0.1.0 Life has no flier at all, and B6's flight clause holds vacuously there. That drops an owner-ruled defining part of the biome's life from the base tier by delegated default. Page two raises no question about it (questions: 0), although these two rulings are concrete evidence against deferring.",
+     "would_pass": "Either the free-tier feeding flier is kept in 0.1.0 as life, with its deletion argument citing §4/§5 and Q11a and a T31 build ticket carrying the B6 flight acceptance. Or the deferral goes on page two as one clear question that cites those rulings, takes the default, and says what changes if he answers otherwise.",
+     "smallest_fix": "Move free_tier_flier_hole to fate 'life' with needed_by 'life: the fliers' country (lore §4 owner ruling; Q11a no thin fallback)'. Drop 'wherever present' from B6. Turn T31 into a definition and build ticket. Failing that, add the question to owner_pages.md page two with this evidence."
+    },
+    {
+     "id": "R3",
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B1 'native green vegetation confined to shade'; checks C7; T29; census.json rows thorn_flora, harrovaq, ruqqal_cloth, sevvuq_dye, zennaq_ordinary, luqqim_light (all fate life)",
+     "evidence": "B1 and its reject picture ('Green ground spreads across exposed flats') make shade confinement part of the land bar. The proposal defines shade placement only for Veqma (glow law plus geometric shade) and Nabbuq (C7, T29). The other kept flora are not covered. src/RimMandrake/CrackedLands/Defs/ThingDefs_Plants/RM_TwistingThorns.xml: the cracked thornwood has 'Tufts of olive leaf', fertilityMin 0.05, and no FloraLaw thingClass or glow limit, so it can grow on open-sun Sand. RM_CrackedLandsFlora.xml header: 'No green anywhere (only Veqma shows green, on the shade line)'. 'Green' is undefined, so one judge can pass olive-tufted thornwood on the sun flats as not green and another can refuse it under B1's reject picture. No rule says which kept plants are shade-bound and which are sun-tolerant and non-green.",
+     "would_pass": "A rule listing each kept wild plant as shade-bound (geometric shade, R3) or sun-tolerant and not green, with 'green' in B1 defined or marked figurative together with an accept picture. C7 and M4 cover every kept flora def, not only Veqma and Nabbuq.",
+     "smallest_fix": "Add rule R3a classifying the kept flora (thornwood, thorngrass, thornweed, harrovaq, ruqqal, sevvuq, zennaq, luqqim, nabbuq, veqma, qirra, talus) as shade-bound or sun-tolerant/non-green. Add a 'figurative' entry for 'green' to B1. Extend C7 to all kept flora."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Defined RM_Muttavaq as the native flood-adapted wader class with no flood impact or drowning. Added B4 comparisons and B6 living wake/wade/seal pictures. The pawn_contact meeting argues the muttavaq case explicitly while retaining M2 for remaining runtime transitions and implementation verification.",
+      "where": "bars.json B4, B6, R6/R6a and shared meetings, definition.md running contract, ambiguities.md 7/17, tickets.md T25/T27, models.md M2, owner_pages.md page two"
+     },
+     {
+      "id": "R2",
+      "changed": "Moved the missing invented free-tier feeding flier to retained 0.1.0 life. Defined RM_Qevrit and turned T31 into its build ticket with B6 actual-flight acceptance in both tiers. Removed conditional/no-flier passing and the next-version deferral. Updated counts.",
+      "where": "census.json free_tier_flier_hole, bars.json B6/C6 and production_defaults, definition.md life/neighbours, ambiguities.md 30, tickets.md T29/T31, models.md M2, next_version.md, owner_pages.md, result.json"
+     },
+     {
+      "id": "R3",
+      "changed": "Classified every kept wild plant, including passive donor ports, as shade-bound in R3a. Marked B1 green figurative across living vegetation pigments with an accept picture. Extended C7, T29 and M4 to all retained defs and their placement/load/shade-loss cases. Updated rule count.",
+      "where": "bars.json B1/C7/R3a and shared meetings, definition.md kept flora siting, census.json kept flora rows, ambiguities.md 19, models.md M4, tickets.md T29, owner_pages.md page two, result.json"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json adds R6a: 'the flood-adapted wader class in this version is RM_Muttavaq. Sealed, waking and awake muttavaq take no flood impact or flood drowning, including owned, injured and downed animals. Water still wakes them and dry sealing retains R9's guards.' R6 now opens with 'Except for R6a's native flood-adapted class'. B4.says now reads 'Grounded people and animals outside the native flood-adapted class'. B4.range.varies adds 'R6a defines the native flood-adapted class as RM_Muttavaq ... Colonists, visitors, non-native animals and other retained fauna follow R6'. B4 gains the accept picture 'A muttavaq wakes in the advancing front and wades unharmed ... while a colonist, visitor or non-native animal remaining beside it is exposed' and a matching reject. B6 gains the accept 'Water wakes a muttavaq standing directly in the advancing front ... then seals alive with the same identity when its pan dries' and the reject 'The front kills the muttavaq pan sleepers it wakes'. The pawn_contact meeting's why opens 'Argued for the muttavaq case under R6a' and keeps unknown only for the remaining runtime transitions. definition.md running contract, ambiguities.md item 7, T25, T27 and M2 agree. This matches the lore admission test ('survives the flood', the_cracked_lands.md line 130)."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "census.json free_tier_flier_hole now has fate 'life' and needed_by 'life: the fliers' country (lore §4 owner ruling, §5 feeding here/nesting elsewhere, Q11a complete free roster)', with RM_Qevrit defined. B6.says has lost 'wherever present'. B6 has the new reject 'The free tier has no feeding flier' and the accept 'The free roster includes the invented qevrit feeding flier with actual airborne feeding travel and grounded landing'. C6 reads 'Require T31's RM_Qevrit in both effective tier rosters'. T31 is now 'Define and build the missing ordinary free-tier feeding flier'. It carries a creature definition, a build scope and an acceptance test requiring RM_Qevrit in the free roster and in the campaign roster with Bestiary absent and present, plus Pawn_FlightTracker airborne feeding-travel ticks and grounded landing. The old next-version T31 heading and next_version.md entry are gone: a grep finds no 'no flier', 'wherever present' or 'only for next version' left. owner_pages.md page one 'Life' and page two both state the retained qevrit."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json adds R3a: 'every kept wild plant is shade-bound under shared geometric R3 shade'. It lists 14 defs, every one present in src (RM_CrackedThornwood, RM_TwistingThorngrass, RM_TwistingThornweed, RM_Harrovaq, RM_Ruqqal, RM_Sevvuq, RM_Zennaq, RM_Luqqim, RM_Nabbuq, RM_Veqma, RM_QirraMat, RM_TalusClasp, RM_HardyGrass, RM_GargantuanLithops), and states 'The sun-tolerant/non-green class is empty.' B1.meant.figurative now holds 'green' standing for 'the living shade-line vegetation, including olive leaves and the roster's violet, coral, copper and chalk-white forms', with an accept picture, and B1 gains a matching accept picture. C7 now covers 'Every kept flora def listed in R3a ... on natural, sown and loaded placements, including wrong-site refusal/dieback after shade loss'. M4 adds 'Enumerate every retained flora def against the complete R3a manifest', and T29 does the same. The classification fits lore line 173: 'No green outside the shade line — a flora def resident on open sun-flats is a' violation."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Decisions that change what gets built or what passes",
+    "bars.json bars/B1",
+    "bars.json bars/B4",
+    "bars.json bars/B6",
+    "bars.json checks/C6",
+    "bars.json checks/C7",
+    "bars.json meetings",
+    "bars.json rules/R3a",
+    "bars.json rules/R6",
+    "bars.json rules/R6a",
+    "census.json rows/donor_port_defs",
+    "census.json rows/free_tier_flier_hole",
+    "census.json rows/harrovaq",
+    "census.json rows/luqqim_light",
+    "census.json rows/nabbuq_food",
+    "census.json rows/ruqqal_cloth",
+    "census.json rows/sevvuq_dye",
+    "census.json rows/talus_placement",
+    "census.json rows/thorn_flora",
+    "census.json rows/veqma_shade",
+    "census.json rows/zennaq_ordinary",
+    "definition.md Edges and neighbours",
+    "definition.md The mod in a player's words",
+    "definition.md The running contract",
+    "models.md M2: Situation and lifecycle generator",
+    "models.md M4: Shade and plant eligibility sweep",
+    "next_version.md New free-tier feeding flier",
+    "owner_pages.md Page one — what the Cracked Lands now are",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T25: Implement and expose real flood impact and immersion danger",
+    "tickets.md T27: Make retained animal lifecycles continuous and readable",
+    "tickets.md T29: Keep ordinary land/life whole after decoupling extras",
+    "tickets.md T31: Define a free-tier feeding flier only for next version",
+    "tickets.md T31: Define and build the missing ordinary free-tier feeding flier"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1300832,
+     "output_tokens": 13014
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "Only RM_Muttavaq is in the flood-adapted class. The other free-roster residents (RM_Uttaqar, crag giant; RM_Tarruq, year-round resident) and the campaign RM_Lirrith/RM_Ommok get no stated relation to the lore admission test 'survives the flood'.",
+   "reason": "R6a puts every other native under R6, so it survives only by escaping. That probably fits crag and bank dwellers, but no entry argues it per species [guess ~65% that none of them is a canyon-floor resident needing adaptation]. A later look could add one line saying which band each lives in and why it is excluded from R6a.",
+   "round": 1
+  },
+  {
+   "what": "T31 adds a new creature and its art to a 0.1.0 cleanse. The ticket says 'Required assets belong to this creature's build, with the standing art workflow' but does not say whether this changes the B6 pass path or the build cost on page one.",
+   "reason": "This is not a defect in the fix. A creature build with art is a large ticket, and owner_pages.md page one does not flag it as the one added content item, so the owner may not see its weight. CrackedLands is not on mod_owner_hold.json [measured], so the hold rule does not apply.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "9d2d0fa9b62d950d4e1c6e7fe7f45e34862d5e57aa91dba28b8a1d74ad48cd4a",
+ "seconds": 439,
+ "at": "2026-11-17T06:41:51"
+}
