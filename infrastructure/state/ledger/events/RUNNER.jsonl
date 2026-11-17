@@ -8263,3 +8263,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_END: disk.scratch_dirty_end = 4 sanity problems at the end of the last run (MEASURED), line > 0","ts":"2026-11-17T05:45:08Z","tsn":1794894308474542591}
 {"seat":"RUNNER","event":"live","id":"OPS_DEPLOY_UPDATE_UNSTICK_RDHQ","result":"kept","detail":"sweep: running again","ts":"2026-11-17T05:48:09Z","tsn":1794894489938026404}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"kept","detail":"sweep: running again","ts":"2026-11-17T05:48:16Z","tsn":1794894496598431713}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_END: disk.scratch_dirty_end = 4 sanity problems at the end of the last run (MEASURED), line > 0","ts":"2026-11-17T05:48:58Z","tsn":1794894538748777205}
