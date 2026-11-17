@@ -16,8 +16,8 @@
   "unknown_pairs": 7,
   "models": 4,
   "tickets": 50,
-  "questions": 0
+  "questions": 1
  },
  "blocked_on": [],
- "applyable": false
+ "applyable": true
 }

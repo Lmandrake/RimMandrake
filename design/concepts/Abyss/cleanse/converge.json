@@ -1,0 +1,150 @@
+{
+ "mod": "Abyss",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "contradicts_ruling_or_lore",
+     "where": "definition.md 'Physical boundaries and transitions'; bars.json R1 and B1; next_version.md 'outdoor drifting pockets'; owner_pages.md page two",
+     "evidence": "The frozen sheet design/Jawa/worldbuilding/biomes/abyss.md §5 'Always true' says: 'The Dark is present, material, and temperature-structured; clear pockets are real, sharp-edged, and unexplained to everyone in-world.' §1 says it 'parts without warning into pockets of impossibly clear air'. The proposal removes every outdoor pocket for 0.1.0. R1 says 'no outdoor microclimate is promised', so clear air exists only inside heated rooms, which a heater explains, or map-wide through Unveiling or a change in the shared outdoor temperature, which is not a pocket. Page two lists this only as a default ('Clear edges are heated doorways, not spontaneous outdoor pockets'). It never says the change breaks an Always-true lore line, and result.json reports questions: 0.",
+     "would_pass": "Either keep sharp-edged, unexplained outdoor clear pockets in 0.1.0 as part of the signature, with a definition and a bar picture, or state on his pages that the lore and the engine conflict. That statement names the §5 line, the engine fact that RimWorld has one outdoor temperature (so 'only a thermometer can tell' cannot hold literally), and the default taken. It is asked as a question carrying that evidence, as brief step 4 and the Evidence-for-Ask rule require.",
+     "smallest_fix": "Add one question to owner_pages.md page two: the §5 'clear pockets are real' line against the single outdoor temperature, the default (no outdoor pockets in 0.1.0, built offset off under T43), and what changes if he says keep them (T43 becomes a signature item and B1 gains an outdoor pocket picture). Set result.json questions to 1."
+    },
+    {
+     "id": "R2",
+     "head": "kept_mechanic_undefined",
+     "where": "census.json row dark_optical_paths (built: absent, fate: signature, ticket T31); bars.json B2 says and R2; tickets.md T31",
+     "evidence": "This kept signature mechanic is unbuilt and only stated in outline. R2 says 'clear endpoints do not bypass intervening Dark'. T31 says 'rays through outdoor Dark remain obstructed'. B2 says 'a clear position cannot grant clean sight'. ambiguities.md leaves the 'sampling algorithm' as an attackable rule. Nothing says what obstruction does to a shot. It could lower hit chance by the density along the path, cap the range, or block targeting entirely. Nothing says whether raiders, turrets and animals are affected the same way as colonists. Nothing says what happens when B1's still-visible dim silhouette can or cannot be ordered attacked. 'Clean' is unmarked, so a token 1% penalty passes B2 as written.",
+     "would_pass": "R2 or definition.md states the form of the effect. For example: accumulated Dark along the line lowers sight and hit chance the way vanilla weather accuracy does; it never removes the target from selection; it applies to every shooter, raiders and turrets included. B2 gains a reject picture that separates a negligible path penalty from real obstruction, without pinning a number.",
+     "smallest_fix": "Add one sentence to R2 naming the effect form and who it applies to, and add one B2 reject picture: 'intervening Dark costs a long shot almost nothing compared with the same shot through clear air'."
+    },
+    {
+     "id": "R3",
+     "head": "figurative_unmarked",
+     "where": "bars.json B2 says ('A visitor in the Abyss loses usable sight and aim')",
+     "evidence": "B1 says, R2 and definition.md use 'neutral visitors' to mean pawns of other factions, as distinct from colonists. B2 uses 'visitor' for whoever carries murk. The census row 'murk' gives that as every humanlike: 'Humanlike sight/aim/melee hediff follows local Dark'. abyss.md §2 uses 'visitors' to mean outsiders, the colony included. B2's figurative list is empty, so a builder who applies murk only to neutral guest pawns passes B2 by the B1 meaning.",
+     "would_pass": "B2 names its subject literally (a colonist or any other non-native humanlike), or marks 'visitor' as figurative with what it stands for and an accept picture showing a colonist impaired.",
+     "smallest_fix": "Change B2 says to 'A colonist or other non-native pawn in the Abyss loses…', or add {word: 'visitor', stands_for: 'every non-native humanlike, colonists included'} to B2 meant.figurative."
+    },
+    {
+     "id": "R4",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B3 sees.control and sees.start",
+     "evidence": "B3 says native food, grazing, timber and fiber plants 'persist without real sky light'. The control lists only 'Fertility, artificial sunlamps or inventory injections' and 'remove other glowers'. It never records or excludes sky glow. No Abyss source touches sky glow (searched [measured]: only RM_CompSummHide reads skyManager.CurSkyGlow, and it expects it to reach 0.5 'under bright open sky'). B1's range assumes 'day/night palette slots for the same fixed solar geometry'. So on any map whose solar geometry gives daytime sky glow, a native plant kept alive by daylight passes the 'persist without real sky light' reading. Abyss sheet §6 ban 6 ('No sun-dependent resident life') is exactly that false pass.",
+     "would_pass": "The B3 instrument records the sky-glow contribution at every sampled plant and plot. Persistence and establishment are read with sky glow attributed or excluded, for example night-phase readings or growth eligibility traced to glow source, so daylight cannot stand in for living light.",
+     "smallest_fix": "Add to B3 sees.control: 'record sky/sun glow at each sample; a native plant counts as persisting without sky light only where its growth eligibility holds with the sky contribution removed'."
+    },
+    {
+     "id": "R5",
+     "head": "core_promise_weakened",
+     "where": "owner_pages.md line 13; definition.md 'Why a player reaches for it'; bars.json B1 and B8 meant",
+     "evidence": "His 2026-10-20 experience (design/RimMandrake/biome_experiences_2026-10-20.md): 'Wonders emerge just as often for moments of transcendent beauty, only to twist into nightmares just as swiftly.' The proposal defers 'the swift twist into nightmares' 'with cryptid content'. Yet the kept mechanics already make that turn. Unveiling (the wonder, B1) ends, the Dark returns (R1), lamps shrink (R3), krizzaks feed (B4) and the ishvarith closes in as light fails (B4). That is a 'terror close by' with no cryptid system. No bar or picture asks for that sequence, so a build where Unveiling's end changes nothing nearby passes every bar. The clause is dropped without an argument that the kept mechanics cannot carry it.",
+     "would_pass": "An accept picture in B8 or B1 in which Unveiling's close readably brings nearby danger back to the colony's edge through the kept Dark, light and predator chain, with a reject picture where the clearing ends and nothing nearby changes. Alternatively, an argument with evidence for why the kept chain cannot carry the clause.",
+     "smallest_fix": "Add one accept and one reject picture to B8 (no new system), and narrow the page-one deferral to the source-of-nightmares dread only."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Added evidence-backed owner question Q1 naming the frozen §5 pocket requirement, the single outdoor temperature and §3 thermometer conflict, the no-pocket/T43-off default, and the signature/T43/B1 alternative. Synchronized the default/conflict wording and question count; removed the launcher-generated refusal appendix.",
+      "where": "owner_pages.md page two Q1 and counts; definition.md Physical boundaries and transitions; ambiguities.md introduction and Pockets; result.json counts.questions"
+     },
+     {
+      "id": "R2",
+      "changed": "Defined accumulated path Dark as a weather-style sight/hit-chance reduction for every shooter, preserving selection and otherwise legal attack orders; added the negligible-long-shot-cost reject picture and aligned the ambiguity entry.",
+      "where": "bars.json R2 and B2.reject; ambiguities.md Light eaten in transit"
+     },
+     {
+      "id": "R3",
+      "changed": "Replaced visitor with the literal subject: a colonist or other non-native humanlike.",
+      "where": "bars.json B2.says"
+     },
+     {
+      "id": "R4",
+      "changed": "Required sky/sun-glow recording at every sampled plant and plot, native persistence and establishment without sky contribution, and attribution of paired crop growth to living light.",
+      "where": "bars.json B3.sees.control"
+     },
+     {
+      "id": "R5",
+      "changed": "Added B8 accept/reject pictures for nearby danger returning as natural Unveiling ends through the kept Dark, artificial light, krizzak and ishvarith chain; required that return in B8.says and narrowed deferral consistently to nightmare-source dread.",
+      "where": "bars.json B8.says, B8.meant, B8.accept/reject and B1.meant; owner_pages.md page one; definition.md Why a player reaches for it; ambiguities.md Tide and experience clauses"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "owner_pages.md page two now asks Q1: 'Keep sharp-edged, unexplained outdoor clear pockets in this version?' It quotes the frozen abyss.md §5 line 'clear pockets are real, sharp-edged, and unexplained to everyone in-world.' It states the engine fact: 'RimWorld has one outdoor temperature, so §3's \"nothing but a thermometer can tell\" cannot hold literally between outdoor cells: the lore and engine conflict.' It gives the default ('no outdoor pockets in 0.1.0; T43 switches the built offset off') and what changes if he says keep them ('T43 becomes signature work … and B1 gains an outdoor-pocket picture'). result.json counts.questions is now 1, and page one says '1 question'. definition.md 'Physical boundaries and transitions' now names the conflict and points to Q1 ('no lore amendment is claimed'). ambiguities.md 'Pockets' now reads 'Default to B pending owner-page Q1, rather than treating a lore conflict as a settled ruling.'"
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "bars.json R2 adds: 'Accumulated Dark density along the sight line reduces effective sight and ranged hit chance through a weather-style accuracy modifier for every shooter, including colonists, other factions, animals and turrets; it never removes a target from selection or prevents an otherwise legal attack order against a dim silhouette.' That states the form of the effect, who it applies to, and what happens to selection and attack orders on B1's dim silhouette. B2.reject gains 'Intervening Dark costs a long shot almost nothing compared with the same shot through clear air.' That separates a token penalty from real obstruction without pinning a number. ambiguities.md 'Light eaten in transit' was aligned to match."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json B2.says now reads 'A colonist or other non-native humanlike in the Abyss loses usable sight and aim through the Dark…'. That names the subject literally, which is the record's first would_pass option and its smallest_fix."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "bars.json B3.sees.control adds: 'Record sky/sun glow at every sampled plant and plot; native persistence and establishment count only where growth eligibility holds with the sky contribution removed, and paired crop readings must attribute growth to living light.' A daylit native plant therefore can no longer pass 'persist without real sky light'."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "bars.json B8.accept adds a natural-Unveiling picture: 'as it ends, returning Dark shortens artificial lamplight, a krizzak feeding on the approach lamp weakens the refuge further, and the ishvarith can approach the workers … no cryptid event or scheduled attack is needed.' B8.reject adds 'With the same cold air, approach lamp, nearby krizzak and ishvarith, Unveiling ends but only the sky tint changes: lamp reach and the predator approach stay as safe as during the clearing, so nothing nearby turns threatening.' B8.says adds 'with nearby danger returning as Unveiling closes'. owner_pages.md page one narrows the deferral: 'Only the dread of finding the nightmares' source is deferred with cryptid content.' The B1 meant intent, definition.md 'Why a player reaches for it' and ambiguities.md were made consistent with this."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Ambiguities settled by the Designer",
+    "ambiguities.md Which clauses of the owner's experience this version carries",
+    "ambiguities.md “A tide” and “just as often”",
+    "ambiguities.md “Light eaten in transit”",
+    "ambiguities.md “Pockets” and the thermometer",
+    "bars.json bars/B1",
+    "bars.json bars/B2",
+    "bars.json bars/B3",
+    "bars.json bars/B8",
+    "bars.json rules/R2",
+    "definition.md Physical boundaries and transitions",
+    "definition.md Why a player reaches for it",
+    "owner_pages.md Page one — what the Abyss would ship",
+    "owner_pages.md Page two — what to check",
+    "result.json counts"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 647407,
+     "output_tokens": 5453
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "B2 accept pictures and range still use 'visitor' ('impaired visitor sight', 'the same visitor can work and aim', 'An evacuated visitor leaves the biome', 'injured/healthy visitor controls'), and B2.meant.figurative is still empty.",
+   "reason": "B2.says is now literal, so the record stands fixed. But a builder reading the accept pictures by B1's 'neutral visitors' meaning could still apply murk only to guest pawns. These sentences predate the fix and were not part of the record's where; replacing them with 'colonist or other non-native humanlike' would close the gap.",
+   "round": 1
+  },
+  {
+   "what": "R2's 'weather-style accuracy modifier' sits next to B2.sees.control's 'flat-weather-penalty mutation must fail'.",
+   "reason": "R2 says the modifier scales with density accumulated along the sight line, so the two do not conflict. Still, 'weather-style' could be misread as the existing blanket WeatherDef multiplier that B2 rejects. Saying 'path-scaled, in the form of' would remove that reading.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "9377a5d435ca1aa7a9d60b83ead589374303360fa5210592c8573e7e25420014",
+ "seconds": 200,
+ "at": "2026-11-17T06:49:29"
+}

@@ -4,7 +4,7 @@
       "id": "B1",
       "says": "The player can distinguish black etched relief, usable ground, living illumination and heated-room clear-air edges while the Dark dims terrain, buildings and non-colony creatures without removing their silhouettes or obscuring the colony's pawns.",
       "meant": {
-        "intent": "The compose line and frozen sheet require inhabitable, visually readable country. This carries the protection/nearby-terror clause through reduced visual detail and partially expresses the beauty clause through briefly revealed relief; it does not carry beauty turning into nightmares or the source-of-nightmares dread, which are deferred with cryptid content.",
+        "intent": "The compose line and frozen sheet require inhabitable, visually readable country. This carries the protection/nearby-terror clause through reduced visual detail and partially expresses the beauty clause through briefly revealed relief; B8 carries the swift turn back to nearby danger through returning Dark, shrinking light and ordinary predators. Only the source-of-nightmares dread is deferred with cryptid content.",
         "source": "CASE Biomes.compose.json line; design/Jawa/worldbuilding/biomes/abyss.md sections 1, 5 and 9; delegated: require usable local ground and a spatial boundary to make the material-air description playable; owner Abyss experience in design/RimMandrake/biome_experiences_2026-10-20.md; delegated: dimming with retained silhouettes, rather than sprite removal, preserves readable danger under the standing no-unreadable-vanishing ruling.",
         "figurative": []
       },
@@ -47,7 +47,7 @@
     },
     {
       "id": "B2",
-      "says": "A visitor in the Abyss loses usable sight and aim through the Dark and regains them in genuinely warm clear air, while a clear position cannot grant clean sight through intervening Dark.",
+      "says": "A colonist or other non-native humanlike in the Abyss loses usable sight and aim through the Dark and regains them in genuinely warm clear air, while a clear position cannot grant clean sight through intervening Dark.",
       "meant": {
         "intent": "Material air must both conceal close danger and permit a warm shelter; otherwise protection is a false tooltip or a permanent blanket penalty.",
         "source": "infrastructure/state/items/closed/ABYSS_DARK_BUILD_1.md spec and frozen abyss.md sections 3, 5, 6; delegated: intervening-air and warm-room control follow from light eaten in transit and no clean sensing.",
@@ -61,7 +61,8 @@
       "reject": [
         "A warm room loses the murk hediff but its shots still suffer the unchanged Abyss blanket penalty through entirely clear air.",
         "The screen shows a clear pocket whose ordinary thermometer is still as cold as the opaque cell beside it, solely because an unseen effective-temperature noise offset was added.",
-        "An observer in a heated room gets clean aim through intervening outdoor Dark, or map exit leaves a visitor carrying a permanent air-caused murk penalty."
+        "An observer in a heated room gets clean aim through intervening outdoor Dark, or map exit leaves a visitor carrying a permanent air-caused murk penalty.",
+        "Intervening Dark costs a long shot almost nothing compared with the same shot through clear air."
       ],
       "lazy": "none: the words require the same air to obstruct intervening sight and release impairment under actual warmth, excluding endpoint-only or fake-temperature success.",
       "range": {
@@ -117,7 +118,7 @@
         "instrument": "M1 plant/substrate transition generator plus M2 calibrated growth/food/harvest traces and glow/overlight reads; resolved-def reads determine inherited fields (T33A/T37A).",
         "start": "Paired plots share soil, temperature and crop age; one has a living emitter and one has no emitter. Natural native clusters are sampled separately from player-planted plots, with no hidden cheat light or food delivery.",
         "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
-        "control": "Fertility, artificial sunlamps or inventory injections could grow/feed the plot: hold soil/heat fixed, remove other glowers and record harvested item origin and actual crop-growth eligibility. Hollow and equally fertile sand controls separate substrate from fertility.",
+        "control": "Fertility, artificial sunlamps or inventory injections could grow/feed the plot: hold soil/heat fixed, remove other glowers and record harvested item origin and actual crop-growth eligibility. Hollow and equally fertile sand controls separate substrate from fertility. Record sky/sun glow at every sampled plant and plot; native persistence and establishment count only where growth eligibility holds with the sky contribution removed, and paired crop readings must attribute growth to living light.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "Not live-only: calibrated production-kernel/state traces can decide this comparison; live state reads calibrate engine integration, no subjective look is required."
       },
@@ -321,9 +322,9 @@
     },
     {
       "id": "B8",
-      "says": "Across a complete season of ordinary full-map play the colony can keep warm lit work and farms usable amid recurring Dark, native predation and grain wear, without runaway residue, emptied native life, stalled work or cascading errors after reload or reordered work.",
+      "says": "Across a complete season of ordinary full-map play the colony can keep warm lit work and farms usable amid recurring Dark, native predation and grain wear, with nearby danger returning as Unveiling closes, without runaway residue, emptied native life, stalled work or cascading errors after reload or reordered work.",
       "meant": {
-        "intent": "The first version must run as a whole: protection, living light, nearby danger and material maintenance must coexist over time, not only in isolated forced scenes. It carries sustained refuge and nearby ordinary predation, not the deferred beauty-to-nightmare reversal or long-stay discovery of a nightmare source; erosion is a material cost, not that dread.",
+        "intent": "The first version must run as a whole: protection, living light, nearby danger and material maintenance must coexist over time, not only in isolated forced scenes. It carries sustained refuge and the swift beauty-to-danger reversal when Unveiling ends through returning Dark, shrinking artificial light, krizzak feeding and an ishvarith approaching the weakened refuge. Only long-stay discovery of a nightmare source is deferred; erosion is a material cost, not that dread.",
         "source": "Owner 2026-10-20 Abyss experience in biome_experiences_2026-10-20.md; cleanse whole-bar requirement; delegated: classify flood/desert/stall/error outcomes using actual colony/material/ecology trajectories.",
         "figurative": [
           {
@@ -340,12 +341,14 @@
       },
       "accept": [
         "During routine residence, workers roof and heat a refuge, maintain a living-light farm, handle a local feeder failure and use recovered grain; native life continues and the explored country periodically clears and closes.",
-        "A save made during active light/air/material pressure resumes into the same kind of recoverable routine; planting before heating and heating before planting both reach usable work when their ordinary prerequisites are met."
+        "A save made during active light/air/material pressure resumes into the same kind of recoverable routine; planting before heating and heating before planting both reach usable work when their ordinary prerequisites are met.",
+        "On a cold map with krizzaks and an ishvarith near the colony edge, a natural Unveiling reveals etched relief; as it ends, returning Dark shortens artificial lamplight, a krizzak feeding on the approach lamp weakens the refuge further, and the ishvarith can approach the workers. The dim silhouette and existing cues let them see the danger return and withdraw toward maintained living light; no cryptid event or scheduled attack is needed."
       ],
       "reject": [
         "A staged clearing with fire, predation or grain switched off looks successful, but full default play empties the native food chain or eats the colony\u2019s land.",
         "Residue fills paths and storage without useful cost, light failures require continual bespoke intervention, ordinary work cannot resume, or a mid-cycle reload starts repeated exceptions.",
-        "The main work sequence succeeds only in its scripted order because warming, planting or excluding a feeder leaves stale state in another system."
+        "The main work sequence succeeds only in its scripted order because warming, planting or excluding a feeder leaves stale state in another system.",
+        "With the same cold air, approach lamp, nearby krizzak and ishvarith, Unveiling ends but only the sky tint changes: lamp reach and the predator approach stay as safe as during the clearing, so nothing nearby turns threatening."
       ],
       "lazy": "none: the words require complete default natural operation across the full stated stretch and action-order/reload cases, excluding an isolated forced showcase.",
       "range": {
@@ -456,7 +459,7 @@
     },
     {
       "id": "R2",
-      "rule": "Use a common bounded final density for view, targeting and sensory consumers; clear endpoints do not bypass intervening Dark. Existing normal wall occlusion remains. Local warmth removes Dark-caused aim loss, not unrelated storm/injury penalties. Presentation uses density-scaled detail/contrast loss for terrain/buildings and non-colony creatures with retained silhouettes; player-owned colonists, tame animals and mechs stay fully drawn, and selection/inspect/UI/warnings remain readable. Ordinary unexplored fog is unchanged.",
+      "rule": "Use a common bounded final density for view, targeting and sensory consumers; clear endpoints do not bypass intervening Dark. Existing normal wall occlusion remains. Local warmth removes Dark-caused aim loss, not unrelated storm/injury penalties. Presentation uses density-scaled detail/contrast loss for terrain/buildings and non-colony creatures with retained silhouettes; player-owned colonists, tame animals and mechs stay fully drawn, and selection/inspect/UI/warnings remain readable. Ordinary unexplored fog is unchanged. Accumulated Dark density along the sight line reduces effective sight and ranged hit chance through a weather-style accuracy modifier for every shooter, including colonists, other factions, animals and turrets; it never removes a target from selection or prevents an otherwise legal attack order against a dim silhouette.",
       "touches": [
         "dark field",
         "external sensing",

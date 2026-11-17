@@ -1,0 +1,29 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Added evidence-backed owner question Q1 naming the frozen §5 pocket requirement, the single outdoor temperature and §3 thermometer conflict, the no-pocket/T43-off default, and the signature/T43/B1 alternative. Synchronized the default/conflict wording and question count; removed the launcher-generated refusal appendix.",
+      "where": "owner_pages.md page two Q1 and counts; definition.md Physical boundaries and transitions; ambiguities.md introduction and Pockets; result.json counts.questions"
+    },
+    {
+      "id": "R2",
+      "changed": "Defined accumulated path Dark as a weather-style sight/hit-chance reduction for every shooter, preserving selection and otherwise legal attack orders; added the negligible-long-shot-cost reject picture and aligned the ambiguity entry.",
+      "where": "bars.json R2 and B2.reject; ambiguities.md Light eaten in transit"
+    },
+    {
+      "id": "R3",
+      "changed": "Replaced visitor with the literal subject: a colonist or other non-native humanlike.",
+      "where": "bars.json B2.says"
+    },
+    {
+      "id": "R4",
+      "changed": "Required sky/sun-glow recording at every sampled plant and plot, native persistence and establishment without sky contribution, and attribution of paired crop growth to living light.",
+      "where": "bars.json B3.sees.control"
+    },
+    {
+      "id": "R5",
+      "changed": "Added B8 accept/reject pictures for nearby danger returning as natural Unveiling ends through the kept Dark, artificial light, krizzak and ishvarith chain; required that return in B8.says and narrowed deferral consistently to nightmare-source dread.",
+      "where": "bars.json B8.says, B8.meant, B8.accept/reject and B1.meant; owner_pages.md page one; definition.md Why a player reaches for it; ambiguities.md Tide and experience clauses"
+    }
+  ]
+}
