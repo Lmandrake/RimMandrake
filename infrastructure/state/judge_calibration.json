@@ -36,6 +36,716 @@
     ]
    },
    "hash": "f0ffd33ad38299b2",
+   "last_run": {
+    "at": "2026-11-17T08:23:53Z",
+    "cases": "came out the other way: regress_RM_DecayDrake_r2, regress_RM_Durrok_r2, regress_RM_Gawpsack_live",
+    "exit": 0,
+    "out": "north_from_south_RM_DecayDrake_r2    expect refuse got refuse C1 Generate a new north.png as a rear view of the existing south/east drake, keepin; D4 Erase the detached mash mounds from south.png and east.png (inpaint the alpha wh",
+    "results": [
+     {
+      "cost_usd": [
+       0.43697040000000004
+      ],
+      "errors": [],
+      "expect": "pass",
+      "got": "pass",
+      "id": "regress_RM_Shadefern_B",
+      "proposals": [
+       "Invented (non-canon) subjects have no Must-show equivalent: propose that a franchise-free subject's description claims about visible traits are yes/no checks, as A2 does for canon. Evidence: subject.j"
+      ],
+      "refusals": [],
+      "verdicts": [
+       {
+        "notes": "Inputs complete for a single-graphic plant: picture, true-scale panel, 32 px/cell copy, def facts. No keep, no notes, no siblings, no donor art, no canon entry ",
+        "picture": "single.png",
+        "verdict": "KEEP"
+       }
+      ],
+      "weighted_tokens": [
+       109243
+      ]
+     },
+     {
+      "cost_usd": [
+       0.5385846000000001
+      ],
+      "errors": [],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "regress_RM_Huldu_C",
+      "proposals": [
+       "For invented (franchise-free) subjects with no canon entry, make the def description's distinctive features a yes/no check, the way A2 does for canon. Evidence: subject.json describes a 'velvet-skinne",
+       "Add an advisory keyline measure for B1a: mean luminance of the outermost opaque ring against the interior. On this subject the ring scored 3–16 against an interior of 90–102 on all three facings, whic",
+       "Make C2 say explicitly that 'facings agree' includes body plan: tail type, limb form and species read. north.png keeps a roughly similar size and palette but switches to a fluke and flippers, and the "
+      ],
+      "refusals": [
+       {
+        "clause": "B1a",
+        "evidence": [
+         "south.png",
+         "east.png",
+         "north.png",
+         "scale.png"
+        ],
+        "fix": "Regenerate south.png, east.png and north.png with the house no-outline register, keeping pose, proportions and palette. Alternatively, strip the outer 2–3 px dark ring and recolour it from the adjacen"
+       },
+       {
+        "clause": "C2",
+        "evidence": [
+         "north.png",
+         "south.png",
+         "east.png",
+         "playzoom_north.png"
+        ],
+        "fix": "Redraw north.png only, as the rear of the otter-bodied subject in south.png and east.png, conditioned on those two facings for proportion and palette."
+       }
+      ],
+      "verdicts": [
+       {
+        "picture": "south.png",
+        "seen": "A continuous near-black keyline runs around the whole silhouette, about 2–3 px wide at the 256 px canvas. The outermost opaque ring averages luminance 16 agains",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "picture": "north.png",
+        "seen": "North draws a different animal from south and east. It has a forked whale-like tail fluke and splayed seal flippers, where south and east show a tapered otter t",
+        "verdict": "REDO",
+        "violated": "C2"
+       },
+       {
+        "picture": "east.png",
+        "seen": "A near-black keyline traces the whole profile, including the tail, paws and head; edge-ring luminance is 5 against an interior of 102. The anatomy, the rearing ",
+        "verdict": "REDO",
+        "violated": "B1a"
+       }
+      ],
+      "weighted_tokens": [
+       134647
+      ]
+     },
+     {
+      "cost_usd": [
+       0.4844562
+      ],
+      "errors": [],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "regress_RM_Ssurr_B",
+      "proposals": [
+       "Invented (franchise-free) subjects need a checkable shape line: subject.json says 'one enormous half-circle crest-fan', but south.png shows a near-full circle wheel behind the body. The brief has no c",
+       "B1a could carry a measurable hint: the share of opaque edge pixels (next to transparency) that are near-black (max RGB < 60). Here it was 1.00 on all three facings, which matches what the eye sees. Us"
+      ],
+      "refusals": [
+       {
+        "clause": "B1a",
+        "evidence": [
+         "south.png",
+         "east.png",
+         "north.png"
+        ],
+        "fix": "Regenerate south.png, east.png and north.png in the house painterly register (HOUSE_ART_REGISTER) with no outline, keeping the poses, the fan design, the green mottled palette and the 256 px canvas"
+       },
+       {
+        "clause": "C2",
+        "evidence": [
+         "north.png",
+         "south.png",
+         "east.png"
+        ],
+        "fix": "Redraw north.png as the same rear view with the body recoloured to match the green mottled hide of south.png and east.png (this can be folded into the B1a rerun)"
+       }
+      ],
+      "verdicts": [
+       {
+        "picture": "south.png",
+        "seen": "A continuous heavy black keyline rings the whole silhouette and every fan rib, claw and leg (measured: 100% of opaque edge pixels next to transparency are near-",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "picture": "east.png",
+        "seen": "Same heavy black keyline around the body, tail, legs and scalloped fan edge (100% of edge pixels near-black); flat cel shading. Pose and proportions are good: a",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "picture": "north.png",
+        "seen": "The heavy black keyline again (100% dark edge pixels). And the palette breaks: the rear-view body is drab brown-grey, while south and east draw a teal-green mot",
+        "verdict": "REDO",
+        "violated": "B1a; C2"
+       }
+      ],
+      "weighted_tokens": [
+       121115
+      ]
+     },
+     {
+      "cost_usd": [
+       0.5434794
+      ],
+      "errors": [],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "regress_RM_Vellak_B",
+      "proposals": [
+       "Facings: a creature's midline feature (dorsal sail, crest, spine row) is drawn centred and near edge-on on north and south, never as a one-sided fan. Evidence: north.png and south.png both put the Vel",
+       "Give B1a a measurable advisory: report the share of opaque silhouette-edge pixels below luminance 60. All three Vellak B facings measured 100% (medians 0–13). A no-outline sprite should sit far lower;"
+      ],
+      "refusals": [
+       {
+        "clause": "B1a",
+        "evidence": [
+         "east.png",
+         "north.png",
+         "south.png",
+         "playzoom_east.png",
+         "playzoom_north.png",
+         "playzoom_south.png"
+        ],
+        "fix": "Regenerate east, north and south under the house no-outline register, keeping the pose, rust sail, tan palette and 2x2 canvas fill."
+       },
+       {
+        "clause": "C2",
+        "evidence": [
+         "north.png",
+         "east.png",
+         "south.png"
+        ],
+        "fix": "Redraw north (and centre the sail on south) as rear and front views of the east design, with the sail centred and near edge-on at east's height relative to the head."
+       }
+      ],
+      "verdicts": [
+       {
+        "picture": "east.png",
+        "seen": "A continuous near-black keyline, 2–3 px wide, runs around the whole silhouette: sail scallops, legs, hooves, tail and head. Measured: 455 opaque edge pixels, me",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "picture": "north.png",
+        "seen": "Black keyline all round (median edge luminance 0, 100% < 60). It is a correct rear view: tail, rump and the back of the head, no face. But the sail is drawn as ",
+        "verdict": "REDO",
+        "violated": "B1a; C2"
+       },
+       {
+        "picture": "south.png",
+        "seen": "Black keyline all round (median edge luminance 2, 100% < 60). The front view looks at the camera with the face, two eyes and both forelegs, and the sail rises b",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "notes": "True-scale panel: at 128 px/cell the Vellak stands about two cells tall beside a vanilla human, which suits 'camel-tall' and bodySize 1.6. Scale passes; the fac",
+        "picture": "scale.png",
+        "verdict": "KEEP"
+       },
+       {
+        "picture": "playzoom_east.png",
+        "seen": "At 32 px/cell the rust sail, the pale tan body and four legs read clearly against the brown ground (B2 advisory fine), and the dark keyline still shows as a dar",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "picture": "playzoom_north.png",
+        "seen": "A narrow tan-and-rust sliver with a dark rim. It reads, but the body value sits close to the ground's (B2 advisory only, not a refusal).",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "picture": "playzoom_south.png",
+        "seen": "A narrow front silhouette with a dark rim. The sail colour reads; the body is close to the ground's value (B2 advisory only).",
+        "verdict": "REDO",
+        "violated": "B1a"
+       }
+      ],
+      "weighted_tokens": [
+       135870
+      ]
+     },
+     {
+      "cost_usd": [
+       0.6004879999999999
+      ],
+      "errors": [],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "regress_RM_Murrin_C",
+      "proposals": [
+       "B2 / swimmers: the play-zoom checks (playzoom_*.png, scale.png) composite a pool fish on brown soil, where its body luminance (~123) nearly equals the ground's (~124), so it reads only through its key",
+       "A rule on surface effects for swimmers (ripple rings, splashes): the description ties the rings to feeding events, so they belong to an effect or mote, not to the body sprite. Evidence: north.png has "
+      ],
+      "refusals": [
+       {
+        "clause": "B1a",
+        "evidence": [
+         "east.png",
+         "south.png",
+         "north.png",
+         "scale.png"
+        ],
+        "fix": "Regenerate or repaint east.png, south.png and north.png without the black keyline, keeping the form, palette and size, and lift the body value a little so it still separates from the ground at 32 px/c"
+       },
+       {
+        "clause": "C1",
+        "evidence": [
+         "north.png",
+         "south.png",
+         "east.png"
+        ],
+        "fix": "Redraw north.png as a rear view of the same fish (south.png's view mirrored to the tail end), keeping palette and scale."
+       },
+       {
+        "clause": "D4",
+        "evidence": [
+         "north.png",
+         "east.png",
+         "south.png"
+        ],
+        "fix": "Remove the ripple rings from north.png (with the C1 redraw); if the rings are wanted, make them a separate effect or mote rather than baking them into the body sprite."
+       }
+      ],
+      "verdicts": [
+       {
+        "picture": "east.png",
+        "seen": "A continuous near-black keyline (mean edge-ring luminance 17.7 vs body 122.6) runs around the body, every comb-fin ray, the tail and both small fins. Otherwise ",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "picture": "south.png",
+        "seen": "A pure-black keyline (mean edge-ring luminance 1.4) outlines the whole head-on silhouette, the fin and the pectorals. The front view is otherwise right: it face",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "picture": "north.png",
+        "seen": "This is a dorsal plan view (top-down) of the whole fish pointing north, with the full body length (233 px, about the same as east's 219 px length) and both pect",
+        "verdict": "REDO",
+        "violated": "C1; D4; B1a"
+       }
+      ],
+      "weighted_tokens": [
+       150122
+      ]
+     },
+     {
+      "cost_usd": [
+       0.46369119999999997
+      ],
+      "errors": [],
+      "expect": "pass",
+      "got": "pass",
+      "id": "regress_RM_Dewblade_B",
+      "proposals": [
+       "For invented (non-canon) subjects with no canon entry, add a constraint that the def description's visible claims are yes/no checks, in the way A2 treats Must show lines. Evidence: subject.json descri",
+       "For plants, state where the base should sit on the canvas (bottom-anchored vs centred). single.png's base is 42 px above the bottom of a 256 px canvas, and D3's 'floats inside it' gives no threshold f"
+      ],
+      "refusals": [],
+      "verdicts": [
+       {
+        "notes": "Plant, one picture, candidate B. B1/B1a: painterly grey-green blades with soft shading and no drawn keyline (measured: edge pixels average luminance 123, interi",
+        "picture": "single.png",
+        "verdict": "KEEP"
+       }
+      ],
+      "weighted_tokens": [
+       115923
+      ]
+     },
+     {
+      "cost_usd": [
+       0.4753388
+      ],
+      "errors": [],
+      "expect": "pass",
+      "got": "refuse",
+      "id": "regress_RM_DecayDrake_r2",
+      "proposals": [
+       "Add a line to D4 saying whether an effect that belongs to the creature (a breath haze, or drips still attached to the body) counts as part of the subject while detached ground props count as scenery. ",
+       "An invented subject with no canon entry and no sibling keeps has nothing to set its style or scale except the description. Consider naming the description as the acceptance target for invented creatur"
+      ],
+      "refusals": [
+       {
+        "clause": "D4",
+        "evidence": [
+         "south.png",
+         "north.png",
+         "east.png",
+         "scale.png",
+         "playzoom_north.png"
+        ],
+        "fix": "Erase the detached ground mash mounds from south.png, north.png and east.png (or regenerate with 'no ground objects' in the prompt), keeping the creature, its attached drips, the breath haze, its pose"
+       }
+      ],
+      "verdicts": [
+       {
+        "picture": "south.png",
+        "seen": "Three separate mounds of bubbling yellow mash sit on the ground in front of and beside the feet (bottom-left, bottom-centre, bottom-right). They are drawn as gr",
+        "verdict": "REDO",
+        "violated": "D4"
+       },
+       {
+        "picture": "north.png",
+        "seen": "Three detached mash mounds sit on the ground around the feet. The rear view is otherwise correct for C1: back, spine ridge, tail and wings, with no face or eyes",
+        "verdict": "REDO",
+        "violated": "D4"
+       },
+       {
+        "picture": "east.png",
+        "seen": "Three detached mash mounds sit on the ground beside the feet. The profile is otherwise good: a heavy quadruped drake with a folded stunted wing, a sagging bubbl",
+        "verdict": "REDO",
+        "violated": "D4"
+       },
+       {
+        "notes": "D1: at true scale beside a vanilla human the drake is roughly two and a half human-widths long, which fits drawSize 2.75 for a heavy beast. At 32 px/cell it rea",
+        "picture": "scale.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2: it reads as a few bold shapes: a dark olive mass, an amber belly and yellow drips, clearly apart from the ground. It is not grey mud.",
+        "picture": "playzoom_south.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2: the olive back and the amber belly underneath are legible. The detached mash piles show as yellow specks at the feet.",
+        "picture": "playzoom_north.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2: the profile silhouette is legible: olive body, amber belly, pale breath plume.",
+        "picture": "playzoom_east.png",
+        "verdict": "KEEP"
+       }
+      ],
+      "weighted_tokens": [
+       118835
+      ]
+     },
+     {
+      "cost_usd": [
+       0.6851221999999999
+      ],
+      "errors": [],
+      "expect": "pass",
+      "got": "refuse",
+      "id": "regress_RM_Durrok_r2",
+      "proposals": [
+       "For invented subjects (canon_entry null), add a constraint that the subject.json description's concrete visual nouns are yes/no checks, the way A2 does for canon. Evidence: subject.json says 'glossy, ",
+       "Add an advisory number to C2: compare the opaque-bbox height of south/north against east, and south width against north, and flag any gap over about 20%. Evidence: south.png 992x753 against north.png ",
+       "Have D4 say that a judge viewing alpha on black will see near-zero-alpha fringe colour (yellow specks here) that is invisible on the ground, and that a judge should composite on the ground colour befo"
+      ],
+      "refusals": [
+       {
+        "clause": "C2",
+        "evidence": [
+         "south.png",
+         "north.png",
+         "east.png",
+         "playzoom_south.png",
+         "playzoom_north.png",
+         "playzoom_east.png"
+        ],
+        "fix": "Rescale or redraw south.png as the front view at north.png's scale (about 730x690 px opaque on the 1024 canvas, feet about 515 px apart, bottom-aligned), keeping the rope-hair and lichen rendering and"
+       }
+      ],
+      "verdicts": [
+       {
+        "notes": "The style passes: painterly, no outline, pale body clearly apart from the dirt at 32 px/cell. On dirt the alpha is clean (pixels away from the body have alpha <",
+        "picture": "south.png",
+        "seen": "South is drawn much larger than the other two facings. Opaque bbox (alpha>128): south 992x753 px, north 727x687 px, east 989x523 px. At play zoom the south is 6",
+        "verdict": "REDO",
+        "violated": "C2"
+       },
+       {
+        "notes": "Matches the description: low barrel body, no head or neck, a blunt front end, a tail-like fall of white cords behind, heavy ropes hanging to the ground, grey-gr",
+        "picture": "east.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "A rear view: the tail fall of cords hangs at the centre, with no face, eyes or head (C1). Palette, rope texture and lichen match the east facing, and its height",
+        "picture": "north.png",
+        "verdict": "KEEP"
+       }
+      ],
+      "weighted_tokens": [
+       171281
+      ]
+     },
+     {
+      "cost_usd": [
+       0.5487024
+      ],
+      "errors": [],
+      "expect": "pass",
+      "got": "refuse",
+      "id": "regress_RM_Gawpsack_live",
+      "proposals": [
+       "Invented (non-canon) creatures have no Must-show list, so their description lines check nothing. subject.json describes a 'translucent bag' whose eyes are 'all of them looking up'. south.png shows an ",
+       "C2 has no numeric guide. A per-facing body-extent comparison (front/back cross-section widths within ~15%) would turn 'looking huge' into an advisory measure. Here north.png measured 202 px and south.",
+       "C5/C5a assume a flip-book of frames, but body_plan 'flyer' subjects such as this one are delivered as single stills per facing with no frames. The brief should say whether a wingless drifter flyer nee"
+      ],
+      "refusals": [
+       {
+        "clause": "C2",
+        "evidence": [
+         "north.png",
+         "south.png",
+         "playzoom_north.png",
+         "playzoom_south.png"
+        ],
+        "fix": "Redraw north.png as the rear view of south.png's lozenge at south's body width, height and placement, keeping the current eyeless veined surface and palette; then regenerate playzoom_north.png from it"
+       }
+      ],
+      "verdicts": [
+       {
+        "notes": "Invented subject, no canon entry (A n/a). Painterly flesh sack covered in mismatched open eyes, trailing tendrils; no keyline (B1, B1a). Faces the camera (C1). ",
+        "picture": "south.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: at 32 px/cell it reads as one bold reddish lozenge with faint tendril wisps. Body luminance is about 93 against the tan dirt in scale.png, so it is",
+        "picture": "playzoom_south.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "Side view: the sack is elongated along its direction of travel, with tendrils trailing west, which is correct for a drifter heading east. Same palette and paint",
+        "picture": "east.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: the bag shape and trailing tendrils read at 32 px/cell. This is the darkest facing (luminance about 82) but it is still apart from the ground.",
+        "picture": "playzoom_east.png",
+        "verdict": "KEEP"
+       },
+       {
+        "picture": "north.png",
+        "seen": "The rear view's body is 202 px wide by 135 px tall with 18.7k body pixels. The south view of the same front/back cross-section is 158 px wide by 123 px tall wit",
+        "verdict": "REDO",
+        "violated": "C2"
+       },
+       {
+        "picture": "playzoom_north.png",
+        "seen": "At 32 px/cell the north body spans 19 px against south's 14 px in playzoom_south.png, so the size jump survives at play zoom. Advisory B2: a legible, flat reddi",
+        "verdict": "REDO",
+        "violated": "C2"
+       },
+       {
+        "notes": "D1: beside the vanilla human at 211 px/cell, the gawpsack is about 0.6 of a cell across. That is a small floating creature inside its 0.7 drawSize, neither floa",
+        "picture": "scale.png",
+        "verdict": "KEEP"
+       }
+      ],
+      "weighted_tokens": [
+       137176
+      ]
+     },
+     {
+      "cost_usd": [
+       0.7092962
+      ],
+      "errors": [],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "regress_RM_Peeper_r2",
+      "proposals": [
+       "C1 says 'no face, no eyes' on north. For a subject whose description puts eyes in its hide (RM_Peeper: 'extra eyes opened in its hide'), body eyes on the back are the design, not a face. Proposed rewo",
+       "Add a measured cross-facing scale check to C2: the ear-tip (or crown) to paw height should agree across south, north and east within ~10% on a shared baseline. This candidate passes on looks one pictu",
+       "Have scale.png show all three facings at true scale, not east only, so a size jump between facings can be seen in the panel and doesn't need a measurement. Evidence: scale.png."
+      ],
+      "refusals": [
+       {
+        "clause": "C2",
+        "evidence": [
+         "south.png",
+         "north.png",
+         "east.png",
+         "scale.png"
+        ],
+        "fix": "Downscale south.png and north.png to about 0.69x around a bottom-centre anchor so their ear-to-paw height matches east.png, then slim the south flank bulge, or regenerate both with east as the size re"
+       }
+      ],
+      "verdicts": [
+       {
+        "picture": "south.png",
+        "seen": "Measured silhouette (alpha>128): south spans 1002 px ear-to-paw on the 1024 canvas, east spans 690 px for the same ear-to-paw height, so the south facing draws ",
+        "verdict": "REDO",
+        "violated": "C2"
+       },
+       {
+        "picture": "north.png",
+        "seen": "North spans 990 px ear-to-paw against east's 690 px (~1.43x larger). It is otherwise a correct rear view: ears, back of the head and a tail, no snout or face; t",
+        "verdict": "REDO",
+        "violated": "C2"
+       },
+       {
+        "notes": "Painterly, real anatomy, no keyline (B1, B1a). Clean alpha: core alpha 250-253, edge contact only alpha 1-3 noise (D4). Sits in the 0.9 drawSize canvas with no ",
+        "picture": "east.png",
+        "verdict": "KEEP"
+       }
+      ],
+      "weighted_tokens": [
+       177325
+      ]
+     },
+     {
+      "cost_usd": [
+       0.5402772000000001
+      ],
+      "errors": [],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "regress_RM_Danglemaw_r1",
+      "proposals": [
+       "B2 for thin, line-shaped bodies (serpentine or tendon creatures): at 32 px/cell playzoom_south.png shows the Danglemaw as a stroke about 3 px wide. It is legible as pink against brown, but it is not '",
+       "C1 for creatures whose face is a mouth with no eyes: write down that teeth or an open jaw count as 'face' for the north rear-view check. North.png here shows a ring of teeth, and the brief's wording (",
+       "A def/behaviour proposal, not an art rule: subject.json gives module 'walker' for a creature its description says is 'anchored in the Eyebark canopy'. A sprite that hangs from the top of the canvas wi"
+      ],
+      "refusals": [
+       {
+        "clause": "C1",
+        "evidence": [
+         "north.png",
+         "south.png"
+        ],
+        "fix": "Regenerate only north.png as a rear view of the same jaw (solid back of the jaw, no teeth or mouth opening), keeping the 256 px canvas, the cord and fan art, the palette and the vertical extent of sou"
+       }
+      ],
+      "verdicts": [
+       {
+        "notes": "Invented subject, no canon entry (A not applicable). Painterly muscular cord with striated fibres, canopy-anchor fan at top, gaping round jaw at the bottom faci",
+        "picture": "south.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "Same cord, palette and height as south and north (C2); the jaw hooks to the right in profile, teeth visible on the open side, as a side view should. West mirror",
+        "picture": "east.png",
+        "verdict": "KEEP"
+       },
+       {
+        "picture": "north.png",
+        "seen": "The north facing shows the jaw as a C-shaped ring with a full row of teeth around the opening and a transparent hole through its centre. The creature's mouth (i",
+        "verdict": "REDO",
+        "violated": "C1"
+       }
+      ],
+      "weighted_tokens": [
+       135070
+      ]
+     },
+     {
+      "cost_usd": [
+       0.403045
+      ],
+      "errors": [],
+      "expect": "pass",
+      "got": "pass",
+      "id": "kept_RM_Gawpsack_live",
+      "proposals": [
+       "For invented subjects with no canon entry (subject.json canon_entry null), the def description should count as a soft visual brief that a judge checks as yes/no lines. Evidence: RM_Gawpsack's descript",
+       "C5/C5a should say how to judge a subject whose body_plan is 'flyer' but whose module is 'walker' and that has no wings: subject.json gives RM_Gawpsack one still per facing and no frames, so it is uncl"
+      ],
+      "refusals": [],
+      "verdicts": [
+       {
+        "notes": "Owner-kept (E3). Painterly fleshy sac packed with mismatched eyes facing the camera, tendrils hanging below; no keyline (B1a); fills about 0.6 of its 0.7 drawSi",
+        "picture": "south.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "C1: a rear view with no eyes, only the veined back of the sac and its tendrils, the same palette as south. The sac reads slightly wider and lumpier than on sout",
+        "picture": "north.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "Side view of the same sac with eyes on its visible side, tendrils trailing behind (west mirrors it). Size and palette agree with south and north (C2).",
+        "picture": "east.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "D1: small beside a vanilla human at 211 px/cell, sitting inside one cell. On the brown ground it shows no backdrop, halo or shadow (D4). At normal play (32/cell",
+        "picture": "scale.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: a bold dark-red rounded body with lighter eye specks; it stands apart from the ground and is not grey mud.",
+        "picture": "playzoom_south.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: a single pinkish-red lump, legible as the same creature from behind.",
+        "picture": "playzoom_north.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: a reddish ovoid with a trailing tail, legible at 32 px/cell.",
+        "picture": "playzoom_east.png",
+        "verdict": "KEEP"
+       }
+      ],
+      "weighted_tokens": [
+       100762
+      ]
+     },
+     {
+      "cost_usd": [
+       0.45945939999999996
+      ],
+      "errors": [],
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "north_from_south_RM_DecayDrake_r2",
+      "proposals": [
+       "A constraint that a facing file must not be byte-identical to another facing (except a declared west mirror of east): north.png and south.png here share sha256 ba1d4d9f…, a defect a hash check catches",
+       "Name the fermentation/effect props explicitly under D4: an invented creature whose description makes things around it change (here mash mounds where it rests) tempts the artist to paint that ground ef"
+      ],
+      "refusals": [
+       {
+        "clause": "C1",
+        "evidence": [
+         "north.png",
+         "south.png",
+         "playzoom_north.png",
+         "playzoom_south.png"
+        ],
+        "fix": "Generate a new north.png as a rear view of the existing south/east drake, keeping the 512 px canvas, body width (~470 px bbox), olive scale and amber-drip palette, and without ground mash piles."
+       },
+       {
+        "clause": "D4",
+        "evidence": [
+         "south.png",
+         "east.png",
+         "north.png",
+         "scale.png"
+        ],
+        "fix": "Erase the detached mash mounds from south.png and east.png (inpaint the alpha where they touch the toes) and draw the new north.png without them; if the effect is wanted in game, make it a separate fi"
+       }
+      ],
+      "verdicts": [
+       {
+        "picture": "north.png (sha256 ba1d4d9f…)",
+        "seen": "north.png is byte-identical to south.png (same sha256 ba1d4d9f…, pixel-equal): a front view with the face, two glowing orange eyes, snout breathing yeast haze, ",
+        "verdict": "REDO",
+        "violated": "C1"
+       },
+       {
+        "picture": "south.png (sha256 ba1d4d9f…)",
+        "seen": "Three separate bubbling yellow mash mounds lie on the ground beside and between the feet (lower left, lower centre, lower right), detached from the body; they w",
+        "verdict": "REDO",
+        "violated": "D4"
+       },
+       {
+        "picture": "east.png (sha256 ea3fa4cc…)",
+        "seen": "Three detached bubbling mash piles sit on the ground (behind the hind foot, under the belly, in front of the fore foot), separate from the body. The drake in pr",
+        "verdict": "REDO",
+        "violated": "D4"
+       }
+      ],
+      "weighted_tokens": [
+       114865
+      ]
+     }
+    ]
+   },
    "model_check": [
     "python3",
     "src/RimMandrake/rimflow/art_calibration.py",
@@ -96,7 +806,7 @@
     }
    ],
    "reset_at": "2026-11-17T07:59:23Z",
-   "status": "UNTESTED",
+   "status": "FAILED",
    "timeout_s": 2400,
    "was": "UNTESTED"
   },
