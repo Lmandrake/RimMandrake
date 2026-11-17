@@ -1,0 +1,55 @@
+KNOCKBACK MAP map-4: lanes 121920 (enumerated), spared 2496 (enumerated), rooms 38874 (seed 20261117, 20000 layouts x 2 tie orders)
+HOLDS M01 the_spared: a spared thing stays on its cell: 0 of 80936 readings (rooms 0 of 57068)
+HOLDS M02 thrown_into_pit_falls: a thing whose flight meets a pit ends on a pit floor, never on the rim or beyond: 0 of 25570 readings (rooms 0 of 10514)
+HOLDS M03 thrown_into_pit_falls: nothing a blast threw rests on an intact cover: 0 of 24997 readings (rooms 0 of 10517)
+HOLDS M04 every_good_moves: a loose good the blast reaches with a throw of a cell or more leaves its cell: 0 of 236118 readings (rooms 0 of 184246)
+HOLDS M05 rest: nothing comes to rest in a wall, a door, deep water or on sandbags: 0 of 298938 readings (rooms 0 of 198762)
+HOLDS M06 closed_container_holds: a container never rests in a pit, on a person or past one, and its goods stay with it: 0 of 19000 readings (rooms 0 of 7012)
+HOLDS M07 blast_breaks_pit_cover: a gas burst leaves every cover whole, and a pawn it shoves onto one stands on it: 0 of 8508 readings (rooms 0 of 5300)
+HOLDS M08 gas_goes_clump_by_clump: a gas shove moves a pawn one cell at most: 0 of 3796 readings (rooms 0 of 940)
+HOLDS M09 reach: nothing moves that the blast could not reach (a wall or closed door between): 0 of 562990 readings (rooms 0 of 510798)
+HOLDS M10 no wall crossed: a thing rests in the room its flight ended in: 0 of 298938 readings (rooms 0 of 198762)
+HOLDS M11 nothing lost: every thing is on the map at the end: 0 of 985720 readings (rooms 0 of 802808)
+HOLDS M12 wall_stops_dead / pawn_hits_pawn_stops: a pawn stopped by a wall, door or pawn rests on the cell before it: 0 of 11562 readings (rooms 0 of 8062)
+HOLDS M13 goods_arc_spin_rebound: a good that hits a wall or door with speed to spare bounces off it: 0 of 110138 readings (rooms 0 of 105498)
+HOLDS M14 closed_container_holds: a thrown container comes down on a cell of the path its throw walked: 0 of 15524 readings (rooms 0 of 3536)
+HOLDS M15 thrown_into_pit_falls, the full pit: with every floor cell beside its landing taken, a stack is set down on the side it came from, within three cells of where it came down: 0 of 4674 readings (rooms 0 of 1522)
+HOLDS M16 (count only) goods held where they lie by the map itself: deep water behind them, a wall that takes a one-cell throw whole, or walls on every side of the bounce: 0 of 8166 readings (rooms 0 of 7206)
+HOLDS M17 (count only) full-pit landings with no free ground on the side they came from either: put back beside where they were thrown from: 0 of 44 readings (rooms 0 of 44)
+HOLDS M18 shield_belt_holds: a burning gas clump's one-cell shove still moves a belted pawn: 0 of 76 readings (rooms 0 of 52)
+HOLDS M19 closed_container_holds: what lay on a closed container's cell ends on that container's cell: 0 of 38870 readings (rooms 0 of 38870)
+HOLDS M20 closed_container_holds: a container bigger than one cell or over the container mass limit is never thrown: 0 of 19492 readings (rooms 0 of 19492)
+HOLDS M21 people keep the kernel: a pawn never flies farther than the kernel's throw for its mass, distance and blast: 0 of 47296 readings (rooms 0 of 10980)
+CASES 24 of 24 fixed cases and settings flips as expected
+knockback map: every bar holds over the declared range (map-4)
+seen  a pawn in bed is thrown                          BREAKS M01 the_spared: a spared thing stays on its cell: 204 of 28198 readings (rooms 32 of 4330)
+seen  a pawn carrying a pawn is thrown                 BREAKS M01 the_spared: a spared thing stays on its cell: 232 of 28198 readings (rooms 60 of 4330)
+seen  an airborne pawn is thrown                       BREAKS M01 the_spared: a spared thing stays on its cell: 172 of 28198 readings (rooms 0 of 4330)
+seen  a pawn in a pit is thrown                        BREAKS M01 the_spared: a spared thing stays on its cell: 344 of 28198 readings (rooms 0 of 4330)
+seen  goods on a pit floor are thrown                  BREAKS M01 the_spared: a spared thing stays on its cell: 4234 of 28198 readings (rooms 394 of 4330)
+seen  a recovering pawn is thrown again                BREAKS M01 the_spared: a spared thing stays on its cell: 228 of 28198 readings (rooms 56 of 4330)
+seen  a closed container keeps nothing                 BREAKS M19 closed_container_holds: what lay on a closed container's cell ends on that container's cell: 673 of
+seen  every shelf keeps its goods                      CASE FAILED settings: at the defaults the colonist, the downed, the animal, the mech, the floor stack, the she
+seen  a gas shove keeps the full throw                 BREAKS M08 gas_goes_clump_by_clump: a gas shove moves a pawn one cell at most: 1296 of 2948 readings (rooms 52
+seen  a gas shove has no cooldown                      BREAKS M01 the_spared: a spared thing stays on its cell: 24 of 28198 readings (rooms 0 of 4330)
+seen  a shield belt holds nobody                       CASE FAILED settings: at the defaults the colonist, the downed, the animal, the mech, the floor stack, the she
+seen  the wild factor lifts a rim good                 BREAKS M01 the_spared: a spared thing stays on its cell: 3182 of 28198 readings (rooms 278 of 4330)
+seen  people fly wild too                              CASE FAILED sc_mortar_throw: a colonist one cell from a mortar shell lands exactly three cells straight away (
+seen  a stack against a wall sits still                CASE FAILED a stack against a wall bounces off it (12,10)
+seen  a short throw onto sandbags is undone            BREAKS M04 every_good_moves: a loose good the blast reaches with a throw of a cell or more leaves its cell: 20
+seen  a full pit cell sends the stack anywhere near    CASE FAILED two stacks, a two-cell pit: both end on the pit floor (13,10) in pit (12,10)
+seen  a full pit sets the stack down on any side       BREAKS M10 no wall crossed: a thing rests in the room its flight ended in: 6 of 115236 readings (rooms 6 of 15
+seen  a container flies through a person               BREAKS M06 closed_container_holds: a container never rests in a pit, on a person or past one, and its goods st
+seen  a container lands on an occupied cell            BREAKS M06 closed_container_holds: a container never rests in a pit, on a person or past one, and its goods st
+seen  a container's rest is read off a shorter line    BREAKS M14 closed_container_holds: a thrown container comes down on a cell of the path its throw walked: 2 of 
+seen  a big container is thrown                        BREAKS M20 closed_container_holds: a container bigger than one cell or over the container mass limit is never 
+seen  a flying good never bounces                      CASE FAILED a stack against a wall bounces off it (12,10)
+seen  a landing never breaks a cover                   CASE FAILED sc_pit_fall covered: the colonist falls through and the cover is broken (13,10)
+seen  a gas shove breaks a cover                       CASE FAILED gas shove onto a cover: it stands on it, the cover whole (10,12) in pit
+seen  a pawn on a cover's deck blocks nobody           CASE FAILED cycle 5: thrown at a pawn on a pit cover, it stops before it and the cover holds (13,10) in pit
+seen  a throw crosses a pit                            CASE FAILED sc_pit_fall open: the colonist lands in the first pit cell (14,10)
+seen  a corpse is weighed by the creature limit        BREAKS M01 the_spared: a spared thing stays on its cell: 266 of 28198 readings (rooms 122 of 4330)
+seen  flying goods off falls back to a throw           CASE FAILED settings: flyingGoods off changes only floor stack, shelf stack, corpse changed: 
+seen  the container shove cannot be switched off       CASE FAILED settings: shoveClosedContainers off changes only locker, locker stack changed: 
+seen  downed pawns cannot be switched off              CASE FAILED settings: throwDowned off changes only downed changed: 
+explosive knockback map: PASS (every bar holds; 30 of 30 planted faults seen)

@@ -191,7 +191,7 @@ def main():
                 for n in range(1, int(bound) + 1):
                     mass = 0.4 * n   # WoodLog 0.4 kg
                     c = cells(x, z, mass)
-                    if c and resolve(x, z, c, cover=cc)[0] == cc:
+                    if c and resolve(x, z, c, cover=cc)[0] == cc and line(x, z, x, z, c)[-1] == cc:
                         path = line(x, z, x, z, max(abs(cc[0] - x), abs(cc[1] - z)))
                         if mass < heavy or not stops.intersection(path):
                             found = ((x, z), n, cc, path)
@@ -204,6 +204,18 @@ def main():
               % (("from %s, %d logs, onto %s" % found[:3]) if found else "none in 1..%s logs" % bound))
         check("P4", found is not None and not stops.intersection(found[3]), "that stack's path crosses no colonist: %s"
               % (found[3] if found else "none"))
+        # P5 (the control, live 2026-11-17: INVALID "the covered-cell stack was not planned onto 59,8 (planned 60,7)"): since a
+        # throw ends in the first covered pit cell (610b127ba8) every log count "plans onto" the cover, so the search took 1 log,
+        # whose throw on the control's flat floor flies a cell past it. The stack must be one whose throw ENDS on that cell with
+        # no pit there: the flat line of its whole throw stops on the cover cell.
+        flat = None
+        if found:
+            (fx, fz), n, cc, _ = found
+            c = cells(fx, fz, 0.4 * n)
+            flat = line(fx, fz, fx, fz, c)[-1] if c else None
+        check("P5", found is not None and flat == found[2], "the same stack's throw on flat ground (the control) ends on the cover cell: %s"
+              % (flat,))
+        check("P6", "FlatEnd(s, c, mass) == cc" in scene, "the scene's search requires the flat throw to end on the cover cell (FlatEnd)")
 
     # C: the cover break under a landing stack, read from the shipped sources
     flyer = rd("Source", "RM_ThingFlyer_Knockback.cs")

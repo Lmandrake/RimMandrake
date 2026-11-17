@@ -162,33 +162,33 @@ namespace RimMandrake.ExplosiveKnockback
 
         private static readonly System.Collections.Generic.Dictionary<Pawn, Job> Hauling = new System.Collections.Generic.Dictionary<Pawn, Job>();
 
-        /// <summary>The explosion id each pawn in a knockback flight was thrown by (negative = a gas burst), set at every launch
-        /// (RememberThrow, so a later throw always overwrites it) and taken at its landing.</summary>
-        private static readonly System.Collections.Generic.Dictionary<Pawn, int> ThrownBy = new System.Collections.Generic.Dictionary<Pawn, int>();
-
-        /// <summary>Called just before MakeFlyer: which explosion threw this pawn (RM_MapComponent_Knockback.ThrowPawn).</summary>
+        /// <summary>Called just before MakeFlyer: which explosion threw this pawn (negative = a gas burst). Kept by the map
+        /// component and saved with it (RM_MapComponent_Knockback.RememberThrow), so a flight saved in mid-air still breaks the
+        /// cover it comes down on after a reload; it was a static dictionary, forgotten by a load, and a reloaded colonist stood
+        /// on the cover.</summary>
         public static void RememberThrow(Pawn p, int explosionId)
         {
-            ThrownBy[p] = explosionId;
+            p.Map?.GetComponent<RM_MapComponent_Knockback>()?.RememberThrow(p, explosionId);
         }
 
         /// <summary>RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP (scene sc_pit_fall: "on the covered cell the colonist
         /// and the stack fall through, one descent each, and the cover is broken"): a pawn a blast threw onto a covered pit cell
         /// breaks the cover and falls, as a thrown stack does (RM_ThingFlyer_Knockback.Land). FlowWorks' own trap springs on a
         /// deck mass that spares the own faction, so without this a thrown colonist stood on the cover. A gas shove (negative id)
-        /// never breaks one (LandingBreaksCover). A flight loaded from a save has no id remembered and breaks nothing.</summary>
+        /// never breaks one (LandingBreaksCover). The id rides in the map component's save, so a flight saved in mid-air
+        /// breaks its cover after a reload too.</summary>
         private static void BreakCoverUnderLanding(Pawn p)
         {
-            if (p == null || !ThrownBy.TryGetValue(p, out int id))
-            {
-                return;
-            }
-            ThrownBy.Remove(p);
-            if (!p.Spawned || p.Dead)
+            if (p == null || !p.Spawned)
             {
                 return;
             }
             Map map = p.Map;
+            RM_MapComponent_Knockback comp = map.GetComponent<RM_MapComponent_Knockback>();
+            if (comp == null || !comp.TakeThrow(p, out int id) || p.Dead)
+            {
+                return;
+            }
             IntVec3 at = p.Position;
             if (!RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn, RM_KnockbackCompat.CoverAt(map, at) != null, false, id))
             {

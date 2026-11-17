@@ -83,6 +83,32 @@ namespace RimMandrake.ExplosiveKnockback
         }
     }
 
+    /// <summary>The map as the plan reads it (KbPlanner.Decide): the path grid, and what a closed container's rest cell needs.
+    /// `self` is the thing being decided; it never blocks itself.</summary>
+    public sealed class RM_MapKbWorld : IKbWorld
+    {
+        private readonly Map map;
+        private readonly Thing self;
+
+        public RM_MapKbWorld(Map map, Thing self)
+        {
+            this.map = map;
+            this.self = self;
+        }
+
+        public IKbGrid Grid(bool forPawn) => new RM_MapKbGrid(map, self, forPawn);
+
+        public bool PawnAt(int x, int z)
+        {
+            var c = new IntVec3(x, 0, z);
+            return c.InBounds(map) && c.GetFirstPawn(map) != null;
+        }
+
+        public bool Occupied(int x, int z) => RM_MapComponent_Knockback.Occupied(map, new IntVec3(x, 0, z));
+
+        public bool Superdeep(int x, int z) => RM_KnockbackCompat.IsSuperdeep(map, new IntVec3(x, 0, z));
+    }
+
     /// <summary>The knockback journal (design §8.2): one JSON line per request / launch / landing / skip, so a
     /// runner asserts records, never a correlate. In memory, capped; read through RM_KnockbackProof.</summary>
     public static class RM_KnockbackJournal
@@ -175,6 +201,25 @@ namespace RimMandrake.ExplosiveKnockback
         // stun-lock guard (design §4): pawn thingIDNumber -> landing tick / landing-stun end tick. Saved.
         private Dictionary<int, int> landedAt = new Dictionary<int, int>();
         private Dictionary<int, int> stunEnd = new Dictionary<int, int>();
+        // the explosion id each pawn now in a knockback flight was thrown by (negative = a gas burst): set at every launch,
+        // taken at its landing, where a blast-thrown pawn breaks the cover it comes down on. Saved (a flight outlives a save).
+        private Dictionary<int, int> thrownBy = new Dictionary<int, int>();
+
+        public void RememberThrow(Pawn p, int explosionId)
+        {
+            thrownBy[p.thingIDNumber] = explosionId;
+        }
+
+        /// <summary>The explosion that threw this pawn, forgotten once read. False when it was not thrown by us.</summary>
+        public bool TakeThrow(Pawn p, out int explosionId)
+        {
+            if (!thrownBy.TryGetValue(p.thingIDNumber, out explosionId))
+            {
+                return false;
+            }
+            thrownBy.Remove(p.thingIDNumber);
+            return true;
+        }
 
         /// <summary>Called when one of our flyers sets a pawn down (RM_Patch_PawnFlyer_KnockbackLanding).</summary>
         public static void NotifyLanded(Pawn p)
@@ -226,6 +271,11 @@ namespace RimMandrake.ExplosiveKnockback
             }
             Scribe_Collections.Look(ref landedAt, "rmKbLandedAt", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref stunEnd, "rmKbStunEnd", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref thrownBy, "rmKbThrownBy", LookMode.Value, LookMode.Value);
+            if (thrownBy == null)
+            {
+                thrownBy = new Dictionary<int, int>();
+            }
             if (landedAt == null)
             {
                 landedAt = new Dictionary<int, int>();
@@ -387,19 +437,22 @@ namespace RimMandrake.ExplosiveKnockback
         /// old every-storage rule returns only with openStorageProtectsGoods. Returns the journal reason, or null.</summary>
         private static string HeldReason(Thing t, Map map)
         {
+            var f = new KbFacts();
+            ReadStorage(f, t, map);
+            return KbPlanner.HeldReason(f, RimMandrakeExplosiveKnockbackSettings.Rules());
+        }
+
+        /// <summary>What lies under a good: storage of any kind, and whether it is a closed container. The closed guard and
+        /// the open-storage setting are applied by the plan (KbPlanner.HeldReason), not here.</summary>
+        private static void ReadStorage(KbFacts f, Thing t, Map map)
+        {
             Building ed = t.Position.GetEdifice(map);
             if (ed == null)
             {
-                return null;
+                return;
             }
-            // closed guard off (sheet: "container goods thrown loose"): a closed container protects nothing
-            bool closed = RimMandrakeExplosiveKnockbackSettings.closedContainerGuard && RM_KnockbackCompat.IsClosedContainer(ed);
-            bool storage = closed || ed is Building_Storage || (ed.def.building != null && ed.def.building.fixedStorageSettings != null);
-            if (!RM_KnockbackMath.GoodsHeld(storage, closed, RimMandrakeExplosiveKnockbackSettings.openStorageProtectsGoods))
-            {
-                return null;
-            }
-            return closed ? "closed_container" : "in_storage";
+            f.onClosed = RM_KnockbackCompat.IsClosedContainer(ed);
+            f.onStorage = f.onClosed || ed is Building_Storage || (ed.def.building != null && ed.def.building.fixedStorageSettings != null);
         }
 
         /// <summary>Called from the explosion prefix BEFORE the blast damages the item: will Execute throw it (same gates,
@@ -408,21 +461,15 @@ namespace RimMandrake.ExplosiveKnockback
         public static bool ItemWillBeThrown(Thing t, Explosion explosion, KbConfig cfg)
         {
             Map map = explosion.Map;
-            if (map == null || !t.Spawned || !RimMandrakeExplosiveKnockbackSettings.throwItems || !RimMandrakeExplosiveKnockbackSettings.flyingGoods
-                || HeldReason(t, map) != null
-                || RM_KnockbackCompat.IsSuperdeep(map, t.Position))
+            if (map == null || !t.Spawned)
             {
                 return false;
             }
-            KbSettings s = RimMandrakeExplosiveKnockbackSettings.Kernel(cfg);
-            float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-            if (!RM_KnockbackMath.Eligible(KbKind.Item, mass, s))
-            {
-                return false;
-            }
-            float dist = (t.Position - explosion.Position).LengthHorizontal;
-            return RM_KnockbackMath.ThrowCells(dist, explosion.radius, cfg.force, mass, s) > 0
-                && RM_KnockbackMath.WildCells(dist, explosion.radius, cfg.force, mass, s, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild) > 0;
+            var f = new KbFacts { kind = KbKind.Item, spawned = true, thingId = t.thingIDNumber, x = t.Position.x, z = t.Position.z,
+                mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount, onSuperdeep = RM_KnockbackCompat.IsSuperdeep(map, t.Position) };
+            ReadStorage(f, t, map);
+            var blast = new KbBlast { id = explosion.thingIDNumber, cx = explosion.Position.x, cz = explosion.Position.z, radius = explosion.radius, force = cfg.force };
+            return KbPlanner.GoodWillBeThrown(f, blast, RimMandrakeExplosiveKnockbackSettings.Rules(), RimMandrakeExplosiveKnockbackSettings.Kernel(cfg));
         }
 
         /// <summary>Owner ruling 2026-11-12, "worse damage if they then hit a solid object": a stack stopped by a wall, door or
@@ -489,13 +536,17 @@ namespace RimMandrake.ExplosiveKnockback
             return room < t.stackCount && items >= c.GetMaxItemsAllowedInCell(map);
         }
 
-        /// <summary>Lands a thrown stack (instant move and carrier alike) without ever moving a resident: Direct at dest only
-        /// when that bumps nothing, else Near dest (GenPlace's Near never picks a full cell), else Near the origin. Only when
-        /// all three fail is it spawned with VanishOrMoveAside (fallback), and then the residents it moved are counted.
-        /// residentsMoved is measured, not assumed: every item on dest before, compared after.</summary>
-        internal static Thing PlaceLanding(Thing t, IntVec3 dest, IntVec3 origin, Map map, out bool fallback, out int residentsMoved)
+        /// <summary>Lands a thrown stack (instant move and carrier alike) without ever moving a resident, in the order the plan
+        /// gives (KbPlanner.LandingOrder): Direct at dest only when that bumps nothing, else GenPlace's Near (which never
+        /// picks a full cell); a landing on a pit cell goes to the pit floor beside it, then to the rim on the side its leg
+        /// came from (`from`), never past the pit; then Near the origin. Only when all fail is it spawned with
+        /// VanishOrMoveAside (fallback), and then the residents it moved are counted. residentsMoved is measured, not
+        /// assumed: every item on dest before, compared after.</summary>
+        internal static Thing PlaceLanding(Thing t, IntVec3 dest, IntVec3 origin, IntVec3 from, Map map, out bool fallback, out int residentsMoved,
+            out KbPlanner.KbPlace via)
         {
             fallback = false;
+            via = KbPlanner.KbPlace.Fallback;
             var residents = new List<KeyValuePair<Thing, IntVec3>>();
             foreach (Thing h in dest.GetThingList(map))
             {
@@ -504,20 +555,42 @@ namespace RimMandrake.ExplosiveKnockback
                     residents.Add(new KeyValuePair<Thing, IntVec3>(h, h.Position));
                 }
             }
-            bool direct = !WouldBump(t, dest, map);
+            bool bump = WouldBump(t, dest, map);
 #if RM_PROOFS
-            direct |= ProofDirectFirst;
+            bump &= !ProofDirectFirst;
 #endif
             Thing placed = null;
-            if (!(direct && GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Direct, out placed))
-                && !GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Near, out placed)
-                && !GenPlace.TryPlaceThing(t, origin, map, ThingPlaceMode.Near, out placed))
+            var grid = new RM_MapKbGrid(map, t, false);
+            foreach (KbPlanner.KbPlace place in KbPlanner.LandingOrder(bump, RM_KnockbackCompat.IsSuperdeep(map, dest)))
             {
-                // never vanish: no free cell anywhere near either end
-                if (!t.Spawned && !t.Destroyed)
+                via = place;
+                if (place == KbPlanner.KbPlace.Fallback)
                 {
-                    placed = GenSpawn.Spawn(t, dest, map, WipeMode.VanishOrMoveAside);
-                    fallback = true;
+                    // never vanish: no free cell anywhere near either end
+                    if (!t.Spawned && !t.Destroyed)
+                    {
+                        placed = GenSpawn.Spawn(t, dest, map, WipeMode.VanishOrMoveAside);
+                        fallback = true;
+                    }
+                    break;
+                }
+                if (place == KbPlanner.KbPlace.Direct)
+                {
+                    if (GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Direct, out placed))
+                    {
+                        break;
+                    }
+                    continue;
+                }
+                Predicate<IntVec3> allow = null;
+                if (place == KbPlanner.KbPlace.PitFloor || place == KbPlanner.KbPlace.NearRim)
+                {
+                    KbPlanner.KbPlace pl = place;
+                    allow = c => c.InBounds(map) && KbPlanner.PlaceAllows(pl, c.x, c.z, dest.x, dest.z, from.x, from.z, grid.At(c.x, c.z));
+                }
+                if (GenPlace.TryPlaceThing(t, place == KbPlanner.KbPlace.NearOrigin ? origin : dest, map, ThingPlaceMode.Near, out placed, null, allow))
+                {
+                    break;
                 }
             }
             residentsMoved = 0;
@@ -532,7 +605,8 @@ namespace RimMandrake.ExplosiveKnockback
             return placed ?? t;
         }
 
-        /// <summary>One throw. True when something actually moved.</summary>
+        /// <summary>One throw. True when something actually moved. The game side of the plan: read the facts (Facts), let
+        /// KbPlanner.Decide rule, apply what it says and journal it. No rule lives here.</summary>
         private bool Execute(KnockbackRequest r)
         {
             Thing t = Resolve(r.thing);
@@ -545,123 +619,28 @@ namespace RimMandrake.ExplosiveKnockback
             {
                 return ThrowContainer(r, container);
             }
-            KbKind kind;
-            float mass;
             Pawn pawn = t as Pawn;
-            if (pawn != null)
-            {
-                string why = PawnSkipReason(pawn);
-                if (why != null)
-                {
-                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", why, "at", t.Position);
-                    return false;
-                }
-                kind = KbKind.Pawn;
-                mass = Mathf.Max(1f, pawn.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(pawn));
-#if RM_PROOFS
-                if (RM_KnockbackProof.PinnedMass.TryGetValue(pawn.thingIDNumber, out float pinned))
-                {
-                    mass = pinned;   // test-only: sc_mass_and_power pins its colonist to 64-76 kg (judge gap g4)
-                }
-#endif
-            }
-            else if (t is Corpse corpse)
-            {
-                if (!RimMandrakeExplosiveKnockbackSettings.throwCorpses)
-                {
-                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "corpses_off");
-                    return false;
-                }
-                kind = KbKind.Corpse;
-                Pawn inner = corpse.InnerPawn;
-                mass = inner != null ? inner.GetStatValue(StatDefOf.Mass) : corpse.GetStatValue(StatDefOf.Mass);
-            }
-            else if (t.def.category == ThingCategory.Item)
-            {
-                if (!RimMandrakeExplosiveKnockbackSettings.throwItems)
-                {
-                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "items_off");
-                    return false;
-                }
-                string held = HeldReason(t, map);
-                if (held != null)
-                {
-                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", held, "at", t.Position);
-                    return false;
-                }
-                kind = KbKind.Item;
-                mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-            }
-            else
+            if (pawn == null && !(t is Corpse) && t.def.category != ThingCategory.Item)
             {
                 return false;
             }
-            if (kind != KbKind.Pawn && RM_KnockbackCompat.IsSuperdeep(map, t.Position))
-            {
-                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "in_pit");
-                return false;
-            }
-            // goods in the air off (sheet, settings_scale_and_switch: "goods unthrown, never the old hop"): loose goods and
-            // corpses are not thrown at all
-            if (kind != KbKind.Pawn && !RimMandrakeExplosiveKnockbackSettings.flyingGoods)
-            {
-                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "flying_off");
-                return false;
-            }
+            KbFacts f = Facts(t, r, out int recoversAt, out int lastGasShove);
             KbSettings s = r.config != null ? RimMandrakeExplosiveKnockbackSettings.Kernel(r.config) : RimMandrakeExplosiveKnockbackSettings.Kernel(r.ownCap);
-            if (pawn != null && r.gas)
-            {
-                // burning gas shoves a person one cell, at most once per gasPawnCooldownTicks (plan step 4)
-                int now = Find.TickManager.TicksGame;
-                if (gasShovedAt.TryGetValue(pawn.thingIDNumber, out int last) && now - last < RimMandrakeExplosiveKnockbackSettings.gasPawnCooldownTicks)
-                {
-                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "gas_cooldown", "last", last);
-                    return false;
-                }
-                s.maxCells = Math.Min(s.maxCells, 1);
-            }
-            if (pawn != null && r.shield != null && RimMandrakeExplosiveKnockbackSettings.shieldsAbsorbThrow)
-            {
-                AbsorbByShield(r, pawn);
-                return false;
-            }
-            if (pawn != null && !CanLaunch(pawn, out int recoversAt))
-            {
-                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "immune", "recoversAt", recoversAt);
-                return false;
-            }
-            if (!RM_KnockbackMath.Eligible(kind, mass, s))
-            {
-                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", kind == KbKind.Pawn ? "too_heavy_creature" : "too_heavy",
-                    "mass", mass, "limit", kind == KbKind.Pawn ? s.creatureMassLimit : s.lightMassLimit);
-                return false;
-            }
+            KbPlan p = KbPlanner.Decide(f, BlastOf(r), RimMandrakeExplosiveKnockbackSettings.Rules(), s, new RM_MapKbWorld(map, t));
+            float mass = f.mass;
             IntVec3 start = t.Position;
-            float dist = (start - r.centre).LengthHorizontal;
-            int kernelCells = RM_KnockbackMath.ThrowCells(dist, r.radius, r.force, mass, s);
-            // goods and corpses fly wild (GoodsThrowWild); people keep the kernel
-            int cells = kind == KbKind.Pawn ? kernelCells
-                : RM_KnockbackMath.WildCells(dist, r.radius, r.force, mass, s, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
-            // the rim (inv_too_weak_skip; every_good_moves' "reached"): a throw is decided by the KERNEL; the wild factor only
-            // lengthens a good's throw of a cell or more, it never lifts a rim good the kernel leaves in place
-            if (kernelCells <= 0 || cells <= 0)
+            switch (p.act)
             {
-                RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", "too_weak", "dist", dist, "mass", mass);
-                return false;
+                case KbAct.Skip:
+                    JournalSkip(r, t, p, recoversAt, lastGasShove);
+                    return false;
+                case KbAct.Absorb:
+                    AbsorbByShield(r, pawn);
+                    return false;
+                case KbAct.None:
+                    return false;
             }
-            float dx, dz;
-            if (start == r.centre)
-            {
-                RM_KnockbackMath.EpicentreDir(r.explosionId, t.thingIDNumber, out dx, out dz);
-            }
-            else
-            {
-                dx = start.x - r.centre.x;
-                dz = start.z - r.centre.z;
-            }
-            KbResult res = RM_KnockbackMath.Resolve(new RM_MapKbGrid(map, t, kind == KbKind.Pawn), start.x, start.z, dx, dz,
-                cells, kind, mass, s);
-            var dest = new IntVec3(res.destX, 0, res.destZ);
+            var dest = new IntVec3(p.res.destX, 0, p.res.destZ);
             if (RimMandrakeExplosiveKnockbackSettings.debugDrawVectors && Prefs.DevMode)
             {
                 map.debugDrawer.FlashLine(start, dest, 120, SimpleColor.Orange);
@@ -671,75 +650,173 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (pawn != null)
             {
-                bool thrown = ThrowPawn(r, pawn, start, dest, res, mass);
+                // LaunchPawn, or Blocked: ThrowPawn deals the impact either way and journals a throw of no cells as blocked
+                bool thrown = ThrowPawn(r, pawn, start, dest, p.res, mass);
                 if (thrown && r.gas)
                 {
                     gasShovedAt[pawn.thingIDNumber] = Find.TickManager.TicksGame;
                 }
                 return thrown;
             }
-            if (!res.Moved)
+            KbKind kind = f.kind;
+            int cells = p.cells, kernelCells = p.kernelCells;
+            float impactFactor = r.config?.impactFactor ?? 1f;
+            if (p.act == KbAct.Blocked)
             {
-                RM_KnockbackJournal.Add("blocked", r.explosionId, t, "from", start, "planned", cells, "stop", res.stop.ToString());
-                GoodsWallImpact(r, t, res, cells);
+                RM_KnockbackJournal.Add("blocked", r.explosionId, t, "from", start, "planned", cells, "stop", p.res.stop.ToString());
+                GoodsWallImpact(r, t, p.res, cells);
                 return false;
             }
             int count = t.stackCount;
-            if (RimMandrakeExplosiveKnockbackSettings.flyingGoods)
+            KbLeg leg = p.first;
+            var legDest = new IntVec3(leg.res.destX, 0, leg.res.destZ);
+            if (p.wallFirst)
             {
-                // RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: the stack flies to the very cell the instant move would choose; the
-                // carrier lands it with the same GenPlace calls and takes the wall impact where the flight is cut short
-                RM_ThingFlyer_Knockback f = RM_ThingFlyer_Knockback.Launch(t, map, start, res, dx, dz, kind, mass, r.explosionId,
-                    r.config?.impactFactor ?? 1f, r.instigator);
-                if (f != null)
+                // a wall, door or the map edge right behind it: it takes the hit where it lies, then flies the bounce
+                GoodsImpact(t, r.explosionId, p.res.stop, cells, impactFactor, r.instigator, "rebound");
+                if (t.Destroyed || !t.Spawned)
                 {
-                    RM_KnockbackJournal.ItemMoves++;
-                    RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", dest,
-                        "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count,
-                        "kernelCells", kernelCells, "wildCells", cells, "flying", true, "flyer", f.thingIDNumber, "flightTicks", f.TicksLeft);
-                    return true;
-                }
-                if (!t.Spawned)
-                {
+                    RM_KnockbackJournal.Add("blocked", r.explosionId, t, "from", start, "planned", cells, "stop", p.res.stop.ToString(), "destroyedAtWall", true);
                     return false;
                 }
             }
+            // RIMMANDRAKE_FLY_KNOCKBACK_GOODS_WILD: the stack flies to the very cell the plan chose; the carrier lands it with
+            // the plan's own placing order and takes the wall impact where the flight is cut short
+            RM_ThingFlyer_Knockback fl = RM_ThingFlyer_Knockback.Launch(t, map, start, leg.res, leg.dx, leg.dz, kind, mass, r.explosionId,
+                impactFactor, r.instigator, p.wallFirst ? 1 : 0);
+            if (fl != null)
+            {
+                RM_KnockbackJournal.ItemMoves++;
+                RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", legDest,
+                    "planned", cells, "cells", leg.res.cellsTravelled, "stop", leg.res.stop.ToString(), "mass", mass, "count", count,
+                    "kernelCells", kernelCells, "wildCells", cells, "flying", true, "flyer", fl.thingIDNumber, "flightTicks", fl.TicksLeft,
+                    "wallFirst", p.wallFirst, "hopped", p.hopped);
+                if (p.wallFirst)
+                {
+                    FleckMaker.ThrowDustPuff(start, map, 0.8f);
+                    RM_KnockbackJournal.Add("item_rebound", r.explosionId, t, "at", start, "hit", p.res.stop.ToString(), "left", cells,
+                        "cells", leg.res.cellsPlanned, "to", legDest, "bounce", 1);
+                }
+                return true;
+            }
+            if (!t.Spawned || p.wallFirst)
+            {
+                return false;
+            }
+            // the carrier could not take it (never seen live): the old instant move, same placing
             t.DeSpawn();
-            Thing placed = PlaceLanding(t, dest, start, map, out bool fallback, out int bumped);
+            Thing placed = PlaceLanding(t, dest, start, start, map, out bool fallback, out int bumped, out KbPlanner.KbPlace via);
             FleckMaker.ThrowDustPuff(dest, map, 1f);
             RM_KnockbackJournal.ItemMoves++;
             RM_KnockbackJournal.Add("item_move", r.explosionId, t, "kind", kind.ToString(), "from", start, "to", placed.Spawned ? placed.Position : dest,
-                "planned", cells, "cells", res.cellsTravelled, "stop", res.stop.ToString(), "mass", mass, "count", count, "flying", false,
+                "planned", cells, "cells", p.res.cellsTravelled, "stop", p.res.stop.ToString(), "mass", mass, "count", count, "flying", false,
                 "kernelCells", kernelCells, "wildCells", cells,
-                "residentsMoved", bumped, "spawnFallback", fallback);
-            GoodsWallImpact(r, placed, res, cells);
+                "residentsMoved", bumped, "spawnFallback", fallback, "place", via.ToString());
+            GoodsWallImpact(r, placed, p.res, cells);
             return true;
         }
 
+        private static KbBlast BlastOf(KnockbackRequest r)
+        {
+            return new KbBlast { id = r.explosionId, cx = r.centre.x, cz = r.centre.z, radius = r.radius, force = r.force, gas = r.gas };
+        }
+
+        /// <summary>The facts of one pawn, corpse or loose good, read now (KbFacts). recoversAt and lastGasShove are journal
+        /// detail for the immune and gas_cooldown skips.</summary>
+        private KbFacts Facts(Thing t, KnockbackRequest r, out int recoversAt, out int lastGasShove)
+        {
+            recoversAt = 0;
+            lastGasShove = 0;
+            var f = new KbFacts { spawned = true, thingId = t.thingIDNumber, x = t.Position.x, z = t.Position.z,
+                onSuperdeep = RM_KnockbackCompat.IsSuperdeep(map, t.Position) };
+            if (t is Pawn p)
+            {
+                f.kind = KbKind.Pawn;
+                f.mass = Mathf.Max(1f, p.GetStatValue(StatDefOf.Mass) - MassUtility.InventoryMass(p));
+#if RM_PROOFS
+                if (RM_KnockbackProof.PinnedMass.TryGetValue(p.thingIDNumber, out float pinned))
+                {
+                    f.mass = pinned;   // test-only: sc_mass_and_power pins its colonist to 64-76 kg (judge gap g4)
+                }
+#endif
+                f.dead = p.Dead;
+                f.flying = p.Flying;
+                f.inBed = p.InBed();
+                f.carryingPawn = p.carryTracker?.CarriedThing is Pawn;
+                f.downed = p.Downed;
+                f.animal = p.RaceProps.Animal;
+                f.mechanoid = p.RaceProps.IsMechanoid;
+                f.shieldAbsorbed = r.shield != null;
+                f.recovering = !CanLaunch(p, out recoversAt);
+                if (gasShovedAt.TryGetValue(p.thingIDNumber, out lastGasShove))
+                {
+                    f.gasShovedAgo = Find.TickManager.TicksGame - lastGasShove;
+                }
+            }
+            else if (t is Corpse corpse)
+            {
+                f.kind = KbKind.Corpse;
+                Pawn inner = corpse.InnerPawn;
+                f.mass = inner != null ? inner.GetStatValue(StatDefOf.Mass) : corpse.GetStatValue(StatDefOf.Mass);
+            }
+            else
+            {
+                f.kind = KbKind.Item;
+                f.mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
+                ReadStorage(f, t, map);
+            }
+            return f;
+        }
+
+        /// <summary>One journal "skip" line, with the detail each reason has always carried.</summary>
+        private static void JournalSkip(KnockbackRequest r, Thing t, KbPlan p, int recoversAt, int lastGasShove)
+        {
+            switch (p.reason)
+            {
+                case "gas_cooldown":
+                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", p.reason, "last", lastGasShove);
+                    break;
+                case "immune":
+                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", p.reason, "recoversAt", recoversAt);
+                    break;
+                case "too_heavy_creature":
+                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", p.reason, "mass", p.mass, "limit", p.s.creatureMassLimit);
+                    break;
+                case "too_heavy":
+                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", p.reason, "mass", p.mass, "limit", p.s.lightMassLimit);
+                    break;
+                case "too_weak":
+                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", p.reason, "dist", p.dist, "mass", p.mass);
+                    break;
+                case "corpses_off":
+                case "items_off":
+                case "in_pit":
+                case "flying_off":
+                    if (p.reason == "in_pit" && t is Pawn)
+                    {
+                        RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", p.reason, "at", t.Position);
+                        break;
+                    }
+                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", p.reason);
+                    break;
+                default:
+                    RM_KnockbackJournal.Add("skip", r.explosionId, t, "reason", p.reason, "at", t.Position);
+                    break;
+            }
+        }
+
         /// <summary>Owner, 2026-11-12 (RIMMANDRAKE_THROW_CLOSED_CRATES_WHOLE_CONTENTS_RIDE_SAFE): "the whole crate/chest would
-        /// go flying a bit, but their contents would remain inside and protected". A 1x1 closed container at or under
-        /// closedContainerMassLimit (its own mass, the goods on its cell and what it holds inside) flies as ONE carrier
-        /// with its goods: the kernel's item throw at that mass, so shorter than loose goods; never into a pit, it comes to
-        /// rest on the farthest free open cell of its path short of a person; with no such cell it jolts in place. One
-        /// journal "container" line each.</summary>
+        /// go flying a bit, but their contents would remain inside and protected". The plan rules (KbPlanner.Decide, a
+        /// container): a 1x1 closed container at or under closedContainerMassLimit (its own mass, the goods on its cell and
+        /// what it holds inside) flies as ONE carrier with its goods; never into a pit, it comes to rest on the farthest free
+        /// open cell of its path short of a person; with no such cell it jolts in place. One journal "container" line each.</summary>
         private bool ThrowContainer(KnockbackRequest r, Building b)
         {
-            if (!RimMandrakeExplosiveKnockbackSettings.shoveClosedContainers || !RM_KnockbackCompat.IsClosedContainer(b))
+            if (!RM_KnockbackCompat.IsClosedContainer(b))
             {
                 return false;
             }
             IntVec3 start = b.Position;
-            float dx, dz;
-            if (start == r.centre)
-            {
-                RM_KnockbackMath.EpicentreDir(r.explosionId, b.thingIDNumber, out dx, out dz);
-            }
-            else
-            {
-                dx = start.x - r.centre.x;
-                dz = start.z - r.centre.z;
-            }
-            bool one = b.def.size.x == 1 && b.def.size.z == 1;
             var goods = new List<Thing>();
             float mass = b.GetStatValue(StatDefOf.Mass);
             foreach (Thing h in start.GetThingList(map))
@@ -759,46 +836,29 @@ namespace RimMandrake.ExplosiveKnockback
                     held++;
                 }
             }
+            bool one = b.def.size.x == 1 && b.def.size.z == 1;
+            var f = new KbFacts { container = true, spawned = true, thingId = b.thingIDNumber, x = start.x, z = start.z, mass = mass, oneByOne = one };
             KbSettings s = r.config != null ? RimMandrakeExplosiveKnockbackSettings.Kernel(r.config) : RimMandrakeExplosiveKnockbackSettings.Kernel(r.ownCap);
-            s.intoPits = false; // an open pit is a wall for a container's path
-            float dist = (start - r.centre).LengthHorizontal;
-            float limit = RimMandrakeExplosiveKnockbackSettings.closedContainerMassLimit;
-            int planned = RM_KnockbackMath.ContainerThrowCells(one, mass, limit, dist, r.radius, r.force, s);
-            IntVec3 to = start;
-            int travelled = 0;
-            if (planned > 0)
+            KbPlan p = KbPlanner.Decide(f, BlastOf(r), RimMandrakeExplosiveKnockbackSettings.Rules(), s, new RM_MapKbWorld(map, b));
+            if (p.act == KbAct.None)
             {
-                var grid = new RM_MapKbGrid(map, b, true);
-                KbResult res = RM_KnockbackMath.Resolve(grid, start.x, start.z, dx, dz, planned, KbKind.Item, mass, s);
-                List<(int x, int z)> path = RM_KnockbackMath.Line(start.x, start.z, dx, dz, res.cellsTravelled);
-                for (int i = 0; i < path.Count; i++)
-                {
-                    var c = new IntVec3(path[i].x, 0, path[i].z);
-                    if (c.GetFirstPawn(map) != null)
-                    {
-                        break; // it does not fly through a person
-                    }
-                    if (ContainerCellFree(map, c, b))
-                    {
-                        to = c;
-                        travelled = i + 1;
-                    }
-                }
+                return false; // the container shove is off
             }
+            var to = new IntVec3(p.toX, 0, p.toZ);
             bool flew = false;
-            if (to != start)
+            if (p.act == KbAct.ContainerThrown)
             {
-                flew = RM_ThingFlyer_Knockback.LaunchContainer(b, goods, map, start, to, travelled, dx, dz, mass, r.explosionId,
+                flew = RM_ThingFlyer_Knockback.LaunchContainer(b, goods, map, start, to, p.travelled, p.dx, p.dz, mass, r.explosionId,
                     r.config?.impactFactor ?? 1f, r.instigator) != null;
             }
             if (!flew)
             {
                 FleckMaker.ThrowDustPuff(start, map, 1f);
-                StartJolt(b, dx, dz);
+                StartJolt(b, p.dx, p.dz);
             }
             RM_KnockbackJournal.Add("container", r.explosionId, b, "action", flew ? "thrown" : "jolt", "from", start, "to", flew ? to : start,
-                "planned", planned, "cells", flew ? travelled : 0, "mass", mass, "goods", goods.Count, "held", held, "oneByOne", one,
-                "overLimit", mass > limit);
+                "planned", p.planned, "cells", flew ? p.travelled : 0, "mass", mass, "goods", goods.Count, "held", held, "oneByOne", one,
+                "overLimit", p.overLimit);
             return flew;
         }
 
@@ -862,12 +922,11 @@ namespace RimMandrake.ExplosiveKnockback
         /// no pawn, nothing standing there but filth, grass and the like.</summary>
         internal static bool ContainerCellFree(Map map, IntVec3 c, Thing self)
         {
-            return c.InBounds(map) && RM_KnockbackMath.ShoveCellFree(new RM_MapKbGrid(map, self, true).At(c.x, c.z), Occupied(map, c))
-                && !RM_KnockbackCompat.IsSuperdeep(map, c);
+            return c.InBounds(map) && KbPlanner.ContainerCellFree(new RM_MapKbWorld(map, self), c.x, c.z);
         }
 
         /// <summary>A cell a thrown container may not land on: anything standing there but filth, grass and the like.</summary>
-        private static bool Occupied(Map map, IntVec3 c)
+        internal static bool Occupied(Map map, IntVec3 c)
         {
             if (!c.InBounds(map))
             {
@@ -913,43 +972,6 @@ namespace RimMandrake.ExplosiveKnockback
             }
             RM_KnockbackJournal.Add("skip", r.explosionId, p, "reason", "shield", "energyBefore", before, "energyAfter", Mathf.Max(0f, after),
                 "broke", broke);
-        }
-
-        private static string PawnSkipReason(Pawn p)
-        {
-            if (p.Dead)
-            {
-                return "dead";
-            }
-            if (p.Flying)
-            {
-                return "flying";
-            }
-            if (p.InBed())
-            {
-                return "in_bed";
-            }
-            if (p.carryTracker?.CarriedThing is Pawn)
-            {
-                return "carrying_pawn";
-            }
-            if (p.Downed && !RimMandrakeExplosiveKnockbackSettings.throwDowned)
-            {
-                return "downed_off";
-            }
-            if (p.RaceProps.Animal && !RimMandrakeExplosiveKnockbackSettings.throwAnimals)
-            {
-                return "animals_off";
-            }
-            if (p.RaceProps.IsMechanoid && !RimMandrakeExplosiveKnockbackSettings.throwMechanoids)
-            {
-                return "mechanoids_off";
-            }
-            if (RM_KnockbackCompat.IsSuperdeep(p.Map, p.Position))
-            {
-                return "in_pit"; // GPT #1 + "you can't climb out. Period."
-            }
-            return null;
         }
 
         /// <summary>RIMMANDRAKE_CHAIN_FLAMMABLE_GAS_CLUMPS (plan step 4): one clump of flammable gas burned at c. Not an

@@ -1,0 +1,3 @@
+pawn_arc         INVALID the walker never stood on the planned cell between launch and landing
+pawn_arc         INVALID the walker never stood on the planned cell between launch and landing
+pawn_arc         INVALID the walker never stood on the planned cell between launch and landing

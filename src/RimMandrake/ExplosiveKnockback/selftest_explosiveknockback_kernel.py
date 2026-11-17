@@ -35,9 +35,9 @@ def main(extra=()):
         print("UNMEASURED: no Windows dotnet.exe / D: staging root on this machine")
         return (1, "UNMEASURED") if extra else 1
     os.makedirs(os.path.join(STAGE, "SelfTest"), exist_ok=True)
-    for f in ("RM_KnockbackMath.cs", "RM_KnockbackVerdicts.cs"):
+    for f in ("RM_KnockbackMath.cs", "RM_KnockbackPlan.cs", "RM_KnockbackVerdicts.cs"):
         shutil.copy2(os.path.join(HERE, "Source", f), os.path.join(STAGE, f))
-    for f in ("Program.cs", "KnockbackFuzz.cs", "KnockbackSweep.cs", "RimMandrakeExplosiveKnockback.SelfTest.csproj"):
+    for f in ("Program.cs", "KnockbackFuzz.cs", "KnockbackSweep.cs", "KnockbackMap.cs", "RimMandrakeExplosiveKnockback.SelfTest.csproj"):
         shutil.copy2(os.path.join(HERE, "Source", "SelfTest", f), os.path.join(STAGE, "SelfTest", f))
     with open(os.path.join(tempfile.gettempdir(), "explosiveknockback_selftest.lock"), "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)

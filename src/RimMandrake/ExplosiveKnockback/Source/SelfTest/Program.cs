@@ -82,6 +82,10 @@ internal static class Program
         {
             return FrameFixtures(args[ff + 1]);
         }
+        if (args.Any(a => a.StartsWith("--map")))
+        {
+            return KnockbackMap.RunMap(args);
+        }
         if (args.Contains("--sweep"))
         {
             return KnockbackSweep.Run();

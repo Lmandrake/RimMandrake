@@ -82,7 +82,7 @@ namespace RimMandrake.ExplosiveKnockback
         /// <summary>Put a spawned stack into a new carrier and send it along `res` (already resolved by the kernel).
         /// Null when it could not: the stack is then still spawned where it was and the caller moves it instantly.</summary>
         public static RM_ThingFlyer_Knockback Launch(Thing t, Map map, IntVec3 start, KbResult res, float dx, float dz,
-            KbKind kind, float mass, int explosionId, float impactFactor, Thing instigator)
+            KbKind kind, float mass, int explosionId, float impactFactor, Thing instigator, int bounces = 0)
         {
             ThingDef def = RM_KnockbackDefOf.RM_ThingFlyer_Knockback;
             if (def == null || t == null || !t.Spawned || map == null || !res.Moved)
@@ -100,6 +100,7 @@ namespace RimMandrake.ExplosiveKnockback
                 return null;
             }
             f.originCell = start;
+            f.bounces = bounces;   // 1 = it was slammed into the wall behind it before it flew (KbPlan.wallFirst)
             f.explosionId = explosionId;
             f.planned = res.cellsPlanned;
             f.kind = kind;
@@ -268,36 +269,29 @@ namespace RimMandrake.ExplosiveKnockback
         private void LegEnd(Thing inner)
         {
             Map map = Map;
-            if (SolidStop && cellsLeft > 0 && RimMandrakeExplosiveKnockbackSettings.goodsRebound && bounces < MaxBounces)
+            var hit = new KbResult { hasBlock = hasBlock, blockX = blockX, blockZ = blockZ, blockFromX = blockFromX, blockFromZ = blockFromZ };
+            // the plan rules whether it bounces on (KbPlanner.Rebound: a solid hit, cells left after the loss, bounces left, a
+            // face to reflect off, a reflected walk of a cell or more)
+            if (KbPlanner.Rebound(new RM_MapKbGrid(map, inner, false), stop, cellsLeft, bounces, hit, destCell.x, destCell.z, dirX, dirZ, kind, mass,
+                    RimMandrakeExplosiveKnockbackSettings.Kernel(), RimMandrakeExplosiveKnockbackSettings.Rules(), out KbLeg next))
             {
-                int next = RM_KnockbackMath.ReboundCells(cellsLeft, RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent);
-                var hit = new KbResult { hasBlock = hasBlock, blockX = blockX, blockZ = blockZ, blockFromX = blockFromX, blockFromZ = blockFromZ };
-                var grid = new RM_MapKbGrid(map, inner, false);
-                if (next > 0 && RM_KnockbackMath.Reflect(grid, hit, dirX, dirZ, out float rx, out float rz))
+                IntVec3 at = destCell;
+                // the hit happens here, in flight: the stack takes it before it bounces on
+                RM_MapComponent_Knockback.GoodsImpact(inner, explosionId, stop, cellsLeft, impactFactor, instigator, "rebound");
+                if (Inner == null)
                 {
-                    KbResult nr = RM_KnockbackMath.Resolve(grid, destCell.x, destCell.z, rx, rz, next, kind, mass,
-                        RimMandrakeExplosiveKnockbackSettings.Kernel());
-                    if (nr.Moved)
-                    {
-                        IntVec3 at = destCell;
-                        // the hit happens here, in flight: the stack takes it before it bounces on
-                        RM_MapComponent_Knockback.GoodsImpact(inner, explosionId, stop, cellsLeft, impactFactor, instigator, "rebound");
-                        if (Inner == null)
-                        {
-                            RM_KnockbackJournal.Add("item_land", explosionId, inner, "from", originCell, "to", at, "bounces", bounces,
-                                "stop", stop.ToString(), "count", 0, "destroyedInFlight", true);
-                            Destroy();
-                            return;
-                        }
-                        bounces++;
-                        FleckMaker.ThrowDustPuff(at, map, 0.8f);
-                        RM_KnockbackJournal.Add("item_rebound", explosionId, inner, "at", at, "hit", stop.ToString(), "left", cellsLeft,
-                            "cells", next, "to", new IntVec3(nr.destX, 0, nr.destZ), "bounce", bounces);
-                        spinRate = -spinRate;
-                        StartLeg(at, nr, rx, rz);
-                        return;
-                    }
+                    RM_KnockbackJournal.Add("item_land", explosionId, inner, "from", originCell, "to", at, "bounces", bounces,
+                        "stop", stop.ToString(), "count", 0, "destroyedInFlight", true);
+                    Destroy();
+                    return;
                 }
+                bounces++;
+                FleckMaker.ThrowDustPuff(at, map, 0.8f);
+                RM_KnockbackJournal.Add("item_rebound", explosionId, inner, "at", at, "hit", stop.ToString(), "left", cellsLeft,
+                    "cells", next.res.cellsPlanned, "to", new IntVec3(next.res.destX, 0, next.res.destZ), "bounce", bounces);
+                spinRate = -spinRate;
+                StartLeg(at, next.res, next.dx, next.dz);
+                return;
             }
             Land(inner, map);
         }
@@ -312,11 +306,12 @@ namespace RimMandrake.ExplosiveKnockback
             int count = inner.stackCount;
             innerContainer.Remove(inner);
             // RIMMANDRAKE_LAND_KNOCKBACK_GOODS_NEVER_BUMP_RESIDENTS: never Direct onto a cell where that shoves a resident
-            Thing landed = RM_MapComponent_Knockback.PlaceLanding(inner, destCell, originCell, map, out bool fallback, out int bumped);
+            Thing landed = RM_MapComponent_Knockback.PlaceLanding(inner, destCell, originCell, startVec.ToIntVec3(), map, out bool fallback, out int bumped,
+                out KbPlanner.KbPlace via);
             FleckMaker.ThrowDustPuff(destCell, map, 1f);
             RM_KnockbackJournal.Add("item_land", explosionId, inner, "from", originCell, "to", landed.Spawned ? landed.Position : destCell,
                 "dest", destCell, "bounces", bounces, "stop", stop.ToString(), "count", count, "spawnFallback", fallback,
-                "residentsMoved", bumped, "ticks", ticksTotal);
+                "residentsMoved", bumped, "ticks", ticksTotal, "place", via.ToString());
             // RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE (leaf thrown_into_pit_falls): a stack come down on a covered
             // pit cell breaks the cover and falls through with it (placed first, so it sits on the pit cell when the deck goes)
             if (landed.Spawned && RM_KnockbackMath.LandingBreaksCover(kind, RM_KnockbackCompat.CoverAt(map, landed.Position) != null, container, explosionId))

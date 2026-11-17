@@ -2317,7 +2317,20 @@ namespace RimMandrake.ExplosiveKnockback
                                 }
                             }));
                         }
-                        Blast(s.o, 2.9f);
+                        // the blast goes off two ticks after the walker's order (live 2026-11-17: INVALID 4 of 9 runs on one site,
+                        // "the walker never stood on the planned cell between launch and landing"). A walker of 4.4 to 4.6 cells/s
+                        // needs 16 or 17 ticks for its one cell of soil and the flight lands 18 ticks after the blast, so a tick or
+                        // two of job start decided the row. Two ticks' head start puts it there with the same margin again, and
+                        // still after the launch (the colonist is in the air from the blast's next tick).
+                        Map blastMap = Map;
+                        IntVec3 blastAt = s.o;
+                        RM_MapComponent_Knockback.ProofSchedule.Add(new KeyValuePair<int, Action>(s.stagedTick + 2, () =>
+                        {
+                            if (blastMap == Find.CurrentMap)
+                            {
+                                Blast(blastAt, 2.9f);
+                            }
+                        }));
                     }
                     s.verdict = sc =>
                     {

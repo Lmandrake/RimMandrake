@@ -45,6 +45,22 @@ namespace RimMandrake.ExplosiveKnockback
             return r.cellsTravelled > 0 ? new IntVec3(r.destX, 0, r.destZ) : IntVec3.Invalid;
         }
 
+        /// <summary>Where the same throw ends on flat ground: the last cell of its whole line, no pit, wall or cover read. The
+        /// covered-cell stack must END on the cover cell, not merely pass over it: a throw ends in the first covered pit cell it
+        /// meets (610b127ba8), so with the cover built every log count "plans onto" it, and the control's flat floor then showed
+        /// a 1-log stack flying a cell past (live 2026-11-17: INVALID "not planned onto 59,8 (planned 60,7)").</summary>
+        private static IntVec3 FlatEnd(Scene s, IntVec3 from, float mass)
+        {
+            KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
+            int cells = RM_KnockbackVerdicts.GoodCells((from - s.o).LengthHorizontal, 2.9f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
+            if (cells <= 0)
+            {
+                return IntVec3.Invalid;
+            }
+            var line = RM_KnockbackMath.Line(from.x, from.z, from.x - s.o.x, from.z - s.o.z, cells);
+            return new IntVec3(line[line.Count - 1].x, 0, line[line.Count - 1].z);
+        }
+
         /// <summary>The most logs the covered-cell stack may hold: WoodLog's stackLimit (75 logs = 30 kg, under lightMassLimit).
         /// The selftest reads this number.</summary>
         private const int CoverLogsMax = 75;
@@ -227,7 +243,7 @@ namespace RimMandrake.ExplosiveKnockback
                     for (int n = 1; n <= maxLogs && !coverFrom.IsValid; n++)
                     {
                         float mass = DefMass("WoodLog", n);
-                        if (PlanGood(s, c, mass) == cc && (mass < RimMandrakeExplosiveKnockbackSettings.heavyGoodsMinMass || !CrossesColonist(s, c, cc)))
+                        if (PlanGood(s, c, mass) == cc && FlatEnd(s, c, mass) == cc && (mass < RimMandrakeExplosiveKnockbackSettings.heavyGoodsMinMass || !CrossesColonist(s, c, cc)))
                         {
                             coverFrom = c;
                             coverCell = cc;

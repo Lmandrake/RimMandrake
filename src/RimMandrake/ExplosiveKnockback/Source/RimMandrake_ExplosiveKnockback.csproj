@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_KnockbackMath.cs" />
+    <Compile Include="RM_KnockbackPlan.cs" />
     <Compile Include="RM_KnockbackVerdicts.cs" />
     <Compile Include="RM_KnockbackMod.cs" />
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="RM_KnockbackProof_StoreroomBombPit.cs" />
     <Compile Include="RM_KnockbackProof_PitProbe.cs" />
     <Compile Include="RM_KnockbackProof_PitFall.cs" />
+    <Compile Include="RM_KnockbackProof_MapCase.cs" />
     <Compile Include="RM_PatchApplierProbe.cs" />
   </ItemGroup>
 

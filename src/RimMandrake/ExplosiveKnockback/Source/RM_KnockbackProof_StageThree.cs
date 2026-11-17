@@ -223,12 +223,15 @@ namespace RimMandrake.ExplosiveKnockback
                 }
                 float total = Mass(heavyBox);
                 int n = 0;
-                for (bool any = true; any && total < 76f && n < 30;)
+                // RIMMANDRAKE_FILL_HEAVY_LOCKER_REAL_MASS_ESTIMATE_FELL_SHORT: the fill reads the locker's REAL mass after every gun
+                // (it summed the defs' abstract masses, which run high: 30 guns estimated at 76 kg weighed 74.9, INVALID in
+                // visit 3 and again live 2026-11-17), and may take up to 60 guns
+                for (bool any = true; any && total < 76f && n < 60;)
                 {
                     any = false;
                     foreach (ThingDef g in guns)
                     {
-                        if (total >= 76f || n >= 30)
+                        if (total >= 76f || n >= 60)
                         {
                             break;
                         }
@@ -241,7 +244,7 @@ namespace RimMandrake.ExplosiveKnockback
                         GenPlace.TryPlaceThing(t, heavyBox.Position, Map, ThingPlaceMode.Direct, out Thing placed);
                         if (placed != null && placed.Spawned && placed.Position == heavyBox.Position)
                         {
-                            total += gm;
+                            total = Mass(heavyBox);
                             n++;
                             any = true;
                         }

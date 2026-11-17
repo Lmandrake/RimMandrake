@@ -15,9 +15,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\RM_KnockbackMath.cs" />
+    <Compile Include="..\RM_KnockbackPlan.cs" />
     <Compile Include="..\RM_KnockbackVerdicts.cs" />
     <Compile Include="KnockbackFuzz.cs" />
     <Compile Include="KnockbackSweep.cs" />
+    <Compile Include="KnockbackMap.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 </Project>

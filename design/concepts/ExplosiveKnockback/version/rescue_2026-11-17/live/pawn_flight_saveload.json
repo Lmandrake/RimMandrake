@@ -1,0 +1,77 @@
+{
+ "rows": [
+  [
+   "PF_PLAIN_IN_FLIGHT",
+   "PASS",
+   "at +5 ticks: READ a=?,?,0,air|covers=; start cell {'pawns': '0', 'items': '0', 'superdeep': 'False', 'cover': 'False', 'flyers': '3'}"
+  ],
+  [
+   "PF_PLAIN_LANDS",
+   "PASS",
+   "save EK_PAWN_FLIGHT_MIDAIR_20261117T105426_PLAIN ({'success': True, 'saveName': 'EK_PAWN_FLIGHT_MIDAIR_2026111); 120 ticks after the reload the end cell reads {'pawns': '1', 'items': '0', 'superdeep': 'False', 'cover': 'False', 'flyers': '0'}, the start cell {'pawns': '0', 'items': '0', 'superdeep': 'False', 'cover': 'False', 'flyers': '0'}"
+  ],
+  [
+   "PF_COVER_IN_FLIGHT",
+   "PASS",
+   "at +5 ticks: READ a=?,?,0,air|covers=3,0; start cell {'pawns': '0', 'items': '0', 'superdeep': 'False', 'cover': 'False', 'flyers': '1'}"
+  ],
+  [
+   "PF_COVER_BREAKS",
+   "PASS",
+   "save EK_PAWN_FLIGHT_MIDAIR_20261117T105426_COVER ({'success': True, 'saveName': 'EK_PAWN_FLIGHT_MIDAIR_2026111); 120 ticks after the reload the end cell reads {'pawns': '1', 'items': '0', 'superdeep': 'True', 'cover': 'False', 'flyers': '0'}, the start cell {'pawns': '0', 'items': '0', 'superdeep': 'False', 'cover': 'False', 'flyers': '0'}"
+  ],
+  [
+   "PF_NO_TICK_EXCEPTIONS",
+   "PASS",
+   "Player.log 'Exception ticking' + 'TweenedPosRoot' lines: 0 before, 0 after"
+  ]
+ ],
+ "ev": {
+  "PLAIN": {
+   "staged": "STAGED map_case",
+   "origin": [
+    27,
+    12
+   ],
+   "mid": "READ a=?,?,0,air|covers=",
+   "save": "EK_PAWN_FLIGHT_MIDAIR_20261117T105426_PLAIN",
+   "end": {
+    "pawns": "1",
+    "items": "0",
+    "superdeep": "False",
+    "cover": "False",
+    "flyers": "0"
+   },
+   "start_after": {
+    "pawns": "0",
+    "items": "0",
+    "superdeep": "False",
+    "cover": "False",
+    "flyers": "0"
+   }
+  },
+  "COVER": {
+   "staged": "STAGED map_case",
+   "origin": [
+    42,
+    12
+   ],
+   "mid": "READ a=?,?,0,air|covers=3,0",
+   "save": "EK_PAWN_FLIGHT_MIDAIR_20261117T105426_COVER",
+   "end": {
+    "pawns": "1",
+    "items": "0",
+    "superdeep": "True",
+    "cover": "False",
+    "flyers": "0"
+   },
+   "start_after": {
+    "pawns": "0",
+    "items": "0",
+    "superdeep": "False",
+    "cover": "False",
+    "flyers": "0"
+   }
+  }
+ }
+}

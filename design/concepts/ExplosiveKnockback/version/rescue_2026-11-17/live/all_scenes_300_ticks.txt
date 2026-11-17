@@ -1,0 +1,142 @@
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,all_fly_no_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter,goods_fly_midair,goods_fly_lands,goods_fly_wall,goods_fly_rebound,goods_fly_off,fire_half,harmful_unpatched,container_thrown,heavy_knock,land_no_bump,land_no_bump_pit,gas_clumps,mass_and_power,mass_and_power_x2,mass_and_power_off,mass_and_power_off_x2,mass_and_power_250,mass_and_power_250_x2,pawn_hits_pawn,only_explosions,open_storage,no_cross_ordered,spared_states,blast_kinds,goods_fly_wild,gas_chain,gas_census,pawn_arc,pit_goods_fetch,hose_carry_drop,hose_carry_drop_off,closed_containers,closed_containers_control,settings_sweep,settings_sweep_after,frame_probe_selfcheck,frame_probe_selfcheck_paused,barrage_perf,barrage_perf_off,gas_into_pit,gas_into_pit_off,goods_obstacles,goods_obstacles_control,storeroom_bomb_pit,storeroom_bomb_pit_control,pit_colonist_control flowworks=True hoses=True
+calibration      advanced 300/300 ticks in 1 s via jawa/safe_advance
+calibration      PASS p 28,12->31,12 (3 cells) away=True alive=True launches=1 [type=launch tick=37502 exp=71807 thing=Human71804 from=28,12 to=31,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False faction=PlayerColony]
+wall_stop        advanced 300/300 ticks in 1 s via jawa/safe_advance
+wall_stop        PASS p 43,12->44,12 (1 cells) [type=launch tick=37802 exp=71814 thing=Human71810 from=43,12 to=44,12 planned=3 cells=1 stop=Wall impact=7.723094 otherImpact=0 door=False mass=60.79998 hoseDropped=False faction=PlayerColony]
+door_stop        advanced 300/300 ticks in 0 s via jawa/safe_advance
+door_stop        PASS p 58,12->59,12 (1 cells) doorHp 104->92 [type=launch tick=38102 exp=71831 thing=Human71824 from=58,12 to=59,12 planned=3 cells=1 stop=Door impact=7.723094 otherImpact=0 door=True mass=60.79998 hoseDropped=False faction=PlayerColony]
+over_sandbags    advanced 300/300 ticks in 0 s via jawa/safe_advance
+over_sandbags    PASS p 73,12->76,12 (3 cells) (sandbags at x+2)
+pit_colonist     advanced 300/300 ticks in 1 s via jawa/safe_advance
+pit_colonist     PASS open: p planned=3 landed=105,12 descents=1 inPit=True; s planned=6 landed=105,12 lands=1 inPit=True | covered: pc planned=3 landed=99,12 descents=1 inPit=True; sc planned=6 landed=99,12 lands=1 inPit=True coverGone=True breaksByLanding=1
+pit_enemy        advanced 300/300 ticks in 1 s via jawa/safe_advance
+pit_enemy        PASS p 118,12->122,11 (4 cells) landedOnFirstPitCell=True stillInPit=True descents=1
+no_cross         advanced 300/300 ticks in 0 s via jawa/safe_advance
+no_cross         PASS p 132,12->134,12 (2 cells) (1-wide pit at x+2; must stop IN it)
+cover_breaks     advanced 300/300 ticks in 1 s via jawa/safe_advance
+cover_breaks     PASS coversLeft=0 pawnInPit=True descents=1 at 149,12
+items            advanced 300/300 ticks in 1 s via jawa/safe_advance
+items            PASS steel 163,12->169,12 (6 cells) mass=37.5 want=6; comp 162,13->162,19 (6 cells) mass=0.6 want=6; heavy 161,12->161,12 (0 cells) mass=3000 want=0; steelCount=75
+corpse_into_pit  advanced 300/300 ticks in 1 s via jawa/safe_advance
+corpse_into_pit  PASS corpse 178,12->180,12 (2 cells) onPitFloor=True forbidden=True
+killed_by_blast  advanced 300/300 ticks in 1 s via jawa/safe_advance
+killed_by_blast  PASS dead=3 corpsesThrown=3
+shelf            advanced 300/300 ticks in 1 s via jawa/safe_advance
+shelf            PASS steel 208,12->214,12 (6 cells) (on an open shelf: must move)
+in_pit_skip      advanced 300/300 ticks in 1 s via jawa/safe_advance
+in_pit_skip      PASS p 223,12->223,12 (0 cells) skips(in_pit)=1
+heavy_skip       advanced 300/300 ticks in 1 s via jawa/safe_advance
+heavy_skip       PASS gromma 240.0 kg: big 238,12->242,14 (4 cells) skips(too_heavy_creature)=1 [type=skip tick=41402 exp=72019 thing=RM_Agaripod72018 reason=too_heavy_creature mass=240 limit=150]
+all_fly_no_cap   advanced 300/300 ticks in 1 s via jawa/safe_advance
+all_fly_no_cap   PASS no_cap=True all_fly=True every_request_answered=True kernelSaysMove=80 requests=90 launches=10 itemMoves=80 maxMovesInOneTick=24 cappedSkips=0 pawns=10 items=80
+settings_off     advanced 300/300 ticks in 1 s via jawa/safe_advance
+settings_off     PASS p 28,27->28,27 (0 cells); steel 26,27->26,27 (0 cells) waveHitThem=True
+emp_no_throw     advanced 300/300 ticks in 1 s via jawa/safe_advance
+emp_no_throw     PASS p 43,27->43,27 (0 cells) (EMP force 0: no request)
+lookup_projectile advanced 300/300 ticks in 1 s via jawa/safe_advance
+lookup_projectile PASS p 58,27->65,27 (7 cells) want~7 [type=request tick=42602 exp=72272 thing=Human72268 from=58,27 centre=57,27 radius=2.9 force=2.5 damType=Bomb source=projectile shieldAbsorbed=False typeForce=2.5 damage=50 damageRatio=1]
+lookup_zero_wins advanced 300/300 ticks in 1 s via jawa/safe_advance
+lookup_zero_wins PASS p 73,27->73,27 (0 cells) requests=0
+impact_factor    advanced 300/300 ticks in 1 s via jawa/safe_advance
+impact_factor    PASS p 88,27->89,27 (1 cells) [type=launch tick=43202 exp=72285 thing=Human72281 from=88,27 to=89,27 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=48.74998 hoseDropped=False faction=PlayerColony]
+body_override    advanced 300/300 ticks in 1 s via jawa/safe_advance
+body_override    PASS Baseopsis 180.0 kg: big 103,27->110,28 (7 cells); control 101,30->97,29 (4 cells) bigLaunches=1 controlLaunches=0 controlTooHeavy=True
+immunity_window  advanced 300/300 ticks in 1 s via jawa/safe_advance
+immunity_window  PASS launches=1 immuneSkip=True guardHolds=True
+shield_counter   advanced 300/300 ticks in 1 s via jawa/safe_advance
+shield_counter   PASS p 133,27->133,27 (0 cells) energy 1.1->1.1 [type=skip tick=44102 exp=72313 thing=Human72301 reason=shield energyBefore=1.067 energyAfter=0.737 broke=False]
+goods_fly_midair advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_midair PASS in carrier at +2 ticks, count=75 dest=154,27 ticksLeft=59
+goods_fly_lands  advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_lands  PASS steel 163,27->169,27 (6 cells) want=6 count=75 flying=True item_land=1 carrierLeft=False [type=item_land tick=44762 exp=72319 thing=Steel72318 from=163,27 to=169,27 dest=169,27 bounces=0 stop=Distance count=75 spawnFallback=False residentsMoved=0 ticks=60 place=Direct]
+goods_fly_wall   advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_wall   PASS comp 178,27->179,27 (1 cells) want=6 flying=True [type=goods_impact tick=45008 exp=72323 thing=ComponentIndustrial72321 stop=Wall left=5 damage=50 destroyed=False at=landed]
+goods_fly_rebound advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_rebound PASS comp 193,27->191,27 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=45308 exp=72327 thing=ComponentIndustrial72325 at=194,27 hit=Wall left=5 cells=3 to=191,27 bounce=1]
+goods_fly_off    advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_off    PASS steel 208,27->208,27 (0 cells) wantIfOn=6 flyingOffSkip=True itemMoves=0 seenInCarrier=False
+fire_half        advanced 300/300 ticks in 1 s via jawa/safe_advance
+fire_half        PASS flameForce=0.5 bombForce=1 flameCells=1 bombCells=3
+harmful_unpatched advanced 300/300 ticks in 1 s via jawa/safe_advance
+harmful_unpatched PASS thumpForce=1 source=unpatched bombForce=1 thumpCells=3 bombCells=3 unpatchedHarmfulPercent=100
+container_thrown advanced 300/300 ticks in 1 s via jawa/safe_advance
+container_thrown PASS thrown=True together=True shorter=True shielded=True box=LWM_WeaponsLocker boxCells=5 looseCells=6 revolverHp=100/100 looseRevolverHp=92/100 [type=container tick=46502 exp=72359 thing=LWM_WeaponsLocker72354 action=thrown from=13,42 to=18,42 planned=5 cells=5 mass=10.6 goods=2 held=0 oneByOne=True overLimit=False]
+heavy_knock      advanced 300/300 ticks in 1 s via jawa/safe_advance
+heavy_knock      PASS hit=True pass=True heavyMass=15 heavyAt=31,42 ph=31,42 phHp=0.940 lightAt=20,42 [type=heavy_hit tick=46813 exp=72372 thing=Steel72364 pawn=Human72366 pawnId=72366 at=31,42 mass=15 damage=4.082253 stunTicks=30 pawnDead=False] passes=1
+land_no_bump     advanced 300/300 ticks in 1 s via jawa/safe_advance
+land_no_bump     PASS stays=True landed=True journal_zero_moved=True resident=49,42 gun=48,42 inPit=False [type=item_land tick=47128 exp=72377 thing=Gun_Revolver72375 from=43,42 to=48,42 dest=49,42 bounces=0 stop=Distance count=1 spawnFallback=False residentsMoved=0 ticks=26 place=NearCell]
+land_no_bump_pit advanced 300/300 ticks in 1 s via jawa/safe_advance
+land_no_bump_pit PASS stays=True landed=True journal_zero_moved=True resident=60,42 gun=60,41 inPit=True [type=item_land tick=47411 exp=72382 thing=Gun_Revolver72380 from=58,42 to=60,41 dest=60,42 bounces=0 stop=Pit count=1 spawnFallback=False residentsMoved=0 ticks=9 place=PitFloor]
+gas_clumps       advanced 300/300 ticks in 1 s via jawa/safe_advance
+gas_clumps       PASS chain=True goods=True shove=True cover=True bursts=37 burstTicks=5 goodsMoves=5 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=159/160
+mass_and_power   advanced 300/300 ticks in 1 s via jawa/safe_advance
+mass_and_power   PASS lane=default damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True
+mass_and_power_x2 advanced 300/300 ticks in 1 s via jawa/safe_advance
+mass_and_power_x2 PASS lane=default damage=100 ratio=2.00 small(gripper 1.2 kg)=6/want 6 colonist(colonist 64.0 kg)=5/want 5 under(gorekite 144.0 kg)=4/want 4 heavy(gromma 240.0 kg)=spared/want 0 order=True
+mass_and_power_off advanced 300/300 ticks in 1 s via jawa/safe_advance
+mass_and_power_off PASS lane=off damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True
+mass_and_power_off_x2 advanced 300/300 ticks in 1 s via jawa/safe_advance
+mass_and_power_off_x2 PASS lane=off damage=100 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=spared/want 0 order=True
+mass_and_power_250 advanced 300/300 ticks in 1 s via jawa/safe_advance
+mass_and_power_250 PASS lane=250 damage=50 ratio=1.00 small(gripper 1.2 kg)=5/want 5 colonist(colonist 64.0 kg)=3/want 3 under(gorekite 144.0 kg)=2/want 2 heavy(gromma 240.0 kg)=1/want 1 order=True
+mass_and_power_250_x2 advanced 300/300 ticks in 1 s via jawa/safe_advance
+mass_and_power_250_x2 PASS lane=250 damage=100 ratio=2.00 small(gripper 1.2 kg)=6/want 6 colonist(colonist 64.0 kg)=5/want 5 under(gorekite 144.0 kg)=4/want 4 heavy(gromma 240.0 kg)=3/want 3 order=True
+pawn_hits_pawn   advanced 300/300 ticks in 1 s via jawa/safe_advance
+pawn_hits_pawn   PASS p 178,42->179,42 (1 cells) [type=launch tick=49802 exp=72534 thing=Human72525 from=178,42 to=179,42 planned=3 cells=1 stop=Pawn impact=3.860753 otherImpact=3.860753 door=False mass=60.74998 hoseDropped=False faction=PlayerColony]
+only_explosions  advanced 300/300 ticks in 1 s via jawa/safe_advance
+only_explosions  PASS melee+bullet requests=0 moved=0; grenade p 194,42->195,42 (1 cells)
+open_storage     advanced 300/300 ticks in 1 s via jawa/safe_advance
+open_storage     PASS g0 208,42->214,42 (6 cells) | floor control 6 cells; g1 206,42->200,42 (6 cells) | floor control 6 cells; g2 207,43->207,49 (6 cells) | floor control 6 cells; g3 207,40->207,36 (4 cells) | floor control 4 cells;
+no_cross_ordered advanced 300/300 ticks in 1 s via jawa/safe_advance
+no_cross_ordered PASS a@(225, 0, 40) b@(225, 0, 45) descents=0 (step 2000 ticks)
+spared_states    advanced 300/300 ticks in 1 s via jawa/safe_advance
+spared_states    PASS big too_heavy_creature; pit in_pit; pitstack in_pit; carrier carrying_pawn; sleeper in_bed; corpse too_heavy; blast at +60 ticks (step 300)
+blast_kinds      advanced 300/300 ticks in 1 s via jawa/safe_advance
+blast_kinds      PASS flame%=50 swapped%=100 cells 1/2 frag%=100 bombsuper%=100 harmless quiet=True
+goods_fly_wild   advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_fly_wild   PASS comp 28,57->26,57 (2 cells) want=6 back=3 rebounds=1 impactAtRebound=True [type=item_rebound tick=51608 exp=72656 thing=ComponentIndustrial72654 at=29,57 hit=Wall left=5 cells=3 to=26,57 bounce=1]
+gas_chain        advanced 300/300 ticks in 1 s via jawa/safe_advance
+gas_chain        PASS chain=True goods=True shove=True cover=True bursts=25 burstTicks=5 goodsMoves=4 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=158/160
+gas_census       advanced 300/300 ticks in 1 s via jawa/safe_advance
+gas_census       PASS chain=True goods=True shove=True cover=True bursts=30 burstTicks=5 goodsMoves=3 maxGoodsPlanned=2 pawnShoves=1 cooldownOk=True gasReg=True coverHp=159/160
+pawn_arc         advanced 300/300 ticks in 1 s via jawa/safe_advance
+pawn_arc         PASS arcTicks=17 planned=76,57 onPlanned=True hitWalker=True stun=True rehaul=True teleportControlClean=True (step 900 ticks)
+pit_goods_fetch  advanced 300/300 ticks in 1 s via jawa/safe_advance
+pit_goods_fetch  FAIL stack out=False corpse out=False hauler in pit=False raised-ladder control stack still in its pit=True (step up to 60000 ticks)
+hose_carry_drop  advanced 300/300 ticks in 1 s via jawa/safe_advance
+hose_carry_drop  PASS launched=True dropped=True three=True takeoff=100,57 carry=Dropped carrier=none end=100,57 pCell=away hurt=True [type=launch tick=53179 exp=72799 thing=Human72788 from=100,57 to=100,60 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.74998 hoseDropped=True faction=PlayerColony]
+hose_carry_drop_off advanced 300/300 ticks in 1 s via jawa/safe_advance
+hose_carry_drop_off PASS takeoff=115,57 carry=Carrying carrier=p end=115,57 pCell=115,57 hurt=True no launch line
+closed_containers advanced 300/300 ticks in 1 s via jawa/safe_advance
+closed_containers PASS free=thrown cells=5 away=True held=True action=thrownx1; crate=thrown cells=4 away=True held=True action=thrownx1; wall=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; pawn=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; pit=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; safe=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; sec=jolted stayed=True held=True lines=1 action=jolt drawnOffset=UNMEASURED; panel=kept goods on its cell=1 limit=250 crateMass=1.5
+closed_containers_control advanced 300/300 ticks in 1 s via jawa/safe_advance
+closed_containers_control PASS looseFlew=5/5 untaggedPanel pg 145,54->145,48 (6 cells)
+settings_sweep   advanced 300/300 ticks in 1 s via jawa/safe_advance
+settings_sweep   PASS fields=equal kernel=9/9 P=thrown A=thrown M=thrown D=thrown G=thrown C=thrown Gcell=moved stunTicks=101 door=hurt draws=no crate=thrown locker=thrown lockerGoods=kept H=knocked gas=burst gasGoods=moved
+settings_sweep_after advanced 300/300 ticks in 1 s via jawa/safe_advance
+settings_sweep_after PASS own=True drift[] unsetAfter[] P=thrown A=thrown M=thrown D=thrown G=thrown C=thrown Gcell=moved stunTicks=82 door=hurt draws=no crate=thrown locker=thrown lockerGoods=kept H=knocked gas=burst gasGoods=moved
+frame_probe_selfcheck advanced 306/300 ticks in 1 s via jawa/safe_advance
+frame_probe_selfcheck FAIL frames=25 probeRows=25 paused=17 wall=1.24s worstMs=20.5 meanMs=49.8 maxInAir=5 selfCheck=paused: 17 of 25 rows rows=C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\RM_FrameProbe_20261117T105359.csv
+frame_probe_selfcheck_paused advanced 300/300 ticks in 1 s via jawa/safe_advance
+frame_probe_selfcheck_paused PASS frames=28 probeRows=28 paused=28 wall=1.33s worstMs=0.0 meanMs=47.6 maxInAir=0 selfCheck=paused: 28 of 28 rows rows=C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\RM_FrameProbe_20261117T105400.csv
+barrage_perf     INVALID not the owner's full list: 34 active mods
+barrage_perf_off INVALID not the owner's full list: 34 active mods
+gas_into_pit     advanced 300/300 ticks in 1 s via jawa/safe_advance
+gas_into_pit     PASS p 12,72->13,72 (1 cells) bursts=21 launches=1 descents=1 inPit=True gasAtColonist=250 gasReg=True [type=launch tick=55512 exp=-164 thing=Human73049 from=12,72 to=13,72 planned=1 cells=1 stop=Pit impact=0 otherImpact=0 door=False mass=60.79998 hoseDropped=False faction=PlayerColony] shove=True landedOnFirstPitCell=True injuries 0->2
+gas_into_pit_off advanced 300/300 ticks in 1 s via jawa/safe_advance
+gas_into_pit_off PASS p 27,72->27,72 (0 cells) bursts=0 launches=0 descents=0 inPit=False gasAtColonist=250 gasReg=False burned=False
+goods_obstacles  advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_obstacles  PASS D ok D 43,72->41,72 (2 cells) want=6 flying=True atRest=True hops=0 hidden=0 back=3 keep%=70 doorClosed=True [type=item_rebound tick=56118 exp=73119 thing=ComponentIndustrial73110 at=44,72 hit=Door left=5 cells=3 to=41,72 bounce=1]; S ok S 43,77->49,77 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 (sandbags at x+3); W ok W 43,67->44,67 (1 cells) want=6 flying=True atRest=True hops=0 hidden=0 (water from x+3) visible=True inWater=0 traceRows=301 (step up to 600 ticks)
+goods_obstacles_control advanced 300/300 ticks in 1 s via jawa/safe_advance
+goods_obstacles_control PASS D ok D 58,72->64,72 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 plan=64,72; S ok S 58,77->64,77 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 plan=64,77; W ok W 58,67->64,67 (6 cells) want=6 flying=True atRest=True hops=0 hidden=0 plan=64,67 traceRows=301 (step up to 600 ticks)
+storeroom_bomb_pit advanced 300/300 ticks in 1 s via jawa/safe_advance
+storeroom_bomb_pit PASS east=True [type=launch tick=56712 exp=73197 thing=Human73177 from=73,72 to=75,72 planned=3 cells=2 stop=Wall impact=3.860753 otherImpact=0 door=False mass=60.74998 hoseDropped=False faction=PlayerColony at 75,72 stunned=True] south=True [pS 72,71->72,68 (3 cells)] goods=True [unmoved= tooWeak=g_shelf2,g_shelf3,g_shelf4,g_shelf5 flown=7 flat= spin=True rebounds=4 despawnSpawnPairs=0] container=True [contents=True thrown=True type=container tick=56714 exp=73197 thing=LWM_WeaponsLocker73173 action=thrown from=70,72 to=69,72 planned=2 cells=1 mass=10.6 goods=2 held=0 oneByOne=True overLimit=False] heavy=True [type=heavy_hit tick=56723 exp=73197 thing=Steel73176 pawn=Human73186 pawnId=73186 at=75,75 mass=37.5 damage=2.214805 stunTicks=30 pawnDead=False] pit=True [pawns=pS:1 goods=g_pit:1] cover=True [cell 74,68 gone=True stack@74,68 descents=1] (step 300-900 ticks)
+storeroom_bomb_pit_control advanced 300/300 ticks in 1 s via jawa/safe_advance
+storeroom_bomb_pit_control PASS descents=0 offPlan=[] cover cell 89,68 solid=True (step 300-900 ticks)
+pit_colonist_control advanced 300/300 ticks in 1 s via jawa/safe_advance
+pit_colonist_control PASS open: p planned=3 landed=106,72 descents=0 inPit=False; s planned=6 landed=109,72 lands=1 inPit=False | covered: pc planned=3 landed=98,72 descents=0 inPit=False; sc planned=6 landed=95,72 lands=1 inPit=False
+VERDICT FAIL  (69 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX.det\Transient\explosive_knockback\run_20261117T105301.jsonl
+[bridge split] 71.5 s wall: load 0.0 / ticks 53.4 / reads 0.0 / other 11.2 / outside calls 6.8 s
+[bridge split] WARN 268 calls of jawa/safe_advance (53.4 s): batch them
+[bridge split] WARN 141 calls of jawa/static_call (7.4 s): batch them
+[bridge split] WARN 96 calls of jawa/mod_settings_field (3.8 s): batch them

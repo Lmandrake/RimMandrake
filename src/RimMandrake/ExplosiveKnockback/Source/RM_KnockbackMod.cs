@@ -163,6 +163,20 @@ namespace RimMandrake.ExplosiveKnockback
             };
         }
 
+        /// <summary>The Mod Settings the plan reads beyond the kernel's (KbPlanner.Decide, Rebound).</summary>
+        public static KbRules Rules()
+        {
+            return new KbRules
+            {
+                throwDowned = throwDowned, throwAnimals = throwAnimals, throwMechanoids = throwMechanoids, throwItems = throwItems,
+                throwCorpses = throwCorpses, flyingGoods = flyingGoods, closedContainerGuard = closedContainerGuard,
+                openStorageProtects = openStorageProtectsGoods, shoveClosedContainers = shoveClosedContainers,
+                shieldsAbsorbThrow = shieldsAbsorbThrow, wild = GoodsThrowWild, containerMassLimit = closedContainerMassLimit,
+                gasPawnCooldownTicks = gasPawnCooldownTicks, goodsRebound = goodsRebound, goodsReboundKeepPercent = goodsReboundKeepPercent,
+                maxBounces = RM_ThingFlyer_Knockback.MaxBounces,
+            };
+        }
+
         public override void ExposeData()
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
