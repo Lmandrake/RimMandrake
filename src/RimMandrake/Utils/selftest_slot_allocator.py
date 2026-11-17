@@ -375,6 +375,22 @@ check("slope from account_usage's series: 5 readings over 2 h, 1.0%/h", rate is 
       and npts == 5, (rate, npts, span))
 rate, npts, span = SA.slope("system", iso(real_now + 48 * H), real_now, dict(R, fit=dict(R["fit"], slope_min_points=6)))
 check("too few readings -> no slope (fallback to messages)", rate is None, rate)
+# RIMMANDRAKE_SPLIT_RUNWAY_SLOPE_AT_MIDWEEK_GRANT_FALSE_CALM: used falls mid-week (99 -> 73, same reset), then burns
+# 3%/h; a fit across the drop read negative, clamped to 0, runway 10 on a live account 4 h from empty (2026-11-17)
+grant = [(5.5, 99.0), (5.0, 99.0), (4.5, 99.0), (4.0, 73.0), (3.0, 76.0), (2.0, 79.0), (1.0, 82.0), (0.0, 85.0)]
+(au / "series.jsonl").write_text("".join(json.dumps({"ts": iso(real_now - h * H), "account": "system", "source": "MEASURED",
+                                                     "measured_at": iso(real_now - h * H), "week_pct_used": u,
+                                                     "week_resets_at": iso(real_now + 48 * H)}) + "\n" for h, u in grant))
+OPS_FIT = {"fit": {"window_h": 6, "slope_min_points": 4, "slope_min_span_h": 2.0}}  # ops_watch_rules accounts_fit
+rate, npts, span = SA.slope("system", iso(real_now + 48 * H), real_now, OPS_FIT)
+check("a mid-week drop in used starts a new segment: 3%/h from the 5 readings after it", rate is not None
+      and abs(rate - 3.0) < 0.01 and npts == 5, (rate, npts, span))
+(au / "series.jsonl").write_text("".join(json.dumps({"ts": iso(real_now - h * H), "account": "system", "source": "MEASURED",
+                                                     "measured_at": iso(real_now - h * H), "week_pct_used": u,
+                                                     "week_resets_at": iso(real_now + 48 * H)}) + "\n"
+                                         for h, u in [(4.0, 60.0), (3.0, 61.0), (2.5, 60.5), (2.0, 62.0), (0.0, 64.0)]))
+rate, npts, span = SA.slope("system", iso(real_now + 48 * H), real_now, OPS_FIT)
+check("a half-point wobble is not a grant: all 5 readings fit", rate is not None and npts == 5, (rate, npts, span))
 (au / "series.jsonl").write_text(json.dumps(srs[-1]) + "\n")
 streams = tmp / "streams"
 streams.mkdir()

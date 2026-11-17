@@ -434,6 +434,9 @@ def same_reset(a, b):
     return a is not None and b is not None and abs(a - b) <= RESET_TOL_S
 
 
+GRANT_DROP_PCT = 2.0  # a fall in week_pct_used larger than this (points) is a quota grant, not meter wobble
+
+
 def slope(account, resets_at, now, rules):
     """(%/h, points, span_h) from account_usage's series for this account and week, or (None, n, span)."""
     fit = rules["fit"]
@@ -450,6 +453,11 @@ def slope(account, resets_at, now, rules):
         m = epoch(rec.get("measured_at"))
         if m is not None and m >= lo:
             pts[m] = float(rec["week_pct_used"])
+    # used only rises within a week: a drop past the meter's wobble is a mid-week grant (2026-11-17: 99 -> 73), and a
+    # fit across it reads negative, clamped to a false 0. Fit only the readings after the last drop.
+    xs = sorted(pts)
+    cut = max((i for i in range(1, len(xs)) if pts[xs[i]] < pts[xs[i - 1]] - GRANT_DROP_PCT), default=0)
+    pts = {x: pts[x] for x in xs[cut:]}
     n = len(pts)
     if n < 2:
         return None, n, 0.0
