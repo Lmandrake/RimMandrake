@@ -479,7 +479,19 @@ class FX:
 
     def publish(self, cwd, paths, msg):
         self.published.append(list(paths))
+        self.snap(cwd)
         return "abc1234"
+
+    def snap(self, cwd=None):
+        """The published proposal (what `git show HEAD:` would return): the folder's bytes now."""
+        cwd = cwd or self.repo
+        self.head = {}
+        for p in self.changed(cwd):
+            with open(os.path.join(cwd, p), encoding="utf-8") as f:
+                self.head[p] = f.read()
+
+    def head_text(self, cwd, rel):
+        return getattr(self, "head", {}).get(rel)
 
     def sleep(self, s):
         self.sleeps.append(s)
@@ -698,8 +710,12 @@ def test_fleet():
     lay(good(), repo=repo)
     out = os.path.join(repo, "design", "concepts", "Demo", "cleanse")
     with open(os.path.join(out, "review.json"), "w") as f:
+        json.dump({"rounds": [], "digest": "0" * 64}, f)
+    check(not DC.done(repo, "Demo"), "resume: a review of other bytes (its digest differs) is stale")
+    with open(os.path.join(out, "review.json"), "w") as f:
         json.dump({"rounds": []}, f)
-    check(not DC.done(repo, "Demo"), "resume: a review that recorded no digest is not trusted (an older launcher's)")
+    # Conductor 2026-11-17: the 23 first looks predate the digest; one with no digest is the first look, not stale
+    check(DC.done(repo, "Demo"), "resume: a review an older launcher wrote with no digest is kept, not re-hunted")
     with open(os.path.join(out, "review.json"), "w") as f:
         json.dump({"rounds": [], "digest": DC.proposal_digest(out)}, f)
     check(DC.done(repo, "Demo"), "resume: a mod whose proposal passes check and has a review of these bytes is skipped")
@@ -879,9 +895,258 @@ def test_review_hardening():
           "claude tool args: none for the cold sort, read-only for review, all for the author")
 
 
+CF = os.path.join("design", "concepts", "Demo", "cleanse")
+
+
+def legacy_review(out, remaining, digest=None):
+    """A review as the 2026-11-16 fleet wrote it (445c1012a5): no digest, remaining on his pages, applyable false."""
+    rv = {"mod": "Demo", "author": "codex", "rounds": [{"refusals": remaining}, {"refusals": remaining}],
+          "remaining": remaining, "applyable": False}
+    if digest:
+        rv["digest"] = digest
+    with open(os.path.join(out, "review.json"), "w") as f:
+        json.dump(rv, f)
+    with open(os.path.join(out, "owner_pages.md"), "a") as f:
+        f.write("\n" + DC._still_refused_block(remaining))
+    res = json.load(open(os.path.join(out, "result.json")))
+    res["applyable"] = False
+    with open(os.path.join(out, "result.json"), "w") as f:
+        json.dump(res, f)
+
+
+def _ids(prompt):
+    return re.findall(r'"id": "([A-Z][\w.]*)"', prompt.split("RECORDS:")[1].split("END RECORDS")[0])
+
+
+def fix_b1(cwd, prompt, counts_bars=None):
+    """The author's converge fix: widens B1's range only, claims one fix per record in fixes.json."""
+    out = os.path.join(cwd, CF)
+    bars = json.load(open(os.path.join(out, "bars.json")))
+    bars["bars"][0]["range"]["varies"] += ", wind on/off" if "wind on/off," not in bars["bars"][0]["range"]["varies"] \
+        else ", dusk"
+    with open(os.path.join(out, "bars.json"), "w") as f:
+        json.dump(bars, f)
+    if counts_bars is not None:
+        res = json.load(open(os.path.join(out, "result.json")))
+        res["counts"]["bars"] = counts_bars
+        with open(os.path.join(out, "result.json"), "w") as f:
+            json.dump(res, f)
+    with open(os.path.join(out, "fixes.json"), "w") as f:
+        json.dump({"fixes": [{"id": i, "changed": "B1 range names wind", "where": "bars.json bars/B1"}
+                             for i in _ids(prompt)]}, f)
+    return {"is_error": False, "result": "done"}
+
+
+def verdict(fixed=(), not_fixed=(), regressions=(), late=()):
+    def make(cwd, prompt):
+        v = [{"id": i, "verdict": "fixed", "evidence": "B1.range now names wind"} for i in fixed]
+        v += [{"id": i, "verdict": "not_fixed", "evidence": "B2 still says nothing floods"} for i in not_fixed]
+        return {"is_error": False, "result": json.dumps({"verdicts": v, "regressions": list(regressions),
+                                                         "advisory_late": list(late)})}
+    return make
+
+
+REF2 = {"head": "cannot_hold_together", "where": "bars.json B2", "evidence": "B2 says nothing floods while R1 lets gas "
+        "fill every cell (Source/Gas.cs line 40)", "would_pass": "B2 and R1 agree on flooding",
+        "smallest_fix": "bound R1 by the vent count"}
+STR = {"head": "stranger", "where": "bars.json B1", "evidence": "a cold reader sorted 'gas pools' as reject",
+       "would_pass": "pictures a cold reader sorts as the proposal does", "smallest_fix": "rewrite those pictures"}
+NEW_ON_B2 = {"entry": "bars.json bars/B2", "evidence": "B2 never names winter", "would_pass": "B2 names winter",
+             "smallest_fix": "add winter"}
+
+
+def _converge_env():
+    os.environ["RM_OWNER_HOLD_FILE"] = holds_file([])
+    os.environ["RM_DETACHED_POOL"] = tempfile.mkdtemp(prefix="dc_pool_")
+    os.environ["RM_CLEANSE_STATUS_DIR"] = tempfile.mkdtemp(prefix="dc_status_")
+
+
+def test_converge():
+    """Conductor 2026-11-17: the second look re-hunted (12 of 23 counts went up), so nothing converged. Standing ruling
+    (standing_rulings.md, a passing bar is an experience): a new gap at a later look on material that did not change is
+    the earlier look's miss: advisory."""
+    _converge_env()
+    try:
+        # one record fixed; a new finding on B2 (which the fix did not touch) and a late note block nothing
+        repo, out = proposal()
+        legacy_review(out, [REF])
+        fx = FX(repo, codex=[fix_b1], claude=[verdict(fixed=["R1"], regressions=[NEW_ON_B2],
+                                                      late=[{"what": "B2 could name dusk", "reason": "noticed"}])])
+        fx.snap()
+        rec = DC.converge_mod("Demo", fx)
+        kinds = [c[0] for c in fx.calls]
+        cv = json.load(open(os.path.join(out, "converge.json")))
+        late = json.dumps(cv.get("advisory_late"))
+        check(rec["state"] == "converged" and cv.get("open") == [] and "B2 never names winter" in late
+              and "B2 could name dusk" in late,
+              "converge does not count a new finding on material the fix did not change: advisory_late, blocks "
+              "nothing (%s, open %s)" % (rec["state"], cv.get("open")))
+        res = json.load(open(os.path.join(out, "result.json")))
+        check(res.get("applyable") is True and not DC.check_dir(out)[0]
+              and DC.STILL_REFUSED_HEAD not in open(os.path.join(out, "owner_pages.md")).read(),
+              "every record fixed and check passing: applyable true, the reviewer's block leaves his pages")
+        check(kinds.count("codex") == 1 and kinds.count("claude") == 1 and "gate" in kinds
+              and not [c for c in fx.calls if c[0] == "claude" and "HIS WORDS" in c[1]],
+              "an old no-digest review is used as the first look: one author fix, one verifier, no fresh review (%s)"
+              % kinds)
+        ap = [c for c in fx.calls if c[0] == "codex"][0][1]
+        check("CONVERGE FIX" in ap and REF["smallest_fix"] in ap and REF["would_pass"] in ap and "fixes.json" in ap
+              and "You are the Designer." not in ap, "the author's fix gets only the records, with would_pass and "
+              "smallest_fix, and is asked for fixes.json")
+        vc = [c for c in fx.calls if c[0] == "claude"][0]
+        check(vc[2].get("model") == "opus" and vc[2].get("tools") == "Read,Grep,Glob" and "VERIFY THE FIX" in vc[1]
+              and "bars.json bars/B1" in vc[1] and "bars.json bars/B2" not in vc[1] and "R1" in vc[1],
+              "the verifier is Claude Opus read-only, shown the records and only the entries the fix changed")
+        check(cv.get("digest") == DC.proposal_digest(out) and DC.done(repo, "Demo") and DC.converge_done(repo, "Demo"),
+              "the converge verdict carries the digest; resume trusts it")
+        check(fx.published and all(p.startswith(CF + "/") for p in fx.published[-1])
+              and CF + "/converge.json" in fx.published[-1] and CF + "/fixes.json" in fx.published[-1],
+              "converge publishes only the cleanse folder, with converge.json and fixes.json")
+        # a finding on an entry the fix DID change is a regression: an open record for the next round
+        repo, out = proposal()
+        legacy_review(out, [REF])
+        reg = dict(NEW_ON_B2, entry="bars.json bars/B1", evidence="B1 range now contradicts R1")
+        fx = FX(repo, codex=[fix_b1, fix_b1], claude=[verdict(fixed=["R1"], regressions=[reg]), verdict(fixed=["G1.1"])])
+        fx.snap()
+        rec = DC.converge_mod("Demo", fx)
+        cv = json.load(open(os.path.join(out, "converge.json")))
+        check(len(cv["rounds"]) == 2 and "G1.1" in json.dumps(cv["rounds"][0].get("open_after"))
+              and rec["state"] == "converged",
+              "a finding on an entry the fix changed is a regression, open for the next round (%s)" % rec["state"])
+        # one fixed, one not: applyable stays false; at most two rounds; the rest on his pages in the reviewer's words
+        repo, out = proposal()
+        legacy_review(out, [REF, REF2])
+        fx = FX(repo, codex=[fix_b1, fix_b1, fix_b1],
+                claude=[verdict(fixed=["R1"], not_fixed=["R2"]), verdict(not_fixed=["R2"]), verdict(fixed=["R2"])])
+        fx.snap()
+        rec = DC.converge_mod("Demo", fx)
+        kinds = [c[0] for c in fx.calls]
+        res = json.load(open(os.path.join(out, "result.json")))
+        pages = open(os.path.join(out, "owner_pages.md")).read()
+        check(res.get("applyable") is False and rec["state"] == "open-after-converge" and kinds.count("codex") == 2
+              and kinds.count("claude") == 2, "one record not fixed: applyable stays false after the two rounds, no "
+              "third (%s, %s)" % (rec["state"], kinds))
+        check(DC.STILL_REFUSED_HEAD in pages and REF2["evidence"] in pages and REF["evidence"] not in pages
+              and not DC.check_dir(out)[0], "what is still not fixed stays on his pages in the reviewer's words; the "
+              "fixed one leaves; check passes the block")
+        n = len(fx.calls)
+        rec = DC.converge_mod("Demo", fx)
+        check(len(fx.calls) == n and rec["state"] == "open-after-converge" and DC.converge_done(repo, "Demo"),
+              "a mod with two rounds behind it runs no third (resume)")
+        # every record fixed but the fix broke the shape: applyable false
+        repo, out = proposal()
+        legacy_review(out, [REF])
+        fx = FX(repo, codex=[lambda c, p: fix_b1(c, p, counts_bars=9), fix_b1], claude=[verdict(fixed=["R1"])])
+        fx.snap()
+        rec = DC.converge_mod("Demo", fx)
+        res = json.load(open(os.path.join(out, "result.json")))
+        check(res.get("applyable") is False and rec["state"] == "open-after-converge"
+              and DC.check_dir(out)[0], "every record fixed but check refuses: applyable false (%s)" % rec["state"])
+        # a stranger record is judged by the cold sort again, on its own bar only, not by the verifier
+        repo, out = proposal()
+        legacy_review(out, [STR])
+        fx = FX(repo, codex=[fix_b1], blinds=[sort_right])
+        fx.snap()
+        rec = DC.converge_mod("Demo", fx)
+        b = [c for c in fx.calls if c[0] == "blind"]
+        check(rec["state"] == "converged" and len(b) == 1 and [i["bar"] for i in _items(b[0][1])] == ["B1"]
+              and "claude" not in [c[0] for c in fx.calls],
+              "a stranger record is re-sorted cold on its bar only (%s)" % rec["state"])
+        # a review of other bytes is stale: converge refuses it and runs nothing
+        repo, out = proposal()
+        legacy_review(out, [REF], digest="0" * 64)
+        fx = FX(repo, codex=[fix_b1])
+        fx.snap()
+        rec = DC.converge_mod("Demo", fx)
+        check(rec["state"] == "blocked" and "codex" not in [c[0] for c in fx.calls],
+              "a review whose digest is of other bytes is stale: converge runs nothing (%s)" % rec.get("why"))
+        # a verifier answer with no verdict for a record leaves it open (one retry, then not fixed)
+        repo, out = proposal()
+        legacy_review(out, [REF])
+        fx = FX(repo, codex=[fix_b1, fix_b1], claude=[verdict(), verdict(), verdict(), verdict()])
+        fx.snap()
+        rec = DC.converge_mod("Demo", fx)
+        check(rec["state"] == "open-after-converge" and REF["evidence"] in open(os.path.join(out, "owner_pages.md")).read(),
+              "an unreadable verifier fixes nothing: the record stays open (%s)" % rec["state"])
+        # the hold: a held mod is not converged
+        os.environ["RM_OWNER_HOLD_FILE"] = holds_file(["Demo"])
+        repo, out = proposal()
+        legacy_review(out, [REF])
+        fx = FX(repo, codex=[fix_b1])
+        rec = DC.converge_mod("Demo", fx)
+        check(rec["state"] == "blocked" and not [c for c in fx.calls if c[0] in ("codex", "clone")],
+              "converge refuses a held mod before any clone or run")
+        os.environ["RM_OWNER_HOLD_FILE"] = holds_file([])
+        # the fleet: --converge runs it per mod, and a resumed fleet skips a converged mod
+        repo, out = proposal()
+        legacy_review(out, [REF])
+        fx = FX(repo, codex=[fix_b1], claude=[verdict(fixed=["R1"])])
+        fx.snap()
+        res = DC.fleet(["Demo"], lambda m: fx, converge=True, parallel=5)
+        n = len(fx.calls)
+        res2 = DC.fleet(["Demo"], lambda m: fx, converge=True, parallel=5)
+        check(res == [("Demo", "converged")] and res2 == [("Demo", "converged")]
+              and not [c for c in fx.calls[n:] if c[0] in ("codex", "claude")],
+              "fleet --converge converges, and a resumed one skips the converged mod (%s %s)" % (res, res2))
+        argv = DC.fleet_unit_argv(["--converge", "--parallel", "5"], unit="u3")
+        check("--converge" in argv and "--foreground" in argv, "the detached unit carries --converge")
+    finally:
+        for k in ("RM_OWNER_HOLD_FILE", "RM_DETACHED_POOL", "RM_CLEANSE_STATUS_DIR"):
+            os.environ.pop(k, None)
+
+
+def test_gather():
+    _converge_env()
+    try:
+        repo, out = proposal()
+        legacy_review(out, [REF])
+        plain = os.path.join(repo, "design", "concepts", "Plain", "cleanse")
+        os.makedirs(plain)
+        files = good()
+        census = json.loads(files["census.json"])
+        census["rows"].append({"id": "moth_lamp", "what": "a lamp the moths circle", "built": "present",
+                               "evidence": "Defs/Lamp.xml", "proven": "missing", "called_by": "nothing", "serves": "",
+                               "fate": "recommend_retire", "why": "nothing calls it", "needed_by": "", "ticket": ""})
+        files["census.json"] = json.dumps(census)
+        files["owner_pages.md"] = ("# Plain\n\nCapabilities 4.\n\n# Page two\n\nQ1. Is the fog a wall? Evidence against: "
+                                   "the sheet says it drifts. Default: it drifts.\n\nQ2. Keep the moths?\nDefault: keep."
+                                   "\n")
+        for name, text in files.items():
+            with open(os.path.join(plain, name), "w") as f:
+                f.write(text)
+        text, totals = DC.gather(repo)
+        path = os.path.join(os.environ["RM_CLEANSE_STATUS_DIR"], "ALL_BIOMES.md")
+        check(os.path.exists(path) and open(path).read() == text, "gather writes ALL_BIOMES.md in the status folder")
+        qs = text.split("## Every question")[1].split("\n## ")[0] if "## Every question" in text else ""
+        qtexts = ["Should the ritual stay?", "Is the fog a wall?", "Keep the moths?"]
+        nums = re.findall(r"^(\d+)\. ", qs, re.M)
+        check(all(qs.count(q) == 1 for q in qtexts) and nums == ["1", "2", "3"] and totals.get("questions") == 3,
+              "gather lists every question once, numbered, with its mod (%s; %s)" % (nums, totals))
+        check("the sheet says it drifts" in qs and "it drifts" in qs and "keep" in qs and "Plain" in qs and "Demo" in qs,
+              "each question carries its evidence and the default taken")
+        rt = text.split("## Every recommended retirement")[1].split("\n## ")[0] if "retirement" in text else ""
+        check("a lamp the moths circle" in rt and "nothing calls it" in rt and "moth_lamp" not in text
+              and "R1" not in text, "retirements in one list, with no id he has not been shown")
+        top = text.split("\n## ")[0]
+        check(re.search(r"^\| Demo \|.*\| no \| 1 \|$", top, re.M) and re.search(r"^\| Plain \|", top, re.M)
+              and "| applyable |" in top, "the top table: one row per mod, applyable and open reviewer items")
+        check(files["owner_pages.md"].strip() in text and "Should the ritual stay? Default: next version." in text,
+              "each mod's two pages in full under its own heading")
+        sd = os.environ.pop("RM_CLEANSE_STATUS_DIR")
+        try:
+            import rmpaths
+            check(DC.status_dir() == str(rmpaths.rm_path("designer_cleanse")), "the status folder comes from the "
+                  "agent-storage helper, not a hard-wired path")
+        finally:
+            os.environ["RM_CLEANSE_STATUS_DIR"] = sd
+    finally:
+        for k in ("RM_OWNER_HOLD_FILE", "RM_DETACHED_POOL", "RM_CLEANSE_STATUS_DIR"):
+            os.environ.pop(k, None)
+
+
 def main():
     for t in (test_check, test_detector, test_case, test_hold, test_run, test_review, test_fleet,
-              test_review_hardening):
+              test_review_hardening, test_converge, test_gather):
         try:
             t()
         except Exception as e:      # a crash is a failed row, not a silent stop

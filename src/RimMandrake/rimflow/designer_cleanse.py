@@ -102,8 +102,11 @@ HEADS = {   # spec §4, the whole-mod check's heads, and only these (plus the la
     "authority_unsourced": "a claim of his authority with no source",
     "stranger": "a cold reader sorted a bar's pictures differently from the proposal (the Stranger test: repair)",
     "self_check": "after the author's fix the self-check refuses the proposal's shape",
+    "regression": "the converge fix broke an entry it changed (the verifier's words)",
 }
 LAUNCHER_HEADS = ("stranger", "self_check")     # written by this program from its own readings, never by the reviewer
+CONVERGE_HEADS = ("regression",)                # written only from a converge verifier's answer
+CONVERGE_ROUNDS = 2     # the Conductor 2026-11-17: "At most two converge rounds per mod"
 
 
 def rel_out(mod):
@@ -111,7 +114,11 @@ def rel_out(mod):
 
 
 def status_dir():
-    return os.environ.get("RM_CLEANSE_STATUS_DIR") or "/mnt/d/ClaudeWork/rimmandrake/designer_cleanse"
+    """The fleet's status, logs and ALL_BIOMES.md: RM_CLEANSE_STATUS_DIR, else the agent-storage helper's folder."""
+    if os.environ.get("RM_CLEANSE_STATUS_DIR"):
+        return os.environ["RM_CLEANSE_STATUS_DIR"]
+    import rmpaths
+    return str(rmpaths.rm_path("designer_cleanse"))
 
 
 def _read(path, default=None):
@@ -168,19 +175,30 @@ def page_words(text):
     return len(re.findall(r"\S+", text or ""))
 
 
+def open_records(out):
+    """-> the reviewer's records still open on this proposal: the latest verdict's (converge.json's open, else
+    review.json's remaining), or None when neither file holds a list of records."""
+    cv = _json_file(os.path.join(out, "converge.json"))
+    if isinstance(cv, dict) and isinstance(cv.get("open"), list):
+        rem = cv["open"]
+    else:
+        rv = _json_file(os.path.join(out, "review.json"))
+        rem = rv.get("remaining") if isinstance(rv, dict) else None
+    return rem if isinstance(rem, list) and all(isinstance(r, dict) for r in rem) else None
+
+
 def page_body(out, pages):
     """-> (the run's own part of his pages, defect or None). The reviewer's still-refused block is cut off only when it is
-    exactly what review.json's remaining refusals write (it is the reviewer's, not the run's); any other text under that
-    heading is the run's and counts, and the heading itself is then a defect (an author cannot hide words under it)."""
+    exactly what the latest verdict's open records write (converge.json's open, else review.json's remaining: it is the
+    reviewer's, not the run's); any other text under that heading is the run's and counts, and the heading itself is then
+    a defect (an author cannot hide words under it)."""
     i = (pages or "").find(STILL_REFUSED_HEAD)
     if i < 0:
         return pages or "", None
-    rv = _json_file(os.path.join(out, "review.json"))
-    rem = rv.get("remaining") if isinstance(rv, dict) else None
-    if isinstance(rem, list) and rem and all(isinstance(r, dict) for r in rem) \
-            and pages[i:].strip() == _still_refused_block(rem).strip():
+    rem = open_records(out)
+    if rem and pages[i:].strip() == _still_refused_block(rem).strip():
         return pages[:i], None
-    return pages, ("his pages hold the heading %r but what follows it is not review.json's remaining refusals word for "
+    return pages, ("his pages hold the heading %r but what follows it is not the latest verdict's open records word for "
                    "word" % STILL_REFUSED_HEAD)
 
 
@@ -876,6 +894,12 @@ class Effects:
             out.append(p)
         return out
 
+    def head_text(self, cwd, rel):
+        """-> the file as the clone's HEAD holds it (the published proposal), or None when HEAD has no such file."""
+        r = subprocess.run(["git", "-C", cwd, "show", "HEAD:" + rel], capture_output=True, timeout=120,
+                           stdin=subprocess.DEVNULL)
+        return r.stdout.decode("utf-8", "replace") if r.returncode == 0 else None
+
     def publish(self, cwd, paths, msg):
         _git(cwd, "add", "--", *paths, timeout=300)
         r = subprocess.run(["./publish", "-m", msg] + list(paths), cwd=cwd, capture_output=True, text=True,
@@ -975,7 +999,7 @@ def unreview(out):
     """A run that writes the proposal again makes every earlier review of it stale: review.json and review_attempt.json
     go (their deletion is committed with the new proposal), the reviewer's block leaves his pages and applyable leaves
     result.json. Nothing then reads the old verdict as this proposal's."""
-    for name in ("review.json", "review_attempt.json"):
+    for name in ("review.json", "review_attempt.json", "converge.json", "fixes.json"):
         p = os.path.join(out, name)
         if os.path.exists(p):
             os.unlink(p)
@@ -1112,7 +1136,7 @@ def review_prompt(repo, mod):
     if os.path.isdir(os.path.join(repo, "design/concepts/%s" % mod)):
         src.append("design/concepts/%s/ (record.json, sheet.md, tree.json: the mod's earlier definition)" % mod)
     lore = [p for p in LORE if os.path.exists(os.path.join(repo, p))]
-    heads = "\n".join("- %s: %s" % (k, v) for k, v in HEADS.items() if k not in LAUNCHER_HEADS)
+    heads = "\n".join("- %s: %s" % (k, v) for k, v in HEADS.items() if k not in LAUNCHER_HEADS + CONVERGE_HEADS)
     return """You are the fresh reviewer of one mod's cleansing proposal, the whole-mod check. You did not write it. You
 read and refuse; you change no file and run nothing that writes. Read in this order.
 
@@ -1188,7 +1212,7 @@ def validate_review(doc):
             bad.append("refusal %d is not an object" % (i + 1))
             continue
         head = r.get("head")
-        if not isinstance(head, str) or head not in HEADS or head in LAUNCHER_HEADS:
+        if not isinstance(head, str) or head not in HEADS or head in LAUNCHER_HEADS + CONVERGE_HEADS:
             bad.append("refusal %d: head %r is not one of the spec's heads" % (i + 1, head))
         for k in ("where", "evidence", "would_pass", "smallest_fix"):
             if not isinstance(r.get(k), str) or _blank(r.get(k)):
@@ -1461,9 +1485,31 @@ def fleet_order(repo, but=(), only=None):
     return [m for m in order if m in set(only)] if only else order
 
 
+def latest_verdict(out):
+    """-> (name, doc) of the latest verdict on the proposal: converge.json when it exists, else review.json; doc None when
+    neither reads as an object."""
+    for name in ("converge.json", "review.json"):
+        if os.path.exists(os.path.join(out, name)):
+            doc = _json_file(os.path.join(out, name))
+            return name, doc if isinstance(doc, dict) else None
+    return None, None
+
+
+def verdict_current(out, doc):
+    """A verdict of these very bytes: its digest equals the proposal's. A verdict with no digest at all was written by the
+    launcher before 2026-11-17 (the 23 first looks of 445c1012a5): the Conductor, 2026-11-17, rules it the first look, not
+    stale ("an old review with no digest is accepted as the first look for converge")."""
+    if not isinstance(doc, dict):
+        return False
+    if "digest" not in doc:
+        return True
+    return doc.get("digest") == proposal_digest(out)
+
+
 def done(repo, mod):
-    """Resume: a mod whose proposal passes check and has a review of these very bytes (its digest), or says it is
-    blocked, is skipped. A review of other bytes (an older proposal, or a review that recorded no digest) is stale."""
+    """Resume: a mod whose proposal passes check and whose latest verdict (converge.json, else review.json) is of these
+    very bytes, or that says it is blocked, is skipped. A verdict whose digest is of other bytes is stale; one with no
+    digest is an older launcher's first look and is kept (verdict_current)."""
     out = os.path.join(repo, rel_out(mod))
     if not os.path.exists(os.path.join(out, "result.json")):
         return False
@@ -1472,8 +1518,7 @@ def done(repo, mod):
         return False
     if stats.get("outcome") == "blocked":
         return True
-    rv = _json_file(os.path.join(out, "review.json"))
-    return isinstance(rv, dict) and rv.get("digest") == proposal_digest(out)
+    return verdict_current(out, latest_verdict(out)[1])
 
 
 def fleet_unit_argv(args, unit):
