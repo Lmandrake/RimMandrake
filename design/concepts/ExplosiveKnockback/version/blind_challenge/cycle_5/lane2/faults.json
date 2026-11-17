@@ -32,7 +32,7 @@
    "would_pass": "lane2/accept_covered_pit.py 6 of 6; live sc_pit_fall: on the covered cell the colonist and the stack fall through, one descent each, cover broken; the filled control lands beyond the rim; a gas shove onto a cover still stands on it, the cover whole",
    "smallest_fix": "RM_KnockbackMath.Resolve: a CoveredPit cell stops the throw IN it when intoPits (a wall when off), as an open pit; LandingBreaksCover: drop the Pawn exclusion for blast ids (id >= 0); RM_MapComponent_Knockback.ThrowPawn remembers the explosion id per pawn and RM_Patch_PawnFlyer_KnockbackLanding breaks the cover under a landed pawn through RM_KnockbackCompat.BreakCoverUnder when that id >= 0; K-08's 'cover is ground' becomes 'a throw over a cover ends in it'; RM_KnockbackProof pit_colonist gains the covered lane, the planned-beyond-the-rim assertion and the filled-pit control",
    "verdict_on_criterion": "right: the scene's words are explicit and the bar's 'nothing is thrown across' follows; the kernel's older design note (cover = ground) predates the leaf",
-   "status": "PENDING",
+   "status": "FIXED 610b127ba8",
    "miss_of": 4
   },
   {
