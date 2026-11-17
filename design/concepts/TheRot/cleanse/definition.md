@@ -24,7 +24,7 @@ Inspect the pale standing fungi, select a usable forage plant and find dry groun
 
 ### Routine
 
-Harvest ordinary fungal food and timber through normal jobs. Cut, haul, cook, feed animals, construct bridges and keep goo lamps fueled through ordinary vanilla workflows. Storing metabolizing glimmerslime and dulcis adds a visible thermal load. Divide storage, provide cooling capacity, reduce held stock or cook and consume the harvest. Frozen outdoor meat still meets the ruled digestive deadline. Indoor refrigeration has its ordinary preservation effect once its heat budget works.
+Harvest ordinary fungal food and timber through normal jobs. Cut, haul, cook, feed animals, construct bridges and keep goo lamps fueled through ordinary vanilla workflows. Storing metabolizing glimmerslime and dulcis adds a visible thermal load. Divide storage, provide cooling capacity, reduce held stock or cook and consume the harvest. Under my delegated default in owner-pages Q1, frozen outdoor meat still meets the digestive deadline. The sheet's starving Frostcaps account and the kit's temperature-scaled design support the opposing cold-preservation reading; frozen loss is not a settled owner ruling. Indoor refrigeration has its ordinary preservation effect once its heat budget works.
 
 The mat uses ordinary room heat. It helps at the cold end and stops adding heat at its ceiling. Ambient cold, clothing, insulation and backup heating still matter. Covering qualifying living floor with inert flooring changes the warmth qualification. Opening a doorway changes heat leakage. Breaching the roof or enclosing a formerly open stockpile changes digestive exposure. A reload re-derives room and thing membership from actual map state.
 

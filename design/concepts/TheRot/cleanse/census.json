@@ -74,7 +74,7 @@
       "called_by": "BiomeDef RM_AcceleratedRotExtension, RM_MapComponent_AcceleratedRot.MapComponentTick, RM_KitFronts",
       "serves": "accelerated rot",
       "fate": "signature",
-      "why": "Designer decision. The hungry side of the metabolic bargain requires exposed stores and corpses to be digested, including the cold regime. Current frozen skip fails the required contract.",
+      "why": "Designer decision under owner-pages Q1: extend exposed digestion through freezing, prioritizing the absolute rot-clock wording against the contrary starving-Frostcaps lore and intentionally temperature-scaled kit. The current frozen skip fails this proposed default, not a settled owner contract; T67 requests the behavior change.",
       "needed_by": "none, direct capability or dependency",
       "ticket": "none, no switch-off work"
     },

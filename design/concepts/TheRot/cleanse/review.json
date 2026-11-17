@@ -1,0 +1,601 @@
+{
+ "mod": "TheRot",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "design/concepts/TheRot/cleanse/bars.json B5 (says, accept 1, reject 1, range -42..24 C); ambiguities.md row 'Gone within a day in freezing air'; owner_pages.md page two 'Frozen exposed meat still meets the sheet's digestive promise' and 'questions total 0'",
+     "evidence": "B5 says exposed raw food is lost to digestion 'even in freezing air', across the whole range down to -42 C. The ambiguities row says 'The sheet requires exposed meat to disappear even across the cold shoulder.' The frozen sheet does not say that. design/Jawa/worldbuilding/biomes/the_rot.md §3 Thermogenesis says the opposite about the cold end: 'Frostcaps is where the heat fails — the starved, freezing edge. Warm ground = actively feeding; cold ground = starving or dead.' The temperature-scaled engine that skips frozen items was designed that way on purpose. rot_kit_spec.md M2 routes the extra rot through RotRateAtTemperature and sets the target against 'vanilla's ~2 days unrefrigerated at warm temps'. So 'gone within a day, for certain' (§3 rot clock, §5) and the starving cold edge are a real conflict in the lore. The proposal settles it by calling the current code a defect (T67) and asks him no question. That is concrete evidence against its default, and the brief says such a case belongs on his pages.",
+     "would_pass": "Either B5 makes no claim about frozen ground (accelerated loss is promised where the gut is fed, and the cold edge follows §3), or the frozen-digestion reading stays but is stated as a delegated default against the §3 Frostcaps line. In the second case it goes on page two as a question, quoting both sheet lines, with the default taken and what changes if he answers otherwise.",
+     "smallest_fix": "Correct the ambiguities row so it quotes §3 line 84-85 next to 'gone within a day'. Add one question to owner_pages.md page two: does the gut still digest on frozen ground at the cold end? Default: yes. Evidence against: the §3 starving-edge line and the kit's temperature-scaled design. Set result.json questions to 1. Keep B5's freezing clause only as that stated default."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "design/concepts/TheRot/cleanse/bars.json B3 says 'a self-sustaining fungal food web'; B3 meant.figurative is []",
+     "evidence": "Read literally, 'self-sustaining' means the population keeps itself going through its own births and diets. definition.md says something else: 'Population limiting admits or delays new wildlife through the shared spawner'. B3's range also leaves out 'perfect static population balance'. So the population is meant to be topped up by vanilla's wild spawner. One builder would build the literal closed web with breeding tuning; another would lean on the spawner; a judge could refuse either one. The word is not marked and has no accept picture that departs from the literal reading.",
+     "would_pass": "B3 lists 'self-sustaining' in meant.figurative, says what it stands for (across the season the roster keeps eating, breeding, hunting and being refilled by ordinary wild spawning, without starving out or flooding), and gives one accept picture where spawner arrivals replace predation losses.",
+     "smallest_fix": "Add one figurative entry to B3 for 'self-sustaining', with its stands_for and one accept picture, or replace the word in says with the plain wording above."
+    }
+   ],
+   "reviewer_refusals": 2,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A dark vanilla woodland has a pale tint, while its edible plants and danger patches disappear beneath opaque cap art.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "An irregular stand of overlapping pale caps surrounds low glowing cover and milk shallows, with dark gaps between biological lights. Ordinary forage and a cloud-emitting Prime are recognisable on approach.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "At the warm shoulder the actual low sun lights the same fungal structures, and the Sheen is named and shown as fungal sleet.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "Ordinary blue marsh and water rain occupy the described milk ponds and Sheen weather.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A worker walks through a visible trunk while the cap image selects a distant root.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A worker follows open ground beneath overhanging caps, selects the intended stem and completes a haul or harvest without crossing its visible solid base.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "A planted clearing works, but mature growth blocks all reachable forage or strands workers against newly occupied contacts.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A changed stand still supports a route to the same ordinary work area, with placements refusing a solid fungal contact.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "The roster is a static selection of named bodies that never eat, reproduce, yield products or hunt.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "A native flyer crosses an obstacle by actual flight. A wounded native dies with a corpse or a readable death sign, while surviving animals remain accounted for after a reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "A moth bobs visually against a wall, or surplus wild giants silently disappear when the population cap runs.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Foragers gather fungal food and building stock while predators feed in their usual habitat. Tamed brogg produce milk and tended dustveils yield silk through their normal lifecycle.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "All rooms receive a global warm-biome offset whether they have living floor or inert flooring.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "The mat produces a negligible thermometer twitch with no useful change to heating work, or makes the cold shoulder routinely comfortable without other protection.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "A cold mat-floored bedroom lets the player run backup heating for less of its routine than in a matching inert-floor bedroom at the same occupied-room temperature, without feeding the ground.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "Across the cold shoulder the player still provides insulation, clothing or heating despite the help from living floor.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "The test uses warm meat alone, while exposed frozen stores survive indefinitely.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A roof canopy alone removes the digestive hazard, or a completed store receives the same accelerated loss as the open ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "An exposed frozen meat stack shows digestive loss and is consumed while the matched enclosed stack retains ordinary cold preservation.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "A roofed lean-to loses exposed perishables until the player finishes its walls. Outdoor corpse and filth disappear through readable decomposition while indoor cleaning remains ordinary.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A freezer that preserves ordinary food warms beyond preservation when loaded with metabolizing fungal food, and a matching change to stock or cooling restores preservation.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Produce heat rises independently of held stock or keeps storage unusable after the player removes the food and provides appropriate cooling.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Dividing, moving and recombining fungal stacks moves the warming load with the actual food, including after a reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "A cosmetic warm label appears on the harvest but a stocked freezer behaves exactly like its ordinary-food control.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "Growth and gas consume the usable forest, native animals starve away, routine jobs stall, losses have no readable cause or recurring errors drown out play.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "A staged colony looks stable because weather, local gas, wet-native growth or digestion is locked or disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "After saving during active harvest and reloading, expanding storage before harvest and harvesting before expanding storage both yield understandable consequences and recoverable colony work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "The settled colony hauls and cooks, its living-floor rooms save heating, and stored fungal food requires cooling decisions while the full forest grows, local hazards run and native animals feed and reproduce.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The census has no row for the shared Direct Sun engine as a dependency of the Rot, or for shade under the giant caps. B1's range sweeps the sun arc from 74 (sun above the horizon at the warm shoulder), and accept picture 3 has 'the actual low sun' lighting the forest. Under the standing Direct Sun ruling, running sun heat on a day-side map depends on a tree-shade model, so whether the overhanging caps count as shade on those sunlit tiles is an unowned question. Direct Sun is named only in passing, in R3 and in models.md M2's assumptions.",
+   "loop_or_three_way": "B5, B4 and B6 meet, through R2 and R3, in the Rot's storeroom. B5 says only walled and roofed storage escapes digestion, so every larder must be enclosed. In the Rot an enclosed room built on native mat qualifies for B4's floor heat, which pushes it toward the mat's ceiling. B6 then adds heat from the stored fungal food on top. The player can only make a working freezer by flooring over the mat, which gives up B4's benefit in that room. No bar's instrument reads this joint case: B4's control matches produce load, and B6's control keeps both arms on identical floors. It sits in the room_heat meeting as 'unknown' (M2), but no accept or reject picture says whether a mat-floored freezer full of glimmerslime should be possible, or whether flooring over the mat is the intended answer.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 470844
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json B5 (says \"even in freezing air\", accept 1, range); C4; R4; tickets.md T67; owner_pages.md Q1",
+     "evidence": "The lore says digestion follows temperature. design/Jawa/worldbuilding/biomes/the_rot.md line 19: \"the spread is not noise, it is the map of digestion (§3)\". Lines 84-86: \"Frostcaps is where the heat fails — the starved, freezing edge. Warm ground = actively feeding; cold ground = starving or dead.\" rot_kit_spec.md lines 157-168 route the gut through RotRateAtTemperature by design, and card 2 at line 535 is \"RULED as drafted\". RM_MapComponent_AcceleratedRot.cs:112-116 implements exactly that (\"frozen — nothing to accelerate\"). The proposal admits all of this but still takes the opposite reading as its default. It writes that reading into a bar's says, a check, a rule and a change request (T67) against a shared engine, then asks him to undo it. Under the Evidence-for-Ask rule the obvious answer is the default and the ask carries the evidence against it. Here the order is reversed.",
+     "would_pass": "B5 promises accelerated digestion of exposed organics wherever the gut is active, scaled by temperature as the sheet and kit describe. Exposed frozen stores at the cold edge slow toward vanilla. A walled-and-roofed store still escapes the acceleration. Any frozen-digestion idea goes to him as a question with its evidence (the absolute \"gone within a day, for certain\" at sheet line 105) and stays off by default.",
+     "smallest_fix": "Flip the Q1 default. Remove \"even in freezing air\" from B5 says and accept 1. Narrow C4/R4 to active, non-frozen exposure. Withdraw T67's engine-change request, or reword it as the conditional branch for the case where he picks frozen digestion. Rewrite Q1 so it asks whether to add frozen digestion."
+    },
+    {
+     "head": "moved_extra_relied_on",
+     "where": "census.json row guardian_gas (fate next_version, ticket T13); tickets.md T13 heading and acceptance test",
+     "evidence": "The moved row's what reads \"Orlath cap, vekkra choker and grath elder carry active gas emitters\". In source, vekkra choker is RM_Skulltop (RM_RotSporeKit_Flora.xml:32-33) and grath elder is RM_AgariluxPrime (RotSpecies_NamesAndSizes.xml:50-57). Both are kept as life by row resident_predatory_fungi and relied on by B1 (\"a cloud-emitting Prime\", hazards) and B3. Only the why and the T13 body narrow the row to the ageless cap. T13's generic acceptance test asks for \"the guardian gas extra absent\" at the producer and effect entry points, which by the row's own what include both kept emitters. A builder following the heading and the test switches off the Prime and Skulltop gas that B1 and B3 require.",
+     "would_pass": "The moved row and T13 name only the Orlath cap (RM_AgelessCap) and its prize defense. The test's positive and negative arms say explicitly that RM_Skulltop and RM_AgariluxPrime keep emitting in both arms.",
+     "smallest_fix": "Rewrite guardian_gas.what and the T13 heading to \"RM_AgelessCap (orlath cap) gas emitter\". Add one line to T13's test: \"RM_Skulltop and RM_AgariluxPrime gas emission is unchanged in both arms.\""
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B5 accept 2 (\"Outdoor corpse and filth disappear through readable decomposition\") and says (\"organic remains\"); definition.md (\"choose which corpses to butcher before the gut takes them\"); R4",
+     "evidence": "The only kept mechanism is RM_MapComponent_AcceleratedRot.AccelerateRot (lines 81-119). It adds RotProgress, and its header says vanilla's tick \"owns the stage-transition consequences\". rot_kit_spec.md lines 174-176: \"Dessication follows vanilla staging automatically since we only accelerate progress.\" Vanilla corpses end at Dessicated and stay on the map. No census row, rule or ticket defines corpse removal: T67 covers frozen meat, and T61 even tests against \"double corpse destruction\" with no destruction path defined. The bar requires a disappearance that nothing in the first version produces.",
+     "would_pass": "Either define the corpse fate the gut causes (for example, an exposed corpse that reaches its final stage is removed, with a readable sign, its gear dropped and Bones outputs reconciled), with a ticket and acceptance test; or narrow the B5 picture to what is built: exposed corpses rot through to desiccated faster than vanilla, and only filth disappears.",
+     "smallest_fix": "Change B5 accept 2 to \"Outdoor corpses rot and desiccate visibly faster than sheltered ones, and outdoor filth fades\". Change the definition.md line to \"before the gut spoils them\". If removal is wanted, add a ticket defining removal and its gear handling."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B6 and R5; ambiguities.md row \"Still alive, everything harvested\"; census.json produce_heat",
+     "evidence": "rot_kit_spec.md M5 (lines 305-318): \"Everything harvested here keeps metabolizing: your fungal food pushes heat into the room storing it... The extension goes on RotSporeKit's food/crop defs\", and the kit marks M5 \"v1: ships... the freezer war is a defining colony rhythm\". the_rot.md line 150: \"What you harvest is still alive... it will wreck any freezer that is not overbuilt.\" The proposal limits heat to RM_Glimmerslime and RM_RawDulcis and claims \"The kit M5 and living-produce extension specify the pair\", which misreads the kit. In source, most Rot forage plants yield vanilla RawFungus (about 16 harvestedThingDef entries across RM_RotSporeKit_Flora.xml and RM_TheRot_DonorPorts.xml), and RawFungus stays inert. A colony living on ordinary forage never meets B6. Its instrument only fires when a tester deliberately stocks the two marked crops, so a build where the freezer war never happens in play still passes.",
+     "would_pass": "Either the Rot-native fungal foods a colony actually eats carry the metabolic load (via Rot-owned harvest products or a biome-scoped marker, leaving vanilla RawFungus elsewhere alone), or B6 and the definition state, with an argument, that the two crops are the colony's main stored food in ordinary play. In either case B7's whole run reads the freezer decision arising from the colony's normal diet.",
+     "smallest_fix": "Correct the misattribution in ambiguities.md. Add an ambiguity row for \"which fungal food is living\" with both readings and the RawFungus consequence. Add to B6 a reject picture: \"the colony eats and stores ordinary forage and never meets a freezer load\". Widen T66 to the foods ordinary play stores, or put this on his pages as the one question."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json row outdoor_compost (fate signature, needed_by \"none, direct capability or dependency\")",
+     "evidence": "The signature is \"the living floor warms shelter, exposed organic stores feed decomposition, and living harvest brings heat into storage\" (result.json). Probabilistic thinning of outdoor filth (RM_MapComponent_AcceleratedRot.cs:122-142, chance 0.15 marked \"INVENTED\") is not a store and not part of that chain. Its why is circular: \"Deleting this part leaves the decomposer landscape unable to digest its ordinary organic litter\". It is the kind of small custom touch the owner asked to strip, kept without a deletion argument against land, life or the signature.",
+     "would_pass": "Either a needed_by argument naming which stated experience fails without it (for example, the readable sign that exposure digests), or fate next_version, switched off, with B5's \"filth\" clause removed.",
+     "smallest_fix": "Set outdoor_compost to next_version with a gate. Drop \"and filth\" from B5 accept 2 and R4. Alternatively, write the deletion argument into needed_by."
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json B7 sees.instrument (\"a live whole-season state trace and look in an owner-present session where flyers run\") and R12",
+     "evidence": "B7 asks for a full 15-day season at 3 and 40 colonists, plus a reload sibling and a reordered-work sibling. Its live reading is placed in an owner-present session because flyers run. CLAUDE.md, owner 2026-11-16: \"Do not hold live testing when I can't go to the desktop\". delegation_policy §2 reserves for him only the flyer flight live test, not a whole-colony season. The flight judgement already sits in B3, and the standing rule says to verify flight by a deterministic Pawn_FlightTracker state read. Tying the whole bar's season run to his presence holds the mod's only whole reading for him across several long runs.",
+     "would_pass": "B7's season trace is agent-run, with flyers' state read through Pawn_FlightTracker and no visual flight judgement. The owner-present flight look stays a short, separate B3 obligation.",
+     "smallest_fix": "Change B7 sees.instrument to \"...followed by an agent-run live whole-season state trace; flyer motion is judged only in B3's owner-present look\". Make the matching change in R12."
+    }
+   ],
+   "reviewer_refusals": 6,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "An irregular stand of overlapping pale caps surrounds low glowing cover and milk shallows, with dark gaps between biological lights. Ordinary forage and a cloud-emitting Prime are recognisable on approach.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "At the warm shoulder the actual low sun lights the same fungal structures, and the Sheen is named and shown as fungal sleet.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "A dark vanilla woodland has a pale tint, while its edible plants and danger patches disappear beneath opaque cap art.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "Ordinary blue marsh and water rain occupy the described milk ponds and Sheen weather.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A worker follows open ground beneath overhanging caps, selects the intended stem and completes a haul or harvest without crossing its visible solid base.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A changed stand still supports a route to the same ordinary work area, with placements refusing a solid fungal contact.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "A planted clearing works, but mature growth blocks all reachable forage or strands workers against newly occupied contacts.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A worker walks through a visible trunk while the cap image selects a distant root.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Foragers gather fungal food and building stock while predators feed in their usual habitat. Tamed brogg produce milk and tended dustveils yield silk through their normal lifecycle.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "The roster is a static selection of named bodies that never eat, reproduce, yield products or hunt.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "A native flyer crosses an obstacle by actual flight. A wounded native dies with a corpse or a readable death sign, while surviving animals remain accounted for after a reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "A moth bobs visually against a wall, or surplus wild giants silently disappear when the population cap runs.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The mat produces a negligible thermometer twitch with no useful change to heating work, or makes the cold shoulder routinely comfortable without other protection.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "Across the cold shoulder the player still provides insulation, clothing or heating despite the help from living floor.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "All rooms receive a global warm-biome offset whether they have living floor or inert flooring.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "A cold mat-floored bedroom lets the player run backup heating for less of its routine than in a matching inert-floor bedroom at the same occupied-room temperature, without feeding the ground.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "The test uses warm meat alone, while exposed frozen stores survive indefinitely.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A roofed lean-to loses exposed perishables until the player finishes its walls. Outdoor corpse and filth disappear through readable decomposition while indoor cleaning remains ordinary.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "A roof canopy alone removes the digestive hazard, or a completed store receives the same accelerated loss as the open ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "An exposed frozen meat stack shows digestive loss and is consumed while the matched enclosed stack retains ordinary cold preservation.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A freezer that preserves ordinary food warms beyond preservation when loaded with metabolizing fungal food, and a matching change to stock or cooling restores preservation.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "A cosmetic warm label appears on the harvest but a stocked freezer behaves exactly like its ordinary-food control.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Produce heat rises independently of held stock or keeps storage unusable after the player removes the food and provides appropriate cooling.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "Dividing, moving and recombining fungal stacks moves the warming load with the actual food, including after a reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "After saving during active harvest and reloading, expanding storage before harvest and harvesting before expanding storage both yield understandable consequences and recoverable colony work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "The settled colony hauls and cooks, its living-floor rooms save heating, and stored fungal food requires cooling decisions while the full forest grows, local hazards run and native animals feed and reproduce.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "Growth and gas consume the usable forest, native animals starve away, routine jobs stall, losses have no readable cause or recurring errors drown out play.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "A staged colony looks stable because weather, local gas, wet-native growth or digestion is locked or disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Corpse composting, the sheet's 'Instant composting... corpses, filth, and mistakes disappear here faster than anywhere' (the_rot.md line 205). The census has no row for what happens to a corpse at the end of accelerated rot. Row accelerated_rot covers RotProgress only, and vanilla staging leaves a desiccated corpse on the map (rot_kit_spec.md lines 174-176), yet B5 and the definition rely on corpses disappearing. A secondary gap: the health effect of the kept Skulltop gas, RM_HediffSkulltopSpores in src/RimMandrake/TheRot/Defs/HediffDefs/RM_RotSporeKit_Hediffs.xml, appears in no census row. That file is cited nowhere in the census.",
+   "loop_or_three_way": "The larder is a three-way meeting of B4, B5 and B6, and the first-hour story walks into it. B5 makes walled-and-roofed rooms the only protected store. Every such room built on native mat is a ProperRoom, and RM_MapComponent_WarmGround.HeatMatFlooredRooms (lines 142-197) pushes heat toward min(outdoor + offset, 21 C) into any qualifying room below that target, with no exception for a cooled room. B6 then adds produce heat to the same room. So the mat fights the cooler in every freezer on native ground, every sweep. Under the proposed frozen default, B5 also removes the cold outdoors as an alternative larder. The colony's only working food store at any temperature is then enclosed, inert-floored and cooled. definition.md's first hour ('Put walls and a roof over living mat, then haul perishables into the resulting enclosed store') puts the perishables into a room the mat is actively warming. No bar picture, rule or story names inert flooring under the larder as the required response. The room_heat meeting marks this 'unknown' in general but does not name this loop.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 751404
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 426422,
+    "output_tokens": 3769
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "bars.json B5 (says \"even in freezing air\", accept 1, range); C4; R4; tickets.md T67; owner_pages.md Q1",
+   "evidence": "The lore says digestion follows temperature. design/Jawa/worldbuilding/biomes/the_rot.md line 19: \"the spread is not noise, it is the map of digestion (§3)\". Lines 84-86: \"Frostcaps is where the heat fails — the starved, freezing edge. Warm ground = actively feeding; cold ground = starving or dead.\" rot_kit_spec.md lines 157-168 route the gut through RotRateAtTemperature by design, and card 2 at line 535 is \"RULED as drafted\". RM_MapComponent_AcceleratedRot.cs:112-116 implements exactly that (\"frozen — nothing to accelerate\"). The proposal admits all of this but still takes the opposite reading as its default. It writes that reading into a bar's says, a check, a rule and a change request (T67) against a shared engine, then asks him to undo it. Under the Evidence-for-Ask rule the obvious answer is the default and the ask carries the evidence against it. Here the order is reversed.",
+   "would_pass": "B5 promises accelerated digestion of exposed organics wherever the gut is active, scaled by temperature as the sheet and kit describe. Exposed frozen stores at the cold edge slow toward vanilla. A walled-and-roofed store still escapes the acceleration. Any frozen-digestion idea goes to him as a question with its evidence (the absolute \"gone within a day, for certain\" at sheet line 105) and stays off by default.",
+   "smallest_fix": "Flip the Q1 default. Remove \"even in freezing air\" from B5 says and accept 1. Narrow C4/R4 to active, non-frozen exposure. Withdraw T67's engine-change request, or reword it as the conditional branch for the case where he picks frozen digestion. Rewrite Q1 so it asks whether to add frozen digestion."
+  },
+  {
+   "head": "moved_extra_relied_on",
+   "where": "census.json row guardian_gas (fate next_version, ticket T13); tickets.md T13 heading and acceptance test",
+   "evidence": "The moved row's what reads \"Orlath cap, vekkra choker and grath elder carry active gas emitters\". In source, vekkra choker is RM_Skulltop (RM_RotSporeKit_Flora.xml:32-33) and grath elder is RM_AgariluxPrime (RotSpecies_NamesAndSizes.xml:50-57). Both are kept as life by row resident_predatory_fungi and relied on by B1 (\"a cloud-emitting Prime\", hazards) and B3. Only the why and the T13 body narrow the row to the ageless cap. T13's generic acceptance test asks for \"the guardian gas extra absent\" at the producer and effect entry points, which by the row's own what include both kept emitters. A builder following the heading and the test switches off the Prime and Skulltop gas that B1 and B3 require.",
+   "would_pass": "The moved row and T13 name only the Orlath cap (RM_AgelessCap) and its prize defense. The test's positive and negative arms say explicitly that RM_Skulltop and RM_AgariluxPrime keep emitting in both arms.",
+   "smallest_fix": "Rewrite guardian_gas.what and the T13 heading to \"RM_AgelessCap (orlath cap) gas emitter\". Add one line to T13's test: \"RM_Skulltop and RM_AgariluxPrime gas emission is unchanged in both arms.\""
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "bars.json B5 accept 2 (\"Outdoor corpse and filth disappear through readable decomposition\") and says (\"organic remains\"); definition.md (\"choose which corpses to butcher before the gut takes them\"); R4",
+   "evidence": "The only kept mechanism is RM_MapComponent_AcceleratedRot.AccelerateRot (lines 81-119). It adds RotProgress, and its header says vanilla's tick \"owns the stage-transition consequences\". rot_kit_spec.md lines 174-176: \"Dessication follows vanilla staging automatically since we only accelerate progress.\" Vanilla corpses end at Dessicated and stay on the map. No census row, rule or ticket defines corpse removal: T67 covers frozen meat, and T61 even tests against \"double corpse destruction\" with no destruction path defined. The bar requires a disappearance that nothing in the first version produces.",
+   "would_pass": "Either define the corpse fate the gut causes (for example, an exposed corpse that reaches its final stage is removed, with a readable sign, its gear dropped and Bones outputs reconciled), with a ticket and acceptance test; or narrow the B5 picture to what is built: exposed corpses rot through to desiccated faster than vanilla, and only filth disappears.",
+   "smallest_fix": "Change B5 accept 2 to \"Outdoor corpses rot and desiccate visibly faster than sheltered ones, and outdoor filth fades\". Change the definition.md line to \"before the gut spoils them\". If removal is wanted, add a ticket defining removal and its gear handling."
+  },
+  {
+   "head": "core_promise_weakened",
+   "where": "bars.json B6 and R5; ambiguities.md row \"Still alive, everything harvested\"; census.json produce_heat",
+   "evidence": "rot_kit_spec.md M5 (lines 305-318): \"Everything harvested here keeps metabolizing: your fungal food pushes heat into the room storing it... The extension goes on RotSporeKit's food/crop defs\", and the kit marks M5 \"v1: ships... the freezer war is a defining colony rhythm\". the_rot.md line 150: \"What you harvest is still alive... it will wreck any freezer that is not overbuilt.\" The proposal limits heat to RM_Glimmerslime and RM_RawDulcis and claims \"The kit M5 and living-produce extension specify the pair\", which misreads the kit. In source, most Rot forage plants yield vanilla RawFungus (about 16 harvestedThingDef entries across RM_RotSporeKit_Flora.xml and RM_TheRot_DonorPorts.xml), and RawFungus stays inert. A colony living on ordinary forage never meets B6. Its instrument only fires when a tester deliberately stocks the two marked crops, so a build where the freezer war never happens in play still passes.",
+   "would_pass": "Either the Rot-native fungal foods a colony actually eats carry the metabolic load (via Rot-owned harvest products or a biome-scoped marker, leaving vanilla RawFungus elsewhere alone), or B6 and the definition state, with an argument, that the two crops are the colony's main stored food in ordinary play. In either case B7's whole run reads the freezer decision arising from the colony's normal diet.",
+   "smallest_fix": "Correct the misattribution in ambiguities.md. Add an ambiguity row for \"which fungal food is living\" with both readings and the RawFungus consequence. Add to B6 a reject picture: \"the colony eats and stores ordinary forage and never meets a freezer load\". Widen T66 to the foods ordinary play stores, or put this on his pages as the one question."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json row outdoor_compost (fate signature, needed_by \"none, direct capability or dependency\")",
+   "evidence": "The signature is \"the living floor warms shelter, exposed organic stores feed decomposition, and living harvest brings heat into storage\" (result.json). Probabilistic thinning of outdoor filth (RM_MapComponent_AcceleratedRot.cs:122-142, chance 0.15 marked \"INVENTED\") is not a store and not part of that chain. Its why is circular: \"Deleting this part leaves the decomposer landscape unable to digest its ordinary organic litter\". It is the kind of small custom touch the owner asked to strip, kept without a deletion argument against land, life or the signature.",
+   "would_pass": "Either a needed_by argument naming which stated experience fails without it (for example, the readable sign that exposure digests), or fate next_version, switched off, with B5's \"filth\" clause removed.",
+   "smallest_fix": "Set outdoor_compost to next_version with a gate. Drop \"and filth\" from B5 accept 2 and R4. Alternatively, write the deletion argument into needed_by."
+  },
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "bars.json B7 sees.instrument (\"a live whole-season state trace and look in an owner-present session where flyers run\") and R12",
+   "evidence": "B7 asks for a full 15-day season at 3 and 40 colonists, plus a reload sibling and a reordered-work sibling. Its live reading is placed in an owner-present session because flyers run. CLAUDE.md, owner 2026-11-16: \"Do not hold live testing when I can't go to the desktop\". delegation_policy §2 reserves for him only the flyer flight live test, not a whole-colony season. The flight judgement already sits in B3, and the standing rule says to verify flight by a deterministic Pawn_FlightTracker state read. Tying the whole bar's season run to his presence holds the mod's only whole reading for him across several long runs.",
+   "would_pass": "B7's season trace is agent-run, with flyers' state read through Pawn_FlightTracker and no visual flight judgement. The owner-present flight look stays a short, separate B3 obligation.",
+   "smallest_fix": "Change B7 sees.instrument to \"...followed by an agent-run live whole-season state trace; flyer motion is judged only in B3's owner-present look\". Make the matching change in R12."
+  }
+ ],
+ "applyable": false,
+ "seconds": 612,
+ "at": "2026-11-17T02:37:16"
+}

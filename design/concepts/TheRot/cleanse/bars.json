@@ -97,7 +97,13 @@
       "meant": {
         "intent": "The life roster must function as encountered ecology and useful husbandry across its ordinary lifecycle. Standing flight and readable-loss rules are part of that experience.",
         "source": "Frozen the_rot.md sections 4, 6 and 7b. Standing native-water, flight, no-vanishing and no-evictions rulings. Dustveil answer in rot_open_questions_2026-10-22.md. Delegated ordinary-lifecycle completeness.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "self-sustaining",
+            "stands_for": "Across the season the roster keeps eating, breeding, hunting and being refilled by ordinary wild spawning, without starving out or flooding. This is functioning open ecology, not a closed population maintained solely by births and diets.",
+            "accept": "Ordinary wild-spawner arrivals replace predation losses while resident animals continue feeding, breeding and hunting; the population need not replace all losses through births."
+          }
+        ]
       },
       "accept": [
         "Foragers gather fungal food and building stock while predators feed in their usual habitat. Tamed brogg produce milk and tended dustveils yield silk through their normal lifecycle.",
@@ -116,7 +122,7 @@
         "instrument": "Normal-job live state trace and the owner-present flight look, with M1 lifecycle situations and M4 food-chain forecast selecting worst cases. Existing paused Pawn_FlightTracker capability read is useful but insufficient for actual flight. T65/T69 provide lifecycle and automatic gas trace.",
         "start": "Known wild and tamed cohorts in a default map, food supply and product counters recorded, no forced injury outcome or direct product spawn. Mat, weather, growth, decomposition and gas remain active.",
         "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
-        "control": "Dev-spawned products and manually triggered gas can fake functional ecology. Require product parent IDs and completion of ordinary milking/shearing/harvest jobs. A flyer with zero elapsed flight time fails the crossing observation. Match health loss to local gas emissions or attacks, including a safe-radius control. Count entities by identity through save, birth, death and departure.",
+        "control": "Dev-spawned products and manually triggered gas can fake functional ecology. Require product parent IDs and completion of ordinary milking/shearing/harvest jobs. A flyer with zero elapsed flight time fails the crossing observation. Match health loss to local gas emissions or attacks, including a safe-radius control. Count entities by identity through save, birth, death and departure. Record ordinary wild-spawner arrivals separately from births and developer spawns; spawner replenishment is allowed, while manual restocking cannot establish seasonal persistence.",
         "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
         "live_only_why": "Autonomous animal choices, actual flight and ordinary job/lifecycle integration depend on the game scheduler. A stat or mocked lifecycle can miss a blocked diet, unusable job or walking flyer."
       },
@@ -183,7 +189,7 @@
       "says": "Players lose raw food and organic remains left exposed to the Rot’s digestion even in freezing air, while walled and roofed storage protects them from that accelerated loss.",
       "meant": {
         "intent": "The gut is a reliable practical consequence of exposure across the full cold-to-warm biome. Shelter is an effective response.",
-        "source": "Frozen the_rot.md rot clock and Always true. Kit owner card 2 confirms walled-plus-roofed exemption. Delegated application of the absolute sheet promise across its own temperature range.",
+        "source": "Frozen the_rot.md section 3 rot clock promises exposed meat gone within a day, but section 3 Thermogenesis describes Frostcaps as the starved, freezing edge, with cold ground starving or dead. rot_kit_spec.md M2 deliberately routes progress through RotRateAtTemperature and targets warm unrefrigerated meat. Kit owner card 2 confirms walled-plus-roofed exemption. Delegated default, not an owner ruling: extend exposed digestion through freezing despite that contrary evidence, prioritizing the absolute rot-clock wording. Owner-pages question Q1 records both readings and the consequence of changing this default.",
         "figurative": [
           {
             "word": "digestion",
@@ -202,11 +208,11 @@
       ],
       "lazy": "none: Signature hunger and its shelter response. Explicit freezing and walls-plus-roof close the temperature-zero and lean-to loopholes.",
       "range": {
-        "varies": "Ambient -42..24 C with dense samples around freezing, fresh/partly rotten/frozen food, whole/split/merged stacks, human/animal corpses with gear and corpse-holder reservations, outdoor filth. Unroofed, lean-to, full room, roof gap, wall breach, doorway and map-edge room. 1..40 colonists and normal hauling/cooking/butchery overlap. Mid-exposure reload and room change before/after haul. The sheet meat deadline remains 60000 game ticks in C4, independent of rate retuning.",
+        "varies": "Ambient -42..24 C with dense samples around freezing, fresh/partly rotten/frozen food, whole/split/merged stacks, human/animal corpses with gear and corpse-holder reservations, outdoor filth. Unroofed, lean-to, full room, roof gap, wall breach, doorway and map-edge room. 1..40 colonists and normal hauling/cooking/butchery overlap. Mid-exposure reload and room change before/after haul. The sheet meat deadline is 60000 game ticks in C4; extending it across freezing is the delegated default in Q1, independent of rate retuning.",
         "left_out": "Live pawn consumption, unjoining/vat recovery, deconstructing inorganic wrecks and special giant digestion. Indoor vanilla rot and dirt still follow their own engine rules."
       },
       "sees": {
-        "instrument": "M1 state-transition enumeration with the real exposure predicate and production digestive seam, cross-checked against elapsed game ticks, RotProgress and destruction state. M2 supplies temperature coupling. T67 repairs the frozen contract. T61 provides the missing generator.",
+        "instrument": "M1 state-transition enumeration with the real exposure predicate and production digestive seam, cross-checked against elapsed game ticks, RotProgress and destruction state. M2 supplies temperature coupling. T67 requests the proposed frozen contract under the Q1 default; the current skip is intentional temperature scaling, not proof of an implementation defect. T61 provides the missing generator.",
         "start": "Matched item IDs, initial freshness and temperature records in exposed, lean-to and enclosed locations. Valid queued haul/butcher actions exist in selected cases. Loaded ordinary rot and digestive settings recorded.",
         "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
         "control": "Hauling, eating or an animal could remove the stack first. Record ownership/destruction reason and use a protected inaccessible-to-eaters item control with equal temperature. A per-cell roof control distinguishes enclosure. Run ordinary ticks to observe stage consequences after bonus progress.",
