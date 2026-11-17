@@ -1,0 +1,91 @@
+# Instruments specified, not built or measured
+
+Build in this order. All input values are proposed sweep choices, not measurements of gameplay. Read exact effective defs/settings and state before running. No model produces a planet or changes the frozen world; a local situation is an observation/replay context. Models do not independently pass a perception bar. An absent adapter yields unknown, never a confident zero. T43–T45 supply the missing instruments.
+
+## M1: Supported situations and transition generator
+
+**Question:** Which supported state or transition can break a kept experience, especially when actions, off/on changes and a reload occur in another order?
+
+**Informs:** B1–B8, R1–R9, especially the unknown persistence meeting and the discovery of starting states for the other models. This is the first instrument because it fixes what “tested the biome” means before any tuning.
+
+**Assumptions:** Data/state exported from the actual composed mod is authoritative; common state constructors can create a legal disposable local state without replacing real runtime hooks. Equivalence groups share a cause of failure, not merely a visual resemblance. All DLC and shared defaults are present. An offline callback model is credible only after the corresponding adapter trace agrees.
+
+**Inputs and sweep:** Enumerate effective RM and campaign roster/diet/lifecycle/growth profiles, all Wastes terrain depths and pollutable/roof/support flags; map sizes 150, 250 and 325 square; temperatures spanning -35 through +30 with boundary and transition cases (test envelope from RM_WastesBiomeRanges and sheet, not a world-tile census); actual source-derived lighting states for warm basin, margin and cold scour. Occupancy 0, 3, 40; clean/part-loaded/saturated surface, empty/part-loaded/full root store; positive stock below/at/above the pollution projection boundary; native food sparse/typical/absent; natural water absent/present/reachable/unreachable.
+
+Generate state classes: clear, ash onset, ash mid, ash end, clear aftermath, back-to-back ash; marker fresh/mature/dead/hidden/absent; root living/ordinary-harvested/cut/fire-destroyed/growth-replaced/grazed/removed/exhausted; cache empty/loaded/buried/revealing/placement-blocked; worker active/interrupted/downed/dead/replaced. Cross roof and pollution fully; fully cross mobile/bound stock with destructive root callbacks; fully cross weather changes with save/reload boundaries; fully cross each deferred parent gate with every direct entry point that source says can reach it. For the remaining axes use pair coverage plus explicit three-way cases of ash choke, loaded-root death and cleanup. Include exact production tick boundaries from the effective code, including immediately before/on/after dose, fall and plant-long-tick boundaries. Generate all legal one-step transitions, both orderings of interfering pairs, and bounded walks through the stock/plant/weather/cache state machines. Store invalid combinations and the legality reason, not silent omissions.
+
+Read actual multi-home patched membership and document it, including the explicitly migrating screecher; no roster edits are output. For flyers generate deterministic tracker transition reads, not autonomous-flight visual scenes. The whole runner must honor the owner-present restriction when a separate visual flight demonstration is contemplated.
+
+**Leaves out:** Infinite state-space proof, alternative planets, new region/tile placement, arbitrary third-party mods, no-DLC configurations, taste in accepted illustrations and deterministic guarantees for random storyteller disasters. Exact continuous values are represented by decision boundaries and fuzzed interiors, not silently rounded into a few friendly cases.
+
+**Real-game calibration:** Before trusting an adapter, compare generated starting state with actual saved/loaded biome, terrain, roof, pawn, food, plant, cache and stock records. State categories, IDs, work availability and callback order must agree exactly; ticks must agree exactly at discrete boundaries. Quantized stock may differ by at most one explicitly recorded projection unit with its remainder accounted for, never unrecorded loss. Run interrupted/resumed and uninterrupted copies of each transition type through real game hooks. If a shared engine cannot export a required state, that portion remains unmeasured until T45 provides it.
+
+**Output and decision:** Coverage manifest, legal-transition graph, minimal counterexample save recipe per bar, unobserved transition list and ordered traces for both work orders. The output changes which missing hook/gate is fixed first and whether a model's claimed range is honest. It does not add a bar or evict a species.
+
+**Rough size:** [guess] Hundreds of equivalence cases and thousands to tens of thousands of short walks; basis: the enumerated axes and bounded interfering transitions, followed by boundary fuzzing. Partition into cheap pure-stock walks and the smallest live adapter calibration set.
+
+**Trigger:** Build first for the unknown persistence meeting and before claiming a new sensing/sequestration/redistribution implementation meets its range. Regenerate when a new entry point, species lifecycle or callback changes.
+
+## M2: Full-map contamination and refuge season
+
+**Question:** Can the complete default biome sustain a maintained occupied refuge and continuing outside danger without runaway contamination, total cleansing, marker loss or stalled work?
+
+**Informs:** B2–B8, R1–R9; unknown ground, mobile-stock, bound-stock and refuge meetings; M1's ash/plant/cleanup three-way case. This is the first dynamic model after M1 and the first substantive implementation risk to settle.
+
+**Assumptions:** Reuse production MovingDunes transfer events and production stock arithmetic, not independent drift physics. A map is a grid of physical cells; mobile and bound stock, cleanup products and documented external/boundary flows are separate accounts. Vanilla pollution is a projection and can be fractional internally. Actual brine uptake is a declared source. Scalar toxic equivalence is a useful assumption to test, not a claim that fiction has only one isotope. The job/health layer may replay measured production traces; if it cannot reproduce cleanup workload and toxicity it may only bound risk, not decide B4/B8.
+
+**Inputs and sweep:** M1 legal full maps in each declared regime and size. Use inherited local land geometry or declared replay fixtures; vary low/high initial mobile stock, isolated/overlapping bound stores, brine absent/present, blocked and open wind paths, small/expanded occupied footprint, 3 and 40 colonists, no upkeep/ordinary declared upkeep, imported food/medicine/feed, partial/full protection. Drive unlocked natural weather from the actual effective selection rules and preserve random streams. Sweep shipped settings and sensitivity values around the deposition, transport, growth/choke, sequestration, release and cleanup constants; include zero as diagnostic counterfactual only, never as a passing complete-default run. A constant adjusted twice in opposite directions gets a sensitivity sweep before another live retune.
+
+Run a 15-day season, extending until the clear/ash/aftermath/root cycle actually occurs; also start from a day-100 history for a further season. Include save/reload mid-ash and mid-cleanup, root cut before/after cleaning, blocked cleanup, worker rescue/death, growth-system organ destruction, cache burial/reveal and ordinary wastepack storage. Preserve every game cadence when using compressed execution. Persist continuous remainders and seeded event order. Separate external deposition, persistent brine input and map-edge flow from internal redistribution.
+
+**Leaves out:** New economic subsystems, default-on deferred extras, a guarantee against all raids, new terrain/weather engines, worldwide circulation and geographic generation. A policy that gets free food, instant cleanup or permanently immune pawns is an isolation control, not the maintained-colony result. It does not establish whether a human understands the landscape.
+
+**Real-game calibration:** Record actual default full-map initial stock, pollution/sand grids, root identities/loads, freshFall, weather draws, cache identities, source-attributed ToxicBuildup, cleanup jobs and waste output at onset, midstorm, end and aftermath. First compare identical initial state/random stream at individual production events: stock transfers, IDs, projection state and callback order must agree, allowing only an explicit retained rounding remainder. Compare independent runs for spatial distributions using declared uncertainty intervals; exact twin streams must not be substituted for statistical replication. Seasonal health/work intervals must match observed classification of maintained versus neglected and open versus roofed/dirty versus clean. If dose disagrees enough to reverse a route/refuge comparison or a job stalls only in game, the model is invalid for that decision, regardless of attractive aggregate agreement. Validate both map-size extremes and warm/cold ends before interpolation.
+
+**Output and decision:** Time-indexed mobile/bound/pollution/ash/marker maps; input-output balance; refuge occupancy and cleanup backlog; usable work/health traces; dangerous-area connectivity; cache identity history; worst counterexample per bar and sensitivity plots. Detect a flood as loss of maintainable reachable refuge/work options, a desert as lost exposure differences, and a stall as no meaningful cycle/job progress; do not pick a single area percentage as a new bar. Output changes local input/sink coupling, update rules and tuning, or identifies an unsatisfiable rule to attack before asking to weaken a bar.
+
+**Rough size:** [guess] Dozens of full grid scenarios, initially reduced time steps using production event cadence, with boundary-case full-tick replays; basis: regime × map-size × load × occupancy comparisons. Native-grid and pawn-health calculation may dominate. Report actual cost once built instead of inventing TPS promises.
+
+**Trigger:** The existing unknown whole-group meetings; build before root/stock mechanics are declared complete. Rebuild on changed fall/transport/sequestration/choke rules, the first seasonal failure or a second contradictory retuning of a constant.
+
+## M3: Exposure geometry and readable-ground sweep
+
+**Question:** Where can cover, hidden vegetation or recent ground changes make a physically worse route look safer than its alternative?
+
+**Informs:** B1, B3–B6, R1–R5/R9; unknown readings meeting and the geometry contribution to ground/refuge meetings. This model enumerates physical/temporal counterexamples; it cannot itself decide rendered legibility.
+
+**Assumptions:** Use actual terrain/roof/room/passability and existing geometric Direct Sun state, not a Wastes heat model. Weather dose uses actual vanilla immunity/resistance. Material draw order and ash depth can obscure a marker even if its plant exists in state. Positive and negative cue cases must be generated independently of the toxicity formula under test.
+
+**Inputs and sweep:** M1 surface/root/indicator/weather states. Enumerate relative cell positions across all orientations of room edges, corners, doors, holes and mixed polluted floors; place root/plant footprints at interior/map-edge/nonpollutable boundaries. Sweep all Wastes water-depth terrain types and passability groups. Wind bearings include axes, diagonals and both sides of obstacle-leeward transitions; use source-derived relevant depth/cover thresholds just below/at/above, not a single pad. Compare the shortest and longer routes through equivalent destination work, equal-duration routes, then different durations. Use actual fixed-tile lighting contexts and compare bright, horizon and dark views; any geometric sun-angle stress sweep evaluates the existing shared function only and authors no world.
+
+Generate views/state for marker growing, absent, dead, buried, cleaned and immediately after deposition/erosion/release, including inspection before and after. Include loaded roots below clean crust, cinderfelt surviving after surface cleanup and polluted ground without a marker. No new exact radiation overlay is allowed.
+
+**Leaves out:** Shared shade-engine redesign, forest crown physics absent from the actual local geometry, replacing accepted art, or pretending a sprite/image classifier can reliably predict a person's interpretation. There is no credible offline substitute for the B1/B3 rendered human comparison; T44 supplies that protocol.
+
+**Real-game calibration:** Export exact roof/room/pollution/depth/plant/stock context and compare predicted source exposure with real unprotected and protected receiver traces across complete eligible dose intervals. Exact cell membership, passability and before/after states must agree; relative dose ordering must never reverse. Compare predicted marker visibility/occlusion to actual normal-zoom game captures and existing inspect text. A visibility mismatch invalidates that geometry class rather than becoming “art polish.” Then blind-sort paired views and inspect displays, swapping scenery and sides; disagreement with intended risk ordering is a B3 failure to repair, not a request to approve confusing cues.
+
+**Output and decision:** Coverage maps, dangerous-but-unmarked counterexamples, crossed roof/ground results, latency tables between physical change and visible/inspect change, paired-view recipes and a worst case per bar. Output changes indicator binding/uncertainty wording/inspection freshness and terrain integration, without inventing a new safety UI or changing Direct Sun.
+
+**Rough size:** [guess] Hundreds of relative-placement equivalence classes and thousands of boundary placements; basis: room/ground/indicator transitions. Human review uses the smallest separating views, not screenshots of every class.
+
+**Trigger:** Unknown readings meeting; first misleading cue, apparently safe bare-hot route, roofed-ground false pass or change in ash visibility/marker death/read latency. Build before claiming that a decorative plant has become a reliable instrument.
+
+## M4: Native food, preservation and ordinary salvage balance
+
+**Question:** Does retained life and ordinary scavenging keep functioning through the actual season without hidden feeding, warm-regime rot or an invented second resource economy?
+
+**Informs:** B2/B7/B8, R6/R7/R9; unknown life meeting and the life contribution to mobile-stock/refuge loops. This is an accounting model, not a demand that the colony or each animal be immortal or self-sufficient.
+
+**Assumptions:** Effective patched diets, thermal/toxic/drinking tolerances, plant growth/harvest, reproduction and item rot come from the game. Ordinary source ecology must supply wild food; declared colony imports can feed tame stock. Scabspinner targets small wild prey, not settlers/livestock. Preservation suppresses ambient rot without blocking damage, consumption or deterioration. Cache inventories retain exact item/rot identity; a def with a Rot comp alone does not establish its net runtime progression.
+
+**Inputs and sweep:** All current RM and campaign resident functional groups; juvenile/adult/breeding/old, no water versus reachable brine, sparse/typical/temporarily choked forage, no scripted food. Warm basin, margin and cold scour; clear/ash/aftermath with shared actual plant death rules. Tame kroffa milk and frethik eggs, ordinary native prey/carrion, butcher/building stock and harvest inputs. Colony 3/40 with declared imports, interrupted gather jobs and worker death/replacement. Supplies loose/stored/buried, naturally rot-sensitive food/eggs/milk/corpses; move a sample outside Wastes and back, preserving progress. Salvage hull/cylinder/sarcophagus by ordinary deconstruct versus smash across legal scatter terrain, work protection and interrupted/resumed work. Read actual loot variability; do not force a particular rare suit or pinned yield.
+
+**Leaves out:** Default-off bezoar/soot-brick/excretor outputs, milk mood bonus, pool-bed processing, contract silver and rare-loot profit forecasts. No full colony economy, full species-extinction guarantee or new native hunger system. Shared Bones is not a source of monumental skeleton shelters. A structural starvation risk may require a live native-food trace; simple calories alone cannot prove AI reaches the food.
+
+**Real-game calibration:** Compare a save's exact food quantities/rot progress, real eat/drink/lay/hatch/milk/harvest/deconstruct job histories, product IDs, births/deaths, hunger/thirst and predator targets before and after full biological cadences. Consume accounting must match within explicit integer rounding with no hidden replenishment; warm and cold rot-stage predictions must match, and outside-biome resumption must use retained progress rather than reset freshness. Protection/source-attributed salvage toxicity must preserve real ordering. When accessibility, AI or resistance reverses a predicted outcome, invalidate that submodel and repair T45's adapter or the binding before trusting it again.
+
+**Output and decision:** Food-source/sink and reachable-food tables by group, periods of shortage, ordinary husbandry availability, native-water failures, preserved-item timelines and deconstruct/protection comparisons. Changes feed availability, tolerances, spoilage integration or misleading descriptions; does not restore a deferred refinery merely to rescue food balance.
+
+**Rough size:** [guess] A small aggregate balance table plus a few dozen representative full lifecycle/job traces; basis: actual functional diet/production/rot groups, avoiding a duplicate test of every def field. Source membership remains individually inventoried.
+
+**Trigger:** Unknown life meeting; before seasonal acceptance; first native dehydration/starvation, warm cache loss, phantom gather success or a salvage cost that bypasses ordinary protection.

@@ -1,0 +1,101 @@
+# The Wastes — proposed Design Version 0.1.0
+
+Proposal only, Designer-authored 2026-11-17. Nothing here edits the frozen sheet, a ruling, the game, a roster or an accepted art decision. A fresh review and the owner's reading precede application. No current gameplay proof is claimed.
+
+## Say the mod
+
+The Wastes is dry, poisoned ground where old wrecks outlast the people who came to strip them. You keep a habitable refuge while ash storms move contamination and expose or bury useful remains. Tough native life endures the poison, and its radiotrophs help you compare dangerous ground while slowly binding contamination beneath a recovering crust.
+
+Land: salt, ash, broken asphalt, blast glass, brine and old remains, with buildable cleaner ground amid environmental hazards; no rain or snow.
+
+Life: the current owned and campaign-patched residents, tough rather than pitiable, sparse forage and ordinary milk, eggs, meat and building stock; no roster eviction.
+
+Signature: ash moves and adds mobile contamination, so settlers must read changed ground and maintain a habitable refuge while radiotrophs bind poison beneath the crust.
+
+Runner-up: the living furnace's heat-for-dose bargain. It loses because the owner's November answer puts ongoing refuge maintenance against accumulated land pollution first; a creature heater adds another system. The giant procession is the strongest spectacle, but does not make a quiet day consequential. Both move intact in intent to the next version, switched off.
+
+## Why a player reaches for it
+
+A scavenger settlement has useful work beyond its walls and a reason to care about the ground beneath them. Survival comes from observation, roofed shelter, clean working space and exposure management. Prediction: this will appeal to players who enjoy maintaining a defensible home against an environmental pressure that persists between incidents. Enjoyment is not a passing bar.
+
+Authority: the selected experience sentence in `design/RimMandrake/biome_experiences_2026-10-20.md`; the November answers in `design/RimMandrake/designer_codex_2026-11-09/Wasteland/ANSWERS_OWNER.md`; the frozen `design/Jawa/worldbuilding/biomes/wastes.md`, especially its later survivor amendment. Scope selections and all details below are delegated Designer decisions, not new owner words.
+
+## Using it
+
+First hour: the map already contains native mobile pollution and visible contamination contexts. Inherited pollution is retained, not reset. A newly entered map must not be harmless until a quest is accepted. Cleaner, reachable construction ground exists, but a bare patch is a candidate for inspection, never a safety certificate. Identify brine, inspect potential shelter ground, establish a roof on cleaned ground, stock food and schedule ordinary cleanup. A roof blocks airborne fallout, not contaminated soil underneath it. Shading does not remove poisoning or change air temperature.
+
+Routine: inspect a changed route before salvage, use ordinary protective equipment and ToxicBuildup readings, interrupt exposed work when necessary, and clean the occupied footprint with vanilla pollution handling. Wastepacks from cleanup remain physical vanilla objects requiring proper storage; there is no new magical disposal sink. The mod's special casks, bays and contracts are off. Retreat stops the current source of exposure; it does not instantly cure accumulated ToxicBuildup.
+
+At a 40-colonist scale: use the same zoning, roof, hauling, cleanup, medical and animal-handling verbs. Enlarging the occupied footprint adds upkeep, not custom commands or individual warning letters. Duty assignments can change without losing the system's state. A downed worker must be rescued under ordinary exposure rules. A dead pawn leaves the normal readable corpse/death outcome. A dead plant releases or retains stock through the defined stock transition; it cannot silently delete it.
+
+A habitable refuge is an occupied clean-ground roofed home whose residents can eat, rest and recover from ongoing exposure with ordinary maintenance. It is neither permanent invulnerability nor an untreated-pawn endurance test. The comparison is a maintained home against an otherwise matched neglected home; food imports, gear and a realistic labor allocation are permitted. An entirely self-sufficient large colony is not promised.
+
+## What changes in the colony's story
+
+On clear days the land remains consequential. Polluted ground and brine do not become safe because the storm ends. After a storm the route and the exposed remains may differ. New fall leaves cinderfelt; older mobile contamination is indicated by radiotroph context; closer inspection distinguishes recent fall, current surface danger and stored root danger. The old root grove can acquire a cleaner surface while its roots become a worse excavation choice. Ordinary scavenging and deliberate cutting have consequences without a special quest or raid.
+
+## Costs and state transitions
+
+Maintain an internal contamination account in a common declared unit, initially pollution-cell equivalents; this is an implementation rule open to attack, not a second player radiation meter. Mobile surface stock, bound root/gall stock, cleanup output, documented external deposition and stock crossing the map edge are accounted separately. Biotech pollution occupancy is the surface projection, not proof of mass conservation. No fraction is discarded merely because a Boolean grid cell changes.
+
+Storm transitions: clear to ash, ash to clear, back-to-back ash, save during ash, reload, deposition, erosion, burial and exposure. The weather has its ordinary visible ash overlay/wind from onset. This version adds no quiet warning phase to ash. ToxicUtility controls airborne resistance and roof effects. Weather sandRate, pollution deposition and MovingDunes transport must be observed separately, then reconciled. The bound-store process runs during ordinary time as well as storms. Cinderfelt marks recent deposition and ages away; radmoss reflects current mobile stock. Darkness, snow cover, ash burial, plant death and fresh cleanup may prevent an affirmative visual reading; existing terrain/plant inspection must explicitly report uncertainty and expose current ground information. No exact safety promise comes from lack of vegetation.
+
+Sequestration transfers mobile stock to bound root/gall stock slowly enough that tending a refuge still matters. It does not destroy contamination or desalinate brine. Brine is a persistent native reservoir and remains poisonous to unadapted humans; any uptake supplied by that reservoir is recorded as input, never claimed as free removal of a finite land stock. Vanilla cleanup removes the mobile fraction into vanilla waste handling; it does not excavate hidden roots automatically.
+
+Cutting, uprooting, fire, shared growth-system death/burst, construction removal or mining that destroys a loaded root/gall store releases its retained stock at the footprint into the mobile ledger, with ordinary pollution/toxicity and a visible local disturbance. Saving and changing a plant's identity cannot duplicate or erase that stock. Collected ordinary wood/fuel is not a new radiation-bearing product; released contamination remains at the disturbed site. A harvested living plant that retains its storage organ retains the bound account. Inspect before destructive work warns that a cleaner surface overlies loaded roots. No radiation-scrubbing drug, bespoke excavator, new ore economy, custom plant-mining job or mutation system is added.
+
+Initial context and aftermath must remain readable on both first-day and old maps. Growth/death/grazing through ExplosiveGrowth must not manufacture an extra mutation ecology. Use the shared engine's resolved profiles and actual output; if an inherited profile violates Wastes' hard bans, repair the Wastes binding, not the ban or the shared engine. A stock-bearing organism's replacement/death transaction occurs once.
+
+## When it goes wrong and the sign
+
+An unattended home accumulates surface pollution and residents develop ordinary ToxicBuildup. A worker in a storm has weather and health indications, and sheltering on polluted soil still leaves the ground source. Cinderfelt can call attention to fall before a mature radmoss pattern develops, but never says that no felt means clean. A poisoned root store identifies its buried load in existing inspection before the cut and leaves a local pollution change afterward. No new warning letters are needed for ordinary deposition; vanilla health/cleanup state and inspection are retained because deleting them would make the signature unreadable. Logs are not player warnings.
+
+The failure region to find, not to tune by guess: drift kills marker plants; marker loss makes hot bare ground look safe; sequestration cleans a thin crust; a colonial harvest releases root stores; cleanup/deposition saturate the remaining refuges. The whole-map model must test that loop together. A beautiful isolated grove or a brief roof comparison does not settle it.
+
+## Edges
+
+No worldgen, alternate planets, tile repaint, region ring, new biome family or selectable climate. One RM_Wastes def remains. Local-map initialization and local weather/ground changes are not planet generation. A biome on no world tiles is expected and carries no finding.
+
+The version is not a second waste-industry mod. No Rite of Tipping, special waste casks/bays, illegal-reburial job, furnace aura, refinery output, gripper theft, electrical weather, brine-bed processing, giant incident or giant quarry runs by default. Species remain resident with ordinary life; their deferred product, aura, zap or thief behavior is gated separately. Future names, dimensions and eligibility rulings remain binding. No content is retired by this proposal.
+
+Near-zero environmental rot is retained across warm basins and cold scour, on map and in this map's buried containers. It does not immunize items against fire, consumption, deliberate destruction or outside-map decay. Preserve rot progress on map exit/re-entry; never reset it to fresh. There is no spoilage-dependent Wastes food chain.
+
+Existing Wreckage hulls, cylinders and sarcophagus-shaped wrecks remain ordinary landscape salvage using the same shared job. They do not imply a live Junker corpse, a particular suit or a bespoke opening sequence. The separate built campaign sealed-corpse scatter moves to next version. Monumental bones are ordinary authored landscape; at a rib-vault described as shelter, actual roof/cover must protect, while deposited ground underneath may be dangerous. Do not claim the Bones butcher engine generates those structures.
+
+## Neighbours and rulings
+
+The source ships composed in `mandrake.rm.biomes`; the folder's About.xml is not the deployed package. RM names no franchise or campaign; genuine canon residents enter through the existing Utinni patch. Current RM cast remains rich with that layer absent. No new naming pass is proposed. The broad aspirational Alien_Bestiary says Wasteland has manufactured labour-line life; it explicitly declares itself unbuilt. The later biome-specific survivor ruling and current approved roster win; no manufactured men or anomaly fauna are imported.
+
+The cold/night, margin and warmer basin regimes share one def and vary by existing authored local settings, mutators and injections. Geography comes from the fixed world's own data, not stale CSV counts. The Wastes is the poisoned-war legacy, not the Horrors' live-bioweapon legacy. Small-cast predation and provoked defense can remain; scabspinner must not turn settlers or tame livestock into routine hunted prey. Ordinary storyteller raids are outside that biome promise.
+
+Dependencies, not redesigned features: CreatureBehaviors supplies shared geometric shade/Direct Sun and retained campaign interfaces; EnvironmentalHazards supplies existing generic hazards/aliases and shade equipment; ExplosiveGrowth supplies actual growth and plant-end transitions; MovingDunes supplies drift, burial/reveal and choking; Wreckage supplies scatter, deconstruction rewards and irradiated exposure; Bones supplies ordinary butcher/building stock; FlowWorks supplies water identity and native drinking. Direct Sun stays the one geometric rule and feeds vanilla heat, never a Wastes exception. All DLC are assumed.
+
+The owner-required all-biome AcousticScanner payload stays as a dependency interface, with only truthful targets for present content. It is not a contamination meter or required navigation equipment. No new scanner safety UI is invented. WasteRun, the Stenchlands, the Kiln and other campaign sites remain external, not rolled into this signature. Existing fixed-world paint/enrichment plans are dependencies for eventual authorship, never work performed here.
+
+Multi-home note: the screecher's Wastes/Cauldron migration is explicitly documented in `WildAnimals_Wastes.xml`. Keep both. Other possible shared resident homes are not permission to evict; the situation generator records actual patched membership for review without changing it. The legacy RUT_Radiothermal shares a label with RM_Smolderback but is not presently added by that patch; do not borrow its proof.
+
+## Why this is more than vanilla toxic fallout
+
+Vanilla toxic fallout already makes a roof valuable; vanilla pollution cleanup already creates handling work, and ordinary milk/eggs already make husbandry useful. Those are retained machinery, not reasons to add custom roof jobs, a new radiation meter, a second milking system or a ritual. Vanilla polux-style removal alone would lose this sheet's cursed deep, while an ash overlay alone would leave the danger map static. The Wastes-specific work is the coupling: moving mobile poison, reliable rough ground reading, and retained bound stores that make surface recovery and later disturbance different choices. Shared Wreckage already does irradiated salvage, so the real sealed-corpse vignette is unnecessary for the first version. This comparison is the deletion argument behind the scope, not a claim that vanilla by itself supplies the missing stock mechanics.
+
+## Settings
+
+Master on. Major kept features: native contamination/refuge, storm dose, ash deposition, stock redistribution, radiotroph reading/sequestration/reopening, cinderfelt aftermath, preservation and Wastes drift participation each get clear controls, shipped on. Retain shared dependency controls in their owning engine, showing the effective state instead of adding another engine implementation. Ordinary defs/rosters stay loadable all-off. Existing cross-biome controls stay off and unsupported; none is added.
+
+All next-version switches default off and are labelled “Next version — unvalidated”. A group parent may gate a whole extra, with child feature switches for its major parts; each census ticket still proves its own absence. Disabling only procession currently permits an immediate giant, and disabling gathering does not stop consumption: those are reasons for complete parent gates, not reasons to keep extras. Code and defs remain in the tree. Def resolution is distinct from things, jobs, letters or incidents being available in play. Fresh defaults suppress availability and effects, not type loading.
+
+Settings changes are saved and restored through real settings files. No active hazard, rooted stock, cached item or pawn disappears when a setting is disabled: stop future production/transfer/damage, retain state for resumption, explain inert retained content through inspection. Existing vanilla pollution and toxicity are not erased by master-off. Initial-authoring controls explicitly say “new local maps only”; no control regenerates the world. Deferring a feature must also gate runtime work, menus, map-scatter bindings and campaign adapters. Existing non-default saves require explicit suspension semantics, not destruction or invented continuing contract liability.
+
+## Four stories
+
+**First hour.** A landing party sees ash flats, brine and an old hull. The apparently bare shelter site is inspected before construction. Its surface is cleaner than the nearby radiotroph patch; the party roofs and cleans an occupied area, leaves the brine alone and gathers ordinary forage. The first work order does not require a quest or animal gimmick.
+
+**Ordinary week.** The keeper milks kroffa and tends frethik eggs. Workers clean the refuge, haul resulting vanilla waste properly and salvage a wreck in short outings. Radmoss helps compare ground, while a root grove's inspection shows it storing what is no longer on the crust. Small scavengers continue their lives without hunting the colony.
+
+**Worst day.** An ash storm interrupts work, banks a drift against a familiar route and adds fallout beyond the roof. A rescuer returns a downed hauler to clean shelter. Afterward a failed cleanup order leaves that room's floor polluted; the health reading exposes the mistake. Cutting a loaded root to clear another route creates a local release. None of this needs the giant, casks or a special letter.
+
+**Season's turn.** The maintained refuge still supports work and rest; its neglected comparison has suffered exposure and repair backlog. The map outside still has safer and worse routes, persistent brine, native life and old remains. The changed route is surveyed again, not trusted by memory. The saved middle of this season reloads into the same physical story, and doing the harvest before rather than after the cleanup does not erase or multiply its poison.
+
+## Evidence and deliberate limits
+
+`census.json` reconciles the historical inventory with current source. This pass searches source and reads scripts; it runs no game, bridge, build, selftest suite, art review or deployment. `selftest_wastes.py` is a mock, not the game. Existing live evidence in the historical record is stale. The functional suite's clear-weather teardown, short warning observation, forced fullness and patch-presence launch checks do not prove whole operation. Models and instrument tickets below are specifications, not measurements. The CASE reports no locked tree leaves, so old_bars is empty; the functional walk's regression lines are not secretly imported as owner bars.

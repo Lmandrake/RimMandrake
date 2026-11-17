@@ -1,0 +1,36 @@
+{
+ "mod": "Wastes",
+ "state": "proposed",
+ "why": "check passes (8 bars, 69 census rows, 806 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-17T02:15:27",
+ "seconds": 1686,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 806,
+  "page_limit": 950,
+  "census_rows": 69,
+  "bars": 8,
+  "bar_numbers": "none",
+  "shared_things": 10,
+  "meetings": 10,
+  "old_bars": "0 mapped of 0 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 6122765,
+    "output_tokens": 50824
+   }
+  }
+ ],
+ "agent_errors": []
+}

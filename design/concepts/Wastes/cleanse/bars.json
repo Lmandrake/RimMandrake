@@ -1,0 +1,674 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "Settlers standing on the Wastes encounter dry ruined flats, poisonous brine where water is present, and recognizably different basin, margin and cold-scour light, with ground they can build a refuge on.",
+      "meant": {
+        "intent": "The ordinary land must be a coherent ruined desert in each authored regime, with usable construction choices rather than an arena made entirely hazardous or a generic green biome. This reads arrangement, ground and light, not new art approval.",
+        "source": "Frozen wastes.md \u00a70\u2013\u00a73, \u00a76 and \u00a79; no-rain/no-snow owner ruling recorded in RM_Wastes_Biome.xml; delegated: November refuge answer implies reachable construction ground. Existing art is accepted under standing_rulings.md \u00a7Biome art never blocks.",
+        "figurative": []
+      },
+      "accept": [
+        "A pale brine basin has salt and ash around an old hull; cleaner accessible ground supports a roofed workshop, and the cold scour instead reads dark with the stormwall on its horizon.",
+        "A waterless war flat has ruined ground and construction space without an invented pool; changing its plant illustration does not alter this judgement."
+      ],
+      "reject": [
+        "The different regimes all show the same sunny fertile field, with a decorative puddle and nowhere reachable to build beyond the contaminated work area.",
+        "An otherwise dry cold-scour map regularly turns white with watery snowfall, or a described rib-vault shelter supplies no actual cover."
+      ],
+      "lazy": "none: the sentence requires dry ruined ground, regime light, poisonous real water when present and usable refuge ground; a label or decorative puddle cannot satisfy it.",
+      "range": {
+        "varies": "Local maps at 150x150, 250x250 and 325x325; warm basin, dark margin, cold scour and their transitions across -35 to +30 C (source extension range, design envelope, not a live tile census). Flat/low-relief and crag-interleaved sites; water absent, shallow/still/moving, chest-deep and deep. Clear/ash weather, map edge/interior, empty/occupied ground, existing authored rib-vault sites. Tile lighting uses actual fixed-world position, never a region-name override.",
+        "left_out": "No new planet, tile distribution, required pool or required rib-vault on each map. No replacement-art or variant-count judgement. Unsupported worlds and DLC-absent setups excluded by standing scope."
+      },
+      "sees": {
+        "instrument": "T44 regime comparison: actual local-map views plus terrain/roof/passability and weather-history state reads; M1 lists situations and M3 supplies ground/cover contexts. Existing accepted art is used.",
+        "start": "Disposable saves whose regime, biome, tile lighting, water and authored landmark states are recorded; no debug light overrides. A reachable candidate footprint is verified by state, not painted on a screenshot.",
+        "on": "All kept mechanics and shared defaults on; extras off; no sky, weather, time, movement or plant-growth lock. View clear and naturally occurring ash portions of the same full-map run.",
+        "control": "A label could falsely imply a regime. Hide the label for comparison, record actual terrain/water/roof/light state, and compare against generic ground and a roofless rib-vault control. A terrain picture alone cannot establish poisonous water or construction access.",
+        "reset": "Discard disposable saves and restore the recorded baseline/settings file; do not clear a pad and claim the map restored.",
+        "live_only_why": "State can prove terrain and cover but cannot establish that existing land, haze and fixed-horizon lighting visibly distinguish these regimes. An offline render without game materials is not a substitute."
+      },
+      "live_only": true,
+      "touches": [
+        "ground",
+        "readings",
+        "refuge",
+        "exposure"
+      ],
+      "tests": {
+        "reject": "Yes: dry poisoned land is the sourced root, not optional decoration.",
+        "renormalize": "No rates, dimensions, values or variant quota pinned; imagery may vary while the spatial comparison remains.",
+        "first_version": "Land; actual shelter is necessary to the selected refuge experience."
+      }
+    },
+    {
+      "id": "B2",
+      "says": "Foragers and keepers meet adapted resident life that can feed and reproduce in its ordinary habitat, offers ordinary food and husbandry, and leaves the colony's routine danger in the environment.",
+      "meant": {
+        "intent": "Preserve the resident roster as functioning survivors rather than starving props, a wilderness zoo of hunters or a mandatory waste refinery. Fictional flyers really fly and natives can drink their own brine.",
+        "source": "wastes.md survivor amendment 2026-09-28 and \u00a74/\u00a76; standing flight and native-water rulings; current RM_Wastes wildAnimals/wildPlants plus WildAnimals_Wastes.xml. Delegated: ordinary husbandry retained, special economies deferred under this brief.",
+        "figurative": []
+      },
+      "accept": [
+        "Scavengers and grazers continue feeding while keepers obtain milk and eggs through ordinary work; the small ambusher hunts the small cast while settlers worry about polluted ground.",
+        "A native by its brine pool can drink without becoming dehydrated, and the scavenger bird traverses an obstacle in its flying state."
+      ],
+      "reject": [
+        "A native sits beside brine and dehydrates, or the whole resident population starves after the staged feeding supplies are gone.",
+        "The ordinary wild ambusher repeatedly hunts settlers and their livestock, or a creature called a bird only walks around the flight obstacle."
+      ],
+      "lazy": "none: feeding, reproduction, actual ordinary outputs and environmental rather than routine colony predation are all explicit; a roster entry alone satisfies none of them.",
+      "range": {
+        "varies": "Every current RM resident and patch-added campaign resident by functional diet/lifecycle group, juvenile/adult/old, healthy/downed/dead, tame/wild, isolated/breeding group; 0, 3 and 40 colonists; days 1\u201315 and day-100 continuation; warm, margin and cold regimes within B1 envelope. Sparse and typical forage, no water and all local brine depths where reachable; no supplied food for the self-supporting wild comparison, declared imported feed for kept herds. Flight checks use obstacle/cooldown/grounded/transit/landing states, without autonomous flight performance staging.",
+        "left_out": "No roster eviction, guaranteed survival of any named individual, guaranteed taming, self-sufficiency for a large colony, new predator combat system or forced flight screenshot. Storyteller raids and deliberate animal abuse are not native routine threat. Multi-home membership is recorded, never automatically repaired."
+      },
+      "sees": {
+        "instrument": "M1 situation generator plus M4 food/rot balance, calibrated against actual food/drink jobs, hunger/thirst, births, products, prey targets and Pawn_FlightTracker state. T45 supplies missing adapters; visible-flight demonstration follows the owner-present ruling if ever needed.",
+        "start": "Recorded natural roster/forage state on full disposable maps, no feeder props in the wild arm; ordinary kept stock has declared feed. Health, pregnancy/egg state and elapsed time captured before advancing.",
+        "on": "All kept mechanics, thirst, shared growth/death and native tolerances active; no hunger, birth, animal-AI or flight debug override. Extras off. Flyer instrument is deterministic state-only under the standing rule.",
+        "control": "Explicitly account for all food consumed and imported. An untouched egg or preset full milk bar proves no production: collect through real jobs after measured growth. Read actual predator targets rather than inferring harmlessness from absent attacks. Read flight tracker rather than merely MaxFlightTime.",
+        "reset": "Discard branch saves and restore baseline/settings; remove no pawn to hide starvation or a death. Any real death remains in the branch record.",
+        "live_only_why": "Not live-only: state and a game-calibrated balance/transition walk distinguish the behaviour; no new aesthetic approval required."
+      },
+      "live_only": false,
+      "touches": [
+        "life",
+        "mobile stock",
+        "persistence",
+        "exposure"
+      ],
+      "tests": {
+        "reject": "Yes, inferred from land/life minimum and explicit survivor, flight and native-drinking rulings.",
+        "renormalize": "No yield, density or speed is pinned; functioning adaptation and ordinary usable outputs remain the comparison.",
+        "first_version": "Life, without retaining the independently deferred product/aura/theft systems."
+      }
+    },
+    {
+      "id": "B3",
+      "says": "A settler comparing work routes can distinguish lower from higher environmental exposure from landscape context and existing inspection, including after ash moves and where a cleaner surface overlies loaded roots, without bare ground falsely certifying safety.",
+      "meant": {
+        "intent": "Give reliable rough ordering, not a precise radiometer overlay or infallible vegetation-only map. Closer inspection resolves uncertainty, recent change and the difference between surface travel and excavation.",
+        "source": "ANSWERS_OWNER.md answer 2, by card 2026-11-10; wastes.md \u00a74 radiotrophs and \u00a74b changed danger. Delegated: absence/lag/ash burial require explicit uncertainty rather than a false safe cue.",
+        "figurative": []
+      },
+      "accept": [
+        "Mature radiotroph growth warns against the worse of otherwise comparable routes; fresh fall or buried markers prompts inspection that reveals current surface danger before the worker commits.",
+        "A bare recently cleaned route is described as needing inspection, and a recovered grove's inspection distinguishes cleaner surface travel from dangerous root disturbance."
+      ],
+      "reject": [
+        "Radmoss is decorative and equally lush over cleaner and worse ground, so its supposed comparison teaches the player the wrong route.",
+        "Ash kills the markers and the resulting bare hot path is presented as safe, or clean-looking roots can be cut without any advance indication of their stored poison."
+      ],
+      "lazy": "none: route ordering, changed ground, buried stores and the bare-ground false pass are explicitly covered; names alone cannot establish a comparison.",
+      "range": {
+        "varies": "M1 cue states: fresh/mature/dead/absent/ash-buried/roofed plants; dry/cleaned/polluted/brine and loaded/unloaded roots; deposition, erosion, cleaning, grazing, fire and root destruction; times immediately before/after change and before/after regrowth. Warm, margin and dark-scour regimes; normal play zoom and closer inspect. Equal route lengths/exposure durations for ordering, then crossed lengths/durations using inspection rather than a categorical safe route. Mobile severity bins 0, positive below projection threshold, just across threshold, saturation; bound stock 0, positive, high.",
+        "left_out": "No exact dose-from-color calibration, scanner safety overlay, bare-ground guarantee or ability to see hidden information through undiscovered terrain. No cosmetic palette or art variant count is pinned."
+      },
+      "sees": {
+        "instrument": "T44 blind route comparisons with actual game views and existing inspection text, linked to M3 geometry/cue sweep and logged exposure from matched receivers. T40 creates missing sensing/inspection behaviour; future views must not be invented model renderings.",
+        "start": "Paired routes with known ground/brine/root stock, matched gear/health/length/duration, recorded lighting and plant age. Situation states built on disposable maps without disabling other kept mechanics.",
+        "on": "All kept mechanics on, extras off, natural weather/plant time unlocked. Preserve actual ash cover and haze during the judgement rather than hiding them for a cleaner picture.",
+        "control": "Blind the labels and hide ground-truth toxicity while the reader ranks; then compare with the receiver's actual source-attributed dose trace. Swap route sides, scenery and geometry; include falsely lush and bare-hot decoys. A closer read must resolve changed-state uncertainty rather than repeat a stale plant claim.",
+        "reset": "Reload the original disposable save for side/order swaps; restore actual settings afterward, discarding test saves.",
+        "live_only_why": "A correlation table cannot establish whether a player can read the rendered landscape and existing inspect display. Human sorting of actual game views is needed; M3 only enumerates and diagnoses it."
+      },
+      "live_only": true,
+      "touches": [
+        "readings",
+        "mobile stock",
+        "bound stock",
+        "exposure",
+        "persistence"
+      ],
+      "tests": {
+        "reject": "Yes: reliable rough comparison is an explicit owner answer.",
+        "renormalize": "Relative ordering and honest uncertainty survive new rates and illustrations; no color constant or growth quota is a bar.",
+        "first_version": "Needed by the environmental signature: informed route/refuge decisions disappear without it."
+      }
+    },
+    {
+      "id": "B4",
+      "says": "Residents of a maintained refuge can work and recover between outings while a comparable neglected home accumulates environmental exposure, and a roof alone does not make polluted ground safe.",
+      "meant": {
+        "intent": "Ongoing upkeep at home leads. Protection works by actual source: roof against airborne fallout, cleanup against mobile ground pollution, gear against its ordinary toxin channel. Existing illness does not instantly vanish indoors.",
+        "source": "ANSWERS_OWNER.md answer 1, by card 2026-11-10; frozen environmental-danger ruling; delegated: maintained/neglected and roof/ground crossed controls make the home experience falsifiable.",
+        "figurative": []
+      },
+      "accept": [
+        "Workers return to a cleaned roofed home, rest, eat and resume work; the same staffing and supplies in an unmaintained comparison leave a rising exposure backlog.",
+        "Roofing a polluted workroom removes the airborne contribution but its ground still harms unprotected workers until cleaned."
+      ],
+      "reject": [
+        "The only habitable room is a debug-clean sealed pad that ordinary cleanup cannot sustain once the storm runs.",
+        "A roof cures existing toxicity or turns the same polluted floor harmless, while the neglected home remains as healthy because nothing happens outside storms."
+      ],
+      "lazy": "none: the comparison includes ongoing ordinary upkeep, useful work/recovery, neglect and the roofed-polluted case; a brief immunity demonstration does not satisfy it.",
+      "range": {
+        "varies": "3\u201340 colonists, small workshop and expanded colony footprint, staffing swaps, injured/downed/dead worker, ordinary protection absent/partial/complete. Clean/polluted floor crossed with open/roofed/doorway/breached roof; clear, ash and post-storm intervals; shared Direct Sun/ambient heat at warm, margin and cold regimes. Ordinary cleanup labor with declared food/medicine/imports and physical wastepack handling, no special casks/bays/contracts. Day-1 and day-100 starting histories; reload during ash and during cleanup.",
+        "left_out": "No guaranteed survival under abandonment, arbitrary storyteller assaults or every extreme tuning setting. No immunity to accumulated illness, heat, ordinary starvation or all causes of damage. Valid at shipped defaults and supported feature-off semantics only."
+      },
+      "sees": {
+        "instrument": "M1 transitions and M2 calibrated full-map occupancy/exposure traces; real job, health, pollution and wastepack state adapter in T43. M3 cover sweep isolates roof/soil geometry.",
+        "start": "Matched populated full-map disposable saves, declared baseline mobile/bound stock, food/medical/feed stocks, schedules and work footprint; record toxic health before any change.",
+        "on": "All kept mechanics and shared defaults active, extras off; pollution, weather, pawns and cleanup jobs unlocked, no god protection, god construction or manual per-step floor cleaning.",
+        "control": "Cross roof with ground rather than comparing roofed clean to exposed dirty. Match health/gear and labor, attribute airborne/ground/salvage contributions. Observe nonzero eligible dose intervals outside shelter. Count cleanup waste outputs to exclude invisible deletion; maintained residents must actually work rather than stay paused or permanently immune.",
+        "reset": "Restore complete baseline save and settings, not just objects/roof. A second branch does actions in reverse order without resetting its accumulated health.",
+        "live_only_why": "Not live-only: the source-attributed health/work/ground trace can distinguish it; model prediction requires game calibration."
+      },
+      "live_only": false,
+      "touches": [
+        "refuge",
+        "mobile stock",
+        "exposure",
+        "persistence",
+        "life"
+      ],
+      "tests": {
+        "reject": "Yes: this is the owner's explicit lead experience.",
+        "renormalize": "No rate, footprint size, workforce quota or toxic threshold pinned in the experience pictures.",
+        "first_version": "Signature: home maintenance against native contamination."
+      }
+    },
+    {
+      "id": "B5",
+      "says": "An ash storm exposes unprotected workers, leaves fallout and changes where mobile contamination and buried finds lie, so a familiar work route calls for inspection again after it passes.",
+      "meant": {
+        "intent": "A changed danger map and physical exhumation rather than a cosmetic overlay, solely additive random pollution or newly conjured loot. Airborne hazard and ground aftermath belong to the same cycle.",
+        "source": "wastes.md \u00a74b; WASTELAND_BEDAZZLE_SITTING_1 amendment directs MovingDunes reuse; pollution-first doctrine. Delegated: finite old stock and item identity must be conserved while new fall is separately accounted.",
+        "figurative": []
+      },
+      "accept": [
+        "After wind scours the previously loaded route and banks ash beside it, inspection ranks the altered ground differently and a previously buried identifiable find becomes accessible.",
+        "An exposed worker takes the storm's ordinary airborne toxicity while a clean roofed comparison avoids that contribution; the deposited pollution persists after the weather clears."
+      ],
+      "reject": [
+        "The sky turns grey and fresh pollution appears at random, but old ground contamination never moves and a supposed revealed find is a newly generated replacement.",
+        "Advancing the storm counter skips actual damage, plant time or drift and is presented as a completed storm cycle."
+      ],
+      "lazy": "none: real exposure, aftermath, movement of pre-existing mobile contamination and physical buried finds are all required; a weather flag cannot satisfy them.",
+      "range": {
+        "varies": "All B1 regimes and map sizes; wind cardinal/intercardinal/shifted, upwind/interior/downwind/obstacle lee, clean/sparse/saturated pollution, pollutable/nonpollutable/roofed ground. Existing item cache empty/full/cap, burial/reveal threshold crossings, blocked reveal placement; no pawn burial. Clear->ash->clear, consecutive ash, save at onset/mid/end and reload. Ordinary natural selection across seasons plus transition replay; a particular random storm need not expose loot if no cache can be eroded.",
+        "left_out": "No promise of new finds from nothing, a reveal in each individual gust, new world landmarks or infinite content. No Halo/Cinderwire event at default. No redesign of MovingDunes physics."
+      },
+      "sees": {
+        "instrument": "M1 generator, M2 stock/transport model and M3 placement sweep, calibrated against real sand/pollution/freshFall/cache identity and airborne health reads via T43/T45; T40 fills missing transfer integration.",
+        "start": "Record existing polluted ash cells and persistent item IDs in caches, roof/terrain and receiver health; include a clean region so new input and transport can be distinguished.",
+        "on": "All kept mechanics on and all shared storm/drift/burial/choke defaults active. Weather changes naturally for whole operation; focused transition branches release any temporary setup lock before recording. Extras off.",
+        "control": "Tag pre-existing internal stock separately from external deposition. Trace erosion->deposit transfers; new pollution alone earns no redistribution evidence. Follow the same cache item through burial/reveal, and compare real airborne dose cadence with clean roofed/resistant controls. Do not substitute forced scatter for actual reveal or a bound extension for actual transport.",
+        "reset": "Reload full baseline including hidden caches, identities, wind state, freshFall, health and pollution; discard altered saves.",
+        "live_only_why": "Not live-only: conserved physical state and source-attributed damage distinguish the experience once adapters/model are validated against game state."
+      },
+      "live_only": false,
+      "touches": [
+        "ground",
+        "mobile stock",
+        "readings",
+        "salvage",
+        "exposure",
+        "persistence"
+      ],
+      "tests": {
+        "reject": "Yes: changed dangerous ground and the ruled MovingDunes reuse are core promises, not embellishments.",
+        "renormalize": "No coverage, weather rate, yield or transport speed pinned; the causal comparison remains.",
+        "first_version": "Signature and its existing shared land dependency."
+      }
+    },
+    {
+      "id": "B6",
+      "says": "Settlers can find a recovering surface above contamination stored by its plants, and disturbing those loaded stores makes that place hazardous again with an advance inspection warning and a visible local consequence.",
+      "meant": {
+        "intent": "Healing immobilizes rather than erases history; opening the vault releases finite stored contamination. This is the counter-process of the same land cycle, not a new ore/refinery minigame.",
+        "source": "wastes.md \u00a74 plants clean by sequestration and \u00a77 plant-vault prize; delegated: finite stock, ordinary destruction hooks and retained inspection are the minimum way to honor that ruling without adding jobs/products.",
+        "figurative": []
+      },
+      "accept": [
+        "The grove's surface becomes safer while inspection shows retained root contamination; cutting it changes the local pollution and an unprotected worker's exposure.",
+        "An exhausted store gives no further release on repeated work, and a living plant harvested without destroying its storage organ retains its load through saving."
+      ],
+      "reject": [
+        "A tree silently deletes pollution and yields harmless wood when removed, leaving no stored danger to inspect or reopen.",
+        "Burning or shared growth-system death erases the stock, or reloading the disturbed grove lets the same load be released repeatedly."
+      ],
+      "lazy": "none: surface recovery, retained stores, advance information and a local hazardous reopening consequence are explicit; a tree description cannot satisfy them.",
+      "range": {
+        "varies": "Radmoss indicators versus vault-root/wartshrub storage roles; empty/part-loaded/heavily loaded/exhausted stores, isolated/overlapping roots, polluted/clean/brine-adjacent ground. Cut, uproot, lethal damage/fire, construction removal, ordinary harvest that retains the organ, ExplosiveGrowth replacement/end-of-life, grazing, mining where an authored root store is present. Save before/after transfer and removal; day-100 history; repeated/reordered jobs; 0\u201340 colonists. Geometry at footprint edge, map edge and nonpollutable neighbors.",
+        "left_out": "No instantaneous landscape cure, desalination, new radiation resource product, mandatory new plant-mining job or player radiation ledger. Naturally dying unloaded plants need not pollute. Shared engine behavior is an input, not redesigned here."
+      },
+      "sees": {
+        "instrument": "M1 destruction/transfer state walk and M2 stock accounting, with T40/T43 adapter reading mobile/bound/cleanup/release records plus actual pollution and ToxicBuildup. Existing inspect display is judged within B3.",
+        "start": "Loaded and unloaded matched plants, actual IDs and saved stock; equivalent construction and work orders; receiver state recorded independently of the stock model.",
+        "on": "All kept mechanics and shared plant lifecycles active, extras off; no growth, fire or weather lock. Each destructive route is triggered without bypassing its real completion hook.",
+        "control": "Use unloaded twins and a nonsequestering plant control. Record stock moving into roots before removing the store; compare health on the same ground without release. Complete real woodcut/harvest/destruction jobs rather than reading harvestedThingDef. Balance inputs, outputs and boundary loss so disappearance or duplicated callbacks cannot masquerade as healing.",
+        "reset": "Reload full baseline before each job order. Compare independent reload to uninterrupted trace; never reconstruct the loaded root by just spawning a new empty plant.",
+        "live_only_why": "Not live-only: actual stock transitions, ground state and worker exposure can tell pass from fail; pure model output cannot until validated."
+      },
+      "live_only": false,
+      "touches": [
+        "bound stock",
+        "mobile stock",
+        "readings",
+        "exposure",
+        "persistence",
+        "life"
+      ],
+      "tests": {
+        "reject": "Yes: harmless deleted poison would contradict the frozen healing/deep-danger ruling.",
+        "renormalize": "No sequestration rate, resource value, quantity or release radius pinned; retained and finite history is the promise.",
+        "first_version": "Signature: the slow immobilization/reopening branch of environmental contamination."
+      }
+    },
+    {
+      "id": "B7",
+      "says": "Scavengers can return to preserved ordinary remains and recover useful salvage through work that costs environmental exposure, while shelter and protection still offer a meaningful way to limit that cost.",
+      "meant": {
+        "intent": "Old ruins persist and reward work, giving the colony a reason to venture out. Preservation holds in warm and cold Wastes, not just a freezer scene. Shared wreck loot/dose is enough; no guaranteed suit, quest or bespoke loot sequence.",
+        "source": "wastes.md \u00a75\u2013\u00a77 preservation and war salvage priced in dose; current RM_WastesWrecks.xml and Wreckage Irradiated weathering. Delegated: ordinary shared salvage is land under the brief; special sealed-corpse scatter is deferred.",
+        "figurative": []
+      },
+      "accept": [
+        "The old hull and a cached supply remain after weather and time; careful deconstruction returns useful materials, and protecting the worker reduces exposure compared with unprotected work.",
+        "A warm-basin supply survives environmental storage without ordinary spoilage consuming it, while theft by an outside raider or deliberate destruction can still remove it."
+      ],
+      "reject": [
+        "The ruin is decoration that cannot be worked for useful salvage, or the dose is identical with and without the claimed protection because it bypasses ordinary toxicity.",
+        "Only the frozen fixture preserves supplies; the warm Wastes quietly spoils the supposedly preserved cache before the return trip."
+      ],
+      "lazy": "none: physical return, preserved supplies, actual useful work and a controllable exposure cost are explicit; a loot table or cold screenshot cannot establish them.",
+      "range": {
+        "varies": "Hull, cylinder and Wreckage sarcophagus families; legal scatter terrain plus dry/no-water layouts; deconstruct versus smash, interrupted/resumed jobs, work skill/protection differences, sunlight versus roof and polluted versus cleaned approach. Warm/margin/cold maps, loose/stored/buried supplies and ordinary milk/eggs/food/corpses with rot tracking, storm and clear weather. Seasonal return and day-100 save/reload; same item/cache identities. Native ingestion and deliberate destruction separately accounted.",
+        "left_out": "No fixed yield/rarity/market value, recovery of a named suit or exact corpse, infinite salvaging, indestructible objects, prevention of fire/deterioration/theft or archaeology quest. Preservation concerns environmental rot, not all forms of removal."
+      },
+      "sees": {
+        "instrument": "M4 food/rot/economy model validated against actual rot trackers, cache identities and completed Wreckage deconstruct outputs/dose; T41 resolves unknown preservation and T45 adds real job/cache tracing.",
+        "start": "Recorded original remains, output inventory and rot progress at supported warm/cold climates. Receivers have matched baseline toxic health and declared gear; no preset completed jobs.",
+        "on": "All kept mechanics, Wreckage loot/weathering, actual growth/rot and MovingDunes burial/reveal defaults on; extras off; no refrigerator/immortality/time skip substituted for Wastes preservation.",
+        "control": "Compare unprotected/protected workers on otherwise matched remains and a smash control for shared loot rules. Check supply rot trackers at the warm end, not merely object count. Keep exact cache identities and include an ordinary outside-biome reference for resumed vanilla rot. A reading of mineableThing or loot tier alone is insufficient.",
+        "reset": "Discard branch saves and restore full original inventory, rot, cache, health and settings baseline.",
+        "live_only_why": "Not live-only: item identity, remaining material, real work outputs, rot and health state tell the difference."
+      },
+      "live_only": false,
+      "touches": [
+        "salvage",
+        "exposure",
+        "persistence",
+        "life"
+      ],
+      "tests": {
+        "reject": "Yes: preservation and a useful prize priced in dose are sourced reasons for the place.",
+        "renormalize": "No reward amount, value, preservation coefficient or time quota appears in the experience pictures.",
+        "first_version": "Land and its ordinary resource use, supplied by the existing shared salvage engine."
+      }
+    },
+    {
+      "id": "B8",
+      "says": "Across a season of the complete Wastes, settlers can maintain an occupied refuge and undertake salvage among surviving native life while ash and recovering roots change the outside ground, without the map becoming uniformly lethal, harmless, stalled or overwhelmed by errors, including after a mid-season reload and reordered work.",
+      "meant": {
+        "intent": "Exactly the whole bar: the coupled land, life and signature must support the daily experience over time, not merely pass isolated fixtures. A maintained refuge remains possible, neglect is costly, and changing land still matters.",
+        "source": "This brief's whole-mod requirement; ANSWERS_OWNER.md refuge/rough-comparison answers; frozen no-outlet environmental-danger/survivor doctrine. Delegated: defining flood, desert, stall and error storm as below makes the whole system testable.",
+        "figurative": []
+      },
+      "accept": [
+        "After the season, the occupied home still supports work and rest, neglected ground has imposed an exposure cost, routes still differ, native feeding continues, and old remains are still a reason to venture out.",
+        "Reloading the saved middle preserves mobile and root history, and harvesting before cleanup instead of after it changes the local consequences coherently without erasing or multiplying contamination."
+      ],
+      "reject": [
+        "Ash chokes the indicators, dying roots release poison and cleanup cannot preserve any useful refuge; or sequestration and cleanup leave the entire outside map as safe as home.",
+        "The demonstration advances only weather timers with plant growth and hazards disabled, leaves the sky locked clear, or reloads into missing stocks, duplicate releases and repeating errors."
+      ],
+      "lazy": "none: complete seasonal operation explicitly includes surviving life, occupied refuge/work, changing hazards, saved history, second action order and the saturation/erasure/stall/error failure regions.",
+      "range": {
+        "varies": "Full 150x150, 250x250 and 325x325 local maps; warm basin, margin, cold scour plus transition representatives from M1; waterless/brine and ordinary obstacle layouts. 3 and 40 colonists, sparse/typical forage and low/high initial mobile/bound stock. Run 15 in-game days (one season) at shipped defaults; continue a day-100 starting history for a further season. At least a full clear/ash/aftermath/root-transfer sequence must occur: if natural weather never supplies it, keep running and record elapsed time instead of injecting a guaranteed natural frequency. Reload a mid-season save into the same weather/stock state. Repeat cleanup->salvage->root-cut as root-cut->salvage->cleanup, keeping weather draws/environment comparable. Compression is wall-clock acceleration of actual complete game ticks only: preserve weather draws, job durations, resistance, growth, death, root callbacks, transport, caching and all shared engine cadences.",
+        "left_out": "No canonical world edits, alternative planets, full default-on next-version extras, unsupported cross-biome behavior or all possible storyteller catastrophes. Deliberate abandonment and arbitrary custom tuning are not guaranteed viable. The generator covers supported boundaries without pretending a finite sample is all maps."
+      },
+      "sees": {
+        "instrument": "T43 complete-map state recorder and M2 whole-map model calibrated against its traces. Record spatial stock/exposure/refuge/work/life/salvage trajectories, identity and save/reload equivalence, errors, tick/job progress and expensive-component timing. Compare B1/B3 scene reads at actual season checkpoints; those human readings remain their own bars.",
+        "start": "Full populated disposable saves, actual shipped settings manifests, engine/def/source fingerprints, no setup objects or invisible food. Initial stock, cache/plant identities, health, work schedule, waste output and natural weather state captured. Maintain and neglect branches start from equivalent saves.",
+        "on": "Every kept mechanic and shared default active, every next-version extra off; all weather, sky, plant/pawn time, rooting, jobs, drift, growth and storyteller progression unlocked. No feature-specific test bypasses count. Exact effective settings and clocks are stored, not assumed from UI defaults.",
+        "control": "Reject a trace with no eligible hazard/work intervals, hidden feeding, weather locks or skipped callbacks. Account separately for native stock, new fall, bound stores, cleanup and boundary flux. Flood means all reachable refuge/work choices become untenable under ordinary maintained play; desert means environmental exposure differences disappear; stall means the cycle/jobs cease progressing or ordinary play cannot continue; error storm means repeated faults, not merely a particular failed regression. Pair maintained/neglected and action-order branches with equal declared inputs and record random draws instead of selecting an attractive run.",
+        "reset": "Save and retain baseline/mid/endpoint disposable artifacts for review, then restore settings and discard runtime branches. Never use pad teardown, global pollution clearing or deleting survivors as restoration.",
+        "live_only_why": "Not live-only: spatial state, real jobs, survival and source-attributed exposure determine whole operation. Live views decide the separate perception bars; the model cannot claim this bar from an uncalibrated prediction."
+      },
+      "live_only": false,
+      "touches": [
+        "ground",
+        "life",
+        "mobile stock",
+        "bound stock",
+        "readings",
+        "refuge",
+        "salvage",
+        "exposure",
+        "persistence",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Yes: the brief requires exactly this whole bar; isolated success does not honor a playable refuge season.",
+        "renormalize": "No fixed yields, coverage, quotas or stat values in the experience pictures; comparative viability and ongoing pressure are stable.",
+        "first_version": "The complete land, life and selected signature at shipped defaults."
+      }
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Resolve current effective RM/campaign defs and engine profiles; derive counts from XML dictionary children and loaded patched state, never hardcode the stale walk's roster/def totals. No missing references/config errors; floor check, not a bar."
+    },
+    {
+      "id": "C2",
+      "what": "Effective settings match the proposed kept-on/extras-off manifest; real settings save/load, reset, search and all-off effects; numeric tuning fields and explicit next-version labels are regression checks."
+    },
+    {
+      "id": "C3",
+      "what": "Existing Wastes math/mock mutant tests remain regression tools; adapt defaults and inactive-extra expectations without calling a mock pass gameplay acceptance. Historical proofs are stale until exact runtime/settings fingerprints agree."
+    },
+    {
+      "id": "C4",
+      "what": "Internal stock residual equals inputs minus outputs/change to within declared quantization; no dropped remainder, negative store, duplicate callback or duplicated cache identity. Projection thresholds, update cadence, root radius and capped memory are tunable implementation readings."
+    },
+    {
+      "id": "C5",
+      "what": "RM_Wastes.generatesNaturally=false; no rain/snow/toxic rain selection; no new worldgen, biome-specific sun/heat, anomaly roster or new cross-biome support switch. Check source and loaded effective definitions."
+    },
+    {
+      "id": "C6",
+      "what": "Every deferred capability's fresh-default state read is absent in play and its enabled eligible state is reachable; all defs/types remain loadable. This includes campaign adapters, direct worker paths, incidents, menus, outputs and letters."
+    },
+    {
+      "id": "C7",
+      "what": "Capture effective native diet/thirst/toxin/temperature and flight tracker states by species; record patched multi-homing, never edit rosters automatically. Source flags alone do not prove a flight transition."
+    },
+    {
+      "id": "C8",
+      "what": "Preservation calibration records rot-progress deltas for supported warm/cold supplies, cached/stored/loose states and outside-biome resumption; ordinary consumption/destruction accounted separately."
+    },
+    {
+      "id": "C9",
+      "what": "Whole traces include real tick counts, weather draws, unlocked effective state, save/source hashes, source-attributed toxicity, item identities and component timings. A missing instrument returns unknown, not zero or a failed bar."
+    },
+    {
+      "id": "C10",
+      "what": "Scanner payload remains loaded under its all-biome ruling; only present targets produce readings. Deferred targets cannot fabricate discoveries, and scanner text never claims to measure contamination safety."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Use vanilla ToxicBuildup and ordinary resistance/health for environmental dose; separate ground, airborne and shared salvage attribution. Roof shields airborne exposure, not polluted ground, and never cures stored health damage. Shared geometric Direct Sun/ambient heat stay separate unchanged inputs.",
+      "touches": [
+        "ground",
+        "exposure",
+        "refuge"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Use internal mobile/bound/cleanup/input/boundary stock accounts and project mobile stock onto Biotech pollution. Reuse MovingDunes transport and item identities. Never add an independent drift engine; no fictional conserved mass is inferred from a Boolean pollution count alone.",
+      "touches": [
+        "mobile stock",
+        "bound stock",
+        "ground",
+        "salvage",
+        "persistence"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Radmoss compares current mobile contamination, cinderfelt marks recent deposition and inspection reports uncertainty plus current surface/root context. Blank, dead or ash-hidden vegetation never certifies safe ground. Remove the temporary unrestricted cinderfelt fallback when reliable fresh-fall wiring is effective; do not remove the species.",
+      "touches": [
+        "readings",
+        "ground",
+        "mobile stock",
+        "bound stock",
+        "life",
+        "persistence"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Vault-root/wartshrub sequestration moves mobile stock into retained bound storage. Actual organ destruction remobilizes its finite load exactly once; ordinary living-organ harvest retains it. Shared plant end-of-life/grazing/fire and construction removal participate; no new root-mining economy or toxic wood item.",
+      "touches": [
+        "bound stock",
+        "mobile stock",
+        "life",
+        "exposure",
+        "persistence"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Maintaining a refuge uses ordinary roof/cleanup/hauling/medical jobs, not deferred bays, furnaces, herds or contracts. Initial local ground must already express native danger and construction choice, preserving inherited state without touching the planet. Cleanup produces vanilla waste handling obligations.",
+      "touches": [
+        "refuge",
+        "ground",
+        "mobile stock",
+        "exposure",
+        "persistence"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Retain all current resident memberships; ordinary food, taming, breeding and small-cast predation remain, while special aura/refinery/theft/zap behaviour gates default off. No routine hunting of colonists or tame livestock by native scabspinner. Real flight and environmental drinking use existing shared/vanilla mechanisms.",
+      "touches": [
+        "life",
+        "exposure",
+        "settings"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Preservation suppresses environmental rot over ordinary Wastes storage in all declared climates, without preventing consumption, deterioration or deliberate destruction; leaving the biome resumes vanilla rot from saved progress. Wreckage owns salvage/scatter/dose and Bones ordinary building material; neither proves a rib-vault generator or real casked corpse.",
+      "touches": [
+        "salvage",
+        "life",
+        "persistence",
+        "exposure"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Shipped kept features on, next-version extras off at complete runtime/availability parent gates. Keep code/defs and real major-feature controls. Suspend existing state safely on off without deleting stock, pawns or objects; stop future side effects. No new cross-biome switch and no world regeneration control.",
+      "touches": [
+        "settings",
+        "persistence",
+        "life",
+        "exposure",
+        "mobile stock",
+        "bound stock",
+        "salvage"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Natural weather and complete game ticks drive whole operation. Accelerate wall-clock execution only; do not skip growth, dose, cache, job or save callbacks. Branch action order under matched inputs. A model is prediction until its adapters agree with actual game records.",
+      "touches": [
+        "persistence",
+        "ground",
+        "life",
+        "mobile stock",
+        "bound stock",
+        "readings",
+        "refuge",
+        "salvage",
+        "exposure",
+        "settings"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "ground",
+      "members": [
+        "B1",
+        "B5",
+        "B8",
+        "R1",
+        "R2",
+        "R3",
+        "R5",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Drift deposition, roof/passability, initial pollution and plant growth can eliminate the same construction region; pairwise roof and terrain proofs do not establish a whole refuge.",
+      "model": "M2: Full-map contamination and refuge season"
+    },
+    {
+      "thing": "readings",
+      "members": [
+        "B1",
+        "B3",
+        "B5",
+        "B6",
+        "B8",
+        "R3",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "The same drift that carries hazard hides or kills its marker; a recovered crust and a loaded root imply different travel and excavation risks. Rendered/inspection comparison and source ordering need M3 plus actual game views.",
+      "model": "M3: Exposure geometry and readable-ground sweep"
+    },
+    {
+      "thing": "refuge",
+      "members": [
+        "B1",
+        "B4",
+        "B8",
+        "R1",
+        "R5",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Roof, ground cleanup, action order and ongoing input can make isolated protection true while a whole occupied settlement is impossible. Cannot settle by choosing rates in prose.",
+      "model": "M2: Full-map contamination and refuge season"
+    },
+    {
+      "thing": "exposure",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "argued",
+      "why": "R1 keeps source-specific vanilla dose and resistance, with ground versus airborne crossed controls. Special animal/cargo auras are off and cannot be needed by any kept bar. This removes competing dose channels while allowing ordinary brine/soil/salvage to remain harmful. Quantitative combined viability is explicitly unknown in refuge/mobile-stock meetings, not inferred here.",
+      "model": ""
+    },
+    {
+      "thing": "life",
+      "members": [
+        "B2",
+        "B4",
+        "B6",
+        "B7",
+        "B8",
+        "R3",
+        "R4",
+        "R6",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Sparse forage, near-zero rot, shared growth/death, ash choke and off-special natives can create starvation or overpopulation; neither a roster nor a fed pair settles the food chain.",
+      "model": "M4: Native food, preservation and ordinary salvage balance"
+    },
+    {
+      "thing": "mobile stock",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B8",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Storm input/transport, root uptake/release and cleanup share stock. The three-way loop of ash choking indicators, root death releasing loads and cleanup shrinking safe space may saturate or empty the map.",
+      "model": "M2: Full-map contamination and refuge season"
+    },
+    {
+      "thing": "persistence",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "FreshFall, caches, root loads, projection remainders, identities and engine timers meet at reload and destruction; independently serializable components can still double-consume or double-release stock after reordered jobs.",
+      "model": "M1: Supported situations and transition generator"
+    },
+    {
+      "thing": "bound stock",
+      "members": [
+        "B3",
+        "B6",
+        "B8",
+        "R2",
+        "R3",
+        "R4",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Sequestration, shared plant end-of-life, ordinary harvest and save/reload can erase, multiply or explosively remobilize loads. Root warning must precede real removal.",
+      "model": "M1: Supported situations and transition generator"
+    },
+    {
+      "thing": "salvage",
+      "members": [
+        "B5",
+        "B7",
+        "B8",
+        "R2",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "argued",
+      "why": "All retained salvage comes through Wreckage and physical cache identities; none requires the deferred casks, giant or real sealed-corpse scatter. R2/R7/R8 keep those boundaries explicit. Economy/rot magnitude remains in the life meeting and M4; no independent Wastes loot source is silently assumed.",
+      "model": ""
+    },
+    {
+      "thing": "settings",
+      "members": [
+        "B8",
+        "R6",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "argued",
+      "why": "The full kept-on/default and extras-off manifest defines this version consistently. Runtime parent gates must cover map workers, comps, jobs and campaign adapters; retaining definitions is compatible with absent runtime things. Settings floor and switch tickets expose incomplete gating; they do not grant a bar waiver.",
+      "model": ""
+    }
+  ],
+  "old_bars": {}
+}
