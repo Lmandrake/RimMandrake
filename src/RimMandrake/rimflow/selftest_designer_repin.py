@@ -14,7 +14,12 @@ stage.json, OWNER lines and a ledger event tying each commit to its card. Checks
    change's (the exam card for the paving commit), a change left uncited (the corrections), a commit paired with the
    wrong card, an uncommitted edit, and an OWNER event that is not his word (a --per-ruling close);
 4. his word after the loop crossed its ceiling lifts the spend park even when no park was written yet (the park would
-   have been written after his card and waited for another word); no word, no lift."""
+   have been written after his card and waited for another word); no word, no lift;
+6. RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: repin_sources (the Maturation tick's own re-pin) finds the cards a hand
+   re-pin cites (paving and the advance corrections, never the exam card given after the corrections commit), refuses
+   his new words on the item (never cited for him), a commit that carries out no card of his (a CONDUCTOR citation is
+   not his word), an uncommitted edit and an unlocked version, each as a refusal record with stage.json
+   byte-identical; and the sources it finds pass repin itself."""
 import json
 import os
 import shutil
@@ -48,8 +53,9 @@ def check(name, ok, got=""):
         FAILS.append(name)
 
 
-def git(root, *a):
-    r = subprocess.run(["git", "-C", root] + list(a), capture_output=True, text=True, timeout=60)
+def git(root, *a, env=None):
+    r = subprocess.run(["git", "-C", root] + list(a), capture_output=True, text=True, timeout=60,
+                       env=dict(os.environ, **env) if env else None)
     if r.returncode:
         raise RuntimeError("git %s: %s" % (" ".join(a), r.stderr.strip()))
     return r.stdout.strip()
@@ -79,7 +85,7 @@ def owner_lines():
     return out
 
 
-def fixture():
+def fixture(dated=False):
     base = os.path.expanduser("~/rm/scratch")
     os.makedirs(base, exist_ok=True)
     root = tempfile.mkdtemp(prefix="selftest-repin-", dir=base)
@@ -102,7 +108,11 @@ def fixture():
             with open(os.path.join(d, fn), "wb") as f:
                 f.write(real(commit, "%s/%s" % (SRC, fn)))
         git(root, "add", "-A")
-        git(root, "commit", "-q", "-m", "fixture: Pyrelands at %s (%s)" % (commit, name))
+        # dated: each commit made when the real one was (a card given after a commit is not what it carried out)
+        when = subprocess.run(["git", "-C", REPO, "log", "-1", "--format=%cI", commit], capture_output=True, text=True,
+                              timeout=60, check=True).stdout.strip()
+        git(root, "commit", "-q", "-m", "fixture: Pyrelands at %s (%s)" % (commit, name),
+            env={"GIT_COMMITTER_DATE": when, "GIT_AUTHOR_DATE": when} if dated else None)
         shas[name] = git(root, "rev-parse", "HEAD")
     with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"), "w") as f:
         f.write(json.dumps({"seat": "CONDUCTOR", "event": "note", "id": ADVANCE, "tsn": 1,
@@ -135,6 +145,71 @@ def refuses(name, d, root, sources, want):
         got = str(e)
     check("refuses %s (%s)" % (name, want), got is not None and want in got, got)
     check("refused %s leaves stage.json byte-identical" % name, stage_bytes(d) == before)
+
+
+def auto_refuses(name, d, root, want):
+    before = stage_bytes(d)
+    srcs, rf = DS.repin_sources(d, repo=root)
+    rf = rf or {}
+    text = json.dumps(rf)
+    check("6 auto refuses %s (%s)" % (name, want), want in text and rf.get("clause") == DS.REPIN_CLAUSE
+          and all(rf.get(k) for k in ("evidence", "observed", "would_pass")) and isinstance(rf.get("smallest_fix"), dict)
+          and all(k in rf["smallest_fix"] for k in ("what", "attainable", "cost")), text[:300])
+    check("6 auto refused %s leaves stage.json byte-identical" % name, stage_bytes(d) == before)
+    return srcs, rf
+
+
+def auto_sources_checks():
+    root, d, shas = fixture(dated=True)
+    try:
+        want = sorted(["OWNER:%s@%s" % (PAVING, shas["paving"]), "OWNER:%s@%s" % (ADVANCE_CARD, shas["corrections"])])
+        srcs, rf = auto_refuses("his new words on the item", d, root, "OWNER:" + EXAM_CARD_ITEM)
+        check("6 auto finds the cards a hand re-pin cites, never the exam card given after the commit",
+              sorted(srcs) == want and not any(EXAM_CARD in x for x in srcs), srcs)
+        # his words taken in (frozen into the accepted stages, as the Designer citing them would): the sources pass
+        st = DS.load_state(d)
+        cur = DS.inputs(d, st, root)
+        frozen = DS.owner_uncited(root, st.get("item"), d)
+        for r in DS.accepted(st):
+            if "owner" in DS.DEPS[r["stage"]]:
+                r["inputs"]["owner"], r["owner_uncited"] = cur.get("owner"), frozen
+        DS.write_json(DS.state_path(d), st)
+        srcs, rf = DS.repin_sources(d, repo=root)
+        check("6 auto with his words taken in: no refusal, the same two sources", rf is None and sorted(srcs) == want,
+              (srcs, rf))
+        out = DS.repin(d, srcs, "selftest: the auto sources", repo=root)
+        check("6 the auto sources pass repin and leave nothing stale",
+              DS.stale_stage(d, DS.load_state(d), root) == (None, []), (out, DS.stale_stage(d, DS.load_state(d), root)))
+        # a fix commit citing only a Conductor call: refused, never cited
+        with open(os.path.join(d, "sheet.md"), "ab") as f:
+            f.write(b"\n- a text leftover fixed\n")
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "fix: a text leftover (option A, CONDUCTOR:1794721030959200569)")
+        fix = git(root, "rev-parse", "HEAD")
+        srcs, rf = auto_refuses("a fix that cites a Conductor call only", d, root, fix)
+        check("6 the refusal names the CONDUCTOR citation as not his word", "CONDUCTOR:1794721030959200569" in
+              json.dumps(rf.get("evidence")) and not srcs, (srcs, rf.get("evidence")))
+        # the smallest fix it names: a ledger event on his card's item naming the sha; then the card is found
+        with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"), "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "note", "id": "RIMMANDRAKE_ASK_PYRE_ROOT_STILL_PROMISES_PAVING_"
+                                "HOLDS", "tsn": 3, "text": "carried out by %s" % fix[:10]}) + "\n")
+        srcs, rf = DS.repin_sources(d, repo=root)
+        check("6 after the note on his card's item the fix is cited by that card", rf is None and srcs == [
+            "OWNER:%s@%s" % (PAVING, fix)], (srcs, rf))
+        keep = open(os.path.join(d, "sheet.md"), "rb").read()
+        with open(os.path.join(d, "sheet.md"), "ab") as f:
+            f.write(b"\n- an uncommitted line\n")
+        auto_refuses("an uncommitted edit", d, root, "uncommitted")
+        with open(os.path.join(d, "sheet.md"), "wb") as f:
+            f.write(keep)
+        vp = os.path.join(d, "version", "VERSION.json")
+        v = json.loads(open(vp).read())
+        v["state"] = "draft"
+        with open(vp, "w") as f:
+            json.dump(v, f)
+        auto_refuses("an unlocked version", d, root, "not locked")
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
 
 
 def main():
@@ -245,6 +320,8 @@ def main():
                 "what") == "locked_change", MA.chain_owed(st5))
         finally:
             shutil.rmtree(root5, ignore_errors=True)
+
+        auto_sources_checks()
 
         # 4: the spend ceiling and his word that predates the park
         st = DS.load_state(d)

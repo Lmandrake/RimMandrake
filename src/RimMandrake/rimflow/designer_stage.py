@@ -2244,14 +2244,132 @@ def input_changes(d, key, repo, pinned):
     return [c for i, (c, h) in enumerate(seen) if i > at[-1] and h != seen[i - 1][1]], ""
 
 
-def repin(d, sources, why, repo=None):
+REPIN_CLAUSE = "locked_change_cites_his_cards"
+REPIN_WOULD_PASS = ("every commit since an accepted stage's pin that moved one of its frozen inputs is tied to the card "
+                    "of his it carries out (designer_stage.change_tied: its message cites OWNER:<tsn> of his byCard or "
+                    "ownerSaid event, or names that card's item, or a ledger event on the card's item names its sha), "
+                    "no change is uncommitted, and his new words on the item are taken in")
+
+
+def _commit_time(repo, commit):
+    out = (_git(repo, "log", "-1", "--format=%ct", commit) or b"").decode().strip()
+    return int(out) if out.isdigit() else None
+
+
+def _his_word(ev):
+    return isinstance(ev, dict) and bool(CT.txt(ev.get("ownerSaid")) or CT.txt(ev.get("byCard")))
+
+
+def commit_cards(commit, repo, owner_ev, events):
+    """-> the tsns of his cards (byCard or ownerSaid events) a commit carries out, by the first tie that finds any, in the
+    order of change_tied: its message cites OWNER:<tsn>; its message names a card's item; a ledger event on a card's item
+    names the commit. A card given after the commit was made is not what the commit carried out and is never cited.
+    Every tsn returned passes change_tied, so repin accepts exactly what a hand re-pin citing it would."""
+    msg = (_git(repo, "log", "-1", "--format=%B", commit) or b"").decode("utf-8", "replace")
+    made = _commit_time(repo, commit)
+    cards = {t: ev for t, ev in owner_ev.items() if _his_word(ev)
+             and (made is None or not str(ev.get("tsn") or t).isdigit() or int(str(ev.get("tsn") or t)) // 10 ** 9 <= made)}
+    named = set()
+    for e in events:
+        if not e.get("id"):
+            continue
+        hexes = _HEX.findall(" ".join(str(e.get(k) or "") for k in ("text", "reason", "why")))
+        if (CT.txt(e.get("sha")) and len(e["sha"]) >= 7 and commit.startswith(e["sha"])) or \
+                any(commit.startswith(h) for h in hexes):
+            named.add(e["id"])
+    tiers = ([t for t in re.findall(r"OWNER:([0-9]+)(?![0-9])", msg) if t in cards],
+             [t for t, ev in cards.items() if ev.get("id") and ev["id"] in msg],
+             [t for t, ev in cards.items() if ev.get("id") in named])
+    for tier in tiers:
+        tied = sorted(dict.fromkeys(t for t in tier if change_tied(cards[t], commit, repo, events)))
+        if tied:
+            return tied
+    return []
+
+
+def repin_sources(d, repo=None):
+    """RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE -> (sources, refusal): the sources a re-pin of this LOCKED concept cites,
+    found the way a hand re-pin finds them (each commit since a stale stage's pin that moved one of its frozen inputs,
+    and the cards of his each one carries out: commit_cards), and None; or the sources found so far and a refusal
+    record (clause, evidence, observed, would_pass, smallest_fix) when a re-pin citing only his cards cannot pass. His
+    new words on the item are never cited for him: whether they are taken in is a reader's call, so they refuse.
+    The dry repin (repin(..., dry=True)) is the last word: whatever it refuses, this refuses. Writes nothing."""
+    repo = repo or clone_of(d) or REPO
+    rel = os.path.relpath(d, repo).replace(os.sep, "/")
+
+    def refusal(evidence, observed, fix, cost="edit"):
+        return {"clause": REPIN_CLAUSE, "evidence": evidence, "observed": observed, "would_pass": REPIN_WOULD_PASS,
+                "smallest_fix": {"what": fix, "attainable": "yes", "cost": cost}}
+    st = load_state(d)
+    ver = read_json(os.path.join(d, VERSION_FILE)) or {}
+    if ver.get("state") != "locked":
+        return [], refusal(["%s/%s state %r" % (rel, VERSION_FILE, ver.get("state"))],
+                           "the version is not locked: an unlocked concept's changed inputs reopen its stages, and "
+                           "no re-pin is owed", "none here: nothing waits on a re-pin of an unlocked concept")
+    owner_ev = CT.owner_events(repo, clone_of(d))
+    events = ledger_events(repo)
+    cur = inputs(d, st, repo)
+    frozen_now = owner_uncited(repo, st.get("item"), d)
+    commits, words, bad = [], [], []
+    for r in sorted(accepted(st), key=lambda r: r["stage"]):
+        for k in DEPS[r["stage"]]:
+            if r["inputs"].get(k) == cur.get(k):
+                continue
+            if k == "owner":
+                new = sorted(set(frozen_now or []) - set(r.get("owner_uncited") or []))
+                if frozen_now is None:
+                    bad.append("stage %d: the OWNER shard is unreadable" % r["stage"])
+                words += [t for t in new if t not in words]
+                continue
+            got, err = input_changes(d, k, repo, r["inputs"].get(k))
+            if got is None:
+                bad.append("stage %d: %s" % (r["stage"], err))
+                continue
+            commits += [c for c in got if c not in commits]
+    if bad:
+        return [], refusal(bad, "the changes since the pin cannot be traced", "repair what each line names, then the "
+                           "next tick tries again", "rerun")
+    sources, uncited = [], []
+    for c in commits:
+        tsns = commit_cards(c, repo, owner_ev, events)
+        if not tsns:
+            subj = (_git(repo, "log", "-1", "--format=%s", c) or b"").decode("utf-8", "replace").strip()
+            conductor = re.findall(r"CONDUCTOR:[0-9]+", (_git(repo, "log", "-1", "--format=%B", c) or b"").decode(
+                "utf-8", "replace"))
+            uncited.append("%s %s: %s" % (c, subj, "cites %s, a delegated call, never his word" % ", ".join(conductor)
+                                          if conductor else "cites no card of his, and no ledger event on a card's item "
+                                          "names it"))
+        sources += ["OWNER:%s@%s" % (t, c) for t in tsns]
+    if uncited:
+        return sources, refusal(uncited, "%d of %d commits that moved a frozen input carry out no card of his that a "
+                                "re-pin can cite" % (len(uncited), len(commits)),
+                                "for each commit named, a ledger event on the item of the card of his it carries out "
+                                "naming its sha (`rimflow note <card item> --text \"carried out by <sha>\"`), or a hand "
+                                "`designer_stage.py repin %s --source OWNER:<tsn>@<sha> ...`; never a CONDUCTOR "
+                                "source" % rel)
+    if words:
+        return sources, refusal(["OWNER:%s (on %s, not cited by record.json or tree.json)" % (t, st.get("item"))
+                                 for t in words],
+                                "his new words on the item since the pin are not taken in; the pipeline never cites "
+                                "them for him", "the Designer takes them in (cites OWNER:<tsn> in record.json or "
+                                "tree.json), or a hand repin cites them once a reader confirms they are taken in")
+    try:
+        repin(d, sources, "dry run", repo=repo, dry=True)
+    except Refused as e:
+        return sources, refusal(["designer_stage.repin refused: %s" % e], str(e),
+                                "repair what the refusal names; the next tick tries again")
+    return sources, None
+
+
+def repin(d, sources, why, repo=None, dry=False):
     """His card changed a LOCKED version (version/VERSION.json state locked): re-pin the accepted results' frozen
     inputs to the current hashes so the stage machine does not reopen stage 1 to re-argue what he decided. `sources`
     are "OWNER:<tsn>@<commit>" (his card and the commit that carried it out) or "OWNER:<tsn>" (his word on the item,
     taken in with no file change). Every source is his word (byCard or ownerSaid) on the OWNER shard; every commit is
     tied to its card (change_tied); every commit since a stage's pin that moved one of its file inputs is cited; every
     owner event on the item new since that pin is cited; no change is uncommitted. Refused otherwise, stage.json
-    untouched. -> the re-pinned stages."""
+    untouched. -> the re-pinned stages. `dry` runs every check and writes nothing (-> the stages it would re-pin or
+    void): the Maturation tick's own re-pin is judged by this same checker before it acts."""
     repo = repo or clone_of(d) or REPO
     if not CT.txt(why):
         raise Refused("a repin says why")
@@ -2334,6 +2452,8 @@ def repin(d, sources, why, repo=None):
     if idle:
         raise Refused("cited commit(s) %s changed none of the stale inputs: not the change cited" % (
             ", ".join(c[:10] for c in idle)))
+    if dry:                           # RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: every check passed, nothing written
+        return sorted(set(plan) | set(voided))
     at = now_iso()
     for r in accepted(st):
         if r["stage"] in plan:

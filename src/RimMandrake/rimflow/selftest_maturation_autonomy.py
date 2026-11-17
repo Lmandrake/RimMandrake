@@ -559,6 +559,119 @@ def final_look_checks(root):
        r.get("decision"))
 
 
+def repin_wait_checks(root):
+    """RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE ("re-pin wait"): a LOCKED concept's grant whose --after items are all
+    closed waits on the re-pin alone (coverage_judge.grant_waits, read for real here over a fixture concept). The tick
+    names that wait, and the pipeline re-pins as an act (autorepin: no brief, no run, one landing) citing the sources
+    designer_stage.repin_sources found, or stays PAUSED with the refusal record (evidence, would_pass, smallest_fix) and
+    the hand command. Once a locked_change is written after the stop, the grant is due and chain_owed fires; an
+    unlocked concept never waits on a re-pin."""
+    import types
+    import coverage_judge as CJ
+    import maturation_autonomy as A
+    vd = os.path.join(root, "design", "concepts", "P", "version")
+    os.makedirs(vd, exist_ok=True)
+
+    def version(state):
+        with open(os.path.join(vd, "VERSION.json"), "w") as f:
+            json.dump({"mod": "P", "version": "0.1.0", "state": state}, f)
+    grant = {"at": "2026-11-15T14:30:00Z", "why": "per d_x", "after": ["FIX_T"]}
+    dst = dict(STOP, coverage_release_granted=grant,
+               history=STOP["history"] + [{"at": grant["at"], "what": "coverage_release_granted"}])
+    closed = {"FIX_T": types.SimpleNamespace(state="done", kind="task", caused_by=None)}
+    asked = []
+    src = ["OWNER:1794926130118775229@" + "a" * 40]
+    refusal = {"clause": "locked_change_cites_his_cards", "evidence": ["%s fix: text: cites CONDUCTOR:17, a delegated "
+               "call, never his word" % ("b" * 40)], "observed": "1 of 1 commits ... carry out no card of his",
+               "would_pass": "every commit ... is tied to the card of his it carries out",
+               "smallest_fix": {"what": "a ledger event on his card's item naming the sha", "attainable": "yes",
+                                "cost": "edit"}}
+
+    def plan(result):
+        return lambda m: asked.append(m) or result
+    x = lambda items, res: {"ledger_items": lambda: items, "repin_plan": plan(res)}       # noqa: E731
+    version("locked")
+    states = lambda ids: {i: closed[i].state for i in ids if i in closed}                 # noqa: E731
+    w = CJ.grant_waits(dst, states, d=os.path.join(root, "design", "concepts", "P"))
+    ok(len(w or []) == 1 and "re-pin" in w[0], "re-pin wait: the fixture grant waits on the re-pin alone (read %s)" % w)
+    r, la = _res(root, {"mods": {}}, dst, [], extra=x(closed, (src, None)))
+    ok(r.get("aut") == "autorepin" and la == ["P"] and r.get("klass") == "launch" and r.get("repin_sources") == src
+       and "re-pin" in str(r.get("status")) and "|repin|" in str(r.get("steward_key")),
+       "re-pin wait: items closed, his cards found: the pipeline's re-pin act launches citing them (read %s, %s)" % (
+           r.get("decision"), str(r.get("status"))[:120]))
+    ok(not r.get("need"), "re-pin wait: the act owes no Needs Conductor line (read %s)" % r.get("need"))
+    r, la = _res(root, {"mods": {}}, dst, [], extra=x(closed, (src, refusal)))
+    need = str(r.get("need"))
+    ok(la == [] and not r.get("aut") and r.get("klass") == "paused" and "waits on the re-pin" in need
+       and "designer_stage.py repin design/concepts/P" in need and "CONDUCTOR:17" in need
+       and "ledger event on his card's item" in need,
+       "re-pin wait: a refused re-pin stays PAUSED naming the wait, the hand command, the evidence and the smallest fix "
+       "(read %s, %s)" % (r.get("decision"), need[:160]))
+    rf = r.get("refusal") or {}
+    ok(all(rf.get(k) for k in ("evidence", "would_pass", "smallest_fix")), "re-pin wait: the row carries the refusal "
+       "record (read %s)" % sorted(rf))
+    # an open --after item: the grant waits on it, its fixer runs as before, no re-pin is planned
+    asked[:] = []
+    open_ = {"FIX_T": types.SimpleNamespace(state="doing", kind="task", caused_by=None)}
+    r, la = _res(root, {"mods": {}}, dst, ["FIX_T"], extra=x(open_, (src, None)))
+    ok(r.get("fix_item") == "FIX_T" and r.get("aut") == "fixer" and not asked,
+       "re-pin wait: an open --after item gets its fixer and no re-pin is planned (read %s, planned %s)" % (
+           r.get("decision"), asked))
+    # a live fixer run on a ticket: the re-pin waits for it
+    r, la = _res(root, {"mods": {}}, dst, ["FIX_R"], runs={"FIX_R": [("rm-u7", "running")]}, extra=x(closed, (src, None)))
+    ok(la == [] and r.get("klass") == "wait" and not r.get("aut"), "re-pin wait: a live ticket run is waited on "
+       "before the re-pin (read %s)" % r.get("decision"))
+    # the act already tried and failed for good: no second try on its own
+    key = "0.1.0|repin|%s" % grant["at"]
+    st = {"mods": {"P": {"steward": {key: {"item": None, "failed": "Refused: commit x is not tied", "tries": 1}}}}}
+    r, la = _res(root, st, dst, [], extra=x(closed, (src, None)))
+    ok(la == [] and r.get("decision") == "launch_failed" and "re-pin" in str(r.get("why")),
+       "re-pin wait: a failed re-pin act is not retried on its own (read %s)" % r.get("decision"))
+    # execute: the act runs the re-pin with the planned sources and books it under its key
+    calls = []
+    st = {"mods": {"P": {}}}
+    row = {"mod": "P", "aut": "autorepin", "decision": "autorepin", "steward_key": key, "repin_sources": src}
+    A.execute(root, dict(CFG), st, [row], ["P"], CLOCK, {"known": lambda: set(), "autorepin":
+              lambda rt, m, sv, now=None: calls.append((m, list(sv))) or "PUBLISHED abc1234"})
+    ok(calls == [("P", src)] and (st["mods"]["P"]["steward"].get(key) or {}).get("landed") == "PUBLISHED abc1234"
+       and row.get("decision") == "launched", "re-pin wait: execute re-pins with the planned sources and books the "
+       "landing (read %s, %s)" % (calls, row.get("decision")))
+    # repin_and_land: an unlanded re-pin is no re-pin: stage.json is put back byte for byte
+    sp = os.path.join(root, "design", "concepts", "P", "stage.json")
+    with open(sp, "w") as f:
+        json.dump(dst, f)
+    before = open(sp, "rb").read()
+
+    def fake_repin(d, sources, why, repo=None):
+        with open(os.path.join(d, "stage.json"), "w") as f:
+            json.dump(dict(dst, history=dst["history"] + [{"what": "locked_change"}]), f)
+
+    def no_land(subject, paths):
+        raise RuntimeError("land.sh exited 1")
+    try:
+        A.repin_and_land(root, "P", src, now=CLOCK, land=no_land, repin=fake_repin)
+        raised = False
+    except Exception:       # noqa: BLE001
+        raised = True
+    ok(hasattr(A, "repin_and_land") and raised and open(sp, "rb").read() == before,
+       "re-pin wait: a failed landing puts stage.json back")
+    os.remove(sp)
+    # after the re-pin: a locked_change after the stop -> the grant is due and the chain is owed
+    dst2 = dict(dst, history=dst["history"] + [{"at": "2026-11-15T14:40:00Z", "what": "locked_change"}])
+    w2 = CJ.grant_waits(dst2, states, d=os.path.join(root, "design", "concepts", "P"))
+    ok(w2 == [] and (A.chain_owed(dst2) or {}).get("what") == "locked_change" and not A.coverage_stopped(dst2),
+       "re-pin wait: after a locked_change the grant is due and chain_owed fires (read %s, %s)" % (
+           w2, A.chain_owed(dst2)))
+    # an unlocked concept: no re-pin wait, no re-pin planned
+    version("draft")
+    asked[:] = []
+    w3 = CJ.grant_waits(dst, states, d=os.path.join(root, "design", "concepts", "P"))
+    r, la = _res(root, {"mods": {}}, dst, [], extra=x(closed, (src, None)))
+    ok(w3 == [] and r.get("aut") != "autorepin" and not asked and "re-pin" not in str(r.get("need")),
+       "re-pin wait: an unlocked concept shows no re-pin wait (read %s, %s)" % (w3, r.get("decision")))
+    shutil.rmtree(os.path.join(root, "design", "concepts", "P"), ignore_errors=True)
+
+
 def exam_gate_checks(root):
     """RIMMANDRAKE_RETAKE_FAILING_EXAM_NOT_SILENT ("exam gate"): a stage-5 concept whose exam fails its gate is owed
     work: one exam_retake steward whose brief is roles/designer_exam.md in full; a spent retake is PAUSED with the
@@ -852,6 +965,7 @@ def main():
         road_back_checks(root)
         paused_fix_checks(root)
         final_look_checks(root)
+        repin_wait_checks(root)
         exam_gate_checks(root)
         worked_after_checks(root)
         designer_lock_checks(root)

@@ -524,6 +524,49 @@ def autolock_and_land(root, mod, now=None, land=None):
         raise
 
 
+REPIN_WAIT = "the re-pin ("     # how coverage_judge.grant_waits names the locked_change a LOCKED concept's grant waits on
+
+
+def repin_owed(root, mod, dst, items=None):
+    """RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE -> True when the standing grant waits on nothing but the re-pin: every
+    --after item is closed, the concept is LOCKED, and no locked_change follows the stop the grant lifts (read by
+    coverage_judge.grant_waits itself). Before this, no stage, ticket or brief owed that re-pin, and the grant never
+    came due unless a hand-filed item carried "then one re-pin"."""
+    import coverage_judge as CJ
+    items = ledger_items() if items is None else items
+    w = CJ.grant_waits(dst or {}, lambda ids: {i: getattr(items.get(i), "state", None) for i in ids},
+                       d=M.mod_dir(root, mod))
+    return bool(w) and all(str(x).startswith(REPIN_WAIT) for x in w)
+
+
+def repin_and_land(root, mod, sources, now=None, land=None, repin=None):
+    """The pipeline's re-pin of a LOCKED concept whose grant waits on it: designer_stage.repin with the sources
+    designer_stage.repin_sources found (his cards only, every check a hand re-pin passes), then stage.json landed in one
+    landing. -> the landing's last line. An unlanded re-pin is no re-pin: stage.json is put back byte for byte, and the
+    act's own retry count decides."""
+    import designer_stage as DS
+    d = M.mod_dir(root, mod)
+    rel = "design/concepts/%s/stage.json" % mod
+    with open(os.path.join(root, rel), "rb") as f:
+        was = f.read()
+    why = ("the grant's --after items are closed and it waits on the re-pin: the Maturation tick re-pins citing the "
+           "cards of his each fix carries out (RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE)")
+    subject = "maturation: the pipeline re-pins locked %s for its granted look (%s)" % (mod, ", ".join(sources))
+    try:
+        (repin or DS.repin)(d, list(sources), why, repo=root)
+        if land:
+            return land(subject, [rel])
+        p = subprocess.run([DS.LAND, "-m", subject, rel], cwd=root, capture_output=True, text=True, timeout=300,
+                           env=dict(os.environ, LAND_REPO=root))
+        if p.returncode:
+            raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
+        return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
+    except Exception:
+        with open(os.path.join(root, rel), "wb") as f:
+            f.write(was)
+        raise
+
+
 # ---- one class per mod -----------------------------------------------------------------------------------------------
 
 def _steward(row, kind, key, why, brief_need):
@@ -579,7 +622,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             row["need"] = ("%s: PAUSED, coverage judging stopped %s; nothing moves on it until `coverage_judge.py "
                            "release design/concepts/%s --why ...` (one more look, on his word)" % (mod, cs.get("at"), mod))
             launches = [m for m in launches if m != mod]
-            _stop_tickets(fx, row, s, dst, now)
+            _stop_tickets(fx, row, s, dst, now, root=root, ver=ver)
         elif dec in LAUNCH and s.get("road_back") and row.get("stage") in ROAD_BACK_STAGES and \
                 _road_back(s, row, open_items, now, moved=True):
             # RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM: the road back's items get their fixers before
@@ -597,15 +640,21 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                 # a Designer blocked on a filed fix item (a pipeline defect) gets that item's one fixer run; the mod
                 # stays paused meanwhile (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)
                 _stop_tickets(fx, row, s, dst, now, kind="blocked")
-        if row.get("aut") == "autolock":
-            # the pipeline's lock is an act, not a run: no slot; tried once (transient faults up to launch_tries)
+        if row.get("aut") in ("autolock", "autorepin"):
+            # the pipeline's lock (or re-pin) is an act, not a run: no slot; tried once (transient faults up to
+            # launch_tries)
             x = (s.get("steward") or {}).get(row["steward_key"])
             if x and not (x.get("failed") and transient(x.get("failed")) and int(x.get("tries") or 1) <
                           int(cfg.get("launch_tries", 3))):
                 row.update(decision="launch_failed", aut=None,
-                           why="the pipeline's 0.1.0 lock of %s was tried (%s) and VERSION.json still reads unlocked; "
-                               "`maturation_dispatch.py clear %s --why ...` un-pauses it" % (
-                                   mod, str(x.get("failed") or x.get("landed") or "ended"), mod))
+                           why=("the pipeline's 0.1.0 lock of %s was tried (%s) and VERSION.json still reads unlocked; "
+                                if row["aut"] == "autolock" else
+                                "the pipeline's re-pin of %s was tried (%s) and the grant still waits on the re-pin; ")
+                           % (mod, str(x.get("failed") or x.get("landed") or "ended")) +
+                           "`maturation_dispatch.py clear %s --why ...` un-pauses it" % mod)
+                if row.get("repin_sources") is not None:
+                    row["need"] = "%s: PAUSED, the grant waits on the re-pin; the pipeline's re-pin was tried (%s): %s" % (
+                        mod, str(x.get("failed") or x.get("landed") or "ended"), _repin_cmd(mod, row["repin_sources"]))
             else:
                 row["retry_of"] = dict(x or {})
                 launches = [m for m in launches if m != mod] + [mod]
@@ -625,10 +674,51 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
     return rows, launches
 
 
-def _stop_tickets(fx, row, s, dst, now, kind="stop"):
+def _repin_cmd(mod, sources):
+    return "python3 src/RimMandrake/rimflow/designer_stage.py repin design/concepts/%s %s --why \"...\"" % (
+        mod, " ".join("--source %s" % sv for sv in sources) or "--source OWNER:<tsn>@<commit> ...")
+
+
+def _repin_route(fx, root, row, dst, ver):
+    """RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: the grant waits on the re-pin alone. designer_stage.repin_sources
+    finds the cards of his each fix carries out (the checks of a hand re-pin, its dry run the last word): found, the
+    pipeline re-pins as an act (autorepin, like the autolock: no brief, no run, one landing); refused, the mod stays
+    PAUSED and its line names the wait, the hand command and the refusal record. Never a CONDUCTOR source."""
+    import designer_stage as DS
+    mod, g = row["mod"], (dst or {}).get("coverage_release_granted") or {}
+    try:
+        sources, refusal = (fx["repin_plan"](mod) if "repin_plan" in fx
+                            else DS.repin_sources(M.mod_dir(root, mod), repo=root))
+    except Exception as e:      # noqa: BLE001  an unreadable history is a refusal, never the tick's crash
+        sources, refusal = [], {"clause": DS.REPIN_CLAUSE, "evidence": ["%s: %s" % (type(e).__name__, e)],
+                                "observed": "the commits since the pin could not be read",
+                                "would_pass": DS.REPIN_WOULD_PASS,
+                                "smallest_fix": {"what": "repair what the error names; the next tick tries again",
+                                                 "attainable": "yes", "cost": "rerun"}}
+    lead = "judging stopped; the grant (%s) has its --after items closed and waits on the re-pin" % g.get("at")
+    if refusal is None:
+        row.update(aut="autorepin", decision="autorepin", steward_key="%s|repin|%s" % (ver, g.get("at")), need=None,
+                   repin_sources=list(sources),
+                   why="%s: the pipeline re-pins, citing his cards %s (designer_stage.repin's own checks passed dry)" % (
+                       lead, ", ".join(sources)))
+        row["steward_why"] = "the re-pin the grant waits on, citing %s" % ", ".join(sources)
+        return
+    fix = refusal.get("smallest_fix") or {}
+    said = "refused (%s): %s; evidence: %s; would pass: %s; smallest fix: %s" % (
+        refusal.get("clause"), refusal.get("observed"), "; ".join(str(e) for e in refusal.get("evidence") or []),
+        refusal.get("would_pass"), fix.get("what") if isinstance(fix, dict) else fix)
+    row["refusal"] = refusal
+    row["why"] = "%s; %s, and the pipeline's re-pin %s" % (str(row.get("why") or ""), lead, said)
+    row["need"] = "%s: PAUSED, the grant waits on the re-pin: %s; the pipeline's re-pin %s" % (
+        mod, _repin_cmd(mod, sources), said)
+
+
+def _stop_tickets(fx, row, s, dst, now, kind="stop", root=None, ver=None):
     """RIMMANDRAKE_RUN_FIX_TICKETS_WHILE_PAUSED: a coverage-stopped mod stays paused, but its own open fix tickets get
     one fixer run each (the road-back fixer, extended): a live run on a ticket is waited on and booked as its run, an
-    earlier run on it counts as spent, and the status names the ticket. No ticket or an unreadable ledger: as before."""
+    earlier run on it counts as spent, and the status names the ticket. No ticket or an unreadable ledger: as before.
+    RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: once no ticket run is live and the grant waits on the re-pin alone, the
+    re-pin is owed before any other ticket (_repin_route)."""
     lead = "judging stopped" if kind == "stop" else "the Designer is blocked"
     try:
         if kind == "blocked":
@@ -638,11 +728,9 @@ def _stop_tickets(fx, row, s, dst, now, kind="stop"):
             tk = fx["stop_tickets"](row["mod"], dst, s) if "stop_tickets" in fx else stop_tickets(dst, s, ledger_items())
     except Exception:       # noqa: BLE001  an unreadable ledger leaves the plain pause
         tk = None
-    if not tk:
-        return
     runs_of = fx.get("ticket_runs", ticket_runs)
-    fixed = s.setdefault("fixers", {})
-    for t in tk:
+    fixed = s.setdefault("fixers", {}) if tk else {}
+    for t in tk or []:
         for unit, status in runs_of(t["id"]):
             if status == "launch_failed":
                 continue
@@ -651,7 +739,17 @@ def _stop_tickets(fx, row, s, dst, now, kind="stop"):
                 row.update(decision="live", waits_on="%s (fix ticket %s)" % (unit, t["id"]), need=None,
                            why="%s and stays paused; its fix ticket %s has a live run %s" % (lead, t["id"], unit))
                 return
-    todo = [t["id"] for t in tk if t["id"] not in fixed]
+    if kind == "stop" and root is not None and tk is not None:
+        try:
+            owed = repin_owed(root, row["mod"], dst, fx["ledger_items"]() if "ledger_items" in fx else None)
+        except Exception:   # noqa: BLE001  an unreadable grant or ledger leaves the plain pause
+            owed = False
+        if owed:
+            _repin_route(fx, root, row, dst, ver)
+            return
+    if not tk:
+        return
+    todo =[t["id"] for t in tk if t["id"] not in fixed]
     ids = ", ".join(t["id"] for t in tk)
     if todo:
         row.update(aut="fixer", fix_item=todo[0], decision="fixer", need=None, fix_for=kind,
@@ -1003,7 +1101,7 @@ PAUSE_WHY = {
 
 def _klass(cfg, s, row, now, queue):
     dec = row.get("decision")
-    if dec in LAUNCH or (row.get("aut") and dec in ("steward", "fixer", "autolock")):
+    if dec in LAUNCH or (row.get("aut") and dec in ("steward", "fixer", "autolock", "autorepin")):
         k, txt = "launch", "moving: %s %s" % (row.get("aut") or "run", row.get("unit") or row.get("item") or "")
         if row.get("fix_item") and row["fix_item"] not in txt:
             txt = "%s on %s" % (txt.rstrip(), row["fix_item"])
@@ -1327,6 +1425,14 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                     "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
                 row.update(decision="launched", why="the pipeline locked %s at 0.1.0 (his Evidence-for-Ask ruling): %s"
                            % (row["mod"], text))
+                continue
+            if row["aut"] == "autorepin":    # RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: an act like the autolock
+                text = fx.get("autorepin", repin_and_land)(root, row["mod"], row["repin_sources"], now=now)
+                st["mods"][row["mod"]].setdefault("steward", {})[row["steward_key"]] = {
+                    "item": None, "unit": None, "at": now, "failed": None, "sources": list(row["repin_sources"]),
+                    "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
+                row.update(decision="launched", why="the pipeline re-pinned %s for its granted look, citing his cards "
+                           "%s: %s" % (row["mod"], ", ".join(row["repin_sources"]), text))
                 continue
             _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish)
         except Exception as e:      # noqa: BLE001  one row's failure is that row's PAUSE, never the tick's crash
