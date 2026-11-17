@@ -119,7 +119,8 @@ def main():
     a2_clone = os.path.join(TMP, "clones", "ITEM_A2.det")
     a2 = rec("a2", "ITEM_A2", at + 5, ended=T_STOP - 2, result="killed: exit-code (exited 143)", returned=T_STOP + 20)
     write(os.path.join(DH.project_dir(a2_clone, PROJECTS), "22222222-aaaa-bbbb-cccc-000000000002.jsonl"),
-          json.dumps({"type": "user", "timestamp": iso(at + 8), "sessionId": "22222222-aaaa-bbbb-cccc-000000000002"}) + "\n")
+          json.dumps({"type": "user", "timestamp": iso(at + 8), "sessionId": "22222222-aaaa-bbbb-cccc-000000000002",
+                      "message": {"role": "user", "content": "Do it.\n\nItem: ITEM_A2"}}) + "\n")
     write(os.path.join(DH.project_dir(a2_clone, PROJECTS), "33333333-aaaa-bbbb-cccc-000000000003.jsonl"),
           json.dumps({"type": "user", "timestamp": iso(at - 20000), "sessionId": "33333333-aaaa-bbbb-cccc-000000000003"}) + "\n")
     # B: no transcript, brief saved
@@ -282,7 +283,8 @@ def review_cases():
                        ("99999999-aaaa-bbbb-cccc-000000000009", T4 - 1000, "sdk-cli"),
                        ("12121212-aaaa-bbbb-cccc-000000000012", T4 - 3000 + 1, "cli")):
         write(os.path.join(DH.project_dir(s_clone, PROJECTS), sid + ".jsonl"),
-              json.dumps({"type": "user", "timestamp": iso(t), "sessionId": sid, "entrypoint": ep}) + "\n")
+              json.dumps({"type": "user", "timestamp": iso(t), "sessionId": sid, "entrypoint": ep,
+                          "message": {"role": "user", "content": [{"type": "text", "text": "Work on ITEM_S."}]}}) + "\n")
     set_plan([plan_line("switch", T4, acted=True, to="system"), plan_line("normal", T4 + 300)])
     L = Launcher()
     by = {x["unit"]: x for x in sweep(L, T4 + 310)}
@@ -352,6 +354,73 @@ def review_cases():
     acts = sorted(by.get(u, {}).get("act") or "-" for u in ck)
     check("CK: a pass that ages out mid-sweep is no headroom for the next act", len(L.calls) == 1
           and acts == ["park", "resumed"], "calls=%s acts=%s" % (items(L), acts))
+
+    # GC: two runs launched into one given clone 10 s apart (and a hook test's session begun there first): each run's
+    # session is the one whose first prompt names its item, never the other's
+    T9 = T_STOP + 1100000
+    g_clone = os.path.join(TMP, "kept", "GC.clone")
+    os.makedirs(g_clone, exist_ok=True)
+    gc = [rec("gc%d" % i, "ITEM_GC%d" % i, T9 - 3000 + 10 * i, clone=g_clone, clone_how="given " + g_clone,
+              ended=T9 - 2, result="killed: x", returned=T9 + 20) for i in (1, 2)]
+    for sid, t, text in (("13131313-aaaa-bbbb-cccc-000000000013", T9 - 2988, "say ok"),
+                         ("14141414-aaaa-bbbb-cccc-000000000014", T9 - 2960, "Build it.\n\nItem: ITEM_GC1"),
+                         ("15151515-aaaa-bbbb-cccc-000000000015", T9 - 2950, "Build it.\n\nItem: ITEM_GC2")):
+        write(os.path.join(DH.project_dir(g_clone, PROJECTS), sid + ".jsonl"),
+              json.dumps({"type": "user", "timestamp": iso(t), "sessionId": sid, "entrypoint": "sdk-cli",
+                          "message": {"role": "user", "content": text}}) + "\n")
+    set_plan([plan_line("switch", T9, acted=True, to="system"), plan_line("normal", T9 + 300)])
+    L = Launcher()
+    sweep(L, T9 + 310)
+    got = {c["item"]: c.get("resume_session") for c in L.calls}
+    check("GC: two runs in one clone each resume their own session",
+          got == {"ITEM_GC1": "14141414-aaaa-bbbb-cccc-000000000014", "ITEM_GC2": "15151515-aaaa-bbbb-cccc-000000000015"},
+          str(got))
+
+    # IN: a sweep killed right after its first launch (the successor exists, its resumed_from never written): the
+    # twin it had not reached yet is resumed on its own, and the claimed run is marked by that successor
+    T10 = T_STOP + 1200000
+    iw = [rec("iw%d" % i, "ITEM_IW", T10 - 3000 + i, brief_src=tsrc, ended=T10 - 2, result="killed: x",
+              returned=T10 + 20) for i in (1, 2)]
+    set_plan([plan_line("switch", T10, acted=True, to="system"), plan_line("normal", T10 + 300)])
+
+    class Dies(Launcher):
+        def __call__(self, *a_, **kw):
+            Launcher.__call__(self, *a_, **kw)
+            raise SystemExit("the sweep's unit was killed")
+    L = Dies()
+    try:
+        sweep(L, T10 + 310)
+    except SystemExit:
+        pass
+    first = "rm-detached-bench-relaunch0-%d" % int(T10 + 310)
+    claimed = [u for u in iw if (DH.read_record(u, STATE) or {}).get("resume_claim")]
+    L2 = Launcher()
+    set_plan([plan_line("switch", T10, acted=True, to="system"), plan_line("normal", T10 + 300),
+              plan_line("normal", T10 + 600)])
+    sweep(L2, T10 + 620)
+    set_plan([plan_line("switch", T10, acted=True, to="system"), plan_line("normal", T10 + 300),
+              plan_line("normal", T10 + 1500)])
+    sweep(L2, T10 + 1510)
+    rb = {u: (DH.read_record(u, STATE) or {}).get("resumed_by") for u in iw}
+    other = [u for u in iw if u not in claimed]
+    check("IN: an interrupted sweep's successor stands for one stopped run only", len(claimed) == 1
+          and rb[claimed[0]] == first and len(L2.calls) == 1 and rb[other[0]] not in (None, first),
+          "claimed=%s resumed_by=%s later launches=%s" % (claimed, rb, items(L2)))
+
+    # OLD: a run launched four days before a hard stop that stands seven days is still resumed (its launch is 11 d old,
+    # its record was written when it was parked)
+    T11 = T_STOP + 1300000
+    old = rec("old", "ITEM_OLD4", T11 - 4 * 86400, brief_src=tsrc, ended=T11 - 2, result="killed: x", returned=T11 + 20)
+    set_plan([plan_line("stop", T11, acted=True), plan_line("stopped", T11 + 300)], notice_state="stop", notice_at=T11 + 300)
+    L = Launcher()
+    sweep(L, T11 + 310)
+    parked = bool((DH.read_record(old, STATE) or {}).get("parked"))
+    os.utime(DH.record_path(old, STATE), (T11 + 310, T11 + 310))     # the park's write, on the test's clock
+    back = T11 + 7 * 86400
+    set_plan([plan_line("stop", T11, acted=True), plan_line("start", back - 300, acted=True), plan_line("normal", back)])
+    sweep(L, back + 10)
+    check("OLD: a parked run launched 11 d before headroom returns is resumed", parked and items(L).count("ITEM_OLD4") == 1,
+          "parked=%s calls=%s" % (parked, items(L)))
 
 
 def wiring():

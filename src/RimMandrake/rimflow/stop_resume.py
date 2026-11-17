@@ -45,7 +45,7 @@ AFTER_S = 120          # finish stamps `ended` once systemd has run it: after th
 # a hard stop stands until some account refills; every weekly cap refills within 7 d, so a run parked by a stop is
 # still read on the first pass with headroom (32 h was the longest measured, 03:35 -> 11:59 next day)
 STOP_LOOKBACK_S = 8 * 86400
-LAUNCH_LOOKBACK_S = 10 * 86400   # runs launched longer ago are not read (their names carry their launch time)
+LAUNCH_LOOKBACK_S = 10 * 86400   # runs launched longer ago are read only if their record was written since STOP_LOOKBACK_S
 # stops before this landed were handled by hand (the 2026-11-17 morning kills were relaunched 05:57 and 06:04)
 CUTOFF = datetime.datetime(2026, 11, 17, 16, 30, tzinfo=datetime.timezone.utc).timestamp()
 FRESH_S = 20 * 60      # switching_plan.NOTICE_FRESH_S: an older reading means the plan's timer stopped
@@ -153,7 +153,12 @@ def recent_records(root, now):
             continue
         t = launched_at(n[:-5])
         if t is not None and t < now - LAUNCH_LOOKBACK_S:
-            continue
+            try:     # an old launch is still read while its record was written within the stop lookback (a long run
+                fresh = os.stat(os.path.join(d, n)).st_mtime >= now - STOP_LOOKBACK_S    # that died lately, or a parked one)
+            except OSError:
+                fresh = False
+            if not fresh:
+                continue
         rec = DH.read_record(n[:-5], root)
         if rec and rec.get("unit") and rec.get("item"):
             out.append(rec)
@@ -177,13 +182,14 @@ def item_closed(repo, item):
     return os.path.isfile(os.path.join(items, "closed", item + ".md")) and not os.path.isfile(os.path.join(items, item + ".md"))
 
 
-def first_ts(path, lines=40):
+def first_ts(path, lines=60):
     return opening(path, lines)[0]
 
 
-def opening(path, lines=40):
-    """-> (first timestamp, entrypoint) of a transcript, each None when its first `lines` lines lack it."""
-    t = ep = None
+def opening(path, lines=60):
+    """-> (first timestamp, entrypoint, first user prompt) of a transcript, each None when its first `lines` lines lack
+    it (the prompt is within them in 436 of 436 runs' own transcripts, measured)."""
+    t = ep = prompt = None
     try:
         with open(path, encoding="utf-8", errors="replace") as f:
             for _ in range(lines):
@@ -194,32 +200,51 @@ def opening(path, lines=40):
                     d = json.loads(ln)
                     t = t or epoch(d.get("timestamp"))
                     ep = ep or d.get("entrypoint")
+                    if prompt is None and d.get("type") == "user":
+                        c = (d.get("message") or {}).get("content")
+                        if isinstance(c, list):
+                            c = " ".join(str(x.get("text") or "") for x in c if isinstance(x, dict))
+                        prompt = c if isinstance(c, str) else ""
                 except (ValueError, AttributeError):
                     continue
-                if t and ep:
+                if t and ep and prompt is not None:
                     break
     except OSError:
         pass
-    return t, ep
+    return t, ep, prompt
+
+
+def brief_head(rec, n=200):
+    """-> the opening of the brief the run was launched with, or None (runs launched before brief_src landed)."""
+    try:
+        with open(rec.get("brief_src") or "/nonexistent", encoding="utf-8", errors="replace") as f:
+            return " ".join(f.read(4 * n).split())[:n] or None
+    except OSError:
+        return None
 
 
 def session_of(rec, projects=None):
     """-> the run's session id whose transcript exists, or None: the record's own resume_session, else the transcript in
-    its clone's project folder that began at its launch (the newest such; another run of the item began elsewhen)."""
+    its clone's project folder that began at its launch and whose first prompt is this run's: it names the run's item
+    (the launch footer does; 436 of 436 runs' own transcripts did, and the 3 other sessions begun at a launch did not,
+    measured 2026-11-17) and, where the brief was saved, opens with its brief. The earliest such."""
     sid = rec.get("resume_session")
     if sid and DH.find_transcript(sid, projects):
         return sid
-    at = rec.get("at") or 0
+    at, item, head = rec.get("at") or 0, rec.get("item") or "", brief_head(rec)
     best = None
     for p in glob.glob(os.path.join(DH.project_dir(rec.get("clone") or "/nonexistent", projects), "*.jsonl")):
         stem = os.path.basename(p)[:-6]
-        t, ep = opening(p)
+        t, ep, prompt = opening(p)
         if not DH.SESSION_RE.match(stem) or t is None or not (at - 2 <= t <= at + SESSION_START_S):
             continue
         if ep == "cli":  # an interactive window's session; a detached run's is "sdk-cli" (427 of 427 found, measured)
             continue
-        if best is None or t < best[0]:  # the first to begin after the launch; a seat's or helper's session in a given
-            best = (t, stem)             # clone begins later (21 of 427 runs had one in their lifetime, measured)
+        flat = " ".join((prompt or "").split())
+        if item not in flat or (head and head not in flat):
+            continue     # another session begun in the clone at the launch (a hand's, a hook test's, another run's)
+        if best is None or t < best[0]:
+            best = (t, stem)
     return best[1] if best else None
 
 
@@ -264,7 +289,14 @@ def classify(rec, stops, siblings, ctx, now):
     if not DH.killed(rec, ctx["runner"], now):
         return None
     base["stop"] = stop
-    def victim(x):  # launched before this stop, killed by it: a twin that needs its own resume
+    claims = [y["resume_claim"] for y in siblings if y["unit"] != unit and y.get("resume_claim") and not y.get("resumed_by")]
+    taken = {y.get("resumed_by") for y in siblings if y["unit"] != unit}
+
+    def victim(x):  # launched before this stop, killed by it: a twin that needs its own resume; or another stopped
+        # run's relaunch: named as its successor, or launched after its claim that never got the successor's name (a
+        # sweep that died mid-launch, before it could write resumed_from)
+        if x["unit"] in taken or (not x.get("resumed_from") and any(c <= (x.get("at") or 0) for c in claims)):
+            return True
         return ((x.get("at") or 0) < stop["ts"] and on_stop(x, [stop]) is stop and not x.get("resumed_from")
                 and DH.killed(x, ctx["runner"], now))
     later = relaunch_of(rec, stop, siblings, victim)
