@@ -345,10 +345,17 @@
     "ref": "run rm-role-designer-1794939319",
     "stage": 3,
     "tokens": 589625
+   },
+   {
+    "at": "2026-11-17T18:27:07Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794939868",
+    "stage": 4,
+    "tokens": 204334
    }
   ],
   "reserve": 60000,
-  "spent": 11509546
+  "spent": 11713880
  },
  "coverage_rounds": [
   {
@@ -807,6 +814,24 @@
    "stage": 4,
    "what": "close",
    "why": "run rm-role-designer-1794939319: stage 3 done"
+  },
+  {
+   "at": "2026-11-17T18:24:41Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "11509546 of 4000000 spent; run rm-role-designer-1794939868 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T18:24:41Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1794939868, stage 4, budget 400000"
+  },
+  {
+   "at": "2026-11-17T18:27:08Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run rm-role-designer-1794939868: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -1051,12 +1076,33 @@
    "run": "rm-role-designer-1794939319",
    "stage": 3,
    "summary": "Fixed both gaps of the live coverage verdict rm-coverage-judge-1794936862 (tree e6507f3b) in scenes.json and wrote coverage_fixes.json against it: g1 sc_spree_variety now captures the lanes unlabelled for a judge and calibrates it on a recolour set; g2 sc_lived_in_soak starts with a sensitive and a clean-freak colonist, reads every colonist against the control, and requires one unforced story. Both MEND acceptance tests PASS. The proof-script work is filed as RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN and RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE (acceptance tests watched failing on 6632657a9e), named as each scene's entry_point_item. The packet's 24-gap list (rm-coverage-judge-1794730911) was stale, settled at the 2026-11-15 lock: close_run never cleared pending_decision. Filed and fixed as RIMMANDRAKE_CLEAR_SETTLED_RETURN_DECISION_RESENT_TWO_DAYS_LATE (a done close pops it; selftest red on base, ALL PASS now). Tree and sheet unchanged; lint PASS, showcase set accepted."
+  },
+  {
+   "at": "2026-11-17T18:27:08Z",
+   "inputs": {
+    "exam": "d2eafd2f45adc568544b32b44a3412f07fff492acfe189d46b733994a41e674d",
+    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
+    "scenes": "0ce1b0ed0644ebed3f1ff06632f3bdb71de7ddef1424cf3c57144afcaca4857b",
+    "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
+    "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894"
+   },
+   "manifest": {
+    "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1794939868",
+   "stage": 4,
+   "summary": "Cold Reader exam stands, not retaken: stage 3 (rm-role-designer-1794939319) changed only scenes.json (g1 sc_spree_variety, g2 sc_lived_in_soak); tree e6507f3b and sheet 26a15750 are byte-identical to the exam's frozen inputs, scenarios_hash recomputes equal, and the control copy (going_over removed) was made from this tree. Readers see only sheet, tree and scenario text, so a retake would re-score identical inputs. Standing result: 122/122 by both Readers, accept_where_reject_core 0, no challenger misses, control missed e8 and e19. The coverage judge's look at the mended scenes is stage 5's."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
