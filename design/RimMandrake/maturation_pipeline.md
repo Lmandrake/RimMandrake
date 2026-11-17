@@ -58,8 +58,10 @@ Forward moves go one stage at a time. Backward moves go only along these roads (
 | preflight | designer |
 | blind_challenge | blind_challenge (one more cycle) |
 | in_game | offline_build, blind_challenge |
-| pre_human | preflight, offline_build, blind_challenge, in_game |
 | his_walk | offline_build, blind_challenge, in_game |
+
+`pre_human` has no road back (his ruling of 2026-11-17, item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`:
+Stage 7 judges nothing).
 
 A fourth blind cycle in one visit is refused without `--conductor-decision` (`CYCLE_LIMIT` = 3).
 Any move is refused while a `kind hold` line in the mod's journal has no later `kind release`, and while the stage
@@ -72,8 +74,8 @@ record's version is not the version in `version/VERSION.json`.
 | 2 | Preflight (`preflight`) | a Python script, no model | by hand | `version/preflight.json` exists for this version; if it is not a pass, `--steward-confirms` |
 | 3 | Offline build (`offline_build`) | builder agents | Dispatch, automatically | every bar in `version/test_table.json` has `every_decider_runnable_today` true, and the table is for this version |
 | 4+5 | Blind challenge, tests first (`blind_challenge`) | one blind judge per cycle | Dispatch (one cycle per visit) or by hand | `--steward-confirms` (any non-empty text) |
-| 6 | In-game acceptance (`in_game`) | one live-game driver | Dispatch, one run per owed visit (`ingame_enabled` true since 2026-11-15) | `--steward-confirms` (any non-empty text) |
-| 7 | Pre-human check (`pre_human`) | a fresh reader | nothing built | `--steward-confirms` (any non-empty text) |
+| 6 | In-game acceptance (`in_game`) | one live-game driver | Dispatch, one run per owed visit (`ingame_enabled` true since 2026-11-15) | `--steward-confirms` (any non-empty text), and the build match: every check's last row made on the build he walks (`build_match.py`) |
+| 7 | Walk brief (`pre_human`) | one fresh reader, no veto (`roles/walk_brief.md`) | Dispatch's steward line | `version/walk_brief/arrival_<N>.md` written, its four headings filled, its `written_by` a unit that made no move and no in-game row of this version |
 | 8 | His walk (`his_walk`) | Mandrake | him | `--owner-said` |
 
 Model tiers for every role are in `infrastructure/agents/Agent_Policy.md`; this doc does not restate them.
@@ -216,13 +218,22 @@ One stage, by his card of 2026-11-13 ("One stage, tests first").
   block (`ingame_rows`, `strange_open`, `savegame`, `exit_met`).
 - **What `next` reads** (`maturation.read_ingame_exit`): each stage-6 check of the table has a PASS row with
   `site_checked` true, a game (`archmagi` or `stevedesktop`) and a `mod_sha`; every strange thing explained or filed; the
-  savegame file exists. The `mod_sha` is recorded, not compared with anything.
-- **Gate to leave**: only a non-empty `--steward-confirms`.
+  savegame file exists; and the **build match** (his ruling of 2026-11-17): `src/RimMandrake/rimflow/build_match.py`
+  compares each check's last row (its `mod_hash`, `game_build` and `active_mods`, from `build_match.py identity --mod
+  <Mod> --tier <T>` or `--full`) with the build he walks (the deployed folder hash, `Version.txt` and the labelled walk
+  savegame's mod list, read on Archmagi). A row on another build does not count: the exit names it "re-run it".
+  `build_match.py check --mod <Mod> [--visit N]` reads that part alone. Selftest: `selftest_build_match.py`.
+- **Gate to leave**: a non-empty `--steward-confirms` and the `build_match` clause.
 
-### Stage 7: Pre-human check
+### Stage 7: Walk brief (the pre-human check)
 
-Nothing is built beyond the record: `advance` from `pre_human` needs a non-empty `--steward-confirms`, and arrivals here
-are counted (`pre_human_arrivals`). No brief, launcher or exit reader exists. No mod has reached it.
+His ruling of 2026-11-17: Stage 7 judges nothing; one fresh read writes his walk brief and has no veto (a finding goes
+into the brief or onto a ticket). Role: `src/RimMandrake/rimflow/roles/walk_brief.md`. Dispatch's steward line names
+the job. `advance --to his_walk` checks only the brief (`maturation.read_walk_brief`):
+`version/walk_brief/arrival_<N>.md` (N = `pre_human_arrivals`), its four headings filled (what to open; what changed
+since his last look; known, not fixed: you need not report these; what I noticed first), and a `written_by` unit that
+made no stage move and no in-game row of this version (`maturation.evidence_writers`). No `--steward-confirms`, no
+road back. Arrivals are still counted. No mod has reached it.
 
 ### Stage 8: His walk
 
@@ -350,10 +361,10 @@ A `hold` blocks every advance until a later `release`.
 - **A common test-table maker**: each mod has its own, and they disagree on whether his Stage 8 look counts as a check.
 - **`advance` refusals counted by `refusal_contract.submit`** (plan slice 2), so a stage refused again and again raises
   an alarm. (The status page reads the stage record since 84993ce73e.)
-- **Program-checked exits** for the blind challenge, in-game acceptance and pre-human check: each is a steward's word.
-- **A verdict counting only on the version and list he walks** (spec §4 Stage 6): one visit's rows must name one
-  `mod_sha`, never compared with the stage's build; no deployed-folder hash, mod list or game build is recorded.
-- **The pre-human check** (Stage 7): no brief, launcher or reader.
+- **Program-checked exits** for the blind challenge and in-game acceptance: each is still a steward's word (in-game
+  acceptance also needs the build match).
+- **The identity fields in the live drivers**: the in-game brief tells the runner to merge `build_match.py identity`
+  into every row; no SteveDesktop queue job records them yet.
 - **The pass record** and anything after a pass (re-running a passed version on change).
 - **Routing a stage-6 check to SteveDesktop** when it is the free game: the admission rule exists, no check carries a
   `testq` block, nothing routes.
@@ -365,7 +376,7 @@ A `hold` blocks every advance until a later `release`.
    "a new blind judge is owed", not met; `advance` still lets the mod leave on the steward's word. Pyrelands (cycle 1)
    and FlowWorks (cycle 1) went to in-game acceptance on 2026-11-15 after a neutral fixer's reconcile in the same cycle,
    with no new blind judge.
-2. **The blind, in-game and pre-human exits** are "PROPOSAL" in the spec and enforced by nothing in the code but a
+2. **The blind and in-game exits** are "PROPOSAL" in the spec and enforced by nothing in the code but a
    non-empty `--steward-confirms`. A steward can advance a mod whose reading says "not met".
 3. **Blindness**: the spec says the judge "is not told" what earlier judges found and works "from the bars alone"
    first. The code's brief tells it which files are closed; nothing enforces it.
@@ -386,7 +397,7 @@ Found by the skeptical review of 2026-11-15 and confirmed by reading the code (c
    UNSETTLED lane-1 rows as not passing; the in-game reader refuses an earlier non-PASS row, a bare `site_checked`, a
    non-hash `mod_sha`, rows on two builds (a3b3dead86), thin strange-thing entries and a file that is not a save. Read
    again on 2026-11-15, Explosive Knockback cycle 2, FlowWorks cycle 1 and Pyrelands cycle 1 read not met.
-8. **The steward's word moves the forward stages to in-game, pre-human and his walk** (a non-empty `--steward-confirms`;
+8. **The steward's word moves the forward stages to in-game and pre-human** (a non-empty `--steward-confirms`;
    binding those exits is his open decision). His walk to passed needs `OWNER:<tsn>`, his event on the OWNER shard
    that does not refuse the pass; the Designer gate needs state `locked` by `owner`; `--by` must name a seat
    (d5d5339d3b).
@@ -454,7 +465,7 @@ Effort: S is under half a day, M a day or two, L several days.
 | `RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS` | his walk to passed, and the Designer lock, need an owner ledger event, not a string or a prefix | 8 | easy | S | S | Convergent |
 | `RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS` | the test table is compared with the locked bars; "progress" is measured from the checks, not the builder's flags; renames do not lift a stop | 9 | moderate | L | M | Convergent |
 | `RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH` | launch only if spent plus the run's cap fits the ceiling; blind and in-game spend recorded; unknown occupancy fails closed | 5, 10 | easy | S | S | Convergent |
-| `RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD` | `mod_sha`, deployed hash, mod list and game build recorded and compared at in-game acceptance and his walk; Stage 7 reader; the pass record | 9 (not built), 7 | moderate | L | M | Convergent for the binding; Divergent for what Stage 7 must show |
+| `RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD` | the pass record (the build match at in-game acceptance and the walk brief are built by `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`) | 9, 7 | moderate | M | M | Convergent |
 | `RIMMANDRAKE_BIND_CERTIFICATE_TO_WHAT_HE_SAW` | the certificate names the gaps he saw and the tree hash, and his event must post-date the tree edit | 11 | easy | M | S | Divergent: which words carry a certificate |
 | `RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT` | the coverage judge's freshness covers every input it reads; a non-zero runner exit refuses; caps hold after a release | 12 | easy | S | S | Convergent |
 | `RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS` | a brief signs in either direction only when calibrated; `calibrate` checks its cases ran and has a read-only status; advisory refusals do not raise repair; fix the registry's FlowWorks text | 12 | moderate | M | M | Divergent: spec open question 7 |

@@ -177,7 +177,7 @@ def p5_planted_changes():
         check("5 red before: EK is not at Stage 7", ek is not None and ek["column"] != "7")
         j = os.path.join(t, "design", "concepts", "ExplosiveKnockback", "journal.md")
         txt = open(j).read() if os.path.exists(j) else "# journal\n\n## The mod as it stands\n\n- **Stage now:** x\n"
-        txt2 = re.sub(r"(\*\*Stage now:\*\*).*", r"\1 Stage 7, pre-human check (planted by the selftest).", txt, count=1)
+        txt2 = re.sub(r"(\*\*Stage now:\*\*).*", r"\1 Stage 7, the walk brief (planted by the selftest).", txt, count=1)
         check("5 the planted stage line took", txt2 != txt)
         open(j, "w").write(txt2)
         # RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: the stage record is the stage; a journal line alone does not move it

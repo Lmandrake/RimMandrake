@@ -29,7 +29,8 @@
     "src/RimMandrake/Utils/systemd/rm-maturation-dispatch.*",
     "src/RimMandrake/Utils/pipeline_tests.json",
     "src/RimMandrake/rimflow/modledger*.py",
-    "src/RimMandrake/rimflow/modledger*.json"
+    "src/RimMandrake/rimflow/modledger*.json",
+    "src/RimMandrake/rimflow/build_match*.py"
   ],
   "tests": [
     {"test": "src/RimMandrake/Utils/selftest_maturation_convergence.py", "seconds": 0.4},
@@ -55,6 +56,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_card_capture.py", "seconds": 2.2},
     {"test": "src/RimMandrake/rimflow/selftest_answered_asks.py", "seconds": 1.4},
     {"test": "src/RimMandrake/rimflow/selftest_maturation.py", "seconds": 1.2},
+    {"test": "src/RimMandrake/rimflow/selftest_build_match.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_autonomy.py", "seconds": 36.3},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_dispatch.py", "seconds": 73.3},
     {"test": "src/RimMandrake/rimflow/selftest_dispatch_two_games.py", "seconds": 3.8},

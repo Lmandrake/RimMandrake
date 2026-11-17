@@ -74,6 +74,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation_now as MN     # noqa: E402  the journal readers: one parser, never a second one
 import refusal_contract as RC   # noqa: E402
 import judge_certificate as JC   # noqa: E402  the pre-judgement certificate (PRE_JUDGEMENT_CERTIFICATE)
+import build_match as BM         # noqa: E402  the Stage 6 exit's build match (owner, 2026-11-17)
 
 UNM = "UNMEASURED"
 RECORD = "version/stage_record.json"
@@ -91,7 +92,7 @@ STAGES = (
     ("blind_challenge", "4+5", "Stages 4 and 5", "Blind challenge, tests first",
      "Stages 4 and 5, the blind challenge (tests first)"),
     ("in_game", "6", "Stage 6", "In-game acceptance", "Stage 6, in-game acceptance"),
-    ("pre_human", "7", "Stage 7", "Pre-human check", "Stage 7, the pre-human check"),
+    ("pre_human", "7", "Stage 7", "Walk brief", "Stage 7, the walk brief"),
     ("his_walk", "8", "Stage 8", "His live walk", "Stage 8, his live walk"),
     ("passed", "passed", "Passed", "Version passed", "Version passed on his word"),
 )
@@ -102,13 +103,14 @@ NUM = {s[0]: s[2] for s in STAGES}
 NAME = {s[0]: s[3] for s in STAGES}
 LINE = {s[0]: s[4] for s in STAGES}
 # The roads back the spec draws (§3 map; rule 2 of validation_map_and_rules.md, carried). Forward is one stage only.
+# Stage 7 has none: it writes his walk brief and judges nothing (owner, 2026-11-17, RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_
+# BRIEF_NO_VETO); what it notices goes into the brief or onto a ticket.
 ROADS_BACK = {
     "preflight": ("designer",),
     "blind_challenge": ("blind_challenge",),
     # in_game -> in_game: a failed line only the game can show stays Stage 6 work and opens the next visit (spec Stage 6
     # road back, "the lowest stage that can show the fault"; RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED)
     "in_game": ("offline_build", "blind_challenge", "in_game"),
-    "pre_human": ("preflight", "offline_build", "blind_challenge", "in_game"),
     "his_walk": ("offline_build", "blind_challenge", "in_game"),
 }
 # "Offline stages never wait for a game" (spec §5). Only a Stage 6 record's runs may take the bridge or the game (Stage 8
@@ -741,18 +743,42 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                    observed="test_table.json version %s" % ((tt or {}).get("version") or terr),
                    would_pass="test_table.json remade with version %s" % rec.get("version"),
                    fix="remake the test table for this Design Version", cost="rerun")
-        elif cur in ("blind_challenge", "in_game", "pre_human"):
+        elif cur in ("blind_challenge", "in_game"):
             hand.append("steward_confirms")
             what = {"blind_challenge": "the blind judge's cycle record (maturation.py next reads its exit block; "
                                        "the exit itself is a proposal)",
                     "in_game": "the visit's in-game record (maturation.py next reads its exit block; the exit "
-                               "itself is carried plus a proposal)",
-                    "pre_human": "the fresh reader's verdict and the walk brief"}[cur]
+                               "itself is carried plus a proposal)"}[cur]
             clause("steward_confirms", "the steward has read %s and says the stage's exit is met" % what,
                    bool(steward), [req_ref], observed="steward_confirms: none in the request",
                    would_pass="--steward-confirms naming the run and the verdict read",
                    fix="the Conductor reads the stage's evidence and passes --steward-confirms", cost="owner",
                    why_sound="the stage's exit is not settled as a program check (plan section 3)")
+            if cur == "in_game":
+                # the BUILD MATCH (owner, 2026-11-17): a verdict made on another build than the one he walks does not
+                # count; its check is re-run (build_match.py, read by read_ingame_exit)
+                n = max(1, len(ingame_openings(rec)))
+                bm = read_ingame_exit(root, mod, n).get("build_match")
+                clause("build_match", "every in-game check's last row was made on the build he walks: its mod hash and "
+                       "game build equal the walk's, its mod list his walk's (a full-list test) or its tier's (a "
+                       "minimal-list test) (build_match.py)", bool(bm) and bm["read"] > 0 and not bm["rerun"],
+                       [rec_ref], observed=BM.summary(bm) if bm else "visit %d has no Exit block to read" % n,
+                       would_pass="python3 src/RimMandrake/rimflow/build_match.py check --mod %s --visit %d exits 0"
+                       % (mod, n),
+                       fix="re-run each listed check on the walk build, its row carrying the fields `build_match.py "
+                           "identity` prints", cost="rerun",
+                       why_sound="his ruling of 2026-11-17 (RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): a "
+                                 "verdict whose mod hash or game build differs does not count, and its line is re-run")
+        elif cur == "pre_human":
+            wb = read_walk_brief(root, mod, rec)
+            clause("walk_brief", "his walk brief for this arrival is written (%s), by an agent that made none of the "
+                   "evidence writes" % ", ".join(WALK_BRIEF_HEADINGS), not wb["why"], [wb["path"], rec_ref],
+                   observed="; ".join(wb["why"]) or "the brief %s is written by %s" % (wb["path"], wb.get("by")),
+                   would_pass="%s with its four headings filled and a written_by line naming a unit that made no move "
+                              "and no in-game row of this version" % wb["path"],
+                   fix="a fresh reader writes it per src/RimMandrake/rimflow/roles/walk_brief.md", cost="rerun",
+                   why_sound="his ruling of 2026-11-17 (RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): one "
+                             "fresh read writes the walk brief; it has no veto, so this is the stage's only exit check")
         elif cur == "his_walk":
             hand.append("owner_said")
             oe, owhy = owner_event(root, owner)
@@ -1241,13 +1267,15 @@ def next_step(root, mod):
         nxt = ("NEXT (wait on its live run, else PAUSED): visit %d is recorded without an exit block: its run writes one, "
                "or (nothing live) the mod is PAUSED until someone reads %s/SUMMARY.md" % (ing["visit"], ing["exit"]["record"]))
     elif ing and ing.get("owed") == "exit met":
-        nxt = ("NEXT (automatic: one steward run): visit %d: exit met (a program's reading of its record: %s); the steward reads "
+        nxt = ("NEXT (automatic: one steward run): visit %d: exit met (a program's reading of its record, the build "
+               "match with it: %s); the steward reads "
                "%s/SUMMARY.md and confirms: maturation.py advance %s --to pre_human --by <SEAT> --why \"...\" "
                "--steward-confirms \"...\"" % (ing["visit"], ing["exit"]["why"][0], ing["exit"]["record"], mod))
     elif ing:
         nxt = ("NEXT (automatic: one steward run, then a fixer per item): visit %d: exit not met (%s); the steward reads "
                "%s/SUMMARY.md, files each failed line as a named item and sends the mod down its road back (maturation.py "
-               "advance %s --to offline_build or --to blind_challenge); the next visit launches when they close" % (
+               "advance %s --to offline_build or --to blind_challenge, or --to in_game for a check only to re-run, as "
+               "one made on another build than his walk's); the next visit launches when they close" % (
                    ing["visit"], "; ".join(ing["exit"]["why"][:3]), ing["exit"]["record"], mod))
     elif blind and blind.get("owed") == "blocked":
         nxt = "NEXT (PAUSED, OPS_MATURATION_MOD_PAUSED): the blind challenge is blocked: %s" % "; ".join(blind["blocked"])
@@ -2409,8 +2437,10 @@ def blind_brief_text(root, mod, cap_usd=None):
 #
 # The visit's record, design/concepts/<Mod>/version/in_game/visit_<N>/ (N = the moves into in_game so far):
 #   rows.jsonl     one row per run of a stage-6 check: {"test", "verdict": PASS|FAIL|UNMEASURED, "site_checked": bool,
-#                  "game": "archmagi"|"stevedesktop", "mod_sha", "command", "evidence", "held": [...]}; the last row per
-#                  test counts (a rerun after a fix made in the sitting supersedes; the earlier FAIL stays as history).
+#                  "game": "archmagi"|"stevedesktop", "mod_sha", "command", "evidence", "held": [...], and the fields
+#                  `build_match.py identity` prints: "mod_hash", "game_build", "active_mods", "tier" or "full_list",
+#                  "unit"}; the last row per test counts (a rerun after a fix made in the sitting supersedes; the earlier
+#                  FAIL stays as history), and only on the build he walks (the build match, read_ingame_exit).
 #                  "held" names what the site switched off or locked for the run ("fire", "weather", ...; [] when the whole
 #                  mod ran): maturation_rescue.py's C5 reads a bar whose every decider ran held as untested by the real
 #                  mechanic, and a row without "held" as UNMEASURED (RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED)
@@ -2623,6 +2653,22 @@ def read_ingame_exit(root, mod, n, tt=None):
     if not one:
         why.append("the rows name more than one build (mod_sha %s): one visit judges one build" % ", ".join(shas))
     out["build"] = shas[-1] if shas and one else None
+    # the BUILD MATCH (owner, 2026-11-17, RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): a check's last row counts
+    # only when its mod hash and game build equal the build he walks (the labelled savegame's, read on Archmagi) and its
+    # mod list is his walk's (a full-list test) or its tier's (a minimal-list test); one that does not is re-run
+    try:
+        bm = BM.check_visit(root, mod, n, tt, blk["savegame"])
+    except Exception as e:      # a build match that cannot run counts nothing
+        bm = None
+        why.append("the build match could not run (%s: %s): no in-game check counts until it does" % (
+            type(e).__name__, e))
+    out["build_match"] = bm
+    if bm and bm.get("walk_why"):
+        why.append("the walk build is unreadable (%s): no in-game check counts until build_match.py reads it" % "; ".join(
+            bm["walk_why"]))
+    elif bm:
+        why.extend("in-game check %s does not count on the walk build (%s): re-run it" % (t, bm["rows"][t]["why"])
+                   for t in bm["rerun"])
     st = _jsonl(os.path.join(d, "strange.jsonl"))
     if st is None:
         why.append("strange.jsonl is missing (an empty file says nothing strange was seen)")
@@ -2643,6 +2689,58 @@ def read_ingame_exit(root, mod, n, tt=None):
     if not why:
         why.append("%d of %d in-game checks PASS on checked sites; strange things all explained or filed; savegame %s"
                    % (len(checks), len(checks), sv))
+    return out
+
+
+# ---- the walk brief (Stage 7) ----------------------------------------------------------------------------------------
+#
+# Owner, 2026-11-17 (RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): Stage 7 judges nothing. One fresh read, by an
+# agent that made none of the evidence writes, writes his walk brief; it has no veto (what it notices goes into the brief
+# or onto a ticket), so the brief written is the stage's only exit. Its role: src/RimMandrake/rimflow/roles/walk_brief.md.
+
+WALK_BRIEF_DIR = "version/walk_brief"
+WALK_BRIEF_HEADINGS = ("What to open", "What changed since his last look",
+                       "Known, not fixed: you need not report these", "What I noticed first")
+
+
+def evidence_writers(root, mod, rec):
+    """The units (and, for a move no unit made, the seat) that wrote this version's evidence: every move's, and every
+    in-game row's `unit`."""
+    out = set()
+    for m in rec.get("moves") or []:
+        out.add(str(m.get("unit") or m.get("by") or "").strip().lower())
+    for n in visit_numbers(root, mod):
+        for r in _jsonl(os.path.join(mod_dir(root, mod), INGAME_DIR, "visit_%d" % n, "rows.jsonl")) or []:
+            out.add(str(r.get("unit") or "").strip().lower())
+    out.discard("")
+    return out
+
+
+def read_walk_brief(root, mod, rec):
+    """-> {path, by, why[]}: this arrival's walk brief (version/walk_brief/arrival_<N>.md, N = pre_human_arrivals) with
+    each heading of WALK_BRIEF_HEADINGS non-empty and a `written_by: <unit>` line naming no evidence writer."""
+    p = "%s/arrival_%d.md" % (WALK_BRIEF_DIR, rec.get("pre_human_arrivals") or 0)
+    out = {"path": rel(mod, p), "why": []}
+    text = read_text(root, mod, p)
+    if text is None:
+        out["why"].append("no walk brief at %s" % out["path"])
+        return out
+    lines = text.split("\n")
+    for h in WALK_BRIEF_HEADINGS:
+        at = next((i for i, ln in enumerate(lines) if re.match(r"^##\s+%s\s*$" % re.escape(h), ln, re.I)), None)
+        if at is None:
+            out["why"].append("the brief has no heading \"## %s\"" % h)
+            continue
+        end = next((j for j in range(at + 1, len(lines)) if lines[j].startswith("## ")), len(lines))
+        if not "".join(lines[at + 1:end]).strip():
+            out["why"].append("the brief's \"%s\" is empty" % h)
+    m = re.search(r"^written_by:\s*`?([^`\s]+)`?\s*$", text, re.M)
+    out["by"] = m.group(1) if m else None
+    if not m:
+        out["why"].append("the brief has no written_by: <unit> line")
+    elif m.group(1).lower() in evidence_writers(root, mod, rec):
+        out["why"].append("written_by %s made evidence writes for this version (a move or an in-game row): the brief "
+                          "is a fresh read" % m.group(1))
     return out
 
 
@@ -3047,9 +3145,15 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "- `rows.jsonl`: one row per run: `{\"test\": id, \"verdict\": \"PASS\"|\"FAIL\"|\"UNMEASURED\", "
           "\"site_checked\": true, \"game\": \"archmagi\"|\"stevedesktop\", \"mod_sha\": <sha of the deployed source>, "
           "\"command\": ..., \"evidence\": <path>, \"held\": [what the site switched off or locked for this run, e.g. "
-          "\"fire\", \"weather\"; [] when the whole mod ran]}`, and in `evidence` or beside it the active mod list parsed from "
-          "that game's `ModsConfig.xml` (`activeMods`, in order) and the game build (spec: a verdict counts only on the "
-          "version and list he walks).",
+          "\"fire\", \"weather\"; [] when the whole mod ran]}`, merged with the one JSON line `python3 "
+          "src/RimMandrake/rimflow/build_match.py identity --mod %s --tier <the tier you loaded>` prints (`--full` "
+          "instead for a check whose `why_full_list` says why), run on the game machine after the deploy and the list "
+          "swap: `mod_hash` (the deployed folder), `game_build`, `active_mods` (ModsConfig.xml, parsed, in order), "
+          "`tier` or `full_list`, `unit`. The BUILD MATCH (owner, 2026-11-17) counts a row only when its mod hash and "
+          "game build equal the build he walks (the labelled savegame below, read on Archmagi) and its list is his "
+          "walk's (a full-list check) or the list modset_builder.py builds for its tier (a minimal-list check); a row "
+          "without the fields, or on another build, is re-run. Redeploying changes the hash: identity again after "
+          "every deploy." % mod,
           "- `strange.jsonl`: as above; an empty file when nothing strange was seen.",
           "- the labelled savegame for his walk (dense, labelled scenes; spec rule 5), its path in the block.",
           "- `SUMMARY.md`: what ran, what failed and what you did about it, the owed cases one by one, then this block "
@@ -3060,9 +3164,10 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "```", "```", "",
           "`python3 src/RimMandrake/rimflow/maturation.py next %s` reads it and checks it against the files: met needs "
           "every check pass in the block AND PASS in its last row with the site checked, the game and mod_sha named, "
-          "every strange thing explained or filed, and the savegame on disk. That reading is evidence for the steward, "
+          "every row on the walk build (`build_match.py check --mod %s` reads that part alone), every strange thing "
+          "explained or filed, and the savegame on disk. That reading is evidence for the steward, "
           "not a move: the Conductor reads your SUMMARY.md and advances with `--to pre_human --steward-confirms "
-          "\"...\"`, or sends a line item down its road back. Never run `maturation.py advance`." % mod, "",
+          "\"...\"`, or sends a line item down its road back. Never run `maturation.py advance`." % (mod, mod), "",
           SELF_CHECK_RULE % mod, "",
           "## Report (10 lines or fewer, plain words)", "",
           "Tag every number [measured] or [guess ~N%%]: checks PASS of %d, FAIL, UNMEASURED; each owed case's outcome; "
@@ -3202,7 +3307,7 @@ def main(argv=None):
         if o.json:
             print(dump(rec), end="")
             return 0
-        print("%s %s: %s since %s; blind cycles %s; arrivals at the pre-human check %s; moves %d"
+        print("%s %s: %s since %s; blind cycles %s; arrivals at the walk brief %s; moves %d"
               % (o.mod, rec["version"], label(rec["stage"]), rec["since"], rec.get("cycles"),
                  rec.get("pre_human_arrivals"), len(rec.get("moves") or [])))
         for st, t in spend_by_stage({"spend": spend_rows(root, o.mod, rec)}).items():

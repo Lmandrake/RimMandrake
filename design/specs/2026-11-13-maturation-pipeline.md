@@ -67,7 +67,7 @@ What it means in practice: §5, "The pipeline fixes its own defects".
 ## 2. The idea in eleven lines
 
 1. **[HIS]** The pipeline moves **whole versioned mods**, not tickets. Tickets stay in RimFlow.
-2. **[HIS]** Ideas wait at an intake. A mod then passes eight stages: Designer, preflight, offline build, offline blind challenge, offline game-logic testing, in-game acceptance, pre-human check, human live walk. **[HIS, by card 2026-11-13]** Stages 4 and 5 run as one stage, tests first (§8, decision 1).
+2. **[HIS]** Ideas wait at an intake. A mod then passes eight stages: Designer, preflight, offline build, offline blind challenge, offline game-logic testing, in-game acceptance, pre-human check, human live walk. **[HIS, 2026-11-17]** The pre-human check judges nothing: it is one fresh read that writes his walk brief, with no veto (§4 Stage 7). **[HIS, by card 2026-11-13]** Stages 4 and 5 run as one stage, tests first (§8, decision 1).
 3. **[HIS]** A judge that finds a fault at Stages 4 and 5 fixes it at once, shows it working, and hands the mod to a **new** blind judge. The cycles are counted on the mod. **[HIS, 2026-11-13]** After three cycles the Conductor decides what to do, and he confirms or changes it when he is next available (§8, decision 3).
 4. **[HIS]** Operations and Dispatch float above. Dispatch knows which mods are advancing and gives them the two games and the offline builders as they need them. **[HIS, by card 2026-11-14]** Either game may give a bar's scripted verdict, whichever is free, and SteveDesktop runs pipeline tests only (§8, decision 18).
 5. **[CARRIED]** The target holds still: a mod is built towards a locked Design Version. A change that shifts the vision goes to the next version. (His ruling of 2026-11-13.)
@@ -98,8 +98,8 @@ flowchart TD
     S2["STAGE 2 · PREFLIGHT<br/>Python checks the build spec:<br/>real files, real mods, real tests"]
     S3["STAGE 3 · OFFLINE BUILD<br/>build it, write every bar's check<br/>(seen failing first), and every test<br/>the builder can think of"]
     S4["STAGES 4 AND 5 · ONE STAGE, TESTS FIRST<br/>first: game-logic tests written from the bars alone,<br/>rules and maths over many cases, no game;<br/>then: code review, planted faults,<br/>rerun of the builder's tests"]
-    S6["STAGE 6 · IN-GAME ACCEPTANCE<br/>dense prepared maps, scripts decide,<br/>explore, many screenshots"]
-    S7["STAGE 7 · PRE-HUMAN CHECK<br/>is all the evidence consistent?<br/>anything odd that would waste his time?"]
+    S6["STAGE 6 · IN-GAME ACCEPTANCE<br/>dense prepared maps, scripts decide,<br/>explore, many screenshots;<br/>exit: the build match (a program)"]
+    S7["STAGE 7 · WALK BRIEF<br/>one fresh reader writes his brief;<br/>judges nothing, no veto"]
     S8["STAGE 8 · HUMAN LIVE WALK<br/>Mandrake, on prepared saves"]
     PASS(["VERSION PASSED<br/>pass record written; the mod rests"])
 
@@ -108,7 +108,6 @@ flowchart TD
     S2 -. "spec refused: back to the Designer" .-> S1
     S4 -. "fault found: fix in place,<br/>then a NEW blind judge<br/>(after three cycles: the Conductor decides)" .-> S4
     S6 -. "a failed line item goes to the<br/>lowest stage that can show it" .-> S3
-    S7 -. "an anomaly goes back to the<br/>stage that made the evidence" .-> S6
     S8 -. "a Problem: touched line items only,<br/>lowest stage that can show it" .-> S3
     S8 -. "a Divergent idea: next version" .-> IN
     PASS -. "open the next version?<br/>decided against the other mods" .-> IN
@@ -134,18 +133,19 @@ Plain-text version of the same map:
                                                     │           fix in place, NEW blind judge;
                                                     │           after three cycles the Conductor decides
                                                     │
-  ──▶ 6 IN-GAME ACCEPTANCE ──▶ 7 PRE-HUMAN CHECK ──▶ 8 HUMAN LIVE WALK ──▶ VERSION PASSED
-      (dense maps, scripts,     (is the evidence      (Mandrake, on          (pass record;
-       explore, screenshots)     consistent?)          prepared saves)        the mod rests)
-            │                        │                      │
-            │                        │                      ├── a Problem ──▶ touched line items only,
-            └── failed line item ────┴── anomaly ───────────┘                to the LOWEST stage (3, 4+5
+  ──▶ 6 IN-GAME ACCEPTANCE ──▶ 7 WALK BRIEF ──────▶ 8 HUMAN LIVE WALK ──▶ VERSION PASSED
+      (dense maps, scripts,     (one fresh read;      (Mandrake, on          (pass record;
+       explore, screenshots;     judges nothing,       prepared saves)        the mod rests)
+       exit: the build match)    no veto)
+            │                                               │
+            │                                               ├── a Problem ──▶ touched line items only,
+            └── failed line item ───────────────────────────┘                to the LOWEST stage (3, 4+5
                 goes to the lowest stage that can show it                    or 6) that can show it
                                                             └── a Divergent idea ──▶ next version ──▶ INTAKE
 ```
 
 **[HIS]** the eight stages, their order, their numbers, the fix-in-place loop, Operations and Dispatch above. **[HIS, by card 2026-11-13]** Stages 4 and 5 as one stage, tests first; the steward is the Conductor, always; three cycles, then the Conductor decides.
-**[CARRIED]** the roads back from 6, 7 and 8 (rule 2, "lowest stage, touched line items only"); the Divergent road (Design Versions ruling).
+**[CARRIED]** the roads back from 6 and 8 (rule 2, "lowest stage, touched line items only"); the Divergent road (Design Versions ruling). **[HIS, 2026-11-17]** Stage 7 has no road back: it judges nothing, and what it notices goes into the walk brief or onto a ticket.
 **[PROPOSAL]** keeping the numbers 6 to 8 unchanged after the merge (from the recommendation he answered; the card did not rule on numbering); the road from "passed" back to intake.
 
 ---
@@ -284,22 +284,24 @@ The fastest methods: the 13-mod minimal list loads in 22 seconds; the full list 
 | The labelled savegame and his live walk (Stage 8) | Archmagi | CARRIED: he sits at that machine |
 | Re-running a passed version's bars when something it depends on changes | Either game, through the queue (§6, "After a version passes") | HIS, by card 2026-11-14 (18b): built only after one version has passed |
 
-**A verdict counts only on the version and list he walks.** This follows from 18a: a pass from a game that ran a different build proves nothing about the one he walks. **[PROPOSAL]** How it is asserted, not built: every in-game verdict records the game it ran on, the mod's source sha and a hash of its deployed folder there, the active mod list read by parsing that game's `ModsConfig.xml` (`activeMods`, in order), and the game build. Stage 7 reads the same four on Archmagi when the walk's savegame is made and compares them with each verdict's record; a verdict whose mod hash or game build differs does not count, and its line item is re-run. The mod list is compared as the test declares it: a full-list test must match his walk's list exactly; a minimal-list test (the carried default, §4 Stage 6) must match the list `modset_builder.py` builds for that tier from the same commit, and his walk is the check of that verdict on his full list. Today a queue result records `runner_sha` and the companion build it deployed, not the mod's folder hash or the mod list: that part is unbuilt.
+**A verdict counts only on the version and list he walks.** This follows from 18a: a pass from a game that ran a different build proves nothing about the one he walks. **[HIS, 2026-11-17]** ("I approve your changes to the Step 6->Step 7 transition and preparation", item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`.) The **build match** is a program, no model, run at the Stage 6 exit. Every in-game verdict row records the game it ran on, the mod's source sha, a hash of its deployed folder there, the active mod list read by parsing that game's `ModsConfig.xml` (`activeMods`, in order) and the game build: the runner gets them from `python3 src/RimMandrake/rimflow/build_match.py identity --mod <Mod> (--tier <T> | --full)` after the deploy and the list swap, and merges that line into every row. The program reads the same on Archmagi for the build he walks (the mod's deployed folder hash, the game's `Version.txt`, and the mod list of the labelled walk savegame that the Stage 6 Exit block names) and compares each check's last row with it; a row whose mod hash or game build differs does not count, and its line item is re-run. The mod list is compared as the test declares it: a full-list test (its `why_full_list` set) must match his walk's list exactly; a minimal-list test (the carried default, §4 Stage 6) must match the list `modset_builder.py` builds for its tier from the same commit, and his walk is the check of that verdict on his full list. `maturation.py` runs it in its Stage 6 exit reading (its `build_match` clause); `python3 src/RimMandrake/rimflow/build_match.py check --mod <Mod> [--visit N]` runs it alone and exits 0 only when every check counts. Selftest: `src/RimMandrake/rimflow/selftest_build_match.py` (with `--mutants`).
 
 **Entry rule. [HIS, by card 2026-11-14]** (18c, "Pipeline tests only", no load-check exception.) Only a test that came through this pipeline's offline stages may be queued on SteveDesktop: a locked bar's in-game check, for a mod version the stage record (`maturation.py`) shows past the blind offline challenge. **Built 2026-11-14** as one more condition in the queue's admission checks (those of `RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED`): `src/RimMandrake/Utils/testq/pipeline_admit.py`, called by `testq.py submit` before anything else and by the filler, the nightly sweep and the fault-window rerun. A job is admitted only when its mod's stage record stands at `in_game` or later, that version is locked and is the one the record is for, and every chain, row and proof it selects is named in the `testq` block of a stage-6 entry of that version's `test_table.json`. A `--full` sweep or an `--item` selection is never one bar's check and is refused. A refusal names what was seen, what would let the job run and the smallest fix. The filler and the sweep are off for every mod with no admissible check. Ops jobs are not tests and are never refused: the brake-release canary (`Operations.canary`) and the steward's repair wake (`BENCH.steward-wake`). A queue empty by this rule is the lane working as ruled: the steward reports `IDLE_BY_RULE`, a settled state, never a stall. Selftest: `src/RimMandrake/Utils/testq/selftest_testq_pipeline_admit.py` (with `--mutants`).
 
-### Stage 7: Pre-human check
+### Stage 7: Pre-human check, the walk brief
+
+**[HIS, 2026-11-17]** Stage 7 judges nothing. He asked "What is step 7 in the maturation pipeline other than redundancy with just-passed judges?" and approved the change: the judges have judged, the build match (Stage 6) has kept only the verdicts made on the build he walks, and what is left is one fresh read that prepares his walk.
 
 | | | mark |
 |---|---|---|
-| Purpose | "Examine all the evidence as not merely sufficient but consistent and not containing obvious anomalies beyond the stated goals that would waste a human's review time." | HIS |
-| Who | A fresh reader that made none of the evidence. | CARRIED (user-level rule, 2026-10-22: "Read it first and see if it's obviously broken... before wasting a human's time") |
-| Model tier | A judging role, as Stage 4. | CARRIED |
-| Inputs | Everything from stages 2 to 6: records, test rows, screenshots, the savegame. | PROPOSAL |
-| Outputs | One short verdict. A list headed "known, not fixed: you need not report these". The brief for his walk: what to open, what to look at, what changed since his last look. | CARRIED (rule 4; "changed since your last look" is his card of 2026-11-12) |
-| Exit ("ready" means) | No two pieces of evidence contradict each other. Nothing obviously odd is left unexplained. The walk is prepared and ranked: the things only he can judge come first. | PROPOSAL |
-| Road back | An anomaly goes back to the stage that made the evidence, as a line item. | CARRIED (rule 2) |
-| Tracked on the mod | Arrivals at this stage. Each arrival is one release candidate: 0.1.0-rc.1, 0.1.0-rc.2. | CARRIED ("A judge round is a release candidate") with a PROPOSAL about what counts as a round (open question) |
+| Purpose | Prepare his walk: one fresh read of the evidence "as not merely sufficient but consistent and not containing obvious anomalies beyond the stated goals that would waste a human's review time". What it finds goes into his brief or onto a ticket; it refuses nothing. | HIS (the quote); HIS, 2026-11-17 (no veto) |
+| Who | ONE fresh reader that made none of the evidence writes: no stage move of this version and no in-game row. `maturation.py` refuses a brief whose `written_by` names a unit that made either. | HIS, 2026-11-17; CARRIED (user-level rule, 2026-10-22: "Read it first and see if it's obviously broken... before wasting a human's time") |
+| Model tier | A reading role, one run. | PROPOSAL |
+| Inputs | Everything from stages 2 to 6: records, test rows, screenshots, the savegame, the build match's reading, the journal and the commits since his last look, the mod's open tickets. | PROPOSAL |
+| Outputs | The walk brief, `design/concepts/<Mod>/version/walk_brief/arrival_<N>.md` (N = arrivals at this stage), under four headings: what to open; what changed since his last look; "known, not fixed: you need not report these"; what it noticed first. Role: `src/RimMandrake/rimflow/roles/walk_brief.md`. | HIS, 2026-11-17; CARRIED (rule 4) |
+| Exit ("ready" means) | The brief is written, its four headings filled, by a fresh reader. It has NO veto: a finding goes into the brief or onto a ticket, never down a road. No `--steward-confirms`. | HIS, 2026-11-17 |
+| Road back | None. | HIS, 2026-11-17 |
+| Tracked on the mod | Arrivals at this stage (`pre_human_arrivals`). Each arrival is one release candidate: 0.1.0-rc.1, 0.1.0-rc.2. Version numbering is unchanged. | CARRIED ("A judge round is a release candidate") with a PROPOSAL about what counts as a round (open question); HIS, 2026-11-17: the rc count per arrival stays |
 
 ### Stage 8: Human live walk
 
@@ -423,7 +425,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 | 2, Code check | selftests, lints, review, planted faults | Split. The builder's own checks are Stage 3. The blind review and the planted-fault challenge are Stage 4. | HIS |
 | 3, Logic off-game | kernels, random cases, conservation | Split. Writing them is Stage 3. Running and challenging them blind is the first part of Stages 4 and 5, before the code is opened. | HIS; the order HIS by card 2026-11-13 |
 | 4, In-game proof | a script's verdict through the game | Stage 6 | HIS |
-| 5, Pre-look | a fresh judge on the scene and the art | Stage 7. The looking at screenshots during the test itself is Stage 6. | HIS |
+| 5, Pre-look | a fresh judge on the scene and the art | Stage 6, where the scene and the art are looked at during the test. Stage 7 is a fresh read with no veto (HIS, 2026-11-17): what it notices goes into his walk brief or onto a ticket. | HIS |
 | 6, Owner look | Mandrake on a labelled save | Stage 8 | HIS |
 
 **Retired by this map, if he accepts it:** the 0 to 6 numbers. The file keeps its rules and gets a banner pointing here. **[PROPOSAL]**
@@ -434,8 +436,8 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 |---|---|---|---|
 | 1 | Mechanism work is done on the script's verdict; work with a look goes on to him | Stage 6 closes mechanism line items. Stage 8 shows him look items, and anything he asks for. | CARRIED (his card 2026-11-12) |
 | 2 | An objection becomes line items; each re-enters at the lowest stage that can show it; only touched line items re-run; his passes are pinned; his objections close on his look | The roads back from 6, 7 and 8 | CARRIED (his cards 2026-11-12) |
-| 3 | A refusal carries its fix path; a broken criterion goes to a neutral fixer at once | Every judge at Stages 4 and 5 and at Stage 7; preflight refusals at Stage 2 | CARRIED (his ruling 2026-11-12) |
-| 4 | Nothing reaches him unread; unfixed findings are listed first | Stage 7 | CARRIED |
+| 3 | A refusal carries its fix path; a broken criterion goes to a neutral fixer at once | Every judge at Stages 4 and 5; preflight refusals at Stage 2 | CARRIED (his ruling 2026-11-12) |
+| 4 | Nothing reaches him unread; unfixed findings are listed first | Stage 7, the walk brief's "known, not fixed" list | CARRIED |
 | 5 | The first human look is a dense, labelled savegame on matrix scenes (one prepared cell copied across the variables that matter) | Built in Stage 6, used in Stage 8 | CARRIED (his words 2026-11-12) |
 | 6 | A test site is checked, never hoped | Stage 6, before any row counts | CARRIED |
 | 7 | When code exists, walk it live before designing more | Stage 1 input; and the early look | CARRIED |
@@ -461,7 +463,7 @@ Today's measured example: the Designer loop on Explosive Knockback charged about
 | Design Versions idea | in the pipeline | mark |
 |---|---|---|
 | A version is a locked vision, bars and tests | Stage 1's exit | CARRIED |
-| Problem stays, Polish goes to the Polish list | every road back, and the exit of Stages 4 and 5 and of Stage 7 | CARRIED (his card 2026-11-13) |
+| Problem stays, Polish goes to the Polish list | every road back, and the exit of Stages 4 and 5 | CARRIED (his card 2026-11-13) |
 | Divergent goes to the next version | the road from Stage 8, or from any stage, to intake | CARRIED |
 | The now-or-next question is asked at filing | whenever a line item is written, at any stage | CARRIED (his card 2026-11-13) |
 | A judge round is a release candidate, rc.N | each arrival at Stage 7 | CARRIED; "what counts" is PROPOSAL |

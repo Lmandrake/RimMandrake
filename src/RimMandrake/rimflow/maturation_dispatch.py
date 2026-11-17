@@ -1510,8 +1510,9 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
         return False
     if owed == "exit met":
         put("exit_met", "in-game visit %s: exit met (%s)" % (n, (ex.get("why") or ["-"])[0]),
-            "in-game visit %s: exit met (a program's reading of %s); the steward reads it and confirms: maturation.py "
-            "advance %s --to pre_human --steward-confirms \"...\" (a Conductor step; the program never advances)"
+            "in-game visit %s: exit met (a program's reading of %s, its build match counting every check on the walk "
+            "build); the steward reads it and confirms: maturation.py advance %s --to pre_human --steward-confirms "
+            "\"...\" (a Conductor step; the program never advances)"
             % (n, summ, mod))
         return False
     if owed == "exit not met":

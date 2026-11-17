@@ -797,6 +797,16 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                        root=root)
         return
     if stage in STEWARD_STAGES and dec == "not_offline":
+        if stage == "pre_human":
+            # Stage 7 judges nothing (owner, 2026-11-17, RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO): one
+            # fresh reader, who made none of the evidence writes, writes his walk brief; it has no veto
+            _steward(row, "stage", "%s|%s" % (ver, stage), "%s: one fresh reader writes it, then advance" % (
+                         M.label(stage)),
+                     "a fresh reader that made none of %s's evidence writes writes design/concepts/%s/%s/arrival_<N>.md "
+                     "(N = the record's pre_human_arrivals) per "
+                     "src/RimMandrake/rimflow/roles/walk_brief.md (no veto: findings go into the brief or onto a "
+                     "ticket), then maturation.py advance %s --to his_walk" % (mod, mod, M.WALK_BRIEF_DIR, mod))
+            return
         _steward(row, "stage", "%s|%s" % (ver, stage), "%s is the steward's step: run it, then advance" % M.label(stage),
                  "do %s as the spec says (design/specs/2026-11-13-maturation-pipeline.md) and advance with "
                  "--steward-confirms naming what you read" % M.label(stage))

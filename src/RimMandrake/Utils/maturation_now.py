@@ -78,7 +78,7 @@ RECORD_COL = {"intake": "intake", "designer": "1", "preflight": "2", "offline_bu
               "in_game": "6", "pre_human": "7", "his_walk": "8", "passed": "passed"}
 COL_NUM = {"intake": "IN", "1": "1", "2": "2", "3": "3", "4+5": "4+5", "6": "6", "7": "7", "8": "8", "passed": "✓"}
 COL_NAME = {"intake": "Intake", "1": "Designer", "2": "Preflight", "3": "Offline build", "4+5": "Tests first",
-            "6": "In-game", "7": "Pre-human", "8": "His walk", "passed": "Passed"}
+            "6": "In-game", "7": "Walk brief", "8": "His walk", "passed": "Passed"}
 COL_LONG = {"intake": "ideas waiting", "1": "vision, bars, lock", "2": "spec checked", "3": "code + tests",
             "4+5": "blind judge", "6": "dense maps", "7": "evidence check", "8": "Mandrake looks",
             "passed": "the mod rests"}

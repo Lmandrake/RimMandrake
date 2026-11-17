@@ -84,7 +84,9 @@ correct diagnosis: the reds are features not yet built). All 6 tests were still 
 Usable: it covers inputs, the programs run before the reader, the fresh reader's six questions, refusal routing, exit
 test, the owner's brief, a pass-record format, acceptance tests and a first slice on Explosive Knockback, each tied to
 a ruling. Weak where it should measure: "reuse an existing folder-hash routine if available" was left unchecked.
-Feed it to the Designer as the starting text for Stage 7, not as a decided design.
+His ruling of 2026-11-17 (item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`) made Stage 7 one fresh read
+with no veto that writes his walk brief, so the draft's refusal routing and exit test do not apply; its pass-record
+format is starting text for `RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD`.
 
 ## Lane E — first-touch Designer drafts
 

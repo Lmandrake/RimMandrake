@@ -40,6 +40,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 
 import maturation as M          # noqa: E402
+import build_match as BM        # noqa: E402
 import maturation_now as MN     # noqa: E402
 import refusal_contract as RC   # noqa: E402
 
@@ -417,10 +418,47 @@ def main():
         # hand steps on the later stages
         refused(M.advance(root, "Pyrelands", "in_game", by="BENCH", why="x"), "steward_confirms",
                 "leaving the blind challenge without the steward's reading of the verdict")
-        for to in ("in_game", "pre_human", "his_walk"):
-            ok(M.advance(root, "Pyrelands", to, by="CONDUCTOR", why="x", steward="read the run's verdict: clean")["ok"],
-               "Pyrelands moves to %s on the steward's word" % to)
-        ok(M.load(root, "Pyrelands")["pre_human_arrivals"] == 1, "arrivals at the pre-human check are counted")
+        ok(M.advance(root, "Pyrelands", "in_game", by="CONDUCTOR", why="x", steward="read the run's verdict: clean")["ok"],
+           "Pyrelands moves to in_game on the steward's word")
+        # the BUILD MATCH at the Stage 6 exit (owner, 2026-11-17): a check made on another build is re-run
+        for brk, what in (("hash", "on another mod hash than his walk's"), ("build", "on another game build"),
+                          ("list", "on its tier's mods in another order"), ("none", "with no build identity")):
+            write_visit(root, "Pyrelands", 1, off_build=brk)
+            refused(M.advance(root, "Pyrelands", "pre_human", by="CONDUCTOR", why="x", steward="read the visit: met"),
+                    "build_match", "a check whose last row is %s" % what)
+        ex = M.read_ingame_exit(root, "Pyrelands", 1)
+        ok(ex["state"] == "not_met" and any("re-run it" in w for w in ex["why"]),
+           "the exit reader names the off-build check to re-run (%s)" % (ex["why"] or ["-"])[0][:90])
+        write_visit(root, "Pyrelands", 1)
+        os.environ[BM.STANDIN_ENV] = os.path.join(root, "no_walk_build.json")
+        try:
+            refused(M.advance(root, "Pyrelands", "pre_human", by="CONDUCTOR", why="x", steward="read the visit: met"),
+                    "build_match", "a walk build that cannot be read counts nothing")
+        finally:
+            write_visit(root, "Pyrelands", 1)
+        ok(M.advance(root, "Pyrelands", "pre_human", by="CONDUCTOR", why="x", steward="read the visit: met")["ok"],
+           "Pyrelands moves to pre_human when every check's last row is on the walk build")
+        ok(M.load(root, "Pyrelands")["pre_human_arrivals"] == 1, "arrivals at the walk brief are counted")
+        # Stage 7 judges nothing: one fresh reader writes the walk brief; it has no veto and needs no steward
+        ok("pre_human" not in M.ROADS_BACK, "Stage 7 has no road back (%s)" % M.ROADS_BACK.get("pre_human"))
+        refused(M.advance(root, "Pyrelands", "his_walk", by="CONDUCTOR", why="x"), "walk_brief",
+                "no walk brief written")
+        wb = os.path.join(root, "design", "concepts", "Pyrelands", M.WALK_BRIEF_DIR, "arrival_1.md")
+        os.makedirs(os.path.dirname(wb), exist_ok=True)
+        body = "".join("## %s\nselftest text under %s\n\n" % (h, h) for h in M.WALK_BRIEF_HEADINGS)
+        for text, what in (("written_by: %s\n\n%s" % (ROW_UNIT, body), "a brief by a unit that wrote an in-game row"),
+                           ("written_by: fresh-reader-1\n\n%s" % body.replace("selftest text under What I noticed "
+                                                                               "first", ""), "a heading left empty"),
+                           ("%s" % body, "no written_by line"),
+                           ("written_by: fresh-reader-1\n\n%s" % body.split("## What I noticed")[0],
+                            "a heading missing")):
+            with open(wb, "w") as f:
+                f.write(text)
+            refused(M.advance(root, "Pyrelands", "his_walk", by="CONDUCTOR", why="x"), "walk_brief", what)
+        with open(wb, "w") as f:
+            f.write("written_by: fresh-reader-1\n\n%s" % body)
+        ok(M.advance(root, "Pyrelands", "his_walk", by="CONDUCTOR", why="walk brief arrival_1 written")["ok"],
+           "Pyrelands moves to his_walk on a fresh reader's brief, no --steward-confirms")
         refused(M.advance(root, "Pyrelands", "passed", by="CONDUCTOR", why="x"), "owner_said",
                 "a pass without his words")
         # RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: only his event on the OWNER shard passes, and not a refusal
@@ -557,6 +595,7 @@ def main():
                               "Pyrelands"], capture_output=True, text=True, env=dict(os.environ), timeout=120)
         ok(cli.returncode == 0 and "NEXT" in cli.stdout, "the command line prints a NEXT line")
     finally:
+        os.environ.pop(BM.STANDIN_ENV, None)
         shutil.rmtree(root, ignore_errors=True)
 
     ok(git_status() == before, "nothing under design/concepts in the repo was written")
@@ -1216,12 +1255,48 @@ def write_ledger(root):
         f.write("".join(json.dumps(e) + "\n" for e in evs))
 
 
+# the build he walks, as build_match.py's stand-in (MATURATION_WALK_BUILD) gives it: never this machine's game
+WALK_HASH, WALK_GAME_BUILD = "selftest-walk-hash", "1.6.4871 rev590"
+WALK_LIST = ["Ludeon.RimWorld", "mandrake.rm.pyrelands", "selftest.other.mod"]
+TIER_LIST = ["Ludeon.RimWorld", "mandrake.rm.pyrelands"]
+ROW_UNIT = "selftest-ingame-runner"
+
+
+def walk_standin(root, tt):
+    """Write the walk-build stand-in for this tree and point build_match.py at it."""
+    tiers = {t: TIER_LIST for t in {"minimal"} | {x.get("tier") for x in tt["tests"].values() if x.get("tier")}}
+    p = os.path.join(root, "walk_build.json")
+    with open(p, "w") as f:
+        json.dump({"mod_hash": WALK_HASH, "game_build": WALK_GAME_BUILD, "active_mods": WALK_LIST, "tiers": tiers}, f)
+    os.environ[BM.STANDIN_ENV] = p
+
+
+def identity(spec, broken=None):
+    """The fields `build_match.py identity` prints for one row, one of them broken on request."""
+    if spec.get("why_full_list"):
+        out = {"full_list": True, "active_mods": list(WALK_LIST)}
+    else:
+        out = {"tier": spec.get("tier") or "minimal", "active_mods": list(TIER_LIST)}
+    out.update(mod_hash=WALK_HASH, game_build=WALK_GAME_BUILD, unit=ROW_UNIT)
+    if broken == "hash":
+        out["mod_hash"] = "a-build-before-a-redeploy"
+    elif broken == "build":
+        out["game_build"] = "1.5.4409 rev1118"
+    elif broken == "list":
+        out["active_mods"] = list(reversed(out["active_mods"]))
+    elif broken == "none":
+        out = {}
+    return out
+
+
 def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=False, site=True, game="archmagi",
                 sha="abc1234", strange=None, strange_open=None, strange_file=True, save=True, rows_file=True,
                 block=True, sha2=None, save_text="<?xml version=\"1.0\"?>\n<savegame><meta/></savegame>",
-                site_reading={"biome": "Pyrelands", "colonists_alive": 3}):
-    """A visit record in the layout maturation.py reads, every file present, with one thing broken on request."""
+                site_reading={"biome": "Pyrelands", "colonists_alive": 3}, off_build=None, off_build_all=False):
+    """A visit record in the layout maturation.py reads, every file present, with one thing broken on request.
+    off_build: "hash"/"build"/"list"/"none" breaks the last check's build identity (every check's with off_build_all)."""
     tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
+    walk_standin(root, tt)
     ids = [k for k, t in tt["tests"].items() if str(t.get("kind", "")).startswith("live") and str(t.get("stage")) == "6"]
     d = os.path.join(root, "design", "concepts", mod, "version", "in_game", "visit_%d" % n)
     shutil.rmtree(d, ignore_errors=True)
@@ -1240,6 +1315,7 @@ def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=Fa
                 row = {"test": t, "verdict": "FAIL" if t == fail else "PASS", "site_checked": site, "game": game,
                        "mod_sha": sha2 if (sha2 and t == ids[-1]) else sha, "command": tt["tests"][t].get("command"), "evidence": "selftest",
                        "site": site_reading}
+                row.update(identity(tt["tests"][t], off_build if (off_build_all or t == ids[-1]) else None))
                 f.write(json.dumps({k: v for k, v in row.items() if v is not None}) + "\n")
                 if t == fail and rerun_pass:
                     f.write(json.dumps(dict(row, verdict="PASS")) + "\n")
@@ -1266,7 +1342,7 @@ def ingame_main():
     before = git_status()
     root = tempfile.mkdtemp(prefix="maturation_ingame_")
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
-            "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG")
+            "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG", BM.STANDIN_ENV)
     env_was = {k: os.environ.get(k) for k in keys}
     try:
         copy_ingame(root)
