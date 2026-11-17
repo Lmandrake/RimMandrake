@@ -526,7 +526,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "burn_line",
-   "observes": "burning ground whose centre moves, a growing scorched trail, and a relight in open grass after it dies; 24 hourly captures, each at its asserted hour, show grass fire moving across the map with the black trail behind it, and a judge shown them confirms a natural grass fire that moves, not a flood over the whole map and not a fire that stands still",
+   "observes": "burning ground whose centre moves, a growing scorched trail, and a relight in open grass after it dies; 24 hourly captures, each at its asserted hour, show grass fire moving across the map with the black trail behind it, and a judge shown them and the whole-map day-end captures confirms a natural grass fire that moves, not a flood over the whole map and not a fire that stands still; the burned share of open plantable ground grows over the four days and is never most of the map (at most half) at any day end",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"

@@ -10,16 +10,17 @@
    "entry_point": "src/RimMandrake/Pyrelands/validation.py::burn_line",
    "start": [
     "fresh Pyrelands map in ordinary play, opening front lit (asserted: ProbeOpeningFront done, lit > 0)",
-    "colony vitals and pending incidents recorded"
+    "colony vitals and pending incidents recorded",
+    "the burned share of open plantable ground (burn-stamped cells outside the suite's fire pads over fertile ground outside them) read, and the start saved (burn_line_share_start)"
    ],
-   "action": "watch the front for a game day, capturing the front and its black trail at play zoom each game hour (capture hour asserted from the game clock at each capture); save the game once while the front walks (burn_line_walking); then let it die down and wait out the smoulder window",
-   "expect": "burning ground whose centre moves, a growing scorched trail, and a relight in open grass after it dies; 24 hourly captures, each at its asserted hour, show grass fire moving across the map with the black trail behind it, and a judge shown them confirms a natural grass fire that moves, not a flood over the whole map and not a fire that stands still",
+   "action": "watch the front for a game day, capturing the front and its black trail at play zoom each game hour (capture hour asserted from the game clock at each capture); save the game once while the front walks (burn_line_walking); play on to the end of day four from the start, reading the burned share and a whole-map capture at each day end; then reload burn_line_share_start with the wind setting (windCarriesFireEnabled) off and play the same four days, read the same way; then let the fire die down and wait out the smoulder window",
+   "expect": "burning ground whose centre moves, a growing scorched trail, and a relight in open grass after it dies; 24 hourly captures, each at its asserted hour, show grass fire moving across the map with the black trail behind it, and a judge shown them and the whole-map day-end captures confirms a natural grass fire that moves, not a flood over the whole map and not a fire that stands still; the burned share of open plantable ground grows over the four days and is never most of the map (at most half) at any day end",
    "control": {
-    "case": "the same seed with the burn line switch (burnLineEnabled) off",
-    "expect": "no front walks and no relight comes in the same window",
-    "rules_out": "a vanilla wildfire incident or a test-lit fire passing for the burn line"
+    "case": "the same start save (burn_line_share_start) with the wind setting (windCarriesFireEnabled) off, played the same four days; and the same seed with the burn line switch (burnLineEnabled) off",
+    "expect": "with the wind off, vanilla's even spread takes most of the map: its burned share passes half by the fourth day end, a clearly larger share than the wind-on run's (a control that does not flood leaves the read unmeasured, never passed); with the burn line off no front walks and no relight comes in the same window",
+    "rules_out": "a share read blind to a flood passing one for the line, and a vanilla wildfire incident or a test-lit fire passing for the burn line"
    },
-   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, restore the burn line switch and weather; the walking-front savegame (burn_line_walking) is kept for his review, then the disposable quicktest map is destroyed",
+   "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit, restore the burn line and wind settings and the weather; the walking-front savegame (burn_line_walking) is kept for his review, then the disposable quicktest map is destroyed",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EVERY_FIRE_A_FOIL",
    "owed_parts_item": "RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN",

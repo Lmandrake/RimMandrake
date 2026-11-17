@@ -1163,7 +1163,8 @@ def ruins(t):
 @suite.chain("burn_line")
 @_teardown(fire=True)
 def burn_line(t):
-    """LONG SPLIT ONLY (~10 min at ~200 ticks/s): run as --chains embergrass_regrow,burn_line, skip in the main run.
+    """LONG SPLIT ONLY (~10 min at ~200 ticks/s before the burned-share read added seven game days, UNMEASURED since): run
+    as --chains embergrass_regrow,burn_line, skip in the main run.
     The fixture holds burnLineEnabled OFF, so a census alone is UNMEASURED. The arm: burnLineEnabled ON, extinguish the
     map, wait StandingBurnQuietTicks + a few BurnWatchIntervalTicks, count free-standing Fire. MapComponent_BurnLine
     .TryReseedStandingBurn must have lit one smoulder (parent == null). Then extinguish; _teardown restores settings."""
@@ -4465,6 +4466,11 @@ R6_FRONT_SAVE_HOUR = 12          # the kept walking-front save is made at this c
 R6_FRONT_MIN_SHIFT = 3.0         # cells the front's centroid must move over the day (a walking line, not one standing blaze)
 R6_FRONT_CROP = 30               # largest side of the capture rect around the front
 R6_HOUR_TOL = 0.6                # a capture's clock hour may sit this far from its expected hour
+R6_SHARE_DAYS = 4                # sc_burn_line_walks' "a few days": the visit-1 walk saves' flood took 78% of the map in 4
+                                 # (T_BURN_ECOLOGY); the model's slowest wind-off flood crosses half only on day 4 (325 map)
+R6_SHARE_MOST = 0.5              # the leaf's "never most of the map": more than half of the open plantable ground is most
+R6_SHARE_PAD_RADIUS = 18         # the suite's own fire pads are left out, as _fresh_site leaves them (CountBurnedOutside)
+R6_SHARE_SAVE = "burn_line_share_start"   # the start both arms of the share read begin from (same seed, same front)
 R6_ASH_EPS = 1e-3
 R6_PAD_ASH_DRAW = (190, 95)      # sc_ash_ground's ten ash-laden ember-grass cells (free of every other pad)
 R6_PAD_COMPOUND = (160, 30)      # sc_burn_compounds' three pads (PAD_BURN 35 cells west, PAD_SPRAY 65 east)
@@ -4569,16 +4575,116 @@ def front_walks(rows, min_shift=R6_FRONT_MIN_SHIFT):
     return True, "fire every hour; the centroid moved up to %.1f cells" % shift
 
 
+def open_ground_outside(cells, fert, pads, radius):
+    """Pure. {(x, z): terrain} and {terrain: fertility} -> how many cells are open plantable ground (fertility > 0; water
+    and rock read 0) outside `radius` (Chebyshev) of every pad: the denominator CountBurnedOutside's numerator matches. A
+    terrain with no fertility read is not counted as ground."""
+    n = 0
+    for (x, z), d in cells.items():
+        if (fert.get(d) or 0) <= 0:
+            continue
+        if any(abs(x - px) <= radius and abs(z - pz) <= radius for px, pz in pads):
+            continue
+        n += 1
+    return n
+
+
+def burned_share_verdict(on, off, most=R6_SHARE_MOST):
+    """Pure. on, off: the burned share of open plantable ground at the start and at each day end (day 0..N), wind carrying
+    fire and the same start save with windCarriesFireEnabled off (vanilla's even spread). -> (True/False/None, why).
+    False: the wind-on map is most of the way burned at any day end (a flood), or its trail never grew. None: unread, or
+    the wind-off control never reached most of the map, so this seed cannot show the read telling a line from a flood.
+    The limit is the leaf's own word ("never most of the map"), held against a control that must cross it."""
+    if not on or not off or len(on) != len(off) or any(v is None for v in list(on) + list(off)):
+        return None, "share reads missing or uneven (on %r, off %r)" % (on, off)
+    days = len(on) - 1
+    worst = max(range(len(on)), key=lambda i: on[i])
+    if on[worst] > most:
+        return False, ("wind on: %.2f of the open ground burned by day %d (> %.2f, most of the map): a flood; the wind-off "
+                       "control read %.2f" % (on[worst], worst, most, off[-1]))
+    if on[-1] <= on[0]:
+        return False, "wind on: the burned share stayed %.3f over %d days: no scorched trail grew" % (on[0], days)
+    if off[-1] <= most:
+        return None, ("the wind-off control burned only %.2f of the open ground in %d days (<= %.2f): no flood on this seed, "
+                      "so the read cannot show it tells the line from one" % (off[-1], days, most))
+    return True, ("wind on: at most %.2f of the open ground burned (day %d) over %d days, limit %.2f; wind off: %.2f, a flood"
+                  % (on[worst], worst, days, most, off[-1]))
+
+
+def _r6_share_ground(t):
+    """sc_burn_line_walks' denominator: open plantable ground outside the suite's fire pads, from the whole map's terrain
+    and each terrain's fertility. None offline."""
+    cells = _r6_terrain_cells(t, _whole(t))
+    if not _live(t):
+        return None
+    terr = sorted(set(cells.values()))
+    fert = _get_defs(t, ";".join("TerrainDef/%s" % d for d in terr), "fertility", deep=False) if terr else {}
+    return open_ground_outside(cells, dict((d, (fert.get(d) or {}).get("fertility")) for d in terr), FIRE_PADS,
+                               R6_SHARE_PAD_RADIUS)
+
+
+def _r6_burned_share(t, ground):
+    """Cells burned since generation outside the fire pads (the ash field's burn stamp), over `ground` -> share, None
+    offline or unread. A stamp on a non-plantable cell (a ruin floor) only raises it: a flood cannot hide in it."""
+    pads = ";".join("%d,%d" % p for p in FIRE_PADS)
+    r = t.bridge_call("jawa/static_call", type=ASH_FIELD, method="CountBurnedOutside",
+                      args="%s|%d" % (pads, R6_SHARE_PAD_RADIUS))
+    if not _live(t) or not ground:
+        return None
+    try:
+        n = int(str((r or {}).get("result")).strip())
+    except ValueError:
+        return None
+    return float(n) / ground if n >= 0 else None
+
+
+def _r6_tick(t):
+    """The game clock (TicksGame), None offline or unread."""
+    return t.session._ticks() if _live(t) and t.session is not None else None
+
+
+def _r6_share_days(t, ground, arm, t0, first=1):
+    """Play to the end of days `first`..R6_SHARE_DAYS counted from tick `t0` (the start save's clock, so an hourly watch
+    cut short cannot shorten the window), reading the burned share and a whole-map capture at each day end -> ([share],
+    [capture]). A day end the clock cannot place reads None."""
+    sx, sz = _map_size(t)
+    shares, shots = [], []
+    for d in range(first, R6_SHARE_DAYS + 1):
+        now = _r6_tick(t)
+        if t0 is None or now is None:
+            _wait(t, TEN_DAY)
+            shares.append(None)
+            shots.append(None)
+            continue
+        if t0 + d * TEN_DAY > now:
+            _wait(t, t0 + d * TEN_DAY - now)
+        shares.append(_r6_burned_share(t, ground))
+        shots.append(t.screenshot(name="burn_share_%s_day_%d" % (arm, d), rect=(0, 0, sx, sz)))
+    return shares, shots
+
+
 def _r6_burn_line(t):
     """sc_burn_line_walks: the opening front asserted lit (ProbeOpeningFront done, lit > 0); vitals and pending incidents
     recorded; 24 hourly captures at play zoom of the front's box, each capture's clock hour asserted; one save while the
     front walks (burn_line_walking, kept for his review); front_walks decides; the guard read again at the end.
+    The flood read (burn_line_burned_share): the burned share of open plantable ground at the start and at each day end
+    over R6_SHARE_DAYS, a whole-map capture with each; then the start save (R6_SHARE_SAVE) reloaded with
+    windCarriesFireEnabled off, the same days read the same way; burned_share_verdict decides (a moving centre and a
+    front-cropped capture cannot tell a line from a flood: a flood also burns and moves).
     Control: the same day with burnLineEnabled off and the map extinguished lights no free-standing Fire."""
     _independent(t)
     with _comp(t, "burn_line_walks_hourly"):
         _set(t, {"burnLineEnabled": True})
         kv = parse_kv(_ten_static(t, BURN_LINE, "ProbeOpeningFront") or "")
         guard0 = _r6_guard(t)
+        try:   # the share's reads are burn_line_burned_share's to judge; their failure is not the front's
+            ground, err = _r6_share_ground(t), None
+        except ExpectationFailed as ex:
+            ground, err = None, str(ex)
+        share0 = _r6_burned_share(t, ground)
+        tick0 = _r6_tick(t)
+        start = t.bridge_call("rimworld/save_game", saveName=R6_SHARE_SAVE)
+        _GEN["burn_share"] = {"ground": ground, "share0": share0, "start": start, "tick0": tick0, "error": err}
         h0 = _ten_hour(t)
         rows, shots, saved = [], [], None
         for i in range(R6_FRONT_HOURS):
@@ -4616,6 +4722,41 @@ def _r6_burn_line(t):
             dmg = _r6_guard_changes(guard0, guard1)
             if dmg:
                 _fail("the day's watch changed the colony: %r" % dmg)
+    _independent(t)
+    with _comp(t, "burn_line_burned_share"):
+        st = _GEN.get("burn_share") or {}
+        ground = st.get("ground")
+        if _live(t):   # refuse before seven game days are spent on a read that cannot be judged
+            if not ground:
+                _unmeasured(t, "no open plantable ground read on the site: %s" % (st.get("error") or "terrain or fertility unread"))
+            if st.get("share0") is None or st.get("tick0") is None:
+                _unmeasured(t, "the start's burned share or clock was not read (share %r, tick %r)"
+                            % (st.get("share0"), st.get("tick0")))
+            if not isinstance(st.get("start"), dict) or not st["start"].get("success", True):
+                _unmeasured(t, "no %s save was made at the start, so the wind-off control has no same seed: %r"
+                            % (R6_SHARE_SAVE, st.get("start")))
+        # day 1 is the hourly watch above; the day ends are counted from the start save's clock
+        on_rest, on_shots = _r6_share_days(t, ground, "on", st.get("tick0"))
+        on = [st.get("share0")] + on_rest
+        t.bridge_call("rimworld/load_game", saveName=R6_SHARE_SAVE)
+        _on_site(t)
+        _set(t, {"windCarriesFireEnabled": False})
+        try:
+            off_rest, off_shots = _r6_share_days(t, ground, "off", _r6_tick(t))
+        finally:
+            _set(t, {"windCarriesFireEnabled": True})
+        off = [st.get("share0")] + off_rest
+        if _live(t):
+            ok, why = burned_share_verdict(on, off)
+            _note(t, "burned share of open plantable ground by day end (wind on, then the same start wind off)",
+                  {"groundCells": ground, "days": R6_SHARE_DAYS, "limit": R6_SHARE_MOST, "on": on, "off": off,
+                   "worstOn": max(v for v in on if v is not None) if any(v is not None for v in on) else None,
+                   "casesRead": sum(1 for v in on + off if v is not None), "startSave": st.get("start"),
+                   "captures": {"on": on_shots, "off": off_shots}, "verdict": why})
+            if ok is None:
+                _unmeasured(t, why)
+            if ok is False:
+                _fail(why)
     _independent(t)
     with _comp(t, "burn_line_off_control"):
         _set(t, {"burnLineEnabled": False})

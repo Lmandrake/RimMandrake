@@ -56,7 +56,11 @@ SCENES = (
       "R6_ROSTER_MIN", "giant_margin(", "RestoreClassicFurnaceBeast", "_unmeasured(")),
     ("sc_burn_line_walks", "burn_line", False,
      ("ProbeOpeningFront", "R6_FRONT_HOURS", "_ten_hour(", "ppc=", "burn_line_walking", "rimworld/save_game",
-      "front_walks(", "burnLineEnabled", "_r6_guard(")),
+      "front_walks(", "burnLineEnabled", "_r6_guard(",
+      # RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES: the burned share of open plantable ground at each day end
+      # over R6_SHARE_DAYS, and the same start save reloaded with windCarriesFireEnabled off as the flood control
+      "CountBurnedOutside", "open_ground_outside(", "R6_SHARE_DAYS", "R6_SHARE_SAVE", "rimworld/load_game",
+      "windCarriesFireEnabled", "burned_share_verdict(")),
     ("sc_burn_compounds", "fresh_burn_bonus", False,
      ("_r6_guard(", "_r6_incidents(", "RM_FE_BlackRain", "freshBurnBonusEnabled", "R6_COMPOUND_DAYS", "_probe(",
       "RoofConstructed")),
@@ -123,8 +127,174 @@ def pure_checks():
         gap = walk[:5] + [{"hour": 5, "fires": 0, "cx": None, "cz": None}] + walk[6:]
         out.append(("front_walks: an hour with no fire does not", V.front_walks(gap)[0] is False))
         out.append(("front_walks: no reads is not judged", V.front_walks([])[0] is None))
+        # burned_share_verdict(on, off): day-0..N shares of open plantable ground, wind on and the same save wind off
+        line = [0.01, 0.01, 0.02, 0.03, 0.05]
+        flood = [0.01, 0.15, 0.40, 0.60, 0.81]          # T_BURN_ECOLOGY's model, 250 map, bearing 90, seed 0
+        out.append(("burned_share: a line against a flooding control passes", V.burned_share_verdict(line, flood)[0] is True))
+        out.append(("burned_share: wind on taking most of the map fails",
+                    V.burned_share_verdict([0.01, 0.2, 0.4, 0.55, 0.7], flood)[0] is False))
+        out.append(("burned_share: most of the map on ONE day end fails",
+                    V.burned_share_verdict([0.01, 0.2, 0.51, 0.51, 0.51], flood)[0] is False))
+        out.append(("burned_share: exactly half is not most", V.burned_share_verdict([0.01, 0.1, 0.3, 0.5, 0.5], flood)[0] is True))
+        out.append(("burned_share: a control that never floods is not judged",
+                    V.burned_share_verdict(line, [0.01, 0.1, 0.2, 0.3, 0.45])[0] is None))
+        out.append(("burned_share: a flood both ways fails, never 'the control floods'",
+                    V.burned_share_verdict(flood, flood)[0] is False))
+        out.append(("burned_share: a trail that never grows fails",
+                    V.burned_share_verdict([0.02, 0.02, 0.02, 0.02, 0.02], flood)[0] is False))
+        out.append(("burned_share: an unread day is not judged", V.burned_share_verdict([0.01, None, 0.02, 0.03, 0.05], flood)[0] is None))
+        out.append(("burned_share: arms of different lengths are not judged", V.burned_share_verdict(line, flood[:3])[0] is None))
+        out.append(("burned_share: no reads is not judged", V.burned_share_verdict([], [])[0] is None))
+        cells = {(x, z): ("RM_FE_Ground_DeepAsh" if x < 8 else "WaterShallow") for x in range(10) for z in range(10)}
+        cells[(0, 0)] = "Granite_Rough"
+        fert = {"RM_FE_Ground_DeepAsh": 0.7, "WaterShallow": 0.0, "Granite_Rough": 0.0}
+        out.append(("open_ground_outside: fertile land only", V.open_ground_outside(cells, fert, (), 18) == 79))
+        out.append(("open_ground_outside: a pad's square is left out (as CountBurnedOutside does)",
+                    V.open_ground_outside(cells, fert, ((2, 2),), 1) == 70))
+        out.append(("open_ground_outside: a terrain with no fertility read is not ground", V.open_ground_outside(cells, {}, (), 18) == 0))
     except Exception as ex:   # noqa: BLE001
         out.append(("pure helpers crashed: %r" % ex, False))
+    return out
+
+
+class _FakeGame(object):
+    """A scripted Pyrelands for _r6_burn_line: a clock, the two settings, saves, and a burned share that grows by day as
+    `on_curve` with the wind carrying fire and as `off_curve` without (index = whole days since the start save)."""
+    DAY = 60000
+
+    def __init__(self, V, on_curve, off_curve, cut_hour=None):
+        self.V, self.on_curve, self.off_curve, self.cut_hour = V, on_curve, off_curve, cut_hour
+        self.tick, self.t0, self.saves = 1000, None, {}
+        self.settings = {"burnLineEnabled": True, "windCarriesFireEnabled": True}
+        self.share_reads, self.wind_at_reads, self.loads = [], [], []
+        self.cells = dict(((x, z), "RM_FE_Ground_DeepAsh") for x in range(100) for z in range(100))
+        self.ground = V.open_ground_outside(self.cells, {"RM_FE_Ground_DeepAsh": 0.7}, V.FIRE_PADS, V.R6_SHARE_PAD_RADIUS)
+
+    def share(self):
+        if self.t0 is None:
+            return 0.01
+        d = min((self.tick - self.t0) // self.DAY, len(self.on_curve) - 1)
+        return (self.on_curve if self.settings["windCarriesFireEnabled"] else self.off_curve)[d]
+
+    def call(self, tool, **kw):
+        if tool == "rimworld/save_game":
+            if kw.get("saveName") == self.V.R6_SHARE_SAVE:
+                self.t0 = self.tick
+            self.saves[kw.get("saveName")] = self.tick
+            return {"success": True}
+        if tool == "rimworld/load_game":
+            self.loads.append(kw.get("saveName"))
+            self.tick = self.saves[kw.get("saveName")]
+            return {"success": True}
+        if tool == "jawa/static_call" and kw.get("method") == "CountBurnedOutside":
+            self.share_reads.append(self.tick - (self.t0 or self.tick))
+            self.wind_at_reads.append(self.settings["windCarriesFireEnabled"])
+            return {"success": True, "result": str(int(round(self.share() * self.ground)))}
+        if tool == "jawa/get_terrain_batch":
+            return {"success": True, "ops": "RM_FE_Ground_DeepAsh:0,0,100,100"}
+        if tool == "jawa/get_defs":
+            return {"success": True, "defs": [{"defName": "RM_FE_Ground_DeepAsh", "fields": {"fertility": 0.7}}]}
+        if tool == "jawa/map_info":
+            return {"success": True, "sizeX": 100, "sizeZ": 100, "mapBiome": "RM_Pyrelands"}
+        return {"success": True}
+
+
+def run_fake_burn_line(V, game):
+    """_r6_burn_line against `game` with the harness around it stubbed -> {component: verdict}, the share note."""
+    import contextlib
+    res, notes = {}, {}
+
+    class T(object):
+        upstream_failed = False
+        components = []
+
+        class session(object):
+            @staticmethod
+            def _ticks():
+                return game.tick
+
+        def bridge_call(self, tool, **kw):
+            return game.call(tool, **kw)
+
+        def screenshot(self, name=None, rect=None, ppc=None, padding=1):
+            return "%s.png" % name
+
+        def _record(self, *a):
+            pass
+
+    @contextlib.contextmanager
+    def comp(t, name, **kw):
+        try:
+            yield t
+            res[name] = "PASS"
+        except V._Unmeasured:
+            res[name] = "UNMEASURED"
+        except V.ExpectationFailed:
+            res[name] = "FAIL"
+        t.upstream_failed = False
+
+    def wait(t, n, fast=None):
+        game.tick += n
+
+    def fires(t):
+        h = (game.tick - (game.t0 or game.tick)) // 2500
+        if game.cut_hour is not None and h == game.cut_hour:
+            raise V.ExpectationFailed("scripted: the hourly watch is cut at hour %d" % h)
+        return [(10 + h, 10)] if game.settings["burnLineEnabled"] else []
+
+    def set_(t, values):
+        game.settings.update(values)
+
+    stubs = {"_comp": comp, "_independent": lambda t: None, "_on_site": lambda t: None, "_wait": wait, "_set": set_,
+             "_ten_static": lambda t, ty, m, args=None: "done=True;lit=4", "_ten_hour": lambda t: (game.tick / 2500.0) % 24,
+             "_r6_guard": lambda t: {}, "_r6_guard_changes": lambda a, b: [], "_r6_fires": fires,
+             "_note": lambda t, label, data: notes.__setitem__(label, data)}
+    saved = dict((k, getattr(V, k)) for k in stubs)
+    try:
+        for k, v in stubs.items():
+            setattr(V, k, v)
+        V._GEN.pop("burn_share", None)
+        V._r6_burn_line(T())
+    finally:
+        for k, v in saved.items():
+            setattr(V, k, v)
+    share = next((v for k, v in notes.items() if k.startswith("burned share")), None)
+    return res, share
+
+
+def chain_checks():
+    """The share read wired into the chain (RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES), on a scripted game."""
+    out = []
+    try:
+        V = load_validation()
+        line, flood = [0.01, 0.01, 0.02, 0.03, 0.05], [0.01, 0.15, 0.40, 0.60, 0.81]
+        day = _FakeGame.DAY
+        g = _FakeGame(V, line, flood)
+        res, note = run_fake_burn_line(V, g)
+        out.append(("chain: a line with a flooding control passes burn_line_burned_share",
+                    res.get("burn_line_burned_share") == "PASS"))
+        out.append(("chain: each arm is read at the start's clock + 1..%d days" % V.R6_SHARE_DAYS,
+                    g.share_reads == [0] + [d * day for d in range(1, V.R6_SHARE_DAYS + 1)] * 2))
+        out.append(("chain: the wind-off arm is the start save reloaded, wind off at its reads, wind back on after",
+                    g.loads == [V.R6_SHARE_SAVE] and g.wind_at_reads == [True] * (V.R6_SHARE_DAYS + 1) + [False] * V.R6_SHARE_DAYS
+                    and g.settings["windCarriesFireEnabled"] is True))
+        out.append(("chain: the note prints worst, limit and cases read",
+                    bool(note) and abs((note.get("worstOn") or 0) - max(line)) < 1.0 / g.ground and note.get("limit") == V.R6_SHARE_MOST
+                    and note.get("casesRead") == 2 * V.R6_SHARE_DAYS + 2))
+        out.append(("chain: the front and burn-line-off rows still run",
+                    res.get("burn_line_walks_hourly") == "PASS" and res.get("burn_line_off_control") == "PASS"))
+        res, _ = run_fake_burn_line(V, _FakeGame(V, [0.01, 0.2, 0.4, 0.62, 0.8], flood))
+        out.append(("chain: a wind-on flood FAILS burn_line_burned_share", res.get("burn_line_burned_share") == "FAIL"))
+        res, _ = run_fake_burn_line(V, _FakeGame(V, line, [0.01, 0.05, 0.1, 0.2, 0.3]))
+        out.append(("chain: a control that never floods is UNMEASURED, never PASS",
+                    res.get("burn_line_burned_share") == "UNMEASURED"))
+        g = _FakeGame(V, line, flood, cut_hour=5)
+        res, _ = run_fake_burn_line(V, g)
+        out.append(("chain: an hourly watch cut short still reads the full window",
+                    res.get("burn_line_walks_hourly") == "FAIL" and res.get("burn_line_burned_share") == "PASS"
+                    and g.share_reads[V.R6_SHARE_DAYS] == V.R6_SHARE_DAYS * day))
+    except Exception as ex:   # noqa: BLE001 - a crash is a FAIL
+        out.append(("chain checks crashed: %r" % ex, False))
     return out
 
 
@@ -157,7 +327,7 @@ def checks(text, rewards):
 def main():
     text = open(VALIDATION, encoding="utf-8").read()
     rewards = open(REWARDS, encoding="utf-8").read()
-    res = checks(text, rewards) + pure_checks()
+    res = checks(text, rewards) + pure_checks() + chain_checks()
     for what, ok in res:
         print("%s %s" % ("PASS" if ok else "FAIL", what))
     bad = sum(1 for _, ok in res if not ok)
