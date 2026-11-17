@@ -1467,6 +1467,12 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1794790336: stage 5 done"
+  },
+  {
+   "at": "2026-11-17T17:09:38Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "his card 2026-11-17 (numbers become experiences, the wind bar); his 2026-11-16 burn-line words carried out by the rescue 49e11870b4; his 2026-11-15 gap-fix cards on the stage-2 item; re-pinned stage 2 (owner); stage 3 (sheet, tree, scenes); stage 5 (tree, sheet); stage 4 left stale, its exam void (sheet, tree, scenes, owner changed): the next open retakes it; sources OWNER:1794926128945577969@1d7b17ad85ce, OWNER:1794926130118775229@1d7b17ad85ce, OWNER:1794842055508243067@1d7b17ad85ce, OWNER:1794790810777772480, OWNER:1794790871101885625, OWNER:1794894282613045211@49e11870b4, OWNER:1794894288587863659@49e11870b4"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1762,7 +1768,7 @@
    "inputs": {
     "exam": "28c949c14eb5077abcd8d0662e9bb29bbb03b1147d7de95a8c6a29045828d1af",
     "floor": "2de6928570f13203102472c6bb69797ee593c6269390f099d9135633b225eaa7",
-    "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
+    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
     "scenes": "227054470a7b899ac1ae4374bd0129f6446d0ded2f040c825cbaa49a94b24f41",
     "sheet": "6c720a5b278642ef393423b293e918c447b12e360e1821767f4cac7065b11979",
@@ -1776,7 +1782,8 @@
    "owner_uncited": [
     "1793766816609436834",
     "1794611171307640419",
-    "1794774895716093173"
+    "1794790810777772480",
+    "1794790871101885625"
    ],
    "repinned": [
     {
@@ -1803,6 +1810,21 @@
       "OWNER:1794774724955142310@4a7b2faf61",
       "OWNER:1794774724955142310@5b463ff0f9",
       "OWNER:1794774895716093173"
+     ]
+    },
+    {
+     "at": "2026-11-17T17:09:38Z",
+     "inputs": [
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794926128945577969@1d7b17ad85ce",
+      "OWNER:1794926130118775229@1d7b17ad85ce",
+      "OWNER:1794842055508243067@1d7b17ad85ce",
+      "OWNER:1794790810777772480",
+      "OWNER:1794790871101885625",
+      "OWNER:1794894282613045211@49e11870b4",
+      "OWNER:1794894288587863659@49e11870b4"
      ]
     }
    ],
@@ -1859,9 +1881,9 @@
     "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
     "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "094f6b143492b2d130b01b3a4ca7ced20d06e5384fd4559173a5d7fa35b2133f",
-    "sheet": "c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab",
-    "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5"
+    "scenes": "b34b53d54f05b610809aeb291395e0f13c215ed681cad3da419ae1e2fabb9ddf",
+    "sheet": "a0d6beb6b982019bd215065d574cb51b165e806f6b9620c10fb20b38a8d7c72a",
+    "tree": "c1b1d874f8b1855f4308b54067d17a2ad1bcc207f539f525f2d1cbdcbeacff08"
    },
    "manifest": {
     "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
@@ -1873,6 +1895,25 @@
     "1793766816609436834",
     "1794611171307640419",
     "1794774895716093173"
+   ],
+   "repinned": [
+    {
+     "at": "2026-11-17T17:09:38Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794926128945577969@1d7b17ad85ce",
+      "OWNER:1794926130118775229@1d7b17ad85ce",
+      "OWNER:1794842055508243067@1d7b17ad85ce",
+      "OWNER:1794790810777772480",
+      "OWNER:1794790871101885625",
+      "OWNER:1794894282613045211@49e11870b4",
+      "OWNER:1794894288587863659@49e11870b4"
+     ]
+    }
    ],
    "run": "rm-role-designer-1794789422",
    "stage": 3,
@@ -1905,7 +1946,28 @@
    },
    "run": "rm-role-designer-1794789873",
    "stage": 4,
-   "summary": "Cold Reader exam retaken on the tree and sheet as edited by the furnace-beast body-9 build (6120bb02aa, his card OWNER:1794786804170379047): 23 frozen scenarios (Examiner abd12815cb1880bd4 e1-e17, three new on the twice-the-Zeer bar; Challenger ac15eed2b5fd7af54 c1-c6, all rejects; 17 rejects), Readers a327667c750d88e96 and a677c54087433ad4d match all 23, 23/23, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with three_skies removed (a7ccf3500aca03beb) accepted e2, e3, which both Readers reject, so the set discriminates. exam.json carries it."
+   "summary": "Cold Reader exam retaken on the tree and sheet as edited by the furnace-beast body-9 build (6120bb02aa, his card OWNER:1794786804170379047): 23 frozen scenarios (Examiner abd12815cb1880bd4 e1-e17, three new on the twice-the-Zeer bar; Challenger ac15eed2b5fd7af54 c1-c6, all rejects; 17 rejects), Readers a327667c750d88e96 and a677c54087433ad4d match all 23, 23/23, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with three_skies removed (a7ccf3500aca03beb) accepted e2, e3, which both Readers reject, so the set discriminates. exam.json carries it.",
+   "voided": [
+    {
+     "at": "2026-11-17T17:09:38Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes",
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794926128945577969@1d7b17ad85ce",
+      "OWNER:1794926130118775229@1d7b17ad85ce",
+      "OWNER:1794842055508243067@1d7b17ad85ce",
+      "OWNER:1794790810777772480",
+      "OWNER:1794790871101885625",
+      "OWNER:1794894282613045211@49e11870b4",
+      "OWNER:1794894288587863659@49e11870b4"
+     ],
+     "why": "its exam ran against another tree or sheet: retake it"
+    }
+   ]
   },
   {
    "at": "2026-11-16T00:57:59Z",
@@ -1915,8 +1977,8 @@
     "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
     "scenes": "094f6b143492b2d130b01b3a4ca7ced20d06e5384fd4559173a5d7fa35b2133f",
-    "sheet": "c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab",
-    "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5"
+    "sheet": "a0d6beb6b982019bd215065d574cb51b165e806f6b9620c10fb20b38a8d7c72a",
+    "tree": "c1b1d874f8b1855f4308b54067d17a2ad1bcc207f539f525f2d1cbdcbeacff08"
    },
    "manifest": {
     "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
@@ -1927,6 +1989,24 @@
     "1793766816609436834",
     "1794611171307640419",
     "1794774895716093173"
+   ],
+   "repinned": [
+    {
+     "at": "2026-11-17T17:09:38Z",
+     "inputs": [
+      "tree",
+      "sheet"
+     ],
+     "sources": [
+      "OWNER:1794926128945577969@1d7b17ad85ce",
+      "OWNER:1794926130118775229@1d7b17ad85ce",
+      "OWNER:1794842055508243067@1d7b17ad85ce",
+      "OWNER:1794790810777772480",
+      "OWNER:1794790871101885625",
+      "OWNER:1794894282613045211@49e11870b4",
+      "OWNER:1794894288587863659@49e11870b4"
+     ]
+    }
    ],
    "run": "rm-role-designer-1794790336",
    "stage": 5,

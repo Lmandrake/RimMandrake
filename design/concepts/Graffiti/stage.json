@@ -673,6 +673,12 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1794755317: stage 5 done"
+  },
+  {
+   "at": "2026-11-17T17:10:10Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "a passing bar is an experience: four oracles reworded (d1542a3675); the ugliness_visible card (1bee0c2e96); the in-version hidden-face fix his lock card kept open (68f199064a); 2026-11-15 card answers on the stage item; re-pinned stage 2 (owner); stage 3 (sheet, tree, scenes); stage 5 (tree, sheet); stage 4 left stale, its exam void (sheet, tree, scenes, owner changed): the next open retakes it; sources OWNER:1794842055508243067@d1542a3675, OWNER:1794889675303725702@1bee0c2e96, OWNER:1794771556666342734@68f199064a, OWNER:1794790746864442914, OWNER:1794790752285697966, OWNER:1794790788426165373, OWNER:1794790829027694796"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -851,7 +857,7 @@
    "inputs": {
     "exam": "28a42f76bf15438aff3a660a75f09d5dc7b0342169e66b517b8b89c8f13c92b3",
     "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "owner": "e697dc11f7e779b953779c8684d055771de40255d1246d2846093d49498777dc",
     "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
     "scenes": "ea5474f3adc9f2e8396926a293a7dc384af5fe5e316454d497e2b7a727a2b3a3",
     "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
@@ -862,11 +868,33 @@
     "designer_dialogue.md": "e88d5a0508489eaae8b9cf6ab0cfea0f7b313852c0efb6c5a3acf2e54247f3fa"
    },
    "outcome": "done",
-   "owner_uncited": [],
+   "owner_uncited": [
+    "1794790746864442914",
+    "1794790752285697966",
+    "1794790788426165373",
+    "1794790829027694796"
+   ],
    "quick_look": {
     "offer": false,
     "why": "no owner question is proposed: his card settled the rework and nothing waits on him"
    },
+   "repinned": [
+    {
+     "at": "2026-11-17T17:10:10Z",
+     "inputs": [
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794842055508243067@d1542a3675",
+      "OWNER:1794889675303725702@1bee0c2e96",
+      "OWNER:1794771556666342734@68f199064a",
+      "OWNER:1794790746864442914",
+      "OWNER:1794790752285697966",
+      "OWNER:1794790788426165373",
+      "OWNER:1794790829027694796"
+     ]
+    }
+   ],
    "run": "rm-role-designer-1794750411",
    "stage": 2,
    "summary": "His card of 2026-11-15 (OWNER:1794749812865303715, 'Rework, and stop parking for these') recorded as decision d_rework_no_park; no ask is sent and no core contradiction is open. The rework edits are already in for stage 3 to lint and the judge to see: g1 (sc_spree_corridor's skilled piece is a script-forced paint job, not a player order; after_the_raid new 3, overlap 0.00, showcase set accepted), g18 (sc_wall_closeup gains a south-only cell and a far-side control, cited to RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL, which had never been filed and is now filed for BENCH), answer_wall's scenario now four sub-cases, and sc_breach_bias_raid's citation made true by a bias-off read. Gate A lint PASS; coverage_fixes.json written against rm-coverage-judge-1794734941. Budget: the task is past its cap (6.94M of 4.0M); raising it is the Conductor's call."
@@ -878,9 +906,9 @@
     "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": "ea5474f3adc9f2e8396926a293a7dc384af5fe5e316454d497e2b7a727a2b3a3",
-    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
-    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d"
+    "scenes": "dfd1eeeae40599754299b0df6b64edeae1681437a476139a74d9c0c44c7d2a72",
+    "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
+    "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894"
    },
    "manifest": {
     "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
@@ -893,6 +921,25 @@
     "offer": false,
     "why": "no owner question is proposed; the next step is the exam and the coverage judge's delta round"
    },
+   "repinned": [
+    {
+     "at": "2026-11-17T17:10:10Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes"
+     ],
+     "sources": [
+      "OWNER:1794842055508243067@d1542a3675",
+      "OWNER:1794889675303725702@1bee0c2e96",
+      "OWNER:1794771556666342734@68f199064a",
+      "OWNER:1794790746864442914",
+      "OWNER:1794790752285697966",
+      "OWNER:1794790788426165373",
+      "OWNER:1794790829027694796"
+     ]
+    }
+   ],
    "run": "rm-role-designer-1794752602",
    "stage": 3,
    "summary": "Stage 3 Write accepted as it stands: Gate A lint PASS; showcase set accepted (spree_corridor 5 new, social_wall 4 new at 0.20 overlap with its staging reason, after_the_raid 3 new, devout_wall 3 new). The return note's 24 round-1 gaps of rm-coverage-judge-1794730911 were fixed at 09:06Z (run rm-role-designer-1794732988); the last verdict on disk, rm-coverage-judge-1794734941, left 2 gaps (inv_player_orders in after_the_raid; the far-side wall case), both reworked and claimed in coverage_fixes.json against that judge (sc_spree_corridor's skilled piece is a script-forced job; sc_wall_closeup gains a south-only cell and far-side control, pending RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL). A fix file against 1794730911 would be refused by coverage_judge.fix_claims as stale, so it was not rewritten. System fault filed: RIMMANDRAKE_CLEAR_PENDING_DECISION_ON_ACCEPT_ROUND_ONE_LINGERS (stage.json pending_decision is never cleared). Budget past cap (7.44M of 4.0M); raising it is the Conductor's call."
@@ -920,7 +967,28 @@
    },
    "run": "rm-role-designer-1794753189",
    "stage": 4,
-   "summary": "Stage 4 Exam PASS against the reworked tree (a6eedf87) and unchanged sheet (40637a73): 82/82 frozen scenarios (63 previous kept, e27 rewritten to answer_wall's four sub-cases, 10 new examiner on the far-side lip and pool-pick control and the four answers, 8 challenger; 60 reject cases) matched by both fresh Readers; accept_where_reject_core 0; no challenger miss; control on going_over missed e8 and e19. Helpers charged 247679 tokens; the task is past its cap (7.98M of 4.0M), raising it is the Conductor's call."
+   "summary": "Stage 4 Exam PASS against the reworked tree (a6eedf87) and unchanged sheet (40637a73): 82/82 frozen scenarios (63 previous kept, e27 rewritten to answer_wall's four sub-cases, 10 new examiner on the far-side lip and pool-pick control and the four answers, 8 challenger; 60 reject cases) matched by both fresh Readers; accept_where_reject_core 0; no challenger miss; control on going_over missed e8 and e19. Helpers charged 247679 tokens; the task is past its cap (7.98M of 4.0M), raising it is the Conductor's call.",
+   "voided": [
+    {
+     "at": "2026-11-17T17:10:10Z",
+     "inputs": [
+      "sheet",
+      "tree",
+      "scenes",
+      "owner"
+     ],
+     "sources": [
+      "OWNER:1794842055508243067@d1542a3675",
+      "OWNER:1794889675303725702@1bee0c2e96",
+      "OWNER:1794771556666342734@68f199064a",
+      "OWNER:1794790746864442914",
+      "OWNER:1794790752285697966",
+      "OWNER:1794790788426165373",
+      "OWNER:1794790829027694796"
+     ],
+     "why": "its exam ran against another tree or sheet: retake it"
+    }
+   ]
   },
   {
    "at": "2026-11-15T14:53:08Z",
@@ -948,8 +1016,8 @@
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
     "scenes": "ea5474f3adc9f2e8396926a293a7dc384af5fe5e316454d497e2b7a727a2b3a3",
-    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
-    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d"
+    "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
+    "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894"
    },
    "manifest": {
     "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
@@ -957,6 +1025,24 @@
    },
    "outcome": "done",
    "owner_uncited": [],
+   "repinned": [
+    {
+     "at": "2026-11-17T17:10:10Z",
+     "inputs": [
+      "tree",
+      "sheet"
+     ],
+     "sources": [
+      "OWNER:1794842055508243067@d1542a3675",
+      "OWNER:1794889675303725702@1bee0c2e96",
+      "OWNER:1794771556666342734@68f199064a",
+      "OWNER:1794790746864442914",
+      "OWNER:1794790752285697966",
+      "OWNER:1794790788426165373",
+      "OWNER:1794790829027694796"
+     ]
+    }
+   ],
    "run": "rm-role-designer-1794755317",
    "stage": 5,
    "summary": "Lock retry after 9eb814c040 (Lock gate reads the concept's own clone; on origin/main). Coverage judge rm-coverage-judge-1794753924 signed tree a6eedf87 / sheet 40637a73 (covered, 0 gaps; rounds 24, 2, 0); the signature is on the BENCH ledger shard locally and on origin/main. concept_tree gate PASS in this clone; showcase set accepted (spree_corridor 5 new, social_wall 4 new at 0.20, after_the_raid 3 new, devout_wall 3 new). Mod item RIMMANDRAKE_FINISH_GRAFFITI_AGAINST_TREE_BUILT_BEFORE_IT (kind mod) is filed with ## verify citing design/concepts/Graffiti/tree.json and the accepted hash. Frozen artifacts unchanged. Still owed, not counted by the judge: record.json inv_mark_on_wall proof 'current' overstates the far-side clause until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL lands. Budget past cap (8.97M of 4.0M); raising it is the Conductor's call."
