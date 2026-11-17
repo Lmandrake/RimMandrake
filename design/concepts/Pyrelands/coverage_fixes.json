@@ -1,11 +1,21 @@
 {
- "against": "rm-coverage-judge-1794779751",
- "by": "RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE (his card OWNER:1794786804170379047, 'Keep twice, raise body to 9+'; edit 6120bb02aa); claim written by Designer run rm-role-designer-1794789422 after reading each place",
+ "against": "rm-coverage-judge-1794946219",
+ "by": "Conductor helper, option A under Evidence-for-Ask (CONDUCTOR:1794939817434538611); claims name the closed fixing items and their shas, all ancestors of origin/main",
  "claims": [
   {
    "gap": "g1",
-   "evidence": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml:290 baseBodySize 9 (was 6); the largest other roster kind is RSW_Zeer at 4.5 (RSW_Zeer.xml:84), so 9 is exactly twice it and the scene's x2 bar against the full resolved roster, patch-added cast included, is attainable and unchanged; adult drawSize 7.5 > the Zeer's 6. scenes.json sc_furnace_giant expect and tree.json furnacebeast_warms oracle_proposed now read body size 9; sheet.md furnacebeast_warms reads 9, twice the Zeer's 4.5; record.json d_furnace_body_nine. selftest_pyrelands_defs_offline.py run in this run: PASS, 7 def facts hold, 16 of 16 mutants red. The live read in sc_furnace_giant stays UNRUN.",
-   "fix": "build changed, not the criterion: the owner chose to keep the twice bar and enlarge the beast"
+   "evidence": "RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED closed at 314117207ec9: scenes.json sc_fire_walks_with_wind start/expect now assert the set wind bearing and a fire-free start, and light a strip mid-way at two opposite bearings (90 and 270) with an off control; wind_burn_live.py verdict rows read the bearing returned and the carries flag. selftest_pyrelands_wind_burn_rows.py 27/27 (failed on the old code) and accept_round9_gaps.py wind_bearings pass, evidence design/concepts/Pyrelands/version/evidence/wind_bearings_offline_2026-11-17.txt. The live read stays UNRUN.",
+   "fix": "scene and live script changed, not the criterion"
+  },
+  {
+   "gap": "g2",
+   "evidence": "RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES closed at c07cd5a998e6: the burn_line chain gains component burn_line_burned_share, reading the burned share of open plantable ground at start and each day end over R6_SHARE_DAYS=4 against a same-start windCarriesFireEnabled-off control (scenes.json, src/RimMandrake/Pyrelands/validation.py). selftest_pyrelands_round6_parts 69 checks and accept_round9_gaps.py burned_share pass, evidence Transient/pyrelands/burned_share_offline_c07cd5a998e6.txt. The live read stays UNRUN.",
+   "fix": "scene and validation changed, not the criterion"
+  },
+  {
+   "gap": "g3",
+   "evidence": "RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS closed at c1564dea9c63: tree.json burn_line_walks drops the 'lights inside the colony' must-not and record.json inv_burn_line_fire_clock drops 'far from buildings' (his 2026-11-16 word) and names the built wind carry, with new decision rows d_burn_line_natural_grassfire and d_fire_walks_with_wind; sheet.md no longer claims a live wind pass; the furnace-giant scene and check drop literal sizes. accept_round9_gaps.py text_fixes FAIL on 3fa42f4a52, PASS at c1564dea9c63; selftest_pyrelands_round6_gaps 18/18, round6_parts 69/69.",
+   "fix": "text corrected to match his ruling, not the criterion"
   }
  ]
 }
