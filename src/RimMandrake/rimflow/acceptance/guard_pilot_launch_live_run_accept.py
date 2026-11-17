@@ -33,7 +33,10 @@ PILOT = (L.config().get("pilot_mods") or ["ExplosiveKnockback"])[0]
 started = []
 D.launch_stage = lambda root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, **kw: started.append(
     (mod, item)) or (0, "DETACHED u-new", "u-new")
-ready = {"ready": lambda r, m: (True, "PASS 7/7"), "land_ledger": lambda paths: "landed", "open_items": lambda ids: []}
+ready = {"ready": lambda r, m: (True, "PASS 7/7"), "land_ledger": lambda paths: "landed", "open_items": lambda ids: [],
+         # a stand-in game reading: the real one reads the live driver lock, so a helper holding a game turned this
+         # offline test red (RIMMANDRAKE_SEAL_PILOT_GUARD_TEST_FROM_THE_LIVE_GAME)
+         "bridge": lambda p, game="a": (True, "free (test stand-in)")}
 
 for stage, owed in (("blind_challenge", "cycle"), ("in_game", "run")):
     M.brief_text = lambda r, m, cap, _s=stage, _o=owed, **k: ("", {"stage": _s, "owed": _o})

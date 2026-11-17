@@ -1,0 +1,86 @@
+{
+ "_doc": "The art judge brief's calibration pictures (art_calibration.py, RIMMANDRAKE_BUILD_ART_BRIEF_CALIBRATION_NOTHING_TO_RUN). Every case is art already made and already ruled by the owner: the regression set's cards (infrastructure/state/art_eval/regression.jsonl) as the art-eval regress run `source_run` staged them under the agent storage root (art_eval/runs/<source_run>/<subject>__<candidate>/), each picture pinned by sha256 here. A picture missing or changed is a case that did not run (the brief stays UNTESTED), never a substitute. `planted` adds the two cases the item asked for, built from the same pictures: an owner-kept subject (checklist step 2, E3) and a north facing that is its south picture (point 27: the fix is a rear-view redraw). No new art is generated.",
+ "source_run": "regress_departures_v3c_20261105",
+ "pins": {
+  "RM_Danglemaw__r1": {
+   "south.png": "afa62f2b40e48fb8b35dd3898044052e20559ff5b402ab23a5b9ceb5a92b95f9",
+   "east.png": "78d2df877296135cc088c2dcad2f059358691990c320cfe2007aa2c3b79bd3e5",
+   "north.png": "a2fda706de690f0c64439f1feba27e4e18ebb5b604f6ee8af5b6d2f5acf1ae84",
+   "scale.png": "d80b8f0b23d129774b886a367e96e217173df0a86b4be69a59f49530b2f33f06"
+  },
+  "RM_DecayDrake__r2": {
+   "south.png": "ba1d4d9f8d382849d306225129bfea01a0e5ce9b1431d6eef411208053a9c5cb",
+   "east.png": "ea3fa4cc77edc94487026d01a4646ea09fd487d8324c7c8829cdcad11b78dd6d",
+   "north.png": "d808a90364fa29ac2d0c35a7f62c6ed77cd001896525e5de3a6b1768555e5d2c",
+   "scale.png": "96025eb13e99ab45b1fe8e90c8079af786f75013fc33304dfd22e8c942d69aea"
+  },
+  "RM_Dewblade__B": {
+   "single.png": "323dc40331390b8dd092d9a24cf06c5f78571ee0edb2d3030678d2b93bf6f926",
+   "scale.png": "7e726436c899b32e6e472c7ddf81332f2841c05b6366c6d8e42757684cffebac"
+  },
+  "RM_Durrok__r2": {
+   "south.png": "565349cd07afdc0e3e670ab5cee54782e8ab5cd018b105a01dd7520ead9ff62e",
+   "east.png": "f7bcb22591f8139b546aaecb84e9defc0a9eb488b563d18cad064aab38ddb8bd",
+   "north.png": "e9880e4c820c334e16b83dcba204f09e4627935084fedd21358ff8d1d9093a5f",
+   "scale.png": "3c37bec60c9b1e3314f02f03a1d13c7c839a63bee32932fe6fbda880b8508e1a"
+  },
+  "RM_Gawpsack__live": {
+   "south.png": "b05f8ce8b318f2202481657347406fba228d533da16d1b84fd14a7f63ebb6d2e",
+   "east.png": "a35cff724b8b330e64789684407543ad2edb36e34d2f4de28b6e6d512530aa47",
+   "north.png": "93c6f50ef90a0ac53085c9b5d971dc0bcb7fcc1a243996583d404e89952224e1",
+   "scale.png": "59ab36d7eb224dc911fac1055aa2090524123b10142629e5c04011291685fee8"
+  },
+  "RM_Huldu__C": {
+   "south.png": "940e99f39a2dbe5a54ca350db0abacfd45351dff8d679e09bfd0a5b15b094b0d",
+   "east.png": "654aeee400680c4d367d7879cde552682b68237634a43fea5c89c9334601dbfd",
+   "north.png": "427ba5ccd8e6bba315d4b3ce479aec369c25a7dd26302bfb0f217d363839e5b3",
+   "scale.png": "075f638365cde22b3e1d8a69d28913c01988e4972cc01c1f6f6c4d991861da00"
+  },
+  "RM_Murrin__C": {
+   "south.png": "26442e911f55f70729104ff22af8d7bc0befb3a2672d9a6d93d27b3f279ccfc3",
+   "east.png": "789d380525b0f01e264280068fed8076ca49ce41d3c29f8eb7f057f1a80b6a48",
+   "north.png": "2db9446e6a536c44c261c90e9c96df074638c13965777e618304ab1be2e41d60",
+   "scale.png": "447d22ae3ed6e3097f86a1af5fa05157a7ad12168f53e8da43a811b1ab8195c8"
+  },
+  "RM_Peeper__r2": {
+   "south.png": "8cae5949c1f55676c3ba2f142a92b4a723fa6211570c8c1234431c41937f93ee",
+   "east.png": "8c1c28a724181c1514077db7e561540d0f852a38eea11cdb1203167d706372fe",
+   "north.png": "b555c81959bb1de1c532e3de5c03dabb1e0c3003383b3457709dd17c27ec3864",
+   "scale.png": "5c2e76e4f59091aea8681d2c95c31ffdb7857c913ee7d69d11c2d550a3824928"
+  },
+  "RM_Shadefern__B": {
+   "single.png": "55ae8b8d006b735764d6b2d80d666621520c647dda3a149e37d257621a6a3043",
+   "scale.png": "48b015b34aa5fc5d8318c2fa6f6f01cd17ca6212f2b236852c3feb9b9c7a4411"
+  },
+  "RM_Ssurr__B": {
+   "south.png": "b4cfc176992174c45df6ea6d7da7534273e701b74307f661361e89b34109aadc",
+   "east.png": "1aa85a076db01b4bf43bbdbbfecd501060a5fac7063cba27043871d89fa0f8d6",
+   "north.png": "762326f801c982a1bffc01b63023b6b175ab080293b6083c1a1e9481da14cafb",
+   "scale.png": "97e964e997a437c75a8054186f8740e86199fb2ebc2655498b1f21c10c29d7c1"
+  },
+  "RM_Vellak__B": {
+   "south.png": "8e2e7d0fe85dcef46169aa9c79b8e0d14e229b9fd9c43919840b2c990364c520",
+   "east.png": "fd658e5252c6ed0ec21a37043d3f9b1f6a8c960dd6d04ff79ea46c1e9d111659",
+   "north.png": "749228c8e4f3a4e89b85be2c5f2d8e5414001997195ba990c2305d2c57d58cc3",
+   "scale.png": "3e44689226d24bc5a6b8eb81fc2b31fd337391a9262730a5ea1f7cb7244cd790"
+  }
+ },
+ "planted": [
+  {
+   "id": "kept_RM_Gawpsack_live",
+   "expect": "pass",
+   "card": "RM_Gawpsack__live",
+   "plant": "owner_kept",
+   "kept": "The owner KEPT this picture (live column A) on owner_escalations_contagion_sheet_2026-10-24.",
+   "why": "criteria_ledger CL-030: owner KEPT live A, which the art-eval pipeline banded REALLY_BAD; E3: a delegated call never REDOes kept art"
+  },
+  {
+   "id": "north_from_south_RM_DecayDrake_r2",
+   "expect": "refuse",
+   "card": "RM_DecayDrake__r2",
+   "plant": "north_from_south",
+   "route": "north_rear",
+   "why": "owner PICKED DecayDrake r2 (owner_picks_2026-10-24); its north.png is replaced by its own south.png, whose face (eyes, snout, jaw) then sits where the rear belongs: C1 refuses and the fix is a rear-view redraw (point 27)"
+  }
+ ]
+}

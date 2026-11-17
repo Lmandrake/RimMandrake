@@ -219,10 +219,13 @@ def _text_of(ref, given):
         return str(txt)
     path = ref if os.path.isabs(ref) else os.path.join((given or {}).get("root") or os.getcwd(), ref)
     try:
-        with open(path, encoding="utf-8", errors="replace") as f:
-            return f.read()
-    except (OSError, ValueError):
+        with open(path, "rb") as f:
+            raw = f.read()
+    except OSError:
         return None
+    if b"\0" in raw[:8192]:   # a picture (an art judge's evidence) has no words to match: its ref alone is checked
+        return None           # (RIMMANDRAKE_TEACH_CONTRACT_CHECK_PICTURES_ARE_NOT_TEXT)
+    return raw.decode("utf-8", errors="replace")
 
 
 def _evidence(rec):

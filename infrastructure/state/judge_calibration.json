@@ -26,16 +26,78 @@
    ],
    "cases": {
     "bad": [
-     "infrastructure/state/art_eval/regression.jsonl rows expect NOT_ACCEPT (6)",
-     "infrastructure/state/art_eval/criteria_ledger.jsonl owner overrides (55 rows)"
+     "planted (art_calibration.py): the 6 NOT_ACCEPT rows of infrastructure/state/art_eval/regression.jsonl (owner REDO or PURGED), judged blind",
+     "planted (art_calibration.py): north_from_south_RM_DecayDrake_r2, owner-picked art whose north.png is its own south.png: refused on C1 with a rear-view redraw (point 27)",
+     "infrastructure/state/art_eval/criteria_ledger.jsonl owner overrides (55 rows): a corpus, not run"
     ],
     "good": [
-     "infrastructure/state/art_eval/regression.jsonl rows expect ACCEPT (5)"
+     "planted (art_calibration.py): the 5 ACCEPT rows of infrastructure/state/art_eval/regression.jsonl (owner kept or picked), judged blind as candidates",
+     "planted (art_calibration.py): kept_RM_Gawpsack_live, a picture the owner KEPT (CL-030) that the art-eval pipeline banded REALLY_BAD, staged with his keep: E3 forbids a REDO"
     ]
    },
    "hash": "f0ffd33ad38299b2",
+   "model_check": [
+    "python3",
+    "src/RimMandrake/rimflow/art_calibration.py",
+    "run"
+   ],
+   "planted": [
+    {
+     "expect": "pass",
+     "id": "regress_RM_Shadefern_B"
+    },
+    {
+     "expect": "refuse",
+     "id": "regress_RM_Huldu_C"
+    },
+    {
+     "expect": "refuse",
+     "id": "regress_RM_Ssurr_B"
+    },
+    {
+     "expect": "refuse",
+     "id": "regress_RM_Vellak_B"
+    },
+    {
+     "expect": "refuse",
+     "id": "regress_RM_Murrin_C"
+    },
+    {
+     "expect": "pass",
+     "id": "regress_RM_Dewblade_B"
+    },
+    {
+     "expect": "pass",
+     "id": "regress_RM_DecayDrake_r2"
+    },
+    {
+     "expect": "pass",
+     "id": "regress_RM_Durrok_r2"
+    },
+    {
+     "expect": "pass",
+     "id": "regress_RM_Gawpsack_live"
+    },
+    {
+     "expect": "refuse",
+     "id": "regress_RM_Peeper_r2"
+    },
+    {
+     "expect": "refuse",
+     "id": "regress_RM_Danglemaw_r1"
+    },
+    {
+     "expect": "pass",
+     "id": "kept_RM_Gawpsack_live"
+    },
+    {
+     "expect": "refuse",
+     "id": "north_from_south_RM_DecayDrake_r2"
+    }
+   ],
    "reset_at": "2026-11-17T07:59:23Z",
    "status": "UNTESTED",
+   "timeout_s": 2400,
    "was": "UNTESTED"
   },
   "coverage_judge": {

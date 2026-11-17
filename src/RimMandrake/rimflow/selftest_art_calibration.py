@@ -1,0 +1,249 @@
+#!/usr/bin/env python3
+"""selftest_art_calibration.py - the art judge brief's calibration check (RIMMANDRAKE_BUILD_ART_BRIEF_CALIBRATION_NOTHING_TO_RUN)
+and the contract fix it needed (RIMMANDRAKE_TEACH_CONTRACT_CHECK_PICTURES_ARE_NOT_TEXT). No model, no network: the
+pictures are small fakes in a temp source run, the judge is a fake runner. The real run is
+`refusal_contract.py calibrate --model art_judge_brief`, which spends."""
+import hashlib
+import json
+import os
+import sys
+import tempfile
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, HERE)
+import refusal_contract as RC  # noqa: E402
+
+FAILS = []
+
+
+def check(name, ok, got=""):
+    print("%s %s%s" % ("ok  " if ok else "FAIL", name, "" if ok else "  got: %r" % (got,)))
+    if not ok:
+        FAILS.append(name)
+
+
+def png(path, rgb, size=(64, 64)):
+    from PIL import Image
+    Image.new("RGBA", size, rgb + (255,)).save(path)
+
+
+def fake_source(src, AC):
+    """One card dir per case card, small coloured PNGs, and the pins that match them."""
+    pins = {}
+    for i, c in enumerate(AC.cases()):
+        d = os.path.join(src, c["card"])
+        if os.path.isdir(d):
+            continue
+        os.makedirs(d)
+        plant = c["card"].split("__")[0] in ("RM_Shadefern", "RM_Dewblade")
+        files = ("single.png", "scale.png") if plant else ("south.png", "east.png", "north.png", "scale.png")
+        for j, f in enumerate(files):
+            png(os.path.join(d, f), (10 + i * 7 % 200, 20 + j * 40, 30))
+        card = {"subject": c["card"].split("__")[0], "label": "x", "template": "plant" if plant else "creature",
+                "module": "bush" if plant else "walker", "candidate": c["card"].split("__")[1],
+                "provenance": "owner PURGED this; owner REDO; owner kept B", "description": "A test creature.",
+                "tier": "RM_", "invented": True, "size": {"drawSize": [0.9, 0.9]}, "owner_kept": False,
+                "body_plan": None if plant else "walker", "departures": []}
+        with open(os.path.join(d, "card.json"), "w") as f:
+            json.dump(card, f)
+        pins[c["card"]] = {f: hashlib.sha256(open(os.path.join(d, f), "rb").read()).hexdigest() for f in files}
+    return pins
+
+
+def answer(verdicts, refusals=(), passed=None, item="x", sha="s"):
+    return {"judge_model": "opus", "subject": "RM_X", "verdicts": list(verdicts), "proposals": [],
+            "contract": {"item": item, "family": "art_judge_brief", "sha": sha, "passed": passed or [],
+                         "refusals": list(refusals)}}
+
+
+def c1_refusal(fix="Redraw north.png as a rear view of the same subject, preserving its proportions, palette and scale."):
+    return {"clause": "C1", "evidence": ["north.png"], "observed": "two eyes and a snout drawn on the north facing",
+            "would_pass": "the north facing shows the back of the head and tail with no eyes, snout or mouth visible",
+            "smallest_fix": {"what": fix, "attainable": "yes", "cost": "rerun"}, "criterion_verdict": "sound",
+            "criterion_why": "North is the rear by the game's convention, and a back view is drawable for this body.",
+            "new_since": "first"}
+
+
+REDO_N = {"picture": "north.png", "facing": "north", "verdict": "REDO", "violated": "C1",
+          "quote": "North is the creature's rear (no face, no eyes)", "seen": "two eyes on the north facing",
+          "redo_brief": "a rear view"}
+KEEP_S = {"picture": "south.png", "facing": "south", "verdict": "KEEP", "notes": "fine"}
+
+
+def contract_cases():
+    """RIMMANDRAKE_TEACH_CONTRACT_CHECK_PICTURES_ARE_NOT_TEXT: a picture cannot be word-matched; text still is."""
+    crit = {"C1": "North is the creature's rear (no face, no eyes)"}
+    with tempfile.TemporaryDirectory() as d:
+        png(os.path.join(d, "north.png"), (200, 40, 40))
+        with open(os.path.join(d, "notes.md"), "w") as f:
+            f.write("the lantern hangs in the hall\n")
+        rec = dict(c1_refusal(), criterion_hash=RC.criterion_hash(crit["C1"]))
+        v = {"item": "x", "family": "art_judge_brief", "sha": "s", "passed": [], "refusals": [rec]}
+        errs = RC.check(v, {"criteria": crit, "inputs": ["north.png"], "root": d})
+        check("contract: a refusal citing a real PNG is well formed", errs == [], errs)
+        v["refusals"][0] = dict(rec, evidence=["notes.md"])
+        errs = RC.check(v, {"criteria": crit, "inputs": ["notes.md"], "root": d})
+        check("contract: text evidence keeps its observed-words check",
+              any("observed quotes" in e for e in errs), errs)
+
+
+def registry_cases(AC):
+    reg = json.load(open(os.path.join(REPO, "infrastructure/state/judge_calibration.json")))
+    row = reg["families"].get("art_judge_brief") or {}
+    check("registry: art_judge_brief names art_calibration.py as its model_check",
+          row.get("model_check") == ["python3", "src/RimMandrake/rimflow/art_calibration.py", "run"], row.get("model_check"))
+    check("registry: its planted cases are the check's own", row.get("planted") == AC.planted(), row.get("planted"))
+    check("registry: its timeout is set for thirteen image judges", int(row.get("timeout_s") or 0) >= 1800,
+          row.get("timeout_s"))
+
+
+def planted_cases(AC):
+    p = {c["id"]: c["expect"] for c in AC.planted()}
+    rows = [json.loads(l) for l in open(os.path.join(REPO, "infrastructure/state/art_eval/regression.jsonl")) if l.strip()]
+    check("planted: at least 11 cases", len(p) >= 11, len(p))
+    check("planted: both ways", set(p.values()) == {"pass", "refuse"}, sorted(set(p.values())))
+    want = {AC.case_id(r): {"ACCEPT": "pass", "NOT_ACCEPT": "refuse"}[r["expect"]] for r in rows}
+    check("planted: every regression.jsonl row is a case with its owner's verdict",
+          all(p.get(k) == v for k, v in want.items()), {k: (v, p.get(k)) for k, v in want.items() if p.get(k) != v})
+    kinds = {c.get("plant"): c for c in AC.cases()}
+    check("planted: an owner-kept subject that must pass (E3)",
+          (kinds.get("owner_kept") or {}).get("expect") == "pass", kinds.get("owner_kept"))
+    check("planted: a north facing whose fix must be a rear-view redraw",
+          (kinds.get("north_from_south") or {}).get("expect") == "refuse"
+          and (kinds.get("north_from_south") or {}).get("route") == "north_rear", kinds.get("north_from_south"))
+
+
+def criteria_cases(AC):
+    crit = AC.criteria()
+    import re
+    text = open(os.path.join(REPO, "design/RimMandrake/art_judge_brief.md"), encoding="utf-8").read()
+    n = len(re.findall(r"^- [A-F]\d+a?\. ", text, re.M))
+    check("criteria: every lettered constraint of the brief", {"A1", "B1a", "C1", "C5a", "C6", "D4", "E3", "F1"} <= set(crit)
+          and len(crit) == n, (n, sorted(crit)))
+    check("criteria: a sub-bullet stays with its constraint", "RM_LadderPortable" in crit.get("D4", ""), crit.get("D4"))
+    check("criteria: C1 is the brief's own line", crit.get("C1", "").startswith(
+        "North is the creature's rear (no face, no eyes); south looks at the camera"), crit.get("C1"))
+
+
+def stage_cases(AC):
+    with tempfile.TemporaryDirectory() as tmp:
+        src, root = os.path.join(tmp, "src"), os.path.join(tmp, "root")
+        os.makedirs(src)
+        pins = fake_source(src, AC)
+        staged = {c["id"]: (c, d, err) for c, d, err in AC.stage(root, source=src, pins=pins)}
+        check("stage: every case staged", all(d for _c, d, _e in staged.values()),
+              {k: e for k, (_c, d, e) in staged.items() if not d})
+        n = next(v for v in staged.values() if v[0].get("plant") == "north_from_south")
+        nd = n[1] or tmp
+        check("stage: the north case's north.png is its south picture",
+              os.path.exists(os.path.join(nd, "north.png")) and
+              open(os.path.join(nd, "north.png"), "rb").read() == open(os.path.join(nd, "south.png"), "rb").read())
+        k = next(v for v in staged.values() if v[0].get("plant") == "owner_kept")
+        kf = json.load(open(os.path.join(k[1] or tmp, "subject.json"))) if k[1] else {}
+        check("stage: the kept case says the owner kept it", "KEPT" in str(kf.get("owner_kept")), kf.get("owner_kept"))
+        leaks = []
+        for cid, (c, d, _e) in staged.items():
+            if not d or c.get("plant"):
+                continue
+            text = open(os.path.join(d, "subject.json")).read()
+            if "PURGED" in text or "REDO" in text or "owner kept B" in text or "regression" in text:
+                leaks.append(cid)
+        check("stage: a regression case's facts carry no verdict or provenance", not leaks, leaks)
+        any_d = next(d for _c, d, _e in staged.values() if d)
+        zoom = [f for f in os.listdir(any_d) if f.startswith("playzoom_")]
+        from PIL import Image
+        check("stage: a 32 px/cell play-zoom copy (drawSize 0.9 -> 29 px)",
+              zoom and Image.open(os.path.join(any_d, zoom[0])).size[0] == 29, zoom)
+        g = AC.given(any_d)
+        check("stage: the given inputs are the staged files", set(g["inputs"]) == set(
+            f for f in os.listdir(any_d) if f.endswith(".png") or f == "subject.json"), g["inputs"])
+        text = AC.prompt(any_d)
+        brief = open(os.path.join(REPO, "design/RimMandrake/art_judge_brief.md"), encoding="utf-8").read()
+        check("prompt: carries the brief's real text whole", brief.strip() in text)
+        check("prompt: tells the judge no expectation and no spend",
+              "expect" not in text.lower().replace("expected", "") and "usd" not in text.lower() and "$" not in text)
+        # a changed picture is a case that did not run, never a substitute
+        victim = next(c for c in AC.cases() if not c.get("plant"))
+        png(os.path.join(src, victim["card"], "scale.png"), (1, 2, 3))
+        again = {c["id"]: (d, err) for c, d, err in AC.stage(os.path.join(tmp, "root2"), source=src, pins=pins)}
+        check("stage: a picture off its pin is not staged", again[victim["id"]][0] is None
+              and "sha" in str(again[victim["id"]][1]), again[victim["id"]])
+
+
+def outcome_cases(AC):
+    o = AC.outcome
+    for name, route, ans, errs, want in (
+            ("all KEEP is a pass", None, answer([KEEP_S]), [], "pass"),
+            ("an UNSURE and no REDO is not a pass", None, answer([KEEP_S, {"facing": "east", "verdict": "UNSURE",
+                                                                         "why": "x"}]), [], "unsure"),
+            ("a quoted REDO is a refusal", None, answer([KEEP_S, REDO_N], [c1_refusal()]), [], "refuse"),
+            ("a REDO without a quote is invalid", None, answer([dict(REDO_N, quote="")], [c1_refusal()]), [],
+             "refuse, invalid"),
+            ("a malformed record does not send work back", None, answer([REDO_N], [c1_refusal()]), ["bad"],
+             "refuse, malformed"),
+            ("a refusal record with no REDO verdict is still a refusal", None, answer([KEEP_S], [c1_refusal()]), [],
+             "refuse"),
+            ("north: C1 on north.png with a rear-view redraw", "north_rear", answer([REDO_N], [c1_refusal()]), [],
+             "refuse"),
+            ("north: a rotate-the-south fix is misdirected", "north_rear",
+             answer([REDO_N], [c1_refusal("Rotate the south picture 180 degrees and use it as north.png.")]), [],
+             "refuse, misdirected"),
+            ("north: a refusal on another clause only is misdirected", "north_rear",
+             answer([dict(REDO_N, violated="B2")], [dict(c1_refusal(), clause="B2")]), [], "refuse, misdirected")):
+        got = o(route, ans, errs)
+        check("outcome: %s" % name, got == want if want != "refuse, misdirected" else got.startswith(want), got)
+
+
+def judge_cases(AC):
+    """The production path: a malformed record is re-asked once (the brief's rule), then counted."""
+    with tempfile.TemporaryDirectory() as tmp:
+        src, root = os.path.join(tmp, "src"), os.path.join(tmp, "root")
+        os.makedirs(src)
+        pins = fake_source(src, AC)
+        staged = [(c, d) for c, d, _e in AC.stage(root, source=src, pins=pins)]
+        c, d = next((c, d) for c, d in staged if c.get("plant") == "north_from_south")
+        g = AC.given(d)
+        good = answer([REDO_N] + [{"picture": f, "facing": f[:-4], "verdict": "KEEP", "notes": "ok"}
+                                  for f in ("south.png", "east.png")], [c1_refusal()],
+                      passed=[{"clause": k, "evidence": sorted(g["inputs"])} for k in g["criteria"] if k != "C1"],
+                      item=c["id"], sha=g["sha"])
+        bad = json.loads(json.dumps(good))
+        bad["contract"]["refusals"][0]["smallest_fix"]["cost"] = "cheap"
+        calls = []
+
+        def runner(argv, cwd, script=[bad, good]):
+            calls.append(argv)
+            so = script[min(len(calls) - 1, len(script) - 1)]
+            return 0, json.dumps({"structured_output": so, "total_cost_usd": 0.5, "session_id": "sess-1",
+                                  "usage": {"input_tokens": 10, "output_tokens": 5}, "modelUsage": {}})
+        got, det = AC.judge(c, d, runner=runner)
+        check("judge: a malformed first answer is re-asked once, on the same session",
+              len(calls) == 2 and "--resume" in calls[1] and "sess-1" in calls[1], [a[:6] for a in calls])
+        check("judge: the re-asked well-formed answer is the planted refusal", got == "refuse", (got, det))
+        check("judge: no spend cap is passed to the agent", not any("--max-budget-usd" in a for a in calls))
+        calls.clear()
+        got, det = AC.judge(c, d, runner=lambda a, w: (calls.append(a), (0, json.dumps(
+            {"structured_output": bad, "total_cost_usd": 0.4, "session_id": "s2"})))[1])
+        check("judge: malformed twice is not the planted refusal", got == "refuse, malformed", (got, det.get("errors")))
+
+
+def main():
+    contract_cases()
+    try:
+        import art_calibration as AC
+    except Exception as e:  # noqa: BLE001 - on the base the module is absent: a failure, not a crash
+        check("art_calibration imports", False, "%s: %s" % (type(e).__name__, e))
+        AC = None
+    if AC:
+        for f in (registry_cases, planted_cases, criteria_cases, stage_cases, outcome_cases, judge_cases):
+            try:
+                f(AC)
+            except Exception as e:  # noqa: BLE001
+                check("%s ran" % f.__name__, False, "%s: %s" % (type(e).__name__, e))
+    print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
