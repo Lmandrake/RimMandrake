@@ -471,23 +471,31 @@ def cords_under_items(B, V, rows):
     """sc_cords_under_items (bar cords_draw_under_things): a battery-fed floor run with a battery standing on it, a stack of steel and a
     bed lying across it and a three-way junction with steel on the joint; at each such cell the probe's under: read must show the
     thing drawn above the cord (under_verdict). The pit half needs FlowWorks: on any other tier it is UNMEASURED with its driver."""
+    # Stage 6 visit 1 (2026-11-16, SITE): a cord routes AROUND a table or a stack lying on a straight run (measured: no strand
+    # under a 3x3 table on the run, and the stack on the run was missed in one of two lays), and build_batch refuses a battery
+    # on a conduit cell (wipeExisting=false). So the battery goes down first, and the stack and the table each sit on a
+    # conduit dead end, a cell the cord's end must reach: branch (x+3, z-1..z-3) ends under the stack, (x+8, z+1..z+3) under
+    # the table centred one cell past its tip.
     x, z = SC0
     _site(B, V)
     run = _line(x, z, x + 12, z)
-    B.call("jawa/build_batch", ops=V.ops("PowerConduit", run + _line(x + 8, z + 1, x + 8, z + 3)), faction="player", wipeExisting=False)
-    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x, z), faction="player", wipeExisting=False)
+    built = {"battery": B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x, z), faction="player", wipeExisting=False).get("placed")}
+    built["conduit"] = B.call("jawa/build_batch", ops=V.ops("PowerConduit", run + _line(x + 8, z + 1, x + 8, z + 3) + _line(x + 3, z - 3, x + 3, z - 1)),
+                              faction="player", wipeExisting=False).get("placed")
     B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x + 12, z + 1), faction="player", wipeExisting=False)
-    B.call("jawa/build_batch", ops="Bed:%d,%d,0" % (x + 5, z), faction="player", wipeExisting=False)
-    B.call("rimworld/spawn_thing", defName="Steel", stackCount=75, x=x + 3, z=z)
+    built["table"] = B.call("jawa/build_batch", ops="Table3x3c:%d,%d,0" % (x + 8, z + 4), stuff="WoodLog", faction="player",
+                            wipeExisting=False).get("placed")
+    B.call("rimworld/spawn_thing", defName="Steel", stackCount=75, x=x + 3, z=z - 3)
     B.call("rimworld/spawn_thing", defName="Steel", stackCount=40, x=x + 8, z=z)
     B.ticks(3)
-    _fill(B, (x - 2, z - 2, 18, 8))
+    _fill(B, (x - 2, z - 5, 18, 12))
     B.probe("rebuild")
     B.ticks(8)
-    for rid, cell, piece in (("SC_under_battery_dry", (x, z), False), ("SC_under_item_stack_dry", (x + 3, z), False),
-                             ("SC_under_furniture_dry", (x + 5, z), False), ("SC_under_junction_piece_dry", (x + 8, z), True)):
+    for rid, cell, piece in (("SC_under_battery_dry", (x, z), False), ("SC_under_item_stack_dry", (x + 3, z - 3), False),
+                             ("SC_under_furniture_dry", (x + 8, z + 3), False), ("SC_under_junction_piece_dry", (x + 8, z), True)):
         st, cause, detail = under_verdict(B.probe("under:%d,%d" % cell), want_piece=piece)
         detail["cell"] = list(cell)
+        detail["built"] = built
         V.row(rows, rid, st, cause, detail)
     V.row(rows, "SC_under_liquid_pit", "UNMEASURED", "HARNESS",
           {"why": "a cord in a FlowWorks pit under liquid, with a battery on the pit floor over it: run on tier gimmesomeslack_flowworks; "

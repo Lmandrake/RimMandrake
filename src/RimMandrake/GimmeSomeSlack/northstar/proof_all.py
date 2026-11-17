@@ -222,6 +222,7 @@ def offline_gate():
     t = time.time()
     rows = V.run_offline()
     steps["validation_offline"] = {"rows": len(rows), "not_pass": [r["id"] for r in rows if r["status"] != "PASS"],
+                                   "statuses": {r["id"]: r["status"] for r in rows},   # read by validation.scenes_from
                                    "wall_s": round(time.time() - t, 1)}
     red += ["validation:" + i for i in steps["validation_offline"]["not_pass"]]
     rc, out, w = _run([sys.executable, os.path.join(MX_DIR, "selftest.py")])

@@ -2309,7 +2309,12 @@ def scenes_from(path):
     """Every scene's verdict over a saved proof result (its "rows"): one line each, the scene rows appended to nothing."""
     import json as _json
     res = _json.load(open(path))
-    rows = res.get("rows") or []
+    rows = list(res.get("rows") or [])
+    # the offline gate's rows (O1..O8) as proof_all recorded them; a live row of the same id wins
+    # (RIMMANDRAKE_CARRY_GSS_GATE_ROWS_SCENES_NEVER_SAW)
+    gate = ((res.get("offline") or {}).get("steps") or {}).get("validation_offline") or {}
+    live_ids = {r["id"] for r in rows}
+    rows += [{"id": k, "status": v} for k, v in sorted((gate.get("statuses") or {}).items()) if k not in live_ids]
     scn = _json.load(open(os.path.join(HERE, "..", "..", "..", "design", "concepts", "GimmeSomeSlack", "scenes.json")))["scenes"]
     bad = 0
     for sc in scn:
