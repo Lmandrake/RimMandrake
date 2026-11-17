@@ -108,14 +108,14 @@
         "left_out": "No living-canopy Rawshade, new fluid chemistry or guarantee water is medically safe; shade protects UV exposure, not ambient heat, contact infection or predation. A parasol follows the shared cover result, never a local special case."
       },
       "sees": {
-        "instrument": "M3 calibrated production shade/exposure sweep and route accessibility adapter, then regression replay of real-game geometry exports. T-geometry required: share the actual service inputs and compare outputs cell by cell; mathematical circles drawn from art are insufficient. The compared output is the predicate Pressure() and the touched-dose code actually call, cell by cell against the shared grid; agreement of the shared grid alone does not count. Trace each consumer call so a correct unused service cannot pass.",
+        "instrument": "M3 calibrated production shade/exposure sweep and route accessibility adapter is an offline prefilter. Running-game drawn-shadow comparison and actual refuge path/job execution decide the visible protection and reachable-route claim. T-geometry required: share the actual service inputs and compare outputs cell by cell; mathematical circles drawn from art are insufficient. The compared output is the predicate Pressure() and the touched-dose code actually call, cell by cell against the shared grid; agreement of the shared grid alone does not count. Trace each consumer call so a correct unused service cannot pass. Water probes additionally require the missing shared contract in T-water-cover.",
         "start": "Export real geometry version, weather and sun pose plus roof/water/crown state; nonzero Burn pressure independently established by exposed control.",
         "on": "All retained Contagion features and required shared engines on at proposed shipped defaults; all DLC; no lock, sky override, frozen pawn, deadline jump or artificial health edit. Next-version extras off. Ablated comparison runs are controls only and never the passing arm.",
         "control": "Same pawn/health, adjacent exposed control and actual registered geometry version rule out globally zero damage, stale grid and hidden immunity. Each exported category must agree with a running-game probe before offline sweep is trusted. Place equivalent pawns in an off-trunk cast shadow, on the trunk cell and in adjacent open ground; read actual Burn damage events and sky-derived touched dose separately from contact. Judge the trunk by its actual cast shade, never by tree occupancy; compare drawn shade to those harm readings.",
         "reset": "Use disposable save fixtures; snapshot settings, world-tile identity, roofs, terrain, things, health, jobs and clock before staging; restore by reloading the baseline, verify fingerprint and baseline state; never clean up by deleting natives or rewriting the canonical world.",
-        "live_only_why": "Production-derived deterministic harness can decide this bounded claim after the stated real-game calibration; a new adapter is ticketed, not claimed built."
+        "live_only_why": "Requires the running renderer to compare drawn shadows with protected cells, and actual path/job execution to show the chosen refuge is reachable and protective on arrival. M3 is an offline prefilter, not evidence of those live observations."
       },
-      "live_only": false,
+      "live_only": true,
       "touches": [
         "shelter-geometry",
         "pawn-health",
@@ -269,22 +269,24 @@
       },
       "accept": [
         "An ordinary purchase supplies the projector; the medic completes the hold, a beam links lens and patient, progression ends, existing mutations remain and a UV injury is visible.",
-        "Stopping the hold or losing reach leaves progression active; successful treatment gives no immunity to a later outdoor assignment."
+        "Stopping the hold or losing reach leaves progression active; successful treatment gives no immunity to a later outdoor assignment.",
+        "A worker showing only the early touched warning and no mutation can receive the held beam; completion arrests that warned state and leaves a treatment burn, and without fresh exposure the worker never gains a first mutation."
       ],
       "reject": [
         "Only a developer-spawned Sunbeam is obtainable with Helix trade off, the patient is cured by the test, or a completed hold has no visible light.",
-        "Treatment erases existing mutations, success is reported with no treatment injury, or an interrupted hold arrests the patient anyway."
+        "Treatment erases existing mutations, success is reported with no treatment injury, or an interrupted hold arrests the patient anyway.",
+        "The Sunbeam refuses a warned, still-unchanged worker, or a completed hold is useless until after the first mutation has already appeared."
       ],
       "lazy": "Only a developer-spawned Sunbeam is obtainable with Helix trade off, the patient is cured by the test, or a completed hold has no visible light.",
       "range": {
-        "varies": "Available standard WeaponRanged trader/reward producers at shipped tech conditions without curator/contracts; patient self/other, downed/prisoner/ally/awake hostile, medic standing/drafted, lost weapon/reservation/path, target death/movement; before/during/after completion saves; armoured patient and projectile miss/deflection; 4/40 colonists, shared shade/ambient/contact exposure continuing.",
+        "varies": "Touched patient pre-onset warned, zero mutations, as well as active progression with existing mutations; available standard WeaponRanged trader/reward producers at shipped tech conditions without curator/contracts; patient self/other, downed/prisoner/ally/awake hostile, medic standing/drafted, lost weapon/reservation/path, target death/movement; before/during/after completion saves; armoured patient and projectile miss/deflection; 4/40 colonists, shared shade/ambient/contact exposure continuing.",
         "left_out": "No guaranteed immediate trader delivery, new cure craft recipe or bespoke rescue quest. Combat use remains the existing same projector: no Bloom accuracy exemption; landed damaging hits may arrest, misses cannot. New weapon powers are out."
       },
       "sees": {
         "instrument": "Ordinary acquisition state and real right-click treatment journey with beam capture, health/gene and event reads; T-treatment includes missing beam implementation. M1 generates interruptions but cannot judge lens light.",
-        "start": "Progressing eligible patient with already applied mutation and a real acquired projector; remove contact for a clean arrest interval, then deliberately restore it for re-exposure.",
+        "start": "Eligible pre-onset warned patient with zero mutations, plus a progressing eligible patient with an already applied mutation, each with a real acquired projector; remove contact and new sky exposure for a clean arrest interval, then deliberately restore exposure for re-exposure. Establish the warned state by natural exposure, not a test-applied hediff.",
         "on": "All retained Contagion features and required shared engines on at proposed shipped defaults; all DLC; no lock, sky override, frozen pawn, deadline jump or artificial health edit. Next-version extras off. Ablated comparison runs are controls only and never the passing arm.",
-        "control": "Patient progression must be active beforehand; compare interrupted hold and an ordinary burn with no Sunbeam. Check actor/job completion and injury cause; no hidden arrest call from the test. Miss/armour controls distinguish damaged hit from merely drawing projectile.",
+        "control": "Read actual warning/progression eligibility before and after treatment, including zero-mutation pre-onset state; completed treatment must clear that state, while an equivalent untreated sheltered control retains it. Absence of a first mutation alone is insufficient: below-threshold severity may remain steady without new dose. Use an untreated naturally exposed control to witness onset/first mutation, and a separate treated re-exposure interval to test restart without claiming immunity. For the already-mutated case, progression must be active beforehand; compare interrupted hold and an ordinary burn with no Sunbeam. Check actor/job completion and injury cause; no hidden arrest call from the test. Miss/armour controls distinguish damaged hit from merely drawing projectile.",
         "reset": "Use disposable save fixtures; snapshot settings, world-tile identity, roofs, terrain, things, health, jobs and clock before staging; restore by reloading the baseline, verify fingerprint and baseline state; never clean up by deleting natives or rewriting the canonical world.",
         "live_only_why": "Requires the running renderer, actual path/job execution or ecological scheduling identified in instrument; an arithmetic prediction or a fake-game PASS cannot establish this experience."
       },
@@ -349,11 +351,11 @@
       "says": "Before committing a genome sample to a Bloody Mess the player can read the ordinary batch odds, and a completed gestation that misses the wanted part still yields donor-labelled tissue usable in surgery or sale.",
       "meant": {
         "intent": "The owner retained the risky ordinary tissue journey and useful misses; no exotic limb factory or silent resource deletion can substitute for it.",
-        "source": "OWNER:1794364405453876478; record.d_other_tissue supports useful matched or sellable ordinary tissue. Delegated Designer call: natural arms/legs and matched mood remain as ordinary tissue, inferred from that promise, the current ordinary batch/surgery path and the filer's retention line in later_version.md; that line is not an owner quotation. OWNER:1794842455892769878 defers the Grown Limbs; the boundary taken here is the exotic system.",
+        "source": "OWNER:1794364405453876478; record.d_other_tissue supports useful matched or sellable ordinary organs. Matched-mood feedback is a delegated Designer call: it makes the donor relationship readable on patched vanilla organ surgery. OWNER:1794842455892769878 and record.d_limbs_next_version defer all Grown Limbs, including RM_GrownArm/RM_GrownLeg and their install recipes.",
         "figurative": []
       },
       "accept": [
-        "The injection menu names the ordinary random batch and chance of the wanted part before spending the sample; the player returns to pick up usable tissue even though the desired leg is absent.",
+        "The injection menu names the ordinary random batch and chance of the wanted part before spending the sample; the player returns to pick up usable tissue even though the desired kidney is absent.",
         "A donor-labelled ordinary organ restores that donor through ordinary surgery and shows matching feedback; someone else can use it without an invented mismatch penalty."
       ],
       "reject": [
@@ -362,8 +364,8 @@
       ],
       "lazy": "Odds appear only after injection, or a miss produces worthless clutter that cannot be installed or sold.",
       "range": {
-        "varies": "Actual pool kidney/liver/lung/heart/natural arm/natural leg, wanted part every pool member, donor alive/dead/absent, matching/nonmatching/unknown ID; sample interrupted transport, moving host, blocked output, host death before/during/after gestation, reserve conflict, stacked outputs, map departure and return; all completion/save phases and 4/40 colonists. Current random batch with replacement and current count distribution; odds computed from actual production pool.",
-        "left_out": "No guaranteed target, bespoke stock buyer, infinite host reuse, new insurance on premature host death or exotic Monstrous output. A destroyed/lost host can lose the batch but must give readable status. Vanilla surgery can fail normally."
+        "varies": "Actual pool kidney/liver/lung/heart, wanted part every pool member, donor alive/dead/absent, matching/nonmatching/unknown ID; sample interrupted transport, moving host, blocked output, host death before/during/after gestation, reserve conflict, stacked outputs, map departure and return; all completion/save phases and 4/40 colonists. Current random batch with replacement and current count distribution; odds computed from actual production pool.",
+        "left_out": "No guaranteed target, bespoke stock buyer, infinite host reuse, new insurance on premature host death or any Grown Limbs output, including natural arms/legs and exotic Monstrous output. A destroyed/lost host can lose the batch but must give readable status. Vanilla surgery can fail normally."
       },
       "sees": {
         "instrument": "M1 and M4 enumerate transactions and odds; actual extraction/injection/normal elapsed gestation/pickup/surgery state trace plus menu text capture settles usability (T-tissue). No severity completion shortcut is a passing arm.",
@@ -390,36 +392,30 @@
     },
     {
       "id": "remains",
-      "says": "After a native dies the player can follow its carcass into collapsed skin and a lasting anatomical Bodyprint, and watch a Bloody Mess reach and consume the remains.",
+      "says": "After a native dies, or a Blisterfloat makes its ridge departure, the player sees a recognizable corpse, bodily remnant or husk instead of an unexplained disappearance.",
       "meant": {
-        "intent": "The explicitly kept phased death is readable biological history; immediate slime alone and invisible remote cleanup are not the promised sequence.",
-        "source": "OWNER:1792162786418789127; record.d_dive_bodyprints_stay; closed CONTAGION_GPT_ENRICHMENT_1 Part 3; standing no pawn/animal vanishes without readable sign.",
-        "figurative": [
-          {
-            "word": "lasting",
-            "stands_for": "Stays readable at least as long as an ordinary trip out from the colony and back, then fades with a visible sign if neither eaten nor deliberately destroyed.",
-            "accept": "An uneaten print remains readable through an ordinary return trip, then visibly fades away rather than staying forever."
-          }
-        ]
+        "intent": "Readable native death is ordinary life and the standing no-vanishing floor; collapsed-skin/print phases, timed fade and a bespoke eater journey are not necessary to show that a body died.",
+        "source": "Standing no pawn/animal vanishes without a readable sign; delegated application to native death classes from the_contagion.md and current death workers. OWNER:1792162786418789127 kept Dive and Bodyprints this sprint on 2026-10-16; record.d_dive_bodyprints_stay maps that to 0.1.0 as an agent inference, not an owner version ruling. Under this cleanse, detailed Bodyprints defer as extras.",
+        "figurative": []
       },
       "accept": [
-        "A dead native leaves a recognizable remnant, then collapsed skin and a glossy anatomical trace; a Bloody Mess travels to it before feeding, while an unreachable print remains readable through an ordinary return trip and later visibly fades.",
-        "A goo-bud leaves non-butcherable transient bodily remains and slime before its print; a departing Blisterfloat leaves a burst husk at the ridge."
+        "A dead native leaves a recognizable corpse or bodily remnant that identifies a death; a goo-bud leaves a non-butcherable bodily trace with its dissolution, and a departing Blisterfloat leaves a burst husk at the ridge.",
+        "Ordinary fire, butchery or decay can end remains with its normal readable sign; a saved corpse/remnant survives reload without a duplicate source or a silent cleanup deletion."
       ],
       "reject": [
-        "The game deletes a corpse off screen and increments a remote eater counter, or only slime appears with no readable phases.",
-        "An uneaten print disappears before an ordinary return trip is possible, or butchery and feeding duplicate the original remains and rewards."
+        "A native simply disappears or only an invisible counter changes, with no readable death or departure sign.",
+        "Butchery and a death callback duplicate the same source, or loading a save silently deletes its readable remains."
       ],
-      "lazy": "The game deletes a corpse off screen and increments a remote eater counter, or only slime appears with no readable phases.",
+      "lazy": "A native simply disappears or only an invisible counter changes, with no readable death or departure sign.",
       "range": {
-        "varies": "All native death categories: normal corpse, goo-bud, acid death, Unfinished unraveling, host birth, Blisterfloat departure; natural/combat/developer kill only as control; eater near/far/unreachable, corpse carried/reserved/butchered/burned, map unload and save at all phase/consume/fade commits; 1/40/200 deaths and day 1/30/100. Existing medicine/loot handled as mutually exclusive claims, no new yield bar.",
-        "left_out": "No player-colonist corpse conversion, remote consumption, final Bodyprint sampling, Helix contracts or collectible print economy. Final sampling feeds deferred Draftprints and is next version, off. Butchered or deliberately destroyed remains may end early with the normal readable destruction sign."
+        "varies": "All native death categories: normal corpse, goo-bud, acid death, Unfinished unraveling, host birth, Blisterfloat departure; natural/combat/developer kill only as control; corpse/remnant carried/reserved/butchered/burned/decayed, map unload and save at death/claim/destruction commits; 1/40/200 deaths and day 1/30/100. Existing medicine/loot handled as mutually exclusive claims, no new yield bar.",
+        "left_out": "No player-colonist corpse conversion, Helix contracts or collectible print economy. Collapsed-skin/anatomical-print phases, bespoke Bloody Mess eater job, timed print fade and final Bodyprint sampling are next version, off; ordinary corpse handling remains vanilla/shared-engine behaviour."
       },
       "sees": {
-        "instrument": "M4 state/ownership replay locates duplication/loss; real phase and physical travel capture plus item-identity state read (T-remains) decides visible stages, persistence against observed ordinary return trips, visible fading and eater arrival. Shared Bones/vanilla butcher reads must be present.",
-        "start": "Known living native IDs before actual death; baseline no remnant/print and no nearby eater; add an ordinary eater by actual reachable movement for positive consumption.",
+        "instrument": "M4 state/ownership replay locates duplication/loss; real death/departure and readable-remnant capture plus item-identity state read (T-remains) decides visibility. Shared Bones/vanilla butcher reads must be present.",
+        "start": "Known living native IDs before actual death/departure; baseline records all existing corpses/remnants and source ownership.",
         "on": "All retained Contagion features and required shared engines on at proposed shipped defaults; all DLC; no lock, sky override, frozen pawn, deadline jump or artificial health edit. Next-version extras off. Ablated comparison runs are controls only and never the passing arm.",
-        "control": "Track original identity through every phase and record eater arrival before consume commit. Out-of-reach control must retain readable remains through an observed ordinary return trip before visible fading; interrupted consume cannot spend the entitlement, and no invisible harness cleanup is permitted. Default-off Draftprints and final sampling must not stop these phases.",
+        "control": "Track the original native and its death/departure event to the visible successor, distinguishing new remains from existing filth/corpses. Replaying load/claim callbacks cannot duplicate or silently erase that source. All Bodyprint phases, eater jobs and sampling are off in the positive arm; no invisible harness cleanup is permitted.",
         "reset": "Use disposable save fixtures; snapshot settings, world-tile identity, roofs, terrain, things, health, jobs and clock before staging; restore by reloading the baseline, verify fingerprint and baseline state; never clean up by deleting natives or rewriting the canonical world.",
         "live_only_why": "Requires the running renderer, actual path/job execution or ecological scheduling identified in instrument; an arithmetic prediction or a fake-game PASS cannot establish this experience."
       },
@@ -433,7 +429,7 @@
         "settings"
       ],
       "tests": {
-        "reject": "Would reject: The explicitly kept phased death is readable biological history; immediate slime alone and invisible remote cleanup are not the promised sequence.",
+        "reject": "Would reject: a native disappears without the readable death/departure sign the standing ruling requires.",
         "renormalize": "The experience compares signs, choices and identities; tuning values and asset multiplicity belong in checks/range, never this bar.",
         "first_version": "Land/life/signature or its deletion-critical link, as named in census.json."
       }
@@ -521,7 +517,7 @@
     },
     {
       "id": "C_batch",
-      "what": "Current normal count uniform 2-4 and pool of kidney/liver/lung/heart/natural arm/natural leg, independent draws with replacement; compute advertised odds from resolved pool. Record donor-ID and once-only completion, output placement and vanilla surgery success witnesses."
+      "what": "Proposed ordinary count uniform 2-4 and pool of kidney/liver/lung/heart only (source currently also includes RM_GrownArm/RM_GrownLeg; remove them from the default pool under T25), independent draws with replacement; compute advertised odds from resolved pool. Record donor-ID and once-only completion, output placement and vanilla surgery success witnesses."
     },
     {
       "id": "C_timing",
@@ -556,7 +552,7 @@
     },
     {
       "id": "R_shade",
-      "rule": "Consume one shared geometric shade/exposure service for Burn pressure, tells-time route selection and exposure, including ruled water. Remove local exact-tree predicate and biome heatKind/heatOffsetC. Direct Sun stays the shared vanilla heat path; BurnDose is distinct UV injury, never a new heat system. Parasols consume shared cover; water is not automatically safe from illness.",
+      "rule": "Consume one shared geometric shade/exposure service for Burn pressure, tells-time route selection and exposure, including water once the CreatureBehaviors owner supplies the missing cover term under T-water-cover; this is a required dependency, not present grid behaviour. Remove local exact-tree predicate and biome heatKind/heatOffsetC. Direct Sun stays the shared vanilla heat path; BurnDose is distinct UV injury, never a new heat system. Parasols consume shared cover; water is not automatically safe from illness.",
       "touches": [
         "shelter-geometry",
         "pawn-health"
@@ -621,7 +617,7 @@
     },
     {
       "id": "R_batch",
-      "rule": "Ordinary batch includes current natural organs and natural arms/legs, not exotic limbs. Show actual pool, random-count distribution and wanted-part chance before commit; current independent draws with replacement: chance at least one target is sum over count probability times (1-(1-p_target)^count). Save donor and completion identity. Commit sample only on successful injection; never kill host for a healthy completion until a whole legal output placement is secured or a readable blocked-birth state retains that entitlement. Premature death loses batch once with a sign.",
+      "rule": "Ordinary batch includes kidney/liver/lung/heart only; all Grown Limbs, including natural arms/legs, are deferred. Show actual pool, random-count distribution and wanted-part chance before commit; current independent draws with replacement: chance at least one target is sum over count probability times (1-(1-p_target)^count). Save donor and completion identity. Commit sample only on successful injection; never kill host for a healthy completion until a whole legal output placement is secured or a readable blocked-birth state retains that entitlement. Premature death loses batch once with a sign.",
       "touches": [
         "jobs",
         "tissue-identity",
@@ -631,7 +627,7 @@
     },
     {
       "id": "R_identity",
-      "rule": "Use stable donor/pawn/transaction IDs through load, death and absent donor; never use display names as identity. Natural-arm/leg restoration and matched mood stay; exotic abilities/removal defer. Match bonus only after successful ordinary surgery, no mismatch penalty.",
+      "rule": "Use stable donor/pawn/transaction IDs through load, death and absent donor; never use display names as identity. Patched vanilla organ surgery and matched mood stay; all Grown Limbs recipes, abilities and removal defer. Match bonus only after successful ordinary surgery, no mismatch penalty.",
       "touches": [
         "tissue-identity",
         "pawn-health",
@@ -640,7 +636,7 @@
     },
     {
       "id": "R_death",
-      "rule": "Death creates one owned chain of physical remains. Goo classes use non-butcherable recognizable remnant, skin then anatomical print instead of persistent ordinary corpse; acid classes preserve acid event and a trace; birth preserves no-acid exception. Consumption requires actual eater arrival; final Bodyprint sampling defers with Draftprints and is absent at default settings. Proposed print persistence at least one ordinary return trip, then visible fading (check tuning in M4); butchery, fire, fading and consumption serialize claims to avoid duplicate products. Ridge departures leave husks; player corpses remain vanilla.",
+      "rule": "Death creates one owned readable corpse or bodily remnant. Goo classes use a non-butcherable recognizable bodily trace instead of a persistent ordinary corpse; acid classes preserve acid event and a trace; birth preserves no-acid exception. Collapsed-skin/Bodyprint phases, bespoke eater arrival/consumption, timed print fade and final sampling defer and are absent at default settings. Ordinary butchery, fire, decay and death callbacks serialize claims to avoid duplicate products. Ridge departures leave husks; player corpses remain vanilla.",
       "touches": [
         "remains",
         "jobs",
@@ -708,7 +704,7 @@
         "R_flight"
       ],
       "holds_together": "argued",
-      "why": "Colours, silhouettes, tells, beam and remains read different objects/states; corpse staging replaces vanish, not live-body art. Roster and beam recognition still require the declared in-game looks. There is no numerical art-variant contract.",
+      "why": "Colours, silhouettes, tells, beam and remains read different objects/states; a readable bodily remnant replaces unexplained vanish, not live-body art. Roster and beam recognition still require the declared in-game looks. There is no numerical art-variant contract.",
       "model": ""
     },
     {
@@ -743,7 +739,7 @@
         "R_dash"
       ],
       "holds_together": "unknown",
-      "why": "Tree shadows, closed rooms, water, shared cover and job selection must agree; growth/death can invalidate a refuge between selection and arrival. Current exact-tree implementation is known contrary evidence.",
+      "why": "Tree shadows, closed rooms, water, shared cover and job selection must agree; growth/death can invalidate a refuge between selection and arrival. Current exact-tree implementation is known contrary evidence. Measured source gap: RM_MapComponent_ShadeGrid.cs ShadeAt/ExposureAt have no terrain-water term; only RM_ContagionSkyExtension.Exposed currently reads IsWater. The delegated record.d_burn_refuge_is_geometry premise that the grid already covers water is false. T-water-cover asks the CreatureBehaviors owner for water-cell UV cover shared by protection and refuge selection; no local water fallback or Contagion redesign of the engine is authorized. M3 must expose the failing dry/water witness until that contract exists.",
       "model": "M3 Refuge geometry and crossing envelope"
     },
     {
@@ -792,7 +788,7 @@
         "R_flight"
       ],
       "holds_together": "unknown",
-      "why": "Dive/sun-escape competition, reservation/cancellation and arrival commits can stall response, treatment, birth retrieval or physical consumption; small individual scenes miss competition at colony scale.",
+      "why": "Dive/sun-escape competition, reservation/cancellation and arrival commits can stall response, treatment, birth retrieval or ordinary remains handling; small individual scenes miss competition at colony scale.",
       "model": "M1 Situation and transition generator"
     },
     {
@@ -811,7 +807,7 @@
         "R_settings"
       ],
       "holds_together": "argued",
-      "why": "Ordinary organs and natural arms/legs retain donor/transaction identity. Exotic limbs/scans/curators are gated without gating the shared pure batch helpers. Final Bodyprint sampling is deferred with Draftprints; retained phases and consumption require neither a sample item nor trade. Competing commit claims are enumerated by M4; no code already proves this.",
+      "why": "Ordinary organs retain donor/transaction identity and matching feedback through patched vanilla surgery. All Grown Limbs, including natural arms/legs and their recipes, are gated without gating shared pure batch or matching helpers. Bodyprint phases, eater sequence and final sampling are deferred; readable death signs require none of them. Competing commit claims are enumerated by M4; no code already proves this.",
       "model": ""
     },
     {
@@ -827,7 +823,7 @@
         "R_settings"
       ],
       "holds_together": "unknown",
-      "why": "Simultaneous normal death, acid, birth, dissolution, butcher/Bones, fading and eater create loss/duplication windows and accumulation. Must serialize ownership and verify transition timing.",
+      "why": "Simultaneous normal death, acid, birth, dissolution, butcher/Bones and ordinary decay/destruction create loss/duplication windows and accumulation. Must serialize ownership and verify readable death signs; phased Bodyprints and bespoke eater jobs are off.",
       "model": "M4 Body and tissue ownership walk"
     },
     {
@@ -849,7 +845,7 @@
         "R_flight"
       ],
       "holds_together": "unknown",
-      "why": "Rupture supplies hosts and jellies, hosts bud finite Unfinished, death supplies print/eater work, shade and growth alter routes; local caps do not bound this three-way reproduction/remains/job loop.",
+      "why": "Rupture supplies hosts and jellies, hosts bud finite Unfinished, death supplies ordinary remains/handling work, shade and growth alter routes; local caps do not bound this three-way reproduction/remains/job loop.",
       "model": "M2 Coupled valley season"
     },
     {
@@ -942,7 +938,7 @@
     },
     "unfinished_malformed": {
       "to": "merged",
-      "why": "Real malformation, limited life and trace retained; no unique-per-bud quota; fertilizer payout deferred and phases in remains.",
+      "why": "Real malformation, limited life and trace retained; no unique-per-bud quota; fertilizer payout deferred and readable death signs in remains.",
       "as": "unfinished_life"
     },
     "genome_brings_tissue": {
@@ -951,9 +947,9 @@
       "as": "tissue"
     },
     "bodyprints_phased": {
-      "to": "kept",
-      "why": "Owner-retained visible phases and physical eater arrival merge into remains; final sampling moves to bodyprint_final_sample with deferred Draftprints.",
-      "as": "remains"
+      "to": "moved",
+      "why": "The 2026-10-16 this-sprint retention became 0.1.0 only by delegated d_dive_bodyprints_stay. Under the cleanse, phases/eater/timed fade are extras; the standing readable death sign remains in remains. Final sampling stays deferred with Draftprints.",
+      "as": "bodyprints / bodyprint_final_sample"
     },
     "flora_flesh": {
       "to": "merged",

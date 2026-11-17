@@ -20,9 +20,9 @@ Ticket: T2.
 
 ### unfinished_mulch — next version, off
 
-What: Sterile fertilizer item drop from dead Unfinished only. Dissolution/remnant trace is retained separately by unfinished_life and bodyprints.
+What: Sterile fertilizer item drop from dead Unfinished only. Dissolution/remnant trace is retained separately by unfinished_life and readable_remains.
 
-Why: Designer call: Death needs a readable trace, not a fertilizer payout; keep the dissolution and Bodyprint path while disabling the item drop.
+Why: Designer call: Death needs a readable trace, not a fertilizer payout; keep the dissolution and readable bodily trace while disabling the item drop.
 
 Ticket: T3.
 
@@ -57,6 +57,14 @@ What: Any active Burn collapses organism into Monstrous samples plus mulch; comb
 Why: Designer call: Owner moved all Coalescence to the next version.
 
 Ticket: T7.
+
+### grown_natural_limbs — next version, off (Grown Limbs)
+
+What: RM_GrownArm/RM_GrownLeg items, their ordinary-batch producers and RM_InstallGrownLimbs.xml install recipes.
+
+Why: OWNER:1794842455892769878 moved everything about Grown Limbs to next version; record.d_limbs_next_version and the inventory include the custom natural-arm/leg recipes. Kidney/liver/lung/heart already supply useful matched or sellable tissue. Keep code/defs and shared organ matching helpers; remove the two limb items from the default ordinary pool.
+
+Ticket: T25; grownLimbsEnabled false for initializers, absent-config fallback, reset and producer/recipe gates.
 
 ### pillar_arm — next version, off
 
@@ -102,7 +110,7 @@ Ticket: T12.
 
 What: Surgical removal/replacement spawns stunned then manhunter Unfinished and a threat letter; ordinary missing-part consequences remain.
 
-Why: Designer call: Exotic limb removal belongs with the deferred limbs; ordinary natural arm/leg surgery stays.
+Why: Designer call: Limb removal belongs with all deferred Grown Limbs; patched vanilla organ surgery stays.
 
 Ticket: T13.
 
@@ -262,13 +270,13 @@ Ticket: T-spec-gestation_steering.
 
 What: Monstrous-first sample choice, exotic gestation dispatch and limbs-off fallback
 
-Why: Designer call: owner moved everything about exotic Grown Limbs; ordinary donors must not depend on Monstrous priority or its fallback. Keep shared pure arithmetic available without enabling scan or exotic production.
+Why: Designer call: owner moved everything about Grown Limbs, including natural arms/legs; ordinary donors must not depend on Monstrous priority or its fallback. Keep shared pure arithmetic available without enabling scan or exotic production.
 
 Ticket: T23.
 
 ### Kept exceptions and dependency boundaries
 
-The Dive and phased Bodyprints remain expressly owner-retained; final Bodyprint sampling defers with its Draftprint consumer. Ordinary organs follow d_other_tissue; including natural arm-leg restoration and matched-mood feedback is a delegated Designer interpretation of that promise and the filer's later_version.md retention line, not an express owner exception. Sunbeam arrest and ordinary acquisition are needed for the signature; Helix special commerce is not. Visible zhool haze remains ordinary appearance, Scan/conversion does not. Wombpod hatching supplies a real host; no target steering. Shared Rupture, acid death, ordinary wrecks, Bones and scanner integration stay on under their owners, not disguised as disabled extras. World-map weeping art is a neighbouring look-only commission and its rules wait for a separate ask; no planet-generation work belongs to any version.
+On 2026-10-16 OWNER:1792162786418789127 kept Dive and Bodyprints “this sprint.” Mapping that to 0.1.0 in d_dive_bodyprints_stay is delegated, speaker agent, not express owner version retention. This cleanse keeps Dive by delegated call because actionable pre-injury native refuge response needs it. Detailed Bodyprint phases, timed fade and bespoke eater arrival/consumption defer: readable native death needs only a recognizable corpse/remnant. Final sampling stays deferred with Draftprints. Ordinary kidney/liver/lung/heart follow d_other_tissue; all Grown Limbs, including natural arms/legs and install recipes, defer. Matched-mood feedback on patched vanilla organ recipes is delegated because it makes donor identity readable. Sunbeam arrest and ordinary acquisition are needed for the signature; Helix special commerce is not. Visible zhool haze remains ordinary appearance, Scan/conversion does not. Wombpod hatching supplies a real host; no target steering. Shared Rupture, acid death, ordinary wrecks, Bones and scanner integration stay on under their owners, not disguised as disabled extras. World-map weeping art is a neighbouring look-only commission and its rules wait for a separate ask; no planet-generation work belongs to any version.
 
 ### sunbeam_native_bonus — next version, off
 
@@ -314,6 +322,16 @@ Ticket: T-spec-sap_medicine. Unbuilt; specification ticket grants no current imp
 
 What: A final sampling interaction on an uneaten Bodyprint supplies a Draftprint.
 
-Why: Its defined consumer belongs to the deferred contract economy; visible death phases and physical consumption work without a new sampling job or item.
+Why: Its defined consumer belongs to the deferred contract economy; the retained readable death sign works without a new sampling job or item, or the separately deferred Bodyprint phases/eater sequence.
 
-Activation: absent/unbuilt; keep unbuilt on this pass. Any later implementation belongs behind the next-version Draftprints switch and must not gate the retained phases, persistence or eater arrival.
+Activation: absent/unbuilt; keep unbuilt on this pass. Any later implementation belongs behind the next-version Draftprints switch and must not gate the retained readable death sign. Detailed phases, persistence and eater arrival are separately deferred under bodyprints.
+
+### bodyprints — next version, off
+
+What: Carcass/remnant -> collapsed skin -> anatomical print, ordinary-return-trip persistence, timed visible fade and bespoke physical Bloody Mess arrival/consumption.
+
+Why: The 2026-10-16 “this sprint” retention became 0.1.0 only through delegated d_dive_bodyprints_stay. Under the later cleanse, deleting these extra phases/jobs leaves readable native death, ordinary life and the weather/body signature intact. The standing no-vanishing sign stays as readable_remains; final sampling remains separately deferred with Draftprints.
+
+Activation: absent/unbuilt; remain unbuilt on this pass. Any later implementation needs a labelled next-version Bodyprints switch, default off, independent of readable death signs and the deferred sampling/trade switch.
+
+Ticket: T-spec-bodyprints.

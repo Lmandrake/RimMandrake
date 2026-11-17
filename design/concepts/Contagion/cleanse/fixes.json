@@ -1,0 +1,29 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Deferred RM_GrownArm/RM_GrownLeg, their producers and install recipes with all Grown Limbs. Limited the ordinary batch/odds pool to kidney/liver/lung/heart and changed leg examples to organs. Kept donor matching and mood on patched vanilla organ recipes; added the decoupling/default-off ticket and census row.",
+      "where": "bars.json tissue, R_batch, R_identity, C_batch and tissue-identity meeting; census.json gestation, natural_match, grown_natural_limbs and related deferral rows; definition.md runner-up/tissue/stories; ambiguities.md 1, 18, 19; next_version.md grown_natural_limbs and boundaries; tickets.md T13, T23, T-tissue, T25; models.md M4; owner_pages.md scope; result.json counts"
+    },
+    {
+      "id": "R2",
+      "changed": "Attributed the 2026-10-16 this-sprint retention to the owner and its 0.1.0 mapping to delegated agent decision d_dive_bodyprints_stay. Kept Dive by its warning/refuge deletion argument. Deferred Bodyprint phases, timed fade and bespoke eater sequence as unnecessary extras; retained only readable native death signs. Added the future-spec ticket and split the census, bar, model and settings obligations accordingly; exposed the settlement on page two.",
+      "where": "owner_pages.md pages one/two; definition.md death/scope/settings/stories; census.json bodyprints, readable_remains, preburn_dive and unfinished_mulch; bars.json remains, R_death, affected meetings and old_bars.bodyprints_phased; ambiguities.md 9, 24, 25 and lazy-build attack; next_version.md bodyprints and kept boundaries; tickets.md T-remains, T-lifecycle, T-settings, T-spec-bodyprints; models.md M1/M3/M4; result.json counts"
+    },
+    {
+      "id": "R3",
+      "changed": "Recorded the measured absence of terrain-water cover in shared ShadeAt/ExposureAt and the false premise in the delegated geometry reading. Added T-water-cover addressed to CreatureBehaviors owner, with a dry/water UV-cover witness that fails on today's grid and integration acceptance for protection and actual refuge routes. Kept the required water case pending that dependency; prohibited a local fallback or Contagion engine redesign.",
+      "where": "bars.json R_shade, shelter-geometry meeting and refuge.sees.instrument; tickets.md T-water-cover; ambiguities.md 4; definition.md arrival/dependencies; models.md M3; owner_pages.md refuge settlement; result.json ticket count"
+    },
+    {
+      "id": "R4",
+      "changed": "Added pre-onset warned, zero-mutation patients to arrest.range and starting states, with accept/reject pictures for preventing the first mutation versus refused/useless warning-stage treatment. Added untreated progression control and aligned warning/treatment eligibility and ticket acceptance.",
+      "where": "bars.json arrest range/sees/accept/reject; ambiguities.md 14; definition.md treatment; tickets.md T-deck and T-treatment; models.md M1; owner_pages.md early-warning settlement"
+    },
+    {
+      "id": "R5",
+      "changed": "Marked refuge live-only for renderer/shadow agreement and actual refuge path/job execution, with M3 only an offline prefilter. Recomputed live-only bars as 9 and synchronized page one.",
+      "where": "bars.json refuge.live_only and refuge.sees; models.md M3; owner_pages.md page-one counts and refuge settlement; result.json counts.live_only_bars"
+    }
+  ]
+}

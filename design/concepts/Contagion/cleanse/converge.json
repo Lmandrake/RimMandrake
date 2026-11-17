@@ -1,0 +1,188 @@
+{
+ "mod": "Contagion",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "contradicts_ruling_or_lore",
+     "where": "design/concepts/Contagion/cleanse/bars.json bar tissue (meant.source, range.varies 'natural arm/natural leg'); rule R_batch; rule R_identity; definition.md Runner-up paragraph; ambiguities.md item 18",
+     "evidence": "The owner's ruling (record.json s_next_version_2026_11_16, OWNER:1794842455892769878) says: \"Everything about the Grown Limbs is next version.\" record.json d_limbs_next_version adds that 0.1.0 ships grownLimbsEnabled off. The record's inventory also says \"The custom limb recipes are Design Version 0.2.0 with the Grown Limbs\". The natural arm and leg the proposal keeps are literally the Grown Limbs: RM_GrownArm and RM_GrownLeg are defined in src/RimMandrake/Contagion/Defs/ThingDefs/RM_GrownLimbs.xml and installed by RM_InstallGrownLimbs.xml through Recipe_InstallGrownBodyPart. The proposal keeps them as a delegated reading, with Questions: 0. Its deletion argument ('deleting restoration makes these ordinary outputs decorative') fails if arms and legs leave the batch pool. The ordinary organs (kidney, liver, lung, heart) alone already meet d_other_tissue's 'other matched or sellable tissue'.",
+     "would_pass": "The 0.1.0 ordinary batch is natural organs only. RM_GrownArm/RM_GrownLeg and their install recipes move to next version, off, with the other Grown Limbs. Alternatively, the reading is put to him as a question with this evidence, and the obvious default (defer) is taken meanwhile.",
+     "smallest_fix": "Take natural arm/leg out of tissue.range, R_batch, R_identity and C_batch's pool. Move them to next_version.md under the Grown Limbs. Change tissue's accept picture ('the desired leg is absent') to name an organ. Keep matched-mood feedback on the patched vanilla organ recipes."
+    },
+    {
+     "id": "R2",
+     "head": "authority_unsourced",
+     "where": "design/concepts/Contagion/cleanse/owner_pages.md page one ('Dive and Bodyprints also stay under your explicit retention'); definition.md 'Kept exceptions'; next_version.md 'expressly owner-retained'; census.json row bodyprints why",
+     "evidence": "His only words are OWNER:1792162786418789127 (2026-10-16): \"keep both in (Dive and Bodyprints stay in THIS sprint)\". That was said a month before Design Versions existed. The mapping of 'this sprint' to 0.1.0 is record.json d_dive_bodyprints_stay, kind 'delegated', speaker 'agent', an evidence-for-ask inference. The proposal presents it as his express 0.1.0 retention. That label is what protects the four-phase Bodyprint sequence (carcass, skin, print, eater arrival, timed fade) from the cut his 2026-11-16 words aim at ('Little custom details that weren't strictly necessary'). The fallback deletion argument over-reaches. The standing no-vanishing ruling asks only for 'a readable sign', not phased prints and eater travel.",
+     "would_pass": "The pages say plainly that he kept Dive and Bodyprints 'this sprint' on 2026-10-16 and that reading this as 0.1.0 is the Designer's delegated call. Bodyprints' phases and eater arrival either carry a deletion argument against land, life or signature that does not rest on his authority, or go to next version with only a readable death sign kept.",
+     "smallest_fix": "Re-attribute the claim on owner_pages.md, definition.md, next_version.md and census.json bodyprints as delegated from d_dive_bodyprints_stay. List it on page two as a settlement he should check."
+    },
+    {
+     "id": "R3",
+     "head": "cannot_hold_together",
+     "where": "design/concepts/Contagion/cleanse/bars.json bar refuge.says ('or in water'); rule R_shade ('Consume one shared geometric shade/exposure service … including ruled water'); rule R_engines ('Do not redesign CreatureBehaviors'); meeting shelter-geometry",
+     "evidence": "The shared service has no water term [measured]. In src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs, ShadeAt combines roof, cast, light, gear, parasol and moving shade, and ExposureAt adds parasol, moving shade and glare. Neither reads terrain water. Only the local predicate RM_ContagionSkyExtension.cs:95 (RM_SkyKernel.Exposed(…, t.IsWater, …)) does, and R_shade bans it. ambiguities.md item 4 forbids a second local water predicate. d_burn_refuge_is_geometry rests on the false premise that the shade grid 'calls … water' shade. As written, the refuge bar's water case can pass only by redesigning a shared engine, which R_engines forbids, or by keeping the banned local predicate. The shelter-geometry meeting's 'why' does not name this gap.",
+     "would_pass": "Either the shared engine's owner is asked, as a named dependency need, for a water-cell cover term in the exposure contract (ticketed with its acceptance test, and the meeting says so), or water leaves refuge.says until that contract exists.",
+     "smallest_fix": "Add the measured gap to the shelter-geometry meeting. Add one dependency ticket to CreatureBehaviors' owner: 'water cell counts as UV cover in ShadeAt/ExposureAt', with an acceptance test that fails on today's grid. Or delete 'or in water' from refuge.says and the matching accept picture."
+    },
+    {
+     "id": "R4",
+     "head": "core_promise_weakened",
+     "where": "design/concepts/Contagion/cleanse/bars.json bar arrest (range.varies, sees.start 'Progressing eligible patient with already applied mutation') and bar body_change",
+     "evidence": "The owner certified record.json d_efa_q05 (2026-11-15): \"the first warning and the treatment it calls for are judged together.\" The proposal splits these into body_change (warning before change) and arrest (start state already mutated). Neither range nor picture covers holding the beam on a worker who shows only the early warning and has no mutation yet. T-deck adds a new pre-onset state. A plausible build makes that state a separate hediff the Sunbeam's IsTouched check (RM_SunbeamArrest.cs:31) does not see. Both bars would then pass while the warning calls for a treatment that cannot act until after the first lasting change.",
+     "would_pass": "arrest.range includes a touched worker before onset with no mutation. An accept picture shows a warned, still-unchanged worker held under the beam who never gains a first mutation, and a reject picture shows the beam refused or useless at the warning stage.",
+     "smallest_fix": "Add 'pre-onset warned, zero mutations' to arrest.range.varies and arrest.sees.start, and add the one accept/reject pair."
+    },
+    {
+     "id": "R5",
+     "head": "evidence_cannot_tell",
+     "where": "design/concepts/Contagion/cleanse/bars.json bar refuge (live_only: false; live_only_why 'Production-derived deterministic harness can decide this bounded claim'); result.json counts.live_only_bars 8; owner_pages.md 'live-only bars: 8'",
+     "evidence": "Refuge's own reject pictures are 'The shadow drawn on screen and the cells that protect a pawn disagree' and 'the path chooser offers a sealed roof room that the pawn cannot enter'. The first needs the renderer. The second is path/job execution, which every other bar in the file says 'Requires the running renderer, actual path/job execution'. An offline harness compares predicate to grid; it cannot see a drawn shadow that disagrees with protection. Its sees.control already relies on live off-trunk, trunk and open probes. The live-only count printed for him is therefore understated.",
+     "would_pass": "Refuge is marked live-only for the drawn-shadow and reachable-route parts, with the offline sweep as a prefilter. The counts in result.json and on page one agree.",
+     "smallest_fix": "Set refuge live_only true with a live_only_why naming the renderer and path execution. Change counts.live_only_bars to 9 and the page-one line to match."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Deferred RM_GrownArm/RM_GrownLeg, their producers and install recipes with all Grown Limbs. Limited the ordinary batch/odds pool to kidney/liver/lung/heart and changed leg examples to organs. Kept donor matching and mood on patched vanilla organ recipes; added the decoupling/default-off ticket and census row.",
+      "where": "bars.json tissue, R_batch, R_identity, C_batch and tissue-identity meeting; census.json gestation, natural_match, grown_natural_limbs and related deferral rows; definition.md runner-up/tissue/stories; ambiguities.md 1, 18, 19; next_version.md grown_natural_limbs and boundaries; tickets.md T13, T23, T-tissue, T25; models.md M4; owner_pages.md scope; result.json counts"
+     },
+     {
+      "id": "R2",
+      "changed": "Attributed the 2026-10-16 this-sprint retention to the owner and its 0.1.0 mapping to delegated agent decision d_dive_bodyprints_stay. Kept Dive by its warning/refuge deletion argument. Deferred Bodyprint phases, timed fade and bespoke eater sequence as unnecessary extras; retained only readable native death signs. Added the future-spec ticket and split the census, bar, model and settings obligations accordingly; exposed the settlement on page two.",
+      "where": "owner_pages.md pages one/two; definition.md death/scope/settings/stories; census.json bodyprints, readable_remains, preburn_dive and unfinished_mulch; bars.json remains, R_death, affected meetings and old_bars.bodyprints_phased; ambiguities.md 9, 24, 25 and lazy-build attack; next_version.md bodyprints and kept boundaries; tickets.md T-remains, T-lifecycle, T-settings, T-spec-bodyprints; models.md M1/M3/M4; result.json counts"
+     },
+     {
+      "id": "R3",
+      "changed": "Recorded the measured absence of terrain-water cover in shared ShadeAt/ExposureAt and the false premise in the delegated geometry reading. Added T-water-cover addressed to CreatureBehaviors owner, with a dry/water UV-cover witness that fails on today's grid and integration acceptance for protection and actual refuge routes. Kept the required water case pending that dependency; prohibited a local fallback or Contagion engine redesign.",
+      "where": "bars.json R_shade, shelter-geometry meeting and refuge.sees.instrument; tickets.md T-water-cover; ambiguities.md 4; definition.md arrival/dependencies; models.md M3; owner_pages.md refuge settlement; result.json ticket count"
+     },
+     {
+      "id": "R4",
+      "changed": "Added pre-onset warned, zero-mutation patients to arrest.range and starting states, with accept/reject pictures for preventing the first mutation versus refused/useless warning-stage treatment. Added untreated progression control and aligned warning/treatment eligibility and ticket acceptance.",
+      "where": "bars.json arrest range/sees/accept/reject; ambiguities.md 14; definition.md treatment; tickets.md T-deck and T-treatment; models.md M1; owner_pages.md early-warning settlement"
+     },
+     {
+      "id": "R5",
+      "changed": "Marked refuge live-only for renderer/shadow agreement and actual refuge path/job execution, with M3 only an offline prefilter. Recomputed live-only bars as 9 and synchronized page one.",
+      "where": "bars.json refuge.live_only and refuge.sees; models.md M3; owner_pages.md page-one counts and refuge settlement; result.json counts.live_only_bars"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json tissue.range.varies now reads 'Actual pool kidney/liver/lung/heart'. Its left_out excludes 'any Grown Limbs output, including natural arms/legs'. The accept picture now says 'the desired kidney is absent'. meant.source cites 'OWNER:1794842455892769878 and record.d_limbs_next_version defer all Grown Limbs, including RM_GrownArm/RM_GrownLeg and their install recipes'. R_batch says 'kidney/liver/lung/heart only; all Grown Limbs, including natural arms/legs, are deferred'. R_identity says 'Patched vanilla organ surgery and matched mood stay; all Grown Limbs recipes, abilities and removal defer'. C_batch names a pool of 'kidney/liver/lung/heart only' and the T25 removal. census.json adds row grown_natural_limbs with fate next_version and ticket T25. next_version.md has section 'grown_natural_limbs' (line 63/65). tickets.md T25 switches grownLimbsEnabled off by default and keeps OrganInstallGenomeMatch on the shared worker. definition.md Runner-up says 'The ordinary pool is kidney, liver, lung and heart only. All Grown Limbs ... defer'. ambiguities.md item 18 now takes reading B."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "owner_pages.md page one: 'You kept Dive and Bodyprints “this sprint” on 2026-10-16; reading that as 0.1.0 was delegated, not your express version retention.' Page two lists the settlement: '“This sprint”: the 0.1.0 Dive/Bodyprints mapping was the Designer's delegated call.' next_version.md 'Kept exceptions' says the mapping 'is delegated, speaker agent, not express owner version retention'. census.json bodyprints is now fate next_version with ticket T-spec-bodyprints. Its why says the mapping 'is delegated, speaker agent'. Dive is kept on a signature argument: census preburn_dive why says 'removing it defeats the actionable native forecast and pre-injury refuge response'. The remains bar now asks only for 'a recognizable corpse, bodily remnant or husk'. Phases, eater and timed fade move to left_out as next version, off."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "The would_pass first branch is met. The shelter-geometry meeting's why now says 'Measured source gap: RM_MapComponent_ShadeGrid.cs ShadeAt/ExposureAt have no terrain-water term ... T-water-cover asks the CreatureBehaviors owner for water-cell UV cover ... no local water fallback'. tickets.md T-water-cover is addressed to 'Dependency owner: CreatureBehaviors' and asks that the 'water cell counts as UV cover in ShadeAt/ExposureAt'. Its acceptance test compares dry and water cells and states 'Today's ShadeAt lacks that water/dry distinction, so the witness fails before delivery'. R_shade now treats water as 'a required dependency, not present grid behaviour'. ambiguities.md item 4 records that the delegated premise is false."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "arrest.range.varies begins 'Touched patient pre-onset warned, zero mutations'. sees.start reads 'Eligible pre-onset warned patient with zero mutations ... Establish the warned state by natural exposure'. There is a new accept picture: 'A worker showing only the early touched warning and no mutation can receive the held beam; completion arrests that warned state ... never gains a first mutation'. There is a new reject picture: 'The Sunbeam refuses a warned, still-unchanged worker, or a completed hold is useless until after the first mutation'. sees.control adds an untreated sheltered control so that merely having no mutation cannot pass. T-deck says 'Expose the pre-onset warned state to Sunbeam eligibility even if it uses a separate hediff'."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "The refuge bar now has \"live_only\": true. Its live_only_why reads 'Requires the running renderer to compare drawn shadows with protected cells, and actual path/job execution ... M3 is an offline prefilter'. In bars.json, 9 of 11 bars carry live_only true. result.json counts.live_only_bars is 9, and owner_pages.md page one says 'live-only bars: 9'. models.md M3 says 'This model is an offline prefilter; refuge remains live-only'."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Second lazy-build attack",
+    "ambiguities.md Settlements that change what gets built or what passes",
+    "bars.json bars/arrest",
+    "bars.json bars/refuge",
+    "bars.json bars/remains",
+    "bars.json bars/tissue",
+    "bars.json checks/C_batch",
+    "bars.json meetings",
+    "bars.json old_bars/bodyprints_phased",
+    "bars.json old_bars/unfinished_malformed",
+    "bars.json rules/R_batch",
+    "bars.json rules/R_death",
+    "bars.json rules/R_identity",
+    "bars.json rules/R_shade",
+    "census.json rows/bodyprints",
+    "census.json rows/gestation",
+    "census.json rows/grown_natural_limbs",
+    "census.json rows/limb_removal",
+    "census.json rows/monstrous_injection_policy",
+    "census.json rows/natural_match",
+    "census.json rows/preburn_dive",
+    "census.json rows/readable_remains",
+    "census.json rows/unfinished_mulch",
+    "definition.md An ordinary week",
+    "definition.md Edges",
+    "definition.md Neighbours and dependencies",
+    "definition.md Settings",
+    "definition.md The mod a player recognizes",
+    "definition.md The worst day",
+    "definition.md Using it: arrival, routine and scale",
+    "definition.md What changes in the colony's story",
+    "definition.md When it goes wrong, and the readable sign",
+    "models.md Instruments specified, not built or measured",
+    "models.md M1 Situation and transition generator",
+    "models.md M3 Refuge geometry and crossing envelope",
+    "models.md M4 Body and tissue ownership walk",
+    "next_version.md Kept exceptions and dependency boundaries",
+    "next_version.md bodyprint_final_sample — next version, off (feeds Draftprints)",
+    "next_version.md bodyprints — next version, off",
+    "next_version.md grown_natural_limbs — next version, off (Grown Limbs)",
+    "next_version.md limb_removal — next version, off",
+    "next_version.md monstrous_injection_policy — next version, off",
+    "next_version.md unfinished_mulch — next version, off",
+    "owner_pages.md Page one — what the Contagion becomes",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T-deck: Build exposure/onset and applied-cost evidence harness",
+    "tickets.md T-lifecycle: Bound ordinary budding and preserve malformed lives",
+    "tickets.md T-remains: Build phased Bodyprints without deferred trade dependency",
+    "tickets.md T-remains: Complete readable native death signs without phased Bodyprints",
+    "tickets.md T-settings: Complete default/gating transition and floor coverage",
+    "tickets.md T-spec-bodyprints: Specify or decline future phased Bodyprints and eater travel",
+    "tickets.md T-tissue: Close ordinary sample/host/batch transaction and odds gaps",
+    "tickets.md T-treatment: Finish visible Sunbeam intervention and ordinary access proof",
+    "tickets.md T-water-cover: Request shared water-cell UV cover from CreatureBehaviors owner",
+    "tickets.md T13: Surgical removal/replacement spawns stunned then manhunter Unfinished and a threat letter; ordinary missing-part consequences remain.",
+    "tickets.md T23: Monstrous-first sample choice, exotic gestation dispatch and limbs-off fallback",
+    "tickets.md T25: Switch off grown natural arms/legs and their install recipes"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1445155,
+     "output_tokens": 19239
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "bars.json bar season meant.source still ends 'retained Dive/Bodyprints ruling'. That reads as an owner ruling and contradicts the R2 reattribution, which treats the 0.1.0 mapping as delegated.",
+   "reason": "The season bar was not among the changed entries, so this is a miss from the earlier look, not a regression. It should cite d_dive_bodyprints_stay as delegated.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "93f27a908831897b87daf6d9596f54e16375f13a7339afe932dc9cb5a07323d6",
+ "seconds": 561,
+ "at": "2026-11-17T06:55:05"
+}
