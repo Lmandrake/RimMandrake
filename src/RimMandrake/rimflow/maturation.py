@@ -1591,6 +1591,32 @@ def takes_game(fn):
         return False
 
 
+COMPANION_ENV = "MATURATION_COMPANION_DLL"     # names the companion DLL to read instead of the game folder's (selftests)
+COMPANION_FIX = ("rebuild and deploy it while the game is down: `python3 src/RimMandrake/bridgetools/build.py --gm` "
+                 "(plan), then `python3 src/RimMandrake/bridgetools/build.py --gm --apply`")
+
+
+def companion_current(game="a"):
+    """-> (current, why): does the game folder's JawaBench companion hold the companion sources of this tree's HEAD?
+    (RIMMANDRAKE_REFUSE_INGAME_VISIT_ON_STALE_COMPANION: on 2026-11-17 GSS visit 2 was owed with the walk's fixed checks
+    committed but the deployed DLL STALE, and nothing refused it.) companion_identity.verdict with cover on (a clean build of
+    a later commit holding the same sources counts); anything but FRESH (STALE, UNSTAMPED, MISSING, UNMEASURED) is not
+    current. Both games load the one install's BridgeTools folder, so `game` changes nothing today."""
+    bt = os.path.join(os.path.dirname(HERE), "bridgetools")
+    if bt not in sys.path:
+        sys.path.insert(0, bt)
+    import companion_identity as CI
+    dll = os.environ.get(COMPANION_ENV)
+    if not dll:
+        utils = os.path.join(os.path.dirname(HERE), "Utils")
+        if utils not in sys.path:
+            sys.path.insert(0, utils)
+        import game_paths
+        dll = os.path.join(game_paths.GAME_DIR, "BridgeTools", "JawaBench", CI.DLL_NAME)
+    v = CI.verdict(dll, REPO, "HEAD", cover=True)
+    return v.get("state") == "FRESH", CI.describe(v)
+
+
 def game_brief(game):
     """The brief's section naming the run's game: game_instance.brief (RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B)."""
     utils = os.path.join(os.path.dirname(HERE), "Utils")
@@ -1601,7 +1627,7 @@ def game_brief(game):
 
 
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
-               resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None):
+               resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None, companion=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -1616,7 +1642,7 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     (modledger.resume_plan, `--resume`); reconcile: why the last run was killed or lost, so the brief opens with the
     reconcile step (RIMMANDRAKE_RESUME_HOLDER_SESSIONS_TO_400K_KILL_AND_RESUME). game: the game an in-game run drives
     (the Dispatch step's free choice): it reaches the unit as RM_GAME_INSTANCE and the brief, and the bridge read is
-    that game's."""
+    that game's. companion: a stand-in for companion_current (an in-game visit refuses a companion not current)."""
     if game:
         env = dict(env or {}, RM_GAME_INSTANCE=game)
     game = (env or {}).get("RM_GAME_INSTANCE") or "a"
@@ -1652,6 +1678,10 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
         if not go:
             return 2, "REFUSED: the bridge of game %s is not takeable for %s's in-game visit %s: %s" % (
                 game, mod, f.get("visit"), why), None
+        cur, cwhy = (companion or companion_current)(game=game)
+        if not cur:
+            return 2, ("REFUSED: %s's in-game visit %s would drive an old JawaBench companion, so its checks would not be "
+                       "the ones committed: %s; %s" % (mod, f.get("visit"), cwhy, COMPANION_FIX)), None
         text = text.rstrip("\n") + "\n\n" + game_brief(game)
     elif f.get("stage") != "offline_build":
         return 2, ("REFUSED: %s stands at %s; only an offline build, a blind challenge or an in-game acceptance "

@@ -1342,10 +1342,16 @@ def ingame_main():
     before = git_status()
     root = tempfile.mkdtemp(prefix="maturation_ingame_")
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
-            "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG", BM.STANDIN_ENV)
+            "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG", BM.STANDIN_ENV, M.COMPANION_ENV)
     env_was = {k: os.environ.get(k) for k in keys}
     try:
         copy_ingame(root)
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "bridgetools"))
+        import companion_identity as CI
+        want = CI.srchash_at(REPO, "HEAD")
+        fresh_dll = CI.write_fixture(os.path.join(root, "companion", "fresh", CI.DLL_NAME), want)
+        stale_dll = CI.write_fixture(os.path.join(root, "companion", "stale", CI.DLL_NAME), "0" * 64)
+        os.environ[M.COMPANION_ENV] = fresh_dll
         write_ledger(root)
         fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
         idle, ilog = os.path.join(root, "fake_idle.py"), os.path.join(root, "fake_idle.log")
@@ -1432,6 +1438,21 @@ def ingame_main():
         os.environ["FAKE_IDLE"] = "NOT"
         chk(lambda: M.bridge_idle("x") == (False, "NOT TAKEABLE  driver lock held by BENCH (selftest)"),
             "bridge_idle reads NOT TAKEABLE rc 1 as not takeable, with its line")
+        # RIMMANDRAKE_REFUSE_INGAME_VISIT_ON_STALE_COMPANION: a visit never drives an old companion's checks
+        free = lambda p, s: (True, "free")  # noqa: E731
+        os.environ[M.COMPANION_ENV] = stale_dll
+        chk(lambda: (lambda r: r[0] == 2 and "companion" in r[1] and "STALE" in r[1] and "build.py --gm --apply" in r[1]
+                     and not calls())(M.launch_mod(root, P, 20, ITEM, bridge=free)),
+            "the game folder's companion STALE against HEAD: launch refuses, names it and the rebuild, launches nothing")
+        os.environ[M.COMPANION_ENV] = os.path.join(root, "companion", "none", CI.DLL_NAME)
+        chk(lambda: (lambda r: r[0] == 2 and "MISSING" in r[1] and not calls())(M.launch_mod(root, P, 20, ITEM,
+                                                                                             bridge=free)),
+            "no companion in the game folder: launch refuses (MISSING), launches nothing")
+        os.environ[M.COMPANION_ENV] = fresh_dll
+        chk(lambda: M.companion_current()[0] is True, "a companion stamped with HEAD's companion sources reads current")
+        chk(lambda: (lambda r: r[0] == 2 and "stand-in says old" in r[1] and not calls())(
+            M.launch_mod(root, P, 20, ITEM, bridge=free, companion=lambda game="a": (False, "stand-in says old"))),
+            "a companion stand-in that says not current refuses, with its words")
         asked = []
 
         def go():
