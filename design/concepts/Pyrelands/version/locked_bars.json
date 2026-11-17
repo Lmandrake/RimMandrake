@@ -46,7 +46,8 @@
   "biome_text_says_engineered",
   "flamefang_bite_carries_venom",
   "inv_firehawk_hunt_rewards",
-  "ullai_cross_the_map_as_vanilla_herds"
+  "ullai_cross_the_map_as_vanilla_herds",
+  "fire_walks_with_wind"
  ],
  "history": [
   {
@@ -72,6 +73,18 @@
    ],
    "removed": [],
    "count": 43
+  },
+  {
+   "at": "2026-11-17T17:10:51Z",
+   "by": "BENCH",
+   "why": "his card 2026-11-17: Just \"The fire walks with the wind.\"",
+   "how": "changed by his card",
+   "source": "OWNER:1794926130118775229",
+   "added": [
+    "fire_walks_with_wind"
+   ],
+   "removed": [],
+   "count": 44
   }
  ]
 }
