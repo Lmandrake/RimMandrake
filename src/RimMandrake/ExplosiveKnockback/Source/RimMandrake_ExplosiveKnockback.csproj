@@ -65,6 +65,7 @@
     <Compile Include="RM_KnockbackProof_GoodsObstacles.cs" />
     <Compile Include="RM_KnockbackProof_StoreroomBombPit.cs" />
     <Compile Include="RM_KnockbackProof_PitProbe.cs" />
+    <Compile Include="RM_KnockbackProof_PitFall.cs" />
     <Compile Include="RM_PatchApplierProbe.cs" />
   </ItemGroup>
 

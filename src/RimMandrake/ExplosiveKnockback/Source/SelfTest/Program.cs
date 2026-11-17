@@ -322,8 +322,16 @@ internal static class Program
             var off = new KbSettings { intoPits = false };
             KbResult ro = RM_KnockbackMath.Resolve(g, 0, 1, 1f, 0f, 4, KbKind.Pawn, 60f, off);
             Check("K-08 pits off", ro.destX == 1);
+            // a covered pit ends a throw IN it, as an open pit (scene sc_pit_fall: "on the covered cell the colonist and the stack
+            // fall through ... and the cover is broken"; RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP: this read
+            // "K-08 cover is ground", destX 4, before)
             var gc = new Grid(10, 3).Set(2, 1, KbCell.CoveredPit);
-            Check("K-08 cover is ground", RM_KnockbackMath.Resolve(gc, 0, 1, 1f, 0f, 4, KbKind.Pawn, 60f, s).destX == 4);
+            KbResult rc = RM_KnockbackMath.Resolve(gc, 0, 1, 1f, 0f, 4, KbKind.Pawn, 60f, s);
+            Check("K-08 a throw over a cover ends in it", rc.destX == 2 && rc.stop == KbStop.Pit);
+            KbResult rci = RM_KnockbackMath.Resolve(gc, 0, 1, 1f, 0f, 4, KbKind.Item, 1f, s);
+            Check("K-08 a stack thrown over a cover ends in it", rci.destX == 2 && rci.stop == KbStop.Pit);
+            Check("K-08 cover with pits off is a wall", RM_KnockbackMath.Resolve(gc, 0, 1, 1f, 0f, 4, KbKind.Pawn, 60f, off).destX == 1);
+            Check("K-08 a throw short of a cover lands short", RM_KnockbackMath.Resolve(gc, 0, 1, 1f, 0f, 1, KbKind.Pawn, 60f, s).destX == 1);
         }
 
         // K-09 pawn-pawn split; item passes a pawn
@@ -628,7 +636,9 @@ internal static class Program
             Check("K-24 no cover under the landing: nothing to break", !RM_KnockbackMath.LandingBreaksCover(KbKind.Item, false, false, 7));
             Check("K-24 a gas burst's throw never breaks a cover", !RM_KnockbackMath.LandingBreaksCover(KbKind.Item, true, false, -3));
             Check("K-24 a closed container's landing never breaks one", !RM_KnockbackMath.LandingBreaksCover(KbKind.Item, true, true, 7));
-            Check("K-24 a pawn's landing is not this rule (pawns fall by FlowWorks' own trap)", !RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn, true, false, 7));
+            // flipped by RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP (sc_pit_fall: the colonist falls through, cover broken)
+            Check("K-24 a blast-thrown pawn on a covered cell breaks it", RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn, true, false, 7));
+            Check("K-24 a gas-shoved pawn never breaks a cover", !RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn, true, false, -3));
         }
 
         // K-25 a pawn standing on a pit cover blocks a thrown pawn as on any ground (bar pawn_hits_pawn_stops; blind cycle 5,

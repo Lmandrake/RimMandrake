@@ -5,5 +5,19 @@
   "before": "35e77081e194e4652e6d26dfcba782f387d8e12b",
   "after": "f35284b2ad1258dc55a5bc142cba9a2ee87a5fe5",
   "fault": "RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER"
+ },
+ {
+  "path": "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+  "why": "K-08 'cover is ground' (a throw over a covered cell landed beyond it, destX 4) FLIPPED to 'a throw over a cover ends in it' (destX 2, stop Pit), plus a stack lane, pits-off-is-a-wall and a short-throw-lands-short check; K-24 'a pawn's landing is not this rule' FLIPPED to 'a blast-thrown pawn on a covered cell breaks it', plus a gas-shoved pawn never breaks one. Reason: the locked scene sc_pit_fall ('on the covered cell the colonist and the stack fall through ... and the cover is broken') and sheet leaf thrown_into_pit_falls ('nothing is thrown across'); the scene text stands, the code follows it (fault RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP from cycle 5 lane 2)",
+  "before": "f35284b2ad1258dc55a5bc142cba9a2ee87a5fe5",
+  "after": "0792f145970947d6f1c43218dae22779cf3c1b64",
+  "fault": "RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP"
+ },
+ {
+  "path": "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackFuzz.cs",
+  "why": "the fuzz's reference walker and its rest-cell invariants treat CoveredPit as a pit (stop in it; a wall with pits off), following the same kernel rule change; a new reach counter fails the fuzz if no case ever stops in a covered pit (666 of 42001 cases did)",
+  "before": "9009305fca457e4e6338448a7be625cbcbc31a12",
+  "after": "2e629b82dc3bed599fa2513dbf07cf7b359b993c",
+  "fault": "RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP"
  }
 ]

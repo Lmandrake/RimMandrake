@@ -1040,6 +1040,7 @@ namespace RimMandrake.ExplosiveKnockback
             int lo = Mathf.Max(0, RimMandrakeExplosiveKnockbackSettings.landingStunMin);
             def.pawnFlyer.stunDurationTicksRange = new IntRange(lo, Mathf.Max(lo, RimMandrakeExplosiveKnockbackSettings.landingStunMax));
             RM_Patch_PawnFlyer_KnockbackLanding.RememberHaul(p);    // back to its haul after landing (bar pawn_flight_arc)
+            RM_Patch_PawnFlyer_KnockbackLanding.RememberThrow(p, r.explosionId); // a blast-thrown landing breaks a cover (sc_pit_fall)
 #if RM_PROOFS
             long takeoffT0 = System.Diagnostics.Stopwatch.GetTimestamp();
 #endif

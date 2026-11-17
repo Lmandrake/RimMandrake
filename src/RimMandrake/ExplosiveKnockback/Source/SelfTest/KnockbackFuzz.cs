@@ -16,7 +16,7 @@ using RimMandrake.ExplosiveKnockback;
 
 internal static class KnockbackFuzz
 {
-    public static long Cases, Steps, Stopped, Thrown, PitStops, PawnHits, Backoffs, CornerBlocks, DoorHits, Capped;
+    public static long Cases, Steps, Stopped, Thrown, PitStops, CoveredPitStops, PawnHits, Backoffs, CornerBlocks, DoorHits, Capped;
     private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
 
     private static List<string> Loop(string name, int n, int seed, Action<Random> one)
@@ -204,13 +204,13 @@ internal static class KnockbackFuzz
             else if (k == KbCell.Wall) block = KbStop.Wall;
             else if (k == KbCell.Door) { block = KbStop.Door; res.hitDoor = true; res.doorX = step.x; res.doorZ = step.z; }
             else if (k == KbCell.Water) block = KbStop.Water;
-            else if (k == KbCell.Pit && !s.intoPits) block = KbStop.Wall;
+            else if ((k == KbCell.Pit || k == KbCell.CoveredPit) && !s.intoPits) block = KbStop.Wall;
             else if (k == KbCell.Partial && kind == KbKind.Pawn && s.sandbagsStop) block = KbStop.PartialCover;
             else if (k == KbCell.Pawn && kind == KbKind.Pawn) { block = KbStop.Pawn; res.hitOther = true; res.otherX = step.x; res.otherZ = step.z; }
             if (block != KbStop.None) { why = block; break; }
             trail.Add((step.x, step.z, k));
             cur = (step.x, step.z);
-            if (k == KbCell.Pit) { why = KbStop.Pit; break; }
+            if (k == KbCell.Pit || k == KbCell.CoveredPit) { why = KbStop.Pit; break; }
         }
         // rest on the last non-sandbag cell of the trail
         int keep = trail.Count;
@@ -265,12 +265,12 @@ internal static class KnockbackFuzz
             {
                 Check(!IsSolid(at) && at != KbCell.Water && at != KbCell.Partial, $"came to rest in a {at} cell");
                 if (kind == KbKind.Pawn) Check(at != KbCell.Pawn, "a thrown pawn rests on another pawn");
-                if (at == KbCell.Pit) Check(got.stop == KbStop.Pit && s.intoPits, "rests in a pit without the Pit stop / with pits off");
+                if (at == KbCell.Pit || at == KbCell.CoveredPit) Check(got.stop == KbStop.Pit && s.intoPits, "rests in a pit without the Pit stop / with pits off");
                 Check(Math.Max(Math.Abs(got.destX - sx), Math.Abs(got.destZ - sz)) == got.cellsTravelled || got.stop == KbStop.None || true, "");
                 Check(Math.Max(Math.Abs(got.destX - sx), Math.Abs(got.destZ - sz)) <= cells, "rests farther than the throw");
             }
             if (!got.Moved) Check(got.destX == sx && got.destZ == sz, "did not move but the destination changed");
-            if (got.stop == KbStop.Pit) Check(at == KbCell.Pit, "Pit stop but the destination is not an open pit cell");
+            if (got.stop == KbStop.Pit) Check(at == KbCell.Pit || at == KbCell.CoveredPit, "Pit stop but the destination is not a pit cell");
             if (kind != KbKind.Pawn) Check(got.impact == 0f && got.otherImpact == 0f && !got.hitOther, "an item / corpse took impact or hit a pawn");
             if (!s.impactEnabled) Check(got.impact == 0f && got.otherImpact == 0f, "impact with impact switched off");
             Check(got.impact >= 0f && got.otherImpact >= 0f, "negative impact");
@@ -282,6 +282,7 @@ internal static class KnockbackFuzz
             Check(Show(again) == Show(got), "Resolve is not deterministic");
             if (got.stop != KbStop.None && got.stop != KbStop.Distance) Stopped++;
             if (got.stop == KbStop.Pit) PitStops++;
+            if (got.stop == KbStop.Pit && at == KbCell.CoveredPit) CoveredPitStops++;
             if (got.hitOther) PawnHits++;
             if (got.hitDoor) DoorHits++;
             if (got.stop == KbStop.Wall && cells > 1) { /* corner or wall */ }
@@ -497,9 +498,9 @@ internal static class KnockbackFuzz
         if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
         if (only == null && !oneSeed.HasValue && scale >= 1)
         {
-            Console.WriteLine($"reached: throws {Thrown}, capped throws {Capped}, collision stops {Stopped}, pit stops {PitStops}, pawn hits {PawnHits}, door hits {DoorHits}, sandbag back-offs {Backoffs}, corner blocks {CornerBlocks}");
-            if (Thrown == 0 || Capped == 0 || Stopped == 0 || PitStops == 0 || PawnHits == 0 || DoorHits == 0 || Backoffs == 0 || CornerBlocks == 0)
-            { Console.WriteLine("FAIL fuzz never reached throw / cap / stop / pit / pawn hit / door / back-off / corner block (blind)"); ok = false; }
+            Console.WriteLine($"reached: throws {Thrown}, capped throws {Capped}, collision stops {Stopped}, pit stops {PitStops} (covered {CoveredPitStops}), pawn hits {PawnHits}, door hits {DoorHits}, sandbag back-offs {Backoffs}, corner blocks {CornerBlocks}");
+            if (Thrown == 0 || Capped == 0 || Stopped == 0 || PitStops == 0 || CoveredPitStops == 0 || PawnHits == 0 || DoorHits == 0 || Backoffs == 0 || CornerBlocks == 0)
+            { Console.WriteLine("FAIL fuzz never reached throw / cap / stop / pit / covered pit / pawn hit / door / back-off / corner block (blind)"); ok = false; }
         }
         Console.WriteLine($"explosiveknockback fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
         return ok;

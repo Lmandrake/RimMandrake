@@ -15,7 +15,7 @@ namespace RimMandrake.ExplosiveKnockback
         Partial = 3,     // sandbags, barricade: Fillage.Partial and passable
         Pawn = 4,        // another pawn stands here
         Pit = 5,         // an OPEN FlowWorks pit cell (D = 4, uncovered)
-        CoveredPit = 6,  // a pit under an intact cover: ground for the path
+        CoveredPit = 6,  // a pit under an intact cover: a pit for the path (the throw ends IN it and breaks it)
         Water = 7,       // terrain this thing cannot stand on (deep water, lava)
         OutOfBounds = 8,
     }
@@ -350,18 +350,22 @@ namespace RimMandrake.ExplosiveKnockback
             return true;
         }
 
-        /// <summary>RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE (certified leaf thrown_into_pit_falls): a thrown stack or
-        /// corpse coming down on a covered pit cell breaks the cover and falls through, whatever its mass. A gas burst's throw
-        /// (negative explosion id) never breaks one (gas bursts never break pit covers); a closed container lands on free cells
-        /// only; a pawn is FlowWorks' own trap's business. True = break the cover under the landing.</summary>
+        /// <summary>RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE (certified leaf thrown_into_pit_falls): a thrown stack,
+        /// corpse or pawn coming down on a covered pit cell breaks the cover and falls through, whatever its mass (scene sc_pit_fall:
+        /// "on the covered cell the colonist and the stack fall through ... and the cover is broken";
+        /// RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP: FlowWorks' own trap springs on a mass sum that spares the own
+        /// faction, so a blast-thrown colonist stood on the cover). A gas burst's throw (negative explosion id) never breaks one
+        /// (gas bursts never break pit covers); a closed container lands on free cells only. True = break the cover under the
+        /// landing.</summary>
         public static bool LandingBreaksCover(KbKind kind, bool covered, bool container, int explosionId)
         {
-            return covered && !container && kind != KbKind.Pawn && explosionId >= 0;
+            return covered && !container && explosionId >= 0;
         }
 
         /// <summary>What a superdeep cell is for the path (RM_MapKbGrid): another pawn there (on the cover's deck, or on an open
         /// pit's floor) blocks a thrown pawn as on any ground (bar pawn_hits_pawn_stops; blind cycle 5,
-        /// RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER); else an intact cover is ground and an open pit a pit.</summary>
+        /// RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER); else an intact cover is a covered pit and an open pit a pit (both
+        /// end a throw in them: Resolve).</summary>
         public static KbCell PitCell(bool covered, bool forPawn, bool pawnThere)
         {
             if (forPawn && pawnThere)
@@ -485,9 +489,10 @@ namespace RimMandrake.ExplosiveKnockback
                     stop = KbStop.Water;
                     break;
                 }
-                if (c == KbCell.Pit && !s.intoPits)
+                bool pit = c == KbCell.Pit || c == KbCell.CoveredPit;
+                if (pit && !s.intoPits)
                 {
-                    stop = KbStop.Wall; // "throw into pits" off: an open pit is a wall for the path
+                    stop = KbStop.Wall; // "throw into pits" off: a pit, open or covered, is a wall for the path
                     SetBlock(ref r, x, z, px, pz);
                     break;
                 }
@@ -514,9 +519,12 @@ namespace RimMandrake.ExplosiveKnockback
                     lastNonPartialZ = z;
                     lastNonPartialN = travelled;
                 }
-                if (c == KbCell.Pit)
+                if (pit)
                 {
-                    stop = KbStop.Pit; // stops IN the first open pit cell: nothing is thrown across a pit
+                    // stops IN the first pit cell, open or covered: nothing is thrown across a pit (sheet thrown_into_pit_falls:
+                    // "onto a covered cell falls through and breaks the cover; nothing is thrown across"); the landing breaks
+                    // the cover (LandingBreaksCover)
+                    stop = KbStop.Pit;
                     break;
                 }
             }

@@ -117,6 +117,7 @@ namespace RimMandrake.ExplosiveKnockback
                 Resume(__state.pawn, __state.resume);
             }
             Landed(__state?.pawn);
+            BreakCoverUnderLanding(__state?.pawn);
 #if RM_PROOFS
             if (__state != null && __state.t0 != 0)
             {
@@ -160,6 +161,42 @@ namespace RimMandrake.ExplosiveKnockback
         }
 
         private static readonly System.Collections.Generic.Dictionary<Pawn, Job> Hauling = new System.Collections.Generic.Dictionary<Pawn, Job>();
+
+        /// <summary>The explosion id each pawn in a knockback flight was thrown by (negative = a gas burst), set at every launch
+        /// (RememberThrow, so a later throw always overwrites it) and taken at its landing.</summary>
+        private static readonly System.Collections.Generic.Dictionary<Pawn, int> ThrownBy = new System.Collections.Generic.Dictionary<Pawn, int>();
+
+        /// <summary>Called just before MakeFlyer: which explosion threw this pawn (RM_MapComponent_Knockback.ThrowPawn).</summary>
+        public static void RememberThrow(Pawn p, int explosionId)
+        {
+            ThrownBy[p] = explosionId;
+        }
+
+        /// <summary>RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP (scene sc_pit_fall: "on the covered cell the colonist
+        /// and the stack fall through, one descent each, and the cover is broken"): a pawn a blast threw onto a covered pit cell
+        /// breaks the cover and falls, as a thrown stack does (RM_ThingFlyer_Knockback.Land). FlowWorks' own trap springs on a
+        /// deck mass that spares the own faction, so without this a thrown colonist stood on the cover. A gas shove (negative id)
+        /// never breaks one (LandingBreaksCover). A flight loaded from a save has no id remembered and breaks nothing.</summary>
+        private static void BreakCoverUnderLanding(Pawn p)
+        {
+            if (p == null || !ThrownBy.TryGetValue(p, out int id))
+            {
+                return;
+            }
+            ThrownBy.Remove(p);
+            if (!p.Spawned || p.Dead)
+            {
+                return;
+            }
+            Map map = p.Map;
+            IntVec3 at = p.Position;
+            if (!RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn, RM_KnockbackCompat.CoverAt(map, at) != null, false, id))
+            {
+                return;
+            }
+            bool broke = RM_KnockbackCompat.BreakCoverUnder(map, at, out int fallers);
+            RM_KnockbackJournal.Add("cover_break", id, p, "at", at, "broken", broke, "fallers", fallers, "kind", "pawn");
+        }
 
         /// <summary>Called just before MakeFlyer: the haul a pawn is on. HaulToCell is not suspendable, so MakeFlyer's
         /// captured queue is empty and the job is gone at landing (live 2026-11-15).</summary>

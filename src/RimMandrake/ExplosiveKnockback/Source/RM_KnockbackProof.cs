@@ -70,6 +70,8 @@ namespace RimMandrake.ExplosiveKnockback
             "goods_obstacles", "goods_obstacles_control",
             // 2026-11-15 the showcase sc_storeroom_bomb_pit and its pit-filled control (RM_KnockbackProof_StoreroomBombPit.cs). NOT YET RUN LIVE.
             "storeroom_bomb_pit", "storeroom_bomb_pit_control",
+            // 2026-11-17 sc_pit_fall as written: open and covered lanes, the no-pit control (RM_KnockbackProof_PitFall.cs). NOT YET RUN LIVE.
+            "pit_colonist_control",
         };
 
         private static Map Map => Find.CurrentMap;
@@ -990,6 +992,9 @@ namespace RimMandrake.ExplosiveKnockback
                     return null;
 
                 case "pit_colonist":
+                case "pit_colonist_control":
+                    return PitFall(s);  // sc_pit_fall's open and covered lanes and its no-pit control (RM_KnockbackProof_PitFall.cs)
+
                 case "pit_enemy":
                     if (!RM_KnockbackCompat.FlowWorks)
                     {
@@ -999,14 +1004,7 @@ namespace RimMandrake.ExplosiveKnockback
                     {
                         return "could not dig the pit";
                     }
-                    if (s.name == "pit_colonist")
-                    {
-                        Colonist(s, "p", O(s, 1, 0));
-                    }
-                    else
-                    {
-                        Hostile(s, "p", O(s, 1, 0));
-                    }
+                    Hostile(s, "p", O(s, 1, 0));
                     Blast(s.o, 2.9f);
                     s.verdict = sc =>
                     {
