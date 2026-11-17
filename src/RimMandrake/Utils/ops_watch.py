@@ -1832,7 +1832,7 @@ def awaiting_retry(units, now, timers=None, runs_of=None, most=4):
     return out
 
 
-PULSE_DEPLOY = "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"   # rm-deploy-update's checkout (env RM_PULSE_DEPLOY overrides)
+PULSE_DEPLOY = "/home/mandrake/rm/pulse-deploy"   # rm-deploy-update's checkout (env RM_PULSE_DEPLOY overrides)
 
 
 def deploy_update_age(now, root=None):

@@ -6,8 +6,8 @@ Description=stream collector (Level 1 series + testing metrics)
 
 [Service]
 Type=oneshot
-Environment=RM_PULSE_DEPLOY=/mnt/d/ClaudeWork/rimmandrake/pulse-deploy
-ExecStart=-/usr/bin/python3 /mnt/d/ClaudeWork/rimmandrake/pulse-deploy/src/RimMandrake/Utils/pulse/testing_metrics.py
-ExecStart=/usr/bin/python3 /mnt/d/ClaudeWork/rimmandrake/pulse-deploy/src/RimMandrake/Utils/pulse/streams.py collect
+Environment=RM_PULSE_DEPLOY=/home/mandrake/rm/pulse-deploy
+ExecStart=-/usr/bin/python3 /home/mandrake/rm/pulse-deploy/src/RimMandrake/Utils/pulse/testing_metrics.py
+ExecStart=/usr/bin/python3 /home/mandrake/rm/pulse-deploy/src/RimMandrake/Utils/pulse/streams.py collect
 TimeoutStartSec=420s
 Nice=10

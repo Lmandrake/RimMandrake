@@ -1,4 +1,4 @@
-# Fast-forwards the deploy checkout /mnt/d/ClaudeWork/rimmandrake/pulse-deploy to origin/main. rm-ops-watch,
+# Fast-forwards the deploy checkout /home/mandrake/rm/pulse-deploy to origin/main. rm-ops-watch,
 # rm-streams-collect and the deadman run their code from it. Was rm-pulse-update (RimPulse retired by the owner 2026-11-03,
 # RIMPULSE_RETIRE_SUPERSEDED_BY_STATUS_PAGE); no --restart: there is no rm-pulse.service to restart (restart would START it).
 # Install:  cp rm-deploy-update.{service,timer} ~/.config/systemd/user/ && systemctl --user daemon-reload && systemctl --user enable --now rm-deploy-update.timer
@@ -7,6 +7,6 @@ Description=fast-forward the pulse-deploy checkout to origin/main
 
 [Service]
 Type=oneshot
-Environment=RM_PULSE_DEPLOY=/mnt/d/ClaudeWork/rimmandrake/pulse-deploy
-ExecStart=/usr/bin/python3 /mnt/d/ClaudeWork/rimmandrake/pulse-deploy/src/RimMandrake/Utils/pulse/pulse.py update
+Environment=RM_PULSE_DEPLOY=/home/mandrake/rm/pulse-deploy
+ExecStart=/usr/bin/python3 /home/mandrake/rm/pulse-deploy/src/RimMandrake/Utils/pulse/pulse.py update
 TimeoutStartSec=120s

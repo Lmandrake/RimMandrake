@@ -109,9 +109,9 @@ RM = Path("/home/mandrake/rm")
 # dirs are sweep_tmp's (TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP).
 DEFAULT_ROOTS = [RM / "scratch", HOME / ".seat-tmp", Path("/tmp")]
 DEFAULT_CORPUS = [RM / "bench"]  # foundry is the retired seat (owner card 2026-11-02); its clone was emptied 2026-11-05
-DEFAULT_SCAN = [HOME, Path("/tmp"), Path("/mnt/d/ClaudeWork/rimmandrake/pulse-deploy")]
+DEFAULT_SCAN = [HOME, Path("/tmp"), Path("/home/mandrake/rm/pulse-deploy")]
 # nightly: the nightly sweep's clean clone of origin/main (nightly_scope.py), reset each run, holds no work
-PROTECTED = [RM / n for n in ("bench", "foundry", "dispatch", "nightly", "anchor", "arena", "arena-vet", "store.git", "mirror.git",
+PROTECTED = [RM / n for n in ("bench", "pulse-deploy", "foundry", "dispatch", "nightly", "anchor", "arena", "arena-vet", "store.git", "mirror.git",
                               "new.git", "retired-trees", "scratch_wallreach_slice")] + [Path("/mnt/d/Luke/dev/RimMandrake")]
 UUID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 UUID_ANY = re.compile(rb"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
