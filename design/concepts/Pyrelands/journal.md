@@ -12,7 +12,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Scope: the biome alone; the Deep
   Desert Tribes are a separate mod (`design/concepts/PyrelandsMechanics`), started only after this version passes.
   Code exists: `src/RimMandrake/Pyrelands/` (packageId `mandrake.rm.pyrelands`, ships composed in `mandrake.rm.biomes`).
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 2:28 PM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-17 12:31 PM PST (`version/stage_record.json`).
 - **Bars:** 42 (21 inventory rows of `record.json` + 21 leaves of `tree.json`), as `version/bars.md` counts them; 41 at
   the lock, `inv_firehawk_hunt_rewards` added by his card 2026-11-14.
   Two inventory rows (`inv_firebreak_firefoam`, `inv_lightning_breaker`) are scope `out`: cut, kept only as absence checks.
@@ -29,7 +29,7 @@ Pyrelands is not the pilot. It advances beside the pilot (Explosive Knockback), 
   14 PROBLEM, 3 CORRECTION, 1 POLISH (g3). By his card 2026-11-15 12:22 PM PST the 17 are fixed in one locked change
   (`RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS`); g3 stays in `version/polish.md`, out of passing.
 - **Held look statements for this mod:** 0 (measured).
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 2:28 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-17 12:31 PM PST).
 
 ### The vision (his root paragraph, approved by card 2026-11-06, OWNER:1793950669508519029)
 
@@ -415,3 +415,14 @@ the tree, record and test-table edits, the re-pin and the lock-bars add are queu
 - CONDUCTOR INTERVENED (stage 4+5, 2026-11-17 9:26 AM PST, kind bar-added): bar `fire_walks_with_wind`, "The fire walks with the wind." (his words), added to 0.1.0 with scene `sc_fire_walks_with_wind` and its test-table row (1d7b17ad85); `maturation.py lock-bars --add` records 44 bars (d55977d87f). Source: OWNER:1794926130118775229.
 - CONDUCTOR INTERVENED (stage 4+5, 2026-11-17 9:26 AM PST, kind release): both blind-cycle judge runs have ended (cycle 3 here, unit `rm-detached-bench-rimmandrake-judge-pyrelands-blind-cycle-1794925887`, exit not met, 5 Problems fixed at 4a7c450d6b) and the queued card change has landed and been re-pinned; the hold of 6:52 AM PST is lifted. Source: the Conductor's order in RIMMANDRAKE_REWORD_DESIGNER_BARS_PINNING_NUMBERS_NOT_HIS (item RIMMANDRAKE_APPLY_BARS_CARD_PATCH_WHEN_BLIND_JUDGES_END).
 - STEWARD (stage 4+5, 2026-11-17 10:08 AM PST, item RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_TWO): re-pin of the locked change checked (history 17:09:38Z re-pinned stages 2, 3, 5; 17:26Z repair d2a3509a53 unlocked stage 4). Cold Reader exam retaken in full on tree c1b1d874f8 / sheet a0d6beb6b9: 40 scenarios (Examiner e1-e32, Challenger c1-c8), both Readers 40/40, no reject accepted, control with `fire_walks_with_wind` removed missed e2, e5, c1 (8141978707). Two coverage looks ran on this tree, not one: the steward's (rm-coverage-judge-1794938181, kept at version/evidence/coverage_verdict.rm-coverage-judge-1794938181.json: 1 Problem `burn_line_walks` cannot tell the line from a flood, 1 Polish wind at one bearing, 3 advisory text leftovers) and the launcher's stage-5 Designer run rm-role-designer-1794938276 (rm-coverage-judge-1794938280, coverage_verdict.json: the same flood Problem, the wind gap raised to a Problem, plus a wind-scene restore Polish); filed RIMMANDRAKE_GUARD_ONE_COVERAGE_LOOK_STEWARD_LAUNCHER_BOTH_RAN for the double look; filed RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES, RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED, RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS (acceptance: version/evidence/accept_round9_gaps.py). Pyrelands waits on his card for the locked-tree fix; no blind cycle 4 opened.
+
+### 2026-11-17 12:31 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: delegated: evidence-for-ask: cycle 3 fixed 5 Problems red-first at 4a7c450d6b and found every offline bar green after, so by its brief its own fixes cannot pass its exit: a NEW blind judge is owed (spec rule 3). Nothing new filed (the lane-1 FAIL is one of the 5 fixed; the 30 UNSETTLED prove at stage 6; the one Polish item is already filed). Certificate's stale stamps were a RECORD GAP, redone for real by certificate --run (22 tests, 16 bars green). Cycle 4 is cycle 3 of visit 2's road, inside the 3-per-visit limit. The Designer's stage-5 delta coverage look released 12:22 PM PST reads the same locked tree and edits nothing, so it need not gate the judge
+- Checks passed: order, by, version, hold, fourth_cycle, judge_certificate.
+- Steward confirms: read cycle_3/SUMMARY.md, lane2/faults.json, fixes.jsonl, tests_edited.json and the diffs of the 3 edited tests (all additions, nothing weakened); exit_met false only because the cycle fixed its own Problems; verdict: a new blind judge is owed
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: evidence-for-ask: cycle 3 fixed 5 Problems red-first at 4a7c450d6b and found every offline bar green after, so by its brief its own fixes cannot pass its exit: a NEW blind judge is owed (spec rule 3). Nothing new filed (the lane-1 FAIL is one of the 5 fixed; the 30 UNSETTLED prove at stage 6; the one Polish item is already filed). Certificate's stale stamps were a RECORD GAP, redone for real by certificate --run (22 tests, 16 bars green). Cycle 4 is cycle 3 of visit 2's road, inside the 3-per-visit limit. The Designer's stage-5 delta coverage look released 12:22 PM PST reads the same locked tree and edits nothing, so it need not gate the judge
+- Blind cycle 3 of this visit (4 in all).
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 2:28 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 2:28 PM PST).
+- Record: `version/stage_record.json`.

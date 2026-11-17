@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-16T14:28:16-08:00",
+  "since": "2026-11-17T12:31:40-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 2,
-    "total": 3
+    "visit": 3,
+    "total": 4
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -98,6 +98,26 @@
       "unit": "rm-detached-bench-rimmandrake-route-pyrelands-cycle-two-fa-1794867953",
       "confirmed": {
         "steward_confirms": "read cycle_2/SUMMARY.md, faults.json, tests_edited.json and the diff 85c4d61bee..b7b77c929e of both edited tests: stricter only (one regex replaced by a stricter fact, sweep facts and mutants added), weakened false verified; 0 Problems open, 6 offline bars green; certificate --run on this build: OK 16 bars. Verdict: open cycle 3, file nothing new"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-17T12:31:40-08:00",
+      "by": "BENCH",
+      "why": "delegated: evidence-for-ask: cycle 3 fixed 5 Problems red-first at 4a7c450d6b and found every offline bar green after, so by its brief its own fixes cannot pass its exit: a NEW blind judge is owed (spec rule 3). Nothing new filed (the lane-1 FAIL is one of the 5 fixed; the 30 UNSETTLED prove at stage 6; the one Polish item is already filed). Certificate's stale stamps were a RECORD GAP, redone for real by certificate --run (22 tests, 16 bars green). Cycle 4 is cycle 3 of visit 2's road, inside the 3-per-visit limit. The Designer's stage-5 delta coverage look released 12:22 PM PST reads the same locked tree and edits nothing, so it need not gate the judge",
+      "unit": "rm-detached-bench-rimmandrake-route-pyrelands-cycle-three-1794947152",
+      "confirmed": {
+        "steward_confirms": "read cycle_3/SUMMARY.md, lane2/faults.json, fixes.jsonl, tests_edited.json and the diffs of the 3 edited tests (all additions, nothing weakened); exit_met false only because the cycle fixed its own Problems; verdict: a new blind judge is owed",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: evidence-for-ask: cycle 3 fixed 5 Problems red-first at 4a7c450d6b and found every offline bar green after, so by its brief its own fixes cannot pass its exit: a NEW blind judge is owed (spec rule 3). Nothing new filed (the lane-1 FAIL is one of the 5 fixed; the 30 UNSETTLED prove at stage 6; the one Polish item is already filed). Certificate's stale stamps were a RECORD GAP, redone for real by certificate --run (22 tests, 16 bars green). Cycle 4 is cycle 3 of visit 2's road, inside the 3-per-visit limit. The Designer's stage-5 delta coverage look released 12:22 PM PST reads the same locked tree and edits nothing, so it need not gate the judge"
       },
       "checks_passed": [
         "order",
