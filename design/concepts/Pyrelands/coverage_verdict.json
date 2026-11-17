@@ -1,35 +1,103 @@
 {
- "against": "rm-coverage-judge-1794938280",
- "at": "2026-11-17T20:10:19Z",
- "changed": [
-  "dec:d_burn_line_natural_grassfire",
-  "dec:d_fire_walks_with_wind",
-  "exam",
-  "inv:inv_burn_line_fire_clock",
-  "leaf:burn_line_walks",
-  "scene:sc_burn_line_walks",
-  "scene:sc_fire_walks_with_wind",
-  "scene:sc_furnace_giant",
-  "sheet:pruning"
+ "advisory_gaps": [
+  {
+   "advisory_why": "late: a new gap at a later look on material that did not change is the miss of rm-coverage-judge-1794946219, and the judge does not call it a serious Problem a player would reject; recorded, never a new bar",
+   "bar_kind": "experience",
+   "criterion_verdict": "sound",
+   "criterion_why": "A leaf's scenario should describe the staging its acceptance scene really uses. Here the scene is right and the proof is unaffected, so the mismatch is polish.",
+   "evidence": [
+    "tree.json:68",
+    "tree.json:56",
+    "scenes.json:38",
+    "scenes.json:44"
+   ],
+   "ids": [
+    "fire_walks_with_wind"
+   ],
+   "late_why": "g1's fix (314117207ec9) rewrote the scene but not the leaf's scenario text, and the round-11 judge looked at the scene, not this field. It was found while checking g1.",
+   "miss_of": "rm-coverage-judge-1794946219",
+   "new_since": "late",
+   "observed": "tree.json:68 reads 'Two strips of ember grass ... light a short line at the upwind end of each with the wind set across the strip, one with the wind setting on and one with it off', and the oracle at tree.json:56 names no reversed bearing. scenes.json:44 expects 'at both bearings, east and the opposite (reversed) west' from a line 'in the middle of each' strip.",
+   "return_to": 3,
+   "severity": "polish",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Reword tree.json fire_walks_with_wind scenario and oracle_proposed to match scenes.json sc_fire_walks_with_wind. Text only, no code."
+   },
+   "what": "The fire_walks_with_wind leaf's scenario and oracle still describe the old staging: two strips, a line lit at the upwind end, one wind bearing. That disagrees with its scene, which lights mid-strip at two opposite bearings, and with the leaf's own red ('burns as far upwind as downwind'), which needs room upwind of the lit line.",
+   "where": "tree.json fire_walks_with_wind scenario / oracle_proposed",
+   "would_pass": "tree.json fire_walks_with_wind scenario names a line lit mid-strip, read at two opposite wind bearings plus a wind-off control and a black-rain strip, and its oracle_proposed names the reversed bearing. A grep for 'upwind end' in tree.json then returns nothing."
+  }
  ],
+ "against": "rm-coverage-judge-1794946219",
+ "at": "2026-11-17T20:33:49Z",
+ "calibration": "CALIBRATED",
+ "changed": [],
  "checklist": [
   {
    "evidence": [
-    "record.json",
-    "scenes.json:4",
-    "scenes.json:31"
+    "scenes.json:38",
+    "scenes.json:44",
+    "scenes.json:45",
+    "tree.json:67",
+    "record.json d_fire_walks_with_wind",
+    "src/RimMandrake/Pyrelands/wind_burn_live.py:66"
+   ],
+   "id": "fire_walks_with_wind",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind (F wind east, R wind reversed west; the line is mid-strip so both upwind and downwind reach are read)",
+     "what": "the fire runs with the wind, further downwind than upwind of where it lit"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind, reversed bearing 270 plus verdict row 'R wind reversed: the burn turns and runs west'",
+     "what": "it turns when the wind turns, so a mod that walks one way or only blocks sideways spread cannot pass"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind control B (windCarriesFireEnabled off): reaches the outer lanes, runs both ways, leans less than either wind run",
+     "what": "not an even spread whatever the wind (the instrument can see vanilla's spread)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind expect: nothing burns in the side lanes and the fires at once stay a few times the cells lit",
+     "what": "not a wind that carries one fire over the whole map"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind start[2]; verdict rows 'start the wind reads back as set' and 'start every strip holds no fire' (selftest_pyrelands_wind_burn_rows 27/27, accept_round9_gaps wind_bearings PASS, run by this judge)",
+     "what": "start asserted: the wind bearing that was set reads back, carries= matches the switch, the strip holds no fire"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind live_run UNRUN with its command recorded, as the contract permits",
+     "what": "live read"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json inv_burn_line_fire_clock",
+    "record.json d_burn_line_natural_grassfire",
+    "scenes.json:11",
+    "scenes.json:18",
+    "sheet.md:15",
+    "sheet.md:62"
    ],
    "id": "inv_burn_line_fire_clock",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_burn_line_walks",
-     "what": "front walks the map and leaves a growing scorched trail"
+     "scene": "sc_burn_line_walks (24 hourly captures, moving centre)",
+     "what": "grass fire walks the map with its own front and leaves a scorched trail"
     },
     {
      "ok": true,
-     "scene": "sc_burn_line_walks (relight arm; burn_line_off_control rules out a stray fire)",
-     "what": "never out for long: a smoulder relights after the quiet spell"
+     "scene": "sc_burn_line_walks expect 'a relight in open grass after it dies'; control burnLineEnabled off shows no relight",
+     "what": "never out for long: a smoulder relights in open grass"
     },
     {
      "ok": true,
@@ -38,81 +106,57 @@
     },
     {
      "ok": true,
-     "scene": "none needed (record text says not a bar)",
-     "what": "keeping lights off the home area and colony buildings: built behaviour, no longer a bar (his 2026-11-16 word)"
+     "scene": "record.json inv_burn_line_fire_clock text and d_burn_line_natural_grassfire (accept_round9_gaps text_fixes PASS)",
+     "what": "no stale 'far from buildings' bar: the colony-distance pick is named as built behaviour, not a bar"
     },
     {
      "ok": true,
-     "scene": "sc_fire_sense, sc_walk",
-     "what": "people step off fire cells and eat before fire duty"
+     "scene": "parts_covered_by sc_fire_sense, sc_walk (unchanged, carried)",
+     "what": "people keep clear of fire and eat before fire duty"
+    },
+    {
+     "ok": true,
+     "scene": "sheet.md:62 'its live test wind_burn_live.py is UNRUN'",
+     "what": "sheet no longer claims a live wind pass"
     }
    ]
   },
   {
    "evidence": [
-    "tree.json",
-    "sheet.md:15",
-    "scenes.json:4",
-    "exam.json",
-    "record.json"
+    "tree.json:42",
+    "tree.json:43",
+    "scenes.json:11",
+    "scenes.json:17",
+    "scenes.json:20",
+    "src/RimMandrake/Pyrelands/validation.py:4589",
+    "sheet.md:15"
    ],
    "id": "burn_line_walks",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_burn_line_walks: 24 hourly captures plus judge",
-     "what": "natural grass fire moving with a black trail that regreens"
+     "scene": "sc_burn_line_walks: 24 hourly captures at asserted hours, judged",
+     "what": "grass fire moves across the map like a natural grass fire with a black trail behind it"
     },
     {
      "ok": true,
-     "scene": "sc_burn_line_walks: burned share at each of four day ends, at most half, against a wind-off control that has to cross half",
-     "what": "must not read as a flood over the whole map (carried gap g2)"
+     "scene": "sc_burn_line_walks expect plus the burnLineEnabled-off control",
+     "what": "never out for long: a smoulder relights in open grass"
     },
     {
      "ok": true,
-     "scene": "sc_burn_line_walks relight arm; exam e2 and c2",
-     "what": "must not read as a fire that burns once and is gone for good"
+     "scene": "sc_burn_line_walks component burn_line_burned_share: burned share of open plantable ground read at start and each day end over 4 days, never most of the map, against the same start save with the wind off that must flood (burned_share_verdict returns unmeasured, never passed, if the control does not flood); round6_parts 69/69 and accept_round9_gaps burned_share PASS, run by this judge",
+     "what": "must not: a flood that takes the whole map and its grass"
     },
     {
      "ok": true,
-     "scene": "leaf experience no longer claims it; sheet.md:15 records his 'Take out the far from buildings'",
-     "what": "the 'lights inside the colony' must-not removed with the building margin (carried gap g3)"
+     "scene": "sc_burn_line_walks: a moving centre, the share must grow (verdict False if on[-1] <= on[0]), relight read",
+     "what": "must not: a fire that does not move, or one that burns once and is gone"
     },
     {
      "ok": true,
-     "scene": "exam.json",
-     "what": "exam is still current: tree input_hash today is 2151214485… and the sheet hash matches; score 40/40"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json:31",
-    "sheet.md",
-    "record.json",
-    "exam.json"
-   ],
-   "id": "fire_walks_with_wind",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_fire_walks_with_wind",
-     "what": "the burn runs further downwind than upwind at east (90) and the reversed west (270), so it turns when the wind turns (carried gap g1)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_fire_walks_with_wind start",
-     "what": "start asserts the wind bearing read back, carries= matching the switch, and no fire on the strip (carried gap g1)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_fire_walks_with_wind control",
-     "what": "the wind-off control spreads evenly, ruling out a blind instrument or an eastward lean; exam control Reader missed e5 and c3, so the exam discriminates"
-    },
-    {
-     "ok": true,
-     "scene": "sc_fire_walks_with_wind live_run",
-     "what": "live test UNRUN, recorded with its command"
+     "scene": "tree.json:42 now lists flood / does not move / burns once only, all read by sc_burn_line_walks (text_fixes PASS)",
+     "what": "no must-not left that no scene checks ('lights inside the colony' removed)"
     }
    ]
   },
@@ -904,176 +948,21 @@
    ]
   }
  ],
- "claims": [],
- "claims_refused": [
-  "coverage_fixes.json is against rm-coverage-judge-1794779751, not the last verdict's rm-coverage-judge-1794938280"
- ],
- "contract": {
-  "advisory": false,
-  "alarms": [
-   {
-    "detail": {
-     "clauses": {
-      "ash_fertile_when_watered": 2,
-      "ash_ground_and_blowing_ash": 3,
-      "ashwallow_dives_unharmed": 1,
-      "burn_line_walks": 3,
-      "fire_walks_with_wind": 2,
-      "firehawk_hunt_rewards": 1,
-      "flamefang_bite_carries_venom": 2,
-      "fresh_burn_compounds_with_black_rain": 2,
-      "furnacebeast_warms": 2,
-      "grass_carpets_and_regreens": 3,
-      "inv_animal_roster": 3,
-      "inv_art_and_text": 3,
-      "inv_ash_field": 3,
-      "inv_biome_self_contained": 2,
-      "inv_burn_line_fire_clock": 4,
-      "inv_burrowers_heat_dome": 1,
-      "inv_embergrass_regrow": 2,
-      "inv_firehawk_ember": 3,
-      "inv_firehawk_hunt_rewards": 2,
-      "inv_furnacebeast": 4,
-      "inv_plant_roster": 3,
-      "inv_ruins_scorched": 2,
-      "inv_settings_gate": 3,
-      "inv_ullai_herd_giant": 3,
-      "inv_weather": 3,
-      "no_ordinary_rain": 1,
-      "populations_are_the_biomes_own": 2,
-      "rest": 3,
-      "ruins_stand_blackened": 2,
-      "three_skies": 2,
-      "ullai_cross_the_map_as_vanilla_herds": 1,
-      "walk_season_on_the_pyre": 1
-     },
-     "repair_due": []
-    },
-    "family": "coverage_judge",
-    "first_at": "2026-11-15T14:05:35Z",
-    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
-    "last_at": "2026-11-17T20:12:26Z",
-    "open": true,
-    "subject": "item:BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
-    "told_at": "2026-11-15T14:05:35Z",
-    "trips": 6,
-    "why": "7 refused verdicts (limit 4)"
-   }
-  ],
-  "cached": [],
-  "calibration": "CALIBRATED",
-  "counted": true,
-  "may_judge": false,
-  "ok": true,
-  "pointer": "refusals.jsonl:501",
-  "repair_due": []
- },
- "contract_reasked": [
-  "evidence 'exam.json (e19)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'record.json (inv_furnacebeast parts_covered_by)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json (sc_furnace, sc_furnace_bed, sc_furnace_hide_bank, sc_furnace_giant)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'scenes.json:326 (sc_furnace), :571 (sc_furnace_bed), :598 (sc_furnace_hide_bank), :701 (sc_furnace_giant)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
-  "evidence 'tree.json (leaf furnacebeast_warms)' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
- ],
- "gaps": [
+ "claims": [
   {
-   "bar_kind": "experience",
-   "carried": true,
-   "criterion_by": "second_reader",
-   "criterion_verdict": "sound",
-   "criterion_why": "A player watching a grass fire would see whether it runs downwind rather than just being blocked sideways, so asking the scene to tell wind-following apart from a wind-blind lane block, with a reversed-wind case and a clean start, is a fair bar that a correct mod can pass.",
-   "evidence": [
-    "tree.json:60",
-    "scenes.json:30",
-    "scenes.json:46",
-    "exam.json"
-   ],
-   "gid": "g1",
-   "ids": [
-    "fire_walks_with_wind",
-    "inv_burn_line_fire_clock"
-   ],
-   "judge_criterion_verdict": "sound",
-   "judge_criterion_why": "His bar is that the fire walks with the wind. A scene that never varies the wind cannot show the wind is the cause, and the contract requires a control that rules out the plausible alternative.",
-   "new_since": "unfixed",
-   "observed": "The leaf asks that the player 'sees it run with the wind, away from where it lit, and not spread evenly to every side', and that it 'must not read as a fire that spreads the same way whatever the wind'. Its red is 'a line burns as far upwind as downwind'. The scene's action lights 'a short line at the upwind end of each strip', so the strip holds no upwind grass to read. Its only varied input is the setting: one wind, 'the wind set across them' (the script calls SetWindForTest \"90\" once, east). The script lights the line at x+2. Its row 'the burn moves downwind' (east_cells >= 4) is never compared with the off control, whose expect reads only 'the burn spreads into the outer lanes on both sides'. The one discriminating read is 'nothing burns in the lanes beside it', and a build that suppresses lateral spread whatever the wind (or spreads along one axis only) passes it. The rules_out, 'an instrument blind to vanilla's even spread passing an unmoved fire as walking', shows the instrument can see, not that the wind is the mechanism. The start's wind is not asserted: the script records wind_set and ProbeWind but never checks them. The strips being fire-free before lighting is not read. exam.json e1, e2 and c1 judge this leaf on whether the upwind ground stays unburned, which the scene cannot read.",
-   "return_to": 3,
-   "severity": "problem",
-   "since": "tree.json gained leaf fire_walks_with_wind and scenes.json gained sc_fire_walks_with_wind (his card 2026-11-17, OWNER:1794926130118775229); neither existed at round 8",
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "In scenes.json sc_fire_walks_with_wind (start, action, expect, control), add the reversed-wind case, the upwind/downwind reach comparison against the off control and the start assertions. Change wind_burn_live.py to match: light mid-strip, call SetWindForTest a second time with 270, and add rows for upwind < downwind, a reversed long axis, a ProbeWind match and zero fires before lighting."
-   },
-   "what": "The new wind scene cannot tell a fire that follows the wind from a mod that simply stops sideways spread whatever the wind's direction. Its start also asserts neither the wind nor fire-free strips.",
-   "where": "scenes.json sc_fire_walks_with_wind (entry point src/RimMandrake/Pyrelands/wind_burn_live.py::main)",
-   "would_pass": "sc_fire_walks_with_wind lights the line with grass on both sides of it along the wind axis, at least as many cells upwind as downwind are planted. It asserts that the downwind reach exceeds the upwind reach with the wind on, and that the off control's upwind and downwind reach are about equal. A second case with the wind reversed (or turned 90 degrees) on the same layout asserts that the burn's long axis follows the new wind. The start asserts that ProbeWind reads the set direction and that each strip's fire count is 0 before lighting. A script or fresh judge can check each of these rows in the scene's output."
+   "evidence": "RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED closed at 314117207ec9: scenes.json sc_fire_walks_with_wind start/expect now assert the set wind bearing and a fire-free start, and light a strip mid-way at two opposite bearings (90 and 270) with an off control; wind_burn_live.py verdict rows read the bearing returned and the carries flag. selftest_pyrelands_wind_burn_rows.py 27/27 (failed on the old code) and accept_round9_gaps.py wind_bearings pass, evidence design/concepts/Pyrelands/version/evidence/wind_bearings_offline_2026-11-17.txt. The live read stays UNRUN.",
+   "gap": "g1"
   },
   {
-   "bar_kind": "experience",
-   "carried": true,
-   "criterion_by": "second_reader",
-   "criterion_verdict": "sound",
-   "criterion_why": "The leaf says the fire must not flood the whole map. A player sees that over the first days, and a daily read of the map-wide burned share with an off control checks it; the one-half line stands in for 'most of the map' and does not pin a burn rate.",
-   "evidence": [
-    "tree.json:31",
-    "tree.json:42",
-    "scenes.json:4",
-    "sheet.md:15"
-   ],
-   "gid": "g2",
-   "ids": [
-    "burn_line_walks",
-    "inv_burn_line_fire_clock"
-   ],
-   "judge_criterion_verdict": "sound",
-   "judge_criterion_why": "He rejected a fire that floods the map. The leaf now states that must-not, and only a map-wide read over the days it names can show it does not happen.",
-   "new_since": "unfixed",
-   "observed": "The oracle says 'never most of the map inside a few days'. The scene's action is 'watch the front for a game day, capturing the front and its black trail at play zoom each game hour', then the smoulder window. Its expect leaves the flood judgement to 'a judge shown them confirms ... not a flood over the whole map', but play-zoom captures of the front do not show the map's extent. No row reads the share of the map burned on day 1, 2 or 3, and the burn_line chain in validation.py reads no burned share either. The wind scene's 'a few times the cells lit' cap is on a bare-ringed strip, so it cannot see a map-scale flood.",
-   "return_to": 3,
-   "severity": "problem",
-   "since": "tree.json burn_line_walks experience and oracle rewritten on his 2026-11-16 words: added 'must not read as a flood that takes the whole map' and 'never most of the map inside a few days'; scenes.json sc_burn_line_walks expect rewritten to 'not a flood over the whole map'",
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Extend scenes.json sc_burn_line_walks (action and expect) and validation.py::burn_line to three game days, with a daily whole-map burned-share read and capture; no new leaf"
-   },
-   "what": "The burn line's new must-not, 'a flood that takes the whole map and its grass', is exercised by no read. The scene watches one day of the front at play zoom and measures no map-wide burned share.",
-   "where": "scenes.json sc_burn_line_walks; tree.json burn_line_walks",
-   "would_pass": "sc_burn_line_walks reads the map-wide burned-cell share (scorched or ash-dusted cells over open grass cells) at the end of days 1, 2 and 3, and asserts it stays below one half while the front still moves. One whole-map capture per day goes to the judge. The burnLineEnabled-off control reads the same share as about 0. A script can check the three shares."
+   "evidence": "RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES closed at c07cd5a998e6: the burn_line chain gains component burn_line_burned_share, reading the burned share of open plantable ground at start and each day end over R6_SHARE_DAYS=4 against a same-start windCarriesFireEnabled-off control (scenes.json, src/RimMandrake/Pyrelands/validation.py). selftest_pyrelands_round6_parts 69 checks and accept_round9_gaps.py burned_share pass, evidence Transient/pyrelands/burned_share_offline_c07cd5a998e6.txt. The live read stays UNRUN.",
+   "gap": "g2"
   },
   {
-   "bar_kind": "experience",
-   "carried": true,
-   "criterion_by": "second_reader",
-   "criterion_verdict": "sound",
-   "criterion_why": "A leaf should not claim a must-not that its scene never checks. A fire lighting inside the colony is something a player would notice, and the fix can go either way (check it, or drop the clause as his ruling did), so a correct mod can pass.",
-   "evidence": [
-    "tree.json:42",
-    "scenes.json:4",
-    "sheet.md:15"
-   ],
-   "gid": "g3",
-   "ids": [
-    "burn_line_walks"
-   ],
-   "judge_criterion_verdict": "flawed",
-   "judge_criterion_why": "The must-not contradicts his removal of the 'far from buildings' claim, so it asks for a property he said the mod has no physics for.",
-   "new_since": "unfixed",
-   "observed": "The experience ends 'or a fire that lights inside the colony'. The scenario now says 'record each relight cell and what grows on it', and the scene's expect reads only 'a relight in open grass after it dies'. Nothing compares a relight cell with the colony, and his words removed the physics behind the claim.",
-   "return_to": 3,
-   "severity": "polish",
-   "since": "tree.json and scenes.json dropped 'beyond the building margin' / 'far from buildings' on his 2026-11-16 words (sheet.md:15: 'Take out the \"far from buildings\" we don't have any physics to substantiate that claim.') but kept the colony must-not",
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "Delete the clause from tree.json burn_line_walks experience (one edit, in line with his 2026-11-16 ruling)"
-   },
-   "what": "The burn line's must-not 'or a fire that lights inside the colony' survives in the tree, but the building-margin read that covered it was removed on his word, so the leaf claims a must-not its scene never checks.",
-   "where": "tree.json burn_line_walks experience; scenes.json sc_burn_line_walks",
-   "would_pass": "Either tree.json burn_line_walks drops 'or a fire that lights inside the colony', matching his ruling, or sc_burn_line_walks asserts that no relight cell lies inside the colony's home area. A grep or the scene's rows show which one."
+   "evidence": "RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS closed at c1564dea9c63: tree.json burn_line_walks drops the 'lights inside the colony' must-not and record.json inv_burn_line_fire_clock drops 'far from buildings' (his 2026-11-16 word) and names the built wind carry, with new decision rows d_burn_line_natural_grassfire and d_fire_walks_with_wind; sheet.md no longer claims a live wind pass; the furnace-giant scene and check drop literal sizes. accept_round9_gaps.py text_fixes FAIL on 3fa42f4a52, PASS at c1564dea9c63; selftest_pyrelands_round6_gaps 18/18, round6_parts 69/69.",
+   "gap": "g3"
   }
  ],
+ "gaps": [],
  "hashes": {
   "dec:d_bar_reworded": "e2e8547d20af51a9",
   "dec:d_blackrain_stop_wipe": "ba9eb5d2975bf78d",
@@ -1193,15 +1082,14 @@
   "scenes.json": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
   "sheet.md": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c"
  },
- "judge": "rm-coverage-judge-1794946219",
+ "judge": "rm-coverage-judge-1794947629",
  "mode": "delta",
- "prompt_chars": 53734,
- "reasons": "No gaps are claimed fixed, and none of the changed entries opens a gap or breaks anything that passed. The changes also answer the three carried gaps. g1: sc_fire_walks_with_wind now runs at east and at the reversed west, rules out 'walks one way whatever the wind', and its start asserts the bearing, carries= and a fire-free strip. g2: sc_burn_line_walks now reads the burned share of open plantable ground at each of four day ends, at most half, against a wind-off control that has to cross half. If the control fails to flood, the read is left unmeasured and never passes (burned_share_verdict in src/RimMandrake/Pyrelands/validation.py). g3: the leaf no longer claims 'a fire that lights inside the colony' (tree.json burn_line_walks, sheet.md:15). sc_furnace_giant covers the size part of furnacebeast_warms. sc_furnace, sc_furnace_bed and sc_furnace_hide_bank cover the rest, so the leaf is whole. The exam is current: today's tree input_hash is 2151214485…, the same as the frozen one, and the sheet hash matches. It scored 40/40, and the control Reader missed exactly the wind rejects e5 and c3. Sub-threshold note: the scene text puts the smoulder wait after the wind-off reload. The code runs the relight arm first and turns the wind back on in a finally block, so the read happens on shipping settings. Not a gap.",
+ "prompt_chars": 7104,
+ "reasons": "All three claimed fixes hold. g1: sc_fire_walks_with_wind now checks at the start that the wind reads back at the bearing that was set, that carries= matches the switch, and that the strip holds no fire. It lights the line mid-strip at bearings 90 and 270, with a wind-off control. That rules out a mod that only blocks sideways spread, because the reversed bearing must also lean downwind. wind_burn_live.py has a verdict row for each of these. I ran selftest_pyrelands_wind_burn_rows (27/27) and accept_round9_gaps wind_bearings, and both pass. g2: the burn line's flood must-not is now read by burn_line_burned_share: the burned share of open plantable ground at each day end over 4 days must never be most of the map. The comparison is the same start save with the wind off, and that control must flood; if it does not, burned_share_verdict returns unmeasured, never pass. I ran round6_parts (0 of 69 failed) and burned_share, and both pass. g3: 'lights inside the colony' is gone from the burn_line_walks experience text. record.json now calls the colony-distance pick built behaviour, not a bar. sheet.md says the wind live test is UNRUN. text_fixes passes. Both live reads stay UNRUN with their commands recorded, which the contract allows. No changed entries were shown and no change opened a gap. One late polish note: the fire_walks_with_wind leaf's scenario text still describes the old upwind-end, single-bearing staging. It does not block. The Transient evidence file Transient/pyrelands/burned_share_offline_c07cd5a998e6.txt is not in this clone (Transient files are untracked), so I reran the check myself instead.",
  "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
- "signed": false,
- "stopped": "the final look (granted 2026-11-17T18:24:41Z, after RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES, RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED, RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS, RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS) at round 11 was not_covered: the owner's to decide",
+ "signed": true,
  "token_unit": "weighted_v2",
- "tokens": 531786,
+ "tokens": 194452,
  "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1",
- "verdict": "not_covered"
+ "verdict": "covered"
 }

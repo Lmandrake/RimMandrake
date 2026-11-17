@@ -502,6 +502,12 @@ def lint(d, repo=REPO, floor_file=None):
             if tree.get("dry_walk") is True and "DRY WALK" not in first:
                 errs.append("a dry walk's sheet starts with a DRY WALK line")
     errs += shape_errors(tree, root_ids_for(repo, tree, sheet), floor, fh)
+    if tree.get("kind") == "mod" and tree.get("dry_walk") is not True:
+        # RIMMANDRAKE_LINT_STALE_ROOT_HASH_BEFORE_THE_JUDGE_SIGNS: a walk re-validated after `write` leaves the tree
+        # citing the old hash; only the gate used to see it, after the exam and the coverage judge had passed it
+        state, cur, _ids, _why = walk_root(repo, tree.get("root_ref"))
+        if state == "VALIDATED" and (tree.get("root_hash") != cur or tree.get("root_state") != "VALIDATED"):
+            errs.append("tree cites a root hash that is not the walk's (re-run `write` to restamp it)")
     in_dry = DRY_DIR in os.path.normpath(os.path.abspath(d)).casefold().split(os.sep)
     if (tree.get("dry_walk") is True) != in_dry:
         errs.append("a dry walk lives under %s/ and nothing else does" % DRY_DIR)
@@ -904,11 +910,9 @@ def gate(d, repo=REPO, floor_file=None):
     if tree.get("dry_walk") is True:
         errs.append("a dry walk is never handed to a worker")
     if tree.get("kind") == "mod":
-        state, cur, _ids, why = walk_root(repo, tree.get("root_ref"))
-        if state != "VALIDATED":
+        state, _cur, _ids, why = walk_root(repo, tree.get("root_ref"))
+        if state != "VALIDATED":     # a stale hash on a VALIDATED walk is lint's refusal now
             errs.append("root is not VALIDATED: %s" % (why or state))
-        elif tree.get("root_hash") != cur or tree.get("root_state") != "VALIDATED":
-            errs.append("tree cites a root hash that is not the walk's")
     why = coverage_problem(d, repo, tree)
     if why:
         errs.append(why)
