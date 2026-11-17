@@ -1,0 +1,166 @@
+{
+ "mod": "BlueDesert",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "cannot_hold_together",
+     "where": "bars.json B3 (says, accept, figurative 'deep') against R5; tickets.md T14; models.md 'Drift and route geometry'; ambiguities.md item 22",
+     "evidence": "B3 says the piles 'obstruct passage until cleared' and its accept picture says 'workers must clear it before ordinary hauling resumes'. R5 says 'Use Odyssey SandGrid for buildup/path costs and erosion'. That mechanism is an owner card decision, not a rule the proposal can change: design/Jawa/worldbuilding/biomes/the_blue_desert.md §4b amendment, 'decisions taken by question card' at BLUEDESERT_DESIGN_SITTING_1, reads 'Ice-sand drift rides Odyssey's SAND grid (… path-cost burial, auto-erosion after the storm)', and his typed words are 'make sure it goes deep'. The engine was read in RimSage. Verse/WeatherBuildupUtility.MovementTicksAddOn gives the deepest category, Thick (depth 0.75 or more), only +12 movement ticks per cell. Verse/AI/PathGrid.cs:169 uses only that add-on. SandGrid.CanHaveSand sets depth to zero under full-fillage buildings. No SandGrid depth makes a cell impassable or stops a job, so a correct build of the ruled mechanism is B3's own reject picture ('slows walking … but never piles into an obstruction'). The 'weather' meeting calls this 'unknown', but the engine settles it now. T14 and the drift model then say 'revise R5' if SandGrid falls short, which would change his card ruling while bars.json presents R5 as our own attackable rule.",
+     "would_pass": "B3 holds with the ruled mechanism. Deep means the thickest buildup reaching the approach cells beside a wall, door or hull, so the route is heavily slowed until a sand-clear area is worked or the drift erodes. The reject pictures are a dusting or thin layer only, an overlay with no buildup, or a storm-time slowdown with no deposit.",
+     "smallest_fix": "Rewrite B3's says, figurative 'deep' and accept/reject around path-cost burial. Source R5 to the card decision. Delete the 'revise R5 / obstruction' clauses in T14, the drift model and ambiguity 22. If the Designer still believes he meant impassable piles, put that on his pages as a question with this engine evidence."
+    },
+    {
+     "id": "R2",
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json R10, B6 (says 'refined native fuel', accept 2, reject 1), B7 accept 2; C5; tickets.md T12 second paragraph and T13; definition.md Costs; ambiguities.md item 19",
+     "evidence": "The proposal makes refined Chemfuel keep the wax's warm hazard. Ambiguity 19 says the life brief 'grants no explicit hazard waiver'. The life brief the proposal itself cites as ratified says the opposite: design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md §7 lines 637-642 read 'RM_ColdWax ×5 → Chemfuel ×10 at the refinery; no recipe-level temperature gate … a warm workroom ruins the input stack before the bill finishes' and '\"Cold-handled only\" (sheet §7) is therefore a fact about rooms … refine it in a cold room, and it is ordinary fuel'. Hard ban 3 in the_blue_desert.md covers 'plant, produce or creature-product defs', and the brief files wax under Manufactured. The 'delegated' inference therefore overrides the specific ratified design.",
+     "would_pass": "The hazard lives in wax (and corpses and feed) up to the end of the bill. A cold-room bill yields ordinary vanilla Chemfuel, and a warm room ruins or wicks the input before it finishes. B6 and B7 pictures say this.",
+     "smallest_fix": "Drop 'refined native fuel' from B6 says and the Chemfuel-continuity pictures. Make R10's output ordinary Chemfuel. Delete C5's Chemfuel clause and T12's provenance paragraph. Alternatively, keep the reading only as a question on his pages, with the brief's 'it is ordinary fuel' line as the evidence against it."
+    },
+    {
+     "id": "R3",
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md Costs paragraph 3; bars.json R10; T12; T13",
+     "evidence": "The proposal says 'The reader must identify the native portion and its state in a mixed stack or consumer. Internal unburned fuel remains covered until actually consumed', and also that the output 'retains the vanilla Chemfuel identity' while 'unrelated imported fuel retains its existing behavior'. Nothing defines what a merged stack does when its native share warms (whole-stack wick or a scaled blast). Nothing defines what a generator holding native fuel does on warming, or how a share is tracked once same-def stacks merge into one Thing and a refuelable building holds a single fuel quantity. The two identity claims also require either a comp on every Chemfuel or a separate def. They cannot both be true as written.",
+     "would_pass": "Either no continuity mechanic at all (see the previous refusal), or a defined one: a separate native fuel def that does not merge with imported Chemfuel, a stated warm outcome for stacks and for loaded consumers, and a stated consumption rule.",
+     "smallest_fix": "Resolve the previous refusal (this mechanic then disappears). Otherwise add a definition paragraph and a rule naming the def, the merge behaviour and the consumer warm outcome."
+    },
+    {
+     "id": "R4",
+     "head": "reads_with_mechanic_off",
+     "where": "bars.json B8 accept 1 ('a prepared cold hold weathers a repairable blackout'), sees.start/control; definition.md 'Worst day'",
+     "evidence": "B8's range sets ambient at '-60 to -19 C with heated rooms', and the_blue_desert.md line 58 puts the Blue Desert at −42.6. R4 gives this nightside no sun heat. A blackout switches off electric heaters, so an enclosed hold on this map stays cold with no ice at all. B8's 'ice/no-ice reserves' control pair would read the same in both arms, and the accept picture passes with loose-ice cooling switched off.",
+     "would_pass": "The blackout beat includes a heat source that survives the blackout (a fuelled heater or heated neighbouring room leaking into the hold, or the hold aboard a ship on a warmer layer). The no-ice arm must be seen to warm past the wax safe limit while the ice arm holds.",
+     "smallest_fix": "Add that heat source and the no-ice-arm warming requirement to B8's sees.start and control. Or drop the blackout from B8's accept and leave long cold holding to B6, whose range already reaches +40 C."
+    },
+    {
+     "id": "R5",
+     "head": "figurative_unmarked",
+     "where": "bars.json B8 says; figurative: []",
+     "evidence": "B8 says 'runaway destruction', 'a dead or stalled biome' and 'a local ignition remains understandable', yet its figurative list is empty. A biome is not literally dead. 'Local' and 'understandable' are the vague words the brief tells the Designer to hunt down. The models.md flood/desert/stall split shows the Designer meant something specific but never wrote it into the bar.",
+     "would_pass": "Each word is marked with what it stands for, for example: 'dead' means no native growth or animals left for the next expedition to meet; 'understandable' means the player can trace the chain's source and path in game. Each gets one accept picture that departs from the literal reading.",
+     "smallest_fix": "Add three figurative entries to B8."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Aligned deep drift with the thickest SandGrid path-cost buildup beside structures, cited the owner card in R5, and removed obstruction and mechanism-replacement requirements. Weather calibration now tests natural attainment and travel delay.",
+      "where": "bars.json B3, R5, weather/routes meetings; definition.md weather; tickets.md T14/T31; models.md Drift and route geometry; ambiguities.md 22; owner_pages.md deep-drift/model summaries"
+     },
+     {
+      "id": "R2",
+      "changed": "Restored the ratified cold-room bill yielding ordinary vanilla Chemfuel. Wax retains its hazard during work, and warm-workroom input ruins or wicks before completion. Removed refined-fuel hazard continuity and corrected its supporting entries.",
+      "where": "bars.json B6, B7, C5, R3, R10 and conversion/heat/organics meetings; definition.md refinery and Costs; tickets.md T12/T13; ambiguities.md 19/33 and repair notes; census.json wax_refinery; models.md lifecycle/thermal entries; owner_pages.md refining summary"
+     },
+     {
+      "id": "R3",
+      "changed": "Removed the native Chemfuel provenance, mixed-stack hazard and internal consumer-fuel mechanic by resolving R2. Completed output uses vanilla stacking, refueling and consumption.",
+      "where": "definition.md Costs; bars.json R3/R10, B6/B7 and meetings; tickets.md T12/T13; models.md lifecycle/thermal entries; census.json wax_refinery; ambiguities.md repair notes; owner_pages.md"
+     },
+     {
+      "id": "R4",
+      "changed": "Specified ongoing blackout heat leakage from a fueled neighboring heater and a matched no-ice hold that must warm above the wax safe limit while the ice hold stays below it with measured reserve loss.",
+      "where": "bars.json B8 sees.start/control; definition.md Worst day; models.md Whole-season coupled map and Thermal reserve ledger; ambiguities.md repair notes; owner_pages.md"
+     },
+     {
+      "id": "R5",
+      "changed": "Added three figurative entries defining local/understandable ignition, runaway destruction and dead/stalled biome, each with an accept picture departing from a literal reading.",
+      "where": "bars.json B8 meant.figurative; ambiguities.md repair notes; owner_pages.md summary"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json B3 now says 'deep ice-sand buildup beside walls, doors and hulls heavily slow approach routes until cleared or eroded'. Its figurative 'deep' stands for 'The thickest SandGrid buildup reaches approach cells beside a wall, door or hull and applies its heaviest movement cost until cleared or eroded', and its accept reads 'Haulers can still cross it, taking longer until a sand-clear area is worked'. Its rejects are 'Only a dusting or thin layer ever reaches structure approaches' and 'A storm overlay or storm-time movement penalty slows travel while approach cells retain no buildup'. R5 now opens 'Owner card decision at BLUEDESERT_DESIGN_SITTING_1, recorded in the_blue_desert.md section 4b amendment'. The 'revise R5' and obstruction clauses are gone. T14 reads 'Tuning choices concern weather accumulation rates and durations within the ruled mechanism'. T31 reads 'report the weather trace and accumulation shortfall for tuning within the ruled SandGrid mechanism'. The drift model's 'Trigger' now reads 'Choice changed by output concerns accumulation rates/durations and local presentation within the owner-ruled SandGrid mechanism'. Ambiguity 22 reads 'The earlier obstruction reading conflicted with that ruled mechanism and is withdrawn'. A grep for 'obstruct' and 'revise R5' finds no drift use left in the proposal."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "B6 now says 'Native corpses, wax and feed stay useful when cold…', with no 'refined native fuel'. B6 accept 2 reads 'Wax stays reactive during bill work, with a warm workroom ruining or wicking the input before completion. A cold-room bill yields ordinary vanilla Chemfuel'. B7 accept 2 reads 'The completed cold-room bill yields ordinary vanilla Chemfuel. A warm workroom ruins or wicks the wax input before the bill finishes'. R10 reads 'outputs ordinary vanilla Chemfuel, as specified by blue_desert_hydrocarbon_life.md section 7'. C5's Chemfuel provenance clause is deleted. T12 reads 'Wax refining follows R10's ratified transition to ordinary Chemfuel at cold-room bill completion'. definition.md Costs cites 'it is ordinary fuel'. Ambiguity 19 reads 'Take A from the ratified life brief section 7 … The prior delegated continuity reading contradicted that specific design and is withdrawn'."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "The continuity mechanic is gone, as the record's first would_pass allows. definition.md Costs now reads 'Completed cold-room work yields ordinary vanilla `Chemfuel`, with vanilla stack merging, refueling and consumption'. The 'native portion … in a mixed stack or consumer' and 'Internal unburned fuel remains covered' sentences are deleted. R10 ends 'Completed cold-room work yields ordinary fuel with vanilla stack merging, refueling and consumption behavior'. T13 reads 'Completed cold-room work yields ordinary vanilla Chemfuel, with vanilla stack merging, refueling and consumption'. The census row wax_refinery now reads 'converts cold wax to ordinary vanilla Chemfuel'. No 'native Chemfuel' or 'imported fuel' text remains in the proposal files."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "B8 sees.start now reads 'The blackout hold receives measured heat leakage from an adjacent room with a fueled heater that remains running throughout the electrical outage … sufficient to warm the no-ice hold beyond the loaded wax safe-temperature limit'. B8 sees.control reads 'verify the fueled neighboring heater stays active in both copies. The no-ice hold must warm past the wax safe limit while the ice hold stays below it with measured reserve loss'. definition.md Worst day reads 'a fueled heater in the neighboring room continues leaking heat into it. In the matched no-ice hold, that heat raises the room past the wax safe limit'."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "B8 meant.figurative now has three entries: 'local ignition remains understandable' ('The player can trace subsequent releases along reachable fuel/heat paths using in-game warnings and event evidence'), 'runaway destruction' and 'dead or stalled biome' ('Dead means native growth and animals are gone for the next expedition. Stalled means ordinary discovery, clearing, extraction, hauling or cooling repair cannot progress…'). Each has an accept picture that departs from the literal reading. Examples: 'A blast starts beyond the camera and reaches a neighboring patch…' and 'One patch is bare and fog temporarily delays hauling. Growth and animals persist elsewhere…'."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Repair after the fresh review",
+    "ambiguities.md Settled ambiguities and the arguments that changed the definition",
+    "bars.json bars/B3",
+    "bars.json bars/B6",
+    "bars.json bars/B7",
+    "bars.json bars/B8",
+    "bars.json checks/C5",
+    "bars.json meetings",
+    "bars.json rules/R10",
+    "bars.json rules/R3",
+    "bars.json rules/R5",
+    "census.json rows/wax_refinery",
+    "definition.md Costs",
+    "definition.md Ordinary week",
+    "definition.md When it goes wrong and its sign",
+    "definition.md Why a player reaches for it",
+    "definition.md Worst day",
+    "models.md Drift and route geometry",
+    "models.md Situation and lifecycle generator",
+    "models.md Thermal reserve ledger",
+    "models.md Whole-season coupled map",
+    "owner_pages.md Page two — what to check",
+    "tickets.md T12: Close lifecycle, warning and roster compatibility gaps",
+    "tickets.md T13: Ordinary discoverable work, water/fuel use and physical ancient context",
+    "tickets.md T14: Ordinary weather action and local ice-grain appearance",
+    "tickets.md T31: Build drift and route instrument"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1049989,
+     "output_tokens": 11063
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "ambiguities.md item 23 still says 'ordinary obstructed weather is land'.",
+   "reason": "The fix left this entry unchanged. After R1 withdrew the obstruction reading of drift, the word can be read as drift obstruction rather than fog's sight and travel cost. It should say 'path-cost and fog-slowed weather'.",
+   "round": 1
+  },
+  {
+   "what": "bars.json B3 range.varies now carries engine numbers: 'Thick, currently depth at least 0.75 with +12 movement ticks per cell'.",
+   "reason": "The bar's pictures key on 'thickest category', and the numbers are marked 'currently' as engine evidence, so this is not a pass threshold. Moving the numbers to R5 or T31 would keep the bar free of numbers if the engine changes.",
+   "round": 1
+  },
+  {
+   "what": "The owner_pages.md section 'Still refused after the second look' repeats all five refusals verbatim as unresolved.",
+   "reason": "Those refusals now stand fixed. If this section is not regenerated by the pipeline, the owner would read stale refusals.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "e7ffe132a748272db34bbf21fb60e9a116b5d2d22d591e447ed099fb169af955",
+ "seconds": 348,
+ "at": "2026-11-17T06:53:10"
+}

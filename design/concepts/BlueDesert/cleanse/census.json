@@ -724,14 +724,14 @@
     },
     {
       "id": "wax_refinery",
-      "what": "Ordinary BiofuelRefinery bill converts cold wax to usable Chemfuel retaining native warm-hazard provenance. Bill and product/consumer adapters are absent.",
+      "what": "Ordinary BiofuelRefinery bill converts cold wax to ordinary vanilla Chemfuel. The bill is absent.",
       "built": "absent",
       "evidence": "src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/RM_ColdWax.xml; design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md section 7; src/RimMandrake/Abyss/Defs/RecipeDefs/RM_Recipes_Chemfuel.xml confirms existing BiofuelRefinery recipe ownership.",
       "proven": "missing",
       "called_by": "RM_ColdWax.xml names owed refinery; bounded src recipe search found no cold-wax-to-chemfuel consumer.",
-      "serves": "Usable cold-dependent native fuel in the signature, including ordinary vanilla fuel consumption.",
+      "serves": "Usable fuel from cold-handled native wax in the signature, including ordinary vanilla fuel consumption.",
       "fate": "needed_by",
-      "why": "Designer decision. Without actual fuel use, collection produces only a dangerous stockpile. Use the existing BiofuelRefinery with work cells within loaded wax safety, preserve native hazard through refined Chemfuel and unburned consumer storage, and discharge only actually consumed fuel. A warm-safe output would contradict the native-product ban.",
+      "why": "Designer decision. Without actual fuel use, collection produces only a dangerous stockpile. Use the existing BiofuelRefinery with cold input and interaction cells. Wax retains its hazard during work, and completed cold-room work yields ordinary Chemfuel under the ratified life brief section 7.",
       "needed_by": "signature",
       "ticket": "T13"
     },

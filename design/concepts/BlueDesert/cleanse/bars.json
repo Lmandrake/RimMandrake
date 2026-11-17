@@ -97,20 +97,20 @@
     },
     {
       "id": "B3",
-      "says": "The player sees deep ice-sand piles against structures bury a doorway or route and obstruct passage until cleared or eroded, while ice fog visibly cuts shooting reach and slows travel until it lifts.",
+      "says": "The player sees deep ice-sand buildup beside walls, doors and hulls heavily slow approach routes until cleared or eroded, while ice fog visibly cuts shooting reach and slows travel until it lifts.",
       "meant": {
-        "intent": "Weather deposits must pile deep enough to bury a doorway or working route and require clearance for ordinary use, with routine fog also affecting work and travel.",
+        "intent": "Deep means the thickest SandGrid buildup reaching structure approaches and imposing its heaviest path cost, with routine fog also affecting work and travel.",
         "source": "the_blue_desert.md section 4b engine amendment, including owner deep-drift instruction at BLUEDESERT_DESIGN_SITTING_1; numerical severity is a check, not a bar. Haze appearance remains B1; exposure is deferred by this Designer.",
         "figurative": [
           {
             "word": "deep",
-            "stands_for": "A pile buries a doorway or route so ordinary passage requires clearance or waiting for erosion. Depth is judged by that obstruction.",
-            "accept": "A top-down sand layer buries the doorway approach and workers must clear it before ordinary hauling resumes, without a vertical depth simulation."
+            "stands_for": "The thickest SandGrid buildup reaches approach cells beside a wall, door or hull and applies its heaviest movement cost until cleared or eroded.",
+            "accept": "A top-down ice-grain layer reaches the thickest buildup category beside a doorway. Haulers can still cross it, taking longer until a sand-clear area is worked."
           },
           {
             "word": "against structures",
             "stands_for": "Deposits occupy approach cells beside a structure. The structure need not cause or redirect accumulation.",
-            "accept": "A patchy deposit spans the cells beside a wall and buries its doorway approach even though the wall did not redirect wind or cause the patch."
+            "accept": "A patchy deposit fills approach cells beside a wall and slows doorway traffic even though the wall did not redirect wind or cause the patch."
           },
           {
             "word": "cuts shooting reach",
@@ -120,24 +120,24 @@
         ]
       },
       "accept": [
-        "A patchy ice-grain pile beside a wall or hull buries the doorway approach so workers must clear it before ordinary hauling resumes. Clearing restores the route and exposed deposits later erode. The structure need not cause the patch.",
+        "A patchy ice-grain deposit reaches its thickest buildup beside a wall, door or hull, heavily slowing haulers across the approach. Working a sand-clear area restores the deposit-free trip, and exposed deposits later erode. The structure need not cause the patch.",
         "A weapon remains intact but loses a previously available distant shot in fog, and a deposit-free trip also slows. Both recover as fog lifts."
       ],
       "reject": [
-        "A thin sand film beside a wall slows walking slightly but never piles into an obstruction.",
-        "A tan storm overlay moves across clean paths but no deposit obstructs a structure or changes a trip.",
+        "Only a dusting or thin layer ever reaches structure approaches.",
+        "A storm overlay or storm-time movement penalty slows travel while approach cells retain no buildup.",
         "Weather definitions contain penalties, but the test map stays clear, or fog never releases its restrictions."
       ],
-      "lazy": "A thin sand film beside a wall slows walking slightly but never piles into an obstruction.",
+      "lazy": "Only a dusting or thin layer ever reaches structure approaches.",
       "range": {
-        "varies": "All transitions among Clear/Haze/IceSandDrift/IceFog; storm-start/middle/end/erosion; wall, door, ordinary room and landed hull, all rotations, edge/interior, open and roofed approaches; narrow and alternate routes; 200/250/300-cell maps, 1/12/40 colonists; short/typical/long naturally supported storm durations and consecutive storms. Shot origin/target distances sweep below, at and beyond the currently loaded range cap, not a permanent fixed bar value.",
+        "varies": "All transitions among Clear/Haze/IceSandDrift/IceFog; storm-start/middle/end/erosion; wall, door, ordinary room and landed hull, all rotations, edge/interior, open and roofed approaches; narrow and alternate routes; 200/250/300-cell maps, 1/12/40 colonists; short/typical/long naturally supported storm durations and consecutive storms. Shot origin/target distances sweep below, at and beyond the currently loaded range cap, not a permanent fixed bar value. SandGrid depth classes include Thick, currently depth at least 0.75 with +12 movement ticks per cell [engine evidence supplied in R1, WeatherBuildupUtility.MovementTicksAddOn and PathGrid.cs:169]. Read approach cells beside full-fillage footprints, where SandGrid.CanHaveSand permits buildup.",
         "left_out": "No windward accumulation algorithm, vehicle burial job or global sand redesign promised. No atmospheric physics model; shared SandGrid remains the dependency. Special shuttle veto is off."
       },
       "sees": {
-        "instrument": "Drift geometry model and state reads of sand depth, sand path cost, clearance jobs and actual trip/shot outcomes over natural weather traces. Read deposited obstruction after drift weather ends, before erosion removes it. T14 supplies matched geometry fixtures and blue-white layer reads. B1 judges material appearance.",
+        "instrument": "Drift geometry model and state reads of sand depth, sand path cost, clearance jobs and actual trip/shot outcomes over natural weather traces. Read deposited path-cost buildup after drift weather ends, before erosion removes it. T14 supplies matched geometry fixtures and blue-white layer reads. B1 judges material appearance.",
         "start": "Assert structure footprints, initial sand, pawn speed/health, gun and target, room roofs and current weather. Confirm no old weather lock, never clear deposits between storm and erosion observations.",
         "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
-        "control": "RM_IceSandDrift itself has moveSpeedMultiplier 0.8 in RM_BlueDesertWeathers.xml, so a slow trip during the storm can occur with zero deposit. Credit deposited obstruction only from a post-storm reading before erosion removes it, or from deposited and deposit-free twin routes under identical weather. Keep topology, pawn health/speed, carried load and roof state matched, read sand path costs and require clearance to restore ordinary route use. Slight post-storm slowdown alone fails the deep-obstruction picture. Read fog movement separately on deposit-free matched routes before/during/after fog, with pawn and topology fixed. Shot requests must exercise the actual targeting/range predicate.",
+        "control": "RM_IceSandDrift itself has moveSpeedMultiplier 0.8 in RM_BlueDesertWeathers.xml, so a slow trip during the storm can occur with zero deposit. Credit deposited path-cost burial from a post-storm reading before erosion removes it, or from deposited and deposit-free twin routes under identical weather. Keep topology, pawn health/speed, carried load and roof state matched. Read the thickest buildup category and its path cost beside structures, then require sand clearing to restore the deposit-free trip. Read fog movement separately on deposit-free matched routes before/during/after fog, with pawn and topology fixed. Shot requests must exercise the actual targeting/range predicate.",
         "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
         "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
       },
@@ -149,7 +149,7 @@
         "heat"
       ],
       "tests": {
-        "reject": "Delegated rejection inference from the owner deep-drift instruction and ruled fog effects. Shallow slowing cannot satisfy the required buried-route experience.",
+        "reject": "The owner deep-drift instruction and ruled SandGrid mechanism require the thickest path-cost buildup beside structures. A dusting, overlay or storm-only slowdown fails that experience.",
         "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
         "first_version": "land"
       }
@@ -253,10 +253,10 @@
     },
     {
       "id": "B6",
-      "says": "Native corpses, wax, refined native fuel and feed stay useful when cold and become a warned explosive hazard when warmed, while loose water ice keeps a closed cold room cold without a rack for far longer than an ordinary cooling repair.",
+      "says": "Native corpses, wax and feed stay useful when cold and become a warned explosive hazard when warmed, while loose water ice keeps a closed cold room cold without a rack for far longer than an ordinary cooling repair.",
       "meant": {
-        "intent": "Native hazard continuity extends through refining and storage. Loose ice alone must keep a prepared closed cold hold cold, with a substantial reserve beyond ordinary cooling repair time under its declared load.",
-        "source": "the_blue_desert.md hard ban on warm-safe native organics; owner answer two in ANSWERS_OWNER.md; later ordinary ice-mining answer. Loose-ice heat accounting and warning reset policy are delegated, not new owner numbers. Retaining the warm hazard in refined native Chemfuel is delegated from the_blue_desert.md sections 5\u20137 and its hard ban on warm-safe native organic products. The output/provenance rule is R10.",
+        "intent": "Native hazard continuity covers corpses, wax and feed through storage and wax bill work. Loose ice alone must keep a prepared closed cold hold cold, with a substantial reserve beyond ordinary cooling repair time under its declared load.",
+        "source": "the_blue_desert.md hard ban on warm-safe native organics; owner answer two in ANSWERS_OWNER.md; later ordinary ice-mining answer; blue_desert_hydrocarbon_life.md section 7 explicitly yields ordinary Chemfuel from cold-room refining. Loose-ice heat accounting and warning reset policy are delegated. The ordinary refining rule is R10.",
         "figurative": [
           {
             "word": "far longer",
@@ -267,23 +267,23 @@
       },
       "accept": [
         "Loose ice alone holds a prepared closed room and its native cargo cold. In an unrepaired blackout arm it continues doing so with substantial reserve well after a matched crew finishes ordinary cooler repair, and eventually melts under continued heat input.",
-        "Wax refined into usable chemfuel still shows its native cold-handling warning when warmed, as do feed and a newly generated native corpse. Splitting, mixing, carrying and reloading preserve that danger. Water ice melts without exploding."
+        "Cold wax, feed and a newly generated native corpse retain their warm hazard through splitting, carrying and reloading. Wax stays reactive during bill work, with a warm workroom ruining or wicking the input before completion. A cold-room bill yields ordinary vanilla Chemfuel. Water ice melts without exploding."
       ],
       "reject": [
-        "The same organic fuel becomes warm-safe as a corpse, newborn product, split or mixed stack, carried item, refined chemfuel or processed food.",
+        "Native organics become warm-safe as a corpse, newborn product, split or merged stack, carried item or processed food, or wax loses its warm reaction while the refinery bill is still in progress.",
         "Only the special rack cools a room, or a warm organic stack goes directly from apparently sound to destruction before the player can locate it and respond.",
         "A full prepared ice stockpile melts away before an ordinary repair crew can finish, or keeps the room cold only until shortly after that repair."
       ],
       "lazy": "A full prepared ice stockpile melts away before an ordinary repair crew can finish, or keeps the room cold only until shortly after that repair.",
       "range": {
-        "varies": "All native plants, live heat tolerance, generated corpses, wax, roe, butcher outputs and enabled shared-engine products; fresh/stored/damaged, stack count 1 through loaded stack limit, merge/split, held/spawned, room/landed ship interior/transport container; ambient -60 through +40 C, door traffic 0/ordinary/40-colonist bursts, 1/12/40 colonists, powered cooling/on/off/repaired, loose-ice no/partial/full reserve, room sizes 9/36/144 cells; save/reload at warming/warning/ice-exhaustion/wick boundaries. Off-map containers may preserve a recorded hazard state but may not become free indefinite refrigeration. Refined native Chemfuel follows the wax safe-temperature limit. Sweep cold-work bill start/progress/completion/cancellation, mixed native/imported fuel and fuel held in an ordinary consumer before actual consumption. For the long-duration comparison use full prepared reserves in closed rooms with positive measured heat input and healthy, available ordinary repair workers with reachable materials. Time an actual standard repair of the same cooling fault and route under each admitted weather/load regime. Continue an identical unrepaired arm beyond repair completion to read reserve and cold holding. Partial/empty reserves, open-door bursts and deliberately excessive heat are exhaustion stress cases, not promises of long holding from any quantity of ice.",
+        "varies": "All native plants, live heat tolerance, generated corpses, wax, roe, butcher outputs and enabled shared-engine products; fresh/stored/damaged, stack count 1 through loaded stack limit, merge/split, held/spawned, room/landed ship interior/transport container; ambient -60 through +40 C, door traffic 0/ordinary/40-colonist bursts, 1/12/40 colonists, powered cooling/on/off/repaired, loose-ice no/partial/full reserve, room sizes 9/36/144 cells; save/reload at warming/warning/ice-exhaustion/wick boundaries. Off-map containers may preserve a recorded hazard state but may not become free indefinite refrigeration. Sweep wax bill start/progress/completion/cancellation with the ingredient hazard active until completion. Completed output is ordinary vanilla Chemfuel under R10. For the long-duration comparison use full prepared reserves in closed rooms with positive measured heat input and healthy, available ordinary repair workers with reachable materials. Time an actual standard repair of the same cooling fault and route under each admitted weather/load regime. Continue an identical unrepaired arm beyond repair completion to read reserve and cold holding. Partial/empty reserves, open-door bursts and deliberately excessive heat are exhaustion stress cases, not promises of long holding from any quantity of ice.",
         "left_out": "No physically infinite outdoor refrigerator or arbitrary target-temperature gizmo on loose ice. No new meltwater drip interaction. Plain water ice, potable water, metal and declared pure-carbon char-lace are not hydrocarbon organics. Char-lace production itself is off."
       },
       "sees": {
         "instrument": "Thermal reserve model and real room/item histories with heat, mass, warning, wick and conversion provenance. T17 defines loose-ice storage; T12 lifecycle reactivity; T13 ordinary water/fuel consumers; T15 observation. Do not credit old rack-only proofs.",
         "start": "Matched enclosed rooms with identical heat input, roofs, doors and initial temperatures. Log real harvested/butchered native cargo and loose ice without racks. Compare loaded versus empty ice and repaired versus still-unpowered arms. Record the same ordinary cooler fault, repair materials, worker state and access route. Use positive heat input sufficient to warm the empty-ice room.",
         "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
-        "control": "Ambient cold or a secretly powered cooler can explain a cold room. Read enclosure, all powered heat exchange and heat input, then compare loaded/empty ice arms with the same traffic and start temperature. Time real ordinary repair including travel and work. Keep the matched unpowered ice arm running well past completion and require continued cold holding with substantial reserve. Barely beating a quick repair fails. Verify finite mass/reserve loss and no reset on split/load. Trace wax through refining into output and internal unburned consumer fuel, then compare warming with imported fuel to catch hazard laundering or a global Chemfuel mutation.",
+        "control": "Ambient cold or a secretly powered cooler can explain a cold room. Read enclosure, all powered heat exchange and heat input, then compare loaded/empty ice arms with the same traffic and start temperature. Time real ordinary repair including travel and work. Keep the matched unpowered ice arm running well past completion and require continued cold holding with substantial reserve. Barely beating a quick repair fails. Verify finite mass/reserve loss and no reset on split/load. Trace wax through cold-room bill completion into ordinary Chemfuel. Compare a warm-workroom arm where the input ruins or wicks before completion, and verify the completed cold-work output behaves like ordinary vanilla Chemfuel.",
         "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
         "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
       },
@@ -296,7 +296,7 @@
         "propagation"
       ],
       "tests": {
-        "reject": "Owner answer two explicitly requires passive cooling and very long melting. Delegated comparison to ordinary repair preserves that promise while allowing thermal tuning. The native-product ban also rejects a warm-safe refining loophole.",
+        "reject": "Owner answer two explicitly requires passive cooling and very long melting. Delegated comparison to ordinary repair preserves that promise while allowing thermal tuning. Wax, corpses and feed retain their warm hazard, including wax during refinery work, as specified by the life brief.",
         "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
         "first_version": "signature/support"
       }
@@ -311,7 +311,7 @@
       },
       "accept": [
         "The crew discovers a broken extraction face with accessible ice and frozen equipment showing an abandoned attempt; ordinary salvage and mine orders yield materials the colony can actually use.",
-        "Clearing surrounding live fuel leaves an exit. Workers mine ice, melt water and refine gathered wax at the ordinary biofuel refinery in a workspace within the wax safe-temperature limit. The resulting usable chemfuel remains cold-dependent."
+        "Clearing surrounding live fuel leaves an exit. Workers mine ice, melt water and refine gathered wax at the ordinary biofuel refinery in a workspace within the wax safe-temperature limit. The completed cold-room bill yields ordinary vanilla Chemfuel. A warm workroom ruins or wicks the wax input before the bill finishes."
       ],
       "reject": [
         "Only a developer spawn provides mineable ice, or unconnected generic wreck props claim an entire archaeological site.",
@@ -319,14 +319,14 @@
       ],
       "lazy": "Mine orders require cold-cutting research, excavation pace secretly changes a loot roll, or the recovered wax has no actual use beyond sitting as an explosive item.",
       "range": {
-        "varies": "Received local maps of 200/250/300 cells, flat through mountainous, edge/interior sites and blocked/open work faces; fresh colony through day 100 with 1/12/40 colonists; normal mining, salvage, bill cancellation, worker death, save/reload between damage hits and conversion; raw ice, can, bucket and melter consumers when installed. Site content may vary without a quota of epochs or variants. For the wax bill use BiofuelRefinery, input/interaction/output-cell temperatures below/at/above loaded RM_ColdWax.maxSafeTemperature, cold-to-warm interruptions, and cancellation/reload at completion. Follow native Chemfuel into vanilla chemfuel-generator storage and actual fuel consumption.",
+        "varies": "Received local maps of 200/250/300 cells, flat through mountainous, edge/interior sites and blocked/open work faces; fresh colony through day 100 with 1/12/40 colonists; normal mining, salvage, bill cancellation, worker death, save/reload between damage hits and conversion; raw ice, can, bucket and melter consumers when installed. Site content may vary without a quota of epochs or variants. For the wax bill use BiofuelRefinery, input/interaction-cell temperatures below/at/above loaded RM_ColdWax.maxSafeTemperature, cold-to-warm interruptions, and cancellation/reload at completion. Follow ordinary output Chemfuel into vanilla chemfuel-generator storage and actual fuel consumption.",
         "left_out": "No campaign faction names or religious study, no timer/incident-created site required, no quarry-to-Horrors releases, no planetary generation or tile assignment. Ancient context is static and generic in the RM member; ship-specific burial is extra."
       },
       "sees": {
         "instrument": "Local placement reachability sweep and real worker mine/salvage/conversion state reads; B1 judges whether the physical attempt is readable. T13 specifies discoverable placement and normal recipes. Existing mineable defs with scatter zero are not placement evidence.",
         "start": "Fresh disposable received-map copy, no debug-spawned ice as acceptance evidence. Read placed site/mineable provenance and job reachability; assert wax and water consumers are actually available with all research unlocked.",
         "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
-        "control": "Random map loot could make an expedition look productive. Trace outputs to the specific mined ice and salvage/job completions; verify ordinary recipes use the recovered resources and no developer grant or thaw roll supplied them. Verify recipeUsers resolves BiofuelRefinery, read all input/interaction/output temperatures against the loaded wax limit, and trace inherited warm-hazard progress on the Chemfuel product. Follow actual refueling and fuel consumption without clearing hazard debt merely on insertion. A warm-output comparison and an imported-Chemfuel control distinguish usable cold-dependent fuel from a safe conversion or global fuel change.",
+        "control": "Random map loot could make an expedition look productive. Trace outputs to the specific mined ice and salvage/job completions; verify ordinary recipes use the recovered resources and no developer grant or thaw roll supplied them. Verify recipeUsers resolves BiofuelRefinery and read input/interaction temperatures against the loaded wax limit during bill work. Compare a completed cold-room bill yielding ordinary Chemfuel with a warm-workroom bill whose input ruins or wicks before completion. Verify actual refueling and fuel consumption, with completed output behaving like ordinary vanilla Chemfuel.",
         "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
         "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
       },
@@ -349,7 +349,23 @@
       "meant": {
         "intent": "The complete first version must remain beautiful, alive and usable through its own hazards, without a map-wide chain on routine predation, accumulating chores, disappearing life or an error storm.",
         "source": "Whole-bar mandate in this cleanse brief; delegated synthesis of owner experience, ordinary mining/cooling answers and life commission. This is a proposed obligation, not a measured seasonal result.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "local ignition remains understandable",
+            "stands_for": "An ignition starts at an identified work-site fuel source. The player can trace subsequent releases along reachable fuel/heat paths using in-game warnings and event evidence.",
+            "accept": "A blast starts beyond the camera and reaches a neighboring patch. On return, the player can identify the warmed wax source and follow the affected fuel path from the in-game evidence."
+          },
+          {
+            "word": "runaway destruction",
+            "stands_for": "Routine predation or ordinary work repeatedly propagates releases across the food web until the next expedition loses living resources and usable work sites.",
+            "accept": "A careless shot destroys a connected patch. Its chain ends at a cleared separation, and later expeditions still meet native life and usable sites."
+          },
+          {
+            "word": "dead or stalled biome",
+            "stands_for": "Dead means native growth and animals are gone for the next expedition. Stalled means ordinary discovery, clearing, extraction, hauling or cooling repair cannot progress through the season under the declared inputs.",
+            "accept": "One patch is bare and fog temporarily delays hauling. Growth and animals persist elsewhere, fog lifts, and workers complete the next extraction and repair."
+          }
+        ]
       },
       "accept": [
         "Wild growth and predation continue between expeditions; a prepared cold hold weathers a repairable blackout, a careless work site suffers a traceable chain, and the next expedition still finds life, routes and work.",
@@ -366,9 +382,9 @@
       },
       "sees": {
         "instrument": "Whole-season model first screens recorded geometries; then an instrumented full-map run reads resource provenance, jobs, ecology, blast/heat causal graphs, weather, departure signs and logs. Runtime traces decide state claims; B1 still requires the visual look. T15 adds a full-map observer and exact replay/recovery protocol; no current seasonal instrument is adequate.",
-        "start": "A working colony with all kept systems, a discoverable site, real native food and prepared cold hold; fingerprint source/defs/assembly/settings/assets/dependencies/save. Record initial states and quotas of neither flora nor animals as bars; log natural events without forcing sky clear.",
+        "start": "A working colony with all kept systems, a discoverable site, real native food and prepared cold hold; fingerprint source/defs/assembly/settings/assets/dependencies/save. Record initial states and quotas of neither flora nor animals as bars; log natural events without forcing sky clear. The blackout hold receives measured heat leakage from an adjacent room with a fueled heater that remains running throughout the electrical outage. Record its fuel, heat transfer and room connection in matched ice/no-ice copies, sufficient to warm the no-ice hold beyond the loaded wax safe-temperature limit.",
         "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
-        "control": "A scripted test can replenish animals, spawn resources or cool rooms between readings. Log every external intervention and reject unexplained additions/removals; paired untreated ecological areas and ice/no-ice reserves distinguish stable systems from scripted repair. Repeat after reload and reversed action order without clearing field state.",
+        "control": "A scripted test can replenish animals, spawn resources or cool rooms between readings. Log every external intervention and reject unexplained additions/removals; paired untreated ecological areas distinguish autonomous ecology. During the same blackout, verify the fueled neighboring heater stays active in both copies. The no-ice hold must warm past the wax safe limit while the ice hold stays below it with measured reserve loss. Match initial temperatures, heater fuel, leakage and door traffic, and record electric cooling as off until repair. Repeat after reload and reversed action order without clearing field state.",
         "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
         "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
       },
@@ -412,7 +428,7 @@
     },
     {
       "id": "C5",
-      "what": "Record organic warm/ruin/wick/corpse generated-def injection and starting-charge application to generated and newborn stages; source-attributed explosion count catches duplicate krissek paths. Track cold-wax recipe provenance, loaded safe-temperature limit and preserved warning/ruin/wick debt in native Chemfuel, mixing and internal unburned consumer fuel. Imported fuel has no new native hazard."
+      "what": "Record organic warm/ruin/wick/corpse generated-def injection and starting-charge application to generated and newborn stages; source-attributed explosion count catches duplicate krissek paths. Record the loaded wax safe-temperature limit and ingredient hazard during refinery work."
     },
     {
       "id": "C6",
@@ -458,7 +474,7 @@
     },
     {
       "id": "R3",
-      "rule": "Safe cutting/harvesting and sealed native ingestion do not fire the plant damage blast; foreign ingestion is visibly incompatible. All fresh native life stages acquire required physiology; butcher/corpse/recipe transitions cannot launder organic hazards. R10 applies the same continuity to refined native Chemfuel and unburned fuel stored inside a consumer.",
+      "rule": "Safe cutting/harvesting and sealed native ingestion do not fire the plant damage blast; foreign ingestion is visibly incompatible. All fresh native life stages acquire required physiology; butcher/corpse/food-processing transitions preserve organic hazards. Wax retains its hazard during refinery work until bill completion yields ordinary Chemfuel under the ratified life brief section 7 and R10.",
       "touches": [
         "ecology",
         "organics",
@@ -477,7 +493,7 @@
     },
     {
       "id": "R5",
-      "rule": "Use Odyssey SandGrid for buildup/path costs and erosion; no windward special algorithm. Native fog handles accuracy/range/travel, ordinary rotation remains unlocked. Local ice-grain appearance changes no global sand material.",
+      "rule": "Owner card decision at BLUEDESERT_DESIGN_SITTING_1, recorded in the_blue_desert.md section 4b amendment: use Odyssey SandGrid for buildup/path-cost burial and erosion, with a local blue-white tint. Approach cells receive deposits and movement costs according to that engine. No windward special algorithm. Native fog handles accuracy/range/travel, ordinary rotation remains unlocked. Local ice-grain appearance changes no global sand material.",
       "touches": [
         "weather",
         "routes",
@@ -528,7 +544,7 @@
     },
     {
       "id": "R10",
-      "rule": "Static site/mineable placement uses existing local content ownership on received maps. Ordinary Wreckage salvage and shared water-mass accounting remain. The cold-wax bill uses vanilla BiofuelRefinery and outputs Chemfuel. Its cold-workspace operating condition is that input, interaction and output cells remain at or below the loaded RM_ColdWax maxSafeTemperature, currently -1 C. The bill uses ordinary work with no custom temperature interlock. Warming retains the input hazard during interrupted work. Refined native Chemfuel inherits the wax safe limit and accumulated warning/ruin/wick debt with readable provenance, including stacks, held fuel and internal unburned fuel in vanilla consumers. Mixing cannot remove this hazard. Unrelated imported Chemfuel retains its existing behavior. Only actual fuel consumption discharges the consumed portion. Refining grants no warm-safe exception.",
+      "rule": "Static site/mineable placement uses existing local content ownership on received maps. Ordinary Wreckage salvage and shared water-mass accounting remain. The cold-wax bill uses vanilla BiofuelRefinery and outputs ordinary vanilla Chemfuel, as specified by blue_desert_hydrocarbon_life.md section 7. Its cold-workspace operating condition keeps input stacks and the interaction cell at or below the loaded RM_ColdWax maxSafeTemperature, currently -1 C. The bill uses ordinary work with no custom temperature interlock. Wax retains its normal warning/ruin/wick state during work and interruptions. A warm workroom ruins or wicks the input before the bill finishes. Completed cold-room work yields ordinary fuel with vanilla stack merging, refueling and consumption behavior.",
       "touches": [
         "sites",
         "conversion",
@@ -577,7 +593,7 @@
         "R10"
       ],
       "holds_together": "argued",
-      "why": "Water outputs share mass and residual-cold accounting. R10 fixes the wax bill to BiofuelRefinery and the loaded wax safe-temperature limit. Output Chemfuel retains native source and hazard debt through stacks and unburned consumer storage. Actual fuel consumption ends the consumed portion. R3 and B6 therefore have no warm-safe processing exception. T12/T13 and the situation generator must witness these transitions.",
+      "why": "Water outputs share mass and residual-cold accounting. R10 fixes the wax bill to BiofuelRefinery. Wax retains its warm hazard through bill work, and cold-room completion yields ordinary vanilla Chemfuel under the ratified life brief section 7. T12/T13 and the situation generator must witness the input hazard and ordinary output use.",
       "model": "none"
     },
     {
@@ -624,7 +640,7 @@
         "R11"
       ],
       "holds_together": "unknown",
-      "why": "Door traffic, room leakage, finite latent reserve, wax/refined-fuel warm progress, weather and repair travel meet here. The loose-ice hold must persist far beyond an ordinary repair under its declared load. Current rack math establishes neither that comparison nor cold-workspace continuity.",
+      "why": "Door traffic, room leakage, finite latent reserve, wax warm progress, weather and repair travel meet here. The loose-ice hold must persist far beyond an ordinary repair under its declared load. Current rack math establishes neither that comparison nor cold-workspace continuity.",
       "model": "Thermal reserve ledger"
     },
     {
@@ -658,7 +674,7 @@
         "R11"
       ],
       "holds_together": "argued",
-      "why": "R2/R3/R9/R10/R11 apply the same readable identity and hazard debt across birth, death, bills, stacks and containers. Native Chemfuel stays reactive through refining, mixing and unburned consumer storage, with unrelated imported fuel unchanged. State enumeration supplies explicit bypass witnesses. This is a common continuity contract whose implementation remains unproven.",
+      "why": "R2/R3/R9/R10/R11 preserve readable native identity and hazard debt across birth, death, organic stacks and containers, including wax during bill work. Cold-room refining yields ordinary Chemfuel under life brief section 7. State enumeration witnesses both the ingredient hazard and that output transition. Lifecycle implementation remains unproven.",
       "model": "none"
     },
     {
@@ -691,7 +707,7 @@
         "R10"
       ],
       "holds_together": "argued",
-      "why": "Containment is declared by reachable paths and causal fuel separation, not a fixed drawn gap. Storm deposits and colony doors remain real obstacles. Travel/thermal feasibility is explicitly unknown under heat/weather/propagation, so this argument claims only consistent semantics.",
+      "why": "Containment is declared by reachable paths and causal fuel separation, not a fixed drawn gap. Storm deposits add path costs and colony doors affect access. Travel/thermal feasibility is explicitly unknown under heat/weather/propagation, so this argument claims only consistent semantics.",
       "model": "none"
     },
     {
@@ -721,7 +737,7 @@
         "R9"
       ],
       "holds_together": "unknown",
-      "why": "Vanilla patchy sand may never bury an approach deeply enough to require clearing across representative walls, doors and hulls. The storm movement multiplier can falsely imply deposition. Post-storm or matched-weather reads must distinguish it, and accumulated obstruction can delay an otherwise ordinary thermal repair.",
+      "why": "The ruled SandGrid gives its thickest deposits a movement cost on approach cells beside structures. Engine evidence supplied in R1 establishes continued traversability and zero depth under full-fillage footprints. Whether natural storm traces reach that category beside representative walls, doors and hulls, and how that delay interacts with thermal repairs, still needs calibration. Post-storm or matched-weather reads isolate deposition from the storm movement multiplier.",
       "model": "Drift and route geometry"
     }
   ],

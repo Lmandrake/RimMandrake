@@ -1,0 +1,29 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Aligned deep drift with the thickest SandGrid path-cost buildup beside structures, cited the owner card in R5, and removed obstruction and mechanism-replacement requirements. Weather calibration now tests natural attainment and travel delay.",
+      "where": "bars.json B3, R5, weather/routes meetings; definition.md weather; tickets.md T14/T31; models.md Drift and route geometry; ambiguities.md 22; owner_pages.md deep-drift/model summaries"
+    },
+    {
+      "id": "R2",
+      "changed": "Restored the ratified cold-room bill yielding ordinary vanilla Chemfuel. Wax retains its hazard during work, and warm-workroom input ruins or wicks before completion. Removed refined-fuel hazard continuity and corrected its supporting entries.",
+      "where": "bars.json B6, B7, C5, R3, R10 and conversion/heat/organics meetings; definition.md refinery and Costs; tickets.md T12/T13; ambiguities.md 19/33 and repair notes; census.json wax_refinery; models.md lifecycle/thermal entries; owner_pages.md refining summary"
+    },
+    {
+      "id": "R3",
+      "changed": "Removed the native Chemfuel provenance, mixed-stack hazard and internal consumer-fuel mechanic by resolving R2. Completed output uses vanilla stacking, refueling and consumption.",
+      "where": "definition.md Costs; bars.json R3/R10, B6/B7 and meetings; tickets.md T12/T13; models.md lifecycle/thermal entries; census.json wax_refinery; ambiguities.md repair notes; owner_pages.md"
+    },
+    {
+      "id": "R4",
+      "changed": "Specified ongoing blackout heat leakage from a fueled neighboring heater and a matched no-ice hold that must warm above the wax safe limit while the ice hold stays below it with measured reserve loss.",
+      "where": "bars.json B8 sees.start/control; definition.md Worst day; models.md Whole-season coupled map and Thermal reserve ledger; ambiguities.md repair notes; owner_pages.md"
+    },
+    {
+      "id": "R5",
+      "changed": "Added three figurative entries defining local/understandable ignition, runaway destruction and dead/stalled biome, each with an accept picture departing from a literal reading.",
+      "where": "bars.json B8 meant.figurative; ambiguities.md repair notes; owner_pages.md summary"
+    }
+  ]
+}
