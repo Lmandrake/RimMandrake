@@ -1,0 +1,725 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "Players can distinguish the dry canyon floor, native green vegetation confined to shade and reachable upper banks as places to work or shelter beneath a sky that brings no local precipitation.",
+      "meant": {
+        "intent": "Ordinary land must make exposure and escape legible before a newcomer is asked to act.",
+        "source": "delegated from the_cracked_lands.md §§1–6,9; standing Direct Sun; compose root; November 10 warning answer in ANSWERS_OWNER.md.",
+        "figurative": []
+      },
+      "accept": [
+        "Pale cracked floor and stained cut walls lead the eye to shaded plants and an accessible cliff-bank pocket; distant storm light changes the dry sky without local rain.",
+        "A roof on low ground shades a worker while the high-water mark still places that room below flood level."
+      ],
+      "reject": [
+        "An open desert with a blue puddle and an invisible safe-cell marker is labelled a canyon.",
+        "Green ground spreads across exposed flats, or a roof is described as incapable of blocking Direct Sun, or local rain supplies the flood."
+      ],
+      "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
+      "range": {
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; passive roster light/placement variants, arrival text present/previously seen, intact and mined faces, player low rooms and ordinary upper-tier Farmer templates.",
+        "left_out": "Planet authoring/tile counts, absent DLC and new art taste approval; primary fixed-world local land only. Existing fixed open-water sites are not treated as new permanent rivers."
+      },
+      "sees": {
+        "instrument": "Human look at the running map and its ordinary arrival/inspect text, supported by saved landform/shade overlays and weather state (T26, M1, M4).",
+        "start": "Unedited native map before a flood, with actual layout/bank record and no debug refuge marks; record sun bearing, weather, naturally placed flora and reachable high paths.",
+        "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
+        "control": "A label, tinted sky or debug overlay alone could fake land. Compare visible bank accesses and high-water marks to the independently read landform; follow a legal path on the normal map and read rain/snow rates while natural weather advances.",
+        "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
+        "live_only_why": "Masks cannot establish whether a newcomer can distinguish landforms or read their visual/weather presentation; no image-free count substitutes for the look."
+      },
+      "live_only": true,
+      "touches": [
+        "landform",
+        "shade",
+        "production_defaults"
+      ],
+      "tests": {
+        "reject": "Without this experience the sourced land promise would fail even if other bars held; this is the Designer’s inference where marked delegated.",
+        "renormalize": "No yield, speed, damage amount, asset count or geometric quota in the experience; tuning readings stay in range/checks/rules.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "B2",
+      "says": "Players hear anchored water chimes before the flood reaches their work and can recall mobile people to reachable high ground while a slow loaded return remains a risk.",
+      "meant": {
+        "intent": "The warning causes an actionable evacuation decision rather than reporting water after impact or promising freight safety.",
+        "source": "Owner November 10 ANSWERS_OWNER.md: prompt people evacuation, slow transport gamble; water chimes the_cracked_lands.md §11; delegated actual reach-linked emitters.",
+        "figurative": []
+      },
+      "accept": [
+        "Workers spread along the cut hear the chimes and reach the upper bank when recalled; a hauler who finishes collecting a load can be caught below.",
+        "A distant Peakstorm changes the waiting clock, but once chimes announce danger the available evacuation interval is preserved."
+      ],
+      "reject": [
+        "A sound counter advances while the game is inaudible at the ordinary working view.",
+        "A chime rings before a token flood yet workers at the upstream work area cannot reach shelter after immediate recall.",
+        "The signal points along a random diagonal instead of the canyon water line, or slow freight is safe because it never has to leave the floor."
+      ],
+      "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
+      "range": {
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; parties of 1–6 and colonies of 7–40 mobile colonists; distributed work sites up to the farthest reachable site; empty/loaded/finish-current-haul orders; natural, peakstorm-biased and external ArmFlood schedules; normal hearing/view settings.",
+        "left_out": "Guaranteed rescue of deliberate route blockades, mental breaks, prisoners or incapacitated pawns; muted audio preference is supported but not evidence of audible default cues. No precise stereo-bearing skill test."
+      },
+      "sees": {
+        "instrument": "Audible normal-speed warning plus real pawn path/job/contact timestamps, with M1 path timing prediction and T26 capture; no DebugArmFloodSoon compression.",
+        "start": "A native reach with people at known working cells and legal high destinations; ordinary jobs in progress and mobile uninjured pawns; no staged adjacent teleport refuge.",
+        "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
+        "control": "People might already be safe or water may be delayed manually. Capture initial positions, first audible event, orders, traversed paths and first contact from the same scheduled cycle; compare completed-haul and immediate-recall order in fresh equivalent copies without changing the clock.",
+        "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
+        "live_only_why": "Only actual playback establishes that the chosen vanilla clips and ordinary camera mix communicate warning; kernel timestamps alone cannot hear it."
+      },
+      "live_only": true,
+      "touches": [
+        "landform",
+        "warning_clock",
+        "pawn_contact",
+        "population",
+        "production_defaults"
+      ],
+      "tests": {
+        "reject": "Without this experience the sourced signature promise would fail even if other bars held; this is the Designer’s inference where marked delegated.",
+        "renormalize": "No yield, speed, damage amount, asset count or geometric quota in the experience; tuning readings stay in range/checks/rules.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "B3",
+      "says": "Players see water advance down the canyon and occupy its low floor from bank to bank, including low covered rooms, while upper banks remain usable shelter.",
+      "meant": {
+        "intent": "Real canyon-wide reach and successive arrival rather than a scattered local flood that can be roofed away.",
+        "source": "Compose root: canyons periodically flood from wall to wall; the_cracked_lands.md §§1–3,6; delegated discrete front and low-room interpretation of November 10 transport gamble.",
+        "figurative": []
+      },
+      "accept": [
+        "The flood front enters upstream and reaches each bend across its open floor; dry upper-bank paths remain above it.",
+        "A low roofed room is hazardous when water reaches its station, while its built floor is still its floor."
+      ],
+      "reject": [
+        "A random blue patch wets part of the cut and misses open strips along its bank.",
+        "Water appears everywhere simultaneously or leaves a roof-shaped dry island on the low floor.",
+        "A dry refuge flag protects a low cell, while an actually high bank floods."
+      ],
+      "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
+      "range": {
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; each cross-section open cell and solids, low walls/roofs/open and closed doors, mined low rock, bank excavation, natural and armed cycles; onset, standing and recede.",
+        "left_out": "Pressure/erosion simulation, tributary creation, building-collapse simulation, unsupported other-biome maps. Solid rock interiors are not open flood floor; independently supplied liquid is attributed to FlowWorks."
+      },
+      "sees": {
+        "instrument": "M1 independently derived bank-to-bank expected mask and station order compared to per-cell runtime contact/water records, plus ordinary visual front trace in T26. State geometry suffices to reject patch/roof immunity; B1 handles visual land recognition.",
+        "start": "A native local layout record produced with rock, snapshot of independent visible/natural bank boundary, no developer flood trigger; track all stations and owner classes before onset.",
+        "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
+        "control": "A nonempty water count could all be outside the reach or on a few cells. Require exact expected-versus-observed cell maps through advancing stations and an upper-bank control; do not accept the flood implementation’s own selected list as the expected geometry.",
+        "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "landform",
+        "warning_clock",
+        "wet_ledger",
+        "pawn_contact",
+        "terrain_ownership",
+        "production_defaults"
+      ],
+      "tests": {
+        "reject": "Without this experience the sourced signature promise would fail even if other bars held; this is the Designer’s inference where marked delegated.",
+        "renormalize": "No yield, speed, damage amount, asset count or geometric quota in the experience; tuning readings stay in range/checks/rules.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "B4",
+      "says": "Grounded people and animals caught by the flood suffer impact and continued immersion danger that can kill, while timely escape prevents those flood injuries and deaths remain visible.",
+      "meant": {
+        "intent": "A real potentially lethal river with an avoidable exposure cost, not a harmless startle or a guaranteed scripted death.",
+        "source": "Owner November 10 ANSWERS_OWNER.md explicitly supersedes injury ceiling; standing readable pawn/animal fate; delegated front-contact/immersion boundary.",
+        "figurative": []
+      },
+      "accept": [
+        "A worker remaining in the water is struck and develops drowning danger; an injured worker can die and leave a corpse, while a recalled coworker above the bank has no flood injury.",
+        "A downed animal remains exposed until rescued; a breathing pawn entering standing water is endangered rather than protected by missing arrival time."
+      ],
+      "reject": [
+        "Only healthy standing pawns receive a light arrival hit and the water is harmless afterward.",
+        "The game kills a chosen pawn regardless of rescue or protection, or silently deletes a caught animal.",
+        "A roof cancels water exposure or an airborne animation grants immunity after the creature has landed."
+      ],
+      "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
+      "range": {
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; adult/juvenile/infant human bodies and small/large roster animals, healthy/injured/downed/carried states; neutral/player/hostile factions; dry/on-front/late-entry/remaining/escape contacts; actual airborne versus grounded and landing. Nonbreathers take impact without biological drowning; explicit shared trait protections are read, not assumed.",
+        "left_out": "Guaranteed death, new personal diving/sea-floor access, equipment from next version, or unsupported non-owned biome mechanics. Machines have no biological drowning; corpses do not receive new living damage."
+      },
+      "sees": {
+        "instrument": "Actual engine state read of body injuries, drowning/exposure, event cause and corpse identity through T25/T26; M2 enumerates the contact sequences and supplies fixtures to the real engine. No offline guessed hit-point formula is accepted.",
+        "start": "Matched exposed and high-ground subjects with recorded health, body, traits, position and flight state; no prior heat/disease injury silently attributed to flood; actual water contact logged.",
+        "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
+        "control": "Heatstroke, combat or another hazard could cause damage. Timestamp impact and immersion transitions with flood cause, compare same bodies and weather on the high bank, and preserve a companion no-flood replay for attribution without using it as the primary passing run.",
+        "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "landform",
+        "warning_clock",
+        "pawn_contact",
+        "population",
+        "identity_save",
+        "production_defaults"
+      ],
+      "tests": {
+        "reject": "Without this experience the sourced signature promise would fail even if other bars held; this is the Designer’s inference where marked delegated.",
+        "renormalize": "No yield, speed, damage amount, asset count or geometric quota in the experience; tuning readings stay in range/checks/rules.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "B5",
+      "says": "After retreat players can use wet natural ground for native gathering and growth, and the extra fertility ends when that ground dries without replacing their floors or excavations.",
+      "meant": {
+        "intent": "Short-lived productive mud, ordinary shaded soil retained, no permanent fertility windfall or terrain loss.",
+        "source": "Owner November 10 ANSWERS_OWNER.md wet/high-fertility window and limited farming effort; the_cracked_lands.md shade soil; FlowWorks single-owner contract; delegated native-gathering payoff.",
+        "figurative": []
+      },
+      "accept": [
+        "Receding water leaves useful wet native growth and gathering in the shade; at drying the extra fertility is gone while ordinary shaded soil remains.",
+        "A sun-exposed flooded flat returns to dry substrate, and a player floor or dug channel retains its identity through the wet interval."
+      ],
+      "reject": [
+        "Receding water permanently paints rich soil over exposed flats or a constructed floor.",
+        "The ground is labelled fertile but neither native growth nor gathering changes during the wet interval.",
+        "The whole shaded soil disappears at drying, contradicting the real-soil habitat, or stale flood wetness persists after its source ends."
+      ],
+      "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
+      "range": {
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; wet/draining/just-before/at/after expiry; natural shade soil, open sand/clay, floors, bridges, ore and FlowWorks D=1..4; rewet same/disjoint/overlapping cells, harvest versus leave growth; dependency-supplied water present/absent.",
+        "left_out": "Newly sown vanilla long-crop maturity guarantees, deep farming tech, survey/cistern/Swale rewards; a real independent water supply may retain its own benefit and must be labelled as such."
+      },
+      "sees": {
+        "instrument": "Per-cell substrate/owner/wet-until/fertility and native plant growth/harvest state reads T24/T26; M3 models labour and natural growth, calibrated against the same cells in game.",
+        "start": "Record original ground, eligible native plants, wet-cell lineage and independent water sources before flood; no manually planted mature reward or rich-soil paint in the measured area.",
+        "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
+        "control": "A pre-existing crop or permanent SoilRich may fake reward. Compare eligible matched native plants on wet and unwetted shaded cells from their initial state; read actual fertility at expiry and identify each source of continuing wetness. Do not force maturity or stop terminals.",
+        "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "wet_ledger",
+        "shade",
+        "terrain_ownership",
+        "identity_save",
+        "production_defaults"
+      ],
+      "tests": {
+        "reject": "Without this experience the sourced signature promise would fail even if other bars held; this is the Designer’s inference where marked delegated.",
+        "renormalize": "No yield, speed, damage amount, asset count or geometric quota in the experience; tuning readings stay in range/checks/rules.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "B6",
+      "says": "Players meet ordinary alien life with airborne feeding fliers and no resident flier nests, see soaked plants swell and wet clay hatch into brief irqit activity, and see wild pan sleepers wake with water and seal again at the dry.",
+      "meant": {
+        "intent": "Land supports ordinary gathering/predation/taming roles, and wet plant/animal activity belongs to the same flood rather than permanent crowding or silent disappearance.",
+        "source": "the_cracked_lands.md §§4,10,10b and 2026-09-28 cast; October 23 cuts retain irqit but remove timed migrants; standing real flight/no vanish and stopped evictions; delegated representative cohorts.",
+        "figurative": [
+          {
+            "word": "wet clay hatch into brief irqit activity",
+            "stands_for": "eggs represented in wetted nursery clay produce bounded living cohorts, not clay itself becoming alive or millions of simulated pawns",
+            "accept": "Moving irqit appear in scattered wetted nursery patches, leaving exposed clay between them."
+          },
+          {
+            "word": "seal again",
+            "stands_for": "the same living wild pawn enters readable dry dormancy with a pan-like presentation; no disappearance or geological terrain replacement",
+            "accept": "The sealed pan is selectable and identifies the same animal even though it resembles cracked ground."
+          }
+        ]
+      },
+      "accept": [
+        "The dry map has shade plants, tarruq calls and crag life; wetted clay supports opening qirra, visibly swelling plants and moving irqit, and surviving wild sleepers become inspectable sealed pans again when dry.",
+        "Spent irqit leave corpses with a dry-out sign; a flying feeder actually flies, while the woolamander remains a walking resident."
+      ],
+      "reject": [
+        "The free tier is an empty fallback, or named fliers walk through the same daily life.",
+        "Wet life is only a spawn counter, plants stay visually static, or irqit remain a year-round multiplying colony.",
+        "Dry sealing deletes a muttavaq, or all irqit vanish instead of dying, or a wet pan sleeps indefinitely.",
+        "Flying feeders establish resident nests on the canyon floor rather than using the canyon as feeding country."
+      ],
+      "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
+      "range": {
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; base free and campaign-added rosters; existing plant forms/resources/diets, each actual flying roster kind and grounded residents; pan birth/wake/damage/dry/rewet/tame/downed/death; irqit live/predated/captured/carried/exported, simultaneous and disjoint flood nurseries, young and mature plants through terminal state.",
+        "left_out": "No new roster evictions, no aspirational Bestiary additions, no timed migrant arrivals/nests, no new training system, reactive wound armour, hydraulic weir or lantern emitter. Cross-band pursuit is allowed; natural placements/home preference remain distinct."
+      },
+      "sees": {
+        "instrument": "Human look/hearing at natural life and plant size/animation changes, paired with per-entity identity/job/flight/growth/cohort records (T27/T29/T26) and M3 food/population model. Existing art is accepted; judge presence/motion/readability, not a new art commission.",
+        "start": "Natural native roster effective with ordinary spawn eligibility; find and mark initial pan/plant identities without replacing them, retain actual wet/dry clocks and production growth terminals.",
+        "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
+        "control": "Debug-spawned irqit or art variants could fake wet response. Follow the same plant and pan identities before/after actual accepted wetting; attribute hatch to nursery records; compare unwetted cells and record corpse/despawn reason, including carried/world entities.",
+        "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
+        "live_only_why": "State can prove that growth/flight was requested but not whether the player sees swelling, activity or a readable sealed pan; the audible ordinary life also needs playback."
+      },
+      "live_only": true,
+      "touches": [
+        "landform",
+        "wet_ledger",
+        "shade",
+        "pawn_contact",
+        "population",
+        "identity_save",
+        "production_defaults"
+      ],
+      "tests": {
+        "reject": "Without this experience the sourced life and signature promise would fail even if other bars held; this is the Designer’s inference where marked delegated.",
+        "renormalize": "No yield, speed, damage amount, asset count or geometric quota in the experience; tuning readings stay in range/checks/rules.",
+        "first_version": "life and signature"
+      }
+    },
+    {
+      "id": "B7",
+      "says": "Players keep their dug channels, pits, liquid work and constructed surfaces through a canyon flood and its retreat, including work done while the water is present.",
+      "meant": {
+        "intent": "Flooding must not destroy the player’s existing FlowWorks and building work by making it ordinary rich soil or replaying an old fill snapshot.",
+        "source": "Standing FlowWorks single-engine/outcome ownership contract cited in RM_MapComponent_CanyonFlood; delegated player-work preservation from that dependency and November 10 wet window.",
+        "figurative": []
+      },
+      "accept": [
+        "A dug channel takes permitted flood water and later is still the same channel; a pit and a surface laid during the flood retain the player’s work.",
+        "A foreign-liquid cell refuses the driver and is left alone; a pump or new excavation edit made during water is not overwritten by a stale restoration."
+      ],
+      "reject": [
+        "A dug canal or pit becomes rich soil at retreat.",
+        "A refused driver write falls back to terrain paint, or recede resurrects water that a pump removed.",
+        "Reload loses ownership records and overwrites a floor laid while the flood was standing."
+      ],
+      "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
+      "range": {
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; FlowWorks D=1..4, prior empty/part/full water and each engine-supported foreign liquid, seals/open channels, Applied/NotOwned/Refused, manual floor/dig/fill/pump changes; no-edit baseline and edits before/after save/reload/recede, both action orders.",
+        "left_out": "Inventing a second liquid solver, pressure model or guaranteed global water conservation for external runoff; unsupported other-biome canyon play. Independent engine flows remain engine-owned."
+      },
+      "sees": {
+        "instrument": "FlowWorks authoritative depth/identity/fill plus terrain/ownership-version state read through T24/T26, replayed by M2 against actual API outcomes. Use integer units from the engine, never water-colour inference.",
+        "start": "Capture original D/F/liquid and terrain owners on a native bed/bank interface; no developer marker takes over the natural flood; retain independent pumps and open/closed seals as real actors.",
+        "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
+        "control": "Unchanged dry channels could mean no flood touched them. Record Applied driver contacts and standing water on allowed cells, deliberate Refused controls, then actual edits and retained results; sample exact before/after ownership, not aggregate flooded count.",
+        "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "landform",
+        "wet_ledger",
+        "terrain_ownership",
+        "external_consumers",
+        "identity_save",
+        "production_defaults"
+      ],
+      "tests": {
+        "reject": "Without this experience the sourced signature promise would fail even if other bars held; this is the Designer’s inference where marked delegated.",
+        "renormalize": "No yield, speed, damage amount, asset count or geometric quota in the experience; tuning readings stay in range/checks/rules.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "B8",
+      "says": "Across a season with the complete default biome running, players experience dry work, an escapable chime warning, a dangerous bank-to-bank flood and a useful wet return that dries again, with the cycle continuing coherently after reload and changed task order.",
+      "meant": {
+        "intent": "The one whole bar: retained land/life/signature together at full-map scale, not isolated acceptance scenes hiding feedback loops.",
+        "source": "Owner cleanse brief whole-mod requirement, compose root and owner November 10 answers; delegated combined cycle and failure regimes.",
+        "figurative": [
+          {
+            "word": "useful wet return",
+            "stands_for": "the post-flood interval offers native gathering and visible life before drying, not a guaranteed crop harvest or a new travel action",
+            "accept": "A crew gathers existing native wet growth and leaves without planting a crop."
+          }
+        ]
+      },
+      "accept": [
+        "A full canyon supports ordinary dry work, interrupts it with chimes and water, then supports a brief busy wet interval before dry routines return; after a mid-cycle reload and a changed order of recall, gathering and channel work the same causes still hold.",
+        "A visiting crew can leave during a quiet stay, while a settled colony through the complete cycle sees bounded wet life, preserved work and another quiet interval without a permanent rich-soil windfall."
+      ],
+      "reject": [
+        "The season is accepted with growth or damage off, weather locked clear, a manually forced patch flood or a kept feature still locked.",
+        "Water and growing things take over the upper banks, the wet return supplies no useful native activity, the map stays rich forever, or the phase clock stalls.",
+        "Reload repeats warnings or hatches, silently loses pawns, overwrites channel work or begins a continuing error storm."
+      ],
+      "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
+      "range": {
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; Full native maps across MAP range in B3; 1–6 visitor crew and 7–40 resident colonists, sparse/dense effective roster and independent ordinary wreck/corpse/Bones/FlowWorks consumers; 15 game days (one season), extend through natural dry->warn->water->wet->dry completion if schedule needs longer, then observe rescheduling. Save in mid-water primary run; M2 covers other phase reloads. Repeat with recall/harvest/channel edits ordered differently. Test first visit and year-2 accumulated history (day 100 onward).",
+        "left_out": "Next-version extras, unsupported cross-biome capability and DLC-less configurations. No live reproduction of alternative planets. Imported pre-existing external technology is attributed to its owner; no future campaign lock is secretly opened."
+      },
+      "sees": {
+        "instrument": "M3 whole-season prediction plus full native running-game look/hearing and time-series state/log capture T26; M1/M2/M4 supply calibrated inputs. No offline model alone awards this bar.",
+        "start": "A full native map at documented effective shipped defaults and initially honest dry state, all kept mechanics effective, no development suppliers, no hidden condition locks; snapshot settings/dependency/assembly fingerprints and initial population/terrain/wet histories.",
+        "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
+        "control": "A pleasant montage could omit the bad interval. Retain continuous tick/phase/wet/population/terrain/event trace, elapsed clocks and log deltas; reconcile actual cells/entities to source histories and include every transition plus reload. A short natural non-flood stay is not the whole proof.",
+        "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
+        "live_only_why": "Long-run visual/audio coherence and the player’s readable choices cannot be certified by numerical surrogates. Acceleration is allowed only when all game ticks advance normally, preserving relative warning/path/growth/damage/weather/expiry clocks and order; a phase jump is not a season."
+      },
+      "live_only": true,
+      "touches": [
+        "landform",
+        "warning_clock",
+        "wet_ledger",
+        "shade",
+        "pawn_contact",
+        "population",
+        "terrain_ownership",
+        "external_consumers",
+        "identity_save",
+        "production_defaults"
+      ],
+      "tests": {
+        "reject": "Without this experience the sourced signature promise would fail even if other bars held; this is the Designer’s inference where marked delegated.",
+        "renormalize": "No yield, speed, damage amount, asset count or geometric quota in the experience; tuning readings stay in range/checks/rules.",
+        "first_version": "signature"
+      }
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Fingerprint composed assemblies/defs/dependencies/settings and all DLC; explicit csproj includes; compare running build before reusing any historical proof. This is floor/regression evidence, never an independent refusal bar."
+    },
+    {
+      "id": "C2",
+      "what": "Read shipped settings effective values and serialization, all-off, section reset, next-launch/local-new-map labels, unsupported cross-biome label and default off; gate truth, not just UI roundtrip."
+    },
+    {
+      "id": "C3",
+      "what": "Record floodPeriodDays/chimeLeadTimeHours/floodDurationHours/soakDecayDays and resulting warning/standing/wet durations. Current source defaults 20 days/2 hours/6 hours/4 days are baselines only; not approved outcomes."
+    },
+    {
+      "id": "C4",
+      "what": "Geometry expected-minus-observed cell/station maps, upstream entry/outlet and high dry controls; no TargetCells 40–400 cap accepted as full reach."
+    },
+    {
+      "id": "C5",
+      "what": "Weather rain/snow precipitation rates remain zero in effective base/campaign tables; Peakstorm bias sample records chance and untouched announced wall; no new planet placement."
+    },
+    {
+      "id": "C6",
+      "what": "Effective roster membership, density nonzero, naming tiers, flight flags/jobs, ordinary diets/trainability/harvest fields, existing wood-policy compliance; no all-fields quota is a bar. Verify no resident flier-nesting production; ordinary flight is distinct from the retired timed migration event."
+    },
+    {
+      "id": "C7",
+      "what": "Veqma/Nabbuq shade eligibility agrees with shared geometric reader and def glow law; no lowSun/heatKind/heatOffsetC remains in effective biome data or arrival text."
+    },
+    {
+      "id": "C8",
+      "what": "Impact/immersion cause, body/health/traits/flight before and after contact and death/corpse identities; no fixed required damage or mortality fraction."
+    },
+    {
+      "id": "C9",
+      "what": "Per-cell wet-until/substrate/owner and independent wet source; fertility loses flood benefit at expiry; overlapping and disjoint nurseries preserve correct deadlines."
+    },
+    {
+      "id": "C10",
+      "what": "Growth engine exact accepted-soak cells, plant identity/growth/terminal timeline; cohort caps, deaths, corpse/Bones/wax outputs and job/log rates; no hard population or yield bar."
+    },
+    {
+      "id": "C11",
+      "what": "FlowWorks authoritative D/F/liquid and outcome, version/ownership before/after recede and concurrent edits; loaded raised-cell/prior arrays relink and reject malformed pairs safely."
+    },
+    {
+      "id": "C12",
+      "what": "Refuge eligible/blocked/sent/arrived/held/released identities and actual routes; no MaxReachProbes truncation accepted as a guarantee of nearest safe access."
+    },
+    {
+      "id": "C13",
+      "what": "Every built deferred/recommended feature tested fresh-map default absent versus feature-on present, with no clean-log or reference failure; all code/defs retained. Loaded old optional pawns get safe lifecycle, no silent cleanup deletion."
+    },
+    {
+      "id": "C14",
+      "what": "Source present versus current gameplay proof separated; UNMEASURED and stale remain such. Old bar leaves empty by CASE; validation.py chains are checks/instruments, not an invented former bar set."
+    },
+    {
+      "id": "C15",
+      "what": "Whole trace contains 15-day season or longer natural complete cycle, mid-water save/reload, second order and day-100 history; all clocks advanced consistently, untouched fixture restore verified."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Delegated construction rule: Local map producer saves a main reach with entry/outlet, ordered complete cross sections, banks, access and matching marks; no raw random footprint cap, planet worker or world painting. Geometry contract in definition.md.",
+      "touches": [
+        "landform",
+        "production_defaults"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Delegated construction rule: Front wets complete successive sections; roofs/floors/doors do not promote bed cells to high ground. Keep constructed surfaces and FlowWorks ownership; no pressure or building-destruction engine.",
+      "touches": [
+        "landform",
+        "pawn_contact",
+        "terrain_ownership"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Delegated construction rule: Direct Sun uses the shared tile geometry; roofs/parasols cover at all angles. Veqma retains its def-wide glow law plus geometric shade; no neighbour-count substitution or biome heat fields.",
+      "touches": [
+        "shade",
+        "landform",
+        "production_defaults"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Delegated construction rule: Refuge is genuinely high cliff-bank space with legal access; capacity may include upper bank outside pockets. Mobile neutral human visitors and trained player animals seek/hold/release; colonists remain ordered by player.",
+      "touches": [
+        "landform",
+        "population",
+        "warning_clock"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Delegated construction rule: Clock is dry->warning->front/standing->retreat->wet->dry. Existing ordinal save bytes may be migrated but not silently reinterpreted. Peakstorm bias is probabilistic and may not advance an already announced wall. Herald extras off; chimes and roar remain.",
+      "touches": [
+        "warning_clock",
+        "identity_save",
+        "production_defaults"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Delegated construction rule: Impact occurs on grounded front/late-entry contact, continued immersion risks drowning; no blanket downed/low-health safety or deterministic casualty. Nonbreathers and real airborne creatures use shared trait/flight truth; record cause and corpse identity.",
+      "touches": [
+        "pawn_contact",
+        "warning_clock",
+        "identity_save"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Delegated construction rule: Natural wet fertility is a temporary benefit over owned substrate; retain ordinary shaded soil, dry exposed flats. Per-cell flood wet-until extends only on actual rewet; independent water is separate. No rich-soil or soak fallback on floors/engine-owned cells.",
+      "touches": [
+        "wet_ledger",
+        "shade",
+        "terrain_ownership"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Delegated construction rule: FlowWorks owns D/F/liquid identity and outcome decisions. Recede restores only still-owned driver changes; compare ownership/version so new pumps, fills, floor or excavation edits are not undone. Expiry/ownership records persist across reload.",
+      "touches": [
+        "wet_ledger",
+        "terrain_ownership",
+        "external_consumers",
+        "identity_save"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Delegated construction rule: Bounded irqit cohorts follow nursery wet intervals including carry/export and leave corpses; qirra follows cell wetness; wild pan sleepers wake on wetting and seal only dry with existing ownership/downed/drafted guards. Growth terminals remain engine-owned and effective.",
+      "touches": [
+        "wet_ledger",
+        "population",
+        "pawn_contact",
+        "identity_save"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Delegated construction rule: Reload/disable is a transition: preserve event ownership/identities/deadlines, release refuge jobs, stop roar/damage, recede safely, finish readable living lifecycles; re-enable never collapses overdue warning. No entity silently vanishes.",
+      "touches": [
+        "identity_save",
+        "warning_clock",
+        "pawn_contact",
+        "production_defaults"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "Delegated construction rule: No roster evictions. Preserve memberships across tier fixes and ordinary Wreckage/Bones consumers; special behaviours get independent default-off next-version gates. External campaign owns quest, discovery locks and templates; no secret unlock to pass the whole.",
+      "touches": [
+        "population",
+        "external_consumers",
+        "production_defaults"
+      ]
+    },
+    {
+      "id": "R12",
+      "rule": "Delegated construction rule: Timings, densities, yields and detailed stats are regression checks. All retained defaults effective together; normal tick acceleration preserves all relative clocks; no dev supplier, weather lock, terminal freeze or missing-feature stub can award a bar.",
+      "touches": [
+        "production_defaults",
+        "warning_clock",
+        "wet_ledger"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "landform",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "holds_together": "unknown",
+      "why": "Wall-to-wall reach, genuinely high capacity, useful paths and bank siting could conflict at bends/narrow exits or with a large colony. A flag/capped BFS cannot settle their joint geometry.",
+      "model": "M1: Canyon geometry and evacuation"
+    },
+    {
+      "thing": "shade",
+      "members": [
+        "B1",
+        "B5",
+        "B6",
+        "B8",
+        "R3",
+        "R7"
+      ],
+      "holds_together": "unknown",
+      "why": "The existing neighbour-count glow proxy and actual directional wall/roof shade can disagree. Wet fertility, visible green and living plants must use a compatible geometric set without changing Direct Sun.",
+      "model": "M4: Shade and plant eligibility sweep"
+    },
+    {
+      "thing": "production_defaults",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R3",
+        "R5",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "The default manifest is explicit: all kept features effective, optional dramaturgy/rewards off, imported dependencies attributed, no dev supplier. On/off controls are separate preference cases and never evidence for default danger. No pair requires an extra to be on; T1–T29 enforce decoupling.",
+      "model": ""
+    },
+    {
+      "thing": "warning_clock",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B8",
+        "R4",
+        "R5",
+        "R6",
+        "R10",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Peakstorm schedule, advancing earliest contact, actual audio lead, loaded work and crowd paths must leave enough time for people while keeping freight risky; settings cannot be accepted from old numbers.",
+      "model": "M1: Canyon geometry and evacuation"
+    },
+    {
+      "thing": "pawn_contact",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B6",
+        "B8",
+        "R2",
+        "R6",
+        "R9",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Grounded danger, true flight, later entry, downed rescue, sleeper wake and readable cohort death touch the same pawn states. No complete adapter or contact-transition enumeration exists.",
+      "model": "M2: Situation and lifecycle generator"
+    },
+    {
+      "thing": "population",
+      "members": [
+        "B2",
+        "B4",
+        "B6",
+        "B8",
+        "R4",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Wet hatches, corpses/Bones, predator food, sleeper wake and crowd evacuation can be individually bounded yet cumulatively swamp food supply, paths or tick work.",
+      "model": "M3: Whole canyon season and resource budget"
+    },
+    {
+      "thing": "wet_ledger",
+      "members": [
+        "B3",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R7",
+        "R8",
+        "R9",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Front/recede, temporary fertility, accepted soak, qirra, cohort expiry and terminal growth may form a long wet/permanent fertile or population feedback loop under repeated water.",
+      "model": "M3: Whole canyon season and resource budget"
+    },
+    {
+      "thing": "terrain_ownership",
+      "members": [
+        "B3",
+        "B5",
+        "B7",
+        "B8",
+        "R2",
+        "R7",
+        "R8"
+      ],
+      "holds_together": "argued",
+      "why": "The rules assign one writer per ownership class: FlowWorks for excavation, player edits for changed surfaces, temporary canyon layer only for natural ground. A complete water hazard mask need not overwrite a floor. Thus danger, wet benefit and work preservation have compatible definitions; runtime compliance still needs T24/T26.",
+      "model": ""
+    },
+    {
+      "thing": "identity_save",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R5",
+        "R6",
+        "R8",
+        "R9",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Repeated wetting, disable/re-enable, transported short-lived animals and saved terrain ownership may duplicate events or resurrect old water. Scribing a list is not evidence of correct transition/relink behaviour.",
+      "model": "M2: Situation and lifecycle generator"
+    },
+    {
+      "thing": "external_consumers",
+      "members": [
+        "B7",
+        "B8",
+        "R8",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "Independent engines consume documented cell/identity state; disabling canyon reward spawners does not require disabling ordinary wreck deconstruction, butchery or external arm service. The deferred campaign Swale lock is not a kept mechanic secretly unlocked by the whole scene. Test only supported supplied interfaces.",
+      "model": ""
+    }
+  ],
+  "old_bars": {}
+}

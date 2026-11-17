@@ -1,0 +1,36 @@
+{
+ "mod": "CrackedLands",
+ "state": "proposed",
+ "why": "check passes (8 bars, 79 census rows, 855 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-17T00:26:35",
+ "seconds": 2395,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 855,
+  "page_limit": 950,
+  "census_rows": 79,
+  "bars": 8,
+  "bar_numbers": "none",
+  "shared_things": 10,
+  "meetings": 10,
+  "old_bars": "0 mapped of 0 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 7298928,
+    "output_tokens": 52652
+   }
+  }
+ ],
+ "agent_errors": []
+}

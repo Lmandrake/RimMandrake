@@ -1,0 +1,22 @@
+{
+  "mod": "CrackedLands",
+  "run": "2026-11-17 Designer cleanse proposal; launcher run identifier not supplied",
+  "outcome": "proposed",
+  "signature": "Water chimes interrupt work before a potentially lethal bank-to-bank flood, whose retreat briefly feeds the canyon before dry ground returns.",
+  "counts": {
+    "capabilities": 79,
+    "kept": 48,
+    "next_version": 23,
+    "recommend_retire": 8,
+    "old_bars": 0,
+    "bars": 8,
+    "live_only_bars": 4,
+    "checks": 15,
+    "rules": 12,
+    "unknown_pairs": 7,
+    "models": 4,
+    "tickets": 31,
+    "questions": 0
+  },
+  "blocked_on": ""
+}
