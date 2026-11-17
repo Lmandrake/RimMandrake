@@ -1372,7 +1372,8 @@ def ingame_main():
                 return [json.loads(x) for x in f if x.strip()]
 
         filed, asked = [], []
-        world = {"live": {}, "last_end": {}, "runs": {}, "account": (True, "test account KEEP"), "bridge": (True, "free")}
+        world = {"live": {}, "last_end": {}, "runs": {}, "account": (True, "test account KEEP"), "bridge": (True, "free"),
+                 "companion": (True, "FRESH (stand-in: the deployed DLL is the game host's, not this machine's)")}
 
         def facts_for(c):
             out = {}
@@ -1392,8 +1393,16 @@ def ingame_main():
               # the zero-token certificate rerun at the visit gate, never a real systemd-run from a selftest
               "cert_rerun": lambda mod, key: (1, "selftest: no real certificate rerun", None),
               "file": lambda item, title, why, **kw: (filed.append((item, title, why, kw)) or True, "filed %s" % item),
+              # companion: the same kind of stand-in as `bridge`. M.launch_mod's in-game branch asks
+              # companion_current(), which reads the DEPLOYED JawaBench DLL under the Windows game folder — absent on
+              # every machine but the game host, so every in-game check here refused MISSING and the whole block went
+              # red off-host (12 of 12, measured 2026-11-17 on the Desktop). That refusal is a reading of the test
+              # machine, never of the mod or of decide_ingame, which is what this block tests; the real gate keeps its
+              # own selftest (RIMMANDRAKE_REFUSE_INGAME_VISIT_ON_STALE_COMPANION). The world owns it, so a check may
+              # still say FRESH or not.
               "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
-                                                                  bridge=lambda p, s: world["bridge"], **kw)}
+                                                                  bridge=lambda p, s: world["bridge"],
+                                                                  companion=lambda game="a": world["companion"], **kw)}
 
         def tick(c, at=0, apply=True):
             return MD.tick(root, c, apply, fx=dict(fx, facts=lambda: facts_for(c)), now=T0 + at, page=False)
@@ -1403,7 +1412,8 @@ def ingame_main():
             open(log, "w").close()
             del filed[:]
             del asked[:]
-            world.update(live={}, last_end={}, runs={}, bridge=(True, "free"))
+            world.update(live={}, last_end={}, runs={}, bridge=(True, "free"),
+                         companion=(True, "FRESH (stand-in)"))
             shutil.rmtree(os.path.join(root, "design/concepts/Pyrelands/version/in_game"), ignore_errors=True)
 
         def need(rd, mod):
@@ -1448,6 +1458,20 @@ def ingame_main():
                 reset()
         chk(t_cert, "on, visit 1 owed, a deciding test red: no live driver, the bridge not even asked, the certificate's "
                     "path to pass on a Needs Conductor line")
+
+        # ---- the companion stand-in is a stand-in, not a bypass ------------------------------------------------------
+        # The `companion` fx above answers FRESH so this block can test decide_ingame off the game host. A stand-in that
+        # could only ever say yes would hide the real gate, so hand it a stale reading and watch the launch refuse.
+        def t_companion_stale():
+            world["companion"] = (False, "STALE (stand-in: deployed DLL holds older companion sources)")
+            try:
+                r = tick(on)
+                return (dec(r) == "launch_failed" and "old JawaBench companion" in (r["mods"]["Pyrelands"]["why"] or "")
+                        and not [x for x in launches() if "--brief-file" in x])
+            finally:
+                reset()
+        chk(t_companion_stale, "a stale companion refuses the visit: launch_failed naming it, no driver started "
+                               "(the stand-in can say no, so it is not a bypass)")
 
         # ---- on: one launch, then never a second automatic try -------------------------------------------------------
         def t_on():

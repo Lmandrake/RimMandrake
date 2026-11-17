@@ -6,6 +6,7 @@ harvest chain and a pending run-now skip it, the Designer stall reader and the i
 prints HELD BY OWNER with his words, date and the lift command. Unheld mods are untouched. Pure: temp files, fakes."""
 import json
 import os
+import stat
 import sys
 import tempfile
 import time
@@ -152,7 +153,10 @@ def test_write_safety():
     synced, real_fsync = [], os.fsync
 
     def spy(fd):
-        synced.append(os.path.isdir("/proc/self/fd/%d" % fd))
+        # fstat, not /proc/self/fd: /proc exists only on Linux, so the old probe answered False for EVERY fd on a
+        # Mac and this check read FAIL ([False, False]) while measuring nothing about the fsync order
+        # (measured 2026-11-17 on the Desktop). An instrument that cannot see must not return a verdict.
+        synced.append(stat.S_ISDIR(os.fstat(fd).st_mode))
         return real_fsync(fd)
     os.fsync = spy
     try:
