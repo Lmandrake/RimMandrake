@@ -844,9 +844,13 @@ namespace JawaBench.BridgeTools
                 Check("Deploy hose -> targeter -> pending Deploy at the clicked cell", rc.pending == GHose.HosePendingOrder.Deploy && rc.pendingAt == tgt, res + " pending " + rc.pending + " at " + rc.pendingAt);
                 res = GClick(G(reel, "Cancel hose order"), null);
                 Check("Cancel hose order clears it", rc.pending == GHose.HosePendingOrder.None, res);
+                // the reel's "Free end" button sets what the end DOES (FlowWorks' freeEndRole: Capped, Intake, Outflow) since the hose port;
+                // how the end LOOKS (rc.end: open, nozzle, cap) is the "End look" button. The check read the look after pressing the
+                // role button, so it saw "Open" three times (in-game visit 1, and again on the 12-mod tier: not a clash with another mod)
                 var ends = new List<string>();
-                for (int i = 0; i < 3; i++) { GClick(G(reel, "Free end"), null); ends.Add(rc.end.ToString()); }
-                Check("Free end toggle cycles three ends and returns", ends.Distinct().Count() == 3 && ends[2] == "Open", ends);
+                string end0 = rc.freeEndRole.ToString();
+                for (int i = 0; i < 3; i++) { GClick(G(reel, "Free end"), null); ends.Add(rc.freeEndRole.ToString()); }
+                Check("Free end toggle cycles three ends and returns", ends.Distinct().Count() == 3 && ends[2] == end0, ends);
                 string look0 = GHose.HoseLook.LookOfThing(reel);   // the reel's look lives in FlowWorks' picker since the hose port
                 res = GClick(G(reel, "Choose style"), null);
                 List<FloatMenuOption> sopts = GTakeFloatMenu();
@@ -918,9 +922,16 @@ namespace JawaBench.BridgeTools
                 Check("Unlink all takes every wire down", aa.links.Count == 0 && ab.links.Count == 0, aa.links.Count);
                 GAer.CompAerialAnchor.TryLink(aa, mb);
                 GAer.CompAerialAnchor.Cut(aa, ab, 0.5f, true);
+                // re-stringing is a colonist's job (owner by card 2026-10-15, "Make it a colonist job"): the button marks the anchor for a
+                // constructor and turns into "Cancel re-string"; the span stays cut until someone splices it (proof rows M15b, M15e). The
+                // check asked the button to put the wire up on the spot, which the mod has not done since that card.
                 bool cutShown = G(ma, "Re-string") != null;
                 res = GClick(G(ma, "Re-string"), null);
-                Check("cut span: Re-string shown and restores it Up", cutShown && aa.LinkTo(ab)?.state == GAer.SpanState.Up, res + " " + aa.LinkTo(ab)?.state);
+                bool marked = GAer.Restringing.Designated(ma), cancelShown = G(ma, "Cancel re-string") != null;
+                string res2 = GClick(G(ma, "Cancel re-string"), null);
+                Check("cut span: Re-string shown, marks the anchor for a constructor, and Cancel takes the mark off",
+                      cutShown && marked && cancelShown && !GAer.Restringing.Designated(ma) && aa.LinkTo(ab)?.state == GAer.SpanState.Cut,
+                      res + " marked " + marked + " cancel " + res2 + " span " + aa.LinkTo(ab)?.state);
                 GAer.CompAerialAnchor.Unlink(aa, ab);
                 Find.Selector.ClearSelection();
                 foreach (Thing t in new[] { ma, mb, mc }) Find.Selector.Select(t, false, false);

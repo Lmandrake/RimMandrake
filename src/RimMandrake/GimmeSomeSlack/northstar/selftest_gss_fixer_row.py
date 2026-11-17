@@ -42,7 +42,7 @@ class Bridge:
             return {"success": True, "thingId": self.n} if self.place else {"success": False, "error": "refused"}
         if tool == "jawa/ordered_job":
             self.jobs[int(kw["pawnId"])] = kw
-            return {"success": True, "curJob": {"def": kw["jobDef"]}}
+            return {"success": True, "accepted": True, "afterJobDef": kw["jobDef"], "nowRunningRequested": True}
         return {}
 
 

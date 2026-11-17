@@ -398,11 +398,13 @@ def fixer_and_other_builder(B, V, end, cut, far):
     placed = {}
     for name, c in (("cut", cut), ("far", far)):
         r = B.call("jawa/blueprint_place", **{"def": "PowerConduit", "x": c[0], "z": c[1], "faction": "Player"}) or {}
-        placed[name] = {"cell": list(c), "id": r.get("thingId") or r.get("id") or (r.get("thing") or {}).get("id"), "raw": {k: r.get(k) for k in ("success", "error", "reason")}}
+        placed[name] = {"cell": list(c), "id": (r.get("blueprint") or {}).get("id") or r.get("thingId") or r.get("id"),
+                        "raw": {k: r.get(k) for k in ("success", "error", "message", "placementCheck")}}
     steel = {}
     for name, c in (("cut", (end[0], end[1] + 1)), ("far", (end[0], end[1] - 1))):
         r = B.call("rimworld/spawn_thing", defName="Steel", stackCount=5, x=c[0], z=c[1]) or {}
-        steel[name] = r.get("thingId") or r.get("id") or (r.get("thing") or {}).get("id")
+        # rimworld/spawn_thing names the stack "Thing_Steel123"; the job tool takes the game's own ThingID, "Steel123"
+        steel[name] = str(r.get("thingId") or r.get("id") or (r.get("thing") or {}).get("id") or "").replace("Thing_", "", 1) or None
     B.probe("poll")
     B.ticks(8)
     if not (placed["cut"]["id"] and placed["far"]["id"] and steel["cut"] and steel["far"]):
@@ -414,17 +416,25 @@ def fixer_and_other_builder(B, V, end, cut, far):
         for who, pid, name in (("fixer", free[0], "cut"), ("other", free[1], "far")):
             B.probe("pawn:%d=undraft" % pid)
             moved = B.probe("pawn:%d=tp:%d,%d" % (pid, end[0], end[1]))
-            # the order waits 6 ticks before it reads the job back: one of the shock's 4-tick checks falls inside, the man still on the cell
+            # the order is given with the game paused (the bridge holds it), then six ticks are played: one of the shock's 4-tick
+            # checks falls inside them, the man one step at most off the cell he was put on
             j = B.call("jawa/ordered_job", pawnId=str(pid), jobDef="HaulToContainer", targetAId=str(steel[name]), targetBId=str(placed[name]["id"]),
-                       count=1, waitTicks=6) or {}
+                       count=1, waitTicks=0) or {}
+            running = j.get("success") is True and j.get("nowRunningRequested") is True
+            stop = None
+            try:
+                B.ticks(6)
+            except Exception as ex:      # the tick governor stops the clock when a colonist goes down: here that is the shock itself
+                stop = repr(ex)[:200]
             pg = (B.call("jawa/pawn_get", pawn=pid).get("pawns") or [{}])[0]
             hed = pg.get("hediffs")
-            cur = j.get("curJob") or j.get("job") or {}
-            trials[who] = {"pawn": pid, "onEnd": bool(moved.get("success")), "job": (cur.get("def") if isinstance(cur, dict) else cur) or j.get("jobDef"),
-                           "target": placed[name]["cell"], "accepted": j.get("success"), "order": {k: j.get(k) for k in ("success", "error", "curJob", "started")},
-                           "shocked": ("RM_FallenWireShock" in [h.get("def") for h in hed]) if isinstance(hed, list) else None, "posAfter": pg.get("pos")}
-            if j.get("success") is False:
-                trials[who]["job"] = None
+            # stood up again before anything else ticks (the governor refuses to run a clock over a downed colonist)
+            healed = B.call("jawa/pawn_health", pawn=str(pid), action="healAll", confirmDestructive=True) or {}
+            trials[who] = {"pawn": pid, "onEnd": bool(moved.get("success")), "job": j.get("afterJobDef") if running else None,
+                           "target": placed[name]["cell"], "accepted": j.get("success"),
+                           "order": {k: j.get(k) for k in ("success", "accepted", "message", "afterJobDef", "nowRunningRequested")},
+                           "shocked": ("RM_FallenWireShock" in [h.get("def") for h in hed]) if isinstance(hed, list) else None, "posAfter": pg.get("pos"),
+                           "clockStopped": stop, "healed": healed.get("success")}
             B.probe("pawn:%d=tp:%d,%d" % (pid, end[0] - 3, end[1] + 4))      # off the end before the next man stands on it
     finally:
         B.hold_off = previous_hold_off
@@ -486,6 +496,25 @@ def floor_end_shock(B, V, rows):
 DECK_WANT = {"All": True, "OnlyDownedLines": True, "None": False}
 
 
+def _colonists(B):
+    """id -> position of every colonist on the map (the probe's roster); {} when the roster cannot be read."""
+    ro = B.probe("colonists") if hasattr(B, "probe") else {}
+    return {p["id"]: p.get("pos") for p in (ro or {}).get("pawns") or [] if isinstance(p, dict) and p.get("id") is not None}
+
+
+def _rescue(B, before):
+    """The colonist a collapse trial spawned on the fallen deck is healed, walked off the wire and drafted beside the colony's own:
+    left lying on a live cord he goes down again, and the tick governor then stops every later clock (first run of this row,
+    2026-11-17: three trial colonists down, the next scene's 8 ticks refused)."""
+    if not before:
+        return
+    hx, hz = next((p for p in before.values() if p), (5, 5))
+    for k, pid in enumerate(sorted(set(_colonists(B)) - set(before))):
+        B.call("jawa/pawn_health", pawn=str(pid), action="healAll", confirmDestructive=True)
+        B.probe("pawn:%d=tp:%d,%d" % (pid, hx + 2 + k, hz + 2))
+        B.probe("pawn:%d=draft" % pid)
+
+
 def deck_verdict(seen):
     """SC_shock_reach_deck_cord_per_value from one collapse per value -> status. seen[value] = {"fell": the deck's live cord really
     fell (FlowWorks dropped its cords and the net split once), "shocked": the colonist standing on a fallen square carries the shock}.
@@ -521,11 +550,13 @@ def deck_cord_per_value(B, V, run_collapse=None):
                 rws = json.load(f).get("rows") or []
             return next((r for r in rws if r.get("id") == "COLLAPSE_CORD_SHOCKS_ONCE"), None)
     seen, raw = {}, {}
+    before = _colonists(B)
     try:
         for i, v in enumerate(DECK_WANT):
             B.ap("set:shockReach=%s" % v)
             B.ticks(8)
             r = run_collapse((150 + 25 * i, 120)) or {}
+            _rescue(B, before)
             d = r.get("detail") if isinstance(r.get("detail"), dict) else {}
             raw[v] = {"status": r.get("status"), "class": r.get("class"), "detail": d}
             fell = (d.get("cordsDropped") or 0) >= 4 and d.get("liveFalls60") == 1 and (d.get("liveHalves") or 0) >= 1
@@ -592,57 +623,62 @@ def under_verdict(read, want_piece=False):
     return ("FAIL" if over else "PASS"), "MOD", {"cord": cord, "things": things, "drawnUnderCord": [t["def"] for t in over]}
 
 
-def pit_verdict(dry, wet, deep, under_battery, drawn):
-    """SC_under_liquid_pit from its five readings -> (status, detail). A cord on dry ground shows whole (seen 1); the same run on the
-    floor of a pit under liquid shows less (seen < 1) and under 2 m or more less again or not at all (never whole: a cord lying on
-    deep pit water was RIMMANDRAKE_BURY_GSS_CORDS_IN_FW_SUPERDEEP_PIT_WATER); the cord is still laid there (strands on each cell: it
-    runs under the liquid, it does not stop at the bank); and the battery on the pit floor draws above it (under_verdict)."""
+def pit_verdict(dry, wet, deep, under_battery, water_stubs):
+    """SC_under_liquid_pit from its readings -> (status, detail). A cord on dry ground shows whole (seen 1). The same run on the floor
+    of a pit under wadeable liquid (1 m) still lies there and shows through it, less than whole (seen < 1), and the battery standing
+    on that floor draws above it (under_verdict). Under 2 m or more (FlowWorks' "deep water") no cord lies on the water at all: the
+    run dives at the banks (two water stubs) as it does under vanilla deep water (a cord drawn across deep pit water was
+    RIMMANDRAKE_BURY_GSS_CORDS_IN_FW_SUPERDEEP_PIT_WATER)."""
     def seen(r):
         return ((r or {}).get("cord") or {}).get("seen")
 
     def strands(r):
-        return ((r or {}).get("cord") or {}).get("strands", 0)
-    d = {"seen": {"dry": seen(dry), "underLiquid": seen(wet), "underDeep": seen(deep)},
-         "strands": {"dry": strands(dry), "underLiquid": strands(wet), "underDeep": strands(deep)}, "battery": under_battery, "drawn": drawn}
-    if None in d["seen"].values() or not all(d["strands"].values()):
-        return "UNMEASURED", dict(d, why="a reading is missing, or no cord lies on one of the three cells")
-    ok = d["seen"]["dry"] == 1 and d["seen"]["underLiquid"] < 1 and d["seen"]["underDeep"] < 1 and d["seen"]["underDeep"] <= d["seen"]["underLiquid"] \
-        and under_battery == "PASS"
+        return ((r or {}).get("cord") or {}).get("strands")
+    d = {"seen": {"dry": seen(dry), "underLiquid": seen(wet)}, "strands": {"dry": strands(dry), "underLiquid": strands(wet), "underDeep": strands(deep)},
+         "battery": under_battery, "waterStubs": water_stubs}
+    if None in d["seen"].values() or None in d["strands"].values() or not isinstance(water_stubs, int) or not d["strands"]["dry"]:
+        return "UNMEASURED", dict(d, why="a reading is missing, or no cord lies on the dry cell")
+    if not d["strands"]["underLiquid"]:
+        return "UNMEASURED", dict(d, why="no cord lies on the floor of the wadeable pit: the site did not stage the case (the pit read as deep, or the run went round)")
+    ok = d["seen"]["dry"] == 1 and d["seen"]["underLiquid"] < 1 and under_battery == "PASS" and d["strands"]["underDeep"] == 0 and water_stubs >= 2
     return ("PASS" if ok else "FAIL"), d
 
 
 def under_liquid_pit(B, V, at):
-    """The pit half of sc_cords_under_items, on a tier with FlowWorks (gimmesomeslack_flowworks): a battery-fed run crosses a pit dug
-    three levels down, a battery stands on the pit floor on the run, the pit is filled 1 m at one end and 2 m (FlowWorks' "deep
-    water (2 m or more)") at the other; the probe's under: read at a dry cell, a cell under 1 m, a cell under 2 m and the battery's.
-    Without FlowWorks the row is UNMEASURED SITE with this driver named."""
+    """The pit half of sc_cords_under_items, on a tier with FlowWorks (gimmesomeslack_flowworks): a battery-fed run crosses two pits
+    dug five levels down, the first filled 1 m (wadeable) with a battery standing on its floor on the run, the second 2 m (FlowWorks'
+    "deep water (2 m or more)"); the probe's under: read at a dry cell, a cell of each pit and the pit battery's, and the census's
+    water stubs. Two pits, three cells of ground between them: one body of liquid has one level. Without FlowWorks the row is
+    UNMEASURED SITE with this driver named."""
     x, z = at
     probe = B.call("jawa/flowworks_excavation_drive", x=x + 3, z=z, deepenLevels=0, setBodyWaterM=-1) or {}
     if probe.get("success") is False or "error" in probe:
         return "UNMEASURED", "SITE", {"why": "FlowWorks is not loaded (jawa/flowworks_excavation_drive refused): run on tier gimmesomeslack_flowworks, "
                                              "`proof_all.py --live --skip-offline --only scenes`", "read": probe}
-    pit = [(x + i, z + j) for i in range(3, 9) for j in (-1, 0, 1)]
+    stubs0 = ((B.probe("census") or {}).get("nodeTypes") or {}).get("stub_water", 0)
+    shallow = [(x + i, z + j) for i in range(3, 6) for j in (-1, 0, 1)]
+    deep = [(x + i, z + j) for i in range(9, 12) for j in (-1, 0, 1)]
     built = {"dug": 0}
-    for c in pit:
+    for c in shallow + deep:
         r = B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], deepenLevels=5, setBodyWaterM=-1) or {}
         built["dug"] += 1 if r.get("success") is not False else 0
-    built["pitBattery"] = B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x + 5, z), faction="player", wipeExisting=False).get("placed")
+    built["pitBattery"] = B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x + 4, z), faction="player", wipeExisting=False).get("placed")
     built["battery"] = B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (x, z), faction="player", wipeExisting=False).get("placed")
-    built["conduit"] = B.call("jawa/build_batch", ops=V.ops("PowerConduit", _line(x, z, x + 11, z)), faction="player", wipeExisting=False).get("placed")
-    B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x + 11, z + 1), faction="player", wipeExisting=False)
-    for c in pit:
-        B.call("jawa/flowworks_excavation_drive", x=c[0], z=c[1], setBodyWaterM=1.0 if c[0] <= x + 5 else 2.0)
+    built["conduit"] = B.call("jawa/build_batch", ops=V.ops("PowerConduit", _line(x, z, x + 14, z)), faction="player", wipeExisting=False).get("placed")
+    B.call("jawa/build_batch", ops="StandingLamp:%d,%d,0" % (x + 14, z + 1), faction="player", wipeExisting=False)
+    fill = {"shallow": B.call("jawa/flowworks_excavation_drive", x=shallow[0][0], z=shallow[0][1], setBodyWaterM=1.0),
+            "deep": B.call("jawa/flowworks_excavation_drive", x=deep[0][0], z=deep[0][1], setBodyWaterM=2.0)}
     B.ticks(3)
-    _fill(B, (x - 1, z - 2, 14, 5))
+    _fill(B, (x - 1, z - 2, 17, 5))
     B.probe("rebuild")
     B.ticks(8)
-    dry, wet, deep = (B.probe("under:%d,%d" % c) for c in ((x + 1, z), (x + 4, z), (x + 7, z)))
-    bat = under_verdict(B.probe("under:%d,%d" % (x + 5, z)))
-    c0 = B.probe("rect:%d,%d,14,5" % (x - 1, z - 2)) or {}
-    drawn = {k: c0.get(k) for k in ("cordEdges", "strands", "stubs", "nodeTypes") if k in c0}
-    st, detail = pit_verdict(dry, wet, deep, bat[0], drawn)
-    detail.update(built=built, cells={"dry": [x + 1, z], "underLiquid": [x + 4, z], "underDeep": [x + 7, z], "battery": [x + 5, z]},
-                  reads={"dry": dry, "underLiquid": wet, "underDeep": deep, "battery": bat[2]})
+    dry, wet, dp = (B.probe("under:%d,%d" % c) for c in ((x + 1, z), (x + 3, z), (x + 10, z)))
+    bat = under_verdict(B.probe("under:%d,%d" % (x + 4, z)))
+    stubs = ((B.probe("census") or {}).get("nodeTypes") or {}).get("stub_water", 0) - stubs0
+    st, detail = pit_verdict(dry, wet, dp, bat[0], stubs)
+    detail.update(built=built, cells={"dry": [x + 1, z], "underLiquid": [x + 3, z], "underDeep": [x + 10, z], "battery": [x + 4, z]},
+                  fill={k: {q: (v or {}).get(q) for q in ("success", "error", "bodyWaterM", "waterM")} for k, v in fill.items()},
+                  reads={"dry": dry, "underLiquid": wet, "underDeep": dp, "battery": bat[2]})
     return st, ("MOD" if st != "UNMEASURED" else "SITE"), detail
 
 

@@ -72,14 +72,14 @@ def main():
 
     def rd(seen, strands=1):
         return {"success": True, "cord": {"seen": seen, "strands": strands}}
-    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.2), "PASS", {})[0] == "PASS", "pit: whole on dry ground, fainter under 1 m, fainter again under 2 m, battery above: passes")
-    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0), "PASS", {})[0] == "PASS", "pit: hidden under 2 m passes")
-    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(1), "PASS", {})[0] == "FAIL", "planted: a cord drawn whole over 2 m of pit water fails")
-    check(scene_rows.pit_verdict(rd(1), rd(1), rd(0.2), "PASS", {})[0] == "FAIL", "planted: a cord drawn whole over 1 m of liquid fails")
-    check(scene_rows.pit_verdict(rd(1), rd(0.3), rd(0.6), "PASS", {})[0] == "FAIL", "planted: deeper water showing more of the cord fails")
-    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.2), "FAIL", {})[0] == "FAIL", "planted: the pit battery drawn under the cord fails")
-    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.2, strands=0), "PASS", {})[0] == "UNMEASURED", "pit: no cord laid under the deep water is unmeasured, never a pass")
-    check(scene_rows.pit_verdict(rd(0.9), rd(0.6), rd(0.2), "PASS", {})[0] == "FAIL", "planted: a cord faded on dry ground fails")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.4, 0), "PASS", 2)[0] == "PASS", "pit: whole on dry ground, fainter on the wadeable pit's floor, battery above, the deep pit dived under: passes")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(1, 1), "PASS", 2)[0] == "FAIL", "planted: a cord drawn across 2 m of pit water fails")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.4, 0), "PASS", 0)[0] == "FAIL", "planted: no cord on the deep water and no dive either (the run simply stops) fails")
+    check(scene_rows.pit_verdict(rd(1), rd(1), rd(0.4, 0), "PASS", 2)[0] == "FAIL", "planted: a cord drawn whole over 1 m of liquid fails")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.4, 0), "FAIL", 2)[0] == "FAIL", "planted: the pit battery drawn under the cord fails")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6, 0), rd(0.4, 0), "PASS", 2)[0] == "UNMEASURED", "pit: no cord on the wadeable pit's floor is unmeasured (the case was not staged), never a pass")
+    check(scene_rows.pit_verdict(rd(0.9), rd(0.6), rd(0.4, 0), "PASS", 2)[0] == "FAIL", "planted: a cord faded on dry ground fails")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.4, 0), "PASS", None)[0] == "UNMEASURED", "pit: the stub count not read is unmeasured")
 
     class NoFw:
         def call(self, tool, **kw):

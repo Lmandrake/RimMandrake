@@ -680,8 +680,11 @@ namespace RimMandrake.GimmeSomeSlack
                     if (tm != null && tm.shader != null)
                     {
                         shader = tm.shader.name;
-                        string rt = tm.GetTag("RenderType", false, "");
-                        depth = tm.HasProperty("_ZWrite") ? (tm.GetInt("_ZWrite") != 0 ? "true" : "false") : (rt == "Transparent" || shader.Contains("Transparent") ? "false" : "true");
+                        // by the shader's family: vanilla's Cutout shaders (Custom/Cutout, CutoutComplex, CutoutSkin, CutoutPlant ...) write
+                        // depth, its Transparent and Mote shaders write none; any other shader is unknown (null) and the reader keeps
+                        // its queue rule. (The RenderType tag does not say: Custom/Cutout carries "Transparent" and writes depth; visit 1's
+                        // own pictures show a junction piece queued 2901 hidden under steel queued 2900.)
+                        depth = shader.Contains("Cutout") ? "true" : shader.Contains("Transparent") || shader.Contains("Mote") ? "false" : "null";
                     }
                 }
                 catch (Exception) { }
