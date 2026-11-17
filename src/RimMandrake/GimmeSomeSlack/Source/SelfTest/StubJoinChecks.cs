@@ -60,8 +60,44 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return w;
         }
 
+        /// <summary>The owner's review map (save GSS_OWNER_LOOK_20261116, the cord world the live probe dumped on 2026-11-17: worlddump), built here
+        /// with the production builder and read with the live check's own two readings. In-game visit 1 read 19 joins off slope, 1 off line and
+        /// 4 bare stubs of 399 there while every check of this file passed on its tidy rooms.</summary>
+        private static void OwnerMap()
+        {
+            using System.Text.Json.JsonDocument doc = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllText(System.IO.Path.Combine(AppContext.BaseDirectory, "owner_look_20261116.json")));
+            CordWorld w = LabWorld.Read(doc.RootElement, out BuildOptions opt, out HashSet<Cell> live);
+            var b = new CordBuilder();
+            List<LaidPiece> ps = b.Build(w, opt, c => live.Contains(c));
+            StubJoins.JoinRead j = StubJoins.Joins(w, ps, opt, "owner's map");
+            CordEndAudit.SlopeRead sl = CordEndAudit.Slopes(w, b.Graph, ps, "owner's map");
+            foreach (string x in j.Bad.Concat(sl.Bad).Take(8)) Console.WriteLine("  stub joins refused: " + x);
+            Check(j.Stubs >= 300 && j.Taken >= 300, $"the owner's review map is read: {j.Stubs} stubs, {j.Taken} cords on them ({j.Summary()})");
+            Check(j.OffLine == 0 && j.OffSlope == 0 && j.Empty == 0 && sl.OffLine + sl.OffSlope + sl.Short + sl.Empty == 0,
+                  $"the owner's review map: every cord on its stub's line and slope, no stub bare: {j.OffSlope} off slope, {j.OffLine} off line, {j.Empty} bare of {j.Stubs} stubs (worst {j.WorstDeg:0.0} deg, {j.WorstPos:0.000} cell); "
+                  + $"box arms {sl.OffSlope} off slope, {sl.OffLine} off line, {sl.Short} short, {sl.Empty} bare");
+        }
+
+        /// <summary>Lamps standing on the conduit line they are hooked to (RebuildPerDigChecks.LiveScene, the lattice measured live: 84 lamps):
+        /// the box under each lamp is hidden by it and its lead leaves from under the lamp; the rule reads every other join there.</summary>
+        private static void LampsOnTheLine()
+        {
+            CordWorld w = RebuildPerDigChecks.LiveScene();
+            var b = new CordBuilder();
+            var opt = new BuildOptions();
+            List<LaidPiece> ps = b.Build(w, opt, c => false);
+            StubJoins.JoinRead j = StubJoins.Joins(w, ps, opt, "lamps on the line");
+            CordEndAudit.SlopeRead sl = CordEndAudit.Slopes(w, b.Graph, ps, "lamps on the line");
+            foreach (string x in j.Bad.Concat(sl.Bad).Take(6)) Console.WriteLine("  stub joins refused: " + x);
+            Check(j.Taken >= 300 && j.OffLine == 0 && j.OffSlope == 0 && j.Empty == 0 && sl.OffLine + sl.OffSlope + sl.Short + sl.Empty == 0,
+                  $"a lattice with a lamp standing on every run: {j.OffSlope} off slope, {j.OffLine} off line, {j.Empty} bare of {j.Stubs} stubs ({j.Taken} cords); "
+                  + $"box arms {sl.OffSlope} off slope, {sl.OffLine} off line, {sl.Short} short, {sl.Empty} bare");
+        }
+
         public static void Run()
         {
+            OwnerMap();
+            LampsOnTheLine();
             var all = new StubJoins.JoinRead();
             var ends = new CordEndAudit.EndRead();
             var live = new StubJoins.LiveRead();

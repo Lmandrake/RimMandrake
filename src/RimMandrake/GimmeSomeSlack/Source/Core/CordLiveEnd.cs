@@ -33,6 +33,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         internal static readonly double[] BroadR = { 0.7, 0.85, 1.0, 0.66 };
         /// <summary>Tighter joins: taken only where the bend bar allows the bend they make (under 90 degrees, a cut end's own first cell, a wall).</summary>
         internal static readonly double[] TightR = { 0.5, 0.4, 0.3, 0.25, BendR };
+        /// <summary>A fitted end's last joins (<see cref="Fit"/>): it has no whip to add to its bend, so where nothing broader has room it may bend down
+        /// to the cord's own floor (StubJoins.MinBendR) with a tenth to spare.</summary>
+        internal static readonly double[] StillR = { 1.5 * StubJoins.MinBendR, 1.1 * StubJoins.MinBendR };
         /// <summary>The tied loop's radii (CordPlugExit's: the owner's "about 0.3-0.4 cell" across).</summary>
         internal static readonly double[] LoopR = { 0.19, 0.17 };
         /// <summary>The far fitting's own run a join never reaches into (BlendCutRun.BlendTail), and a fitting's straight bit.</summary>
@@ -216,7 +219,100 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return false;
         }
 
+        /// <summary>Diagnostics only: why a live end found no lay. Null in the game.</summary>
+        [ThreadStatic] internal static Action<string> LayWhy;
+
         private struct Cand { public double Cost, R, SJ; public CordShape.Dubins.Path Dp; public V2 J; public int I; public double HJ; }
+
+        /// <summary>Every join of these radii (one class, broad or tight) from the kept cord P to the straight run that ends at T heading
+        /// <paramref name="o"/>, each with the whole cord it makes: the one that disturbs the cord least first (cord laid again plus length gained
+        /// or lost), the broader bend between equals. (Broadest-first drew rings a cell across on a one-cell stub's three strands.) Only joins on
+        /// clear ground, through a doorway only on the run's own line, off the run itself unless <paramref name="overRun"/>, never back over the
+        /// far fitting, within the cord's length limit and the rod bar. One enumerator for a live cut end's run and a fitting's
+        /// (<see cref="Fit"/>): the two were the same join.</summary>
+        private static IEnumerable<(Cand, List<V2>)> Joined(List<V2> P, double[] cum, List<double> joins, double[] radii, V2 A, V2 T, V2 o,
+                                                            double runLen, List<V2> run, Site site, bool? overRun)
+        {
+            double Lold = cum[cum.Length - 1], ho = Math.Atan2(o.Z, o.X);
+            var cands = new List<Cand>();
+            var all = new List<CordShape.Dubins.Path>(6);
+            foreach (double r in radii)
+                foreach (double sJ in joins)
+                {
+                    V2 J = PointAt(P, cum, sJ, out int i);
+                    List<V2> head = P.GetRange(0, i);
+                    double hJ = HeadingInto(head, J, P, i), old = Lold - sJ - runLen;
+                    foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(J, hJ, A, ho, r, all))
+                    {
+                        if (sJ + dp.Len + runLen > site.MaxLen) continue;
+                        // the rod bar: a join's straight, with the run when it runs on into it
+                        if (dp.Word < 4 && dp.P * r + (dp.Q * r < Step ? runLen : 0) > CordShapeAudit.RodLen - 2 * Step) continue;
+                        cands.Add(new Cand { Cost = Math.Round((Lold - sJ) + Math.Abs(dp.Len - old), 1), R = r, SJ = sJ, Dp = dp, J = J, I = i, HJ = hJ });
+                    }
+                }
+            foreach (Cand c in cands.OrderBy(x => x.Cost).ThenBy(x => -x.R).ThenBy(x => -x.SJ))
+            {
+                List<V2> arc = CordShape.Dubins.Sample(c.J, c.HJ, c.Dp, Step);
+                if (arc.Count == 0) continue;
+                arc[arc.Count - 1] = A;
+                if (!arc.All(site.Clear) || !run.All(site.Clear)) continue;
+                // through a doorway only on the run's own line
+                if (site.Door != null && arc.Any(q => site.Door(q) && Math.Abs((q.X - A.X) * o.Z - (q.Z - A.Z) * o.X) > Step)) continue;
+                var join = new List<V2>(arc.Count + 1) { c.J };
+                join.AddRange(arc);
+                // (a round that allows a join back across the run tries only those: the others were tried, and refused, in the round before; null: both, the tied loops' one round)
+                if (overRun.HasValue && CrossesRun(join, A, T, 3) != overRun.Value) continue;
+                if (OverFarBody(join.Concat(run), site)) continue;
+                var R = new List<V2>(c.I + arc.Count + run.Count + 1);
+                R.AddRange(P.GetRange(0, c.I));
+                R.AddRange(join);
+                R.AddRange(run);
+                yield return (c, R);
+            }
+        }
+
+        /// <summary>The lay of a cord's end at a fitting's stub (a box arm, a switch stub, a plug's boot, a wall plate): the same lay as the live
+        /// cut end's, with the stub's own straight run in place of the conduit end's and no tail. P is read toward the fitting, its last point
+        /// the cord's end inside the fitting; <paramref name="into"/> the way the cord goes into the stub; <paramref name="runLen"/> from that end
+        /// out past the stub's tip and the slope rule's chord. <paramref name="keep"/>: the cord at the far end a join never enters (the far
+        /// fitting's own run, a live end's run and tail). <paramref name="holds"/> reads the stub's own rule on a candidate. Null: no join holds
+        /// (the cord has no room), the caller keeps the cord as handed.</summary>
+        /// <summary>Diagnostics only: why a fitted end found no join. Null in the game.</summary>
+        [ThreadStatic] internal static Action<string> FitWhy;
+
+        internal static List<V2> Fit(List<V2> P, V2 into, double runLen, Site site, List<CordTie> ties, double keep, Func<List<V2>, bool> holds, out double radius)
+        {
+            radius = 0;
+            V2 o = into.Norm(), T = P[P.Count - 1], A = T - o * runLen;
+            int runN = Math.Max(1, (int)Math.Round(runLen / Step));
+            var run = new List<V2>(runN);
+            for (int k = 1; k <= runN; k++) run.Add(A + (T - A) * (k / (double)runN));
+            double[] cum = Geo.CumLen(P);
+            double Lold = cum[cum.Length - 1];
+            int oldBends = -1, oldKinks = -1, oldDoor = -1;      // read on the handed cord only when a join gets that far
+            double tieEnd = ties != null && ties.Count > 0 ? ties.Max(t => t.S1) : 0;
+            double loKeep = Math.Max(keep, tieEnd + 0.1);
+            var joins = new List<double>();
+            for (double s = Lold - runLen - 0.1; s >= loKeep - 1e-9; s -= Lold - s <= runLen + 4.0 ? 0.1 : 0.5) joins.Add(s);
+            if ((joins.Count == 0 || joins[joins.Count - 1] > loKeep + 0.05) && Lold - runLen - loKeep > 0.05) joins.Add(loKeep);
+            if (joins.Count == 0) { FitWhy?.Invoke($"no place to leave the cord: {Lold:0.00} long, run {runLen:0.00}, keep {loKeep:0.00}"); return null; }
+            int tried = 0, offRule = 0, pinched = 0, bent = 0, door = 0;
+            foreach (bool overRun in new[] { false, true })
+                foreach (double[] radii in new[] { BroadR, TightR, StillR })
+                    foreach ((Cand c, List<V2> R) in Joined(P, cum, joins, radii, A, T, o, runLen, run, site, overRun))
+                    {
+                        tried++;
+                        if (!holds(R)) { offRule++; continue; }
+                        if (StubJoins.MinRadius(R.GetRange(Math.Max(0, c.I - 2), R.Count - Math.Max(0, c.I - 2))) < StubJoins.MinBendR) { pinched++; continue; }
+                        if (oldBends < 0) { oldBends = site.Bends(P, ties); oldKinks = site.Kinks(P, ties); oldDoor = site.DoorReturns == null ? 0 : site.DoorReturns(P); }
+                        if (site.Kinks(R, ties) > oldKinks || site.Bends(R, ties) > oldBends) { bent++; continue; }
+                        if (site.DoorReturns != null && site.DoorReturns(R) > oldDoor) { door++; continue; }
+                        radius = c.R;
+                        return R;
+                    }
+            FitWhy?.Invoke($"no join: {Lold:0.00} long, run {runLen:0.00}, keep {loKeep:0.00}, {joins.Count} places; {tried} clear joins, {offRule} off the stub's rule, {pinched} pinched, {bent} adding a bend or kink, {door} adding a door return");
+            return null;
+        }
 
         /// <summary>Lays the live end of P (read toward the cut end at <paramref name="tip"/>, the conduit running <paramref name="outDir"/>).
         /// Kept: the cord as handed already holds the bars with margin. Join: the straight run joined by a Dubins path. TurnLoop: a join that comes
@@ -224,9 +320,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// handed and does not whip. None: nothing holds, the cord is returned as handed (its joint still set).
         /// <paramref name="farCut"/>: the far end is a live cut end too (two tails share the cord); <paramref name="farOff"/>: the cord at the far
         /// end the tail and a join never enter (a fitting's stiff bit, a live end's run, a dead end's limp curl).</summary>
-        internal static Result Lay(List<V2> P0, V2 tip, V2 outDir, Site site, List<CordTie> ties0, bool farCut, double farOff = FitOff, bool allowDevice = true)
+        internal static Result Lay(List<V2> P0, V2 tip, V2 outDir, Site site, List<CordTie> ties0, bool farCut, double farOff = FitOff, bool allowDevice = true, List<V2> farRun = null)
         {
-            Result r = LayCore(P0, tip, outDir, site, ties0, farCut, farOff, allowDevice);
+            Result r = LayCore(P0, tip, outDir, site, ties0, farCut, farOff, allowDevice, farRun);
             r.FarCut = farCut; r.FarOff = farOff; r.Tip = tip; r.Out = outDir.Norm();
             // a cord laid to lie still that could whip after all, whips: only a cord with no tail that holds the bars lies still
             if (r.Kind == Kind.Still && WouldWhip(r, out List<V2> pts, out int cnt)) { r.Pts = pts; r.Count = cnt; r.Kind = Kind.Join; }
@@ -242,7 +338,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return Bars(pts, T, r.Out, cnt, r.Ties) == "";
         }
 
-        private static Result LayCore(List<V2> P0, V2 tip, V2 outDir, Site site, List<CordTie> ties0, bool farCut, double farOff, bool allowDevice)
+        private static Result LayCore(List<V2> P0, V2 tip, V2 outDir, Site site, List<CordTie> ties0, bool farCut, double farOff, bool allowDevice, List<V2> farRun)
         {
             var ties = ties0 == null ? new List<CordTie>() : new List<CordTie>(ties0);
             V2 o = outDir.Norm();
@@ -270,8 +366,20 @@ namespace RimMandrake.GimmeSomeSlack.Core
             for (double s = Lold - Run - 0.2; s >= loKeep - 1e-9; s -= Lold - s <= Run + 4.0 ? 0.1 : 0.5) joins.Add(s);
             if ((joins.Count == 0 || joins[joins.Count - 1] > loKeep + 0.05) && Lold - loKeep > 0.2) joins.Add(loKeep);
             if (tieEnd == 0 && !farCut && farOff <= FarStiff) joins.Add(FarStiff);
+            // (a handed cord with a tied loop at its far plug is laid whole only when nothing else holds, the loop and its band given up: wholeTied)
+            bool wholeTied = false;
+            List<V2> wholeFrom = farRun != null && farRun.Count >= 2 && !farCut ? farRun : null;
+            double[] wholeCum = wholeFrom == null ? null : Geo.CumLen(wholeFrom);
+            List<double> wholeAt = wholeFrom == null ? null : new List<double> { wholeCum[wholeCum.Length - 1] };
             bool still = false;      // the second round: a cord with no room for a tail is laid to lie still
+            Dictionary<string, int> why = LayWhy == null ? null : new Dictionary<string, int>();
             Result Judge(List<V2> R, List<CordTie> newTies, Kind kind, double r, out string bad)
+            {
+                Result res = Judge1(R, newTies, kind, r, out bad);
+                if (why != null && res == null) { string k = (still ? "still " : "") + bad; why[k] = (why.TryGetValue(k, out int n0) ? n0 : 0) + 1; }
+                return res;
+            }
+            Result Judge1(List<V2> R, List<CordTie> newTies, Kind kind, double r, out string bad)
             {
                 int cnt = 0;
                 if (!still) R = SetJoint(R, newTies, farCut, farOff, out cnt);
@@ -283,42 +391,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 return new Result { Pts = R, Count = cnt, Kind = still ? Kind.Still : kind, R = r, Ties = newTies };
             }
 
-            Result Attempt(double[] radii, bool tieLoops, bool overRun = false)
+            Result Attempt(double[] radii, bool tieLoops, bool? overRun = false)
             {
-                // every join of these radii (one class, broad or tight): the one that disturbs the cord least first (cord laid again plus length
-                // gained or lost), the broader bend between equals. Broadest-first drew rings a cell across on a one-cell stub's three strands
-                var cands = new List<Cand>();
-                var all = new List<CordShape.Dubins.Path>(6);
-                foreach (double r in radii)
-                    foreach (double sJ in joins)
-                    {
-                        V2 J = PointAt(P, cum, sJ, out int i);
-                        List<V2> head = P.GetRange(0, i);
-                        double hJ = HeadingInto(head, J, P, i), old = Lold - sJ - Run;
-                        foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(J, hJ, A, ho, r, all))
-                        {
-                            if (sJ + dp.Len + Run > site.MaxLen) continue;
-                            // the rod bar: a join's straight, with the run when it runs on into it
-                            if (dp.Word < 4 && dp.P * r + (dp.Q * r < Step ? Run : 0) > CordShapeAudit.RodLen - 2 * Step) continue;
-                            cands.Add(new Cand { Cost = Math.Round((Lold - sJ) + Math.Abs(dp.Len - old), 1), R = r, SJ = sJ, Dp = dp, J = J, I = i, HJ = hJ });
-                        }
-                    }
-                foreach (Cand c in cands.OrderBy(x => x.Cost).ThenBy(x => -x.R).ThenBy(x => -x.SJ))
+                foreach ((Cand c, List<V2> R) in Joined(P, cum, joins, radii, A, T, o, Run, run, site, overRun))
                 {
-                    List<V2> arc = CordShape.Dubins.Sample(c.J, c.HJ, c.Dp, Step);
-                    if (arc.Count == 0) continue;
-                    arc[arc.Count - 1] = A;
-                    if (!arc.All(site.Clear) || !run.All(site.Clear)) continue;
-                    // through a doorway only on the run's own line
-                    if (site.Door != null && arc.Any(q => site.Door(q) && Math.Abs((q.X - A.X) * o.Z - (q.Z - A.Z) * o.X) > Step)) continue;
-                    var join = new List<V2>(arc.Count + 1) { c.J };
-                    join.AddRange(arc);
-                    if (!overRun && CrossesRun(join, A, T, 3)) continue;
-                    if (OverFarBody(join.Concat(run), site)) continue;
-                    var R = new List<V2>(c.I + arc.Count + run.Count + 1);
-                    R.AddRange(P.GetRange(0, c.I));
-                    R.AddRange(join);
-                    R.AddRange(run);
                     var newTies = new List<CordTie>(ties);
                     if (tieLoops)
                     {
@@ -344,6 +420,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     Result res = Judge(R, newTies, tieLoops ? Kind.TurnLoop : Kind.Join, c.R, out string _);
                     if (res != null) return res;
                 }
+                // the whole cord laid again: the far fitting's own straight run out of its stub, the join, the live run. Last of its class (it
+                // replaces every bit of the handed cord), and never where the handed cord carries a tied loop. The handed cord's own first
+                // bit is not always straight enough to leave from (a cord bending 0.08 out of its box arm, the cut end one cell in front: the
+                // straight shot between them was no join at all)
+                if (!tieLoops && wholeFrom != null && (tieEnd == 0 || wholeTied))
+                    foreach ((Cand c, List<V2> R) in Joined(wholeFrom, wholeCum, wholeAt, radii, A, T, o, Run, run, site, overRun))
+                    {
+                        Result res = Judge(R, new List<CordTie>(), Kind.Join, c.R, out string _);
+                        if (res != null) return res;
+                    }
                 return null;
             }
 
@@ -352,7 +438,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
             Result got = Attempt(BroadR, false) ?? Attempt(TightR, false) ?? Attempt(BroadR, false, true) ?? Attempt(TightR, false, true);
             // no join holds: a handed cord already as round as the tied loop itself is kept, a device could not better it
             if (got == null && Bars(P, T, o, cnt0, ties, LoopR.Min()) == "") return kept;
-            if (got == null && allowDevice) got = Attempt(LoopR, true);
+            if (got == null && allowDevice) got = Attempt(LoopR, true, null);
+            // a cut end right in front of a plug that wears a tied strain-relief loop: the loop takes the room the lay needs. The loop is
+            // given up and the cord laid whole from the plug's own run (random family "Modern ... len1 ... noprune", second draw)
+            if (got == null && tieEnd > 0 && wholeFrom != null)
+            {
+                wholeTied = true;
+                got = Attempt(BroadR, false) ?? Attempt(TightR, false) ?? Attempt(BroadR, false, true) ?? Attempt(TightR, false, true);
+                wholeTied = false;
+            }
             if (got != null) return got;
             // no lay with the lay's own margins: the cord as handed, when it runs straight out of the conduit end and bends nowhere under the
             // pinch bar as those two bars themselves read them (15 degrees, radius 0.10), keeps its lay and its whip. (A cord that crosses blocked ground a fifth of a
@@ -370,6 +464,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             got = Attempt(BroadR, false) ?? Attempt(TightR, false) ?? Attempt(BroadR, false, true) ?? Attempt(TightR, false, true);
             if (got != null) return got;
             // nothing holds: the cord is returned as handed, its joint set
+            LayWhy?.Invoke($"handed {bad0}, {Lold:0.00} long, far {(farCut ? "cut" : "fitting")} keeps {farOff:0.00}, {joins.Count} places; clear joins refused by bar (S straight, T tail, P pinch, B bend, K kink, D door): "
+                           + (why.Count == 0 ? "none was clear" : string.Join(", ", why.OrderBy(kv => kv.Key).Select(kv => kv.Key + " " + kv.Value))));
             return new Result { Pts = SetJoint(new List<V2>(P0), ties, farCut, farOff, out int cntNone), Count = cntNone, Kind = Kind.None, Ties = ties };
         }
     }

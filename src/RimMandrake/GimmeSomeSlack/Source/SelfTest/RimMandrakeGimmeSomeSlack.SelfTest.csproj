@@ -52,6 +52,8 @@
     <Compile Include="..\Core\CordEndAudit.cs" />
     <Compile Include="..\Core\StubJoinAudit.cs" />
     <Compile Include="..\Core\LegacyName.cs" />
+    <Compile Include="..\Core\TexPath.cs" />
+    <Compile Include="TexPathChecks.cs" />
     <Compile Include="..\Core\CordMotion.cs" />
     <Compile Include="..\Core\ConduitTargets.cs" />
     <Compile Include="..\Core\HookupPick.cs" />
@@ -118,6 +120,7 @@
     <None Include="matrix_det_scenes.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="sitting_ba_Modern.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="sitting_ba_Scrapper.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="owner_look_20261116.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

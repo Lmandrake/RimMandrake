@@ -1547,7 +1547,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 double dx = b.X - a.X, dz = b.Z - a.Z, D = Math.Sqrt(dx * dx + dz * dz), d = D / r;
                 double th = D > 1e-9 ? Mod2Pi(Math.Atan2(dz, dx)) : 0, al = Mod2Pi(ha - th), be = Mod2Pi(hb - th);
                 double sa = Math.Sin(al), sb = Math.Sin(be), ca = Math.Cos(al), cb = Math.Cos(be), cab = Math.Cos(al - be), d2 = d * d;
-                void Add(int word, double t, double p, double q) => o.Add(new Path { Word = word, T = t, P = p, Q = q, R = r });
+                // a turn a rounding short of a whole circle is no turn: two poses on one line, heading along it, are joined by the straight
+                // between them. (Mod2Pi turns an angle of -1e-16 into a full circle, and the straight shot from a box arm to a cut end one
+                // cell in front of it came out as a ring at each end: 8 live ends of 126,730 in the whole census had no other lay.)
+                double Whole(double x) => x > 2 * Math.PI - 1e-6 ? 0 : x;
+                void Add(int word, double t, double p, double q) => o.Add(new Path { Word = word, T = word < 4 ? Whole(t) : t, P = p, Q = word < 4 ? Whole(q) : q, R = r });
                 double ps = 2 + d2 - 2 * cab + 2 * d * (sa - sb);                     // LSL
                 if (ps >= 0) { double t1 = Math.Atan2(cb - ca, d + sa - sb); Add(0, Mod2Pi(t1 - al), Math.Sqrt(ps), Mod2Pi(be - t1)); }
                 ps = -2 + d2 + 2 * cab + 2 * d * (sa + sb);                            // LSR

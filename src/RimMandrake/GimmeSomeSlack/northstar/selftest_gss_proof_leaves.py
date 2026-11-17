@@ -42,13 +42,13 @@ LIVE_RUN = """
     M1_cords_exist M1_node_census M1c_end_pieces M2b_no_vertex_unwalkable M2c_no_sharp_bends M6_overlay_lines_intact 
     M5_local_invalidation M8_break_two_ends_live_dead M2_cords_only_within_net B1_rope_settle B6_tangle_lit_strips 
     B3c_spark_rides_whip B3_whip_live_ends SW3_break_readout_off_no_glow_no_whip SW4_sparks_only_overlay_shut_no_glow 
-    B4_downed_wire_bursts B4b_sparks_thrown_ticking B4c_spark_intensity_scales_downed 
+    B4b_sparks_thrown_ticking B4c_spark_intensity_scales_downed 
     B4d_spark_budget_shared_visible_first M1e_machine_on_inwall_run_draws_a_cord M1f_machine_on_hidden_conduit_draws_none 
-    B7_sway_cpu_two_frame B7b_sway_shader_path B7c_floor_ripple B5_selection_highlight SW1_highlight_off_draws_no_ring 
+    B7_ground_cords_never_sway B5_selection_highlight SW1_highlight_off_draws_no_ring 
     SW2_lod_off_far_zoom_draws_full B8_lod_far_zoom B9_cutscene_guard_idle B6b_strips_dark_when_dead 
     M10_tangle_threshold_setting M11_dive_through_setting M12a_slide_under_off_plug_on_cell_centre 
     M12b_slide_under_on_plug_off_centre B13_hidden_conduit_hookup_not_drawn SW5_hide_hookup_off_leaves_vanilla_wire 
-    SW6_needless_loops_off_reaches_builder B12_shader_sway_far_zoom_drawn_once P1B_perf_rebuild 
+    SW6_needless_loops_off_reaches_builder P1B_perf_rebuild 
     A8_same_frame_dirty_not_dropped ST1_styles_textures_load ST2_switch_changes_textures ST3_extcord_colour_modes 
     ST4_settings_roundtrip ST5_restore_default_and_master M8c_source_off_reads_dead_250 M7_off_restores_vanilla 
     M7b_on_again_invisible M13a_linked_one_net_across_gap M13b_far_consumer_powered M13c_unlink_two_nets_relink_one 
@@ -56,7 +56,7 @@ LIVE_RUN = """
     M14_gap_control_without_fix M14a_remove_middle_both_ends_resolve M14b_dead_pole_drops_live_and_dead_cords 
     M14c_live_tip_glows M15_explosion_cuts_span M15a_wire_down_alert_lists_cut M15b_restring_rejoins 
     M15c_wire_down_alert_clears_on_restring M15e_restring_is_a_colonist_job M15f_restring_joined_run_one_look 
-    M15d_diagonal_cut_halves_meet_on_line R3_sway_proxy M19_tap_drains_one_way M19n_taps_off_control 
+    M15d_diagonal_cut_halves_meet_on_line R3_sway_proxy R3b_sway_looks_each_draw M19_tap_drains_one_way M19n_taps_off_control 
     M19m_tap_mixed_net_connects_own_conduit M17_owner_change_cuts_cross_owner_wires M20a_fallen_wire_shock_flip 
     M20b_fallen_wire_knockback_flip M20c_fallen_wire_ignites_flip M20e_shock_cells_die_with_wire 
     M20d_keep_wires_setting_roundtrip M21a_cut_wires_on_owner_change_off_keeps_link 

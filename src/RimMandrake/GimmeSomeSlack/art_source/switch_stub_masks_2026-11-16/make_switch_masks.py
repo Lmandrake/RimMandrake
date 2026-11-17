@@ -9,8 +9,10 @@ corridor, so the lever and the box stay whole. The cut positions are read off th
 
 Output beside each source: PowerSwitch[_Off]_p<mask>.png, mask bits E=1 N=2 W=4 S=8 (texture up is north), masks 1..14
 (0 and 15 draw the full art). The C# side: Core/StubJoinAudit.cs SwitchStubs; Aerial/ConduitStylePicker.cs SwitchPath.
-The device stub's small + box carries one cord: Junction_X_p4 / Junction_Tin_p4 keep only its -X (west) arm (CordDecal.Ports,
-CordMaterials.OnePortBox); the box art's body is narrower, so its edge is read at BOX_BODY.
+The + junction box the same way (RIMMANDRAKE_FIX_GSS_BOX_ARMS_OFF_SLOPE_IN_CROWDS: a box where cords leave on fewer than three
+sides, two conduits side by side or a box in a crowd, drew bare arms): Junction_X_p<mask> / Junction_Tin_p<mask>, the same bits
+(CordDecal.Ports, CordMaterials.MaskedBox); mask 4 is the device stub's one-arm box. The box art's body is narrower, so its edge is
+read at BOX_BODY.
 
     python3 src/RimMandrake/GimmeSomeSlack/art_source/switch_stub_masks_2026-11-16/make_switch_masks.py          # write
     python3 src/RimMandrake/GimmeSomeSlack/art_source/switch_stub_masks_2026-11-16/make_switch_masks.py --check  # rc 1 if stale
@@ -81,7 +83,9 @@ def outputs():
                 yield os.path.join(TEX, "%s%s_p%d.png" % (rel, state, mask)), masked(src, mask, c)
     for rel in BOXES:
         box = np.array(Image.open(os.path.join(TEX, rel + ".png")).convert("RGBA"))
-        yield os.path.join(TEX, rel + "_p4.png"), masked(box, W, cuts(box[:, :, 3], BOX_BODY))
+        c = cuts(box[:, :, 3], BOX_BODY)
+        for mask in range(1, 15):
+            yield os.path.join(TEX, "%s_p%d.png" % (rel, mask)), masked(box, mask, c)
 
 
 def main():
@@ -96,7 +100,7 @@ def main():
             buf = io.BytesIO()
             Image.fromarray(arr).save(buf, format="PNG", optimize=True)
             artledger.install_bytes(path, buf.getvalue(), reason="script:src/RimMandrake/GimmeSomeSlack/art_source/switch_stub_masks_2026-11-16/make_switch_masks.py unused stubs cut from the kept art")
-    print(("%d stale" % stale) if check else "wrote 120 textures")
+    print(("%d stale" % stale) if check else "wrote %d textures" % sum(1 for _ in outputs()))
     return 1 if stale else 0
 
 

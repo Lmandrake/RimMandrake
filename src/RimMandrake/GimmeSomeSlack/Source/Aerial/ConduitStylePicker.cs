@@ -195,7 +195,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             ConduitStyles.TryParseKey(key, out string look, out string colour);
             look = look ?? "Modern";
             int v = ConduitStyles.IsColour(colour) ? ConduitStyles.ColourIndex(colour) : 0;
-            return ContentFinder<Texture2D>.Get(CordMaterials.StrandPathOf(look, v), false) ?? (Texture2D)Widgets.GetIconFor(d, null, null);
+            return RimMandrake.GimmeSomeSlack.SafeTex.Get(CordMaterials.StrandPathOf(look, v), false) ?? (Texture2D)Widgets.GetIconFor(d, null, null);
         }
 
         public static List<FloatMenuOption> MenuFor(Designator_Build des)
@@ -247,7 +247,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             string path = SwitchPath(look, on, drawn);
             if (switchGraphics.TryGetValue(path, out Graphic g)) return g;
-            Texture2D tex = ContentFinder<Texture2D>.Get(path, false);
+            Texture2D tex = RimMandrake.GimmeSomeSlack.SafeTex.Get(path, false);
             GraphicData gd = switchDef.graphicData;
             g = null;
             if (tex != null && gd != null)

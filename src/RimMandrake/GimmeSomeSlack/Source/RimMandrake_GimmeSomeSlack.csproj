@@ -64,6 +64,8 @@
     <Compile Include="Core\SettingsPrint.cs" />
     <Compile Include="..\..\_Shared\SlackGeometry\DrawOrder.cs" Link="Shared\SlackGeometry\DrawOrder.cs" />
     <Compile Include="Core\LegacyName.cs" />
+    <Compile Include="Core\TexPath.cs" />
+    <Compile Include="SafeTex.cs" />
   </ItemGroup>
 
   <!-- game side: power-network adapter, map component, drawer, settings, probe -->

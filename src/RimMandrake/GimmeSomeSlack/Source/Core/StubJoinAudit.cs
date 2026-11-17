@@ -321,6 +321,27 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return true;
         }
 
+        /// <summary>The stub a strand's end is read against, where the cord passes nearest its tip (<paramref name="bq"/>) and the cord's heading
+        /// there; null when the end belongs to no stub. The rule's one reading: the builder lays an end against the same stub the rule will
+        /// read it at (CordBuilder.FitEnds).</summary>
+        internal static StubArt.Stub StubFor(List<StubArt.Stub> stubs, List<V2> P, bool atStart, out V2 bq, out V2 bh)
+        {
+            V2 e = atStart ? P[0] : P[P.Count - 1];
+            StubArt.Stub best = null; double bd = double.MaxValue; bq = default(V2); bh = default(V2);
+            foreach (StubArt.Stub st in stubs)
+            {
+                if (V2.Dist(e, st.T) > Reach) continue;
+                // an end on a stub lies inside its piece, behind the tip: the far end of a short lead that leaves this stub (a box
+                // beside its own machine) lies out along it, and is its own stub's end
+                if (Dot(e - st.T, st.U) > 0.1) continue;
+                if (!Nearest(P, atStart, st.T, V2.Dist(e, st.T) + 0.5, out V2 q, out V2 h, out double dd)) continue;
+                // a tie (two stubs equally near: the + box's arms meet at its centre) goes to the stub the cord heads along
+                double score = dd - 0.001 * Dot(h, st.U);
+                if (score < bd) { bd = score; best = st; bq = q; bh = h; }
+            }
+            return best == null || V2.Dist(bq, best.T) > 0.3 ? null : best;
+        }
+
         /// <summary>The rule at every stub in the scene.</summary>
         internal static JoinRead Joins(CordWorld w, List<LaidPiece> ps, BuildOptions opt, string scene, Func<V2, bool> keep = null)
         {
@@ -331,20 +352,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             foreach (var (p, s) in strands)
                 foreach (bool atStart in new[] { true, false })
                 {
-                    V2 e = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
-                    StubArt.Stub best = null; double bd = double.MaxValue; V2 bq = default(V2), bh = default(V2);
-                    foreach (StubArt.Stub st in stubs)
-                    {
-                        if (V2.Dist(e, st.T) > Reach) continue;
-                        // an end on a stub lies inside its piece, behind the tip: the far end of a short lead that leaves this stub (a box
-                        // beside its own machine) lies out along it, and is its own stub's end
-                        if (Dot(e - st.T, st.U) > 0.1) continue;
-                        if (!Nearest(s.Pts, atStart, st.T, V2.Dist(e, st.T) + 0.5, out V2 q, out V2 h, out double dd)) continue;
-                        // a tie (two stubs equally near: the + box's arms meet at its centre) goes to the stub the cord heads along
-                        double score = dd - 0.001 * Dot(h, st.U);
-                        if (score < bd) { bd = score; best = st; bq = q; bh = h; }
-                    }
-                    if (best == null || V2.Dist(bq, best.T) > 0.3) continue;   // this end belongs to no stub (a loose end, a lamp, a hole)
+                    StubArt.Stub best = StubFor(stubs, s.Pts, atStart, out V2 bq, out V2 bh);
+                    if (best == null) continue;   // this end belongs to no stub (a loose end, a lamp, a hole)
                     taken[best] = taken.TryGetValue(best, out int c0) ? c0 + 1 : 1;
                     double off = V2.Dist(bq, best.T);
                     double deg = Math.Acos(Math.Max(-1, Math.Min(1, Dot(bh, best.U)))) * 180 / Math.PI;

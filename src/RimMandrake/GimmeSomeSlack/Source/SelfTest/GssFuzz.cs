@@ -9,7 +9,7 @@
 //   args:      --fuzz-scale F   multiply every family's case count (default 1; 0 skips the whole fuzz)
 //              --fuzz-only NAME run one family (cords|aerial)
 //              --fuzz-seed N    replay one seed of the chosen family verbosely (no shrinking limit)
-//              --fuzz-slope 1   also gate the box-arm slope rule (CheckEndKinds; red today, its own item)
+//              --fuzz-slope 0   leave out the stub rules (CheckEndKinds: every cord end on its stub's line and slope, no stub drawn bare); on by default
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,17 +29,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         /// <summary>RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner look 2026-11-16): every end one kind and every box arm left on its line and
         /// slope (Core/CordEndAudit), on every step of every random sequence: the fuzz judged nets and cord shape only, never a fitting against
         /// the cord at it, so a wall end drawn plugged AND loose passed 400 random scenes a night.</summary>
-        /// <summary>--fuzz-slope 1: also gate the box-arm slope rule on random scenes. Off by default: red today on blob boxes and crowded tees
-        /// (RIMMANDRAKE_FIX_GSS_BOX_ARMS_OFF_SLOPE_IN_CROWDS carries it with this command as its acceptance test).</summary>
-        internal static bool SlopeGate;
+        /// <summary>The stub rules on every step of every random sequence (RIMMANDRAKE_FIX_GSS_BOX_ARMS_OFF_SLOPE_IN_CROWDS: the checks built tidy
+        /// rooms only, and in-game visit 1 found 19 of 399 joins off slope on the owner's map; 713 of these 1,723 random worlds refused before
+        /// the fix, none after): both readings, the box arms' (CordEndAudit.Slopes) and every stub's (StubJoins.Joins, the live check's own).
+        /// --fuzz-slope 0 leaves them out.</summary>
+        internal static bool SlopeGate = true;
 
-        internal static string CheckEndKinds(CordWorld w, CordGraph g, List<LaidPiece> ps)
+        internal static string CheckEndKinds(CordWorld w, CordGraph g, List<LaidPiece> ps, BuildOptions opt = null)
         {
             CordEndAudit.EndRead e = CordEndAudit.Ends(g, ps, "fuzz");
             if (e.Both + e.FitSparks + e.None + e.TerminalsFitted + e.WallTerminalsLoose + e.StubsLoose > 0) return e.Bad.FirstOrDefault() ?? "end kind";
             if (!SlopeGate) return null;
             CordEndAudit.SlopeRead sl = CordEndAudit.Slopes(w, g, ps, "fuzz");
             if (sl.OffLine + sl.OffSlope + sl.Short + sl.Empty > 0) return sl.Bad.FirstOrDefault() ?? "slope";
+            StubJoins.JoinRead jr = StubJoins.Joins(w, ps, opt ?? new BuildOptions(), "fuzz");
+            if (jr.OffLine + jr.OffSlope + jr.Empty > 0) return jr.Bad.FirstOrDefault() ?? "stub join";
             return null;
         }
 
@@ -392,7 +396,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 if (bad != null) return "nets: " + bad + at;
                 bad = CheckGeometry(w, last, s.Opt);
                 if (bad != null) return "geometry: " + bad + at;
-                bad = CheckEndKinds(w, incr.Graph, last);
+                bad = CheckEndKinds(w, incr.Graph, last, s.Opt);
                 if (bad != null) return "ends: " + bad + at;
                 if (everyStep || i == acts.Count)
                 {
@@ -653,7 +657,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             }
             double scale = double.Parse(Arg(args, "--fuzz-scale") ?? "1", System.Globalization.CultureInfo.InvariantCulture);
             if (scale <= 0) return;
-            SlopeGate = Arg(args, "--fuzz-slope") == "1";
+            SlopeGate = Arg(args, "--fuzz-slope") != "0";
             string one = Arg(args, "--fuzz-seed");
             int Cases(int n) => Math.Max(1, (int)Math.Round(n * scale));
             var all = Stopwatch.StartNew();
@@ -750,6 +754,16 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             var a = new List<LaidPiece> { new LaidPiece { Key = "k", Strands = { new CordStrand { Pts = new List<V2> { new V2(0, 0), new V2(1, 0) } } } } };
             var b = new List<LaidPiece> { new LaidPiece { Key = "k", Strands = { new CordStrand { Pts = new List<V2> { new V2(0, 0), new V2(1, 0.01) } } } } };
             Program.Check(Digest(a) != Digest(b), "fuzz control: the digest tells a 0.01-cell nudge apart");
+            // the stub rules can fail: random world 26 with the fitted-end lay switched off has a cord 35 degrees off its box's arm
+            var w26 = CordWorlds(26).First(q => q.seed == 26 && q.step == 0);
+            var b26 = new CordBuilder();
+            List<LaidPiece> on26 = b26.Build(w26.w, w26.opt, c => w26.live(c));
+            Program.Check(CheckEndKinds(w26.w, b26.Graph, on26, w26.opt) == null, "fuzz control: random world 26 as built holds the stub rules");
+            CordBuilder.FitEndsOff = true;
+            string off26;
+            try { var bo = new CordBuilder(); List<LaidPiece> ps26 = bo.Build(w26.w, w26.opt, c => w26.live(c)); off26 = CheckEndKinds(w26.w, bo.Graph, ps26, w26.opt); }
+            finally { CordBuilder.FitEndsOff = false; }
+            Program.Check(off26 != null && off26.Contains("slope"), "fuzz control: the same world with the fitted-end lay off is flagged off slope (" + (off26 ?? "clean") + ")");
             var sh = Shrink(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8 }, l => l.Contains(3) && l.Contains(6));
             Program.Check(sh.SequenceEqual(new[] { 3, 6 }), "fuzz control: the shrinker reduces eight actions to the two that matter (" + string.Join(",", sh) + ")");
         }

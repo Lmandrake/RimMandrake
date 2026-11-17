@@ -584,8 +584,7 @@ namespace RimMandrake.GimmeSomeSlack
 
         private static int MaxSparkingEnds => Mathf.Clamp(GimmeSomeSlackSettings.maxSparkingEnds, 1, 200);
 
-        // SPARK_EFFECT_BUDGET_REWORK_1: ONE endpoint set per frame, shared by the glow, the floor sparks and the downed-
-        // wire bursts, so wall + floor ends together never exceed the setting; ends on screen are admitted first, so an
+        // SPARK_EFFECT_BUDGET_REWORK_1: ONE endpoint set per frame, shared by the glow and the floor sparks, so the ends together never exceed the setting; ends on screen are admitted first, so an
         // off-screen run cannot starve the ones the player is looking at.
         private readonly List<CordEnd> sparkSet = new List<CordEnd>();
         private readonly List<CordEnd> sparkOff = new List<CordEnd>();
@@ -640,9 +639,6 @@ namespace RimMandrake.GimmeSomeSlack
                     // a pop now and then, drawn here so it stays on the moving end; vanilla's glow fleck stays where it was thrown
                     float pop = Mathf.Repeat(t * 0.8f + (h & 0xff) * 0.0173f, 1f);
                     float size = (0.30f + 0.32f * f * f + (pop < 0.09f ? 0.45f * (1f - pop / 0.09f) : 0f)) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
-                    // a downed wire's glow follows its burst schedule: a 2x flash, brief pops, an ember between
-                    if (e.Wall && GimmeSomeSlackSettings.downedWire && downed.TryGetValue(e.NetCell, out DownedWireSchedule dw))
-                        size = (float)(0.45 * dw.Glow(t)) * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity);
                     V2 tipNow = SparkTipNow(e);
                     var pos = new Vector3((float)tipNow.X, y, (float)tipNow.Z);
                     Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(size, 1f, size)), CordMaterials.LiveGlow, 0);
@@ -669,8 +665,6 @@ namespace RimMandrake.GimmeSomeSlack
             float k = GimmeSomeSlackSettings.sparkIntensity;
             foreach (CordEnd e in SparkEnds())
                 {
-                    // the drip schedule owns wall ends (they are in the shared budget already)
-                    if (e.Wall && GimmeSomeSlackSettings.downedWire) continue;
                     int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
                     int period = Mathf.Max(8, Mathf.RoundToInt(TipSparks.Period / k));
                     if ((tick + (h & 0x7fff)) % period != 0) continue;
@@ -679,11 +673,11 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         // ================================================================ phase 1b lane A: motion
-        // Whip (B3), downed-wire bursts (B4), selection highlight (B5). All runtime-only, drawn from
+        // Whip (B3), selection highlight (B5). (The downed-wire bursts, B4, were a live wire hanging out of a wall: no cord hangs out of a
+        // wall since the owner's ruling of 2026-11-16, and the schedule, its setting and its proof row went with it.) All runtime-only, drawn from
         // MapComponentUpdate with a dynamic mesh rebuilt per frame for what is on screen; nothing here touches the
         // static section meshes. Wind moves no ground cord (owner 2026-11-16: wind sway is for pole wires only).
         private bool motionErrorLogged;
-        private readonly Dictionary<Cell, DownedWireSchedule> downed = new Dictionary<Cell, DownedWireSchedule>();
         private Mesh hiMesh;
         /// <summary>Per strand variant (lane C): one whip mesh each, drawn with that variant's material.</summary>
         private readonly Mesh[] floorMeshes = new Mesh[16];
@@ -692,8 +686,7 @@ namespace RimMandrake.GimmeSomeSlack
         private readonly List<int> mt = new List<int>();
         private PowerNet hiNet;
         private int hiBuilds = -1;
-        public static int WhipDraws, WhipStillDraws, HighlightCords, HighlightStubs, SparksThrown, DripEvents;
-        public static readonly int[] DownedHist = new int[4];
+        public static int WhipDraws, WhipStillDraws, HighlightCords, HighlightStubs, SparksThrown;
         public static string HighlightNetId;
 
 
@@ -797,8 +790,7 @@ namespace RimMandrake.GimmeSomeSlack
             float baseY = AltitudeLayer.Conduits.AltitudeFor() + 0.002f;
             if (SectionLayer_RM_MessyCords.FarNow)
             {
-                // far zoom: LOD only, no geometry motion -- but the downed-wire bursts (the only sparks a wall end throws
-                // while downedWire is on) and the selection highlight are not motion and keep running (GPT review #6)
+                // far zoom: LOD only, no geometry motion -- but the selection highlight is not motion and keeps running (GPT review #6)
                 DrawEffects(now, baseY);
                 return;
             }
@@ -867,83 +859,10 @@ namespace RimMandrake.GimmeSomeSlack
 
         private void DrawEffects(float now, float baseY)
         {
-            // ---- B4 downed-wire bursts at live wall terminals (real-time schedule; flecks only while time runs)
-            // frame-driven effects draw from their own seeded stream: Verse.Rand is gameplay state and must not depend on
-            // camera, settings or frame rate (Codex review 2026-11-09)
-            if (GimmeSomeSlackSettings.downedWire && SparksAllowed)
-            {
-                Rand.PushState(unchecked(Time.frameCount * 7919 + map.uniqueID));
-                try { DownedWires(now); }
-                finally { Rand.PopState(); }
-            }
             // ---- B5 selection highlight
             if (GimmeSomeSlackSettings.highlight) DrawHighlight(baseY);
         }
 
-        private void DownedWires(float now)
-        {
-            bool paused = Find.TickManager.Paused;
-            if (downed.Count > 0)
-            {
-                deadScratch.Clear();
-                foreach (Cell c in downed.Keys)
-                    if (!liveEnds.TryGetValue(c, out bool live) || !live) deadScratch.Add(c);
-                foreach (Cell c in deadScratch) { downed.Remove(c); thrownOf.Remove(c); sparkCredit.Remove(c); }
-            }
-            float k = GimmeSomeSlackSettings.sparkIntensity;
-            foreach (CordEnd e in SparkEnds())
-                {
-                    if (!e.Wall) continue;
-                    if (!downed.TryGetValue(e.NetCell, out DownedWireSchedule dw))
-                        downed[e.NetCell] = dw = new DownedWireSchedule(CordRng.Hash("downed", e.NetCell.X, e.NetCell.Z, map.uniqueID), now);
-                    if (dw.Due(now))
-                    {
-                        dw.Advance(now);
-                        DownedHist[(int)dw.State]++;
-                        DripEvents++;
-                        thrownOf[e.NetCell] = 0;
-                        if (!paused && dw.State == DripState.Flash)
-                        {
-                            V2 tipNow = SparkTipNow(e);
-                            FleckMaker.ThrowLightningGlow(new Vector3((float)tipNow.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)tipNow.Z), map, 0.8f * Mathf.Min(1.5f, GimmeSomeSlackSettings.sparkIntensity));
-                        }
-                    }
-                    if (paused) continue;
-                    thrownOf.TryGetValue(e.NetCell, out int done);
-                    int due = dw.SparksDue(now);
-                    // the schedule's sparks are scaled by the intensity setting with fractional credit carried between
-                    // events: 0.5x throws every other scheduled spark, 2x two per scheduled spark
-                    sparkCredit.TryGetValue(e.NetCell, out float credit);
-                    for (; done < due; done++)
-                    {
-                        credit += k;
-                        while (credit >= 1f)
-                        {
-                            credit -= 1f;
-                            ThrowDownedSpark(e);
-                        }
-                    }
-                    sparkCredit[e.NetCell] = credit;
-                    thrownOf[e.NetCell] = done;
-                }
-        }
-
-        private readonly List<Cell> deadScratch = new List<Cell>();
-        private readonly Dictionary<Cell, float> sparkCredit = new Dictionary<Cell, float>();
-
-        private void ThrowDownedSpark(CordEnd e)
-        {
-            V2 tipNow = SparkTipNow(e);
-            var loc = new Vector3((float)tipNow.X + Rand.Range(-0.06f, 0.06f), AltitudeLayer.MoteOverhead.AltitudeFor(), (float)tipNow.Z);
-            if (!loc.ShouldSpawnMotesAt(map)) return;
-            FleckCreationData d = FleckMaker.GetDataStatic(loc, map, FleckDefOf.MicroSparks, Rand.Range(0.7f, 1.1f));
-            d.rotationRate = Rand.Range(-12f, 12f);
-            d.velocityAngle = Rand.Range(160f, 200f);           // screen-down: the sparks fall down the face
-            d.velocitySpeed = Rand.Range(0.5f, 1.3f);
-            map.flecks.CreateFleck(d);
-            SparksThrown++;
-        }
-        private readonly Dictionary<Cell, int> thrownOf = new Dictionary<Cell, int>();
 
         /// <summary>The net of whatever powered thing is selected (a conduit, a battery, a lamp), or null.</summary>
         public PowerNet SelectedNet()

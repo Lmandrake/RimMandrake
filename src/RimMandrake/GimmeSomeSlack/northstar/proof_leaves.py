@@ -62,7 +62,6 @@ ROW_LEAVES = dict(_MATRIX, **{
     "B3_whip_live_ends": ["cut_live_and_dead_ends"],
     "SW3_break_readout_off_no_glow_no_whip": ["settings_switch_cleanly", "cut_live_and_dead_ends"],
     "SW4_sparks_only_overlay_shut_no_glow": ["settings_switch_cleanly", "cut_live_and_dead_ends"],
-    "B4_downed_wire_bursts": ["cut_live_and_dead_ends"],
     "B4b_sparks_thrown_ticking": ["cut_live_and_dead_ends"],
     "B4c_spark_intensity_scales_downed": ["cut_live_and_dead_ends"],
     "B4d_spark_budget_shared_visible_first": ["cut_live_and_dead_ends", "no_stall_on_rewire"],

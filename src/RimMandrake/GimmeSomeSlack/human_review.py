@@ -1007,7 +1007,6 @@ SETTINGS = [
     ("gss", "breakReadout", "True", "live ends spark, dead ends lie limp", "1-4, 13"),
     ("gss", "sparkIntensity", "1.0", "spark intensity (also clamp sparks)", "1, 13, 27, 29"),
     ("gss", "whip", "True", "live broken floor ends whip (also paused)", "1-4"),
-    ("gss", "downedWire", "True", "live wires hanging out of walls drip sparks", "12"),
     ("gss", "sparksOnlyOverlay", "False", "sparks only while the power overlay is open", "13, 29"),
     ("gss", "maxSparkingEnds", "24", "most sparking ends per map", "no station (needs 24+ live ends on one map)"),
     ("gss", "highlight", "True", "selecting a powered building highlights its net's cords", "23"),

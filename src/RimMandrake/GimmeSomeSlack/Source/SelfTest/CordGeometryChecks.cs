@@ -262,7 +262,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 for (int s = 0; s < 40; s++)
                 {
                     RandScene sc = MakeScene(6000 + s + (walls ? 500 : 0), 6, 14, walls);
-                    foreach (LaidPiece p in new CordBuilder().Build(sc.W, new BuildOptions(), live)) foreach (CordStrand st in p.Strands) tally.Add(sc.W, p, st);
+                    foreach (LaidPiece p in new CordBuilder().Build(sc.W, new BuildOptions(), live))
+                        foreach (CordStrand st in p.Strands)
+                        {
+                            int before = tally.Unforced;
+                            tally.Add(sc.W, p, st);
+                            // a refusal names the cord: its scene, ends and the lay that drew it
+                            if (tally.Unforced > before && tally.Unforced > BendsRatchet) Console.WriteLine($"    random base {6000 + s + (walls ? 500 : 0)}: {p.EndA}|{p.EndB} lay {st.Lay}: {tally.Unforced - before} unforced bend(s)");
+                        }
                 }
             Check(tally.Strands > 500 && tally.Unforced <= BendsRatchet, $"random bases: unforced bends over 80 scenes {tally.Unforced} of {tally.Bends} in {tally.Strands} strands (ratchet {BendsRatchet}; 82 before the fix)");
             // cords_never_repeat: eight equal runs side by side, generator to consumer, lengths 4/6/9/12, build seeds 1..6 (L1_NO_REPEAT's room)

@@ -51,8 +51,41 @@ def main():
     check(st == "UNMEASURED", "a junction cell with no piece is unmeasured (%s)" % st)
     st = scene_rows.under_verdict(read([("Steel", 0.4, 2000)], pieces=1, pq=2001), want_piece=True)[0]
     check(st == "FAIL", "planted: a junction piece queued after the steel fails (%s)" % st)
+    # the depth clause (RIMMANDRAKE_RULE_SLACK_UNDER_CHECK_IGNORES_DEPTH_WRITE): a thing that writes depth hides the cord below it
+    # whatever the queues; one that writes none is still held to its queue; a cord at or above the thing fails either way
+    deep = read([("Steel", 0.4, 2000)], pieces=1, pq=2001)
+    deep["things"][0]["depth"] = True
+    st = scene_rows.under_verdict(deep, want_piece=True)[0]
+    check(st == "PASS", "a junction piece queued after depth-writing steel above it passes (%s)" % st)
+    flat = read([("Steel", 0.4, 2000)], pieces=1, pq=2001)
+    flat["things"][0]["depth"] = False
+    st = scene_rows.under_verdict(flat, want_piece=True)[0]
+    check(st == "FAIL", "planted: the same piece under a thing that writes no depth fails (%s)" % st)
+    high = read([("Steel", 0.05, 2450)], alt=0.1)
+    high["things"][0]["depth"] = True
+    st = scene_rows.under_verdict(high)[0]
+    check(st == "FAIL", "planted: a cord above a depth-writing stack fails (%s)" % st)
+    check('\\"depth\\":' in src, "the probe's under: read says whether each thing writes depth")
     st = scene_rows.under_verdict({"success": False})[0]
     check(st == "UNMEASURED", "no probe reading is unmeasured (%s)" % st)
+    # the pit half (SC_under_liquid_pit): its verdict from the five readings
+
+    def rd(seen, strands=1):
+        return {"success": True, "cord": {"seen": seen, "strands": strands}}
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.2), "PASS", {})[0] == "PASS", "pit: whole on dry ground, fainter under 1 m, fainter again under 2 m, battery above: passes")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0), "PASS", {})[0] == "PASS", "pit: hidden under 2 m passes")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(1), "PASS", {})[0] == "FAIL", "planted: a cord drawn whole over 2 m of pit water fails")
+    check(scene_rows.pit_verdict(rd(1), rd(1), rd(0.2), "PASS", {})[0] == "FAIL", "planted: a cord drawn whole over 1 m of liquid fails")
+    check(scene_rows.pit_verdict(rd(1), rd(0.3), rd(0.6), "PASS", {})[0] == "FAIL", "planted: deeper water showing more of the cord fails")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.2), "FAIL", {})[0] == "FAIL", "planted: the pit battery drawn under the cord fails")
+    check(scene_rows.pit_verdict(rd(1), rd(0.6), rd(0.2, strands=0), "PASS", {})[0] == "UNMEASURED", "pit: no cord laid under the deep water is unmeasured, never a pass")
+    check(scene_rows.pit_verdict(rd(0.9), rd(0.6), rd(0.2), "PASS", {})[0] == "FAIL", "planted: a cord faded on dry ground fails")
+
+    class NoFw:
+        def call(self, tool, **kw):
+            return {"success": False, "error": "unknown tool"}
+    st, cause, _ = scene_rows.under_liquid_pit(NoFw(), None, (10, 10))
+    check((st, cause) == ("UNMEASURED", "SITE"), "pit: without FlowWorks the row is unmeasured (site), never a pass (%s %s)" % (st, cause))
     rows = [{"id": r, "status": "PASS"} for r in scene_rows.UNDER_ROWS]
     st, _ = validation.scene_verdict("sc_cords_under_items", rows, want=list(scene_rows.UNDER_ROWS))
     check(st == "PASS", "the scene passes when every row passes (%s)" % st)

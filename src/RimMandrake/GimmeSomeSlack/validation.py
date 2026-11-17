@@ -118,7 +118,7 @@ SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", 
            "cordsPerConnection": "1", "tangles": "true", "needlessLoops": "true", "diveThrough": "true", "slideUnder": "true", "breakReadout": "true",
            "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
            # phase 1b lane A
-           "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",
+           "tangleMin": "9", "whip": "true", "sparksOnlyOverlay": "false",
            "maxSparkingEnds": "24", "highlight": "true", "lod": "true",
            # lane C art styles
            "extCordColorMode": "ExtCordColorMode.Mixed", "extCordColor": "0"}
@@ -949,10 +949,11 @@ def live_battery(B, fresh_map=False, rows=None):
     cords_ok = (c0.get("cordEdges") or 0) >= 4 and (c0.get("layerVerts") or 0) > 0 and c0.get("layerVisible")
     row(rows, "M1_cords_exist", "PASS" if cords_ok else "FAIL", "MOD",
         {k: c0.get(k) for k in ("conduitCells", "cordEdges", "hiddenEdges", "strands", "layerVerts", "layerSectionsWithCords")} | {"nodes": nt})
-    want_types = {"battery", "consumer", "junction", "stub_wall"}
-    wall_live = [e for e in c0.get("ends") or [] if e.get("wall") and e.get("netLive")]
-    row(rows, "M1_node_census", "PASS" if want_types <= set(nt) and nt.get("terminal", 0) >= 2 and wall_live else "FAIL", "MOD",
-        "need %s + >=2 terminals (FAR run ends) + a live wall terminal; got %s, live wall ends %d" % (sorted(want_types), nt, len(wall_live)))
+    # owner 2026-11-16 ("simply not show sparking ends that are inside walls"; "Rock and wall should act the same"): a run that ends
+    # inside a wall enters its face with no loose or sparking end. The row asked for a live wall terminal, the thing that ruling removed;
+    # it now refuses one (a planted sparking wall end turns it red: selftest_gss_wall_end_rows.py)
+    st_m1, why_m1 = node_census_verdict(nt, c0.get("ends") or [])
+    row(rows, "M1_node_census", st_m1, "MOD", why_m1)
     dc = c0.get("decals") or {}
     row(rows, "M1c_end_pieces", "PASS" if dc.get("Plug", 0) > 0 and dc.get("StubWall", 0) > 0 and
         (dc.get("JunctionTape", 0) + dc.get("JunctionTin", 0)) > 0 and (dc.get("FrayDead", 0) + dc.get("FrayLive", 0)) > 0 else "FAIL",
@@ -1070,6 +1071,25 @@ def live_battery(B, fresh_map=False, rows=None):
 SHOTS = os.path.join(REPO, "Transient", "messy_conduit_live_20261002")
 
 
+def node_census_verdict(node_types, ends):
+    """M1_node_census: the scene's node kinds are all there, two far run ends, and no end on a wall is live (owner 2026-11-16)."""
+    want_types = {"battery", "consumer", "junction", "stub_wall"}
+    wall_live = [e for e in ends if e.get("wall") and e.get("netLive")]
+    ok = want_types <= set(node_types) and node_types.get("terminal", 0) >= 2 and not wall_live
+    return ("PASS" if ok else "FAIL"), "need %s + >=2 terminals (FAR run ends) and no live end on a wall; got %s, live wall ends %d" % (
+        sorted(want_types), node_types, len(wall_live))
+
+
+def spark_budget_verdict(bud):
+    """B4d_spark_budget_shared_visible_first: with the cap at 1 the one sparking end is the one on screen, framed on the far stub and
+    framed on the scene; with the cap at 24 every live end sparks. Two live ends in all are enough to tell (one per frame): the row
+    asked for three, the third being the scene's live wall end the owner's ruling of 2026-11-16 removed."""
+    st_, s_, c_ = bud.get("stub") or {}, bud.get("scene") or {}, bud.get("cap24") or {}
+    return bool((st_.get("liveEndsAll") or 0) >= 2 and st_.get("liveEndsOnScreen") == 1 and st_.get("sparkSet") == 1
+                and st_.get("sparkSetOnScreen") == 1 and s_.get("liveEndsOnScreen") == 1 and s_.get("sparkSet") == 1 and s_.get("sparkSetOnScreen") == 1
+                and c_.get("sparkSet") == min(24, c_.get("liveEndsAll") or 0) and (c_.get("liveEndsAll") or 0) >= 2)
+
+
 def shot(B, name, rect, log, pad=1, root=None):
     import shutil
     kw = {} if root is None else {"rootSize": root}
@@ -1156,17 +1176,11 @@ def lane_a_live(B, rows, log):
     # SW3/SW4 (GSS dense proofs 2026-11-12): one key flipped each, whip left ON; the control is m1b (every switch on)
     B.probe("deselect")
     sw_glow_rows(B, rows, m1b)
-    # B4 downed-wire schedule: real time, histogram of events (counts while paused; flecks only while time runs)
+    # (B4_downed_wire_bursts is retired: it read the burst schedule of a live wire hanging out of a wall, and the owner's ruling of
+    # 2026-11-16 ("simply not show sparking ends that are inside walls") took that wire, its schedule and its setting out of the mod.
+    # M1_node_census holds the ruling instead: no live wall end at all.)
     B.probe("motionreset")
-    hist, t0 = {}, time.time()
-    while time.time() - t0 < 45:
-        time.sleep(5)
-        hist = (B.probe("motion").get("downedHist") or {})
-        if all(hist.get(k, 0) > 0 for k in ("Drip", "Flash", "Quiet", "Crackle")):
-            break
     m2 = B.probe("motion")
-    row(rows, "B4_downed_wire_bursts", "PASS" if m2.get("liveWallEnds", 0) >= 1 and all(hist.get(k, 0) > 0 for k in ("Drip", "Flash", "Quiet", "Crackle")) else "FAIL",
-        "MOD", {"liveWallEnds": m2.get("liveWallEnds"), "hist": hist, "events": m2.get("dripEvents"), "seconds": int(time.time() - t0)})
     s0 = m2.get("sparksThrown", 0)
     B.ticks(160)
     m3 = B.probe("motion")
@@ -1225,10 +1239,7 @@ def lane_a_live(B, rows, log):
     B.probe("set:maxSparkingEnds=24")
     mm = B.probe("motion")
     bud["cap24"] = {k: mm.get(k) for k in ("liveEndsAll", "sparkSet", "maxSparkingEnds")}
-    st_, s_, c_ = bud["stub"], bud["scene"], bud["cap24"]
-    b4d = (st_.get("liveEndsAll") or 0) >= 3 and st_.get("liveEndsOnScreen") == 1 and st_.get("sparkSet") == 1 \
-        and st_.get("sparkSetOnScreen") == 1 and s_.get("sparkSet") == 1 and s_.get("sparkSetOnScreen") == 1 \
-        and c_.get("sparkSet") == min(24, c_.get("liveEndsAll") or 0)
+    b4d = spark_budget_verdict(bud)
     row(rows, "B4d_spark_budget_shared_visible_first", "PASS" if b4d else "FAIL", "MOD", bud)
     B.call("jawa/destroy_batch", rects=frect, categories="All")
     if frect in OFF_SITE_RECTS:
@@ -1990,7 +2001,6 @@ ROW_SHOWS = {
     "B6_tangle_lit_strips": ["dense_grid_reads_as_tangle"],
     "M8_break_two_ends_live_dead": ["break_live_and_dead_ends_differ"],
     "B6b_strips_dark_when_dead": ["break_live_and_dead_ends_differ"],
-    "B4_downed_wire_bursts": ["break_live_and_dead_ends_differ"],
     "ST1_styles_textures_load": ["four_styles_distinguishable"],
     "ST2_switch_changes_textures": ["four_styles_distinguishable"],
     # rows only proof_all.py produces (matrix, aerial, style blocks; the hose rows moved to FlowWorks/validation.py)
@@ -2010,7 +2020,7 @@ ROW_SHOWS = {
 }
 CORE_SHOW_IDS = ["M1_conduit_transparent", "M7b_on_again_invisible", "B1_rope_settle", "M1c_end_pieces",
                  "M2b_no_vertex_unwalkable", "B6_tangle_lit_strips", "M8_break_two_ends_live_dead",
-                 "B6b_strips_dark_when_dead", "B4_downed_wire_bursts", "ST1_styles_textures_load",
+                 "B6b_strips_dark_when_dead", "ST1_styles_textures_load",
                  "ST2_switch_changes_textures"]
 OFFLINE_SHOW_IDS = ["O3_core_selftest", "O5_style_art_sane", "O6_review_round1"]
 PROOF_ALL_SHOW_IDS = [r for r in ROW_SHOWS if r not in CORE_SHOW_IDS and r not in OFFLINE_SHOW_IDS]

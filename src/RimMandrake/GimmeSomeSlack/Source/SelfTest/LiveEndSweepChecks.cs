@@ -222,7 +222,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             // 284, a 0.8-cell cord from a water or device stub right behind the end, once kept whipping on a tail of exactly 0.70)
             Tally c = Sweep(LiveEndCensus.Worlds(0, 40, Program.OracleScenes, families: false).Select(x => (x.name, x.w, x.opt, x.live))
                             .Concat(GssFuzz.CordWorlds(284).Where(x => x.seed == 81 || x.seed == 257 || x.seed == 284).Select(x => ($"fuzz seed {x.seed} step {x.step}", x.w, x.opt, x.live)))
-                            .Concat(PastADoor()));
+                            .Concat(PastADoor())
+                            // (and the cut end one cell in front of its box with needless loops off, second draw: 8 of 126,730 in the whole
+                            // census were left unlaid when the slack's keep-off round its own box was first applied to the live end's join too)
+                            .Concat(LiveEndCensus.Family(2).Where(x => x.name.Contains(" len1 turn0 after0 ") && x.name.EndsWith(" noprune s1", StringComparison.Ordinal))));
             Console.WriteLine($"  live end challenge cases: {c.Worlds} worlds (oracle scenes x looks, 40 random sequences), {c.Ends} live ends: {c.None} unlaid, {c.Straight} not straight, {c.Pinched} pinched, {c.BadTail} tails off length, {c.Devices} tied loops, {c.Still} lying still");
             foreach (string x in c.Bad.Take(6)) Console.WriteLine("  live end challenge refused: " + x);
             int listed = t.CutEnds + p.CutEnds + c.CutEnds, unlisted = t.Unlisted + p.Unlisted + c.Unlisted;

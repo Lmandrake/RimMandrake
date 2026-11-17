@@ -150,7 +150,7 @@ namespace RimMandrake.GimmeSomeSlack
         {
             if (switchDef == null || switchOrig == null) return;
             GraphicData use = switchOrig;
-            Texture2D on = ContentFinder<Texture2D>.Get(SwitchTexPathOurs, false), off = ContentFinder<Texture2D>.Get(SwitchTexPathOurs + "_Off", false);
+            Texture2D on = SafeTex.Get(SwitchTexPathOurs, false), off = SafeTex.Get(SwitchTexPathOurs + "_Off", false);
             if (ours && on != null && off != null)
             {
                 on.wrapMode = TextureWrapMode.Clamp;

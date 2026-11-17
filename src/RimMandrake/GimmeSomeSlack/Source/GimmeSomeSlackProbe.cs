@@ -106,9 +106,7 @@ namespace RimMandrake.GimmeSomeSlack
             if (cmd == "motion") return Motion(map, comp);
             if (cmd == "motionreset")
             {
-                for (int i = 0; i < RM_MapComponent_CordGraph.DownedHist.Length; i++) RM_MapComponent_CordGraph.DownedHist[i] = 0;
                 RM_MapComponent_CordGraph.SparksThrown = 0;
-                RM_MapComponent_CordGraph.DripEvents = 0;
                 return "{\"success\":true,\"cmd\":\"motionreset\"}";
             }
             // GSS_SLICE_FIX_LONE_REBUILD_HITS_140MS: open a fresh slice window before a spawn (winMaxSliceMs & co in motion)
@@ -672,9 +670,23 @@ namespace RimMandrake.GimmeSomeSlack
             foreach (Thing t in map.thingGrid.ThingsListAt(c))
             {
                 int q = -1;
-                try { q = t.Graphic?.MatSingle?.renderQueue ?? -1; } catch (Exception) { }
+                // whether the thing's material writes depth (then it hides a cord at a lower altitude whichever is queued first): its
+                // shader's RenderType is Transparent when it writes none (vanilla's Cutout family reads TransparentCutout or Opaque)
+                string shader = "", depth = "null";
+                try
+                {
+                    UnityEngine.Material tm = t.Graphic?.MatSingle;
+                    q = tm?.renderQueue ?? -1;
+                    if (tm != null && tm.shader != null)
+                    {
+                        shader = tm.shader.name;
+                        string rt = tm.GetTag("RenderType", false, "");
+                        depth = tm.HasProperty("_ZWrite") ? (tm.GetInt("_ZWrite") != 0 ? "true" : "false") : (rt == "Transparent" || shader.Contains("Transparent") ? "false" : "true");
+                    }
+                }
+                catch (Exception) { }
                 things.Add("{\"def\":" + J.S(t.def.defName) + ",\"category\":" + J.S(t.def.category.ToString()) + ",\"layer\":" + J.S(t.def.altitudeLayer.ToString()) +
-                           ",\"altitude\":" + J.D(t.def.Altitude) + ",\"queue\":" + q + "}");
+                           ",\"altitude\":" + J.D(t.def.Altitude) + ",\"queue\":" + q + ",\"shader\":" + J.S(shader) + ",\"depth\":" + depth + "}");
             }
             int strands = 0, pieces = 0;
             var kinds = new List<string>();
@@ -825,9 +837,6 @@ namespace RimMandrake.GimmeSomeSlack
             F("sparkSet", sset.Count.ToString());
             F("sparkSetOnScreen", sset.Count(OnScreen).ToString());
             F("maxSparkingEnds", GimmeSomeSlackSettings.maxSparkingEnds.ToString());
-            F("downedHist", "{\"Drip\":" + RM_MapComponent_CordGraph.DownedHist[0] + ",\"Flash\":" + RM_MapComponent_CordGraph.DownedHist[1] +
-                            ",\"Quiet\":" + RM_MapComponent_CordGraph.DownedHist[2] + ",\"Crackle\":" + RM_MapComponent_CordGraph.DownedHist[3] + "}");
-            F("dripEvents", RM_MapComponent_CordGraph.DripEvents.ToString());
             F("sparksThrown", RM_MapComponent_CordGraph.SparksThrown.ToString());
             F("liveWallEnds", comp.Pieces.Sum(p => p.Ends.Count(e => e.Wall && (comp.EndLive(e.NetCell) ?? false))).ToString());
             F("glowDraws", RM_MapComponent_CordGraph.LastGlowDraws.ToString());

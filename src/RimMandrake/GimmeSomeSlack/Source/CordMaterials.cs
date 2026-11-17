@@ -60,7 +60,7 @@ namespace RimMandrake.GimmeSomeSlack
 
         static CordMaterials()
         {
-            Texture2D jawa = ContentFinder<Texture2D>.Get(Dir + "Strand_Jawa", reportFailure: true);
+            Texture2D jawa = SafeTex.Get(Dir + "Strand_Jawa", reportFailure: true);
             int q = RimMandrake.Shared.Slack.DrawOrder.BaseStrandQueue(jawa != null ? MaterialPool.MatFrom(new MaterialRequest(jawa, ShaderDatabase.Transparent)).renderQueue : 0);
             StrandQueue = q;
             ShadowQueue = q - 1;
@@ -139,8 +139,7 @@ namespace RimMandrake.GimmeSomeSlack
             {
                 case "Junction_T": return "Junction_Tape";
                 case "Junction_X": return "Junction_Tin";
-                case "Junction_X_p4": return "Junction_Tin_p4";
-                default: return slot;
+                default: return slot.StartsWith("Junction_X_p", System.StringComparison.Ordinal) ? "Junction_Tin_p" + slot.Substring(12) : slot;
             }
         }
 
@@ -201,7 +200,7 @@ namespace RimMandrake.GimmeSomeSlack
             d[DecalKind.Plug] = SlotMat(style, "Plug", PieceQueue);
             d[DecalKind.JunctionTape] = SlotMat(style, "Junction_T", PieceQueue);
             d[DecalKind.JunctionTin] = SlotMat(style, "Junction_X", PieceQueue);
-            d[OnePortBox] = SlotMat(style, "Junction_X_p4", PieceQueue);
+            for (int mask = 1; mask < 15; mask++) d[MaskedBox(mask)] = SlotMat(style, "Junction_X_p" + mask, PieceQueue);
             d[DecalKind.StubWall] = SlotMat(style, "StubWall", FaceQueue);
             d[DecalKind.StubRock] = SlotMat(style, "StubRock", FaceQueue);
             d[DecalKind.PowerStrip] = SlotMat(style, "PowerStrip", PieceQueue);
@@ -326,7 +325,7 @@ namespace RimMandrake.GimmeSomeSlack
                 d[DecalKind.Plug] = SlotMat(style, "Plug", PieceQueue, null, null, false);
                 d[DecalKind.JunctionTape] = SlotMat(style, "Junction_T", PieceQueue, null, null, false);
                 d[DecalKind.JunctionTin] = SlotMat(style, "Junction_X", PieceQueue, null, null, false);
-                d[OnePortBox] = SlotMat(style, "Junction_X_p4", PieceQueue, null, null, false);
+                for (int mask = 1; mask < 15; mask++) d[MaskedBox(mask)] = SlotMat(style, "Junction_X_p" + mask, PieceQueue, null, null, false);
                 d[DecalKind.StubWall] = SlotMat(style, "StubWall", FaceQueue, null, null, false);
                 d[DecalKind.StubRock] = SlotMat(style, "StubRock", FaceQueue, null, null, false);
                 d[DecalKind.PowerStrip] = SlotMat(style, "PowerStrip", PieceQueue, null, null, false);
@@ -365,7 +364,7 @@ namespace RimMandrake.GimmeSomeSlack
 
         private static Texture2D Tex(string path)
         {
-            Texture2D t = ContentFinder<Texture2D>.Get(path, reportFailure: false);
+            Texture2D t = SafeTex.Get(path, reportFailure: false);
             return t == null || t == BaseContent.BadTex ? null : t;
         }
 
@@ -441,11 +440,17 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>State read: the cord colour each piece variant was built for (extension-cord look only).</summary>
         public static readonly List<string> PieceColors = new List<string>();
         /// <summary>The extension-cord pieces whose art carries a cord stub, and so must follow the cord colour (B14).</summary>
-        public static readonly Dictionary<DecalKind, string> ColourSlots = new Dictionary<DecalKind, string>
+        public static readonly Dictionary<DecalKind, string> ColourSlots = MakeColourSlots();
+
+        private static Dictionary<DecalKind, string> MakeColourSlots()
         {
-            { DecalKind.Plug, "Plug" }, { DecalKind.JunctionTape, "Junction_T" }, { DecalKind.JunctionTin, "Junction_X" }, { OnePortBox, "Junction_X_p4" },
-            { DecalKind.FrayDead, "EndFrayed_Dead" }
-        };
+            var d = new Dictionary<DecalKind, string>
+            {
+                { DecalKind.Plug, "Plug" }, { DecalKind.JunctionTape, "Junction_T" }, { DecalKind.JunctionTin, "Junction_X" }, { DecalKind.FrayDead, "EndFrayed_Dead" }
+            };
+            for (int mask = 1; mask < 15; mask++) d[MaskedBox(mask)] = "Junction_X_p" + mask;
+            return d;
+        }
 
         /// <summary>A piece in its net's cord colour (falls back to the style's own piece).</summary>
         public static Material Decal(DecalKind k, int variant)
@@ -457,12 +462,14 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>The texture behind a piece variant (state read for the probe), or null.</summary>
         public static string DecalTexName(DecalKind k, int variant) => Decal(k, variant)?.mainTexture?.name;
 
-        /// <summary>The material key of the one-port device box (CordDecal.Ports): not a DecalKind of its own, so every audit that counts
-        /// + boxes still counts it; only the art differs.</summary>
-        public const DecalKind OnePortBox = (DecalKind)64;
+        /// <summary>The material key of a + box drawn with only some of its arms (CordDecal.Ports, 1 to 14): not a DecalKind of its own, so
+        /// every audit that counts + boxes still counts it; only the art differs (Junction_X_p&lt;mask&gt;).</summary>
+        public static DecalKind MaskedBox(int ports) => (DecalKind)(64 + ports);
+        /// <summary>The device stub's one-arm box.</summary>
+        public static readonly DecalKind OnePortBox = MaskedBox(CordBuilder.DeviceBoxPorts);
 
-        /// <summary>The material a decal prints with: a + box with some arms left out draws its one-port art.</summary>
-        public static DecalKind MatKey(CordDecal d) => d.Kind == DecalKind.JunctionTin && d.Ports == CordBuilder.DeviceBoxPorts ? OnePortBox : d.Kind;
+        /// <summary>The material a decal prints with: a + box with some arms left out draws the art cut to its arms.</summary>
+        public static DecalKind MatKey(CordDecal d) => d.Kind == DecalKind.JunctionTin && d.Ports > 0 && d.Ports < 15 ? MaskedBox(d.Ports) : d.Kind;
 
         public static bool IsFace(DecalKind k) => k == DecalKind.StubWall || k == DecalKind.StubRock || k == DecalKind.WallOutlet;
 

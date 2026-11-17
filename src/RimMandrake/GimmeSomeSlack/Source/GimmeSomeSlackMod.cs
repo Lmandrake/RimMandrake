@@ -65,7 +65,6 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>Live floor ends whip (drawn per frame, also while paused).</summary>
         public static bool whip = true;
         /// <summary>Live wall-terminal ends drip sparks in irregular bursts (downed wire), never a steady arc.</summary>
-        public static bool downedWire = true;
         /// <summary>Sparks and glow only while the power overlay is open.</summary>
         public static bool sparksOnlyOverlay = false;
         /// <summary>Most sparking/whipping/dripping ends per map (8-48).</summary>
@@ -108,7 +107,6 @@ namespace RimMandrake.GimmeSomeSlack
             Scribe_Values.Look(ref debugDraw, "debugDraw", false);
             Scribe_Values.Look(ref tangleMin, "tangleMin", 9);
             Scribe_Values.Look(ref whip, "whip", true);
-            Scribe_Values.Look(ref downedWire, "downedWire", true);
             Scribe_Values.Look(ref sparksOnlyOverlay, "sparksOnlyOverlay", false);
             Scribe_Values.Look(ref maxSparkingEnds, "maxSparkingEnds", 24);
             Scribe_Values.Look(ref highlight, "highlight", true);
@@ -138,7 +136,6 @@ namespace RimMandrake.GimmeSomeSlack
             debugDraw = false;
             tangleMin = 9;
             whip = true;
-            downedWire = true;
             sparksOnlyOverlay = false;
             maxSparkingEnds = 24;
             highlight = true;
@@ -266,7 +263,7 @@ namespace RimMandrake.GimmeSomeSlack
                 list.GapLine();
             }
 
-            if (Group(list, "Breaks and sparks", RimMandrake.Shared.SettingScope.Now, new[] { "breakReadout", "sparkIntensity", "whip", "downedWire", "sparksOnlyOverlay", "maxSparkingEnds", "highlight" }))
+            if (Group(list, "Breaks and sparks", RimMandrake.Shared.SettingScope.Now, new[] { "breakReadout", "sparkIntensity", "whip", "sparksOnlyOverlay", "maxSparkingEnds", "highlight" }))
             {
             list.Label("These also govern fallen overhead wires (with their own sparking-ends budget of the same size); spark intensity and the overlay-only option also govern power-tap clamp sparks.");
             list.CheckboxLabeled("Break readout: live ends spark, dead ends lie limp", ref breakReadout);
@@ -275,10 +272,6 @@ namespace RimMandrake.GimmeSomeSlack
             using (Dependent(list, "whip"))
             {
             list.CheckboxLabeled("Live broken ends whip about (also while paused)", ref whip);
-            }
-            using (Dependent(list, "downedWire"))
-            {
-            list.CheckboxLabeled("Live wires hanging out of walls drip sparks in bursts", ref downedWire);
             }
             list.CheckboxLabeled("Sparks only while the power overlay is open", ref sparksOnlyOverlay);
             list.Label("Most sparking ends per map: " + maxSparkingEnds);
@@ -330,7 +323,7 @@ namespace RimMandrake.GimmeSomeSlack
         /// look of masts and wires too) and the four spark settings (RM_MapComponent_Aerial: fallen wires and tap clamps).</summary>
         internal static readonly RimMandrake.Shared.SettingDependencies Masters = new RimMandrake.Shared.SettingDependencies()
             .Declare("enabled", "extCordColorMode", "extCordColor", "hideHookupWires", "slack", "loopBudget", "cordsPerConnection",
-                     "tangles", "needlessLoops", "diveThrough", "slideUnder", "tangleMin", "whip", "downedWire", "highlight",
+                     "tangles", "needlessLoops", "diveThrough", "slideUnder", "tangleMin", "whip", "highlight",
                      "excludedConduits", "lod", "debugDraw")
             .Declare("tangles", "tangleMin")          // BuildOptions: TangleMin is used only while Tangles (CordBuilder)
             .Declare("breakReadout", "whip")           // whip = whip && breakReadout (CordGraph, MessyCords layer)
@@ -514,7 +507,7 @@ namespace RimMandrake.GimmeSomeSlack
             float w = r.width / paths.Length;
             for (int i = 0; i < paths.Length; i++)
             {
-                Texture2D t = ContentFinder<Texture2D>.Get(paths[i], reportFailure: false);
+                Texture2D t = SafeTex.Get(paths[i], reportFailure: false);
                 if (t != null) GUI.DrawTexture(new Rect(r.x + i * w, r.y, w - 2f, r.height), t, ScaleMode.StretchToFill);
             }
         }

@@ -233,6 +233,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         Link(mv, face, null, null);
                         Link(face, Vid(face.B), null, face.B);
                     }
+                    // a conduit that runs on from the hookup under the machine itself is that machine's connection: the run goes into its
+                    // face (the device stub there), and a lead of its own from the cell beside it would be the same connection drawn twice
+                    // (a box arm with two cords and a bare arm: RIMMANDRAKE_FIX_GSS_BOX_ARMS_OFF_SLOPE_IN_CROWDS)
+                    else if (!BuriedCells.Contains(h) && UnderOwn(m, h) is Cell under) Link(mv, Vid(under), null, under);
                     else Link(mv, Vid(h), null, h);
                 }
                 foreach (string other in m.MachineLinks)
@@ -259,6 +263,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         private readonly HashSet<VId> machineStubs = new HashSet<VId>();
+
+        /// <summary>The conduit cell under machine m that the run through hookup h goes on into, if any.</summary>
+        private Cell? UnderOwn(MachineInfo m, Cell h)
+        {
+            foreach (Cell q in nb[h])
+                if (m.Contains(q) && BuriedCells.Contains(q) && World.BuriedKind(q) == BlockKind.Device) return q;
+            return null;
+        }
 
         /// <summary>The stub a machine hooked to buried cell h draws its cord from: the open face of that buried run closest to the
         /// machine, h's own first. A machine standing against the face has no cord to draw, and null keeps it the hidden link.</summary>
@@ -896,6 +908,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 System.Threading.Volatile.Write(ref armTable, t);
             }
             return t.TryGetValue(v, out HashSet<Cell> arms) ? arms : new HashSet<Cell>();
+        }
+
+        private List<KeyValuePair<VId, KeyValuePair<V2, List<V2>>>> spurHanks;
+        /// <summary>The spare loop of each needless spur whose junction has room for one: the junction, the side of the box it leaves by (the box
+        /// draws an arm there) and the loop (CordBuilder.SpurHank). In SpurKnots' order; two spurs at one junction take two sides.</summary>
+        internal List<KeyValuePair<VId, KeyValuePair<V2, List<V2>>>> SpurHanks()
+        {
+            List<KeyValuePair<VId, KeyValuePair<V2, List<V2>>>> t = System.Threading.Volatile.Read(ref spurHanks);
+            if (t != null) return t;
+            t = new List<KeyValuePair<VId, KeyValuePair<V2, List<V2>>>>();
+            var used = new Dictionary<VId, List<V2>>();
+            foreach (var sk in SpurKnots)
+            {
+                if (!Nodes.TryGetValue(sk.Key, out CordNode j) || j.Type != NodeType.Junction) continue;
+                if (!used.TryGetValue(sk.Key, out List<V2> u))
+                {
+                    used[sk.Key] = u = new List<V2>();
+                    foreach (Cell a in ArmsOf(sk.Key)) u.Add(new V2(a.X, a.Z));
+                }
+                List<V2> coil = CordBuilder.SpurHank(World, this, sk.Key, j, sk.Value, CordRng.Of(seed, "spurcoil", j.Cell.X, j.Cell.Z), u, out V2 arm);
+                if (coil == null) continue;
+                u.Add(arm);
+                t.Add(new KeyValuePair<VId, KeyValuePair<V2, List<V2>>>(sk.Key, new KeyValuePair<V2, List<V2>>(arm, coil)));
+            }
+            System.Threading.Volatile.Write(ref spurHanks, t);
+            return t;
         }
 
         private Dictionary<long, List<KeyValuePair<VId, CordNode>>> nodeGrid;

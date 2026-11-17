@@ -46,11 +46,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (lab >= 0) return LabWorld.Run(args[lab + 1], args[lab + 2]);
             int uc = Array.IndexOf(args, "--unroutable-census");
             if (uc >= 0) return UnroutableCensus.Run(args[uc + 1], uc + 2 < args.Length ? int.Parse(args[uc + 2]) : 120);
+            if (Environment.GetEnvironmentVariable("GSS_FIT_OFF") == "1") CordBuilder.FitEndsOff = true;   // diagnosis: the cords as laid before the fitted-end pass
+            if (Environment.GetEnvironmentVariable("GSS_FIT_TRACE") == "1") CordBuilder.FitTrace = true;   // a strand with no fitted join names why in its Lay
             if (args.Contains("--lay-profile")) { SliceGateChecks.LayProfile(); return 0; }
             if (args.Contains("--slice-repeat")) return SliceGateChecks.SliceRepeat(20, args.Contains("--old-form"));
             if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); SliceGateChecks.Run(); RebuildTailChecks.Run(); SnapshotPoolChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
             int sd = Array.IndexOf(args, "--scene-dump");
             if (sd >= 0) return SceneDump.Run(args[sd + 1], args[sd + 2]);
+            int slc = Array.IndexOf(args, "--slope-census");
+            if (slc >= 0) return SceneDump.Census(args[slc + 1], slc + 2 < args.Length && int.TryParse(args[slc + 2], out int scn) ? scn : 120);
             if (args.Contains("--live-sweep-only")) { LiveEndSweepChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (live end sweep only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--endkind-only")) { CordEndKindChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (end kind + slope only)"); return fails == 0 ? 0 : 1; }
@@ -109,7 +113,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             StyleStage1Checks.Run();       // per-build style stage 1 (2026-10-04): StyleStage1Checks.cs + ../Aerial/AerialStyles.cs
             StyleStage2Checks.Run();       // per-build style stage 2, conduit runs (2026-10-04): StyleStage2Checks.cs + ../Aerial/ConduitStyles.cs
             BatchedLinkStyleMergeChecks.Run(); // GSS_BATCHED_LINK_FIX_SKIPS_STYLE_MERGE
-            LegacyNameChecks.Run();        // rename from Messy Conduit (2026-10-05): saved type names + settings files: LegacyNameChecks.cs + ../Core/LegacyName.cs
+TexPathChecks.Run();           // RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIRST_START: TexPathChecks.cs + ../Core/TexPath.cs
+                        LegacyNameChecks.Run();        // rename from Messy Conduit (2026-10-05): saved type names + settings files: LegacyNameChecks.cs + ../Core/LegacyName.cs
             DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
             GptReadFixChecks.Run();        // GPT source read 2026-10-06 fixes: GptReadFixChecks.cs
             TheftChecks.Run();             // POWER_THEFT_BUILD_SLOW_GOODWILL_LEAK (owner 2026-10-10): TheftChecks.cs

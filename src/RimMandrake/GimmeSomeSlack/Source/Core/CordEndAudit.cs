@@ -167,6 +167,20 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return false;
         }
 
+        /// <summary>Whether piece p runs to a machine whose footprint holds the connector at m.</summary>
+        private static bool UnderOwnMachine(CordGraph g, LaidPiece p, V2 m)
+        {
+            foreach (string name in new[] { p.EndA, p.EndB })
+            {
+                if (name == null) continue;
+                foreach (CordNode nd in g.Nodes.Values)
+                    if (nd.IsMachine && nd.Machine != null && nd.OracleName + ":" + nd.Cell.X + "," + nd.Cell.Z == name && nd.Machine.Contains(m.Floor)) return true;
+            }
+            return false;
+        }
+
+        private static double TipDist(V2 e, Fitted f) => f.Arms.Min(u => V2.Dist(e, f.M + u * f.Tip));
+
         internal static SlopeRead Slopes(CordWorld w, CordGraph g, List<LaidPiece> ps, string scene, Func<V2, bool> keep = null)
         {
             var r = new SlopeRead();
@@ -187,8 +201,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         // plug end lies within reach of the box). The exact ownership, in place of "a box with few arms owns only ends within 60
                         // degrees of an arm", which would also have excused a cord that misses its arm
                         if (MachineEnd(g, owner[s], e, atStart ? s.Pts[s.Pts.Count - 1] : s.Pts[0])) continue;
-                        // an end belongs to the connector it is nearest (two boxes a cell apart share one short cord)
-                        if (all.Any(o => o != f && V2.Dist(e, o.M) < V2.Dist(e, f.M))) continue;
+                        // a box under the machine its cord runs to (a lamp standing on the conduit it is hooked to) is hidden by that machine:
+                        // the lead comes out from under the machine, not by an arm (CordBuilder.UnderOwnMachine; the owner's question Q6 of
+                        // 2026-11-17 is whether that lead is drawn at all)
+                        if (UnderOwnMachine(g, owner[s], f.M)) continue;
+                        // the far end of a short lead that leaves this box lies out past the arm's tip (a junction's arm that runs into a machine
+                        // or water right beside it: the cord runs on under what it goes into; a rock's hole just past the face) and is its own end, not a cord stopping short of the
+                        // box: the stub-join rule's own reading (StubJoins.StubFor), which this one lacked
+                        if (V2.Dist(e, f.M) > f.Tip && V2.Dist(atStart ? s.Pts[s.Pts.Count - 1] : s.Pts[0], f.M) < f.Tip) continue;
+                        // an end belongs to the connector whose arm tip it is nearest (two boxes a cell apart share one short cord). It was the
+                        // nearest centre: a small box (a device stub's, a heap's) half a cell from a big one then took the ends lying in the big
+                        // one's arm, and read them as stopping short of its own (random worlds 63 and 96)
+                        if (all.Any(o => o != f && TipDist(e, o) < TipDist(e, f))) continue;
                         if (!Crossing(s.Pts, atStart, f.M, f.Tip, out V2 x, out V2 head)) continue;
                         V2 dir = (x - f.M).Norm();
                         int arm = Enumerable.Range(0, f.Arms.Count).OrderByDescending(k => Dot(dir, f.Arms[k])).First();

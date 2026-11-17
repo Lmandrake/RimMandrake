@@ -93,7 +93,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Span = def.Span;
             Fallen = Span;
             Shadow = Tiled(AerialDir + "SpanShadow", new Color(1f, 1f, 1f, 0.32f)) ?? Tiled(Dir + "StrandShadow", new Color(1f, 1f, 1f, 0.45f));
-            Texture2D glow = ContentFinder<Texture2D>.Get(Dir + "SparkGlow", false);
+            Texture2D glow = RimMandrake.GimmeSomeSlack.SafeTex.Get(Dir + "SparkGlow", false);
             Glow = glow != null ? MaterialPool.MatFrom(new MaterialRequest(glow, ShaderDatabase.MoteGlow)) : null;
             FrayLive = CordMaterials.Decal(RimMandrake.GimmeSomeSlack.Core.DecalKind.FrayLive) ?? Plain(Dir + "EndFrayed_Live", Color.white);
             FrayDead = CordMaterials.Decal(RimMandrake.GimmeSomeSlack.Core.DecalKind.FrayDead) ?? Plain(Dir + "EndFrayed_Dead", new Color(0.62f, 0.58f, 0.55f, 1f));
@@ -283,7 +283,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private static bool Exists(string path)
         {
-            Texture2D t = ContentFinder<Texture2D>.Get(path, false);
+            Texture2D t = RimMandrake.GimmeSomeSlack.SafeTex.Get(path, false);
             return t != null && t != BaseContent.BadTex;
         }
 
@@ -293,7 +293,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private static Material Tiled(string path, Color? c = null, bool overhead = false)
         {
-            Texture2D tex = ContentFinder<Texture2D>.Get(path, false);
+            Texture2D tex = RimMandrake.GimmeSomeSlack.SafeTex.Get(path, false);
             if (tex == null) return null;
             tex.wrapMode = TextureWrapMode.Repeat;
             var req = new MaterialRequest(tex, ShaderDatabase.Transparent, c ?? Color.white);
@@ -303,7 +303,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
 
         private static Material Plain(string path, Color c)
         {
-            Texture2D tex = ContentFinder<Texture2D>.Get(path, true);
+            Texture2D tex = RimMandrake.GimmeSomeSlack.SafeTex.Get(path, true);
             return tex == null ? null : MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, c));
         }
 
@@ -316,7 +316,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Color c = Color.white;
             string key = texPath;
             if (topMats.TryGetValue(key, out Material m)) return m;
-            Texture2D tex = ContentFinder<Texture2D>.Get(texPath, true);
+            Texture2D tex = RimMandrake.GimmeSomeSlack.SafeTex.Get(texPath, true);
             m = tex == null ? null : MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent, c) { renderQueue = OverheadQueue });
             topMats[key] = m;
             return m;

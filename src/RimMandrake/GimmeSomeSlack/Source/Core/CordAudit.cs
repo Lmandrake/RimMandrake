@@ -312,7 +312,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                                                          d.Kind == DecalKind.PowerStrip || d.Kind == DecalKind.PowerStripDark).ToList();
                 R.PileConnectors += cons.Count;
                 R.PileJunctions += cons.Count(d => d.Kind == DecalKind.JunctionTin || d.Kind == DecalKind.JunctionTape);
+                // (a strip's own lead is a place a cable ends too: the art draws its stub, and a heap's strips are plugged into each other by it)
                 List<CordBuilder.PilePort> ports = CordBuilder.PortsOf(cons);
+                ports.AddRange(CordBuilder.LeadsOf(cons));
                 var perCon = new int[cons.Count];
                 foreach (CordStrand s in p.Strands)
                     foreach (V2 e in new[] { s.Pts[0], s.Pts[s.Pts.Count - 1] })
@@ -353,7 +355,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             List<CordDecal> cons = ps.SelectMany(p => p.Decals).Where(d => d.Kind != DecalKind.FrayDead && d.Kind != DecalKind.FrayLive && d.Kind != DecalKind.CableTie).ToList();   // a tie band on a strain-relief loop joins nothing
             // a connector's centre and every port on it (junction arm tips, strip sockets): a cable plugged into an arm ends
             // a box-half away from the box's centre
-            var nodes = cons.Select(d => d.Pos).Concat(CordBuilder.PortsOf(cons).Select(q => q.Tip)).ToList();
+            var nodes = cons.Select(d => d.Pos).Concat(CordBuilder.PortsOf(cons).Select(q => q.Tip)).Concat(CordBuilder.LeadsOf(cons).Select(q => q.Tip)).ToList();
             var all = new List<(string key, CordStrand s, double[] cum)>();
             foreach (LaidPiece p in ps)
                 foreach (CordStrand s in p.Strands)

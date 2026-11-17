@@ -96,30 +96,6 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 if (d1 > 0.06) snaps++;
             }
             Check(snaps >= 3, $"whip: only {snaps} sharp snaps in 20 s (want the 0.6-2 s random kicks)");
-            // downed-wire schedule
-            var sch = new DownedWireSchedule(99, 0);
-            var seen = new HashSet<DripState>();
-            double gmin = 9, gmax = 0, now = 0;
-            int sparks = 0;
-            for (int k = 0; k < 200; k++)
-            {
-                now = sch.NextAt;
-                seen.Add(sch.Advance(now));
-                gmin = Math.Min(gmin, sch.LastGap); gmax = Math.Max(gmax, sch.LastGap);
-                sparks += sch.Sparks;
-            }
-            Check(seen.Count == 4, $"drip: only {seen.Count}/4 states in 200 draws");
-            Check(gmin >= 0.3 - 1e-9 && gmax <= 2.5 + 1e-9, $"drip: gaps {gmin:0.00}-{gmax:0.00} outside 0.3-2.5 s");
-            double mean = now / 200;
-            Check(mean > 0.6 && mean < 1.3, $"drip: mean gap {mean:0.00} s, want ~0.9");
-            var s1 = new DownedWireSchedule(5, 0); var s2 = new DownedWireSchedule(5, 0);
-            bool same = true;
-            for (int k = 0; k < 50; k++) { s1.Advance(k); s2.Advance(k); same &= s1.State == s2.State && s1.LastGap == s2.LastGap; }
-            Check(same, "drip: schedule not deterministic by seed");
-            var flash = new DownedWireSchedule(1, 0);
-            double peak = 0;
-            for (int k = 0; k < 200 && peak < 1.9; k++) { flash.Advance(k); if (flash.State == DripState.Flash) peak = flash.Glow(k + 0.01); }
-            Check(peak >= 1.9 && flash.Glow(flash.StateAt + 2.0) < 0.35, "drip: FLASH does not pop to 2x and fade to an ember");
             // owner 2026-11-16: wind moves no ground cord; the cords' motion kernel takes no wind and has no sway or ripple
             var windy = typeof(CordMotion).GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)
                 .Where(m => m.DeclaringType == typeof(CordMotion) && (m.GetParameters().Any(q => q.Name == "wind") || m.Name.Contains("Sway") || m.Name.Contains("Ripple")))
@@ -127,7 +103,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(windy.Count == 0, "wind: CordMotion still moves a ground cord with the wind (" + string.Join(", ", windy) + ")");
             Check(typeof(CordMotion).GetMethods(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic).Any(m => m.Name == "WhipInto"),
                   "can-fail: the reflection scan sees CordMotion's internal methods (WhipInto)");
-            Console.WriteLine($"  motion: whip max {maxD:0.000}, snaps {snaps}/20 s; drip states {seen.Count}, gaps {gmin:0.00}-{gmax:0.00} mean {mean:0.00}, sparks {sparks}/200");
+            Console.WriteLine($"  motion: whip max {maxD:0.000}, snaps {snaps}/20 s");
         }
 
         // ------------------------------------------------------------------ L2: B2 stub merge (§8.7.3)
@@ -340,6 +316,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(cold < 4000, $"perf: cold build of the {cells}-cell field took {cold:0} ms (> 4 s)");
             int bad = ps.SelectMany(p => p.Strands).Where(s => !s.OverFace).Sum(s => { List<V2> t = Program.TrimUnderArt(w, s.Pts); return t.Skip(1).Take(Math.Max(0, t.Count - 2)).Count(q => !w.IsWalkable(q.Floor)); });
             Check(bad == 0, $"perf: {bad} laid vertices in unwalkable cells on the density field");
+            // a refusal names the cords: their ends, the lay that drew them and the first such vertex
+            if (bad > 0)
+                foreach (LaidPiece p in ps)
+                    foreach (CordStrand s in p.Strands.Where(s => !s.OverFace))
+                    {
+                        List<V2> t = Program.TrimUnderArt(w, s.Pts);
+                        List<V2> off = t.Skip(1).Take(Math.Max(0, t.Count - 2)).Where(q => !w.IsWalkable(q.Floor)).ToList();
+                        if (off.Count > 0) Console.WriteLine($"    {p.EndA}|{p.EndB} lay {s.Lay}: {off.Count} vertices, first ({off[0].X:0.00},{off[0].Z:0.00})");
+                    }
             Console.WriteLine($"  perf: {cells} conduit cells -> {b.Graph.Nodes.Count} nodes, {b.Graph.CordEdges().Count()} cord edges, {ps.Sum(p => p.Strands.Count)} strands, {pts} laid points, settle work {work}; cold {cold:0} ms, warm {warm:0} ms");
         }
     }

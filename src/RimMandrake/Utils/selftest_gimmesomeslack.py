@@ -93,6 +93,9 @@ def main(argv):
         if "--scene-dump" in argv:   # SceneDump.cs: --scene-dump OUT.json fuzz:SEED[:STEP] | placed:N | family:N, a built scene for scene_picture.py
             i = argv.index("--scene-dump")
             args += ["--scene-dump", winbuild.win(os.path.abspath(argv[i + 1])), argv[i + 2]]
+        if "--slope-census" in argv:   # SceneDump.Census: every slope and stub-join refusal of the first N random worlds, one line each
+            i = argv.index("--slope-census")
+            args += ["--slope-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
         if "--lab" in argv:   # LabWorld.cs: --lab WORLD.json OUT.json, the shape lab on a world the live probe dumped
             i = argv.index("--lab")
             args += ["--lab", winbuild.win(os.path.abspath(argv[i + 1])), winbuild.win(os.path.abspath(argv[i + 2]))]

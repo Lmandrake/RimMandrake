@@ -52,7 +52,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             File.WriteAllText(path, sb.ToString());
         }
 
-        /// <summary>--scene-dump OUT.json fuzz:SEED[:STEP] | placed:INDEX | family:INDEX</summary>
+        /// <summary>--scene-dump OUT.json fuzz:SEED[:STEP] | placed:INDEX | family:INDEX | live:0 (the slice checks' live scene)</summary>
         public static int Run(string outPath, string what)
         {
             string[] t = what.Split(':');
@@ -65,12 +65,55 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 var q0 = step < 0 ? all[all.Count - 1] : all.First(q => q.step == step);
                 x = ($"fuzz seed {q0.seed} step {q0.step}", q0.w, q0.opt, q0.live);
             }
+            else if (t[0] == "world")
+            {
+                // a world the live probe dumped ("worlddump:NAME"), kept beside the oracle scenes: world:owner_look_20261116
+                using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, t[1] + ".json")));
+                CordWorld lw = LabWorld.Read(doc.RootElement, out BuildOptions lo, out HashSet<Cell> ll);
+                x = (t[1], lw, lo, c => ll.Contains(c));
+            }
+            else if (t[0] == "live") x = ("the live scene", RebuildPerDigChecks.LiveScene(), new BuildOptions(), c => false);
             else if (t[0] == "placed") x = LiveEndCensus.Placements(false).Skip(int.Parse(t[1])).First();
+            else if (t[0] == "familyname")      // a family scene by its name (GSS_SCENE_NAME: names hold spaces and commas), second draws included
+                x = LiveEndCensus.Family(2).First(q => q.name == Environment.GetEnvironmentVariable("GSS_SCENE_NAME"));
             else x = LiveEndCensus.Family(1).Skip(int.Parse(t[1])).First();
+            CordBuilder.FitTrace = true;
+            string tr = Environment.GetEnvironmentVariable("GSS_TRACE_NEAR");   // "x,z,endsubstring": which lay stage first brings a strand within 0.15 of the point
+            if (!string.IsNullOrEmpty(tr))
+            {
+                string[] tp = tr.Split(',');
+                var at = new V2(double.Parse(tp[0], System.Globalization.CultureInfo.InvariantCulture), double.Parse(tp[1], System.Globalization.CultureInfo.InvariantCulture));
+                CordBuilder.StepTrace = (stage, a, b2, pts) =>
+                {
+                    if (pts == null || !((a ?? "") + "|" + (b2 ?? "")).Contains(tp[2])) return;
+                    Console.WriteLine($"trace {stage} {a}|{b2} {pts.Count} pts, {Geo.Length(pts):0.00} long, nearest {pts.Min(q => V2.Dist(q, at)):0.00}");
+                };
+            }
             var b = new CordBuilder();
             List<LaidPiece> ps = b.Build(x.w, x.opt, c => x.live(c));
             Write(outPath, x.name, x.w, b.Graph, ps, x.opt, x.live);
             Console.WriteLine($"scene dump: {x.name} -> {outPath}");
+            return 0;
+        }
+        /// <summary>--slope-census OUT.txt [N]: every slope and stub-join refusal on every step of the first N random worlds (default 120), one
+        /// line each as "seed step | refusal", so a regime is read off the whole population and not off the first refusal of each world.</summary>
+        public static int Census(string outPath, int n)
+        {
+            var lines = new List<string>();
+            int worlds = 0, red = 0;
+            foreach (var q in GssFuzz.CordWorlds(n))
+            {
+                var b = new CordBuilder();
+                List<LaidPiece> ps = b.Build(q.w, q.opt, c => q.live(c));
+                worlds++;
+                var bad = new List<string>();
+                foreach (string x in CordEndAudit.Slopes(q.w, b.Graph, ps, "S").Bad) bad.Add("slope " + x);
+                foreach (string x in StubJoins.Joins(q.w, ps, q.opt, "J").Bad) bad.Add("join " + x);
+                if (bad.Count > 0) red++;
+                foreach (string x in bad) lines.Add($"{q.seed} {q.step} | {x}");
+            }
+            File.WriteAllLines(outPath, lines);
+            Console.WriteLine($"slope census: {worlds} worlds, {red} with a refusal, {lines.Count} refusals -> {outPath}");
             return 0;
         }
     }

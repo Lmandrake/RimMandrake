@@ -248,12 +248,12 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (look == null) look = "Scrapper";
             if (tapMats.TryGetValue(look, out Material m)) return m;
             string path = ConduitStyles.TapClampPath(AerialMaterials.AerialDir, look);
-            Texture2D tex = ContentFinder<Texture2D>.Get(path, false);
+            Texture2D tex = RimMandrake.GimmeSomeSlack.SafeTex.Get(path, false);
             if (tex == null && look != "Scrapper")
             {
                 Log.WarningOnce("[GimmeSomeSlack] tap clamp art missing for " + look + " (" + path + "): drawing the root clamp", path.GetHashCode());
                 path = ConduitStyles.TapClampPath(AerialMaterials.AerialDir, null);
-                tex = ContentFinder<Texture2D>.Get(path, false);
+                tex = RimMandrake.GimmeSomeSlack.SafeTex.Get(path, false);
             }
             // above every cord material (strands 3000, plugs 3001, wall faces 3002): the clamp sits ON the meeting cables
             m = tex == null ? null : MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = RimMandrake.Shared.Slack.DrawOrder.TapClampQueue(CordMaterials.StrandQueue) });

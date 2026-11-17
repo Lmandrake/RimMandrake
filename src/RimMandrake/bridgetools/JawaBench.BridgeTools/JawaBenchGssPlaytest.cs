@@ -577,6 +577,15 @@ namespace JawaBench.BridgeTools
 
         private static IEnumerable<PWait> GFrames(int n) { for (int i = 0; i < n; i++) yield return null; }
 
+        /// <summary>Frames until the cord component has laid everything it planned (it lays over frames, on a worker and in slices: on a
+        /// 316-mod list four frames were not enough, and the walk compared a half-laid map with a fresh build), at most
+        /// <paramref name="most"/>. The compare after it reports what was still pending.</summary>
+        private static IEnumerable<PWait> GSettle(Map m, int most = 240)
+        {
+            var comp = m.GetComponent<GSS.RM_MapComponent_CordGraph>();
+            for (int i = 0; i < most && comp != null && (comp.LastPending > 0 || i < 4); i++) yield return null;
+        }
+
         /// <summary>The first free, undrafted, hauling-capable colonist (also used by FlowWorks' hose_carry).</summary>
         private static Pawn GWorker(Map m)
         {
@@ -596,11 +605,18 @@ namespace JawaBench.BridgeTools
             if (g == null) return -1;
             CellRect r = t.OccupiedRect();
             int n = 0;
-            foreach (GCore.CordEdge e in g.CordEdges())
+            // a machine's node carries the conduit cell it is hooked to, not its own cell (CordGraph.Classify): a cord to a lamp three
+            // cells off its conduit read as no cord at all (in-game visit 1: "no cord drawn to a connected lamp (0)" with the cord on
+            // screen and the fresh build equal). An end is at the thing when its node is that machine (its footprint), else by its cell.
+            bool At(GCore.VId v)
             {
-                GSlack.Cell a = g.CellOf(e.A), b = g.CellOf(e.B);
-                if (r.Contains(new IntVec3(a.X, 0, a.Z)) || r.Contains(new IntVec3(b.X, 0, b.Z))) n++;
+                GCore.CordNode nd = g.Nodes[v];
+                if (nd.IsMachine && nd.Machine != null)
+                    return nd.Machine.X0 <= r.maxX && nd.Machine.X0 + nd.Machine.W - 1 >= r.minX && nd.Machine.Z0 <= r.maxZ && nd.Machine.Z0 + nd.Machine.H - 1 >= r.minZ;
+                return r.Contains(new IntVec3(nd.Cell.X, 0, nd.Cell.Z));
             }
+            foreach (GCore.CordEdge e in g.CordEdges())
+                if (At(e.A) || At(e.B)) n++;
             return n;
         }
 
@@ -623,7 +639,7 @@ namespace JawaBench.BridgeTools
             c.ev["site"] = PD("x", r.minX, "z", r.minZ);
             c.Phase("exec");
             yield return PTicks(5);
-            foreach (PWait x in GFrames(4)) yield return x;
+            foreach (PWait x in GSettle(m)) yield return x;
             c.Phase("observe");
             var steps = new List<Dictionary<string, object>>();
             c.ev["steps"] = steps;
@@ -636,7 +652,7 @@ namespace JawaBench.BridgeTools
             c.Phase("exec");
             foreach (Thing t in conduits) if (t.Spawned) t.Destroy(DestroyMode.Deconstruct);
             yield return PTicks(5);
-            foreach (PWait x in GFrames(4)) yield return x;
+            foreach (PWait x in GSettle(m)) yield return x;
             c.Phase("observe");
             int toLamp2 = GCordsTo(m, lamp);
             var f2 = GFresh(m);
@@ -647,7 +663,7 @@ namespace JawaBench.BridgeTools
             conduits.Clear();
             for (int x = r.minX + 2; x <= r.minX + 9; x++) conduits.Add(GSpawn(c, "PowerConduit", new IntVec3(x, 0, z)));
             yield return PTicks(5);
-            foreach (PWait x in GFrames(4)) yield return x;
+            foreach (PWait x in GSettle(m)) yield return x;
             c.Phase("observe");
             int toLamp3 = GCordsTo(m, lamp);
             var f3 = GFresh(m);
@@ -657,7 +673,7 @@ namespace JawaBench.BridgeTools
             c.Phase("exec");
             Thing wall = GSpawn(c, "Wall", new IntVec3(r.minX + 6, 0, z + 4));
             yield return PTicks(2);
-            foreach (PWait x in GFrames(4)) yield return x;
+            foreach (PWait x in GSettle(m)) yield return x;
             c.Phase("observe");
             var f4 = GFresh(m);
             steps.Add(PD("step", "wall_4_away", "fresh", f4));
@@ -665,7 +681,12 @@ namespace JawaBench.BridgeTools
             var fails = new List<string>();
             if (toLamp <= 0) fails.Add("no cord drawn to a connected lamp (" + toLamp + ")");
             if (!(bool)f1["equal"]) fails.Add("connect: live cords != fresh build");
-            if (toLamp2 > 0) fails.Add("a cord still runs to the lamp after every conduit was removed (" + toLamp2 + ")");
+            // with every conduit gone vanilla wires the lamp to whatever transmitter is still in reach (here the battery, six cells
+            // off), and the owner's decision of 2026-10-06 draws that connection as a cord like any other: one cord to a lamp that is
+            // still connected, none to one that is not. (The row asked for none in both cases.)
+            bool stillWired = lp?.connectParent?.parent != null && lp.connectParent.parent.Spawned;
+            if (!stillWired && toLamp2 > 0) fails.Add("a cord still runs to the lamp after every conduit was removed and nothing powers it (" + toLamp2 + ")");
+            if (stillWired && toLamp2 != 1) fails.Add("the lamp is wired straight to " + lp.connectParent.parent.def.defName + " after every conduit was removed and has " + toLamp2 + " cords (want 1)");
             if (!(bool)f2["equal"]) fails.Add("disconnect: live cords != fresh build");
             if (toLamp3 <= 0) fails.Add("no cord after the run was rebuilt");
             if (!(bool)f3["equal"]) fails.Add("reconnect: live cords != fresh build");

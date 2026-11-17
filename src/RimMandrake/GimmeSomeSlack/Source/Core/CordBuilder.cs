@@ -420,7 +420,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             var p = new LaidPiece { Key = "node:" + v, Owner = nd.Cell };
             JunctionPose jp = PoseJunction(g, v, seed);
-            p.Decals.Add(new CordDecal(jp.Kind, jp.Centre, jp.Angle, JunctionScale));
+            p.Decals.Add(new CordDecal(jp.Kind, jp.Centre, jp.Angle, JunctionScale) { Ports = jp.Ports });
             return p;
         }
 
@@ -766,36 +766,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     outp.Add(tp);
                 }
             }
-            // the arm directions at every spur knot, from ONE pass over the graph's edges (Codex review 2026-11-09: SpurHank
-            // scanned every edge per spur, S x E a Build); same directions, same order, as the old per-spur scan
-            var spurArms = new Dictionary<VId, List<V2>>();
-            if (g.SpurKnots.Count > 0)
+            // the spare cord of every needless spur: a loose loop out of an arm of its own on the box (CordGraph.SpurHanks: the box's pose reads
+            // the same list). Where none fits it is not drawn. A power strip's needless spur is the socket left empty: no spare cord across its sockets
+            int hankNo = 0;
+            foreach (var sh in g.SpurHanks())
             {
-                foreach (var sk in g.SpurKnots) if (!spurArms.ContainsKey(sk.Key)) spurArms[sk.Key] = new List<V2>();
-                foreach (CordEdge e in g.Edges)
-                {
-                    if (spurArms.TryGetValue(e.A, out List<V2> ua)) ua.Add(ArmDir(g, e, true));
-                    if (spurArms.TryGetValue(e.B, out List<V2> ub)) ub.Add(ArmDir(g, e, false));
-                }
-            }
-            foreach (var sk in g.SpurKnots)
-            {
-                if (!g.Nodes.TryGetValue(sk.Key, out CordNode j) || j.Type != NodeType.Junction) continue;
-                var p = new LaidPiece { Key = "coil:" + sk.Key, Owner = j.Cell };
-                CordRng r = CordRng.Of(opt.Seed, "spurcoil", j.Cell.X, j.Cell.Z);
-                // a power strip's needless spur is the socket left empty: no spare cord across its sockets
-                if (opt.PileFor(j.Cell) == PileArt.Strips) { outp.Add(p); continue; }
-                // the spare cord as a loose loop out of a side of the box no cord leaves by, clear of the boxes round it (SpurHank); where none fits, the small curl on the box
-                List<V2> coil = SpurHank(w, g, sk.Key, j, sk.Value, r, spurArms[sk.Key]);
-                if (coil == null)
-                {
-                    coil = CordLayer.Loop(j.Pos, new V2(1, 0), new V2(0, 1), 0.22, r.Sign());
-                    CordLayer.ProjectOut(w, coil);
-                    // the small curl is a 0.2-cell pigtail: kept only where the bend bar reads it clean, else the spur's spare cord is not drawn
-                    // (blind cycle 1: 8 unforced bends in 400 random scenes were this curl)
-                    if (opt.Lay.FairBends && CordShapeAudit.Unforced(w, null, null, coil) > 0) coil = null;
-                }
-                if (coil != null && coil.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = coil, S0 = r.Value(), Lay = "coil" });
+                CordNode j = g.Nodes[sh.Key];
+                var p = new LaidPiece { Key = "coil:" + sh.Key + ":" + hankNo++, Owner = j.Cell };
+                if (opt.PileFor(j.Cell) != PileArt.Strips && sh.Value.Value.All(q => w.IsWalkable(q.Floor)))
+                    p.Strands.Add(new CordStrand { Pts = sh.Value.Value, S0 = CordRng.Of(opt.Seed, "spurcoil", j.Cell.X, j.Cell.Z).Value(), Lay = "coil" });
                 outp.Add(p);
             }
             (tangleCache, tangleNext) = (tangleNext, tangleCache);
@@ -1090,7 +1069,22 @@ namespace RimMandrake.GimmeSomeSlack.Core
             nums.Add(w.Width); nums.Add(w.Height);
             nums.Add(unchecked((long)opt.Seed)); nums.Add(tangleMin); nums.Add(spurMax); nums.Add(opt.SlideUnder ? 1 : 0);
             foreach (Cell c in w.ConduitCells())
+            {
                 nums.Add(((long)c.X << 32) | ((long)(uint)c.Z << 8) | (long)(byte)w.BuriedKind(c));
+                // a needless spur's spare loop (CordGraph.SpurHanks) lies on the ground round its junction, and the box's pose reads whether it
+                // fits: the ground round every conduit dead end (a spur's tip is one, its junction within spurMax cells, the loop within two
+                // more) is the graph's input, so a wall or table set down there reduces the graph again
+                if (HookupPick.Degree(w, c) != 1) continue;
+                long ground = 17;
+                int reach = spurMax + 3;
+                for (int dx = -reach; dx <= reach; dx++)
+                    for (int dz = -reach; dz <= reach; dz++)
+                    {
+                        var q = new Cell(c.X + dx, c.Z + dz);
+                        ground = unchecked(ground * 1000003 + (!w.InBounds(q) ? 0 : (w.IsWalkable(q) ? 1 : 0) | (w.IsFurniture(q) ? 2 : 0) | (w.IsDoor(q) ? 4 : 0)));
+                    }
+                nums.Add(ground);
+            }
             if (opt.StraightPlugIds != null && opt.StraightPlugIds.Count > 0)
             {
                 var ids = opt.StraightPlugIds.ToList();
@@ -1548,8 +1542,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // a machine whose art stops short of its footprint edge (solar panel legs): run the cord on under the
                 // art so it visibly goes INTO the graphic (owner review 2026-10-04 B10). Appended after the floor rule:
                 // these points lie inside the machine's own footprint by design.
-                if (na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine, g.Slides(na.Machine));
-                if (nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine, g.Slides(nb.Machine));
+                if (na.IsMachine && na.Machine != null) P = IntoArt(P, true, na.Machine, g.Slides(na.Machine), ArmInto(g, e, true, opt));
+                if (nb.IsMachine && nb.Machine != null) P = IntoArt(P, false, nb.Machine, g.Slides(nb.Machine), ArmInto(g, e, false, opt));
                 // round 4: a cord into a wall/rock face runs on under the wall to just past the face line, so it meets the
                 // plate (drawn inside the wall from the face, WallMount) with no strip of bare floor between; the wall hides
                 // the overrun. Appended after the floor rule like IntoArt: these points lie in the wall cell by design.
@@ -1601,7 +1595,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 foreach (CordStrand s in piece.Strands)
                 {
                     if (s.Lifted || s.OverFace || s.Pts == null || s.Pts.Count < 3) continue;
-                    off = off ?? SlackClear(g, e);
+                    off = off ?? SlackClear(g, e, opt);
                     // a strand the floor rule laid on its planned centreline (FellBack) is a taut straight cord; it takes the slack lobe too, on clear ground
                     // (blind cycle 1, 2000 seeded scenes: 2 of the 7 strands under 1.4, a 6-cell rod to a heap's port), and nothing else
                     // a plug end SeatPlugTails laid along its axis keeps that run, past its boot by the slope chord (a Modern corner wall plug's seat was re-bent
@@ -1669,7 +1663,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     StepTrace?.Invoke(piece.TwinPts != null && ReferenceEquals(s, piece.Strands[0]) ? "twin" : "vary", piece.EndA, piece.EndB, s.Pts);
                 }
             }
-            LiveEnds(w, piece, na, nb, isLive, opt, SlackClear(g, e));
+            LiveEnds(w, piece, na, nb, isLive, opt, OtherBoxClear(g, e), StubPicker(w, g, e, piece, na, nb, opt));
+            StepTrace?.Invoke("live", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
+            FitEnds(w, g, e, piece, na, nb, isLive, opt, SlackClear(g, e, opt));
+            StepTrace?.Invoke("fit", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
             double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
             foreach (CordStrand s in piece.Strands)
@@ -1690,13 +1687,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
         }
 
         /// <summary>
-        /// A spur's spare cord as one loose loop out of its junction box: it leaves the box's middle (under the art) and comes back to it, the loop lying off a side of the box no
-        /// cord leaves by (the spur's own side first, where the needless conduit ran), a dropped teardrop of cord, full out past the box and leaning a little (<see cref="SpurHankR"/>, past the bar's 0.45 loop radius, so not a tight
-        /// pigtail), on open floor and <see cref="SpurKeepOff"/> off every other box, strip, plate and cut end. Pass 18's broad ring left by any side: it hung across a neighbouring
-        /// strip or box and shared the box's fitting with a real lead (blind judge p18b, every look). Null when no side has room: the caller lays the small curl on the box.
+        /// A spur's spare cord as one loose loop out of its junction box, through an arm of its own. It left the box's middle from under the art, off a side
+        /// with no arm (the box's art has no way in there; the stub rule read its ends against the arms either side, a quarter cell off their lines:
+        /// RIMMANDRAKE_FIX_GSS_BOX_ARMS_OFF_SLOPE_IN_CROWDS). Now it is a cord like any other at the box: the box draws an arm on the side the needless
+        /// conduit ran (else another side no cord leaves by: PoseJunction reads <see cref="CordGraph.SpurHanks"/>), both legs lie in that arm side by side,
+        /// leave its tip straight (the stub's own run), and the loop between is one round turn (Dubins, right-left-right or its mirror) of
+        /// <see cref="SpurHankR"/>, on open floor and <see cref="SpurKeepOff"/> off every other box, strip, plate and cut end. Where no side has room the
+        /// spare cord is not drawn and the box has no arm for it. Reads the graph and its world only, so the graph worker and the caller agree.
         /// </summary>
-        private static List<V2> SpurHank(CordWorld w, CordGraph g, VId v, CordNode j, List<Cell> spur, CordRng r, List<V2> used)
+        internal static List<V2> SpurHank(CordWorld w, CordGraph g, VId v, CordNode j, List<Cell> spur, CordRng r, List<V2> used, out V2 arm)
         {
+            arm = default(V2);
             if (j.IsBlob || spur == null || spur.Count == 0) return null;
             Cell c = j.Cell;
             Cell near = spur.OrderBy(q => Math.Abs(q.X - c.X) + Math.Abs(q.Z - c.Z)).First();
@@ -1719,40 +1720,46 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 return true;
             }
             int sg = r.Sign();
-            double lean = r.Range(-0.28, 0.28), fat = r.Range(0.35, 0.6), drift = r.Range(0.03, 0.07);
-            foreach (var (wide, deep) in SpurHankR)
+            double tip = StubArt.BoxArm * JunctionScale, run = CordEndAudit.SlopeChord + 2 * CordLiveEnd.Step, half = 0.015;
+            var all = new List<CordShape.Dubins.Path>(6);
+            foreach (double rad in SpurHankR)
                 foreach (V2 n in sides)
                 {
                     if (used.Any(u => V2.Dist(u, n) < 0.1)) continue;
                     foreach (int side in new[] { sg, -sg })
                     {
+                        // the leg that leaves lies on the side the loop first turns to, so the two legs never cross
                         V2 t = n.Perp * side;
-                        // a dropped loop of cord: the two legs close together where they go into the box, the loop full and round out past it, leaning a little
-                        V2 out1 = (n + t * lean).Norm(), across = out1.Perp * side;
-                        var o = new List<V2>(72);
-                        for (int i = 0; i < 72; i++)
+                        V2 s1 = j.Pos + n * ArmTuck + t * half, a1 = j.Pos + n * (tip + run) + t * half;
+                        V2 s2 = j.Pos + n * ArmTuck - t * half, a2 = j.Pos + n * (tip + run) - t * half;
+                        double hn = Math.Atan2(n.Z, n.X);
+                        foreach (CordShape.Dubins.Path dp in CordShape.Dubins.All(a1, hn, a2, hn + Math.PI, rad, all))
                         {
-                            double th = 2 * Math.PI * i / 71.0, h = 0.5 * (1 - Math.Cos(th));
-                            double x = wide * Math.Sin(th) * ((1 - fat) + fat * 2 * h) / (1 - fat + fat);
-                            o.Add(j.Pos + across * (x + drift * (th - Math.PI)) + out1 * (2 * deep * h));
-                        }
-                        // the stretch under the box's art is hidden: only the loop out past it must lie clear
-                        if (o.Where(q => V2.Dist(q, j.Pos) > 0.42).All(Ok)) return o;
-                        if (HopWhy != null)
-                        {
-                            V2 bad = o.Where(q => V2.Dist(q, j.Pos) > 0.42).First(q => !Ok(q));
-                            Cell f = bad.Floor;
-                            HopWhy("spur " + c + " n " + n + " side " + side + " r " + wide + "x" + deep + " at " + bad + " walk " + w.IsWalkable(f) + " furn " + w.IsFurniture(f) + " door " + w.IsDoor(f) + " clr " + w.Clearance(bad).ToString("0.00")
-                                   + " mach " + w.Machines.Any(m => m.Contains(f)) + " box " + others.Any(o2 => V2.Dist(bad, o2) < SpurKeepOff) + " used " + string.Join(";", used));
+                            if (dp.Word < 4 || dp.P < Math.PI) continue;      // the round loop only
+                            List<V2> loop = CordShape.Dubins.Sample(a1, hn, dp, CordLiveEnd.Step);
+                            if (loop.Count < 8) continue;
+                            // out on the side it leaves by
+                            V2 first = loop[Math.Min(loop.Count - 1, 4)] - a1;
+                            if (first.X * t.X + first.Z * t.Z < 0) continue;
+                            loop[loop.Count - 1] = a2;
+                            if (!loop.All(Ok)) continue;
+                            // kept only where the bend bar reads it clean (as the old loop was)
+                            if (CordShapeAudit.Unforced(w, null, null, loop) > 0) continue;
+                            var o = new List<V2>(loop.Count + 12);
+                            int k = Math.Max(1, (int)Math.Round(V2.Dist(s1, a1) / CordLiveEnd.Step));
+                            for (int i = 0; i <= k; i++) o.Add(s1 + (a1 - s1) * (i / (double)k));
+                            o.AddRange(loop);
+                            for (int i = 1; i <= k; i++) o.Add(a2 + (s2 - a2) * (i / (double)k));
+                            arm = n;
+                            return o;
                         }
                     }
                 }
             return null;
         }
 
-        /// <summary>The loops a spur tries, half-width across the side then half-depth out from it (cells), widest first: the narrowest hangs between a neighbouring box and a
-        /// machine. Each averages past the bar's 0.45 loop radius.</summary>
-        private static readonly (double, double)[] SpurHankR = { (0.5, 0.6), (0.44, 0.62), (0.38, 0.64) };
+        /// <summary>The round turn a spur's loop tries, cells, broadest first: past the bend bar's 0.45 loop radius, so not a tight pigtail.</summary>
+        private static readonly double[] SpurHankR = { 0.5, 0.46 };
         /// <summary>How far a spur's loop keeps off another box, strip, plate or cut end, cells.</summary>
         private const double SpurKeepOff = 0.6;
 
@@ -2721,11 +2728,55 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private const double FitTurnSpare = 0.3;
 
         /// <summary>Ground a slackened lead's lobe keeps off: every other box, strip and plate this edge does not end at (<see cref="BoxKeepOff"/>, as <see cref="HopWhole"/>).</summary>
-        private static Func<V2, bool> SlackClear(CordGraph g, CordEdge e)
+        /// <summary>Off every fitting the cord does not end at. (The live cut end's join keeps to this: what it may do at its own far fitting is
+        /// CordLiveEnd.Site.OnFar's, never back over it once left; the slack's stricter rule, below, left a cut end a cell in front of
+        /// its box with no join: 8 of 126,730 live ends in the whole census.)</summary>
+        private static Func<V2, bool> OtherBoxClear(CordGraph g, CordEdge e)
         {
             List<V2> boxes = OtherBoxes(g, e);
             return q => { foreach (V2 bx in boxes) if (V2.Dist(q, bx) < BoxKeepOff) return false; return true; };
         }
+
+        private static Func<V2, bool> SlackClear(CordGraph g, CordEdge e, BuildOptions opt)
+        {
+            List<V2> boxes = OtherBoxes(g, e);
+            Func<V2, bool> own = OwnBoxClear(g, e, opt);
+            return q =>
+            {
+                foreach (V2 bx in boxes) if (V2.Dist(q, bx) < BoxKeepOff) return false;
+                return own(q);
+            };
+        }
+
+        /// <summary>Whether a box lies under the machine its cord runs to (a standing lamp on the very conduit cell it is hooked to: measured
+        /// live, RebuildPerDigChecks.LiveScene). The lead comes out from under that machine and goes back under it; the box end is not
+        /// laid at an arm (FitEnds) and the cord may lie round the box (OwnBoxClear). Whether that lead should be drawn at all is the owner's
+        /// question (questions.md, the run of 2026-11-17).</summary>
+        private static bool UnderOwnMachine(CordNode box, CordNode far) => far.IsMachine && far.Machine != null && far.Machine.Contains(box.Cell);
+
+        /// <summary>Whether a point keeps off the cord's own boxes, but for the arm it leaves each by: slack laid round a box came back across
+        /// another of its arms' tips (random world 109: read there as a cord leaving that arm 73 degrees off).</summary>
+        private static Func<V2, bool> OwnBoxClear(CordGraph g, CordEdge e, BuildOptions opt)
+        {
+            CordNode na = g.Nodes[e.A], nb = g.Nodes[e.B];
+            // (a power strip takes its cords on its sockets, along its side: the box's rule is not its rule)
+            bool ja = na.Type == NodeType.Junction && opt.PileFor(na.Cell) != PileArt.Strips, jb = nb.Type == NodeType.Junction && opt.PileFor(nb.Cell) != PileArt.Strips;
+            if (!ja && !jb) return q => true;
+            V2 aa = ja ? ArmDir(g, e, true) : default(V2), ab = jb ? ArmDir(g, e, false) : default(V2);
+            bool OwnBox(V2 q, V2 pos, V2 arm)
+            {
+                V2 d = q - pos;
+                if (d.Len >= BoxKeepOff) return false;
+                return Dot(d, arm) < 0 || Math.Abs(d.X * arm.Z - d.Z * arm.X) > OwnArmHalf;
+            }
+            // (a box under the cord's own machine, a lamp standing on the conduit it is hooked to, is hidden by that machine: UnderOwnMachine)
+            if (ja && UnderOwnMachine(na, nb)) ja = false;
+            if (jb && UnderOwnMachine(nb, na)) jb = false;
+            if (!ja && !jb) return q => true;
+            return q => !(ja && OwnBox(q, na.Pos, aa)) && !(jb && OwnBox(q, nb.Pos, ab));
+        }
+        /// <summary>Half the width of the corridor along its own arm a cord may lie in near its own box: the arm's own thickness (0.16 to 0.25 cell).</summary>
+        private const double OwnArmHalf = 0.125;
 
         /// <summary>Lab trace of <see cref="HopWhole"/>: what each cord laid again whole met.</summary>
         internal static Action<string> HopWhy;
@@ -2963,7 +3014,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
             EndDecor(w, g, e, e.A, na, piece, true, opt, isLive);
             EndDecor(w, g, e, e.B, nb, piece, false, opt, isLive);
             SeatPlugTails(g, e, piece, opt);
-            LiveEnds(w, piece, na, nb, isLive, opt, SlackClear(g, e));
+            LiveEnds(w, piece, na, nb, isLive, opt, OtherBoxClear(g, e), StubPicker(w, g, e, piece, na, nb, opt));
+            StepTrace?.Invoke("live", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
+            FitEnds(w, g, e, piece, na, nb, isLive, opt, SlackClear(g, e, opt));
+            StepTrace?.Invoke("fit", piece.EndA, piece.EndB, piece.Strands.Count > 0 ? piece.Strands[0].Pts : null);
             // a dived cord's route depends on walls anywhere (a door opened far off may give it a surface route): its corridor
             // is the whole map, so any walkability change re-plans it
             piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
@@ -3039,6 +3093,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             public double Angle;
             internal V2 Centre;
             public int Arms;
+            /// <summary>The + box's arms in use (CordDecal.Ports: E 1, N 2, W 4, S 8); 0 draws them all.</summary>
+            public int Ports;
         }
 
         internal static V2 Snap4(V2 d)
@@ -3072,11 +3128,32 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             CordNode nd = g.Nodes[v];
             CordRng r = CordRng.Of(seed, "jdecal", nd.Cell.X, nd.Cell.Z);
-            if (nd.IsBlob || !v.IsCellish)
-                return new JunctionPose { Kind = DecalKind.JunctionTin, Angle = 0, Centre = nd.Pos, Arms = 4 };
             HashSet<Cell> dirs = g.ArmsOf(v);
+            // a box draws the arms its cords leave by, no other (the bar: no stub drawn bare while a cord is attached elsewhere on its piece).
+            // Four ways the tin cross, three the taped T; fewer (two conduits side by side meeting at a box, a box in a crowd whose
+            // cords share a side) the tin cross cut to the arms in use (art Junction_X_p<mask>, make_switch_masks.py). A blob's box sat
+            // with all four arms whatever left it, and a two-way box wore the T with one arm bare.
+            // (a spur's spare loop has its own arm)
+            List<KeyValuePair<VId, KeyValuePair<V2, List<V2>>>> hanks = g.SpurHanks();
+            if (hanks.Count > 0)
+            {
+                bool copied = false;
+                foreach (var sh in hanks)
+                {
+                    if (!sh.Key.Equals(v)) continue;
+                    if (!copied) { dirs = new HashSet<Cell>(dirs); copied = true; }
+                    dirs.Add(new Cell((int)Math.Round(sh.Value.Key.X), (int)Math.Round(sh.Value.Key.Z)));
+                }
+            }
+            int ports = 0;
+            foreach (Cell c in dirs) ports |= c.X > 0 ? 1 : c.Z > 0 ? 2 : c.X < 0 ? 4 : 8;
+            bool whole = dirs.Count >= 4 || dirs.Count == 0;
+            if (nd.IsBlob || !v.IsCellish)
+                return new JunctionPose { Kind = DecalKind.JunctionTin, Angle = 0, Centre = nd.Pos, Arms = whole ? 4 : dirs.Count, Ports = whole ? 0 : ports };
             if (dirs.Count >= 4)
                 return new JunctionPose { Kind = DecalKind.JunctionTin, Angle = r.Int(0, 3) * Math.PI / 2, Centre = nd.Pos, Arms = 4 };
+            if (dirs.Count != 3)
+                return new JunctionPose { Kind = DecalKind.JunctionTin, Angle = 0, Centre = nd.Pos, Arms = whole ? 4 : dirs.Count, Ports = whole ? 0 : ports };
             var order = new[] { new Cell(0, 1), new Cell(1, 0), new Cell(0, -1), new Cell(-1, 0) };
             List<Cell> missing = order.Where(c => !dirs.Contains(c)).ToList();
             Cell m = missing[r.Int(0, missing.Count - 1)];
@@ -3333,32 +3410,227 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return 1.25 * (pathLen + lay.MaxExtra) + nb * 2 * lay.Cap * 1.1 + 3.0;
         }
 
-        internal static void LiveEnds(CordWorld w, LaidPiece piece, CordNode na, CordNode nb, Func<Cell, bool> isLive, BuildOptions opt, Func<V2, bool> off = null)
+        /// <summary>Where the join of a cord's end may lie (a live cut end's, a fitted end's): on open floor, off every fitting the cord does not
+        /// end at (off: SlackClear, the slack lobe's own rule); under its own machine only on its way out (CordLiveEnd.Site.OnFar: the art hides
+        /// what lies under it, the bend bar's own "hidden").</summary>
+        private static Func<V2, bool> EndGround(CordWorld w, List<MachineInfo> own, Func<V2, bool> off) => q =>
+        {
+            Cell c = q.Floor;
+            if (!w.IsWalkable(c) || w.IsFurniture(c)) return own.Any(m => m.Contains(c));
+            if (off != null && !off(q)) return false;
+            if (w.IsDoor(c)) return true;      // (through a doorway only on the end's own line: CordLiveEnd.Site.Door)
+            if (w.Clearance(q) >= LayParams.RC) return true;
+            // close to something: clear only when that is the cord's own machine (it plugs into it)
+            for (int dx = -1; dx <= 1; dx++)
+                for (int dz = -1; dz <= 1; dz++)
+                {
+                    var n = new Cell(c.X + dx, c.Z + dz);
+                    if (w.IsWalkable(n) || CordShapeAudit.RectDist(n.X, n.Z, 1, 1, q) >= LayParams.RC) continue;
+                    if (!own.Any(m => m.Contains(n))) return false;
+                }
+            return true;
+        };
+
+        /// <summary>The stub a cord's end at this node goes into, when the node's fitting has one the piece's own decals do not carry: a junction
+        /// box's arm (the arm along this cord, its tip BoxArm out from the node's point whichever way the art is turned), a power switch's four.</summary>
+        private static void NodeStubs(CordWorld w, CordGraph g, CordEdge e, bool atA, CordNode nd, BuildOptions opt, List<StubArt.Stub> o)
+        {
+            // a heap's port (a Junctions heap: the nearest of its boxes' free arms, EndPose's own pick; a strip heap's plug is the piece's decal)
+            if (nd.Type == NodeType.Tangle && nd.Cells != null && opt.PileFor(nd.Cell) != PileArt.Strips)
+            {
+                List<PilePort> ports = PortsOf(PileConnectors(w, nd, opt, true, IncidentEnds(g, atA ? e.A : e.B).Count));
+                if (ports.Count == 0) return;
+                PilePort q = EntryPort(ports, atA ? e.PA : e.PB);
+                o.Add(new StubArt.Stub { Kind = "heap port", T = q.Tip, U = q.Out.Norm(), Fitting = atA ? -1 : -2 });
+                return;
+            }
+            if (nd.Type == NodeType.Junction && opt.PileFor(nd.Cell) != PileArt.Strips)
+            {
+                V2 a = ArmDir(g, e, atA);
+                o.Add(new StubArt.Stub { Kind = "box", T = nd.Pos + a * (StubArt.BoxArm * JunctionScale), U = a, Fitting = atA ? -1 : -2 });
+            }
+            else if (nd.IsMachine && nd.Machine != null && nd.Machine.SidePorts)
+            {
+                V2 c = new V2(nd.Machine.X0 + 0.5, nd.Machine.Z0 + 0.5);
+                foreach (V2 u in SwitchStubs.Dirs) o.Add(new StubArt.Stub { Kind = "switch", T = c + u * CordEndAudit.SwitchStubTip, U = u, Fitting = atA ? -1 : -2 });
+            }
+        }
+
+        /// <summary>The stub a strand's end goes into (null: none): the graph's own for a box arm, a switch stub or a heap port (the one whose
+        /// line the end lies on: a cord that fell back to its planned line ends on the box's middle, on every arm's line and near no tip); else
+        /// the one the rule reads the end at, among the piece's own decals (a plug's boot, a wall plate, a device box). Null: the piece has no stub.</summary>
+        private static Func<CordStrand, bool, StubArt.Stub> StubPicker(CordWorld w, CordGraph g, CordEdge e, LaidPiece piece, CordNode na, CordNode nb, BuildOptions opt)
+        {
+            var stubs = new List<StubArt.Stub>();
+            int fit = 0;
+            StubArt.OfPiece(piece, opt, stubs, ref fit);
+            var stubsA = new List<StubArt.Stub>();
+            var stubsB = new List<StubArt.Stub>();
+            NodeStubs(w, g, e, true, na, opt, stubsA);
+            NodeStubs(w, g, e, false, nb, opt, stubsB);
+            stubs.AddRange(stubsA);
+            stubs.AddRange(stubsB);
+            if (stubs.Count == 0) return null;
+            return (s, atStart) =>
+            {
+                V2 end = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], next = atStart ? s.Pts[1] : s.Pts[s.Pts.Count - 2];
+                StubArt.Stub best = null;
+                foreach (StubArt.Stub c in atStart ? stubsA : stubsB)
+                    if (StubRun(end, c) > 0 && (best == null || Dot(next - end, c.U) > Dot(next - end, best.U))) best = c;
+                if (best != null && (atStart ? stubsA : stubsB).Count == 1) return best;
+                return best ?? StubJoins.StubFor(stubs, s.Pts, atStart, out V2 _, out V2 _);
+            };
+        }
+
+        /// <summary>Whether a strand's end holds the stub rule at <paramref name="st"/> as the rule itself reads it (StubJoins: on the stub's tip
+        /// within PosMax, the cord's heading there within <paramref name="deg"/> of the stub).</summary>
+        private static bool OnStub(List<V2> P, bool atStart, StubArt.Stub st, double deg)
+        {
+            V2 e = atStart ? P[0] : P[P.Count - 1];
+            if (!StubJoins.Nearest(P, atStart, st.T, V2.Dist(e, st.T) + 0.5, out V2 q, out V2 h, out double dd)) return false;
+            return dd <= CordEndAudit.PosMax && Math.Acos(Math.Max(-1, Math.Min(1, Dot(h, st.U)))) * 180 / Math.PI <= deg;
+        }
+
+        /// <summary>The straight run a cord's end keeps at its stub: from the end inside the fitting out past the stub's tip, the slope rule's
+        /// chord and a sample each side of it. 0: the end is not on the stub's line.</summary>
+        private static double StubRun(V2 end, StubArt.Stub st)
+        {
+            V2 d = end - st.T;
+            double along = Dot(d, st.U), lat = Math.Abs(d.X * st.U.Z - d.Z * st.U.X);
+            return along > 0 || lat > CordEndAudit.PosMax / 2 ? 0 : -along + CordEndAudit.SlopeChord + 2 * CordLiveEnd.Step;
+        }
+
+        /// <summary>Whether a point lies on a stub's own straight run (within a sample of its line, from inside the fitting to the run's end).</summary>
+        private static bool OnRun(V2 q, StubArt.Stub st, double runLen)
+        {
+            V2 d = q - st.T;
+            return Math.Abs(d.X * st.U.Z - d.Z * st.U.X) <= CordLiveEnd.Step && Dot(d, st.U) <= CordEndAudit.SlopeChord + 3 * CordLiveEnd.Step;
+        }
+
+        /// <summary>RIMMANDRAKE_FIX_GSS_BOX_ARMS_OFF_SLOPE_IN_CROWDS (in-game visit 1, the owner's review map: 19 of 399 joins off slope): every
+        /// cord end at a stub leaves it on its line and slope. One lay for every fitting, the live cut end's own (CordLiveEnd.Fit): the stub's
+        /// straight run, joined to the cord as laid by the least-disturbing round join. Each fitting had its own way to hold its end (a pin the
+        /// fairing kept, a straight bit the approach asked for, a plug's ease) and every later pass could bend it again: this runs last, on the
+        /// cord as finally laid, and reads the end with the rule's own reading. A cord that already holds the rule with half its slope to
+        /// spare is left alone; one with no room for a join keeps its lay.</summary>
+        internal static void FitEnds(CordWorld w, CordGraph g, CordEdge e, LaidPiece piece, CordNode na, CordNode nb, Func<Cell, bool> isLive, BuildOptions opt, Func<V2, bool> off = null)
+        {
+            if (FitEndsOff) return;
+            if (FitProf != null)
+            {
+                long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+                Action<double, string> prof = FitProf;
+                FitProf = null;
+                try { FitEnds(w, g, e, piece, na, nb, isLive, opt, off); }
+                finally { FitProf = prof; }
+                prof((System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency, piece.EndA + "|" + piece.EndB + " " + string.Join(" ; ", piece.Strands.Select(x => x.Lay)));
+                return;
+            }
+            Func<CordStrand, bool, StubArt.Stub> Pick = StubPicker(w, g, e, piece, na, nb, opt);
+            if (Pick == null) return;
+            bool cutA = na.Type == NodeType.Terminal && !na.Seam, cutB = nb.Type == NodeType.Terminal && !nb.Seam;
+            // the cord's own machines: the ones it plugs into, and the one a device stub's run goes under. (By the ends' names a machine merely
+            // hooked at a junction's cell counted too, and a cord between two boxes was laid under it.)
+            var own = new List<MachineInfo>();
+            foreach (CordNode nd in new[] { na, nb })
+            {
+                if (nd.IsMachine && nd.Machine != null) own.Add(nd.Machine);
+                else if (nd.Type == NodeType.StubDevice) foreach (MachineInfo m in w.Machines) if (m.Contains(nd.Buried)) own.Add(m);
+            }
+            Func<V2, bool> clear = EndGround(w, own, off), ownClear = OwnBoxClear(g, e, opt);
+            foreach (CordStrand s in piece.Strands)
+            {
+                if (s.Pts == null || s.Pts.Count < 3 || s.OverFace || s.Lifted) continue;
+                foreach (bool atStart in new[] { false, true })
+                {
+                    if (atStart ? s.DiveA || cutA : s.DiveB || cutB) continue;
+                    if (UnderOwnMachine(atStart ? na : nb, atStart ? nb : na)) continue;
+                    StubArt.Stub st = Pick(s, atStart);
+                    // (a cord that comes back over its own box after leaving it is laid again from past where it does)
+                    if (st == null || (OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg / 2) && s.Pts.All(ownClear))) continue;
+                    double runLen = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);
+                    if (runLen <= 0) continue;
+                    // the far end's own: a live cut end's run, tail and the window its pinch bar reads; a dead end's limp curl; a dive's
+                    // stiff bit; a fitting's own run at its stub
+                    bool farCut = atStart ? cutB : cutA, farDive = atStart ? s.DiveB : s.DiveA;
+                    int farWhip = atStart ? s.WhipB : s.WhipA;
+                    double keep = CordLiveEnd.FitOff;
+                    if (farDive) keep = CordLiveEnd.FarKeep;
+                    else if (farCut)
+                        keep = Math.Max(CutKeep, farWhip > 0 ? Geo.Length(atStart ? s.Pts.GetRange(s.Pts.Count - farWhip, farWhip) : s.Pts.GetRange(0, farWhip)) + 0.4 + 2 * CordLiveEnd.Step : 0);
+                    else
+                    {
+                        StubArt.Stub fs = Pick(s, !atStart);
+                        if (fs != null) keep = Math.Max(keep, StubRun(atStart ? s.Pts[s.Pts.Count - 1] : s.Pts[0], fs));
+                    }
+                    List<V2> P = atStart ? Enumerable.Reverse(s.Pts).ToList() : new List<V2>(s.Pts);
+                    List<CordTie> ties = atStart ? FlipTies(s.Ties, Geo.Length(P)) : s.Ties;
+                    List<V2> Native(List<V2> q) => atStart ? Enumerable.Reverse(q).ToList() : q;
+                    List<CordTie> NativeTies(List<V2> q, List<CordTie> t) => atStart ? FlipTies(t, Geo.Length(q)) : t;
+                    CordNode far = atStart ? nb : na;
+                    var site = new CordLiveEnd.Site
+                    {
+                        // the stub's own run is the fitting: it lies where the fitting does (a box against a wall, a device box at its machine's face)
+                        Clear = q => OnRun(q, st, runLen) || clear(q),
+                        MaxLen = LengthLimit(piece.PathLen, opt.Lay),
+                        OnFar = farCut || farDive ? (Func<V2, bool>)null
+                            : far.IsMachine && far.Machine != null ? (q => far.Machine.Contains(q.Floor))
+                            : (q => V2.Dist(q, far.Pos) < BoxKeepOff),
+                        Bends = (q, t) => { List<V2> n = Native(q); int k = 0; foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(n, NativeTies(q, t))) if (CordShapeAudit.Why(w, piece.EndA, piece.EndB, n, b) == "unforced") k++; return k; },
+                        Kinks = (q, t) => CordShape.Kinks(q).Count,
+                        Door = q => w.IsDoor(q.Floor),
+                        DoorReturns = q => { CordShape.RingReturns(w, q, out int atDoor); return atDoor; }
+                    };
+                    string why = null;
+                    if (FitTrace) CordLiveEnd.FitWhy = x => why = x;
+                    List<V2> R = CordLiveEnd.Fit(P, -st.U, runLen, site, ties, keep, q => OnStub(Native(q), atStart, st, CordEndAudit.SlopeMaxDeg / 2) && q.All(x => OnRun(x, st, runLen) || ownClear(x)), out double _);
+                    CordLiveEnd.FitWhy = null;
+                    if (R == null)
+                    {
+                        // two fittings nearer each other than their two straight runs (a strip's plug and a wall plug in one cell): no cord
+                        // between them is straighter at both than the straight from one to the other. Taken where both stubs' rule then
+                        // holds as the rule itself reads it
+                        StubArt.Stub fs2 = farCut || farDive ? null : Pick(s, !atStart);
+                        if (fs2 != null)
+                        {
+                            V2 e0 = s.Pts[0], e1 = s.Pts[s.Pts.Count - 1];
+                            int sn = Math.Max(2, (int)Math.Ceiling(V2.Dist(e0, e1) / CordLiveEnd.Step));
+                            var line = new List<V2>(sn + 1);
+                            for (int k = 0; k <= sn; k++) line.Add(e0 + (e1 - e0) * (k / (double)sn));
+                            if ((s.Ties == null || s.Ties.Count == 0) && line.All(q => clear(q) || OnRun(q, st, runLen) || OnRun(q, fs2, runLen))
+                                && OnStub(line, atStart, st, CordEndAudit.SlopeMaxDeg) && OnStub(line, !atStart, fs2, CordEndAudit.SlopeMaxDeg))
+                            {
+                                s.Pts = line;
+                                s.Lay += "+straight";
+                                continue;
+                            }
+                        }
+                        s.Lay += "+nofit" + (why == null ? "" : " (" + why + ")");
+                        continue;
+                    }
+                    s.Pts = Native(R);
+                    s.Ties = ties == null || ties.Count == 0 ? null : NativeTies(R, ties);
+                    s.Lay += "+fit";
+                }
+            }
+        }
+
+        /// <summary>The census reads the cords as handed (CordLiveEnd's LiveEndLayOff twin for the fitted ends).</summary>
+        internal static bool FitEndsOff;
+        /// <summary>Diagnostics only (SceneDump): a strand with no fitted join carries the reason in its Lay.</summary>
+        internal static bool FitTrace;
+        /// <summary>Diagnostics only: each call's milliseconds and what it laid. Null in the game.</summary>
+        [ThreadStatic] internal static Action<double, string> FitProf;
+
+        internal static void LiveEnds(CordWorld w, LaidPiece piece, CordNode na, CordNode nb, Func<Cell, bool> isLive, BuildOptions opt, Func<V2, bool> off = null,
+                                      Func<CordStrand, bool, StubArt.Stub> farStub = null)
         {
             if (LiveEndLayOff) return;
             bool cutA = na.Type == NodeType.Terminal && !na.Seam, cutB = nb.Type == NodeType.Terminal && !nb.Seam;
             bool liveA = cutA && isLive(na.Cell), liveB = cutB && isLive(nb.Cell);
             if (!liveA && !liveB) return;
             List<MachineInfo> own = CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB);
-            // a join lies on open floor, off every fitting the cord does not end at (off: SlackClear, the slack lobe's own rule); under its own
-            // machine only on its way out (CordLiveEnd.Site.OnFar: the art hides what lies under it, the bend bar's own "hidden")
-            bool Clear(V2 q)
-            {
-                Cell c = q.Floor;
-                if (!w.IsWalkable(c) || w.IsFurniture(c)) return own.Any(m => m.Contains(c));
-                if (off != null && !off(q)) return false;
-                if (w.IsDoor(c)) return true;      // (through a doorway only on the end's own line: CordLiveEnd.Site.Door)
-                if (w.Clearance(q) >= LayParams.RC) return true;
-                // close to something: clear only when that is the cord's own machine (it plugs into it)
-                for (int dx = -1; dx <= 1; dx++)
-                    for (int dz = -1; dz <= 1; dz++)
-                    {
-                        var n = new Cell(c.X + dx, c.Z + dz);
-                        if (w.IsWalkable(n) || CordShapeAudit.RectDist(n.X, n.Z, 1, 1, q) >= LayParams.RC) continue;
-                        if (!own.Any(m => m.Contains(n))) return false;
-                    }
-                return true;
-            }
+            Func<V2, bool> Clear = EndGround(w, own, off);
             foreach (CordStrand s in piece.Strands)
             {
                 if (s.Pts == null || s.Pts.Count < 3 || s.OverFace || s.Lifted) continue;
@@ -3394,11 +3666,27 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     V2 o = new V2(nd.Out.X, nd.Out.Z);
                     if (o.Len < 1e-9) continue;
                     V2 oldTip = P[P.Count - 1];
-                    CordLiveEnd.Result r = CordLiveEnd.Lay(P, nd.Pos, o, site, ties, farLive && !farDive, farOff);
+                    string layWhy = null;
+                    if (FitTrace) CordLiveEnd.LayWhy = x => layWhy = x;
+                    // the far fitting's own straight run from its stub (a box arm, a plug's boot): the lay may lay the whole cord from it
+                    List<V2> farRun = null;
+                    if (farStub != null && !farCutEnd && !farDive && farStub(s, !atStart) is StubArt.Stub fs && StubRun(P[0], fs) is double fr && fr > 0)
+                    {
+                        int fn = Math.Max(1, (int)Math.Round(fr / CordLiveEnd.Step));
+                        farRun = new List<V2>(fn + 1);
+                        for (int k = 0; k <= fn; k++) farRun.Add(P[0] + fs.U * (fr * k / fn));
+                    }
+                    CordLiveEnd.Result r = CordLiveEnd.Lay(P, nd.Pos, o, site, ties, farLive && !farDive, farOff, farRun: farRun);
+                    CordLiveEnd.LayWhy = null;
+                    // a tied loop the lay gave up (the cord laid whole from its far plug) takes its band with it
+                    if (ties != null && ties.Count > 0 && (r.Ties == null || r.Ties.Count < ties.Count))
+                        foreach (CordTie t0 in ties)
+                            if (r.Ties == null || !r.Ties.Any(x => V2.Dist(x.At, t0.At) < 1e-6))
+                                piece.Decals.RemoveAll(d => d.Kind == DecalKind.CableTie && V2.Dist(d.Pos, t0.At) < 1e-6);
                     s.Pts = Native(r.Pts);
                     s.Ties = r.Ties == null || r.Ties.Count == 0 ? null : NativeTies(r.Pts, r.Ties);
                     if (atStart) s.WhipA = r.Count; else s.WhipB = r.Count;
-                    if (r.Kind != CordLiveEnd.Kind.Kept) s.Lay += "+live-" + r.Kind.ToString().ToLowerInvariant();
+                    if (r.Kind != CordLiveEnd.Kind.Kept) s.Lay += "+live-" + r.Kind.ToString().ToLowerInvariant() + (layWhy == null ? "" : " (" + layWhy + ")");
                     // a tied loop the lay made wears its band
                     if (r.Kind == CordLiveEnd.Kind.TurnLoop && r.Ties != null && r.Ties.Count > 0)
                     {
@@ -3686,6 +3974,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     target = LampEntry(nd.Machine, BackAlong(P, !atA, LampLook));
                 arrive = IntoMachine(nd.Machine, target);
                 if (g.Slides(nd.Machine) || baseLamp) arrive = CordGraph.SlideArrive(nd.Machine, target, arrive);
+                // a machine (a standing lamp too) against the tip of the box arm its lead leaves by takes the lead straight in on the arm's
+                // line, just inside its edge; IntoArt carries it on under the art
+                if (ArmInto(g, e, atA, opt) is V2 armIn)
+                {
+                    CordNode box = g.Nodes[atA ? e.B : e.A];
+                    target = box.Pos + armIn * (StubArt.BoxArm * JunctionScale + 0.06) + Side(armIn) * (lat * 0.03);
+                    arrive = armIn;
+                    baseLamp = false;
+                }
                 if (baseLamp) straight = Math.Max(straight, 0.3);
                 // a power switch's stub: in on the stub's line, the cord's last bit straight along it past the stub's tip (owner 2026-11-16)
                 if (nd.Machine.SidePorts) straight = Math.Max(straight, 0.3);
@@ -3702,12 +3999,28 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 {
                     V2 d = nd.Pos - other.Pos;
                     basePos = other.Pos + nd.Into * (d.X * nd.Into.X + d.Z * nd.Into.Z);
+                    // with no fitting of its own on the face (a machine, water: a wall has its plate) the junction's arm is the fitting, and
+                    // the cord runs on out of the arm's tip under what it goes into, the slope rule's chord and a sample past the face
+                    if (nd.Type != NodeType.StubWall && nd.Type != NodeType.StubRock) basePos = nd.Face + nd.Into * StubDip;
                 }
+                // two stubs in one cell (a conduit cell between a machine and water): the machine's end wears no box (AtOwnJunction) and runs
+                // on under the machine the same way
+                else if (nd.Type == NodeType.StubDevice && other.IsStub && other.Cell == nd.Cell) basePos = nd.Face + nd.Into * StubDip;
                 target = basePos + Side(nd.Into) * (lat * 0.03);
                 arrive = nd.Into;
                 // the device stub's little box (Junctions look) sits DeviceBoxBack off the face: the cord runs straight past its arm's tip
                 // before it bends, so it leaves the arm on the arm's line (owner 2026-11-09 slope rule, 2026-11-16 junction box stubs)
-                if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) != PileArt.Strips)
+                if (nd.Type == NodeType.StubDevice && AtOwnJunction(g, e, nd)) { }
+                // the device box's arm points the way the conduit comes: where the run turns the corner into the machine in the stub's own
+                // cell, the cord goes into the box from the side (it had to turn a quarter in half a cell to meet an arm that always
+                // pointed straight out from the machine, against a wall there it could not: random world 94)
+                else if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) != PileArt.Strips && DeviceArm(g, e, atA, nd) is V2 da && Dot(da, nd.Into) > -0.5)
+                {
+                    target = nd.Face - nd.Into * DeviceBoxBack + Side(da) * (lat * 0.03);
+                    arrive = -da;
+                    straight = DeviceBoxArm + 0.15;
+                }
+                else if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) != PileArt.Strips)
                     straight = DeviceBoxBack + DeviceBoxArm + 0.15;
                 // the device stub's strip (Modern) lies along the cord, its lead toward it: the cord ends in the lead's tip, along it
                 // (it lay across the cord with its lead pointing aside, a bare lead: RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE)
@@ -4108,13 +4421,41 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>How far into a pole's or mast's cell its floor cord runs, under the foot of its art (MachineInfo.Foot), cells.</summary>
         public const double FootTuck = 0.15;
 
-        private static List<V2> IntoArt(List<V2> P, bool atStart, MachineInfo m, bool slide = false)
+        /// <summary>A machine standing against the tip of the box arm its lead leaves by: the way that arm points (the lead goes straight on
+        /// under the machine, IntoArt). Null: no box, or its arm does not run into the machine.</summary>
+        private static V2? ArmInto(CordGraph g, CordEdge e, bool machineAtA, BuildOptions opt)
+        {
+            CordNode nd = g.Nodes[machineAtA ? e.A : e.B], box = g.Nodes[machineAtA ? e.B : e.A];
+            if (!nd.IsMachine || nd.Machine == null || nd.Machine.Foot || nd.Machine.HasHome || nd.Machine.SidePorts) return null;
+            if (box.Type != NodeType.Junction || box.IsBlob || opt.PileFor(box.Cell) == PileArt.Strips) return null;
+            V2 arm = ArmDir(g, e, !machineAtA);
+            V2 tipOfArm = box.Pos + arm * (StubArt.BoxArm * JunctionScale);
+            return nd.Machine.Contains((tipOfArm + arm * 0.05).Floor) ? arm : (V2?)null;
+        }
+
+        private static List<V2> IntoArt(List<V2> P, bool atStart, MachineInfo m, bool slide = false, V2? armLine = null)
         {
             if (P.Count < 2) return P;
             V2 tip = atStart ? P[0] : P[P.Count - 1];
             V2 into = IntoMachine(m, tip);
             V2 c = ArtTarget(m);
             var ext = new List<V2>();
+            // straight on from a box arm that ends at the machine's edge, as deep as the art's base and no lower than it (under the art): the
+            // half cell from the arm's tip to the base, a quarter cell aside, could not leave the arm straight and still reach the base
+            // (83 degrees off the arm on the owner's review map, in-game visit 1)
+            if (armLine is V2 al && !m.Foot && !m.HasHome)
+            {
+                V2 on = tip + al * Math.Max(0.1, Dot(c - tip, al));
+                if (m.Contains(on.Floor) && on.Z >= c.Z - 1e-9 && V2.Dist(on, c) <= 0.5 && Math.Abs(Dot(tip - on, al.Perp)) < 0.05)
+                {
+                    int ka = Math.Max(1, (int)Math.Ceiling(V2.Dist(tip, on) / 0.05));
+                    for (int i = 1; i <= ka; i++) ext.Add(tip + (on - tip) * (i / (double)ka));
+                    var oa = new List<V2>(P);
+                    if (atStart) { ext.Reverse(); oa.InsertRange(0, ext); }
+                    else oa.AddRange(ext);
+                    return oa;
+                }
+            }
             if (m.Foot)
             {
                 // a pole or mast: just in under its foot and no further (on to the centroid it ran up the pole's art: owner 2026-11-08)
@@ -4288,6 +4629,41 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return Math.Atan2(d.Z, d.X);
         }
 
+        /// <summary>The way a device stub's box points its one arm: at the conduit cell the run comes from when that lies beside the stub's own cell
+        /// (the run turns the corner there), else straight out from the machine.</summary>
+        private static V2 DeviceArm(CordGraph g, CordEdge e, bool atA, CordNode nd)
+        {
+            V2 outv = nd.Into * -1;
+            VId s = atA ? e.A : e.B;
+            if (s.T != 's') return outv;
+            Cell w = s.A;
+            int n = e.Via.Count;
+            VId At(int k) => k < n ? (atA ? e.Via[k] : e.Via[n - 1 - k]) : (atA ? e.B : e.A);
+            int i = n > 0 && At(0).T == 'c' && At(0).A == w ? 1 : 0;
+            if (i == 0) return outv;
+            VId p = At(i);
+            Cell pc;
+            if (p.T == 'c') pc = p.A;
+            else if (g.Nodes.TryGetValue(p, out CordNode pn) && (pn.Type == NodeType.Junction || pn.Type == NodeType.Terminal) && !pn.IsBlob) pc = pn.Cell;
+            else return outv;
+            int dx = pc.X - w.X, dz = pc.Z - w.Z;
+            if (Math.Abs(dx) + Math.Abs(dz) != 1) return outv;
+            var d = new V2(dx, dz);
+            return Dot(d, nd.Into) > 0.5 ? outv : d;
+        }
+
+        /// <summary>How far past the face a cord runs on under what it goes into, where a junction's own arm is its fitting (EndPose).</summary>
+        public const double StubDip = CordEndAudit.SlopeChord + CordLiveEnd.Step;
+
+        /// <summary>Whether a stub's cord runs to a junction, or to another stub, in the stub's own cell: the cord has no cell of its own to
+        /// arrive in, and the fitting it would wear there has no room for its straight run.</summary>
+        private static bool AtOwnJunction(CordGraph g, CordEdge e, CordNode nd)
+        {
+            CordNode a = g.Nodes[e.A], b = g.Nodes[e.B];
+            CordNode other = ReferenceEquals(a, nd) ? b : a;
+            return (other.Type == NodeType.Junction || other.IsStub) && other.Cell == nd.Cell;
+        }
+
         private static void EndDecor(CordWorld w, CordGraph g, CordEdge e, VId v, CordNode nd, LaidPiece piece, bool atStart, BuildOptions opt,
                                      Func<Cell, bool> isLive)
         {
@@ -4399,6 +4775,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     piece.Decals.Add(plate);
                     hole = WallMount.Socket(plate);
                 }
+                // a run that goes under a machine right at a junction: the junction's own arm reaches the machine's face and is the fitting
+                // (as at a wall); a box or strip of its own would lie on top of the junction's
+                else if (nd.Type == NodeType.StubDevice && AtOwnJunction(g, e, nd)) { }
                 else if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) == PileArt.Strips)
                 {
                     // the strip's LEDs read the net (phase 1b B6): lit when live, dark when not
@@ -4408,7 +4787,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 else if (nd.Type == NodeType.StubDevice)
                     // no strips outside the modern look (B1/B15): the cord ends in a small junction box, an arm along it. The box draws
                     // that one arm only (art -X, toward the cord; the others would be bare stubs: RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE)
-                    piece.Decals.Add(new CordDecal(DecalKind.JunctionTin, nd.Face - nd.Into * DeviceBoxBack, ang, DeviceBoxScale) { Ports = DeviceBoxPorts });
+                {
+                    V2 da = DeviceArm(g, e, atStart, nd);      // the art's one arm (-X) along it
+                    piece.Decals.Add(new CordDecal(DecalKind.JunctionTin, nd.Face - nd.Into * DeviceBoxBack, Math.Atan2(-da.Z, -da.X), DeviceBoxScale) { Ports = DeviceBoxPorts });
+                }
             }
         }
 
@@ -4461,6 +4843,20 @@ namespace RimMandrake.GimmeSomeSlack.Core
         // PowerStrip art (64x32, drawn 0.9 x 0.45): four sockets along its long axis. PROVISIONAL, read off the PNG.
         public static readonly double[] StripSockets = { -0.22, -0.08, 0.06, 0.20 };
         public const double StripScale = 0.9, PilePlugScale = 0.42;
+
+        /// <summary>Every strip's own lead as a port: its tip under the strip's end cap (the stub the art draws, StubArt's "strip lead"), the
+        /// lead running on along the strip. In decal order.</summary>
+        public static List<PilePort> LeadsOf(List<CordDecal> ds)
+        {
+            var leads = new List<PilePort>();
+            for (int i = 0; i < ds.Count; i++)
+            {
+                if (ds[i].Kind != DecalKind.PowerStrip && ds[i].Kind != DecalKind.PowerStripDark) continue;
+                V2 along = CordAudit.Dir(ds[i].Angle);
+                leads.Add(new PilePort { Tip = ds[i].Pos + along * (StripLeadX * ds[i].Scale), Out = along, Connector = i });
+            }
+            return leads;
+        }
 
         /// <summary>The ports of every connector decal in a pile (junction arms, strip sockets), in decal order.</summary>
         public static List<PilePort> PortsOf(List<CordDecal> ds)
@@ -4516,6 +4912,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The connectors (junction boxes or strips) of a pile, deterministic from the seed and the pile's cells. Shared
         /// by <see cref="TanglePiece"/> and the cords that enter the pile (they plug into one of these ports, round 5).</summary>
 
+        /// <summary>From a wall's face to the tip of the heap box arm facing it: the cord's end in the plate (0.06 inside the face), then the slope
+        /// rule's chord and a sample for each of the two fittings.</summary>
+        private const double FacingGap = 0.06 + 2 * (CordEndAudit.SlopeChord + CordLiveEnd.Step);
+
         internal static List<CordDecal> PileConnectors(CordWorld w, CordNode nd, BuildOptions opt, bool lit, int incoming = 0)
         {
             List<Cell> comp = nd.Cells;
@@ -4531,6 +4931,26 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (strips) want = Math.Max(want, (incoming + StripHeads.Length - 3) / (StripHeads.Length - 2));
             var cons = new List<CordDecal>();
             int portsSoFar = 0;
+            // a run that goes into a wall or rock from one of the heap's own cells: its cord is half a cell long, with no room to come round to a
+            // box lying any way. The heap keeps a box facing that wall, an arm in line with the wall's plate, and the cord runs straight between
+            // them (random world 96: 56 degrees off the nearest box's arm). Read off the ground alone, as the rest of the heap is
+            if (!strips)
+                foreach (Cell c in comp)
+                    foreach (Cell dd in Cell.Dirs4)
+                    {
+                        Cell hid = c + dd;
+                        if (!w.InBounds(hid) || !w.IsConduit(hid) || !w.IsBuried(hid)) continue;
+                        BlockKind k = w.BuriedKind(hid);
+                        if (k != BlockKind.Wall && k != BlockKind.Rock) continue;
+                        var into = new V2(dd.X, dd.Z);
+                        double fsc = PileJunctionScale * PileScaleLo;
+                        V2 at = c.Centre + into * (0.5 - FacingGap - StubArt.BoxArm * fsc);
+                        var d = new CordDecal(DecalKind.JunctionTin, at, Math.Atan2(into.Z, into.X), fsc);
+                        List<PilePort> mine = PortsOf(new List<CordDecal> { d });
+                        if (mine.Any(q => !w.IsWalkable(q.Tip.Floor)) || cons.Any(o => V2.Dist(o.Pos, at) < 0.45)) continue;
+                        portsSoFar += mine.Count;
+                        cons.Add(d);
+                    }
             foreach (Cell c in cells)
             {
                 if (cons.Count >= want) break;
@@ -4973,13 +5393,18 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 var reserved = new HashSet<int>(PileSockets(g, v, ports).Values);
                 ports = ports.Where((port, k) => !reserved.Contains(k)).ToList();
             }
+            // a strip's own lead is a port too, and the first to be filled: every strip in a heap is plugged into another by its lead (the lead
+            // was no port at all, and a heap's strips lay with bare leads: 3 on the owner's review map, in-game visit 1). The leads follow the
+            // sockets in the list; a lead takes no plug
+            int sockets = ports.Count;
+            if (strips) ports.AddRange(LeadsOf(cons));
             // ---- cables: each runs port to port; cable i pairs port i with the port half the list away (another connector),
             // so the first ports/2 cables already fill every port: no socket or arm is left empty
             // HeapDensity thins a big heap; a small one keeps the old count up to HeapMinCables, so it is still a rats-nest and not a few loose cords (review 1, B2)
             int old = Math.Min(14, 4 + comp.Count / 3);
             int n = Math.Min(MaxPileCables, Math.Max(Math.Max(Math.Min(old, HeapMinCables), (int)(old * HeapDensity)), (ports.Count + 1) / 2));
             // A strip socket takes one cable end. An odd spare socket stays empty.
-            if (strips) n = Math.Min(n, ports.Count / 2);
+            if (strips) n = Math.Max(Math.Min(n, sockets / 2), Math.Min(cons.Count, sockets));
             var used = new HashSet<int>();
             var internalEnds = new int[cons.Count];
             // the heap may spill a cell past its conduit onto open floor: kept to the conduit's own cells, its cables drew the block's square
@@ -4999,9 +5424,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     int rotation = i / Math.Max(1, n);
                     // Cover every strip before filling extra sockets. Rotate tied choices
                     // on retries so an unusable port does not starve the entire pile.
-                    for (int k = 0; k < ports.Count; k++)
+                    // a lead not yet plugged in comes first
+                    for (int k = sockets; k < ports.Count && a < 0; k++) if (!used.Contains(k)) a = k;
+                    bool leadFirst = a >= 0;
+                    for (int k = 0; k < sockets && !leadFirst; k++)
                     {
-                        int candidate = (k + rotation) % ports.Count;
+                        int candidate = (k + rotation) % sockets;
                         if (used.Contains(candidate)) continue;
                         if (a < 0 || internalEnds[ports[candidate].Connector] < internalEnds[ports[a].Connector])
                             a = candidate;
@@ -5010,9 +5438,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     b = -1;
                     // Prefer another strip, giving its least-connected connector priority.
                     for (int pass = 0; pass < 2 && b < 0; pass++)
-                        for (int k = 0; k < ports.Count; k++)
+                        for (int k = 0; k < sockets; k++)
                         {
-                            int candidate = (a + ports.Count / 2 + k + rotation) % ports.Count;
+                            int candidate = (a + sockets / 2 + k + rotation) % sockets;
                             if (candidate == a || used.Contains(candidate)
                                 || (pass == 0 && ports[candidate].Connector == ports[a].Connector)) continue;
                             if (b < 0 || internalEnds[ports[candidate].Connector] < internalEnds[ports[b].Connector])
@@ -5138,7 +5566,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             // ---- connectors are printed over the cables; a strip gets a plug in every socket a cable uses
             p.Decals.AddRange(cons);
             if (strips)
-                foreach (int k in used.OrderBy(x => x))
+                foreach (int k in used.Where(x => x < sockets).OrderBy(x => x))
                 {
                     PilePort q = ports[k];
                     p.Decals.Add(new CordDecal(DecalKind.PlugTop, q.Tip - q.Out * PlugTopReach, Math.Atan2(q.Out.Z, q.Out.X), PlugTopScale));
