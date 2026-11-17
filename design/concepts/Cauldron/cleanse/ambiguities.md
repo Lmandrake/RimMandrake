@@ -1,0 +1,121 @@
+# Ambiguities settled by this Designer
+
+These are this run's defaults, never additions to his words. Source paths and event identifiers below already exist in the concept record, sheet or cited source; this proposal invents no owner event. No new question is sent: the substantive contrary evidence found is implementation mismatch, not evidence for a different owner preference. Prior waivers are not reopened. Construction remains pending, and these defaults do not pretend to be runtime measurements.
+
+### Rich chemistry versus a collection of signatures
+
+Two readings: keep every named animal/plant/ruin interaction because it is built, or require one player-facing cause/effect chain. Consequence: the former makes a shrine, animal fire police, sleep-seeding and collector output jointly mandatory. Taken: the vent warning -> exposure/containment -> capping/collection -> useful refining chain is the signature. Renewal is runner-up and moves. Moved owner-kept capabilities remain future promises, not rescinded rulings. Moved by: this Designer under the 2026-11-16 cleansing authority. The expanded root was delegated synthesis (record d_stage1_root), not an instruction that every capability must ship together forever.
+
+### Chemical vent versus steam geyser
+
+Two readings: reuse a geyser's hot exhaust, or reuse its footprint/placement idiom only. Consequence: a hot vent contradicts R13 and changes heat protection. Taken: chemical reaction product, no steam, volcanism, earthquake or heat source. Evidence: cauldron.md R13; RM_CauldronVents.cs explicitly adds no heat; inherited Building-style shape does not grant a steam capability. The popular geothermal/volcanic-biome analogy is rejected here.
+
+### Permanent dusk and 'no shadows' versus a private sun law
+
+Two readings: impose biome-specific thermal darkness and shade everywhere, or use diffuse weather appearance while shared geometry governs Direct Sun. Consequence: a tail tile could get a contradictory heat exemption. Taken: shared geometric Direct Sun wins; weather attenuation and mineral/dim visual identity supply land appearance, with no per-biome heat or sun offset. Evidence: standing Direct Sun ruling is newer than the frozen visual prose. The source's four day/night colour tables also do not prove a fixed supplied site's light. No new world position or biome placement is designed.
+
+### 'Angry', 'roils', 'eternal' and 'breathes'
+
+Two readings: continuous lightning and a bespoke engine soundscape, or a rainless atmospheric impression with recurring dry storms and vent output. Consequence: literal perpetual lightning requires a new scheduler/audio loop. Taken: figurative original experience sentence; actual contract is the ruled weather set, rainless lightning, visible chemical vent activity and timed warning. No constant lightning quota. Vanilla sounds stay, per record s_audio and the mechanics item's later ruling. The new bars avoid these poetic sky words. 'Season's turn' is a game observation interval, not an astronomical change in this fixed terminator's light.
+
+### Wet, green, lush and mineral
+
+Two readings: a lush conventional forest retinted grey, or wet/crystalline non-green native forms and dark soils. Consequence: vanilla foliage under fog could pass a label test. Taken: mineral/filter-frond silhouettes, attached metal and dark distinguishable soils at ordinary zoom; no leaf canopy or volcanic read. Keep existing owner exceptions for imported creatures. Dewfall's no-green exception is explicitly recorded in CAULDRON_ENRICHMENT_VISUALS_1 and is not repealed; its decorative swap simply defaults off. Nothing in this proposal redraws owner-kept art or reopens the owner-digest art critiques.
+
+### Mineral trunk versus a second age renderer
+
+Two readings: installed assay flecks prove all promised scabs/fans, or a separately specified coat is another feature. Consequence: tests can announce a coat built while runtime classes and textures are absent. Taken: attached current metal/fleck appearance and truthful maturity cue stay; extra age-threshold coat moves. Evidence: record trunk_deposit_coat, cauldron_trunk_deposits_design_2026-11-02.md, source-wide search for RM_TrunkDepositsExtension/DepositTier/trunkDepositsEnabled finds design-pinning selftest references only. Current assay flecks are present, but the open midair-nuggets item is evidence against assuming correct registration, not an asset-count bar.
+
+### 'About an hour' versus weather interpolation or dose cadence
+
+Two readings: any vanilla transition length counts as an hour, or the readable cue-to-full-bloom interval is independently timed. Consequence: the present 4000-tick blend can become the entire warning, while first dose sampling supplies a misleading extra wait. Taken: nominal 2500 ticks, sampling tolerance 250 ticks for the regression check; onset and first dose are separately measured. Evidence: OWNER:1792108481222070856, current RM_CauldronVents.cs and record ground_falter_duration. The hour is an explicit sourced intent, never a new owner timing vote. The rule/check is attackable; a retuned incidental numeric threshold does not create a new experience bar.
+
+### 'Nearby', 'stillness' and a forest already quiet
+
+Two readings: all wildlife stops and every pawn can always reach shelter, or eligible idle natives provide a cue over a declared reachable route. Consequence: fighting animals can abandon combat; a motionless animal may be counted as a warning it did not give. Taken: awake wild idle suush/zisska/eskith hush; owned, asleep, downed, mentally disturbed or fighting animals keep their state. Warning-route range includes ordinary paths to shelter and excludes immobile/blocked escape promises. Evidence: HushFauna exclusions in source. Observe preceding movement/output and actual shelter arrival. All-capped or no-eligible-native scenes use the retained timed message; no already-zero puff count is called a visible decrease. Default natural-map cue proof still needs active vents and moving eligible natives.
+
+### A label saying vent bloom versus a harmful stage
+
+Two readings: current WeatherDef identity starts dose immediately, or the warning and full-output/harmful stage are distinct. Consequence: a transition can poison the worker while the warning is still being delivered. Taken: cue first, full bloom then damage cadence; all three moments are independently read. Evidence: current RM_VentKernel/ RM_YieldKernel gate on transition completion and record falter gap. No sky lock or skipped cadence can pass protection. Repeated transitions and a mid-falter save are explicit cases, not staged examples treated as universal.
+
+### 'Sealed', acid-proof armour and native immunity
+
+Two readings: material immunity, vacuum seal and toxin stats are interchangeable, or item survival and body exposure are separate. Consequence: full gear can keep its HP while its worker gains metal. Taken: a functional complete environmental seal and roof each prevent ambient bloom/acid, partial equipment uses actual stats, native/condition exemptions stay explicit, faction is not immunity. Evidence: d_stage2_protection_routes, RM_VexxithAcidImmunity.cs and RM_VentBloomExposure.cs versus RM_AcidAir.cs. A full local suit/helmet currently has a source-derived seal/bloom mismatch; that calls for fixing the outcome, not weakening the promise. A roof or ambient seal does not grant universal direct-liquid, fire or smoke immunity.
+
+### Weakest near, strongest far, capped and old-map exposure
+
+Two readings: capping a visible source also cures all ambient danger, or local source reduction coexists with background exposure and already released stock. Consequence: a prepared-base model can falsely erase old gas and existing poisoning when tapping starts. Taken: active uncapped vent contribution, weaker distant dose and residual ambient floor; caps stop new emission, leave old clouds to clear and retain health. Saved suppression/recovery continues without new default drinking. Evidence: ExposureWeight source and gas tap lookup. No-vent legacy maps keep their stated fallback but are not accepted as the default source-cycle demonstration. Capping/exposure locality must be measured and fixed if source currently disagrees.
+
+### Persistent versus merely slow metal clearance
+
+Two readings: a slowly declining condition is practically permanent, or every positive load persists until advanced medical treatment. Consequence: a short healthy scene hides natural clearance and lost saved traces. Taken: persistent positive load through ordinary care, travel and reload, with normal successful advanced purge; ordinary tending does not substitute. Evidence: OWNER:1794373071501926623 versus RM_VentMetalLoad.xml's -0.08/day. Designer default advanced medicine is MedicineUltratech; ordinary surgery accounting handles consumption, failure/interruption. Low traces must be visible enough to treat through a normal bill even if their original health stage hid them. This default supplies missing construction detail, not a new owner preference.
+
+### Permanent acid and sensory harm
+
+Two readings: any AcidBurn label or temporary pain qualifies, or real acid can leave permanent facial/sensory-part consequences. Consequence: cosmetic scar text can pass with restored capacities. Taken: actual damage-cause attribution, lasting disfigurement and sensory part injury/loss after normal healing/reload; no guaranteed outcome per hit and no newly invented probability. Evidence: OWNER:1794373071501926623; generic DamageInfo in RM_AcidAir.cs does not establish this. Vanilla permanent injury/part state is the implementation seam. Exceptional DLC healing and prosthetic replacement remain legitimate remedies; this is not an unhealable curse. Enumerated reachable outcomes and real witnesses replace an arbitrary random-batch quota.
+
+### 'Water is acid' versus every liquid sharing one invented chemistry
+
+Two readings: label all pools acid, or preserve actual toxic/acid identities and the non-potable-land promise. Consequence: terrain can corrode clothes while bottles secretly deliver clean water. Taken: actual delivered site pool, terrain/liquid/fluid/contact and transferred stock agree; do not infer pH from colour. Evidence: OWNER:1793251119194850898, record ground_pool_binding, FlowWorks registry/compatibility. Toxic and acid are not synonyms. Source mismatch between vanilla ToxicWater and owned poisoned-water rows is an implementation risk. Controlled fixtures cannot establish intended-site delivery. Native animals drinking native hazardous water comply with the standing 2026-11-01 ruling rather than becoming an exception to it.
+
+### 'Connected', 'thick', water and corners
+
+Two readings: Fire's neighbourhood alone defines the chain, or a currently combustible gas path through passable geometry does. Consequence: a 3x3 offer can ignite through a sealed diagonal corner, or fuel-less water Fire deletion can halt the cloud. Taken: density at the tunable combustion threshold, cardinal passability and both cardinal side cells for a diagonal; same law for emission overflow, transport and ignition. Water is not a barrier to the cloud. Evidence: OWNER:1794373071501926623, original gas question and RM_VentGas.cs/RM_VentGasKernel.cs. 'Gap' means continuously gas-free and wide enough to separate allowed combustion edges; independently propagated ordinary fires or blast splash are traced separately. No bar fixes the threshold, radius or throw distance.
+
+### Dramatic blast versus item teleport
+
+Two readings: any before/after moved item counts, or a readable gas-source blast causes the displacement. Consequence: harness moves can fake the selected experience, and a second local throw engine can diverge from the shared one. Taken: source/instigator-linked shared ExplosiveKnockback event, readable blast and identified loose goods motion, with position and cause traces. Evidence: OWNER:1794373071501926623 and OWNER:1794468874358971350, current compat registration. Anchored/blocked goods follow the shared engine's own rules, not a new universal throws-everything promise. The whole live review sees readability; state/geometry traces establish causation.
+
+### Saved gas versus a saved active front
+
+Two readings: saved gas bytes prove reload continuity, or the unfinished burn must actually resume. Consequence: over-water Fire disappearance can leave an unburned cloud after load. Taken: preserve pending combustion and original instigator with the same reachable continuation as uninterrupted play. Evidence: RM_VentGas.ExposeData saves bytes/cursors/counters, while RM_VentGasFront is transient and its own comment assumes live Fires suffice. The gas model must test the no-live-Fire state and scan-budget rollover. A debug reset of reused vents or a freshly seeded lane never proves saved continuation.
+
+### Useful collector versus a pipe network member
+
+Two readings: any piped tank can receive from a tap, or this local adapter outputs only into touching compatible tanks. Consequence: a visibly connected hose can never collect. Taken: the current ordinary footprint-edge/corner adjacency, bank delivery of whole units, normal FlowWorks plumbing after tank reception. Evidence: RM_GasTap.TouchingTanks/Deliver; 200 litres per bank unit is a check input, not a yield bar. Full/incompatible tank stops acceptance; full bank can forgo future uncaptured flow but not delete accepted stock. Destroying or moving infrastructure follows declared explicit loss rules.
+
+### Refining versus a free source of all supplies
+
+Two readings: condensate becomes both fresh water and reagent automatically, or each registered input/process has its own output and costs. Consequence: a staged product hides an unreachable water recipe and false economy. Taken: condensate -> reagent; actual toxic/acid-water detox -> fresh water; real power, cartridges, input and output room. Evidence: RM_FilterWorks.xml, RM_Liquid_VentCondensate.xml and FlowWorks process rows. No numerical production/price target belongs in bars. Stock conservation is checked at transactions and interruption boundaries, not inferred from a final pile.
+
+### Ruin, shrine and research gate
+
+Two readings: code coupling makes rig discovery and shrine necessary, or ordinary research can be separated from them. Consequence: simply turning ruins off strands the kept converter. Taken: normal Electricity-to-Filter-Works research stays, requiredAnalyzed/rig study and dressed ruin move; shrine moves in its Utinni owner. Evidence: RM_FilterWorksResearch.requiredAnalyzed, RM_CompCauldronRuinKit and Cauldron_OomoShrine.xml caller search. Code calls establish coupling, not experience need. Prior owner 'in' decisions are deferred under this version authority, never recast as his rejection. Default industry must be reachable without debug research or a single enabled extra.
+
+### Optional detail hidden inside a creature name
+
+Two readings: a roster member forces every inherited comp to remain, or keep ordinary animal life and split independent hazards/jobs. Consequence: dozens of extras survive under a 'life' heading. Taken: no animal evictions, actual diets/births/predation/products/flight remain; suush/garsulix death blasts, zisska fire-spit, bedbug paralysis, vexxiss policing/water conversion/drinking/prying/tracks move. Evidence: XML comp/deathAction and source tick/job callers. Ordinary biting remains ordinary Bite without paralysis. Crystalmit periodic manufactured bricks duplicate stonecutting and are recommended for retirement; EatWeirdFood remains. Ossrith shed crystals stay biological waste/product, but their separate uranium refinery recipe moves. A shared neighbouring species is a dependency-owned animal and is not rewritten here.
+
+### A bound animal versus a forest-growth engine
+
+Two readings: 'make them animals and make them bind' requires continual new groves, or binding is animal identity while sprouting/rooting are a separate renewal cycle. Consequence: removing growth code can accidentally erase home tether or galls. Taken: binding/rebinding/unbound text and ordinary edible galls remain; seeding and kin-rooting off. Evidence: OWNER:1792460018243907000 in record s_rhossak, RM_CompRhossakGrove.Check calls Bind, Sprout and Grove separately. No tree means ordinary unbound life, no vanish or replacement spawn. Bound tame animals follow the existing tether's wild-idle scope; binding does not cancel owner work. Season modelling cannot turn renewal back on to conceal an unsustainable first version.
+
+### Weather, animal or garden colour as a necessary warning
+
+Two readings: flowers, dew sprites, footprints and acoustic readings are necessary to understand chemistry, or actual vent state/puffs, animal change, message and inspect panes already communicate it. Consequence: decorative generators become mandatory unbounded spread systems. Taken: dew bead/swap and garden/tracking systems move off, current assay cue remains because selecting timber uses it. Cauldron-specific scanner payload is recommended for retirement because it repeats inspect state. Evidence: their distinct MapComponent tick/print/patch callers, and kept vent/assay inspect outputs. Disabling shore gardens cannot disable the kept vent EnsureGenerated path; disabling print metadata cannot clear the shared grid.
+
+### Superb settings versus one gate controlling unrelated features
+
+Two readings: field roundtrips count as control, or actual behaviours change at an advertised boundary. Consequence: turning future lined machines off can hide required suits, vessels and the hull rig together. Taken: independent gates, startup fallback/default/reset agreement, searchable usable UI, now/restart/future-local-map labels and non-destructive all-off. Evidence: RM_VexxithGearGate loops over all these defs/recipes; RM_CauldronFloraGate ties expansion and venom differently, while kissaveth damage and cut use separate comps. Feature-issued active jobs/wicks must stop at the named off boundary; save load cannot resurrect opt-out abilities. Off is not a cure or stock wipe. Normal ordinary/expanded plant roster stays on while its hazards are off.
+
+### Ship corrosion as ordinary acidic land
+
+Two readings: keeping ambient body acid requires ship hull maintenance and lining, or these are separate player loops. Consequence: a single BurnHull branch and warning become an extra passing system. Taken: ambient body exposure remains; ship corrosion/liner and upgraded filter/tap move, labelled future. Evidence: RM_AcidAir.MapComponentTick calls BurnPawns and separately guarded BurnHull; the 2026-10-09 source owner context retains the future ship promise. No Forge body-acid or hull service is disabled as collateral: the deferred hull opt-in is Cauldron-scoped, leaving the shared Forge consumer and its protection access intact. Ordinary material immunity, liquid containers/gates and suit/helmet remain required handling/protection, because without them the stated local livelihood route fails.
+
+### One whole system versus a short scripted 'prepared day'
+
+Two readings: a clean demonstration with frozen skies or a complete season with ordinary needs, ecology, weather and both work orders. Consequence: an isolated converter pass can hide a map-wide gas flood or labour/illness feedback. Taken: one whole bar, full map and season, real midpoint reload and main actions in another order, finite imports recorded. Evidence: owner dependable-industry answer and explicit cleansing whole requirement. Three-to-forty-colonist and late-save regimes are declared, never a single staged family. 'Manageable' means actual prepared duties complete with available workers and maintained useful supply, not a frame-rate threshold or immortality. Time compression advances real ticks, never skips plant/animal/dose/stock clocks. A storm not seen naturally requires a supplementary active cycle, not declaring a clear season conclusive.
+
+### Checks, rules, passing and unbuilt proof
+
+Two readings: every old live regression leaf is an owner bar, or experience/refusal is separate from our numbers, instruments and construction rules. Consequence: any art variant or balance retune reopens the entire mod. Taken: observer/settings as inherited floors and regression checks; timing, topology, research and transactional choices listed as attackable rules; biological/chemical/player outcomes remain ten bars. Evidence: standing owner bar ruling, 2026-11-16. Old live-tier assignment does not identify which cases genuinely need a visual look; the proposal explicitly distinguishes them. Historical receipts, Cold Reader exams and fake-game selftests remain historical/scoped, never current loaded-candidate proof.
+
+### Missing modeller or unknowable fun
+
+Two readings: invent a simulation that certifies fun/AI, or model only credible state/dynamics and keep visual/play judgement where needed. Consequence: a beautiful generated graph can bless a colony that does not work. Taken: specified generator, gas geometry/save, coupled season/work, liquid ledger and health state instruments; calibrate exact transitions against real traces, bound stochastic work/ecology, and retain live season/readability. Six grouped meetings are unknown, each names its model. No invented model claims to decide enjoyment or unattended visual flight. Those are predictions or the later owner-present view, not forgotten numeric criteria.
+
+## Second lazy-build attack
+
+After drafting, I tried to pass the scope with all sources already capped and no idle natives. The original warning wording demanded a puff decrease from zero. I repaired it: actors capable of the natural cue must visibly change; absent cues require the already retained timed message. An active natural-source case is still required, so the fallback cannot replace default readability proof.
+
+I also tried to pass with a loaded-but-never-used converter, a poison that decays only after the short scene, a crystalmit that makes bricks but starves, a saved gas byte grid with no burning front, a forty-worker colony sustained only by hidden imports, and an empty log because observation lost records. Each contradicts an explicit new bar outcome or its causal instrument, not a guessed implementation rule. The absence tests distinguish inert loaded defs from active things, so keeping source cannot masquerade as keeping an extra running. Remaining seasonal/topology/transaction/health risks are named unknowns; none is called measured or settled by prose.

@@ -1,0 +1,1272 @@
+{
+  "rows": [
+    {
+      "id": "biome_identity",
+      "what": "Owned Cauldron biome with world-map texture, roster weights, diseases, foraging and travel properties. Ships through the Baroque Biomes composition.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+        "src/RimMandrake/Biomes.compose.json",
+        "src/RimMandrake/Cauldron/About/About.xml"
+      ],
+      "proven": "stale",
+      "called_by": "Biomes.compose.json; local map biome lookups and vanilla travel/spawn services",
+      "serves": "land",
+      "fate": "land",
+      "why": "Designer decision: The fixed-world local map needs its own ground, roster and travel identity; no placement promise is retained.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "soils",
+      "what": "Own plain/rich terrain defs, distinct installed dark soil textures and fertility bands.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/TerrainDefs/RM_Cauldron_Terrains.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_Cauldron.xml terrainsByFertility; vanilla terrain rendering and planting",
+      "serves": "land",
+      "fate": "land",
+      "why": "Designer decision: Deleting distinguishable ordinary and rich dark ground defeats the wet mineral forest and buildable/plantable land.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "weather",
+      "what": "Scatter-dusk, vapour bank, dewfall and vent bloom provide different sky, visibility and wind conditions with no rain or snow. Dry thunderstorms remain in the biome weather table.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/WeatherDefs/RM_CauldronWeathers.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_Cauldron.xml weather table; RM_CauldronVents.cs; RM_VentBloomExposure.cs; RM_CauldronDewfallVisuals.cs",
+      "serves": "land",
+      "fate": "land",
+      "why": "Designer decision: The ruled rainless weather set is the ordinary sky and drives the vent cycle; deleting it defeats both place and signature.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "placement_legacy",
+      "what": "Existing tile-scoring worker with temperature, rainfall, elevation and seeded rarity gates. Its rarity setting is persistent.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronBiome.cs"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml workerClass; RM_CauldronMod.cs biomeRarityFactor",
+      "serves": "independent enrichment",
+      "fate": "recommend_retire",
+      "why": "Designer decision: The tile scorer and rarity UI promise alternative-world placement, forbidden in every version; recommend retirement, never defer worldgen.",
+      "needed_by": "",
+      "ticket": "T1"
+    },
+    {
+      "id": "settings",
+      "what": "Persistent feature toggles, strength sliders, scroll/search/collapse/reset UI, timing labels and Harmony failure notice.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs",
+        "src/RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs"
+      ],
+      "proven": "stale",
+      "called_by": "Tick, harvest, draw and startup callers in Cauldron Source; SettingsKit UI",
+      "serves": "vent chemistry cycle",
+      "fate": "needed_by",
+      "why": "Designer decision: Without usable persistent controls the standing settings ruling and safe disabling of major features fail.",
+      "needed_by": "standing settings floor",
+      "ticket": ""
+    },
+    {
+      "id": "flora_base",
+      "what": "Owned thornwood, dark crust, crystal flower, blood bouquet, raven nettle, red bugloss, giant agaritox, keening cordax, giant toxic flower and xithess form the base roster. Xithess yields chemfuel and selected chemotrophs declare zero light requirements.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_Cauldron.xml wildPlants; vanilla growth/harvest; RM_CondensateGardens.Participants; RM_CompRhossakGrove.Sprout",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: The ordinary standing plant cast supplies the mineral forest, growth and fuel; removing it leaves scenery without life. Ordinary roster growth stays; habitat generators are separate extras.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "forestry",
+      "what": "Successful thornwood harvest produces growth-scaled steel beside wood. Thornwood has elevated harvest work and the vanilla smithing sound.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+      ],
+      "proven": "stale",
+      "called_by": "Vanilla JobDriver_PlantWork -> GetAdditionalHarvestYield",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Wood with bioaccumulated metal is the named reason to work this forest; deleting the additional harvest makes it ordinary wood gathering.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "assay",
+      "what": "Inspect grade and expected metal amount follow growth and tuning. unripe/fair/rich/lode distinctions.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompMetalYield.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CompMetalYield.CompInspectStringExtra; RM_AssayFlecks -> GradeFraction",
+      "serves": "vent chemistry cycle",
+      "fate": "needed_by",
+      "why": "Designer decision: The worker must choose exposed harvests by their metal maturity; without the truthful inspect prediction this choice becomes blind.",
+      "needed_by": "life: readable mineral organisms",
+      "ticket": ""
+    },
+    {
+      "id": "assay_flecks",
+      "what": "Installed light and heavy fleck overlays follow assay grade through the Plant.Print hook and remesh on relevant settings changes.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Light.png",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_AssayFlecks/Flecks_Heavy.png"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CauldronDewfallVisuals.cs Plant.Print patch; RM_CauldronMod.RemeshAllMaps",
+      "serves": "vent chemistry cycle",
+      "fate": "needed_by",
+      "why": "Designer decision: Existing trunk-attached mineral flecks make metal-bearing timber readable before selection and distinguish it from conventional trees; an additional age coat is unnecessary.",
+      "needed_by": "life: readable mineral organisms",
+      "ticket": ""
+    },
+    {
+      "id": "dew_beads",
+      "what": "Chemical-dew filth during dewfall outside the home area, bounded density and automatic expiry. no contact dose added by this visual.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs"
+      ],
+      "proven": "missing",
+      "called_by": "RM_MapComponent_CauldronDewfall.MapComponentTick -> SpawnBeads",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Expiring decorative filth adds a separate surface-spawn system; the existing sky and wet plant art already communicate condensation.",
+      "needed_by": "",
+      "ticket": "T2"
+    },
+    {
+      "id": "dew_saturation",
+      "what": "Installed dew variants for crystal flower, blood bouquet, red bugloss, keening cordax and giant toxic flower swap with weather and remesh through the saturation hook.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronDewfallVisuals.cs",
+        "src/RimMandrake/Cauldron/Textures/Things/Plant/RM_Dewfall/RM_CrystalFlower_dew.png"
+      ],
+      "proven": "stale",
+      "called_by": "RM_DewfallSaturation graphic/print hooks and weather flip remesh",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Weather-swapped plant variants embellish the ruled dewfall sky; removing this swap leaves the land and vent cycle readable.",
+      "needed_by": "",
+      "ticket": "T3"
+    },
+    {
+      "id": "shore_gardens",
+      "what": "Roster-opted raven nettles colonise toxic-water shore cells at map creation and by slow sampling. existing zones/occupants respected.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_MapComponent_CondensateGardens.MapGenerated and MapComponentTick -> TryColonize",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Automatic nettle shore colonisation is a second growth system; the retained wild plant roster already supplies ordinary flora.",
+      "needed_by": "",
+      "ticket": "T4"
+    },
+    {
+      "id": "vent_gardens",
+      "what": "State-keyed rings: crystal at stable vents, blood bouquet at leaks, giant toxic flower after blowout. mapgen replaces eligible wild non-trees, later fills empty space.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CondensateGardens.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_MapComponent_CondensateGardens.MapGenerated and MapComponentTick -> TryPlant; calls EnsureGenerated on kept vents",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Habitat-keyed flower succession is a second growth system; vents already expose state in puffs and inspect text.",
+      "needed_by": "",
+      "ticket": "T5"
+    },
+    {
+      "id": "tsevrix_food",
+      "what": "Harvested toxic raw pulp and a stove recipe for safe roasted food, including corrected raw-food thought handling.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+        "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_TsevrixRoast.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronFloraItems.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Local forage needs a usable food route. Toxic pulp and its ordinary stove roast turn a hazardous native harvest into food; deleting the roast strands this staple.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "ixalith_beauty",
+      "what": "Fragile iridescent beauty plant with no harvest yield.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Ordinary stationary mineral plant appearance and vanilla beauty are land/life, without an independent interaction or state machine.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "fexxil_hazard",
+      "what": "Cobalt thicket with path cost, contact scratch/toxic hediff via EnvironmentalHazards, glass-shard harvest and startup venom toggle.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml",
+        "src/RimMandrake/Cauldron/Defs/DamageDefs/RM_FexxilScratch.xml",
+        "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Keep the physical thicket, path obstruction and harvested shard as ordinary ground cover; contact venom is split out and deferred.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "sessarix_fuel",
+      "what": "Slow chemfuel resin plant with explicit soil blacklist and fertility bypass. expansion roster switch.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Its rock habitat and ordinary fuel harvest supply mineral-ground flora and usable local fuel; no new substrate-spread mechanic is retained.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "kissaveth_gas",
+      "what": "Kissaveth releases toxic gas on external violence and plant cutting through damage and cut components.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronFloraExpansion.cs"
+      ],
+      "proven": "missing",
+      "called_by": "Vanilla damage -> CompGasOnDamage; PlantCollected -> RM_CompGasOnCut.PostDestroy",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Plant-triggered toxic leaks form an independent hazard; vent combustion already supplies the signature gas danger. The plant itself stays in the roster.",
+      "needed_by": "",
+      "ticket": "T6"
+    },
+    {
+      "id": "selvix_medicine",
+      "what": "Crystal-rimmed medicine plant yielding herbal medicine.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Ordinary native medicine harvest supports colony care; herbal medicine does not purge the signature metal load.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "suush_ecology",
+      "what": "Docile tamable atmospheric feeder: no food need, no attack tools, solitary native and directional art.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: A floating atmospheric feeder makes the sealed-or-chemistry-fed life visible; its lack of food need is how that animal lives, not a bonus production system.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "suush_flight",
+      "what": "Core flight stats and race fields support the suush floating behavior.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "vent chemistry cycle",
+      "fate": "needed_by",
+      "why": "Designer decision: A fictional flyer walking on the ground violates the standing flight ruling and defeats the retained suush identity.",
+      "needed_by": "life: readable mineral organisms",
+      "ticket": ""
+    },
+    {
+      "id": "suush_burst",
+      "what": "Bullet/Bomb starts wick, death backstop and toxic gas blast. melee is not a wick trigger.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proven": "stale",
+      "called_by": "Vanilla CompExplosive damage wick/death",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: A damage wick and death blast are a second ignition/hazard mechanism, unnecessary to a living atmospheric feeder or vent fire.",
+      "needed_by": "",
+      "ticket": "T7"
+    },
+    {
+      "id": "vexxiss_shear",
+      "what": "Solid giant, no explosive comp, tame-only shear of vexxith, living material supply, native art/variant and ordinary animal systems.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Tame-only living plate supply makes a mineral animal worth tending and supplies the protective material loop; without it protection has no local renewable source.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "water_poisoning",
+      "what": "Vexxiss converts clean named water terrains around its feet to toxic equivalents. per-animal warning letter/cooldown and independent toggles.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CompVexxissBehaviour.CompTick -> PoisonWaterAround -> MaybeWarnPoisonedWater",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Animal terrain conversion and its letters are independent of naturally hazardous pools and the vent cycle.",
+      "needed_by": "",
+      "ticket": "T8"
+    },
+    {
+      "id": "fire_warden",
+      "what": "Awake able vexxiss takes BeatFire or attacks reachable recorded igniter, spares same faction. bounded attack job.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CompVexxissBehaviour.CompTick -> TryWardFire -> vanilla BeatFire/AttackMelee",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Fire beating and hunting an igniter are independent animal jobs; the signature works with vanilla firefighting and containment.",
+      "needed_by": "",
+      "ticket": "T9"
+    },
+    {
+      "id": "vent_drinking",
+      "what": "Wild vexxiss seek drinkable vents and accumulate suppression until the vent falls silent. Disabling vent drinking aborts its walk and drink job.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+        "src/RimMandrake/Cauldron/Source/RM_CompVexxissBehaviour.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CompVexxissBehaviour.CompTick -> TryDrinkVent; RM_JobDriver_VexxissDrinkVent -> vent.Inhale",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Wild vent suppression adds resource competition and another vent recovery clock; capping already supplies the core hazard/industry choice.",
+      "needed_by": "",
+      "ticket": "T10"
+    },
+    {
+      "id": "vexxiss_tracks",
+      "what": "Walking vexxiss write prints to the CreatureBehaviors track grid. Cauldron saves maker and expiry metadata for hover identification and timed removal.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VexxissPrints.cs"
+      ],
+      "proven": "missing",
+      "called_by": "RM_CompVexxissBehaviour.CompTick -> RM_VexxissPrints.TryStep; shared track grid draw/hover",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Identified expiring footprints support animal tracking, a separate interaction beyond ordinary husbandry.",
+      "needed_by": "",
+      "ticket": "T11"
+    },
+    {
+      "id": "vent_sites",
+      "what": "Natural chemical vents on new Cauldron maps, safe start/spacing, mixed stable/leaking states and recent-blowout memory. generation idempotent and setting-gated.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "proven": "stale",
+      "called_by": "MapGenerated -> EnsureGenerated; deferred gardens also call EnsureGenerated; vanilla vent ticking",
+      "serves": "vent chemistry cycle",
+      "fate": "signature",
+      "why": "Designer decision: Vents must exist on the intended fixed-world local map for the warning, gas and tap chain to work; retain local dressing, never world-tile scoring.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "vent_cycle_falter",
+      "what": "Weather changes scale vent output. The transition into a bloom provides a falter, native hush jobs and an optional warning, with the hush count saved.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_MapComponent_CauldronVents.MapComponentTick; vent Tick; bloom exposure",
+      "serves": "vent chemistry cycle",
+      "fate": "signature",
+      "why": "Designer decision: The lull, idle native stillness and warning are the necessary preparation stage of the vent bloom chain.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "bloom_load",
+      "what": "Vent bloom adds a separate metal-load condition to eligible exposed flesh pawns while roofed pawns and biome-native animals are exempt. Resistance stats scale dose and vanilla weather toxin buildup is disabled.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VentBloomExposure.cs",
+        "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_MapComponent_VentBloomExposure.MapComponentTick -> HealthUtility.AdjustSeverity",
+      "serves": "vent chemistry cycle",
+      "fate": "signature",
+      "why": "Designer decision: Exposure is the bodily cost that makes shelter and capping consequential, with no duplicate vanilla weather dose.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "local_exposure",
+      "what": "Bloom dose strongest near recovering active vents, with residual floor and old-map/no-vent fallback.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_VentBloomExposure -> RM_MapComponent_CauldronVents.ExposureWeight",
+      "serves": "vent chemistry cycle",
+      "fate": "signature",
+      "why": "Designer decision: A distance-weighted dose makes the ground sources matter to work routes; deleting it makes capping locally irrelevant. Capped/silent vents contribute no local source; the residual ambient floor remains.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "gas_grid",
+      "what": "Separate persistent vent-gas byte grid, passability-aware emission/diffusion/dissipation and section rendering. vanilla gas storage kept separate.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs"
+      ],
+      "proven": "stale",
+      "called_by": "vent Tick -> AddGas; gas MapComponentTick and SectionLayer_VentGas",
+      "serves": "vent chemistry cycle",
+      "fate": "signature",
+      "why": "Designer decision: Combustible transported gas is the vent product that can be contained or harvested; a visual haze cannot substitute.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "gas_drift",
+      "what": "Wind-driven cloud movement, daily map-seeded heading, diagonal wall-corner guard and centroid tooling.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_MapComponent_VentGas.MapComponentTick -> RM_VentGasCells.Drift",
+      "serves": "vent chemistry cycle",
+      "fate": "signature",
+      "why": "Designer decision: Moving gas makes wind and containment matter; deleting movement leaves a static terrain trap instead of a breathing vent landscape.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "gas_ignition",
+      "what": "Thick vent gas ignites cell by cell, consumes gas, leaves toxic smoke and preserves the original instigator. A flame front lets combustion continue after a fuel-less ground fire expires.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VentGas.cs",
+        "ITEM:RIMMANDRAKE_FIND_WHY_GAS_CHAIN_STOPS_FIVE_OF_SEVENTEEN",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_VentGasKernel.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_MapComponent_VentGas.BurnScan -> Ignite; ExplosiveKnockback compat hook",
+      "serves": "vent chemistry cycle",
+      "fate": "signature",
+      "why": "Designer decision: The ruled connected combustible cloud and toxic smoke are a consequence of leaving the same useful chemistry uncapped.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "gas_tap",
+      "what": "A vent-only scaffold caps emission, banks condensate and delivers whole bank units to touching FlowWorks tanks. Each bank unit represents 200 litres.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_GasTap.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CompGasTap.CompTickRare; vent.CappingTap lookup",
+      "serves": "vent chemistry cycle",
+      "fate": "signature",
+      "why": "Designer decision: Capping and collecting the same vent is the safety-to-production link; without the collector the signature is only an avoidable weather tax.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "tap_prying",
+      "what": "Wild drinking damages ordinary scaffold. lined tap is pry-proof. prying toggle leaves drinking.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_JobDriver_VexxissDrinkVent tick -> capping tap TakeDamage",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Prying exists to support deferred wild vent competition; it is not needed for collecting or containing gas.",
+      "needed_by": "",
+      "ticket": "T12"
+    },
+    {
+      "id": "ruin_site",
+      "what": "Mapgen corroded filter rig with once-only dressed tanks/toxic water, broken pipes/slag, kept-clear study interaction ring.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronRuinKit.cs",
+        "src/RimMandrake/Cauldron/Defs/GenStepDefs/RM_CauldronRuinScatter.xml",
+        "src/RimMandrake/Cauldron/Patches/RM_CauldronRuinScatter_Register.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CauldronRuinScatter_Register.xml -> EH scatterer -> RM_CompCauldronRuinKit; Oomo patch shrineDefs",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: A dressed ruin with seeded stock is a separate discovery reward; ordinary research can unlock the kept converter without it.",
+      "needed_by": "",
+      "ticket": "T13"
+    },
+    {
+      "id": "study_research",
+      "what": "Study corroded rig in place using vanilla analysis system, unlock Filter-Works research, then normal research prerequisite.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_CauldronRuins.xml",
+        "src/RimMandrake/Cauldron/Defs/ResearchProjectDefs/RM_FilterWorksResearch.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_FilterWorksResearch.requiredAnalyzed -> RM_CorrodedFilterRig.CompAnalyzableUnlockResearch",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: The bespoke in-place rig discovery gate is an extra progression step. Retain normal Electricity-to-Filter-Works bench research separately.",
+      "needed_by": "",
+      "ticket": "T14"
+    },
+    {
+      "id": "filter_works",
+      "what": "Powered cartridge-fed Industrial refine/detox converter: condensate to reagent items, toxic/acid water to fresh, existing FlowWorks process and machine toggle.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+        "src/RimMandrake/Cauldron/Defs/LiquidDefs/RM_Liquid_VentCondensate.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_FilterWorksItems.xml"
+      ],
+      "proven": "stale",
+      "called_by": "FlowWorks CompLiquidConverter; normal building/research/refuel systems",
+      "serves": "vent chemistry cycle",
+      "fate": "signature",
+      "why": "Designer decision: Ordinary powered refining and detoxification are the useful return from mastering local chemistry, not a detached second industry.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "vexxith_material",
+      "what": "Rare Metallic/plate stuff. general structural strength, zero flammability and high heat armour. acid marker on stuff/Thing defs and guarded AcidBurn/BloomAcid damage markers.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_VexxithAcidImmunity.cs",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronItems.xml",
+        "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidDamage.xml"
+      ],
+      "proven": "stale",
+      "called_by": "Thing.TakeDamage prefix; FlowWorks material/container/gate handling; vanilla stuff use",
+      "serves": "vent chemistry cycle",
+      "fate": "needed_by",
+      "why": "Designer decision: Acid-resistant things are needed for the retained chemical handling/material reward. Removing material immunity makes the locally supplied protection unreadable or false; wearer sealing stays separate.",
+      "needed_by": "signature: protected chemical livelihood",
+      "ticket": ""
+    },
+    {
+      "id": "vexxith_door",
+      "what": "Plate-only acid-proof door, startup architect-menu gate, already built doors preserved.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VexxithDoor.xml"
+      ],
+      "proven": "stale",
+      "called_by": "Vanilla architect and construction; RM_VexxithDoorGate startup",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: A bespoke plate-only door duplicates a normal stuff-made door and is not needed for roofs or sealed fluid handling.",
+      "needed_by": "",
+      "ticket": "T15"
+    },
+    {
+      "id": "containers_gates",
+      "what": "Dedicated vexxith bottle, bucket and barrel recipes preserve material identity. FlowWorks recognizes vexxith containers and passes canal-gate acid damage through the material immunity hook.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/RecipeDefs/RM_VexxithContainers.xml",
+        "src/RimMandrake/Cauldron/Patches/RM_Cauldron_VexxithContainers.xml",
+        "src/RimMandrake/FlowWorks/Source/LiquidTypes/RM_ContainerMaterialMath.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_VexxithContainers recipes/patches; FlowWorks RM_ContainerMaterialMath and canal damage",
+      "serves": "vent chemistry cycle",
+      "fate": "needed_by",
+      "why": "Designer decision: Without normal acid-compatible vessels and gates local hazardous water cannot be moved and processed honestly; this is required handling equipment, not a new liquid engine.",
+      "needed_by": "signature: protected chemical livelihood",
+      "ticket": ""
+    },
+    {
+      "id": "lined_machines",
+      "what": "Vexxith filter vessel gives quarter cartridge use and acid immunity. lined vent tap acid/pry protection. existing rates/processes retained.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_FilterWorks.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_VentGasTap.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_VexxithGearGate; FlowWorks converter; RM_PryProofExtension in drink job",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Cartridge-saving filter and pry-proof tap are upgrades; ordinary machines perform the signature, and prying is deferred.",
+      "needed_by": "",
+      "ticket": "T16"
+    },
+    {
+      "id": "vexxith_gear",
+      "what": "Environmental suit/helmet and recipes with sealing, heat protection and acid-proof item markers. startup availability switch.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_VexxithSuit.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_VexxithGearGate recipes; pawn worn stats consumed separately by acid/bloom",
+      "serves": "vent chemistry cycle",
+      "fate": "needed_by",
+      "why": "Designer decision: A craftable complete suit and helmet make exposed routine work possible. Deleting this route leaves only roofs and breaks the source-backed prepared expedition promise.",
+      "needed_by": "signature: protected chemical livelihood",
+      "ticket": ""
+    },
+    {
+      "id": "acid_air",
+      "what": "Cauldron/Forge opt into hourly ambient AcidBurn on unroofed, unsealed non-native pawns, all factions. existing native/condition immunity rules and strength toggle.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+        "src/RimMandrake/Cauldron/Patches/RM_Cauldron_AcidAir.xml",
+        "src/RimMandrake/Cauldron/Source/Kernel/RM_AcidAirKernel.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_MapComponent_AcidAir.MapComponentTick -> BurnPawns; Cauldron and Forge patch opts in",
+      "serves": "land",
+      "fate": "land",
+      "why": "Designer decision: The source-backed ambient acidic environment explains sealed life and protected work even between blooms; removing it breaks the explicit acid-environment promise. No biome-specific heat is introduced.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "acid_hull",
+      "what": "Exposed player buildings on ship substructure slowly burn toward a 30% floor. warning once. vexxith immunity or one hull liner rig stops sampled damage.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Buildings/RM_HullLinerRig.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_MapComponent_AcidAir.MapComponentTick -> BurnHull; RM_HullLinerExtension; RM_VexxithGearGate",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Ship-building corrosion and map-wide hull lining add a separate vehicle maintenance loop; workers, pools and vent collection operate without it.",
+      "needed_by": "",
+      "ticket": "T17"
+    },
+    {
+      "id": "rhossak_bind",
+      "what": "Own rhossak/galled animals bind nearest thornwood, report bound/unbound, rebind after loss. existing CreatureBehaviors tether acts on wild idle wandering.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CompRhossakGrove.Check -> Bind -> CreatureBehaviors home tether",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: These are owner-ruled ordinary animals that bind, not disappearing dryads. Removing binding erases their explicit living identity; renewal is separately deferred.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "rhossak_sprout",
+      "what": "Sleeping seed-bearing rhossak seeds nearby eligible non-tree plants from current biome roster. galled excluded.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs"
+      ],
+      "proven": "missing",
+      "called_by": "RM_CompRhossakGrove.Check -> Sprout",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Sleep-seeding is an independent forest renewal loop. Ordinary plant growth and bound animals remain functional without it.",
+      "needed_by": "",
+      "ticket": "T18"
+    },
+    {
+      "id": "rhossak_grove",
+      "what": "Three nearby seed-bearing kin accumulate awake time, hold progress asleep, reset when apart. root thornwood with cooldown, bind trio and message.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CompRhossakGrove.cs"
+      ],
+      "proven": "missing",
+      "called_by": "RM_CompRhossakGrove.Check -> Grove -> TryRoot -> BindTo",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Kin-based new-grove rooting is the runner-up signature, not a necessary stage of vent chemistry.",
+      "needed_by": "",
+      "ticket": "T19"
+    },
+    {
+      "id": "galled_food",
+      "what": "Seedless galled rhossak sheds edible rhossak-meat galls periodically, including wild. own animal lifecycle.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Rhossak.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Periodic edible galls are the galled animal\u2019s ordinary food product; deleting them removes its livelihood role while no new job or growth system is needed.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "zisska",
+      "what": "Herd mineral rasper with toxic valued meat, trace steel on butcher. fire-spit ability/projectile when VEF is present.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml",
+        "src/RimMandrake/Cauldron/Defs/AbilityDefs/RM_FireSpit.xml",
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_CauldronItems.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Keep ordinary rasper husbandry, toxic meat and butcher steel as mineral food/resource life. Fire-spit is split out and deferred.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "eskith",
+      "what": "Ground-sensing small flock with native hush role and ordinary animal behaviour/art.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Flock movement and ground-sensing stillness make native life and the warning legible; deleting movement makes the warning indistinguishable from idle scenery.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "bedbug",
+      "what": "Owned bedbugs have paralysis bites, egg laying and hatching. EnvironmentalHazards owns their shared paralysis condition.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_BedBug.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Keep predation, ordinary bite damage, eggs and hatching as a living food chain. Paralysis is split out and deferred.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "crystalmit",
+      "what": "Owned crystal-bodied mineral eater with VEF guarded chunk-eating and random stone-block production.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Keep mineral eating and ordinary reproduction/carcass products: without eating stone this animal cannot live its stated mineral niche. Random manufactured-brick output is split out.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "garsulix",
+      "what": "Owned floating predator port: guarded VEF jelly production, asexual reproduction/floating, death explosion and native roster.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Garsulix.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Keep close-range predation, jelly, floating locomotion and asexual reproduction as its ordinary life/food chain; death explosion is split out.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "ossrith",
+      "what": "Radyak/ossrith owned port, milk, guarded crystal production and refinery recipe turning crystals into uranium.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Radyak.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Keep ordinary herd life, milk and shed mineral crystals: this is an animal whose body excretes the load, not an extra interaction. The uranium refining recipe is split out.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "sikka",
+      "what": "Owned Sikka Sikka, eggs/hatching, sheared silk and ordinary animal lifecycle.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_SikkaSikka.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Eggs, hatching and sheared silk are ordinary animal food and husbandry products; no bespoke job or hazard is needed.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "shared_cast",
+      "what": "Roster also uses owned neighbours' visceral, decay drake, bileworm and mullgoth. guards/load-set matter. These are real roster capabilities, not locally defined natives.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml",
+        "src/RimMandrake/Cauldron/About/About.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Retain current neighbour-owned roster members and their service-owned behaviours; evictions are stopped. Do not redesign the neighbouring species here.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "campaign_cast",
+      "what": "Utinni patch adds Neebray, Mynock, GraniteSlug, VentStalker, Lylek, Skalder and Silooth. campaign toxic-prized-meat layer remains external.",
+      "built": "present",
+      "evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Cauldron.xml",
+        "src/RimUtinni/UtinniPatches/Patches/Cauldron_ToxicPrizedMeat.xml",
+        "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_CauldronPrizedMeats.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
+      "serves": "life",
+      "fate": "life",
+      "why": "Designer decision: Retain campaign patch-added species and toxic/prized meat as ordinary animal encounters, with their names in the correct tier; no roster eviction.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "oomo_shrine",
+      "what": "Utinni-only grudging shrine patched into ruin-kit slot. Natural meditation focus and biome-local lore.",
+      "built": "present",
+      "evidence": [
+        "src/RimUtinni/UtinniPatches/Patches/Cauldron_OomoShrine.xml",
+        "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_OomoGrudgingShrine.xml"
+      ],
+      "proven": "stale",
+      "called_by": "Cauldron_OomoShrine.xml adds shrineDefs to RM_CorrodedFilterRig; RM_CompCauldronRuinKit dresses slot",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Meditation and campaign devotion are separate from surviving and refining vent chemistry; no retained consumer needs the shrine slot.",
+      "needed_by": "",
+      "ticket": "T20"
+    },
+    {
+      "id": "scanner_payload",
+      "what": "Optional AcousticScanner readings for vents, listening fauna, resin and hidden cavities. existing scanner owns the mechanic.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Patches/RM_AcousticPayload_Cauldron.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_AcousticPayload_Cauldron.xml guarded scanner payload consumer",
+      "serves": "independent enrichment",
+      "fate": "recommend_retire",
+      "why": "Designer decision: Bespoke scanner lore repeats vent state already readable by inspection and creates an optional provider surface; recommend retiring only this payload, not AcousticScanner.",
+      "needed_by": "",
+      "ticket": "T21"
+    },
+    {
+      "id": "growth_stalled",
+      "what": "ExplosiveGrowth data registers Cauldron in stalled terminator band, using shared engine rather than new local growth mechanics.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ExplosiveGrowth/RM_Cauldron_ExplosiveGrowthStalled.xml"
+      ],
+      "proven": "missing",
+      "called_by": "ExplosiveGrowth rule registry -> shared growth service",
+      "serves": "vent chemistry cycle",
+      "fate": "dependency",
+      "why": "Designer decision: Use the existing ExplosiveGrowth terminator growth regime; the biome must not implement a rival plant-growth engine.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "aerosol_neighbour",
+      "what": "Warscar marks Cauldron as polluted for its aerosol-screen system. consumer and mechanics live in Scarlands.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Scarlands/Patches/RM_AerosolScreen_PollutedBiomes.xml"
+      ],
+      "proven": "missing",
+      "called_by": "Scarlands RM_AerosolScreen_PollutedBiomes.xml -> shared consumer",
+      "serves": "vent chemistry cycle",
+      "fate": "dependency",
+      "why": "Designer decision: Scarlands owns this guarded polluted-biome consumer; preserve its existing classification without making it a Cauldron experience or redesigning it.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "trunk_deposit_coat",
+      "what": "An additional age-based scab and crystal-fan coat for existing thornwood is specified in the trunk-deposit design. The searched runtime and art implementation remains absent.",
+      "built": "absent",
+      "evidence": [
+        "design/Jawa/worldbuilding/biomes/cauldron_trunk_deposits_design_2026-11-02.md"
+      ],
+      "proven": "missing",
+      "called_by": "No runtime caller found; selftest_cauldron_trunk_deposits.py only design-pins proposed names",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: A separately specified age coat is absent; installed mineral art and assay flecks already communicate metal. No first-version dependency on another renderer.",
+      "needed_by": "",
+      "ticket": "none: already specified by cauldron_trunk_deposits_design_2026-11-02.md; future build is switched off and not a first-version obligation"
+    },
+    {
+      "id": "acid_pool_binding",
+      "what": "The owner-established toxic pools and acid-water experience depend on selected map terrain and FlowWorks liquid binding. Their delivered state requires a read of the intended saved site.",
+      "built": "unknown",
+      "evidence": [
+        "OWNER:1793251119194850898"
+      ],
+      "proven": "missing",
+      "called_by": "FlowWorks terrain/liquid/fluid registry and normal fill/pump/contact consumers",
+      "serves": "land",
+      "fate": "land",
+      "why": "Designer decision: The actual pools are hazardous ground/water, not a label or injected tank; without binding the wet landscape and processing input disagree.",
+      "needed_by": "",
+      "ticket": "T32"
+    },
+    {
+      "id": "lasting_metal_poisoning",
+      "what": "Owner-approved metal poisoning persists after leaving exposure and requires advanced medicine to purge.",
+      "built": "absent",
+      "evidence": [
+        "OWNER:1794373071501926623",
+        "src/RimMandrake/Cauldron/Defs/HediffDefs/RM_VentMetalLoad.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_VentBloomExposure adds RM_VentMetalLoad; no purge recipe located",
+      "serves": "vent chemistry cycle",
+      "fate": "needed_by",
+      "why": "Designer decision: The owner explicitly requires persistent poisoning and an advanced medical purge. Deleting persistence would make exposure a temporary cost and defeat the signature\u2019s lasting consequence.",
+      "needed_by": "signature: protected chemical livelihood",
+      "ticket": "T28"
+    },
+    {
+      "id": "permanent_acid_injuries",
+      "what": "Owner-approved acid exposure leaves permanent disfigurement and sensory-organ injury.",
+      "built": "unknown",
+      "evidence": [
+        "OWNER:1794373071501926623",
+        "src/RimMandrake/Cauldron/Source/RM_AcidAir.cs"
+      ],
+      "proven": "missing",
+      "called_by": "RM_AcidAir.BurnPawns -> TakeDamage(AcidBurn); shared pool contact damage",
+      "serves": "vent chemistry cycle",
+      "fate": "needed_by",
+      "why": "Designer decision: The owner explicitly requires enduring disfigurement and sensory injury from actual acid; generic temporary burns cannot supply that cost.",
+      "needed_by": "signature: protected chemical livelihood",
+      "ticket": "T29"
+    },
+    {
+      "id": "gas_knockback",
+      "what": "ExplosiveKnockback registers Cauldron ignition and supplies gas-clump bursts that displace nearby goods and eligible pawns. Cauldron owns gas transport and combustion.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackCompat.cs",
+        "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs"
+      ],
+      "proven": "stale",
+      "called_by": "ExplosiveKnockback RM_KnockbackCompat Cauldron ignition hook -> shared knockback component",
+      "serves": "vent chemistry cycle",
+      "fate": "dependency",
+      "why": "Designer decision: ExplosiveKnockback owns the ruled blast displacement. Cauldron must supply ignition events and original instigators, not implement another throwing engine.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "fexxil_venom",
+      "what": "Contact scratch poison from the retained physical fexxil thicket",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFloraExpansion.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_CauldronFloraGate removes contact comp when fexxilVenomEnabled is off; EH contact tick",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: A separate touch hazard; path obstruction and ordinary mineral cover survive without it.",
+      "needed_by": "",
+      "ticket": "T22"
+    },
+    {
+      "id": "zisska_firespit",
+      "what": "VEF fire-spit ability on zisska",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
+      ],
+      "proven": "missing",
+      "called_by": "VEF CompProperties_InitialAbility -> RM_FireSpit AbilityDef/projectile",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: A second ignition weapon; lightning and ordinary fire already ignite retained vent gas. Owner keep remains a future scope promise.",
+      "needed_by": "",
+      "ticket": "T23"
+    },
+    {
+      "id": "bedbug_paralysis",
+      "what": "Paralysis added by bedbug bites",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_BedBug.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_ParalysingBite tool -> maneuver -> DamageDef -> EH RM_Paralysis",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Additional disabling hazard; the retained predator still bites and reproduces without it.",
+      "needed_by": "",
+      "ticket": "T24"
+    },
+    {
+      "id": "crystalmit_bricks",
+      "what": "Periodic random manufactured stone blocks from crystalmit",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml"
+      ],
+      "proven": "missing",
+      "called_by": "VEF AnimalProduct -> RM_RandomBricks/randomItems; independent of EatWeirdFood",
+      "serves": "independent enrichment",
+      "fate": "recommend_retire",
+      "why": "Designer decision: Duplicates vanilla stonecutting without advancing vent chemistry; retain mineral feeding and corpse products.",
+      "needed_by": "",
+      "ticket": "T25"
+    },
+    {
+      "id": "garsulix_death_blast",
+      "what": "Small explosion on garsulix death",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Garsulix.xml"
+      ],
+      "proven": "missing",
+      "called_by": "race.deathAction -> DeathActionWorker_SmallExplosion",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: Independent death hazard; floating predation, jelly and fission continue without it.",
+      "needed_by": "",
+      "ticket": "T26"
+    },
+    {
+      "id": "ossrith_refinery",
+      "what": "Biofuel-refinery recipe for turning shed ossrith crystal into uranium",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_Radyak.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_RefineOssrithCrystal recipeUsers BiofuelRefinery",
+      "serves": "independent enrichment",
+      "fate": "next_version",
+      "why": "Designer decision: A separate uranium processing branch; ordinary mineral shedding remains a living body sign without that recipe.",
+      "needed_by": "",
+      "ticket": "T27"
+    },
+    {
+      "id": "ordinary_research",
+      "what": "Normal bench Filter-Works research after Electricity, decoupled from rig study",
+      "built": "absent",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ResearchProjectDefs/RM_FilterWorksResearch.xml"
+      ],
+      "proven": "missing",
+      "called_by": "Vanilla research -> RM_FilterWorks researchPrerequisites",
+      "serves": "signature: Filter-Works",
+      "fate": "needed_by",
+      "why": "Designer decision: Without a reachable ordinary unlock, deferring the rig strands the signature converter.",
+      "needed_by": "signature: Filter-Works",
+      "ticket": "T33"
+    },
+    {
+      "id": "flora_expansion_roster",
+      "what": "Retained ordinary expansion plants, including kissaveth without the deferred gas effect",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/BiomeDefs/RM_Cauldron.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_CauldronFloraGate startup; vanilla plant growth",
+      "serves": "ordinary land/life and shared services",
+      "fate": "life",
+      "why": "Designer decision: Ordinary mineral cover, food, medicine and fuel remain; the physical roster is not disabled to remove special hazards.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "creature_engine",
+      "what": "CreatureBehaviors home tether, ordinary shared behaviour and nonvanishing lifecycle",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompHomeTether.cs"
+      ],
+      "proven": "missing",
+      "called_by": "RM_CompRhossakGrove.BindTo -> SetHome",
+      "serves": "ordinary land/life and shared services",
+      "fate": "dependency",
+      "why": "Designer decision: Need bound wild idle wandering; tracking metadata belongs to the deferred footprints, not this dependency.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "hazards_engine",
+      "what": "EnvironmentalHazards shared condition and scatter services",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/EnvironmentalHazards/About/About.xml"
+      ],
+      "proven": "missing",
+      "called_by": "Cauldron About hard dependency; deferred fexxil/ruin callers; neighbouring species",
+      "serves": "ordinary land/life and shared services",
+      "fate": "dependency",
+      "why": "Designer decision: Keep load/condition ownership; no new Cauldron hazard or ruin is required from it at defaults.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "wreckage_engine",
+      "what": "Wreckage shared salvage engine in composed mod",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Biomes.compose.json"
+      ],
+      "proven": "missing",
+      "called_by": "Composed engine entry; no direct Cauldron runtime call found in searched local Source/Defs",
+      "serves": "ordinary land/life and shared services",
+      "fate": "dependency",
+      "why": "Designer decision: Need normal salvage coexistence only; first version has no bespoke wreck reward or ruin dependency.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "bones_engine",
+      "what": "Bones ordinary butchery byproducts",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Bones/Source/RM_Patch_ButcherBones.cs"
+      ],
+      "proven": "missing",
+      "called_by": "Pawn.ButcherProducts shared postfix",
+      "serves": "ordinary land/life and shared services",
+      "fate": "dependency",
+      "why": "Designer decision: Need existing meat and bone output to coexist without duplicate carcasses or disappearing pawns; no local redesign.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "liquid_engine",
+      "what": "FlowWorks authoritative identities, storage, containers, converter and stock conservation",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/FlowWorks/Source/RM_FluidIdentity.cs"
+      ],
+      "proven": "missing",
+      "called_by": "RM_GasTap; Filter-Works; dedicated containers; pool transfer",
+      "serves": "ordinary land/life and shared services",
+      "fate": "dependency",
+      "why": "Designer decision: Need one real liquid identity through source, vessel, line, conversion and output; no replacement registry.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "vef_engine",
+      "what": "Guarded VEF animal feeding, floating, reproduction and products",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CrystalMit.xml"
+      ],
+      "proven": "missing",
+      "called_by": "Retained crystalmit feeding, garsulix fission/jelly/floating and ossrith mineral shedding",
+      "serves": "ordinary land/life and shared services",
+      "fate": "dependency",
+      "why": "Designer decision: These services implement retained ordinary animals. Supported full composition includes the provider; provider absence checks load safety only, never fake ecology acceptance.",
+      "needed_by": "",
+      "ticket": ""
+    }
+  ]
+}
