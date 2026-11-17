@@ -1,0 +1,1 @@
+When a rule lives in Verse code no offline test runs, blind judges re-find its faults one per cycle: Explosive Knockback lost five cycles to it. Lift the DECISION (facts in, plan out) into a Verse-free file the selftest compiles, enumerate situations over it, and check the model against the game with staged cases (115 of 115) before trusting it (2026-11-17)

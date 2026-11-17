@@ -1,0 +1,1 @@
+A live proof scene that re-uses one site reads hidden state: Explosive Knockback's gas cells burst once per 600 ticks, so 24 of 115 map-agreement cases 300 ticks apart on one cell read 'nothing moved'; take sites in turn, and suspect the site before the mod when every OTHER case fails (2026-11-17)

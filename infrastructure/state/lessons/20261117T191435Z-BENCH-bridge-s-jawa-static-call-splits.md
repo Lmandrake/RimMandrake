@@ -1,0 +1,1 @@
+The bridge's jawa/static_call splits its args on a bar: a proof method that takes one string must not use '|' inside it (RM_KnockbackProof.MapCase read 'No public static MapCase with 2 params'); and ./game only stamps state, game_instance.py stop/launch is what closes and starts RimWorld (2026-11-17)
