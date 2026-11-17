@@ -21,6 +21,10 @@ judges, never one judge doing both: once a judge has a checklist, it looks only 
   vanilla object in or beside at least one crop for scale). If a matrix, a grid key: the variable values of each cell
   (e.g. "bottom: depth 4, water at the brim"), nothing more.
 - Never what was changed, fixed, measured or passed. A judge told "the hose was fixed" checks the hose and stops looking.
+- Resetting a scene is harness housekeeping (owner, 2026-11-17: *"We shouldn't be judging Test Reset as a mod
+  deliverable."*): stage each frame from the save taken before the scene. A judge's ODD or WRONG on a leftover of an
+  earlier scene (its filth, fire, scar or staged object) is the presenter's reset to redo, never a finding against the
+  mod, a Problem or a Polish entry.
 
 ## Pass 1: ONE fresh judge, open question, no checklist
 Give the images, the grid key and this question only: *"You are a RimWorld player who has just walked up to this part

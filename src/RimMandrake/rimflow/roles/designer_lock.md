@@ -42,8 +42,9 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    scenes the set names are rechecked against the scene contract (a scene added since stage 3 is not trusted by id).
 5. **File the mod item**, `--kind mod`, with `## verify` citing `design/concepts/<Mod>/tree.json` and the accepted tree
    hash. A new mod under another kind escapes the gate. The Producer admits it. Relentless runs `gate` at the pool, at the
-   lease, and at `enrol`. FlowWorks and GSS go to Relentless like every other mod. Every scene's missing entry point,
-   control or restoration step is a filed build item before this one.
+   lease, and at `enrol`. FlowWorks and GSS go to Relentless like every other mod. Every scene's missing entry point
+   or control is a filed build item before this one (resetting a scene is harness housekeeping, never a mod item:
+   owner 2026-11-17).
 6. Write `result.json` `done`. The launcher then marks the concept `locked`.
 
 Changing a locked tree: his word only, for an edit, removal or waiver (a `locked_change` decision with his OWNER event); a

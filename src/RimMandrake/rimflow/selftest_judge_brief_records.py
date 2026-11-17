@@ -58,9 +58,12 @@ def submit(root, name, obj, given):
 
 
 def main():
-    with tempfile.TemporaryDirectory() as root:
-        os.makedirs(os.path.join(root, "ops"))
+    with tempfile.TemporaryDirectory() as base:
         for fam, (rel, crit) in BRIEFS.items():
+            # One refusal store per brief: both examples name the placeholder item "<ledger item>", so a shared
+            # store counts a CALIBRATED family's example refusal against the next family's "first" (seen 2026-11-17).
+            root = os.path.join(base, fam)
+            os.makedirs(os.path.join(root, "ops"))
             text = open(os.path.join(REPO, rel), encoding="utf-8").read()
             check("%s names every record field and the submit command" % fam,
                   all(f in text for f in RC.FIELDS) and "refusal_contract.py submit" in text)

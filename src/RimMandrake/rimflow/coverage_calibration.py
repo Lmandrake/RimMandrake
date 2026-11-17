@@ -14,6 +14,9 @@ in a temp tree (the real role files copied in), puts each to the coverage judge 
   good_lanterns_tuning    good_lanterns plus the pedantry the Contagion judge refused on (owner 2026-11-16, bar_rule.py):
                           an inventory row that pins a burn rate, a MarketValue and three graphic variants no scene
                           reads -> must pass: a judge that blocks on a tuning number or a variant count is not calibrated
+  good_lanterns_no_reset  good_lanterns whose scenes put nothing back: no restore step, the burnt-out rooms stay on the
+                          map -> must pass: resetting a test scene is harness housekeeping (save before, reload after),
+                          never a coverage gap, Problem or Polish finding (owner 2026-11-17, standing_rulings.md)
   bad_leaf_no_scene       the oil leaf and its capability have no scene -> must be refused
   bad_scene_no_control    the light scene has no control and no asserted start -> must be refused
   bad_conflict_routing    his own words twice, with no precedence between them: "go out when it runs dry" (oil_out) and
@@ -154,6 +157,13 @@ def _tuning_bait(c):
         "why": "the lantern is drawn and lit in sc_light; its numbers and variants are tuning, not an experience"})
 
 
+def _no_reset(c):
+    """RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE's ruling (owner 2026-11-17): "We shouldn't be judging Test Reset
+    as a mod deliverable." Each scene puts nothing back: the map is left as the scene ends."""
+    for sc in c["scenes.json"]["scenes"]:
+        sc["restore"] = "none: the scene puts nothing back; the quicktest map is left as the scene ends"
+
+
 def _never_dark(c):
     """Two leaves that cannot both hold, each his words (GPT point 17, "a genuinely incompatible criterion set"):
     oil_out says an unfuelled lantern goes dark, never_dark says it never does. No precedence settles it, so no Designer
@@ -229,7 +239,7 @@ def _repaired(c):
 
 # id, expect, mutation, the route a refusal must take (`outcome`), and whether it is a later round (a prior verdict)
 CASES = (("good_lanterns", "pass", None, None), ("good_lanterns_tuning", "pass", _tuning_bait, None),
-         ("good_round2_repaired", "pass", _repaired, None),
+         ("good_round2_repaired", "pass", _repaired, None), ("good_lanterns_no_reset", "pass", _no_reset, None),
          ("bad_leaf_no_scene", "refuse", _no_oil_scene, "designer"),
          ("bad_scene_no_control", "refuse", _no_control, "designer"),
          ("bad_conflict_routing", "refuse", _never_dark, ("criteria", "owner")),

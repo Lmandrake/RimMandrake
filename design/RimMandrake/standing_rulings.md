@@ -882,3 +882,26 @@ and the system choked at their lack of precision I think."*
   status` and the maturation page print **HELD BY OWNER** with his words and date. A run already live on it finishes.
 - **Only he lifts it:** `python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"`, then publish
   `mod_owner_hold.json`; `mod_owner_hold.py show` lists the holds. A new hold is a row in the same file, with his words.
+
+## Resetting a test scene is harness housekeeping, never a mod deliverable — owner, 2026-11-17
+
+His typed answer to a Conductor card (Tue 2026-11-17) on the proposed Pyrelands polish entry
+`RIMMANDRAKE_RESTORE_PYRE_WIND_SCENE_GROUND` (put the scene's ground back after the wind-burn scene):
+*"This is dumb. It's not even an item at all. Just save the test in a file and reload... We shouldn't be judging Test
+Reset as a mod deliverable."*
+
+- **The decision:** resetting or cleaning up after a test scene is the harness's job: it saves the game before the scene
+  and reloads that save after. It is never a mod deliverable, never a build item for the mod, and never a coverage gap,
+  Problem or Polish finding. No judge (coverage, blind Judge, scene look) refuses, fails or files anything for how a
+  scene is reset.
+- **Why:** reset is the same for every scene and every mod, so it belongs once in the harness; judging it per mod spends
+  rewrite, exam and judge rounds on work no player ever sees.
+- **Superseded:** the polish entry `RIMMANDRAKE_RESTORE_PYRE_WIND_SCENE_GROUND` (deleted from
+  `design/concepts/Pyrelands/version/polish.md`; it was never filed); "restoration" as a judged part of the proof-scene
+  contract (`coverage_judge.py` prompt, `roles/designer_scene_contract.md`, `roles/designer_lock.md` step 5).
+- **What it does not change:** a scene still writes a `restore` line and the runner still records recovery
+  (`designer_stage.py scene-begin` / `scene-end`), so an interrupted run is still put back before the next one; the
+  asserted start and the control are still judged; a mod effect that persists in a real game (a scar that never fades,
+  terrain a mod corrupts) is still a mod finding, since that is play, not test reset.
+- **Owed:** the harness saves before and reloads after each scene where it does not yet
+  (`RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE`).

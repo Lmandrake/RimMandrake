@@ -38,8 +38,11 @@ most mods do not have mature testing scripts. That's part of what I'd like Desig
   (`designer_stage.py scene-begin <dir> --scene <id> --recovery "<what to put back>"`). A normal exit restores and closes
   it (`scene-end`); an `owner_review` scene is held instead (`scene-hold --until "<when>"`). After an interrupted run the
   open entry stays, and the launcher refuses every further run on the concept until it is restored or held.
-- The mod's script lacks a part (start assertion, control, restoration)? The stage 0 audit lists it; stage 3 files the
-  build item. You write no code.
+- **Reset is housekeeping** (owner, 2026-11-17: *"We shouldn't be judging Test Reset as a mod deliverable."*):
+  resetting or cleaning up a scene is the harness's job (save before, reload after). It is never a mod deliverable, a
+  build item for the mod, a coverage gap, or a Problem or Polish finding. Write the `restore` line; nobody judges it.
+- The mod's script lacks a part (start assertion, control)? The stage 0 audit lists it; stage 3 files the build item.
+  You write no code.
 - Each experience or walk leaf off the offline tier has at least one acceptance scene.
 
 The intent behind a scene is the approved requirement it cites (`requirement`), or the exploration's `question`.

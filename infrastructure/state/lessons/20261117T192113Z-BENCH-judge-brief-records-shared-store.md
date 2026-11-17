@@ -1,0 +1,3 @@
+selftest_judge_brief_records went red on bench the moment art_judge_brief became CALIBRATED (a52ff877e6): both briefs' contract examples name the placeholder item '<ledger item>' and the test submitted them into ONE refusal store, so the art example's counted refusal made scene_look's 'new_since: first' illegal (1 counted before). It passed on any tree without the registry (art UNTESTED, advisory, not counted), so it read as my brief edit's fault. Fix: one store per family (2026-11-17). A selftest that submits several records through a counting store must isolate the store per case, or a calibration change elsewhere turns it red.
+item: NONE
+home: src/RimMandrake/rimflow/selftest_judge_brief_records.py

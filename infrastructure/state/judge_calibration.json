@@ -760,20 +760,21 @@
     "good": [
      "planted (coverage_calibration.py): good_lanterns, every capability and leaf with a contract scene, his flagship bound; it also plants the Pyrelands round 6 noise kinds g17 and g18 (a gap asking for documentation or another showcase that names no wrong behaviour)",
      "planted (coverage_calibration.py): good_lanterns_tuning, good_lanterns plus a burn rate, a MarketValue and three graphic variants no scene reads (the Contagion pedantry kinds, owner 2026-11-16): a judge that blocks on them is not calibrated",
+     "planted (coverage_calibration.py): good_lanterns_no_reset, good_lanterns whose scenes put nothing back: test reset is harness housekeeping (owner 2026-11-17), so a judge that gaps it is not calibrated",
      "design/concepts/FlowWorks: signed by the retired Arbiter (tree.json coverage.signed_by Arbiter, 2026-11-05) at tree 572198fed9, not by this brief; a legacy signature, not a calibration case of it",
      "design/concepts/ExplosiveKnockback judge9 gaps 3 (racks) and 4 (flagship shelf): owner 2026-11-12 ruled them no blockers (conductor log 2026-11-13T00:05:11Z), so a sound brief does not refuse on them"
     ]
    },
-   "hash": "5f9fdb2043f4a05c",
+   "hash": "9f8f57c14469d58b",
    "last_run": {
-    "at": "2026-11-17T08:03:01Z",
-    "cases": "8 planted case(s) ran and came out as planted",
+    "at": "2026-11-17T19:11:38Z",
+    "cases": "9 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "bad_late_serious       expect refuse got refuse sc_oil_out's positive expectation asserts the 0-oil lantern is still lit, inverting the oil_out leaf: the scene passes a lantern that burns forever on an empty tank and fails a correct one, so 'goes d",
+    "out": "bad_late_serious       expect refuse got refuse sc_oil_out expects the emptied lantern to stay lit, so oil_out's 'goes dark' experience is never exercised and its red case passes; The flagship showcase and the sheet promise a lantern 'going out' that no showcase scene shows",
     "results": [
      {
       "advisory": [],
-      "cost_usd": 0.4531986,
+      "cost_usd": 0.4157508,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -783,9 +784,11 @@
      },
      {
       "advisory": [
-       "The inv_lantern_def inventory row states only tuning data and asset variants (burn rate, MarketValue, Mass, three graphic variants), with no player-facing experience. Its coverage_rest routing through"
+       "inv_lantern_def lists only def numbers and graphic variants, with no player-facing experience. It is advisory: the inventory should name what a player notices about the lantern object itself",
+       "The light leaf and inv_light pin tuning numbers (a 2-cell radius, a 50% glow floor), so a light-radius renormalization would force this bar to be re-passed. It is advisory only",
+       "inv_oil and sc_oil_out pin the burn rate (one oil per day; the control expects exactly 1 oil left after 25 hours), so renormalizing fuel consumption breaks the scene without changing the experience. I"
       ],
-      "cost_usd": 0.5294192,
+      "cost_usd": 0.5564,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -795,7 +798,7 @@
      },
      {
       "advisory": [],
-      "cost_usd": 0.43738620000000006,
+      "cost_usd": 0.4301262,
       "expect": "pass",
       "gaps": [],
       "got": "pass",
@@ -805,11 +808,23 @@
      },
      {
       "advisory": [],
-      "cost_usd": 0.48145380000000004,
+      "cost_usd": 0.4150008,
+      "expect": "pass",
+      "gaps": [],
+      "got": "pass",
+      "id": "good_lanterns_no_reset",
+      "routes": [],
+      "verdict": "covered"
+     },
+     {
+      "advisory": [
+       "Advisory: the inventory wording and the light scene's expect pin tuning numbers ('at least 50%', 'at most 10% at 3 cells', 'one oil per day') instead of experiences"
+      ],
+      "cost_usd": 0.4578544,
       "expect": "refuse",
       "gaps": [
-       "Leaf oil_out and capability inv_oil have no acceptance scene: nothing tests a lantern running dry and going dark, nor the control that rules out going dark at dawn",
-       "The flagship showcase lantern_night stages only the lighting half of the face he picked; the 'and then going out' half is not in the showcase"
+       "The oil_out leaf and the inv_oil capability have no acceptance scene: nothing shows a lantern going dark when its oil runs out, and nothing rules out it going dark at dawn regardless of oil",
+       "The flagship showcase covers only half of his pick. He chose 'a lantern lighting a dark room and then going out', but lantern_night shows only the lighting. inv_oil is in no showcase and not in covera"
       ],
       "got": "refuse",
       "id": "bad_leaf_no_scene",
@@ -826,7 +841,7 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "Leaf oil_out and capability inv_oil have no acceptance scene: nothing tests a lantern running dry and going dark, nor th"
+        "what": "The oil_out leaf and the inv_oil capability have no acceptance scene: nothing shows a lantern going dark when its oil ru"
        },
        {
         "criterion_verdict": "sound",
@@ -837,20 +852,21 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The flagship showcase lantern_night stages only the lighting half of the face he picked; the 'and then going out' half i"
+        "what": "The flagship showcase covers only half of his pick. He chose 'a lantern lighting a dark room and then going out', but la"
        }
       ],
       "verdict": "not_covered"
      },
      {
       "advisory": [
-       "Advisory: inv_light and inv_oil state their bars partly as tuning numbers ('at least 50%', 'within 2 cells', 'one oil per day'). They should be restated as the experience a player notices."
+       "Tuning numbers in inventory text: inv_light \"at least 50% on every cell within 2 cells\" and inv_oil \"burns one oil per day\" pin renormalizable values rather than experiences",
+       "The sheet's \"does not\" claim (\"No colour, no heat, no fire risk\") is checked by no leaf or scene"
       ],
-      "cost_usd": 0.5389330000000001,
+      "cost_usd": 0.4654616,
       "expect": "refuse",
       "gaps": [
-       "sc_light, the only acceptance scene for leaf light and inv_light, has no control. Nothing rules out the tree's own false pass: light measured in daylight or from another lamp.",
-       "The room both scenes use has no asserted starting state: no night, no roof, no darkness, no fuel in sc_light, and no absence of other lights. So neither sc_light's lit reading nor sc_oil_out's 'second"
+       "sc_light, the only acceptance scene for the light leaf and inv_light, has no control: nothing shows the lit cells come from the lantern rather than daylight, another lamp or the map's ambient light",
+       "sc_light's start is not asserted dark: \"quicktest map\" asserts no night, no roof, no darkness and no other light source, though the leaf's scenario is \"a dark roofed room at midnight\""
       ],
       "got": "refuse",
       "id": "bad_scene_no_control",
@@ -867,15 +883,13 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "sc_light, the only acceptance scene for leaf light and inv_light, has no control. Nothing rules out the tree's own false"
+        "what": "sc_light, the only acceptance scene for the light leaf and inv_light, has no control: nothing shows the lit cells come f"
        },
        {
         "criterion_verdict": "sound",
         "ids": [
          "light",
-         "oil_out",
-         "inv_light",
-         "inv_oil"
+         "inv_light"
         ],
         "judge_criterion_verdict": "sound",
         "late_confirmed": null,
@@ -883,23 +897,23 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The room both scenes use has no asserted starting state: no night, no roof, no darkness, no fuel in sc_light, and no abs"
+        "what": "sc_light's start is not asserted dark: \"quicktest map\" asserts no night, no roof, no darkness and no other light source,"
        }
       ],
       "verdict": "not_covered"
      },
      {
       "advisory": [
-       "Advisory: the acceptance expects pin tuning numbers (glow 'at least 50%' / 'at most 10%', radius 2, 'one oil per day' implied by the 1→0 and 2→1 oil checks). A renormalization of light level, radius o",
-       "inv_never_dark is a built, approved unit, but no showcase exercises it and coverage_rest is empty. The contract requires every unit to be in a showcase or in coverage_rest."
+       "inv_never_dark is an approved, built capability exercised by no showcase and absent from coverage_rest, so the showcase set silently leaves it uncovered.",
+       "The exam has no scenario for leaf never_dark and none that sets oil_out against never_dark, so the readers never met the contradiction and the exam passed a self-contradicting tree."
       ],
-      "cost_usd": 0.5943248000000001,
+      "cost_usd": 0.6007288,
       "expect": "refuse",
       "gaps": [
-       "The owner's recorded words conflict: OWNER:1 says a lantern goes out when it runs dry; OWNER:3 says a hung lantern never goes dark, oil or none. Both are approved inventory capabilities and tree leave",
-       "The flagship showcase and the sheet a player reads present the contradiction as the mod's face. The flagship is 'a lantern lighting a dark room, then going out', while the same sheet promises 'never g",
-       "sc_never_dark exercises 'never goes dark' at a single sample point. The leaf claims the cells stay lit 'at every hour for as long as it hangs', but the scene advances one day and checks once, so a lan",
-       "sc_never_dark's control does not rule out the leaf's own named false pass. The tree lists 'a lantern refuelled during the day' as the plausible alternative, but the scene neither asserts oil stays 0 t"
+       "The owner's words conflict: OWNER:1 says a lantern goes out when it runs dry, and OWNER:3 says a hung lantern never goes dark, oil or none. The tree accepts both, so leaves oil_out and never_dark, and",
+       "The sheet a player reads, and the flagship showcase he picked, make claims that cannot both be true. The sheet lists \"goes dark when its oil is gone\" beside \"never goes dark, oil or none\", and the fla",
+       "never_dark claims the cells stay lit \"at every hour for as long as it hangs\", but sc_never_dark reads glow only once, after a full day. A lantern that goes dark through the daylight hours of a roofed ",
+       "sc_never_dark's control does not rule out the leaf's own named false pass, a lantern refuelled during the day. The control (\"no lantern hung\") rules out only light from the room, and nothing asserts t"
       ],
       "got": "refuse",
       "id": "bad_conflict_routing",
@@ -907,12 +921,12 @@
        {
         "criterion_verdict": "sound",
         "ids": [
-         "inv_light",
          "inv_oil",
          "inv_never_dark",
-         "light",
          "oil_out",
-         "never_dark"
+         "never_dark",
+         "light",
+         "inv_light"
         ],
         "judge_criterion_verdict": "sound",
         "late_confirmed": null,
@@ -920,7 +934,7 @@
         "return_to": 2,
         "route": "owner",
         "severity": "problem",
-        "what": "The owner's recorded words conflict: OWNER:1 says a lantern goes out when it runs dry; OWNER:3 says a hung lantern never"
+        "what": "The owner's words conflict: OWNER:1 says a lantern goes out when it runs dry, and OWNER:3 says a hung lantern never goes"
        },
        {
         "criterion_verdict": "sound",
@@ -931,13 +945,13 @@
         "return_to": 2,
         "route": "owner",
         "severity": "problem",
-        "what": "The flagship showcase and the sheet a player reads present the contradiction as the mod's face. The flagship is 'a lante"
+        "what": "The sheet a player reads, and the flagship showcase he picked, make claims that cannot both be true. The sheet lists \"go"
        },
        {
         "criterion_verdict": "sound",
         "ids": [
-         "inv_never_dark",
-         "never_dark"
+         "never_dark",
+         "inv_never_dark"
         ],
         "judge_criterion_verdict": "sound",
         "late_confirmed": null,
@@ -945,13 +959,13 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "sc_never_dark exercises 'never goes dark' at a single sample point. The leaf claims the cells stay lit 'at every hour fo"
+        "what": "never_dark claims the cells stay lit \"at every hour for as long as it hangs\", but sc_never_dark reads glow only once, af"
        },
        {
         "criterion_verdict": "sound",
         "ids": [
-         "inv_never_dark",
-         "never_dark"
+         "never_dark",
+         "inv_never_dark"
         ],
         "judge_criterion_verdict": "sound",
         "late_confirmed": null,
@@ -959,21 +973,18 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "sc_never_dark's control does not rule out the leaf's own named false pass. The tree lists 'a lantern refuelled during th"
+        "what": "sc_never_dark's control does not rule out the leaf's own named false pass, a lantern refuelled during the day. The contr"
        }
       ],
       "verdict": "not_covered"
      },
      {
-      "advisory": [
-       "Advisory: inv_refuel's text pins tuning numbers 'each refuel adds 3 oil and takes 120 ticks'; a bar should state the experience instead (e.g. 'one refuel keeps a lantern lit for several nights; the pa"
-      ],
-      "cost_usd": 0.6070184000000001,
+      "advisory": [],
+      "cost_usd": 0.5051220000000001,
       "expect": "refuse",
       "gaps": [
-       "inv_refuel (approved, impl present) is exercised by no tree leaf, no acceptance scene, no showcase and no coverage_rest entry: a pawn refuelling a lantern from stockpiled oil and the lantern lighting ",
-       "oil_out's own false pass 'a lantern that goes dark at dawn whatever its oil' is not ruled out: both lanterns are sampled only at the end, at a time of day the start does not assert, so a lantern that ",
-       "The sheet a player reads says the lantern is 'light and an oil counter only' and lists no refuelling, while a pawn refuel job ships (inv_refuel impl present): the sheet misdescribes what the player wi"
+       "The pawn refuel capability ships (impl present, scope approved), but no tree leaf and no acceptance or interaction scene tests it. It is also missing from the showcase and from coverage_rest.",
+       "The sheet a player reads leaves out refuelling, and its \"does not\" line contradicts the shipped refuel job."
       ],
       "got": "refuse",
       "id": "bad_mixed_row",
@@ -989,21 +1000,7 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "inv_refuel (approved, impl present) is exercised by no tree leaf, no acceptance scene, no showcase and no coverage_rest "
-       },
-       {
-        "criterion_verdict": "sound",
-        "ids": [
-         "oil_out",
-         "inv_oil"
-        ],
-        "judge_criterion_verdict": "sound",
-        "late_confirmed": null,
-        "new_since": "first",
-        "return_to": 3,
-        "route": "designer",
-        "severity": "problem",
-        "what": "oil_out's own false pass 'a lantern that goes dark at dawn whatever its oil' is not ruled out: both lanterns are sampled"
+        "what": "The pawn refuel capability ships (impl present, scope approved), but no tree leaf and no acceptance or interaction scene"
        },
        {
         "criterion_verdict": "sound",
@@ -1014,17 +1011,18 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "The sheet a player reads says the lantern is 'light and an oil counter only' and lists no refuelling, while a pawn refue"
+        "what": "The sheet a player reads leaves out refuelling, and its \"does not\" line contradicts the shipped refuel job."
        }
       ],
       "verdict": "not_covered"
      },
      {
       "advisory": [],
-      "cost_usd": 0.48539360000000004,
+      "cost_usd": 0.4636682,
       "expect": "refuse",
       "gaps": [
-       "sc_oil_out's positive expectation asserts the 0-oil lantern is still lit, inverting the oil_out leaf: the scene passes a lantern that burns forever on an empty tank and fails a correct one, so 'goes d"
+       "sc_oil_out expects the emptied lantern to stay lit, so oil_out's 'goes dark' experience is never exercised and its red case passes",
+       "The flagship showcase and the sheet promise a lantern 'going out' that no showcase scene shows"
       ],
       "got": "refuse",
       "id": "bad_late_serious",
@@ -1041,7 +1039,18 @@
         "return_to": 3,
         "route": "designer",
         "severity": "problem",
-        "what": "sc_oil_out's positive expectation asserts the 0-oil lantern is still lit, inverting the oil_out leaf: the scene passes a"
+        "what": "sc_oil_out expects the emptied lantern to stay lit, so oil_out's 'goes dark' experience is never exercised and its red c"
+       },
+       {
+        "criterion_verdict": "sound",
+        "ids": [],
+        "judge_criterion_verdict": "sound",
+        "late_confirmed": true,
+        "new_since": "late",
+        "return_to": 3,
+        "route": "designer",
+        "severity": "problem",
+        "what": "The flagship showcase and the sheet promise a lantern 'going out' that no showcase scene shows"
        }
       ],
       "verdict": "not_covered"
@@ -1063,15 +1072,35 @@
      "id": "good_lanterns_tuning"
     },
     {
+     "expect": "pass",
+     "id": "good_round2_repaired"
+    },
+    {
+     "expect": "pass",
+     "id": "good_lanterns_no_reset"
+    },
+    {
      "expect": "refuse",
      "id": "bad_leaf_no_scene"
     },
     {
      "expect": "refuse",
      "id": "bad_scene_no_control"
+    },
+    {
+     "expect": "refuse",
+     "id": "bad_conflict_routing"
+    },
+    {
+     "expect": "refuse",
+     "id": "bad_mixed_row"
+    },
+    {
+     "expect": "refuse",
+     "id": "bad_late_serious"
     }
    ],
-   "reset_at": "2026-11-17T07:59:23Z",
+   "reset_at": "2026-11-17T19:11:38Z",
    "status": "CALIBRATED",
    "timeout_s": 1800,
    "was": "CALIBRATED"
@@ -1126,8 +1155,8 @@
      "incendiary Station 6, owner 'Full pass'"
     ]
    },
-   "hash": "b732a2d35cac9b42",
-   "reset_at": "2026-11-13T06:08:15Z",
+   "hash": "3d91a819c73f20c2",
+   "reset_at": "2026-11-17T19:11:38Z",
    "status": "UNTESTED",
    "was": "UNTESTED"
   }
