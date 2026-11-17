@@ -14,6 +14,19 @@
       "ticket": "none"
     },
     {
+      "id": "toxic_pools",
+      "what": "Stationary damaging toxic pools with recognisable sulfuric-looking edges and the ruled irradiated inner patches.",
+      "built": "absent",
+      "evidence": "design/Jawa/worldbuilding/the_forgotten_war.md:217-244, especially hazards row at line 232; design/Jawa/worldbuilding/biomes/the_rust_cathedral.md §6.5, §8, §9; design/Jawa/reconciled_lore/03_deep_history.md:127-130. Search of src/RimMandrake/RustCathedral source/defs/patches finds no ToxicWater, IrradiatedWater or SulfuricWater consumer; Defs/BiomeDefs/RM_RustCathedral_Biome.xml wires only ordinary metal ground and water edges.",
+      "proven": "missing",
+      "called_by": "No Cathedral pool-placement or hazard-terrain consumer found. T43 must connect local layout to the existing ruled terrain hazard providers.",
+      "serves": "Land has a visible stationary exposure cost to route around, alongside garrisons and sacrilege.",
+      "fate": "land",
+      "why": "Owner ruling 2026-08-19 sets pools, garrisons and sacrilege together. Deleting damaging pools leaves a dry scrap maze whose only costs are trespass; sulfuric-looking harmless water cannot satisfy the ruled land.",
+      "needed_by": "none",
+      "ticket": "T43"
+    },
+    {
       "id": "bulk_salvage",
       "what": "Deck plate yields steel; dead-smartsteel veins yield a valuable commodity; rock forcing and two-tier scatter.",
       "built": "present",
@@ -41,14 +54,14 @@
     },
     {
       "id": "sacred_economics",
-      "what": "Generic sacred-building offence -> Cathedral standing/irritation and bounded hostility economics.",
+      "what": "Sacred-building offences debit the campaign-wide Free Droid Enclave relationship, with vanilla diplomatic isolation at hostility; saved local hum standing mirrors sacred debt without replacing faction goodwill.",
       "built": "absent",
-      "evidence": "src/RimMandrake/RustCathedral/Defs/ThingDefs_Buildings/RM_SacredWall_Conduit.xml; RustCathedral Source, Defs and Patches; src C# references to RM_SacredCellExtension, RM_SacredWall_Conduit and AffectStanding; RUST_CATHEDRAL_MECHANICS_1; RUSTCATHEDRAL_GOODWILL_FLOOR_1",
+      "evidence": "src/RimMandrake/RustCathedral/Defs/ThingDefs_Buildings/RM_SacredWall_Conduit.xml; RustCathedral Source, Defs and Patches; src C# references to RM_SacredCellExtension, RM_SacredWall_Conduit and AffectStanding; RUST_CATHEDRAL_MECHANICS_1; RUSTCATHEDRAL_GOODWILL_FLOOR_1; design/Jawa/worldbuilding/the_forgotten_war.md:229-244; src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaFreeDroidEnclaves.xml",
       "proven": "missing",
       "called_by": "No general caller found; GenStep_ScatterSacredWalls only SetFaction; special RM_WornBitDig.MineOne debits its own path.",
-      "serves": "Protected structures without accountable damage and repayment make the temper arbitrary or false.",
+      "serves": "Desecration has a readable lasting warning even below hostility and ultimately costs Enclave contact; moving to another Cathedral tile cannot forgive it.",
       "fate": "signature",
-      "why": "Designer delegated call: Protected structures without accountable damage and repayment make the temper arbitrary or false.",
+      "why": "The 2026-08-19 owner ruling explicitly assigns sacrilege to the non-permanent-enemy Enclaves. The goodwill-floor ledger addresses only the permanent-enemy Arsenal and does not waive that relationship.",
       "needed_by": "none",
       "ticket": "T30"
     },
@@ -67,14 +80,14 @@
     },
     {
       "id": "attitude_state",
-      "what": "Saved standing and decaying irritation, band hysteresis and unified public display; passive worst-band debit inventoried separately.",
+      "what": "Existing saved local fast irritation/standing, band hysteresis and public display; required global sacred-debt mirror and unpaid-sacred warning floor are absent and specified under T30. Passive worst-band debit inventoried separately.",
       "built": "present",
       "evidence": "src/RimMandrake/RustCathedral/Source/Hum/RM_AttitudeKernel.cs; src/RimMandrake/RustCathedral/Source/Hum/RM_MapComponent_BiomeAttitude.cs; src/RimMandrake/RustCathedral/Defs/RM_BiomeAttitudeDefs/RM_RustCathedralAttitude.xml",
       "proven": "stale",
       "called_by": "Fishing scan/catch, watched bolt hooks, drill response; GetBand consumers dance, reader and campaign/repair/hull adapters.",
-      "serves": "The single saved fast irritation/slow standing ledger connects exploitation, warning, defence and recovery.",
+      "serves": "Local irritation can recover, while unpaid sacred damage remains perceptible across maps and cannot be mistaken for forgiveness.",
       "fate": "signature",
-      "why": "Designer delegated call: The single saved fast irritation/slow standing ledger connects exploitation, warning, defence and recovery.",
+      "why": "Designer delegated warning-floor rule makes the November repayment answer observable below the Enclave hostility threshold; global sacred receipts preserve the August diplomatic ruling.",
       "needed_by": "none",
       "ticket": "T31"
     },
@@ -594,7 +607,7 @@
       "called_by": "EnvironmentalHazards arrival-letter extension delivery.",
       "serves": "Readable local hazards before first work.",
       "fate": "needed_by",
-      "why": "Designer delegated call: Deleting the concise heat, sacred-property and warning advice would leave a newcomer without the minimum safe actions. Keep one arrival delivery; no narrative, campaign truths or repeated reminders.",
+      "why": "Deleting concise heat, toxic-pool, sacred-property and warning advice leaves a newcomer without minimum safe actions. Keep one arrival delivery; no narrative, campaign truths or repeated reminders.",
       "needed_by": "signature warning and land safety",
       "ticket": "T32"
     },
@@ -730,14 +743,14 @@
     },
     {
       "id": "restitution",
-      "what": "Nonritual material repayment for sacred standing debt",
+      "what": "Nonritual material repayment for global sacred receipts and local deep-intrusion receipts; sacred credit restores the actual Enclave debit and removes its persistent hum floor.",
       "built": "absent",
       "evidence": "design/RimMandrake/designer_codex_2026-11-09/RustCathedral/ANSWERS_OWNER.md; src/RimMandrake/RustCathedral/Source/Hum/RM_MapComponent_BiomeAttitude.cs",
       "proven": "missing",
       "called_by": "No general standing-credit caller found; existing AffectStanding supports negative inputs.",
-      "serves": "Signature recovery.",
+      "serves": "The owner-required comfortable return has real warning and diplomatic effects, not just a local ledger increment.",
       "fate": "signature",
-      "why": "Designer delegated call: Without a costly concrete repayment action the November return ruling cannot be played; waiting and repairing a ritual are not substitutes.",
+      "why": "Without reachable costly repayment the sacred warning floor and Enclave isolation have no defined player-controlled restoration route.",
       "needed_by": "none",
       "ticket": "T30"
     },

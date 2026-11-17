@@ -1,0 +1,643 @@
+{
+ "mod": "RustCathedral",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "census.json (no row); definition.md 'Land' and 'Costs and recovery' (line 33); bars.json R10; owner_pages.md 'Land:' line",
+     "evidence": "design/Jawa/worldbuilding/the_forgotten_war.md:217-232 'RULED 2026-08-19 — the two costs of the Rust Cathedral, set together' row 'hazards | toxic pools do the work, sulfuric does the look. ToxicWaterShallow/Deep ... VEE_IrradiatedWater* ... VEE_SulfuricWater*'; design/Jawa/reconciled_lore/03_deep_history.md:127-129 'Its costs are set together [owner 2026-08-19]: stationary legible hazards (toxic pools that damage ...) + Arsenal garrisons at their densest + sacrilege'; the_rust_cathedral.md §6.5 'pool hazards are stationary and legible', §8 'the pools with their sulfuric look', §9 'hazard-sulfur at the pools'. The proposal keeps the garrisons (B5) and the sacrilege (B6) but has no census row, fate, bar, rule or next-version line for the pools. definition.md:33 says only 'No new corrosion ... or acid damage is introduced', and the land line names no hazard. src/RimMandrake/RustCathedral/Defs/BiomeDefs/RM_RustCathedral_Biome.xml has no toxic, irradiated or sulfuric terrain, so the pools are also unbuilt.",
+     "would_pass": "A census row for the owner-ruled stationary, legible toxic pools (built: absent, with its evidence) and an explicit fate. If kept as land, B1 (or a land bar) says what the crew sees and avoids: a pool that harms when entered and is recognisable before entry. If moved, it gets a deletion argument and a line on page one, because it is one of the three costs he set together.",
+     "smallest_fix": "Add census row 'toxic_pools' citing the_forgotten_war.md:232 and sheet §6.5. Give it a fate and record that fate on owner_pages.md page one and in result.json counts."
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "definition.md 'Costs and recovery' (line 37); ambiguities.md item 6; bars.json R3, C3 and B6 reject picture 2",
+     "evidence": "The 2026-08-19 ruling (the_forgotten_war.md:229-244) makes sacrilege a relationship with the Free Droid Enclaves: 'Jawa_FreeDroidEnclaves startingGoodwill 0 — neutral', '−15 per sacred structure ... QuestNode_ChangeFactionGoodwill', and −75/0 is vanilla FactionRelation hysteresis. Its consequence is 'The punishment is isolation, not an army' (guests become prisoners, trade requests die, passing ships vanish). Sheet §5: 'The sacrilege economics stand as ruled (2026-08-19)'; 03_deep_history.md:130 'it is sacred to the Free Droid Enclaves'. The proposal moves the debt to a per-map local standing whose latch drives Cathedral guards (R3 'Saved standing and hostility latch record sacred/deep debt'; R2 'per map'). It justifies this only by ambiguity 6's argument that permanent-enemy Mechanoid goodwill cannot move (RUSTCATHEDRAL_GOODWILL_FLOOR_1), which does not apply to the non-permanent-enemy Enclaves. A grep finds the Enclaves only in 'no new pass, quest, enclave or settlement is created here'. As written, the ruled isolation consequence is gone. A per-map ledger also lets a crew that desecrates and then lands on a neighbouring Cathedral tile start clean. Page two calls it 'Existing sacred debit and hostility thresholds remain', which presents a change of currency as continuity.",
+     "would_pass": "Either the sacred debit and its repayment act on the ruled Enclave relationship (the local standing may mirror it for the hum), with the isolation consequence kept or explicitly deferred, or page two carries a question with this evidence: 'the ruling put sacrilege on Enclave goodwill; the default I took is a local per-map ledger; if you say otherwise, B6 and R3 change'.",
+     "smallest_fix": "Add an ambiguities.md entry, 'whose goodwill is the sacrilege currency', citing the_forgotten_war.md:229-244. State the cross-map persistence of debt in R3/R5. Put the question on owner_pages.md page two and set result.json questions to 1."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B6 says '... restores the access it cost'; definition.md lines 37-41; owner_pages.md 'Sacred damage'",
+     "evidence": "His answer (ANSWERS_OWNER.md item 3) is 'sacred damage requires costly, concrete repayment before comfortable access returns'. The proposal never says what access an unpaid debt costs. Under the kept numbers (C3 debit 15, latch at −75; RM_RustCathedralAttitude.xml goodwillCompositeWeight 0.5, first threshold 10), one sacred debt adds 7.5 composite, still calm, so up to four unpaid debts change nothing the player can perceive. Above the latch, guards already threaten intruders on held ground at any standing (B1 reject picture 2; B5 accept picture 1). The sacred walls are Faction.OfMechanoids (GenStep_ScatterSacredWalls.cs:54), a permanent enemy per RUSTCATHEDRAL_GOODWILL_FLOOR_1. So neither the latch's effect nor B6's 'restored access' is defined, and B6's paid arm has nothing to read but a ledger value.",
+     "would_pass": "definition.md states, per debt level (one debt, several, latched), what the player loses: for example a raised hum baseline that tips minor work sooner, guards contesting public corridors, or the ruled Enclave isolation. It also states what the latch changes relative to ordinary held-ground defence. B6's range includes a sub-latch debt with that readable consequence and its restoration.",
+     "smallest_fix": "Add one paragraph under 'Costs and recovery' defining the access cost per debt level. Add 'single sub-latch debt: <readable cost> restored on payment' to B6 range.varies and to its accept picture."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B6 sees.start and sees.control, against accept picture 1 ('After cancelled fishing and a quiet interval the crew hears calm again')",
+     "evidence": "B6 sees.start stages only 'Known pre-offence standing/hostility, bill source value, silver inventory'. Its control is 'Compare quiet-only and paid arms from the same debt state'. Nothing requires the fishing to have raised irritation and a cue before the quiet interval. census.json eel_pricing is 'proven: missing'. A build whose fishing input never registers keeps the hum calm throughout and passes the minor-easing half of B6 exactly as a working one does.",
+     "would_pass": "The reading first shows fishing attributed and the band raised above calm, with its cue. Then cancellation, a quiet interval and a return to calm. A same-start control with fishing left running shows the band stays raised.",
+     "smallest_fix": "Add to B6 sees.control: 'minor arm must first read the fishing-attributed rise above calm; a calm reading without a prior recorded rise is invalid; continued-fishing arm stays raised'."
+    }
+   ],
+   "reviewer_refusals": 4,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A convenient corridor network stands in ordinary green soil under a temperate sky, with no sense that the crew is standing on a poisoned metal country at eternal noon.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "Random mineable clumps form a circuit-board picture from altitude but leave no deliberate corridors for the crew to follow.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "From the landing approach a crew follows aligned passages to an unprotected metal fragment; a patterned divider offers a tempting shorter opening toward visibly held ground.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "A canal bends the corridor pattern without severing the public retreat; the player can see why cutting this divider changes access.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 5,
+     "text": "The attractive route terminates inside guardian range with no advance boundary cue or public escape.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "Identical unmarked plate sometimes charges an offence only after it has already been mined.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "Workers haul mined steel and dead smartsteel from public rubble while the hum stays as it was; selecting a sacred conduit or marked divider shows the risk before the order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "Mineable walls yield unusable decorative objects while the map description calls them treasure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Opening a marked divider yields the same ordinary material but disturbs the place because of what was opened.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "A roach reaches and consumes filth while a bolt traces a ground figure; visible eels circle canal water and a damaged borehulk backs away without selecting an attack.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "Roaches spawn with the right label but never consume reachable dirt, or eels choose water endpoints by paths that cross the dry plate.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "The peaceful giant retaliates after damage or is deleted when its path becomes awkward.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "A dry map has land residents but no invented eel population; an eel stranded by a changed canal remains visible with its condition readable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "When bolts cannot reach the active cut, its baseline work-site cue still identifies the order; its protected status was visible before damage.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "The sound changes only as the response strikes, and moving bolts are clustered around a ship rather than the active work.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "The hidden band rises but stage-capped sound stays calm, or a newcomer needs a hum-reader book to find the cause.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "With fishing and innocent hauling running together, the sound changes and bolts gather by the fisher; the work-site indication lets the player cancel the line before another catch.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "A force receives an assault-colony order and chases a retreating fisher past the held boundary.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "Guards threaten a crew inside their visible ground and remain there after it withdraws; a deep response converges on the working drill and leaves once its target is removed.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "A fisher who stopped causing irritation is not selected across the map by the drill response; distant ordinary drilling retains ordinary game risk.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Removing the drill leaves the response wandering forever or changes its target to the nearest bedroom.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "Payment raises vanilla mech faction goodwill while local standing and guardians remain unchanged, or repeated claim cycling farms credit.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Workers finish the named silver delivery from the public side and the corresponding debt/access restriction clears; an interrupted delivery resumes without paying twice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Idling clears sacred debt, or the repayment order exists only inside the hostile perimeter it is supposed to reopen.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "After cancelled fishing and a quiet interval the crew hears calm again; after sacred damage the damage bill survives the same interval and a reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "The map fills with curiosity drops or repeated force spawns, every open route becomes unusable, residents silently disappear, work stalls, or the log repeats errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Fishers disturb the place before miners breach a divider in a rerun, and both causes remain understandable; the worn giant and cleaners stay ordinary residents with the repair and hull stories dormant.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "Every isolated demonstration works, but concurrent fishing and a breach trap the colony in permanent hostility after it has stopped and paid its actual debts.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "Careful trips still recover finite salvage while reckless work still provokes local warnings and bounded defence; a quiet period and repayment permit another visit after the saved season resumes.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Droid mercy. design/Jawa/worldbuilding/biomes/the_rust_cathedral.md §5 'Always true': 'Even the droids don't know why they are spared here ... arriving with reverence, they are passed over — the first of many sacred moments.' The census has no row for it. The proposal mentions it only as a text ban (R9 'no explanation of droid mercy'), and a source grep finds no implementation (the only 'mercy' hits are an unused negative-irritation comment in RM_MapComponent_BiomeAttitude.cs:236 and AttitudeFuzz.cs). Yet B5 range.varies lists 'biological/droid/pass-holder identities' with no defined outcome for a player droid on held ground, so two builders would build two different guard behaviours.",
+   "loop_or_three_way": "Bolt attraction (B4, R6), local defence (B5, R4) and bolt protection (R2, R3; census bolt_protection: 'Pawn.Kill prefix -> NoteKill', any player-instigated kill) form a loop. An offence draws living bolts to the work site. The drill response or held-ground guards converge on the same site. The colony's own defensive fire and explosions there kill the gathered bolts, which counts as a player act under R2 (only nonplayer crossfire is excluded). That raises irritation and escalation, which draws more bolts into the fight. A crew that is trying to withdraw is driven toward permanent hostility. The 'defence' meeting (unknown, M1) and the 'attitude' meeting do not name this loop. M1's event classes and M3's workloads should include 'combat at an attracted-bolt site', with a rule on whether incidental kills during defence count.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 745236
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B2 (says, reject, lazy)",
+     "evidence": "The owner-picked experience in design/RimMandrake/biome_experiences_2026-10-20.md:21 is \"A maze built by minds you'll never meet, still guarded by their machines. Salvage paradise with a temper.\" The 2026-08-19 ruling in design/Jawa/worldbuilding/the_forgotten_war.md:228 reads: \"The ordinary metal is mineable rock the player strips freely — the whole map really is the reward.\" The November answer (ANSWERS_OWNER.md:3) qualifies that premise only for cutting shortcuts. B2 promises only \"useful metal from loose plate and richer dead smartsteel\" and claims \"lazy: none\". Consider a build where only scattered rubble is free and every corridor wall of the maze is a marked divider. It satisfies B2's words and B1's, yet it turns the paradise into a scrap trickle. He would refuse it.",
+     "would_pass": "B2 says the bulk of the metal a crew can see and reach is free salvage, and that marked dividers and sacred works are the exception. A reject picture then catches the scarce build.",
+     "smallest_fix": "In B2.says, change \"recovers useful metal from loose plate\" to \"strips most of the metal in sight freely\", and mark \"most of the metal in sight\" as figurative (no ratio pinned). Add the reject picture \"Only scattered rubble is free; nearly every corridor wall is a marked divider, so salvage means trespass.\""
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B2 says (\"loose plate\"); figurative: []",
+     "evidence": "The free bulk the census calls bulk_salvage is src/RimMandrake/RustCathedral/Defs/ThingDefs_Buildings/RM_CathedralDeckPlate.xml. That file uses ParentName=\"RockBase\", isNaturalRock and mineableThing Steel, so it is mineable wall rock, not loose items. B2 says \"loose plate\" and its figurative list is empty. One builder will read \"loose\" as scattered chunks or items. Another will read it as unmarked deck-plate wall. The two readings give different maps and different passes.",
+     "would_pass": "\"loose\" is either removed or marked figurative, standing for deck-plate wall and rubble that is not a marked route divider or a sacred work. It comes with an accept picture of a worker mining an unmarked corridor wall without offence.",
+     "smallest_fix": "Add a figurative entry for \"loose\" in B2 with that meaning and the one accept picture."
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "definition.md, Costs and recovery (\"Sacred player damage/claim creates one game-level offence receipt per original protected structure ... Destruction updates that receipt\"); R3; R5; C3",
+     "evidence": "The ruling at the_forgotten_war.md:230 reads: \"−15 per sacred structure, applied through QuestNode_AddTag + QuestNode_ChangeFactionGoodwill on the shipped <tag>.Destroyed signal\". Line 231 counts \"five strips before −75\". The proposal takes the full Enclave debit on the first damaging hit. A conduit that is chipped but still standing therefore costs what a strip costs. In a B5 firefight inside held ground, stray player fire on several conduits can tip the Enclaves hostile when nothing was stripped. The definition presents this trigger as the ruled economics, and owner_pages does not list it as a departure.",
+     "would_pass": "The Enclave debit fires on destruction or strip of a sacred structure, as ruled (claim may count as a strip). First damage short of that raises only fast irritation and the warning. Alternatively, keep the first-hit trigger but list it on page two as a proposed change to the ruled trigger, citing :230.",
+     "smallest_fix": "In R3, R5, C3 and definition.md, change the debit trigger to destruction or claim. Add a B6 range arm \"sacred work damaged but standing\", which must not move Enclave goodwill."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json R3 (unpaid-sacred floor \"across all Cathedral maps\") with R6 and B4; definition.md, at a 40-colonist scale and Costs and recovery",
+     "evidence": "R3 holds the hum and bolts at least at their first non-calm warning on every Cathedral map while any sacred receipt is unpaid, including a neighbouring map with no marker on it. R6 sends bolts only to \"active reachable causes\". The definition says \"Public inspect text reports observable activity and mood, never its hidden cause.\" Nothing says what the bolts do, or what any cue points at, when the floor is the only cause. B4 promises the player can \"locate the offending work\", and B4's intent rejects \"location cues pointing at innocent work\". A newcomer who hears an uneasy hum on arrival has no defined way to tell an old bill from current work, and may cancel innocent jobs hunting for it.",
+     "would_pass": "A defined floor-only behaviour. Bolts hold non-calm stiffness without gathering at any work. One observable cue (a hum inspect line or arrival notice) states that an unpaid damage bill stands and on which Cathedral tile. B4's range gains a floor-only arm: no active cause, on the origin map and on a neighbouring map.",
+     "smallest_fix": "Add one sentence to R3 and R6 defining the floor-only cue and the bolts' behaviour under it. Add the floor-only arm to B4's range, and a reject picture to B6: \"An inherited uneasy hum sends bolts toward innocent haulers.\""
+    }
+   ],
+   "reviewer_refusals": 4,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "From the landing approach a crew follows aligned passages to an unprotected metal fragment; a patterned divider offers a tempting shorter opening toward visibly held ground.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "Sulfur-coloured pools are harmless decoration, or apparently safe corridor ground harms a worker before the pool boundary can be recognised.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "A convenient corridor network stands in ordinary green soil under a temperate sky, with no sense that the crew is standing on a poisoned metal country at eternal noon.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "The attractive route terminates inside guardian range with no advance boundary cue or public escape.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 5,
+     "text": "Sulfur-coloured edges and an inspect warning distinguish a toxic pool before entry; a worker can choose dry ground around it, while a deliberately exposed entrant suffers the existing terrain hazard.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 6,
+     "text": "A canal bends the corridor pattern without severing the public retreat; the player can see why cutting this divider changes access.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 7,
+     "text": "Random mineable clumps form a circuit-board picture from altitude but leave no deliberate corridors for the crew to follow.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "Opening a marked divider yields the same ordinary material but disturbs the place because of what was opened.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "Identical unmarked plate sometimes charges an offence only after it has already been mined.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "Workers haul mined steel and dead smartsteel from public rubble while the hum stays as it was; selecting a sacred conduit or marked divider shows the risk before the order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Mineable walls yield unusable decorative objects while the map description calls them treasure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "A roach reaches and consumes filth while a bolt traces a ground figure; visible eels circle canal water and a damaged borehulk backs away without selecting an attack.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "A dry map has land residents but no invented eel population; an eel stranded by a changed canal remains visible with its condition readable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "The peaceful giant retaliates after damage or is deleted when its path becomes awkward.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Roaches spawn with the right label but never consume reachable dirt, or eels choose water endpoints by paths that cross the dry plate.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The hidden band rises but stage-capped sound stays calm, or a newcomer needs a hum-reader book to find the cause.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "With fishing and innocent hauling running together, the sound changes and bolts gather by the fisher; the work-site indication lets the player cancel the line before another catch.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "The sound changes only as the response strikes, and moving bolts are clustered around a ship rather than the active work.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "When bolts cannot reach the active cut, its baseline work-site cue still identifies the order; its protected status was visible before damage.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "Guards threaten a crew inside their visible ground and remain there after it withdraws; a deep response converges on the working drill and leaves once its target is removed.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "Removing the drill leaves the response wandering forever or changes its target to the nearest bedroom.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "A fisher who stopped causing irritation is not selected across the map by the drill response; distant ordinary drilling retains ordinary game risk.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "A force receives an assault-colony order and chases a retreating fisher past the held boundary.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "An unpaid sacred offence below diplomatic hostility has no persistent readable consequence, or landing on another Cathedral map forgets it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Idling clears sacred debt, or the repayment order exists only inside the hostile perimeter it is supposed to reopen.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Sacred damage leaves an uneasy hum even while Enclave contact is still open; paying that offence removes its warning floor, and a neighbouring Cathedral visit carries the same unpaid receipts.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "Workers finish the named silver delivery from the public side and the corresponding receipt and warning restriction clear; an interrupted delivery resumes without paying twice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "Desecration that has made the Enclaves hostile removes their contact without summoning an army; quiet leaves it lost, and material repayments that settle the outstanding sacrilege restore contact when the relationship recovers.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 6,
+     "text": "Fishing first raises the hum with an attributed warning; cancellation and quiet restore its calm baseline while continued fishing keeps the warning raised.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 7,
+     "text": "Payment changes only local standing while the Enclave relationship and its lost contact remain untouched, or repeated claim cycling farms credit.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "Every isolated demonstration works, but concurrent fishing and a breach trap the colony in permanent hostility after it has stopped and paid its actual debts.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Fishers disturb the place before miners breach a divider in a rerun, and both causes remain understandable; the worn giant and cleaners stay ordinary residents with the repair and hull stories dormant.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "Careful trips route around damaging visible pools and still recover finite salvage while reckless work provokes local warnings and bounded defence; quiet eases minor work, and paid sacred debts remove their warning floor and permit Enclave contact to recover after the saved season resumes.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "The map fills with curiosity drops or repeated force spawns, every open route becomes unusable, residents silently disappear, work stalls, or the log repeats errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The player can neutralise the hazard pools with ordinary construction. Odyssey's ToxicWaterShallow carries the Bridgeable affordance [measured, RimSage TerrainDef ToxicWaterShallow], so a vanilla bridge over a pool ends the terrain exposure. The same def also sets avoidWander and extraNonDraftedPerceivedPathCost 180, so undrafted pawns already path around pools without anything from this mod. No census row covers bridging, and neither B1's range nor T43 does. The proposal never says whether bridging is an intended counter (likely, since it is vanilla) or a way to erase the ruled land cost. That needs a decision, a B1 range arm, and an M2 input.",
+   "loop_or_three_way": "B5, R3/R5 and B6 meet in a firefight. B5 lets the crew fight guards inside held ground and allows self-defence against an ongoing attacker. R3's first-hit trigger turns each sacred conduit the player's stray fire chips into a full Enclave debit, and R2 excludes only nonplayer crossfire. Several receipts then flip the Enclaves hostile and carry a warning floor onto every Cathedral map, all from fighting that B5 itself permits. The bills can be paid only at the offended structures, which sit at the guarded perimeter, so paying them draws the crew back toward the same guards. The defence meeting in bars.json argues only that the latch does not enlarge guard footprints. It never examines this combat-to-debt-to-repayment path.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 478951
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1540727,
+    "output_tokens": 18352
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "core_promise_weakened",
+   "where": "bars.json B2 (says, reject, lazy)",
+   "evidence": "The owner-picked experience in design/RimMandrake/biome_experiences_2026-10-20.md:21 is \"A maze built by minds you'll never meet, still guarded by their machines. Salvage paradise with a temper.\" The 2026-08-19 ruling in design/Jawa/worldbuilding/the_forgotten_war.md:228 reads: \"The ordinary metal is mineable rock the player strips freely — the whole map really is the reward.\" The November answer (ANSWERS_OWNER.md:3) qualifies that premise only for cutting shortcuts. B2 promises only \"useful metal from loose plate and richer dead smartsteel\" and claims \"lazy: none\". Consider a build where only scattered rubble is free and every corridor wall of the maze is a marked divider. It satisfies B2's words and B1's, yet it turns the paradise into a scrap trickle. He would refuse it.",
+   "would_pass": "B2 says the bulk of the metal a crew can see and reach is free salvage, and that marked dividers and sacred works are the exception. A reject picture then catches the scarce build.",
+   "smallest_fix": "In B2.says, change \"recovers useful metal from loose plate\" to \"strips most of the metal in sight freely\", and mark \"most of the metal in sight\" as figurative (no ratio pinned). Add the reject picture \"Only scattered rubble is free; nearly every corridor wall is a marked divider, so salvage means trespass.\""
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B2 says (\"loose plate\"); figurative: []",
+   "evidence": "The free bulk the census calls bulk_salvage is src/RimMandrake/RustCathedral/Defs/ThingDefs_Buildings/RM_CathedralDeckPlate.xml. That file uses ParentName=\"RockBase\", isNaturalRock and mineableThing Steel, so it is mineable wall rock, not loose items. B2 says \"loose plate\" and its figurative list is empty. One builder will read \"loose\" as scattered chunks or items. Another will read it as unmarked deck-plate wall. The two readings give different maps and different passes.",
+   "would_pass": "\"loose\" is either removed or marked figurative, standing for deck-plate wall and rubble that is not a marked route divider or a sacred work. It comes with an accept picture of a worker mining an unmarked corridor wall without offence.",
+   "smallest_fix": "Add a figurative entry for \"loose\" in B2 with that meaning and the one accept picture."
+  },
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "definition.md, Costs and recovery (\"Sacred player damage/claim creates one game-level offence receipt per original protected structure ... Destruction updates that receipt\"); R3; R5; C3",
+   "evidence": "The ruling at the_forgotten_war.md:230 reads: \"−15 per sacred structure, applied through QuestNode_AddTag + QuestNode_ChangeFactionGoodwill on the shipped <tag>.Destroyed signal\". Line 231 counts \"five strips before −75\". The proposal takes the full Enclave debit on the first damaging hit. A conduit that is chipped but still standing therefore costs what a strip costs. In a B5 firefight inside held ground, stray player fire on several conduits can tip the Enclaves hostile when nothing was stripped. The definition presents this trigger as the ruled economics, and owner_pages does not list it as a departure.",
+   "would_pass": "The Enclave debit fires on destruction or strip of a sacred structure, as ruled (claim may count as a strip). First damage short of that raises only fast irritation and the warning. Alternatively, keep the first-hit trigger but list it on page two as a proposed change to the ruled trigger, citing :230.",
+   "smallest_fix": "In R3, R5, C3 and definition.md, change the debit trigger to destruction or claim. Add a B6 range arm \"sacred work damaged but standing\", which must not move Enclave goodwill."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "bars.json R3 (unpaid-sacred floor \"across all Cathedral maps\") with R6 and B4; definition.md, at a 40-colonist scale and Costs and recovery",
+   "evidence": "R3 holds the hum and bolts at least at their first non-calm warning on every Cathedral map while any sacred receipt is unpaid, including a neighbouring map with no marker on it. R6 sends bolts only to \"active reachable causes\". The definition says \"Public inspect text reports observable activity and mood, never its hidden cause.\" Nothing says what the bolts do, or what any cue points at, when the floor is the only cause. B4 promises the player can \"locate the offending work\", and B4's intent rejects \"location cues pointing at innocent work\". A newcomer who hears an uneasy hum on arrival has no defined way to tell an old bill from current work, and may cancel innocent jobs hunting for it.",
+   "would_pass": "A defined floor-only behaviour. Bolts hold non-calm stiffness without gathering at any work. One observable cue (a hum inspect line or arrival notice) states that an unpaid damage bill stands and on which Cathedral tile. B4's range gains a floor-only arm: no active cause, on the origin map and on a neighbouring map.",
+   "smallest_fix": "Add one sentence to R3 and R6 defining the floor-only cue and the bolts' behaviour under it. Add the floor-only arm to B4's range, and a reject picture to B6: \"An inherited uneasy hum sends bolts toward innocent haulers.\""
+  }
+ ],
+ "applyable": false,
+ "seconds": 1043,
+ "at": "2026-11-17T01:59:40"
+}
