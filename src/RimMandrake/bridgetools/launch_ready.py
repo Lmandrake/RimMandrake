@@ -296,8 +296,9 @@ class RealEnv:
             if rc != 0:
                 raise RuntimeError(out)
             return
-        subprocess.run(["cmd.exe", "/c", "start", "", "steam://rungameid/294100"], cwd="/mnt/c",
-                       capture_output=True, timeout=60)
+        # game a: through Steam, or directly when Steam answers WaitingPrevProcess beside another game
+        # (RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B); the wait for the process stays this launcher's
+        game_instance.fire_a()
 
     def read_log(self):
         try:

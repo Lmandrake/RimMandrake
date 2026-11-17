@@ -100,7 +100,7 @@ At the blind challenge (item RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MOD
 At in-game acceptance (item RIMMANDRAKE_BUILD_IN_GAME_STAGE_LAUNCHER_PYRELANDS_ARRIVED_FIRST), per advancing mod, one of:
   launch        visit N (the moves into in_game) is owed (no visit_N folder), nothing live or just ended on it, no
                 in-game run since it opened, no automatic run yet this visit, no in-game run live on ANY mod (one
-                live-game driver at a time across all mods), and `rimflow bridge idle` says takeable: one live driver
+                live-game driver per game, across all mods), and a game is free: one live driver
                 (opus, ingame_cap_usd), item RIMMANDRAKE_DRIVE_<MOD>_IN_GAME_ACCEPTANCE_VISIT_<N> (needs game-up)
   ingame_off    ingame_enabled is false: a Needs Conductor line. It ships false: the timer starts no live run until
                 the Conductor has run the first one by hand and set it true
@@ -335,6 +335,52 @@ def gather(root, cfg, live=True):
     return out
 
 
+def _takes(fn, name):
+    """Does fn take keyword `name` (by name or **kw)?"""
+    import inspect
+    try:
+        ps = inspect.signature(fn).parameters.values()
+    except (TypeError, ValueError):
+        return True
+    return any(p.name == name or p.kind == p.VAR_KEYWORD for p in ps)
+
+
+def run_game(r):
+    """The game a run drives: its own `game`, else RM_GAME_INSTANCE in its unit's record (the env it was launched
+    with), else a: a hand launch with no game named drives today's game."""
+    g = r.get("game") or (((DH.read_record(r.get("unit")) if r.get("unit") else None) or {}).get("env") or {}).get(
+        "RM_GAME_INSTANCE")
+    return (g or "a").strip().lower()
+
+
+def driver_games(facts):
+    """-> {unit: game} for the live in-game runs, on any mod."""
+    out = {}
+    for f in facts.values():
+        out.update(f.get("ingame_games") or {})
+    return out
+
+
+def pick_game(cfg, bridge, purpose, held=None):
+    """-> (the first free game, or None; [why not, per game]). A game is free when no live driver holds it (held:
+    {game: unit}) and its own bridge reading says takeable. The games are cfg game_instances (else a); a reading that
+    cannot name a game (a one-argument stand-in) reads game a only. RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B:
+    the owner, 2026-11-16, "don't forget we have two Rimworld games, so I don't want to hear any 'waiting for game'"."""
+    read = bridge or (lambda p, game="a": M.bridge_idle(p, cfg.get("seat", "BENCH"), game=game))
+    named = M.takes_game(read)
+    games = [g for g in (cfg.get("game_instances") or ["a"])] if named else ["a"]
+    whys = []
+    for g in games:
+        if g in (held or {}):
+            whys.append("game %s: driven by %s" % (g, held[g]))
+            continue
+        go, why = read(purpose, game=g) if named else read(purpose)
+        if go:
+            return g, whys
+        whys.append("game %s: %s" % (g, why))
+    return None, whys
+
+
 def live_drivers(facts):
     """-> the live in-game runs, on any mod: the one-driver rule's list."""
     return list(dict.fromkeys(u for f in facts.values() for u in list(f.get("ingame_live") or []) +
@@ -379,6 +425,7 @@ def add_ingame(root, mod, f, runs):
     At in-game acceptance also maturation.ingame_facts (visit, exit reading, owed) and ingame_runs, the in-game runs
     started since the visit opened (10 min of slack, as for the blind challenge)."""
     f["ingame_live"] = [r.get("unit") for r in runs or [] if r.get("live") and _is_ingame_item(r.get("item"))]
+    f["ingame_games"] = {r.get("unit"): run_game(r) for r in runs or [] if r.get("live") and _is_ingame_item(r.get("item"))}
     if f.get("stage") != "in_game":
         return f
     f.update(M.ingame_facts(root, mod))
@@ -696,6 +743,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
     mods = st.setdefault("mods", {})
     live_total = occupancy(facts)
     drivers = live_drivers(facts)
+    games_of = driver_games(facts)
     for mod in cfg.get("advancing") or []:
         f = facts.get(mod) or {"stage": UNM}
         s = mods.setdefault(mod, {})
@@ -722,9 +770,10 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
         if f.get("stage") == "in_game":
             s.pop("owed_since", None)
             s.pop("watch", None)
-            if decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge, releases):
+            if decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge, releases, games_of):
                 live_total += 1
                 drivers.append("(this tick: %s)" % mod)
+                games_of[drivers[-1]] = row.get("game", "a")
                 launches.append(mod)
             continue
         if f.get("stage") != "offline_build":
@@ -1411,10 +1460,11 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
     return True
 
 
-def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge, releases=None):
+def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge, releases=None, games_of=None):
     """One decision for an advancing mod at in-game acceptance -> True to launch its live driver. At most
     ingame_auto_runs_per_visit (1) automatic runs per visit (keyed by the version and the visit number), one live-game
-    driver at a time across all mods (drivers: the live in-game runs), only when the bridge is takeable, and only with
+    driver per game across all mods (drivers: the live in-game runs; games_of: the game each drives, a when unknown),
+    only on a FREE game (pick_game: no live driver on it, its own bridge takeable), set as row["game"], and only with
     ingame_enabled true (it ships false: the Conductor runs the first visit by hand). Every ended visit is a Needs
     Conductor line; the program never advances and never takes the bridge itself."""
     mod, n = f.get("mod"), f.get("visit")
@@ -1502,22 +1552,23 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     if not account[0]:
         put("account_hold", account[1])
         return False
-    if drivers:
-        put("driver_busy", "an in-game run is live (%s): one live-game driver at a time across all mods" % (
-            ", ".join(drivers)))
+    held = {(games_of or {}).get(u, "a"): u for u in drivers}
+    games = (cfg.get("game_instances") or ["a"]) if (bridge is None or M.takes_game(bridge)) else ["a"]
+    if all(g in held for g in games):
+        put("driver_busy", "an in-game run is live on every game (%s): one live-game driver per game across all mods"
+            % ", ".join("game %s: %s" % (g, held[g]) for g in games))
         return False
     if no_slot(cfg, live_total, put):
         return False
-    go, why = (bridge or (lambda p: M.bridge_idle(p, cfg.get("seat", "BENCH"))))(
-        "%s in-game acceptance visit %s" % (mod, n))
-    if not go:
-        put("bridge_held", "the bridge is not takeable: %s" % why)
+    game, whys = pick_game(cfg, bridge, "%s in-game acceptance visit %s" % (mod, n), held)
+    if not game:
+        put("bridge_held", "no game is free: %s" % "; ".join(whys))
         return False
-    row.update(cap=cap, visit_id=vid)
+    row.update(cap=cap, visit_id=vid, game=game)
     if retry:
         row["retry_of"] = dict(retry)
-    put("launch", "in-game visit %s owed, nothing live or recorded on it, the visit's automatic run%s, bridge %s (%s)" % (
-        n, retried(cfg, retry), why, account[1]))
+    put("launch", "in-game visit %s owed, nothing live or recorded on it, the visit's automatic run%s, on game %s%s (%s)" % (
+        n, retried(cfg, retry), game, " (%s)" % "; ".join(whys) if whys else "", account[1]))
     return True
 
 
@@ -1887,8 +1938,9 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
             led = ledger_open(root, mod, ROLE_OF_STAGE.get(stage, "holder"), "", stage=stage, now=now, fx=fx)
     except Exception as e:      # noqa: BLE001  a refused grant is a launch that never started, said in its words
         return 2, "REFUSED: %s's ledger launch failed: %s: %s" % (mod, type(e).__name__, e), None
+    game = kw.pop("game", None)
     rc, text, unit = launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, preface=led["brief"],
-                            env=led["env"], **kw)
+                            env=dict(led["env"], **({"RM_GAME_INSTANCE": game} if game else {})), **kw)
     unit = unit if rc == 0 else None
     return rc, "%s; %s" % (text, ledger_after(root, st, mod, led, unit, item, now, fx)), unit
 
@@ -1951,7 +2003,13 @@ def pilot_launch(root, cfg, mod, why, item=None, usd=None, fx=None, now=None):
                                    else "the run records cannot be read (%s), so nothing launches on a blind reading" % live,
                                    "judge" if stage == "blind_challenge" else "driver",
                                    "cycle" if stage == "blind_challenge" else "visit"))
-            rc, text, unit = launch_stage(root, cfg, st, mod, cap, item, now, fx, launch=fx.get("launch"))
+            gkw = {}
+            if stage == "in_game":      # a free game of the two, never "waiting for game" while one is free
+                game, whys = pick_game(cfg, fx.get("bridge"), "%s in-game visit (pilot-launch)" % mod)
+                if not game:
+                    return 2, "REFUSED: %s at in_game: no game is free: %s" % (mod, "; ".join(whys))
+                gkw["game"] = game
+            rc, text, unit = launch_stage(root, cfg, st, mod, cap, item, now, fx, launch=fx.get("launch"), **gkw)
         elif opened:
             rc, text, unit, item = road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx)
             if rc is None:      # refused before any launch
@@ -1984,11 +2042,12 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx):
     # at Stage 6, every open item needs the live game: the holder takes the bridge and the game, one holder at a
     # time (RIMMANDRAKE_LET_HOLDER_TAKE_BRIDGE_ALL_ITEMS_NEED_GAME)
     live = M.game_takeable(stage) and AUT.live_only(opened)
-    if live:
-        ok, why_b = (fx.get("bridge") or M.bridge_idle)("%s live holder run" % mod)
-        if not ok:
-            return None, ("REFUSED: %s's open items all need the live game and the bridge is not takeable (%s); "
-                          "one bridge holder at a time" % (mod, why_b)), None, item
+    game = None
+    if live:        # a free game of the two (pick_game), its bridge takeable; none free is a refusal with each reason
+        game, whys = pick_game(cfg, fx.get("bridge"), "%s live holder run" % mod)
+        if not game:
+            return None, ("REFUSED: %s's open items all need the live game and no game is free (%s); "
+                          "one bridge holder per game" % (mod, "; ".join(whys))), None, item
     plan = modledger.resume_plan(root, mod)     # the holder's recorded session is resumed, not restarted
     rkw = {"session": plan["session_id"]} if plan.get("action") == "resume" and plan.get("session_id") else {}
     led = ledger_open(root, mod, "fixer", AUT.fixer_brief(item, mod, cap, live=live) + (
@@ -1997,9 +2056,11 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx):
         "Close each one its acceptance test passes; a note starting LEFT OPEN: on each that is not.\n"
         % ("live " if live else "", ", ".join(ids)) + (
         "Not yours: %s need%s the live game, Stage 6 work; work none of them here.\n" % (
-            ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "")), stage=stage, now=now, fx=fx)
+            ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "") + (
+        "\n" + M.game_brief(game) if game else "")), stage=stage, now=now, fx=fx)
     rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
-        item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"), env=led["env"], **rkw)
+        item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
+        env=dict(led["env"], **({"RM_GAME_INSTANCE": game} if game else {})), **rkw)
     unit = unit if rc == 0 else None
     text = "%s%s%s; %s" % ("live holder (bridge and game allowed): " if live else "",
                            "%s; " % plan["why"] if rkw else "",
@@ -2136,6 +2197,8 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
 
     def launch_holder(mod, s, row, cap, item, **kw):     # a pilot mod's run is its holder (holder_launch)
         hcap, hkw = holder_launch(root, cfg, s, row, cap, fx)
+        if kw.get("game") == "a" and not _takes(do_launch, "game"):     # a one-game launcher: game a is its only game
+            kw.pop("game")
         return do_launch(mod, hcap, item, **dict(hkw, **kw))
     done = []
     for row in rows:
@@ -2175,7 +2238,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 cfg, s, row, now, "ingame_auto", {"visit_id": row.get("visit_id"), "visit": row.get("visit")},
                 lambda: ingame_item_id(mod, row.get("visit"), known),
                 lambda it: do_file(it, title, why, needs="game-up"), do_publish,
-                lambda it: launch_holder(mod, s, row, row["cap"], it, **resume_kw(row)))
+                lambda it: launch_holder(mod, s, row, row["cap"], it, **dict(resume_kw(row), game=row.get("game", "a"))))
             if ok:
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None

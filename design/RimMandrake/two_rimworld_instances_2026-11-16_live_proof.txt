@@ -1,0 +1,78 @@
+# Live proof, Archmagi, item RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B (readings as printed; times PST)
+## b up, Steam's answer to steam://rungameid/294100, then the direct start of a
+23:29:47 game_instance.py launch b --wait -> started game b, pid 45000, bridge on port 5175 after 118 s
+23:31:57 game_instance.py launch a --wait -> started game a directly (Steam answered WaitingPrevProcess while game b runs), flags -disable-compute-shaders, pid 34948, bridge on port 5174 after 24 s
+Steam console_log.txt:
+[2026-11-16 23:31:58] ExecuteSteamURL: "steam://rungameid/294100"
+[2026-11-16 23:31:58] GameAction [AppID 294100, ActionID 131] : LaunchApp changed task to CheckShaderDepotManifest with ""
+[2026-11-16 23:31:58] GameAction [AppID 294100, ActionID 131] : LaunchApp changed task to WaitingPrevProcess with ""
+[2026-11-16 23:32:00] Game process updated : AppID 294100 ""C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64.exe" -savedatafolder=D:\ClaudeWork\rimmandrake\instances\b -logfile D:\ClaudeWork\rimmandrake\instances\b\Player.log -screen-fullscreen 0 -screen-width 1280 -screen-height 720 -disable-comp", ProcID 34948, IP 0.0.0.0:0
+[2026-11-16 23:32:03] GameAction [AppID 294100, ActionID 131] : LaunchApp changed task to Completed with ""
+Earlier refusals the same evening (b up, no a):
+[2026-11-16 21:21:29] ExecuteSteamURL: "steam://rungameid/294100"
+[2026-11-16 21:21:29] GameAction [AppID 294100, ActionID 121] : LaunchApp changed task to CheckShaderDepotManifest with ""
+[2026-11-16 21:21:30] GameAction [AppID 294100, ActionID 121] : LaunchApp changed task to WaitingPrevProcess with ""
+[2026-11-16 21:21:35] GameAction [AppID 294100, ActionID 121] : LaunchApp changed task to Completed with ""
+[2026-11-16 21:23:28] ExecuteSteamURL: "steam://rungameid/294100"
+[2026-11-16 21:23:28] GameAction [AppID 294100, ActionID 122] : LaunchApp changed task to CheckShaderDepotManifest with ""
+[2026-11-16 21:23:29] GameAction [AppID 294100, ActionID 122] : LaunchApp changed task to WaitingPrevProcess with ""
+[2026-11-16 21:23:34] GameAction [AppID 294100, ActionID 122] : LaunchApp changed task to Completed with ""
+
+2026-11-16 23:32:34 PST
+a  running pid 34948       port 5174
+b  running pid 45000       port 5175
+port 5175 owner pid 45000
+port 5174 owner pid 34948
+a cmdline: "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64.exe" -disable-compute-shaders 
+== game a
+rimbridge/ping: {   "message": "pong",   "timestamp": "2026-11-17T07:32:37.9246522Z",   "operation": {     "OperationId": "op_79af4cbf19b64a1fab380a2abca62434",     "Status": "Completed"
+
+jawa/debug_settings: {   "success": true,   "action": "list",   "count": 47,   "fields": [     {       "name": "activateAllBuildingDemands",       "value": false     },     {       "name": "a
+
+jawa/map_info: bridge reply: jawa/map_info answered success:false {   "success": false,   "message": "No current map. These tools are map-scoped; use the planet-scoped world tool family
+
+jawa tools: 637
+== game b
+rimbridge/ping: {   "message": "pong",   "timestamp": "2026-11-17T07:32:40.0538431Z",   "operation": {     "OperationId": "op_106da6463d704295ba272f7e98fd5757",     "Status": "Completed"
+
+jawa/debug_settings: {   "success": true,   "action": "list",   "count": 47,   "fields": [     {       "name": "activateAllBuildingDemands",       "value": false     },     {       "name": "a
+
+jawa/map_info: bridge reply: jawa/map_info answered success:false {   "success": false,   "message": "No current map. These tools are map-scoped; use the planet-scoped world tool family
+
+jawa tools: 637
+== game a: quicktest map, map-scoped companion tools, mod sources
+{   "success": true,   "message": "RimWorld map data is available.",   "state": {     "programState": "MapInitializing",     "inEntryScene": false,     "hasCurrentGame": true,     "longEventPending": 
+
+jawa/map_info: "success": false 
+jawa/time_clock: "success": true 
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 348, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1210 column 1 (char 38185)
+game a list_mods: 113 mods, by source {'SteamWorkshop': 102, 'OfficialModsFolder': 6, 'ModsFolder': 5}
+keys ['success', 'includeInactive', 'includeDetails', 'modCount', 'activeCount', 'loadedSessionModCount', 'restartRequired', 'restartReasonCount']
+== a then b: 23:33:31
+SUCCESS: Sent termination signal to the process with PID 45000.
+a  running pid 34948       port 5174
+started game b, pid 36136, bridge on port 5175 after 112 s
+a  running pid 34948       port 5174
+b  running pid 36136       port 5175
+game a ping: "pong"
+game b ping: "pong"
+== real machine: free / leftovers 23:35:54
+a
+b
+a  pid 34948  up, nobody holds it: may be stopped (game_instance.py stop --instance a)
+b  pid 36136  up, nobody holds it: may be stopped (game_instance.py stop --instance b)
+== shutdown
+SUCCESS: Sent termination signal to the process with PID 34948.
+SUCCESS: Sent termination signal to the process with PID 36136.
+a  stopped                 port 5174
+bridge released by BENCH — it is now FREE for the other window
+archmagi.b bridge released by BENCH
+bridge FREE — take it:  rimflow bridge take --for "<what for>"
+archmagi.b bridge FREE in the ledger — take it:  rimflow bridge take --host archmagi.b --for "<what for>"

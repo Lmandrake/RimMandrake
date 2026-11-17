@@ -154,8 +154,12 @@ class Ops(object):
         gi = self.instance()
         if gi.current() != gi.DEFAULT:      # a named game starts directly; Steam's launch can only ever start game a
             return gi.launch()
-        # through Steam, never the bare .exe (rimworld-load-round §10: the bare exe corrupts assembly loading)
-        return self.sh(["powershell.exe", "-NoProfile", "-Command", "Start-Process 'steam://rungameid/294100'"], timeout=60)
+        # through Steam; directly (Steam's flags, steam_appid.txt) only when Steam answers WaitingPrevProcess beside
+        # another game (game_instance.fire_a; RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B)
+        try:
+            return 0, gi.fire_a()[1]
+        except (gi.Refused, gi.Blind) as e:
+            return 1, str(e)
 
     def load_bound(self):
         if UTILS not in sys.path:

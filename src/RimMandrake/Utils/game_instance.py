@@ -12,8 +12,10 @@ process means, and game_paths, rimbridge_client and driver_lock follow that name
     python3 src/RimMandrake/Utils/game_instance.py stop [PID] [--force] [--instance b] [--for "why"]   taskkill /PID, never /IM; only
                                                                     when `rimflow bridge idle` says TAKEABLE
     python3 src/RimMandrake/Utils/game_instance.py prepare b        seed the folder (safe while another game runs)
-    python3 src/RimMandrake/Utils/game_instance.py launch b [--wait]
+    python3 src/RimMandrake/Utils/game_instance.py launch a|b [--wait]
     python3 src/RimMandrake/Utils/game_instance.py status
+    python3 src/RimMandrake/Utils/game_instance.py free [--busy a] [--for "why"]   the first game a run may take, else 3
+    python3 src/RimMandrake/Utils/game_instance.py leftovers        games up with nobody holding them (may be stopped)
 
 Exit 0 ok; 2 BLIND (the process list could not be read, so nothing was acted on); 3 REFUSED, with the reason.
 
@@ -28,9 +30,23 @@ error); Prefs.xml carries a window size beside <fullscreen>False</fullscreen> (t
 fullscreen); and seeding reads no other game's state, so it works with A up. Player.log sits in the data folder, because
 modset_builder builds PLAYERLOG from there. Unity does not rotate under -logfile, so launch moves the old one to .prev.
 
-launch refuses game a, whose launch stays where it is (steam://, rw_game.sh up), and refuses a folder with no
-steam_appid.txt: rung one is measured only where that file exists, and on Archmagi it is a separate decision.
-A running game a's INHERITED_FLAGS (Archmagi's -disable-compute-shaders, a Steam launch option) go on B's command line too.
+Game a starts through Steam (steam://rungameid/294100), as it always has, unless Steam will not: a direct game with
+steam_appid.txt joins Steam's session for app 294100, and while Steam counts it, rungameid logs `LaunchApp changed task to
+WaitingPrevProcess`, then Completed, and starts nothing (MEASURED on Archmagi 2026-11-16 21:21 and 21:23 PST, game b up,
+no game a: RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B). launch reads Steam's answer in its console_log.txt
+and then starts RimWorldWin64.exe itself, as Steam would: the game folder as working directory, Steam's flags, no
+-savedatafolder or -logfile (Unity's own Player.log in LocalLow, which game_paths reads) and no GABP pair (a b-shell
+exports one through WSLENV; game a must bind 5174 and write its `Bridge token:` line). So every tool reads it as before.
+Steam silent while another game lives is the same direct start; Steam silent with no other game is waited on (its cloud
+sync alone took 29 s).
+A named game is always started directly, and needs steam_appid.txt (Workshop through Steam); so does a direct game a.
+INHERITED_FLAGS (Archmagi's -disable-compute-shaders, a Steam launch option) come from Steam's own last "Game process
+added" line, or from a running game's command line, and go on every direct start.
+
+free answers the first game (RM_GAME_INSTANCES, else a,b) a live run may take: not --busy (a live run of the caller's
+already drives it) and `rimflow bridge idle` TAKEABLE for that game. Up or down does not matter, so no run waits for a
+game while one is free, and none is handed a game another run holds. leftovers lists games up whose bridge is takeable:
+an idle leftover nobody holds, which stop may take down; a held game is never one.
 
 Selftest: selftest_game_instance.py (two fake games, real processes, no Windows). Planted faults:
 selftest_second_game_mutants.py.
@@ -56,6 +72,11 @@ PORT_LINE = "GABP server connected to GABS on port"     # env mode's line; there
 WINDOW = (1280, 720)
 INHERITED_FLAGS = ("-disable-compute-shaders",)  # Archmagi's Steam launch option for A; B is started like A on the same GPU
 LAUNCH_SEEN_S = 15
+STEAM_SEEN_S = 120          # Steam's launch of a: cloud sync took 29 s on 2026-11-16 before the process came
+STEAM_ANSWER_S = 15         # its WaitingPrevProcess came 1 s after the URL, both times measured
+STEAM_URL = "steam://rungameid/294100"
+INSTANCES_ENV = "RM_GAME_INSTANCES"
+A_PORT_RE = re.compile(r"\[RimBridge\][^\n]*on port\s+(\d+)")
 WAIT_S = 600
 EX_BLIND, EX_REFUSED = 2, 3
 WIN_DIRS = ("/mnt/c/Windows/System32/WindowsPowerShell/v1.0", "/mnt/c/Windows/System32")
@@ -171,9 +192,22 @@ def env(name=None):
     d = data_dir(name)
     have = [v for v in os.environ.get("WSLENV", "").split(":") if v]
     wslenv = have + [v for v in _WSLENV if v not in have]
-    return {INSTANCE_ENV: name, "RM_GAME_USERDATA": d, "RM_GAME_LOGDIR": d, "GABP_SERVER_PORT": str(port(name)),
-            "GABP_TOKEN": ensure_token(name), "RIMFLOW_DRIVER_LOCK": lock_path(name), ROOT_ENV: root(),
-            "WSLENV": ":".join(wslenv)}
+    out = {INSTANCE_ENV: name, "RM_GAME_USERDATA": d, "RM_GAME_LOGDIR": d, "GABP_SERVER_PORT": str(port(name)),
+           "GABP_TOKEN": ensure_token(name), "RIMFLOW_DRIVER_LOCK": lock_path(name), ROOT_ENV: root()}
+    # game a's own log folder (SteveDesktop's testcentre_env.sh sets one), kept so `launch a` from this shell reads a's log
+    a_log = os.environ.get("RM_GAME_A_LOGDIR") or os.environ.get("RM_GAME_LOGDIR", "")
+    if a_log.strip() and not _under_root(a_log):
+        out["RM_GAME_A_LOGDIR"] = a_log
+        wslenv += [] if "RM_GAME_A_LOGDIR/p" in wslenv else ["RM_GAME_A_LOGDIR/p"]
+    out["WSLENV"] = ":".join(wslenv)
+    return out
+
+
+def _under_root(p):
+    """Is path p inside the instances root (a named game's folder, not game a's)?"""
+    def norm(x):
+        return _native(x).replace("\\", "/").rstrip("/").lower()
+    return (norm(p) + "/").startswith(norm(root()) + "/")
 
 
 def owner(cmdline):
@@ -276,6 +310,20 @@ def ps_processes(name=None):
     return "Get-Process -Id %s -ErrorAction SilentlyContinue" % ",".join(map(str, mine)) if mine else "@()"
 
 
+def live_holder(name):
+    """-> why, when a live process other than this one's own take holds game `name`'s driver lock, else None
+    (host_guard.crossing). Every detached run is seat BENCH, so `rimflow bridge idle` reads another BENCH run's hold as
+    ours (MEASURED 2026-11-16 23:37 PST: a live BENCH holder on b, and bridge idle said TAKEABLE); the holder's process
+    is the run, whatever its seat. A process that inherited its take (RM_HOST_GUARD_GEN) or is the holder's window is
+    its own holder and passes."""
+    rf = os.path.join(REPO, "src", "RimMandrake", "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import host_guard
+    with host_guard.instance_env(None if name == DEFAULT else name):
+        return host_guard.crossing()
+
+
 def bridge_refusal(name, purpose=None, timeout=120):
     """None when this seat may stop game `name`, else why not and what would pass. RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD
     (GPT review p2.F2: stop used to taskkill with no bridge check). The verdict is rimflow's own, not a second copy:
@@ -283,6 +331,10 @@ def bridge_refusal(name, purpose=None, timeout=120):
     OWNER hold only 45 min after his last interaction (an UNMEASURED reading of him refuses); it also refuses on the
     shared lock and the driver lock. Only its exit 0 with a TAKEABLE line passes: no answer is no permission."""
     purpose = purpose or "stop game %s (game_instance.py stop)" % name
+    held = live_holder(name)
+    if held:
+        return ("game %s is another live driver's: %s\n  what passes: its run ends or releases it (another run's game "
+                "is never stopped or handed out)" % (name, held))
     env = dict(os.environ)
     if name == DEFAULT:
         env.pop(INSTANCE_ENV, None)
@@ -381,31 +433,171 @@ def _steam_running():
     return r.returncode == 0 and (r.stdout or "").strip().isdigit()
 
 
-def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.time):
-    """Start a named instance directly -> (exit code, text). Raises Refused for game a, a folder with no steam_appid.txt
-    or no Steam; a game already up is ok, with its pid. wait: until this run's log has the port line."""
-    name = check_name(name or current())
-    if name == DEFAULT:
-        raise Refused("game a keeps its own launch (Steam, or rw_game.sh up)")
+def _game_dir():
     import game_paths
-    if not os.path.exists(os.path.join(game_paths.GAME_DIR, "steam_appid.txt")):
-        raise Refused("%s holds no steam_appid.txt: rung one is measured only where it exists, and this machine's trial "
-                      "is a separate decision" % game_paths.GAME_DIR)
+    return game_paths.GAME_DIR
+
+
+def _need_appid(what):
+    if not os.path.exists(os.path.join(_game_dir(), "steam_appid.txt")):
+        raise Refused("%s holds no steam_appid.txt, so %s would get no Steam and no Workshop mods; write 294100 into it "
+                      "(Valve's documented file; Steam's own launch of game a is unchanged by it)" % (_game_dir(), what))
+
+
+def steam_log_path():
+    """Steam's console_log.txt: the install is three folders above common/RimWorld."""
+    return os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(_game_dir()))), "logs", "console_log.txt")
+
+
+def _steam_log_tail(start=None, size=2 << 20):
+    """-> (text from byte `start`, or the last `size` bytes; the end offset). ("", None) when it cannot be read."""
+    try:
+        with open(steam_log_path(), "rb") as f:
+            f.seek(0, 2)
+            end = f.tell()
+            f.seek(start if start is not None and start <= end else max(0, end - size))
+            return f.read().decode("utf-8", "replace").replace("\r", ""), end
+    except OSError:
+        return "", None
+
+
+def steam_flags():
+    """The INHERITED_FLAGS on Steam's own last launch of the game (its "Game process added" line for app 294100 with no
+    -savedatafolder): where Archmagi's -disable-compute-shaders comes from, read from Steam itself."""
+    text, _ = _steam_log_tail()
+    added = [ln for ln in text.splitlines() if "Game process added : AppID 294100" in ln and "-savedatafolder" not in ln]
+    last = added[-1].split() if added else []
+    return [f for f in INHERITED_FLAGS if f in last or f + '",' in last]
+
+
+def inherited_flags(rows=None):
+    """INHERITED_FLAGS from Steam's last launch, or any running game's command line (a b started beside a carries them)."""
+    cmds = [(g["cmd"] or "").split() for g in (games() if rows is None else rows)]
+    have = set(steam_flags()) | {f for f in INHERITED_FLAGS for c in cmds if f in c}
+    return [f for f in INHERITED_FLAGS if f in have]
+
+
+def _steam_answer(start, sleep, clock):
+    """-> 'refused' (WaitingPrevProcess), 'working' (any other LaunchApp task after start), or None (nothing said in
+    STEAM_ANSWER_S, or the log unreadable)."""
+    t0 = clock()
+    while True:
+        text, _ = _steam_log_tail(start)
+        tasks = re.findall(r"GameAction \[AppID 294100, ActionID \d+\] : LaunchApp changed task to (\w+)", text)
+        if "WaitingPrevProcess" in tasks:
+            return "refused"
+        if [t for t in tasks if t not in ("CheckShaderDepotManifest", "Completed")] or "Game process added" in text:
+            return "working"
+        if clock() - t0 >= STEAM_ANSWER_S or start is None:
+            return None
+        sleep(1)
+
+
+def _steam_url():
+    subprocess.run([_exe("cmd.exe"), "/c", "start", "", STEAM_URL], cwd="/mnt/c" if os.path.isdir("/mnt/c") else None,
+                   capture_output=True, timeout=60, stdin=subprocess.DEVNULL)
+
+
+def _start_direct_a(flags):
+    """RimWorldWin64.exe as Steam starts it: the game folder, Steam's flags, no GABP pair (port 5174, the token line)."""
+    gd = win_path(_game_dir())
+    script = ("Remove-Item Env:GABP_SERVER_PORT,Env:GABP_TOKEN -ErrorAction SilentlyContinue; "
+              "Start-Process -FilePath '%s\\%s' -WorkingDirectory '%s'%s"
+              % (gd, GAME_EXE, gd, (" -ArgumentList " + ",".join("'%s'" % f for f in flags)) if flags else ""))
+    r = _ps(script)
+    if r.returncode != 0:
+        raise Refused("Start-Process failed (exit %d): %s" % (r.returncode, (r.stderr or "").strip()))
+
+
+def fire_a(sleep=time.sleep, clock=time.time):
+    """Send game a's launch -> (route, text): 'steam' when Steam took it (or is still working on it), 'direct' when
+    Steam refused it, or said nothing while another game lives, and this started the exe itself. Waits for nothing
+    else; the caller waits for the process (launch, launch_ready)."""
+    rows = games()
+    others = sorted({g["instance"] or "?" for g in rows if g["instance"] != DEFAULT})
+    _, start = _steam_log_tail()
+    _steam_url()
+    said = _steam_answer(start, sleep, clock)
+    if said == "working" or (said is None and not others):
+        return "steam", "through Steam (%s)" % ("Steam is launching it" if said else "Steam has not said yet; no other game up")
+    _need_appid("game a started directly")
+    flags = inherited_flags(rows)
+    _start_direct_a(flags)
+    return "direct", ("directly (Steam %s while game %s runs), flags %s" % (
+        "answered WaitingPrevProcess" if said else "said nothing", ",".join(others) or "?", " ".join(flags) or "none"))
+
+
+def a_player_log():
+    """Game a's Player.log from any shell: a b-shell's RM_GAME_LOGDIR is b's folder (env), so RM_GAME_A_LOGDIR, which
+    env() keeps when it replaces one, then game_paths' own reading in a shell on game a, then its default LocalLow."""
+    import game_paths
+    keep = os.environ.get("RM_GAME_A_LOGDIR", "").strip()
+    if keep:
+        return os.path.join(_native(keep), "Player.log")
+    if current() == DEFAULT:
+        return game_paths.PLAYER_LOG
+    have = os.environ.get("RM_GAME_LOGDIR", "").strip()
+    if have and not _under_root(have):
+        return os.path.join(_native(have), "Player.log")
+    return os.path.join(game_paths.resolve(game_paths._DEF_LOW_WIN, game_paths._DEF_LOW_WSL), "Player.log")
+
+
+def _launch_a(wait, wait_s, sleep, clock):
+    log = a_player_log()
+    t0 = clock()
+    t_file = time.time()
+    route, how = fire_a(sleep, clock)
+    t_fired = clock()           # Steam's answer may have taken STEAM_ANSWER_S; the process window starts now
+    up, seen_s = None, STEAM_SEEN_S if route == "steam" else LAUNCH_SEEN_S
+    while up is None and clock() - t_fired < seen_s:
+        up = pid(DEFAULT)
+        if up is None:
+            sleep(1)
+    if up is None:
+        return 1, "no game a process %d s after the launch, %s" % (seen_s, how)
+    if not wait:
+        return 0, "started game a %s, pid %d" % (how, up)
+    while clock() - t0 < wait_s:
+        text = ""
+        try:
+            if os.path.getmtime(log) >= t_file - 5:
+                text = _read(log)
+        except OSError:
+            pass
+        m = A_PORT_RE.search(text)
+        if m and int(m.group(1)) == port(DEFAULT):
+            return 0, "started game a %s, pid %d, bridge on port %d after %d s" % (how, up, port(DEFAULT), clock() - t0)
+        if m or "[RimBridge] Failed to start server" in text:
+            return 1, "game a pid %d, %s: its bridge is not on port %d (%s): a GABP pair reached it, or the port is taken" % (
+                up, how, port(DEFAULT), m.group(0) if m else "Failed to start server")
+        if up not in pids(DEFAULT):
+            return 1, "game a exited during the load (%s); last of %s:\n%s" % (how, log, text[-1500:])  # cut-ok: the tail of a game log the message names; the log is the full text
+        sleep(5)
+    return 1, "no port line in %s after %d s; game a pid %d (%s) is left running" % (log, wait_s, up, how)
+
+
+def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.time):
+    """Start a game -> (exit code, text). Game a through Steam, or directly when Steam will not (fire_a); a named game
+    directly. Raises Refused for no Steam, or a direct start with no steam_appid.txt; a game already up is ok, with its
+    pid. wait: until this run's log has the port line."""
+    name = check_name(name or current())
     up = pid(name)
     if up:
         return 0, "game %s already running, pid %d" % (name, up)
     if not _steam_running():
         raise Refused("Steam is not running, and a game started now would have no Workshop mods (rw_game.sh up starts it)")
+    if name == DEFAULT:
+        return _launch_a(wait, wait_s, sleep, clock)
+    _need_appid("game %s" % name)
     d = prepare(name)
     log = log_path(name)
     if os.path.exists(log):
         os.replace(log, log + ".prev")
     wd = win_path(d)
-    game_dir = win_path(game_paths.GAME_DIR)
+    game_dir = win_path(_game_dir())
     args = ["-savedatafolder=%s" % wd, "-logfile", "%s\\Player.log" % wd, "-screen-fullscreen", "0",
             "-screen-width", str(WINDOW[0]), "-screen-height", str(WINDOW[1])]
-    a_cmds = [g["cmd"] or "" for g in games() if g["instance"] == DEFAULT]
-    args += [f for f in INHERITED_FLAGS if any(f in c.split() for c in a_cmds)]
+    args += inherited_flags()
     script = ("$env:GABP_SERVER_PORT='%d'; $env:GABP_TOKEN='%s'; Start-Process -FilePath '%s\\%s' -WorkingDirectory '%s' "
               "-ArgumentList %s" % (port(name), ensure_token(name), game_dir, GAME_EXE, game_dir,
                                     ",".join("'%s'" % a for a in args)))
@@ -433,6 +625,57 @@ def launch(name=None, wait=False, wait_s=WAIT_S, sleep=time.sleep, clock=time.ti
             return 1, "game %s exited during the load; last of %s:\n%s" % (name, log, text[-1500:])  # cut-ok: the tail of a game log the message names; the log is the full text
         sleep(5)
     return 1, "no port line in %s after %d s; game %s pid %d is left running" % (log, wait_s, name, up)
+
+
+def instances():
+    """The games a run may be given on this machine: RM_GAME_INSTANCES (letters, comma separated), else a and b."""
+    have = [check_name(x) for x in os.environ.get(INSTANCES_ENV, "").replace(" ", "").split(",") if x]
+    return have or [DEFAULT, "b"]
+
+
+def free(busy=(), purpose=None, refusal=None):
+    """-> (the first game a live run may take, or None; {game: why not}). A game in `busy` (a live run already drives
+    it) is not free; any other is free when its bridge is takeable (bridge_refusal: free, ours, or stale), up or down."""
+    refusal = refusal or bridge_refusal
+    why = {}
+    for n in instances():
+        if n in busy:
+            why[n] = "a live run drives it"
+            continue
+        no = refusal(n, purpose or "take game %s for a live run (game_instance.py free)" % n)
+        if no:
+            why[n] = no.splitlines()[0]
+            continue
+        return n, why
+    return None, why
+
+
+def leftovers(busy=(), refusal=None):
+    """-> [{instance, pid}]: games up that nobody holds (not busy, bridge takeable): an idle leftover may be stopped."""
+    refusal = refusal or bridge_refusal
+    rows = games()
+    if any(g["instance"] is None for g in rows):
+        raise Blind("cannot read a game's command line, so no game can be called nobody's")
+    return [{"instance": g["instance"], "pid": g["pid"]} for g in sorted(rows, key=lambda g: (g["instance"], g["pid"]))
+            if g["instance"] not in busy and not refusal(g["instance"], "is game %s an idle leftover" % g["instance"])]
+
+
+def brief(name):
+    """A run brief's section naming the game it drives (maturation.game_brief, the Dispatch step's in-game runs)."""
+    name = check_name(name)
+    return "\n".join([
+        "## Your game: %s" % name, "",
+        "This machine runs two RimWorld games, a and b. This run drives game **%s**: `RM_GAME_INSTANCE=%s` is set in "
+        "your environment, so game_paths, the bridge client (port %d), `rimflow bridge take` and the driver lock all "
+        "follow it. The other game is another run's: never stop, restart or deploy over it, and never take its bridge."
+        % (name, name, port(name)),
+        "- Start yours, if it is down: `python3 src/RimMandrake/Utils/game_instance.py launch %s --wait` (game a goes "
+        "through Steam, or directly with Steam's flags when Steam refuses beside the other game; b always directly)."
+        % name,
+        "- Stop only yours, by pid: `python3 src/RimMandrake/Utils/game_instance.py stop --instance %s`. "
+        "`game_instance.py status` shows both." % name,
+        "- Both games read one Mods folder: deploy only your own mod's files; a DLL the other game has loaded "
+        "cannot be replaced while it runs.", ""])
 
 
 def _read(path):
@@ -468,6 +711,10 @@ def main(argv=None):
     s.add_argument("--instance", default=None)
     s.add_argument("--for", dest="purpose", default=None, help="what the stop is for (the bridge check records it)")
     sub.add_parser("status")
+    s = sub.add_parser("free")
+    s.add_argument("--busy", action="append", default=[], help="a game a live run already drives (repeatable)")
+    s.add_argument("--for", dest="purpose", default=None)
+    sub.add_parser("leftovers")
     a = ap.parse_args(argv)
     try:
         if a.cmd == "env":
@@ -481,6 +728,15 @@ def main(argv=None):
             print("prepared %s" % prepare(a.name))
         elif a.cmd == "status":
             print("\n".join(status_lines()))
+        elif a.cmd == "free":
+            got, why = free([check_name(x) for x in a.busy], a.purpose)
+            if not got:
+                raise Refused("no game is free: %s" % "; ".join("game %s: %s" % kv for kv in sorted(why.items())))
+            print(got)
+        elif a.cmd == "leftovers":
+            for g in leftovers():
+                print("%s  pid %d  up, nobody holds it: may be stopped (game_instance.py stop --instance %s)" % (
+                    g["instance"], g["pid"], g["instance"]))
         else:
             rc, text = (stop(a.pid, a.force, a.instance, a.purpose) if a.cmd == "stop" else launch(a.name, a.wait))
             print(text)

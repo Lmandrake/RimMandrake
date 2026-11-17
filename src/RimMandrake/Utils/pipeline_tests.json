@@ -53,6 +53,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_maturation.py", "seconds": 1.2},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_autonomy.py", "seconds": 36.3},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_dispatch.py", "seconds": 73.3},
+    {"test": "src/RimMandrake/rimflow/selftest_dispatch_two_games.py", "seconds": 3.8},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_hands.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_next_dispatch.py", "seconds": 1.2},
     {"test": "src/RimMandrake/rimflow/selftest_red_dispatch.py", "seconds": 0.3},

@@ -152,9 +152,7 @@ def paths(w):
 def launch(w):
     a = w.start_a()
     r = w.gi("launch", "a")
-    check(r.returncode == G.EX_REFUSED and "keeps its own launch" in r.stderr, "launch refuses game a")
-    r = w.gi("launch")
-    check(r.returncode == G.EX_REFUSED, "launch with nothing set refuses too")
+    check(r.returncode == 0 and "already running" in r.stdout and w.log_lines("cmd") == [], "launch a with a up starts nothing")
     r = w.gi("launch", "b", FAKE_NO_STEAM="1")
     check(r.returncode == G.EX_REFUSED and "Steam is not running" in r.stderr, "no Steam: refused by name")
     appid = os.path.join(w.game_dir, "steam_appid.txt")
@@ -336,6 +334,144 @@ def bridge(w):
     w.bridge()
 
 
+A_WAITED = "import game_instance as G; rc, t = G.launch('a', wait=True, wait_s=%d); print(t); print('RC', rc)"
+
+
+def both_orders(w):
+    """RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B. Measured on Archmagi 2026-11-16 21:21 and 21:23 PST: with
+    game b up and no game a, steam://rungameid/294100 logged `LaunchApp changed task to WaitingPrevProcess` and then
+    Completed, and started nothing (b had joined Steam's session through steam_appid.txt). So `launch a` asks Steam
+    first, reads Steam's answer, and on WaitingPrevProcess starts RimWorldWin64.exe itself with Steam's flags, no
+    -savedatafolder or -logfile (Unity's own log, as Steam's launch gives it) and no GABP pair (port 5174, the token
+    line), so every tool reads game a as before. Both orders start; the other game is never touched."""
+    # b then a: Steam refuses, the direct start carries the flag Steam gave a (its own last launch, in its log) and
+    # none of a b-shell's GABP pair
+    os.makedirs(os.path.join(w.tmp, "logs"), exist_ok=True)
+    with open(os.path.join(w.tmp, "logs", "console_log.txt"), "w") as f:
+        f.write('[2026-11-16 22:00:44] Game process added : AppID 294100 ""C:\\Game\\RimWorldWin64.exe" '
+                '-disable-compute-shaders", ProcID 14052, IP 0.0.0.0:0\n')
+    b = w.start_b()
+    b_shell = dict(re.findall(r"export (\w+)='?([^'\n]*)'?", w.gi("env", "b").stdout))     # eval "$(... env b)"
+    check(b_shell.get("RM_GAME_A_LOGDIR") == w.a_dir and "GABP_TOKEN" in b_shell,
+          "a b-shell keeps game a's log folder it replaced: %s" % b_shell.get("RM_GAME_A_LOGDIR"))
+    r = w.py(A_WAITED % 20, timeout=200, **b_shell)
+    a = stdout(w.gi("pid", "a"))
+    saw = w.a_saw() or {}
+    check("RC 0" in r.stdout and a.isdigit() and "WaitingPrevProcess" in w.steam_log(),
+          "b then a: Steam answers WaitingPrevProcess and game a starts anyway: %s %s" % (r.stdout[-300:], r.stderr[-300:]))
+    check("directly" in r.stdout and "port 5174" in r.stdout, "... directly, and --wait reads a's own port line: %s" % r.stdout[-200:])
+    check(saw.get("argv") == ["-disable-compute-shaders"], "a's command line is Steam's (its flag, no -savedatafolder, no -logfile): %s" % saw)
+    check(saw.get("port") is None and saw.get("token") is None, "a b-shell's GABP pair does not reach game a: %s" % saw)
+    check(F.alive(b) and w.kills() == [], "game b is untouched by a's launch")
+    r = w.gi("status")
+    check("a  running" in r.stdout and "b  running" in r.stdout, "both games up at once: %s" % r.stdout)
+    w.clear()
+
+    # a then b: nothing else up, so Steam's own launch (his launch options), then b beside it
+    os.makedirs(os.path.join(w.tmp, "logs"), exist_ok=True)
+    open(os.path.join(w.tmp, "logs", "console_log.txt"), "w").close()
+    r = w.py(A_WAITED % 20, timeout=200)
+    a = stdout(w.gi("pid", "a"))
+    check("RC 0" in r.stdout and a.isdigit() and "through Steam" in r.stdout and "WaitingPrevProcess" not in w.steam_log(),
+          "a alone: through Steam, as before: %s %s" % (r.stdout[-300:], r.stderr[-300:]))
+    check([ln for ln in w.log_lines("START") if "RimWorldWin64.exe" in ln] == [], "a alone: no direct start")
+    r = w.py("import game_instance as G; rc, t = G.launch('b', wait=True, wait_s=20); print(t); print('RC', rc)")
+    b = stdout(w.gi("pid", "b"))
+    check("RC 0" in r.stdout and b.isdigit() and a.isdigit() and F.alive(int(a)) and w.kills() == [], "a then b: both up, a untouched: %s" % r.stdout[-200:])
+    w.clear()
+
+    # Steam's answer unreadable while another game lives: a direct start rather than a wait on a launch that never comes
+    b = w.start_b()
+    r = w.py(A_WAITED % 20, timeout=200, FAKE_STEAM="mute")
+    check("RC 0" in r.stdout and stdout(w.gi("pid", "a")).isdigit() and "directly" in r.stdout and F.alive(b),
+          "Steam silent beside b: started directly: %s %s" % (r.stdout[-200:], r.stderr[-200:]))
+    w.clear()
+
+    # a direct start needs steam_appid.txt (Workshop through Steam) and Steam itself
+    appid = os.path.join(w.game_dir, "steam_appid.txt")
+    os.rename(appid, appid + ".away")
+    b = w.start_b()
+    r = w.gi("launch", "a")
+    check(r.returncode == G.EX_REFUSED and "steam_appid.txt" in r.stderr and not stdout(w.gi("pid", "a")),
+          "Steam refuses beside b and no steam_appid.txt: refused by name, nothing started: %s" % r.stderr[-200:])
+    os.rename(appid + ".away", appid)
+    w.clear()
+
+    # the launcher drivers use (launch_ready.py RealEnv.launch) goes the same way
+    b = w.start_b()
+    r = w.py("import sys; sys.path.insert(0, %r); import launch_ready as L; L.RealEnv().launch(); print('RC 0')"
+             % os.path.join(w.repo, "src/RimMandrake/bridgetools"))
+    check("RC 0" in r.stdout and stdout(w.gi("pid", "a")).isdigit() and F.alive(b) and w.kills() == [],
+          "launch_ready's launch of game a with b up starts a: %s %s" % (r.stdout[-200:], r.stderr[-300:]))
+    w.clear()
+
+
+def free(w):
+    """A live run never waits for a game while one is free, and never takes one another run holds: `free` answers the
+    first game whose bridge `rimflow bridge idle` calls takeable (free, ours or stale), up or down; --busy names games a
+    live run already drives. An idle leftover (a game up with nobody holding it) is listed, and may be stopped."""
+    a, b = w.start_a(), w.start_b()
+    w.bridge((OTHER, 120))
+    r = w.gi("free", RM_HOST="archmagi", timeout=120)
+    check(r.returncode == 0 and stdout(r) == "b", "a held by another seat: b is the free game: %r %s" % (stdout(r), r.stderr[-200:]))
+    w.bridge((OTHER, 120, "archmagi.b"))
+    r = w.gi("free", RM_HOST="archmagi", timeout=120)
+    check(r.returncode == 0 and stdout(r) == "a", "b held: a is free: %r %s" % (stdout(r), r.stderr[-200:]))
+    w.bridge((OTHER, 120), (OTHER, 120, "archmagi.b"))
+    r = w.gi("free", RM_HOST="archmagi", timeout=120)
+    check(r.returncode == G.EX_REFUSED and "game a" in r.stderr and "game b" in r.stderr and not stdout(r),
+          "both held: refused, each game's reason said: %s" % r.stderr[-300:])
+    w.bridge()
+    r = w.gi("free", "--busy", "a", RM_HOST="archmagi", timeout=120)
+    check(r.returncode == 0 and stdout(r) == "b", "a live run on a (--busy a): b: %r" % stdout(r))
+    r = w.gi("free", RM_HOST="archmagi", RM_GAME_INSTANCES="b", timeout=120)
+    check(stdout(r) == "b", "RM_GAME_INSTANCES narrows the games: %r" % stdout(r))
+    check(F.alive(a) and F.alive(b) and w.kills() == [], "choosing a game stops nothing")
+
+    w.bridge((OTHER, 120, "archmagi.b"))
+    r = w.gi("leftovers", RM_HOST="archmagi", timeout=120)
+    check(r.returncode == 0 and re.search(r"^a\s+pid %d" % a, r.stdout, re.M) and not re.search(r"^b\s", r.stdout, re.M),
+          "leftovers: a is up with nobody on it, b is held so not one: %s" % r.stdout)
+    r = w.gi("stop", "--instance", "b", RM_HOST="archmagi", timeout=120)
+    check(r.returncode == G.EX_REFUSED and F.alive(b), "the held game b is never stopped")
+    r = w.gi("stop", "--instance", "a", RM_HOST="archmagi", timeout=120)
+    check(r.returncode == 0 and F.wait_dead(a) and F.alive(b), "the idle leftover a may be stopped; b lives: %s" % r.stderr[-200:])
+    w.bridge()
+
+    # Every detached run is seat BENCH, so `rimflow bridge idle` reads another BENCH run's hold as "ours" (MEASURED
+    # 2026-11-16 23:37 PST: a live BENCH host_guard holder on b, and bridge idle said TAKEABLE). A live holder process
+    # that is not this process's own take is someone else's game, whatever its seat.
+    a = w.start_a()
+    import subprocess
+    guard = os.path.join(w.repo, "src/RimMandrake/rimflow/host_guard.py")
+    lock_b = os.path.join(w.b_dir, "DRIVER_LOCK.json")
+    holder = subprocess.Popen([sys.executable, guard, "run", "--seat", "BENCH", "--for", "another BENCH run drives b",
+                               "--", "sleep", "60"], env=dict(w.env, RM_GAME_INSTANCE="b", RM_HOST="archmagi",
+                                                              RIMFLOW_DRIVER_LOCK=lock_b),     # as `env b` sets it
+                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    try:
+        for _ in range(100):
+            if os.path.exists(lock_b):
+                break
+            F.time.sleep(0.05)
+        r = w.gi("free", RM_HOST="archmagi", RM_GAME_INSTANCES="b,a", timeout=120)
+        check(stdout(r) == "a", "a live BENCH holder on b: b is not free, though bridge idle calls it ours: %r %s"
+              % (stdout(r), r.stderr[-200:]))
+        r = w.gi("leftovers", RM_HOST="archmagi", timeout=120)
+        check(not re.search(r"^b\s", r.stdout, re.M) and re.search(r"^a\s", r.stdout, re.M),
+              "... and no leftover: %s" % r.stdout)
+        r = w.gi("stop", "--instance", "b", RM_HOST="archmagi", timeout=120)
+        check(r.returncode == G.EX_REFUSED and F.alive(b) and "driver lock is held" in r.stderr,
+              "... and stop refuses it, b lives: %s" % r.stderr[-200:])
+        r = w.gi("stop", "--instance", "a", RM_HOST="archmagi", timeout=120)
+        check(r.returncode == 0 and F.wait_dead(a) and F.alive(b), "control: with b held, the unheld a may still be "
+              "stopped, and b lives: %s" % (r.stdout + r.stderr)[-200:])
+    finally:
+        holder.kill()
+        holder.wait()
+    w.bridge()
+
+
 FAKE_BROADCAST = """import json, os, sys
 with open(os.environ["FAKE_BROADCAST_LOG"], "a") as f:
     f.write(json.dumps({"sentence": sys.argv[1:], "why": os.environ.get("RIMFLOW_WHY")}) + "\\n")
@@ -408,7 +544,7 @@ def whole_repo():
 
 
 SECTIONS = {"names": names, "stop": stop, "blind": blind, "paths": paths, "launch": launch, "rw_game": rw_game, "sites": sites,
-            "bridge": bridge, "game_idle_ok": game_idle_ok}
+            "bridge": bridge, "game_idle_ok": game_idle_ok, "both_orders": both_orders, "free": free}
 
 
 def main():

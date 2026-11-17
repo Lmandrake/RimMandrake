@@ -97,10 +97,11 @@ def launch_and_wait(budget=None):
             sys.exit("[4 launch] %s" % e)
         if rc != 0:
             sys.exit("[4 launch] %s" % out)
-    else:
-        rc, out = sh(["powershell.exe", "-NoProfile", "-Command", "Start-Process 'steam://rungameid/294100'"], timeout=60)
-        if rc:
-            sys.exit("[4 launch] Steam launch failed: %s" % out)
+    else:       # through Steam, or directly when Steam refuses beside game b (RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B)
+        try:
+            game_instance.fire_a()
+        except (game_instance.Refused, game_instance.Blind) as e:
+            sys.exit("[4 launch] %s" % e)
     if not wait_for_process(profile["launch_to_process_s"]):
         sys.exit("[4 launch] " + load_policy.deadline_exceeded(
             "waiting for Steam to create the game process", profile["launch_to_process_s"],

@@ -59,6 +59,7 @@ MATURATION_CLOCK (a unix time) pins the clock for the selftest. Selftest: selfte
 """
 import argparse
 import datetime as dt
+import inspect
 import json
 import os
 import re
@@ -1554,8 +1555,25 @@ def reconcile_text(mod, why):
             "nothing it already did.\n" % (why, mod))
 
 
+def takes_game(fn):
+    """Can this bridge reading name a game (a `game` parameter)? A stand-in that cannot reads game a only."""
+    try:
+        return "game" in inspect.signature(fn).parameters
+    except (TypeError, ValueError):
+        return False
+
+
+def game_brief(game):
+    """The brief's section naming the run's game: game_instance.brief (RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B)."""
+    utils = os.path.join(os.path.dirname(HERE), "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import game_instance
+    return game_instance.brief(game)
+
+
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
-               resume=None, bars=None, preface=None, env=None, session=None, reconcile=None):
+               resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -1568,7 +1586,12 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     modledger.launch): the brief opens with it, then the stage's own brief; env: RM_ variables the run's unit carries
     (the holder's RM_MODLEDGER_WRITER). session: the mod's holder session to resume
     (modledger.resume_plan, `--resume`); reconcile: why the last run was killed or lost, so the brief opens with the
-    reconcile step (RIMMANDRAKE_RESUME_HOLDER_SESSIONS_TO_400K_KILL_AND_RESUME)."""
+    reconcile step (RIMMANDRAKE_RESUME_HOLDER_SESSIONS_TO_400K_KILL_AND_RESUME). game: the game an in-game run drives
+    (the Dispatch step's free choice): it reaches the unit as RM_GAME_INSTANCE and the brief, and the bridge read is
+    that game's."""
+    if game:
+        env = dict(env or {}, RM_GAME_INSTANCE=game)
+    game = (env or {}).get("RM_GAME_INSTANCE") or "a"
     if not isinstance(budget_usd, (int, float)) or isinstance(budget_usd, bool) or budget_usd <= 0:
         return 2, "REFUSED: a spend cap is required (--budget-usd > 0); there is no default", None
     if not item:
@@ -1593,9 +1616,15 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
             return 2, "REFUSED: %s owes no in-game visit: visit %s is %s (%s)" % (
                 mod, f.get("visit"), "recorded" if f.get("owed") != "blocked" else "blocked",
                 "; ".join(f.get("blocked") or (f.get("exit") or {}).get("why") or [f.get("owed", UNM)])), None
-        go, why = (bridge or bridge_idle)("%s in-game acceptance visit %s" % (mod, f.get("visit")), seat)
+        read, purpose = bridge or bridge_idle, "%s in-game acceptance visit %s" % (mod, f.get("visit"))
+        if takes_game(read):
+            go, why = read(purpose, seat, game=game)
+        else:
+            go, why = read(purpose, seat) if game == "a" else (False, "this bridge reading cannot name game %s" % game)
         if not go:
-            return 2, "REFUSED: the bridge is not takeable for %s's in-game visit %s: %s" % (mod, f.get("visit"), why), None
+            return 2, "REFUSED: the bridge of game %s is not takeable for %s's in-game visit %s: %s" % (
+                game, mod, f.get("visit"), why), None
+        text = text.rstrip("\n") + "\n\n" + game_brief(game)
     elif f.get("stage") != "offline_build":
         return 2, ("REFUSED: %s stands at %s; only an offline build, a blind challenge or an in-game acceptance "
                    "launches from here" % (mod, f.get("stage"))), None
@@ -2870,20 +2899,33 @@ def ingame_facts(root, mod):
     return out
 
 
-def bridge_idle(purpose, seat="BENCH", runner=subprocess.run):
+def bridge_idle(purpose, seat="BENCH", runner=subprocess.run, game=None):
     """-> (takeable, text): `rimflow bridge idle`, the delegated take's own verdict (the ledger holder, his OWNER hold,
-    the shared lock across clones and the Archmagi driver lock), read-only. MATURATION_BRIDGE_IDLE names a stand-in
+    the shared lock across clones and the Archmagi driver lock), read-only. game: whose bridge (RM_GAME_INSTANCE for
+    the reading; a, or None, is today's game a whatever this shell names). MATURATION_BRIDGE_IDLE names a stand-in
     command (the selftests'); a reading that fails is not takeable."""
     cmd = os.environ.get("MATURATION_BRIDGE_IDLE")
     argv = ([sys.executable, cmd] if cmd else [sys.executable, os.path.join(HERE, "cli.py")]) + [
         "bridge", "idle", "--for", purpose, "--seat", seat]
+    env = dict(os.environ)
+    if game and game != "a":
+        env["RM_GAME_INSTANCE"] = game
+    else:
+        env.pop("RM_GAME_INSTANCE", None)
     try:
-        r = runner(argv, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+        r = runner(argv, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL, env=env)
     except (OSError, subprocess.SubprocessError) as e:
         return False, "the bridge reading failed: %s" % e
     text = ((r.stdout or "") + (r.stderr or "")).strip().splitlines()
     line = next((x for x in reversed(text) if x.startswith(("TAKEABLE", "NOT TAKEABLE"))), text[-1] if text else "")
-    return r.returncode == 0 and line.startswith("TAKEABLE"), line or "no reading (rc %s)" % r.returncode
+    go = r.returncode == 0 and line.startswith("TAKEABLE")
+    if go and not cmd:      # seat BENCH reads another BENCH run's hold as ours: a live holder process is that run's
+        import host_guard
+        with host_guard.instance_env(game if game and game != "a" else None):
+            held = host_guard.crossing()
+        if held:
+            return False, "NOT TAKEABLE  game %s: %s" % (game or "a", held)
+    return go, line or "no reading (rc %s)" % r.returncode
 
 
 def _check_lines(tt, ids, root):

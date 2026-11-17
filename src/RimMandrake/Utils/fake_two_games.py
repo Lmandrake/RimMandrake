@@ -34,6 +34,19 @@ for x in a:
     if x.startswith("-savedatafolder="):
         with open(os.path.join(x.split("=", 1)[1], "game_saw.json"), "w") as f:
             json.dump({"argv": a, "port": os.environ.get("GABP_SERVER_PORT"), "token": os.environ.get("GABP_TOKEN")}, f)
+# game a (no -savedatafolder, no -logfile): Unity's own log in LocalLow, rotated to Player-prev.log, the standalone port
+# line and a token unless a GABP pair leaked into its environment; what it saw goes to a_saw.json beside the log
+if not any(x.startswith("-savedatafolder=") for x in a) and "-logfile" not in a and os.environ.get("FAKE_A_LOGDIR"):
+    d = os.environ["FAKE_A_LOGDIR"]
+    log = os.path.join(d, "Player.log")
+    if os.path.exists(log):
+        os.replace(log, os.path.join(d, "Player-prev.log"))
+    p = os.environ.get("GABP_SERVER_PORT")
+    with open(log, "w") as f:
+        f.write(("[RimBridge] GABP server connected to GABS on port %s\n" % p) if p else
+                "[RimBridge] GABP server running standalone on port 5174\n[RimBridge] Bridge token: faketoken\n")
+    with open(os.path.join(d, "a_saw.json"), "w") as f:
+        json.dump({"argv": [x for x in a if x != "--ignore-term"], "port": p, "token": os.environ.get("GABP_TOKEN")}, f)
 time.sleep(600)
 '''
 
@@ -61,6 +74,35 @@ def start_ms(pid):
     with open("/proc/stat") as f:
         btime = [int(ln.split()[1]) for ln in f if ln.startswith("btime")][0]
     return int((btime + ticks / os.sysconf("SC_CLK_TCK")) * 1000)
+def steam(url):
+    # Steam as measured on Archmagi 2026-11-16 (its console_log.txt): while a game it counts for app 294100 lives (a game
+    # it started, or a direct game that joined it through steam_appid.txt), rungameid answers WaitingPrevProcess, then
+    # Completed, and starts nothing. Otherwise it creates the game with his launch options and logs "Game process added".
+    # FAKE_STEAM=lets starts it anyway (a game Steam does not count); FAKE_STEAM=mute writes nothing and starts nothing.
+    import time as _t
+    mode = os.environ.get("FAKE_STEAM", "")
+    if "rungameid/294100" not in url or mode == "mute":
+        return
+    path = os.path.join(os.path.dirname(os.environ["RM_STEAMAPPS"]), "logs", "console_log.txt")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    def say(text):
+        with open(path, "a") as f:
+            f.write("[%s] %s\n" % (_t.strftime("%Y-%m-%d %H:%M:%S"), text))
+    act = "GameAction [AppID 294100, ActionID 9] : LaunchApp changed task to %s with \"\""
+    say('ExecuteSteamURL: "%s"' % url)
+    say(act % "CheckShaderDepotManifest")
+    if games() and mode != "lets":
+        say(act % "WaitingPrevProcess")
+        say(act % "Completed")
+        return
+    say(act % "CreatingProcess")
+    flags = os.environ.get("FAKE_STEAM_FLAGS", "-disable-compute-shaders").split()
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GABP_")}     # the game gets Steam's environment
+    p = subprocess.Popen([sys.executable, FAKE] + flags, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                         stderr=subprocess.DEVNULL, start_new_session=True)
+    say('Game process added : AppID 294100 ""C:\\Game\\RimWorldWin64.exe" %s", ProcID %d, IP 0.0.0.0:0'
+        % (" ".join(flags), p.pid))
+    say(act % "Completed")
 '''
 
 POWERSHELL = "#!/usr/bin/env python3\n" + SHIM_LIB + r"""
@@ -85,9 +127,14 @@ elif "Get-NetTCPConnection" in script:
 elif "Get-Process steam" in script:
     if not os.environ.get("FAKE_NO_STEAM"):
         print(4242)
+elif "Start-Process 'steam://" in script:
+    log("START " + script)
+    steam(re.search(r"'(steam://[^']*)'", script).group(1))
 elif "Start-Process" in script:
     log("START " + script)
     env = dict(os.environ)
+    for k in re.findall(r"Remove-Item[^;]*?Env:(\w+)", script) + re.findall(r",Env:(\w+)", script):
+        env.pop(k, None)
     for k, v in re.findall(r"\$env:(\w+)='([^']*)'", script):
         env[k] = v
     args = re.findall(r"'([^']*)'", script[script.index("-ArgumentList"):]) if "-ArgumentList" in script else []
@@ -121,7 +168,10 @@ for p in targets:
 '''
 
 CMD = "#!/usr/bin/env python3\n" + SHIM_LIB + r'''
-log("cmd " + " ".join(sys.argv[1:]))    # steam:// goes no further than this line
+log("cmd " + " ".join(sys.argv[1:]))
+for x in sys.argv[1:]:
+    if x.startswith("steam://"):
+        steam(x)
 '''
 
 PYTHON_EXE = "#!/bin/sh\necho pong\n"
@@ -167,6 +217,7 @@ class World:
         self.env.update(PATH=self.bin + os.pathsep + os.environ["PATH"], RM_INSTANCES_ROOT=self.root,
                         RM_STEAMAPPS=self.steamapps, RM_GAME_USERDATA=self.a_dir, RM_GAME_LOGDIR=self.a_dir,
                         FAKE_GAME_SCRIPT=self.game_script, FAKE_KILL_LOG=self.kill_log, PYTHONDONTWRITEBYTECODE="1",
+                        FAKE_A_LOGDIR=self.a_dir,
                         RM_DATA_ROOT=os.path.join(self.tmp, "data"))
         # rimflow's bridge on throwaway state: game_instance.stop asks `rimflow bridge idle` before any signal, and a
         # fake machine must never read (or let a live visit decide) the clone's own ledger, lock or BRIDGE mirror
@@ -274,6 +325,21 @@ class World:
     def saw(self):
         with open(os.path.join(self.b_dir, "game_saw.json")) as f:
             return json.load(f)
+
+    def a_saw(self):
+        """What the last game a saw (argv, port, token), or None when none started."""
+        try:
+            with open(os.path.join(self.a_dir, "a_saw.json")) as f:
+                return json.load(f)
+        except OSError:
+            return None
+
+    def steam_log(self):
+        try:
+            with open(os.path.join(self.tmp, "logs", "console_log.txt")) as f:
+                return f.read()
+        except OSError:
+            return ""
 
     def close(self):
         self.clear()

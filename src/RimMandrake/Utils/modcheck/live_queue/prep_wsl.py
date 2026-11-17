@@ -78,7 +78,8 @@ def main(argv):
     if os.environ.get("RM_GAME_INSTANCE", "").strip().lower() not in ("", "a"):     # Steam's launch can only start game a
         print("next: launch directly -- python3 src/RimMandrake/Utils/game_instance.py launch --wait")
         return 0
-    print("next: launch through Steam -- powershell.exe -NoProfile -Command \"Start-Process 'steam://rungameid/294100'\"")
+    print("next: launch -- python3 src/RimMandrake/Utils/game_instance.py launch a --wait  (through Steam, or directly "
+          "when Steam refuses beside game b)")
     return 0
 
 
