@@ -67,12 +67,28 @@ def run(B):
     god = {r["name"]: r["value"] for r in (B.call("jawa/debug_settings", action="list") or {}).get("fields") or []}.get("godMode")
     if god:
         B.call("jawa/debug_settings", action="set", field="godMode", value=False)
+    # the player's own two values are read first and put back in the finally, whatever throws in between
+    # (proof_restore_check: the finally used to write a fixed "true" through cfg, which loses a player's "false" and reads as
+    # two unrestored pokes; RIMMANDRAKE_RESTORE_PIPE_POLE_MENU_PRIORS_TWO_NEW_LEAKS)
+    def setf(type_name, field, value):
+        B.call("jawa/mod_settings_field", typeName=type_name, action="set", field=field, value=value)
+
+    def was(type_name, field):
+        r = B.call("jawa/mod_settings_field", typeName=type_name, action="get", field=field) or {}
+        return str(r.get("value", "true")).lower()
+
+    prior = {(AS, "enabled"): was(AS, "enabled"), (MS, "pipePolesEnabled"): was(MS, "pipePolesEnabled")}
     try:
         seen["base"] = cfg("true", "true")
         seen["masterOff"] = cfg("false", "true")
         seen["polesOff"] = cfg("true", "false")
     finally:
-        seen["restored"] = cfg("true", "true")
+        for (type_name, field), value in prior.items():
+            setf(type_name, field, value)
+        B.call("jawa/static_call", type=AS, method="Apply", args="")
+        B.call("jawa/static_call", type=PP, method="RedrawSpans", args="")
+        time.sleep(0.5)
+        seen["restored"] = vis()
         if god:
             B.call("jawa/debug_settings", action="set", field="godMode", value=True)
     st, why = verdict(seen)
