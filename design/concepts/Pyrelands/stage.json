@@ -689,6 +689,16 @@
   "reserve": 60000,
   "spent": 18977885
  },
+ "coverage_release_granted": {
+  "after": [
+   "RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES",
+   "RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED",
+   "RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS",
+   "RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS"
+  ],
+  "at": "2026-11-17T18:24:41Z",
+  "why": "option A by delegated Evidence-for-Ask call CONDUCTOR:1794939817434538611: one final look once the three round-9 gaps are fixed in 0.1.0 and re-pinned; hand grant folded by RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE"
+ },
  "coverage_releases": [
   {
    "at": "2026-11-15T06:01:06Z",
@@ -1627,6 +1637,12 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794938276 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-17T18:24:41Z",
+   "stage": 5,
+   "what": "coverage_release_granted",
+   "why": "option A by delegated Evidence-for-Ask call CONDUCTOR:1794939817434538611: one final look once the three round-9 gaps are fixed in 0.1.0 and re-pinned; hand grant folded by RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE (takes effect after RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES, RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED, RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS, RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS close and the re-pin lands)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
