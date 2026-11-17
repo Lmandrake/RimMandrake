@@ -35,157 +35,138 @@
      "planted (art_calibration.py): kept_RM_Gawpsack_live, a picture the owner KEPT (CL-030) that the art-eval pipeline banded REALLY_BAD, staged with his keep: E3 forbids a REDO"
     ]
    },
-   "hash": "bcf3606aef323f7c",
+   "hash": "cb8d39e19eb92d29",
    "last_run": {
-    "at": "2026-11-17T08:33:05Z",
-    "cases": "came out the other way: north_from_south_RM_DecayDrake_r2, regress_RM_Durrok_r2, regress_RM_Gawpsack_live",
+    "at": "2026-11-17T14:23:40Z",
+    "cases": "12 planted case(s) ran and came out as planted",
     "exit": 0,
-    "out": "north_from_south_RM_DecayDrake_r2    expect refuse got refuse, misdirected (C1) C1 Redraw north.png as a rear view of the same subject at 512x512 real alpha, keepi",
+    "out": "north_from_south_RM_DecayDrake_r2    expect refuse got refuse C1 Regenerate north.png as a rear view of the r2 fermatalis on the same 512 px canv",
     "results": [
      {
       "cost_usd": [
-       0.4733648
+       0.4841372
       ],
       "errors": [],
       "expect": "pass",
       "got": "pass",
       "id": "regress_RM_Shadefern_B",
       "proposals": [
-       "Plants whose description ties a direction to the world (here 'every frond swept to the cold side') can only show a fixed screen direction, because the texture is not rotated with the neighbouring rock",
-       "B2 could name a bush-darkness reference (vanilla bush mean luminance) so that 'clearly apart from the ground' is checked against a number, not by eye. The fern in playzoom_single.png is dark (interior"
+       "Plants whose description names a growing surface (here 'the shaded face of standing stone') need a ruling on whether the sprite may show that surface. D4 counts it as scenery. That reading is likely b",
+       "For invented (franchise-free) subjects with no canon entry, add a line making each visual claim in the def description a yes/no check, the way A2 does for Must show lines. Example: 'every frond swept "
       ],
       "refusals": [],
       "verdicts": [
        {
-        "notes": "Fits the description: deep-green fern, every frond swept one way (to the right) as if combed, pale rachis drawn clearly on each frond, curled fiddleheads at the",
+        "notes": "Plant, one picture (no facings). 256x256 RGBA for drawSize 1x1 (2x the 128 px/cell floor, D2). It matches the description in subject.json: deep-green fern, ever",
         "picture": "single.png",
         "verdict": "KEEP"
        }
       ],
       "weighted_tokens": [
-       118342
+       121035
       ]
      },
      {
       "cost_usd": [
-       0.571966
+       0.6199665999999999
       ],
       "errors": [],
       "expect": "refuse",
       "got": "refuse",
       "id": "regress_RM_Huldu_C",
       "proposals": [
-       "Add a pose-consistency line to C: all facings show the same gait or posture (all fours versus rearing upright). Evidence: east.png rears upright while south.png walks on all fours, and C2 only names s",
-       "Make B1a measurable: say what 'heavy' means for a keyline, for example near-black edge pixels (luminance < 30) more than 1 px wide on a 256 px canvas while the interior is around 90. Evidence: all thr",
-       "Give C1 a test for a 'top-down view': for example, all four limbs splayed symmetrically flat and no legs below the body line. Evidence: north.png is a plan view, but the wording leaves room for argume"
+       "For invented subjects (canon_entry null) the subject.json description is the only appearance spec. I propose a clause that every visible trait it names (here 'dorsal comb folded flat like wet fur', 'v",
+       "The scale panel's '32 ×4 nearest' strip shows an unlabelled grey rat-like reference animal between the human and the subject. Label it, so the judge knows which vanilla creature sets the size comparis"
       ],
       "refusals": [
-       {
-        "clause": "B1a",
-        "evidence": [
-         "south.png",
-         "east.png",
-         "north.png",
-         "playzoom_south.png"
-        ],
-        "fix": "Regenerate the three facings with the house no-outline register, or post-process by replacing the dark edge ring with the adjacent fur colour, keeping pose, palette and scale."
-       },
-       {
-        "clause": "C1",
-        "evidence": [
-         "north.png",
-         "south.png"
-        ],
-        "fix": "Redraw north.png as a rear three-quarter view of the same creature, matching south's camera, proportions and palette."
-       },
        {
         "clause": "C2",
         "evidence": [
          "north.png",
          "east.png",
-         "south.png",
-         "playzoom_north.png",
-         "playzoom_east.png"
+         "south.png"
         ],
-        "fix": "Keep south.png's design as the reference and regenerate north.png (rear view, tapered tail, paws) and east.png (side profile on all fours) from it."
+        "fix": "Regenerate north.png as a rear view of the south/east otter body (tapered tail, toed paws, flat dorsal comb), keeping palette and canvas."
+       },
+       {
+        "clause": "B1a",
+        "evidence": [
+         "south.png",
+         "east.png",
+         "north.png"
+        ],
+        "fix": "Regenerate all three facings with the house no-outline register (or strip the keyline in post), keeping pose, palette and detail."
        }
       ],
       "verdicts": [
        {
+        "notes": "Advisory size (C2): north bbox is 88x235 px and east's is 243x189 px. Height ratio north:east is about 1.24 [measured]. C1 is satisfied: no face, only ear stubs",
+        "picture": "north.png",
+        "seen": "North has a different body plan from east and south. Its tail ends in a bilobed fish fluke, and all four limbs are seal-like flippers with no toes. East and sou",
+        "verdict": "REDO",
+        "violated": "C2"
+       },
+       {
+        "notes": "Advisory size (C2): south bbox is 106x244 px. B2: at 32 px/cell the pale chest bib separates clearly from the brown body and the tan ground.",
         "picture": "south.png",
-        "seen": "A continuous near-black keyline, 2-3 px wide (luminance 13-25 against a body interior of ~90, measured across row 180), runs around the whole silhouette. Everyt",
+        "seen": "A continuous dark keyline is drawn around the whole silhouette. The outer 4 px rim averages luminance 50 against 101 for the interior, and 42% of rim pixels fal",
         "verdict": "REDO",
         "violated": "B1a"
        },
        {
+        "notes": "East is a little cooler and greyer than south/north (mean RGB 118,91,78 vs 111,84,69) [measured]. That is not a palette disagreement on its own. Advisory size (",
         "picture": "east.png",
-        "seen": "The body rears upright on its hind legs with both forepaws raised and a long tapered otter tail, while south walks on all fours and north shows a flat body with",
+        "seen": "A dark drawn contour runs around the whole body, tail and paws. Rim luminance is 67 against 108 for the interior, and 34% of rim pixels fall below luminance 40 ",
         "verdict": "REDO",
-        "violated": "C2; B1a"
+        "violated": "B1a"
        },
        {
-        "picture": "north.png",
-        "seen": "It reads as a dorsal plan view seen from straight above. Four flat flipper-like limbs splay symmetrically and the tail ends in a forked whale-like fluke, unlike",
-        "verdict": "REDO",
-        "violated": "C1; C2; B1a"
-       },
-       {
-        "notes": "D1: beside the vanilla human at 256 px/cell the huldu sits at forearm-length scale within one cell. At 32 px/cell it is about rat-sized and reads as a brown bod",
+        "notes": "D1: at 256 px/cell the subject sits inside its 0.8-cell slot beside the human, a small animal of plausible size. At 32 px/cell it reads as a small brown shape a",
         "picture": "scale.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "B2 advisory: a bold brown shape with the face as a lighter patch, clearly apart from the ground. This is not grey mud.",
+        "notes": "B2 advisory: the cream bib and dark brown back are two bold shapes clearly apart from the ground. Not grey mud.",
         "picture": "playzoom_south.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "B2 advisory: it reads as a brown upright otter shape. The posture concern is recorded on east.png.",
-        "picture": "playzoom_east.png",
-        "verdict": "KEEP"
+        "picture": "playzoom_north.png",
+        "verdict": "UNSURE",
+        "why": "B2 is advisory only. At 32 px/cell the north is a thin, mostly single-value brown stick, and its fluke tail is the most readable feature. That is legible but we"
        },
        {
-        "notes": "B2 advisory: it reads as a dark reddish-brown elongated shape. The fluke is visible even at this size. The concern is recorded on north.png.",
-        "picture": "playzoom_north.png",
+        "notes": "B2 advisory: the upright otter profile with its pale chest reads clearly at 32 px/cell.",
+        "picture": "playzoom_east.png",
         "verdict": "KEEP"
        }
       ],
       "weighted_tokens": [
-       142992
+       154992
       ]
      },
      {
       "cost_usd": [
-       0.545145
+       0.7425344
       ],
       "errors": [],
       "expect": "refuse",
       "got": "refuse",
       "id": "regress_RM_Ssurr_B",
       "proposals": [
-       "Invented (franchise-free) subjects have no canon entry, so nothing in the brief checks the picture against the subject's own description. Ssurr's description says the fan is a 'half-circle crest-fan',",
-       "C2 covers size, proportions and palette, but not where a feature sits. In east.png the fan is a mid-back dorsal sail; south.png and north.png centre it on the neck and shoulders. Proposal: a distincti",
-       "B1a measure: in all three facings, 100% of alpha-edge pixels had luminance below 50, against interior means of about 90 to 106. An edge-luminance check is a cheap advisory flag for the keyline failure"
+       "For invented subjects with no canon entry, let the def description's shape words (here 'one enormous half-circle crest-fan ... open it is a wheel') be a yes/no check, the way A2 does for canon subject",
+       "Add an advisory keyline measure for B1a, analogous to B2: mean luminance of the opaque pixels that touch transparency, compared with the interior. On this candidate it was 0.1 to 13 against 90 to 104 "
       ],
       "refusals": [
        {
         "clause": "B1a",
         "evidence": [
          "south.png",
-         "east.png",
          "north.png",
-         "scale.png"
-        ],
-        "fix": "Regenerate south, east and north under the house painterly register prompt (HOUSE_ART_REGISTER) with no-outline wording, keeping this candidate's design: teal wheel-fan, cream belly, hound-sized repti"
-       },
-       {
-        "clause": "B1",
-        "evidence": [
-         "south.png",
          "east.png",
          "scale.png"
         ],
-        "fix": "Same regeneration as the B1a fix: one painterly rerun of all three facings fixes the cel banding and the outline together."
+        "fix": "Regenerate south.png, north.png and east.png with the no-outline house register: painterly shading, edges defined by value and colour, keeping the current size and canvas."
        },
        {
         "clause": "C2",
@@ -194,46 +175,50 @@
          "south.png",
          "east.png",
          "playzoom_north.png",
-         "playzoom_south.png"
+         "playzoom_east.png",
+         "subject.json"
         ],
-        "fix": "Redraw only north.png as the rear of the same teal animal, using east.png's dorsal colouring for back, tail and legs, at the same size and proportions. This can share the B1a/B1 rerun."
+        "fix": "Fix the fan's plane (subject.json's 'open it is a wheel' suggests a neck frill, which is a narrow upright band behind the head when seen side-on), then redraw east.png to it if south and north are kep"
        }
       ],
       "verdicts": [
        {
+        "notes": "C1 passes: the face looks at the camera. Play zoom reads as a bold teal wheel, clearly apart from the ground (B2 fine). Canvas 256 px for drawSize 1.1 is genero",
         "picture": "south.png",
-        "seen": "A continuous black keyline runs around the whole silhouette: the fan scallops, the crest and the legs. Every alpha-edge pixel is near black (mean luminance 1.0 ",
+        "seen": "A continuous near-black keyline runs around the whole fan rim, every scallop, the legs and the claws (outer edge pixels mean luminance 1.0 of 255 against 104 in",
         "verdict": "REDO",
         "violated": "B1a"
        },
        {
-        "picture": "east.png",
-        "seen": "A heavy black keyline goes around the whole body, fan, tail and legs (edge-pixel mean luminance 0.6 against 97.6 inside; 100% below 50) [measured]. The fan ribs",
-        "verdict": "REDO",
-        "violated": "B1a"
-       },
-       {
+        "notes": "C1 passes: back of the head and the tail, no eyes or face. Advisory size note: the north fan is about 186 px wide against south's 221 (~0.84) [measured bbox], w",
         "picture": "north.png",
-        "seen": "The body and tail are tan-brown with dark tiger stripes (spine mean RGB 92,80,67 [measured]). South has a teal body with a cream belly and east has a teal-green",
+        "seen": "The body, legs and tail on north are a grey-brown and tan, with no green and no pale cream spots; on south and east the body is teal-green with cream mottling a",
         "verdict": "REDO",
-        "violated": "C2; B1a"
+        "violated": "C2"
+       },
+       {
+        "notes": "West mirrors east. Play zoom reads clearly: a teal half-disc over a slim body. The scale panel shows hound size, about 1 cell beside the human, which suits body",
+        "picture": "east.png",
+        "seen": "East draws the crest-fan as a dorsal sail: a half-circle standing up from the mid-back in the body's lengthwise plane, seen face-on from the side. South and nor",
+        "verdict": "REDO",
+        "violated": "C2"
        }
       ],
       "weighted_tokens": [
-       136287
+       185634
       ]
      },
      {
       "cost_usd": [
-       0.5881518000000001
+       0.7331353999999999
       ],
       "errors": [],
       "expect": "refuse",
       "got": "refuse",
       "id": "regress_RM_Vellak_B",
       "proposals": [
-       "The C2 facing check should cover appendage geometry, not only size, proportions and palette. A dorsal sail or crest must be in its true plane in every facing: edge-on, centred above the spine, from fr",
-       "B1a could give an advisory measure, never a refusal on its own: the mean luminance of the outer 2 px ring against the interior. Here the ring was 0.4–16 against an interior of 115–132, which separated"
+       "A midline dorsal structure (sail, crest, fin) is drawn edge-on, or nearly so, in north and south, not fanned out to one side; evidence: north.png fans the sail off one side of the spine. Proposed as a",
+       "Stray isolated alpha specks away from the body are a D4 cleanup item; evidence: north.png has 3 pixels at x=43–44, while the body starts at x=100."
       ],
       "refusals": [
        {
@@ -243,47 +228,80 @@
          "north.png",
          "south.png",
          "playzoom_east.png",
+         "playzoom_north.png",
+         "playzoom_south.png",
          "scale.png"
         ],
-        "fix": "Regenerate east, north and south with the no-outline house register, keeping pose, proportions, height and palette. Alternatively, strip the outer 2 px dark ring by recolouring it to the neighbouring "
+        "fix": "Regenerate east.png, north.png and south.png with the house no-outline register, keeping the pose, proportions, palette and 256 px canvas, and adding a value split so the tan body stays apart from dir"
        }
       ],
       "verdicts": [
        {
+        "notes": "Body tan (mean RGB 144,111,85) sits close to a dirt ground; without the keyline the redraw needs a value split (darker legs/belly or a lighter back) to stay leg",
         "picture": "east.png",
-        "seen": "A continuous near-black keyline about 2 px wide around the whole silhouette, legs, ears, tail and sail included. Measured: the outermost two pixel rings average",
+        "seen": "A continuous near-black keyline wraps the whole silhouette and the inner part edges (legs, sail, neck): the outermost 1 px edge band measures mean luminance 15 ",
         "verdict": "REDO",
         "violated": "B1a"
        },
        {
+        "notes": "Advisory: there are 3 stray alpha pixels at x=43–44, well away from the body (which starts at x=100); clean them up in the redraw. The sail drawn side-fanned is",
         "picture": "north.png",
-        "seen": "A black keyline of 1–2 px traces the whole rear silhouette. Measured: outer ring luminance 0.4, second ring 24, interior 116. It is a correct rear view with no ",
+        "seen": "Same near-black keyline round the whole rear view: the 1 px edge band measures luminance 7 against an interior of 149. C1 is met: the back of the head with ears",
         "verdict": "REDO",
         "violated": "B1a"
        },
        {
+        "notes": "Advisory C2: south is narrow (bbox 71 px wide, x 93–164) against north's 113 px; front-on is legitimately narrow.",
         "picture": "south.png",
-        "seen": "A black keyline of 1–2 px around the whole front silhouette. Measured: outer ring luminance 3.8, second ring 25, interior 115. The face looks at the camera (eye",
+        "seen": "A near-black keyline round the silhouette (edge band luminance 11 against an interior of 160). Face toward the camera with eyes and muzzle, a pale chest, four l",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "notes": "This is a derived copy of east.png. B2 is advisory: it reads as a few bold shapes (body, sail, legs).",
+        "picture": "playzoom_east.png",
+        "seen": "At 32 px/cell the east silhouette is held apart from the ground mainly by the dark edge pixels and the rust sail; the tan body is close to the ground value.",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "notes": "Derived copy of north.png.",
+        "picture": "playzoom_north.png",
+        "seen": "The dark contour is still visible at 32 px/cell. The rust sail stripe carries most of the read.",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "notes": "Derived copy of south.png.",
+        "picture": "playzoom_south.png",
+        "seen": "The dark contour is visible at 32 px/cell. The pale chest and the rust sail read, while the legs blur toward the ground value.",
+        "verdict": "REDO",
+        "violated": "B1a"
+       },
+       {
+        "notes": "D1 met: judged at 128 px/cell and at 32 px/cell. The scale is right.",
+        "picture": "scale.png",
+        "seen": "Beside the vanilla human the vellak stands about 2 cells tall, which fits 'camel-tall' and drawSize 2. On the tan ground its body tan nearly matches the dirt, a",
         "verdict": "REDO",
         "violated": "B1a"
        }
       ],
       "weighted_tokens": [
-       147038
+       183284
       ]
      },
      {
       "cost_usd": [
-       0.5328982
+       0.6283844
       ],
       "errors": [],
       "expect": "refuse",
       "got": "refuse",
       "id": "regress_RM_Murrin_C",
       "proposals": [
-       "C2 could also say that effect matter the description gives the subject (here the murrin's surface rings, drawn only on north.png and absent from east.png and south.png) must appear on every facing or ",
-       "C1/C2 could say that north and south share one camera elevation. Here south.png is a near-level frontal view with the body hidden behind the head, while north.png shows the full body length receding u",
-       "B1a could give a measurable threshold for 'heavy' (for example, a dark contour band ≥1% of canvas width that covers ≥80% of the silhouette perimeter). Without one, a thin consistent keyline like this "
+       "B2/D4: a swimmer's sprite is drawn over water, not soil, so its 32 px/cell legibility check should composite over a water tile as well as tan ground. scale.png only shows the murrin on tan, where its ",
+       "C1: say directly whether a swimmer's north may be a dorsal plan view. A fish seen from behind is a thin, tail-on shape that is hard to draw, and north.png shows the artist reached for a top-down view.",
+       "D4: say whether a self-made surface effect (the murrin's rings) must appear on every facing or may appear on just one. north.png has the rings; east.png and south.png do not."
       ],
       "refusals": [
        {
@@ -291,336 +309,346 @@
         "evidence": [
          "east.png",
          "north.png",
-         "south.png",
-         "playzoom_east.png"
+         "south.png"
         ],
-        "fix": "Regenerate east.png, north.png and south.png under the house no-outline register (HOUSE_ART_REGISTER), keeping the pose, deep keel, tall comb-fin, grey-bronze palette and canvas fill; check that no da"
+        "fix": "Regenerate east.png, north.png and south.png with the house no-outline register, or strip and repaint the keyline band, keeping the same anatomy, palette and scale."
+       },
+       {
+        "clause": "C1",
+        "evidence": [
+         "north.png",
+         "south.png",
+         "east.png"
+        ],
+        "fix": "Redraw north.png as the rear elevation mirroring south.png's framing, preserving proportions, palette and scale; the surface rings may stay."
        }
       ],
       "verdicts": [
        {
+        "notes": "Anatomy, painterly scale shading and side profile are good. The tall dorsal comb-fin and deep keel from the description are clearly shown. Advisory (C2 size): e",
         "picture": "east.png",
-        "seen": "A continuous near-black keyline about 2–3 px wide at 256 px runs around the whole silhouette: body, tail, every ray of the dorsal comb, the pectoral and anal fi",
+        "seen": "A continuous black keyline, about 2–3 px wide, runs around the whole fish: body, tail, every dorsal ray and the fins. I measured the mean luminance of opaque ed",
         "verdict": "REDO",
         "violated": "B1a"
        },
        {
+        "notes": "The surface rings around the fin are the effect the description says the fish makes (\"cuts the surface in rings\"), so I did not count them as scenery under D4. ",
         "picture": "north.png",
-        "seen": "The same continuous black keyline outlines the body, the comb-fin, the pectorals and the forked tail. C1 holds: this is a rear view with the tail toward the cam",
+        "seen": "B1a: a dark keyline runs around the body, fins and tail; edge luminance averages 58/255 against 111 inside, and 77% of edge pixels are below 60. C1: no eyes are",
         "verdict": "REDO",
-        "violated": "B1a"
+        "violated": "B1a; C1"
        },
        {
+        "notes": "The face reads well and the body plan matches east. At 32 px/cell (playzoom_south.png and scale.png), the grey-tan body sits close in value to the tan ground. T",
         "picture": "south.png",
-        "seen": "A black keyline traces the whole frontal silhouette: head, comb-fin, splayed pectorals and pelvic fins. The face looks at the camera with two eyes and a mouth, ",
+        "seen": "A solid black keyline, about 2–3 px wide, wraps the whole south silhouette. Edge-pixel luminance averages 2/255 (inner 114), and 100% of edge pixels are below 6",
         "verdict": "REDO",
         "violated": "B1a"
        }
       ],
       "weighted_tokens": [
-       133225
+       157097
       ]
      },
      {
       "cost_usd": [
-       0.4039434
+       0.5631608
       ],
       "errors": [],
       "expect": "pass",
       "got": "pass",
       "id": "regress_RM_Dewblade_B",
       "proposals": [
-       "The description gives Dewblade's character as 'Whole hillsides of them align like iron filings' (subject.json), but the single picture is a radial rosette whose blades fan out in all directions. A gro"
+       "Ground-cover and plant subjects whose description gives a height ('shin-high') could get an advisory check of the sprite's height against the human in the true-scale panel. Evidence: scale.png shows t",
+       "A 'grass-analog' plant could carry a silhouette-read line (blade tuft, not succulent rosette). Evidence: single.png reads partly agave-like. No owner line exists, so this is only a proposal."
       ],
       "refusals": [],
       "verdicts": [
        {
-        "notes": "Invented plant with no canon entry, so A is not applicable. Painterly, with soft value modelling and no keyline (B1, B1a). A grey-green tuft of flat blades, sev",
+        "notes": "Painterly tuft of flat grey-green blades with a clear drip-point bead at each arching tip. It matches the description's 'flat grey-green blades … each blade tip",
         "picture": "single.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: at 32 px/cell it reads as one bold, pale grey-green fan, with the body value clearly apart from the brown ground in scale.png's 32/cell panels. No ",
+        "picture": "playzoom_single.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "D1: at 256 px/cell beside the vanilla human the plant is a plausible ground-cover tuft in one cell. At 32 px/cell (normal play, ×4 nearest and 18/cell) it stays",
+        "picture": "scale.png",
         "verdict": "KEEP"
        }
       ],
       "weighted_tokens": [
-       100986
+       140791
       ]
      },
      {
       "cost_usd": [
-       0.491788
+       0.5478194000000001
       ],
       "errors": [],
       "expect": "pass",
       "got": "pass",
       "id": "regress_RM_DecayDrake_r2",
       "proposals": [
-       "D4 could add a stray-speck tolerance: all three facings carry isolated opaque specks of 5–7 px well below the silhouette (north.png lowest opaque row 508 vs. mounds ending ~455). They are harmless at "
+       "D4 could say explicitly whether a breath, vapour or haze effect named in the subject's description (here the yeast haze plume seen on north.png and east.png) counts as the subject, as the mash mounds "
       ],
       "refusals": [],
       "verdicts": [
        {
-        "notes": "The drake faces the camera: a heavy, scaled green body, stunted orange-membraned wings folded at the shoulders, a bloated amber belly, golden haze curling from ",
+        "notes": "Faces the camera: amber eyes, snout breathing yeast haze, mash dripping from jaw onto a bloated orange belly; stunted wings folded at the shoulders; four clawed",
         "picture": "south.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "A true rear view: spinal ridge, wing backs, a foreshortened tail stub and the amber belly showing below. No face and no eyes (C1). The haze rises from beyond th",
+        "notes": "Rear view: dorsal spine ridge, tail hanging down over the bloated belly, both folded wings, four legs and mounds; no eyes or face (C1). The haze plume rising be",
         "picture": "north.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "A side profile, so west mirrors it (C2): long tail, folded wing, sagging belly, head with dripping mash and a haze plume. Its proportions and palette agree with",
+        "notes": "Side profile with head and haze to the right, tail to the left, one near folded wing, a pendulous belly and four legs; mash drips and mounds match the other fac",
         "picture": "east.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "D1: at 140 px/cell beside a vanilla human it is a heavy beast about 2.5 cells long, well above human mass, which fits 'heavy drake'. At 32 px/cell (inset) it st",
+        "picture": "scale.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: at 32 px/cell it reads as a few bold shapes (a dark green bulk, a yellow-orange belly and drips, yellow mounds), with the body value clearly apart ",
+        "picture": "playzoom_south.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: the green bulk, orange belly and mounds read clearly at 32 px/cell.",
+        "picture": "playzoom_north.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: the profile silhouette, the belly and the haze curl are all legible at 32 px/cell.",
+        "picture": "playzoom_east.png",
         "verdict": "KEEP"
        }
       ],
       "weighted_tokens": [
-       122947
+       136955
       ]
      },
      {
       "cost_usd": [
-       0.5335285999999999
+       0.5932294
       ],
       "errors": [],
       "expect": "pass",
-      "got": "refuse",
+      "got": "pass",
       "id": "regress_RM_Durrok_r2",
       "proposals": [
-       "C2 could give a measurable tolerance for creature facings, e.g. 'the front/rear view's width should not exceed the side view's length, and facing heights should agree within ~20% after allowing for th",
-       "D4 could say that edge pixels at alpha <= 3 do not count as a halo. All three facings carry ~500-3000 yellow/red fringe pixels at alpha 1-3 left over from matting. They are invisible on game ground (s"
+       "D3 asks whether the silhouette sits inside the def's footprint, but subject.json for a creature gives only drawSize and no footprint. Either state that D3 applies to drawSize for pawns, or have the wi",
+       "D4 could set a threshold for near-invisible alpha speckle. All three facings carry about 100-300 pixels at alpha ≤16 above the body, and a faint yellow fringe at alpha ≤16 that shows on black viewers "
       ],
-      "refusals": [
-       {
-        "clause": "C2",
-        "evidence": [
-         "south.png",
-         "north.png",
-         "east.png",
-         "playzoom_south.png",
-         "playzoom_north.png"
-        ],
-        "fix": "Regenerate south.png at north.png's scale (or rescale the existing south about 0.73x about its foot baseline and re-pad it to 1024), keeping its content, palette and alpha."
-       }
-      ],
+      "refusals": [],
       "verdicts": [
        {
+        "notes": "Front view of the subject: a domed haystack of pale rope-hair with grey-green lichen strands, no head or neck, blunt front, two dark feet showing at the base. P",
         "picture": "south.png",
-        "seen": "Measured opaque bbox: south spans x 17-1011 (994 px wide) by y 145-900 (755 px tall), versus north 729 x 689 and east 993 long x 524 tall. The front view is as ",
-        "verdict": "REDO",
-        "violated": "C2"
+        "verdict": "KEEP"
        },
        {
-        "notes": "C1: a rear view with the white cord tail-fall in the centre and no face. Description check against subject.json: barrel body, hair in ropes to the ground, grey-",
+        "notes": "Rear view: no face and no eyes (C1 yes). The tail-like fall of white cords hangs centre-rear, which agrees with the tail on east.png. Four feet are seen at the ",
         "picture": "north.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "Side view: blunt front end to the right, cord tail to the left, low barrel body, hooves under the hair, lichen across the back, shoulders and legs. Every descri",
+        "notes": "Side view: a low barrel body with a blunt front end at the right, a rope tail falling at the left, and four short dark feet under the hair. All of these match t",
         "picture": "east.png",
         "verdict": "KEEP"
        }
       ],
       "weighted_tokens": [
-       133383
+       148308
       ]
      },
      {
       "cost_usd": [
-       0.4970487999999999
+       0.5473323999999999
       ],
       "errors": [],
       "expect": "pass",
-      "got": "refuse",
+      "got": "pass",
       "id": "regress_RM_Gawpsack_live",
       "proposals": [
-       "The brief should treat the def description as a soft appearance check for invented subjects that have no canon entry. Evidence: subject.json says 'A drifting translucent bag stuffed with mismatched ey",
-       "C5/C5a should state what a judge does when a subject's body_plan is 'flyer' but only one still per facing is given. Evidence: subject.json says body_plan 'flyer' and module 'walker' and gives no flip-"
+       "For flyer body plans (subject.json body_plan 'flyer'), the judge is given one still per facing and no flip-book frames, so C5a cannot be checked frame by frame; the brief's input list should name 'eve",
+       "For invented subjects with no canon entry, the description's concrete visual claims (here 'translucent', 'mismatched eyes', 'all of them open, all of them looking up') could be a lightweight Must-show"
       ],
-      "refusals": [
-       {
-        "clause": "C2",
-        "evidence": [
-         "south.png",
-         "north.png",
-         "east.png",
-         "playzoom_south.png",
-         "playzoom_north.png"
-        ],
-        "fix": "Regenerate or rescale south.png so the bag matches north.png's width and outline (scale the body horizontally about 1.25x, or redraw from north's silhouette with eyes added), keeping the palette, tran"
-       }
-      ],
+      "refusals": [],
       "verdicts": [
        {
-        "picture": "south.png",
-        "seen": "The south bag is visibly narrower than the same bag seen from the back or side. Measured [measured] on the 256 px canvases: widest row 157 px on south against 1",
-        "verdict": "REDO",
-        "violated": "C2"
-       },
-       {
-        "notes": "C1: a true rear view with no eyes, just a veined flesh sack and trailing tendrils. Same painterly style and palette as east and south. Alpha is real (transparen",
-        "picture": "north.png",
-        "verdict": "KEEP"
-       },
-       {
-        "notes": "Side view in profile with eyes on the near flank and tendrils trailing west, consistent with drifting. Its width matches north (203 against 199 px widest row). ",
-        "picture": "east.png",
-        "verdict": "KEEP"
-       }
-      ],
-      "weighted_tokens": [
-       124263
-      ]
-     },
-     {
-      "cost_usd": [
-       0.6272646
-      ],
-      "errors": [],
-      "expect": "refuse",
-      "got": "refuse",
-      "id": "regress_RM_Peeper_r2",
-      "proposals": [
-       "C1 clarification: for a subject whose own description puts eyes in its hide (RM_Peeper, 'extra eyes opened in its hide'), say whether 'no eyes' on north means no FACE eyes only. I passed north.png on ",
-       "C2 advisory measure: report the ratio of silhouette widths between north and south (and of areas). Here 469/607 px and 310k/416k px made a mismatch visible that is easy to talk oneself out of, because",
-       "B2 ground colour: the play-zoom copies are given on transparency. Judged on a RimWorld dirt brown (RGB 150,120,85), the peeper's mean body luminance is 108-116 against the ground's 125, a low contrast"
-      ],
-      "refusals": [
-       {
-        "clause": "C2",
-        "evidence": [
-         "north.png",
-         "south.png",
-         "east.png",
-         "playzoom_north.png",
-         "playzoom_south.png"
-        ],
-        "fix": "Regenerate north.png only, as a rear view matching south.png's bulk and east.png's barrel belly (about 600 px widest at 1024 canvas), keeping the palette, hide eyes, ears seen from behind and tail."
-       }
-      ],
-      "verdicts": [
-       {
-        "notes": "Painterly and outline-free; faces the camera with a canine face, fangs and a soft fat body studded with slit-pupil hide eyes, which matches the description 'onc",
+        "notes": "Painterly translucent flesh-pink bag packed with ~25 mismatched open eyes (varied iris colours and sizes) facing the camera, six trailing tendrils below. No key",
         "picture": "south.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "A clean side profile: barrel body, a ridge of eyes along the spine, a long tail, a snout with fangs, four legs with claws. The silhouette spans x 11-1015 with n",
+        "notes": "Rear of the sack: veined membrane, no eyes, no face (C1 holds). Same palette and same six-ish tendrils as south and east (C2 body plan holds). Advisory C2 size:",
+        "picture": "north.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "Side view: eyed bag elongated toward the right, tendrils streaming back-left as if drifting; same palette and eye style as south. bbox 240x214, nearly edge to e",
         "picture": "east.png",
         "verdict": "KEEP"
        },
        {
-        "picture": "north.png",
-        "seen": "The rear view is a much slimmer animal than the front. Its widest row is 469 px against south's 607 (about 30% wider in front), its silhouette is 310k px agains",
-        "verdict": "REDO",
-        "violated": "C2"
+        "notes": "D1: beside the vanilla human at 211 px/cell it is a small creature well inside one cell; at 32 px/cell (right inset) it is a small dark-red blob clearly apart f",
+        "picture": "scale.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: 22x22 (0.7 cell at 32 px/cell); reads as one bold dark-red rounded shape with tendrils; individual eyes become speckle, acceptable at this size.",
+        "picture": "playzoom_south.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: reads as a single mauve dome, value clearly apart from typical ground; slightly lower contrast than south since it has no eyes.",
+        "picture": "playzoom_north.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: reads as an elongated dark-red bag with a tendril tail; legible.",
+        "picture": "playzoom_east.png",
+        "verdict": "KEEP"
        }
       ],
       "weighted_tokens": [
-       156817
+       136834
       ]
      },
      {
       "cost_usd": [
-       0.5081032000000001
+       0.5965933999999999
       ],
       "errors": [],
       "expect": "refuse",
       "got": "refuse",
       "id": "regress_RM_Danglemaw_r1",
       "proposals": [
-       "The danglemaw is described as 'anchored in the Eyebark canopy' with a 'free-hanging jaw', but it is a walker pawn sprite whose anchor fan floats at the top of the canvas (south.png, scale.png). The br",
-       "Advisory to B2: at 32 px/cell this subject is a 2–3 px wide stroke (playzoom_south.png, playzoom_east.png, playzoom_north.png). The value is distinct, but the shape is barely 'a few bold shapes'. Cons",
-       "C1 says 'no face, no eyes' but does not say what counts as the face of an eyeless, mouth-only creature. Proposed wording: 'for an eyeless creature, the mouth and teeth are its face, and north shows th",
-       "Small hygiene note: north.png has two stray alpha=1 pixels at (x=40–41, y=191), far from the body. They are invisible, but a stray-pixel check would catch them."
+       "Creatures whose only 'head' is a mouth at the end of a limb or cord (Danglemaw): state explicitly that the north facing shows the closed outside or back of that mouth, never the teeth or the opening, ",
+       "Real alpha: a body part may be see-through only where the body really has an opening; a mouth cavity drawn as alpha 0 (ground showing through the creature's head) should be named as a defect. Evidence",
+       "B2 for thin-bodied subjects: add advice that a cord or stalk creature needs a stroke at least ~4 px wide at 32 px/cell, or a bolder terminal mass, to read in play. Evidence: playzoom_south.png and sca"
       ],
       "refusals": [
        {
         "clause": "C1",
         "evidence": [
          "north.png",
-         "playzoom_north.png",
-         "south.png"
+         "playzoom_north.png"
         ],
-        "fix": "Redraw north.png as a rear view of the same jaw bulb (closed back, no fangs or hole), keeping the cord, anchor fan, palette and canvas placement of south.png."
+        "fix": "Redraw north.png as a rear view of the same jaw, keeping the cord, root-fan anchor, palette and canvas scale of south.png and east.png; regenerate playzoom_north.png from it."
        },
        {
         "clause": "C2",
         "evidence": [
          "north.png",
-         "south.png",
-         "east.png"
+         "south.png"
         ],
-        "fix": "Part of the same north.png redraw: make the rear jaw bulb match south's width and shape."
+        "fix": "Same redraw as for C1: a solid rear view of the jaw on north.png with no transparent cavity."
        }
       ],
       "verdicts": [
        {
-        "notes": "Painterly striated-muscle cord with a fanned anchor at top and a bulbous jaw at the bottom, open toward the camera with a ring of ivory teeth. No keyline, clean",
+        "notes": "Invented subject, no canon entry (A n/a). Painterly striated muscle cord with a frayed root-fan anchor at top and an open toothed jaw facing the camera; no keyl",
         "picture": "south.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "Same cord, palette and length as south (jaw y≈195–250, cord ~11 px wide against south's 12). The jaw turns to the side in profile, showing upper and lower fangs",
+        "notes": "Same cord, anchor fan and palette as south; jaw hooks to the east in profile with upper and lower teeth, which reads well. West mirrors it. Advisory C2 size: wi",
         "picture": "east.png",
         "verdict": "KEEP"
        },
        {
         "picture": "north.png",
-        "seen": "North shows the mouth from the front: a horseshoe of fangs points inward around an opening, and the opening is fully transparent (alpha 0 across x≈118–140 at y=",
+        "seen": "The north facing shows the open mouth from the front: a ring of teeth pointing inward around the jaw, with the cavity drawn as a fully transparent hole (alpha 0",
         "verdict": "REDO",
-        "violated": "C1; C2"
+        "violated": "C1"
+       },
+       {
+        "notes": "B2 advisory: at 32 px/cell it reads as a thin pink-red stalk (2–3 px) ending in a darker blob; red-pink is clearly apart from the tan ground, not grey mud, but ",
+        "picture": "playzoom_south.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "B2 advisory: the jaw hook is visible as a small bend at the foot; the rest is a thin line. Same caveat as south.",
+        "picture": "playzoom_east.png",
+        "verdict": "KEEP"
+       },
+       {
+        "picture": "playzoom_north.png",
+        "seen": "The play-zoom copy of north shows the same open toothed ring at the foot (a C-shape with a gap); it inherits the north facing's defect.",
+        "verdict": "REDO",
+        "violated": "C1"
+       },
+       {
+        "notes": "D1: at 140 px/cell beside the vanilla human, the danglemaw stands about 1.6 cells tall against the human's ~1.3, which suits a canopy-hung predator; the 32 px/c",
+        "picture": "scale.png",
+        "verdict": "KEEP"
        }
       ],
       "weighted_tokens": [
-       127026
+       149149
       ]
      },
      {
       "cost_usd": [
-       0.5321533999999999
+       0.5379004000000001
       ],
       "errors": [],
       "expect": "pass",
       "got": "pass",
       "id": "kept_RM_Gawpsack_live",
       "proposals": [
-       "Invented-creature fidelity: when a subject has no canon entry, its def description should be a yes/no check the way Must-show lines are. subject.json says 'a drifting translucent bag ... all of them l",
-       "C2 advisory measure: give the size agreement between the front and back facings an advisory number, e.g. flag when the max body width of south and north differs by more than ~15%. Here north.png is 27",
-       "C5a for still-only flyers: a subject with body_plan 'flyer' but module 'walker' (subject.json) gets one still per facing and no flip-book frames. The brief should say whether C5/C5a apply to it, and i"
+       "For invented subjects with no canon entry, consider treating the def description's visual nouns as yes/no Must-show checks. Here 'translucent bag' and 'all of them looking up' are not met: the membran",
+       "Flyer subjects that have no wings and no frame set (body_plan 'flyer', drifting bag) need a stated rule: C5 and C5a assume flip-book wing frames. Only single stills were given here, so the frame-by-fr"
       ],
       "refusals": [],
       "verdicts": [
        {
-        "notes": "Owner-kept (E3). Painterly fleshy bag studded with many mismatched open eyes facing camera, tendrils hanging below; no keyline (B1a); real alpha, corners alpha ",
+        "notes": "Owner-kept (E3), and nothing here argues for a redraw. Painterly fleshy bag covered in mismatched open eyes, facing the camera, with about 5 trailing tendrils. ",
         "picture": "south.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "Owner-kept (E3), KEPT-BUT-FLAGGED. C1 met: rear of the bag, veined skin, no eyes. Concern raised under E3 but not refused: the north body is drawn wider and fla",
+        "notes": "Rear view: veined membrane with no eyes (C1 met), same tendrils and same palette as south and east. Advisory under C2 only: the north body is drawn wider than s",
         "picture": "north.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "Owner-kept (E3). Side view: eyes cover the flank, tendrils trail toward the west, and the palette matches south and north. Solid max width 213 px, which is plau",
+        "notes": "Side view: the bag is tilted forward, the eyes face the viewer and the east side, and the tendrils trail west (about 6). Same parts and palette as south. Alpha ",
         "picture": "east.png",
+        "verdict": "KEEP"
+       },
+       {
+        "notes": "At 211 px/cell beside the vanilla human, the drawSize 0.7 body sits inside one cell and is smaller than a human: a small drifting creature. At the 32 px/cell in",
+        "picture": "scale.png",
         "verdict": "KEEP"
        }
       ],
       "weighted_tokens": [
-       133039
+       134476
       ]
      },
      {
       "cost_usd": [
-       0.43878500000000004
+       0.526395
       ],
       "errors": [],
       "expect": "refuse",
-      "got": "refuse, misdirected (C1)",
+      "got": "refuse",
       "id": "north_from_south_RM_DecayDrake_r2",
       "proposals": [
-       "A mechanical gate before judging: refuse any creature candidate whose north.png is byte-identical or near-identical (perceptual hash) to south.png, unless the def is declared facing-symmetric. Evidenc",
-       "State in D3 what 'footprint' means for a pawn or animal with no footprint def field (here subject.json gives only drawSize 2.75). Today D3 can only be judged against drawSize and the canvas for creatu"
+       "A constraint (or a pre-judge gate) that refuses a facing byte-identical to another facing: here north.png and south.png share a sha256, which a hash check catches before any judge looks. Evidence: nor",
+       "Give the creature's footprint (cells) in subject.json alongside drawSize so D3 can be checked against a stated number rather than inferred; subject.json carries drawSize 2.75 only."
       ],
       "refusals": [
        {
@@ -628,32 +656,32 @@
         "evidence": [
          "north.png",
          "south.png",
-         "playzoom_north.png",
-         "playzoom_south.png"
+         "playzoom_north.png"
         ],
-        "fix": "Redraw north.png as a rear view of the same subject at 512x512 real alpha, keeping south.png's proportions, palette, scale and footprint (mash mounds optional). Do not copy or flip south.png."
+        "fix": "Regenerate north.png as a rear view of the r2 fermatalis on the same 512 px canvas, conditioned on south.png and east.png for palette and proportions, with mash mounds allowed at its feet."
        }
       ],
       "verdicts": [
        {
-        "notes": "Front view facing the camera: amber eyes, a snout breathing yeast haze, mash drooling onto a bloated orange belly, stunted wings folded at the shoulders. Painte",
+        "notes": "Advisory C2: no size disagreement measured, because it is the south image. The fault is the facing itself, not scale.",
+        "picture": "north.png",
+        "seen": "north.png is byte-identical to south.png (same sha256 prefix ba1d4d9f8d382849, same alpha bbox 16,26,489,490): a front view with the face, two glowing orange ey",
+        "verdict": "REDO",
+        "violated": "C1"
+       },
+       {
+        "notes": "C1 yes: the front view looks at the camera. B1 painterly, B1a no drawn keyline, B2 reads at 32 px (playzoom_south.png) as a green bulk with an amber belly, clea",
         "picture": "south.png",
         "verdict": "KEEP"
        },
        {
-        "notes": "Side profile: dorsal spikes, a folded stunted wing, a bloated dripping belly, tail behind, and a haze curl at the snout. Same palette, scale class and rendering",
+        "notes": "Side profile: head right, spiked tail left, stunted wings folded over the back, bloated amber belly with drips, four clawed legs, haze curling from the nostrils",
         "picture": "east.png",
         "verdict": "KEEP"
-       },
-       {
-        "picture": "north.png",
-        "seen": "north.png is byte-identical to south.png (md5 f17b8bd41614ecf3c447fc6f5a5fa467 for both), and playzoom_north.png is identical to playzoom_south.png. The north f",
-        "verdict": "REDO",
-        "violated": "C1"
        }
       ],
       "weighted_tokens": [
-       109697
+       131599
       ]
      }
     ]
@@ -713,8 +741,8 @@
      "id": "north_from_south_RM_DecayDrake_r2"
     }
    ],
-   "reset_at": "2026-11-17T08:33:05Z",
-   "status": "FAILED",
+   "reset_at": "2026-11-17T14:23:40Z",
+   "status": "CALIBRATED",
    "timeout_s": 2400,
    "was": "FAILED"
   },
