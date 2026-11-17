@@ -73,6 +73,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             return best;
         }
 
+        /// <summary>A conduit through a doorway that ends one, two or three cells past it, cut at both ends: the end's own line runs back through
+        /// the door (CordShapeChecks' door room, nearer the door than it goes).</summary>
+        private static IEnumerable<(string name, CordWorld w, BuildOptions opt, Func<Cell, bool> live)> PastADoor()
+        {
+            foreach (int d in new[] { 1, 2, 3 })
+                foreach (ulong seed in new ulong[] { 1, 2, 3, 4 })
+                {
+                    var w = new CordWorld(50, 30);
+                    for (int z = 4; z <= 26; z++) if (z != 15) w.SetBlocked(new Cell(20, z), BlockKind.Wall);
+                    w.SetDoor(new Cell(20, 15));
+                    for (int x = 12; x <= 20 + d; x++) w.SetConduit(new Cell(x, 15));
+                    yield return ($"door room, end {d} past the door, seed {seed}", w, new BuildOptions { Seed = seed }, _ => true);
+                }
+        }
+
         internal sealed class Tally
         {
             public int Worlds, Ends, Straight, Pinched, BadTail, None, Still, StillWithRoom, Devices, Thin, Kept, Joined, WholePigtail, Near, MachineOnRun;
@@ -177,11 +192,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   + $"(the nearest machine with its plug within 1.5 cells stands {machineSep:0.000} off, laid to like every placement); {p.Ends + t.Ends} live ends");
 
             // ---- challenge cases beside the families: the oracle's scenes in every look and random worlds. Nothing the builder lays anywhere is unlaid
-            Tally c = Sweep(LiveEndCensus.Worlds(0, 40, Program.OracleScenes, families: false).Select(x => (x.name, x.w, x.opt, x.live)));
+            // (and the one random world a 300-sequence census found unlaid: sequence 257, a cord crossing blocked ground a fifth of a cell behind its end)
+            Tally c = Sweep(LiveEndCensus.Worlds(0, 40, Program.OracleScenes, families: false).Select(x => (x.name, x.w, x.opt, x.live))
+                            .Concat(GssFuzz.CordWorlds(257).Where(x => x.seed == 257).Select(x => ($"fuzz seed {x.seed} step {x.step}", x.w, x.opt, x.live)))
+                            .Concat(PastADoor()));
             Console.WriteLine($"  live end challenge cases: {c.Worlds} worlds (oracle scenes x looks, 40 random sequences), {c.Ends} live ends: {c.None} unlaid, {c.Straight} not straight, {c.Pinched} pinched, {c.BadTail} tails off length, {c.Devices} tied loops, {c.Still} lying still");
             foreach (string x in c.Bad.Take(6)) Console.WriteLine("  live end challenge refused: " + x);
-            Check(c.Ends >= 40 && c.None == 0 && c.Straight == 0 && c.Pinched == 0 && c.BadTail == 0,
-                  $"challenge cases: every live end of the oracle scenes and the random worlds is laid and holds the bars: {c.None} unlaid, {c.Straight} not straight, {c.Pinched} pinched, {c.BadTail} tails off length, of {c.Ends}");
+            Check(c.Ends >= 40 && c.None == 0 && c.Straight == 0 && c.Pinched == 0 && c.BadTail == 0 && c.Thin == 0,
+                  $"challenge cases: every live end of the oracle scenes and the random worlds is laid and holds the bars: {c.None} unlaid, {c.Straight} not straight, {c.Pinched} pinched, {c.BadTail} tails off length, {c.Thin} under the margin, of {c.Ends}");
 
             // the whip alone, on a dead straight cord, over 60 seeds and 20 seconds at each end of the whip bar
             double shortTail = StraightWhipRadius(0.7, 60, false), longTail = StraightWhipRadius(0.95, 60, false);

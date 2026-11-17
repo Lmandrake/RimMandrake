@@ -3345,8 +3345,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             bool Clear(V2 q)
             {
                 Cell c = q.Floor;
-                if (!w.IsWalkable(c) || w.IsFurniture(c) || w.IsDoor(c)) return own.Any(m => m.Contains(c));
+                if (!w.IsWalkable(c) || w.IsFurniture(c)) return own.Any(m => m.Contains(c));
                 if (off != null && !off(q)) return false;
+                if (w.IsDoor(c)) return true;      // (through a doorway only on the end's own line: CordLiveEnd.Site.Door)
                 if (w.Clearance(q) >= LayParams.RC) return true;
                 // close to something: clear only when that is the cord's own machine (it plugs into it)
                 for (int dx = -1; dx <= 1; dx++)
@@ -3387,6 +3388,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             : (q => V2.Dist(q, far.Pos) < BoxKeepOff),
                         Bends = (q, t) => { List<V2> n = Native(q); int k = 0; foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(n, NativeTies(q, t))) if (CordShapeAudit.Why(w, piece.EndA, piece.EndB, n, b) == "unforced") k++; return k; },
                         Kinks = (q, t) => CordShape.Kinks(q).Count,
+                        Door = q => w.IsDoor(q.Floor),
                         DoorReturns = q => { CordShape.RingReturns(w, q, out int atDoor); return atDoor; }
                     };
                     V2 o = new V2(nd.Out.X, nd.Out.Z);

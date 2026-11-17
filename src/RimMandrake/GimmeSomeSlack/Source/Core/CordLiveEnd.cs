@@ -75,6 +75,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
             /// point; a machine: its footprint): once a join has left its far fitting it never comes back over it. Null: no body (a far cut end).</summary>
             public Func<V2, bool> OnFar;
             public Func<V2, bool> Clear;
+            /// <summary>Whether a point lies in a doorway. A join goes through one only on the end's own line, straight (a cord through a door
+            /// crosses it once, and a cut end in the cell past a door has its run's line through that door). Null: no doors.</summary>
+            public Func<V2, bool> Door;
             public Func<List<V2>, List<CordTie>, int> Bends, Kinks;
             /// <summary>How many extra lines the cord draws at a door (CordShape.RingReturns: the owner, 2026-11-07, three cables out of a doorway
             /// to one end): a join never adds one. Null: not read.</summary>
@@ -138,12 +141,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>'' or the letters that fail, each a bar's own reading with room to spare: S the run dead straight to the conduit end (read on
         /// every lead, not only a cell or more); T the tail TailMin to TailMax; P every laid bend in the pinch window BendR or wider (a tied loop's
         /// own arc at its own radius).</summary>
-        internal static string Bars(List<V2> P, V2 tip, V2 outDir, int count, List<CordTie> ties, double bendR = BendR, bool still = false)
+        internal static string Bars(List<V2> P, V2 tip, V2 outDir, int count, List<CordTie> ties, double bendR = BendR, bool still = false,
+                                    double deg = StraightDeg, double tailLo = TailMin, double tailHi = TailMax)
         {
             string bad = "";
             V2 e = P[P.Count - 1];
             double arrive = CordAudit.AngDiff(CordAudit.Ang(e - CordAudit.PointBack(P, 0.1)), CordAudit.Ang(outDir)) * 180 / Math.PI;
-            if (arrive > StraightDeg || CordAudit.TipTurn(P) * 180 / Math.PI > StraightDeg || V2.Dist(e, tip) > TipOff) bad += "S";
+            if (arrive > deg || CordAudit.TipTurn(P) * 180 / Math.PI > deg || V2.Dist(e, tip) > TipOff) bad += "S";
             if (still)
             {
                 // a cord that lies still: no tail to read; its last cell and a half (the window a whip would have had) is still laid round
@@ -152,7 +156,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             if (count <= 0) return bad + "T";
             double tail = Geo.Length(P.GetRange(P.Count - count, count));
-            if (tail < TailMin - 1e-9 || tail > TailMax + 1e-9) bad += "T";
+            if (tail < tailLo - 1e-9 || tail > tailHi + 1e-9) bad += "T";
             double need = bendR;
             if (ties != null && ties.Count > 0)
             {
@@ -305,6 +309,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (arc.Count == 0) continue;
                     arc[arc.Count - 1] = A;
                     if (!arc.All(site.Clear) || !run.All(site.Clear)) continue;
+                    // through a doorway only on the run's own line
+                    if (site.Door != null && arc.Any(q => site.Door(q) && Math.Abs((q.X - A.X) * o.Z - (q.Z - A.Z) * o.X) > Step)) continue;
                     var join = new List<V2>(arc.Count + 1) { c.J };
                     join.AddRange(arc);
                     if (!overRun && CrossesRun(join, A, T, 3)) continue;
@@ -348,6 +354,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (got == null && Bars(P, T, o, cnt0, ties, LoopR.Min()) == "") return kept;
             if (got == null && allowDevice) got = Attempt(LoopR, true);
             if (got != null) return got;
+            // no lay with the lay's own margins: the cord as handed, when it holds the three bars as the bars themselves read them (15 degrees,
+            // a tail of 0.7 to 1.15, no bend under the pinch bar), keeps its lay and its whip. (A cord that crosses blocked ground a fifth of a
+            // cell behind its end has no join to take: it was returned as handed with its whip taken away, random world 257.)
+            if (Bars(P, T, o, cnt0, ties, StubJoins.MinBendR / 0.98, false, 15, 0.7, 1.15) == "") return kept;
             // the owner, 2026-11-16 (by picture, of a cut end right in front of its fitting): "a2, and where it does not apply then c": a cord
             // no lay can give a whipping tail lies still and only sparks. It is still laid straight out of the conduit end: as handed when that
             // holds, else by the same joins
@@ -357,9 +367,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             cum = Geo.CumLen(P);
             got = Attempt(BroadR, false) ?? Attempt(TightR, false) ?? Attempt(BroadR, false, true) ?? Attempt(TightR, false, true);
             if (got != null) return got;
-            kept = new Result { Pts = new List<V2>(P0), Count = 0, Ties = ties };
-            kept.Kind = Kind.None;
-            return kept;
+            // nothing holds: the cord is returned as handed, its joint set
+            return new Result { Pts = SetJoint(new List<V2>(P0), ties, farCut, farOff, out int cntNone), Count = cntNone, Kind = Kind.None, Ties = ties };
         }
     }
 }
