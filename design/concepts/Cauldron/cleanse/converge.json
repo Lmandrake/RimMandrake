@@ -160,26 +160,70 @@
      "smallest_fix": "Add to T39's Work and acceptance test: make the eskith description's silence clause conditional on faunaHushEnabled, or reword it for the default."
     }
    ]
-  }
- ],
- "open": [
-  {
-   "id": "G1.1",
-   "head": "regression",
-   "where": "bars.json bars/living_cast",
-   "evidence": "range.varies now says 'Mineral-body reading covers the retained native forms at ordinary zoom under the declared weather; admitted owner-kept imports are explicit appearance exceptions'. Reject[2] fails the bar when 'The native cast looks like ordinary unmineralised fauna'. But several retained natives that are not named as imports have no mineral body in their own defs. Suush is 'A translucent globe that floats above the ground' (RM_CauldronFauna.xml:112). Eskith is 'A knee-high animal with broad, feathered foot pads' (:493). Rhossak is 'grown from tightly wound living roots' (RM_Rhossak.xml:101). The bedbug is 'An oversized insect' (RM_BedBug.xml:22). The new ambiguity entry rules out 'a promised new art system', and definition.md says 'this proposal makes no import eviction or art redo'. So the range demands mineral bodies on forms that, by their own design, have none. The bar would then need new art, which the proposal forbids, or it cannot pass. That breaks the changed entry under cannot_hold_together.",
-   "would_pass": "living_cast declares which retained natives carry the mineral-body reading (for example zisska, vexxiss, crystalmit, ossrith) and which natives keep non-mineral forms as stated exceptions alongside the imports, or it scopes the reading to the cast as a whole, with no new art required.",
-   "smallest_fix": "Rewrite the range sentence to name the mineral-bodied natives, and list suush, eskith, rhossak and bedbug (or whichever apply) as non-mineral exceptions with a reason, matching the figurative stands_for."
   },
   {
-   "id": "G1.2",
-   "head": "regression",
-   "where": "tickets.md T39: Switch off native_hush",
-   "evidence": "The eskith's shipped in-game description says 'Their sudden silence is a good reason to get under a roof.' (RM_CauldronFauna.xml:493). With faunaHushEnabled off by default, eskith no longer fall silent before a bloom, so the default game tells the player about a warning that never comes. T39's Work gates only 'the call, count and hush inspect wording'. It never mentions this description, and the census eskith row keeps 'ordinary animal behaviour/art' unchanged. Hush is now a moved extra, but the shipped lore text still promises it. That fits contradicts_ruling_or_lore (and moved_extra_relied_on, in player-facing text).",
-   "would_pass": "With hush off at defaults, no shipped description or tooltip promises native silence before a bloom; the hush wording returns only with the opt-in.",
-   "smallest_fix": "Add to T39's Work and acceptance test: make the eskith description's silence clause conditional on faunaHushEnabled, or reword it for the default."
+   "n": 2,
+   "records": [
+    {
+     "id": "G1.1",
+     "head": "regression",
+     "where": "bars.json bars/living_cast",
+     "evidence": "range.varies now says 'Mineral-body reading covers the retained native forms at ordinary zoom under the declared weather; admitted owner-kept imports are explicit appearance exceptions'. Reject[2] fails the bar when 'The native cast looks like ordinary unmineralised fauna'. But several retained natives that are not named as imports have no mineral body in their own defs. Suush is 'A translucent globe that floats above the ground' (RM_CauldronFauna.xml:112). Eskith is 'A knee-high animal with broad, feathered foot pads' (:493). Rhossak is 'grown from tightly wound living roots' (RM_Rhossak.xml:101). The bedbug is 'An oversized insect' (RM_BedBug.xml:22). The new ambiguity entry rules out 'a promised new art system', and definition.md says 'this proposal makes no import eviction or art redo'. So the range demands mineral bodies on forms that, by their own design, have none. The bar would then need new art, which the proposal forbids, or it cannot pass. That breaks the changed entry under cannot_hold_together.",
+     "would_pass": "living_cast declares which retained natives carry the mineral-body reading (for example zisska, vexxiss, crystalmit, ossrith) and which natives keep non-mineral forms as stated exceptions alongside the imports, or it scopes the reading to the cast as a whole, with no new art required.",
+     "smallest_fix": "Rewrite the range sentence to name the mineral-bodied natives, and list suush, eskith, rhossak and bedbug (or whichever apply) as non-mineral exceptions with a reason, matching the figurative stands_for."
+    },
+    {
+     "id": "G1.2",
+     "head": "regression",
+     "where": "tickets.md T39: Switch off native_hush",
+     "evidence": "The eskith's shipped in-game description says 'Their sudden silence is a good reason to get under a roof.' (RM_CauldronFauna.xml:493). With faunaHushEnabled off by default, eskith no longer fall silent before a bloom, so the default game tells the player about a warning that never comes. T39's Work gates only 'the call, count and hush inspect wording'. It never mentions this description, and the census eskith row keeps 'ordinary animal behaviour/art' unchanged. Hush is now a moved extra, but the shipped lore text still promises it. That fits contradicts_ruling_or_lore (and moved_extra_relied_on, in player-facing text).",
+     "would_pass": "With hush off at defaults, no shipped description or tooltip promises native silence before a bloom; the hush wording returns only with the opt-in.",
+     "smallest_fix": "Add to T39's Work and acceptance test: make the eskith description's silence clause conditional on faunaHushEnabled, or reword it for the default."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "G1.1",
+      "changed": "Scoped living_cast’s mineral-body reading to zisska, vexxiss, crystalmit and ossrith. Named suush, eskith, rhossak including galled kin and bedbugs as native non-mineral exceptions because their existing designs are translucent, feathered, root-grown or insect forms; imports remain exceptions. Aligned says, figurative meaning/picture, rejection, range, ambiguity and T38 with that scope and explicitly require no art redo.",
+      "where": "bars.json bars/living_cast; tickets.md T38; ambiguities.md Animals are minerals; life twists under the load"
+     },
+     {
+      "id": "G1.2",
+      "changed": "Added T39 work and acceptance coverage for the eskith description’s silence clause, translated wording and related tooltips: absent with faunaHushEnabled off/default, restored only on opt-in, and refreshed on live changes and reload. Recorded the player-facing dependency in the hush ambiguity.",
+      "where": "tickets.md T39 Work and Acceptance test; ambiguities.md Nearby, stillness and a forest already quiet"
+     }
+    ]
+   },
+   "verdicts": {
+    "G1.1": {
+     "verdict": "fixed",
+     "evidence": "bars.json living_cast range.varies now reads 'Mineral-body reading covers zisska stone-like plates, vexxiss mineral slag/crystal fans, crystalmit crystal growths and ossrith spinal crystals at ordinary zoom under the declared weather. Suush (translucent globes), eskith (feathered foot pads), rhossak including galled kin (living roots/galls) and bedbugs (insect bodies) keep their existing non-mineral forms as exceptions because these are their stated native designs, not missing mineral art; admitted owner-kept imports are also appearance exceptions. No art redo is required.' reject[2] is now scoped to 'The mineral-bodied natives named in range'. figurative stands_for, says, the ambiguity entry ('The mineral-body reading applies to zisska, vexxiss, crystalmit and ossrith... no evictions, new species or art redo') and T38 ('apply this mineral-body reading to zisska, vexxiss, crystalmit and ossrith, while preserving the stated non-mineral native and owner-kept import exceptions') all match it. The four named natives have mineral bodies in their own defs: RM_CrystalMit.xml:20 'a tangle of crystal growths', RM_Radyak.xml:29 'Green crystals grow through its spinal plates', RM_CauldronFauna.xml:252 'plates of bark and mineral slag, with crystal fans', and :392 'rough stone-like plates'. So the bar can pass on existing art."
+    },
+    "G1.2": {
+     "verdict": "fixed",
+     "evidence": "tickets.md T39 Work adds 'Make the eskith description’s silence-before-bloom clause in RM_CauldronFauna.xml conditional on faunaHushEnabled, including its translated description and any related tooltip: off/default text keeps the animal’s ordinary description without promising a silence warning; the clause returns only with opt-in and updates at the same live settings boundary.' The Acceptance test adds 'Read the eskith’s in-game description and related tooltips (including translated text) at defaults and after live disable/reload: none promises native silence before bloom. Enable faunaHushEnabled and verify the conditional silence clause returns; disable it again and verify the clause disappears without a stale cached description.' This targets the clause at RM_CauldronFauna.xml:493, 'Their sudden silence is a good reason to get under a roof.', and meets the would_pass. The 'Nearby' ambiguity entry records the dependency."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md 'Nearby', 'stillness' and a forest already quiet",
+    "ambiguities.md Animals are minerals; life twists under the load",
+    "bars.json bars/living_cast",
+    "tickets.md T38: Preserve native livelihood across the full roster",
+    "tickets.md T39: Switch off native_hush"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 264600,
+     "output_tokens": 2903
+    }
+   },
+   "author_error": null,
+   "open_after": []
   }
  ],
+ "open": [],
  "advisory_late": [
   {
    "what": "owner_pages.md, the 'Still refused after the second look' list under Page two still quotes all four records as standing, including 'Page two never mentions the tier'. Page two now does mention it.",
@@ -190,10 +234,20 @@
    "what": "R_health says 'no off-map site, rig discovery or next-version feature is required' for the reagent route, but RM_FilterWorks.xml:13 currently says 'Research: RM_FilterWorksResearch, which needs a corroded filter rig studied first', and the rig is deferred.",
    "reason": "This is already covered as a known gap: the T33 acceptance test requires Filter-Works to be reachable with all extras absent, and definition.md says ordinary research depends on the moved rig. The medicine route depends on T33 landing, and R_health does not say so.",
    "round": 1
+  },
+  {
+   "what": "living_cast range.varies now lists which natives carry the mineral body and which are exceptions, but two retained owned natives appear in neither list: garsulix (census.json 'Owned floating predator port'; RM_Garsulix.xml:30 'A floating, veined gas sac capped with chitin plates') and Sikka Sikka (census.json 'Owned Sikka Sikka'; RM_SikkaSikka.xml:16 'A large, docile flightless bird').",
+   "reason": "This does not break the bar. reject[2] is scoped to 'the mineral-bodied natives named in range', so neither animal is held to a mineral body. A tester could still read the list as complete and wonder about these two, so naming both as non-mineral exceptions (or as imports, if Sikka is one) would close the gap.",
+   "round": 2
+  },
+  {
+   "what": "The census.json eskith row still says 'ordinary animal behaviour/art' and does not mention the silence clause in its description that T39 now gates.",
+   "reason": "That entry was not changed in this round, so this is not a regression. T39 now carries the work and the test.",
+   "round": 2
   }
  ],
- "applyable": false,
- "digest": "9a8ae139a3e6a4faa1ea88a0fd57aaba4b1f68d61efbd0143330c63b20c215cf",
- "seconds": 546,
- "at": "2026-11-17T06:43:38"
+ "applyable": true,
+ "digest": "020847e1278e9135b0e41e06c83457700d47da5f4174e64f86bc6a4c3fa10fbd",
+ "seconds": 723,
+ "at": "2026-11-17T06:46:36"
 }

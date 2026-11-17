@@ -1,29 +1,14 @@
 {
   "fixes": [
     {
-      "id": "R1",
-      "changed": "Settled advanced medicine as industrial or higher in a dedicated purge bill; specified native herbal harvest, ordinary crafting and reagent-funded orbital ingredient trade, with finite setup reserves. Added the supply route to health/colony_work arguments, season-model inputs/calibration and owner page two; aligned treatment definition and T28.",
-      "where": "bars.json R_health and meetings health/colony_work; ambiguities.md persistent load and advanced-medicine entries; models.md coupled season and exposure models; definition.md health; tickets.md T28; owner_pages.md page two"
+      "id": "G1.1",
+      "changed": "Scoped living_cast’s mineral-body reading to zisska, vexxiss, crystalmit and ossrith. Named suush, eskith, rhossak including galled kin and bedbugs as native non-mineral exceptions because their existing designs are translucent, feathered, root-grown or insect forms; imports remain exceptions. Aligned says, figurative meaning/picture, rejection, range, ambiguity and T38 with that scope and explicitly require no art redo.",
+      "where": "bars.json bars/living_cast; tickets.md T38; ambiguities.md Animals are minerals; life twists under the load"
     },
     {
-      "id": "R2",
-      "changed": "Split native_hush from retained falter, deferred it with the suush hover rule and added audited switch-off ticket T39. Removed hush requirements and the hush_flight meeting from the shipped warning, models and related documents; retained ordinary eskith movement and genuine suush flight. The census split raises capabilities to 83 and next_version to 26; tickets to 39.",
-      "where": "census.json vent_cycle_falter, native_hush, eskith, suush_flight; bars.json warning, R_warning, touches and hush_flight; next_version.md native_hush; tickets.md T30/T36/T38/T39; models.md Situation generator; definition.md; ambiguities.md nearby/stillness; owner_pages.md; result.json counts"
-    },
-    {
-      "id": "R3",
-      "changed": "Restored mineral-bodied native wildlife with ordinary-zoom body pictures, a figurative interpretation and explicit owner-kept import exceptions; settled life twists as adapted native life and existing lasting health harm. Added real visual evidence and a reject picture for ordinary-looking rock eaters. This makes living_cast live-only and the total 4.",
-      "where": "bars.json living_cast; ambiguities.md animals are minerals/life twists; definition.md life; tickets.md T38; owner_pages.md life/page two/counts; result.json live_only_bars"
-    },
-    {
-      "id": "R4",
-      "changed": "Marked expeditions as figurative on-map errands beyond shelter and runaway gas as the connected-gas work-route flood, each with a contrasting accept picture. Made caravan/off-map exclusion explicit and recorded the expedition scope settlement.",
-      "where": "bars.json whole.meant.figurative and whole.range.left_out; ambiguities.md Expeditions on this version; definition.md season story; owner_pages.md page two"
-    },
-    {
-      "id": "C0.1",
-      "changed": "Replaced the ambiguous count clause with name-then-digits: capabilities 82 before, capabilities 83 after the required hush split. The current count matches the 83 census rows and result.json; also reconciled retained/next-version, live-only and ticket totals.",
-      "where": "owner_pages.md page one Counts; result.json counts; census.json rows"
+      "id": "G1.2",
+      "changed": "Added T39 work and acceptance coverage for the eskith description’s silence clause, translated wording and related tooltips: absent with faunaHushEnabled off/default, restored only on opt-in, and refreshed on live changes and reload. Recorded the player-facing dependency in the hush ambiguity.",
+      "where": "tickets.md T39 Work and Acceptance test; ambiguities.md Nearby, stillness and a forest already quiet"
     }
   ]
 }
