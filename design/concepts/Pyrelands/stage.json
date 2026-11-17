@@ -1720,6 +1720,18 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-pyre-exam-st4-r9-20261117: stage 4 done"
+  },
+  {
+   "at": "2026-11-17T20:05:20Z",
+   "stage": 5,
+   "what": "park",
+   "why": "ceiling: the judge-and-rework loop has spent 11220115 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap) (park_summary.md)"
+  },
+  {
+   "at": "2026-11-17T20:05:20Z",
+   "stage": 5,
+   "what": "refused",
+   "why": "PARKED (ceiling): the judge-and-rework loop has spent 11220115 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap); nothing opens until his word on BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1730,6 +1742,13 @@
   "1794790810777772480",
   "1794790871101885625"
  ],
+ "park": {
+  "at": "2026-11-17T20:05:20Z",
+  "kind": "ceiling",
+  "quick_look": true,
+  "summary": "park_summary.md",
+  "why": "the judge-and-rework loop has spent 11220115 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap)"
+ },
  "parks": [
   {
    "at": "2026-11-13T19:03:33Z",
@@ -2239,6 +2258,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
- "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
+ "status": "waiting_owner",
+ "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
