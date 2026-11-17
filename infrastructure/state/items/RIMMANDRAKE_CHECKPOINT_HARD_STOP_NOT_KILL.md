@@ -31,6 +31,13 @@ Design (built here):
 
 Limits: a bare `claude-account fleet-stop` that neither the plan nor `use` logged is not seen; with HOLD set or the
 timer stopped nothing sweeps (`stop_resume.py sweep` by hand does). Stops before this landed are not swept.
+A hand relaunch landing in the seconds between the sweep's per-run rescan and its launch can still double that run
+(closing it needs hand launches to coordinate with the sweep). In a given clone, a `claude -p` session started by
+hand within 300 s of the launch and before the run's own transcript can be taken for the run's session (interactive
+windows are skipped: their entrypoint is `cli`). A run that crashed within 15 min before a stop is resumed; a kill
+logged more than 15 min after it is missed. A run not launched by `detached_helper` (e.g. a seat's own unit) is
+not seen, and runs launched before `brief_src` landed relaunch only by session. Not built: the checkpoint signal
+with a grace period before a soft switch (goal 2).
 
 ## criteria
 - a detached run killed by a switch's fleet stop is relaunched on the new account by the next plan pass, the same
@@ -45,8 +52,8 @@ Acceptance test: `python3 src/RimMandrake/Utils/run_selftests.py --only selftest
 no module resumes a run). Also selftest_detached_helper, selftest_switching_plan, selftest_switching_plan_notice,
 selftest_holder_resume.
 Live: the next real switch (account-plan.timer, about 15:00 PST 2026-11-17, to steven) must resume
-rm-detached-bench-rimmandrake-lay-slack-close-fittings-twe-1794925467 and
-rm-detached-bench-rimmandrake-judge-pyrelands-blind-cycle-1794925887 if they are still running; read
+rm-detached-bench-rimmandrake-judge-pyrelands-blind-cycle-1794925887 (session c8a3854d) if it is still running
+(the slack run's item is closed, so it is rightly not resumed); read
 `python3 src/RimMandrake/rimflow/stop_resume.py scan` and the conductor log after it.
 
 ## refs

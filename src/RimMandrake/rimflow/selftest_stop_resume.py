@@ -254,10 +254,104 @@ def main():
         sweep(refuse, T3 + 310 + k * 300)
     check("a refused resume is tried at most MAX_TRIES times", len(tries) == SR.MAX_TRIES,
           "%d tries, cap %d" % (len(tries), SR.MAX_TRIES))
+    review_cases()
 
     wiring()
     print("%d checks failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
+
+
+def review_cases():
+    """The 2026-11-17 review's counterexamples, each a case."""
+    def items(L):
+        return [c["item"] for c in L.calls]
+
+    # TW: a twin launched 30 s before the stop, both killed by it, is no relaunch of the older one
+    T4 = T_STOP + 120000
+    tsrc = os.path.join(DH.runs_dir(STATE), "tw.brief.src.md")
+    write(tsrc, "Build item TW.\n")
+    tw1 = rec("tw1", "ITEM_TW", T4 - 3600, brief_src=tsrc, ended=T4 - 2, result="killed: x", returned=T4 + 20)
+    tw2 = rec("tw2", "ITEM_TW", T4 - 30, brief_src=tsrc, ended=T4 - 2, result="killed: x", returned=T4 + 20)
+    # S: a given clone where another session began during the run: the run's own transcript is the one resumed
+    s_clone = os.path.join(TMP, "kept", "S.clone")
+    os.makedirs(s_clone, exist_ok=True)
+    s = rec("s", "ITEM_S", T4 - 3000, clone=s_clone, clone_how="given " + s_clone, ended=T4 - 2, result="killed: x",
+            returned=T4 + 20)
+    # (and a window opened there by hand as the launch prepared: an interactive session, entrypoint "cli")
+    for sid, t, ep in (("88888888-aaaa-bbbb-cccc-000000000008", T4 - 3000 + 4, "sdk-cli"),
+                       ("99999999-aaaa-bbbb-cccc-000000000009", T4 - 1000, "sdk-cli"),
+                       ("12121212-aaaa-bbbb-cccc-000000000012", T4 - 3000 + 1, "cli")):
+        write(os.path.join(DH.project_dir(s_clone, PROJECTS), sid + ".jsonl"),
+              json.dumps({"type": "user", "timestamp": iso(t), "sessionId": sid, "entrypoint": ep}) + "\n")
+    set_plan([plan_line("switch", T4, acted=True, to="system"), plan_line("normal", T4 + 300)])
+    L = Launcher()
+    by = {x["unit"]: x for x in sweep(L, T4 + 310)}
+    check("TW: a twin launched just before the stop does not stand in for the older run's resume",
+          items(L).count("ITEM_TW") == 2 and by.get(tw1, {}).get("act") == by.get(tw2, {}).get("act") == "resumed",
+          "%s %s" % (by.get(tw1, {}).get("act"), by.get(tw2, {}).get("act")))
+    cs = [c for c in L.calls if c["item"] == "ITEM_S"]
+    check("S: the session begun at the launch is resumed, not a later one in the same clone",
+          len(cs) == 1 and cs[0].get("resume_session") == "88888888-aaaa-bbbb-cccc-000000000008",
+          str([c.get("resume_session") for c in cs]))
+
+    # BR: a failed switch off a spent account whose fallback fleet stop is logged under `brake`
+    T5 = T_STOP + 160000
+    br = rec("br", "ITEM_BR", T5 - 3000, brief_src=tsrc, ended=T5 - 2, result="killed: x", returned=T5 + 20)
+    write(os.path.join(PLAN_DIR, "log.jsonl"), json.dumps({
+        "acted": True, "at": iso(T5), "do": "switch", "live": "lukas", "to": "steven", "why": "test",
+        "result": {"use": [1, "failed"]}, "brake": {"fleet-stop": [0, "stopped 4"]}}) + "\n")
+    got = {x["unit"]: x for x in SR.scan(now=T5 + 60, root=STATE, plan_dir=PLAN_DIR, acct_log=ACCT_LOG, repo=REPO,
+                                         projects=PROJECTS, runner=systemctl, cutoff=T_STOP - 86400)}
+    check("BR: a fallback fleet stop is a stop (the run is parked: the switch failed)",
+          got.get(br, {}).get("act") == "park" and got.get(br, {}).get("stop", {}).get("kind") == "stop", str(got.get(br)))
+
+    # R: decided afresh before each act: a plan stop and a hand relaunch that land while the first resume launches
+    T6 = T_STOP + 200000
+    rx = rec("rx", "ITEM_RX", T6 - 3000, brief_src=tsrc, ended=T6 - 2, result="killed: x", returned=T6 + 20)
+    ry = rec("ry", "ITEM_RY", T6 - 2990, brief_src=tsrc, ended=T6 - 2, result="killed: x", returned=T6 + 20)
+    rz = rec("rz", "ITEM_RZ", T6 - 2980, brief_src=tsrc, ended=T6 - 2, result="killed: x", returned=T6 + 20)
+    set_plan([plan_line("switch", T6, acted=True, to="system"), plan_line("normal", T6 + 300)])
+    hand = []
+
+    class Racing(Launcher):
+        def __call__(self, *a_, **kw):
+            if not self.calls:
+                with open(os.path.join(PLAN_DIR, "log.jsonl"), "a", encoding="utf-8") as f:
+                    f.write(plan_line("stop", T6 + 330, acted=True))
+                hand.append(rec("rzhand", "ITEM_RZ", T6 + 320, status="running"))
+            return Launcher.__call__(self, *a_, **kw)
+    L = Racing()
+    by = {x["unit"]: x for x in sweep(L, T6 + 310)}
+    check("R: the first run resumed", items(L).count("ITEM_RX") == 1, str(items(L)))
+    check("R: a stop that lands mid-sweep parks the rest", "ITEM_RY" not in items(L) and by.get(ry, {}).get("act") == "park",
+          str(by.get(ry)))
+    check("R: a hand relaunch that lands mid-sweep is not doubled", "ITEM_RZ" not in items(L)
+          and (DH.read_record(rz, STATE) or {}).get("resumed_by") == (hand or [None])[0], str(by.get(rz)))
+
+    # P: parked by a hard stop that stands six days (all accounts spent), resumed on the first pass with headroom
+    T7 = T_STOP + 260000
+    p = rec("p", "ITEM_P", T7 - 3000, brief_src=tsrc, ended=T7 - 2, result="killed: x", returned=T7 + 20)
+    set_plan([plan_line("stop", T7, acted=True), plan_line("stopped", T7 + 300)], notice_state="stop", notice_at=T7 + 300)
+    L = Launcher()
+    sweep(L, T7 + 310)
+    parked = bool((DH.read_record(p, STATE) or {}).get("parked"))
+    late = T7 + 6 * 86400
+    set_plan([plan_line("stop", T7, acted=True), plan_line("start", late - 300, acted=True), plan_line("normal", late)])
+    sweep(L, late + 10)
+    check("P: parked six days, resumed on the first pass with headroom", parked and items(L).count("ITEM_P") == 1,
+          "parked=%s calls=%s" % (parked, items(L)))
+
+    # CK: each act is decided at the time it is taken: the first resume takes so long that the plan's newest pass has
+    # aged past FRESH_S (its timer stopped) by the second, which is parked, not launched on the stale reading
+    T8 = T_STOP + 900000
+    ck = [rec("ck%d" % i, "ITEM_CK%d" % i, T8 - 3000 + i, brief_src=tsrc, ended=T8 - 2, result="killed: x",
+              returned=T8 + 20) for i in (1, 2)]
+    set_plan([plan_line("switch", T8, acted=True, to="system"), plan_line("normal", T8 + 300)])
+    L = Launcher()
+    by = {x["unit"]: x for x in sweep(L, T8 + 310, clock=lambda: T8 + 310 + (SR.FRESH_S + 60 if L.calls else 0))}
+    acts = sorted(by.get(u, {}).get("act") or "-" for u in ck)
+    check("CK: a pass that ages out mid-sweep is no headroom for the next act", len(L.calls) == 1
+          and acts == ["park", "resumed"], "calls=%s acts=%s" % (items(L), acts))
 
 
 def wiring():

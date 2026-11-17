@@ -42,14 +42,18 @@ ACCT_LOG = os.path.join(os.environ.get("RM_ACCOUNTS_DIR", os.path.expanduser("~/
 # gives `use` 600 s (rimflow-operations skill, traps); the plan's own stop line came 2 s after the 03:35:15.9 kill
 BEFORE_S = 900
 AFTER_S = 120          # finish stamps `ended` once systemd has run it: after the kill, not before
-STOP_LOOKBACK_S = 3 * 86400      # a hard stop can stand until a reset 32 h away (03:35 -> 11:59 next day, measured)
-LAUNCH_LOOKBACK_S = 4 * 86400    # runs launched longer ago are not read (their names carry their launch time)
+# a hard stop stands until some account refills; every weekly cap refills within 7 d, so a run parked by a stop is
+# still read on the first pass with headroom (32 h was the longest measured, 03:35 -> 11:59 next day)
+STOP_LOOKBACK_S = 8 * 86400
+LAUNCH_LOOKBACK_S = 10 * 86400   # runs launched longer ago are not read (their names carry their launch time)
 # stops before this landed were handled by hand (the 2026-11-17 morning kills were relaunched 05:57 and 06:04)
 CUTOFF = datetime.datetime(2026, 11, 17, 16, 30, tzinfo=datetime.timezone.utc).timestamp()
 FRESH_S = 20 * 60      # switching_plan.NOTICE_FRESH_S: an older reading means the plan's timer stopped
 CLAIM_S = 900          # a claim older than this is a sweep that died mid-launch (the later-record check still holds)
 MAX_TRIES = 3          # a resume refused this many times is given up, and said so
 RETURN_GRACE_S = DH.RETURN_WAIT_S + 300     # a return not done by then is not waited for
+# a run's own transcript begins within 64 s of its launch (427 runs on 2026-11-17, measured: clone sync, then claude)
+SESSION_START_S = 300
 NO_HEADROOM = ("soft", "stop", "stopped")
 DECISIONS = ("normal", "soft", "switch", "stop", "stopped", "start", "hold", "poll", "passive")
 ACTIONABLE = ("resume", "park", "mark", "refuse", "give_up")
@@ -91,7 +95,8 @@ def stop_events(plan_dir=None, acct_log=None, now=None, cutoff=CUTOFF):
     for r in jsonl(os.path.join(plan_dir or PLAN_DIR, "log.jsonl")):
         if not r.get("acted") or r.get("dry"):
             continue
-        for key, res in (r.get("result") or {}).items():
+        # a failed switch off a spent account stops the fleet as its fallback; that stop is logged under `brake`
+        for key, res in list((r.get("result") or {}).items()) + list((r.get("brake") or {}).items()):
             if key in ("use", "fleet-stop") and isinstance(res, list) and res and res[0] == 0:
                 kind = "switch" if key == "use" else "stop"
                 out.append({"ts": epoch(r.get("at")), "kind": kind,
@@ -173,6 +178,12 @@ def item_closed(repo, item):
 
 
 def first_ts(path, lines=40):
+    return opening(path, lines)[0]
+
+
+def opening(path, lines=40):
+    """-> (first timestamp, entrypoint) of a transcript, each None when its first `lines` lines lack it."""
+    t = ep = None
     try:
         with open(path, encoding="utf-8", errors="replace") as f:
             for _ in range(lines):
@@ -180,14 +191,16 @@ def first_ts(path, lines=40):
                 if not ln:
                     break
                 try:
-                    t = epoch(json.loads(ln).get("timestamp"))
+                    d = json.loads(ln)
+                    t = t or epoch(d.get("timestamp"))
+                    ep = ep or d.get("entrypoint")
                 except (ValueError, AttributeError):
                     continue
-                if t:
-                    return t
+                if t and ep:
+                    break
     except OSError:
         pass
-    return None
+    return t, ep
 
 
 def session_of(rec, projects=None):
@@ -196,15 +209,17 @@ def session_of(rec, projects=None):
     sid = rec.get("resume_session")
     if sid and DH.find_transcript(sid, projects):
         return sid
-    at, end = rec.get("at") or 0, rec.get("ended") or time.time()
+    at = rec.get("at") or 0
     best = None
     for p in glob.glob(os.path.join(DH.project_dir(rec.get("clone") or "/nonexistent", projects), "*.jsonl")):
         stem = os.path.basename(p)[:-6]
-        t = first_ts(p)
-        if not DH.SESSION_RE.match(stem) or t is None or not (at - 120 <= t <= end):
+        t, ep = opening(p)
+        if not DH.SESSION_RE.match(stem) or t is None or not (at - 2 <= t <= at + SESSION_START_S):
             continue
-        if best is None or t > best[0]:
-            best = (t, stem)
+        if ep == "cli":  # an interactive window's session; a detached run's is "sdk-cli" (427 of 427 found, measured)
+            continue
+        if best is None or t < best[0]:  # the first to begin after the launch; a seat's or helper's session in a given
+            best = (t, stem)             # clone begins later (21 of 427 runs had one in their lifetime, measured)
     return best[1] if best else None
 
 
@@ -220,13 +235,14 @@ def on_stop(rec, stops):
     return None
 
 
-def relaunch_of(rec, stop, siblings):
+def relaunch_of(rec, stop, siblings, victim=lambda x: False):
     """-> the unit of a run of the same item launched after this one died (a hand or sweep relaunch), or None. A run
-    launched before the death is a second run that may have died at the same stop, and one resumed from another
-    stopped run is that run's relaunch, not this one's."""
+    launched before the death is a second run that may have died at the same stop, a run `victim` says this stop
+    killed too is a twin, never a relaunch, and one resumed from another stopped run is that run's relaunch."""
     died = rec.get("ended") or (stop["ts"] - BEFORE_S)
     later = sorted((x for x in siblings if x["unit"] != rec["unit"] and (x.get("at") or 0) > max(rec.get("at") or 0, died - 60)
-                    and x.get("status") != "launch_failed" and x.get("resumed_from") in (None, rec["unit"])),
+                    and x.get("status") != "launch_failed" and x.get("resumed_from") in (None, rec["unit"])
+                    and not victim(x)),
                    key=lambda x: x.get("at") or 0)
     return later[0]["unit"] if later else None
 
@@ -248,7 +264,10 @@ def classify(rec, stops, siblings, ctx, now):
     if not DH.killed(rec, ctx["runner"], now):
         return None
     base["stop"] = stop
-    later = relaunch_of(rec, stop, siblings)
+    def victim(x):  # launched before this stop, killed by it: a twin that needs its own resume
+        return ((x.get("at") or 0) < stop["ts"] and on_stop(x, [stop]) is stop and not x.get("resumed_from")
+                and DH.killed(x, ctx["runner"], now))
+    later = relaunch_of(rec, stop, siblings, victim)
     if later:
         return {**base, "act": "mark", "why": "already relaunched as %s" % later, "by": later}
     if unit in ctx["books"]:
@@ -283,8 +302,8 @@ def classify(rec, stops, siblings, ctx, now):
 
 
 def scan(now=None, root=None, plan_dir=None, acct_log=None, repo=None, projects=None, runner=subprocess.run,
-         cutoff=CUTOFF):
-    """-> [{unit, item, act, why, ...}] for every recent run a stop killed. Reads only."""
+         cutoff=CUTOFF, only=None):
+    """-> [{unit, item, act, why, ...}] for every recent run a stop killed (or the one named `only`). Reads only."""
     now = now or time.time()
     stops = stop_events(plan_dir, acct_log, now, cutoff)
     if not stops:
@@ -297,6 +316,8 @@ def scan(now=None, root=None, plan_dir=None, acct_log=None, repo=None, projects=
            "headroom": headroom(plan_dir, now)}
     out = []
     for r in sorted(recs, key=lambda x: x.get("at") or 0):
+        if only and r["unit"] != only:
+            continue
         x = classify(r, stops, by_item[r["item"]], ctx, now)
         if x:
             out.append(x)
@@ -412,8 +433,10 @@ def resume(rec, x, now, root, repo, projects, launch_fn, log_path):
 
 
 def sweep(now=None, root=None, plan_dir=None, acct_log=None, repo=None, projects=None, launch_fn=None,
-          runner=subprocess.run, cutoff=CUTOFF, log_path=None, dry=False):
-    """-> [{unit, act, why, ...}]: what each killed run got. One sweep at a time (a lock in the runs dir)."""
+          runner=subprocess.run, cutoff=CUTOFF, log_path=None, dry=False, clock=None):
+    """-> [{unit, act, why, ...}]: what each killed run got. One sweep at a time (a lock in the runs dir). `clock`
+    gives the time of each per-run decision (the wall clock in a real sweep; a given `now` stands still in a test)."""
+    clock = clock or ((lambda: now) if now else time.time)
     now = now or time.time()
     repo = repo or REPO
     launch_fn = launch_fn or DH.launch
@@ -428,9 +451,14 @@ def sweep(now=None, root=None, plan_dir=None, acct_log=None, repo=None, projects
             return found
         out = []
         for x in found:
+            # decided afresh just before acting: a resume before it may have taken minutes, in which a hand relaunch
+            # can appear or the plan can stop the fleet (one scan for the whole sweep would act on both stale)
+            now = clock()  # a pass that has aged out since the sweep began is no headroom
+            fresh = scan(now, root, plan_dir, acct_log, repo, projects, runner, cutoff, only=x["unit"])
             rec = DH.read_record(x["unit"], root)
-            if not rec:
+            if not rec or not fresh:
                 continue
+            x = fresh[0]
             act = x["act"]
             if act == "mark":
                 rec["resumed_by"] = x["by"]
