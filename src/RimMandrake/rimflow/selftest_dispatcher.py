@@ -841,6 +841,16 @@ def test_publish_young_lock_is_traffic():
     st, noted = run(["waited 0.3 s for another git's index.lock; pushed"], (10.0,))
     check(not noted and not any(k.startswith("publish:") for k in st["alarms"]),
           "a push that waited for a lock raises nothing: %r %r" % (noted, st["alarms"]))
+    # RIMMANDRAKE_CLEAR_PUBLISH_STUCK_ON_LEVEL_SHARD: a publish that finds nothing unpublished (None) proves the
+    # earlier stopped commit reached origin by another route; two tick-budget kills 37 min apart with 12 such ticks
+    # between them rang publish-20261117143919 (13:59:59Z and 14:36:37Z) on a clone that was pushing all along
+    killed = "publish KILLED after 0 s (tick budget; the commit stays local, the next tick retries)"
+    st, noted = run([killed, None, None, killed], (10.0, 600.0, 1200.0, 2210.0))
+    check(not noted and "publish:stuck" not in st["alarms"],
+          "a level shard between two kills clears the stuck clock: %r %r" % (noted, st["alarms"]))
+    st, noted = run([killed, killed], (10.0, 2210.0))
+    check(len(noted) == 1 and "publish:stuck" in st["alarms"],
+          "two kills with no level reading between still alarm as stuck: %r %r" % (noted, st["alarms"]))
 
 def test_seat_rule():
     base = [{"seat": "BENCH", "event": "file", "id": "SOME_ITEM_DO_IT", "title": "t", "kind": "task", "for": "FOUNDRY",

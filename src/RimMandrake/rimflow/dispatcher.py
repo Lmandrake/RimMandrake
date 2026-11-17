@@ -2006,8 +2006,10 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
             if out is not None:
                 journal(root, {"at": iso(now), "do": "publish", "result": out})
             # the next tick retries a failed publish by itself; one that stays failed is a stuck clone. Each publish
-            # the tick tried says one of these (None: nothing to publish, which moves neither way)
-            if out == "pushed" or (out or "").endswith("; pushed"):
+            # the tick tried says one of these. None is nothing unpublished on the shard: the stopped commit reached
+            # origin another way (the RUNNER ingest pushes in this clone), so the clone is level and not stuck
+            # (RIMMANDRAKE_CLEAR_PUBLISH_STUCK_ON_LEVEL_SHARD: two kills 37 min apart rang publish-20261117143919)
+            if out is None or out == "pushed" or out.endswith("; pushed"):
                 st.pop("publish_fail_since", None)
             elif out:
                 st.setdefault("publish_fail_since", now)
