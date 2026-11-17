@@ -947,9 +947,9 @@ def test_q1_recheck_reapplies_quiet_at_kill():
                                 ("no timestamp", None, True)):
             SR.tx_summary = lambda path, *a, **k: {"last_kind": "assistant_end", "last_at": at, "last_user_at": 0}
             holds = SR.recheck_at_kill("FOUNDRY", sch, rs, sf, paused=lambda: None, work=lambda s_, ts: [])
-            # the temp path leaves the hold text first: under an unresolved seat it is .seat-tmp/unknown/..., and the
-            # word "unknown" in a path is not an unknown-quiet hold
-            got = any(("quiet" in h) or ("unknown" in h.replace(TMP, "")) for h in holds)
+            # the temp path leaves the hold text first: under an unresolved seat it is .seat-tmp/unknown/..., and a
+            # word in a path ("unknown", "quiet") is not an unknown-quiet hold
+            got = any(("quiet" in h) or ("unknown" in h) for h in (x.replace(TMP, "") for x in holds))
             check(got == want, "Q1 kill-time recheck, assistant_end %s: quiet hold=%s want %s (%s)" % (label, got, want, holds))
     finally:
         SR.tx_summary = old
@@ -1277,23 +1277,36 @@ def test_v3_close_out_continues_while_context_is_ok():
     window."""
     raw = {"seats": {"FOUNDRY": {"session_name": "AGENT FOUNDRY", "clone": CLONE}},
            "seat_restart": {"enabled": True, "seats": {"FOUNDRY": {"backstop_ctx_tokens": 110_000}}}}
-    rc, out, wrote = _request(raw, 60_000)
+
+    def landed():
+        # earlier tests write "landed x" to this same seat log: each call here is read as its own new entry
+        try:
+            with open(SR.seat_log_path("FOUNDRY"), encoding="utf-8") as f:
+                return f.read().count("landed x")
+        except OSError:
+            return 0
+    seen = [landed()]
+
+    def call(*a, **k):      # _request, with the log count read after it
+        r = _request(*a, **k)
+        seen.append(landed())
+        return r
+    rc, out, wrote = call(raw, 60_000)
     check(rc == 0 and not wrote and "next --seat FOUNDRY" in out and "CONTEXT OK" in out,
           "V3 context 60k < 110k: no request written, the seat is told to run next (rc %s, wrote %s, %r)"
           % (rc, wrote, out[-200:]))
-    rc, out, wrote = _request(raw, 120_000)
+    rc, out, wrote = call(raw, 120_000)
     check(rc == 0 and wrote and "RESTART REQUESTED" in out,
           "V3 context 120k >= 110k: the fresh-window request is written (rc %s, wrote %s)" % (rc, wrote))
-    rc, out, wrote = _request(raw, None)
+    rc, out, wrote = call(raw, None)
     check(rc == 0 and wrote, "V3 context UNMEASURED: ask for the fresh window (never continue blind) (wrote %s)" % wrote)
-    rc, out, wrote = _request(raw, 60_000, ["--fresh"])
+    rc, out, wrote = call(raw, 60_000, ["--fresh"])
     check(rc == 0 and wrote, "V3 --fresh asks for the fresh window whatever the context (wrote %s)" % wrote)
     raw["seat_restart"]["seats"]["FOUNDRY"]["grace_s"] = 30
-    rc, out, wrote = _request(raw, 120_000)
+    rc, out, wrote = call(raw, 120_000)
     check("30 s grace" in out, "V3 the request names the seat's configured grace, not the default (%r)" % out[-160:])
-    with open(SR.seat_log_path("FOUNDRY"), encoding="utf-8") as f:
-        log = f.read()
-    check(log.count("landed x") >= 5, "V3 the note reaches the seat log whether or not a restart is requested")
+    check(all(b == a + 1 for a, b in zip(seen, seen[1:])) and len(seen) == 6,
+          "V3 the note reaches the seat log once per call, whether or not a restart is requested (counts %s)" % seen)
 
 
 # ---- Codex review 2026-10-29 (rev/out.txt P1 1 + 2)
@@ -1877,7 +1890,7 @@ def test_h3_final_fence_after_the_killed_record():
     sch = bsched()
     kills, recs = [], []
     fx = {"session_file": lambda pid: {"pid": pid, "sessionId": "sid-old", "name": "CONDUCTOR", "status": "idle"},
-          "kill": lambda pid, start=None: kills.append(pid) or "SIGTERM", "write_killed": lambda seat, rec: recs.append(rec),
+          "kill": lambda pid, start=None: kills.append(pid) or "SIGTERM", "write_killed": lambda seat, rec: recs.append(json.loads(json.dumps(rec))),
           "recheck": lambda *a: [], "start": lambda pid: 77, "final": lambda *a: ["new input at 13:47 (fence)"]}
     st = fresh()
     r = dict(breq(), input_ts=GB_T, tx_offset=0)
@@ -2762,7 +2775,8 @@ def test_d3_last_helper_ends_then_kill_never_before():
     done = [dict(h, alive=False, last_at=T0 + 200) for h in LIVE4]
     a = run(sch, st, obs(helpers=done, work=[{"event": "start", "id": "SEAT_ITEM", "seat": "FOUNDRY",
                                               "ts": SR._iso(T0 + 300)}]), T0 + 400)
-    check(state(st) != "pending", "D3 real new work after the drain ended still cancels (%s)" % dos(a))
+    check(state(st) == "cancelled" and "restart_cancel" in dos(a) and "restart_kill" not in dos(a),
+          "D3 real new work after the drain ended still cancels (state %s, %s)" % (state(st), dos(a)))
 
 
 def test_d4_alarm_names_them_at_the_bound():

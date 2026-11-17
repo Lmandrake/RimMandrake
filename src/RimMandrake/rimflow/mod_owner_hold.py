@@ -59,8 +59,50 @@ def load(path=None):
         if not (isinstance(h, dict) and isinstance(h.get("mod"), str) and h["mod"].strip()
                 and isinstance(h.get("said"), str) and h["said"].strip() and isinstance(h.get("date"), str)):
             raise Unreadable("%s: a hold needs mod, said (his words) and date: %r" % (p, h))
+        d = h.get("design_allowed")
+        if d is not None and not (isinstance(d, dict) and isinstance(d.get("said"), str) and d["said"].strip()
+                                  and isinstance(d.get("date"), str) and d["date"].strip()):
+            raise Unreadable("%s: design_allowed needs said (his words) and date: %r" % (p, h))
+        if key(h["mod"]) in out:
+            raise Unreadable("%s: %s is held twice (rows %r and %r)" % (p, key(h["mod"]), out[key(h["mod"])], h))
         out[key(h["mod"])] = h
     return out
+
+
+def _rewrite(p, change):
+    """Read, change and write the hold file as one step: under an exclusive lock, validated by load() first, written to
+    a temp file and moved over it, so a crash or a second writer never leaves a half or stale list. The lock lives in
+    the temp dir (keyed by the file's real path), not beside the file: a lock file in the tree would dirty every clone."""
+    import fcntl
+    import hashlib
+    import tempfile
+    lock = os.path.join(tempfile.gettempdir(), "mod_owner_hold.%s.lock"
+                        % hashlib.sha1(os.path.realpath(p).encode()).hexdigest()[:16])
+    with open(lock, "a") as lk:
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        load(p)
+        with open(p, encoding="utf-8") as f:
+            doc = json.load(f)
+        out = change(doc)
+        fd, tmp = tempfile.mkstemp(prefix=".mod_owner_hold.", dir=os.path.dirname(os.path.abspath(p)))
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as f:
+                json.dump(doc, f, indent=2, ensure_ascii=False)
+                f.write("\n")
+                f.flush()
+                os.fsync(f.fileno())
+            load(tmp)       # the new bytes must read as a hold list before they replace the old
+            os.replace(tmp, p)
+            dfd = os.open(os.path.dirname(os.path.abspath(p)), os.O_RDONLY)
+            try:
+                os.fsync(dfd)   # the rename itself survives a crash
+            finally:
+                os.close(dfd)
+        except BaseException:
+            if os.path.exists(tmp):
+                os.unlink(tmp)
+            raise
+        return out
 
 
 def held(name, holds=None):
@@ -76,19 +118,16 @@ def status(h):
 def lift(mod, said, path=None):
     """Remove `mod` from the list. -> the hold removed. Raises KeyError when it is not held."""
     p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
-    load(p)
-    with open(p, encoding="utf-8") as f:
-        doc = json.load(f)
-    keep = [h for h in doc["holds"] if key(h.get("mod")) != key(mod)]
-    if len(keep) == len(doc["holds"]):
-        raise KeyError("%s is not held" % mod)
-    gone = [h for h in doc["holds"] if key(h.get("mod")) == key(mod)][0]
-    doc["holds"] = keep
-    doc.setdefault("lifted", []).append(dict(gone, lifted_said=said))
-    with open(p, "w", encoding="utf-8") as f:
-        json.dump(doc, f, indent=2, ensure_ascii=False)
-        f.write("\n")
-    return gone
+
+    def change(doc):
+        keep = [h for h in doc["holds"] if key(h.get("mod")) != key(mod)]
+        if len(keep) == len(doc["holds"]):
+            raise KeyError("%s is not held" % mod)
+        gone = [h for h in doc["holds"] if key(h.get("mod")) == key(mod)][0]
+        doc["holds"] = keep
+        doc.setdefault("lifted", []).append(dict(gone, lifted_said=said))
+        return gone
+    return _rewrite(p, change)
 
 
 def design_allowed(h):
@@ -103,18 +142,17 @@ def allow_design(mod, said, path=None, date=None):
     import datetime
     if not (isinstance(said, str) and said.strip()):
         raise ValueError("allow-design needs his words")
+    if date is not None and not (isinstance(date, str) and date.strip()):
+        raise ValueError("allow-design's date must be a non-blank date string")
     p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
-    load(p)
-    with open(p, encoding="utf-8") as f:
-        doc = json.load(f)
-    rows = [h for h in doc["holds"] if key(h.get("mod")) == key(mod)]
-    if not rows:
-        raise KeyError("%s is not held" % mod)
-    rows[0]["design_allowed"] = {"said": said.strip(), "date": date or datetime.date.today().isoformat()}
-    with open(p, "w", encoding="utf-8") as f:
-        json.dump(doc, f, indent=2, ensure_ascii=False)
-        f.write("\n")
-    return rows[0]
+
+    def change(doc):
+        rows = [h for h in doc["holds"] if key(h.get("mod")) == key(mod)]
+        if not rows:
+            raise KeyError("%s is not held" % mod)
+        rows[0]["design_allowed"] = {"said": said.strip(), "date": date or datetime.date.today().isoformat()}
+        return rows[0]
+    return _rewrite(p, change)
 
 
 def main(argv=None):

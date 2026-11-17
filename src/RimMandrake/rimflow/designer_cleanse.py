@@ -35,8 +35,10 @@ import json
 import os
 import random
 import re
+import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 
@@ -113,11 +115,41 @@ def status_dir():
 
 
 def _read(path, default=None):
+    """-> the file's text, or `default` when it cannot be opened. Bytes that are not UTF-8 read as U+FFFD (check_dir
+    refuses such a file by name; nothing else crashes on it)."""
     try:
         with open(path, encoding="utf-8") as f:
             return f.read()
+    except UnicodeDecodeError:
+        with open(path, encoding="utf-8", errors="replace") as f:
+            return f.read()
     except OSError:
         return default
+
+
+def _not_utf8(path):
+    try:
+        with open(path, encoding="utf-8") as f:
+            f.read()
+        return False
+    except UnicodeDecodeError:
+        return True
+    except OSError:
+        return False
+
+
+def _json_text(text):
+    """-> the parsed value, or _ABSENT when `text` is None or is not JSON (a nesting too deep to parse included)."""
+    if text is None:
+        return _ABSENT
+    try:
+        return json.loads(text)
+    except (ValueError, RecursionError):
+        return _ABSENT
+
+
+def _json_file(path):
+    return _json_text(_read(path))
 
 
 def _blank(v):
@@ -133,8 +165,23 @@ def _headings(text):
 
 
 def page_words(text):
-    """Words on his pages, the reviewer's still-refused block excluded (it is the reviewer's, not the run's)."""
-    return len(re.findall(r"\S+", (text or "").split(STILL_REFUSED_HEAD)[0]))
+    return len(re.findall(r"\S+", text or ""))
+
+
+def page_body(out, pages):
+    """-> (the run's own part of his pages, defect or None). The reviewer's still-refused block is cut off only when it is
+    exactly what review.json's remaining refusals write (it is the reviewer's, not the run's); any other text under that
+    heading is the run's and counts, and the heading itself is then a defect (an author cannot hide words under it)."""
+    i = (pages or "").find(STILL_REFUSED_HEAD)
+    if i < 0:
+        return pages or "", None
+    rv = _json_file(os.path.join(out, "review.json"))
+    rem = rv.get("remaining") if isinstance(rv, dict) else None
+    if isinstance(rem, list) and rem and all(isinstance(r, dict) for r in rem) \
+            and pages[i:].strip() == _still_refused_block(rem).strip():
+        return pages[:i], None
+    return pages, ("his pages hold the heading %r but what follows it is not review.json's remaining refusals word for "
+                   "word" % STILL_REFUSED_HEAD)
 
 
 # ------------------------------------------------------------------------------------------------ check
@@ -162,33 +209,41 @@ def check_dir(out):
         refs.append({"rule": rule, "where": where, "what": what, "would_pass": would_pass})
 
     def load_json(name):
+        """-> the parsed value, or _ABSENT when the file is missing or does not parse (JSON null is a value)."""
         text = _read(os.path.join(out, name))
         if text is None:
-            return None
+            return _ABSENT
         try:
             return json.loads(text)
-        except ValueError as e:
-            refuse("files", name, "%s does not parse: %s" % (name, e), "%s is valid JSON" % name)
-            return None
+        except (ValueError, RecursionError) as e:
+            refuse("files", name, "%s does not parse: %s" % (name, str(e)[:200]), "%s is valid JSON" % name)
+            return _ABSENT
 
     result = load_json("result.json")
     blocked = isinstance(result, dict) and result.get("outcome") == "blocked"
     want = BLOCKED_FILES if blocked else FILES
+    for name in FILES:
+        if _not_utf8(os.path.join(out, name)):
+            refuse("files", name, "%s is not UTF-8 text" % name, "%s written as UTF-8" % name)
     for name in want:
         t = _read(os.path.join(out, name))
         if t is None or not t.strip():
             refuse("files", name, "%s is %s" % (name, "missing" if t is None else "empty"),
                    "%s present in %s with its contents (the brief's file table)" % (name, out))
     stats["files"] = "%d of %d present" % (sum(1 for n in want if (_read(os.path.join(out, n)) or "").strip()), len(want))
-    pages = _read(os.path.join(out, "owner_pages.md")) or ""
+    pages, block_bad = page_body(out, _read(os.path.join(out, "owner_pages.md")) or "")
+    if block_bad:
+        refuse("reviewer_block", "owner_pages.md", block_bad, "no such heading on his pages (only the review writes it, "
+               "from review.json)")
     words = page_words(pages)
     stats["page_words"], stats["page_limit"] = words, PAGE_WORDS
     if words > PAGE_WORDS:
         refuse("owner_pages_length", "owner_pages.md", "his pages run %d words; the limit is %d (two pages)"
                % (words, PAGE_WORDS), "owner_pages.md at most %d words; detail moves to the other files" % PAGE_WORDS)
     if not isinstance(result, dict):
-        if result is not None:
-            refuse("counts", "result.json", "result.json is not an object", "result.json as the brief's table shapes it")
+        if result is not _ABSENT:
+            refuse("counts", "result.json", "result.json is %s, not an object" % type(result).__name__,
+                   "result.json as the brief's table shapes it")
         return refs, stats
     if result.get("outcome") not in ("proposed", "blocked"):
         refuse("counts", "result.json outcome", "outcome %r is not proposed or blocked" % result.get("outcome"),
@@ -208,7 +263,7 @@ def check_dir(out):
 
     rows = census.get("rows") if isinstance(census, dict) else census
     rows = rows if isinstance(rows, list) else []
-    if census is not None and not rows:
+    if census is not _ABSENT and not rows:
         refuse("census_fate", "census.json", "the census holds no rows", "census.json {\"rows\": [...]}, one per capability")
     stats["census_rows"] = len(rows)
     ticket_sections = dict(_sections(tickets_md))
@@ -218,9 +273,10 @@ def check_dir(out):
         if r.get("fate") not in FATES:
             refuse("census_fate", where, "fate %r is not one of %s" % (r.get("fate"), ", ".join(FATES)),
                    "fate one of %s" % ", ".join(FATES))
-        for k in ("id", "what", "why"):
+        for k in ("id", "what", "why", "evidence", "called_by", "serves"):
             if _blank(r.get(k)):
-                refuse("census_row", where, "%s is blank" % k, "%s filled (the brief's census columns)" % k)
+                refuse("census_row", where, "%s is blank" % k, "%s filled (the brief's census columns; `none` and why, "
+                       "when there is none)" % k)
         if r.get("built") not in BUILT:
             refuse("census_row", where, "built %r is not one of %s" % (r.get("built"), ", ".join(BUILT)),
                    "built one of %s, with the file that shows it in evidence" % ", ".join(BUILT))
@@ -238,14 +294,17 @@ def check_dir(out):
                 refuse("ticket", where, "a built extra moved to the next version %s" % (
                     "with no ticket" if not t else "names ticket %r, which tickets.md has no ## heading for" % t),
                     "ticket names a `## %s...` section of tickets.md, its switch-off ticket" % (t or "<ID>"))
-            elif not re.search(r"acceptance test\s*:", sec, re.I):
-                refuse("ticket", "tickets.md %s" % t, "the switch-off ticket has no acceptance test",
-                       "the ticket says `Acceptance test: ...` (or `Acceptance test: none, <reason>`)")
+    for h, body in ticket_sections.items():
+        bad = _acceptance_defect(body)
+        if bad:
+            refuse("ticket", "tickets.md %s" % h[:80], "the ticket %s" % bad,
+                   "the ticket says `Acceptance test: <the test>` (or `Acceptance test: none, <the reason>`)")
 
+    _bars_shape(bars_doc, refuse)
     doc = bars_doc if isinstance(bars_doc, dict) else {}
-    bars = [b for b in doc.get("bars") or [] if isinstance(b, dict)]
+    bars = _dicts(doc.get("bars"))
     stats["bars"] = len(bars)
-    if bars_doc is not None and not bars:
+    if bars_doc is not _ABSENT and not bars:
         refuse("bar_part", "bars.json", "bars.json holds no bars", "bars.json {\"bars\": [...]} with the whole bar")
     worst_num = None
     for b in bars:
@@ -253,8 +312,7 @@ def check_dir(out):
         _bar_parts(b, where, refuse)
         texts = [("says", b.get("says"))] + [("accept", x) for x in _strs(b.get("accept"))] + \
                 [("reject", x) for x in _strs(b.get("reject"))] + \
-                [("figurative accept", (f or {}).get("accept")) for f in (b.get("meant") or {}).get("figurative") or []
-                 if isinstance(f, dict)]
+                [("figurative accept", f.get("accept")) for f in _dicts(_dict(b.get("meant")).get("figurative"))]
         for part, text in texts:
             hit = bar_number(text if isinstance(text, str) else "")
             if hit:
@@ -262,10 +320,10 @@ def check_dir(out):
                 refuse("bar_number", "%s %s" % (where, part), "%r pins a number, a count or every field (%r)"
                        % (text, hit), "the comparison a player sees instead; numbers go in range or sees, or a check")
     stats["bar_numbers"] = worst_num or "none"
-    ids = [b.get("id") for b in bars]
+    ids = [b.get("id") if isinstance(b.get("id"), str) else "" for b in bars]
     if len(set(ids)) != len(ids) or any(_blank(i) for i in ids):
         refuse("bar_part", "bars.json", "bar ids are blank or repeated: %s" % ids, "every bar a unique id")
-    wholes = set(x for x in [doc.get("whole")] if not _blank(x)) | {b.get("id") for b in bars if b.get("whole") is True}
+    wholes = set(x for x in [doc.get("whole")] if not _blank(x)) | {i for i, b in zip(ids, bars) if b.get("whole") is True}
     if len(wholes) != 1 or not wholes <= set(ids):
         refuse("whole", "bars.json whole", "%s whole bars (%s)%s" % (len(wholes), sorted(wholes),
                "" if wholes <= set(ids) else ", not all of them bars"),
@@ -273,6 +331,9 @@ def check_dir(out):
     _meetings(doc, bars, models, refuse, stats)
     old = _old_bars(out)
     mapped = doc.get("old_bars") if isinstance(doc.get("old_bars"), dict) else {}
+    idset = lambda xs: {x["id"].strip() for x in xs if isinstance(x.get("id"), str)}    # noqa: E731
+    became = {"kept": ("bar", idset(bars)), "merged": ("bar", idset(bars)),
+              "check": ("check", idset(_dicts(doc.get("checks")))), "rule": ("rule", idset(_dicts(doc.get("rules"))))}
     stats["old_bars"] = "%d mapped of %d in tree.json" % (len([o for o in old if o in mapped]), len(old))
     for o in old:
         m = mapped.get(o)
@@ -280,9 +341,13 @@ def check_dir(out):
             refuse("old_bar", "old_bars %s" % o, "old bar %s is %s" % (o, "unmapped" if m is None else
                    "mapped without a `to` from %s or a why" % ", ".join(OLD_TO)),
                    "old_bars[%r] = {\"to\": one of %s, \"as\": the new id, \"why\": ...}" % (o, ", ".join(OLD_TO)))
-        elif m.get("to") in ("kept", "merged", "check", "rule") and _blank(m.get("as")):
+        elif m.get("to") in became and _blank(m.get("as")):
             refuse("old_bar", "old_bars %s" % o, "old bar %s went to %s without naming as what" % (o, m.get("to")),
                    "`as` names the bar, check or rule it became")
+        elif m.get("to") in became and m.get("as").strip() not in became[m.get("to")][1]:
+            refuse("old_bar", "old_bars %s" % o, "old bar %s went to %s as %r, which is no %s id of bars.json"
+                   % (o, m.get("to"), m.get("as"), became[m.get("to")][0]),
+                   "`as` is one id of bars.json %ss: %s" % (became[m.get("to")][0], sorted(became[m.get("to")][1])[:12]))
     extra = sorted(set(mapped) - set(old))
     if extra:
         refuse("old_bar", "old_bars", "old_bars maps ids the concept's tree.json does not hold: %s" % extra,
@@ -293,6 +358,37 @@ def check_dir(out):
 
 def _strs(v):
     return [x for x in v if isinstance(x, str)] if isinstance(v, list) else []
+
+
+def _dicts(v):
+    return [x for x in v if isinstance(x, dict)] if isinstance(v, list) else []
+
+
+def _dict(v):
+    return v if isinstance(v, dict) else {}
+
+
+_ABSENT = object()      # load_json: the file is missing or does not parse (JSON null is a value, refused as such)
+_PAGE_LABELS = {"capabilities": r"\bcapabilit(?:y|ies)\b",
+                "live_only_bars": r"\blive[- ]only bars?\b|\bbars only the live game can decide\b",
+                "bars": r"(?<!live-only )(?<!live only )(?<!old )\bbars?\b(?! only the live)"}
+_CLAUSE_END = r";|\n|\.(?:\s|$)"
+
+
+def page_states(page, key, n):
+    """Whether `page` states count `n` beside its name `key`: the digits after the name in the same clause (up to `;`,
+    a line end, a sentence end or the next counted name), or just before it ("3 capabilities"). A bare digit elsewhere
+    on the page is not a statement of the count (two counts swapped would pass a page-wide search)."""
+    num = r"(?<![\w.])%d(?!\w|[.,]\d)" % n
+    other = re.compile("|".join("(?:%s)" % v for v in _PAGE_LABELS.values()), re.I)
+    for m in re.finditer(_PAGE_LABELS[key], page or "", re.I):
+        seg = re.split(_CLAUSE_END, page[m.end():], maxsplit=1)[0]
+        nxt = other.search(seg)
+        if re.search(num, seg[:nxt.start()] if nxt else seg):
+            return True
+        if re.search(num + r"[^\d;\n]{0,3}$", re.split(_CLAUSE_END, page[max(0, m.start() - 12):m.start()])[-1]):
+            return True
+    return False
 
 
 def _sections(md):
@@ -308,6 +404,58 @@ def _ticket_section(sections, tid):
     return None
 
 
+_ACCEPTANCE = re.compile(r"^[ \t>*_-]*acceptance test[*_]*[ \t]*:[*_]*\s*(\S[^\n]*)?", re.I | re.M)
+
+
+def _acceptance_defect(body):
+    """-> why a ticket's section fails the brief's "Acceptance test: ..." line, or None."""
+    m = _ACCEPTANCE.search(body or "")
+    if not m or not (m.group(1) or "").strip():
+        return "has no acceptance test (a line `Acceptance test: ...` with the test after it)"
+    v = m.group(1).strip().strip("*_ ")
+    if re.match(r"none\b", v, re.I) and not re.match(r"none\b[\W_]*\w", v, re.I):
+        return "says its acceptance test is none without the reason"
+    return None
+
+
+_SHAPE_LISTS = (("bars", ()), ("checks", ("id", "what")), ("rules", ("id", "rule")),
+                ("meetings", ("thing", "holds_together")))
+
+
+def _bars_shape(bdoc, refuse):
+    """bars.json's containers as SHAPE fixes them: an object; bars, checks, rules and meetings lists of objects ([] when
+    there are none), each with its named text fields; a rule's touches and a meeting's members lists of text; old_bars an
+    object ({} when there is no tree)."""
+    if bdoc is _ABSENT:
+        return
+    if not isinstance(bdoc, dict):
+        refuse("shape", "bars.json", "bars.json is %s, not an object" % type(bdoc).__name__, "bars.json as SHAPE says")
+        return
+    for key, need in _SHAPE_LISTS:
+        v = bdoc.get(key)
+        if not isinstance(v, list) or any(not isinstance(x, dict) for x in v):
+            refuse("shape", "bars.json %s" % key, "%s is %s" % (key, "missing" if v is None else
+                   "not a list of objects (%s)" % type(v).__name__ if not isinstance(v, list) else "a list holding a non-object"),
+                   "%s a list of objects ([] when there are none)" % key)
+            continue
+        for i, x in enumerate(v):
+            where = "bars.json %s %d (%s)" % (key, i + 1, str(x.get("id") or x.get("thing") or "no id")[:60])
+            for f in need:
+                if _blank(x.get(f)):
+                    refuse("shape", where, "%s is blank or not text" % f, "%s filled with text" % f)
+            for f in {"rules": ("touches",), "meetings": ("members",)}.get(key, ()):
+                if not _text_list(x.get(f)):
+                    refuse("shape", where, "%s is not a non-empty list of text" % f, "%s a list of ids or things" % f)
+    if not isinstance(bdoc.get("old_bars"), dict):
+        refuse("shape", "bars.json old_bars", "old_bars is %s, not an object" % type(bdoc.get("old_bars")).__name__,
+               "old_bars an object ({} when the concept has no tree.json)")
+
+
+def _text_list(v):
+    """True when `v` is a non-empty list of non-blank strings and nothing else."""
+    return isinstance(v, list) and bool(v) and all(isinstance(x, str) and x.strip() for x in v)
+
+
 def _bar_parts(b, where, refuse):
     miss = []
     meant = b.get("meant") if isinstance(b.get("meant"), dict) else None
@@ -315,6 +463,8 @@ def _bar_parts(b, where, refuse):
     sees = b.get("sees") if isinstance(b.get("sees"), dict) else None
     if _blank(b.get("says")):
         miss.append("says")
+    if meant is None or _blank(meant.get("intent")):
+        miss.append("meant.intent (the intent behind the bar)")
     if meant is None or _blank(meant.get("source")):
         miss.append("meant.source (his words by event, a standing ruling, or `delegated: from what`)")
     fig = (meant or {}).get("figurative")
@@ -322,10 +472,9 @@ def _bar_parts(b, where, refuse):
                                          ("word", "stands_for", "accept")) for f in fig):
         miss.append("meant.figurative (a list; each {word, stands_for, accept}; [] when no word is figurative)")
     acc, rej = _strs(b.get("accept")), _strs(b.get("reject"))
-    if not [x for x in acc if x.strip()]:
-        miss.append("accept")
-    if not [x for x in rej if x.strip()]:
-        miss.append("reject")
+    for k in ("accept", "reject", "touches"):
+        if not _text_list(b.get(k)):
+            miss.append("%s (a non-empty list of pictures or things, each text)" % k)
     lazy = b.get("lazy")
     if _blank(lazy):
         miss.append("lazy")
@@ -334,15 +483,13 @@ def _bar_parts(b, where, refuse):
                     "tight>`)")
     if rng is None or _blank(rng.get("varies")) or _blank(rng.get("left_out")):
         miss.append("range {varies, left_out}")
-    for k in ("instrument", "start", "on", "control"):
+    for k in ("instrument", "start", "on", "control", "reset"):
         if sees is None or _blank(sees.get(k)):
             miss.append("sees.%s" % k)
     if b.get("live_only") is True and _blank((sees or {}).get("live_only_why")) and _blank(b.get("live_only_why")):
         miss.append("sees.live_only_why (a live-only bar says why nothing cheaper can see it)")
     if not isinstance(b.get("live_only"), bool):
         miss.append("live_only (true or false)")
-    if not [t for t in _strs(b.get("touches")) if t.strip()]:
-        miss.append("touches")
     for m in miss:
         refuse("bar_part", where, "%s is missing or blank" % m, "%s filled as the brief's bar parts say" % m.split(" (")[0])
 
@@ -351,12 +498,11 @@ def _meetings(doc, bars, models, refuse, stats):
     touchers = {}
     for b in bars:
         for t in _strs(b.get("touches")):
-            touchers.setdefault(_norm(t), set()).add(b.get("id"))
-    for r in doc.get("rules") or []:
-        if isinstance(r, dict):
-            for t in _strs(r.get("touches")):
-                touchers.setdefault(_norm(t), set()).add(r.get("id"))
-    meets = [m for m in doc.get("meetings") or [] if isinstance(m, dict)]
+            touchers.setdefault(_norm(t), set()).add(str(b.get("id")))
+    for r in _dicts(doc.get("rules")):
+        for t in _strs(r.get("touches")):
+            touchers.setdefault(_norm(t), set()).add(str(r.get("id")))
+    meets = _dicts(doc.get("meetings"))
     by_thing = {}
     for m in meets:
         by_thing.setdefault(_norm(m.get("thing")), []).append(m)
@@ -380,12 +526,14 @@ def _meetings(doc, bars, models, refuse, stats):
         if h not in HOLDS:
             refuse("meeting", where, "holds_together %r is not one of %s" % (h, ", ".join(HOLDS)),
                    "holds_together argued (say it), measured (cite it) or unknown (name the model)")
-        elif h in ("argued", "measured") and _blank(m.get("why")):
-            refuse("meeting", where, "an %s meeting with no argument or citation in why" % h,
-                   "why holds the argument (argued) or the reading it cites (measured)")
-        elif h == "unknown":
+        elif _blank(m.get("why")):
+            refuse("meeting", where, "an %s meeting with no %s in why" % (h, {"argued": "argument", "measured": "citation",
+                   "unknown": "reason it is not known"}[h]),
+                   "why holds the argument (argued), the reading it cites (measured) or what is not known (unknown)")
+        if h == "unknown":
             mod = _norm(m.get("model"))
-            if not mod or not any(mod == x or x.startswith(mod) or mod in x for x in models_n):
+            # the heading itself, or its id: "M1" names "## M1: gas spread"; "gas" names no heading it is only inside
+            if not mod or not any(mod == x or re.match(re.escape(mod) + r"(?![\w-])", x) for x in models_n):
                 refuse("unknown_model", where, "an unknown meeting names model %r, which models.md has no ## heading for"
                        % m.get("model"), "model names a `## ` heading of models.md that would settle it")
 
@@ -407,24 +555,23 @@ def _counts(result, rows, bars, doc, models, tickets, pages, mapped, refuse, sta
     have = {"capabilities": len(rows), "kept": sum(1 for f in fates if f in KEPT),
             "next_version": fates.count("next_version"), "recommend_retire": fates.count("recommend_retire"),
             "old_bars": len(mapped), "bars": len(bars), "live_only_bars": sum(1 for b in bars if b.get("live_only") is True),
-            "checks": len([c for c in doc.get("checks") or [] if isinstance(c, dict)]),
-            "rules": len([r for r in doc.get("rules") or [] if isinstance(r, dict)]),
-            "unknown_pairs": sum(1 for m in doc.get("meetings") or [] if isinstance(m, dict)
-                                 and m.get("holds_together") == "unknown"),
+            "checks": len(_dicts(doc.get("checks"))), "rules": len(_dicts(doc.get("rules"))),
+            "unknown_pairs": sum(1 for m in _dicts(doc.get("meetings")) if m.get("holds_together") == "unknown"),
             "models": len(models), "tickets": len(tickets), "questions": len(questions)}
     stats["questions"], stats["question_limit"] = len(questions), QUESTIONS
     counts = result.get("counts") if isinstance(result.get("counts"), dict) else {}
     for k in COUNT_KEYS:
-        if counts.get(k) != have[k]:
+        if type(counts.get(k)) is not int or counts.get(k) != have[k]:     # True and 1.0 are not the count 1
             refuse("counts", "result.json counts.%s" % k, "counts.%s reads %r; the files hold %d" % (k, counts.get(k), have[k]),
                    "counts.%s = %d (%s)" % (k, have[k], _COUNT_HOW[k]))
     if len(questions) > QUESTIONS:
         refuse("counts", "owner_pages.md", "%d questions; at most %d" % (len(questions), QUESTIONS),
                "at most %d questions, each a line starting Q<n>." % QUESTIONS)
     for k in ("capabilities", "bars", "live_only_bars"):
-        if not re.search(r"(?<![\w.])%d(?!\w|[.,]\d)" % have[k], pages.split(STILL_REFUSED_HEAD)[0]):
-            refuse("counts", "owner_pages.md", "his pages do not state the %s count %d" % (k.replace("_", "-"), have[k]),
-                   "page one states %s as the digits %d, the number in result.json" % (k.replace("_", "-"), have[k]))
+        if not page_states(pages, k, have[k]):
+            refuse("counts", "owner_pages.md", "his pages do not state the %s count %d beside its name"
+                   % (k.replace("_", "-"), have[k]), "page one says `%s %d` (the name, then the digits, in one clause; "
+                   "a before-and-after pair may sit in it), the number in result.json" % (k.replace("_", "-"), have[k]))
     for k in ("mod", "run", "signature"):
         if _blank(result.get(k)):
             refuse("counts", "result.json %s" % k, "%s is blank" % k, "%s filled (the brief's result.json)" % k)
@@ -510,7 +657,8 @@ def docs_naming(repo, mod, source, skip):
 SHAPE = """The shape the self-check reads (the brief's table, with the field names fixed):
 - census.json: {"rows": [{"id", "what", "built": present|absent|unknown, "evidence", "proven": current|stale|missing|unknown,
   "called_by", "serves", "fate": land|life|signature|needed_by|dependency|next_version|recommend_retire, "why",
-  "needed_by", "ticket"}]}. A needed_by row names what needs it in "needed_by" and gives the deletion argument in "why".
+  "needed_by", "ticket"}]}; id, what, evidence, called_by, serves and why are never blank (write "none" and why when
+  there is none). A needed_by row names what needs it in "needed_by" and gives the deletion argument in "why".
   A built (present) row moved to next_version names its switch-off ticket in "ticket".
 - bars.json: {"bars": [{"id", "says", "meant": {"intent", "source", "figurative": [{"word", "stands_for", "accept"}]},
   "accept": [...], "reject": [...], "lazy": one of the reject pictures word for word, or "none: <why the words are tight>",
@@ -524,8 +672,9 @@ SHAPE = """The shape the self-check reads (the brief's table, with the field nam
   check.
 - models.md and tickets.md: one "## " heading per model or ticket (a ticket heading starts with its id, e.g.
   "## T1: ..."), each ticket with a line "Acceptance test: ..." (or "Acceptance test: none, <reason>").
-- owner_pages.md: at most %d words; questions are lines starting "Q1.", "Q2." (at most %d); page one states the
-  capabilities, bars and live-only bars counts as digits, the same numbers as result.json.
+- owner_pages.md: at most %d words; questions are lines starting "Q1.", "Q2." (at most %d); page one states each of
+  the capabilities, bars and live-only bars counts as digits beside its name in one clause, the same numbers as
+  result.json, e.g. "Capabilities 14 before, 9 after; bars 18 before, 7 after; live-only bars 2."
 - result.json: {"mod", "run", "outcome": "proposed"|"blocked", "signature", "counts": {%s}, "blocked_on"}, each count
   equal to the files (kept = rows whose fate is land, life, signature, needed_by or dependency; unknown_pairs = unknown
   meetings; models and tickets = their "## " headings; old_bars = entries of old_bars). A blocked run writes at least
@@ -602,6 +751,37 @@ def pool_root():
     return os.environ.get("RM_DETACHED_POOL") or os.path.expanduser("~/rm/relentless")
 
 
+def claude_tool_args(tools):
+    """tools=None: the writing author (no permission prompts); "": no tool at all; "Read,Grep,Glob": only those."""
+    if tools is None:
+        return ["--dangerously-skip-permissions"]
+    if tools == "":
+        return ["--tools", ""]
+    return ["--tools", tools, "--allowedTools", tools]
+
+
+class Busy(RuntimeError):
+    pass
+
+
+@contextlib.contextmanager
+def mod_lock(mod):
+    """One invocation per mod at a time (run, review and a fleet's mod share the clone cleanse-<Mod>): an exclusive,
+    non-blocking flock on <pool>/clones/.cleanse-<Mod>.lock (ext4, beside the clone), released when the holder exits or
+    dies. A second taker raises Busy instead of syncing, writing or publishing over the first."""
+    d = os.path.join(pool_root(), "clones")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, ".cleanse-%s.lock" % mod), "a") as fh:
+        try:
+            fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            raise Busy("another designer_cleanse invocation holds %s (its run, review or fleet is live)" % mod)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
+
+
 class Effects:
     """The real world: pool clones, the quota gate, Codex and Claude, git and ./publish. The selftest swaps this."""
 
@@ -663,13 +843,14 @@ class Effects:
 
     def claude(self, cwd, prompt, base, model="opus", tools=None, **_):
         """claude -p in claude_bounded.sh; tools=None is a writing author (no permission prompts), a tool list is a
-        read-only reviewer. No spend cap is passed and none is told: the run is never told its spend."""
+        read-only reviewer, "" is no tool at all (the blind sort). No spend cap is passed and none is told: the run is
+        never told its spend."""
         os.makedirs(os.path.dirname(base), exist_ok=True)
         bounded = os.path.join(cwd, "src", "RimMandrake", "Utils", "claude_bounded.sh")
         if not os.path.exists(bounded):
             bounded = os.path.join(UTILS, "claude_bounded.sh")
         cmd = [bounded, "-p", "--model", model or "opus", "--output-format", "json"]
-        cmd += ["--tools", tools, "--allowedTools", tools] if tools else ["--dangerously-skip-permissions"]
+        cmd += claude_tool_args(tools)
         env = dict(os.environ)
         env.setdefault("AGENT_SEAT", "BENCH")
         env.setdefault("RIMFLOW_SEAT", env["AGENT_SEAT"])
@@ -790,6 +971,43 @@ def _write_json(path, doc):
         f.write("\n")
 
 
+def unreview(out):
+    """A run that writes the proposal again makes every earlier review of it stale: review.json and review_attempt.json
+    go (their deletion is committed with the new proposal), the reviewer's block leaves his pages and applyable leaves
+    result.json. Nothing then reads the old verdict as this proposal's."""
+    for name in ("review.json", "review_attempt.json"):
+        p = os.path.join(out, name)
+        if os.path.exists(p):
+            os.unlink(p)
+    pp = os.path.join(out, "owner_pages.md")
+    pages = _read(pp)
+    if pages is not None and STILL_REFUSED_HEAD in pages:
+        with open(pp, "w", encoding="utf-8") as f:
+            f.write(pages.split(STILL_REFUSED_HEAD)[0].rstrip() + "\n")
+    res = _json_file(os.path.join(out, "result.json"))
+    if isinstance(res, dict) and "applyable" in res:
+        res.pop("applyable")
+        _write_json(os.path.join(out, "result.json"), res)
+
+
+def proposal_digest(out):
+    """sha256 over the proposal's files as the run wrote them: his pages cut at the reviewer's heading, result.json
+    without applyable (both are the review's own writes). A review records it; resume trusts a review only of the same
+    bytes."""
+    import hashlib
+    h = hashlib.sha256()
+    for name in FILES:
+        text = _read(os.path.join(out, name))
+        if name == "owner_pages.md" and text is not None:
+            text = text.split(STILL_REFUSED_HEAD)[0].rstrip()
+        if name == "result.json":
+            doc = _json_text(text)
+            if isinstance(doc, dict):
+                text = json.dumps({k: v for k, v in doc.items() if k != "applyable"}, sort_keys=True)
+        h.update(name.encode() + b"\0" + ("\x01" if text is None else text).encode("utf-8", "replace") + b"\0")
+    return h.hexdigest()
+
+
 def run_mod(mod, fx, runner="codex", model=None, effort=None):
     """One cleansing run of `mod`. -> the run record {state, why, ...}; state proposed or blocked."""
     t0 = time.time()
@@ -804,6 +1022,7 @@ def run_mod(mod, fx, runner="codex", model=None, effort=None):
     out = os.path.join(clone, out_rel)
     os.makedirs(out, exist_ok=True)
     base = os.path.join(status_dir(), "runs", mod, time.strftime("%Y%m%d-%H%M%S") + ".author")
+    unreview(out)
     before = set(fx.changed(clone))
     prompt = prompt_for(clone, mod)
     fx.status(mod, "running", "%s writing the proposal" % runner)
@@ -818,8 +1037,7 @@ def run_mod(mod, fx, runner="codex", model=None, effort=None):
                "self-check again.\n\n%s\n" % (out_rel, _refusal_text(refs)))
         runs.append(_agent(fx, mod, runner, clone, fix, base + ".fix", **kw))
         refs, stats = check_dir(out)
-    result = json.loads(_read(os.path.join(out, "result.json")) or "null") if not [
-        r for r in refs if r["where"] == "result.json" and r["rule"] == "files"] else None
+    result = _json_file(os.path.join(out, "result.json"))
     outcome = result.get("outcome") if isinstance(result, dict) else None
     if refs:
         state, why = "blocked", "the self-check still refuses after one fix pass (%d refusals: %s)" % (
@@ -887,7 +1105,7 @@ def blind(bars, rng):
     return items, truth
 
 
-def review_prompt(repo, mod, items):
+def review_prompt(repo, mod):
     e = entry(repo, mod)
     out = rel_out(mod)
     src = ["src/RimMandrake/%s/" % (e.get("source") or mod)]
@@ -908,15 +1126,6 @@ Source: %s
 Rulings and lore: %s
 The brief the author followed: %s (what a bar is, the fate of an extra, the file table).
 
-## The pictures, blind (do this before you open the proposal)
-
-For each bar below you see what it says and its pictures, shuffled and unlabelled. Sort each picture as `accept` (a
-build the owner would take as this bar met) or `reject` (one he would refuse), as a cold reader would.
-
-BLIND PICTURES:
-%s
-END BLIND PICTURES
-
 ## THE PROPOSAL
 
 The folder %s: owner_pages.md, definition.md, census.json, ambiguities.md, bars.json, models.md, next_version.md,
@@ -932,10 +1141,24 @@ capability the census missed, and one loop or three-way meeting among the bars a
 Your last message is one JSON object and nothing else:
 {"refusals": [{"head": "<one of the heads above>", "where": "<file and bar, row or line>", "evidence": "...",
   "would_pass": "...", "smallest_fix": "..."}],
- "blind_sort": [{"bar": "<id>", "n": <picture number>, "sorted": "accept" or "reject"}],
  "missed_capability": "...", "loop_or_three_way": "..."}
-""" % (his_words(repo, mod), "; ".join(src), "; ".join(lore), BRIEF, json.dumps(items, indent=1, ensure_ascii=False),
-       out, heads)
+""" % (his_words(repo, mod), "; ".join(src), "; ".join(lore), BRIEF, out, heads)
+
+
+def blind_prompt(items):
+    """The Stranger test's cold sort: only each bar's words and its pictures, shuffled and unlabelled. It is asked in a
+    call of its own, with no tool and an empty folder, so the labels in bars.json are out of its reach."""
+    return """You are a cold reader. Below, each bar says what a player should find in a RimWorld mod, and lists pictures:
+short descriptions of builds of it, shuffled and unlabelled. Sort each picture as `accept` (a build the owner would take
+as this bar met) or `reject` (one he would refuse), from the words alone. You have no files; do not ask for any.
+
+BLIND PICTURES:
+%s
+END BLIND PICTURES
+
+Your last message is one JSON object and nothing else:
+{"blind_sort": [{"bar": "<id>", "n": <picture number>, "sorted": "accept" or "reject"}]}
+""" % json.dumps(items, indent=1, ensure_ascii=False)
 
 
 def parse_review(text):
@@ -961,14 +1184,15 @@ def validate_review(doc):
     if not isinstance(refs, list):
         bad.append("refusals is not a list")
     for i, r in enumerate(refs if isinstance(refs, list) else []):
-        r = r if isinstance(r, dict) else {}
-        if r.get("head") not in HEADS or r.get("head") in LAUNCHER_HEADS:
-            bad.append("refusal %d: head %r is not one of the spec's heads" % (i + 1, r.get("head")))
+        if not isinstance(r, dict):
+            bad.append("refusal %d is not an object" % (i + 1))
+            continue
+        head = r.get("head")
+        if not isinstance(head, str) or head not in HEADS or head in LAUNCHER_HEADS:
+            bad.append("refusal %d: head %r is not one of the spec's heads" % (i + 1, head))
         for k in ("where", "evidence", "would_pass", "smallest_fix"):
-            if _blank(r.get(k)):
-                bad.append("refusal %d: %s is blank" % (i + 1, k))
-    if not isinstance(doc.get("blind_sort"), list):
-        bad.append("blind_sort is not a list")
+            if not isinstance(r.get(k), str) or _blank(r.get(k)):
+                bad.append("refusal %d: %s is blank or not text" % (i + 1, k))
     for k in ("missed_capability", "loop_or_three_way"):
         if _blank(doc.get(k)):
             bad.append("%s is blank (say what you found, or \"looked, none\")" % k)
@@ -980,7 +1204,7 @@ def score_blind(sort, truth):
     differently, or left unsorted, is a Stranger refusal (repair, as the brief's Stranger test says)."""
     got = {}
     for s in sort if isinstance(sort, list) else []:
-        if isinstance(s, dict):
+        if isinstance(s, dict) and isinstance(s.get("bar"), str) and not isinstance(s.get("n"), bool):
             try:
                 got[(s.get("bar"), int(s.get("n")))] = s.get("sorted")
             except (TypeError, ValueError):
@@ -1003,12 +1227,43 @@ def score_blind(sort, truth):
     return rows, refs
 
 
+def _blind_sort(fx, mod, rv_runner, rv_model, items, base):
+    """The cold sort, sealed before the reviewer may open the proposal: its own call in an empty temporary folder, no
+    tool for Claude, a read-only sandbox for Codex, the prompt holding only the bars' words and shuffled pictures.
+    -> (sort list or None, the call's usage)."""
+    if not items:
+        return [], None
+    cwd = tempfile.mkdtemp(prefix="cleanse-blind-")
+    kw = {"model": rv_model, "tools": ""} if rv_runner == "claude" else {"sandbox": "read-only"}
+    prompt, res, sort = blind_prompt(items), None, None
+    try:
+        for attempt in (1, 2):
+            p = prompt if attempt == 1 else prompt + "\n\nYour last answer was not the one JSON object asked for. " \
+                                                     "Answer again with it only.\n"
+            res = _agent(fx, mod, rv_runner, cwd, p, base + (".blind.retry" if attempt == 2 else ".blind"), **kw)
+            doc = parse_review((res or {}).get("result"))
+            if isinstance(doc, dict) and isinstance(doc.get("blind_sort"), list):
+                sort = doc["blind_sort"]
+                break
+    finally:
+        shutil.rmtree(cwd, ignore_errors=True)
+    return sort, _usage(res)
+
+
 def _look(fx, mod, clone, rv_runner, rv_model, base, rng):
-    """One look by the reviewer. -> the round's record."""
+    """One look by the reviewer: the cold sort first, in its own sealed call, then the review of the proposal.
+    -> the round's record."""
     out = os.path.join(clone, rel_out(mod))
-    bars = [b for b in (json.loads(_read(os.path.join(out, "bars.json")) or "{}").get("bars") or []) if isinstance(b, dict)]
+    bars = _dicts(_dict(_json_file(os.path.join(out, "bars.json"))).get("bars"))
     items, truth = blind(bars, rng)
-    prompt = review_prompt(clone, mod, items)
+    sort, blind_usage = _blind_sort(fx, mod, rv_runner, rv_model, items, base)
+    if sort is None:
+        bad = ["the cold sort's answer was unreadable twice"]
+        fx.log(mod, "the reviewer's cold sort is still unreadable after one retry")
+        return {"runner": rv_runner, "model": rv_model, "refusals": [], "reviewer_refusals": 0, "stranger": [],
+                "missed_capability": None, "loop_or_three_way": None, "defects": bad, "usage": None,
+                "blind_usage": blind_usage}
+    prompt = review_prompt(clone, mod)
     kw = {"model": rv_model, "tools": "Read,Grep,Glob"} if rv_runner == "claude" else {"sandbox": "read-only"}
     doc, bad, res = None, None, None
     for attempt in (1, 2):      # a malformed review is asked once more, with what was wrong; nothing loops past that
@@ -1022,12 +1277,14 @@ def _look(fx, mod, clone, rv_runner, rv_model, base, rng):
     if bad:     # the reviewer's record is unreadable: no reading of the proposal, so no refusal of it
         fx.log(mod, "the reviewer's record is still unreadable after one retry: %s" % "; ".join(bad))
         return {"runner": rv_runner, "model": rv_model, "refusals": [], "reviewer_refusals": 0, "stranger": [],
-                "missed_capability": None, "loop_or_three_way": None, "defects": bad, "usage": _usage(res)}
-    rows, stranger = score_blind(doc.get("blind_sort"), truth)
+                "missed_capability": None, "loop_or_three_way": None, "defects": bad, "usage": _usage(res),
+                "blind_usage": blind_usage}
+    rows, stranger = score_blind(sort, truth)
     refusals = [r for r in doc.get("refusals") or [] if isinstance(r, dict)]
     return {"runner": rv_runner, "model": rv_model, "refusals": refusals + stranger, "reviewer_refusals": len(refusals),
             "stranger": rows, "missed_capability": (doc or {}).get("missed_capability"),
-            "loop_or_three_way": (doc or {}).get("loop_or_three_way"), "defects": bad or [], "usage": _usage(res)}
+            "loop_or_three_way": (doc or {}).get("loop_or_three_way"), "defects": bad or [], "usage": _usage(res),
+            "blind_usage": blind_usage}
 
 
 def _still_refused_block(remaining):
@@ -1057,19 +1314,25 @@ def _reviewer_failed(fx, mod, clone, rounds, t0, fix_rec=None):
 def review_mod(mod, fx, author="codex", author_model=None, effort=None, clone=None):
     """The whole-mod check of spec §4. -> {state: reviewed | refused-after-second-look | blocked, ...}."""
     t0 = time.time()
+    why = _hold_refusal(mod)
+    if why:
+        fx.status(mod, "blocked", why)
+        fx.log(mod, "review refused: " + why)
+        return {"mod": mod, "state": "blocked", "why": why}
     clone = clone or fx.clone(mod)
     out_rel = rel_out(mod)
     out = os.path.join(clone, out_rel)
     refs, _ = check_dir(out)
-    if refs or not os.path.exists(os.path.join(out, "result.json")):
+    result = _json_file(os.path.join(out, "result.json"))
+    if refs or not isinstance(result, dict):
         why = "no proposal that passes the self-check to review (%d refusals)" % len(refs)
         fx.status(mod, "blocked", why)
         return {"mod": mod, "state": "blocked", "why": why}
-    result = json.loads(_read(os.path.join(out, "result.json")))
-    if result.get("outcome") == "blocked":
+    if result.get("outcome") != "proposed":
         why = "the run is blocked: %s" % result.get("blocked_on")
         fx.status(mod, "blocked", why)
         return {"mod": mod, "state": "blocked", "why": why}
+    pre = dict(result)
     rv_runner, rv_model = reviewer_for(author)
     fx.status(mod, "running", "review: %s %s first look" % (rv_runner, rv_model or ""))
     base = os.path.join(status_dir(), "runs", mod, time.strftime("%Y%m%d-%H%M%S") + ".review")
@@ -1078,6 +1341,11 @@ def review_mod(mod, fx, author="codex", author_model=None, effort=None, clone=No
     if rounds[0]["defects"]:
         return _reviewer_failed(fx, mod, clone, rounds, t0)
     fix_rec = None
+    if rounds[0]["refusals"] and _hold_refusal(mod):
+        why = _hold_refusal(mod)       # the hold changed during the first look: no writing author runs
+        fx.status(mod, "blocked", why)
+        fx.log(mod, "review fix refused: " + why)
+        return {"mod": mod, "state": "blocked", "why": why, "clone": clone}
     if rounds[0]["refusals"]:
         fx.log(mod, "the first look refused %d; one fix run by the author" % len(rounds[0]["refusals"]))
         fx.status(mod, "running", "review: author fixing %d refusals" % len(rounds[0]["refusals"]))
@@ -1096,7 +1364,19 @@ def review_mod(mod, fx, author="codex", author_model=None, effort=None, clone=No
         rounds.append(_look(fx, mod, clone, rv_runner, rv_model, base + ".look2", rng))
         if rounds[-1]["defects"]:
             return _reviewer_failed(fx, mod, clone, rounds, t0, fix_rec)
-    remaining = rounds[-1]["refusals"]
+    remaining = list(rounds[-1]["refusals"])
+    result = _json_file(os.path.join(out, "result.json"))
+    if not isinstance(result, dict):     # the fix broke result.json: its bytes stay beside, the counts before it return
+        bad_p = os.path.join(out, "result.json")
+        if os.path.exists(bad_p):
+            os.replace(bad_p, os.path.join(out, "result.broken-by-fix.txt"))
+        result = dict(pre)
+        result["note"] = "result.json as it stood before the review's fix run: the fix left it unreadable " \
+                         "(kept as result.broken-by-fix.txt)"
+    if result.get("outcome") != "proposed":
+        remaining.append({"head": "self_check", "where": "result.json", "evidence": "after the fix the outcome is "
+                          "%r, not proposed" % result.get("outcome"), "would_pass": "outcome proposed",
+                          "smallest_fix": "restore the proposal, or say in ambiguities.md why it cannot be one"})
     if fix_rec and fix_rec["check_after"]:
         remaining = remaining + [{"head": "self_check", "where": r["where"], "evidence": "after the fix the "
                                   "self-check refuses: " + r["what"], "would_pass": r["would_pass"],
@@ -1107,12 +1387,12 @@ def review_mod(mod, fx, author="codex", author_model=None, effort=None, clone=No
         pages += "\n" + _still_refused_block(remaining)
     with open(pages_p, "w", encoding="utf-8") as f:
         f.write(pages)
-    result = json.loads(_read(os.path.join(out, "result.json")) or "{}")
     result["applyable"] = not remaining
     _write_json(os.path.join(out, "result.json"), result)
     state = "reviewed" if not remaining else "refused-after-second-look"
     review = {"mod": mod, "author": author, "reviewer": {"runner": rv_runner, "model": rv_model}, "rounds": rounds,
               "fix_run": fix_rec, "remaining": remaining, "applyable": not remaining,
+              "digest": proposal_digest(out),
               "seconds": int(time.time() - t0), "at": datetime.datetime.now().isoformat(timespec="seconds")}
     _write_json(os.path.join(out, "review.json"), review)
     paths = sorted(p for p in fx.changed(clone) if p.startswith(out_rel))
@@ -1182,12 +1462,18 @@ def fleet_order(repo, but=(), only=None):
 
 
 def done(repo, mod):
-    """Resume: a mod whose proposal passes check and has a review (or says it is blocked) is skipped."""
+    """Resume: a mod whose proposal passes check and has a review of these very bytes (its digest), or says it is
+    blocked, is skipped. A review of other bytes (an older proposal, or a review that recorded no digest) is stale."""
     out = os.path.join(repo, rel_out(mod))
     if not os.path.exists(os.path.join(out, "result.json")):
         return False
     refs, stats = check_dir(out)
-    return not refs and (os.path.exists(os.path.join(out, "review.json")) or stats.get("outcome") == "blocked")
+    if refs:
+        return False
+    if stats.get("outcome") == "blocked":
+        return True
+    rv = _json_file(os.path.join(out, "review.json"))
+    return isinstance(rv, dict) and rv.get("digest") == proposal_digest(out)
 
 
 def fleet_unit_argv(args, unit):
@@ -1199,7 +1485,7 @@ def fleet_unit_argv(args, unit):
         path = os.environ.get("PATH", "/usr/bin:/bin")
     env = ["--setenv", "PATH=" + path]
     for k in ("CODEX_SANDBOX", "CODEX_MODEL", "CODEX_EFFORT", "CODEX_HOME", "AGENT_SEAT", "RIMFLOW_SEAT",
-              "RM_CLEANSE_STATUS_DIR", "RM_DETACHED_POOL", "HOME"):
+              "RM_CLEANSE_STATUS_DIR", "RM_DETACHED_POOL", "RM_OWNER_HOLD_FILE", "HOME"):
         if os.environ.get(k):
             env += ["--setenv", "%s=%s" % (k, os.environ[k])]
     if not os.environ.get("AGENT_SEAT"):
@@ -1212,28 +1498,42 @@ def fleet_unit_argv(args, unit):
 
 def fleet(mods, fx_for, runner="codex", parallel=4, model=None, effort=None):
     st = Status(status_dir())
-    for m in mods:
-        if (st.read()["mods"].get(m) or {}).get("state") not in ("reviewed", "refused-after-second-look"):
+    for m in mods:     # a running line may be another invocation's live mod: its owner rewrites it, not this queue
+        if (st.read()["mods"].get(m) or {}).get("state") not in ("reviewed", "refused-after-second-look", "running"):
             st.set(m, "queued", "")
 
     def one(mod):
         fx = fx_for(mod)
+        try:
+            with mod_lock(mod):
+                return _one(mod, fx)
+        except Busy as e:
+            fx.log(mod, "skipped: %s" % e)
+            return mod, "busy"
+
+    def _one(mod, fx):
         clone = None
         try:
             clone = fx.clone(mod)
+            out = os.path.join(clone, rel_out(mod))
             if done(clone, mod):
-                prev = json.loads(_read(os.path.join(clone, rel_out(mod), "review.json")) or "{}")
-                state = "reviewed" if prev.get("applyable") else (
+                prev = _dict(_json_file(os.path.join(out, "review.json")))
+                state = "reviewed" if prev.get("applyable") is True else (
                     "refused-after-second-look" if prev else "blocked")
                 fx.status(mod, state, "already done (resumed): %s" % (rel_out(mod)))
                 return mod, state
-            refs, _ = check_dir(os.path.join(clone, rel_out(mod)))
-            has = os.path.exists(os.path.join(clone, rel_out(mod), "result.json"))
+            refs, _ = check_dir(out)
+            has = os.path.exists(os.path.join(out, "result.json"))
+            author, a_model, a_effort = runner, model, effort
             if not has or refs:
                 rec = run_mod(mod, fx, runner=runner, model=model, effort=effort)
                 if rec["state"] != "proposed":
                     return mod, rec["state"]
-            rec = review_mod(mod, fx, author=runner, author_model=model, effort=effort, clone=clone)
+            else:      # resuming a proposal written earlier: its own author answers the review, whoever runs now
+                ran = _dict(_json_file(os.path.join(out, "run.json")))
+                if ran.get("runner") in ("codex", "claude"):
+                    author, a_model, a_effort = ran["runner"], ran.get("model"), ran.get("effort")
+            rec = review_mod(mod, fx, author=author, author_model=a_model, effort=a_effort, clone=clone)
             return mod, rec["state"]
         except Exception as e:      # noqa: BLE001  one mod's crash is its own line, never the fleet's end
             import traceback
@@ -1248,6 +1548,17 @@ def fleet(mods, fx_for, runner="codex", parallel=4, model=None, effort=None):
         res = list(ex.map(one, mods))
     print("fleet done: %s" % ", ".join("%s %s" % r for r in res), flush=True)
     return res
+
+
+def _main_one(o):
+    """run or review of one mod, its lock held by main."""
+    if o.cmd == "run":
+        rec = run_mod(o.mod, Effects(), runner=o.runner, model=o.model, effort=o.effort)
+        print(json.dumps({k: rec.get(k) for k in ("mod", "state", "why", "sha", "seconds", "stray")}, indent=1))
+        return 0 if rec["state"] in ("proposed", "blocked") else 1
+    rec = review_mod(o.mod, Effects(), author=o.author, author_model=o.model, effort=o.effort)
+    print(json.dumps({k: rec.get(k) for k in ("mod", "state", "why", "sha")}, indent=1))
+    return 0
 
 
 def main(argv=None):
@@ -1282,14 +1593,13 @@ def main(argv=None):
         refs, text = check_report(o.dir)
         print(text)
         return 1 if refs else 0
-    if o.cmd == "run":
-        rec = run_mod(o.mod, Effects(), runner=o.runner, model=o.model, effort=o.effort)
-        print(json.dumps({k: rec.get(k) for k in ("mod", "state", "why", "sha", "seconds", "stray")}, indent=1))
-        return 0 if rec["state"] in ("proposed", "blocked") else 1
-    if o.cmd == "review":
-        rec = review_mod(o.mod, Effects(), author=o.author, author_model=o.model, effort=o.effort)
-        print(json.dumps({k: rec.get(k) for k in ("mod", "state", "why", "sha")}, indent=1))
-        return 0
+    if o.cmd in ("run", "review"):
+        try:
+            with mod_lock(o.mod):
+                return _main_one(o)
+        except Busy as e:
+            print("refused: %s" % e)
+            return 1
     if o.cmd == "fleet":
         only = [x for x in o.only.split(",") if x.strip()]
         mods = fleet_order(ROOT, but=o.all_biomes_but, only=only)

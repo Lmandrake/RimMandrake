@@ -60,7 +60,7 @@ def good():
              "lazy": "none: the words name the whole season and the flood that would fail it",
              "range": {"varies": "seeds 1-5, colony size 3 to 40", "left_out": "other biomes"},
              "sees": {"instrument": "live look", "start": "full map", "on": "everything", "control": "a reload mid-way",
-                      "live_only_why": "only the whole game runs every system at once"},
+                      "reset": "throwaway save", "live_only_why": "only the whole game runs every system at once"},
              "live_only": True, "touches": ["gas cells"]},
         ],
         "whole": "B2",
@@ -234,12 +234,129 @@ def test_check():
     files["result.json"] = json.dumps(r)
     refs, _ = DC.check_dir(lay(files, old=None))
     check(not refs, "a mod with no concept tree passes with old_bars empty (refusals: %s)" % [x["what"] for x in refs])
-    # the reviewer's block on his pages is not counted against his two pages
+    # GPT review 2026-11-16 (consult-20261116-230848): JSON null, the brief's other columns and parts, swapped page counts
     files = good()
-    files["owner_pages.md"] += "\n" + DC.STILL_REFUSED_HEAD + "\n\n" + ("reviewer words " * 600)
+    files["result.json"] = "null"
+    refused(files, "counts", "a result.json holding JSON null")
+    files = good()
+    files["census.json"] = "null"
+    refused(files, "census_fate", "a census.json holding JSON null")
+    for col in ("evidence", "called_by", "serves"):
+        refused(mutate("census.json", lambda d, col=col: d["rows"][0].pop(col)), "census_row", "a census row with no %s" % col)
+    refused(mutate("bars.json", lambda d: d["bars"][0]["meant"].pop("intent")), "bar_part", "a bar missing meant.intent")
+    refused(mutate("bars.json", lambda d: d["bars"][0]["sees"].pop("reset")), "bar_part", "a bar missing sees.reset")
+    refused(mutate("owner_pages.md", lambda t: t.replace("Capabilities 3 before 3 after; bars 2; live-only bars 1.",
+                                                         "Capabilities 2; bars 3; live-only bars 1.")), "counts",
+            "his pages with the capability and bar counts swapped")
+    for line in ("Capabilities: 3 before, 2 after; bars: 2 before, 2 after; live-only bars: 1.",
+                 "3 capabilities, 2 bars and 1 live-only bar.",
+                 "| Capabilities | 3 | 2 |\n| Bars | 4 | 2 |\n| Bars only the live game can decide | 1 |"):
+        refs, _ = DC.check_dir(lay(mutate("owner_pages.md", lambda t, line=line: t.replace(
+            "Capabilities 3 before 3 after; bars 2; live-only bars 1.", line))))
+        check(not refs, "page counts stated as %r pass (refusals: %s)" % (line[:40], [x["what"] for x in refs]))
+    # a malformed value anywhere in the JSON files is a refusal or a pass, never a crash
+    base, n, crashed = good(), 0, []
+
+    def paths(v, at=()):
+        yield at
+        if isinstance(v, dict):
+            for k in v:
+                yield from paths(v[k], at + (k,))
+        elif isinstance(v, list):
+            for i, x in enumerate(v):
+                yield from paths(x, at + (i,))
+    for name in ("result.json", "census.json", "bars.json"):
+        doc0 = json.loads(base[name])
+        for at in list(paths(doc0)):
+            for junk in (None, "", "x", 1, True, [], {}, ["x"], [1], {"x": 1}):
+                doc = json.loads(base[name])
+                if at:
+                    tgt = doc
+                    for k in at[:-1]:
+                        tgt = tgt[k]
+                    tgt[at[-1]] = junk
+                else:
+                    doc = junk
+                files = dict(base, **{name: json.dumps(doc)})
+                n += 1
+                try:
+                    DC.check_dir(lay(files))
+                except Exception as e:      # noqa: BLE001
+                    crashed.append("%s %s=%r: %s: %s" % (name, "/".join(map(str, at)), junk, type(e).__name__, e))
+    check(not crashed and n > 1000, "check_dir on %d malformed variants (every JSON path x 10 junk values): %d crashed%s"
+          % (n, len(crashed), (": " + "; ".join(crashed[:3])) if crashed else ""))
+    # the reviewer's block on his pages is not counted against his two pages -- only when it IS the reviewer's
+    rem = [dict(REF, evidence="reviewer words " * 600)]
+    files = good()
+    files["owner_pages.md"] = files["owner_pages.md"].rstrip() + "\n\n" + DC._still_refused_block(rem)
+    files["review.json"] = json.dumps({"remaining": rem})
     refs, _ = DC.check_dir(lay(files))
-    check(not [x for x in refs if x["rule"] == "owner_pages_length"],
-          "the reviewer's still-refused block is not counted in the 950 words")
+    check(not refs, "the reviewer's still-refused block (exactly review.json's remaining) is not counted in the 950 "
+          "words (%s)" % sorted({x["rule"] for x in refs}))
+    files = good()
+    files["owner_pages.md"] += "\n" + DC.STILL_REFUSED_HEAD + "\n\n" + ("author words " * 600)
+    refs, _ = DC.check_dir(lay(files))
+    check({"reviewer_block", "owner_pages_length"} <= {x["rule"] for x in refs},
+          "an author's words under the reviewer's heading count, and the heading is refused (%s)"
+          % sorted({x["rule"] for x in refs}))
+    files["review.json"] = json.dumps({"remaining": [REF]})
+    refs, _ = DC.check_dir(lay(files))
+    check({"reviewer_block", "owner_pages_length"} <= {x["rule"] for x in refs},
+          "a block that is not review.json's remaining word for word is the author's (%s)"
+          % sorted({x["rule"] for x in refs}))
+    # GPT review 2026-11-17 (a_launcherA): the shape SHAPE fixes, read strictly
+    refused(mutate("tickets.md", lambda t: t + "\n## T2: another ticket\nno test line here\n"), "ticket",
+            "a second ticket with no acceptance test (every ticket needs one, not only a switch-off ticket)")
+    refused(mutate("tickets.md", lambda t: t.replace("Acceptance test: with defaults the ritual def is absent.",
+                                                     "Acceptance test: none")), "ticket",
+            "an acceptance test of `none` with no reason")
+    refs, _ = DC.check_dir(lay(mutate("tickets.md", lambda t: t.replace(
+        "Acceptance test: with defaults the ritual def is absent.", "**Acceptance test:** none, the def is deleted"))))
+    check(not refs, "`**Acceptance test:** none, <reason>` passes (%s)" % sorted({x["rule"] for x in refs}))
+    refused(mutate("bars.json", lambda d: d["old_bars"]["pool_chemistry"].update({"as": "B9"})), "old_bar",
+            "an old bar kept as an id bars.json does not hold")
+    refused(mutate("bars.json", lambda d: d["old_bars"]["pool_chemistry"].update({"to": "check", "as": "B1"})),
+            "old_bar", "an old bar turned into a check named by a bar id")
+    refs, _ = DC.check_dir(lay(mutate("bars.json", lambda d: d["old_bars"]["pool_chemistry"].update(
+        {"to": "rule", "as": "R1"}))))
+    check(not [x for x in refs if x["rule"] == "old_bar"], "an old bar turned into rule R1 resolves")
+    refused(mutate("bars.json", lambda d: d["meetings"][0].update({"model": "gas"})), "unknown_model",
+            "an unknown meeting whose model is only a word inside a heading")
+    refs, _ = DC.check_dir(lay(mutate("models.md", lambda t: t.replace("## Season gas model", "## M1: Season gas model")
+                                      ) | {"bars.json": json.dumps(dict(json.loads(good()["bars.json"]), meetings=[
+                                          dict(json.loads(good()["bars.json"])["meetings"][0], model="M1")]))}))
+    check(not [x for x in refs if x["rule"] == "unknown_model"], "a model named by its heading's id resolves")
+    refused(mutate("bars.json", lambda d: d["meetings"][0].update({"why": ""})), "meeting",
+            "an unknown meeting that does not say what is not known")
+    for key in ("checks", "rules", "meetings"):
+        refused(mutate("bars.json", lambda d, k=key: d.__setitem__(k, "none")), "shape", "bars.json %s as a string" % key)
+        refused(mutate("bars.json", lambda d, k=key: d.pop(k)), "shape", "bars.json without %s" % key)
+    refused(mutate("bars.json", lambda d: d["checks"][0].pop("what")), "shape", "a check with no what")
+    refused(mutate("bars.json", lambda d: d["rules"][0].update({"touches": "gas cells"})), "shape",
+            "a rule whose touches is a string")
+    refused(mutate("bars.json", lambda d: d["meetings"][0].update({"members": [1, 2]})), "shape",
+            "a meeting whose members are not text")
+    refused(mutate("bars.json", lambda d: d.update({"old_bars": []})), "shape", "old_bars as a list")
+    refused(mutate("bars.json", lambda d: d["bars"][0]["accept"].append(7)), "bar_part", "a picture that is not text")
+    refused(mutate("bars.json", lambda d: d["bars"][0].update({"touches": ["gas cells", {"x": 1}]})), "bar_part",
+            "a touches list holding an object")
+    for junk in (True, 2.0):
+        refused(mutate("result.json", lambda d, j=junk: d["counts"].update({"live_only_bars": j})), "counts",
+                "a count of %r (not the integer)" % junk)
+    out = lay(good())
+    with open(os.path.join(out, "definition.md"), "wb") as f:
+        f.write(b"# Definition \xff\xfe broken\n")
+    refs, _ = DC.check_dir(out)
+    check([x for x in refs if x["rule"] == "files" and x["where"] == "definition.md"],
+          "a file that is not UTF-8 is refused by name, not a crash")
+    out = lay(good())
+    with open(os.path.join(out, "bars.json"), "w") as f:
+        f.write("[" * 100000)
+    try:
+        refs, _ = DC.check_dir(out)
+        check([x for x in refs if x["where"] == "bars.json"], "a bars.json nested too deep to parse is refused")
+    except RecursionError:
+        check(False, "a bars.json nested too deep to parse is refused (RecursionError)")
 
 
 def fake_repo():
@@ -254,8 +371,8 @@ def fake_repo():
                {"key": "Demo", "source": "DemoSrc", "group": "biome"},
                {"key": "Plain", "source": "Plain", "group": "biome"},
                {"key": "Pyrelands", "source": "Pyrelands", "group": "biome"},
-               {"key": "Cauldron", "source": "Cauldron", "group": "biome"},
                {"key": "Kit", "source": "Kit", "group": "kit"}]
+    entries += [{"key": m, "source": m, "group": "biome"} for m in reversed(DC.CONCEPT_FIRST)]
     with open(os.path.join(repo, "src", "RimMandrake", "Biomes.compose.json"), "w") as f:
         json.dump({"entries": entries}, f)
     with open(os.path.join(repo, "src", "RimMandrake", "rimflow", "roles", "designer_cleanse.md"), "w") as f:
@@ -308,9 +425,11 @@ def test_case():
 class FX:
     """Fake effects: records every call; scripted gate and agents."""
 
-    def __init__(self, repo, gate=(), codex=(), claude=(), write=None):
+    def __init__(self, repo, gate=(), codex=(), claude=(), write=None, blinds=()):
         self.repo, self.calls, self.sleeps, self.published = repo, [], [], []
         self.gates, self.codexes, self.claudes = list(gate), list(codex), list(claude)
+        self.blinds = list(blinds)     # the sealed cold-sort calls; default: every picture sorted accept
+        self.blind_cwds = []
         self.write = write
         self.states = []
 
@@ -331,12 +450,22 @@ class FX:
             out = out(cwd, prompt)
         return out
 
+    def _blind(self, kind, cwd, prompt, kw):
+        self.calls.append(("blind", prompt, dict(kw, runner=kind)))
+        self.blind_cwds.append((cwd, sorted(os.listdir(cwd))))
+        out = self.blinds.pop(0) if self.blinds else accept_all
+        return out(cwd, prompt) if callable(out) else out
+
     def codex(self, cwd, prompt, base, **kw):
+        if "BLIND PICTURES:" in prompt:
+            return self._blind("codex", cwd, prompt, kw)
         if self.write:
             self.write(cwd)
         return self._agent("codex", self.codexes, cwd, prompt, base, **kw)
 
     def claude(self, cwd, prompt, base, **kw):
+        if "BLIND PICTURES:" in prompt:
+            return self._blind("claude", cwd, prompt, kw)
         return self._agent("claude", self.claudes, cwd, prompt, base, **kw)
 
     def changed(self, cwd):
@@ -448,15 +577,26 @@ def test_run():
         os.environ.pop("RM_OWNER_HOLD_FILE", None)
 
 
-def review_json(refusals, sort_all="truth"):
+def _items(prompt):
+    return json.loads(prompt.split("BLIND PICTURES:")[1].split("END BLIND PICTURES")[0])
+
+
+def accept_all(cwd, prompt):
+    sort = [{"bar": it["bar"], "n": p["n"], "sorted": "accept"} for it in _items(prompt) for p in it["pictures"]]
+    return {"is_error": False, "result": "```json\n" + json.dumps({"blind_sort": sort}) + "\n```"}
+
+
+def sort_right(cwd, prompt):
+    bars = {b["id"]: b for b in json.loads(good()["bars.json"])["bars"]}
+    sort = [{"bar": it["bar"], "n": q["n"], "sorted": "accept" if q["text"] in bars[it["bar"]]["accept"] else "reject"}
+            for it in _items(prompt) for q in it["pictures"]]
+    return {"is_error": False, "result": json.dumps({"blind_sort": sort})}
+
+
+def review_json(refusals):
     def make(cwd, prompt):
-        m = re.search(r"BLIND SORT KEY ([0-9a-f]+)", prompt)
-        items = json.loads(prompt.split("BLIND PICTURES:")[1].split("END BLIND PICTURES")[0])
-        sort = [{"bar": it["bar"], "n": p["n"], "sorted": "accept"} for it in items for p in it["pictures"]]
         return {"is_error": False, "result": "```json\n" + json.dumps({
-            "refusals": refusals, "blind_sort": sort,
-            "missed_capability": "looked, none", "loop_or_three_way": "looked, none",
-            "key": m.group(1) if m else ""}) + "\n```"}
+            "refusals": refusals, "missed_capability": "looked, none", "loop_or_three_way": "looked, none"}) + "\n```"}
     return make
 
 
@@ -497,18 +637,7 @@ def test_review():
     # a clean first look: no fix, applyable true
     repo = fake_repo()
     lay(good(), repo=repo)
-    fx = FX(repo, claude=[review_json([])])
-    # sort the pictures right this time
-    def right(cwd, prompt):
-        items = json.loads(prompt.split("BLIND PICTURES:")[1].split("END BLIND PICTURES")[0])
-        bars = {b["id"]: b for b in json.loads(good()["bars.json"])["bars"]}
-        sort = [{"bar": it["bar"], "n": q["n"],
-                 "sorted": "accept" if q["text"] in bars[it["bar"]]["accept"] else "reject"}
-                for it in items for q in it["pictures"]]
-        return {"is_error": False, "result": json.dumps({"refusals": [], "blind_sort": sort,
-                                                         "missed_capability": "looked, none",
-                                                         "loop_or_three_way": "looked, none"})}
-    fx.claudes = [right]
+    fx = FX(repo, claude=[review_json([])], blinds=[sort_right])
     rec = DC.review_mod("Demo", fx, author="codex")
     kinds = [c[0] for c in fx.calls]
     res = json.load(open(os.path.join(repo, "design", "concepts", "Demo", "cleanse", "result.json")))
@@ -559,17 +688,21 @@ def test_fleet():
     repo = fake_repo()
     order = DC.fleet_order(repo, but=["Pyrelands"])
     check("Pyrelands" not in order and "Eng" not in order and "Kit" not in order, "fleet: biomes only, Pyrelands out")
-    check(order[0] == "Cauldron" and order.index("Demo") > 0, "fleet: the six with a concept folder first, in the "
-          "Conductor's order (%s)" % order)
+    check(order.index("Demo") == len(DC.CONCEPT_FIRST), "fleet: the other biomes follow the six (%s)" % order)
     order = DC.fleet_order(repo, but=["Pyrelands"], only=["Plain"])
     check(order == ["Plain"], "fleet --only narrows the list")
-    real = DC.fleet_order(DC.ROOT, but=["Pyrelands"])
-    check(real[:6] == list(DC.CONCEPT_FIRST) and len(real) == len(set(real)),
-          "the real compose file: the six first, no repeats (%d mods)" % len(real))
+    order = DC.fleet_order(repo, but=["Pyrelands"])
+    check(order[:6] == list(DC.CONCEPT_FIRST) and len(order) == len(set(order)),
+          "the six first in the Conductor's order though the compose file lists them reversed and last, no repeats (%s)"
+          % order)
     lay(good(), repo=repo)
-    with open(os.path.join(repo, "design", "concepts", "Demo", "cleanse", "review.json"), "w") as f:
+    out = os.path.join(repo, "design", "concepts", "Demo", "cleanse")
+    with open(os.path.join(out, "review.json"), "w") as f:
         json.dump({"rounds": []}, f)
-    check(DC.done(repo, "Demo"), "resume: a mod whose proposal passes check and has a review is skipped")
+    check(not DC.done(repo, "Demo"), "resume: a review that recorded no digest is not trusted (an older launcher's)")
+    with open(os.path.join(out, "review.json"), "w") as f:
+        json.dump({"rounds": [], "digest": DC.proposal_digest(out)}, f)
+    check(DC.done(repo, "Demo"), "resume: a mod whose proposal passes check and has a review of these bytes is skipped")
     check(not DC.done(repo, "Plain"), "resume: a mod with no proposal is not")
     sd = tempfile.mkdtemp(prefix="dc_status_")
     st = DC.Status(sd)
@@ -582,10 +715,173 @@ def test_fleet():
     argv = DC.fleet_unit_argv(["--all-biomes-but", "Pyrelands", "--parallel", "4"], unit="u1")
     check(argv[:2] == ["systemd-run", "--user"] and "--foreground" in argv and "RuntimeMaxSec" not in " ".join(argv),
           "fleet detaches into its own systemd user unit with no wall-time bound")
+    os.environ["RM_OWNER_HOLD_FILE"] = "/x/hold.json"
+    try:
+        argv = DC.fleet_unit_argv(["--parallel", "4"], unit="u2")
+    finally:
+        os.environ.pop("RM_OWNER_HOLD_FILE", None)
+    check("RM_OWNER_HOLD_FILE=/x/hold.json" in argv, "the detached unit carries the hold file it was launched with")
+
+
+def proposal(repo=None):
+    repo = repo or fake_repo()
+    lay(good(), repo=repo)
+    return repo, os.path.join(repo, "design", "concepts", "Demo", "cleanse")
+
+
+def test_review_hardening():
+    """GPT review 2026-11-17 (a_launcherB): sealed cold sort, hold in review, broken fix, stale reviews, locks, author
+    on resume."""
+    os.environ["RM_OWNER_HOLD_FILE"] = holds_file([])
+    pool = tempfile.mkdtemp(prefix="dc_pool_")
+    os.environ["RM_DETACHED_POOL"] = pool
+    sdir = tempfile.mkdtemp(prefix="dc_status_")
+    os.environ["RM_CLEANSE_STATUS_DIR"] = sdir
+    try:
+        # the cold sort is its own call: no tool, an empty folder that is not the clone, no proposal path, no label
+        repo, out = proposal()
+        fx = FX(repo, claude=[review_json([])], blinds=[sort_right])
+        DC.review_mod("Demo", fx, author="codex")
+        b = [c for c in fx.calls if c[0] == "blind"]
+        r = [c for c in fx.calls if c[0] == "claude"]
+        cwd, listing = fx.blind_cwds[0]
+        labels = json.dumps(json.loads(good()["bars.json"])["bars"][0]["accept"])
+        check(len(b) == 1 and b[0][2].get("tools") == "" and cwd != repo and listing == [] and not os.path.exists(cwd),
+              "the cold sort runs alone, no tool, in an empty folder removed after (%s, %s)" % (b[0][2] if b else None,
+                                                                                               listing))
+        check("cleanse" not in b[0][1] and "bars.json" not in b[0][1] and '"accept": [' not in b[0][1]
+              and labels not in b[0][1], "the cold sort's prompt names no proposal file and carries no label")
+        check(fx.calls.index(b[0]) < fx.calls.index(r[0]) and "BLIND PICTURES" not in r[0][1],
+              "the cold sort is sealed before the review call, which carries no pictures")
+        # codex as reviewer: the cold sort runs read-only too
+        repo, out = proposal()
+        fx = FX(repo, codex=[review_json([])], blinds=[sort_right])
+        DC.review_mod("Demo", fx, author="claude")
+        b = [c for c in fx.calls if c[0] == "blind"]
+        check(b and b[0][2].get("runner") == "codex" and b[0][2].get("sandbox") == "read-only",
+              "a Codex reviewer's cold sort runs read-only (%s)" % (b[0][2] if b else None))
+        # an unreadable cold sort twice: the reviewer is unreadable, nothing decided
+        repo, out = proposal()
+        nojson = {"is_error": False, "result": "no"}
+        fx = FX(repo, claude=[review_json([REF])], blinds=[nojson, nojson])
+        rec = DC.review_mod("Demo", fx, author="codex")
+        check(rec["state"] == "blocked" and not os.path.exists(os.path.join(out, "review.json"))
+              and [c[0] for c in fx.calls].count("blind") == 2 and "claude" not in [c[0] for c in fx.calls],
+              "a cold sort unreadable twice blocks the review before the proposal is read (%s)" % rec["state"])
+        # the hold: review refuses a held mod; a hold that lands during the first look stops the fix run
+        repo, out = proposal()
+        os.environ["RM_OWNER_HOLD_FILE"] = holds_file(["Demo"])
+        fx = FX(repo, claude=[review_json([REF])])
+        rec = DC.review_mod("Demo", fx, author="codex")
+        check(rec["state"] == "blocked" and "allow-design" in rec["why"] and not fx.calls,
+              "review refuses a held mod without allow-design and runs nothing (%s)" % rec["state"])
+        hold_late = holds_file(["Demo"])
+        os.environ["RM_OWNER_HOLD_FILE"] = holds_file([])
+        def look_then_hold(cwd, prompt):
+            os.environ["RM_OWNER_HOLD_FILE"] = hold_late
+            return review_json([REF])(cwd, prompt)
+        fx = FX(repo, claude=[look_then_hold])
+        rec = DC.review_mod("Demo", fx, author="codex")
+        check(rec["state"] == "blocked" and "codex" not in [c[0] for c in fx.calls],
+              "a hold that lands during the first look: no writing author runs (%s)" % rec["state"])
+        os.environ["RM_OWNER_HOLD_FILE"] = holds_file([])
+        # the fix breaks result.json: the review still ends, blocked result kept, broken bytes kept beside
+        repo, out = proposal()
+        def break_result(cwd, prompt):
+            with open(os.path.join(out, "result.json"), "w") as f:
+                f.write("{ broken")
+            return {"is_error": False, "result": "done"}
+        fx = FX(repo, claude=[review_json([REF]), review_json([])], codex=[break_result])
+        rec = DC.review_mod("Demo", fx, author="codex")
+        res = DC._json_file(os.path.join(out, "result.json"))
+        rv = DC._json_file(os.path.join(out, "review.json"))
+        check(isinstance(res, dict) and res.get("applyable") is False and rec["state"] == "refused-after-second-look"
+              and os.path.exists(os.path.join(out, "result.broken-by-fix.txt"))
+              and any(x.get("head") == "self_check" for x in rv["remaining"]),
+              "a fix that breaks result.json: the review ends, applyable false, the broken bytes kept (%s)" % rec["state"])
+        # the fix turns the outcome to blocked: never applyable
+        repo, out = proposal()
+        def to_blocked(cwd, prompt):
+            d = json.load(open(os.path.join(out, "result.json")))
+            d["outcome"], d["blocked_on"] = "blocked", "the fix gave up"
+            with open(os.path.join(out, "result.json"), "w") as f:
+                json.dump(d, f)
+            return {"is_error": False, "result": "done"}
+        fx = FX(repo, claude=[review_json([REF]), review_json([])], codex=[to_blocked])
+        rec = DC.review_mod("Demo", fx, author="codex")
+        res = DC._json_file(os.path.join(out, "result.json"))
+        check(res.get("applyable") is False and rec["state"] == "refused-after-second-look",
+              "a fix that leaves the outcome blocked is never applyable (%s, %s)" % (rec["state"], res.get("applyable")))
+        # the digest: a clean review is trusted until the proposal's bytes change; a new run unreviews
+        repo, out = proposal()
+        fx = FX(repo, claude=[review_json([])], blinds=[sort_right])
+        rec = DC.review_mod("Demo", fx, author="codex")
+        check(rec["state"] == "reviewed" and DC.done(repo, "Demo"), "a reviewed proposal is done (%s)" % rec["state"])
+        bars_p = os.path.join(out, "bars.json")
+        d = json.load(open(bars_p))
+        d["bars"][0]["says"] += " Also at dusk."
+        with open(bars_p, "w") as f:
+            json.dump(d, f)
+        check(not DC.done(repo, "Demo"), "a proposal changed after its review is not done: the review is stale")
+        DC.unreview(out)
+        pages = open(os.path.join(out, "owner_pages.md")).read()
+        check(not os.path.exists(os.path.join(out, "review.json")) and "applyable" not in json.load(
+              open(os.path.join(out, "result.json"))) and DC.STILL_REFUSED_HEAD not in pages,
+              "a new run clears review.json, applyable and the reviewer's block")
+        repo, out = proposal()
+        fx = FX(repo, claude=[review_json([REF]), review_json([REF])], blinds=[sort_right, sort_right])
+        DC.review_mod("Demo", fx, author="codex")
+        digest = DC._json_file(os.path.join(out, "review.json")).get("digest")
+        check(digest == DC.proposal_digest(out) and DC.STILL_REFUSED_HEAD in open(os.path.join(out, "owner_pages.md")).read(),
+              "the digest is of the proposal as written, his pages' reviewer block and applyable left out")
+        # the lock: a second taker is refused; a fleet's mod that is held elsewhere is skipped, status untouched
+        with DC.mod_lock("Demo"):
+            try:
+                with DC.mod_lock("Demo"):
+                    check(False, "a second taker of a mod's lock is refused")
+            except DC.Busy:
+                check(True, "a second taker of a mod's lock is refused")
+            repo, out = proposal()
+            fx = FX(repo)
+            DC.Status(sdir).set("Demo", "running", "the other invocation's line")
+            res = DC.fleet(["Demo"], lambda m: fx, parallel=1)
+            line = DC.Status(sdir).read()["mods"]["Demo"]
+            check(res == [("Demo", "busy")] and not fx.calls and not fx.states and line["state"] == "running",
+                  "a fleet skips a mod another invocation holds and leaves its status line alone (%s, %s)" % (res, line))
+            check(DC.main(["review", "Demo"]) == 1, "review of a mod another invocation holds is refused")
+        with DC.mod_lock("Demo"):
+            check(True, "the lock is free again when its holder leaves")
+        # resume: the proposal's own author answers its review, whoever runs the fleet now
+        repo, out = proposal()
+        with open(os.path.join(out, "run.json"), "w") as f:
+            json.dump({"runner": "claude", "model": "opus"}, f)
+        fx = FX(repo, codex=[review_json([])], blinds=[sort_right])
+        res = DC.fleet(["Demo"], lambda m: fx, runner="codex", parallel=1)
+        kinds = [c[0] for c in fx.calls]
+        check(res == [("Demo", "reviewed")] and "codex" in kinds and "claude" not in kinds,
+              "a resumed proposal written by Claude is reviewed by Codex though the fleet runs Codex (%s, %s)"
+              % (res, kinds))
+    finally:
+        os.environ.pop("RM_OWNER_HOLD_FILE", None)
+        os.environ.pop("RM_DETACHED_POOL", None)
+        os.environ.pop("RM_CLEANSE_STATUS_DIR", None)
+    # the reviewer's record and the cold sort, forged
+    bad = DC.validate_review({"refusals": [dict(REF, head={"x": 1})], "missed_capability": "x",
+                              "loop_or_three_way": "x"})
+    check(bad, "a refusal whose head is an object is the reviewer's defect, not a crash (%s)" % bad)
+    bad = DC.validate_review({"refusals": ["no"], "missed_capability": "x", "loop_or_three_way": "x"})
+    check(bad, "a refusal that is not an object is the reviewer's defect")
+    rows, refs = DC.score_blind([{"bar": ["B1"], "n": 1, "sorted": "accept"}, {"bar": "B1", "n": True}],
+                                {("B1", 1): ("accept", "a vent")})
+    check(len(refs) == 1 and rows[0]["sorted"] is None, "a forged cold sort (list bar, bool n) sorts nothing")
+    check(DC.claude_tool_args("") == ["--tools", ""] and "--dangerously-skip-permissions" in DC.claude_tool_args(None)
+          and DC.claude_tool_args("Read,Grep") == ["--tools", "Read,Grep", "--allowedTools", "Read,Grep"],
+          "claude tool args: none for the cold sort, read-only for review, all for the author")
 
 
 def main():
-    for t in (test_check, test_detector, test_case, test_hold, test_run, test_review, test_fleet):
+    for t in (test_check, test_detector, test_case, test_hold, test_run, test_review, test_fleet,
+              test_review_hardening):
         try:
             t()
         except Exception as e:      # a crash is a failed row, not a silent stop

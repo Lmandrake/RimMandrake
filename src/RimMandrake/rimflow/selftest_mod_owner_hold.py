@@ -8,6 +8,7 @@ import json
 import os
 import sys
 import tempfile
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -92,6 +93,93 @@ def test_allow_design():
     check(OH.main(["allow-design", "Nope", "--said", "x"]) == 1, "allow-design on an unheld mod exits 1")
     check(OH.main(["allow-design", "ModTwo", "--said", " "]) == 1, "allow-design with empty words exits 1")
     check(json.load(open(p))["holds"][1].get("design_allowed") is None, "a refused allow-design writes nothing")
+
+
+def test_write_safety():
+    """A malformed allowance or a twice-held mod is Unreadable; a failed write leaves the file whole; two writers at
+    once lose neither change (the read-change-write step is under one lock)."""
+    import threading
+    import types
+    import mod_owner_hold as OH
+    p = temp_holds(["ModOne"])
+    for bad, what in (({"said": "yes"}, "an allowance without a date"), ({"said": " ", "date": "2026-11-16"},
+                      "an allowance with empty words"), ("yes", "an allowance that is not a row")):
+        doc = json.load(open(p))
+        doc["holds"][0]["design_allowed"] = bad
+        json.dump(doc, open(p, "w"))
+        try:
+            OH.load()
+            check(False, "%s raises Unreadable" % what)
+        except OH.Unreadable:
+            check(True, "%s raises Unreadable" % what)
+    p = temp_holds(["Cauldron", "design/concepts/Cauldron"])
+    try:
+        OH.load()
+        check(False, "one mod held twice (two spellings) raises Unreadable")
+    except OH.Unreadable:
+        check(True, "one mod held twice (two spellings) raises Unreadable")
+    p = temp_holds(["ModOne", "ModTwo"])
+    before = open(p).read()
+    real = OH.json
+
+    def boom(*a, **k):
+        raise OSError("disk full")
+    OH.json = types.SimpleNamespace(load=real.load, dump=boom)
+    try:
+        OH.allow_design("ModOne", "design it", date="2026-11-16")
+        check(False, "a write that fails raises")
+    except OSError:
+        check(open(p).read() == before and not [f for f in os.listdir(os.path.dirname(p)) if f.startswith(".mod_")],
+              "a write that fails mid-way leaves the file byte-identical and no temp file behind")
+    finally:
+        OH.json = real
+    # GPT review 2026-11-17 (a_hold2): a blank date, or a change that leaves no hold list, never replaces the file;
+    # the rename is fsynced in its folder
+    p = temp_holds(["ModOne", "ModTwo"])
+    before = open(p).read()
+    for d in ("", "  ", 7):
+        try:
+            OH.allow_design("ModOne", "design it", date=d)
+            check(False, "allow-design with date %r refuses" % (d,))
+        except ValueError:
+            check(open(p).read() == before, "allow-design with date %r refuses and writes nothing" % (d,))
+    try:
+        OH._rewrite(p, lambda doc: doc.update(holds="none"))
+        check(False, "a change that leaves no hold list raises")
+    except OH.Unreadable:
+        check(open(p).read() == before and not [f for f in os.listdir(os.path.dirname(p)) if f.startswith(".mod_")],
+              "a change that leaves no hold list raises Unreadable; the file is byte-identical, no temp file left")
+    synced, real_fsync = [], os.fsync
+
+    def spy(fd):
+        synced.append(os.path.isdir("/proc/self/fd/%d" % fd))
+        return real_fsync(fd)
+    os.fsync = spy
+    try:
+        OH.allow_design("ModTwo", "design it", date="2026-11-16")
+    finally:
+        os.fsync = real_fsync
+    check(synced == [False, True], "a write fsyncs the new file, then its folder after the rename (%s)" % synced)
+    mods = ["Mod%d" % i for i in range(8)]
+    temp_holds(mods)
+
+    def slow_load(f):
+        doc = real.load(f)
+        time.sleep(0.05)        # widen the read-to-write window so an unlocked writer would lose updates every time
+        return doc
+    OH.json = types.SimpleNamespace(load=slow_load, dump=real.dump)
+    try:
+        ts = [threading.Thread(target=OH.allow_design, args=(m, "design " + m), kwargs={"date": "2026-11-16"})
+              for m in mods]
+        for t in ts:
+            t.start()
+        for t in ts:
+            t.join()
+    finally:
+        OH.json = real
+    hs = OH.load()
+    got = sum(1 for m in mods if OH.design_allowed(hs[m]))
+    check(got == len(mods), "8 writers at once: %d of %d allowances kept (worst case read: 8 rows)" % (got, len(mods)))
 
 
 def test_designer_chain():
@@ -207,7 +295,7 @@ def test_dispatch_tick():
 
 
 def main():
-    for t in (test_the_shipped_list, test_unreadable_raises, test_lift, test_allow_design, test_designer_chain, test_stall_reader,
+    for t in (test_the_shipped_list, test_unreadable_raises, test_lift, test_allow_design, test_write_safety, test_designer_chain, test_stall_reader,
               test_dispatch_tick):
         try:
             t()

@@ -1,0 +1,3 @@
+designer_cleanse check_dir (as first published, cbedab2d6e) passed a result.json holding JSON null, census rows with blank evidence/called_by/serves, bars missing meant.intent or sees.reset, and his pages with the capability and bar counts swapped; and it crashed (TypeError) on 37 of 1460 junk-value variants (e.g. bars: 1). Fixed with _ABSENT vs null, _dicts/_dict guards, the brief's full column/part lists, and page_states matching each count to its own label within one clause; a fuzz row (every JSON path x 10 junk values, never raises) now guards it. Lesson: a mechanical check of agent output gets a junk-value fuzz row from day one.
+item: RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED
+home: src/RimMandrake/rimflow/designer_cleanse.py

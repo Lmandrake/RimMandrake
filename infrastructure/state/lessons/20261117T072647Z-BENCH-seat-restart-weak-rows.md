@@ -1,0 +1,3 @@
+selftest_seat_restart had three rows that could not go red (GPT review 2026-11-17): V3 counted 'landed x' >= 5 in a seat log earlier tests already wrote 3 into (measured counts [3..8]), so two missing notes passed; H3 kept the live mutable record, so an abort never written to disk passed; D3 checked state != pending, so a wrong kill passed. Fixed: per-call log count delta, a JSON copy of each written record, and state cancelled + restart_cancel + no restart_kill. Lesson: an accumulating shared fixture (one seat log across tests) needs a delta, never an absolute floor.
+item: RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED
+home: src/RimMandrake/rimflow/selftest_seat_restart.py
