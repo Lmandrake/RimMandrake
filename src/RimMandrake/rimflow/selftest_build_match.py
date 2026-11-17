@@ -120,6 +120,50 @@ def io_checks(tmp):
     os.unlink(os.path.join(alias, "b"))
     check(hb and seen_a == ["About", "a", "b"] and B.deployed_hash(alias) not in (None, hb),
           "two links to one directory are both hashed, and removing one changes the hash: %s" % seen_a)
+    # third GPT review (D:\ClaudeWork\rimmandrake\conductor\bm_gpt_review3.md)
+    nl_a = os.path.join(tmp, "Nl", "mod")
+    nl_b = nl_a + "\n0"
+    write(os.path.join(nl_a, "0\n!"), "bytes")
+    os.makedirs(nl_b)
+    os.link(os.path.join(nl_a, "0\n!"), os.path.join(nl_b, "!"))            # one inode: every stat field the same
+    B.deployed_hash(nl_a, cache_dir=cache)
+    got_b, true_b = B.deployed_hash(nl_b, cache_dir=cache), B.deployed_hash(nl_b)
+    check(got_b == true_b and true_b != B.deployed_hash(nl_a),
+          "a folder and file name holding newlines cannot make two folders share a cache entry: %s vs %s"
+          % ((got_b or "")[:16], (true_b or "")[:16]))
+    odd = os.path.join(tmp, "Odd")
+    write(os.path.join(odd, "About", "About.xml"), "x")
+    os.symlink("/proc/uptime", os.path.join(odd, "uptime"))              # stat says size 0, a read gives bytes
+    check(B.deployed_hash(odd) is None and B.deployed_hash(odd, cache_dir=cache) is None,
+          "a file whose read length is not its size (a /proc file) is not hashed: no value to cache or match")
+    fifo = os.path.join(tmp, "Fifo")
+    write(os.path.join(fifo, "About", "About.xml"), "x")
+    os.mkfifo(os.path.join(fifo, "pipe"))
+    check(B.deployed_hash(fifo) is None and B.deployed_hash(fifo, cache_dir=cache) is None,
+          "a folder holding a pipe is not hashed (and the reading does not wait on it)")
+    bad = os.path.join(tmp, "Undecodable")
+    write(os.path.join(bad, "About", "About.xml"), "x")
+    write(os.path.join(os.fsencode(bad), b"n\xff.xml").decode("utf-8", "surrogateescape"), "y")
+    hu = B.deployed_hash(bad, cache_dir=cache)
+    check(bool(hu) and hu == B.deployed_hash(bad), "a file name that is not UTF-8 hashes, cached and not: %s"
+          % (hu or "")[:20])
+    # a link back to an ancestor under another spelling (drvfs folds case; realpath does not) is still a cycle
+    ci_base = "/mnt/d/ClaudeWork/rimmandrake/build_match"
+    if os.path.isdir(ci_base):
+        ci = tempfile.mkdtemp(prefix="bm_case_", dir=ci_base)
+        try:
+            top = os.path.join(ci, "BmCase")
+            write(os.path.join(top, "x"), "x")
+            os.symlink(os.path.join(ci, "bmcase"), os.path.join(top, "self"))
+            if os.path.isdir(os.path.join(ci, "bmcase")):
+                seen = [r for r, _ in B._files(top)]
+                check(seen == ["x"], "a link to an ancestor spelt in another case is cut as a cycle: %s" % seen)
+            else:
+                check(True, "case alias: %s is case-sensitive, not testable here" % ci_base)
+        finally:
+            shutil.rmtree(ci, ignore_errors=True)
+    else:
+        check(True, "case alias: no case-folding drive here (%s), not testable" % ci_base)
 
     # ---- the deployed folder is found by packageId, not by name ------------------------------------------------------
     root = os.path.join(tmp, "repo")
@@ -139,6 +183,14 @@ def io_checks(tmp):
     got2 = B._mod_folder(root2, "Comp", mods2)[1]
     check(got2 == os.path.join(mods2, "RimMandrake.Biomes"),
           "a composed mod is hashed in the Biomes folder, not in a stale standalone copy: %s" % got2)
+    shutil.rmtree(os.path.join(mods2, "RimMandrake.Biomes"))
+    got3 = B._mod_folder(root2, "Comp", mods2)[1]
+    check(got3 is None, "a composed mod whose Biomes folder is not deployed has no folder (never the stale "
+          "standalone copy): %s" % got3)
+    write(os.path.join(root2, "src", "RimMandrake", "Solo", "About", "About.xml"), ABOUT % "mandrake.rm.solo")
+    write(os.path.join(mods2, "Solo", "About", "About.xml"), ABOUT % "mandrake.rm.solo")
+    check(B._mod_folder(root2, "Solo", mods2)[1] == os.path.join(mods2, "Solo"),
+          "a mod the composition does not name is read from its own folder")
 
     # ---- ModsConfig.xml is parsed, in order; a commented-out line is not a mod ---------------------------------------
     cfg = os.path.join(tmp, "ModsConfig.xml")
@@ -391,6 +443,49 @@ def _standalone_first(root, mod, mods_dir):
     return pid, folder if folder or not comp else B.deployed_folder(mods_dir, comp[0], comp[1] or "")
 
 
+def _newline_key(folder, files, cache_dir):
+    """the second build's cache key: names joined by newlines, which a name may hold."""
+    sig = B.hashlib.sha256(os.path.realpath(folder).encode("utf-8", "surrogateescape") + b"\n")
+    for r, p in files:
+        st = os.stat(p)
+        sig.update(("%s\0%d\0%d\0%d\n" % (r, st.st_size, st.st_mtime_ns, st.st_ctime_ns)).encode(
+            "utf-8", "surrogateescape"))
+    return os.path.join(cache_dir, "hash_%s.txt" % sig.hexdigest()[:32])
+
+
+def _any_file_digest(path, h):
+    """the second build's file read: any file opened, its stat size trusted (a pipe is opened non-blocking here so the
+    mutant fails its check instead of hanging the selftest)."""
+    fd = os.open(path, os.O_RDONLY | os.O_NONBLOCK)
+    with os.fdopen(fd, "rb") as f:
+        h.update(b"%d\0" % os.fstat(f.fileno()).st_size)
+        for chunk in iter(lambda: f.read(1 << 20) or b"", b""):
+            h.update(chunk)
+
+
+def _path_chain_files(folder):
+    """the second build's walk: a cycle known by its real path string, which drvfs case folding defeats."""
+    out, top = [], os.path.realpath(folder)
+    stack = [(folder, "", top, frozenset((top,)))]
+    while stack:
+        d, rel, real, chain = stack.pop()
+        for e in list(os.scandir(d)):
+            if e.is_dir():
+                sub = os.path.realpath(e.path) if e.is_symlink() else os.path.join(real, e.name)
+                if sub not in chain:
+                    stack.append((e.path, rel + e.name + "/", sub, chain | {sub}))
+            else:
+                out.append((rel + e.name, e.path))
+    return sorted(out)
+
+
+def _fallback_mod_folder(root, mod, mods_dir):
+    """the second build: a composed mod whose Biomes folder is missing fell back to its standalone folder."""
+    pid, comp = B.mod_package_id(root, mod), B.composed_into(root, mod)
+    folder = B.deployed_folder(mods_dir, comp[0], comp[1] or "") if comp else None
+    return pid, folder or B.deployed_folder(mods_dir, pid, mod)
+
+
 def _old_last_rows(rows):
     return {r.get("test") or r.get("id"): r for r in rows or [] if r.get("test") or r.get("id")}
 
@@ -400,6 +495,10 @@ MUTANTS = {
     "cache_key_size_mtime": lambda: setattr(B, "_cache_key", _old_key),
     "aliases_cut": lambda: setattr(B, "_files", _seen_once_files),
     "standalone_before_composed": lambda: setattr(B, "_mod_folder", _standalone_first),
+    "key_newline_ambiguous": lambda: setattr(B, "_cache_key", _newline_key),
+    "any_file_read": lambda: setattr(B, "_digest_file", _any_file_digest),
+    "cycle_by_path_string": lambda: setattr(B, "_files", _path_chain_files),
+    "composed_falls_back": lambda: setattr(B, "_mod_folder", _fallback_mod_folder),
     "standin_on_real_repo": lambda: setattr(B, "REPO", "/nonexistent/repo"),
     "idless_rows_dropped": lambda: setattr(B, "last_rows", _old_last_rows),
     "tier_scans_every_tier": lambda: setattr(B, "_resolve_tier", (lambda o: lambda t, i: o(t, []))(B._resolve_tier)),
@@ -418,8 +517,12 @@ def main():
     if "--mutants" in sys.argv:
         bad = []
         for m in MUTANTS:
-            r = subprocess.run([sys.executable, os.path.abspath(__file__), "--mutant", m], capture_output=True,
-                               text=True, timeout=300)
+            try:
+                r = subprocess.run([sys.executable, os.path.abspath(__file__), "--mutant", m], capture_output=True,
+                                   text=True, timeout=120)
+            except subprocess.TimeoutExpired:                   # a mutant that hangs the reading is caught too
+                print("ok    mutant %s: hung past 120 s, caught" % m)
+                continue
             n = r.stdout.count("\nFAIL") + r.stdout.startswith("FAIL")
             print("%s  mutant %s: exit %d, %d check(s) failed" % ("ok  " if r.returncode == 1 else "FAIL", m,
                                                                    r.returncode, n))

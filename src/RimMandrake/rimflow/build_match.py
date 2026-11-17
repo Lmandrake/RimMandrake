@@ -35,6 +35,7 @@ import json
 import os
 import re
 import socket
+import stat
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -68,11 +69,21 @@ def same_list(a, b):
 
 
 def _digest_file(path, h):
+    """A plain file's size and bytes. Anything else raises OSError, so the folder hashes to None: a pipe or device is
+    never opened (a pipe would wait for a writer), and a file whose read length is not its size (a /proc file reads
+    bytes at size 0) is refused, so every hash the cache keeps was read from bytes its size key describes (third GPT
+    review, 2026-11-17)."""
+    if not stat.S_ISREG(os.stat(path).st_mode):
+        raise OSError("not a plain file: %s" % path)
     with open(path, "rb") as f:
         size = os.fstat(f.fileno()).st_size
         h.update(b"%d\0" % size)
+        got = 0
         for chunk in iter(lambda: f.read(1 << 20), b""):
+            got += len(chunk)
             h.update(chunk)
+    if got != size:
+        raise OSError("read %d bytes of a %d-byte file: %s" % (got, size, path))
 
 
 def _files(folder):
@@ -80,21 +91,23 @@ def _files(folder):
     (a link to a directory already on the path down is a cycle and is cut; two links to one directory are two paths the
     game loads, both hashed); an unreadable directory raises OSError, never drops out of the hash.
     Empty directories are not hashed: the game loads files, and a folder holding no file changes nothing it loads.
-    A plain directory's real path is its parent's plus its name; only a link is resolved (realpath on every directory
-    of RimMandrake.Biomes made the walk 81 s against 11 s, measured on /mnt/c 2026-11-17)."""
+    A directory is known by its device and inode, not by its path: drvfs folds case and realpath does not, so a link to
+    an ancestor spelt in another case was hashed once more (third GPT review; inode equal across case on /mnt/d,
+    measured 2026-11-17)."""
     out = []
-    top = os.path.realpath(folder)
-    stack = [(folder, "", top, frozenset((top,)))]
+    st = os.stat(folder)
+    stack = [(folder, "", frozenset(((st.st_dev, st.st_ino),)))]
     while stack:
-        d, rel, real, chain = stack.pop()
+        d, rel, chain = stack.pop()
         with os.scandir(d) as it:
             entries = list(it)
         for e in entries:
             r = rel + e.name
             if e.is_dir():                              # follows a link, as the game does
-                sub = os.path.realpath(e.path) if e.is_symlink() else os.path.join(real, e.name)
-                if sub not in chain:                    # every real directory down this path is in chain: no loop
-                    stack.append((e.path, r + "/", sub, chain | {sub}))
+                s = e.stat()
+                ident = (s.st_dev, s.st_ino)
+                if ident not in chain:                  # every directory down this path is in chain: no loop
+                    stack.append((e.path, r + "/", chain | {ident}))
             else:
                 out.append((r, e.path))
     return sorted(out)
@@ -117,10 +130,14 @@ def deployed_hash(folder, cache_dir=None):
 
 
 def _cache_key(folder, files, cache_dir):
-    sig = hashlib.sha256(os.path.realpath(folder).encode("utf-8") + b"\n")
+    """Each part is one JSON line: a name may hold a newline, and JSON escapes it, so no two
+    folders serialize alike (third GPT review, 2026-11-17). A part that is not a plain file has no key."""
+    sig = hashlib.sha256(json.dumps(os.path.realpath(folder)).encode("ascii") + b"\n")
     for r, p in files:
         st = os.stat(p)
-        sig.update(("%s\0%d\0%d\0%d\n" % (r, st.st_size, st.st_mtime_ns, st.st_ctime_ns)).encode("utf-8"))
+        if not stat.S_ISREG(st.st_mode):
+            raise OSError("not a plain file: %s" % p)
+        sig.update(json.dumps([r, st.st_size, st.st_mtime_ns, st.st_ctime_ns]).encode("ascii") + b"\n")
     return os.path.join(cache_dir, "hash_%s.txt" % sig.hexdigest()[:32])
 
 
@@ -137,7 +154,7 @@ def _hash_files(folder, files, cache_dir):
             pass
     h = hashlib.sha256()
     for r, p in files:
-        h.update(r.encode("utf-8") + b"\0")
+        h.update(os.fsencode(r) + b"\0")                 # a name that is not UTF-8 hashes too
         _digest_file(p, h)
     out = "sha256:" + h.hexdigest()
     if key:
@@ -214,14 +231,14 @@ def _paths():
 
 
 def _mod_folder(root, mod, mods_dir):
-    """A mod composed into Biomes is read from the Biomes folder first: a standalone copy left from before it was
-    composed is not what the walk loads (second GPT review, 2026-11-17)."""
+    """A mod composed into Biomes is read from the Biomes folder only: a standalone copy left from before it was
+    composed is not what the walk loads (second GPT review, 2026-11-17), and with Biomes not deployed the mod is not
+    deployed (third)."""
     pid = mod_package_id(root, mod)
     comp = composed_into(root, mod)
-    folder = deployed_folder(mods_dir, comp[0], comp[1] or "") if comp else None
-    if folder is None:
-        folder = deployed_folder(mods_dir, pid, mod)
-    return pid, folder
+    if comp:                                            # composed: Biomes or nothing (third GPT review)
+        return pid, deployed_folder(mods_dir, comp[0], comp[1] or "")
+    return pid, deployed_folder(mods_dir, pid, mod)
 
 
 def source_sha(root, mod):
