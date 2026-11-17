@@ -1338,10 +1338,10 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False):
             "it is new), land "
             "with `./publish -m ... <paths>`, and close the item with the published sha. If it cannot be fixed "
             "offline, or the fix is the owner's (a bar, a ruling, a classification), write that in a note and drop "
-            "nothing. %s\n%s\n\n%s\n" % (item, mod, item, item, mod, "Its acceptance test needs the live game: use it "
-                                         "as the section below says, and write a note starting LEFT OPEN: on what "
-                                         "still fails." if live else OFFLINE_CLOSE % {"mod": mod, "item": item},
-                                         M.SELF_FIX_RULE, M.HOW_A_BAR_HOLDS)
+            "nothing. %s\n%s\n\n%s\n\n%s\n" % (item, mod, item, item, mod, "Its acceptance test needs the live game: use it "
+                                               "as the section below says, and write a note starting LEFT OPEN: on "
+                                               "what still fails." if live else OFFLINE_CLOSE % {"mod": mod, "item": item},
+                                               M.SELF_FIX_RULE, M.HOW_A_BAR_HOLDS, M.OFFLINE_MODEL)
             + (live_rules("%s holder run on %s" % (mod, item), mod) if live else ""))
 
 

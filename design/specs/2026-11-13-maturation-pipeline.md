@@ -234,6 +234,8 @@ One proposal inside Stage 1 is big enough to be an open question: whether the De
 
 For a mod that is already built (all five current mods), Stage 3 is not "build". It is "reconcile": check each locked bar against what exists, and build only the missing tests and the missing pieces. **[PROPOSAL]**
 
+**[HIS, 2026-11-17]** From a mod's first build, the builder's brief (and the road-back fixer's) carries the offline model: decision logic Verse-free so an offline test runs the shipped decision, a generator of the mod's situations read by the bars' own checks before any fix or tuning, its range declared. One source, `roles/fable_rescue.md` step 2; `design/RimMandrake/standing_rulings.md` §Every mod builder builds the offline model from the first build.
+
 ### Stages 4 and 5: Blind offline challenge and game-logic testing, one stage, tests first
 
 **[HIS, by card 2026-11-13]** "One stage, tests first." His question "is this really different than Stage 4, or should it be folded in?" is answered: one stage. The independence two stages would have bought is kept by order: the blind agent writes and runs its own game-logic tests from the bars alone, before it opens the builder's code or tests, and only then does the code challenge. One load of the mod, one cycle, independent tests. The two parts are reported as two lanes so the pilot can count what each finds. **[PROPOSAL]** the stage keeps the label "Stages 4 and 5", so that his numbers 6 to 8 do not move.

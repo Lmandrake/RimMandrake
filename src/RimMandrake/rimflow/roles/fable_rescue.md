@@ -78,12 +78,23 @@ certificate's red came from a fifth pair. Then write the inputs, and each requir
 what is underspecified and say so.
 
 **2. Build the instrument: the game's own state, read by the bars' own checks, over every situation the game can
-produce for those bars, enumerated.** Hunt parameter regimes and regions, not examples (owner, 2026-11-16). Before
-any fix, build what lets you SEE the problem: a generator of the situations the mod can be in (on Slack: what the cord
-comes from, run length, last turn, walls, settings, look; about 300 lines and one run), read by the same checks the
-bars use. Every mod can have one; the mathematics is optional. Declare that range of situations: what it varies, how
-many cases it makes, what it leaves out and why. It is never "every case"; name the dimensions it does not cover, and keep the
-mod's existing scenes and the cases that used to fail as separate challenge cases beside it.
+produce for those bars, enumerated.**
+<!-- offline-model: begin. One source: maturation.OFFLINE_MODEL reads this block into the offline builder's and the
+road-back fixer's briefs (item RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD; selftest_offline_model_rule.py). -->
+**The offline model (owner, 2026-11-16 and 2026-11-17).** Hunt parameter regimes and regions, not examples.
+- Keep the mod's decision logic (where a thing goes, which way, how far, whether it fires) in code that does not
+  depend on the game (no Verse types), so an offline test compiles and runs the SHIPPED decision, not a copy of it.
+  The Explosive Knockback rescue (2026-11-17) moved the throw decision into `RM_KnockbackPlan.cs` and read an
+  enumerated map of lanes with the bars' own checks.
+- Before any fix or tuning, build what lets you SEE the problem: a generator of the situations the mod can be in (on
+  Gimme Some Slack: what the cord comes from, run length, last turn, walls, settings, look; about 300 lines and one
+  run), read by the same checks the bars use. Every mod can have one; the mathematics is optional.
+- Declare that range of situations: what it varies, how many cases it makes, what it leaves out and why. It is never
+  "every case"; name the dimensions it does not cover, and keep the mod's existing scenes and the cases that used to
+  fail as separate challenge cases beside it.
+- Proportional: a mod with no decision logic (defs and art only) says so in one line in your last note instead of
+  building one.
+<!-- offline-model: end -->
    - Every check you write prints its worst value, its limit, and what it sampled (the generator, how many cases, what
      was excluded). A worst value read from one seed is a reading of one seed.
    - Every result names the source commit, the settings and the instrument version it ran on. When any of those

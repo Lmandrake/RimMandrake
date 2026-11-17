@@ -650,6 +650,24 @@ Dispatch state dir; `maturation_rescue.py status`). This supersedes "No stall de
 `RIMMANDRAKE_ENACT_INVENTION_WHEN_BARS_CONFLICT_GRADIENT_TOO_EASY`. Item:
 `RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED`.
 
+## Every mod builder builds the offline model from the first build — owner, 2026-11-17
+
+*"Also, it feels like the Fable Rescuer again found that offline modeling is REALLY informative and useful. Sounds like
+something that should be instructed to the mod builder in general, yes, from the get-go? I kinda thought we already
+had, but maybe it hadn't had a chance to benefit from that yet."* (about 10:50 AM PST, after the Explosive Knockback
+rescue; "Rescurer" in his words is "Rescuer".) Enacted by the Conductor.
+
+- **What it says:** keep a mod's decision logic Verse-free so an offline test runs the shipped decision; before any
+  fix or tuning, build a generator of the situations the mod can be in, read by the bars' own checks; declare the range
+  (what it varies, how many cases, what it leaves out), never "every case"; a mod with no decision logic says so in one
+  line. It extends his 2026-11-16 "Hunt parameter regimes and regions, not examples" from the rescue to every builder.
+- **One source:** the `offline-model` block in `src/RimMandrake/rimflow/roles/fable_rescue.md` step 2. The rescue reads it
+  in place; `maturation.OFFLINE_MODEL` reads it into the offline builder's brief (`brief_text`, from a mod's first
+  build) and the road-back fixer's (`maturation_autonomy.fixer_brief`). Edit the block, never a copy.
+- **What it does not change:** no spend, cap or budget goes in it; the bars, stages and judges are as before.
+
+Item: `RIMMANDRAKE_TEACH_OFFLINE_MODEL_FIRST_BUILD`; selftest `selftest_offline_model_rule.py`.
+
 ## Broken tests are expected; an inability to measure is reported up, never read as broken work — owner, 2026-11-03
 
 *"The checker was unable to measure something, and interpreted that as a wrong value rather than an inability that should
