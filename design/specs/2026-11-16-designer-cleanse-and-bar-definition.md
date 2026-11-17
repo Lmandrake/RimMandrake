@@ -31,7 +31,7 @@ His card answers, same sitting:
 - Pyrelands: six bars pinned numbers, every in-game scene ran with fire off and the sky locked clear, one promised
   mechanic had no spec, and "a line of fire" was held literally until he loosened it. Slack: five bars and checks read
   the same 0.6 cell of cord and nobody had listed them together; a builder's habit stood in an impossibility proof.
-- 22 biome members of Baroque Biomes other than Pyrelands have source; 6 of them have a concept folder.
+- 23 biome members of Baroque Biomes other than Pyrelands have source; 6 of them have a concept folder.
 
 ## 3. The definition of a bar (proposed; replaces the leaf fields `experience`, `false_pass`, `red` in spirit)
 
@@ -116,4 +116,4 @@ tonight's mass run.
 
 Acceptance test for this item: `python3 src/RimMandrake/Utils/run_selftests.py --only selftest_designer_cleanse` passes
 (fails on the base commit: the file does not exist), and `designer_cleanse.py status` shows a `proposed` or `blocked`
-result with a passing `check` for each of the 22 biomes.
+result with a passing `check` for each of the 23 biomes other than Pyrelands.
