@@ -194,6 +194,20 @@ def outcome_cases(AC):
             ("north: a rotate-the-south fix is misdirected", "north_rear",
              answer([REDO_N], [c1_refusal("Rotate the south picture 180 degrees and use it as north.png.")]), [],
              "refuse, misdirected"),
+            # RIMMANDRAKE_FIX_REAR_CHECK_NEGATED_FLIP_READ_AS_ROTATION: the 2026-11-17 08:33Z judge's own words
+            ("north: a rear redraw that forbids a flip is not misdirected", "north_rear",
+             answer([REDO_N], [c1_refusal("Redraw north.png as a rear view of the same subject at 512x512 real alpha, "
+                                          "keeping south.png's proportions, palette, scale and footprint (mash mounds "
+                                          "optional). Do not copy or flip south.png.")]), [], "refuse"),
+            ("north: a rear redraw that says never rotate is not misdirected", "north_rear",
+             answer([REDO_N], [c1_refusal("Draw a new rear view for north.png, never a rotation of the south.")]), [],
+             "refuse"),
+            ("north: a flip-then-repaint fix is still misdirected", "north_rear",
+             answer([REDO_N], [c1_refusal("Flip south.png and paint over the face as the rear view; do not keep the eyes.")]),
+             [], "refuse, misdirected"),
+            ("north: a rear view rotated 180 is still misdirected", "north_rear",
+             answer([REDO_N], [c1_refusal("Use a rear view: rotate south.png 180 degrees, not a new drawing.")]), [],
+             "refuse, misdirected"),
             ("north: a refusal on another clause only is misdirected", "north_rear",
              answer([dict(REDO_N, violated="B2")], [dict(c1_refusal(), clause="B2")]), [], "refuse, misdirected")):
         got = o(route, ans, errs)

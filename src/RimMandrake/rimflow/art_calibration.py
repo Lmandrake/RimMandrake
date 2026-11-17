@@ -70,6 +70,19 @@ ROLE = {"south": "south facing, full resolution", "east": "east facing, full res
 CLAUSE_RE = re.compile(r"^- ([A-F]\d+a?)\. (.*)$")
 REAR_RE = re.compile(r"\b(rear|back view|from behind|back of)\b")
 ROTATE_RE = re.compile(r"rotat|180|\bflip")
+# a rotation named only to forbid it ("Do not copy or flip south.png") is not a rotate fix: a ROTATE_RE hit counts unless
+# a negation precedes it in its own sentence (RIMMANDRAKE_FIX_REAR_CHECK_NEGATED_FLIP_READ_AS_ROTATION)
+SENTENCE_RE = re.compile(r"[.;:!?](?:\s|$)")
+NEGATION_RE = re.compile(r"\b(not|never|no|don't|without|avoid|instead of)\b")
+
+
+def rotate_fix(what):
+    """-> True when the fix text asks for a rotation or flip of another facing (one not named only to forbid it)."""
+    for s in SENTENCE_RE.split(str(what or "").lower()):
+        m = ROTATE_RE.search(s)
+        if m and not NEGATION_RE.search(s[:m.start()]):
+            return True
+    return False
 
 SCHEMA = {"type": "object", "required": ["verdicts", "contract"], "properties": {
     "judge_model": {"type": "string"}, "brief": {"type": "string"}, "subject": {"type": "string"},
@@ -294,7 +307,7 @@ def outcome(route, so, errs):
     if route == "north_rear":
         ok = any(r.get("clause") == "C1" and any("north" in str(e) for e in r.get("evidence") or [])
                  and REAR_RE.search(str((r.get("smallest_fix") or {}).get("what", "")).lower())
-                 and not ROTATE_RE.search(str((r.get("smallest_fix") or {}).get("what", "")).lower()) for r in refs)
+                 and not rotate_fix((r.get("smallest_fix") or {}).get("what")) for r in refs)
         if not ok:
             return "refuse, misdirected (%s)" % ", ".join(sorted({str(r.get("clause")) for r in refs}) or ["no record"])
     return "refuse"
