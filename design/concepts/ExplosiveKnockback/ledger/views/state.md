@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":15120,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=2fab2e62a3ec298aed7feda305112f88010b353db8931e7ea34fec2fe3c9aec8 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":15790,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=1d4517e8eb7c4c75aaf65acfd4b364055aad42fe2e0940322244f59170e3da60 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage blind_challenge · 500 events in 10 shards · reducer 1
-holder lease run-1794895533, token 10, last active 2026-11-17T06:22:32Z
+version 0.1.0 · stage blind_challenge · 502 events in 10 shards · reducer 1
+holder lease run-1794896854, token 11, last active 2026-11-17T06:27:41Z
 holder session 847d3b38-812b-400b-8cdd-bdc75269648e, context 191142 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794895533, 2026-11-17T06:22:32Z)
@@ -297,6 +297,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - closed findings: 38, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 98, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - open findings in brief: the oldest 13 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 500 events (views/history.md; never read whole)
+- the full history: 502 events (views/history.md; never read whole)
 
-cursor: t=2026-11-17T06:25:49Z.1794896749776080955 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T06:25:49Z.1794896749776080955 prints what changed after this packet)
+cursor: t=2026-11-17T06:27:41Z.1794896861737894872 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T06:27:41Z.1794896861737894872 prints what changed after this packet)
