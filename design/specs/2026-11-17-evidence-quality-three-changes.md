@@ -162,16 +162,27 @@ wrong theory.
 
 ### The change
 
-Two optional fields on `rimflow finding`, and one derived line in the record:
+**Revised at 0.2.0** (review findings 1 and 2). Two optional fields on `rimflow finding`, and one
+derived line in the record:
 
-- `--ruled-out "<cause>: <the observation that excludes it>"`, repeatable. Free text, one cause per
-  flag. No vocabulary, no schema beyond the colon.
-- `--red-at "<the assertion or symptom that went red, and where>"`. When the finding came from a test
-  that failed, this is *which* check failed, not that one did.
+- `--ruled-out "<theory> :: <why_not>"`, repeatable. The grammar and validator are **lifted from
+  `relentless_explain._pairs`** (`relentless_explain.py:59-70`): the `::` separator, both sides
+  present, each at least 4 characters, no unfilled `<placeholder>`. Not a new vocabulary — the same
+  one, moved out of a retired module into the live path.
+- The `why_not` half must carry **one typed evidence reference** in `modledger.check_entry`'s
+  existing grammar (`path:…#row`, `run:<id>`, `test:<id>`; `modledger.py:320-330`). This is what
+  makes the field machine-checkable: the reference either resolves or it does not, and a `run:<id>`
+  that resolves to nothing is refused the way `cmd_spawn` already refuses a causeless cause
+  (`cli.py:3211`).
+- `--red-at "<which assertion went red, and where>"`. When the finding came from a failing test,
+  this is *which* check failed, not that one did.
 
-**Neither is required. Nothing is refused for lacking them.** The record grows a field
-`discriminated: true|false` — true when at least one `--ruled-out` is present — and the rendered
-finding shows the ruled-out list under the finding's own line.
+**Neither flag is required. Nothing is refused for lacking them.** But a `--ruled-out` that IS
+passed must parse and its reference must resolve — a malformed one is refused, not stored with a
+`malformed: true` flag as 0.1.0 proposed. A field that records its own brokenness is a rigour signal
+that lies.
+
+The record grows `discriminated: true|false`, true when at least one valid `--ruled-out` is present.
 
 ### Why this is not the blocker he refused
 
@@ -190,10 +201,12 @@ in `cli.py`). `[guess ~90%]` that the prose costs under 100 output tokens per fi
 ### Risks and costs, stated
 
 - **A fabricated ruling-out is worse than none.** "I ruled out X" with no real observation behind it
-  is a false statement with a permanent address, and it will read as rigour. Mitigation: the flag's
-  own help text demands the *observation*, and the grammar (`cause: observation`) makes an empty
-  assertion visibly empty. No checker can verify it; this is an honesty-dependent field and is
-  documented as one.
+  is a false statement with a permanent address, and it will read as rigour. **Partly closed at
+  0.2.0**: the typed reference must resolve, so an invented `run:<id>` or a `path:` that is not
+  there is refused. What remains unverifiable is whether a resolving reference actually *supports*
+  the claim — a real run id can be cited beside a theory it says nothing about. That residue is
+  honesty-dependent and is documented as such; it is strictly smaller than 0.1.0's, which could not
+  check anything at all.
 - **Optional fields get skipped.** Likely, at first. Accepted: the field's value is in the records
   that *do* carry it, and in the daily digest being able to say what share of findings discriminated.
   No enforcement is proposed in this version.
@@ -203,17 +216,23 @@ in `cli.py`). `[guess ~90%]` that the prose costs under 100 output tokens per fi
 ### Acceptance test
 
 `src/RimMandrake/rimflow/selftest_finding_discriminated.py` — fails on the base commit (the flags do
-not exist; argparse exits 2), passes after. Cases: a finding with two `--ruled-out` flags records both
-and `discriminated: true`; a finding with none records `discriminated: false` and is **not** refused
-(exit 0); a `--ruled-out` without a colon is still accepted verbatim (no schema enforcement) but the
-record marks it `malformed: true` so a reader can see it; `--red-at` is recorded verbatim; the
-renderer shows the list. Expected: 6 of 6 pass.
+not exist; argparse exits 2), passes after. Cases: a finding with two valid `--ruled-out` flags
+records both and `discriminated: true`; a finding with none records `discriminated: false` and is
+**not** refused (exit 0); a `--ruled-out` missing `::` exits 2; one whose `why_not` carries no typed
+reference exits 2; one citing a `run:<id>` that resolves to nothing exits 2; an unfilled
+`<placeholder>` exits 2; `--red-at` is recorded verbatim; **the fields survive a ledger replay**
+(write, re-read through `model.load()`, assert they are still there — the check 0.1.0 lacked, which
+is why it would have shipped a store nothing reads). Expected: 8 of 8 pass.
 
 ### Where it goes
 
-`src/RimMandrake/rimflow/cli.py` (`cmd_finding`, the parser), `src/RimMandrake/rimflow/model.py`
-(the `finding` verb's `opt` tuple, line 517), the finding renderer in `modledger.py`
-(`findings_block`, line 1239).
+`src/RimMandrake/rimflow/cli.py` (`cmd_finding`, the parser), `src/RimMandrake/rimflow/model.py` —
+the `finding` verb's `opt` tuple (line 517) **and `_apply`'s finding branch (line 2763), which keeps
+only four fields today**, plus the strict-write and tolerant-read paths (`:964`, `:3077`). The
+grammar and validator are lifted from `relentless_explain.py:59-70` (retired module; see review
+finding 2). Renderer: whichever ledger actually stores it — `modledger.findings_block` (`:1239`)
+reads `finding.open` entries, a different store from `rimflow finding`, so the renderer follows the
+chosen store rather than being assumed.
 
 ---
 
@@ -272,8 +291,13 @@ against the pre-change shape, minus new keys); an unknown disposition exits 2. E
 
 ### Where it goes
 
-Same three files as change one, plus the daily digest (`delegated_digest.py`) gaining a
-dispositions-by-count line — it is token-blind by construction and counts are all it may show.
+Same files as change one, including `model._apply` (review finding 1). **Open at 0.2.0, to settle
+before building:** whether the disposition lives on `rimflow finding` or beside `modledger`'s
+existing closed sets for `finding.open` (`modledger.py:350`), which already carry `class` and
+`how_checked` and already have `verified|withdrawn` statuses (`:1050`). If it goes in `modledger`,
+`rejected` must relate to those two rather than forming a sixth parallel vocabulary. Plus the daily
+digest (`delegated_digest.py`) gaining a dispositions-by-count line — token-blind by construction,
+so counts are all it may show.
 
 ---
 
