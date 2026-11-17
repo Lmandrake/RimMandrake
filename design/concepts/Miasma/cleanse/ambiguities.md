@@ -108,11 +108,11 @@ Each entry records an alternative build, its concrete consequence and the delega
 
 ## Tolerance and harm
 
-**Two readings.** Tolerance is permanent unconditional safety, or it removes the colony from the mother’s ordinary target set until nursery harm, with sale permanently closing forgiveness.
+**Two readings.** Tolerance protects ordinary harvesting unless nursery members are harmed, or any harvest inside anchor reach makes its actor a target even when tolerated.
 
-**Consequence.** Unconditional safety lets a protected butcher exploit the same nursery. Pawn-only damage attribution can let a colony turret preserve a supposedly clean record.
+**Consequence.** The first reading lets a tolerated woodcutter or salt gatherer work beside the crèche untouched, contrary to both the frozen sheet and the September fauna amendment. Treating that local exception as permanent colony betrayal would also punish ordinary forestry as if a child had been sold.
 
-**Taken.** Player-controlled pawn/turret damage, killing, butchery and harvesting nursery young break the local clean record and revoke tolerance. Wildlife and disease alone do not count as colony betrayal. Sale is the irreversible refusal state and voids succession. Ordinary harm keeps consent closed for that nursery in this version. New rescues still preserve animals, but supply no forgiveness reset. This follows the frozen “harvesting inside her reach” boundary and September clean-record rule. The mother remains wild and uncommandable.
+**Taken.** Corrected after review: any colonist harvesting plants, wood, salt or animals inside the anchor reach is targeted immediately, tolerated or not. Outside-reach harvesting does not trigger her. This per-act exception ends when ordinary non-nursery harvesting stops and does not erase trust or the clean nursery record. Defence still obeys anchor reach and water-only path legality. Separately, player-controlled pawn/turret damage, killing, butchery or harvesting nursery young breaks that nursery’s clean record and revokes tolerance; ordinary harm keeps consent closed in this version, without a new-rescue forgiveness reset. Wildlife and disease alone do not count as colony harm. Completed sale permanently closes tolerance and succession. Evidence: the_miasma.md section 4 explicitly says harvesting inside reach returns you to the target set; fauna roster section 6 says harvesting anything, while section 6a ties clean-record loss to harm to young. These are distinct conditions. The mother remains wild and uncommandable.
 
 ## Frequent consent versus a guaranteed animal
 
@@ -120,7 +120,7 @@ Each entry records an alternative build, its concrete consequence and the delega
 
 **Consequence.** Guaranteed affection removes the frozen “rebirth, maybe” premise, while a chance too low to occur during colony play makes the payoff unreachable.
 
-**Taken.** Probabilistic consent, no ordinary taming grind, tested over its declared supported campaign window. Generator branches test roll outcomes without declaring a single lucky live draw sufficient. Timing tuning stays outside the bars. Nursery affiliation and water eligibility are mandatory before a consent attempt. Consent without rescue is possible, while an actual successful rescue/return history is required for inheritance. A child that is dead, away or unreachable at the one promotion decision supplies no local heir.
+**Taken.** Frequent probabilistic consent, with no ordinary taming grind. “Frequently” means consent recurs among unharmed clean-nursery young through the whole-bar observation window; a clean nursery whose young almost never consent fails. It is not a guaranteed animal on a particular roll or a regular schedule. B7 marks the frequency word figurative and contrasts the pictures; chance and cadence remain C11 tuning checks. Generator branches cover roll outcomes, and whole-map histories measure ordinary occurrence rather than a forced lucky draw. Nursery affiliation and water eligibility are mandatory. Consent without rescue is possible. Inheritance needs the colony’s successful rescue record at this nursery, not the candidate’s personal rescue history: a living self-tamed sibling can inherit even if it was never rescued. A child dead, away or unreachable at the promotion decision supplies no local heir. Evidence: the owner’s “frequently self-tame” words and section 6a’s sibling payoff.
 
 ## An heir in name or an heir on watch
 
@@ -128,7 +128,7 @@ Each entry records an alternative build, its concrete consequence and the delega
 
 **Consequence.** RM_CompCrecheYoungLedger.TryPromoteSuccessor currently supplies the former. Protection disappears while the game claims continuity.
 
-**Taken.** Actual anchor/duty and executed guard behaviour, a visibly weaker juvenile, and an explained absent-heir branch. No new adult, instant maturation or second full-sized mother. Old-age inheritance is anticipated, with plain age information on first encounter. The delegated tuning target is loss within 30-60 game days of encountering an already-old mother, subject to calibration of actual age/health progression. Earlier ordinary violent or disease death is a separate readable outcome, with no clean inheritance reward for colony killing.
+**Taken.** Actual anchor/duty and executed guard behaviour, a visibly weaker juvenile, and an explained absent-heir branch. Eligibility belongs to the colony’s record at that nursery: at least one successful rescue/return, a clean record and a living self-tamed affiliated young with a legal water route. A never-rescued sibling qualifies; rescue nothing, harm or betray the nursery and there is no heir. Requiring the heir’s own rescue was my erroneous narrowing, corrected on the September section 6a sibling evidence. No new adult, instant maturation or second full-sized mother. Old-age inheritance is anticipated, with plain age information on first encounter. The delegated tuning target is loss within 30-60 game days of encountering an already-old mother, subject to calibration of actual age/health progression. Earlier ordinary violent or disease death is a separate readable outcome, with no clean inheritance reward for colony killing.
 
 ## “Trainable” at the waterline
 
@@ -136,7 +136,7 @@ Each entry records an alternative build, its concrete consequence and the delega
 
 **Consequence.** Current hiding and periodic land interruption leave no useful dedicated hauling job.
 
-**Taken.** The ruled water work stays because removing it defeats the explicitly affectionate child’s ordinary usefulness in the signature. Use ordinary loose goods or Wreckage salvage, with eligible source, destination and complete water route. Repeated Miasma flotsam spawning can therefore move without coupling the kept job to an extra reward engine. No general land Haul or Rescue is offered.
+**Taken.** The ruled water work stays because removing it defeats the affectionate child’s ordinary usefulness in the signature. Keep its recurring post-recession wet root-line deposits as needed_by signature: no staged items, no source creation by the haul job, and eligible pickup, destination and complete water route. Initial seeding alone moves. RM_MiasmaWreckField.xml scatters wreck buildings once at local-map creation, with no water-side placement; it cannot sustain the ruled root-line work through the season. T15 must prove repeated natural source-to-store hauling after initial salvage ceases to supply the route. No general land Haul or Rescue is offered.
 
 ## Pool expiry and the previously allowed fallback
 
@@ -196,11 +196,11 @@ Each entry records an alternative build, its concrete consequence and the delega
 
 ## Flotsam and salvage
 
-**Two readings.** Every surge needs a new free-goods restock as well as Wreckage’s brined salvage, or the shared ordinary salvage remains while repeated rewards wait.
+**Two readings.** Once-only Wreckage salvage can supply water-only haul forever, or recurring natural wet root-line deposits are necessary for that work while initial flotsam seeding is dispensable.
 
-**Consequence.** The present root-proximity-only loose spawner can generate goods beside transplanted inland trees and can swell the economy independently of rescues.
+**Consequence.** Deferring all flotsam leaves a trained child idle after any initially reachable salvage is exhausted; staged haul items disguise the missing natural source. Conversely, current root-proximity-only placement can generate goods beside inland transplanted trees and inflate the economy.
 
-**Taken.** Keep the shared Wreckage dependency. Defer Miasma’s independent initial/recede loose-item grant and prevent juvenile work from calling it. This follows the deletion test for a second reward system and the shared-engine exemption.
+**Taken.** Corrected after review: split the existing flotsam capability. Keep post-recession wet root-line deposits as needed_by signature, since deleting them defeats recurring water-only haul. Defer only the initial seed windfall. MapComponentTick reads LastRecedeCompletedTick and calls FlotsamStep then Place; those paths currently share flotsamEnabled and must be decoupled. T6 separates startup gating without consuming or replaying recession events; T15 requires actual wet root-line pickup cells, not root proximity, and saved outstanding-stock limits. Existing Wreckage remains a dependency. Whole-map item-flow modelling must settle sustainable work versus accumulating goods, including full stores and harvested roots. This is my revised deletion argument, not a new owner ruling.
 
 ## Cosmetics, medicine and rot
 

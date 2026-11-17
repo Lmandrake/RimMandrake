@@ -195,24 +195,25 @@
       },
       "accept": [
         "A continuous sea-fed canal extends a permitted water route, the mother swims along the part within her nursery reach and stops where dry ground interrupts it.",
-        "A child follows its keeper along the water and stops when the keeper goes inland, while a trained child completes ordinary water-side hauling along an eligible route.",
+        "A child follows its keeper along the water and stops when the keeper goes inland, while a trained child hauls naturally deposited root-line flotsam along an eligible route after successive recessions.",
         "After a canal is cut the mother stays visibly in the wet isolated component, and restoring the water route makes it usable again."
       ],
       "reject": [
         "A valid water destination causes a path across a dry shortcut, followed by a periodic teleport or recovery walk.",
         "A fresh river exit or any large closed pond is treated as a sea connection, or an isolated-pool flag deletes the trapped mother.",
-        "A trained child offers general land hauling and repeatedly starts impossible jobs, or a canal grants command of the wild mother."
+        "A trained child offers general land hauling and repeatedly starts impossible jobs, or a canal grants command of the wild mother.",
+        "The trained child hauls only a staged item or the initial wreck salvage, then has no natural water-side work after later recessions."
       ],
       "lazy": "none: The sentence covers executed movement and work in water, sea-connected entry and visible severance. Water destinations followed by dry shortcuts or an arbitrary large pond omit a named constraint.",
       "range": {
-        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Flood-fill components exhaustively on small synthetic grids, then all bearings and actual map sizes from common range. Orthogonal/diagonal contacts, channel throats 1-8 cells, shortest dry shortcuts, shallow/deep/FlowWorks water, bridge top and under-water, slopes absent from flat movement plane, walls/doors/impassable occupants, canal cut/repair during movement, call/defence/haul/wander and exit jobs, wild/tolerant/betrayed/tame/stranded state. Hydrological sea-connectedness and usable movement surfaces are recorded separately.",
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Flood-fill components exhaustively on small synthetic grids, then all bearings and actual map sizes from common range. Orthogonal/diagonal contacts, channel throats 1-8 cells, shortest dry shortcuts, shallow/deep/FlowWorks water, bridge top and under-water, slopes absent from flat movement plane, walls/doors/impassable occupants, canal cut/repair during movement, call/defence/haul/wander and exit jobs, wild/tolerant/betrayed/tame/stranded state. Hydrological sea-connectedness and usable movement surfaces are recorded separately. Default recurring flotsam source on, initial seeding off, no staged haul items. Sweep wet root-lines and inland transplanted-root controls, naturally eligible versus blocked/full destinations, consumed versus outstanding deposits, and source stock exhausted before later recessions. Natural eligible root-lines must supply recurring work through B9’s stretch; absence of suitable roots/routes is a reported boundary, not a passing no-work fixture.",
         "left_out": "An unresolved distressed young may be carried across land for rescue. The affectionate water-bound young have no carry-home upgrade. No new canal engine or body-footprint system is commissioned."
       },
       "sees": {
         "instrument": "Shore and route sweep first, then T12/T15/T19 full engine path-cell and executed-movement traces across the same fixtures with all kept jobs enabled. State enumeration checks path changes after water topology changes.",
-        "start": "Known seaward boundary and water component, a real mother and affiliated young with normal duties, canal/water destinations and a shorter forbidden dry route. A separate closed pond has equal or greater area than the real sea-fed branch.",
+        "start": "Known seaward boundary and water component, a real mother and affiliated young with normal duties, canal/water destinations and a shorter forbidden dry route. A separate closed pond has equal or greater area than the real sea-fed branch. Default natural root-lines, no staged items and initial loose seeding off; record all initial salvage separately from recession-produced stacks.",
         "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
-        "control": "Trace every executed movement cell and rejected path request so a water destination or sampled resting positions cannot mask dry steps. Cut only the sea connection while keeping the destination wet, then repair it. Test fresh-edge-only connectivity separately.",
+        "control": "Trace every executed movement cell and rejected path request so a water destination or sampled resting positions cannot mask dry steps. Cut only the sea connection while keeping the destination wet, then repair it. Test fresh-edge-only connectivity separately. Trace genuine recession completion to each deposited stack and the same stack’s pickup/deposit across later recessions after initial salvage is exhausted. Hauling and proof helpers cannot call Place to create work. Read blocked-source reasons rather than accepting a no-op as useful work.",
         "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
         "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
       },
@@ -223,7 +224,8 @@
         "nursery record",
         "colony effort",
         "information",
-        "settings"
+        "settings",
+        "root-line goods"
       ],
       "tests": {
         "reject": "Designer inference from the cited source. Losing this experience alone defeats the water limitation that makes rescue and canal engineering matter",
@@ -233,32 +235,34 @@
     },
     {
       "id": "B6",
-      "says": "Returning a stranded young to its own Miasma mother’s reachable water earns her colony-wide tolerance, while a completed sale permanently costs that nursery’s tolerance and inheritance.",
+      "says": "Returning a stranded young to its own Miasma mother’s reachable water earns colony-wide tolerance except for colonists harvesting anything within her anchor reach, whom she targets at once, while a completed sale permanently costs that nursery’s tolerance and inheritance.",
       "meant": {
         "intent": "the nursery choice having a durable and local consequence",
-        "source": "September 23 befriending ruling and closed MIASMA_MOTHERS_PRICE_1 for the October 2 owner card. Delegated for completed-transaction commit and durable known parentage.",
+        "source": "September 23 befriending ruling and closed MIASMA_MOTHERS_PRICE_1 for the October 2 owner card. Delegated for completed-transaction commit and durable known parentage. Frozen the_miasma.md section 4 and September 23 fauna section 6 explicitly retain targeting for harvesting anything inside her reach.",
         "figurative": []
       },
       "accept": [
-        "A carried or canal-freed young reaches its own mother’s accessible water, distress ends and she stops targeting colonists while remaining wild.",
+        "A carried or canal-freed young reaches its own mother’s accessible water, distress ends and she stops targeting non-harvesting colonists while remaining wild.",
         "A buyer completes a meaningful sale, payment and the child’s transfer occur, and that nursery permanently refuses later forgiveness while an unrelated nursery can still accept its own young.",
-        "Cancelling a sale leaves both the child and the nursery’s standing intact, and harming the nursery later ends previously earned tolerance."
+        "Cancelling a sale leaves both the child and the nursery’s standing intact, and harming the nursery later ends previously earned tolerance.",
+        "A tolerated colonist cutting wood inside her reachable anchor waters is attacked while a colonist harvesting outside her anchor reach works unharmed by her."
       ],
       "reject": [
         "Any nearby mother accepts any child and awards colony-wide protection, or the return removes the only identity record needed for later consent.",
         "Opening a trade window or an unaffordable offer voids succession before a sale completes.",
-        "A success letter appears while the mother still targets the colony, or a reload or setting cycle forgives a completed betrayal."
+        "A success letter appears while the mother still targets non-harvesting tolerated colonists, or a reload or setting cycle forgives a completed betrayal.",
+        "A tolerated colonist harvests salt beside the crèche untouched because only harming nursery young can trigger the mother’s defence."
       ],
-      "lazy": "none: The child must enter its own mother’s reachable water, earn actual colony-wide tolerance, and completed sale must permanently close that nursery’s trust and inheritance. A message or cancelled trade cannot meet it.",
+      "lazy": "none: Actual colony-wide target exclusion, its explicit any-harvest exception within anchor reach, correct parentage and permanent completed-sale consequences rule out unconditional protection, wrong-parent credit and merely attempted trades.",
       "range": {
-        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Mother/child sites 0, 1 and 2-8, near/far/wrong parent, mother living/downed/dead or already betrayed, carried/spawned/downed child, direct and canal rescue, hostile player pawn/turret and unrelated wildlife damage. Actual completed/cancelled/rejected/unfunded trade with ordinary traders and unavailable trader factions. Return-before-sale/sale-before-return, simultaneous actors, interrupted transfer and save/reload on each commit boundary.",
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Mother/child sites 0, 1 and 2-8, near/far/wrong parent, mother living/downed/dead or already betrayed, carried/spawned/downed child, direct and canal rescue, hostile player pawn/turret and unrelated wildlife damage. Actual completed/cancelled/rejected/unfunded trade with ordinary traders and unavailable trader factions. Return-before-sale/sale-before-return, simultaneous actors, interrupted transfer and save/reload on each commit boundary. Harvest wood/plants/salt/animals just inside, at and outside the actual anchor boundary; reachable water-side versus inaccessible positions; start/stop/cancel harvest with and without tolerance, concurrent non-harvesting colonists, save during a harvest. Separate temporary any-harvest targeting from nursery-member harm and permanent completed-sale betrayal.",
         "left_out": "No promise that an ordinary trader arrives on a fixed schedule or through an impossible route. The custom held-young buyer incident is deferred. No global morality or faction reputation system is added."
       },
       "sees": {
-        "instrument": "Nursery transition generator plus T14/T19 state reads of genuine carrying/canal jobs and actual trade transaction outcomes, payment, ownership, mother targets, nursery ledger and notification history.",
+        "instrument": "Nursery transition generator plus T14/T19 state reads of genuine carrying/canal jobs and actual trade transaction outcomes, payment, ownership, mother targets, nursery ledger and notification history. Trace actual harvest jobs, anchor geometry and mother target acquisition/attack for plants, wood, salt and animals.",
         "start": "Known mother-child links at distinct nurseries, an initially intolerant wild mother, a held distressed young and an ordinary solvent trader when testing sale. No direct Notify_Sold, TryReturn or GrantColonyTolerance invocation may stand in for the ordinary action.",
         "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
-        "control": "Use wrong-nursery and cancelled-trade branches with identical proximity and price. Read targets before and after a successful return with the same colonist positions. Confirm real trade payment and transferred pawn identity before the nursery changes permanently.",
+        "control": "Use wrong-nursery and cancelled-trade branches with identical proximity and price. Read targets before and after a successful return with the same colonist positions. Confirm real trade payment and transferred pawn identity before the nursery changes permanently. After earning tolerance, compare the same colonist starting and stopping an ordinary harvest within reachable anchor waters with non-harvesting and outside-reach controls. Read target inclusion immediately and actual defence execution, not only the tolerance flag; ordinary non-nursery harvest does not dirty the nursery record.",
         "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
         "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
       },
@@ -278,32 +282,41 @@
     },
     {
       "id": "B7",
-      "says": "In a clean-record Miasma nursery, young sometimes choose the colony and do useful water-bound work, and a rescued juvenile can inherit a weaker watch after the mother’s visibly foreshadowed decline and death during colony life.",
+      "says": "In a clean-record Miasma nursery, young frequently choose the colony and do useful water-bound work, and after the mother’s visibly foreshadowed decline and death during colony life a self-tamed juvenile of that nursery can inherit a weaker watch if the colony has successfully rescued young at that nursery.",
       "meant": {
         "intent": "hopeful continuity with an earned, visibly weaker successor",
         "source": "September 23 fauna roster section 6a for self-taming, useful water work, foreshadowed old-age death and juvenile succession. Later fluff digest explicitly retains succession. Delegated for persistence, old-save reconciliation and single promotion semantics.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "frequently",
+            "stands_for": "consent is a recurring ordinary clean-nursery outcome during the whole-bar observation stretch, rather than an almost-never windfall or a guaranteed result on a particular roll",
+            "accept": "Several unharmed young of a clean nursery choose the colony during the observed stretch, with gaps and failed rolls allowed; they need not consent at regular intervals."
+          }
+        ]
       },
       "accept": [
-        "The mother is visibly failing from first encounter, the keeper receives a plain age warning, a registered unharmed young chooses the colony and works along the water.",
+        "The mother is visibly failing from first encounter and the keeper receives a plain age warning; several unharmed young of the clean nursery choose the colony within the whole observed stretch, with failed rolls and gaps allowed, and work along the water.",
         "After the anticipated age-related loss a living eligible juvenile actually guards that nursery with less reach and threat than the mother, and the saved watch continues after reload.",
-        "An empty or betrayed nursery remains without an heir and tells the player why."
+        "An empty or betrayed nursery remains without an heir and tells the player why.",
+        "A self-tamed sibling that was never rescued takes the weaker watch because the colony successfully returned another young to that same clean nursery; an otherwise identical nursery with no rescue has no heir."
       ],
       "reject": [
         "A saved heir name and celebratory message appear while no juvenile takes guard duty.",
         "The mother never declines within colony play, dies without prior warning, or her child instantly becomes an equal adult sea giant.",
-        "A returned child loses its nursery link and can never consent or inherit, or a killed/traded young is resurrected or replaced to force succession."
+        "A returned child loses its nursery link and can never consent or inherit, or a killed/traded young is resurrected or replaced to force succession.",
+        "A clean nursery’s young almost never consent through the whole observed stretch, leaving affection an effectively unreachable windfall.",
+        "The colony rescued a young at this clean nursery, but its living water-connected self-tamed sibling is refused solely because that sibling was never rescued, or a different nursery’s rescue supplies the missing credit."
       ],
-      "lazy": "none: Actual consent, useful water work, rescued-juvenile guarding, weaker protection and anticipated campaign-visible decline are explicit. A saved heir name, adult replacement or unreachable chance omits the experience.",
+      "lazy": "none: Frequent ordinary consent, executed water work and a real weaker watch earned by this nursery’s colony rescue record are explicit. Rare windfalls, individual-rescue-only eligibility and name-only promotion omit those experiences.",
       "range": {
-        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Clean/harmed/betrayed and no/multiple eligible young, normal/deformed/recovered/carried history, old and new saves with and without ledger fields, juvenile alive/downed/dead/away or sold at promotion. Test age decline, age death and unrelated violent death separately, heir duty through later surge, call, canal severance and repair. Use ordinary time until the actual age cycle closes, delegated tuning target 30-60 game days from encounter with full warning already present. Alternative action orders rescue/train/canal and canal/rescue/train.",
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Clean/harmed/betrayed and no/multiple eligible young, normal/deformed/recovered/carried history, old and new saves with and without ledger fields, juvenile alive/downed/dead/away or sold at promotion. Test age decline, age death and unrelated violent death separately, heir duty through later surge, call, canal severance and repair. Use ordinary time until the actual age cycle closes, delegated tuning target 30-60 game days from encounter with full warning already present. Alternative action orders rescue/train/canal and canal/rescue/train. Explicit eligibility branches: rescued heir; never-rescued self-tamed sibling of a successfully returned young; rescued young dead or away with a living consenting sibling; no successful rescue; rescue only at a different nursery; harmed/betrayed record. Use independent RNG histories across the full B9 observation window to distinguish frequent consent from an isolated lucky roll; chance/timing calibration is C11.",
         "left_out": "No guaranteed consent on a particular random roll. No adult maturation, new full-strength mother, repeat heir manufacture or general land work. Violence against the mother by the colony cannot earn a clean succession."
       },
       "sees": {
         "instrument": "Nursery transition generator for exhaustive eligibility/commit logic. T14/T15/T19 then trace actual self-tame, ordinary water work, maternal age/health progression, death cause, anchor/duty transfer and real guard action. Existing aged-render proof supports the selected life stage only.",
         "start": "A naturally generated old mother with declared age/health and at least a reachable nursery rescue opportunity, no artificially learned general hauling, and clean versus harmful records branched from the same disposable baseline.",
         "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
-        "control": "A name/message-only mutant must fail the executed guard trace. Compare clean record with no-rescue, harm and completed-sale branches. Compare juvenile and prior mother reachable defence area and attacks without pinning an exact radius or stat. Preserve pawn identity through return and every reload.",
+        "control": "A name/message-only mutant must fail the executed guard trace. Compare clean record with no-rescue, harm and completed-sale branches. Compare juvenile and prior mother reachable defence area and attacks without pinning an exact radius or stat. Preserve pawn identity through return and every reload. Hold candidate identity, consent and route constant while varying only this nursery’s colony rescue record, including a never-rescued sibling as heir. Record consent opportunities and outcomes across independent histories over B9’s full stretch, not a forced roll or lucky draw.",
         "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
         "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
       },
@@ -314,7 +327,8 @@
         "life biomass",
         "colony effort",
         "information",
-        "settings"
+        "settings",
+        "root-line goods"
       ],
       "tests": {
         "reject": "Designer inference from the cited source. Losing this experience alone defeats hopeful continuity with an earned, visibly weaker successor",
@@ -378,23 +392,25 @@
       "accept": [
         "A working settlement hunts, builds, tends, rescues and trades through repeated natural storm advances and recessions, saves during an unresolved pool and resumes with the same animals, history and viable routes.",
         "Over the full stretch, harvested channels regain ordinary life, warnings lead to actions, betrayal remains local and permanent, and an age-related loss either transfers a real smaller watch or leaves a plainly explained empty nursery.",
-        "A replay that builds its canal before rescuing and a replay that rescues before finishing its canal each reaches coherent recorded outcomes with the rest of colony work still functioning."
+        "A replay that builds its canal before rescuing and a replay that rescues before finishing its canal each reaches coherent recorded outcomes with the rest of colony work still functioning.",
+        "Later recessions leave new flotsam in wet root-lines, and a trained young repeatedly hauls those actual deposits without staged goods or an ever-growing field of abandoned stacks."
       ],
       "reject": [
         "Isolated demonstration scenes pass while the running map fills with breeders, loses its ordinary canopy to accumulated crust, or produces an endless queue of rescue warnings.",
         "Reload revives an expired pool, forgets a sale, erases a saved child or breaks the relationship between a mother and her nursery.",
-        "The mother spends the season restarting call jobs, the child repeatedly fails land hauling, or errors recur while a laboratory scene succeeds with weather and growth disabled."
+        "The mother spends the season restarting call jobs, the child repeatedly fails land hauling, or errors recur while a laboratory scene succeeds with weather and growth disabled.",
+        "The trained young works only while initial salvage lasts, or recurring deposits pile up inland or overwhelm ordinary stores while the rest of the nursery demonstration appears successful."
       ],
       "lazy": "none: The complete default system must run the season and nursery cycle, maintain actual rescue consequences and ecological/work continuity, and survive reload and reordered actions. Isolated scenes leave explicit requirements unobserved.",
       "range": {
-        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Full map and colony sizes in common range, 15 game days minimum and continuation through the old-age nursery cycle, target 30-60 days and extend to 120 if the age model requires it. Baseline ordinary hunt/gather/tend/build schedule plus rescue-first and canal-first orders, spare versus occupied stockpiles, rare and frequent allowed storms, low/high native fertility and predator pressure. At least one save during a live pool before decision and another after a permanent sale, ordinary replay from those saves. Accelerate wall-clock with normal tick execution only, preserving all job, weather, growth, disease, age, breeder and incident clocks and their ordering.",
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Full map and colony sizes in common range, 15 game days minimum and continuation through the old-age nursery cycle, target 30-60 days and extend to 120 if the age model requires it. Baseline ordinary hunt/gather/tend/build schedule plus rescue-first and canal-first orders, spare versus occupied stockpiles, rare and frequent allowed storms, low/high native fertility and predator pressure. At least one save during a live pool before decision and another after a permanent sale, ordinary replay from those saves. Accelerate wall-clock with normal tick execution only, preserving all job, weather, growth, disease, age, breeder and incident clocks and their ordering. Recurring root-line flotsam on, initial seeding off, no staged haul items; track source depletion/restock, roots harvested or isolated, full stores and ordinary item consumption through the full stretch.",
         "left_out": "An unlimited future campaign is beyond a finite observation. Aggressive extermination and intentionally destroying all shelter are outside this routine. An insufficient event draw extends the observation or is reported unobserved, never declared a pass by directly forcing the missing outcome."
       },
       "sees": {
         "instrument": "Whole-map season is the cheapest risk-finder after its game agreement is demonstrated. T19 supplies the actual whole-map chronological state trace and save/replay comparison through normal entry points. T16/T17 supply population and health/job readings. No isolated proof helper alone can decide this bar.",
         "start": "An inhabited full local Miasma map with the actual admitted flora/fauna, old mother and nursery, available ordinary tools and all default kept mechanics active and unlocked. Record initial biomass, water masks, known identities, item quantities, roof/canal/construction and job state. Next-version extras absent from active availability.",
         "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
-        "control": "Compare uninterrupted/reloaded action timelines from the same saved state, retaining RNG state. Attribute population changes to births, predation, harvest and immigration, water to actual event/canal transitions, and status to committed transactions. The whole run uses normal weather priorities and every kept mechanic, with no paused producer or direct success-state write.",
+        "control": "Compare uninterrupted/reloaded action timelines from the same saved state, retaining RNG state. Attribute population changes to births, predation, harvest and immigration, water to actual event/canal transitions, and status to committed transactions. The whole run uses normal weather priorities and every kept mechanic, with no paused producer or direct success-state write. Record each natural recession deposit and item sink separately from initial Wreckage salvage and any imported goods; require actual repeated trained hauling after initial stocks cease to supply the route.",
         "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
         "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
       },
@@ -407,7 +423,8 @@
         "weather",
         "colony effort",
         "information",
-        "settings"
+        "settings",
+        "root-line goods"
       ],
       "tests": {
         "reject": "Designer inference from the cited source. Losing this experience alone defeats the first version functioning as a whole colony experience",
@@ -432,7 +449,7 @@
     },
     {
       "id": "C4",
-      "what": "Snapshot ordinary plant yields/growth, animal diets/products, density/pressure values and product stack conservation. Neither numbers nor field-completeness are passing bars."
+      "what": "Snapshot ordinary plant yields/growth, animal diets/products, density/pressure values and product stack conservation. Neither numbers nor field-completeness are passing bars. Snapshot recession deposit quantities, weighted table, outstanding-stock cap and provenance; test genuine wet-root eligibility and no duplicate restock at reload or toggle."
     },
     {
       "id": "C5",
@@ -448,7 +465,7 @@
     },
     {
       "id": "C8",
-      "what": "No default custom nursery-buyer incident, decay meter/research availability, cell construction/feed/conversion, corpse processing or Cuisine output, attar production/application or loose flotsam restocking. Existing code/defs remain stable and inert. Read game availability and active state, not DefDatabase absence."
+      "what": "No default custom nursery-buyer incident, decay meter/research availability, cell construction/feed/conversion, corpse processing or Cuisine output, attar production/application or initial loose flotsam seeding; recurring wet root-line deposits remain active for juvenile hauling. Existing code/defs remain stable and inert. Read game availability and active state, not DefDatabase absence."
     },
     {
       "id": "C9",
@@ -460,7 +477,7 @@
     },
     {
       "id": "C11",
-      "what": "Existing warden age texture/render-state tests and negative verdict mutants. Record actual initial age, health decline, death cause, known warning time and smaller heir defence footprint. No graphic count as a bar."
+      "what": "Existing warden age texture/render-state tests and negative verdict mutants. Record actual initial age, health decline, death cause, known warning time and smaller heir defence footprint. No graphic count as a bar. Record consent chance, eligible roll cadence, opportunity totals and outcomes across independent histories over B9’s window; tune probability as a check while preserving frequent consent as the experience."
     },
     {
       "id": "C12",
@@ -519,7 +536,7 @@
     },
     {
       "id": "R6",
-      "rule": "Only the child’s own reachable mother accepts return. Commit payment/ownership and permanent betrayal atomically after completed trade. Cancel/refusal cannot betray. Colony pawn, turret and harvest/butchery harm to nursery members breaks the clean record and revokes tolerance. Unrelated disease or wildlife harm does not. Betrayal survives reload and toggle. Group notifications by nursery and changed reason. Evaluate a legitimate offered return before routine maternal acquisition of that carrier as a target at the acceptance water, so the normal rescue action can complete without changing the mother’s general hostility.",
+      "rule": "Only the child’s own reachable mother accepts return. Commit payment/ownership and permanent betrayal atomically after completed trade. Cancel/refusal cannot betray. Colony pawn, turret and harvest/butchery harm to nursery members breaks the clean record and revokes tolerance. Unrelated disease or wildlife harm does not. Betrayal survives reload and toggle. Group notifications by nursery and changed reason. Evaluate a legitimate offered return before routine maternal acquisition of that carrier as a target at the acceptance water, so the normal rescue action can complete without changing the mother’s general hostility. Tolerance removes the colony from ordinary targets, but starting any harvest of plants, wood, salt or animals inside the mother’s anchor reach immediately restores that actor as a defence target, tolerated or not; outside-reach harvesting does not. This is a per-act exception, not permanent colony-wide revocation. Stopping non-nursery harvest restores ordinary exclusion if trust remains intact. Damage, killing, harvesting or butchering nursery young instead breaks the nursery’s clean record. Targeting never permits a dry-land chase or enlarges the anchor.",
       "touches": [
         "nursery record",
         "water routes",
@@ -529,13 +546,14 @@
     },
     {
       "id": "R7",
-      "rule": "Keep the mother wild and anchored. Young consent is probabilistic while the affiliated record is clean, is never conventional taming, and remains possible after a genuine return. Preserve Guard, water-side haul and release/attack with full-route eligibility, hide general Haul/Rescue. An age-related death can promote a living eligible juvenile once, with less reach and combat threat. No rescue means no manufactured heir. Colony killing the mother bars a clean inheritance. Initial mother age is plainly failing, with a delegated tuning target of loss within 30-60 game days and warning already present on encounter. Use ordinary age/health progression, calibrated before choosing a final constant. Consent without rescue is allowed, but inheritance requires that individual’s actual successful rescue/return history, clean affiliation, living colony ownership and a legitimate local water route to the nursery. A known away pawn waits as an absent candidate until the death decision, and cannot be replaced or teleported into the nursery. The single promotion decision at death records an absent heir if no eligible local young exists.",
+      "rule": "Keep the mother wild and anchored. Young consent is frequent and probabilistic while the affiliated record is clean, is never conventional taming, and remains possible after a genuine return. Preserve Guard, water-side haul and release/attack with full-route eligibility, hide general Haul/Rescue. An age-related death can promote a living eligible juvenile once, with less reach and combat threat. No rescue means no manufactured heir. Colony killing the mother bars a clean inheritance. Initial mother age is plainly failing, with a delegated tuning target of loss within 30-60 game days and warning already present on encounter. Use ordinary age/health progression, calibrated before choosing a final constant. Consent without rescue is allowed, but inheritance requires at least one actual successful colony rescue/return at that same nursery, its still-clean record, and a living self-tamed young affiliated to it with a legitimate local water route to the nursery; the heir need not itself have been rescued. A known away pawn waits as an absent candidate until the death decision, and cannot be replaced or teleported into the nursery. The single promotion decision at death records an absent heir if no eligible local young exists. Keep recurring post-recession root-line deposits as needed by signature water-only hauling: without them default natural maps have no recurring water-side work. Deposit only at actual wet root-lines with eligible water-side pickup and destination routes, bounded by saved outstanding-stock accounting; inland transplanted roots alone never qualify. Consume each completed recession once, preserve stack identities and cap accounting through haul/consumption/reload, and never have a haul job summon its own source items. Initial loose-goods seeding is separately default-off next-version scope. T6 splits those gates and T15 supplies placement/work.",
       "touches": [
         "nursery record",
         "water routes",
         "colony effort",
         "information",
-        "life biomass"
+        "life biomass",
+        "root-line goods"
       ]
     },
     {
@@ -571,12 +589,13 @@
     },
     {
       "id": "R11",
-      "rule": "All deferred and recommended-for-retirement active behaviours default off and are absent from fresh-map availability. Preserve their defs, code, assets and saved progress inertly. Keep return/consent operational independently of optional sale or succession controls. Turn off decay/cuisine, attar and boons at every actual execution and availability entry point. The retired pollination gate remains retired. Worldgen has no next-version mode.",
+      "rule": "All deferred and recommended-for-retirement active behaviours default off and are absent from fresh-map availability. Preserve their defs, code, assets and saved progress inertly. Keep return/consent operational independently of optional sale or succession controls. Turn off decay/cuisine, attar and boons at every actual execution and availability entry point. The retired pollination gate remains retired. Worldgen has no next-version mode. Defer initial flotsam seeding only; its gate never disables the kept recurring wet root-line deposits or the work they support.",
       "touches": [
         "settings",
         "life biomass",
         "nursery record",
-        "colony effort"
+        "colony effort",
+        "root-line goods"
       ]
     },
     {
@@ -629,7 +648,7 @@
         "R10"
       ],
       "holds_together": "unknown",
-      "why": "The same surge, canal, pool and work graph drives isolation, calls, rescue and defence. Endpoint-only checks and any-edge heuristics cannot establish the whole invariant.",
+      "why": "The same surge, canal, pool and work graph drives isolation, calls, rescue and defence. Endpoint-only checks and any-edge heuristics cannot establish the whole invariant. Harvest defence must obey the same anchor and water path limits, and root-line pickup/placement cannot rely on proximity alone.",
       "model": "Shore and route sweep"
     },
     {
@@ -648,7 +667,7 @@
         "R11"
       ],
       "holds_together": "unknown",
-      "why": "Return removes the hediff holding identity while trade callbacks and promotion can race or lose prior state. Several nurseries and an expiring pool expose the combined failure.",
+      "why": "Return removes the hediff holding identity while trade callbacks and promotion can race or lose prior state. Several nurseries and an expiring pool expose the combined failure. The nursery’s colony rescue credit is independent of the heir’s individual history; per-act ordinary harvesting alters current targets without falsely marking nursery harm.",
       "model": "Nursery transition generator"
     },
     {
@@ -704,7 +723,7 @@
         "R11"
       ],
       "holds_together": "unknown",
-      "why": "Concurrent tending, slow travel, blocked work, several pools, buyers and juvenile hauling can consume rescue windows and restart duties. Ordinary party success cannot be inferred from individual job methods.",
+      "why": "Concurrent tending, slow travel, blocked work, several pools, buyers and juvenile hauling can consume rescue windows and restart duties. Ordinary party success cannot be inferred from individual job methods. Recession deposits, hauling, maternal harvest defence and competing colony harvest jobs add source availability and target-interruption pressure.",
       "model": "Food and rescue budget"
     },
     {
@@ -751,6 +770,19 @@
       "holds_together": "argued",
       "why": "The default kept-mechanic manifest defines every bar’s on state. Controls pause producers while stable records remain authoritative, so no successful branch relies on an enabled deferred feature. Independent return, sale and succession gates are explicitly required, and off/on/reload checks reject silent resets.",
       "model": ""
+    },
+    {
+      "thing": "root-line goods",
+      "members": [
+        "B5",
+        "B7",
+        "B9",
+        "R7",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Recurring deposits must land on naturally usable wet root-lines and support real water-only work after initial salvage runs out, while stock caps, harvest, congestion and reload cannot flood stores, create inland grants or duplicate items. The startup gate must not disable this source. No calibrated whole-map item-flow trace exists.",
+      "model": "Whole-map season"
     }
   ],
   "old_bars": {}

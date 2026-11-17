@@ -62,11 +62,11 @@ Ordered pawn job uses one attar to reduce first permanent injury's severity; fre
 
 Designer decision. Designer recommends retiring the current injury-severity balm because it changes health and conflicts with the cosmetic-only, no-medicine boundary. Cosmetic attar remains a next-version possibility. Ticket T5.
 
-### flotsam_yard — Next version, switched off
+### flotsam_initial_seed — Next version, switched off
 
-Seeded and post-recede weighted steel/wood/cloth/component stacks near thessamor, brelloch or thrannock; amount/cap tuning and saved references. Proximity alone does not establish a wet root-line.
+The one-time startup loose-goods scattering, currently sharing FlotsamStep and flotsamEnabled with recession deposits.
 
-Designer decision. Repeated loose-goods restocking adds a second surge reward. Ordinary Wreckage salvage and ordinary haulable goods suffice for water work. Ticket T6.
+Designer decision. The initial windfall can disappear without defeating land, life or the signature; recurring wet root-line deposits remain kept as needed_by signature water-only haul. T6 splits the startup gate; T15 specifies the kept source and work.
 
 ### fever_forging — Next version, switched off
 

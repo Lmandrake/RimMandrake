@@ -1,0 +1,1061 @@
+{
+ "mod": "Miasma",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json B6 (says, accept 1: 'she stops targeting colonists while remaining wild') and R6; definition.md 'Using it / Routine' ('Tolerance excludes ordinary colonists from her targets until the colony harms or harvests the nursery'); ambiguities.md 'Tolerance and harm'",
+     "evidence": "design/Jawa/worldbuilding/biomes/the_miasma.md §4 (lines 119-121): 'Tolerance means only that you have left her target set; she is commanded by nobody, and harvesting inside her reach returns you to it at once.' miasma_fauna_roster_2026-09-23.md §6 'Not-so-gentle': 'Harvesting anything inside her reach puts you straight back into it, tolerated or not — which is the \"not-so-gentle\" he asked for'. The proposal narrows this to harm or harvest of nursery members. Under B6/R6 as written, a tolerated colonist can cut thessamor or gather brelloch salt beside the crèche and stay safe. ambiguities.md cites the 'frozen harvesting inside her reach boundary' but rewrites it as 'harvesting nursery young'.",
+     "would_pass": "Tolerance takes the colony out of her target set colony-wide, but any colonist harvesting anything inside her anchor reach (plants, wood, salt, animals) is targeted at once, while colonists harvesting outside it stay safe. Harm, killing or butchering nursery young still ends the clean record, and a completed sale still betrays the nursery permanently.",
+     "smallest_fix": "Add the per-act harvest-inside-reach targeting clause to R6 and to B6's says. Add an accept picture to B6: 'a tolerated colonist cutting wood inside her reach is attacked while one harvesting outside it works unharmed'. Add a reject picture: 'a tolerated colonist harvests beside the crèche untouched'. Correct the 'Tolerance and harm' entry in ambiguities.md."
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json B7 says ('a rescued juvenile can inherit') and R7 ('inheritance requires that individual's actual successful rescue/return history'); definition.md 'What changes in the colony's story'; tickets.md T14",
+     "evidence": "miasma_fauna_roster_2026-09-23.md §6a, 'The answer to his question: they inherit her': 'If you have spent the campaign pulling her young out of drying pools — and they have self-tamed, and grown — one of them stays and takes the crèche … guarded by an animal that chose you because of what you did for its siblings.' Also: 'rescue nothing and there is no child to inherit' and 'the difference must be entirely the player's record.' The ruling makes inheritance depend on the nursery's rescue record. A self-tamed sibling is the intended heir. The proposal bars any heir that was not itself rescued.",
+     "would_pass": "Eligibility is: the colony has at least one successful rescue/return at that nursery, its record is clean, and a living self-tamed young of that nursery has a legal water route to it. Rescue nothing, betray, or harm the nursery and there is no heir.",
+     "smallest_fix": "Reword R7 and B7 from 'that individual's rescue history' to 'the colony's rescue record at that nursery, plus a self-tamed young of it'. Change T14's acceptance test and the nursery transition generator's branches so they include 'sibling of a rescued young inherits'."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B7 says ('young sometimes choose the colony'), figurative: []",
+     "evidence": "miasma_fauna_roster_2026-09-23.md §6a, the owner verbatim: 'They should frequently self-tame if there are no hostilities against them.' Also: 'Frequent self-tame while your record against that crèche is clean'. B7 replaces 'frequently' with 'sometimes', which is weaker. 'Sometimes' is also an unmarked vague frequency word: no picture separates a nursery whose young almost never consent from one where consent is common.",
+     "would_pass": "B7 says consent is frequent for a clean-record nursery. The frequency word is marked figurative and backed by pictures: accept, several unharmed young of a clean nursery choose the colony within the stretch the whole bar observes; reject, a clean nursery whose young almost never consent over that stretch. The chance value itself stays a check.",
+     "smallest_fix": "Replace 'sometimes' with 'frequently' in B7 and add it to figurative with one accept picture and one reject picture. Keep the roll tuning in C11 or C6."
+    },
+    {
+     "head": "moved_extra_relied_on",
+     "where": "bars.json B5 accept 2 ('a trained child completes ordinary water-side hauling along an eligible route'), B7 ('useful water-bound work'), R7, T15; census.json flotsam_yard (fate next_version, T6) and water_only_haul",
+     "evidence": "miasma_fauna_roster_2026-09-23.md §6a, the haul row: 'Haul, from the water only — the flotsam yard is already a Miasma economy (sheet §7) and RM_Thrannock's root-nets are where it collects.' The proposal defers the flotsam yard and claims 'ordinary loose items or normal Wreckage salvage' suffice. But src/RimMandrake/Miasma/Defs/MapGeneration/RM_MiasmaWreckField.xml scatters wreck buildings once, at map generation (order 965), with no water-side placement. Nothing else named brings items to water-side cells on a recurring basis. B5's range does not vary whether a water-side item source exists. With flotsam off, the haul picture either finds nothing to haul after the first salvage or passes only on staged items.",
+     "would_pass": "A default map with flotsam off and no staged items has a recurring natural source of items at eligible water-side cells, and a trained young hauls them through the season. Alternatively, the root-line deposit that supplies them is kept as needed_by signature, with its deletion argument.",
+     "smallest_fix": "Reclassify flotsam_yard's post-recession root-line deposit as needed_by signature. The deletion argument: without it, the ruled water-only haul has no recurring work. The initial seeding can stay deferred. Add 'flotsam source on, no staged items' to B5's range. Narrow T6 to match."
+    }
+   ],
+   "reviewer_refusals": 4,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A legible showcase corner sits beside the base while the ordinary inhabited map is an impassable wall of roots or loses its blooms in opaque haze.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "From a working settlement, prop-root cages and low crowns enclose channels, pale salt banks mark the seaward side and saturated blooms remain distinguishable through warm haze. Workers can reach the fresh buildable patches.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "After recession, older dead ilbareen stand beyond the current water margin while the current water colours still reveal where brine is now.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "A generic green forest covers blue ponds under a green filter, with root forms and salt banks indistinguishable at colony zoom.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "The plant kills a colonist, a tame animal or prey behind a sealed wall, or silently deletes the prey with no feeding sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A hunter takes edible scuttlers, animal predators feed, a plant visibly feeds on an eligible wild scuttler, and later ordinary life replenishes the worked channel.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "Products exist in defs but ordinary harvest/husbandry cannot obtain them, or a fictional flyer only walks on the ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Scuttlers are painted or spawned for a showcase and disappear from routine channels after ordinary hunting and predation.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "A colonist, a tame scuttler and a rainbow bloom share the worked patch safely while the separate carnivorous plant takes wild prey.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 6,
+     "text": "The keeper obtains liliana silk and eggs and karrobel castings through ordinary jobs while a swarm’s flight tracker enters flight and a native beside its own water drinks successfully.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "A warning and water recolour occur on a permanently fixed water footprint, so recession cannot create a newly isolated pool.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "The tide repeats on a fixed calendar while the sky stays clear, or all brine advance fails to affect exposed crops.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "The weather and warning change, a worker returns from a nearby channel job, brine wets a previously exposed margin and the fresh crop patch it reaches fails while constructed surfaces remain usable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "The new water withdraws from that margin into disconnected low spots, and removing a bridge later reveals the correctly updated natural ground beneath it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "The front instantly traps a worker after its first sign, or it replaces the player’s completed floor with raw crust.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The first call opens a letter but the animal is silent and unlocatable through the actual rescue, or all ordinary rescues time out before a ready party can arrive.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A rescued young remains identifiable after its former pool expires, while a delayed wild young dies visibly or has its departure explicitly reported at that pool.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "A young is spawned in a pre-existing painted pond by a proof helper while the surge itself changes no connectivity.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "A formerly sea-connected branch becomes a shrinking pool after recession, an existing juvenile is visibly stranded and a prepared party returns it before the pool dries.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "The call remains locatable during an unresolved carry and stops when that individual’s rescue is accepted.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 6,
+     "text": "The pool expiry destroys a rescued colony animal elsewhere on the map, or only a developer log reveals the missing animal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "A trained child offers general land hauling and repeatedly starts impossible jobs, or a canal grants command of the wild mother.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A child follows its keeper along the water and stops when the keeper goes inland, while a trained child completes ordinary water-side hauling along an eligible route.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "A valid water destination causes a path across a dry shortcut, followed by a periodic teleport or recovery walk.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "A continuous sea-fed canal extends a permitted water route, the mother swims along the part within her nursery reach and stops where dry ground interrupts it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "A fresh river exit or any large closed pond is treated as a sea connection, or an isolated-pool flag deletes the trapped mother.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 6,
+     "text": "After a canal is cut the mother stays visibly in the wet isolated component, and restoring the water route makes it usable again.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A carried or canal-freed young reaches its own mother’s accessible water, distress ends and she stops targeting colonists while remaining wild.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "A success letter appears while the mother still targets the colony, or a reload or setting cycle forgives a completed betrayal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Cancelling a sale leaves both the child and the nursery’s standing intact, and harming the nursery later ends previously earned tolerance.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "Any nearby mother accepts any child and awards colony-wide protection, or the return removes the only identity record needed for later consent.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "Opening a trade window or an unaffordable offer voids succession before a sale completes.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 6,
+     "text": "A buyer completes a meaningful sale, payment and the child’s transfer occur, and that nursery permanently refuses later forgiveness while an unrelated nursery can still accept its own young.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "After the anticipated age-related loss a living eligible juvenile actually guards that nursery with less reach and threat than the mother, and the saved watch continues after reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "A saved heir name and celebratory message appear while no juvenile takes guard duty.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The mother never declines within colony play, dies without prior warning, or her child instantly becomes an equal adult sea giant.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "A returned child loses its nursery link and can never consent or inherit, or a killed/traded young is resurrected or replaced to force succession.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "The mother is visibly failing from first encounter, the keeper receives a plain age warning, a registered unharmed young chooses the colony and works along the water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 6,
+     "text": "An empty or betrayed nursery remains without an heir and tells the player why.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Rain supplies the swamp, a clear-sky test conceals the haze cost, or a biome-specific sun immunity makes the worker safe.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Surge weather takes over during the advance, dry haze returns after it and a sheltered team continues necessary colony and rescue work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "A native drinks from its own brackish water without a dehydration spiral while the colonists still pay their normal water and disease costs.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "A recovered disease quietly grants a deferred boon at default settings.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "The roof clears a real disease instantly, or routine dry weather permanently incapacitates the colony despite ordinary shelter and tending.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 6,
+     "text": "An outdoor worker accumulates visible exposure, spends time under a roof and recovers that exposure while a genuinely diseased colonist still needs ordinary tending.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 1,
+     "text": "Reload revives an expired pool, forgets a sale, erases a saved child or breaks the relationship between a mother and her nursery.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 2,
+     "text": "The mother spends the season restarting call jobs, the child repeatedly fails land hauling, or errors recur while a laboratory scene succeeds with weather and growth disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 3,
+     "text": "Over the full stretch, harvested channels regain ordinary life, warnings lead to actions, betrayal remains local and permanent, and an age-related loss either transfers a real smaller watch or leaves a plainly explained empty nursery.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 4,
+     "text": "A replay that builds its canal before rescuing and a replay that rescues before finishing its canal each reaches coherent recorded outcomes with the rest of colony work still functioning.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 5,
+     "text": "Isolated demonstration scenes pass while the running map fills with breeders, loses its ordinary canopy to accumulated crust, or produces an endless queue of rescue warnings.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 6,
+     "text": "A working settlement hunts, builds, tends, rescues and trades through repeated natural storm advances and recessions, saves during an unresolved pool and resumes with the same animals, history and viable routes.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Canal-carried brine salting the colony's own fresh ground. miasma_fauna_roster_2026-09-23.md §6b, 'Brine is a fluid too': 'A canal dug from the wrong end of the gradient carries brine, which kills the fresh-end flora — RM_Ilbareen above all … Careless canal-building salts your own ground.' Its partner in the same section is a surge cutting or redrawing a dug canal ('A canal that silts, is cut, or is redrawn by a surge leaves her in … a pond'). census.json has engine_flow and sea_connected_routes but no row for canal-borne salinity changing the gradient or ilbareen, and none for the surge interacting with a player-built canal. No bar, rule or model sweeps either.",
+   "loop_or_three_way": "R3 (bridges and floors are preserved), R4 ('a bridge preserves its underlying fluid connection but can obstruct a swimmer's movement surface') and B5 (the mother 'become[s] visibly stranded when a canal severs that connection') meet with R5 and the no-unreadable-vanish ruling. A colonist bridges the sea-fed canal that carries the mother inland. Hydrologically the inland reach still touches the sea, so no pool is tracked, no stranded state or drying outcome fires, and R4's trapped-animal sign never triggers. Yet she can never swim home past the bridge. Each piece holds in pairs; together they produce a permanently trapped giant with no readable sign and a 'viable route' in B9's reload comparison. Neither the shore-and-route sweep nor C9 states this case as a distinct witness (C9 lists bridge cut/repair mutants but reads stranding from the hydrological component).",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 594195
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B4 (says, range.left_out, reject #1); definition.md 'Using it'; owner_pages.md page one",
+     "evidence": "The owner's ruling, quoted word for word in design/Jawa/worldbuilding/biomes/miasma_fauna_roster_2026-09-23.md §6, says: \"Means that when it spawns, so do some stranded young (sometimes).\" The same section explains why it matters: \"the offer arrives with her, on the first day ... it is what makes this content reachable at all.\" census.json row warden_sites keeps it as signature (\"anchored warden and sometimes a nearby stranded juvenile\"). But no bar, definition paragraph or owner-page line mentions it. B4 says only \"When Miasma surge water withdraws...\", and its range allows \"Not every random recession must create an occupied pool.\" B4 reject #1 also refuses \"A young is spawned in a pre-existing painted pond ... while the surge itself changes no connectivity.\" A cold reader would refuse the ruled day-one young under that picture. So the ruled first-day offer is neither promised nor protected, and B9's stretch may never show an orphan at all.",
+     "would_pass": "A bar says a mother can arrive with a stranded young of her own, so the rescue-or-sell choice can open before any storm. Surge recession remains the recurring cause. The prepainted-pond reject is narrowed so it cannot catch the mother's own arrival.",
+     "smallest_fix": "Add a B4 accept picture: 'A mother placed with the map sometimes has her own stranded young nearby, which calls and can be rescued before any storm has come.' Reword reject #1 to: 'a proof helper spawns a young in a painted pond, and neither the mother's arrival nor a surge caused it.' Add one line to definition.md 'Using it' and to page one."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json rows flotsam_yard and water_only_haul (both needed_by signature); bars.json B5 accept #2 and reject #4, B9 accept #4 and reject #4, R7's deposit clauses, meeting 'root-line goods'; tickets T6 and T15",
+     "evidence": "The signature in result.json is \"Storm recession creates nursery rescues whose treatment determines maternal tolerance and the chance of a juvenile inheritance.\" The case for keeping the deposits is circular. ambiguities.md 'Flotsam and salvage' says \"deleting them defeats recurring water-only haul\". 'Trainable at the waterline' says the haul stays because removing it \"defeats the affectionate child's ordinary usefulness\". So the deposits are kept for the haul, and the haul is kept for usefulness, which the signature sentence never names. The fauna roster §6a table already lists Guard and release/attack as water-scoped trained work that needs no item source. Deleting the haul and its recurring deposits leaves rescue, tolerance, sale and inheritance whole. What it removes is a custom economy with stock caps, its own wet-root placement, an unknown meeting ('root-line goods') and a seasonal item-flow model. That is the 'little custom details' the owner told the Designer to move.",
+     "would_pass": "Either a deletion argument that ties water-side haul to land, life or the signature as stated, or water-side haul and its recurring deposits moved to next version, switched off. The young's 'useful water-bound work' in B7 is then met by Guard and release/attack.",
+     "smallest_fix": "Move flotsam_yard's recurring deposits and water_only_haul to next_version.md with switch-off tickets (merge T6 and T15 into one). Drop B5 accept #2's haul clause, B5 reject #4, B9 accept #4 and reject #4, R7's deposit sentences and the 'root-line goods' meeting. Keep Guard and release/attack in R7."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B7 (accept #2 'actually guards that nursery with less reach and threat'), R6, R7; definition.md 'What changes in the colony's story'; tickets.md T14",
+     "evidence": "R6: \"starting any harvest of plants, wood, salt or animals inside the mother's anchor reach immediately restores that actor as a defence target, tolerated or not.\" The source mechanism is RM_JobGiver_AnchorDefense (EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs), which the roster describes as fighting \"anything hostile-or-harvesting inside the anchor radius\". The roster §6a says the heir is \"simply a tamed juvenile with the anchor comp pointed at the crèche. The same mechanism\". Neither the proposal nor T14 says whom the colony-owned heir targets. Does it attack its own colony's salt and wood gatherers inside its reach? Does it guard only against hostiles? Does the harvest exception end when the mother dies? The 'weaker watch' is a kept signature mechanic with no target set.",
+     "would_pass": "R7 and B7 state the heir's target set: for example, hostiles in its reduced reach, never its own colony's harvesters. Add an accept/reject pair: 'a colonist gathering salt beside the inherited crèche works unharmed while the heir attacks a raider crossing its channel' against 'the heir attacks its own colony's salt gatherer'.",
+     "smallest_fix": "Add one sentence to R7 naming the heir's targets, and that accept/reject pair to B7."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md 'Using it' ('A held distressed young ... can be offered to an ordinary eligible trader'); ambiguities.md 'Carrying versus the water-bound affection' ('held for the ruled sale'); bars.json B6 accept #2, R6, R7 ('is never conventional taming'); next_version.md buyer_visits",
+     "evidence": "In code, a sellable young must belong to the colony. RM_MothersPrice.cs:280 checks \"p.Faction == Faction.OfPlayer && RM_MothersPrice.IsStrandedYoung(p)\". Carrying a wild pawn does not change its faction. R7 forbids conventional taming, and the roster §6a says a conventional taming grind \"is working against three rulings at once\". With the custom buyer moved to next version, the proposal never says how a colony comes to 'hold' a wild stranded young that an ordinary trader can buy: vanilla Tame, penning, capture, or only after self-taming. Without that, the sale half of the ruled 'carry it home or sell it' choice (MIASMA_MOTHERS_PRICE_1, owner card 2026-10-02) has no defined route.",
+     "would_pass": "A rule naming the act that makes a stranded young colony-held and tradeable, consistent with R7. Plus a B6 picture in which an ordinary trader's dialog lists a young the colony came to hold that way.",
+     "smallest_fix": "Add to R6: '<named act> makes an unresolved stranded young colony-held without taming it; only a held young appears in an ordinary trader's dialog.' Add the matching accept picture to B6."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B9 says ('ecological engulfment', 'permanent barren collapse') with figurative []; B1 says ('rainbow plants') with figurative []",
+     "evidence": "B9's figurative list is empty, but 'engulfment' and 'barren collapse' are images, not states. models.md defines a different set of words, 'flood', 'desert', 'stall' and 'error storm', so B9 and its own model use different vocabulary. B1's accept picture says \"saturated blooms\", which departs from a literal 'rainbow' without marking it.",
+     "would_pass": "Each word is listed in figurative with what it stands for and one accept picture that departs from the literal reading. Or B9 uses models.md's defined words.",
+     "smallest_fix": "Add figurative entries: 'engulfment' = breeders or events displacing ordinary play (the models' 'flood'); 'barren collapse' = ordinary life failing to recover in the habitable fresh region (the 'desert'); 'rainbow' = saturated multi-coloured blooms, not every hue on one plant."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B7 (figurative 'frequently', reject #4); models.md Whole-map season 'Game agreement before belief'; checks C11",
+     "evidence": "The instrument checks only that consent counts on holdout histories \"fit prediction intervals fixed from shipped chance/cadence\". That tests whether the model agrees with the game, not whether consent is frequent. A build that ships a chance so low the young almost never consent would match its own model and pass. models.md says \"B7 frequent-versus-almost-never classifications must agree with real traces\" but never states the line that classifies a trace as frequent or almost-never. The tuning is pushed to C11.",
+     "would_pass": "B7's sees states the comparison a player notices, as a classification and not a tuning number. For example, across the observed stretch a clean nursery with living young usually has young choosing the colony before the mother dies, and a clean nursery whose mother dies with none having chosen is the exception. The verdict comes from game traces, never from agreement with the shipped chance.",
+     "smallest_fix": "Add that classification rule to B7 sees.control. Delete 'fixed from shipped chance/cadence' as the pass criterion in models.md, keeping it only as the model's calibration check."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B1 sees.instrument",
+     "evidence": "\"Live rendered-map look with the simultaneous terrain/salinity and access overlay supplied by T19.\" B1 is about the player recognising salt, mud and channels at ordinary zoom. A look taken with a salinity overlay drawn reads the overlay, so a build whose plain render leaves salt banks indistinguishable (reject #1) can pass.",
+     "would_pass": "The look is judged on the plain rendered map with no debug overlay. The overlay is captured as a separate frame, used only to choose and label the sampled regions.",
+     "smallest_fix": "Reword the B1 instrument: 'judged on the plain render with no overlay drawn; the T19 overlay is a separate frame used only to locate sample regions.'"
+    }
+   ],
+   "reviewer_refusals": 7,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A generic green forest covers blue ponds under a green filter, with root forms and salt banks indistinguishable at colony zoom.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "From a working settlement, prop-root cages and low crowns enclose channels, pale salt banks mark the seaward side and saturated blooms remain distinguishable through warm haze. Workers can reach the fresh buildable patches.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "A legible showcase corner sits beside the base while the ordinary inhabited map is an impassable wall of roots or loses its blooms in opaque haze.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "After recession, older dead ilbareen stand beyond the current water margin while the current water colours still reveal where brine is now.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A hunter takes edible scuttlers, animal predators feed, a plant visibly feeds on an eligible wild scuttler, and later ordinary life replenishes the worked channel.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "The plant kills a colonist, a tame animal or prey behind a sealed wall, or silently deletes the prey with no feeding sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "Scuttlers are painted or spawned for a showcase and disappear from routine channels after ordinary hunting and predation.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Products exist in defs but ordinary harvest/husbandry cannot obtain them, or a fictional flyer only walks on the ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "The keeper obtains liliana silk and eggs and karrobel castings through ordinary jobs while a swarm’s flight tracker enters flight and a native beside its own water drinks successfully.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 6,
+     "text": "A colonist, a tame scuttler and a rainbow bloom share the worked patch safely while the separate carnivorous plant takes wild prey.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "The front instantly traps a worker after its first sign, or it replaces the player’s completed floor with raw crust.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "The new water withdraws from that margin into disconnected low spots, and removing a bridge later reveals the correctly updated natural ground beneath it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "The tide repeats on a fixed calendar while the sky stays clear, or all brine advance fails to affect exposed crops.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "The weather and warning change, a worker returns from a nearby channel job, brine wets a previously exposed margin and the fresh crop patch it reaches fails while constructed surfaces remain usable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "A warning and water recolour occur on a permanently fixed water footprint, so recession cannot create a newly isolated pool.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "A formerly sea-connected branch becomes a shrinking pool after recession, an existing juvenile is visibly stranded and a prepared party returns it before the pool dries.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "The pool expiry destroys a rescued colony animal elsewhere on the map, or only a developer log reveals the missing animal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "The first call opens a letter but the animal is silent and unlocatable through the actual rescue, or all ordinary rescues time out before a ready party can arrive.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The call remains locatable during an unresolved carry and stops when that individual’s rescue is accepted.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "A rescued young remains identifiable after its former pool expires, while a delayed wild young dies visibly or has its departure explicitly reported at that pool.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 6,
+     "text": "A young is spawned in a pre-existing painted pond by a proof helper while the surge itself changes no connectivity.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "After a canal is cut the mother stays visibly in the wet isolated component, and restoring the water route makes it usable again.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A continuous sea-fed canal extends a permitted water route, the mother swims along the part within her nursery reach and stops where dry ground interrupts it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "A fresh river exit or any large closed pond is treated as a sea connection, or an isolated-pool flag deletes the trapped mother.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "A child follows its keeper along the water and stops when the keeper goes inland, while a trained child hauls naturally deposited root-line flotsam along an eligible route after successive recessions.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "A valid water destination causes a path across a dry shortcut, followed by a periodic teleport or recovery walk.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 6,
+     "text": "A trained child offers general land hauling and repeatedly starts impossible jobs, or a canal grants command of the wild mother.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 7,
+     "text": "The trained child hauls only a staged item or the initial wreck salvage, then has no natural water-side work after later recessions.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A success letter appears while the mother still targets non-harvesting tolerated colonists, or a reload or setting cycle forgives a completed betrayal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Any nearby mother accepts any child and awards colony-wide protection, or the return removes the only identity record needed for later consent.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Opening a trade window or an unaffordable offer voids succession before a sale completes.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "A tolerated colonist cutting wood inside her reachable anchor waters is attacked while a colonist harvesting outside her anchor reach works unharmed by her.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "Cancelling a sale leaves both the child and the nursery’s standing intact, and harming the nursery later ends previously earned tolerance.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 6,
+     "text": "A tolerated colonist harvests salt beside the crèche untouched because only harming nursery young can trigger the mother’s defence.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 7,
+     "text": "A buyer completes a meaningful sale, payment and the child’s transfer occur, and that nursery permanently refuses later forgiveness while an unrelated nursery can still accept its own young.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 8,
+     "text": "A carried or canal-freed young reaches its own mother’s accessible water, distress ends and she stops targeting non-harvesting colonists while remaining wild.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "An empty or betrayed nursery remains without an heir and tells the player why.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "The mother never declines within colony play, dies without prior warning, or her child instantly becomes an equal adult sea giant.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The mother is visibly failing from first encounter and the keeper receives a plain age warning; several unharmed young of the clean nursery choose the colony within the whole observed stretch, with failed rolls and gaps allowed, and work along the water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "The colony rescued a young at this clean nursery, but its living water-connected self-tamed sibling is refused solely because that sibling was never rescued, or a different nursery’s rescue supplies the missing credit.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "A clean nursery’s young almost never consent through the whole observed stretch, leaving affection an effectively unreachable windfall.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 6,
+     "text": "A saved heir name and celebratory message appear while no juvenile takes guard duty.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 7,
+     "text": "After the anticipated age-related loss a living eligible juvenile actually guards that nursery with less reach and threat than the mother, and the saved watch continues after reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 8,
+     "text": "A self-tamed sibling that was never rescued takes the weaker watch because the colony successfully returned another young to that same clean nursery; an otherwise identical nursery with no rescue has no heir.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 9,
+     "text": "A returned child loses its nursery link and can never consent or inherit, or a killed/traded young is resurrected or replaced to force succession.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Surge weather takes over during the advance, dry haze returns after it and a sheltered team continues necessary colony and rescue work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "An outdoor worker accumulates visible exposure, spends time under a roof and recovers that exposure while a genuinely diseased colonist still needs ordinary tending.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "A recovered disease quietly grants a deferred boon at default settings.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Rain supplies the swamp, a clear-sky test conceals the haze cost, or a biome-specific sun immunity makes the worker safe.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "A native drinks from its own brackish water without a dehydration spiral while the colonists still pay their normal water and disease costs.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 6,
+     "text": "The roof clears a real disease instantly, or routine dry weather permanently incapacitates the colony despite ordinary shelter and tending.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 1,
+     "text": "Over the full stretch, harvested channels regain ordinary life, warnings lead to actions, betrayal remains local and permanent, and an age-related loss either transfers a real smaller watch or leaves a plainly explained empty nursery.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 2,
+     "text": "Isolated demonstration scenes pass while the running map fills with breeders, loses its ordinary canopy to accumulated crust, or produces an endless queue of rescue warnings.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 3,
+     "text": "Reload revives an expired pool, forgets a sale, erases a saved child or breaks the relationship between a mother and her nursery.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 4,
+     "text": "Later recessions leave new flotsam in wet root-lines, and a trained young repeatedly hauls those actual deposits without staged goods or an ever-growing field of abandoned stacks.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 5,
+     "text": "A replay that builds its canal before rescuing and a replay that rescues before finishing its canal each reaches coherent recorded outcomes with the rest of colony work still functioning.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 6,
+     "text": "The trained young works only while initial salvage lasts, or recurring deposits pile up inland or overwhelm ordinary stores while the rest of the nursery demonstration appears successful.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 7,
+     "text": "A working settlement hunts, builds, tends, rescues and trades through repeated natural storm advances and recessions, saves during an unresolved pool and resumes with the same animals, history and viable routes.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 8,
+     "text": "The mother spends the season restarting call jobs, the child repeatedly fails land hauling, or errors recur while a laboratory scene succeeds with weather and growth disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Vanilla taming, penning and ownership of nursery juveniles. The census rows return_tolerance ('Player-owned or colonist-carried deformed young') and buyer_price assume a player-owned stranded young, but no row covers how a wild juvenile becomes player-owned other than self-taming. That covers the vanilla Tame designation and wildness on the TerminalBiomes juvenile kinds, and whether a pen or capture changes faction. The sale branch depends on that route (RM_MothersPrice.cs:280 requires Faction.OfPlayer), and the roster §6a says conventional taming works against three rulings.",
+   "loop_or_three_way": "Three-way among R6, R7/B7 and B2/R8. R6 targets anyone harvesting anything inside an anchor's reach, 'tolerated or not'. R7 and B7 pass the same anchor mechanism to a colony-owned juvenile heir (roster §6a: 'the anchor comp pointed at the crèche. The same mechanism'). B2 and R8 keep ordinary wood, salt and animal harvest, with brelloch salt in the brine band where the crèches sit in the shallows. Each pair holds alone. All three together mean either the inherited heir attacks its own colony's salt gatherers, a tame animal turning on its keepers that undoes the continuity B7 promises, or the harvest exception silently ends at succession. The 'nursery record' meeting lists R6 and R7 but argues neither outcome.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 630093
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1749376,
+    "output_tokens": 17172
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "core_promise_weakened",
+   "where": "bars.json B4 (says, range.left_out, reject #1); definition.md 'Using it'; owner_pages.md page one",
+   "evidence": "The owner's ruling, quoted word for word in design/Jawa/worldbuilding/biomes/miasma_fauna_roster_2026-09-23.md §6, says: \"Means that when it spawns, so do some stranded young (sometimes).\" The same section explains why it matters: \"the offer arrives with her, on the first day ... it is what makes this content reachable at all.\" census.json row warden_sites keeps it as signature (\"anchored warden and sometimes a nearby stranded juvenile\"). But no bar, definition paragraph or owner-page line mentions it. B4 says only \"When Miasma surge water withdraws...\", and its range allows \"Not every random recession must create an occupied pool.\" B4 reject #1 also refuses \"A young is spawned in a pre-existing painted pond ... while the surge itself changes no connectivity.\" A cold reader would refuse the ruled day-one young under that picture. So the ruled first-day offer is neither promised nor protected, and B9's stretch may never show an orphan at all.",
+   "would_pass": "A bar says a mother can arrive with a stranded young of her own, so the rescue-or-sell choice can open before any storm. Surge recession remains the recurring cause. The prepainted-pond reject is narrowed so it cannot catch the mother's own arrival.",
+   "smallest_fix": "Add a B4 accept picture: 'A mother placed with the map sometimes has her own stranded young nearby, which calls and can be rescued before any storm has come.' Reword reject #1 to: 'a proof helper spawns a young in a painted pond, and neither the mother's arrival nor a surge caused it.' Add one line to definition.md 'Using it' and to page one."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json rows flotsam_yard and water_only_haul (both needed_by signature); bars.json B5 accept #2 and reject #4, B9 accept #4 and reject #4, R7's deposit clauses, meeting 'root-line goods'; tickets T6 and T15",
+   "evidence": "The signature in result.json is \"Storm recession creates nursery rescues whose treatment determines maternal tolerance and the chance of a juvenile inheritance.\" The case for keeping the deposits is circular. ambiguities.md 'Flotsam and salvage' says \"deleting them defeats recurring water-only haul\". 'Trainable at the waterline' says the haul stays because removing it \"defeats the affectionate child's ordinary usefulness\". So the deposits are kept for the haul, and the haul is kept for usefulness, which the signature sentence never names. The fauna roster §6a table already lists Guard and release/attack as water-scoped trained work that needs no item source. Deleting the haul and its recurring deposits leaves rescue, tolerance, sale and inheritance whole. What it removes is a custom economy with stock caps, its own wet-root placement, an unknown meeting ('root-line goods') and a seasonal item-flow model. That is the 'little custom details' the owner told the Designer to move.",
+   "would_pass": "Either a deletion argument that ties water-side haul to land, life or the signature as stated, or water-side haul and its recurring deposits moved to next version, switched off. The young's 'useful water-bound work' in B7 is then met by Guard and release/attack.",
+   "smallest_fix": "Move flotsam_yard's recurring deposits and water_only_haul to next_version.md with switch-off tickets (merge T6 and T15 into one). Drop B5 accept #2's haul clause, B5 reject #4, B9 accept #4 and reject #4, R7's deposit sentences and the 'root-line goods' meeting. Keep Guard and release/attack in R7."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "bars.json B7 (accept #2 'actually guards that nursery with less reach and threat'), R6, R7; definition.md 'What changes in the colony's story'; tickets.md T14",
+   "evidence": "R6: \"starting any harvest of plants, wood, salt or animals inside the mother's anchor reach immediately restores that actor as a defence target, tolerated or not.\" The source mechanism is RM_JobGiver_AnchorDefense (EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs), which the roster describes as fighting \"anything hostile-or-harvesting inside the anchor radius\". The roster §6a says the heir is \"simply a tamed juvenile with the anchor comp pointed at the crèche. The same mechanism\". Neither the proposal nor T14 says whom the colony-owned heir targets. Does it attack its own colony's salt and wood gatherers inside its reach? Does it guard only against hostiles? Does the harvest exception end when the mother dies? The 'weaker watch' is a kept signature mechanic with no target set.",
+   "would_pass": "R7 and B7 state the heir's target set: for example, hostiles in its reduced reach, never its own colony's harvesters. Add an accept/reject pair: 'a colonist gathering salt beside the inherited crèche works unharmed while the heir attacks a raider crossing its channel' against 'the heir attacks its own colony's salt gatherer'.",
+   "smallest_fix": "Add one sentence to R7 naming the heir's targets, and that accept/reject pair to B7."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "definition.md 'Using it' ('A held distressed young ... can be offered to an ordinary eligible trader'); ambiguities.md 'Carrying versus the water-bound affection' ('held for the ruled sale'); bars.json B6 accept #2, R6, R7 ('is never conventional taming'); next_version.md buyer_visits",
+   "evidence": "In code, a sellable young must belong to the colony. RM_MothersPrice.cs:280 checks \"p.Faction == Faction.OfPlayer && RM_MothersPrice.IsStrandedYoung(p)\". Carrying a wild pawn does not change its faction. R7 forbids conventional taming, and the roster §6a says a conventional taming grind \"is working against three rulings at once\". With the custom buyer moved to next version, the proposal never says how a colony comes to 'hold' a wild stranded young that an ordinary trader can buy: vanilla Tame, penning, capture, or only after self-taming. Without that, the sale half of the ruled 'carry it home or sell it' choice (MIASMA_MOTHERS_PRICE_1, owner card 2026-10-02) has no defined route.",
+   "would_pass": "A rule naming the act that makes a stranded young colony-held and tradeable, consistent with R7. Plus a B6 picture in which an ordinary trader's dialog lists a young the colony came to hold that way.",
+   "smallest_fix": "Add to R6: '<named act> makes an unresolved stranded young colony-held without taming it; only a held young appears in an ordinary trader's dialog.' Add the matching accept picture to B6."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B9 says ('ecological engulfment', 'permanent barren collapse') with figurative []; B1 says ('rainbow plants') with figurative []",
+   "evidence": "B9's figurative list is empty, but 'engulfment' and 'barren collapse' are images, not states. models.md defines a different set of words, 'flood', 'desert', 'stall' and 'error storm', so B9 and its own model use different vocabulary. B1's accept picture says \"saturated blooms\", which departs from a literal 'rainbow' without marking it.",
+   "would_pass": "Each word is listed in figurative with what it stands for and one accept picture that departs from the literal reading. Or B9 uses models.md's defined words.",
+   "smallest_fix": "Add figurative entries: 'engulfment' = breeders or events displacing ordinary play (the models' 'flood'); 'barren collapse' = ordinary life failing to recover in the habitable fresh region (the 'desert'); 'rainbow' = saturated multi-coloured blooms, not every hue on one plant."
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json B7 (figurative 'frequently', reject #4); models.md Whole-map season 'Game agreement before belief'; checks C11",
+   "evidence": "The instrument checks only that consent counts on holdout histories \"fit prediction intervals fixed from shipped chance/cadence\". That tests whether the model agrees with the game, not whether consent is frequent. A build that ships a chance so low the young almost never consent would match its own model and pass. models.md says \"B7 frequent-versus-almost-never classifications must agree with real traces\" but never states the line that classifies a trace as frequent or almost-never. The tuning is pushed to C11.",
+   "would_pass": "B7's sees states the comparison a player notices, as a classification and not a tuning number. For example, across the observed stretch a clean nursery with living young usually has young choosing the colony before the mother dies, and a clean nursery whose mother dies with none having chosen is the exception. The verdict comes from game traces, never from agreement with the shipped chance.",
+   "smallest_fix": "Add that classification rule to B7 sees.control. Delete 'fixed from shipped chance/cadence' as the pass criterion in models.md, keeping it only as the model's calibration check."
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json B1 sees.instrument",
+   "evidence": "\"Live rendered-map look with the simultaneous terrain/salinity and access overlay supplied by T19.\" B1 is about the player recognising salt, mud and channels at ordinary zoom. A look taken with a salinity overlay drawn reads the overlay, so a build whose plain render leaves salt banks indistinguishable (reject #1) can pass.",
+   "would_pass": "The look is judged on the plain rendered map with no debug overlay. The overlay is captured as a separate frame, used only to choose and label the sampled regions.",
+   "smallest_fix": "Reword the B1 instrument: 'judged on the plain render with no overlay drawn; the T19 overlay is a separate frame used only to locate sample regions.'"
+  }
+ ],
+ "applyable": false,
+ "seconds": 947,
+ "at": "2026-11-17T01:58:52"
+}
