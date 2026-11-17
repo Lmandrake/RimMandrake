@@ -1,0 +1,22 @@
+{
+  "mod": "RustCathedral",
+  "run": "designer-cleanse-2026-11-17",
+  "outcome": "proposed",
+  "signature": "Extraction disturbs the Cathedral, the hum and living bolts reveal where restraint is needed, and continued intrusion meets local defence or a debt that concrete repayment can clear.",
+  "counts": {
+    "capabilities": 67,
+    "kept": 31,
+    "next_version": 34,
+    "recommend_retire": 2,
+    "old_bars": 0,
+    "bars": 7,
+    "live_only_bars": 3,
+    "checks": 13,
+    "rules": 12,
+    "unknown_pairs": 6,
+    "models": 3,
+    "tickets": 42,
+    "questions": 0
+  },
+  "blocked_on": []
+}

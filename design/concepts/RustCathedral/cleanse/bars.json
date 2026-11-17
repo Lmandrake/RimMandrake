@@ -1,0 +1,731 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "A visiting crew on the flat polluted metal plateau beneath the fixed desert sun can follow deliberate corridors to salvage and machine-held ground, choosing between an open route and a visibly marked cut that trespasses.",
+      "meant": {
+        "intent": "Reject if the selected maze is just random scrap or offers no understandable route choice; it is the place the player came to enter.",
+        "source": "Owner-selected experience in design/RimMandrake/biome_experiences_2026-10-20.md; frozen sheet §1/§5; owner answers 2026-11-10 in designer_codex_2026-11-09/RustCathedral/ANSWERS_OWNER.md; delegated route contract from these.",
+        "figurative": [
+          {
+            "word": "deliberate",
+            "stands_for": "Repeated alignments and connected public routes with legible held-ground boundaries; no claim of a literal hidden designer solving a circuit.",
+            "accept": "A route bends around a canal and still visibly belongs to the repeated metal plan."
+          },
+          {
+            "word": "fixed desert sun",
+            "stands_for": "The authored tidal-lock position and shared geometric sunlight; clouds can still filter exposure and roofs provide shade.",
+            "accept": "Cloud reduces direct exposure without turning the native terrain into wet temperate ground or moving the sun through a normal day."
+          }
+        ]
+      },
+      "accept": [
+        "From the landing approach a crew follows aligned passages to an unprotected metal fragment; a patterned divider offers a tempting shorter opening toward visibly held ground.",
+        "A canal bends the corridor pattern without severing the public retreat; the player can see why cutting this divider changes access."
+      ],
+      "reject": [
+        "Random mineable clumps form a circuit-board picture from altitude but leave no deliberate corridors for the crew to follow.",
+        "The attractive route terminates inside guardian range with no advance boundary cue or public escape.",
+        "A convenient corridor network stands in ordinary green soil under a temperate sky, with no sense that the crew is standing on a poisoned metal country at eternal noon."
+      ],
+      "lazy": "none: Connected meaningful corridors, actionable marked cuts and readable held ground exclude mere patterned fragments; the reject pictures fail those words.",
+      "range": {
+        "varies": "Local map sizes 200, 250, 300, 325 cells square; flat authored tile envelope, dry and canal-bearing layouts, all cardinal rotations, map-edge clipping, pre/post ordinary salvage depletion and after a marked breach; one visitor and colony populations 8 and 40; foreground walls and wrecks overlap where the engine allows. M2 enumerates transformed authored local templates, never planet seeds. Use the actual authored temperature/pollution envelope and roofed/unroofed exposure; global geometric Direct Sun and normal weather are active. No local heat multiplier or native soil/greenery substitution.",
+        "left_out": "No alternative planets, mountainous worlds or layouts authored for foreign biomes. Arbitrary player-built sealed prisons need a blocked-route refusal, not a guarantee of unblocking. Whole-map later colony demolition is assessed as depletion, not native maze regeneration."
+      },
+      "sees": {
+        "instrument": "M2 map graph/path sweep plus a live normal-zoom look on the exported best and worst valid layouts; T29/T36 instruments. Visual judgment has no credible offline surrogate.",
+        "start": "Fresh authored-tile local map before colony construction; identify start, salvage, public retreat, held footprint and marked divider from the map export, not spawned proof props.",
+        "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run.",
+        "control": "Compare graph and live look to same material budget placed as random clumps, and to a marked cut replaced by loose rubble. Guards remain active in the real arm; graph-only success with no visual route distinction is insufficient.",
+        "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
+        "live_only_why": "State and models can expose causal faults but cannot establish visual route legibility and lived warning readability with competing normal game cues."
+      },
+      "live_only": true,
+      "touches": [
+        "layout",
+        "salvage",
+        "defence",
+        "warnings",
+        "continuity"
+      ],
+      "qualification": {
+        "reject_test": "Reject if the selected maze is just random scrap or offers no understandable route choice; it is the place the player came to enter.",
+        "renormalize": "No acceptance picture fixes a yield, stat, speed, size, value or variant count. Retuning preserves this qualitative promise; new art does not itself demand a re-pass.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "B2",
+      "says": "A salvager recovers useful metal from loose plate and richer dead smartsteel without an offence for ordinary salvage, while marked route dividers and sacred works warn of the different consequence before damage.",
+      "meant": {
+        "intent": "Reject a decorative salvage paradise or indiscriminate punishment for all mining; later shortcut ruling refines what free bulk means.",
+        "source": "Frozen sheet §5 sacrilege economics and wall ladder; owner November answers; delegated distinction between loose ordinary fragments and marked structural dividers.",
+        "figurative": []
+      },
+      "accept": [
+        "Workers haul mined steel and dead smartsteel from public rubble while the hum stays as it was; selecting a sacred conduit or marked divider shows the risk before the order.",
+        "Opening a marked divider yields the same ordinary material but disturbs the place because of what was opened."
+      ],
+      "reject": [
+        "Identical unmarked plate sometimes charges an offence only after it has already been mined.",
+        "Mineable walls yield unusable decorative objects while the map description calls them treasure."
+      ],
+      "lazy": "none: The sentence requires useful recoverable material and distinguishes loose salvage from trespass, excluding cosmetic walls or punishment for innocent mining.",
+      "range": {
+        "varies": "Each material/ownership class: loose plate, loose dead smartsteel, marked route divider, protected conduit, ordinary player wall and inert wreck; mining, destruction and claim attempts by player, visitor and hostile; yield permitted/zero work outcomes; stack split/haul/merge; reload before first damage and after completion; populations 1..40.",
+        "left_out": "No required exchange rate, yield, market-value ratio, smelting redesign or new stuff alloy. Richer means a salable higher-value material under the current resolved economy, not a pinned price."
+      },
+      "sees": {
+        "instrument": "M1 situation generator using actual mining/event adapter and resolved defs, with M2 topology labels; compare calibrated real-game inventories, ownership and offence journal through read-only state hooks (T36).",
+        "start": "Known labelled source objects, empty worker inventory, recorded ledger and ordinary mining ability; no proof API directly awarding yields or changing standing.",
+        "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run.",
+        "control": "Read source depletion and hauled output together; equal actor/target arms differing only in loose-versus-divider role. Nonplayer damage and ordinary colony construction cannot debit player standing.",
+        "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
+        "live_only_why": "Not live-only: a calibrated executable situation/geometry or whole-mod model can decide this causal/state claim; required real-game agreement is specified in models.md. A model not yet calibrated is UNMEASURED, not a pass."
+      },
+      "live_only": false,
+      "touches": [
+        "layout",
+        "salvage",
+        "attitude",
+        "warnings",
+        "continuity"
+      ],
+      "qualification": {
+        "reject_test": "Reject a decorative salvage paradise or indiscriminate punishment for all mining; later shortcut ruling refines what free bulk means.",
+        "renormalize": "No acceptance picture fixes a yield, stat, speed, size, value or variant count. Retuning preserves this qualitative promise; new art does not itself demand a re-pass.",
+        "first_version": "land and signature boundary"
+      }
+    },
+    {
+      "id": "B3",
+      "says": "On Cathedral ground the player meets roaches that clean, bolts that form patterns, coolant eels that remain in their canals where water exists, and a worn borehulk that stays peaceful when harmed.",
+      "meant": {
+        "intent": "Reject a named roster of idle props, fish-only catch tables, land-wandering eels or a giant that secretly retaliates; these are the ruled ordinary residents.",
+        "source": "Owner roach addition 2026-09-07 in RUST_CATHEDRAL_MECHANICS_1; sheet §4; borehulk owner words in RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1; standing no silent disappearance and flyer rules; delegated combined ordinary-life bar.",
+        "figurative": []
+      },
+      "accept": [
+        "A roach reaches and consumes filth while a bolt traces a ground figure; visible eels circle canal water and a damaged borehulk backs away without selecting an attack.",
+        "A dry map has land residents but no invented eel population; an eel stranded by a changed canal remains visible with its condition readable."
+      ],
+      "reject": [
+        "Roaches spawn with the right label but never consume reachable dirt, or eels choose water endpoints by paths that cross the dry plate.",
+        "The peaceful giant retaliates after damage or is deleted when its path becomes awkward."
+      ],
+      "lazy": "none: The specific resident activities, home-water boundary and peaceful giant exclude merely spawning named pawns.",
+      "range": {
+        "varies": "Each kept RM resident in its native spawned state; campaign mynock and voltmaw in the patched roster without eviction; absent/present giant, no-water, connected water, disconnected pools, narrow channels, filled cell, blocked route, daytime native temperature/pollution envelope, resident death and save/load; roach food absent/present/out of range; population 0,1,8,40 colonists; inherited flight checks for actual flyers.",
+        "left_out": "No new taming, custom predator web, repair/ownership/mining arc or generated organic wildlife. Forced spawning a giant on every map is not required. Campaign canon names do not leak into RM defs."
+      },
+      "sees": {
+        "instrument": "M1 executable resident state walks plus M2 paths; verify job targets, consumed source things, path cells, damage reactions, corpse identities and flight tracker against isolated real-game state reads. Appearance/motion refinements are not independent bars.",
+        "start": "Native resident kinds from normal local placement or a labelled isolated state fixture with matching native defs; seed reachable filth and record it; canal cells and dry cells exported.",
+        "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run.",
+        "control": "Same filth with cleaner disabled remains; external janitors are absent. Damaging hostile control proves the trace can see an attack. Compare actual eel traversed cells to endpoints, and resident identities to spawn/death/edge-exit journal.",
+        "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
+        "live_only_why": "Not live-only: a calibrated executable situation/geometry or whole-mod model can decide this causal/state claim; required real-game agreement is specified in models.md. A model not yet calibrated is UNMEASURED, not a pass."
+      },
+      "live_only": false,
+      "touches": [
+        "residents",
+        "layout",
+        "warnings",
+        "continuity",
+        "settings"
+      ],
+      "qualification": {
+        "reject_test": "Reject a named roster of idle props, fish-only catch tables, land-wandering eels or a giant that secretly retaliates; these are the ruled ordinary residents.",
+        "renormalize": "No acceptance picture fixes a yield, stat, speed, size, value or variant count. Retuning preserves this qualitative promise; new art does not itself demand a re-pass.",
+        "first_version": "life"
+      }
+    },
+    {
+      "id": "B4",
+      "says": "A player working the plateau can hear and see the hum and living bolts change with disturbance, locate the offending work, and stop it before its next avoidable escalation without learning a secret or a skill.",
+      "meant": {
+        "intent": "Reject truthful hidden numbers with no useful warning, location cues pointing at innocent work, or progression-gated observation; the owner explicitly chose bolts gathering around what they dislike.",
+        "source": "Frozen sheet §5 and §P; owner warning answer 2026-11-10; standing readable-sign rule; delegated baseline work-site fallback from absence/unreachability of bolts.",
+        "figurative": [
+          {
+            "word": "hum",
+            "stands_for": "The sustained layered environmental sound and its cessation, not a voice saying its cause.",
+            "accept": "At the worst mood the sustained sound falls silent while visual warning remains."
+          }
+        ]
+      },
+      "accept": [
+        "With fishing and innocent hauling running together, the sound changes and bolts gather by the fisher; the work-site indication lets the player cancel the line before another catch.",
+        "When bolts cannot reach the active cut, its baseline work-site cue still identifies the order; its protected status was visible before damage."
+      ],
+      "reject": [
+        "The hidden band rises but stage-capped sound stays calm, or a newcomer needs a hum-reader book to find the cause.",
+        "The sound changes only as the response strikes, and moving bolts are clustered around a ship rather than the active work."
+      ],
+      "lazy": "none: Locate, stop and before avoidable escalation require actionable timing and spatial information, excluding a nominal band change.",
+      "range": {
+        "varies": "Calm through worst and recovery transitions; fishing, divider breach, bolt kill, sacred damage and deep working drill; one and multiple simultaneous causes on separate sides of a map; 0,1 and crowded local bolt groups; obstructed paths, no reader/droid/ship, sound muted with visual warning on, map switch paused/unpaused, viewed/unviewed state, reload during active job; colonies 1,8,40. Threat already in melee is a separate combat state.",
+        "left_out": "No mind identity, explanation of droid mercy, hidden coolant meaning or deep-response explanation. No prevention of the atomic first intentional hit; protected status must precede that order. No guarantee that a player ignoring both channels notices."
+      },
+      "sees": {
+        "instrument": "M1 event/cue ordering traces and M3 overlap timing triage, then a live audible/normal-zoom comparison with normal weather and colony work. T32/T33/T36. Listening/locating is a live-only judgment; no credible numerical audio proxy can replace it.",
+        "start": "Newcomer colony with no reader trait, no campaign unlock, fixed ordinary work priorities and recorded innocent/background events; known trigger order without direct band forcing in the acceptance arm.",
+        "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run.",
+        "control": "Disable the offence source in a separate arm while keeping background work, weather and audio unchanged; trigger a harmless hauling control elsewhere. Confirm cues match actual act identities, precede escalation, persist after map switch and permit cancellation; a silent layer-handle count is insufficient.",
+        "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
+        "live_only_why": "State and models can expose causal faults but cannot establish visual route legibility and lived warning readability with competing normal game cues."
+      },
+      "live_only": true,
+      "touches": [
+        "warnings",
+        "attitude",
+        "layout",
+        "residents",
+        "defence",
+        "continuity",
+        "text",
+        "settings"
+      ],
+      "qualification": {
+        "reject_test": "Reject truthful hidden numbers with no useful warning, location cues pointing at innocent work, or progression-gated observation; the owner explicitly chose bolts gathering around what they dislike.",
+        "renormalize": "No acceptance picture fixes a yield, stat, speed, size, value or variant count. Retuning preserves this qualitative promise; new art does not itself demand a re-pass.",
+        "first_version": "signature and necessary safety readability"
+      }
+    },
+    {
+      "id": "B5",
+      "says": "A crew that provokes the Cathedral meets machines defending held ground or the offending deep drill, and withdrawing from that ground or ending the drill violation ends pursuit without a hunt for the colony.",
+      "meant": {
+        "intent": "Reject ordinary colony raids pretending to be perimeter defence, permanent pursuers or response forces stuck on invalid drills; the sheet forbids hunting Sentinels.",
+        "source": "Frozen sheet §5 and hard ban §6.3; deep response kit; delegated precise target and withdrawal contract from the owner-selected guarded maze.",
+        "figurative": []
+      },
+      "accept": [
+        "Guards threaten a crew inside their visible ground and remain there after it withdraws; a deep response converges on the working drill and leaves once its target is removed.",
+        "A fisher who stopped causing irritation is not selected across the map by the drill response; distant ordinary drilling retains ordinary game risk."
+      ],
+      "reject": [
+        "A force receives an assault-colony order and chases a retreating fisher past the held boundary.",
+        "Removing the drill leaves the response wandering forever or changes its target to the nearest bedroom."
+      ],
+      "lazy": "none: Held ground, the offending drill and an end to pursuit exclude a generic raid substituted for defence.",
+      "range": {
+        "varies": "Public boundary crossed inward/outward; visitor/player, biological/droid/pass-holder identities; local standing calm/hostile/repaid and ongoing attacker exception; drill qualifying/nonqualifying, switched off, removed, destroyed, blocked before/after spawn; multiple drills with distinct identities, targets lost during save/load; low/mid/high storyteller threat-point bands and colony populations 1,8,40.",
+        "left_out": "Unrelated vanilla raids and mechanoids outside Cathedral-owned forces are not redefined. Immediate self-defence against a continuing attacker is allowed but cannot authorize searching for new targets off held ground. No new giant combat species."
+      },
+      "sees": {
+        "instrument": "M1 guard/response state-machine walk and M2 boundary/path sweep using actual lord/job adapters; validate target and exit journal in the real game with controls before trusting offline results (T34/T36).",
+        "start": "Exported held footprint and public path; known guard roster/targets; threat eligibility and actual resource under each drill recorded; no AssaultColony fixture substituting for the proposed logic.",
+        "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run.",
+        "control": "Run the same crew along the public path without intrusion and run the same drill over ordinary resource. Read lord target selection and path crossing so failure to attack from unrelated pass/faction settings cannot look like successful withdrawal.",
+        "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
+        "live_only_why": "Not live-only: a calibrated executable situation/geometry or whole-mod model can decide this causal/state claim; required real-game agreement is specified in models.md. A model not yet calibrated is UNMEASURED, not a pass."
+      },
+      "live_only": false,
+      "touches": [
+        "defence",
+        "layout",
+        "attitude",
+        "warnings",
+        "continuity",
+        "settings"
+      ],
+      "qualification": {
+        "reject_test": "Reject ordinary colony raids pretending to be perimeter defence, permanent pursuers or response forces stuck on invalid drills; the sheet forbids hunting Sentinels.",
+        "renormalize": "No acceptance picture fixes a yield, stat, speed, size, value or variant count. Retuning preserves this qualitative promise; new art does not itself demand a re-pass.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "B6",
+      "says": "A returning crew finds minor disturbance eased by time and restraint, but sacred damage still owed until a reachable material repayment clears that offence and restores the access it cost.",
+      "meant": {
+        "intent": "Reject either blanket waiting-away of desecration or a permanent unrecoverable punishment; this is the explicit return ruling, necessary for repeat salvage visits.",
+        "source": "Owner return answer 2026-11-10 in ANSWERS_OWNER.md; frozen sacrilege economics; delegated material delivery contract in definition.md from costly concrete repayment without a ritual.",
+        "figurative": []
+      },
+      "accept": [
+        "After cancelled fishing and a quiet interval the crew hears calm again; after sacred damage the damage bill survives the same interval and a reload.",
+        "Workers finish the named silver delivery from the public side and the corresponding debt/access restriction clears; an interrupted delivery resumes without paying twice."
+      ],
+      "reject": [
+        "Idling clears sacred debt, or the repayment order exists only inside the hostile perimeter it is supposed to reopen.",
+        "Payment raises vanilla mech faction goodwill while local standing and guardians remain unchanged, or repeated claim cycling farms credit."
+      ],
+      "lazy": "none: Rest ends minor irritation but payment clears persistent debt; each action is named, excluding automatic blanket forgiveness or permanent lockout.",
+      "range": {
+        "varies": "Irritation below/at/above each resolved threshold; standing -100..100 with hostile latch thresholds under the existing ruling; partial damage, claim, destruction, replacement and repeat damage; no/multiple debts; partial/full payment, insufficient funds, carrier death, cancellation, no reachable public deposit cell, map left/returned, reload at each transaction boundary; minor fishing and shortcut work before and after debt payment.",
+        "left_out": "No forgiveness of campaign deliberate betrayal, no god rewards or new rite, no positive credit from waiting. The exact replacement-value multiplier is an attackable rule, not a bar. Permanent destruction of public access by player construction can give a clear no-consumption refusal."
+      },
+      "sees": {
+        "instrument": "M1 transaction/state walks with saved event identities; M3 recovery curves and debt conservation; calibrate paid quantities, debit/latch state, interrupted carrier inventory and resumed access to isolated real-game reads (T30/T31/T36).",
+        "start": "Known pre-offence standing/hostility, bill source value, silver inventory and publicly reachable deposit location; no precredited proof deliveries.",
+        "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run.",
+        "control": "Compare quiet-only and paid arms from the same debt state; compare an unrelated delivery and a second identical completion callback. Read both consumed silver and local access rather than a congratulatory message.",
+        "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
+        "live_only_why": "Not live-only: a calibrated executable situation/geometry or whole-mod model can decide this causal/state claim; required real-game agreement is specified in models.md. A model not yet calibrated is UNMEASURED, not a pass."
+      },
+      "live_only": false,
+      "touches": [
+        "restitution",
+        "attitude",
+        "defence",
+        "salvage",
+        "continuity",
+        "settings"
+      ],
+      "qualification": {
+        "reject_test": "Reject either blanket waiting-away of desecration or a permanent unrecoverable punishment; this is the explicit return ruling, necessary for repeat salvage visits.",
+        "renormalize": "No acceptance picture fixes a yield, stat, speed, size, value or variant count. Retuning preserves this qualitative promise; new art does not itself demand a re-pass.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "B7",
+      "says": "Across a full-map season with the complete shipped biome active, a colony can repeat the route, salvage, disturbance, withdrawal and repayment cycle after a midway reload and changed action order without losing readable choices to a flood, a barren map, a stall or an error storm.",
+      "meant": {
+        "intent": "Reject a system that only works in isolated demonstrations: land, life and temper must remain playable together over their own cycle.",
+        "source": "Whole-bar requirement in this cleanse brief; owner-selected salvage/temper experience; delegated failure regimes and repeated-visit story from all kept mechanics.",
+        "figurative": [
+          {
+            "word": "flood",
+            "stands_for": "Unbounded native events, objects or combat pressure that consumes the ordinary salvage decisions.",
+            "accept": "A crowded work site is acceptable if its events end and the player can still choose and cancel work."
+          },
+          {
+            "word": "barren map",
+            "stands_for": "Native activity destroys access to the promised land/life/salvage before ordinary use; finite deposits legitimately mined out are depletion, not failure.",
+            "accept": "A worked quarry is empty while untouched public salvage remains reachable."
+          },
+          {
+            "word": "stall",
+            "stands_for": "A loop cannot progress or settle despite valid player actions, such as a response waiting forever for a removed drill.",
+            "accept": "A worker pauses for an honestly missing material and resumes after it is delivered."
+          },
+          {
+            "word": "error storm",
+            "stands_for": "Repeating mod-attributable exceptions or warnings that obscure play or keep a mechanic retrying.",
+            "accept": "An ordinary loss produces a readable in-game consequence without a repeating log fault."
+          }
+        ]
+      },
+      "accept": [
+        "Careful trips still recover finite salvage while reckless work still provokes local warnings and bounded defence; a quiet period and repayment permit another visit after the saved season resumes.",
+        "Fishers disturb the place before miners breach a divider in a rerun, and both causes remain understandable; the worn giant and cleaners stay ordinary residents with the repair and hull stories dormant."
+      ],
+      "reject": [
+        "Every isolated demonstration works, but concurrent fishing and a breach trap the colony in permanent hostility after it has stopped and paid its actual debts.",
+        "The map fills with curiosity drops or repeated force spawns, every open route becomes unusable, residents silently disappear, work stalls, or the log repeats errors."
+      ],
+      "lazy": "none: The complete default season, reload and changed order plus named failure regimes exclude isolated showcases and a calm locked map.",
+      "range": {
+        "varies": "Full local maps 200..325 square from the B1 dry/canal envelope; 15 in-game days including day/night-equivalent fixed-sun weather variation supplied by the authored tile, plus recovery tail to day 30 where a debt/force remains; colonies 1,8,40; ordinary/restraint, repeated minor disturbance, deliberate sacred/deep intrusion workloads. Save at mid-season with active jobs/debt; rerun same action multiset in fishing-then-cut and cut-then-fishing order. Day-100 continuation is a depletion/state-continuity stress check, not a requirement that finite deposits refill.",
+        "left_out": "No extras on, foreign biomes, alternative worlds, climate seed sweep or forced clear sky. Player-driven total demolition/extermination and unrelated catastrophic storyteller endings are not native equilibrium failures; the trace must distinguish them from mod-caused failures."
+      },
+      "sees": {
+        "instrument": "M3 whole-mod model first, then real full-map season replay and live land/warning observations. Compression may batch idle tick intervals only while preserving every transition, actor job ordering, event eligibility/cooldown, random stream, weather progression, heat exposure, depletion, pawn scheduling and save serialization; otherwise run actual ticks. T36 is required; current isolated proof hooks cannot decide this.",
+        "start": "Fresh native map and complete settings/def fingerprints, no hidden campaign locks; record residents, salvage sources, standing, water, public paths, threat RNG and log baseline. Stage real colony actions through jobs, not direct debit setters.",
+        "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run.",
+        "control": "Match each event to actor, source, target and cue; compare restrained baseline, offence workload and delayed-source controls at identical weather/RNG inputs. Snapshot the save then replay in reverse action order from a clean baseline; a calm scene due to an unwired mechanic is invalid, not a pass.",
+        "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
+        "live_only_why": "State and models can expose causal faults but cannot establish visual route legibility and lived warning readability with competing normal game cues."
+      },
+      "live_only": true,
+      "touches": [
+        "layout",
+        "salvage",
+        "residents",
+        "attitude",
+        "warnings",
+        "defence",
+        "restitution",
+        "continuity",
+        "settings",
+        "text"
+      ],
+      "qualification": {
+        "reject_test": "Reject a system that only works in isolated demonstrations: land, life and temper must remain playable together over their own cycle.",
+        "renormalize": "No acceptance picture fixes a yield, stat, speed, size, value or variant count. Retuning preserves this qualitative promise; new art does not itself demand a re-pass.",
+        "first_version": "complete land, life and signature"
+      }
+    }
+  ],
+  "whole": "B7",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Inherited floor: loads, clean log, effective Mod Settings, honest scope text and all-off controls. A red reading is attributed to mod/site/instrument before repair; it is not a refusal independent of a bar."
+    },
+    {
+      "id": "C2",
+      "what": "Parse current merged BiomeDef XML as elements: native wildPlants empty, forageability zero, animalDensity positive, catch and rock defs resolve; campaign roster patch has actual resolved additions. No evictions/tier leaks."
+    },
+    {
+      "id": "C3",
+      "what": "Sacred standing debit 15 once per structure, hostile latch at -75, return nonhostile at 0; retain these ruled economics independently of mutable band thresholds."
+    },
+    {
+      "id": "C4",
+      "what": "Record current attitude thresholds 10/30/55/80, hysteresis 6, base half-life 1 day, interval 250 ticks as source-snapshot regressions from RM_RustCathedralAttitude.xml; these are not passing numbers and may be retuned."
+    },
+    {
+      "id": "C5",
+      "what": "No planet rarity capability/scoring can create or place a world; required worker identity may remain inert. Zero world tiles is expected, never a finding."
+    },
+    {
+      "id": "C6",
+      "what": "Switch-off state manifest: fresh defaults, all next-version emissions absent; definitions/code retained; enabled controls prove each gate reaches its own emitter. Existing explicit prefs upgrade visibly, no silent state deletion."
+    },
+    {
+      "id": "C7",
+      "what": "Saved event/job/object identities survive duplicate callbacks, haul split/merge, interrupted work, pawn death, map removal and reload without double debit/credit or hidden despawn."
+    },
+    {
+      "id": "C8",
+      "what": "Validate actual eel path cells, cleaner source consumption, peaceful giant jobs and runtime flight tracker; not just destination cells, def labels or spawned counts."
+    },
+    {
+      "id": "C9",
+      "what": "Record target resource, usable-drill conditions, lord targets/exit and cooldowns; nonqualifying drill and toggle-off arms retain vanilla eligibility."
+    },
+    {
+      "id": "C10",
+      "what": "Measure current scribed/default/reset feature values for each gate; source defaults formerly on do not become an approved first-version feature by accident."
+    },
+    {
+      "id": "C11",
+      "what": "Run existing relevant source/def selftests as regressions after consumer changes, adapting obsolete assertions only with attributed evidence; old validation.py north-star entries are not a substitute tree. No missing-instrument zero."
+    },
+    {
+      "id": "C12",
+      "what": "Repayment bill uses positive resolved replacement value, multiplier 2 as delegated tuning; compare delivered/consumed/refunded silver and saved debit receipts exactly; no arbitrary zero bill."
+    },
+    {
+      "id": "C13",
+      "what": "Surface string corpus: cathedral_arc_lint.py plus actual displayed settings/letters/inspect/scanner text; planted secret control must fail. Static source lints alone do not prove text not assembled at runtime."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Use a local corridor/held-footprint graph with loose rubble and inspectably marked structural dividers; labels persist by source identity after breach. Do not add a planet generator. Corridor layout is a rule open to replacement, intentional legible routes are the bar.",
+      "touches": [
+        "layout",
+        "salvage",
+        "defence",
+        "warnings",
+        "continuity"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Persist offence source ids and once-only transaction ids per map; deduplicate scan, damage, catch/butcher and reload callbacks; attribute only actual player acts, never mere haul location or nonplayer crossfire.",
+      "touches": [
+        "attitude",
+        "salvage",
+        "residents",
+        "continuity"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Fast irritation gets minor fishing, shortcut and bolt-kill input; no passive standing ratchet or ordinary catch-standing cost at defaults. Saved standing and hostility latch record sacred/deep debt independently of vanilla permanent-enemy relations.",
+      "touches": [
+        "attitude",
+        "restitution",
+        "defence",
+        "continuity"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Cathedral-owned guards use marked footprint/patrol targeting; custom drill force uses actual qualifying drill identity and exits on invalidation. Nonqualifying drills keep vanilla infestation eligibility and foreign mech factions keep their rules.",
+      "touches": [
+        "defence",
+        "layout",
+        "warnings",
+        "settings",
+        "continuity"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Repay damage is an ordinary delivery order, silver bill twice intact replacement market value with positive def fallback; commit once, refund no consumed deposit, restore only the recorded debit, reachable on public side. Destruction keeps a saved site marker. No positive standing farming.",
+      "touches": [
+        "restitution",
+        "salvage",
+        "attitude",
+        "defence",
+        "layout",
+        "continuity"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Public hum and bolt cues use actual local mood without campaign stage ceiling; unfinished campaign progression is dormant. Active reachable causes attract bolts with rotating selection; baseline inspect/click-through work-site cue covers absent bolts or obstacles. Do not require a reader trait.",
+      "touches": [
+        "warnings",
+        "attitude",
+        "residents",
+        "layout",
+        "text",
+        "continuity"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "A true mechanics master and per-major-feature gates stop pending effects as well as new work; defaults/reset/Scribe agree, deferred extras off and labelled Next version, migration explicit and non-destructive, existing unsupported cross-biome options off. Per-feature off retains dormant saved debt and living pawns.",
+      "touches": [
+        "settings",
+        "attitude",
+        "residents",
+        "defence",
+        "restitution",
+        "warnings",
+        "continuity"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Keep the resolved resident roster without evictions; roaches clean independently of mood, eel destinations and actual paths stay in water and stranded eels remain visible; worn borehulk never attacks or mines. Shared engines retain their contracts.",
+      "touches": [
+        "residents",
+        "layout",
+        "continuity",
+        "settings"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Use only observable surface register for descriptions/settings/scanner/letters; preserve all frozen secrecy bans, including no explanation of droid mercy and no description of the deep response beyond massive mechanoid movement.",
+      "touches": [
+        "text",
+        "warnings",
+        "defence"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Ambient temperature/pollution come from the fixed tile and sun exposure from the one shared geometric rule; legacy overhead field is not a heat multiplier. Rust dust and shimmer are visual atmosphere, not secondary hazards.",
+      "touches": [
+        "layout",
+        "residents",
+        "warnings"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "Finite vanilla mining, inert wreck salvage and catch-table fishing supply ordinary outputs; no automatic metal regrowth, curiosity production or new salvage industry. Eel pawns are not a counterfeit count of Odyssey fish pool stock.",
+      "touches": [
+        "salvage",
+        "residents",
+        "attitude"
+      ]
+    },
+    {
+      "id": "R12",
+      "rule": "Season replay may compress idle intervals only if transition order, actor jobs, rates, RNG, weather, temperature, depletion and serialization are equivalent to real ticks; no fixed-clear test sky or disabled kept subsystem.",
+      "touches": [
+        "continuity",
+        "settings",
+        "attitude",
+        "layout",
+        "residents",
+        "defence",
+        "warnings",
+        "restitution",
+        "salvage",
+        "text"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "layout",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B7",
+        "R1",
+        "R4",
+        "R5",
+        "R6",
+        "R8",
+        "R10",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Marked cuts, public escape, canal paths, giant clearance, guard footprints, repayment placement and post-mining topology meet here. Pairwise reachability cannot prove all remain reachable together.",
+      "model": "M2: Local geometry and boundary sweep"
+    },
+    {
+      "thing": "salvage",
+      "members": [
+        "B1",
+        "B2",
+        "B6",
+        "B7",
+        "R1",
+        "R2",
+        "R5",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "The same material can be loose or structural: map labels determine trespass, material defs determine yield. A breached divider retains identity for once-only offence, while already paid silver never becomes native salvage. Finite depletion is explicitly allowed. The economic rate risk belongs to the attitude meeting.",
+      "model": "none"
+    },
+    {
+      "thing": "defence",
+      "members": [
+        "B1",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R1",
+        "R3",
+        "R4",
+        "R5",
+        "R7",
+        "R9",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Guards, local hostility latch, saved debt and drill-target loss can form a chase/stall loop after a map breach or reload. A lord type name is not proof of no hunting across the public boundary.",
+      "model": "M1: Situation and transition generator"
+    },
+    {
+      "thing": "warnings",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B7",
+        "R1",
+        "R4",
+        "R6",
+        "R7",
+        "R9",
+        "R10",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Multiple simultaneous sources compete for bolts and colony attention; sound, work-site indication and cancellation may be individually correct but too late together. Model timing cannot certify audible/visual salience.",
+      "model": "M3: Whole-mod season and workload model"
+    },
+    {
+      "thing": "continuity",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "One reload can replay scan charges, restart a response or forgive a debt while every isolated subsystem test passes. Saved transactions, creature identities, weather and action-order swaps need whole-run traces.",
+      "model": "M3: Whole-mod season and workload model"
+    },
+    {
+      "thing": "attitude",
+      "members": [
+        "B2",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R2",
+        "R3",
+        "R5",
+        "R6",
+        "R7",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Fishing workload, shortcut input, warning delay, decay, sacred/deep debt and repayment meet in the complete loop. Removing the passive drain prevents one obvious ratchet but does not establish a useful quiet-work window at colony scale.",
+      "model": "M3: Whole-mod season and workload model"
+    },
+    {
+      "thing": "residents",
+      "members": [
+        "B3",
+        "B4",
+        "B7",
+        "R2",
+        "R6",
+        "R7",
+        "R8",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Water confinement, sun/pollution survival, cleaning availability, combat and finite eel/giant presence can erase native life when combined even if each def works alone. No unsupported perfect population equilibrium is assumed.",
+      "model": "M3: Whole-mod season and workload model"
+    },
+    {
+      "thing": "settings",
+      "members": [
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R4",
+        "R7",
+        "R8",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "Each off switch suspends the corresponding effects and pending escalation while preserving defs/pawns/dormant debt. Sound mute leaves visual warning. The complete shipped run excludes off arms; negative arms are separate controlled readings, so disabling cannot fake a pass.",
+      "model": "none"
+    },
+    {
+      "thing": "text",
+      "members": [
+        "B4",
+        "B7",
+        "R6",
+        "R9",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "Warnings describe observable target, damage and sound, and repayment describes an ordinary bill. None requires identity, droid-mercy explanation or deep cause. Scanner and all actual runtime text use the same surface register; the empty campaign stage does not suppress the public local mood.",
+      "model": "none"
+    },
+    {
+      "thing": "restitution",
+      "members": [
+        "B6",
+        "B7",
+        "R3",
+        "R5",
+        "R7",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "Persistent debt survives calm; silver delivery only restores the corresponding recorded debit, never generates positive credit. Reachable public-side placement is a layout obligation covered by the geometry unknown; transaction survival is covered by continuity, so this is a logical conservation argument, not a claimed measurement.",
+      "model": "none"
+    }
+  ],
+  "old_bars": {}
+}

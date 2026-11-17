@@ -1,0 +1,82 @@
+# RustCathedral — proposed Design Version 0.1.0
+
+All settlements of open design below are the Designer's delegated decisions under this cleanse brief. Nothing is an owner quotation or a change to an existing ruling. This folder is a proposal, unreviewed and unapplied. The current concept has no record, sheet, log, next-version file or tree leaves; the historical Designer record is `design/RimMandrake/designer_codex_2026-11-09/RustCathedral/record.json`. It supplies inventory leads, not approval. No game or current deployment has been measured here.
+
+Three sentences a player recognises: You enter a flat metal maze whose corridors lead past salvage and machine-held ground. Taking ordinary scrap is useful, but cutting marked shortcuts, disturbing canal life or damaging protected works changes the hum and draws living bolts toward the offending work. You can stop, withdraw and return after minor irritation fades; sacred damage instead leaves a material debt, and deep intrusion draws machines against the drill rather than a hunt for the colony.
+
+Land: an intentional circuit-board maze on polluted deck plate, dry bright sky, rust dust, working coolant channels where the authored tile has them, inert wreck salvage and desiccated approach corpses.
+
+Life: mechanical land cleaners, patterned living bolts, water-bound coolant eels and the peaceful worn borehulk; existing campaign mynocks and voltmaw remain, with no evictions. There is no native green forage, livestock industry or ordinary predator/prey web. Bolts and roaches are machines, not meat. Eels are the only ordinary catch, not a promised staple colony food supply.
+
+Signature: Extraction disturbs the Cathedral, the hum and living bolts reveal where restraint is needed, and continued intrusion meets local defence or a debt that concrete repayment can clear.
+
+Runner-up: restoring the borehulk and choosing ownership or freedom. It loses because it is a separate personal quest and remote mining reward; removing that story leaves the owner's selected guarded salvage maze and its temper whole. It moves intact, not cancelled, with its expensive repair and keep/free outcomes preserved for its version. The wild worn resident stays; no quest tease, drill-removal option or inaccessible reward remains at default settings.
+
+## Why a player reaches for it
+
+A salvage expedition with route choices and understandable boundaries replaces the generic scrap map. Vanilla mining already provides labour, yields and ordinary wall destruction; RustCathedral adds the deliberate geometry and a response to how that geometry and its maintained life are treated. Vanilla mech clusters provide kinds and weapons, not permission to replace held ground with raiding parties. The proposal predicts that listening and choosing routes will be enjoyable; enjoyment is not a passing bar.
+
+## Using it
+
+First hour: arrive with water, food and ordinary heat/pollution protection. Arrival advice names roofs, sacred ownership and changes in hum/bolt behaviour without explaining why. A connected outer corridor offers unprotected rubble salvage and a visible protected boundary. A player can mine loose plate and dead smartsteel without an offence merely for yielding metal. A route-divider has distinct patterned edging and an inspect warning before the first damaging action. Mining it still gives ordinary salvage; the shortcut is what causes irritation. Some such breaches reveal guarded closed chambers, but there is no random trap mechanic in this version. A chamber guard is the trap.
+
+Routine: designate ordinary salvage; maintain an open withdrawal path. Canal fishing, taking eel bodies for catch, harming local bolts and breaching marked dividers add fast irritation attributed to the actual player act. Fishing starts a tell before the next catch, not a charge on every scan. Cancelled fishing does not keep accumulating irritation. Bolts gravitate through reachable corridors toward the cause and stiffen as anger rises; they do not teleport through walls. Public inspect text reports observable activity and mood, never its hidden cause. Neither sound nor locating work depends on learned literacy. Stop minor offences and irritation decays; it cannot silently become permanent debt while you wait.
+
+At a 40-colonist scale: simultaneous causes stay distinct in an event registry, each with map, source location, actor/source identity and lifecycle. Bolts choose among reachable active causes, with deterministic rotation so a large group does not hide a second work site forever. Sound expresses map-wide mood; location comes from nearby bolts and a baseline click-through warning at each active work site. This is the minimum fallback when no living bolt can reach a site, not a new letter stream. A newcomer must be able to cancel the indicated activity before its next avoidable escalation. An atomic damaging blow cannot be retroactively prevented: the target must show its protected status before the order. Already hostile combat is not a promise of safe cancellation.
+
+## What changes in the colony's story
+
+The colony learns which walls are free salvage, which openings trespass, which works are protected, and when to leave its fishers idle. It does not learn the machine's identity, droid mercy's reason or deep drilling's hidden cause from tooltips, settings, scanner text or letters. Campaign truth and faction exceptions remain owned by their neighbours. No mind, god or quest must unlock the free biome's truthful warning. Existing campaign targeting exceptions are respected; no new pass, quest, enclave or settlement is created here.
+
+## Costs and recovery
+
+Food, drinking water, protection, hauling and mining labour use existing game systems. The walls are finite material, not a renewable steel printer. No new corrosion, sunbeam, custom heat kind, moving shadow clock or acid damage is introduced. The fixed-world tile supplies ambient heat and pollution; the shared sun engine computes exposure from position and geometry. Living native life must survive its declared home conditions without an undocumented immunity to a second heat system.
+
+Ordinary fishing, shortcut breaches and bolt killing affect fast irritation only. The current catch-standing counter and passive worst-band drain are not accepted as rules for the first version. The owner required minor disturbance to ease through time and restraint, and the source shows an irreversible accumulation without a general recovery route.
+
+Sacred damage/claim creates one saved standing debit per original protected structure, not per hit. Destruction upgrades that same offence, never charges it twice. The existing sacred economics remain: debit 15, defence hostile at -75, recovery to nonhostile only at 0 (these are standing rulings/checks, not bar wording). No vanilla permanent-enemy faction goodwill is changed. Cathedral-specific guard targeting reads the local ledger; unrelated mechanoids keep their own faction rules.
+
+Delegated concrete repayment: a `Repay damage` delivery order at the offended structure or its saved site takes silver worth twice the intact structure's replacement market value, with a def-authored positive replacement value when the resolved value is zero. The inspector shows the exact bill, the offence it settles and that this is repayment, not purchase of the place. Silver is ordinary material currency; there is no ritual, god reward or new resource. The committed deposit is consumed once, then restores only that offence's debit up to its pre-offence value. Partial deliveries persist; cancelling returns uncommitted reserved silver, never consumed deposits. Repeat damage on the same repaired structure reopens debt only after actual restoration, not claim cycling. A deep-drill intrusion similarly creates one saved recoverable debit for that drill episode, with its replacement value as the bill basis. Unpaid debt never decays. Nonnegative starting standing and ordinary waiting cannot farm credits.
+
+A destroyed site's marker persists with its original identity and bill. Its order is accessible from adjacent reachable dry ground; blockage gives an explicit refusal and consumes nothing. Pawn death, carrying interruption and map departure preserve committed state without creating duplicate receipts. Destroying or rebuilding the marker never erases debt. Repayment is possible without approaching a hostile guard: the deposit point is on the public side of the protected perimeter. If there is no reachable public side, the map layout fails; a menu bypass is not the solution.
+
+## When it goes wrong and the readable sign
+
+Ground held by guards is distinct from public passages before entry. Guards patrol their held footprint and defend there; crossing out ends pursuit, except immediate self-defence against an ongoing attacker. They cannot select distant colonists or chase a withdrawing fisher across the map. Powerful existing mech kinds may appear on slow routes; no new armed giant species is commissioned. The borehulk is never that guard.
+
+Deep extraction qualifies by the resource actually under the working drill. Warnings and local mood remain active before the storyteller response; the force targets that drill and leaves once it is destroyed, removed or no longer a valid reachable violation. It must not wait forever at a missing target. Non-live-metal drills keep vanilla infestation eligibility; disabling the custom response restores ordinary eligibility. A response describes only massive mechanoid movement. The mystery is preserved without using it to excuse bad target selection.
+
+No resident disappears as a cleanup technique. Death leaves a corpse or wreck and normal death evidence; a legitimate exit crosses an edge with an observable departure. Setting changes stop behaviours without deleting pawns. Water removed under an eel leaves a stranded visible eel and an inspect warning; shared confinement is not an excuse to delete it. Destroyed warning bolts leave a work-site warning fallback. No auto-respawn of a giant or guards replaces their loss during this season; no exotic regeneration is added.
+
+## Edges
+
+This is a local biome on one authored desert world, not a planet generator or repaint task. Local map layout on already authored tiles is allowed; alternate planets, climate-based rarity and seed searches for worlds are not. No road web, green native ecology, organic settlement or native farming camp is added. Heat shimmer/rust dust describe the ordinary bright dry surface, not a scripted damage field. The frozen sheet's older hills language yields to the explicit flatness ruling in `ASHKARR_WORLD_DEFINITION.md` §7d; relief is built walls and machinery.
+
+Dry maps can have no eels or fishing. Canal maps must have real standable-water paths and usable fishing edges. The proposal does not invent canals on every tile, simulate underground pumps or distinguish the two secret coolant systems in player text. Eel pawns and Odyssey's catch pool are separate vanilla representations; no false one-pawn-per-catch bookkeeping is promised. Catching does not invisibly delete a named eel. Eldest eels, remnant rebuilding, sun bars and an armed platewalker were unchosen pitches, not missing builds.
+
+## Neighbours and dependencies
+
+- CreatureBehaviors supplies existing seek/eat-cleanable work and common Direct Sun/shade geometry. Roaches use their dedicated mech think tree so the shared job is actually reachable. Do not redesign the engine. Roaches remain outside hum mechanics; shell yield is ordinary carcass salvage.
+- EnvironmentalHazards supplies eel confinement and arrival delivery. The water-lock backstop only stops a dry pawn; it is not proof that a route never crosses dry ground. Validate the consumer's water-only route selection. Existing ambient pollution/temperature remain the world's costs, not new Cathedral hazards.
+- ExplosiveGrowth is not a required native-life engine here: the native plant roster is empty. If the composed environment applies it to player crops, ordinary global crop rules apply; no Cathedral growth profile or invented flora is added.
+- Wreckage remains the owner of generic salvage/weathering where its engine places content. Cathedral's present derelict port actually uses vanilla wrecks and slag, not a demonstrated Wreckage API. Do not infer new crash incidents, loot tables or plating rewards; no new dependency is fabricated.
+- Bones remains the owner of global organic corpse byproducts. Cooked strays are desiccated dressing; mechanical roaches/bolts do not acquire organic bones. Eel butchery continues ordinary shared rules; no Cathedral bone system is specified.
+- Acoustic Scanner consumes the existing guarded payload under its standing all-biome ruling. Correct references to creatures inside walls, preserve register bans, and do not add a detection minigame.
+- The composed Baroque Biomes package and its per-biome switches remain. All installed DLC are assumed. RM names remain franchise-free; campaign fauna arrive through Utinni patches. Mynock's Warscar range is documented, not evicted. Flyer's fiction must agree with runtime flight; deterministic flight state is the cheap check and a visual flight sitting requires the owner.
+- Campaign Pass is an existing dependency/input, not this proposal's targeting redesign. Regard, conduct-stage progression and hidden plots stay dormant as next-version integrations; existing settled campaign facts are not re-ruled. The rites were already deferred; no waiver or old dropped feature is reopened.
+
+## Settings
+
+Shipped defaults: ordinary land/life and the whole local signature on; all listed next-version extras off, labelled `Next version`. A mechanics master, per-major-feature controls for hum/warnings, bolt display/protection, fishing consequences, shortcut offence, sacred consequences/repayment, local guard response, deep response, roach cleaning, local placements and worn-borehulk idle life must have honest scope labels. A sound mute is separate from disabling the consequence system and leaves visual warnings readable. Turning a consequential feature off also stops new debits and its pending escalation, not just its visible tell; existing debts are retained dormant, not erased. Per-feature settings describe coupled changes. The master stops all local scripted consequences; static terrain/defs and resident pawns remain. Existing attacks abort/revert to held-ground defence on disabling the responsible custom response; queued jobs cannot continue hidden work.
+
+Current scribing is centralized under prefixed Hum/Walls keys. New defaults, Scribe fallbacks, reset defaults, composition reset and effective predicates must agree. Saved explicit old preferences are not silently overwritten: provide one visible version-upgrade notice listing deferred systems now off, preserve their state and make an explicit re-enable opt-in. No automatic feature-on migration. New-map placement controls say `new local maps only`; no planet rarity UI remains. Existing unsupported cross-biome controls remain off and labelled unsupported; add no new cross-biome scope. All-off and individual off arms are regression checks under the inherited floor, not extra bars.
+
+## Four short stories
+
+First hour: a crew roofs its working spot and follows a repeating metal corridor. It mines an unprotected fragment. A worker selected to cut patterned edging sees that it opens held ground; the player chooses the longer route instead.
+
+Ordinary week: fishers begin working the canal while miners collect dead smartsteel. The hum sharpens and bolts gather by the lines, not by innocent haulers. Cancelling fishing eases the sound; the miners keep their ordinary salvage. A roach is still cleaning while the bolts grow still.
+
+Worst day: a crew breaches protected works and leaves with its wounded. The guardians remain at their ground. The debt is still there after a reload; stopping work calms irritation but does not clear that bill. Silver delivery from the public side settles the actual damage without a god, ritual or magical faction conversion.
+
+Season's turn: repeated careful trips remain possible, intact corridors still guide choice and depleting ordinary salvage stays depleted. The same season with fishing and shortcut work reversed gives understandable warnings in either order. A midway reload has not forgiven damage, charged old fishing again, duplicated residents, flooded the plate with curiosities or filled the log with errors.

@@ -1,0 +1,36 @@
+{
+ "mod": "RustCathedral",
+ "state": "proposed",
+ "why": "check passes (7 bars, 67 census rows, 806 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-17T01:20:41",
+ "seconds": 1274,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 806,
+  "page_limit": 950,
+  "census_rows": 67,
+  "bars": 7,
+  "bar_numbers": "none",
+  "shared_things": 10,
+  "meetings": 10,
+  "old_bars": "0 mapped of 0 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 5211174,
+    "output_tokens": 43158
+   }
+  }
+ ],
+ "agent_errors": []
+}
