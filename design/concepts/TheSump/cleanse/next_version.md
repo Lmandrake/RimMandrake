@@ -1,6 +1,6 @@
 # Next version, switched off
 
-Designer decisions for Design Version 0.1.0. These preserve future lore and owner rulings; they do not activate anything. All built entries name a default-off consumer/producer ticket. Recommended retirements await the owner; prohibited worldgen never gets an on switch.
+Designer decisions for Design Version 0.1.0. These preserve future lore and owner rulings; they do not activate anything. The playable “hides all” promise is consciously deferred with archive excavation; legible deep/shallow land does not stand in for it. All built entries name a default-off consumer/producer ticket. Recommended retirements await the owner; prohibited worldgen never gets an on switch.
 
 ### placement worker — recommended retirement
 What: Existing tile-score worker and rarity slider for alternative-world generation; retained as built evidence, outside the campaign/player promise.

@@ -6,7 +6,18 @@
       "meant": {
         "intent": "Land: legible ordinary ground, usable settlement area and the ruled weather, without adding an industry or a heat exception.",
         "source": "the_sump.md §§1,2,6,9; Biomes.compose.json TheSump line; later no-precipitation ruling recorded in RM_TheSump_Biome.xml; delegated: distinguishability and usable build ground inferred from settling that land.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "flat",
+            "stands_for": "A low basin skyline and continuous low ground without hills or mountains, not identical terrain at every cell.",
+            "accept": "An irregular shoreline curves around shallow pockets and solid sheets beneath the low horizon."
+          },
+          {
+            "word": "black basin",
+            "stands_for": "Black tar pools and glassy sheets dominate the terrain reading; vegetated margins and building ground need not all be black.",
+            "accept": "Waxy grey-green plants occupy non-black dry margins between the black pools and sheets."
+          }
+        ]
       },
       "accept": [
         "The horizon stays low and amber, black pools differ from solid sheets and their shallow margins, and a settler can choose a connected solid patch for stores and shelter.",
@@ -102,7 +113,7 @@
       "accept": [
         "Mice feed and cross their shallow-tar habitat while skarrid hunt, a permitted tame attempt proceeds by ordinary work, and a skellarn flight state carries it across a ground barrier.",
         "A plain kethrel eats and can be managed without stealing scrap; an animal that dies leaves a corpse or a readable ordinary exit.",
-        "A native animal meets its thirst at the tar margin without human liquid penalties; settlers use their ordinary supplied drinking water."
+        "A native animal meets its thirst at the tar margin without human liquid penalties; settlers drink carried fresh-water bottles or draw from imported fresh-water barrels."
       ],
       "reject": [
         "Animals spawn for the photograph but cannot reach suitable food or complete a normal hunt/tame job in their habitat.",
@@ -111,12 +122,12 @@
       ],
       "lazy": "none: The sentence requires ordinary feeding, hunting, taming and adapted movement rather than body/def existence.",
       "range": {
-        "varies": "Seated RM mouse, Gulveth, Thrummel, Warden, Broodmother, Dredgel, Skarrid, Skellarn and Kethrel plus conditional campaign Hssiss; juvenile/adult, wild/tame, hungry/fed, downed/dead and ordinary cold stress; feeding/hunting/taming where allowed by the actual race; mouse shallow crossings and skellarn grounded/cooldown/flight over shallow/deep barriers; initial/reload/revisit; colonies 3,12,40 with low/high ordinary prey demand. Roster commonalities are tunable checks, not quotas. Hydration: thirsty/sated native at/adjacent to accessible tar, wild and tame membership recognised through the actual patched roster; humanlike control with supplied potable water; shared thirst enabled.",
-        "left_out": "No guarantee every species appears on a single map, every tame roll succeeds or every animal survives starvation/player extermination. No restored Brommet or additional VGE bestiary species. No unattended visual flight test; real flight is checked by tracker state."
+        "varies": "Seated RM mouse, Gulveth, Thrummel, Warden, Broodmother, Dredgel, Skarrid, Skellarn and Kethrel plus conditional campaign Hssiss; juvenile/adult, wild/tame, hungry/fed, downed/dead and ordinary cold stress; feeding/hunting/taming where allowed by the actual race; mouse shallow crossings and skellarn grounded/cooldown/flight over shallow/deep barriers; initial/reload/revisit; colonies 3,12,40 with low/high ordinary prey demand. Roster commonalities are tunable checks, not quotas. Hydration: thirsty/sated native at/adjacent to accessible tar, wild and tame membership recognised through the actual patched roster; humanlike control with carried RM_Bottle_FreshWater / RM_Barrel_FreshWater stock; shared thirst enabled.",
+        "left_out": "No guarantee every species appears on a single map, every tame roll succeeds or every animal survives starvation/player extermination. No restored Brommet or additional VGE bestiary species. No unattended visual flight test; real flight is checked by tracker state. Sustained imported non-native livestock is excluded: owner-ruled terrain-only animal drinking plus the frozen tar-only surface leaves no legal source. Do not label it native or silently exempt thirst; dehydration is readable."
       },
       "sees": {
         "instrument": "T44 native traversal and FlightTracker deterministic reads, actual ordinary feeding/hunt/tame job outcomes; Situation walk for state transitions and Whole map for food-web continuity. Available def fields alone are insufficient. Read actual FlowWorks thirst need, selected source/liquid, HomeWater/NativeHere result and hydration delta; the generic native-water audit omits Sump because its BiomeDef fertility terrains do not name tar.",
-        "start": "Actual natural habitat with accessible species-appropriate food and reachable targets, seated races with no debug AI lock; paired colonist and mouse on the same shallow route; skellarn rested and in cooldown arms.",
+        "start": "Actual natural habitat with accessible species-appropriate food and reachable targets, seated races with no debug AI lock; paired colonist and mouse on the same shallow route; skellarn rested and in cooldown arms. Humanlike controls have reachable carried fresh-water bottles/barrels; native arms drink tar rather than benefiting from that cargo.",
         "on": "All retained land, life, tar pickup/exposure, glasswalk, bitumen/weak-solvent and routine-cleanup consumers at proposed shipped defaults; every DLC; shared EnvironmentalHazards, CreatureBehaviors, ExplosiveGrowth, FlowWorks, Wreckage and Bones at their composed defaults. No debug/weather/time/AI locks. All next-version Sump consumers and producers off. Negative-control fixture is separate from the main reading; it does not replace it.",
         "control": "Record flight-tracker state and traversed cells, not just changed position; teleport/despawn mutants fail. Link food consumption/hunt to actual food/prey id; disabled custom shell/trails cannot be credited for ordinary feeding. Paired unadapted colonist distinguishes speed stat from terrain exemption.",
         "reset": "Use a disposable copy of a fixed-world local Sump test save; record settings, spawned objects, pawns, terrain, growth, jobs, reservations and queues before each arm. Restore that copy in finally and verify the state fingerprint/log. Do not mutate the canonical save or clear real queues via proof helpers.",
@@ -240,7 +251,13 @@
       "meant": {
         "intent": "Signature recovery: faster paid relief and automatic ordinary handling are necessary; this is the deletion argument for the cleanup action and local solvent chain.",
         "source": "ANSWERS_OWNER.md answer on automatic routine, card 2026-11-10; RM_Tarred_Solvents.xml and EH exposure/surgery source; delegated: source clearing, physical material handling and noninjurious routine are the operational reading.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "burden",
+            "stands_for": "The inspectable tar condition and comparative movement/work cost; no carried weight item or new injury is required.",
+            "accept": "The worker is visibly tarred and works more slowly although its inventory mass has not increased."
+          }
+        ]
       },
       "accept": [
         "After outside work, an available worker uses accessible reserved solvent under the colony policy, returns to ordinary work and stays recovered until newly exposed.",
@@ -280,30 +297,45 @@
     },
     {
       "id": "B7",
-      "says": "The settled Sump keeps its dusky black ground, living margins and feeding wildlife while dirty workers sustain ordinary colony work through recovery, a reload and a changed order of work.",
+      "says": "The settled Sump keeps its dusky black ground, living margins and feeding wildlife while supplied settlers sustain ordinary colony work through persistent tar costs, natural tar fire, recovery, a reload and a changed order of work.",
       "meant": {
         "intent": "Exactly one whole bar: land, life and the tar-maintenance signature operate together long enough for coupled growth, traffic, recovery and ordinary tar physics to expose failure.",
-        "source": "Supplied cleansing brief whole-bar requirement; owner ordinary-routine card in ANSWERS_OWNER.md; delegated synthesis of the experience sentence and the frozen land/life lore.",
-        "figurative": []
+        "source": "Supplied cleansing brief whole-bar requirement; owner ordinary-routine card in ANSWERS_OWNER.md; delegated synthesis of the experience sentence and the frozen land/life lore. Typed owner experience, biome_experiences_2026-10-20.md:27 (slow to burn); frozen the_sump.md §§3,5,7b; delegated: finite carried water makes the declared supplied-colony range explicit.",
+        "figurative": [
+          {
+            "word": "dusky black ground",
+            "stands_for": "The dry-dusk presentation and dominance of black tar and glass sheets, not uniform blackness or absence of ordinary lamps.",
+            "accept": "Grey-green vegetation stands on non-black margins and a lamp lights a work pad while the surrounding pools remain dark."
+          },
+          {
+            "word": "living margins",
+            "stands_for": "Eligible tar-edge habitat supports ordinary plants and their feeding animals, not a sentient shoreline or uninterrupted vegetation ring.",
+            "accept": "Irregular pools have bare breaks between occupied plant patches where animals forage."
+          }
+        ]
       },
       "accept": [
         "Across settlement and continued outside work, paths improve and solvent stock is spent and replenished, plants are harvested and regrow where eligible, animals feed, and dirty areas remain without halting meals, hauling and construction after a reload.",
-        "Building routes before rendering solvent or rendering solvent before extending routes produces different inconvenience but neither order needs a debug cure, a hidden extra or a locked sky to keep the colony working."
+        "Building routes before rendering solvent or rendering solvent before extending routes produces different inconvenience but neither order needs a debug cure, a hidden extra or a locked sky to keep the colony working.",
+        "Settlers drink carried fresh water while natives hydrate at tar; the declared expedition stock lasts through the run without a fresh-water pond, hidden refill or thirst exemption.",
+        "Ignited natural tar remains an ongoing visible fire hazard while workers reroute; the fuel does not flash away into instantly harmless paving."
       ],
       "reject": [
         "Raw tar or uncontrolled plant spread consumes the usable settlement, or the map becomes empty of ordinary native life despite suitable food and temperature.",
-        "Workers repeatedly reserve cleanup forever while food and ordinary work stop, or reload duplicates stock, loses pawns, activates deferred systems or produces a repeating error storm."
+        "Workers repeatedly reserve cleanup forever while food and ordinary work stop, or reload duplicates stock, loses pawns, activates deferred systems or produces a repeating error storm.",
+        "The colony dehydrates for lack of any legal water source, or a hidden fresh-water pond or disabled thirst makes the supplied colony seem viable.",
+        "Natural tar flashes away at ignition into harmless paving, so its supposed persistent burn never affects ordinary work."
       ],
-      "lazy": "none: The whole duration, reload, reordered actions and continuing jobs/populations rule out an isolated staged success.",
+      "lazy": "none: Continuing jobs and populations, actual finite potable-stock debits, persistent natural-tar burning, reload and reordered actions exclude a staged success or hidden water/physics bypass.",
       "range": {
-        "varies": "Full maps 250x250,300x300,400x400, colony 3/12/40, at least 60 in-game days so a 15-day season and the current slow crop cycle fit; thermal cases -15,-8,0,15,22 C anchored to actual fixed-site ambient readings rather than invented world tiles. Frozen-temperature case uses planned provisions and tests visible thermal halt, not forced native growth. Low/high ordinary traffic, prey/predator composition sampled from the retained full roster without quota; ordinary harvest, sow, hunt, tame, craft pitch/wax/solvent, construct glasswalk, clean, haul, small generic channel/gate use and player-caused natural-tar ignition once reachable. No unlimited pump input or deliberate whole-map destruction. Save mid-way with dirty pawns, in-progress growth, a reservation and live ordinary dependency state; continue both uninterrupted and loaded runs; reverse route-building versus solvent-first order and harvest/cleanup order. Wall-clock speed-up only initially; no skipped pawn/plant/fire/job ticks. Include native hydration from home tar, human drinking-water provision, water hauling and thirst searches at default FlowWorks settings.",
-        "left_out": "No alternative world generation, unsupported outside-biome feature configuration, DLC-absent tier, player extermination or intentional unbounded flooding/incineration of the whole map. Next-version features stay off by definition; all retained dependency physics stay enabled. Not a requirement to feed forty people from wild forage alone or to stop deliberate player disasters."
+        "varies": "Full maps 250x250,300x300,400x400, colony 3/12/40, at least 60 in-game days so a 15-day season and the current slow crop cycle fit; thermal cases -15,-8,0,15,22 C anchored to actual fixed-site ambient readings rather than invented world tiles. Frozen-temperature case uses planned provisions and tests visible thermal halt, not forced native growth. Low/high ordinary traffic, prey/predator composition sampled from the retained full roster without quota; ordinary harvest, sow, hunt, tame, craft pitch/wax/solvent, construct glasswalk, clean, haul, small generic channel/gate use and player-caused natural-tar ignition once reachable. No unlimited pump input or deliberate whole-map destruction. Save mid-way with dirty pawns, in-progress growth, a reservation and live ordinary dependency state; continue both uninterrupted and loaded runs; reverse route-building versus solvent-first order and harvest/cleanup order. Wall-clock speed-up only initially; no skipped pawn/plant/fire/job ticks. Include native hydration from home tar, human drinking from carried RM_Bottle_FreshWater and RM_Barrel_FreshWater, water hauling and thirst searches at default FlowWorks settings. Provision the complete 60-day-or-longer declared horizon for the actual colonist count using resolved thirst rate, maximum supported heat/work factors, actual container capacity/drawnUnits, rounding waste, deterioration and a recorded contingency reserve. Extend the finite budget if the run extends; no unlimited stock, scripted refill or guaranteed visiting trader. Include a separate inaccessible/insufficient-stock control, not credited as a supplied default arm.",
+        "left_out": "No alternative world generation, unsupported outside-biome feature configuration, DLC-absent tier, player extermination or intentional unbounded flooding/incineration of the whole map. Next-version features stay off by definition; all retained dependency physics stay enabled. Not a requirement to feed forty people from wild forage alone or to stop deliberate player disasters. No promise of local drinking-water production or indefinite survival on landing cargo. Imported non-native livestock cannot be sustained under the terrain-only animal and tar-only Sump rulings; seated tame natives remain in range."
       },
       "sees": {
-        "instrument": "T47 Whole map and Solvent queue models after calibration, plus actual complete default-run state trace via T46: terrain regions, growth/food/prey, pawn identities/exits, jobs, resource ledgers, reservations, fire/liquid state, defaults and logs. This is unmeasured until those instruments and normal-tick calibration exist; historical isolated passes cannot count.",
-        "start": "Legitimate fixed-world surface site initialized as Sump, complete retained roster availability and ordinary starting food/build material, no prefabricated routes or free solvent credited to the production chain. Default dependency profiles recorded; nothing locked or protected from the retained mechanics. Supply ordinary colonist drinking water through existing provisions/engines; natural tar is not fresh water for humanlikes.",
+        "instrument": "T47 Whole map and Solvent queue models after calibration, plus actual complete default-run state trace via T46: terrain regions, growth/food/prey, pawn identities/exits, jobs, resource ledgers, reservations, fire/liquid state, defaults and logs. This is unmeasured until those instruments and normal-tick calibration exist; historical isolated passes cannot count. T51 records off-site filling/transport provenance, actual potable litres, human drink/haul jobs and need deltas through reload; compare ignition, continuing combustion, fuel debit and cooled terrain to distinguish persistent tar burning from a flash conversion.",
+        "start": "Legitimate fixed-world surface site initialized as Sump, complete retained roster availability and ordinary starting food/build material, no prefabricated routes or free solvent credited to the production chain. Default dependency profiles recorded; nothing locked or protected from the retained mechanics. Bring finite RM_Bottle_FreshWater / RM_Barrel_FreshWater cargo filled at a legal off-site fresh-water source through the ordinary FlowWorks fill job and carried in ordinary caravan inventory. T51 records source and container identities, actual litres, mass/carry capacity and the full-horizon budget including reserve. Inspect real reachable cargo at start; do not conjure replacements during the run. Natural tar is not fresh water for humanlikes; seated wild/tame natives use their tar binding. No imported non-native animal is represented as sustainably watered.",
         "on": "All retained land, life, tar pickup/exposure, glasswalk, bitumen/weak-solvent and routine-cleanup consumers at proposed shipped defaults; every DLC; shared EnvironmentalHazards, CreatureBehaviors, ExplosiveGrowth, FlowWorks, Wreckage and Bones at their composed defaults. No debug/weather/time/AI locks. All next-version Sump consumers and producers off. Negative-control fixture is separate from the main reading; it does not replace it.",
-        "control": "Parallel disposable save branches: normal job execution uninterrupted, loaded mid-way and alternate action order with matched input policy/initial state. Replay stochastic seeds where possible and report envelopes where not. Separate mutants suppress tracking, prevent regrowth, leak deferred callbacks and retain filth on cure; their expected failures show a smooth summary cannot mask a stalled subsystem.",
+        "control": "Parallel disposable save branches: normal job execution uninterrupted, loaded mid-way and alternate action order with matched input policy/initial state. Replay stochastic seeds where possible and report envelopes where not. Separate mutants suppress tracking, prevent regrowth, leak deferred callbacks and retain filth on cure; their expected failures show a smooth summary cannot mask a stalled subsystem. Trace each human drink to named cargo and its finite debit with thirst still enabled; forbidden/unreachable stock and a dry-cargo mutant must fail, even beside accessible tar. Observe ongoing burning after ignition with source replenishment recorded so indefinite pumping cannot counterfeit slow fuel consumption.",
         "reset": "Use a disposable copy of a fixed-world local Sump test save; record settings, spawned objects, pawns, terrain, growth, jobs, reservations and queues before each arm. Restore that copy in finally and verify the state fingerprint/log. Do not mutate the canonical save or clear real queues via proof helpers.",
         "live_only_why": "No credible cheap offline model reproduces the complete composed scheduler, ecology, fire, serialization and logging. Models locate risky regimes; an actual full-map normal-tick state trace through reload and reordered actions decides the whole experience. Visual sampling is separate; no unattended flight capture."
       },
@@ -368,7 +400,7 @@
     },
     {
       "id": "C10",
-      "what": "Whole trace checks resource identity, terrain regions, animal exits/food actions, growth, job queues, fire/liquid totals, log signatures, snapshot restoration and action-order comparison."
+      "what": "Whole trace checks resource identity, terrain regions, animal exits/food actions, growth, job queues, fire/liquid totals, log signatures, snapshot restoration and action-order comparison. Include finite potable cargo budgets/debits and actual drinking need/job deltas, plus tar ignition/continuing fuel debit/cooling records; counts and burn timings are checks, not bar quotas."
     },
     {
       "id": "C11",
@@ -486,6 +518,17 @@
         "routes",
         "saved"
       ]
+    },
+    {
+      "id": "R12",
+      "rule": "Humanlikes keep default FlowWorks thirst and drink imported RM_Bottle_FreshWater / RM_Barrel_FreshWater, filled off-site and carried as finite ordinary caravan cargo. Budget the full declared whole-run horizon from resolved needs, capacities, losses and reserve; continued residence requires player-arranged imports, not a promised merchant or local water producer. No surface water, rain or human potable tar. Seated natives hydrate at tar. Under the owner terrain-only animal rule, imported non-native livestock is outside sustained husbandry; no container adapter or hidden thirst exemption. This supply/range choice is ours; the animal and frozen surface bans remain fixed.",
+      "touches": [
+        "stock",
+        "animals",
+        "liquid",
+        "saved",
+        "defaults"
+      ]
     }
   ],
   "meetings": [
@@ -531,10 +574,11 @@
         "B5",
         "B7",
         "R6",
-        "R11"
+        "R11",
+        "R12"
       ],
       "holds_together": "unknown",
-      "why": "A default tar source, player channel and ignition can keep supplying fire or reshape the margin while plants, paths and workers respond. Turning the special belch off does not break this dependency loop.",
+      "why": "A default tar source, player channel and ignition can keep supplying fire or reshape the margin while plants, paths and workers respond. Turning the special belch off does not break this dependency loop. Slow fuel consumption rather than immediate conversion also needs normal-tick calibration; imported drinking water remains contained and cannot be modeled as new surface water.",
       "model": "Whole map"
     },
     {
@@ -550,7 +594,8 @@
         "R1",
         "R5",
         "R6",
-        "R7"
+        "R7",
+        "R12"
       ],
       "holds_together": "argued",
       "why": "The group explicitly separates retained data/bodies and shared physical laws from the disabled Sump producers/effects; none of the retained causal paths needs a deferred action. Chemical recovery works without bottled gas; plain animals feed without shell/trails; habitats do not query deferred rings. Ticketed gate/decoupling work must implement this design argument; current code is not claimed to satisfy it.",
@@ -582,10 +627,11 @@
         "B7",
         "R4",
         "R5",
-        "R9"
+        "R9",
+        "R12"
       ],
       "holds_together": "unknown",
-      "why": "Forage, animal wax, bitumen, solvent reservations and ordinary labour compete at colony scale; def yields cannot establish whether the routine remains supplied without starving other jobs.",
+      "why": "Forage, animal wax, bitumen, solvent reservations and ordinary labour compete at colony scale; def yields cannot establish whether the routine remains supplied without starving other jobs. Finite water cargo and drinking/haul access compete with the same ordinary labour; Whole map supplies the water ledger alongside Solvent queue.",
       "model": "Solvent queue"
     },
     {
@@ -596,10 +642,11 @@
         "R5",
         "R7",
         "R8",
-        "R10"
+        "R10",
+        "R12"
       ],
       "holds_together": "unknown",
-      "why": "Native movement, predator/prey intake, human hunting for wax and weak-solvent demand can consume each other's food web. No ordinary population persistence argument is credible without a map/food trace. Native hydration at the tar shore is another food-web input; the generic audit misses Sump when it infers liquids only from fertility terrains.",
+      "why": "Native movement, predator/prey intake, human hunting for wax and weak-solvent demand can consume each other's food web. No ordinary population persistence argument is credible without a map/food trace. Native hydration at the tar shore is another food-web input; the generic audit misses Sump when it infers liquids only from fertility terrains. The supported husbandry range is seated natives; importing a non-native creates a readable unsupported hydration failure, not permission to add water terrain.",
       "model": "Whole map"
     },
     {
@@ -614,7 +661,8 @@
         "R4",
         "R5",
         "R8",
-        "R11"
+        "R11",
+        "R12"
       ],
       "holds_together": "unknown",
       "why": "A saved dirty carrier, pending ingredient debit, flight state and default-off extra queue can each look correct locally but reload together into duplication, re-exposure or a late wake.",

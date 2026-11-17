@@ -1016,7 +1016,7 @@
     },
     {
       "id": "native_hydration",
-      "what": "Seated natives meet hydration needs at their own environmental tar without human liquid consequences; colonists retain ordinary supplied drinking-water needs.",
+      "what": "Seated natives meet hydration needs at their own environmental tar without human liquid consequences; humanlike carried-water provision is inventoried separately; imported non-native livestock is outside sustained husbandry under terrain-only animal drinking.",
       "built": "absent",
       "evidence": "design/RimMandrake/biome_rulings.md, Natives drink their own environmental water (2026-11-01); src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs; src/RimMandrake/FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Tar.xml; src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_DrinkableTerrain_ForeignTerrains.xml (read-only HEAD blobs). Generic HomeWater/NativeHere support present; no tar nativeWater binding found in inspected source or HEAD nativeWater search.",
       "proven": "missing",
@@ -1026,6 +1026,19 @@
       "why": "Designer decision (delegated from the standing ruling): an ordinary native that dehydrates beside the biome liquid is not a working local animal. Use the shared nativeWater data/API; no new human potable liquid, surface water or thirst engine.",
       "needed_by": "",
       "ticket": "T50"
+    },
+    {
+      "id": "carried_drinking_water",
+      "what": "Finite player-carried FlowWorks fresh-water bottles/barrels supply humanlikes through the declared expedition; seated natives use tar, imported non-native livestock has no legal Sump hydration source.",
+      "built": "present",
+      "evidence": "src/RimMandrake/FlowWorks/Defs/LiquidTypes/ThingDefs/RM_LiquidBottles.xml (RM_Bottle_FreshWater, RM_Barrel_FreshWater); Source/LiquidTypes/JobDriver_FillBottle.cs; Source/Thirst/RM_ThirstJobs.cs, RM_ThirstContainers.cs, RM_ThirstSettings.cs and RM_ThirstMath.cs under the same FlowWorks root, read-only HEAD blobs. design/RimMandrake/thirst_bottles_design_2026-10-16.md §2 OQ-5 explicitly requires animal terrain-only drinking; frozen the_sump.md §6 forbids surface water.",
+      "proven": "missing",
+      "called_by": "FlowWorks humanlike drink giver -> bottle Ingest/hydrate or RM_DrinkFromContainer; FillBottle pays source volume; ordinary caravan inventory transports containers. AnimalDrink only searches terrain, so does not consume cargo.",
+      "serves": "Supplied settlers remain alive while the ordinary biome and signature run together.",
+      "fate": "needed_by",
+      "why": "Designer decision: deleting named finite potable cargo leaves settlers unable to hydrate on a tar-only map with default thirst, invalidating the whole experience. Existing engine containers/jobs provide supply; T51 must prove capacity, provenance and actual consumption. No local source, automatic trader, new engine or non-native animal exemption is commissioned.",
+      "needed_by": "B7 supplied-colony whole run (and B3 humanlike control)",
+      "ticket": "T51"
     }
   ]
 }

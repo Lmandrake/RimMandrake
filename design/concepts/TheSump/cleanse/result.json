@@ -1,22 +1,23 @@
 {
-  "mod": "TheSump",
-  "run": "designer-cleanse-TheSump-2026-11-17",
-  "outcome": "proposed",
-  "signature": "Crossing raw tar brings a persistent movement/work burden into the colony, answered by route planning and supplied worker cleanup.",
-  "counts": {
-    "capabilities": 79,
-    "kept": 37,
-    "next_version": 36,
-    "recommend_retire": 6,
-    "old_bars": 0,
-    "bars": 7,
-    "live_only_bars": 4,
-    "checks": 13,
-    "rules": 11,
-    "unknown_pairs": 9,
-    "models": 4,
-    "tickets": 50,
-    "questions": 0
-  },
-  "blocked_on": []
+ "mod": "TheSump",
+ "run": "designer-cleanse-TheSump-2026-11-17",
+ "outcome": "proposed",
+ "signature": "Crossing raw tar brings a persistent movement/work burden into the colony, answered by route planning and supplied worker cleanup.",
+ "counts": {
+  "capabilities": 80,
+  "kept": 38,
+  "next_version": 36,
+  "recommend_retire": 6,
+  "old_bars": 0,
+  "bars": 7,
+  "live_only_bars": 4,
+  "checks": 13,
+  "rules": 12,
+  "unknown_pairs": 9,
+  "models": 4,
+  "tickets": 51,
+  "questions": 0
+ },
+ "blocked_on": [],
+ "applyable": false
 }
