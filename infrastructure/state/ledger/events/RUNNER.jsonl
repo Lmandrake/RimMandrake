@@ -8287,3 +8287,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"kept","detail":"sweep: running again","ts":"2026-11-17T06:18:11Z","tsn":1794896291111860595}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_END: disk.scratch_dirty_end = 4 sanity problems at the end of the last run (MEASURED), line > 0","ts":"2026-11-17T06:19:32Z","tsn":1794896372632165772}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_END: disk.scratch_dirty_end = 4 sanity problems at the end of the last run (MEASURED), line > 0","ts":"2026-11-17T06:20:48Z","tsn":1794896448966048626}
+{"seat":"RUNNER","event":"note","id":"OPS_DEPLOY_UPDATE_UNSTICK_RDHQ","text":"ops_watch: cleared at 2026-11-17T06:23:20Z (timers.deploy_update_age_min now 3.7)","ts":"2026-11-17T06:23:30Z","tsn":1794896610177878818}
