@@ -1,0 +1,24 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Restored freely mineable bulk as the salvage-paradise promise, with marked dividers and sacred works as exceptions; marked most of the metal in sight as figurative without a ratio, added the scarce-map reject and a full-map control, and aligned the definition and owner summary.",
+      "where": "bars.json B2; definition.md Using it; ambiguities.md Free bulk vs shortcut anger; owner_pages.md Page two Maze/free salvage"
+    },
+    {
+      "id": "R2",
+      "changed": "Removed loose from B2 says and identified ordinary deck-plate as mineable corridor wall rock as well as rubble. Added an accept picture of a worker mining an unmarked corridor wall without offence, and aligned the range and explanatory wording.",
+      "where": "bars.json B2; definition.md Using it; ambiguities.md Free bulk vs shortcut anger; owner_pages.md Page two Maze/free salvage"
+    },
+    {
+      "id": "R3",
+      "changed": "Moved the sacred receipt and actual Enclave debit to destruction/strip or claim, once per original structure. Damage while standing and unclaimed raises only fast irritation/warning. Added the B6 range, accept and observation control for unchanged goodwill, and aligned the repayment rule, definition, ambiguity, ticket and owner summary.",
+      "where": "bars.json R3/R5/C3/B6; definition.md Costs and recovery; ambiguities.md Whose goodwill is the sacrilege currency; tickets.md T30; owner_pages.md Pages one and two Sacred currency"
+    },
+    {
+      "id": "R4",
+      "changed": "Defined floor-only bolts as stiff without gathering at any work and a public hum inspect line identifying unpaid damage bills and originating Cathedral world tiles. Added B4 origin/neighbour range and observation arms, the innocent-hauler B6 reject, and aligned the definition, ambiguity, ticket and owner summary.",
+      "where": "bars.json R3/R6/B4/B6; definition.md Using it; ambiguities.md Living bolts gravitate nearby; tickets.md T33; owner_pages.md Page two Unpaid access"
+    }
+  ]
+}

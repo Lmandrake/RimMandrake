@@ -59,30 +59,38 @@
     },
     {
       "id": "B2",
-      "says": "A salvager recovers useful metal from loose plate and richer dead smartsteel without an offence for ordinary salvage, while marked route dividers and sacred works warn of the different consequence before damage.",
+      "says": "A salvager strips most of the metal in sight freely, including ordinary deck-plate walls, and recovers richer dead smartsteel, while marked route dividers and sacred works are exceptions that warn of their different consequences before damage.",
       "meant": {
-        "intent": "Reject a decorative salvage paradise or indiscriminate punishment for all mining; later shortcut ruling refines what free bulk means.",
-        "source": "Frozen sheet §5 sacrilege economics and wall ladder; owner November answers; delegated distinction between loose ordinary fragments and marked structural dividers.",
-        "figurative": []
+        "intent": "Reject a decorative or scarce salvage paradise or indiscriminate punishment for mining; the bulk of visible, reachable metal is free salvage, with marked shortcuts and sacred works as exceptions.",
+        "source": "Owner-selected salvage paradise in design/RimMandrake/biome_experiences_2026-10-20.md:21; owner ruling the_forgotten_war.md:228 on freely stripped mineable bulk; frozen sheet §5 sacrilege economics and wall ladder; November shortcut answer qualifies marked dividers, not the free bulk. RM_CathedralDeckPlate.xml defines ordinary plate as mineable RockBase wall, not loose items.",
+        "figurative": [
+          {
+            "word": "most of the metal in sight",
+            "stands_for": "The bulk of visible, reachable ordinary metal is freely mineable wall rock and rubble; marked route dividers and sacred works are recognisable exceptions. No area, mass or yield ratio is pinned.",
+            "accept": "A crew mines ordinary corridor walls freely across the maze while leaving marked shortcut dividers and protected works intact; neither a distant inaccessible facade nor a depleted worked-out corridor promises a fixed free-metal fraction."
+          }
+        ]
       },
       "accept": [
         "Workers haul mined steel and dead smartsteel from public rubble while the hum stays as it was; selecting a sacred conduit or marked divider shows the risk before the order.",
-        "Opening a marked divider yields the same ordinary material but disturbs the place because of what was opened."
+        "Opening a marked divider yields the same ordinary material but disturbs the place because of what was opened.",
+        "A worker mines an unmarked deck-plate corridor wall and hauls its steel without offence; the surrounding ordinary walls are also free salvage, rather than a few loose chunks standing for the whole reward."
       ],
       "reject": [
         "Identical unmarked plate sometimes charges an offence only after it has already been mined.",
-        "Mineable walls yield unusable decorative objects while the map description calls them treasure."
+        "Mineable walls yield unusable decorative objects while the map description calls them treasure.",
+        "Only scattered rubble is free; nearly every corridor wall is a marked divider, so salvage means trespass."
       ],
-      "lazy": "none: The sentence requires useful recoverable material and distinguishes loose salvage from trespass, excluding cosmetic walls or punishment for innocent mining.",
+      "lazy": "none: The sentence requires the bulk of visible, reachable metal, including ordinary deck-plate walls, to be free salvage and marked dividers/sacred works to be exceptions; cosmetic yields, punishment for innocent mining and rubble-only scarcity each fail it.",
       "range": {
-        "varies": "Each material/ownership class: loose plate, loose dead smartsteel, marked route divider, protected conduit, ordinary player wall and inert wreck; mining, destruction and claim attempts by player, visitor and hostile; yield permitted/zero work outcomes; stack split/haul/merge; reload before first damage and after completion; populations 1..40.",
+        "varies": "Each material/ownership class: unmarked deck-plate wall and rubble, unmarked dead smartsteel, marked route divider, protected conduit, ordinary player wall and inert wreck; mining, destruction and claim attempts by player, visitor and hostile; yield permitted/zero work outcomes; stack split/haul/merge; reload before first damage and after completion; populations 1..40.",
         "left_out": "No required exchange rate, yield, market-value ratio, smelting redesign or new stuff alloy. Richer means a salable higher-value material under the current resolved economy, not a pinned price."
       },
       "sees": {
         "instrument": "M1 situation generator using actual mining/event adapter and resolved defs, with M2 topology labels; compare calibrated real-game inventories, ownership and offence journal through read-only state hooks (T36).",
-        "start": "Known labelled source objects, empty worker inventory, recorded ledger and ordinary mining ability; no proof API directly awarding yields or changing standing.",
+        "start": "A full native maze with exported free/marked/sacred roles over its visible, reachable metal, known labelled source objects, empty worker inventory, recorded ledger and ordinary mining ability; no proof API directly awarding yields or changing standing.",
         "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run.",
-        "control": "Read source depletion and hauled output together; equal actor/target arms differing only in loose-versus-divider role. Nonplayer damage and ordinary colony construction cannot debit player standing.",
+        "control": "Read source depletion and hauled output together; equal actor/target arms differing only in unmarked-wall-versus-divider role. Nonplayer damage and ordinary colony construction cannot debit player standing. Include a rubble-only/mostly-marked-wall mutant; selected free sample objects cannot certify the full-map bulk promise.",
         "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
         "live_only_why": "Not live-only: a calibrated executable situation/geometry or whole-mod model can decide this causal/state claim; required real-game agreement is specified in models.md. A model not yet calibrated is UNMEASURED, not a pass."
       },
@@ -95,7 +103,7 @@
         "continuity"
       ],
       "qualification": {
-        "reject_test": "Reject a decorative salvage paradise or indiscriminate punishment for all mining; later shortcut ruling refines what free bulk means.",
+        "reject_test": "Reject a decorative or scarce salvage paradise or indiscriminate punishment for mining; the bulk of visible, reachable metal is free salvage, with marked shortcuts and sacred works as exceptions.",
         "renormalize": "No acceptance picture fixes a yield, stat, speed, size, value or variant count. Retuning preserves this qualitative promise; new art does not itself demand a re-pass.",
         "first_version": "land and signature boundary"
       }
@@ -145,7 +153,7 @@
     },
     {
       "id": "B4",
-      "says": "A player working the plateau can hear and see the hum and living bolts change with disturbance, locate the offending work, and stop it before its next avoidable escalation without learning a secret or a skill.",
+      "says": "A player working the plateau can hear and see the hum and living bolts change with disturbance, locate any active offending work and stop it before its next avoidable escalation, or identify an unpaid bill and its originating Cathedral tile when no offending work is active, without learning a secret or a skill.",
       "meant": {
         "intent": "Reject truthful hidden numbers with no useful warning, location cues pointing at innocent work, or progression-gated observation; the owner explicitly chose bolts gathering around what they dislike.",
         "source": "Frozen sheet §5 and §P; owner warning answer 2026-11-10; standing readable-sign rule; delegated baseline work-site fallback from absence/unreachability of bolts.",
@@ -159,22 +167,23 @@
       },
       "accept": [
         "With fishing and innocent hauling running together, the sound changes and bolts gather by the fisher; the work-site indication lets the player cancel the line before another catch.",
-        "When bolts cannot reach the active cut, its baseline work-site cue still identifies the order; its protected status was visible before damage."
+        "When bolts cannot reach the active cut, its baseline work-site cue still identifies the order; its protected status was visible before damage.",
+        "With no active offending work on either the origin map or a neighbouring Cathedral tile, bolts retain non-calm stiffness without gathering at any work; the hum inspector names the unpaid damage bill and its originating Cathedral tile."
       ],
       "reject": [
         "The hidden band rises but stage-capped sound stays calm, or a newcomer needs a hum-reader book to find the cause.",
         "The sound changes only as the response strikes, and moving bolts are clustered around a ship rather than the active work."
       ],
-      "lazy": "none: Locate, stop and before avoidable escalation require actionable timing and spatial information, excluding a nominal band change.",
+      "lazy": "none: Active work requires actionable location and timing before avoidable escalation; floor-only unease requires the unpaid bill and originating tile, excluding nominal band changes and invented targets at innocent jobs.",
       "range": {
-        "varies": "Calm through worst and recovery transitions; fishing, divider breach, bolt kill, sacred damage and deep working drill; one and multiple simultaneous causes on separate sides of a map; 0,1 and crowded local bolt groups; obstructed paths, no reader/droid/ship, sound muted with visual warning on, map switch paused/unpaused, viewed/unviewed state, reload during active job; colonies 1,8,40. Threat already in melee is a separate combat state.",
+        "varies": "Calm through worst and recovery transitions; fishing, divider breach, bolt kill, sacred damage and deep working drill; one and multiple simultaneous causes on separate sides of a map; 0,1 and crowded local bolt groups; obstructed paths, no reader/droid/ship, sound muted with visual warning on, map switch paused/unpaused, viewed/unviewed state, reload during active job; colonies 1,8,40. Threat already in melee is a separate combat state. Floor-only arm: unpaid sacred receipt with no active cause, on both its origin map and a neighbouring Cathedral map, with ordinary innocent hauling present and after reload; the hum inspect line identifies the unpaid bill and originating tile while bolts gather at no work.",
         "left_out": "No mind identity, explanation of droid mercy, hidden coolant meaning or deep-response explanation. No prevention of the atomic first intentional hit; protected status must precede that order. No guarantee that a player ignoring both channels notices."
       },
       "sees": {
         "instrument": "M1 event/cue ordering traces and M3 overlap timing triage, then a live audible/normal-zoom comparison with normal weather and colony work. T32/T33/T36. Listening/locating is a live-only judgment; no credible numerical audio proxy can replace it.",
         "start": "Newcomer colony with no reader trait, no campaign unlock, fixed ordinary work priorities and recorded innocent/background events; known trigger order without direct band forcing in the acceptance arm.",
         "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run.",
-        "control": "Disable the offence source in a separate arm while keeping background work, weather and audio unchanged; trigger a harmless hauling control elsewhere. Confirm cues match actual act identities, precede escalation, persist after map switch and permit cancellation; a silent layer-handle count is insufficient.",
+        "control": "Disable the offence source in a separate arm while keeping background work, weather and audio unchanged; trigger a harmless hauling control elsewhere. Confirm cues match actual act identities, precede escalation, persist after map switch and permit cancellation; a silent layer-handle count is insufficient. In the floor-only arms, read the bill/tile inspect line and confirm that innocent background work attracts no bolts on either map.",
         "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
         "live_only_why": "State and models can expose causal faults but cannot establish visual route legibility and lived warning readability with competing normal game cues."
       },
@@ -241,7 +250,7 @@
     },
     {
       "id": "B6",
-      "says": "A returning crew finds minor disturbance eased by time and restraint, while sacred damage leaves an uneasy warning that reachable material repayment clears and a real Enclave goodwill loss that can close contact.",
+      "says": "A returning crew finds minor disturbance eased by time and restraint, while stripping or claiming sacred works leaves an uneasy warning that reachable material repayment clears and a real Enclave goodwill loss that can close contact.",
       "meant": {
         "intent": "Reject either blanket waiting-away of desecration or a permanent unrecoverable punishment; this is the explicit return ruling, necessary for repeat salvage visits. A local number alone is insufficient: unpaid damage must remain noticeable below diplomatic hostility, and the ruled isolation is actual Enclave contact loss.",
         "source": "Owner return answer 2026-11-10 in ANSWERS_OWNER.md; frozen sacrilege economics; delegated material delivery contract in definition.md from costly concrete repayment without a ritual. Enclave currency/isolation: owner ruling 2026-08-19, the_forgotten_war.md:229-244; delegated unpaid-sacred hum floor, without extra guard aggression.",
@@ -255,25 +264,27 @@
       },
       "accept": [
         "Fishing first raises the hum with an attributed warning; cancellation and quiet restore its calm baseline while continued fishing keeps the warning raised.",
-        "Sacred damage leaves an uneasy hum even while Enclave contact is still open; paying that offence removes its warning floor, and a neighbouring Cathedral visit carries the same unpaid receipts.",
+        "Sacred destruction or claim leaves an uneasy hum even while Enclave contact is still open; paying that offence removes its warning floor, and a neighbouring Cathedral visit carries the same unpaid receipts.",
         "Desecration that has made the Enclaves hostile removes their contact without summoning an army; quiet leaves it lost, and material repayments that settle the outstanding sacrilege restore contact when the relationship recovers.",
-        "Workers finish the named silver delivery from the public side and the corresponding receipt and warning restriction clear; an interrupted delivery resumes without paying twice."
+        "Workers finish the named silver delivery from the public side and the corresponding receipt and warning restriction clear; an interrupted delivery resumes without paying twice.",
+        "Player fire chips a sacred conduit but leaves it standing and unclaimed: fast irritation and its warning rise, Enclave goodwill stays unchanged and no unpaid sacred receipt is committed."
       ],
       "reject": [
         "Idling clears sacred debt, or the repayment order exists only inside the hostile perimeter it is supposed to reopen.",
         "Payment changes only local standing while the Enclave relationship and its lost contact remain untouched, or repeated claim cycling farms credit.",
-        "An unpaid sacred offence below diplomatic hostility has no persistent readable consequence, or landing on another Cathedral map forgets it."
+        "An unpaid sacred offence below diplomatic hostility has no persistent readable consequence, or landing on another Cathedral map forgets it.",
+        "An inherited uneasy hum sends bolts toward innocent haulers."
       ],
       "lazy": "none: Attributed minor recovery, a persistent unpaid warning and real Enclave contact loss/restoration exclude an always-calm fishing input, a cosmetic debt counter and a map-local diplomatic substitute.",
       "range": {
-        "varies": "Minor arm: no sacred/deep debt and calm recorded start, fishing must first cause a recorded rise above calm and a cue. Sacred arm: single sub-latch debt with persistent non-calm hum floor removed by payment; several unpaid debts below hostility with the same floor and accumulated composite pressure; Enclave hostile latch before/at/after -75, recovery below/at/above 0 with range -100..100. Vary unrelated goodwill gains/losses and pre-existing hostility; no promise to erase those losses. Partial damage, claim, destruction, replacement and repeat damage; no/multiple debts; partial/full payment, insufficient funds, carrier death, cancellation, unreachable deposit, map departure, neighbouring Cathedral arrival, old local map unloaded/deleted, reload at each transaction boundary; minor fishing and shortcut work before/after payment. Guards defend the same footprint in every relation state; the diplomatic latch changes Enclave contact, never their pursuit boundary. Ordinary goodwill gifts can restore diplomatic contact before a material receipt is settled; its unpaid warning floor remains until material payment.",
+        "varies": "Minor arm: no sacred/deep debt and calm recorded start, fishing must first cause a recorded rise above calm and a cue. Sacred arm: single sub-latch debt with persistent non-calm hum floor removed by payment; several unpaid debts below hostility with the same floor and accumulated composite pressure; Enclave hostile latch before/at/after -75, recovery below/at/above 0 with range -100..100. Vary unrelated goodwill gains/losses and pre-existing hostility; no promise to erase those losses. Sacred work damaged but standing and unclaimed: fast irritation and warning only, no Enclave goodwill change or unpaid sacred receipt; then destruction (including stripping) or claim commits the once-only debit. Replacement and repeat damage; no/multiple debts; partial/full payment, insufficient funds, carrier death, cancellation, unreachable deposit, map departure, neighbouring Cathedral arrival, old local map unloaded/deleted, reload at each transaction boundary; minor fishing and shortcut work before/after payment. Guards defend the same footprint in every relation state; the diplomatic latch changes Enclave contact, never their pursuit boundary. Ordinary goodwill gifts can restore diplomatic contact before a material receipt is settled; its unpaid warning floor remains until material payment.",
         "left_out": "No forgiveness of campaign deliberate betrayal, no god rewards or new rite, no positive credit from waiting. The exact replacement-value multiplier is an attackable rule, not a bar. Permanent destruction of public access by player construction can give a clear no-consumption refusal. A debt’s payment cannot free existing prisoners, resurrect cancelled trade requests or recreate departed ships; restoration means future contact is eligible again. No new Enclave raids or campaign progression are required."
       },
       "sees": {
         "instrument": "M1 transaction/relation state walks and M3 recovery curves; calibrate real faction goodwill/relation-kind callbacks, available Enclave contact, hum baseline, inventories and global receipt identities across saves and neighbouring maps (T30/T31/T36).",
         "start": "Minor arm starts calm and debt-free, then real fishing must produce an attributed above-calm band and its emitted cue before cancellation. Sacred arms record actual pre-offence Enclave goodwill/relation-kind, available trade/contact, all global and local receipts, hum floor, bill values, silver inventory and public deposit location; no precredited proof delivery. Include Enclave guests, an active trade request and a passing ship in a disposable hostility-flip fixture.",
         "on": "Every kept mechanic at shipped defaults, all DLC, composed Baroque Biomes and consumer dependencies loaded; no campaign, trait, artificial weather lock or next-version feature required. Negative controls are separate arms, never the acceptance run. The fixed-world Enclave faction is resolved through its existing Utinni integration, independent of deferred mission/Regard progression; absence is missing evidence for the diplomatic arm, never a local-ledger substitute.",
-        "control": "Minor arm must first read the fishing-attributed rise above calm and its cue: calm without that prior rise is invalid. Branch from the raised state into cancellation/quiet and continued-fishing arms; continued fishing must stay raised over the same interval. Separately compare quiet-only and paid sacred arms from the same debt/relation state, an unrelated delivery and a duplicate completion callback. Read consumed silver, receipt settlement, hum-floor removal and actual Enclave contact eligibility, not a message or local standing alone. Test an isolated sub-latch offence and a real hostility flip; exclude storyteller raids, ordinary heat and independent goodwill changes as causes. Travel to another Cathedral tile and reload without forgiving or replaying debits.",
+        "control": "Minor arm must first read the fishing-attributed rise above calm and its cue: calm without that prior rise is invalid. Branch from the raised state into cancellation/quiet and continued-fishing arms; continued fishing must stay raised over the same interval. Separately compare quiet-only and paid sacred arms from the same debt/relation state, an unrelated delivery and a duplicate completion callback. Read consumed silver, receipt settlement, hum-floor removal and actual Enclave contact eligibility, not a message or local standing alone. Test an isolated sub-latch offence and a real hostility flip; exclude storyteller raids, ordinary heat and independent goodwill changes as causes. Travel to another Cathedral tile and reload without forgiving or replaying debits. Compare sacred work damaged but standing and unclaimed with its later destruction/claim: only the latter commits the receipt and Enclave debit; duplicate destruction after claim cannot debit again.",
         "reset": "Use an isolated disposable save with a journal of map/global state and settings; save before staging, reload that exact baseline for each arm and on interruption; do not use RM_WornBitProof cleanup on a shared save. Keep failing traces and the midway save.",
         "live_only_why": "Not live-only: a calibrated executable situation/geometry or whole-mod model can decide this causal/state claim; required real-game agreement is specified in models.md. A model not yet calibrated is UNMEASURED, not a pass."
       },
@@ -376,7 +387,7 @@
     },
     {
       "id": "C3",
-      "what": "Owner economics: actual Free Droid Enclave goodwill starts neutral 0 in the fixed-world fixture, sacred debit 15 once per structure, vanilla relation hostile at -75 and recovery at 0. Keep global receipts and local hum mirror distinct; first unpaid sacred receipt imposes at least first non-calm warning independent of composite thresholds. Permanent-enemy Arsenal goodwill is unchanged. Guard footprint/targets do not expand at the diplomatic latch."
+      "what": "Owner economics: actual Free Droid Enclave goodwill starts neutral 0 in the fixed-world fixture, sacred debit 15 once per structure on destruction (including stripping) or claim; damage while standing and unclaimed changes only fast irritation/warning, with no Enclave debit or unpaid receipt. Vanilla relation hostile at -75 and recovery at 0. Keep global receipts and local hum mirror distinct; first unpaid sacred receipt imposes at least first non-calm warning independent of composite thresholds. Permanent-enemy Arsenal goodwill is unchanged. Guard footprint/targets do not expand at the diplomatic latch."
     },
     {
       "id": "C4",
@@ -447,7 +458,7 @@
     },
     {
       "id": "R3",
-      "rule": "Minor fishing, shortcut and bolt-kill inputs affect fast irritation only; passive standing ratchet and catch-standing costs are off. Sacred offences debit the real Free Droid Enclave relationship once per structure and retain game-level unpaid receipts across all Cathedral maps. Each local hum mirrors those receipts, with a floor at the first non-calm band while any remains unpaid; debt pressure can raise the band further. Vanilla Enclave FactionRelation hostility/recovery controls isolation, never Arsenal guard pursuit. Local saved standing remains for deep intrusion, separate from global sacred goodwill; permanent-enemy Arsenal relations are never the sacrilege currency. For the hum only, derive standing by subtracting unpaid sacred receipt debits from the saved local deep-standing value and clamping to its existing bounds; never write that mirror back as a faction debit. Feed the existing composite/band hysteresis, then impose the unpaid-sacred display floor. Partial material deposits leave the receipt outstanding until completion. Independent vanilla gifts can restore Enclave contact without clearing the material receipt or this floor.",
+      "rule": "Minor fishing, shortcut and bolt-kill inputs affect fast irritation only; passive standing ratchet and catch-standing costs are off. Sacred destruction (including stripping) or claim debits the real Free Droid Enclave relationship once per structure; damage short of destruction or claim raises only fast irritation and warning, without a faction debit or unpaid sacred receipt. These game-level unpaid receipts persist across all Cathedral maps. Each local hum mirrors those receipts, with a floor at the first non-calm band while any remains unpaid; debt pressure can raise the band further. Vanilla Enclave FactionRelation hostility/recovery controls isolation, never Arsenal guard pursuit. Local saved standing remains for deep intrusion, separate from global sacred goodwill; permanent-enemy Arsenal relations are never the sacrilege currency. For the hum only, derive standing by subtracting unpaid sacred receipt debits from the saved local deep-standing value and clamping to its existing bounds; never write that mirror back as a faction debit. Feed the existing composite/band hysteresis, then impose the unpaid-sacred display floor. Partial material deposits leave the receipt outstanding until completion. Independent vanilla gifts can restore Enclave contact without clearing the material receipt or this floor. When unpaid receipts are the only cause, bolts retain non-calm stiffness without gathering at any work, and the public hum inspect line identifies each unpaid damage bill and its originating Cathedral world tile, on both origin and neighbouring maps, without revealing hidden lore.",
       "touches": [
         "attitude",
         "restitution",
@@ -470,7 +481,7 @@
     },
     {
       "id": "R5",
-      "rule": "Repay damage is a public-side ordinary delivery order, silver bill twice intact replacement market value with positive def fallback. A game-level sacred receipt commits once across maps/reload; settlement credits at most its actual original Enclave debit with no repayment-created positive goodwill, removes only that receipt and recalculates every map’s unpaid-sacred warning floor. Partial deposits and destroyed-site markers survive map removal; revisit rematerialises the same site identity. Other unpaid debts or unrelated diplomatic losses can keep contact closed; payment does not recreate lost ships/requests or release prisoners. Deep episodes use the same transaction mechanism but credit only their recorded local standing debit, never Enclave goodwill. No consumed-deposit refund, local/global double credit or positive-standing farming.",
+      "rule": "Repay damage is a public-side ordinary delivery order, silver bill twice intact replacement market value with positive def fallback. A game-level sacred receipt and Enclave debit commit on destruction (including stripping) or claim, never damage while standing and unclaimed, and only once across maps/reload; settlement credits at most its actual original Enclave debit with no repayment-created positive goodwill, removes only that receipt and recalculates every map’s unpaid-sacred warning floor. Partial deposits and destroyed-site markers survive map removal; revisit rematerialises the same site identity. Other unpaid debts or unrelated diplomatic losses can keep contact closed; payment does not recreate lost ships/requests or release prisoners. Deep episodes use the same transaction mechanism but credit only their recorded local standing debit, never Enclave goodwill. No consumed-deposit refund, local/global double credit or positive-standing farming.",
       "touches": [
         "restitution",
         "salvage",
@@ -484,7 +495,7 @@
     },
     {
       "id": "R6",
-      "rule": "Public hum and bolt cues use actual local mood without campaign stage ceiling; unfinished campaign progression is dormant. Active reachable causes attract bolts with rotating selection; baseline inspect/click-through work-site cue covers absent bolts or obstacles. Do not require a reader trait.",
+      "rule": "Public hum and bolt cues use actual local mood without campaign stage ceiling; unfinished campaign progression is dormant. Active reachable causes attract bolts with rotating selection; baseline inspect/click-through work-site cue covers absent bolts or obstacles. Do not require a reader trait. When unpaid receipts are the only cause, bolts retain non-calm stiffness without gathering at any work, and the public hum inspect line identifies each unpaid damage bill and its originating Cathedral world tile, on both origin and neighbouring maps, without revealing hidden lore.",
       "touches": [
         "warnings",
         "attitude",

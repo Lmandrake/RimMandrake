@@ -1,0 +1,155 @@
+{
+ "mod": "RustCathedral",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "core_promise_weakened",
+     "where": "bars.json B2 (says, reject, lazy)",
+     "evidence": "The owner-picked experience in design/RimMandrake/biome_experiences_2026-10-20.md:21 is \"A maze built by minds you'll never meet, still guarded by their machines. Salvage paradise with a temper.\" The 2026-08-19 ruling in design/Jawa/worldbuilding/the_forgotten_war.md:228 reads: \"The ordinary metal is mineable rock the player strips freely — the whole map really is the reward.\" The November answer (ANSWERS_OWNER.md:3) qualifies that premise only for cutting shortcuts. B2 promises only \"useful metal from loose plate and richer dead smartsteel\" and claims \"lazy: none\". Consider a build where only scattered rubble is free and every corridor wall of the maze is a marked divider. It satisfies B2's words and B1's, yet it turns the paradise into a scrap trickle. He would refuse it.",
+     "would_pass": "B2 says the bulk of the metal a crew can see and reach is free salvage, and that marked dividers and sacred works are the exception. A reject picture then catches the scarce build.",
+     "smallest_fix": "In B2.says, change \"recovers useful metal from loose plate\" to \"strips most of the metal in sight freely\", and mark \"most of the metal in sight\" as figurative (no ratio pinned). Add the reject picture \"Only scattered rubble is free; nearly every corridor wall is a marked divider, so salvage means trespass.\""
+    },
+    {
+     "id": "R2",
+     "head": "figurative_unmarked",
+     "where": "bars.json B2 says (\"loose plate\"); figurative: []",
+     "evidence": "The free bulk the census calls bulk_salvage is src/RimMandrake/RustCathedral/Defs/ThingDefs_Buildings/RM_CathedralDeckPlate.xml. That file uses ParentName=\"RockBase\", isNaturalRock and mineableThing Steel, so it is mineable wall rock, not loose items. B2 says \"loose plate\" and its figurative list is empty. One builder will read \"loose\" as scattered chunks or items. Another will read it as unmarked deck-plate wall. The two readings give different maps and different passes.",
+     "would_pass": "\"loose\" is either removed or marked figurative, standing for deck-plate wall and rubble that is not a marked route divider or a sacred work. It comes with an accept picture of a worker mining an unmarked corridor wall without offence.",
+     "smallest_fix": "Add a figurative entry for \"loose\" in B2 with that meaning and the one accept picture."
+    },
+    {
+     "id": "R3",
+     "head": "contradicts_ruling_or_lore",
+     "where": "definition.md, Costs and recovery (\"Sacred player damage/claim creates one game-level offence receipt per original protected structure ... Destruction updates that receipt\"); R3; R5; C3",
+     "evidence": "The ruling at the_forgotten_war.md:230 reads: \"−15 per sacred structure, applied through QuestNode_AddTag + QuestNode_ChangeFactionGoodwill on the shipped <tag>.Destroyed signal\". Line 231 counts \"five strips before −75\". The proposal takes the full Enclave debit on the first damaging hit. A conduit that is chipped but still standing therefore costs what a strip costs. In a B5 firefight inside held ground, stray player fire on several conduits can tip the Enclaves hostile when nothing was stripped. The definition presents this trigger as the ruled economics, and owner_pages does not list it as a departure.",
+     "would_pass": "The Enclave debit fires on destruction or strip of a sacred structure, as ruled (claim may count as a strip). First damage short of that raises only fast irritation and the warning. Alternatively, keep the first-hit trigger but list it on page two as a proposed change to the ruled trigger, citing :230.",
+     "smallest_fix": "In R3, R5, C3 and definition.md, change the debit trigger to destruction or claim. Add a B6 range arm \"sacred work damaged but standing\", which must not move Enclave goodwill."
+    },
+    {
+     "id": "R4",
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json R3 (unpaid-sacred floor \"across all Cathedral maps\") with R6 and B4; definition.md, at a 40-colonist scale and Costs and recovery",
+     "evidence": "R3 holds the hum and bolts at least at their first non-calm warning on every Cathedral map while any sacred receipt is unpaid, including a neighbouring map with no marker on it. R6 sends bolts only to \"active reachable causes\". The definition says \"Public inspect text reports observable activity and mood, never its hidden cause.\" Nothing says what the bolts do, or what any cue points at, when the floor is the only cause. B4 promises the player can \"locate the offending work\", and B4's intent rejects \"location cues pointing at innocent work\". A newcomer who hears an uneasy hum on arrival has no defined way to tell an old bill from current work, and may cancel innocent jobs hunting for it.",
+     "would_pass": "A defined floor-only behaviour. Bolts hold non-calm stiffness without gathering at any work. One observable cue (a hum inspect line or arrival notice) states that an unpaid damage bill stands and on which Cathedral tile. B4's range gains a floor-only arm: no active cause, on the origin map and on a neighbouring map.",
+     "smallest_fix": "Add one sentence to R3 and R6 defining the floor-only cue and the bolts' behaviour under it. Add the floor-only arm to B4's range, and a reject picture to B6: \"An inherited uneasy hum sends bolts toward innocent haulers.\""
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Restored freely mineable bulk as the salvage-paradise promise, with marked dividers and sacred works as exceptions; marked most of the metal in sight as figurative without a ratio, added the scarce-map reject and a full-map control, and aligned the definition and owner summary.",
+      "where": "bars.json B2; definition.md Using it; ambiguities.md Free bulk vs shortcut anger; owner_pages.md Page two Maze/free salvage"
+     },
+     {
+      "id": "R2",
+      "changed": "Removed loose from B2 says and identified ordinary deck-plate as mineable corridor wall rock as well as rubble. Added an accept picture of a worker mining an unmarked corridor wall without offence, and aligned the range and explanatory wording.",
+      "where": "bars.json B2; definition.md Using it; ambiguities.md Free bulk vs shortcut anger; owner_pages.md Page two Maze/free salvage"
+     },
+     {
+      "id": "R3",
+      "changed": "Moved the sacred receipt and actual Enclave debit to destruction/strip or claim, once per original structure. Damage while standing and unclaimed raises only fast irritation/warning. Added the B6 range, accept and observation control for unchanged goodwill, and aligned the repayment rule, definition, ambiguity, ticket and owner summary.",
+      "where": "bars.json R3/R5/C3/B6; definition.md Costs and recovery; ambiguities.md Whose goodwill is the sacrilege currency; tickets.md T30; owner_pages.md Pages one and two Sacred currency"
+     },
+     {
+      "id": "R4",
+      "changed": "Defined floor-only bolts as stiff without gathering at any work and a public hum inspect line identifying unpaid damage bills and originating Cathedral world tiles. Added B4 origin/neighbour range and observation arms, the innocent-hauler B6 reject, and aligned the definition, ambiguity, ticket and owner summary.",
+      "where": "bars.json R3/R6/B4/B6; definition.md Using it; ambiguities.md Living bolts gravitate nearby; tickets.md T33; owner_pages.md Page two Unpaid access"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json B2.says now reads \"A salvager strips most of the metal in sight freely, including ordinary deck-plate walls, and recovers richer dead smartsteel, while marked route dividers and sacred works are exceptions\". meant.figurative now has an entry for \"most of the metal in sight\", which \"stands_for\" the bulk of visible, reachable ordinary metal and says \"No area, mass or yield ratio is pinned.\" B2.reject adds \"Only scattered rubble is free; nearly every corridor wall is a marked divider, so salvage means trespass.\" B2.lazy now names \"rubble-only scarcity\" as a failure. B2.sees.control adds a \"rubble-only/mostly-marked-wall mutant\". The source now cites biome_experiences_2026-10-20.md:21 and the_forgotten_war.md:228. definition.md Using it and owner_pages.md Page two match."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "The word \"loose\" is gone from B2.says. B2.range.varies changed from \"loose plate\" to \"unmarked deck-plate wall and rubble\". B2.accept adds \"A worker mines an unmarked deck-plate corridor wall and hauls its steel without offence\". B2.meant.source says \"RM_CathedralDeckPlate.xml defines ordinary plate as mineable RockBase wall, not loose items.\" ambiguities.md entry 2 repeats this."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "R3 now says \"Sacred destruction (including stripping) or claim debits the real Free Droid Enclave relationship once per structure; damage short of destruction or claim raises only fast irritation and warning, without a faction debit or unpaid sacred receipt.\" R5 says the receipt and debit commit \"on destruction (including stripping) or claim, never damage while standing and unclaimed\". C3 says the debit is 15 \"on destruction (including stripping) or claim; damage while standing and unclaimed changes only fast irritation/warning\". definition.md Costs and recovery cites \"the ruled <tag>.Destroyed trigger in the_forgotten_war.md:230 with claim treated as a strip\". B6.range adds the arm \"Sacred work damaged but standing and unclaimed: fast irritation and warning only, no Enclave goodwill change or unpaid sacred receipt\". B6.accept adds the chipped-conduit picture with \"Enclave goodwill stays unchanged\". T30's acceptance test checks the same thing."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "R3 and R6 both now say \"When unpaid receipts are the only cause, bolts retain non-calm stiffness without gathering at any work, and the public hum inspect line identifies each unpaid damage bill and its originating Cathedral world tile, on both origin and neighbouring maps\". B4.range.varies adds \"Floor-only arm: unpaid sacred receipt with no active cause, on both its origin map and a neighbouring Cathedral map, with ordinary innocent hauling present and after reload\". B4 gets a matching accept picture and control. B6.reject adds \"An inherited uneasy hum sends bolts toward innocent haulers.\" definition.md Using it and T33 match."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Settled ambiguities — Designer decisions, not owner words",
+    "bars.json bars/B2",
+    "bars.json bars/B4",
+    "bars.json bars/B6",
+    "bars.json checks/C3",
+    "bars.json rules/R3",
+    "bars.json rules/R5",
+    "bars.json rules/R6",
+    "definition.md Costs and recovery",
+    "definition.md Using it",
+    "owner_pages.md Page one — what I propose",
+    "owner_pages.md Page two — what to check",
+    "tickets.md T30: Connect sacred consequences and nonritual restitution",
+    "tickets.md T33: Locate displeasure through reachable bolt behaviour"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 703294,
+     "output_tokens": 8453
+    }
+   },
+   "author_error": null,
+   "open_after": [
+    {
+     "id": "G1.1",
+     "head": "regression",
+     "where": "bars.json bars/B2",
+     "evidence": "B2.accept now reads \"A worker mines an unmarked deck-plate corridor wall and hauls its steel without offence; the surrounding ordinary walls are also free salvage\". Its figurative accept reads \"A crew mines ordinary corridor walls freely across the maze while leaving marked shortcut dividers ... intact\". B1.says (bars.json:5) promises the crew can \"choose an open route or a visibly marked trespassing cut\". ambiguities.md entry 2 rejects reading A because it \"makes every maze route optional without cost\". Nothing in B2 says what happens when mining a free, unmarked corridor wall connects two routes. A build where most corridor walls are free and unmarked, and mining one opens a shortcut with no consequence, passes B2's new accept pictures. That same build empties B1's route choice: every marked cut has a free unmarked bypass. B2 and B1 now cannot hold together on that build.",
+     "would_pass": "B2 says that free unmarked wall is wall mass that does not join two routes when removed (backing, thick wall bulk, outer facades, worked-out spurs). Any wall whose removal would open a route between corridors or into held ground is a marked divider, visible before designation. A reject picture catches a free unmarked wall that opens a costless shortcut.",
+     "smallest_fix": "In B2.meant.figurative \"most of the metal in sight\".stands_for, add \"free walls are wall mass whose removal joins no two routes; a wall whose removal opens a route is a marked divider\". Add to B2.reject: \"Mining an unmarked corridor wall opens a shortcut between routes with no warning or consequence, bypassing the marked cut.\" Add that arm to B2.range.varies."
+    }
+   ]
+  }
+ ],
+ "open": [
+  {
+   "id": "G1.1",
+   "head": "regression",
+   "where": "bars.json bars/B2",
+   "evidence": "B2.accept now reads \"A worker mines an unmarked deck-plate corridor wall and hauls its steel without offence; the surrounding ordinary walls are also free salvage\". Its figurative accept reads \"A crew mines ordinary corridor walls freely across the maze while leaving marked shortcut dividers ... intact\". B1.says (bars.json:5) promises the crew can \"choose an open route or a visibly marked trespassing cut\". ambiguities.md entry 2 rejects reading A because it \"makes every maze route optional without cost\". Nothing in B2 says what happens when mining a free, unmarked corridor wall connects two routes. A build where most corridor walls are free and unmarked, and mining one opens a shortcut with no consequence, passes B2's new accept pictures. That same build empties B1's route choice: every marked cut has a free unmarked bypass. B2 and B1 now cannot hold together on that build.",
+   "would_pass": "B2 says that free unmarked wall is wall mass that does not join two routes when removed (backing, thick wall bulk, outer facades, worked-out spurs). Any wall whose removal would open a route between corridors or into held ground is a marked divider, visible before designation. A reject picture catches a free unmarked wall that opens a costless shortcut.",
+   "smallest_fix": "In B2.meant.figurative \"most of the metal in sight\".stands_for, add \"free walls are wall mass whose removal joins no two routes; a wall whose removal opens a route is a marked divider\". Add to B2.reject: \"Mining an unmarked corridor wall opens a shortcut between routes with no warning or consequence, bypassing the marked cut.\" Add that arm to B2.range.varies."
+  }
+ ],
+ "advisory_late": [
+  {
+   "what": "bars.json rules entry at line 440 still reads \"Use a local corridor/held-footprint graph with loose rubble and inspectably marked structural dividers\". The entry at line 613 still reads \"The same material can be loose or structural\". models.md:11 still lists \"loose mining\" as an event class.",
+   "reason": "The fix did not change these entries. They keep the \"loose\" framing that R2 removed from B2, and they leave out unmarked deck-plate wall as free bulk.",
+   "round": 1
+  },
+  {
+   "what": "definition.md line 5 (the three-sentence summary) still says \"sacred damage instead leaves a material debt\".",
+   "reason": "This section was unchanged. Under the corrected rule, damage while a work is standing and unclaimed leaves no receipt or debt; only destruction, stripping or claim does.",
+   "round": 1
+  },
+  {
+   "what": "Line 241 of tickets.md T30 (\"Source and callers\") still says \"general first-hit/claim and credit path not found\".",
+   "reason": "This describes what the source search found, not a trigger. It could still lead a builder back to a first-hit debit. It sits in the part of T30 the fix left alone.",
+   "round": 1
+  }
+ ],
+ "applyable": false,
+ "digest": "129da1dbb4f49519da533e31527b512009642f92bb4adf1302ea34b2156f8fe4",
+ "seconds": 280,
+ "at": "2026-11-17T06:45:05"
+}
