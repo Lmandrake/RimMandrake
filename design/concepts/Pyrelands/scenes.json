@@ -36,17 +36,18 @@
    "staged_by": "script",
    "entry_point": "src/RimMandrake/Pyrelands/wind_burn_live.py::main",
    "start": [
-    "a current Pyrelands map on the pyrelands tier, the bridge held",
-    "two strips of ember grass on deep ash, each ringed bare; the wind set across them"
+    "a current Pyrelands map on the pyrelands tier, the bridge held; the scene saves wind_burn_live_pre before it lays a strip",
+    "four strips of ember grass on deep ash, each 61 x 21 and ringed bare, a 9-cell line marked across the wind in the middle of each, so as much grass lies upwind of it as downwind",
+    "asserted before each line is lit: SetWindForTest returned the bearing asked, ProbeWind reads that bearing back with carries= matching the wind switch, and the strip holds no fire"
    ],
-   "action": "light a short line at the upwind end of each strip, one with windCarriesFireEnabled on and one with it off, and let both burn; then light a third strip under the wind and bring black rain",
-   "expect": "with the wind on, the burn reaches downwind of the lit line, nothing burns in the lanes beside it and the fires at once stay a few times the cells lit; black rain puts the line out",
+   "action": "set the wind east (90) and light the first strip's line with windCarriesFireEnabled on; reverse the wind to west (270) and light the second; set it east again with the setting off and light the third; burn each 10,000 ticks, reading every 500 how far the fires reach downwind and upwind of the lit column and how many burn in the outer three lanes each side; then light the fourth strip's line under the wind and bring black rain",
+   "expect": "at both bearings, east and the opposite (reversed) west, the burn runs further downwind than upwind of the lit line, so it turns when the wind turns; nothing burns in the lanes beside it and the fires at once stay a few times the cells lit; black rain puts the line out",
    "control": {
-    "case": "the same line with the wind setting (windCarriesFireEnabled) off",
-    "expect": "the burn spreads into the outer lanes on both sides",
-    "rules_out": "an instrument blind to vanilla's even spread passing an unmoved fire as walking"
+    "case": "the same line with the wind setting (windCarriesFireEnabled) off, the wind east",
+    "expect": "the burn spreads into the outer lanes and runs both ways along the strip, leaning less than either wind run",
+    "rules_out": "a mod that blocks sideways spread or walks one way whatever the wind (the reversed bearing), and an instrument blind to vanilla's even spread or leaning east on its own (the control)"
    },
-   "restore": "settings, weather and fires are put back by wind_burn_live.py",
+   "restore": "settings, weather, fires and the map's own wind bearing are put back by wind_burn_live.py; the four strips' terrain and plants are not: the map is disposable, and the save wind_burn_live_pre made at scene-begin holds the ground as it was",
    "hold": "immediate",
    "entry_point_item": "RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE",
    "live_run": "UNRUN",
