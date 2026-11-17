@@ -218,6 +218,7 @@ def main():
                 "owner_uncited": res[2].get("owner_uncited")}
             st5["results"].append(r4)
             st5["stage"] = 5
+            st5["status"] = "locked"     # as Pyrelands and Graffiti stood 2026-11-17: stage 5 signed, then his card
             DS.write_json(DS.state_path(d5), st5)
             changed4 = sorted(k for k in ("tree", "sheet") if r4["inputs"].get(k) != cur5.get(k))
             out5 = DS.repin(d5, good(shas5), "selftest: a tree change under an accepted exam", repo=root5)
@@ -230,6 +231,18 @@ def main():
                   and any("another" in e for e in ee), (s5, ee[:2]))
             row5 = (st5.get("history") or [{}])[-1]
             check("5 the history says stage 4 was left stale", "stage 4 left stale" in row5.get("why", ""), row5)
+            # RIMMANDRAKE_UNLOCK_REPIN_VOIDED_EXAM_NEXT_OPEN_REFUSED: a locked concept whose exam the repin voids must
+            # be openable for the retake, and the maturation chain must be owed; a lock would refuse both forever
+            check("5 a voided exam unlocks the concept for its retake", st5.get("status") != "locked", st5.get("status"))
+            try:
+                DS.open_run(d5, "selftest-preview", repo=root5, commit=False)
+                why5 = None
+            except DS.Refused as e:
+                why5 = str(e)
+            check("5 the next open is not refused as LOCKED", not (why5 or "").startswith("LOCKED"), why5)
+            import maturation_autonomy as MA
+            check("5 the maturation chain is owed for the locked change", (MA.chain_owed(st5) or {}).get(
+                "what") == "locked_change", MA.chain_owed(st5))
         finally:
             shutil.rmtree(root5, ignore_errors=True)
 

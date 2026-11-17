@@ -2318,10 +2318,17 @@ def repin(d, sources, why, repo=None):
         if r["stage"] in voided:
             r.setdefault("voided", []).append({"at": at, "inputs": voided[r["stage"]], "sources": list(sources),
                                                "why": "its exam ran against another tree or sheet: retake it"})
-    hist(st, "locked_change", "%s; re-pinned %s%s; sources %s" % (why, "; ".join(
+    # RIMMANDRAKE_UNLOCK_REPIN_VOIDED_EXAM_NEXT_OPEN_REFUSED: a locked status refuses every open and owes no maturation
+    # chain, so a voided exam on a locked concept could never be retaken. His card is the word that unlocks it; stage 5's
+    # coverage signature locks it again after the retake.
+    unlocked = bool(voided) and st.get("status") == "locked"
+    if unlocked:
+        st["status"] = "ready"
+    hist(st, "locked_change", "%s; re-pinned %s%s%s; sources %s" % (why, "; ".join(
         "stage %d (%s)" % (s, ", ".join(ks)) for s, ks in sorted(plan.items())) or "nothing", "".join(
         "; stage %d left stale, its exam void (%s changed): the next open retakes it" % (s, ", ".join(ks))
-        for s, ks in sorted(voided.items())), ", ".join(sources)))
+        for s, ks in sorted(voided.items())), "; unlocked for the retake, stage 5 locks it again" if unlocked else "",
+        ", ".join(sources)))
     write_json(state_path(d), st)
     return sorted(plan)
 
