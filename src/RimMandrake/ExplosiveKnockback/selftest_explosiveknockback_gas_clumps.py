@@ -23,6 +23,7 @@ FILES = {
     "kernel": os.path.join(SRC, "Cauldron", "Source", "Kernel", "RM_VentGasKernel.cs"),
     "vent": os.path.join(SRC, "Cauldron", "Source", "RM_VentGas.cs"),
     "comp": os.path.join(HERE, "Source", "RM_MapComponent_Knockback.cs"),
+    "plan": os.path.join(HERE, "Source", "RM_KnockbackPlan.cs"),
     "compat": os.path.join(HERE, "Source", "RM_KnockbackCompat.cs"),
     "mod": os.path.join(HERE, "Source", "RM_KnockbackMod.cs"),
 }
@@ -68,10 +69,19 @@ def read_rule(t):
     if not re.search(r"gasCellBurstTick\.TryGetValue\(c, out int was\) && now - was < GasCellOnceTicks\)\s*\{\s*"
                      r"RM_KnockbackJournal\.Add\(\"gas_reburst_skip\"[^;]*;\s*return;", g):
         raise ValueError("GasBurst no longer refuses a second burst on a cell inside GasCellOnceTicks")
-    p = t["comp"]
-    if not re.search(r"pawn != null && r\.gas\)\s*\{[^}]*now - last < RimMandrakeExplosiveKnockbackSettings\.gasPawnCooldownTicks", p, re.S) \
-            or "s.maxCells = Math.Min(s.maxCells, 1);" not in p:
+    # the shove rule lives in the Verse-free plan since 2026-11-17 (RM_KnockbackPlan.cs, run by the SelfTest); the map component
+    # hands it the ticks since the pawn's last shove and Rules() the cooldown setting
+    p = t["plan"]
+    if not re.search(r"pawn && b\.gas\)\s*\{[^}]*f\.gasShovedAgo < q\.gasPawnCooldownTicks[^}]*\}\s*s\.maxCells = Math\.Min\(s\.maxCells, 1\);", p, re.S) \
+            or "f.gasShovedAgo = Find.TickManager.TicksGame - lastGasShove;" not in t["comp"] \
+            or "gasPawnCooldownTicks = gasPawnCooldownTicks" not in t["mod"]:
         raise ValueError("a gas shove is no longer 1 cell at most once per gasPawnCooldownTicks")
+    # the game path hands the plan the live rules and the request's gas flag (the old check read both in the map component)
+    ex = t["comp"][t["comp"].index("private bool Execute(KnockbackRequest r)"):]
+    ex = ex[:ex.index("private static KbBlast BlastOf(")]
+    if "KbPlanner.Decide(f, BlastOf(r), RimMandrakeExplosiveKnockbackSettings.Rules()," not in ex \
+            or not re.search(r"KbBlast BlastOf\(KnockbackRequest r\)\s*\{[^}]*\bgas = r\.gas\b", t["comp"]):
+        raise ValueError("the map component no longer hands the plan the live rules and the request's gas flag")
     return r
 
 
@@ -161,6 +171,11 @@ def main():
         "fires reach two cells": ("vent", "GenAdj.AdjacentCells[n]", "GenAdj.AdjacentCells[n] + GenAdj.AdjacentCells[n]"),
         "gas shoves hurt": ("comp", "impactFactor = 0f, source = \"gas\"", "impactFactor = 1f, source = \"gas\""),
         "no cooldown": ("mod", "gasPawnCooldownTicks = 120", "gasPawnCooldownTicks = 0"),
+        "the cooldown never reaches the plan": ("mod", "gasPawnCooldownTicks = gasPawnCooldownTicks,", ""),
+        "a gas shove keeps the full throw": ("plan", "s.maxCells = Math.Min(s.maxCells, 1);", ""),
+        "the game path hands the plan default rules": ("comp", "KbPlanner.Decide(f, BlastOf(r), RimMandrakeExplosiveKnockbackSettings.Rules(), s, new RM_MapKbWorld(map, t))",
+                                                        "KbPlanner.Decide(f, BlastOf(r), new KbRules(), s, new RM_MapKbWorld(map, t))"),
+        "a gas burst reaches the plan as a plain blast": ("comp", ", gas = r.gas };", " };"),
         "a cell bursts again under its fire": ("comp", "const int GasCellOnceTicks = 600", "const int GasCellOnceTicks = 0"),
         "goods fly 6": ("mod", "gasBurstGoodsCells = 2", "gasBurstGoodsCells = 6"),
         "postfix bursts on every Ignite call": ("compat", "if (__result && VentGasRegistered", "if (VentGasRegistered"),

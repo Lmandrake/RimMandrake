@@ -162,7 +162,14 @@ def l0_wiring(fields):
         bad.append("ConfigOf does not read the explosion's projectile and weapon ThingDefs")
     if "HarmonyPatch(typeof(CompShield), nameof(CompShield.PostPreApplyDamage))" not in patch:
         bad.append("no CompShield absorb-capture patch")
-    if "AbsorbByShield" not in comp or "shieldsAbsorbThrow" not in comp:
+    # the shield rule moved with the whole throw decision into the Verse-free plan (RM_KnockbackPlan.cs, which the SelfTest
+    # runs): the map component still absorbs, the plan rules behind the setting, Rules() carries the setting to it
+    plan = src("RM_KnockbackPlan.cs")
+    mod_src = src("RM_KnockbackMod.cs")
+    if "AbsorbByShield" not in comp or "f.shieldAbsorbed && q.shieldsAbsorbThrow" not in plan \
+            or "shieldsAbsorbThrow = shieldsAbsorbThrow" not in mod_src or "case KbAct.Absorb:" not in comp \
+            or "KbPlanner.Decide(f, BlastOf(r), RimMandrakeExplosiveKnockbackSettings.Rules(), s, new RM_MapKbWorld(map, t))" not in comp \
+            or "f.shieldAbsorbed = r.shield != null;" not in comp:
         bad.append("map component does not absorb throws by shield behind the setting")
     if "NotifyLanded" not in fly:
         bad.append("landing postfix does not stamp the stun-lock guard")

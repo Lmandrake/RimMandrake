@@ -41,11 +41,24 @@ GAME_SIDE = {
 # fire throws nothing"): each is a saved setting, default on, reset to on, and READ by the code path it switches (blind cycle 2,
 # steward's decision 6). file -> the code that must read it.
 SWITCH_READS = {
-    "closedContainerGuard": [("RM_MapComponent_Knockback.cs", r"HeldReason\(Thing t, Map map\)(.*?)\n        \}"),
+    # the throw decision is the Verse-free plan since 2026-11-17 (RM_KnockbackPlan.cs, run by the SelfTest): a switch the plan
+    # reads is read there as q.<name>, and RM_KnockbackMod.Rules() must carry the setting into it (checked in switches())
+    "closedContainerGuard": [("RM_KnockbackPlan.cs", r"public static string HeldReason\(KbFacts f, KbRules q\)(.*?)\n        \}"),
                              ("RM_MapComponent_Knockback.cs", r"InClosedContainer\(Thing t, Map map\)(.*?)\n        \}")],
     "fireAtHalf": [("RM_Patch_DamageWorker_ExplosionKnockback.cs", r"public static KbConfig ConfigOf\((.*?)\n        \}")],
     # goods in the air off: goods unthrown, never the old hop (sheet; the walk row yields to the bar, steward's decision 8)
-    "flyingGoods": [("RM_MapComponent_Knockback.cs", r"public static bool ItemWillBeThrown\((.*?)\n        \}")],
+    "flyingGoods": [("RM_KnockbackPlan.cs", r"public static bool GoodWillBeThrown\((.*?)\n        \}"),
+                    ("RM_KnockbackPlan.cs", r"public static KbPlan Decide\((.*?)\n        \}\n\n")],
+}
+# a switch the plan reads reaches it only through the game-side caller: each caller must hand the plan the live Rules()
+# (the old reads stood in these very bodies, so this is the hop the move added)
+PLAN_CALLERS = {
+    "closedContainerGuard": [(r"private static string HeldReason\(Thing t, Map map\)(.*?)\n        \}",
+                              "KbPlanner.HeldReason(f, RimMandrakeExplosiveKnockbackSettings.Rules())")],
+    "flyingGoods": [(r"public static bool ItemWillBeThrown\((.*?)\n        \}",
+                     "KbPlanner.GoodWillBeThrown(f, blast, RimMandrakeExplosiveKnockbackSettings.Rules(),"),
+                    (r"private bool Execute\(KnockbackRequest r\)(.*?)\n        \}\n\n",
+                     "KbPlanner.Decide(f, BlastOf(r), RimMandrakeExplosiveKnockbackSettings.Rules(),")],
 }
 
 
@@ -63,11 +76,18 @@ def switches(mod, src):
             faults.append("switch %s has no checkbox on the settings page" % name)
         for f, body_re in reads:
             m = re.search(body_re, src.get(f, ""), re.S)
-            if not m or not re.search(r"RimMandrakeExplosiveKnockbackSettings\.%s\b" % name, m.group(1)):
+            in_plan = f == "RM_KnockbackPlan.cs"
+            carried = not in_plan or re.search(r"\b%s = %s\b" % (name, name), mod.split("public static KbRules Rules()", 1)[-1].split("\n        }", 1)[0])
+            if not m or not carried or not re.search((r"\bq\.%s\b" if in_plan else r"RimMandrakeExplosiveKnockbackSettings\.%s\b") % name, m.group(1)):
                 faults.append("switch %s is not read by %s (%s)" % (name, f, body_re.split("\\(")[0]))
-    # flying goods off: the instant move is gone from Execute's goods path (goods unthrown instead)
-    ex = src.get("RM_MapComponent_Knockback.cs", "")
-    if re.search(r"if \(RimMandrakeExplosiveKnockbackSettings\.flyingGoods\)\s*\{", ex) and "flying_off" not in ex:
+        for body_re, call in PLAN_CALLERS.get(name, []):
+            m = re.search(body_re, src.get("RM_MapComponent_Knockback.cs", ""), re.S)
+            if not m or call not in m.group(1):
+                faults.append("switch %s does not reach the plan: RM_MapComponent_Knockback.cs (%s) does not call %s"
+                              % (name, body_re.split("\\(")[0], call.split("(")[0]))
+    # flying goods off: goods unthrown, never the instant move (the skip moved from Execute into the plan's Decide)
+    dec = re.search(r"public static KbPlan Decide\((.*?)\n        \}\n\n", src.get("RM_KnockbackPlan.cs", ""), re.S)
+    if not dec or not re.search(r"if \(!pawn && !q\.flyingGoods\)\s*\{\s*return Skip\(p, \"flying_off\"\);", dec.group(1)):
         faults.append("flyingGoods off still falls through to the instant move (no flying_off skip)")
     return faults
 SWEPT_ELSEWHERE = {"enabled": "sc_settings_off", "shieldsAbsorbThrow": "sc_shield"}
@@ -127,7 +147,7 @@ def main():
     defaults = dict(kv.split("=", 1) for kv in df.split()[1:])
     mod = open(MOD, encoding="utf-8").read()
     src = {f: open(os.path.join(HERE, "Source", f), encoding="utf-8").read()
-           for f in ("RM_MapComponent_Knockback.cs", "RM_Patch_DamageWorker_ExplosionKnockback.cs")}
+           for f in ("RM_MapComponent_Knockback.cs", "RM_Patch_DamageWorker_ExplosionKnockback.cs", "RM_KnockbackPlan.cs")}
     faults = static(mod, swept, defaults) + switches(mod, src)
     for f in faults:
         print("FAIL", f)
@@ -142,7 +162,9 @@ def main():
     missed = [k for k, m in planted.items() if m == mod or not static(m, swept, defaults)]
     # planted switch faults: each must be seen by switches()
     cg_src = dict(src)
+    cg_src["RM_KnockbackPlan.cs"] = re.sub(r"\bq\.closedContainerGuard\b", "true", src["RM_KnockbackPlan.cs"])
     cg_src["RM_MapComponent_Knockback.cs"] = re.sub(r"RimMandrakeExplosiveKnockbackSettings\.closedContainerGuard\b", "true", src["RM_MapComponent_Knockback.cs"])
+    comp_k = src["RM_MapComponent_Knockback.cs"]
     fh_src = dict(src)
     fh_src["RM_Patch_DamageWorker_ExplosionKnockback.cs"] = re.sub(r"RimMandrakeExplosiveKnockbackSettings\.fireAtHalf\b", "true",
                                                                    src["RM_Patch_DamageWorker_ExplosionKnockback.cs"])
@@ -150,6 +172,17 @@ def main():
         "closed guard read nowhere": (mod, cg_src),
         "fire at half read nowhere": (mod, fh_src),
         "fire at half defaults off": (mod.replace("public static bool fireAtHalf = true;", "public static bool fireAtHalf = false;", 1), src),
+        "closed guard not carried into the plan": (mod.replace("closedContainerGuard = closedContainerGuard,", "", 1), src),
+        "goods in the air read nowhere": (mod, dict(src, **{"RM_KnockbackPlan.cs": re.sub(r"\bq\.flyingGoods\b", "true", src["RM_KnockbackPlan.cs"])})),
+        "the guard's caller hands the plan default rules": (mod, dict(src, **{"RM_MapComponent_Knockback.cs": comp_k.replace(
+            "KbPlanner.HeldReason(f, RimMandrakeExplosiveKnockbackSettings.Rules())", "KbPlanner.HeldReason(f, new KbRules())", 1)})),
+        "goods-in-the-air caller hands the plan default rules": (mod, dict(src, **{"RM_MapComponent_Knockback.cs": comp_k.replace(
+            "KbPlanner.GoodWillBeThrown(f, blast, RimMandrakeExplosiveKnockbackSettings.Rules(),", "KbPlanner.GoodWillBeThrown(f, blast, new KbRules(),", 1)})),
+        "Execute hands the plan default rules": (mod, dict(src, **{"RM_MapComponent_Knockback.cs": comp_k.replace(
+            "KbPlanner.Decide(f, BlastOf(r), RimMandrakeExplosiveKnockbackSettings.Rules(), s, new RM_MapKbWorld(map, t))",
+            "KbPlanner.Decide(f, BlastOf(r), new KbRules(), s, new RM_MapKbWorld(map, t))", 1)})),
+        "goods in the air off falls through": (mod, dict(src, **{"RM_KnockbackPlan.cs": src["RM_KnockbackPlan.cs"].replace(
+            'return Skip(p, "flying_off");', 'p.reason = "flying_off";', 1)})),
         "closed guard not saved": (re.sub(r'Scribe_Values\.Look\(ref closedContainerGuard, "closedContainerGuard", true\);', "", mod), src),
     }
     sw_missed = [k for k, (m, sr) in sw_planted.items() if (m == mod and sr == src) or not switches(m, sr)]
