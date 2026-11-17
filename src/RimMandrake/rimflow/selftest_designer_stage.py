@@ -299,6 +299,12 @@ def main():
         result(d, "done")
         ok, errs = DS.close_run(d, "run11", 1000, repo=repo.root)
         check("back to stage 3", ok and DS.load_state(d)["stage"] == 3, errs)
+        # RIMMANDRAKE_CLEAR_SETTLED_RETURN_DECISION_RESENT_TWO_DAYS_LATE: the stage that took the decision closed done, so
+        # no later packet may still say it is missing (Graffiti's 2026-11-15 gap list came back after a 2026-11-17 re-pin)
+        text, _ = DS.open_run(d, "run11b", repo=repo.root)
+        check("a done run settles the returned decision: it leaves the state and the next packet",
+              "pending_decision" not in DS.load_state(d) and "ladder material" not in text, text[:200])
+        DS.abort_run(d, "run11b")
 
         # ---- stage 3: scenes and floor as checked data (lint stubbed: concept_tree has its own selftest)
         tree = {"subject": "Foo", "kind": "mod", "leaves": [

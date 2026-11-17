@@ -2036,6 +2036,9 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
             entry[k] = res[k]
     st["results"].append(entry)
     if out == "done":
+        # a return's decision is the work of the stage it went back to: once that stage is done it is settled, and a later
+        # reopen must not re-send it as missing (RIMMANDRAKE_CLEAR_SETTLED_RETURN_DECISION_RESENT_TWO_DAYS_LATE)
+        st.pop("pending_decision", None)
         if stage == 5:
             st["status"] = "locked"
             if os.path.exists(os.path.join(d, PARK_FILE)):

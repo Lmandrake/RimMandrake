@@ -13,6 +13,10 @@ Graffiti is built. The plan is proof, not construction, plus one new behaviour: 
   corridor, wall loss, the walk).
 - Start assertion "all 8 settings at shipped defaults": RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT (preflight
   checks 6 today; its acceptance test fails on the base).
+- Two scenes re-mended for coverage judge rm-coverage-judge-1794936862: sc_spree_variety's judge capture and recolour-set
+  control (RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN), and sc_lived_in_soak's trait mix, per-colonist
+  read and unforced story (RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE, which the soak's twelve-claim scene now
+  waits on as well as RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE).
 - The one new behaviour: RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL (a per-faction record of standing
   raider marks, a letter naming faction and mark, raid points or timing pushed by a setting, lifted when the last mark goes).
 
@@ -23,11 +27,11 @@ Graffiti is built. The plan is proof, not construction, plus one new behaviour: 
 4. The corridor, wall loss and walk scenes; the walk needs the lived-in save from
    RIMMANDRAKE_WALK_GRAFFITI_LIVED_IN_WALL_WEEKS_NOT_MINUTES and step 3.
 No instrument leaf: every leaf is measured by existing bridge reads (marks, thoughts, opinions, goodwill, letters, raid
-points); the soak's mood sum is a read over those.
+points); the soak's per-colonist mood is a read over those.
 
 ## risks
 - The soak (stories_not_tax) is the one long live run; compressed at top speed, three in-game weeks. If it cannot finish
-  on the full list, it is decomposed into a mark-count rate and a thought-sum per colonist, and says so.
+  on the full list, it is decomposed into a mark-count rate and a per-colonist thought read, and says so.
 - Raider pressure on raid size alone may be invisible: the letter carries the trace, so its look-target is asserted.
 - Art-reading leaves (reads_at_play_zoom, punk_register, no_english, not_dirt, ugliness_visible) need a judge that did not
   make the art; each control plants a known-bad texture so the judge is shown able to refuse.

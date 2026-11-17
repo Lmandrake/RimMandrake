@@ -1,17 +1,13 @@
 {
- "against": "rm-coverage-judge-1794734941",
+ "against": "rm-coverage-judge-1794936862",
  "claims": [
   {
    "gap": "g1",
-   "evidence": "scenes.json sc_spree_corridor: the skilled piece is a script-forced RM_PaintGraffitiJob painting the pool's pick for an art-16 hand, with no Designator_PaintGraffitiMark and no paint designation on the map (asserted designations 0), in start, action and control; so inv_player_orders is first used by after_the_raid (sc_raid_retaken's Designator_ScrubGraffiti). designer_stage.py showcases: after_the_raid exercises 3, new 3, overlap 0.00; showcase set accepted"
+   "evidence": "scenes.json sc_spree_variety: action now captures every lane's marks at play zoom, unlabelled, and shows them to a judge that did not make the art, who names the kinds (the def and variant read stays as a script read); control.case is a calibration for the same judge: one def's texture in the six lanes' tints and six defs sharing one texture, expect 'the judge calls each recolour set recolours of one', rules_out adds 'a judge who calls any tinted set varied'; the pool-gate read stays. The script work is filed as entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN. acceptance/variety_scene_judge_capture.py: PASS"
   },
   {
    "gap": "g2",
-   "evidence": "scenes.json sc_wall_closeup: start adds a cell whose only wall is south of it (asserted ReadWallSide 2, FaceHidden); control issues a paint order and a pool pick there and expects no Filth_Mark, marked expected-to-fail until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL (filed 2026-11-15: apply SidePaintable in GraffitiPool.WeightedPick and JobDriver_PaintGraffiti.ChooseMark) lands; tree.json sits_on_wall oracle, scenario and false_pass carry the far-side case; record.json inv_mark_on_wall cites the item"
+   "evidence": "scenes.json sc_lived_in_soak: start asserts at least one sensitive and one clean-freak (Very Neurotic) colonist among the six, read from GraffitiTemperament; expect is per colonist against the control ('every colonist, each read on their own, stays below the control's standing tax for a colonist of the same temperament'), no summed check, plus 'at least one unforced graffiti story happens in the three weeks: a mark painted, read with a thought, or answered'; the control is read per colonist and rules out an instrument that averages a taxed colonist away. Script work filed as entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE. acceptance/soak_scene_per_colonist.py: PASS"
   }
- ],
- "also": [
-  "tree.json answer_wall.scenario now stages four sub-cases, one per answer, matching its oracle and sc_answer_wall",
-  "scenes.json sc_breach_bias_raid now flips breach bias off after the lure read, so its stands_alone_settings citation is true (that switch's behavioural row); requirement_why says breach bias has no leaf of its own and binds through coverage_rest"
  ]
 }

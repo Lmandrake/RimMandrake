@@ -65,15 +65,16 @@
     "quicktest map, minimal list plus all five DLC, Graffiti active (asserted: RM_GraffitiProof Loaded answers)",
     "the six lanes after sc_spree_wall (asserted: marks present)"
    ],
-   "action": "read def and variant of every mark",
+   "action": "capture every lane's marks at play zoom, unlabelled (no def name, no overlay), and show the captures to a judge that did not make the art, who names the kinds of mark it sees; the script also reads def and variant of every mark",
    "expect": "a judge shown the lanes' marks tells several kinds of mark apart, not recolours of one",
    "control": {
-    "case": "the pool gated to one def",
-    "expect": "one def only",
-    "rules_out": "variety coming from tint alone"
+    "case": "calibration for the same judge, shown the same way: a recolour set, one def's texture painted in the six lanes' tints (and a second set of six defs sharing one texture); the pool gated to one def stays as a script read",
+    "expect": "the judge calls each recolour set 'recolours of one'; the gated pool yields one def only",
+    "rules_out": "variety coming from tint alone, and a judge who calls any tinted set varied"
    },
    "restore": "destroy the quicktest map; nothing persistent changed",
-   "hold": "immediate"
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN"
   },
   {
    "id": "sc_wall_closeup",
@@ -630,18 +631,19 @@
    "entry_point": "src/RimMandrake/Graffiti/validation.py::scene_lived_in_soak",
    "start": [
     "full list, all five DLC, a colony of six on ordinary walls (asserted)",
+    "among the six, at least one colonist the temperament table reads as sensitive and one as a clean freak (Very Neurotic), plus ordinary ones (asserted from GraffitiTemperament per colonist)",
     "all 8 shipped settings, and the 3 raider-pressure settings (switch, sooner-or-larger mode, push size) once RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL lands, at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)"
    ],
-   "action": "run three in-game weeks at top speed, no forcing",
-   "expect": "summed mark thoughts stay small and Graffiti messages few per week",
+   "action": "run three in-game weeks at top speed, no forcing; read each colonist's own Graffiti mood thoughts daily, and every Graffiti mark, thought and answer",
+   "expect": "every colonist, each read on their own, stays below the control's standing tax for a colonist of the same temperament: no colonist's mood is ruled by marks; Graffiti messages and letters are few per week; and at least one unforced graffiti story happens in the three weeks: a mark painted, read with a thought, or answered",
    "control": {
-    "case": "painting forced every hour",
-    "expect": "a visible standing tax",
-    "rules_out": "an instrument blind to thoughts"
+    "case": "the same start with painting forced every hour, read per colonist",
+    "expect": "a visible standing tax on each colonist, the sensitive and clean-freak ones heaviest",
+    "rules_out": "an instrument blind to thoughts, or one that averages a taxed colonist away"
    },
    "restore": "load the save from before the soak",
    "hold": "immediate",
-   "entry_point_item": "RIMMANDRAKE_CLAIM_GRAFFITI_MUST_SHOWS_TWELVE_LEFT_BARE"
+   "entry_point_item": "RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE"
   },
   {
    "id": "sc_walk",
