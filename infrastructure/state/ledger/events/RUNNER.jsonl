@@ -8391,3 +8391,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-17T10:18:06Z","tsn":1794910686775832611}
 {"seat":"RUNNER","event":"live","id":"DEPLOY_UPDATE_UNSTICK_ART_EVENTS_BLOCK_PULL","result":"broken","detail":"reading /mnt/d/ClaudeWork/rimmandrake/pulse-deploy/.git/FETCH_HEAD is 3678 s old (max 3600)","ts":"2026-11-17T11:18:12Z","tsn":1794914292060248757}
 {"seat":"RUNNER","event":"raise","id":"DEPLOY_UPDATE_UNSTICK_ART_EVENTS_BLOCK_PULL","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-17T11:18:18Z","tsn":1794914298200779779}
+{"seat":"RUNNER","event":"note","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","text":"ops_watch: cleared at 2026-11-17T12:15:40Z (maturation.hand_acts_overdue now 0)","ts":"2026-11-17T12:15:48Z","tsn":1794917748337133571}
