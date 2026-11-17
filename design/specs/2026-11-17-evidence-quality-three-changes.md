@@ -1,7 +1,7 @@
 # Three changes to how the pipeline records evidence
 
-**Filed** 2026-11-17, ~12:10 PM PST, by the Conductor, from the owner's conversation of the same
-morning (the e2e.com evaluation and his reply to it). Design Version of this spec: **0.1.0**.
+**Filed** 2026-11-17, ~12:10 PM PST, by the Conductor; revised to 0.2.0 ~1:40 PM PST after a blind review, from the owner's conversation of the same
+morning (the e2e.com evaluation and his reply to it). Design Version of this spec: **0.2.0** (0.1.0 was the pre-review draft; see the review section).
 
 **What this is.** Three narrow changes to what the Maturation Pipeline *records* about its own runs.
 None of them changes a bar, a stage, a model, or a budget. Each exists because the pipeline currently
@@ -33,6 +33,116 @@ Nothing in this spec deletes evidence. A promotion gate requiring a live reprodu
 counts — `CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP` took 314 non-pass runs and a Test Pilot sitting to find
 a spawn path that skipped `PostProcessSpawnedPawns`; a gate like that would have made it
 unreportable.
+
+---
+
+## Blind review, 2026-11-17 — what it changed (Design Version 0.2.0)
+
+A blind Opus review (fresh agent, given the code and not this writer's confidence) found nine
+defects. Every load-bearing claim below was re-checked against the code by the Conductor before it
+was accepted. **It killed Part B, rerouted change one, and found that Part A's named change site was
+the wrong function.** The order of work is now: change two → change one → Part A → (Part B not in
+this version).
+
+**Accepted, verified, and now binding on this spec:**
+
+1. 🔴 **Change one as written wrote to a store nothing reads.** `model._apply` keeps exactly four
+   fields on a finding — `{"from", "type", "severity", "at"}` (`model.py:2763`). `--ruled-out`,
+   `--red-at` and `discriminated` would land in the shard and be **dropped at every replay**, and
+   the renderer this spec named (`modledger.py:1239` `findings_block`) belongs to a *different*
+   ledger, fed by `modledger append --kind finding.open`. [measured — read both call sites]
+2. 🔴 **Change one reinvents an existing, stricter, and already-verifiable checker.**
+   `relentless_explain.validate()` already **requires** ruled-out causes as `theory :: why_not`
+   pairs through `_pairs()` (`relentless_explain.py:59-70`): both sides present, minimum length, no
+   unfilled placeholder, empty list refused. The proposed grammar was weaker (one colon, no minimum,
+   `malformed: true` instead of a refusal) with a different separator. **And the "no checker can
+   verify it" premise was wrong**: `cmd_spawn` already refuses a cause that resolves to nothing —
+   *"a cause that resolves to nothing is not one"* (`cli.py:3211`) — and `modledger.check_entry`
+   already requires evidence as a typed reference (`path:…#row`, `run:<id>`, `test:<id>`) and
+   refuses pasted logs (`modledger.py:320-330`). Requiring one typed reference in the observation
+   half makes the field machine-checkable for ~zero tokens.
+   **Where the review was wrong, and the correction:** it recommended extending `relentless_explain`.
+   That module is only reachable from `relentless.py`, which the owner **retired 2026-11-13** with
+   *"nothing to resume"* (`design/RimMandrake/retired_loops_2026-11-13.md`), and nothing in `cli.py`
+   imports it [measured — no non-selftest importer outside the three `relentless_*` files]. So its
+   **grammar and its `_pairs` validator are lifted** into the live path rather than extended in
+   place; a retired module is not a home for new work.
+3. 🔴 **Part B's central mitigation is decorative.** `testpilot_route.brief()` prints
+   `"Routed by the Test Pilot rule: %s" % verdict["why"]` (`testpilot_route.py:170`), and `judge()`
+   builds that `why` from the predicate itself (`:124`). Change the predicate and the brief hands
+   the agent the sentence *"3 non-informative runs in a row."* The proposed acceptance test — grep
+   the brief builders for the field name — **would have passed while the information leaked**,
+   because the leak is the derived prose, not the identifier. A test calibrated to the mitigation's
+   wording instead of its claim is exactly the "passing grader on a wrong theory" this spec was
+   written about. [measured]
+4. 🔴 **Part A and Part B contradicted each other.** Part A excluded pipeline faults from the streak
+   *and* filed findings for them; Part B counted a new finding as yield. So every novel pipeline
+   fault would reset the non-informative counter, holding the Test Pilot off precisely the mods
+   breaking most. Both could not stand.
+5. 🔴 **`unknown → pipeline` misclassified the worst real defect class.** For a RimWorld mod, *"the
+   game fails to load"* is the most severe genuine mod defect (a malformed def, a bad `MayRequire`, a
+   static-constructor exception). The table's first row booked it against the harness. The fix is to
+   split that signature on **whether the declared mod list was active at the failure** —
+   `build_match.judge_row` already carries that discriminator (`build_match.py:433-448`) — and a load
+   failure with the mod active is `mod`, full stop.
+6. 🔴 **Part A named the wrong function.** Visit consumption is not `retriable()`; it is
+   `launch_counted` (`maturation_dispatch.py:1673-1704`, one book entry per visit), the two `per`
+   gates (`:1438` blind, `:1541` in-game), and the `if mine and not retry` terminals (`:1428`,
+   `:1535`). None were listed. Also unlisted: `AUT.releasable`, `reserve_refused`, and
+   `maturation_autonomy.TRANSIENT/NEVER_TRANSIENT` — a **second** fault vocabulary that already
+   overlaps this one, whose `NEVER_TRANSIENT` exists because that overlap bit once already
+   (`RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD`). Two classifiers will reproduce it;
+   Part A extends the existing vocabulary rather than adding a rival.
+7. 🔴 **This spec overstated its own motivating defect.** *"All of them spend the visit and land as a
+   non-pass on the mod"* is half wrong. The mod's verdict is derived separately by `read_ingame_exit`
+   (`maturation.py:2639`); a game that never loaded writes no rows, so it reads `no_exit_block` →
+   `visit_unfinished` → *"nothing launches: the Conductor reads it"* (`maturation_dispatch.py:1526`).
+   That is a **park, not a false non-pass**. The real harm is the spent automatic launch plus a hand
+   step — smaller than claimed. [measured] A spec that overstates its motivation gets built to the
+   wrong size, so: **try `testpilot_route.NOT_A_TEST` first** (`testpilot_route.py:42`), which already
+   exists for *"runs that are not tests of the item"*, and measure whether one tuple entry closes most
+   of the complaint before building a classifier.
+8. **The repeat-detector had no comparison defined**, and all three obvious ones break (verbatim
+   `why` carries unit ids and never matches; `kind` has 7 buckets so three unrelated faults stop a
+   mod). Resolved by reuse, found independently before the review landed: **`findings_fold.row_key()`
+   / `signature()`** (`src/RimMandrake/Utils/findings_fold.py:107-115`) is a tested exact-signature
+   comparator stripping only job ids, timestamps and durations, with its doctrine written down —
+   *"A duplicate row is cheap; a wrong merge loses a bug."* `findings_fold_rules.json`'s
+   `machine_health_patterns` is already Part A's idea in production, routing a machine fault to
+   Operations instead of the mod. **Measured 2026-11-17: no file under `src/RimMandrake/rimflow/` or
+   `Utils/modcheck/` reads either.** Both are reused, not reinvented. The counter's home and reset
+   rule must be stated before Part A is built (the visit books are keyed `version#visit` and released
+   wholesale by `clear`, so a counter living there resets with them).
+9. **The "obvious answer" on refusing a why-less UNMEASURED fixes the wrong layer.** UNMEASURED is
+   mostly **derived, not written**: `status.step4_live` returns it for a *missing* record
+   (`status.py:619-628`), `read_ingame_exit` derives `absent`/`no_exit_block`, `maturation_convergence`
+   returns it for "no measured round". A refusal inside `record_run` reaches none of those. **Before
+   building that refusal, measure what share of the 659 historical UNMEASURED rows were explicitly
+   written rather than derived.** Unmeasured today; stated as the prerequisite rather than guessed.
+   Related: `verdict_for` being untouched means Part A could create two instruments that disagree
+   about one mod, against `status.py:674`'s own standing rule — *"A summary must never be able to
+   disagree with the detail it summarises."*
+
+**Also accepted:** both changes' new fields need a `model._apply` change plus the strict-write and
+tolerant-read paths (`model.py:964`, `:3077`); change two's vocabulary should live beside
+`modledger`'s existing closed sets (`modledger.py:350`) and relate to its `verified|withdrawn`
+statuses rather than forming a sixth parallel vocabulary; novelty-by-finding-name is free to game
+because `modledger._finding_name_ok` requires a freshly minted name per finding (`:240-250`); and
+`bar_rule.split` routes tuning/variant gaps to advisory so a correctly-behaving mod could read
+non-informative and burn a sitting. Concurrency is unaddressed: several helpers share one tree and
+one index, and both the per-cause counter and "novel against existing findings" are
+read-modify-write on shared state — so the derivation runs once, after the fact, by a single reader.
+
+**One live demonstration, fixed in the same session** (*the pipeline fixes its own defects*, owner
+2026-11-15): `selftest_maturation_dispatch.py`'s in-game block was red 12-of-12 on this machine
+because it asked the real `companion_current()`, which reads the deployed JawaBench DLL under the
+Windows game folder — absent anywhere but the game host. A filed item claimed **one** failing check;
+twelve were measured. That is this spec's Part A in miniature: a reading of the test machine,
+reported as a verdict on the pipeline. Fixed by a `companion` stand-in beside the existing `bridge`
+one, plus a new check that hands it a STALE reading and watches the launch refuse, so the stand-in
+cannot become a bypass. `selftest_mod_owner_hold.py`'s fsync-order spy had the same disease: it
+probed `/proc/self/fd`, which exists only on Linux, so every fd read False on a Mac and the check
+reported FAIL having measured nothing. Both green, published `165b38afa4a1`.
 
 ---
 
@@ -245,7 +355,23 @@ case per signature in the table above (7), plus: `unknown` evidence classifies `
 declared list) classifies `mod`; a pipeline classification emits a finding event; the third identical
 cause returns a stop. Expected: 11 of 11 pass. Run with `--mutants`.
 
-### Part B: informativeness, recorded beside the verdict
+### Part B: informativeness — NOT BUILT IN THIS VERSION (0.2.0)
+
+🔴 **Withdrawn from this version by the blind review, and the Conductor agrees.** His four-way
+reading is right and is kept below verbatim as the design to return to. What was wrong was this
+spec's way of measuring it: uncalibrated by its own admission, contradicting Part A (review finding
+4), gameable by construction because `modledger._finding_name_ok` mints a fresh name per finding,
+its central mitigation printing itself into the brief (finding 3), and its "same insight" comparator
+undefined. The review's verdict, which this writer accepts: *"measuring it with undefined novelty
+against an uncalibrated threshold that gates continuation is the worst version of being right."*
+
+It returns when three things exist, in this order: Part A has landed (so a pipeline fault is already
+out of the yield numerator); the novelty comparator is `findings_fold.signature()` rather than
+something new; and there are enough runs under the new predicate to calibrate it the way the
+non-pass streak was calibrated (858 items, 2664 runs, 2026-10-31). Until then the Test Pilot keeps
+routing on consecutive non-pass runs, which is calibrated.
+
+The design to return to, unchanged:
 
 #### What is wrong now
 
