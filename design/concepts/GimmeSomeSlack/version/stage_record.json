@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "in_game",
   "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-16T03:25:09-08:00",
+  "since": "2026-11-17T09:22:15-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -170,6 +170,24 @@
         "hold",
         "steward_confirms",
         "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "in_game",
+      "at": "2026-11-17T09:22:15-08:00",
+      "by": "BENCH",
+      "why": "delegated: steward road back: every visit-1 FAIL/UNMEASURED line is filed and closed (M8 dead cut end, D2 fresh builder, box leads off slope, walk split at 1d580847bd/298de5b1bf; sparking-wall and under-item checks mended per the owner's 2026-11-16 ruling; three unwritten drivers now in scene_rows.py and passing on the FlowWorks tier) by the Fable run RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID (published 1bd5dfa700cb); the Conductor released the hold 2026-11-17 9:04 AM PST for the next visit; all 198 rows were made on 6ecfb14c, another build, so visit 2 reruns every check incl. the full-list walk",
+      "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794935989",
+      "confirmed": {
+        "steward_confirms": "read visit_1/SUMMARY.md, rows.jsonl (198 checks: 178 PASS, 6 FAIL, 14 UNMEASURED) and the Fable report rm-detached-bench-rimmandrake-lay-slack-close-fittings-twe-1794925467.out.json; judge the judge: sc_walls/sc_rewire_cost and the three under-item rows were CRITERION FLAW (mended, bars' meaning kept, owner ruling 2026-11-16); three unwritten drivers and M8/D2/stub joins/sc_walk were REAL MISS, all now closed; no RECORD GAP; tests_edited none; locked pins unchanged (test_table.json is not pinned). Verdict: nothing new to file; rerun every check in visit 2",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: delegated: steward road back: every visit-1 FAIL/UNMEASURED line is filed and closed (M8 dead cut end, D2 fresh builder, box leads off slope, walk split at 1d580847bd/298de5b1bf; sparking-wall and under-item checks mended per the owner's 2026-11-16 ruling; three unwritten drivers now in scene_rows.py and passing on the FlowWorks tier) by the Fable run RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID (published 1bd5dfa700cb); the Conductor released the hold 2026-11-17 9:04 AM PST for the next visit; all 198 rows were made on 6ecfb14c, another build, so visit 2 reruns every check incl. the full-list walk"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],
