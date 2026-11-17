@@ -1,0 +1,766 @@
+{
+ "mod": "LeaningScrub",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "owner_pages.md page one ('These are my Designer scope decisions…' paragraph and the next-version line 'Ruins, vaporator research/water, scavenger camps, giant fire stamping/maker pursuit, calling-pyre beliefs/ritual'), page two 'Questions: 0'; result.json counts.questions = 0; bars.json old_bars stamping, maker, gale_exposure, concealment, thornhold_den, shokka, ribbon_route, cruststar, arm_regrowth",
+     "evidence": "record.json scope owner_corrected_bar_20261116 (OWNER:1794835478275153823, his cards on the morning of 2026-11-16, about 17 hours before the cleansing request) has these words: 'scrub_fire_and_belief: thundersteps stamping plus witness/trail maker tracking BINDING now'; 'scrub_wind_home: BINDING as written' (turn_03.md:17: 'wind supplies useful colony power with exposure and repair risks'); 'scrub_native_ecology: BINDING as written' (turn_03.md:21: 'concealment, runway, den, ambush, canopy, grazing and finite arm/regrowth mechanisms actually work'); and when asked to pick one flagship he declined: 'These are all important'. record.json owner_witness_system also gives his own reason for the witness system, which reaches beyond this mod: 'We will need this later for the ownership mod anyway. So worth investing on a robust witness violator relationship tracking system.' The proposal moves every one of these to the next version. The pages disclose only 'each ruled form' and the 'fire-response obligations'. They list stamping and maker pursuit on the same line as ruins, scavenger camps and calling-pyre, which he moved himself, so the stamping and witness move reads as already his call. They never mention that the wind exposure and repair risks, or the native concealment, den, ambush, canopy, grazing and arm behaviours, were bound by him that same day. That is concrete evidence against the obvious answer, so under the brief and the Evidence-for-Ask rule it belongs on his pages as a question, with the default still taken.",
+     "would_pass": "Page two carries one very clear question: the items he bound on 2026-11-16 at about 5 AM (stamping plus witness/trail, the wind exposure and repair risks, native concealment/den/ambush/canopy/grazing/arm, tree history and visit traces), quoted with his words as evidence; the default taken (next version, switched off); and what changes if he says otherwise (which ones return as bars and what that adds to the bar count). Page one keeps his own next-version moves (ruins/water, scavenger camps, calling-pyre) apart from the Designer's moves.",
+     "smallest_fix": "Add that one question to owner_pages.md page two, split the next-version line into 'you moved' and 'I move', and set result.json counts.questions to 1."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json land_read, accept[0] and meant.intent",
+     "evidence": "accept[0]: 'a small native disappears behind ordinary foliage rather than becoming magically invisible; the vine mass interrupts the person's view'; meant: 'vines interrupt human sightlines'. No kept rule, census row or ticket defines a mechanism for either effect. A search of src/RimMandrake/LeaningScrub for AltitudeLayer, DrawAt, occlusion or shimmer found nothing. No venomvine form def sets fillPercent or any sight-blocking field; the only fillPercent values are on fuzz flora and the vaporator (0.0–0.3). In vanilla, pawns draw on a layer above plants, and plants never fully fill a cell, so they do not block line of sight [guess ~80%; RimSage was not connected to confirm]. The only built way an animal disappears into the fuzz is ripple concealment ('Hiding beneath fuzz with a faint shimmer'), and the proposal moves it to the next version. As written, the accepting picture needs a render or line-of-sight behaviour that no kept part supplies.",
+     "would_pass": "Either the picture describes what the kept build actually shows (a small native's body sits within the fuzz height while a standing person clears it; a mature vine stand towers over both at colony zoom), or a rule plus ticket defines the occlusion or sight-blocking mechanism and its range.",
+     "smallest_fix": "Rewrite land_read accept[0] as a height and silhouette contrast and remove 'interrupt human sightlines' from meant, or add a rule and ticket that defines vine sight-blocking and small-animal occlusion."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json whole_season says ('runaway vines', 'frozen work'); tree_care says ('a free eligible coated animal'); vine_country says ('repeatedly meet')",
+     "evidence": "whole_season marks only 'error storm' as figurative. 'runaway' and 'frozen' are not literal either, and they are read only through the reject picture ('vine flood', 'endlessly repeats blocked jobs'). In tree_care, 'free' could mean wild, ownerless, unpenned or idle; the rule means 'not roped, with a legal path inside its pen or allowed area' (care_transaction). 'repeatedly' is a frequency word of the 'often' kind the brief names. tree_care and vine_country both have 'figurative': [].",
+     "would_pass": "Each of these words gets a figurative entry saying what it stands for, with one accept picture that departs from the literal reading (for example: a penned animal whose pen holds a tree is 'free' for this bar; a vine field still spreading at its cap is not 'runaway').",
+     "smallest_fix": "Add four figurative entries in bars.json (runaway, frozen, free, repeatedly). No other change."
+    }
+   ],
+   "reviewer_refusals": 3,
+   "stranger": [
+    {
+     "bar": "earned_claims",
+     "n": 1,
+     "text": "A harvest label or canceled job passes as renewable venom, or a spawned blanket bypasses an unusable recipe.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "earned_claims",
+     "n": 2,
+     "text": "A completed venom harvest leaves the living stand recovering; an interrupted attempt grants nothing. A crafted blanket becomes a visible claim; its dry payout is delivered after the stated long wait and keeps a matched heater or work consumer useful longer than the ordinary-wood alternative.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "earned_claims",
+     "n": 3,
+     "text": "A few short visits to a claim produce free fuel, a reload pays the same claim again, or fuel-filter acceptance is called premium while the consumer works no longer than with wood.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "earned_claims",
+     "n": 4,
+     "text": "An interrupted or repeated claim cannot create extra cane; a saved claim retains its original due time when later claims use changed tuning.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "land_read",
+     "n": 1,
+     "text": "A silver recolor of open sand leaves people hidden by tall ordinary grass, and the Gale is a motionless fog sheet with the ordinary wind audio still playing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "land_read",
+     "n": 2,
+     "text": "Calm makes the wind bed subside; a Gale drives dust along the plants’ shared lean while the map and route warnings remain readable. A tree-free map still reads as Scrub.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "land_read",
+     "n": 3,
+     "text": "A person stands above the moving cover; a small native disappears behind ordinary foliage rather than becoming magically invisible; the vine mass interrupts the person’s view.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "land_read",
+     "n": 4,
+     "text": "A tree’s oversized canopy obscures every route warning at colony zoom, or noisy jungle calls drown out the Stall.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "ordinary_life",
+     "n": 1,
+     "text": "Naturally present animals feed and hunt through ordinary jobs, produce their ordinary meat, coats or eggs and retain usable carcasses; a thornhold’s actual melee can apply its own venom without a vine nearby.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "ordinary_life",
+     "n": 2,
+     "text": "A staged spawn lineup is the only evidence of wildlife, or food-search returns a target but hungry animals never finish eating.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "ordinary_life",
+     "n": 3,
+     "text": "A native vanishes to maintain a hidden population count, or ordinary eggs cannot hatch because proximity hatching was switched off.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "ordinary_life",
+     "n": 4,
+     "text": "A native with access to its environmental water stays hydrated; hunger or predation can still kill animals, leaving a readable body or cause.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "real_flyers",
+     "n": 1,
+     "text": "The only successful launch is a direct test call, deferred bloom or summoned crown cloud; ordinary wildlife never flies.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "real_flyers",
+     "n": 2,
+     "text": "The flyer’s production tracker becomes airborne for its journey, its body animation follows travel direction and it lands; a gliding shirrel can later reach its living tree home.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "real_flyers",
+     "n": 3,
+     "text": "A positive flight stat passes while the creature walks the journey, or the airborne sprite is a motionless walking pose.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "real_flyers",
+     "n": 4,
+     "text": "When its tree is removed or the Gale ends, a shirrel lands safely and seeks an available ordinary home rather than disappearing or hovering forever.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 1,
+     "text": "A protected yard is overgrown, or clearing a modest dirt route continuously consumes the colony’s available work.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 2,
+     "text": "The hauler takes the longer safe way; when it closes the pawn waits with a reason. A separately ordered expedition reaches the venom harvest, receives attributable contact harm if exposed, returns and resumes safe hauling.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 3,
+     "text": "Path cost prefers a safe detour once, then ordinary work takes poison when the detour becomes blocked.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 4,
+     "text": "A drafted or rescued pawn keeps stale permission for later hauling, or a forbidden body size teleports through a wall because the player clicked it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 5,
+     "text": "New growth approaches a dirt route slowly enough for scheduled clearing; developed ground remains protected. A blunt gallery remains usable by an eligible pawn even during an expedition.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 1,
+     "text": "A pen-bound animal with no legal path stays in its pen; an interrupted rub grants no wool or healing. A tree-free map has no tree aura and can use the declared imported blanket-material route.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 2,
+     "text": "The hediff name says healing while parasites never improve, or the tree cures a nearby animal that never rubbed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 3,
+     "text": "Harvesting the tree resets maturity history and permanently stops free wool shedding.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 4,
+     "text": "A ready, unrestrained coated animal chooses a reachable tree, completes its rub, sheds coat and subsequently shows improving eligible disease severity. Harvesting the bark delivers stored felt while loose shedding continues after an earlier harvest.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 5,
+     "text": "An animal escapes a closed pen to groom, or repeat harvests duplicate the same stored coat.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "vine_country",
+     "n": 1,
+     "text": "A cleared test disc somewhere else on the map passes while the actual arrival site is trapped.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "vine_country",
+     "n": 2,
+     "text": "Several natural journeys require a choice between a clear detour and a visible stand; an actual start supports shelter, work and edge access without threading poison.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "vine_country",
+     "n": 3,
+     "text": "Isolated decorative stems satisfy a plant census while ordinary journeys can ignore vines, or a sealed vine wall makes leaving depend on an expedition.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "vine_country",
+     "n": 4,
+     "text": "A gallery can be recognized before entering it; the adjacent venom-bearing edge remains a different choice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole_season",
+     "n": 1,
+     "text": "Changing the order of gathering, route clearing, tree harvest and claim placement changes local outcomes without duplicating resources or stranding routine work; the long claim eventually pays its recorded due reward.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole_season",
+     "n": 2,
+     "text": "The weather progresses on its own; routine work and deliberate trips remain distinguishable, new runners approach wild margins, animals feed and mature, and the same colony resumes its unfinished jobs and claims after loading.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole_season",
+     "n": 3,
+     "text": "The map becomes a vine flood or empty wildlife desert, the colony endlessly repeats blocked jobs, reload loses a banked claim, or repeated exceptions halt progress.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole_season",
+     "n": 4,
+     "text": "A clear-sky display with creep, health, animal AI or growth disabled is the only successful season.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "working_home",
+     "n": 1,
+     "text": "Connected wind generation feeds storage and colony consumers during the windy routine; storage carries chosen essential work through calm or the player sees the power shortfall and reduces demand.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "working_home",
+     "n": 2,
+     "text": "The inspect pane reports abundant output while the connected workbench has no usable power.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "working_home",
+     "n": 3,
+     "text": "An unconnected generator or tester-filled battery carries every calm period, hiding whether wind actually supports the home.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Salvessa, the scrub medicine herb: src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_Salvessa.xml defines RM_Salvessa, harvested as RM_RawSalvessa, whose description says it 'Can be refined into large quantities of primitive medicine'. It is also the parent def of the RSW_DesertPortB reskin. RM_TanniVine.xml, a frost-resistant ivy ported from RSW_TanniVine, is missing too. Neither name appears anywhere in design/concepts/LeaningScrub/, so neither has a census row or a fate. Salvessa matters to the kept bars: tree_care and care_transaction send coatless or ineligible animals to 'ordinary medicine', and venom contact on ordered trips makes local medicine part of what a trip costs. Its fate (life, needed_by, or next version) and whether its refining recipe exists should be recorded.",
+   "loop_or_three_way": "A loop runs through tree supply, encroachment and routine access. one_encroachment lets creep insert into wild ground; a sweetline's surroundings are not 'developed ground' under protected_ground. ordinary_intent and safe_routine then forbid the forager's ordinary wool and felt collection through armed vines, so that work waits. care_transaction also requires a legal reachable touch-cell, and animals obey the physical contact hazard, so creep around a tree cuts off both rubbing (tree_care) and wool supply. claim_transaction's blanket, the one tool that stops creep on a stand, needs SweetlineWool. So the vines that cut a colony off from its tree can only be smothered with material from that same tree, unless the player imports Cloth or orders an expedition. The tree-supply meeting lists all of these members but states only 'availability/labor … unmeasured'. Its model (Economy and care walk) explicitly leaves out the map geometry, and the Geometry and route sweep, which has the tree trunk and crown geometry, is not named for this meeting. The meeting should name the geometry sweep, run with creep around tree cells, as what settles it.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 529790
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json rule protected_ground vs bar safe_routine; owner_pages.md page two, line \"Maintained\"; definition.md, \"Using it\"",
+     "evidence": "protected_ground: \"Developed ground is a cell under a roof, an existing building, a laid floor/underterrain, a zone or a sown plant. No creep insertion there; a designation alone and Home area alone are not immunity. Dirt routes are actually cut/harvested ... no invisible dirt-route ward.\" The source agrees: src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:96 refuses any cell where `c.GetZone(map) != null`, and a stockpile or dumping zone counts. So a player can paint a one-cell stockpile stripe along every dirt route and get a free, permanent ward. That contradicts the pages' settlement \"dirt routes require measured labor. Home-area paint and blueprints confer no invisible immunity\", the definition's \"Dirt routes need actual repeated maintenance\", and the maintenance the signature (\"maintained routes\") and safe_routine's second accept picture (\"scheduled clearing\") depend on. Zone paint is the same kind of act as Home-area paint.",
+     "would_pass": "One reading everywhere. Either (a) zone paint is the intended cheap upkeep, said in safe_routine and on his pages, with the \"measured labor\" lines dropped; or (b) protection comes only from a roof, a building, a floor, or a sown plant inside a growing zone, and bare stockpile, dumping or other zones give no immunity.",
+     "smallest_fix": "Edit protected_ground to name which zone types protect (recommend: only a growing zone cell holding a sown plant). Add a TROUTE acceptance row: a stockpile stripe on a dirt route still receives runners. Keep the pages' \"Maintained\" line as written."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json rule ordinary_intent and bars safe_routine and earned_claims; tickets.md TROUTE; rule fuel_transaction",
+     "evidence": "The signature's central act is \"a specifically ordered prepared trip\". It exists only as \"an explicit expedition UI acknowledgement tied to actor ID, job ID and target\" (ordinary_intent) and \"A new player confirmation names contact danger and the target\" (TROUTE). The census marks ordered_crossing_policy built \"unknown\" and proven \"missing\". Nothing defines what the player clicks, which jobs can carry consent (venom harvest, blanket placement, collecting due cane, cutting an armed stand, rescue), or what happens to a plain Harvest designation on a Dripping stand. fuel_transaction says \"Ordinary Dripping harvest uses vanilla regrowing-harvest completion\", and vanilla harvesting is designation-driven autonomous grower work, which by safe_routine is ordinary work that must wait. A builder and a judge would build and judge two different expedition systems.",
+     "would_pass": "A short definition: the order's entry point (for example a right-click option on the target stating the contact risk); the closed list of job types that can carry consent; that a harvest or placement designation alone stays ordinary work and waits when the target is reachable only through armed cells; and what the waiting reason says.",
+     "smallest_fix": "Add one paragraph to definition.md under \"Using it\" and one sentence to ordinary_intent naming the entry point and the eligible job list. Add both to TROUTE's acceptance test."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json bar tree_care (says, accept picture one, range); rule care_transaction; check care_tuning",
+     "evidence": "His words (record.json owner_corrected_bar_20261116, OWNER:1794835478275153823): \"animals rub the sweetline because scratching gives them a healing hediff that removes parasites and disease over time.\" The bar weakens \"removes\" to \"gradually relieve\", and its accept picture only needs \"improving eligible disease severity\", so a build where severity dips and the animal still dies of plague passes. The promise is also unreachable in ordinary play. [measured, RimSage] Vanilla IncidentWorker_DiseaseAnimal gives disease only to player-faction non-humanlike pawns (Animal_Flu, Animal_Plague). Disease_GutWorms and Disease_MuscleParasites use IncidentWorker_DiseaseHuman, which targets only free colonists and prisoners. So no animal ever gets parasites, and wild natives never get disease. Finally, RM_SweetlineScratching.cs:122 lets an animal rub only when its coat is ready, so a sick animal with an unready coat cannot seek the cure. That reverses his \"because\".",
+     "would_pass": "says: over time the rubbing animal is rid of its eligible disease or parasites. An accept picture shows the condition gone, sooner than in a matched untreated animal. The range states which animals actually fall sick in play (tame flu and plague) and whether parasites need a native source or are staged-only. Readiness to rub is reconciled with \"because scratching heals\": either sickness also lets an animal rub, or this is stated as a deliberate narrowing on his pages.",
+     "smallest_fix": "Reword tree_care's says and first accept picture to \"rid of\". Add one range line on the vanilla disease sources. Add a page-two line (or ticket under TCARE) on the coat-readiness gate and the missing source of animal parasites."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json row shirrel_glide; bars.json bar real_flyers (says) and rule real_locomotion",
+     "evidence": "The census keeps \"Gale launch/home tether\" as life with the reason \"deleting real launch, flight and landing violates the standing flyer ruling\". That argues only for flight. The standing ruling needs a fiction flyer to really fly; it does not need a Gale-triggered launch or a tether to a sweetline home (RM_ShirrelGlide.cs HomeTether). Deleting the Gale trigger and tether while keeping ordinary flight, as the proposal itself requires for dustflutter, would defeat neither land, life nor the signature. Yet real_flyers writes the extra into a bar: \"including a shirrel gliding downwind and returning to an available home\". It also pulls weather and tree supply into the flight meeting.",
+     "would_pass": "Either a deletion argument showing that ordinary flight without the Gale trigger and tether defeats land or life, or the Gale glide and tether moved to the next version and switched off like the other weather-triggered scripts, with the shirrel flying by ordinary flight.",
+     "smallest_fix": "Drop the shirrel clause from real_flyers' says and its second accept picture. Move the Gale trigger and home tether to next_version.md with a switch-off ticket, keeping the shirrel's ordinary flight under TFLIGHT."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json bar vine_country, says and accept picture two",
+     "evidence": "\"recognizable venom edges and blunt galleries\" are coined names for the Dripping and Hollow forms. `figurative` marks only \"repeatedly\". A cold reader cannot tell that \"venom edges\" means the Dripping harvest form. \"Galleries\" literally means a walk-in tunnel, while contact_boundary says Hollow is \"not an invisible tunnel/teleport/crawl job\" and passable only inside its size band.",
+     "would_pass": "Figurative entries for \"venom edges\" (the Dripping stand's harvestable venom-bearing side) and \"blunt galleries\" (a Hollow stand with no contact venom that a body inside the size band can cross; no crawl job, no pocket space), each with an accept picture.",
+     "smallest_fix": "Add two figurative entries to vine_country."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json bars safe_routine (\"prepared trip\") and earned_claims (\"prepared forager\")",
+     "evidence": "meant.intent of safe_routine: \"Prepared is informed consent and ordinary supplies, not a new equipment recipe.\" The word is in `says`, but `figurative` is empty for safe_routine and absent for it in earned_claims. Read literally, \"prepared\" leads a builder to add a preparation requirement, or a judge to refuse because none exists. His source is \"farther journeys require preparation\" (record.json owner_home_routes).",
+     "would_pass": "A figurative entry on both bars: \"prepared\" stands for the player's explicit acknowledgement of the named contact risk for that trip. An accept picture shows an unequipped pawn ordered on an acknowledged trip.",
+     "smallest_fix": "Copy the meant sentence into a figurative entry with one accept picture on each bar."
+    },
+    {
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json bar tree_care says (\"without duplicating the animal's coat\"); bar earned_claims says (\"conserved\") and accept picture two",
+     "evidence": "These are the accounting invariants of the care_transaction and claim_transaction rules and of economy_observer_check. tree_care: \"without duplicating the animal's coat\". earned_claims: \"conserved dry cane\" and the whole of accept picture two: \"An interrupted or repeated claim cannot create extra cane; a saved claim retains its original due time when later claims use changed tuning.\" A player does not see a coat-to-wool ledger or the freezing of a claim's duration. The brief's reject test (would he reject the mod if only this were false?) is not answered from a source for either.",
+     "would_pass": "Bars state what the player sees (wool and felt to gather; dry cane after the long wait, worth more than wood). Conservation, due-time capture and no duplication on reload stay in the rules and checks, where they already are.",
+     "smallest_fix": "Strike \"without duplicating the animal's coat\" and \"conserved\" from the two says. Replace earned_claims' second accept picture with a player-visible one, or cite the source that makes duplication a rejection."
+    }
+   ],
+   "reviewer_refusals": 7,
+   "stranger": [
+    {
+     "bar": "earned_claims",
+     "n": 1,
+     "text": "A completed venom harvest leaves the living stand recovering; an interrupted attempt grants nothing. A crafted blanket becomes a visible claim; its dry payout is delivered after the stated long wait and keeps a matched heater or work consumer useful longer than the ordinary-wood alternative.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "earned_claims",
+     "n": 2,
+     "text": "A few short visits to a claim produce free fuel, a reload pays the same claim again, or fuel-filter acceptance is called premium while the consumer works no longer than with wood.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "earned_claims",
+     "n": 3,
+     "text": "An interrupted or repeated claim cannot create extra cane; a saved claim retains its original due time when later claims use changed tuning.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "earned_claims",
+     "n": 4,
+     "text": "A harvest label or canceled job passes as renewable venom, or a spawned blanket bypasses an unusable recipe.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "land_read",
+     "n": 1,
+     "text": "A tree’s oversized canopy obscures every route warning at colony zoom, or noisy jungle calls drown out the Stall.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "land_read",
+     "n": 2,
+     "text": "Calm makes the wind bed subside; a Gale drives dust along the plants’ shared lean while the map and route warnings remain readable. A tree-free map still reads as Scrub.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "land_read",
+     "n": 3,
+     "text": "A silver recolor of open sand leaves people hidden by tall ordinary grass, and the Gale is a motionless fog sheet with the ordinary wind audio still playing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "land_read",
+     "n": 4,
+     "text": "A small native’s body sits within the height of the moving fuzz while a standing person clears it. A mature vine stand towers over both at colony zoom.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "ordinary_life",
+     "n": 1,
+     "text": "A staged spawn lineup is the only evidence of wildlife, or food-search returns a target but hungry animals never finish eating.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "ordinary_life",
+     "n": 2,
+     "text": "Naturally present animals feed and hunt through ordinary jobs, produce their ordinary meat, coats or eggs and retain usable carcasses; a thornhold’s actual melee can apply its own venom without a vine nearby.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "ordinary_life",
+     "n": 3,
+     "text": "A native with access to its environmental water stays hydrated; hunger or predation can still kill animals, leaving a readable body or cause.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "ordinary_life",
+     "n": 4,
+     "text": "A native vanishes to maintain a hidden population count, or ordinary eggs cannot hatch because proximity hatching was switched off.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "real_flyers",
+     "n": 1,
+     "text": "The only successful launch is a direct test call, deferred bloom or summoned crown cloud; ordinary wildlife never flies.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "real_flyers",
+     "n": 2,
+     "text": "The flyer’s production tracker becomes airborne for its journey, its body animation follows travel direction and it lands; a gliding shirrel can later reach its living tree home.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "real_flyers",
+     "n": 3,
+     "text": "A positive flight stat passes while the creature walks the journey, or the airborne sprite is a motionless walking pose.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "real_flyers",
+     "n": 4,
+     "text": "When its tree is removed or the Gale ends, a shirrel lands safely and seeks an available ordinary home rather than disappearing or hovering forever.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 1,
+     "text": "The hauler takes the longer safe way; when it closes the pawn waits with a reason. A separately ordered expedition reaches the venom harvest, receives attributable contact harm if exposed, returns and resumes safe hauling.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 2,
+     "text": "Path cost prefers a safe detour once, then ordinary work takes poison when the detour becomes blocked.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 3,
+     "text": "A drafted or rescued pawn keeps stale permission for later hauling, or a forbidden body size teleports through a wall because the player clicked it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 4,
+     "text": "A protected yard is overgrown, or clearing a modest dirt route continuously consumes the colony’s available work.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "safe_routine",
+     "n": 5,
+     "text": "New growth approaches a dirt route slowly enough for scheduled clearing; developed ground remains protected. A blunt gallery remains usable by an eligible pawn even during an expedition.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 1,
+     "text": "Harvesting the tree resets maturity history and permanently stops free wool shedding.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 2,
+     "text": "The hediff name says healing while parasites never improve, or the tree cures a nearby animal that never rubbed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 3,
+     "text": "An animal escapes a closed pen to groom, or repeat harvests duplicate the same stored coat.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 4,
+     "text": "A pen-bound animal with no legal path stays in its pen; an interrupted rub grants no wool or healing. A tree-free map has no tree aura and can use the declared imported blanket-material route.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "tree_care",
+     "n": 5,
+     "text": "A ready, unrestrained coated animal chooses a reachable tree, completes its rub, sheds coat and subsequently shows improving eligible disease severity. Harvesting the bark delivers stored felt while loose shedding continues after an earlier harvest.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "vine_country",
+     "n": 1,
+     "text": "Several natural journeys require a choice between a clear detour and a visible stand; an actual start supports shelter, work and edge access without threading poison.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "vine_country",
+     "n": 2,
+     "text": "Isolated decorative stems satisfy a plant census while ordinary journeys can ignore vines, or a sealed vine wall makes leaving depend on an expedition.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "vine_country",
+     "n": 3,
+     "text": "A gallery can be recognized before entering it; the adjacent venom-bearing edge remains a different choice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "vine_country",
+     "n": 4,
+     "text": "A cleared test disc somewhere else on the map passes while the actual arrival site is trapped.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole_season",
+     "n": 1,
+     "text": "The weather progresses on its own; routine work and deliberate trips remain distinguishable, new runners approach wild margins, animals feed and mature, and the same colony resumes its unfinished jobs and claims after loading.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole_season",
+     "n": 2,
+     "text": "The map becomes a vine flood or empty wildlife desert, the colony endlessly repeats blocked jobs, reload loses a banked claim, or repeated exceptions halt progress.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole_season",
+     "n": 3,
+     "text": "Changing the order of gathering, route clearing, tree harvest and claim placement changes local outcomes without duplicating resources or stranding routine work; the long claim eventually pays its recorded due reward.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole_season",
+     "n": 4,
+     "text": "A clear-sky display with creep, health, animal AI or growth disabled is the only successful season.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "working_home",
+     "n": 1,
+     "text": "An unconnected generator or tester-filled battery carries every calm period, hiding whether wind actually supports the home.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "working_home",
+     "n": 2,
+     "text": "Connected wind generation feeds storage and colony consumers during the windy routine; storage carries chosen essential work through calm or the player sees the power shortfall and reduces demand.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "working_home",
+     "n": 3,
+     "text": "The inspect pane reports abundant output while the connected workbench has no usable power.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Where sick animals come from. The census has no row for how a native animal gets the diseases and parasites that tree care is meant to remove. [measured, RimSage] In vanilla, IncidentWorker_DiseaseAnimal targets only player-faction non-humanlike pawns (Animal_Flu, Animal_Plague), and Disease_GutWorms and Disease_MuscleParasites use IncidentWorker_DiseaseHuman (free colonists and prisoners only). RM_LeaningScrub_Biome.xml:94-126 lists both incidents. So wild natives never fall ill and no animal ever gets parasites. tree_care's \"naturally present coated native ... named eligible condition\" start, and his \"removes parasites\", therefore have no natural source. The census should hold one row: either a native source of animal sickness (a dependency or a small adapter), or a stated narrowing to tame flu and plague.",
+   "loop_or_three_way": "earned_claims × safe_routine (with rule ordinary_intent) × whole_season. The dry cane is delivered at the claim, inside a still-armed island: claim_transaction says the smothered stand \"is not a safe passage until actually removed\", and its neighbours stay armed. Hauling the payout home is ordinary hauling, which safe_routine forbids through poison. Consent dies with its job and target, so each payout stack needs a fresh explicit trip order. If the player does not issue one, the reward sits uncollected while the haul job-giver may keep finding and rejecting the target. whole_season reads that as \"missing rewards\" or \"the colony endlessly repeats blocked jobs\". The route-intent meeting names \"due-claim hazards\" but no meeting or picture says how the payout reaches home: whether collecting it is an eligible trip job, or whether the cane is delivered at the island's edge.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 616977
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 702004,
+    "output_tokens": 7296
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "cannot_hold_together",
+   "where": "bars.json rule protected_ground vs bar safe_routine; owner_pages.md page two, line \"Maintained\"; definition.md, \"Using it\"",
+   "evidence": "protected_ground: \"Developed ground is a cell under a roof, an existing building, a laid floor/underterrain, a zone or a sown plant. No creep insertion there; a designation alone and Home area alone are not immunity. Dirt routes are actually cut/harvested ... no invisible dirt-route ward.\" The source agrees: src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:96 refuses any cell where `c.GetZone(map) != null`, and a stockpile or dumping zone counts. So a player can paint a one-cell stockpile stripe along every dirt route and get a free, permanent ward. That contradicts the pages' settlement \"dirt routes require measured labor. Home-area paint and blueprints confer no invisible immunity\", the definition's \"Dirt routes need actual repeated maintenance\", and the maintenance the signature (\"maintained routes\") and safe_routine's second accept picture (\"scheduled clearing\") depend on. Zone paint is the same kind of act as Home-area paint.",
+   "would_pass": "One reading everywhere. Either (a) zone paint is the intended cheap upkeep, said in safe_routine and on his pages, with the \"measured labor\" lines dropped; or (b) protection comes only from a roof, a building, a floor, or a sown plant inside a growing zone, and bare stockpile, dumping or other zones give no immunity.",
+   "smallest_fix": "Edit protected_ground to name which zone types protect (recommend: only a growing zone cell holding a sown plant). Add a TROUTE acceptance row: a stockpile stripe on a dirt route still receives runners. Keep the pages' \"Maintained\" line as written."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "bars.json rule ordinary_intent and bars safe_routine and earned_claims; tickets.md TROUTE; rule fuel_transaction",
+   "evidence": "The signature's central act is \"a specifically ordered prepared trip\". It exists only as \"an explicit expedition UI acknowledgement tied to actor ID, job ID and target\" (ordinary_intent) and \"A new player confirmation names contact danger and the target\" (TROUTE). The census marks ordered_crossing_policy built \"unknown\" and proven \"missing\". Nothing defines what the player clicks, which jobs can carry consent (venom harvest, blanket placement, collecting due cane, cutting an armed stand, rescue), or what happens to a plain Harvest designation on a Dripping stand. fuel_transaction says \"Ordinary Dripping harvest uses vanilla regrowing-harvest completion\", and vanilla harvesting is designation-driven autonomous grower work, which by safe_routine is ordinary work that must wait. A builder and a judge would build and judge two different expedition systems.",
+   "would_pass": "A short definition: the order's entry point (for example a right-click option on the target stating the contact risk); the closed list of job types that can carry consent; that a harvest or placement designation alone stays ordinary work and waits when the target is reachable only through armed cells; and what the waiting reason says.",
+   "smallest_fix": "Add one paragraph to definition.md under \"Using it\" and one sentence to ordinary_intent naming the entry point and the eligible job list. Add both to TROUTE's acceptance test."
+  },
+  {
+   "head": "core_promise_weakened",
+   "where": "bars.json bar tree_care (says, accept picture one, range); rule care_transaction; check care_tuning",
+   "evidence": "His words (record.json owner_corrected_bar_20261116, OWNER:1794835478275153823): \"animals rub the sweetline because scratching gives them a healing hediff that removes parasites and disease over time.\" The bar weakens \"removes\" to \"gradually relieve\", and its accept picture only needs \"improving eligible disease severity\", so a build where severity dips and the animal still dies of plague passes. The promise is also unreachable in ordinary play. [measured, RimSage] Vanilla IncidentWorker_DiseaseAnimal gives disease only to player-faction non-humanlike pawns (Animal_Flu, Animal_Plague). Disease_GutWorms and Disease_MuscleParasites use IncidentWorker_DiseaseHuman, which targets only free colonists and prisoners. So no animal ever gets parasites, and wild natives never get disease. Finally, RM_SweetlineScratching.cs:122 lets an animal rub only when its coat is ready, so a sick animal with an unready coat cannot seek the cure. That reverses his \"because\".",
+   "would_pass": "says: over time the rubbing animal is rid of its eligible disease or parasites. An accept picture shows the condition gone, sooner than in a matched untreated animal. The range states which animals actually fall sick in play (tame flu and plague) and whether parasites need a native source or are staged-only. Readiness to rub is reconciled with \"because scratching heals\": either sickness also lets an animal rub, or this is stated as a deliberate narrowing on his pages.",
+   "smallest_fix": "Reword tree_care's says and first accept picture to \"rid of\". Add one range line on the vanilla disease sources. Add a page-two line (or ticket under TCARE) on the coat-readiness gate and the missing source of animal parasites."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json row shirrel_glide; bars.json bar real_flyers (says) and rule real_locomotion",
+   "evidence": "The census keeps \"Gale launch/home tether\" as life with the reason \"deleting real launch, flight and landing violates the standing flyer ruling\". That argues only for flight. The standing ruling needs a fiction flyer to really fly; it does not need a Gale-triggered launch or a tether to a sweetline home (RM_ShirrelGlide.cs HomeTether). Deleting the Gale trigger and tether while keeping ordinary flight, as the proposal itself requires for dustflutter, would defeat neither land, life nor the signature. Yet real_flyers writes the extra into a bar: \"including a shirrel gliding downwind and returning to an available home\". It also pulls weather and tree supply into the flight meeting.",
+   "would_pass": "Either a deletion argument showing that ordinary flight without the Gale trigger and tether defeats land or life, or the Gale glide and tether moved to the next version and switched off like the other weather-triggered scripts, with the shirrel flying by ordinary flight.",
+   "smallest_fix": "Drop the shirrel clause from real_flyers' says and its second accept picture. Move the Gale trigger and home tether to next_version.md with a switch-off ticket, keeping the shirrel's ordinary flight under TFLIGHT."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json bar vine_country, says and accept picture two",
+   "evidence": "\"recognizable venom edges and blunt galleries\" are coined names for the Dripping and Hollow forms. `figurative` marks only \"repeatedly\". A cold reader cannot tell that \"venom edges\" means the Dripping harvest form. \"Galleries\" literally means a walk-in tunnel, while contact_boundary says Hollow is \"not an invisible tunnel/teleport/crawl job\" and passable only inside its size band.",
+   "would_pass": "Figurative entries for \"venom edges\" (the Dripping stand's harvestable venom-bearing side) and \"blunt galleries\" (a Hollow stand with no contact venom that a body inside the size band can cross; no crawl job, no pocket space), each with an accept picture.",
+   "smallest_fix": "Add two figurative entries to vine_country."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json bars safe_routine (\"prepared trip\") and earned_claims (\"prepared forager\")",
+   "evidence": "meant.intent of safe_routine: \"Prepared is informed consent and ordinary supplies, not a new equipment recipe.\" The word is in `says`, but `figurative` is empty for safe_routine and absent for it in earned_claims. Read literally, \"prepared\" leads a builder to add a preparation requirement, or a judge to refuse because none exists. His source is \"farther journeys require preparation\" (record.json owner_home_routes).",
+   "would_pass": "A figurative entry on both bars: \"prepared\" stands for the player's explicit acknowledgement of the named contact risk for that trip. An accept picture shows an unequipped pawn ordered on an acknowledged trip.",
+   "smallest_fix": "Copy the meant sentence into a figurative entry with one accept picture on each bar."
+  },
+  {
+   "head": "check_or_rule_as_bar",
+   "where": "bars.json bar tree_care says (\"without duplicating the animal's coat\"); bar earned_claims says (\"conserved\") and accept picture two",
+   "evidence": "These are the accounting invariants of the care_transaction and claim_transaction rules and of economy_observer_check. tree_care: \"without duplicating the animal's coat\". earned_claims: \"conserved dry cane\" and the whole of accept picture two: \"An interrupted or repeated claim cannot create extra cane; a saved claim retains its original due time when later claims use changed tuning.\" A player does not see a coat-to-wool ledger or the freezing of a claim's duration. The brief's reject test (would he reject the mod if only this were false?) is not answered from a source for either.",
+   "would_pass": "Bars state what the player sees (wool and felt to gather; dry cane after the long wait, worth more than wood). Conservation, due-time capture and no duplication on reload stay in the rules and checks, where they already are.",
+   "smallest_fix": "Strike \"without duplicating the animal's coat\" and \"conserved\" from the two says. Replace earned_claims' second accept picture with a player-visible one, or cite the source that makes duplication a rejection."
+  }
+ ],
+ "applyable": false,
+ "seconds": 819,
+ "at": "2026-11-17T00:25:09"
+}

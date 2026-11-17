@@ -4,17 +4,9 @@
       "id": "biome_cast",
       "what": "The composed biome provides its own ground cover, scrub, wildlife and ordinary plant/animal products. Optional franchise rows are conditional additions; presence in the roster does not prove natural generation or a complete lifecycle.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:167",
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:191",
-        "src/RimMandrake/Biomes.compose.json:45",
-        "ITEM:LEANINGSCRUB_RM_MOD_BUILD_1",
-        "ITEM:LEANINGSCRUB_RULED_CONTENT_1"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:167\nsrc/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:191\nsrc/RimMandrake/Biomes.compose.json:45\nITEM:LEANINGSCRUB_RM_MOD_BUILD_1\nITEM:LEANINGSCRUB_RULED_CONTENT_1",
       "proven": "stale",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:167"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:167",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -25,15 +17,9 @@
       "id": "weather_calendar",
       "what": "Ordinary weather defs maintain wind; Stall is calm; Gale is strong wind. Windy twins replace stock overcast, gray pall and dry thunderstorm in the biome table.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:23",
-        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_WindyTwins.xml",
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:151"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:23\nsrc/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_WindyTwins.xml\nsrc/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:151",
       "proven": "stale",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:23"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:23",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -44,14 +30,9 @@
       "id": "wind_sound",
       "what": "Steady wind and fog carry vanilla wind and jungle insect ambient beds; Stall quiet is represented by its weather definition. Audibility and transitions require a human sound pass.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:30",
-        "src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:30\nsrc/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:30"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml:30",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -62,14 +43,9 @@
       "id": "lean_heading",
       "what": "Scrub maps share a heading derived from tile-to-substellar geometry, using CreatureBehaviors sun geometry; heading is recomputed rather than serialized.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:139",
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:156"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:139\nsrc/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:156",
       "proven": "stale",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:139"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:139",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "land and signature",
       "ticket": "",
@@ -80,14 +56,9 @@
       "id": "plant_lean",
       "what": "Listed ground-cover plants face the shared wind direction instead of random mirroring; texture-specific orientation is data on the biome.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs:95",
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:247"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs:95\nsrc/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:247",
       "proven": "stale",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs:95"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs:95",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -98,15 +69,9 @@
       "id": "gale_dust",
       "what": "Gale overlay loads owned A/B textures when present and pans with the Lean; absent art falls back to vanilla fog material.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs:44",
-        "src/RimMandrake/LeaningScrub/Textures/Weather/RM_GaleDust_A.png",
-        "src/RimMandrake/LeaningScrub/Textures/Weather/RM_GaleDust_B.png"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs:44\nsrc/RimMandrake/LeaningScrub/Textures/Weather/RM_GaleDust_A.png\nsrc/RimMandrake/LeaningScrub/Textures/Weather/RM_GaleDust_B.png",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs:44"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs:44",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -117,14 +82,9 @@
       "id": "stall_freeze",
       "what": "Stall replaces idle wandering for eligible small wild animals with a waiting job; higher-priority feeding, flight-related activity, fleeing and other jobs must be attributed separately.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:170"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:170",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:138: prefix: nameof(Wander_Prefix));",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:47: public static bool stallFreezeEnabled = true;"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:138: prefix: nameof(Wander_Prefix));\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:47: public static bool stallFreezeEnabled = true;",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T1",
@@ -135,15 +95,9 @@
       "id": "gale_exposure",
       "what": "Gale periodically applies hearing/speech penalty to unroofed non-mechanoid living pawns.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:78",
-        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Hediffs.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:78\nsrc/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Hediffs.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:67: if (RM_WindCalendar.On(RM_LeaningScrubSettings.galeDeafenEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:49: public static bool galeDeafenEnabled = true;"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:67: if (RM_WindCalendar.On(RM_LeaningScrubSettings.galeDeafenEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:49: public static bool galeDeafenEnabled = true;",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T2",
@@ -154,15 +108,9 @@
       "id": "gale_turbines",
       "what": "Gale multiplies positive turbine output and rolls breakdowns for eligible working player turbines; tuning is provisional.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:186",
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:101"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:186\nsrc/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:101",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:72: if (tick % TurbineInterval == 0 && RM_WindCalendar.On(RM_LeaningScrubSettings.galeTurbineSurgeEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:50: public static bool galeTurbineSurgeEnabled = true;"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:72: if (tick % TurbineInterval == 0 && RM_WindCalendar.On(RM_LeaningScrubSettings.galeTurbineSurgeEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:50: public static bool galeTurbineSurgeEnabled = true;",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T3",
@@ -173,14 +121,9 @@
       "id": "gale_raid_weight",
       "what": "Gale multiplies enemy raid incident weight among threats; it does not guarantee an incident or create additional threat events.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:200"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:200",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:206: if (RM_WindCalendar.On(RM_LeaningScrubSettings.galeRaidWeightingEnabled) && RM_WindCalendar.IsGale(map))",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:53: public static bool galeRaidWeightingEnabled = true;"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:206: if (RM_WindCalendar.On(RM_LeaningScrubSettings.galeRaidWeightingEnabled) && RM_WindCalendar.IsGale(map))\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:53: public static bool galeRaidWeightingEnabled = true;",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T4",
@@ -191,15 +134,9 @@
       "id": "upwind_scent",
       "what": "Eligible wild non-predators acquire a flee response to an upwind humanlike within configured range on leaning maps.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:207"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:207",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:211: || !RM_LeaningScrubSettings.leanScentEnabled)",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:68: public static bool leanScentEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs:170: savedScent = RM_LeaningScrubSettings.leanScentEnabled;"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:211: || !RM_LeaningScrubSettings.leanScentEnabled)\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:68: public static bool leanScentEnabled = true;\nsrc/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs:170: savedScent = RM_LeaningScrubSettings.leanScentEnabled;",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T5",
@@ -210,15 +147,9 @@
       "id": "downwind_fire",
       "what": "Directional fire hook biases eligible spread attempts downwind on leaning maps.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:254"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:254",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:256: if (!RM_LeaningScrubSettings.leanFireEnabled)",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:70: public static bool leanFireEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs:251: RM_LeaningScrubSettings.leanFireEnabled = leanOn;"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:256: if (!RM_LeaningScrubSettings.leanFireEnabled)\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:70: public static bool leanFireEnabled = true;\nsrc/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs:251: RM_LeaningScrubSettings.leanFireEnabled = leanOn;",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T6",
@@ -229,22 +160,9 @@
       "id": "ripple",
       "what": "Eligible small wild animals on marked cover become psychologically invisible while visible to the player as shimmer; Gale expands size band and moving in Stall reveals them. Mental-state animals and active crust swimmers are excluded.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:58",
-        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_RippleKernel.cs:40",
-        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Ripple.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:58\nsrc/RimMandrake/LeaningScrub/Source/Kernel/RM_RippleKernel.cs:40\nsrc/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Ripple.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:27: public class RM_RippleCoverExtension : DefModExtension",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubDefOf.cs:15: public static HediffDef RM_RippleHidden;",
-        "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:158: bool savedMod = RM_LeaningScrubSettings.modEnabled, savedHunt = RM_LeaningScrubSettings.stallHuntEnabled, savedRipple = RM_LeaningScrubSettings.rippleEnabled;",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:109: public static bool rippleEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Patches/RM_Ripple_Cover.xml:3: RM_Ripple_Cover.xml   LEANINGSCRUB_MECHANICS_BUILD_1 part 6 - the ripple.",
-        "src/RimMandrake/LeaningScrub/Source/Kernel/RM_RippleKernel.cs:11: public static class RM_RippleKernel",
-        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Ripple.xml:3: LEANINGSCRUB_MECHANICS_BUILD_1 part 6 - the ripple (Source/RM_Ripple.cs adds and removes it).",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:640: (RM_Ripple.cs: a wild creature within rippleMaxBodySize on fuzz cover is hidden in wind, moving or not; in the Stall a"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:27: public class RM_RippleCoverExtension : DefModExtension\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubDefOf.cs:15: public static HediffDef RM_RippleHidden;\nsrc/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:158: bool savedMod = RM_LeaningScrubSettings.modEnabled, savedHunt = RM_LeaningScrubSettings.stallHuntEnabled, savedRipple = RM_LeaningScrubSettings.rippleEnabled;\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:109: public static bool rippleEnabled = true;\nsrc/RimMandrake/LeaningScrub/Patches/RM_Ripple_Cover.xml:3: RM_Ripple_Cover.xml   LEANINGSCRUB_MECHANICS_BUILD_1 part 6 - the ripple.\nsrc/RimMandrake/LeaningScrub/Source/Kernel/RM_RippleKernel.cs:11: public static class RM_RippleKernel\nsrc/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Ripple.xml:3: LEANINGSCRUB_MECHANICS_BUILD_1 part 6 - the ripple (Source/RM_Ripple.cs adds and removes it).\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:640: (RM_Ripple.cs: a wild creature within rippleMaxBodySize on fuzz cover is hidden in wind, moving or not; in the Stall a",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T7",
@@ -255,14 +173,9 @@
       "id": "windbreak_lee",
       "what": "Wind-blocking impassable buildings create a short local lee where moving animals lose ripple concealment.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:73"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:73",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:65: bool still = stall || (on && cover && InWindbreakLee(p.Position));",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:73: public static bool leanWakesEnabled = true;"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:65: bool still = stall || (on && cover && InWindbreakLee(p.Position));\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:73: public static bool leanWakesEnabled = true;",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T8",
@@ -273,16 +186,9 @@
       "id": "stall_hunter",
       "what": "An idle wild stall hunter selects visible eligible reachable prey in Stall and starts PredatorHunt; the current proof disables ripple and only reads job assignment.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:54",
-        "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:102"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:54\nsrc/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:102",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:24: public class RM_StallHunterExtension : DefModExtension",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:112: public static bool stallHuntEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:399: <li Class=\"RimMandrake.LeaningScrub.RM_StallHunterExtension\" />"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:24: public class RM_StallHunterExtension : DefModExtension\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:112: public static bool stallHuntEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:399: <li Class=\"RimMandrake.LeaningScrub.RM_StallHunterExtension\" />",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T9",
@@ -293,15 +199,9 @@
       "id": "vine_islands",
       "what": "New Scrub maps lay tall venomvine islands with rarer forms as rooms, target share and start clearance/traversability checks.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:140",
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:277",
-        "ITEM:VENOMVINE_BUILD_SCRUB_GROWS_TEETH"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:140\nsrc/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:277\nITEM:VENOMVINE_BUILD_SCRUB_GROWS_TEETH",
       "proven": "stale",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:140"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:140",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -312,14 +212,9 @@
       "id": "vine_creep",
       "what": "Mature unsmothered eligible forms emit safe young runners with a downwind bias and map cap; natural-ground filter rejects roofs, buildings, zones, floors and existing protected plants.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:94",
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:444"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:94\nsrc/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:444",
       "proven": "stale",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:94"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:94",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -330,13 +225,9 @@
       "id": "vine_growth_exemption",
       "what": "Venomvine registers both no-soak and no-everyday-band exemptions with ExplosiveGrowth.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ExplosiveGrowth/RM_LeaningScrub_ExplosiveGrowthExempt.xml",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -347,16 +238,9 @@
       "id": "vine_hazard",
       "what": "EnvironmentalHazards owns contact venom and body-size path barriers. Scrub registers its passability gate and young-runner minimum growth. Exact size boundary is strict greater-than in the barrier code.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_BodySizeBarrier.cs:181",
-        "src/RimMandrake/EnvironmentalHazards/Source/MapComponent_ContactVenom.cs",
-        "src/RimMandrake/LeaningScrub/Patches/RM_Venomvine_TallCreepSafeRunners.xml",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:799"
-      ],
+      "evidence": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_BodySizeBarrier.cs:181\nsrc/RimMandrake/EnvironmentalHazards/Source/MapComponent_ContactVenom.cs\nsrc/RimMandrake/LeaningScrub/Patches/RM_Venomvine_TallCreepSafeRunners.xml\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:799",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_BodySizeBarrier.cs:181"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_BodySizeBarrier.cs:181",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -367,16 +251,9 @@
       "id": "dripping_harvest",
       "what": "Dripping yields raw venom and resets growth when regrowing harvest is enabled; Apply runs at startup and settings writes.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:50",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:27"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:50\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:27",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:35: public class RM_RegrowingHarvestExtension : DefModExtension",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:82: public static bool drippingRegrowEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:11: (RM_RegrowingHarvestExtension) and the crown's Stall mob (RM_StallMobExtension)."
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:35: public class RM_RegrowingHarvestExtension : DefModExtension\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:82: public static bool drippingRegrowEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:11: (RM_RegrowingHarvestExtension) and the crown's Stall mob (RM_StallMobExtension).",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -387,15 +264,9 @@
       "id": "twitcher",
       "what": "Twitcher strikes once and saves its recovery tick; poised/spent is reported on inspect. A state-dependent droop graphic is not demonstrated by this implementation.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs:61"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs:61",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs:25: public class RM_CompProperties_Lash : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:57: public static bool twitcherLashEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:10: (RM_CompProperties_Lash), the dripping stand's regrowing harvest"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs:25: public class RM_CompProperties_Lash : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:57: public static bool twitcherLashEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:10: (RM_CompProperties_Lash), the dripping stand's regrowing harvest",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T10",
@@ -406,13 +277,9 @@
       "id": "hollow_passage",
       "what": "Hollow venomvine has a wider free-pass band and no contact-venom comp. The def acknowledges that a dedicated crawl job/graphic is stubbed.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:157"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:157",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:157"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:157",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -423,17 +290,9 @@
       "id": "crown_mob",
       "what": "During Stall, crown attracts eligible idle wild dustflutters, counting residents plus in-transit mobbers against its cap.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:131",
-        "src/RimMandrake/LeaningScrub/repro_crown_mob.py",
-        "infrastructure/state/live_proofs/LEANINGSCRUB_CROWN_MOB_LIVE_1.txt"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:131\nsrc/RimMandrake/LeaningScrub/repro_crown_mob.py\ninfrastructure/state/live_proofs/LEANINGSCRUB_CROWN_MOB_LIVE_1.txt",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:72: public class RM_StallMobExtension : DefModExtension",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:83: public static bool crownMobEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:11: (RM_RegrowingHarvestExtension) and the crown's Stall mob (RM_StallMobExtension)."
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:72: public class RM_StallMobExtension : DefModExtension\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:83: public static bool crownMobEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubVenomvineForms.xml:11: (RM_RegrowingHarvestExtension) and the crown's Stall mob (RM_StallMobExtension).",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T11",
@@ -444,16 +303,9 @@
       "id": "rearing",
       "what": "A pushed mature rearing stand sets a saved reared state, reveals intruders and conditionally alerts; Gale masks alert, not necessarily every mechanic. Random graphic variants are not state poses.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:753",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:753\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:112: public class RM_CompProperties_Rearing : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:126: public static bool rearingEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:78: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Rearing\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:112: public class RM_CompProperties_Rearing : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:126: public static bool rearingEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:78: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Rearing\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T12",
@@ -464,16 +316,9 @@
       "id": "walking",
       "what": "Gale onset makes walking stands advance downwind and sometimes leave dead-cane tail. Connected smothering and map-wide walking cap are handled by the kernel; destination protection is weaker than slow creep.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:880",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:880\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:156: public class RM_CompProperties_Walking : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:128: public static bool walkingEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:147: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Walking\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:156: public class RM_CompProperties_Walking : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:128: public static bool walkingEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:147: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Walking\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T13",
@@ -484,16 +329,9 @@
       "id": "hoard",
       "what": "Hoard stores eligible loose goods and corpse apparel/equipment with saved object ownership/clocks and drops them on despawn. Corpse itself stays outside.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:260",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:260\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:249: public class RM_CompProperties_Hoard : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:130: public static bool hoardEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:215: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Hoard\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:249: public class RM_CompProperties_Hoard : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:130: public static bool hoardEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:215: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Hoard\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T14",
@@ -504,16 +342,9 @@
       "id": "quench",
       "what": "Ready quench extinguishes nearby fire with a foam burst and saves its recharge clock. State graphics are not wired as readiness poses.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:205",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:205\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:193: public class RM_CompProperties_Quench : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:133: public static bool quenchEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:280: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Quench\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:193: public class RM_CompProperties_Quench : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:133: public static bool quenchEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:280: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Quench\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T15",
@@ -524,17 +355,9 @@
       "id": "sworn",
       "what": "Sowable researched sworn hedge spares a sap-marked pawn through its marked-thorn mechanism without faction-based ownership checks.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:80",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:80\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:83: && RM_WindCalendar.On(RM_LeaningScrubSettings.swornSparesMarkedEnabled)",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:135: public static bool swornSparesMarkedEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:297: spare any pawn carrying RM_SwornSapMarked, whoever they are (owner ruling 2026-10-03).",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFormSupport.xml:9: RM_SwornSapMark      a pot of anointing made from the dripping stand's RM_RawVenom."
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:83: && RM_WindCalendar.On(RM_LeaningScrubSettings.swornSparesMarkedEnabled)\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:135: public static bool swornSparesMarkedEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:297: spare any pawn carrying RM_SwornSapMarked, whoever they are (owner ruling 2026-10-03).\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_VenomvineFormSupport.xml:9: RM_SwornSapMark      a pot of anointing made from the dripping stand's RM_RawVenom.",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T16",
@@ -545,16 +368,9 @@
       "id": "shedding",
       "what": "Gale onset places a downwind fan of thorn litter; litter supplies scratch behavior through the forms sweep.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:951",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:951\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:175: public class RM_CompProperties_Shedding : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:136: public static bool sheddingEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:418: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Shedding\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:175: public class RM_CompProperties_Shedding : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:136: public static bool sheddingEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineSixForms.xml:418: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Shedding\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T17",
@@ -565,16 +381,9 @@
       "id": "strangler",
       "what": "Mature strangler wraps an adjacent wrappable wall/tree, damages it and may designate itself for cutting near player structures.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:32",
-        "ITEM:LEANINGSCRUB_STRANGLER_VINE_1"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:32\nITEM:LEANINGSCRUB_STRANGLER_VINE_1",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:20: public class RM_CompProperties_Strangler : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:138: public static bool stranglerEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:64: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Strangler\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:20: public class RM_CompProperties_Strangler : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:138: public static bool stranglerEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:64: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Strangler\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T18",
@@ -585,16 +394,9 @@
       "id": "weeper",
       "what": "Mature weeper leaves pools and can pollute a bounded cumulative number of neighboring ground cells. Its safe-passage description conflicts with contact-venom/barrier comps.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:131",
-        "ITEM:LEANINGSCRUB_WEEPER_VINE_1"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:131\nITEM:LEANINGSCRUB_WEEPER_VINE_1",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:117: public class RM_CompProperties_Weeper : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:141: public static bool weeperEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:127: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Weeper\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:117: public class RM_CompProperties_Weeper : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:141: public static bool weeperEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:127: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Weeper\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T19",
@@ -605,16 +407,9 @@
       "id": "sleeper",
       "what": "Grounded sufficiently large traffic wakes dormant sleeper into its awakened def and applies a wake-area hit. Wake damage currently bypasses the shared Scratch settings path.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:201",
-        "ITEM:LEANINGSCRUB_SLEEPER_VINE_1"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:201\nITEM:LEANINGSCRUB_SLEEPER_VINE_1",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:172: public class RM_CompProperties_Sleeper : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:143: public static bool sleeperEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:179: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Sleeper\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:172: public class RM_CompProperties_Sleeper : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:143: public static bool sleeperEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:179: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Sleeper\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T20",
@@ -625,16 +420,9 @@
       "id": "lure",
       "what": "Mature lure emits edible fruit up to a nearby supply cap. Actual hungry animals approaching and eating it is not proven by the fruit-generation hook.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:287",
-        "ITEM:LEANINGSCRUB_LURE_VINE_1"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:287\nITEM:LEANINGSCRUB_LURE_VINE_1",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:274: public class RM_CompProperties_Lure : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:144: public static bool lureEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:295: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Lure\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:274: public class RM_CompProperties_Lure : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:144: public static bool lureEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_VenomvineFourForms.xml:295: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_Lure\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T21",
@@ -645,19 +433,9 @@
       "id": "smother_craft",
       "what": "Tailoring recipe makes a blanket from fuzz fiber and sweetline felt. Ordered use consumes one blanket and banks a serialized timed claim; maturation swaps the plant for dead cane. Feature off blocks new jobs and holds due claims.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:97",
-        "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:171",
-        "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:85"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:97\nsrc/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:171\nsrc/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:85",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:910: RM_CompSmotherable sm = w.parent.TryGetComp<RM_CompSmotherable>();",
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:214: int claim = RM_CompSmotherable.ClaimTicks;",
-        "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:32: compClass = typeof(RM_CompSmotherable);",
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:463: RM_CompSmotherable sm = p.GetComp<RM_CompSmotherable>();",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:97: <defName>RM_Make_SmotherBlanket</defName>"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:910: RM_CompSmotherable sm = w.parent.TryGetComp<RM_CompSmotherable>();\nsrc/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:214: int claim = RM_CompSmotherable.ClaimTicks;\nsrc/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:32: compClass = typeof(RM_CompSmotherable);\nsrc/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:463: RM_CompSmotherable sm = p.GetComp<RM_CompSmotherable>();\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:97: <defName>RM_Make_SmotherBlanket</defName>",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "TCLAIM",
@@ -668,14 +446,9 @@
       "id": "dead_cane_fuel",
       "what": "Dead venomvine is accepted by wood-filter CompRefuelable consumers; this is distinct from the promised premium burn duration/heat.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:73"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:73",
       "proven": "stale",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "signature: banked fuel claim",
       "ticket": "",
@@ -686,16 +459,9 @@
       "id": "sweetline_landmark",
       "what": "Rare ancient named sweetline placement and persistent location identity; history UI is separately inventoried.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs:33",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:111",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:345",
-        "src/RimMandrake/LeaningScrub/Defs/RulePackDefs/RM_LeaningScrub_Namers.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs:33\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:111\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:345\nsrc/RimMandrake/LeaningScrub/Defs/RulePackDefs/RM_LeaningScrub_Namers.xml",
       "proven": "stale",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs:33"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs:33",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -706,15 +472,9 @@
       "id": "sweetline_canopy",
       "what": "Sweetline opts into BiomesShell canopy rendering with separate trunk and canopy pools at different viewing scales.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:91",
-        "design/concepts/LeaningScrub/record.json"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:91\ndesign/concepts/LeaningScrub/record.json",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:91",
-        "External/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence."
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:91\nExternal/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence.",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -726,15 +486,9 @@
       "id": "sweetline_shed",
       "what": "A once-mature sweetline keeps its timed free felt shed after harvest; everMature records that distinction.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:99",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:145",
-        "ITEM:LEANINGSCRUB_SWEETLINE_SHED_LIVE_1"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:99\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:145\nITEM:LEANINGSCRUB_SWEETLINE_SHED_LIVE_1",
       "proven": "stale",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:99"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:99",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -745,17 +499,9 @@
       "id": "sweetline_scratching",
       "what": "A ready shearable animal can choose a reachable tree, rub its own coat product off, and bank a felt share. Explicit rope and player allowed-area gates exist; full pen containment remains unproved.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:106",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:163",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:284",
-        "ITEM:SWEETLINE_SCRATCHING_TREE_BUILD_1"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:106\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:163\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:284\nITEM:SWEETLINE_SCRATCHING_TREE_BUILD_1",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:209: Job job = new RM_JobGiver_ScratchOnSweetline().TryIssueJobPackage(animal, default(JobIssueParams)).Job;",
-        "src/RimMandrake/LeaningScrub/Defs/JobDefs/RM_SweetlineScratching.xml:31: <li Class=\"RimMandrake.LeaningScrub.RM_JobGiver_ScratchOnSweetline\" />"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:209: Job job = new RM_JobGiver_ScratchOnSweetline().TryIssueJobPackage(animal, default(JobIssueParams)).Job;\nsrc/RimMandrake/LeaningScrub/Defs/JobDefs/RM_SweetlineScratching.xml:31: <li Class=\"RimMandrake.LeaningScrub.RM_JobGiver_ScratchOnSweetline\" />",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -766,14 +512,9 @@
       "id": "sweetline_felt_bank",
       "what": "Tree pays accumulated felt once through additional harvest yield and debits its store.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:271"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:271",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:181: tree.TryGetComp<RM_CompSweetlineStation>()?.Notify_Scratched(pawn, felted);",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:257: public void Notify_Scratched(Pawn animal, float coatUnitsFelted)"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:181: tree.TryGetComp<RM_CompSweetlineStation>()?.Notify_Scratched(pawn, felted);\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:257: public void Notify_Scratched(Pawn animal, float coatUnitsFelted)",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "life: coat and wool foraging",
       "ticket": "",
@@ -784,19 +525,9 @@
       "id": "felt_comfort",
       "what": "Felt stuff adds furniture comfort; wearing felt apparel yields a single thought independent of garment count.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:39",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:81",
-        "src/RimMandrake/LeaningScrub/Defs/ThoughtDefs/RM_SweetlineFelt_Thoughts.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:39\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:81\nsrc/RimMandrake/LeaningScrub/Defs/ThoughtDefs/RM_SweetlineFelt_Thoughts.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:21: public class RM_StuffComfortExtension : DefModExtension",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:96: public static bool sweetlineFeltApparelEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Patches/RM_StuffComfort_StatPart.xml:5: RM_StuffComfortExtension.comfortOffset. Inert for every stuff without the extension. -->",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SweetlineTree_Items.xml:40: <li Class=\"RimMandrake.LeaningScrub.RM_StuffComfortExtension\">",
-        "src/RimMandrake/LeaningScrub/Defs/ThoughtDefs/RM_SweetlineFelt_Thoughts.xml:3: stacked per piece\" (spec §5). Fires for any stuff carrying RM_StuffComfortExtension. -->"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:21: public class RM_StuffComfortExtension : DefModExtension\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:96: public static bool sweetlineFeltApparelEnabled = true;\nsrc/RimMandrake/LeaningScrub/Patches/RM_StuffComfort_StatPart.xml:5: RM_StuffComfortExtension.comfortOffset. Inert for every stuff without the extension. -->\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SweetlineTree_Items.xml:40: <li Class=\"RimMandrake.LeaningScrub.RM_StuffComfortExtension\">\nsrc/RimMandrake/LeaningScrub/Defs/ThoughtDefs/RM_SweetlineFelt_Thoughts.xml:3: stacked per piece\" (spec §5). Fires for any stuff carrying RM_StuffComfortExtension. -->",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T22",
@@ -807,14 +538,9 @@
       "id": "sweetline_visits",
       "what": "Timed home-map tree visits are abstract traces: ash or token and history, with no arriving visitor pawns.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:173"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:173",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:86: public static bool sweetlineVisitorsEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:89: private static bool VisitorsOn => Enabled && RM_LeaningScrubSettings.sweetlineVisitorsEnabled;"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:86: public static bool sweetlineVisitorsEnabled = true;\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:89: private static bool VisitorsOn => Enabled && RM_LeaningScrubSettings.sweetlineVisitorsEnabled;",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T23",
@@ -825,16 +551,9 @@
       "id": "runway_bloom",
       "what": "Moving disturbers on non-tree cover trigger queued species responses: scatter/flee, sway/hold, force-surface/exit hole, shed item or erupt/flight. Mental-state animals retain their behavior.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:182"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:182",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:50: public class RM_RunwayBloomExtension : DefModExtension",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:84: public static bool runwayBloomEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:79: <li Class=\"RimMandrake.LeaningScrub.RM_RunwayBloomExtension\">",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Misc/RM_SurrikExitHole.xml:5: (RM_RunwayBloomExtension response Surface, Source/RM_RunwayBloom.cs). PLACEHOLDER ART: vanilla rock"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:50: public class RM_RunwayBloomExtension : DefModExtension\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:84: public static bool runwayBloomEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:79: <li Class=\"RimMandrake.LeaningScrub.RM_RunwayBloomExtension\">\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Misc/RM_SurrikExitHole.xml:5: (RM_RunwayBloomExtension response Surface, Source/RM_RunwayBloom.cs). PLACEHOLDER ART: vanilla rock",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T24",
@@ -845,17 +564,9 @@
       "id": "vissler_arm_food",
       "what": "Shed vissler arms use vanilla ingestible/rotting meat with a settings gate. Food search hook tests hungry eligible ground meat eaters; it does not implement finite anatomy or seasonal arm regrowth.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:37",
-        "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:51"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:37\nsrc/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:51",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:98: public static bool visslerArmFoodEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:13: public static class RM_VisslerArmPatches",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:773: <RM_VisslerArm>1</RM_VisslerArm>",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_LeaningScrubItems.xml:6: RM_VisslerArm  the shed arm of RM_Vissler (butcher product of the animal)."
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:98: public static bool visslerArmFoodEnabled = true;\nsrc/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:13: public static class RM_VisslerArmPatches\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:773: <RM_VisslerArm>1</RM_VisslerArm>\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_LeaningScrubItems.xml:6: RM_VisslerArm  the shed arm of RM_Vissler (butcher product of the animal).",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T25",
@@ -866,15 +577,9 @@
       "id": "thornhold_quills",
       "what": "Thornhold quill-lash melee tool uses its venom damage wiring; ordinary hunting is distinguished in the damage definition/melee setup.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:119",
-        "src/RimMandrake/LeaningScrub/Defs/DamageDefs/RM_LeaningScrub_FaunaDamage.xml",
-        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:119\nsrc/RimMandrake/LeaningScrub/Defs/DamageDefs/RM_LeaningScrub_FaunaDamage.xml\nITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:119"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:119",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -885,17 +590,9 @@
       "id": "thornhold_den_stand",
       "what": "Wild thornhold chooses a reachable vine den and tethers there; external attacker near the den can trigger scoped stand/aggression. Passing nearby does not itself call the damage hook.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:147",
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:216",
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:254"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:147\nsrc/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:216\nsrc/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:254",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:53: public class RM_CompProperties_VineDen : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:101: public static bool thornholdStandEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:124: safe. ContactVenomImmunity: its own den does not poison it. Mod Settings: thornholdDenEnabled, thornholdStandEnabled. -->"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:53: public class RM_CompProperties_VineDen : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:101: public static bool thornholdStandEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:124: safe. ContactVenomImmunity: its own den does not poison it. Mod Settings: thornholdDenEnabled, thornholdStandEnabled. -->",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T26",
@@ -906,20 +603,9 @@
       "id": "surrik_crustswim",
       "what": "Special crust burrowing, hidden movement and surface strike; ordinary species remains.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:543",
-        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:207",
-        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:40"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:543\nsrc/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:207\nsrc/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:40",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:44: && def.HasModExtension<RimMandrake.CreatureBehaviors.RM_SandSwimExtension>();",
-        "src/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Surrik.xml:6: Movement is CreatureBehaviors' sand-swim kit (RM_SandSwimExtension on the race, worker comp injected at startup),",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:525: sand-swim kit (RM_SandSwimExtension below), retuned to the crust: it swims the Scrub's own natural ground (Sand, Soil,",
-        "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs:41: private RM_SandSwimExtension extCached;",
-        "src/RimMandrake/CreatureBehaviors/Source/RM_SandSwimExtension.cs:15: public class RM_SandSwimExtension : DefModExtension",
-        "src/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_SandSwim_Hediffs.xml:5: The two hediffs RM_CompSandSwim manages. Any RM_SandSwimExtension may point at these"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:44: && def.HasModExtension<RimMandrake.CreatureBehaviors.RM_SandSwimExtension>();\nsrc/RimMandrake/LeaningScrub/Defs/HediffDefs/RM_LeaningScrub_Surrik.xml:6: Movement is CreatureBehaviors' sand-swim kit (RM_SandSwimExtension on the race, worker comp injected at startup),\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:525: sand-swim kit (RM_SandSwimExtension below), retuned to the crust: it swims the Scrub's own natural ground (Sand, Soil,\nsrc/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs:41: private RM_SandSwimExtension extCached;\nsrc/RimMandrake/CreatureBehaviors/Source/RM_SandSwimExtension.cs:15: public class RM_SandSwimExtension : DefModExtension\nsrc/RimMandrake/CreatureBehaviors/Defs/HediffDefs/RM_SandSwim_Hediffs.xml:5: The two hediffs RM_CompSandSwim manages. Any RM_SandSwimExtension may point at these",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T27",
@@ -930,15 +616,9 @@
       "id": "ribbonwhip_wind_concealment",
       "what": "Ribbonwhip participates in ripple wind concealment and bloom sway; this does not implement its promised canopy-only travel.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:639",
-        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:247"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:639\nsrc/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:247",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:179: <RM_Ribbonwhip>0.3</RM_Ribbonwhip>",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:644: <defName>RM_Ribbonwhip</defName>"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:179: <RM_Ribbonwhip>0.3</RM_Ribbonwhip>\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:644: <defName>RM_Ribbonwhip</defName>",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T28",
@@ -949,16 +629,9 @@
       "id": "shirrel_glide",
       "what": "Wild idle shirrel near an eligible tree can launch a real downwind Gale glide, bind to sweetline through HomeTether, and retain a gate outside its own launch. launchFromAnyTree permits other trees; no sweetline is not the same as no launch tree.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:146",
-        "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:195",
-        "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:257"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:146\nsrc/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:195\nsrc/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:257",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:36: public class RM_CompProperties_ShirrelGlide : CompProperties",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:998: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_ShirrelGlide\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:36: public class RM_CompProperties_ShirrelGlide : CompProperties\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:998: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_ShirrelGlide\">",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "",
@@ -969,14 +642,9 @@
       "id": "shirrel_flight_art",
       "what": "Shirrel has a wired directional flying flipbook prefix and frames on disk. Stale C# header still claims frames are absent.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:1022",
-        "src/RimMandrake/LeaningScrub/Textures/Things/Pawn/Animal/RM_Shirrel/Flying/RM_Shirrel_Flying_1_north.png"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:1022\nsrc/RimMandrake/LeaningScrub/Textures/Things/Pawn/Animal/RM_Shirrel/Flying/RM_Shirrel_Flying_1_north.png",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:1022"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:1022",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "life: real visible flight",
       "ticket": "",
@@ -987,17 +655,9 @@
       "id": "rollbug_carrion",
       "what": "Wild rollbug can collect eligible corpse to its larder including colony dead by default, preserve gear by stripping, bite progressively and drop carried corpse on interruption.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:450",
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:570",
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:675"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:450\nsrc/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:570\nsrc/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:675",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:349: public class RM_CompProperties_CarrionLarder : CompProperties",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:102: public static bool rollbugCarrionEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:1143: Source/RM_ScrubDens.cs, Defs/JobDefs/RM_ScrubDens.xml. Mod Settings: rollbugCarrionEnabled (off: no rolling, no"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:349: public class RM_CompProperties_CarrionLarder : CompProperties\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:102: public static bool rollbugCarrionEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:1143: Source/RM_ScrubDens.cs, Defs/JobDefs/RM_ScrubDens.xml. Mod Settings: rollbugCarrionEnabled (off: no rolling, no",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T29",
@@ -1008,19 +668,9 @@
       "id": "ruin_injections",
       "what": "New player-home maps can receive dead farmstead, mid-cycle smother field and hedge-homestead ruins with spacing and start clearance.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:52",
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:190",
-        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:52\nsrc/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:190\nsrc/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:62: if (RM_WindCalendar.On(RM_LeaningScrubSettings.scrubInjectionsEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:120: public static bool scrubInjectionsEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:237: <li>RM_ScrubInjections</li>",
-        "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml:38: The Scrub's farmer camps now belong to OutlanderCivil (RM_ScrubInjections_GenStep.xml).",
-        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:9: UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml adds the Jawa clans. Settings: scrubInjectionsEnabled,"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:62: if (RM_WindCalendar.On(RM_LeaningScrubSettings.scrubInjectionsEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:120: public static bool scrubInjectionsEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml:237: <li>RM_ScrubInjections</li>\nsrc/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml:38: The Scrub's farmer camps now belong to OutlanderCivil (RM_ScrubInjections_GenStep.xml).\nsrc/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:9: UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml adds the Jawa clans. Settings: scrubInjectionsEnabled,",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T30",
@@ -1031,17 +681,9 @@
       "id": "wind_vaporator",
       "what": "Dead farmstead supplies a techprint for wind vaporator research; building has powered vanilla fog-water spawner, no drying scar.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:205",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:42",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:148"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:205\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:42\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:148",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:443: ThingDef vap = DefDatabase<ThingDef>.GetNamedSilentFail(\"RM_WindVaporator\");",
-        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:16: <ruinVaporatorDef>RM_WindVaporatorWreck</ruinVaporatorDef>",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:4: RM_WindVaporator.xml              LEANINGSCRUB_MECHANICS_BUILD_1 part 3"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:443: ThingDef vap = DefDatabase<ThingDef>.GetNamedSilentFail(\"RM_WindVaporator\");\nsrc/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:16: <ruinVaporatorDef>RM_WindVaporatorWreck</ruinVaporatorDef>\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Buildings/RM_WindVaporator.xml:4: RM_WindVaporator.xml              LEANINGSCRUB_MECHANICS_BUILD_1 part 3",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T31",
@@ -1052,19 +694,9 @@
       "id": "scavenger_camps",
       "what": "Living scavenger camp code defends at peace, assaults when hostile and returns to defend on peace; eligible faction list is empty in base and populated by campaign patch. Farmer camp faction field is unset.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:248",
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:356",
-        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:22",
-        "design/concepts/LeaningScrub/record.json"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:248\nsrc/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:356\nsrc/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:22\ndesign/concepts/LeaningScrub/record.json",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:77: if (RM_WindCalendar.On(RM_LeaningScrubSettings.scrubCampsEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:122: public static bool scrubCampsEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:9: UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml adds the Jawa clans. Settings: scrubInjectionsEnabled,",
-        "External/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence."
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:77: if (RM_WindCalendar.On(RM_LeaningScrubSettings.scrubCampsEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:122: public static bool scrubCampsEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:9: UtinniPatches/Patches/RM_ScrubInjections_ScavengerClans.xml adds the Jawa clans. Settings: scrubInjectionsEnabled,\nExternal/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence.",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T32",
@@ -1076,17 +708,9 @@
       "id": "fire_stamping",
       "what": "Available marked wild giants converge on an open-fire cluster and stamp nearby open fire/burning things. Roofed/enclosed fires and fueled-fire building overlays are distinct. This is blaze targeting, not maker pursuit.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:128",
-        "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:220",
-        "design/concepts/LeaningScrub/record.json"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:128\nsrc/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:220\ndesign/concepts/LeaningScrub/record.json",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:35: public class RM_FireStamperExtension : DefModExtension",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:106: public static bool fireStampEnabled = true;",
-        "External/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence."
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:35: public class RM_FireStamperExtension : DefModExtension\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:106: public static bool fireStampEnabled = true;\nExternal/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence.",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T33",
@@ -1098,17 +722,9 @@
       "id": "calling_pyre",
       "what": "Calling-pyre defines forbidden, last-rite and venerated beliefs, meme eligibility, ritual behavior/outcome, field fires and arriving marked herd with rage/aftermath.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml",
-        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:141",
-        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml\nsrc/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:141\nsrc/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:192",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:33: public static class RM_CallingPyreDefOf",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:115: public static bool callingPyreEnabled = true;",
-        "src/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml:4: RM_CallingPyre.xml          LEANINGSCRUB_MECHANICS_BUILD_1 part 5, second half"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:33: public static class RM_CallingPyreDefOf\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:115: public static bool callingPyreEnabled = true;\nsrc/RimMandrake/LeaningScrub/Defs/Ideology/RM_CallingPyre.xml:4: RM_CallingPyre.xml          LEANINGSCRUB_MECHANICS_BUILD_1 part 5, second half",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T34",
@@ -1119,21 +735,9 @@
       "id": "save_aliases",
       "what": "Absorbed non-franchise fauna/products/eggs and old SWB names retain def aliases owned by EnvironmentalHazards alias engine.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/Bones/About/About.xml:30: 4. Save back-compat (RM_DefAliasDef): the donor's BoneItem, BoneChina, Bonecrete and BonePlastic load as",
-        "src/RimMandrake/Bones/Defs/Misc/RM_BonesRetire_Aliases.xml:4: as ours through RM_DefAliasDef (EnvironmentalHazards, RM_DefAliases.cs; it applies only when the old name",
-        "src/RimMandrake/LeaningScrub/Defs/Misc/RM_Chikka_Aliases.xml:5: RM_DefAliasDef (src/RimMandrake/EnvironmentalHazards/Source/RM_DefAliases.cs; EnvironmentalHazards is a dependency",
-        "src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml:5: or meat) loads it as the RM_ def through RM_DefAliasDef",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_DefAliases.cs:57: public class RM_DefAliasDef : Def",
-        "src/RimMandrake/EnvironmentalHazards/Defs/Misc/RM_BiomeTierCleanup_Aliases.xml:5: card 2026-10-02 in the item). A save holding an old name loads it as the RM_ def through RM_DefAliasDef",
-        "src/RimMandrake/EnvironmentalHazards/Defs/Misc/RM_PlantTierReconcile_Aliases.xml:5: on a map, a harvested item) loads it as the RM_ def through RM_DefAliasDef (RM_DefAliases.cs, this mod).",
-        "src/RimMandrake/EnvironmentalHazards/Defs/Misc/RM_MaterialMerges_Aliases.xml:4: material def loads as its survivor through RM_DefAliasDef (RM_DefAliases.cs). An alias applies only when the"
-      ],
+      "called_by": "src/RimMandrake/Bones/About/About.xml:30: 4. Save back-compat (RM_DefAliasDef): the donor's BoneItem, BoneChina, Bonecrete and BonePlastic load as\nsrc/RimMandrake/Bones/Defs/Misc/RM_BonesRetire_Aliases.xml:4: as ours through RM_DefAliasDef (EnvironmentalHazards, RM_DefAliases.cs; it applies only when the old name\nsrc/RimMandrake/LeaningScrub/Defs/Misc/RM_Chikka_Aliases.xml:5: RM_DefAliasDef (src/RimMandrake/EnvironmentalHazards/Source/RM_DefAliases.cs; EnvironmentalHazards is a dependency\nsrc/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml:5: or meat) loads it as the RM_ def through RM_DefAliasDef\nsrc/RimMandrake/EnvironmentalHazards/Source/RM_DefAliases.cs:57: public class RM_DefAliasDef : Def\nsrc/RimMandrake/EnvironmentalHazards/Defs/Misc/RM_BiomeTierCleanup_Aliases.xml:5: card 2026-10-02 in the item). A save holding an old name loads it as the RM_ def through RM_DefAliasDef\nsrc/RimMandrake/EnvironmentalHazards/Defs/Misc/RM_PlantTierReconcile_Aliases.xml:5: on a map, a harvested item) loads it as the RM_ def through RM_DefAliasDef (RM_DefAliases.cs, this mod).\nsrc/RimMandrake/EnvironmentalHazards/Defs/Misc/RM_MaterialMerges_Aliases.xml:4: material def loads as its survivor through RM_DefAliasDef (RM_DefAliases.cs). An alias applies only when the",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T35",
@@ -1144,13 +748,9 @@
       "id": "acoustic_payload",
       "what": "Optional Acoustic Scanner integration supplies biome-specific readings for buried creatures, sweetline, hollow vine and hidden caves.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml:20: <li Class=\"RimMandrake.AcousticScanner.RM_AcousticPayloadExtension\">"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Patches/RM_AcousticPayload_LeaningScrub.xml:20: <li Class=\"RimMandrake.AcousticScanner.RM_AcousticPayloadExtension\">",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T36",
@@ -1161,16 +761,9 @@
       "id": "proximity_hatch",
       "what": "Optional ProximityHatch engine integration adds a near-pawn trigger to Protovermes fertilized egg, retaining vanilla timer hatching when integration is absent.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml:6: Moved here (batch 3) from src/RimStarWars/SWBestiary/Patches/ProximityHatch/RSW_ProtovermesEgg_ProximityHatch.xml.",
-        "src/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml:60: <li><from>RSW_ProtovermesEggFertilized</from><to>RM_ProtovermesEggFertilized</to><defType>ThingDef</defType></li>",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Protovermes.xml:70: <eggFertilizedDef>RM_ProtovermesEggFertilized</eggFertilizedDef>",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml:212: <defName>RM_ProtovermesEggFertilized</defName>"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Patches/ProximityHatch/RM_ProtovermesEgg_ProximityHatch.xml:6: Moved here (batch 3) from src/RimStarWars/SWBestiary/Patches/ProximityHatch/RSW_ProtovermesEgg_ProximityHatch.xml.\nsrc/RimMandrake/LeaningScrub/Defs/Misc/RM_SWBRehome_Aliases.xml:60: <li><from>RSW_ProtovermesEggFertilized</from><to>RM_ProtovermesEggFertilized</to><defType>ThingDef</defType></li>\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Absorbed_Protovermes.xml:70: <eggFertilizedDef>RM_ProtovermesEggFertilized</eggFertilizedDef>\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_Absorbed_Eggs.xml:212: <defName>RM_ProtovermesEggFertilized</defName>",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T37",
@@ -1181,39 +774,9 @@
       "id": "settings",
       "what": "ModSettings saves per-feature switches/tuning with shared groups and current/new-map scopes. Writing settings reapplies dripping harvest. DEFAULTS in validation omits shirrelGlideEnabled, so it is not a complete settings census.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:165",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:804",
-        "src/RimMandrake/LeaningScrub/validation.py:58"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:165\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:804\nsrc/RimMandrake/LeaningScrub/validation.py:58",
       "proven": "stale",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:46: return RM_LeaningScrubSettings.modEnabled && feature;",
-        "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:88: if (now % StampInterval != 0 || !RM_WindCalendar.On(RM_LeaningScrubSettings.fireStampEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:83: && RM_WindCalendar.On(RM_LeaningScrubSettings.swornSparesMarkedEnabled)",
-        "src/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:67: RM_LeaningScrubSettings.rippleMaxBodySize, gale, still,",
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:158: if (map == null || !RM_WindCalendar.On(RM_LeaningScrubSettings.leanEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:101: if (!RM_WindCalendar.On(RM_LeaningScrubSettings.runwayBloomEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs:67: float amount = Props.damageAmount * RM_LeaningScrubSettings.twitcherLashDamageFactor;",
-        "src/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:56: bool on = RM_WindCalendar.On(RM_LeaningScrubSettings.stallHuntEnabled);",
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:62: if (RM_WindCalendar.On(RM_LeaningScrubSettings.scrubInjectionsEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:74: if (parent.Map == null || !RM_WindCalendar.On(RM_LeaningScrubSettings.stranglerEnabled)) return;",
-        "src/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs:97: if (!RM_LeaningScrubSettings.leanPlantsEnabled || !RM_LeaningScrubSettings.leanEnabled",
-        "src/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:92: public static bool DenOn => RM_WindCalendar.On(RM_LeaningScrubSettings.thornholdDenEnabled);",
-        "src/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:71: return RM_PyreKernel.Gate(RM_WindCalendar.On(RM_LeaningScrubSettings.callingPyreEnabled), Belief(ideo), hostiles);",
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:56: bool on = RM_WindCalendar.On(RM_LeaningScrubSettings.drippingRegrowEnabled);",
-        "src/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs:116: LastDrew = RM_WindCalendar.On(RM_LeaningScrubSettings.galeDustOverlayEnabled);",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:39: RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineStationsEnabled)",
-        "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:83: public static bool FeatureOn => RM_WindCalendar.On(RM_LeaningScrubSettings.shirrelGlideEnabled);",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:31: if (!RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineFeltComfortEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:28: public class RM_LeaningScrubSettings : ModSettings",
-        "src/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs:160: float range = RM_LeaningScrubSettings.leanScentRange;",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:87: private static bool Enabled => RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineStationsEnabled);",
-        "src/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:40: && !RM_WindCalendar.On(RM_LeaningScrubSettings.visslerArmFoodEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:44: public static int ClaimTicks => RM_SmotherKernel.ClaimTicks(RM_LeaningScrubSettings.smotherDays);",
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:127: if (ext?.thicketDef == null || !RM_WindCalendar.On(RM_LeaningScrubSettings.venomvineIslandsEnabled))",
-        "src/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs:35: if (treeDef == null || !RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineStationsEnabled))"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs:46: return RM_LeaningScrubSettings.modEnabled && feature;\nsrc/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:88: if (now % StampInterval != 0 || !RM_WindCalendar.On(RM_LeaningScrubSettings.fireStampEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:83: && RM_WindCalendar.On(RM_LeaningScrubSettings.swornSparesMarkedEnabled)\nsrc/RimMandrake/LeaningScrub/Source/RM_Ripple.cs:67: RM_LeaningScrubSettings.rippleMaxBodySize, gale, still,\nsrc/RimMandrake/LeaningScrub/Source/RM_TheLean.cs:158: if (map == null || !RM_WindCalendar.On(RM_LeaningScrubSettings.leanEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:101: if (!RM_WindCalendar.On(RM_LeaningScrubSettings.runwayBloomEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_TwitcherLash.cs:67: float amount = Props.damageAmount * RM_LeaningScrubSettings.twitcherLashDamageFactor;\nsrc/RimMandrake/LeaningScrub/Source/RM_StallHunt.cs:56: bool on = RM_WindCalendar.On(RM_LeaningScrubSettings.stallHuntEnabled);\nsrc/RimMandrake/LeaningScrub/Source/RM_ScrubInjections.cs:62: if (RM_WindCalendar.On(RM_LeaningScrubSettings.scrubInjectionsEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_VenomvineFourForms.cs:74: if (parent.Map == null || !RM_WindCalendar.On(RM_LeaningScrubSettings.stranglerEnabled)) return;\nsrc/RimMandrake/LeaningScrub/Source/RM_PlantLean.cs:97: if (!RM_LeaningScrubSettings.leanPlantsEnabled || !RM_LeaningScrubSettings.leanEnabled\nsrc/RimMandrake/LeaningScrub/Source/RM_ScrubDens.cs:92: public static bool DenOn => RM_WindCalendar.On(RM_LeaningScrubSettings.thornholdDenEnabled);\nsrc/RimMandrake/LeaningScrub/Source/RM_CallingPyre.cs:71: return RM_PyreKernel.Gate(RM_WindCalendar.On(RM_LeaningScrubSettings.callingPyreEnabled), Belief(ideo), hostiles);\nsrc/RimMandrake/LeaningScrub/Source/RM_VenomvineRooms.cs:56: bool on = RM_WindCalendar.On(RM_LeaningScrubSettings.drippingRegrowEnabled);\nsrc/RimMandrake/LeaningScrub/Source/RM_WeatherOverlay_GaleDust.cs:116: LastDrew = RM_WindCalendar.On(RM_LeaningScrubSettings.galeDustOverlayEnabled);\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:39: RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineStationsEnabled)\nsrc/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:83: public static bool FeatureOn => RM_WindCalendar.On(RM_LeaningScrubSettings.shirrelGlideEnabled);\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineFelt.cs:31: if (!RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineFeltComfortEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_LeaningScrubMod.cs:28: public class RM_LeaningScrubSettings : ModSettings\nsrc/RimMandrake/LeaningScrub/Source/RM_TheLeanProof.cs:160: float range = RM_LeaningScrubSettings.leanScentRange;\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs:87: private static bool Enabled => RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineStationsEnabled);\nsrc/RimMandrake/LeaningScrub/Source/RM_VisslerArm.cs:40: && !RM_WindCalendar.On(RM_LeaningScrubSettings.visslerArmFoodEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_SmotherCraft.cs:44: public static int ClaimTicks => RM_SmotherKernel.ClaimTicks(RM_LeaningScrubSettings.smotherDays);\nsrc/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:127: if (ext?.thicketDef == null || !RM_WindCalendar.On(RM_LeaningScrubSettings.venomvineIslandsEnabled))\nsrc/RimMandrake/LeaningScrub/Source/RM_GenStep_SweetlineTrees.cs:35: if (treeDef == null || !RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineStationsEnabled))",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "land, life and signature: standing settings floor",
       "ticket": "",
@@ -1224,15 +787,9 @@
       "id": "dependable_home_routes",
       "what": "Owner approved dependable home and a few maintained routes while farther journeys need preparation. Slow creep guards some developed ground; the whole upkeep experience is unmeasured and walking-vine protection differs.",
       "built": "unknown",
-      "evidence": [
-        "OWNER:1794327080747931066",
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:94",
-        "src/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:918"
-      ],
+      "evidence": "OWNER:1794327080747931066\nsrc/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:94\nsrc/RimMandrake/LeaningScrub/Source/RM_VenomvineForms.cs:918",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; OWNER:1794327080747931066"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; OWNER:1794327080747931066",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "TROUTE",
@@ -1243,15 +800,9 @@
       "id": "ordered_crossing_policy",
       "what": "Recorded owner answer says routine hauling uses clear detour and vine crossing is ordered expedition only. Shared hooks have body-size/cost policy, no explicit routine-vs-expedition distinction; a cheaper detour chosen once is insufficient proof.",
       "built": "unknown",
-      "evidence": [
-        "OWNER:1794334503877366549",
-        "design/RimMandrake/designer_codex_2026-11-09/LeaningScrub/ANSWERS_OWNER.md:4",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_BodySizeBarrierPatches.cs:37"
-      ],
+      "evidence": "OWNER:1794334503877366549\ndesign/RimMandrake/designer_codex_2026-11-09/LeaningScrub/ANSWERS_OWNER.md:4\nsrc/RimMandrake/EnvironmentalHazards/Source/RM_BodySizeBarrierPatches.cs:37",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; OWNER:1794334503877366549"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; OWNER:1794334503877366549",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "TROUTE",
@@ -1262,16 +813,9 @@
       "id": "fire_maker_witness_trail",
       "what": "Owner requests robust shared witness/violator tracking reused by ownership. Current stamping targets blaze. RimProperty witness utility is for takings and excludes non-humanlikes; it is a neighbor to adapt, not a ready giant-attribution system.",
       "built": "unknown",
-      "evidence": [
-        "OWNER:1794334503877366549",
-        "src/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:49",
-        "design/concepts/LeaningScrub/record.json"
-      ],
+      "evidence": "OWNER:1794334503877366549\nsrc/RimMandrake/LeaningScrub/Source/RM_FireStamp.cs:49\ndesign/concepts/LeaningScrub/record.json",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; OWNER:1794334503877366549",
-        "External/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence."
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; OWNER:1794334503877366549\nExternal/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence.",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T38",
@@ -1283,15 +827,9 @@
       "id": "premium_dead_cane",
       "what": "The item promises long/hot finest fuel. Wood-filter acceptance is present, but no separate premium duration/heat mechanism was found; comparative useful fuel output remains unmeasured.",
       "built": "unknown",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75",
-        "src/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml",
-        "CONDUCTOR:1794794271528276351"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75\nsrc/RimMandrake/LeaningScrub/Patches/RM_DeadVenomvine_Fuel.xml\nCONDUCTOR:1794794271528276351",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Items/RM_SmotherCraft.xml:75",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "signature: banked fuel claim",
       "ticket": "TFUEL",
@@ -1302,15 +840,9 @@
       "id": "shokka_ambush",
       "what": "Shokka flat-hold ambush at fuzz-edge crossings remains explicitly stubbed.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:243",
-        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
-        "CONDUCTOR:1794794271528276351"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:243\nITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS\nCONDUCTOR:1794794271528276351",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:243"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:243",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T39",
@@ -1321,15 +853,9 @@
       "id": "fuzzviper_ambush",
       "what": "Fuzzviper run-wall ambush remains explicitly stubbed.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:444",
-        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
-        "CONDUCTOR:1794794271528276351"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:444\nITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS\nCONDUCTOR:1794794271528276351",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:444"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:444",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T40",
@@ -1340,15 +866,9 @@
       "id": "ribbonwhip_canopy_route",
       "what": "Ribbonwhip canopy-only travel remains explicitly stubbed despite built ripple and sway.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:642",
-        "ITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS",
-        "CONDUCTOR:1794794271528276351"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:642\nITEM:LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS\nCONDUCTOR:1794794271528276351",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:642"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:642",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T41",
@@ -1359,14 +879,9 @@
       "id": "pillowmoss_wet_spot",
       "what": "Pillowmoss promised wet ground/fog condensation is stubbed.",
       "built": "unknown",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
-        "CONDUCTOR:1794794271528276351"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11\nCONDUCTOR:1794794271528276351",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T42",
@@ -1377,14 +892,9 @@
       "id": "tanglefuzz_den_ecology",
       "what": "Tanglefuzz promised den-anchor ecology is stubbed.",
       "built": "unknown",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
-        "CONDUCTOR:1794794271528276351"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11\nCONDUCTOR:1794794271528276351",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T43",
@@ -1395,14 +905,9 @@
       "id": "cruststar_grazing_ecology",
       "what": "Cruststar promised crustweevil grazing relationship is stubbed; ordinary ingestibility is not a specialized ecology proof.",
       "built": "unknown",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
-        "CONDUCTOR:1794794271528276351"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11\nCONDUCTOR:1794794271528276351",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_LeaningScrubFuzzFlora.xml:11",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T44",
@@ -1413,15 +918,9 @@
       "id": "vissler_finite_arm_regrowth",
       "what": "Seasonal arm-regrowth description exceeds bloom spawning a new item; finite anatomical loss/regrowth is not established.",
       "built": "unknown",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:734",
-        "src/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:217",
-        "CONDUCTOR:1794794271528276351"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:734\nsrc/RimMandrake/LeaningScrub/Source/RM_RunwayBloom.cs:217\nCONDUCTOR:1794794271528276351",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:734"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:734",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "T45",
@@ -1432,15 +931,9 @@
       "id": "bark_wardens_removed",
       "what": "Historical guardian/roost/rage capability was cut. Tree, free shed and scratching remain. Current source and tree comp list confirm absence; no restoration is proposed.",
       "built": "absent",
-      "evidence": [
-        "design/RimMandrake/fluff_cuts_2026-10-23.md:86",
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:33",
-        "ITEM:LEANINGSCRUB_SWEETLINE_GUARDIAN_1"
-      ],
+      "evidence": "design/RimMandrake/fluff_cuts_2026-10-23.md:86\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml:33\nITEM:LEANINGSCRUB_SWEETLINE_GUARDIAN_1",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; design/RimMandrake/fluff_cuts_2026-10-23.md:86"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; design/RimMandrake/fluff_cuts_2026-10-23.md:86",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "",
@@ -1451,14 +944,9 @@
       "id": "farmer_camps_removed",
       "what": "Farmer camps are disabled by unset faction; banned CombHolds def remains as loadable save tombstone. Scavenger camp integration survives.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:6",
-        "src/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml:25"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:6\nsrc/RimMandrake/LeaningScrub/Defs/FactionDefs/RM_CombHolds.xml:25",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:6"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; src/RimMandrake/LeaningScrub/Defs/MapGeneration/RM_ScrubInjections_GenStep.xml:6",
       "serves": "secondary interaction",
       "needed_by": "",
       "ticket": "",
@@ -1469,14 +957,9 @@
       "id": "sweetline_scratching_healing",
       "what": "Owner requires a health/healing hediff from sweetline scratching that removes parasites and disease over time. Read Rub and its selection gates; no healing call found there. Full implementation ownership and disease eligibility remain Stage 3 work; no defName or tuning invented.",
       "built": "unknown",
-      "evidence": [
-        "OWNER:1794835478275153823",
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:163"
-      ],
+      "evidence": "OWNER:1794835478275153823\nsrc/RimMandrake/LeaningScrub/Source/RM_SweetlineScratching.cs:163",
       "proven": "missing",
-      "called_by": [
-        "No separate production call found in source search for this promised behavior; OWNER:1794835478275153823"
-      ],
+      "called_by": "No separate production call found in source search for this promised behavior; OWNER:1794835478275153823",
       "serves": "ordinary land, ordinary life or route/claim signature",
       "needed_by": "",
       "ticket": "TCARE",
@@ -1487,13 +970,9 @@
       "id": "sweetline_history",
       "what": "Dated event log and History gizmo",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Source/RM_SweetlineStation.cs",
       "serves": "next_version",
       "fate": "next_version",
       "why": "delegated: A diary is extra lore/UI; the current location label, actual timers and bank inspect remain readable without it.",
@@ -1504,14 +983,9 @@
       "id": "ordinary_wind_power",
       "what": "Vanilla turbines power real colony consumers from the retained wind calendar",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs",
-        "src/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Source/RM_WindCalendar.cs\nsrc/RimMandrake/LeaningScrub/Defs/WeatherDefs/RM_LeaningScrub_Weather.xml",
       "proven": "missing",
-      "called_by": [
-        "Vanilla CompPowerPlantWind consumes WindManager; RM_WindCalendarPatches.WindOutput_Postfix must return the unmodified result with its deferred switch off."
-      ],
+      "called_by": "Vanilla CompPowerPlantWind consumes WindManager; RM_WindCalendarPatches.WindOutput_Postfix must return the unmodified result with its deferred switch off.",
       "serves": "land",
       "fate": "land",
       "why": "delegated: Without actual usable electricity, the approved wind-powered-home root is only a weather label.",
@@ -1522,15 +996,9 @@
       "id": "terrain_light_constraints",
       "what": "Crusted buildable ground, spaced low cover, fog-only weather and fixed geometric sun",
       "built": "unknown",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml",
-        "design/Jawa/worldbuilding/biomes/arid_shrubland.md"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml\ndesign/Jawa/worldbuilding/biomes/arid_shrubland.md",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml",
-        "design/Jawa/worldbuilding/biomes/arid_shrubland.md"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Defs/BiomeDefs/RM_LeaningScrub_Biome.xml\ndesign/Jawa/worldbuilding/biomes/arid_shrubland.md",
       "serves": "land",
       "fate": "land",
       "why": "delegated: Deleting the physical bans produces a different place, open sand and naturally igniting storms instead of this plain.",
@@ -1541,15 +1009,9 @@
       "id": "basic_flyer_locomotion",
       "what": "All fiction flyers on the effective roster launch, travel and land in real flight",
       "built": "unknown",
-      "evidence": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
-        "skills/rimworld-modding/references/flight.md"
-      ],
+      "evidence": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml\nskills/rimworld-modding/references/flight.md",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml",
-        "skills/rimworld-modding/references/flight.md"
-      ],
+      "called_by": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml\nskills/rimworld-modding/references/flight.md",
       "serves": "life",
       "fate": "life",
       "why": "delegated: The standing flyer ruling applies even after crown and bloom move; ordinary AI cannot depend on those triggers.",
@@ -1560,15 +1022,9 @@
       "id": "native_giant_presence",
       "what": "Keep existing giant species and authorized franchise-free thunderstep rehome independently of fire jobs",
       "built": "unknown",
-      "evidence": [
-        "OWNER:1792856115688559019",
-        "design/concepts/LeaningScrub/record.json"
-      ],
+      "evidence": "OWNER:1792856115688559019\ndesign/concepts/LeaningScrub/record.json",
       "proven": "missing",
-      "called_by": [
-        "OWNER:1792856115688559019",
-        "External/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence."
-      ],
+      "called_by": "OWNER:1792856115688559019\nExternal/campaign binding is recorded historically but cannot be inspected here; existing local calls/bindings remain the only present source evidence.",
       "serves": "life",
       "fate": "life",
       "why": "delegated: Removing stamping is not roster eviction; no new creature is substituted for an existing authorized invented species.",
@@ -1580,15 +1036,9 @@
       "id": "engine_creaturebehaviors",
       "what": "CreatureBehaviors: geometric sun/heading, flight helpers, and existing native opt-ins",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_PinnedSun.cs",
-        "src/RimMandrake/CreatureBehaviors/Source/RM_CompHomeTether.cs"
-      ],
+      "evidence": "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_PinnedSun.cs\nsrc/RimMandrake/CreatureBehaviors/Source/RM_CompHomeTether.cs",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatExtension.cs",
-        "src/RimMandrake/CreatureBehaviors/Source/RM_CompHomeTether.cs"
-      ],
+      "called_by": "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatExtension.cs\nsrc/RimMandrake/CreatureBehaviors/Source/RM_CompHomeTether.cs",
       "serves": "dependency",
       "fate": "dependency",
       "why": "delegated: Use shared geometry, locomotion and permitted animal behaviors; no private sun or new generic AI engine.",
@@ -1599,13 +1049,9 @@
       "id": "engine_growth",
       "what": "ExplosiveGrowth: normal growth and a single exclusion registry for all kept vines",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowthRegistry.cs"
-      ],
+      "evidence": "src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowthRegistry.cs",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowthRegistry.cs"
-      ],
+      "called_by": "src/RimMandrake/ExplosiveGrowth/Source/RM_ExplosiveGrowthRegistry.cs",
       "serves": "dependency",
       "fate": "dependency",
       "why": "delegated: Keep ordinary growth active while the complete retained vine set has only its own creep clock.",
@@ -1616,13 +1062,9 @@
       "id": "engine_wreckage",
       "what": "Wreckage: ordinary salvage objects and custody when present in the composed ecosystem",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Wreckage/Source/RM_CompSalvageLoot.cs"
-      ],
+      "evidence": "src/RimMandrake/Wreckage/Source/RM_CompSalvageLoot.cs",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/Wreckage/Source/RM_CompSalvageLoot.cs"
-      ],
+      "called_by": "src/RimMandrake/Wreckage/Source/RM_CompSalvageLoot.cs",
       "serves": "dependency",
       "fate": "dependency",
       "why": "delegated: No first-version feature requires a special wreck injection; ordinary engine salvage is not a mod extra and must never pay a fuel claim twice.",
@@ -1633,13 +1075,9 @@
       "id": "engine_bones",
       "what": "Bones: ordinary corpse/butchery products when that engine is loaded",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Bones/Source/RM_Patch_ButcherBones.cs"
-      ],
+      "evidence": "src/RimMandrake/Bones/Source/RM_Patch_ButcherBones.cs",
       "proven": "missing",
-      "called_by": [
-        "src/RimMandrake/Bones/Source/RM_Patch_ButcherBones.cs"
-      ],
+      "called_by": "src/RimMandrake/Bones/Source/RM_Patch_ButcherBones.cs",
       "serves": "dependency",
       "fate": "dependency",
       "why": "delegated: No special yield or new bone behavior; shared corpse products remain normal life and cannot substitute for lost bodies.",

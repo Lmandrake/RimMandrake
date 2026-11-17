@@ -4,7 +4,7 @@
       "id": "land_read",
       "says": "At colony zoom and sound, the player sees a crusted plain of low leaning fuzz, taller vine obstacles and occasional ancient tree landmarks, and can distinguish ordinary wind, a quiet Stall and a driven Gale.",
       "meant": {
-        "intent": "This is the actual place, not just an arid biome label. Knee-height is a relative canopy read: people stand above it, small animals occupy it, vines interrupt human sightlines and trees rise beyond both. Art quality/variant counts are not acceptance gates. Reject inference: losing these contrasts loses the compose sentence and OWNER integral-vine/wind directions. First-version: land.",
+        "intent": "This is the actual place, not just an arid biome label. Knee-height is a relative canopy read: people stand above it, small animals occupy it, mature vine stands tower over both at colony zoom and trees rise beyond both. Art quality/variant counts are not acceptance gates. Reject inference: losing these contrasts loses the compose sentence and OWNER integral-vine/wind directions. First-version: land.",
         "source": "OWNER:1792167263801507527; OWNER:1792525009391726212; biome_mod_architecture.md §7 Q2; arid_shrubland.md §§5–6,9; delegated: current cleanse land/life limit.",
         "figurative": [
           {
@@ -20,7 +20,7 @@
         ]
       },
       "accept": [
-        "A person stands above the moving cover; a small native disappears behind ordinary foliage rather than becoming magically invisible; the vine mass interrupts the person’s view.",
+        "A small native’s body sits within the height of the moving fuzz while a standing person clears it. A mature vine stand towers over both at colony zoom.",
         "Calm makes the wind bed subside; a Gale drives dust along the plants’ shared lean while the map and route warnings remain readable. A tree-free map still reads as Scrub."
       ],
       "reject": [
@@ -91,7 +91,13 @@
       "meant": {
         "intent": "Abundant means route-scale obstacles encountered across travel directions, not a quota of plants or a ring-wall around the start. Varied means decision-relevant poisonous and blunt passage/harvest forms, not retaining every enriched form. Reject inference: without this, the integral vine disappears into decorative scatter. First-version: signature.",
         "source": "OWNER:1792167263801507527; OWNER:1794327080747931066; design/RimMandrake/venomvine_design_2026-10-16.md §10; delegated: this cleansing mandate selects thicket, Dripping and Hollow for the current version.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "repeatedly",
+            "stands_for": "vine stands pose route choices across the travel directions and topology regimes declared in range, with open stretches between them and variable encounter intervals",
+            "accept": "A journey crosses a long open stretch before a connected stand makes the player choose a detour or prepared entry; other travel directions also meet stands, although an individual short trip can stay entirely clear."
+          }
+        ]
       },
       "accept": [
         "Several natural journeys require a choice between a clear detour and a visible stand; an actual start supports shelter, work and edge access without threading poison.",
@@ -247,7 +253,13 @@
       "meant": {
         "intent": "This is ordinary native grooming/forage, not a health aura, paid ritual, visitor event or new medicine industry. Coated eligibility is source-backed by CompShearable; sick animals without coats retain ordinary treatment. Reject: OWNER explicitly added healing to explain rubbing; a wool-only animation contradicts that explanation. First-version life and readable supply to the signature blanket.",
         "source": "OWNER:1794835478275153823; RM_SweetlineScratching.cs WhyNot/Rub; sweetline_guardian_spec.md retained tree/wool directions; delegated: finite eligibility, disease adapters and containment below.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "free",
+            "stands_for": "unroped and able to reach a legal tree touch-cell within pen and allowed-area constraints, with coat readiness and eligibility determined by care_transaction",
+            "accept": "A penned coated animal can finish rubbing at a tree inside its pen when a legal path exists. Ownership and fencing do not disqualify it."
+          }
+        ]
       },
       "accept": [
         "A ready, unrestrained coated animal chooses a reachable tree, completes its rub, sheds coat and subsequently shows improving eligible disease severity. Harvesting the bark delivers stored felt while loose shedding continues after an earlier harvest.",
@@ -328,6 +340,16 @@
             "word": "error storm",
             "stands_for": "repeated mod-related runtime exceptions or warnings disrupting play, not weather",
             "accept": "The sky stays calm while repeated job exceptions prevent work; this is still an error storm."
+          },
+          {
+            "word": "runaway",
+            "stands_for": "vine expansion that defeats usable maintained home routes or the declared protected-ground and cap policies, as assessed across the full run",
+            "accept": "Vines advance through wild margins until their cap stops insertion while developed ground and maintained routes remain usable; continued local growth is acceptable."
+          },
+          {
+            "word": "frozen",
+            "stands_for": "ordinary work makes no progress because mod-caused routing or job retries cannot recover through the supported actions",
+            "accept": "A pawn visibly waits when a route closes, then resumes the original ordinary task after a safe detour is cleared. The temporary wait is acceptable."
           }
         ]
       },
