@@ -304,16 +304,17 @@ def expiry(plan: dict, name: str, r, now: float):
     return rs if w is None else rs - WEEK + w * 3600
 
 
-def lines(meter: dict, plan: dict, now: float) -> tuple[dict, dict]:
+def lines(meter: dict, plan: dict, now: float, out=()) -> tuple[dict, dict]:
     """-> ({name: line}, {name: eligible}). An account's line is its leave_pct_left when it has one; else the
     switch-away floor while some OTHER account has budget above its wait floor to take over, else the wait floor
-    (we idle on it until a reset). Eligible = MEASURED, fresh, in its window, above its line."""
+    (we idle on it until a reset). Eligible = MEASURED, fresh, in its window, above its line, and not in `out` (the
+    accounts a transition marker keeps out: they can take over from nobody, so they never lower another's line)."""
     fl = plan["floors"]
 
     def ok(n, ln):
         r = meter.get(n)
-        return (usable(r) and not reset_passed(r, now) and in_window(plan, n, r, now, plan.get("window_margin_min", 0) * 60)
-                and r["week_pct_left"] > ln)
+        return (n not in out and usable(r) and not reset_passed(r, now)
+                and in_window(plan, n, r, now, plan.get("window_margin_min", 0) * 60) and r["week_pct_left"] > ln)
 
     strict = {}
     for n in plan["order"]:
@@ -393,6 +394,21 @@ def manual_switch(sw, markers: dict, live):
     return sw
 
 
+def marker_lifted(raw: dict, plan: dict, name, m: dict, meter: dict) -> bool:
+    """A marker keeps an account out at the line it was left at. A dated exception standing now that gives it a LOWER
+    line opened budget the marker never saw (owner, by card 2026-11-17: steven left at 52% on 11-12, then 'switch to
+    Steve' down to 35%), so the marker stops keeping it out while that exception stands; it binds again after. The
+    line left at is the marker's own `line`, else the leave line of the plan in force when it was written."""
+    cfg = plan["accounts"].get(name) or {}
+    if not plan.get("_exception") or not str(cfg.get("_leave_pct_left", "")).startswith("exception"):
+        return False
+    then = m.get("line")
+    if not isinstance(then, (int, float)) or isinstance(then, bool):
+        t = epoch(m.get("at"))
+        then = None if t is None else (at(raw, t, meter)["accounts"].get(name) or {}).get("leave_pct_left")
+    return then is not None and cfg["leave_pct_left"] < then
+
+
 # ------------------------------------------------------------------ the decision (pure)
 def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, polled: bool = False,
            manual=None) -> dict:
@@ -402,14 +418,16 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         return {"do": "skip", "why": "live account unknown (claude-account --json status failed)"}
     raw, plan = plan, at(plan, now, meter)  # the plan in force now: a dated exception, when one stands
     order, fr = plan["order"], plan["fresh"]
-    line, elig = lines(meter, plan, now)
+    kept_out = set()
     for m in markers.values():  # an account we left at its line is no target again before its reset: no flapping
         f = m.get("from")       # when its meter recovers and re-reads the same last 1%
-        rs = next_reset(meter.get(f) or {}, now) if f in elig and f != live else None
+        rs = next_reset(meter.get(f) or {}, now) if f in order and f != live else None
         # a pending marker whose target is live now is a switch that landed before its pass could record it
         landed = m.get("phase") == "done" or (m.get("phase") == "pending" and m.get("to") == live)
-        if landed and m.get("under") and rs is not None and (epoch(m.get("at")) or 0) > rs - WEEK:
-            elig[f] = False
+        if (landed and m.get("under") and rs is not None and (epoch(m.get("at")) or 0) > rs - WEEK
+                and not marker_lifted(raw, plan, f, m, meter)):
+            kept_out.add(f)
+    line, elig = lines(meter, plan, now, kept_out)
     lr = meter.get(live) or {}
     pl = left(plan, lr, now)
     if ((state.get("stopped") or {}).get("account") == live and live in elig and pl is not None
@@ -952,13 +970,14 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
             return ["fleet-stop"]
         return same
     if d["do"] == "switch":
-        write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under")})
+        write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under"),
+                                "line": d.get("line")})
         write_notice({**d, "do": "soft"}, now)
         res = armed_call(st, ["use", d["to"]], still)
         ok = (res.get("use") or (1,))[0] == 0
         lapsed = (res.get("use") or (1,))[0] is None and "lapsed" in str(res.get("use"))
         write_marker(d["key"], {"phase": "done" if ok else "lapsed" if lapsed else "failed", "at": iso(now), "from": live, "to": d["to"],
-                                "under": d.get("under"), "result": res})
+                                "under": d.get("under"), "line": d.get("line"), "result": res})
         if ok:
             state.pop("stopped", None)
             save_state(state)

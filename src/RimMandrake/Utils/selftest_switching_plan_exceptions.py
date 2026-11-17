@@ -133,6 +133,39 @@ def main():
     check(any("T_EXC" in x for x in d.get("exception_refused") or []), f"a refused exception is named in every "
                                                                         f"decision: {d.get('exception_refused')}")
 
+    # ---- a done/under marker for A (left at its standing 52% line before the exception) does not hide the budget the
+    # exception opened (RIMMANDRAKE_FIX_SWITCHING_PLAN_EXCEPTION_MARKERS: live 2026-11-17, the engine picked C at 2%)
+    def mk(frm, to, at_h, **kw):
+        return {"k": {"at": SP.iso(NOW + at_h * H), "from": frm, "to": to, "phase": "done", "under": True, **kw}}
+    left_a = mk(A, B, -118)  # a legacy marker: no line recorded (the live one, 11-12 13:50, ~118 h before the case)
+    d = SP.decide(m0, B, NOW, P, {}, left_a, polled=True)
+    check(d["do"] == "switch" and d["to"] == A, f"marker (no line) + exception: {B} at 0% switches to {A}, never {C} "
+                                                f"({d['do']} {d.get('to')}: {d['why']})")
+    d = SP.decide(m0, B, NOW, P, {}, mk(A, B, -118, line=52), polled=True)
+    check(d["do"] == "switch" and d["to"] == A, f"marker (line 52) + exception line 35: switch to {A} ({d['do']} {d.get('to')})")
+    for p in (35, 34):
+        d = SP.decide({**m0, A: R(p, 27.3)}, B, NOW, P, {}, left_a, polled=True)
+        check(d["do"] == "stop" and d.get("to") is None, f"marker + exception, {A} at {p}% (<= 35): IDLE, {C} at 2% "
+                                                         f"never picked ({d['do']} {d.get('to')}: {d['why']})")
+    d = SP.decide({**m0, A: R(36, 27.3)}, A, NOW, P, {}, left_a, polled=True)
+    check(d["do"] == "soft" and d.get("to") is None, f"{A} live at 36% with the marker: burns on, soft ({d['do']} {d.get('to')})")
+    d = SP.decide({**m0, A: R(40, 27.3)}, B, NOW, P, {}, mk(A, B, -5, line=35), polled=True)
+    check(d["do"] == "stop", f"a marker left at the exception's own 35% line still excludes {A} ({d['do']} {d.get('to')})")
+    d = SP.decide({**m0, A: R(40, 27.3)}, B, NOW, P, {}, mk(A, B, -0.5), polled=True)
+    check(d["do"] == "stop", f"a legacy marker written inside the exception reads its line (35): {A} excluded ({d['do']})")
+    # the marker's meaning is unchanged outside the exception: A in its window, left at 52%, re-reads 60%
+    inwin = {A: R(60, 150), B: R(40, 25.3), C: R(30, 28.3)}
+    d = SP.decide(inwin, B, NOW, BASE, {}, mk(A, B, -10), polled=True)
+    check(d["do"] == "normal" and d.get("to") is None, f"standing plan: the marker keeps {A} out ({d['do']} {d.get('to')})")
+    d = SP.decide(inwin, B, NOW, BASE, {}, {}, polled=True)
+    check(d["do"] == "switch" and d["to"] == A, f"control, no marker: {A} in its window is the target ({d['do']} {d.get('to')})")
+    d = SP.decide(inwin, B, NOW + 3 * H, short, {}, mk(A, B, -10), polled=True)
+    check(d["do"] == "normal" and d.get("exception") is None,
+          f"after the exception expires the marker excludes {A} again ({d['do']} {d.get('to')})")
+    # a marker for an account whose line the exception does not lower keeps its meaning inside the exception
+    d = SP.decide({A: R(50, 27.3), B: R(1, 25.3), C: R(2, 28.3)}, A, NOW, P, {}, mk(B, A, -1), polled=True)
+    check(d["do"] == "normal" and d.get("to") is None, f"{B} left at its floor re-reads 1%: no flap back ({d['do']} {d.get('to')})")
+
     # ---- the pool counts the exception's budget only while it stands
     pl = SP.pool(meter, NOW, P)
     pa = [x for x in pl["parts"] if x["account"] == A and x["by_h"] < 30]
