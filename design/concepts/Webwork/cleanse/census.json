@@ -178,9 +178,9 @@
       "called_by": "RM_Webwork_Nest.xml CanBeDormant, wake, CompSpawnerPawn and lord; not a SenseWeb node itself",
       "serves": "signature: living nest and extraction",
       "fate": "needed_by",
-      "why": "Without the defending owner and guardian state the nest is unattended loot. This does not require a unique mother identity or a new breed; use bounded existing spawner/lord machinery.",
+      "why": "Without the defending owner and guardian state the nest is unattended loot. This does not require a unique mother identity or a new breed; use bounded existing spawner/lord machinery. Its DefendAndExpandHive defence/assault movement must obey R4 exposure refusal too; the lord is not an exemption.",
       "needed_by": "signature: living nest and extraction",
-      "ticket": ""
+      "ticket": "T38"
     },
     {
       "id": "egg_relay",
@@ -269,9 +269,9 @@
       "called_by": "Cable/strand/legacy defs -> RM_CompEmergentSpawnOnDestroy.PostDestroy -> RM_EmergentKernel.Fires -> pawn generation",
       "serves": "signature",
       "fate": "signature",
-      "why": "Keep the explicitly ruled harvest ambusher risk as part of cutting the web, with a readable emergence tell. It cannot substitute for normal pursuit; constrain duplicate events and model population accumulation.",
+      "why": "Keep the explicitly ruled harvest ambusher risk as part of cutting the web, with a readable emergence tell. It cannot substitute for normal pursuit; constrain duplicate events and model population accumulation. The built Manhunter state is a self-chosen chase under R4, not forced movement; T38 must cover it as well as the ordinary hunter.",
       "needed_by": "",
-      "ticket": "T39"
+      "ticket": "T39; T38"
     },
     {
       "id": "silk_harvest",

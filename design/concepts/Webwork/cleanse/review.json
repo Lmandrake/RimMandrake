@@ -1,0 +1,1036 @@
+{
+ "mod": "Webwork",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json B7 and R4 (\"Owner voluntary hunting paths refuse exposed crossings\") against two kept census rows: harvest_emergence (fate signature) and nest_guardian (fate needed_by)",
+     "evidence": "B7 says sunlit ground \"stops voluntary owner crossings\", and R4 and T38 bind the refusal only to the \"production hunter\". But two kept mechanics make owners move without that hunter. First, src/RimMandrake/Webwork/Source/RM_CompEmergentSpawnOnDestroy.cs:69 spawns each harvest emergent with `TryStartMentalState(MentalStateDefOf.Manhunter, forceWake: true)`, which runs vanilla JobGiver_Manhunter. Second, src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_Webwork_Nest.xml:89-100 runs the guardians under `LordJob_DefendAndExpandHive`, whose graph (RimSage, LordJob_DefendAndExpandHive.CreateGraph) moves to `LordToil_AssaultColony` on Trigger_PawnHarmed or MemoAttackedByEnemy. Raiding a clutch or cutting a cable, the exact acts in B3 and B6, therefore produces owners whose chase is not \"voluntary\" under any definition in the proposal. ambiguities.md row 20 names the result (\"A crippled manhunter slowly walks through the supposed moat\") but never says whether a manhunter or lord-assault chase counts as voluntary. Read one way, the light-moat fails against every emergent and every enraged guardian. Read the other way, the kept emergence and hive lord need code the census and tickets never mention. The words \"voluntary\" and \"production hunter\" are also not marked or defined.",
+     "would_pass": "R4 says which movement sources the exposure refusal covers: think-tree hunting, mark-directed pursuit, the Manhunter mental state and lord duties, including AssaultColony and DefendHiveAggressively. Only a pawn already standing in sun may cross exposed cells, and only to retreat. B7's range lists emergent manhunters and enraged nest guardians, and T38's acceptance test adds both as controls.",
+     "smallest_fix": "Define \"voluntary\" in R4 as every self-chosen path, including mental-state and lord-duty paths. Add the emergence and hive-lord paths to T38's scope and acceptance test. Add emergent and enraged-guardian rows to B7's range."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B3 sees.instrument and live_only=false; models.md M1 \"Leaves out\" and M3 \"Assumptions\"",
+     "evidence": "B3 promises that owners come \"together through shaded approaches\". Its accept picture has owners converging \"from separate shaded approaches\", and its reject picture has owners that \"queue indefinitely at the same blocked crossing\". B3 is read by M1 plus M3 and declared not live-only. M1 explicitly \"Leaves out ... actual pathfinding geometry (M3). Real combat and movement scheduling remain integration calibration\". M3 checks one hunter's path admissibility (\"the actual retained exposure-aware hunter's admissibility predicate\") and never simulates several owners moving at once. A trace in which every owner gets a job targeting the intruder and each single path is admissible would pass both models even if the build is the conga line the reject picture refuses. Neither instrument can separate the accept picture from that false pass.",
+     "would_pass": "B3's convergence clause is read by a multi-owner position-and-path trace over time on a natural map with several awake owners, including a single-crossing control. The trace shows distinct approach routes, or no owner held at a blocked cell past one path retry. Alternatively, the convergence clause is marked live-only with that trace as its decisive instrument.",
+     "smallest_fix": "Add to B3's sees a live state trace of every responding owner's path and position from acquisition to contact, with a single-crossing geometry as the control. Keep M1/M3 for the lifecycle half and say they do not decide convergence."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B2 sees.instrument (\"Live listening ... the sound defs/event log are checks and controls, not the acoustic verdict\"); tickets.md T44",
+     "evidence": "B2's verdict is \"live listening\", and T44 says \"a cold reader ... hears contact and quiet foot arrival\". The proposal never names who listens. A pipeline agent cannot hear game audio, and the one machine-readable trace (sound-event timestamps) is explicitly ruled out as the verdict. As written, nothing in the pipeline can tell the accept picture (a sparse bed plus a distinct thrum) from the reject \"A rainforest chorus plays under the same thrum\". The bar would sit UNMEASURED for good, or be passed on an agent's unsupported claim.",
+     "would_pass": "B2 names an instrument that can actually be run. Either the owner listens to a staged save (an owner look, kept as a save per his 2026-11-16 ruling), or the reading is the active ambient sound-def set plus the thrum event attributed to a new acquisition, with a loud-chorus control that must fail.",
+     "smallest_fix": "In B2 sees, name the listener (an owner sitting on a staged save) or promote the ambient-def and thrum-event read to the decisive instrument, with the rainforest-chorus build as its negative control."
+    }
+   ],
+   "reviewer_refusals": 3,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A permanent pond is supplied as the jungle water source.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "A continuous white floor replaces the jungle, although the biome still spawns trees.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "The main silk looks like scattered fence posts and blocks passage across otherwise buildable ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "Trunks and undergrowth remain readable behind spanning silk; carpet marks a nest site and open ground accepts ordinary colony buildings.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 5,
+     "text": "A scout can climb over a cable and still distinguish it from the fine sticky threads beside it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "Walking scouts hear footfalls and a sparse silk-and-drip bed; touching a live strand adds a distinct thrum.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A stationary marked carrier makes the warning repeat until other play sounds are obscured.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "A rainforest chorus plays under the same thrum.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "All game audio is muted, so there is neither jungle noise nor a usable contact cue.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "Eggs continue to mark a carrier without replaying the acquisition cue on each scan.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Available owners converge from separate shaded approaches on the same intruder; the party retreats by a prepared guarded route rather than improvising through unseen canopy.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "A landing emits only an introductory letter.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "A scout steps on a registered strand, is visibly marked with a thrum, and an awake owner changes target and approaches through shaded ground.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "An egg hauler remains marked; after dropping the cargo the mark expires and the hunter stops tracking that cause.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "Only a nearby manhunter reacts while other available owners ignore the signal or queue indefinitely at the same blocked crossing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 6,
+     "text": "A ship on bare landing ground wakes a living nest owner, which approaches or visibly waits at the sunlight boundary.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 7,
+     "text": "An egg in hauling hands escapes detection because only inventory is checked.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 8,
+     "text": "A touched pawn receives a mark, but ordinary owners continue wandering until a proof method starts their jobs.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 9,
+     "text": "Reloading or a dead target leaves a permanent, source-free hunt.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "A debris-like concealment gives way to a visible owner; mouth silk restrains the scout and a medic can treat the named condition.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "Dormancy hides no visible owner or concealment tell and an attack appears from empty ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "An unprotected colonist who stays in reach is overpowered and suffers ordinary recorded wounds or leaves recoverable evidence of death.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "A web effect quietly deletes its victim without a body, wound history or readable sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "The same animal chases as an ordinary pettable predator, with a harmless projectile labelled loom silk.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "Plant and animal descriptions promise a living resource base, but ordinary forage, harvest or butchery produces unusable items that no pawn can eat or use.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A winged sivvern walks over ground obstacles because only its sprite claims flight.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "Vennick travel along an actual reachable silk route to existing eggs and eat from that clutch; a scout can follow.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Sivvern enter a real flight-tracker state while the other resident wildlife remains sparse and huntable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "Vennick stream toward an absent or sealed nest because a decorative waypoint says eggs are there.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 6,
+     "text": "Quarrok graze plants forever while chewable web remains within reach.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 7,
+     "text": "A quarrok chews a reachable cable; the destroyed crossing stops reporting touches while an overlapping live node still senses its own cells.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 8,
+     "text": "A foraging party brings back usable food and harvested plant material; hunting and butchery yield ordinary usable animal products without a campaign quest.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "An exhausted clutch renews while a living local owner survives; after the owners die the remaining nest stops supplying eggs.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "The only working silk reward comes from a disabled giant-reading job or a debug lance specimen.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "A costly rare resale offers fabric without turning every ordinary trader into a substitute for cutting the web.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "Ordinary traders routinely supply the supposedly local treasure because only an XML stock row was stripped.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "Eggs hatch into trainable owners, cannot be sold without a campaign quest, or accumulate in unattended clutches regardless of living owners.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 6,
+     "text": "Beetle damage or burning web grants the same free fabric as a deliberate risky cut.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 7,
+     "text": "A prepared party cuts cable and mines clutches, escapes marked, and uses the fabric or net cargo proceeds for a new working workshop or a coherent equipment refit beyond replacing expedition supplies.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 8,
+     "text": "A serious successful expedition brings home only incidental cloth and sale money that cannot advance a planned colony improvement despite its danger.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "A permanently safe clearing flag remains after regrowth restores canopy.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Shade secretly cools the ambient-air thermometer through a Webwork-only heat rule.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "A roof protects a worker from Direct Sun but also provides shade a hostile owner can use; lamps do not create refuge.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "A roof stand-in or locked clear sky is used to claim real-canopy protection, while the shared sun system is disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "Spiders receive a scald icon but their voluntary chase still crosses the sunlit gap.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 6,
+     "text": "Owners hold at an exposed clearing edge while ordinary workers maintain the cut margin; a newly shaded bridge lets a hunter approach.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 7,
+     "text": "A spider forced into sunlight accumulates a named crippling condition, can retreat to shade and recovers without being downed by scald alone.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Maintained colony ground persists, abandoned shade grows back, actual contacts bring hunters, recovered cargo advances a planned colony improvement and a surviving nest later renews eggs; the saved run resumes without duplicates.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "The party can work only because a later-version lance, siege payout or campaign quest was silently left active.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "A passing showcase freezes weather and disables fire, growth or ordinary AI while staged harvest and predator probes run.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "The reversed work-and-haul order changes the danger encountered but still supports the same legible refuge and extraction cycle.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "Repeated harvesting keeps adding owners until ordinary maintenance cannot function, or predators erase the living prey and jungle cycle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 6,
+     "text": "Reload duplicates owners, nodes, marks or rewards, resets the nest clock, or leaves jobs retrying without progress.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The nest guardian's vanilla hive-lord escalation. The census row nest_guardian says only \"vanilla spawner/lord machinery\". RM_Webwork_Nest.xml:93 uses LordJob_DefendAndExpandHive, which (RimSage CreateGraph) moves to DefendHiveAggressively (attack radius 40) and then to LordToil_AssaultColony when a guardian is harmed or the hive is attacked, and returns only after 1200 ticks without harm. That is a second, non-mark pursuit mechanic with its own start (any harm) and end (a quiet timer). No row, rule, bar range or M1 state covers it. R3's \"expiry cancels only signal-directed pursuit\" and B3's \"pursuit ending when that signal expires\" say nothing about it, and the CompSpawnerPawn replacement cadence up to maxSpawnedPawnsPoints 640 feeds M2's flood loop without being named as an input.",
+   "loop_or_three_way": "Direct Sun ruling × R4 × B7/B8. The standing ruling (owner 2026-10-19, CLAUDE.md §One Direct Sun) runs Direct Sun on tree-heavy maps only with an excellent tree-shade model; without one it is turned off there, and the Webwork is the most tree-heavy map we have. R4 ties scald and colonist Direct Sun to \"the same geometry\". B7 and B8 need that geometry live on a real-canopy map with nothing locked. Pairwise each holds, but all three together have only one consistent state: the tree-shade model passes calibration. If it does not, the ruling turns Direct Sun off on Webwork maps. Then either scald runs on a geometry the shared sun system is ruled off for (breaking R4's same-geometry promise), or scald goes off with it (the moat disappears and B7/B8 cannot pass). definition.md (\"report the resulting Webwork evidence gap\") says this happens but does not record it as an unknown meeting with the tree-shade model as its deciding instrument, so the dependency is missing from the meetings and from M3's trigger.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 492373
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "design/concepts/Webwork/cleanse/bars.json, B1/B3/B4/B8 sees.start and sees.reset; tickets.md T40/T41/T44",
+     "evidence": "The live bars need a map that cannot be made today. B1 start says \"Map created through its normal local MapCommonBase steps, not PlaceWeb/PlaceNest on another biome\". B8 start says \"Naturally created local RM_Webwork map ... world never repainted\". Every reset says \"no canonical world save or tile edit\". But RM_Webwork is on zero world tiles until the end paint (CLAUDE.md, biome_rulings). design/validation_walks/RimMandrake/Webwork.md lines 19, 26 and 32 record that \"the bridge cannot generate an RM_Webwork map\". No ticket (T40, T41, T44) and no rule says how a natural Webwork map is produced. So B1, B3, B4 and B8 have no starting state that their own instruments accept until the planet is painted.",
+     "would_pass": "The proposal names one route to a local RM_Webwork map that obeys the rulings. For example: a test-only local map built with that biome in a disposable, non-canonical save, never shipped, no world repaint, no alternative planet. If no such route exists, the proposal says plainly on his pages that the live bars cannot be read before the end paint, and why.",
+     "smallest_fix": "Add one rule and one instrument ticket naming how the map is created. Change the reset clause to forbid edits to canonical saves and shipped tiles only, and point B1/B3/B4/B8 start at that route."
+    },
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json B6 accept picture 2 vs R5 and the kept census row nest_guardian; src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_Webwork_Nest.xml:89-100; definition.md line 59",
+     "evidence": "B6 accepts \"after the owners die the remaining nest stops supplying eggs\". R5 renews eggs while any living local ollathrix exists. The kept nest wall carries CompProperties_SpawnerPawn (RM_Ollathrix, initialPawnsPoints 320, maxSpawnedPawnsPoints 640). Vanilla CompSpawnerPawn.CompTick [measured, RimSage] calls FilterOutUnspawnedPawns and then TrySpawnPawn whenever Active and SpawnedPawnsPoints < maxSpawnedPawnsPoints. So killed guardians are replaced on the spawn interval for as long as the awake wall stands, and the owners never stay dead while the wall exists. Once the wall is destroyed, the relay that rides on it is gone too. The accepted picture therefore cannot occur. definition.md also claims the spawner \"is not a perpetual manhunter dispenser\", which the kept code contradicts.",
+     "would_pass": "Either the guardian spawner gets a stated lifetime budget, or stops refilling, so that killing the owners while the wall stands is reachable and then stops renewal. Or B6's picture and R5 are reworded to the state the code can actually reach. Either way the nest_state meeting names the spawner refill.",
+     "smallest_fix": "Add to R5: \"the nest's guardian spawner does not replace killed guardians beyond a fixed lifetime budget\". Add a ticket with its acceptance test (kill all spawned guardians on an awake wall; none respawn; the relay stops). Add the spawner to the nest_state meeting."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "census.json row sticky_web (fate signature); bars.json (no bar, rule or check)",
+     "evidence": "census sticky_web is kept as signature: \"Local strands/old sheet webs apply sticky/slicked/locked hediff, decay and tending ... without that slowing/contact cost the web ceases to be a hunting surface.\" In bars.json the only mention is the phrase \"fine sticky threads\" in a B1 accept picture. No bar, rule (R1-R10) or check defines what adhesion does to a pawn: slowed or locked in place, how long, whether it can trap a pawn indefinitely, how tending clears it, or whether it applies to animals. definition.md mentions it only as a dependency and a settings group. The signature as stated (touch or rob → hunters; sunlight breaks the approach) does not run through adhesion either.",
+     "would_pass": "Either a rule defining adhesion as the player meets it (what it slows, whether it can immobilise, its readable sign, how it is cleared, no vanishing) that joins the detection_state and predator_population meetings. Or the row moves to the next version, switched off, with the strands kept only as sensed nodes.",
+     "smallest_fix": "Move sticky_web to next_version with a switch-off ticket (strands stay as sense nodes). Otherwise add an R11 that defines it and list it in the meetings."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json row egg_trail_gap (built absent, fate life, ticket T37); bars.json B5 says and R7",
+     "evidence": "Vennick clutch-seeking does not exist yet (\"no RM_JobGiver_RunToEggs in src search\"); T37 would build a new job giver. Its only argument is \"Without an observable route to real finite eggs it is an arbitrary extra prey sprite.\" That is not a deletion argument. An ordinary small animal that is hunted and butchered is life. Deleting the egg-seeking defeats neither land, life nor the signature, since nests are placed by MapCommonBase and found by walking. This is the kind of unbuilt custom touch the owner asked to move: \"Little custom details that weren't strictly necessary\".",
+     "would_pass": "Vennick egg-seeking moves to the next version and the vennick clause is struck from B5 and R7. Or the census gives a real deletion argument showing that land, life or the signature fails without it.",
+     "smallest_fix": "Set egg_trail_gap to next_version. Drop \"vennick lead along silk to edible clutches\" from B5 says and from accept 3 / reject 2, drop the vennick sentence from R7, and remove it from T37."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json row harvest_emergence (fate signature); bars.json B7 pictures and R4; meetings predator_population",
+     "evidence": "census why: \"Keep the explicitly ruled harvest ambusher risk as part of cutting the web.\" That names where the feature came from; it is not a deletion argument. With RM_CompEmergentSpawnOnDestroy deleted, \"touching or robbing the living web brings its hunters\" still holds through B3, where existing owners converge on the cutter. So the signature is not defeated. The emergence is a second, random source of hunters, and it is the main feed of the predator_population loop the proposal itself leaves unknown (\"harvest->owners->less work->shade->pursuit\").",
+     "would_pass": "Harvest emergence moves to the next version, switched off, with a switch-off ticket, and \"harvest-emergent manhunter\" is struck from B7's pictures and R4's source list. Or the census states which named experience fails without it.",
+     "smallest_fix": "Set harvest_emergence to next_version with a switch-off ticket, and edit the B7 pictures, R4 and T38 to drop the emergent-manhunter cases."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B6 says: \"without creating tame owners or fabric from destructive harvesting\"",
+     "evidence": "Deconstructing a cable destroys the node. A literal reader therefore takes \"fabric from destructive harvesting\" to forbid the very cut that B6 accept 1 rewards (\"cuts cable and mines clutches ... uses the fabric\"). The meaning is R6's list: combat, beetle, burn and cleanup destruction. B6's figurative list marks \"living nest\", \"owners\" and \"substantial colony progress\" but not this phrase.",
+     "would_pass": "The says names the excluded routes plainly, or the phrase is marked figurative with what it stands for and an accept picture that departs from the literal reading.",
+     "smallest_fix": "Replace \"fabric from destructive harvesting\" with \"fabric from fire, fighting or beetle damage\"."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B6 sees.control and range; definition.md Costs",
+     "evidence": "The control says \"Declare the ordinary next colony improvement and starting resources before departure\". The range says \"Exact chosen benchmark cost is a check\". The person running the test picks the benchmark, so a token haul passes by declaring a cheap improvement (definition.md allows \"a new working workshop\" for an early colony). The reading cannot tell the major windfall the owner chose on November 10 from the \"incidental cloth\" that B6 reject 5 forbids.",
+     "would_pass": "A benchmark the tester cannot choose. For example: the same colony over the same days without the expedition (doing ordinary work and trade) is the control arm, and the expedition arm affords an improvement the control arm cannot, judged on what it actually buys.",
+     "smallest_fix": "Add that paired control arm to B6 sees.control, and state that the improvement must be out of the control arm's reach."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "design/validation_walks/RimMandrake/Webwork.md line 55 (owner, 2026-10-20); definition.md line 19; ambiguities.md (no row); bars.json",
+     "evidence": "His north-star sentence is \"So quiet that you know you're in terrible danger. It makes treasure, it eats all, and it's coming for you.\" quiet → B2, treasure → B6, coming for you → B3, but \"it eats all\" gets no reading. definition.md only quotes it, and there is no ambiguities row and no bar mapping. Two readings build different mods: the jungle swallowing clearings (B7 regrowth), or the predators and plants consuming the living. B8 even rejects \"predators erase the living prey and jungle cycle\", which one reading of \"eats all\" could call the intended picture.",
+     "would_pass": "An ambiguities row for \"it eats all\" with its two readings, the reading taken, the evidence (for example, the biome description \"most of the animals have been eaten, and few will enter\"), and the bar that carries it.",
+     "smallest_fix": "Add the row, and name in B5, B7 or B8 meant.source which clause carries \"it eats all\"."
+    }
+   ],
+   "reviewer_refusals": 8,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "Trunks and undergrowth remain readable behind spanning silk; carpet marks a nest site and open ground accepts ordinary colony buildings.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "The main silk looks like scattered fence posts and blocks passage across otherwise buildable ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "A permanent pond is supplied as the jungle water source.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "A scout can climb over a cable and still distinguish it from the fine sticky threads beside it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 5,
+     "text": "A continuous white floor replaces the jungle, although the biome still spawns trees.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A stationary marked carrier makes the warning repeat until other play sounds are obscured.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "All game audio is muted, so there is neither jungle noise nor a usable contact cue.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "Walking scouts hear footfalls and a sparse silk-and-drip bed; touching a live strand adds a distinct thrum.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A rainforest chorus plays under the same thrum.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "Eggs continue to mark a carrier without replaying the acquisition cue on each scan.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Available owners converge from separate shaded approaches on the same intruder; the party retreats by a prepared guarded route rather than improvising through unseen canopy.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "A landing emits only an introductory letter.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "A scout steps on a registered strand, is visibly marked with a thrum, and an awake owner changes target and approaches through shaded ground.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Reloading or a dead target leaves a permanent, source-free hunt.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "An egg hauler remains marked; after dropping the cargo the mark expires and the hunter stops tracking that cause.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 6,
+     "text": "Only a nearby manhunter reacts while other available owners ignore the signal or queue indefinitely at the same blocked crossing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 7,
+     "text": "A touched pawn receives a mark, but ordinary owners continue wandering until a proof method starts their jobs.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 8,
+     "text": "An egg in hauling hands escapes detection because only inventory is checked.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 9,
+     "text": "A ship on bare landing ground wakes a living nest owner, which approaches or visibly waits at the sunlight boundary.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "An unprotected colonist who stays in reach is overpowered and suffers ordinary recorded wounds or leaves recoverable evidence of death.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A web effect quietly deletes its victim without a body, wound history or readable sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "The same animal chases as an ordinary pettable predator, with a harmless projectile labelled loom silk.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "A debris-like concealment gives way to a visible owner; mouth silk restrains the scout and a medic can treat the named condition.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "Dormancy hides no visible owner or concealment tell and an attack appears from empty ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "Quarrok graze plants forever while chewable web remains within reach.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A quarrok chews a reachable cable; the destroyed crossing stops reporting touches while an overlapping live node still senses its own cells.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "Vennick travel along an actual reachable silk route to existing eggs and eat from that clutch; a scout can follow.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "A winged sivvern walks over ground obstacles because only its sprite claims flight.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "Sivvern enter a real flight-tracker state while the other resident wildlife remains sparse and huntable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 6,
+     "text": "A foraging party brings back usable food and harvested plant material; hunting and butchery yield ordinary usable animal products without a campaign quest.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 7,
+     "text": "Plant and animal descriptions promise a living resource base, but ordinary forage, harvest or butchery produces unusable items that no pawn can eat or use.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 8,
+     "text": "Vennick stream toward an absent or sealed nest because a decorative waypoint says eggs are there.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "An exhausted clutch renews while a living local owner survives; after the owners die the remaining nest stops supplying eggs.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "A serious successful expedition brings home only incidental cloth and sale money that cannot advance a planned colony improvement despite its danger.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Ordinary traders routinely supply the supposedly local treasure because only an XML stock row was stripped.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "Eggs hatch into trainable owners, cannot be sold without a campaign quest, or accumulate in unattended clutches regardless of living owners.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "A costly rare resale offers fabric without turning every ordinary trader into a substitute for cutting the web.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 6,
+     "text": "The only working silk reward comes from a disabled giant-reading job or a debug lance specimen.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 7,
+     "text": "A prepared party cuts cable and mines clutches, escapes marked, and uses the fabric or net cargo proceeds for a new working workshop or a coherent equipment refit beyond replacing expedition supplies.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 8,
+     "text": "Beetle damage or burning web grants the same free fabric as a deliberate risky cut.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "A spider already exposed by emergence, displacement or shade loss accumulates a named crippling condition and can cross exposed cells only to retreat to shade, then recovers without being downed by scald alone.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Shade secretly cools the ambient-air thermometer through a Webwork-only heat rule.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "A roof protects a worker from Direct Sun but also provides shade a hostile owner can use; lamps do not create refuge.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "A roof stand-in or locked clear sky is used to claim real-canopy protection, while the shared sun system is disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "Spiders receive a scald icon but an ordinary hunter, harvest-emergent manhunter or enraged nest guardian still chooses a chase across the sunlit gap.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 6,
+     "text": "Owners hunting, chasing as manhunters or defending an enraged nest hold at an exposed clearing edge while workers maintain the cut margin; a newly shaded bridge lets them approach.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 7,
+     "text": "A permanently safe clearing flag remains after regrowth restores canopy.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "The party can work only because a later-version lance, siege payout or campaign quest was silently left active.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Maintained colony ground persists, abandoned shade grows back, actual contacts bring hunters, recovered cargo advances a planned colony improvement and a surviving nest later renews eggs; the saved run resumes without duplicates.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "Reload duplicates owners, nodes, marks or rewards, resets the nest clock, or leaves jobs retrying without progress.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Repeated harvesting keeps adding owners until ordinary maintenance cannot function, or predators erase the living prey and jungle cycle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "The reversed work-and-haul order changes the danger encountered but still supports the same legible refuge and extraction cycle.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 6,
+     "text": "A passing showcase freezes weather and disables fire, growth or ordinary AI while staged harvest and predator probes run.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "src/RimMandrake/Webwork/Defs/BiomeDefs/RM_Webwork_Biome.xml line 56 sets <allowRivers>true</allowRivers>, and line 55 sets allowRoads true. No census row covers either. A river painted through a Webwork tile at the end paint would put a surface river on the local map, against B1's \"without a surface river or permanent pool\" and the census's own \"waterless\" biome_ecology row. Rivers are a world-tile feature the BiomeDef currently permits, so B1 needs a matching rule or check (allowRivers false, or an end-paint rule that keeps rivers off Webwork tiles).",
+   "loop_or_three_way": "Three bars meet at the clearing margin. B7 has workers keep the sunlit margin open, and that work means cutting or walking the cables that run through the margin. Each contact marks the worker (R2, plus R6 for a deliberate cut). B3 then brings available owners to the nearest shaded edge, which is exactly where the workers stand. definition.md line 45 says the clearing does not protect against mouth spit from a reachable shaded edge, and B4 has that spit restrain an unprotected colonist. Restrained and tending workers stop maintaining the margin, R9 canopy return reopens shade, and B3's approach gets shorter. The proposal's predator_population meeting names a harvest→owners→less work loop. It does not name that routine maintenance is itself the trigger that summons hunters to the margin, or that spit range from the edge compared with the width of the cleared margin decides whether B7's refuge can be maintained at all. M2/M3 should sweep that width against spit range, with marks refreshing from maintenance.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 654652
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 780112,
+    "output_tokens": 9235
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "cannot_hold_together",
+   "where": "design/concepts/Webwork/cleanse/bars.json, B1/B3/B4/B8 sees.start and sees.reset; tickets.md T40/T41/T44",
+   "evidence": "The live bars need a map that cannot be made today. B1 start says \"Map created through its normal local MapCommonBase steps, not PlaceWeb/PlaceNest on another biome\". B8 start says \"Naturally created local RM_Webwork map ... world never repainted\". Every reset says \"no canonical world save or tile edit\". But RM_Webwork is on zero world tiles until the end paint (CLAUDE.md, biome_rulings). design/validation_walks/RimMandrake/Webwork.md lines 19, 26 and 32 record that \"the bridge cannot generate an RM_Webwork map\". No ticket (T40, T41, T44) and no rule says how a natural Webwork map is produced. So B1, B3, B4 and B8 have no starting state that their own instruments accept until the planet is painted.",
+   "would_pass": "The proposal names one route to a local RM_Webwork map that obeys the rulings. For example: a test-only local map built with that biome in a disposable, non-canonical save, never shipped, no world repaint, no alternative planet. If no such route exists, the proposal says plainly on his pages that the live bars cannot be read before the end paint, and why.",
+   "smallest_fix": "Add one rule and one instrument ticket naming how the map is created. Change the reset clause to forbid edits to canonical saves and shipped tiles only, and point B1/B3/B4/B8 start at that route."
+  },
+  {
+   "head": "cannot_hold_together",
+   "where": "bars.json B6 accept picture 2 vs R5 and the kept census row nest_guardian; src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_Webwork_Nest.xml:89-100; definition.md line 59",
+   "evidence": "B6 accepts \"after the owners die the remaining nest stops supplying eggs\". R5 renews eggs while any living local ollathrix exists. The kept nest wall carries CompProperties_SpawnerPawn (RM_Ollathrix, initialPawnsPoints 320, maxSpawnedPawnsPoints 640). Vanilla CompSpawnerPawn.CompTick [measured, RimSage] calls FilterOutUnspawnedPawns and then TrySpawnPawn whenever Active and SpawnedPawnsPoints < maxSpawnedPawnsPoints. So killed guardians are replaced on the spawn interval for as long as the awake wall stands, and the owners never stay dead while the wall exists. Once the wall is destroyed, the relay that rides on it is gone too. The accepted picture therefore cannot occur. definition.md also claims the spawner \"is not a perpetual manhunter dispenser\", which the kept code contradicts.",
+   "would_pass": "Either the guardian spawner gets a stated lifetime budget, or stops refilling, so that killing the owners while the wall stands is reachable and then stops renewal. Or B6's picture and R5 are reworded to the state the code can actually reach. Either way the nest_state meeting names the spawner refill.",
+   "smallest_fix": "Add to R5: \"the nest's guardian spawner does not replace killed guardians beyond a fixed lifetime budget\". Add a ticket with its acceptance test (kill all spawned guardians on an awake wall; none respawn; the relay stops). Add the spawner to the nest_state meeting."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "census.json row sticky_web (fate signature); bars.json (no bar, rule or check)",
+   "evidence": "census sticky_web is kept as signature: \"Local strands/old sheet webs apply sticky/slicked/locked hediff, decay and tending ... without that slowing/contact cost the web ceases to be a hunting surface.\" In bars.json the only mention is the phrase \"fine sticky threads\" in a B1 accept picture. No bar, rule (R1-R10) or check defines what adhesion does to a pawn: slowed or locked in place, how long, whether it can trap a pawn indefinitely, how tending clears it, or whether it applies to animals. definition.md mentions it only as a dependency and a settings group. The signature as stated (touch or rob → hunters; sunlight breaks the approach) does not run through adhesion either.",
+   "would_pass": "Either a rule defining adhesion as the player meets it (what it slows, whether it can immobilise, its readable sign, how it is cleared, no vanishing) that joins the detection_state and predator_population meetings. Or the row moves to the next version, switched off, with the strands kept only as sensed nodes.",
+   "smallest_fix": "Move sticky_web to next_version with a switch-off ticket (strands stay as sense nodes). Otherwise add an R11 that defines it and list it in the meetings."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json row egg_trail_gap (built absent, fate life, ticket T37); bars.json B5 says and R7",
+   "evidence": "Vennick clutch-seeking does not exist yet (\"no RM_JobGiver_RunToEggs in src search\"); T37 would build a new job giver. Its only argument is \"Without an observable route to real finite eggs it is an arbitrary extra prey sprite.\" That is not a deletion argument. An ordinary small animal that is hunted and butchered is life. Deleting the egg-seeking defeats neither land, life nor the signature, since nests are placed by MapCommonBase and found by walking. This is the kind of unbuilt custom touch the owner asked to move: \"Little custom details that weren't strictly necessary\".",
+   "would_pass": "Vennick egg-seeking moves to the next version and the vennick clause is struck from B5 and R7. Or the census gives a real deletion argument showing that land, life or the signature fails without it.",
+   "smallest_fix": "Set egg_trail_gap to next_version. Drop \"vennick lead along silk to edible clutches\" from B5 says and from accept 3 / reject 2, drop the vennick sentence from R7, and remove it from T37."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json row harvest_emergence (fate signature); bars.json B7 pictures and R4; meetings predator_population",
+   "evidence": "census why: \"Keep the explicitly ruled harvest ambusher risk as part of cutting the web.\" That names where the feature came from; it is not a deletion argument. With RM_CompEmergentSpawnOnDestroy deleted, \"touching or robbing the living web brings its hunters\" still holds through B3, where existing owners converge on the cutter. So the signature is not defeated. The emergence is a second, random source of hunters, and it is the main feed of the predator_population loop the proposal itself leaves unknown (\"harvest->owners->less work->shade->pursuit\").",
+   "would_pass": "Harvest emergence moves to the next version, switched off, with a switch-off ticket, and \"harvest-emergent manhunter\" is struck from B7's pictures and R4's source list. Or the census states which named experience fails without it.",
+   "smallest_fix": "Set harvest_emergence to next_version with a switch-off ticket, and edit the B7 pictures, R4 and T38 to drop the emergent-manhunter cases."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B6 says: \"without creating tame owners or fabric from destructive harvesting\"",
+   "evidence": "Deconstructing a cable destroys the node. A literal reader therefore takes \"fabric from destructive harvesting\" to forbid the very cut that B6 accept 1 rewards (\"cuts cable and mines clutches ... uses the fabric\"). The meaning is R6's list: combat, beetle, burn and cleanup destruction. B6's figurative list marks \"living nest\", \"owners\" and \"substantial colony progress\" but not this phrase.",
+   "would_pass": "The says names the excluded routes plainly, or the phrase is marked figurative with what it stands for and an accept picture that departs from the literal reading.",
+   "smallest_fix": "Replace \"fabric from destructive harvesting\" with \"fabric from fire, fighting or beetle damage\"."
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json B6 sees.control and range; definition.md Costs",
+   "evidence": "The control says \"Declare the ordinary next colony improvement and starting resources before departure\". The range says \"Exact chosen benchmark cost is a check\". The person running the test picks the benchmark, so a token haul passes by declaring a cheap improvement (definition.md allows \"a new working workshop\" for an early colony). The reading cannot tell the major windfall the owner chose on November 10 from the \"incidental cloth\" that B6 reject 5 forbids.",
+   "would_pass": "A benchmark the tester cannot choose. For example: the same colony over the same days without the expedition (doing ordinary work and trade) is the control arm, and the expedition arm affords an improvement the control arm cannot, judged on what it actually buys.",
+   "smallest_fix": "Add that paired control arm to B6 sees.control, and state that the improvement must be out of the control arm's reach."
+  },
+  {
+   "head": "core_promise_weakened",
+   "where": "design/validation_walks/RimMandrake/Webwork.md line 55 (owner, 2026-10-20); definition.md line 19; ambiguities.md (no row); bars.json",
+   "evidence": "His north-star sentence is \"So quiet that you know you're in terrible danger. It makes treasure, it eats all, and it's coming for you.\" quiet → B2, treasure → B6, coming for you → B3, but \"it eats all\" gets no reading. definition.md only quotes it, and there is no ambiguities row and no bar mapping. Two readings build different mods: the jungle swallowing clearings (B7 regrowth), or the predators and plants consuming the living. B8 even rejects \"predators erase the living prey and jungle cycle\", which one reading of \"eats all\" could call the intended picture.",
+   "would_pass": "An ambiguities row for \"it eats all\" with its two readings, the reading taken, the evidence (for example, the biome description \"most of the animals have been eaten, and few will enter\"), and the bar that carries it.",
+   "smallest_fix": "Add the row, and name in B5, B7 or B8 meant.source which clause carries \"it eats all\"."
+  }
+ ],
+ "applyable": false,
+ "seconds": 729,
+ "at": "2026-11-17T03:22:07"
+}
