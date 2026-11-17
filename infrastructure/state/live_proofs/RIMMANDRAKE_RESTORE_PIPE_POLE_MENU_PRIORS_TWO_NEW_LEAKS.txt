@@ -1,0 +1,6 @@
+# RIMMANDRAKE_RESTORE_PIPE_POLE_MENU_PRIORS_TWO_NEW_LEAKS: ac2ebc01cb made live_pipe_pole_menu.py capture the player's two
+# Mod Settings (AerialSettings.enabled, RM_MachinerySettings.pipePolesEnabled) and put those priors back in its finally. The
+# offline restore check is green (selftest_proof_restore_check.py); the live run of the changed script was UNRUN (close note,
+# CONDUCTOR 2026-11-17T19:10:47Z). A1 runs it once on its own tier: exit 0 = PASS, 2 = UNMEASURED (no pole or mast in a menu).
+live-mods: GimmeSomeSlack
+live-proof A1: mkdir -p /mnt/d/ClaudeWork/rimmandrake/scratch/gss_pole_menu_20261117; rm -f /mnt/d/ClaudeWork/rimmandrake/scratch/gss_pole_menu_20261117/pole_menu.json; python.exe src/RimMandrake/GimmeSomeSlack/northstar/live_pipe_pole_menu.py --out D:/ClaudeWork/rimmandrake/scratch/gss_pole_menu_20261117/pole_menu.json < /dev/null
