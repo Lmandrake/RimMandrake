@@ -6,7 +6,8 @@ sc_frame_probe_check and sc_barrage_perf in design/concepts/ExplosiveKnockback/s
   N  every entry point and its control lane is in RM_KnockbackProof.SceneNames and reaches its builder from Build
   G  each builder carries the start assertions its scene names (INVALID guards) and its control lane
   F  the sweep's field list equals the settings' saved Scribe keys, and every saved key but enabled and shieldsAbsorbThrow
-     is named in the scene's action text (a saved field in none of the three fails the scene, offline too)
+     is named in the scene's action text (a saved field in none of the three fails the scene, offline too); every sweep
+     lane writes a value other than its field's shipped default (F5: a default-only lane is a no-op that always passes)
   R  every builder that changes a setting or a def sets s.restore
   T  the runner can wait in real time (--real-seconds): a frame scene stepped by ticks inside one frame measures nothing
 The frame probe's arithmetic is K-22 in Source/SelfTest/Program.cs (selftest_explosiveknockback_kernel.py).
@@ -26,7 +27,7 @@ SCENES = os.path.join(REPO, "design", "concepts", "ExplosiveKnockback", "scenes.
 LANES = {
     "sc_hose_drop": ("hose_carry_drop", ["hose_carry_drop_off"], "HoseCarryDrop",
                      ["FlowWorks hose reels not hooked", "RM_CarryHoseEnd", "TryTakeOrderedJob", "hoseDropped", "enabled = false",
-                      "IntVec3.South, 2.9f", "Cheb(lt, to) == 3"]),
+                      "IntVec3.South, 2.9f", "RM_KnockbackVerdicts.HoseDrop("]),
     "sc_closed_containers": ("closed_containers", ["closed_containers_control"], "ClosedContainers",
                              ["LWM_WeaponsLocker", "LWM_Safe", "SealedCrate", "AncientSecurityCrate",
                               "guy762_SecretFloorPanel_darkwhiteoutlines", "RM_KnockbackClosedStorage", "ClearClosedCache",
@@ -116,6 +117,19 @@ def main():
     lanes = set(re.findall(r'\["(\w+)"\]', lanes_m.group(1))) if lanes_m else set()
     gone = [l for l in GAME_LANES if l not in lanes]
     check("F4", not gone, "every game-side sweep lane has a lane" + (": missing %s" % gone if gone else ""))
+    # F5: a lane that writes only its fields' shipped defaults changes nothing, so its "only its own outcomes moved" reads
+    # green whatever the mod does (blind cycle 3's PF_ST3_FIREHALF_LANE_NOOP stayed green offline)
+    defaults = dict(re.findall(r"public static (?:bool|float|int) (\w+) = ([^;]+);", mod))
+    norm = lambda v: v.strip().lower() if v.strip().lower() in ("true", "false") else float(v.strip().rstrip("fF"))
+    noop, unknown = [], []
+    for name, sets in re.findall(r'\["(\w+)"\] = Lane\(new\[\] \{([^}]*)\}', lanes_m.group(1) if lanes_m else ""):
+        pairs = [a.split("=", 1) for a in re.findall(r'"([^"]+)"', sets)]
+        unknown += ["%s.%s" % (name, f) for f, _ in pairs if f not in defaults]
+        if pairs and all(f in defaults and norm(v) == norm(defaults[f]) for f, v in pairs):
+            noop.append(name)
+    check("F5", not noop and not unknown and len(defaults) >= 40, "every sweep lane writes a non-default value (%d lanes, %d defaults read)"
+          % (len(re.findall(r'\["\w+"\] = Lane\(', lanes_m.group(1) if lanes_m else "")), len(defaults))
+          + (": no-op %s" % noop if noop else "") + (": field without a default %s" % unknown if unknown else ""))
     check("T1", "--real-seconds" in runner and "time.sleep(a.real_seconds)" in runner and "if a.ticks > 0:" in runner,
           "knockback_runner.py waits in real time and can skip tick stepping")
     print("%s stage3 scenes: %d failed" % ("PASS" if not fails else "FAIL", len(fails)))

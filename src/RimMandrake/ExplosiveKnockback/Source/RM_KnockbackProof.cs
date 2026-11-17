@@ -910,7 +910,7 @@ namespace RimMandrake.ExplosiveKnockback
             KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
             Thing t = s.things[key];
             float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-            return mass > k.lightMassLimit ? 0 : RM_KnockbackMath.WildCells((s.starts[key] - s.o).LengthHorizontal, r, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
+            return RM_KnockbackVerdicts.GoodCells((s.starts[key] - s.o).LengthHorizontal, r, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
         }
 
         /// <summary>WantCells for a blast centred on <paramref name="centre"/> rather than the scene origin (a scene with several
@@ -920,7 +920,7 @@ namespace RimMandrake.ExplosiveKnockback
             KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
             Thing t = s.things[key];
             float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-            return mass > k.lightMassLimit ? 0 : RM_KnockbackMath.WildCells((s.starts[key] - centre).LengthHorizontal, r, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
+            return RM_KnockbackVerdicts.GoodCells((s.starts[key] - centre).LengthHorizontal, r, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
         }
 
         // ── the scenes ───────────────────────────────────────────────────
@@ -937,9 +937,10 @@ namespace RimMandrake.ExplosiveKnockback
                     {
                         string m = Moved(sc, "p", out Thing t, out int cells);
                         var launch = ForThing(sc, "launch", t);
-                        bool away = t.Spawned && t.Position.x > sc.starts["p"].x && t.Position.z == sc.starts["p"].z;
                         bool alive = t is Pawn p && !p.Dead;
-                        return Result(sc, cells == 3 && away && alive && launch.Count == 1, m + " away=" + away + " alive=" + alive
+                        bool ok = RM_KnockbackVerdicts.Calibration(cells, t.Spawned, t.Position.x, t.Position.z, sc.starts["p"].x, sc.starts["p"].z,
+                            alive, launch.Count, out bool away);
+                        return Result(sc, ok, m + " away=" + away + " alive=" + alive
                             + " launches=" + launch.Count + (launch.Count > 0 ? " [" + Rec(launch[0]) + "]" : ""));
                     };
                     return null;
@@ -1097,7 +1098,7 @@ namespace RimMandrake.ExplosiveKnockback
                         {
                             Thing t = sc.things[key];
                             float mass = t.GetStatValue(StatDefOf.Mass) * t.stackCount;
-                            int want = mass > k.lightMassLimit ? 0 : RM_KnockbackMath.WildCells((sc.starts[key] - sc.o).LengthHorizontal, 2.9f, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
+                            int want = RM_KnockbackVerdicts.GoodCells((sc.starts[key] - sc.o).LengthHorizontal, 2.9f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
                             sb.Append(Moved(sc, key, out Thing tt, out int cells)).Append(" mass=").Append(mass.ToString("0.#")).Append(" want=").Append(want).Append("; ");
                             ok &= tt.Spawned && cells == want;
                         }
@@ -1559,7 +1560,7 @@ namespace RimMandrake.ExplosiveKnockback
                         bool skipped = ForThing(sc, "skip", t).Any(r => (string)r["reason"] == "flying_off");
                         bool noMove = ForThing(sc, "item_move", t).Count == 0;
                         bool neverAir = !sc.numbers.ContainsKey("steel_airTick");
-                        bool ok = skipped && noMove && neverAir && tt.Spawned && cells == 0 && tt.stackCount == 75;
+                        bool ok = RM_KnockbackVerdicts.FlyOff(skipped, noMove, neverAir, tt.Spawned, cells, tt.stackCount, 75);
                         return Result(sc, ok, m + " wantIfOn=" + want + " flyingOffSkip=" + skipped + " itemMoves=" + (noMove ? 0 : 1) + " seenInCarrier=" + !neverAir);
                     };
                     return null;

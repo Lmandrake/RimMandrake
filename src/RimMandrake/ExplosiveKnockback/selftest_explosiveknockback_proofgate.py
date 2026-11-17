@@ -30,7 +30,7 @@ import io  # noqa: E402
 from proof_build_gate import EXIT, is_release_answer, require_proof_build  # noqa: E402
 
 RELEASE = os.path.join(HERE, "Assemblies", "RimMandrakeExplosiveKnockback.dll")
-PROOF_NAMES = ["RM_KnockbackProof", "RM_PatchApplierProbe", "ProofSchedule", "FillToSurface", "RM_FrameProbe"]
+PROOF_NAMES = ["RM_KnockbackProof", "RM_PatchApplierProbe", "ProofSchedule", "FillToSurface", "RM_FrameProbe", "RM_KnockbackVerdicts"]
 SANITY = ["RM_MapComponent_Knockback", "RM_ThingFlyer_Knockback"]
 PROOF_ERROR = "RimMandrake.ExplosiveKnockback.RM_KnockbackProof.Stage threw: NullReferenceException"
 

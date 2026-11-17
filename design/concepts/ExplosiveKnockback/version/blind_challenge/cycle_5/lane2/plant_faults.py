@@ -2,7 +2,8 @@
 """Plant each fault of planted_faults.json in turn, run the offline suites and blind lane 1, restore the file byte for byte.
     WINBUILD_ROOT=/mnt/d/ClaudeWork/rimmandrake/scratch/explosiveknockback_blind_c5_mut/ python3 plant_faults.py [--ids A,B] [--baseline] [--finish]
 --baseline writes the baseline row (a fresh results file); --ids runs those faults and appends; --finish appends the
-tree-clean row (git diff --quiet -- src/RimMandrake/ExplosiveKnockback). A fault is CAUGHT only when it makes a new failing
+tree-clean row (git diff --quiet -- src/RimMandrake/ExplosiveKnockback). --faults and --out name another fault list and
+results file (default planted_faults.json, planted_results.jsonl), so a re-planted list never overwrites this cycle's record. A fault is CAUGHT only when it makes a new failing
 row: a suite that was PASS at baseline goes FAIL, or a lane-1 row id that was not FAIL at baseline goes FAIL. Restores on
 SIGTERM, SIGINT and SIGHUP."""
 import argparse, json, os, signal, subprocess, sys, time
@@ -68,11 +69,15 @@ def baseline():
 
 
 def main():
+    global OUT
     ap = argparse.ArgumentParser()
     ap.add_argument("--ids", default="")
     ap.add_argument("--baseline", action="store_true")
     ap.add_argument("--finish", action="store_true")
+    ap.add_argument("--faults", default=os.path.join(HERE, "planted_faults.json"))
+    ap.add_argument("--out", default=OUT)
     a = ap.parse_args()
+    OUT = os.path.abspath(a.out)
     env = dict(os.environ)
     env.setdefault("WINBUILD_ROOT", "/mnt/d/ClaudeWork/rimmandrake/scratch/explosiveknockback_blind_c5_mut/")
     if a.baseline:
@@ -80,7 +85,7 @@ def main():
         with open(OUT, "w") as f:
             f.write(json.dumps({"baseline": True, "suites": res, "lane1_fail": fails}) + "\n")
         print("BASELINE", res, fails)
-    faults = json.load(open(os.path.join(HERE, "planted_faults.json")))
+    faults = json.load(open(a.faults))
     want = [x for x in a.ids.split(",") if x]
     for fl in faults:
         if fl["id"] not in want:

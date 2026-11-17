@@ -46,6 +46,8 @@ def main():
         root = sys.argv[sys.argv.index("--src") + 1]
     proof = rd(root, "Source", "RM_KnockbackProof.cs")
     own = rd(root, "Source", FILE)
+    # the start assertion and the per-lane verdict live in RM_KnockbackVerdicts (kernel-tested V-03, V-08, V-09); the scene calls them
+    lifted = rd(root, "Source", "RM_KnockbackVerdicts.cs")
     csproj = rd(root, "Source", "RimMandrake_ExplosiveKnockback.csproj")
     m = re.search(r"SceneNames\s*=\s*\{(.*?)\};", proof, re.S)
     names = set(re.findall(r'"(\w+)"', m.group(1))) if m else set()
@@ -78,7 +80,9 @@ def main():
         ("_inWater", "a stack in deep water is counted"), ("Fogged(", "lane W's stack must be visible"),
         ('return "lane ', "a failed start assertion returns its reason (Stage reads it INVALID)"), ("600", "the trace runs at most 600 ticks"),
     ]:
-        check("G1", needle in body or needle in own, what + " (" + needle + ")")
+        check("G1", needle in body or needle in own or needle in lifted, what + " (" + needle + ")")
+    for call in ("RM_KnockbackVerdicts.ObstaclePlan(", "RM_KnockbackVerdicts.ObstacleLane(", "RM_KnockbackVerdicts.DoorBounced("):
+        check("G1", call in body, "the scene judges through the tested " + call)
     check("G2", len(re.findall(r"Blast\(O\(s, 0, ", body)) == 1 and "LaneZ" in body,
           "one grenade per lane, each at its own lane origin")
     # the arming lives in Build's goods_obstacles case (blind cycle 3): there the restore comes first and pokes both

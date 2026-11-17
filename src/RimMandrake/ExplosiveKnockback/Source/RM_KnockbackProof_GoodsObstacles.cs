@@ -80,33 +80,15 @@ namespace RimMandrake.ExplosiveKnockback
                 s.numbers[k + "_want"] = want;
                 s.numbers[k + "_planX"] = plan.destX;
                 s.numbers[k + "_planZ"] = plan.destZ;
-                int beyond = s.o.x + 3;   // the obstacle's column
-                if (control)
+                string bad = RM_KnockbackVerdicts.ObstaclePlan(k, control, plan.stop, plan.destX, s.o.x + 3, s.o.x, want,
+                    RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent, out int back);   // s.o.x + 3: the obstacle's column
+                if (bad != null)
                 {
-                    if (plan.stop != KbStop.Distance || plan.destX <= beyond)
-                    {
-                        return "control lane " + k + " plan " + plan.stop + " to x+" + (plan.destX - s.o.x) + ": does not land beyond where the obstacle stood (want=" + want + ")";
-                    }
+                    return bad;
                 }
-                else if (k == "D")
+                if (!control && k == "D")
                 {
-                    int back = RM_KnockbackMath.ReboundCells(want - 1, RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent);
-                    if (plan.stop != KbStop.Door || back < 1)
-                    {
-                        return "lane D plan " + plan.stop + " want=" + want + " back=" + back + ": the throw does not reach the door with cells to rebound";
-                    }
                     s.numbers["D_back"] = back;
-                }
-                else if (k == "S")
-                {
-                    if (plan.destX <= beyond)
-                    {
-                        return "lane S plan " + plan.stop + " to x+" + (plan.destX - s.o.x) + ": the throw does not carry past the sandbags (want=" + want + ")";
-                    }
-                }
-                else if (plan.stop != KbStop.Water || plan.destX != beyond - 1)
-                {
-                    return "lane W plan " + plan.stop + " to x+" + (plan.destX - s.o.x) + ": deep water is not a Water stop on the last cell before it (want=" + want + ")";
                 }
             }
             TraceGoods(s, ObstacleLanes, 600);
@@ -134,39 +116,34 @@ namespace RimMandrake.ExplosiveKnockback
                     bool rest = tt.Spawned && CarrierOf(tt.Map, t) == null;
                     bool flew = ForThing(sc, "item_move", t).Any(r => Equals(r["flying"], true));
                     var plan = new IntVec3((int)sc.numbers[k + "_planX"], 0, (int)sc.numbers[k + "_planZ"]);
-                    bool ok;
                     string why;
+                    bool bounced = false, closed = false, dry = false, visible = false;
                     if (control)
                     {
-                        ok = rest && flew && tt.Position == plan;
                         why = " plan=" + plan.x + "," + plan.z;
                     }
                     else if (k == "D")
                     {
                         var rb = ForThing(sc, "item_rebound", t);
-                        int keep = rb.Count > 0 ? RM_KnockbackMath.ReboundCells(Convert.ToInt32(rb[0]["left"]),
-                            RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent) : -1;
-                        bool bounced = rb.Count >= 1 && (string)rb[0]["hit"] == "Door" && Convert.ToInt32(rb[0]["cells"]) == keep;
+                        bounced = rb.Count > 0 && RM_KnockbackVerdicts.DoorBounced(rb.Count, (string)rb[0]["hit"], Convert.ToInt32(rb[0]["left"]),
+                            Convert.ToInt32(rb[0]["cells"]), RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent);
                         Thing door = sc.things["door"];
-                        bool closed = door.Spawned && door is Building_Door bd && !bd.Open;
-                        bool blastSide = rest && tt.Position.x < sc.o.x + 3;
-                        ok = flew && bounced && closed && blastSide;
+                        closed = door.Spawned && door is Building_Door bd && !bd.Open;
                         why = " back=" + sc.numbers["D_back"] + " keep%=" + RimMandrakeExplosiveKnockbackSettings.goodsReboundKeepPercent + " doorClosed=" + closed
                               + (rb.Count > 0 ? " [" + Rec(rb[0]) + "]" : " no item_rebound");
                     }
                     else if (k == "S")
                     {
-                        ok = rest && flew && tt.Position.x > sc.o.x + 3 && tt.Position.z == sc.o.z + z;
                         why = " (sandbags at x+3)";
                     }
                     else
                     {
-                        bool dry = rest && tt.Position.GetTerrain(tt.Map) != TerrainDefOf.WaterDeep;
-                        bool visible = rest && !tt.Position.Fogged(tt.Map);
-                        ok = flew && dry && visible && inWater == 0 && tt.Position == O(sc, 2, z);
+                        dry = rest && tt.Position.GetTerrain(tt.Map) != TerrainDefOf.WaterDeep;
+                        visible = rest && !tt.Position.Fogged(tt.Map);
                         why = " (water from x+3) visible=" + visible + " inWater=" + inWater;
                     }
-                    ok &= rest && hops == 0 && hidden == 0;
+                    bool ok = RM_KnockbackVerdicts.ObstacleLane(k, control, rest, flew, tt.Position.x, tt.Position.z, plan.x, plan.z, sc.o.x + 3,
+                        sc.o.z + z, bounced, closed, dry, visible, inWater, hops, hidden);
                     all &= ok;
                     parts.Add(k + (ok ? " ok " : " BAD ") + m + " want=" + sc.numbers[k + "_want"] + " flying=" + flew + " atRest=" + rest
                               + " hops=" + hops + " hidden=" + hidden + why);

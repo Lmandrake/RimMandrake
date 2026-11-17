@@ -10,9 +10,12 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <BaseOutputPath>bin\</BaseOutputPath>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <!-- RM_KnockbackVerdicts.cs (the proof scenes' verdict arithmetic) compiles under RM_PROOFS or this -->
+    <DefineConstants>$(DefineConstants);RM_KB_SELFTEST</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\RM_KnockbackMath.cs" />
+    <Compile Include="..\RM_KnockbackVerdicts.cs" />
     <Compile Include="KnockbackFuzz.cs" />
     <Compile Include="KnockbackSweep.cs" />
     <Compile Include="Program.cs" />

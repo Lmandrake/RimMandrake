@@ -27,12 +27,12 @@ namespace RimMandrake.ExplosiveKnockback
             }
             Pawn h = s.things.TryGetValue("h", out Thing ht) ? ht as Pawn : null;
             Thing st = s.things.TryGetValue("st", out Thing t) ? t : null;
-            if (h == null || st == null || !h.Spawned || Map == null)
+            string missing = RM_KnockbackVerdicts.PitProbeMissing(name, h != null, h != null && h.Spawned, h != null && h.Dead,
+                h?.ParentHolder?.ToString(), st != null, st != null && st.Spawned, st != null && st.Destroyed, st?.ParentHolder?.ToString(),
+                Map != null);
+            if (missing != null)
             {
-                return "INVALID " + name + " hauler or steel missing (h=" + (h != null) + " hSpawned=" + (h != null && h.Spawned)
-                    + " hDead=" + (h != null && h.Dead) + " hHolder=" + h?.ParentHolder + " st=" + (st != null) + " stSpawned="
-                    + (st != null && st.Spawned) + " stDestroyed=" + (st != null && st.Destroyed) + " stHolder=" + st?.ParentHolder
-                    + ")";
+                return missing;
             }
             if (log && h.jobs != null)
             {

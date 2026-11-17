@@ -655,6 +655,119 @@ internal static class Program
             Check("K-25 the thrown pawn stops on the cell before, both hit", r.destX == 2 && r.stop == KbStop.Pawn && r.hitOther && r.impact > 0f);
         }
 
+        // V-01..V-06 the proof scenes' verdict and plan arithmetic (RM_KnockbackVerdicts.cs; blind cycle 5,
+        // RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED: nine faults planted in these lines stayed green
+        // offline while they lived in the Verse scenes). Each verdict's pass edge and every way it must fail.
+        {
+            // V-01 sc_calibration: exactly 3 cells, straight away, alive, one launch line (bar people_thrown_three_cells)
+            bool V1(int cells, bool spawned, int x, int z, bool alive, int launches) =>
+                RM_KnockbackVerdicts.Calibration(cells, spawned, x, z, 10, 10, alive, launches, out _);
+            Check("V-01 calibration passes at 3 cells straight away", V1(3, true, 13, 10, true, 1)
+                && RM_KnockbackVerdicts.Calibration(3, true, 13, 10, 10, 10, true, 1, out bool away1) && away1);
+            Check("V-01 calibration fails at 2 and at 4 cells, and at 0", !V1(2, true, 12, 10, true, 1) && !V1(4, true, 14, 10, true, 1) && !V1(0, true, 10, 10, true, 0));
+            Check("V-01 calibration fails off the row, toward the blast, or unspawned",
+                !V1(3, true, 13, 11, true, 1) && !V1(3, true, 7, 10, true, 1) && !V1(3, false, 13, 10, true, 1));
+            Check("V-01 calibration fails dead, with no launch line or with two", !V1(3, true, 13, 10, false, 1) && !V1(3, true, 13, 10, true, 0) && !V1(3, true, 13, 10, true, 2));
+
+            // V-02 goods plan (WantCells, WantCellsFrom, PlanGood): 0 over the light-goods mass limit, else WildCells at the wild factor
+            KbSettings ks = cs0();
+            Check("V-02 sanity: the kernel alone would throw a 76 kg good at d1", RM_KnockbackMath.WildCells(1f, 2.9f, 1f, ks.lightMassLimit + 1f, ks, 1.6f) > 0,
+                "WildCells=" + RM_KnockbackMath.WildCells(1f, 2.9f, 1f, ks.lightMassLimit + 1f, ks, 1.6f));
+            Check("V-02 a good over the mass limit is not planned", RM_KnockbackVerdicts.GoodCells(1f, 2.9f, ks.lightMassLimit + 1f, ks, 1.6f) == 0);
+            Check("V-02 a good at the mass limit is planned by the kernel", RM_KnockbackVerdicts.GoodCells(1f, 2.9f, ks.lightMassLimit, ks, 1.6f)
+                == RM_KnockbackMath.WildCells(1f, 2.9f, 1f, ks.lightMassLimit, ks, 1.6f) && RM_KnockbackVerdicts.GoodCells(1f, 2.9f, ks.lightMassLimit, ks, 1.6f) > 0);
+            var ks10 = cs0();
+            ks10.lightMassLimit = 10f;
+            Check("V-02 the limit is the setting's: 11 kg over a 10 kg limit is not planned, 10 kg is",
+                RM_KnockbackVerdicts.GoodCells(1f, 2.9f, 11f, ks10, 1.6f) == 0 && RM_KnockbackVerdicts.GoodCells(1f, 2.9f, 10f, ks10, 1.6f) > 0);
+            Check("V-02 goods are planned wild: 70 kg at d1 flies 4, not the plain kernel's",
+                RM_KnockbackVerdicts.GoodCells(1f, 2.9f, 70f, ks, 1.6f) == 4 && RM_KnockbackMath.ThrowCells(1f, 2.9f, 1f, 70f, ks) != 4,
+                "goods=" + RM_KnockbackVerdicts.GoodCells(1f, 2.9f, 70f, ks, 1.6f) + " kernel=" + RM_KnockbackMath.ThrowCells(1f, 2.9f, 1f, 70f, ks));
+            Check("V-02 the wild factor is the caller's", RM_KnockbackVerdicts.GoodCells(1f, 2.9f, 70f, ks, 1f) == RM_KnockbackMath.ThrowCells(1f, 2.9f, 1f, 70f, ks));
+            Check("V-02 out of reach is 0", RM_KnockbackVerdicts.GoodCells(5f, 2.9f, 1f, ks, 1.6f) == 0);
+
+            // V-03 sc_goods_obstacles start assertion (obstacle column 13, origin 10)
+            string V3(string lane, bool control, KbStop stop, int destX, int want, float keep = 70f) =>
+                RM_KnockbackVerdicts.ObstaclePlan(lane, control, stop, destX, 13, 10, want, keep, out _);
+            Check("V-03 control lane lands past the column on a full-distance flight", V3("D", true, KbStop.Distance, 14, 4) == null && V3("W", true, KbStop.Distance, 15, 5) == null);
+            Check("V-03 control lane short of or on the column is refused", V3("D", true, KbStop.Distance, 13, 3) != null && V3("S", true, KbStop.Distance, 12, 2) != null);
+            Check("V-03 control lane stopped by anything is refused", V3("D", true, KbStop.Door, 14, 4) != null && V3("W", true, KbStop.Water, 14, 4) != null
+                && V3("S", true, KbStop.Wall, 15, 5) != null);
+            Check("V-03 door lane with cells to rebound passes and reports them",
+                RM_KnockbackVerdicts.ObstaclePlan("D", false, KbStop.Door, 12, 13, 10, 4, 70f, out int back4) == null && back4 == 2, "back=" + back4);
+            Check("V-03 door lane with no cell left to rebound is refused", V3("D", false, KbStop.Door, 12, 1) != null && V3("D", false, KbStop.Door, 12, 2) != null
+                && V3("D", false, KbStop.Door, 12, 4, 0f) != null);
+            Check("V-03 door lane that never meets the door is refused", V3("D", false, KbStop.Distance, 14, 4) != null && V3("D", false, KbStop.Wall, 12, 4) != null);
+            Check("V-03 sandbag lane past the column passes, short of it is refused", V3("S", false, KbStop.Distance, 14, 4) == null
+                && V3("S", false, KbStop.Distance, 13, 3) != null && V3("S", false, KbStop.PartialCover, 12, 4) != null);
+            Check("V-03 water lane: a Water stop on the last cell before it only", V3("W", false, KbStop.Water, 12, 4) == null
+                && V3("W", false, KbStop.Water, 11, 4) != null && V3("W", false, KbStop.Distance, 12, 2) != null && V3("W", false, KbStop.Distance, 15, 5) != null);
+
+            // V-04 sc_hose_drop_control: the blast alone never drops the hose (no launch, still carrying on the takeoff cell, hurt)
+            Check("V-04 hose control passes still carrying, hurt, no launch", RM_KnockbackVerdicts.HoseControl(0, "Carrying", "p", "5,5", "5,5", true));
+            Check("V-04 hose control fails on a launch line", !RM_KnockbackVerdicts.HoseControl(1, "Carrying", "p", "5,5", "5,5", true));
+            Check("V-04 hose control fails dropped, carried by another or moved", !RM_KnockbackVerdicts.HoseControl(0, "Dropped", "p", "5,5", "5,5", true)
+                && !RM_KnockbackVerdicts.HoseControl(0, "Carrying", "none", "5,5", "5,5", true) && !RM_KnockbackVerdicts.HoseControl(0, "Carrying", "p", "6,5", "5,5", true));
+            Check("V-04 hose control fails unhurt (the blast did not land)", !RM_KnockbackVerdicts.HoseControl(0, "Carrying", "p", "5,5", "5,5", false));
+
+            // V-05 sc_hose_drop: one launch that dropped the hose, the end on the takeoff cell, landing 3 cells out
+            bool V5(int launches, bool flag, string carry, string carrier, string end, int cheb) =>
+                RM_KnockbackVerdicts.HoseDrop(launches, flag, carry, carrier, end, "5,5", cheb, out _, out _, out _);
+            Check("V-05 hose drop passes", V5(1, true, "Dropped", "none", "5,5", 3));
+            Check("V-05 hose drop fails at 2 or 4 cells or with no landing cell", !V5(1, true, "Dropped", "none", "5,5", 2) && !V5(1, true, "Dropped", "none", "5,5", 4)
+                && !V5(1, true, "Dropped", "none", "5,5", -1));
+            Check("V-05 hose drop fails with no or two launches, or the launch not dropping it", !V5(0, true, "Dropped", "none", "5,5", 3)
+                && !V5(2, true, "Dropped", "none", "5,5", 3) && !V5(1, false, "Dropped", "none", "5,5", 3));
+            Check("V-05 hose drop fails still carried, or the end elsewhere", !V5(1, true, "Carrying", "p", "5,5", 3) && !V5(1, true, "Dropped", "none", "8,5", 3));
+
+            // V-06 PitProbe's start gate: INVALID unless hauler there and spawned, steel there, a map current
+            string V6(bool h, bool hs, bool st, bool map) => RM_KnockbackVerdicts.PitProbeMissing("pit_goods_fetch", h, hs, false, null, st, true, false, null, map);
+            Check("V-06 pit probe runs with everything there", V6(true, true, true, true) == null);
+            bool allInvalid = true;
+            foreach (var c in new[] { (false, false, true, true), (true, false, true, true), (true, true, false, true), (true, true, true, false), (false, false, false, false) })
+            {
+                string v = V6(c.Item1, c.Item2, c.Item3, c.Item4);
+                allInvalid &= v != null && v.StartsWith("INVALID pit_goods_fetch hauler or steel missing");
+            }
+            Check("V-06 pit probe reads INVALID for each missing piece", allInvalid);
+
+            // V-07 sc_goods_fly_off (blind cycle 3's PF_PROOF_FLYOFF_SKIP_UNCHECKED): skipped flying_off, unmoved, never in the air
+            Check("V-07 fly-off passes skipped, unmoved, whole", RM_KnockbackVerdicts.FlyOff(true, true, true, true, 0, 75, 75));
+            Check("V-07 fly-off fails without the flying_off skip line", !RM_KnockbackVerdicts.FlyOff(false, true, true, true, 0, 75, 75));
+            Check("V-07 fly-off fails moved, in the air, a cell off, gone or split", !RM_KnockbackVerdicts.FlyOff(true, false, true, true, 0, 75, 75)
+                && !RM_KnockbackVerdicts.FlyOff(true, true, false, true, 0, 75, 75) && !RM_KnockbackVerdicts.FlyOff(true, true, true, true, 1, 75, 75)
+                && !RM_KnockbackVerdicts.FlyOff(true, true, true, false, 0, 75, 75) && !RM_KnockbackVerdicts.FlyOff(true, true, true, true, 0, 74, 75));
+
+            // V-08 sc_goods_obstacles' per-lane verdict (column 13, lane row 10); blind cycle 3's PF_GO_WALL_POSITION_UNCHECKED, PF_GO_WATER_UNCHECKED
+            bool V8(string lane, bool control, int x, int z, bool rest = true, bool flew = true, int planX = 15, int planZ = 10, bool bounced = true,
+                bool closed = true, bool dry = true, bool visible = true, int inWater = 0, int hops = 0, int hidden = 0) =>
+                RM_KnockbackVerdicts.ObstacleLane(lane, control, rest, flew, x, z, planX, planZ, 13, 10, bounced, closed, dry, visible, inWater, hops, hidden);
+            Check("V-08 control lane passes on its planned cell only", V8("D", true, 15, 10) && !V8("D", true, 14, 10) && !V8("D", true, 15, 11) && !V8("S", true, 16, 10));
+            Check("V-08 control lane fails unflown or not at rest", !V8("W", true, 15, 10, flew: false) && !V8("W", true, 15, 10, rest: false));
+            Check("V-08 door lane passes bounced back to the blast side, door shut", V8("D", false, 11, 10));
+            Check("V-08 door lane fails unbounced, door open, through or on the door", !V8("D", false, 11, 10, bounced: false)
+                && !V8("D", false, 11, 10, closed: false) && !V8("D", false, 13, 10) && !V8("D", false, 14, 10) && !V8("D", false, 11, 10, flew: false));
+            Check("V-08 sandbag lane passes past the bags in its row", V8("S", false, 15, 10) && !V8("S", false, 13, 10) && !V8("S", false, 15, 11)
+                && !V8("S", false, 15, 10, flew: false));
+            Check("V-08 water lane passes dry on the last cell before it", V8("W", false, 12, 10));
+            Check("V-08 water lane fails drawn on water even once, wet, fogged or off the cell", !V8("W", false, 12, 10, inWater: 1)
+                && !V8("W", false, 12, 10, dry: false) && !V8("W", false, 12, 10, visible: false) && !V8("W", false, 11, 10) && !V8("W", false, 12, 9));
+            Check("V-08 every lane fails on a hop or hidden, or still flying", !V8("S", false, 15, 10, hops: 1) && !V8("W", false, 12, 10, hidden: 1)
+                && !V8("D", true, 15, 10, hops: 1) && !V8("D", false, 11, 10, rest: false));
+
+            // V-09 lane D's rebound: off the door, ReboundCells(left, keep%) cells
+            Check("V-09 door rebound reads the kernel's rebound", RM_KnockbackVerdicts.DoorBounced(1, "Door", 3, RM_KnockbackMath.ReboundCells(3, 70f), 70f)
+                && !RM_KnockbackVerdicts.DoorBounced(1, "Door", 3, RM_KnockbackMath.ReboundCells(3, 70f) + 1, 70f)
+                && !RM_KnockbackVerdicts.DoorBounced(1, "Wall", 3, RM_KnockbackMath.ReboundCells(3, 70f), 70f) && !RM_KnockbackVerdicts.DoorBounced(0, "Door", 3, 2, 70f));
+
+            // V-10 sc_closed_containers, a thrown container (blind cycle 3's PF_ST3_CONTAINER_ZERO_CELLS_OK)
+            Check("V-10 container thrown 1..cap cells away, held", RM_KnockbackVerdicts.ContainerThrown(1, 6, true, true, true) && RM_KnockbackVerdicts.ContainerThrown(6, 6, true, true, true));
+            Check("V-10 container unmoved, past the cap or gone fails", !RM_KnockbackVerdicts.ContainerThrown(0, 6, true, true, true)
+                && !RM_KnockbackVerdicts.ContainerThrown(7, 6, true, true, true) && !RM_KnockbackVerdicts.ContainerThrown(-1, 6, true, true, true));
+            Check("V-10 container toward the blast, not journalled thrown or spilled fails", !RM_KnockbackVerdicts.ContainerThrown(2, 6, false, true, true)
+                && !RM_KnockbackVerdicts.ContainerThrown(2, 6, true, false, true) && !RM_KnockbackVerdicts.ContainerThrown(2, 6, true, true, false));
+        }
+
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");
         return fail == 0 ? 0 : 1;
     }

@@ -35,11 +35,7 @@ namespace RimMandrake.ExplosiveKnockback
         private static IntVec3 PlanGood(Scene s, IntVec3 from, float mass)
         {
             KbSettings k = RimMandrakeExplosiveKnockbackSettings.Kernel();
-            if (mass > k.lightMassLimit)
-            {
-                return IntVec3.Invalid;
-            }
-            int cells = RM_KnockbackMath.WildCells((from - s.o).LengthHorizontal, 2.9f, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
+            int cells = RM_KnockbackVerdicts.GoodCells((from - s.o).LengthHorizontal, 2.9f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);
             if (cells <= 0)
             {
                 return IntVec3.Invalid;

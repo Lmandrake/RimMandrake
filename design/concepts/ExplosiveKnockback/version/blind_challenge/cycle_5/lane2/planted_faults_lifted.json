@@ -1,0 +1,152 @@
+[
+ {
+  "id": "PF_P_CALIBRATION_ANY_CELLS",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "return cells == 3 && away && alive && launches == 1;",
+  "new": "return cells >= 0 && away && alive && launches == 1;",
+  "bars": [
+   "inv_proof_scenes",
+   "people_thrown_three_cells"
+  ],
+  "moved_from": "RM_KnockbackProof.cs"
+ },
+ {
+  "id": "PF_SB_PLAN_IGNORES_MASS_LIMIT",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "            if (mass > k.lightMassLimit)\n",
+  "new": "            if (mass > k.lightMassLimit * 10f)\n",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "moved_from": "RM_KnockbackProof_StoreroomBombPit.cs"
+ },
+ {
+  "id": "PF_SB_PLAN_PLAIN_KERNEL",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "return RM_KnockbackMath.WildCells(dist, radius, 1f, mass, k, wild);",
+  "new": "return RM_KnockbackMath.WildCells(dist, radius, 1f, mass, k, 1f);",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "moved_from": "RM_KnockbackProof_StoreroomBombPit.cs"
+ },
+ {
+  "id": "PF_GO_CONTROL_NEVER_FAILS",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "if (stop != KbStop.Distance || destX <= beyond)",
+  "new": "if (false)",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "moved_from": "RM_KnockbackProof_GoodsObstacles.cs"
+ },
+ {
+  "id": "PF_GO_DOOR_LANE_NO_REBOUND",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "if (stop != KbStop.Door || back < 1)",
+  "new": "if (stop != KbStop.Door)",
+  "bars": [
+   "inv_proof_scenes"
+  ],
+  "moved_from": "RM_KnockbackProof_GoodsObstacles.cs"
+ },
+ {
+  "id": "PF_S3_HOSE_CONTROL_ALWAYS_PASSES",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "return launches == 0 && still && hurt;",
+  "new": "return true;",
+  "bars": [
+   "inv_proof_scenes",
+   "hose_drops_at_takeoff"
+  ],
+  "moved_from": "RM_KnockbackProof_StageThree.cs"
+ },
+ {
+  "id": "PF_S3_HOSE_THREE_DROPPED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "return launched && dropped && three;",
+  "new": "return launched && dropped;",
+  "bars": [
+   "inv_proof_scenes",
+   "hose_drops_at_takeoff"
+  ],
+  "moved_from": "RM_KnockbackProof_StageThree.cs"
+ },
+ {
+  "id": "PF_PP_INVALID_NEVER",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "if (hThere && stThere && hSpawned && mapThere)",
+  "new": "if (mapThere)",
+  "bars": [
+   "inv_proof_scenes",
+   "pit_goods_fetched"
+  ],
+  "moved_from": "RM_KnockbackProof_PitProbe.cs"
+ },
+ {
+  "id": "PF_PP_INVALID_TEXT",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "return \"INVALID \" + name + \" hauler or steel missing",
+  "new": "return \"PASS \" + name + \" hauler or steel missing",
+  "bars": [
+   "inv_proof_scenes",
+   "pit_goods_fetched"
+  ],
+  "moved_from": "RM_KnockbackProof_PitProbe.cs"
+ },
+ {
+  "id": "PF_PROOF_FLYOFF_SKIP_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "return skipped && noMove && neverAir && spawned",
+  "new": "return noMove && neverAir && spawned",
+  "bars": [
+   "inv_proof_scenes",
+   "settings_scale_and_switch"
+  ],
+  "moved_from": "RM_KnockbackProof.cs"
+ },
+ {
+  "id": "PF_GO_WALL_POSITION_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "ok = rest && flew && x == planX && z == planZ;",
+  "new": "ok = rest && flew;",
+  "bars": [
+   "inv_proof_scenes",
+   "goods_arc_spin_rebound"
+  ],
+  "moved_from": "RM_KnockbackProof_GoodsObstacles.cs"
+ },
+ {
+  "id": "PF_GO_WATER_UNCHECKED",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "ok = flew && dry && visible && inWater == 0 &&",
+  "new": "ok = flew && dry && visible &&",
+  "bars": [
+   "inv_proof_scenes",
+   "doors_and_deep_water_stop"
+  ],
+  "moved_from": "RM_KnockbackProof_GoodsObstacles.cs"
+ },
+ {
+  "id": "PF_ST3_CONTAINER_ZERO_CELLS_OK",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs",
+  "old": "return cells >= 1 && cells <= maxCells",
+  "new": "return cells >= 0 && cells <= maxCells",
+  "bars": [
+   "inv_proof_scenes",
+   "closed_container_holds"
+  ],
+  "moved_from": "RM_KnockbackProof_StageThree.cs"
+ },
+ {
+  "id": "PF_ST3_FIREHALF_LANE_NOOP",
+  "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs",
+  "old": "[\"fireHalf\"] = Lane(new[] { \"fireAtHalf=False\" }),",
+  "new": "[\"fireHalf\"] = Lane(new[] { \"fireAtHalf=True\" }),",
+  "bars": [
+   "inv_proof_scenes",
+   "settings_scale_and_switch"
+  ],
+  "moved_from": "(unmoved: a lane table, caught by T_STAGE3_SCENES F5)"
+ }
+]

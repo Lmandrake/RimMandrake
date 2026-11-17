@@ -10,7 +10,7 @@
 4. the rim (inv_too_weak_skip, every_good_moves' "reached"): a thing whose KERNEL throw rounds to 0 is skipped too_weak, goods
    included, so a rim good never flies one cell on its wild factor alone (Execute and the prefix's ItemWillBeThrown agree).
 5. wiring the offline deciders could not see (blind cycle 2's planted faults): GoodsThrowWild is the sheet's 1.6; a gas burst's
-   goods cap is exact (scaleOwnCap false); every proof goods expectation uses WildCells; every validation.py scene is a proof
+   goods cap is exact (scaleOwnCap false); every proof goods expectation plans through RM_KnockbackVerdicts.GoodCells with GoodsThrowWild; every validation.py scene is a proof
    SceneName; the Stage-3 sweep's closedGuard and fireHalf lanes read their own observation; storeroom_pit_proof.py reads the
    player's settings before its first reset and puts them back in its finally.
 Each check is shown to fail on a planted break of the source it reads.
@@ -22,6 +22,7 @@ import re
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+SELFTEST_MARK = "\n// ---- Source/SelfTest ----\n"   # load() puts the mod's sources before it, the SelfTest's after
 
 
 def body(src, head):
@@ -76,6 +77,14 @@ def checks(mc, math_cs, all_src):
     iw = body(mc, "public static bool ItemWillBeThrown(")
     if not re.search(r"RM_KnockbackMath\.ThrowCells\(dist, explosion\.radius, cfg\.force, mass, s\) > 0\s*&&", iw):
         f.append("the rim: ItemWillBeThrown does not require a kernel throw of a cell")
+    # the proof's goods plans go through RM_KnockbackVerdicts.GoodCells (kernel-tested, V-02) with the real wild factor
+    # (RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED: a plan passing 1f there is the plain kernel again)
+    calls = re.findall(r"RM_KnockbackVerdicts\.GoodCells\(([^;]*)\);", all_src.split(SELFTEST_MARK)[0])
+    if len(calls) < 4:
+        f.append("proof goods plans: %d RM_KnockbackVerdicts.GoodCells calls, want WantCells, WantCellsFrom, the items want and PlanGood" % len(calls))
+    for c in calls:
+        if not c.rstrip().endswith("RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild"):
+            f.append("a proof goods plan passes %r, not GoodsThrowWild, as the wild factor" % c.split(",")[-1].strip())
     return f
 
 
@@ -85,8 +94,8 @@ def wiring(mod, mc, proof, three, val, store):
         f.append("GoodsThrowWild is not the sheet's 1.6")
     if not re.search(r'source = "gas",\s*scaleOwnCap = false \}', mc):
         f.append("the gas burst's goods cap is rescaled (scaleOwnCap not false)")
-    if re.search(r"lightMassLimit \? 0 : RM_KnockbackMath\.ThrowCells\(", proof):
-        f.append("a proof goods expectation uses the plain kernel, not WildCells")
+    if re.search(r"lightMassLimit \? 0 : RM_KnockbackMath\.(ThrowCells|WildCells)\(", proof):
+        f.append("a proof goods expectation plans inline (the plain kernel or an untested copy), not through RM_KnockbackVerdicts.GoodCells")
     names = re.search(r"SceneNames\s*=\s*\{(.*?)\};", proof, re.S)
     listed = set(re.findall(r'"(\w+)"', names.group(1))) if names else set()
     want = set(re.findall(r'^\s*\("(\w+)", "\w+", "\w+",', val, re.M))
@@ -107,7 +116,7 @@ def load(src_dir):
     rd = lambda n: open(os.path.join(src_dir, n), encoding="utf-8").read()
     mc, km = rd("RM_MapComponent_Knockback.cs"), rd("RM_KnockbackMath.cs")
     every = "".join(open(os.path.join(src_dir, n), encoding="utf-8").read() for n in sorted(os.listdir(src_dir)) if n.endswith(".cs"))
-    every += "".join(open(os.path.join(src_dir, "SelfTest", n), encoding="utf-8").read()
+    every += SELFTEST_MARK + "".join(open(os.path.join(src_dir, "SelfTest", n), encoding="utf-8").read()
                      for n in sorted(os.listdir(os.path.join(src_dir, "SelfTest"))) if n.endswith(".cs")) if os.path.isdir(os.path.join(src_dir, "SelfTest")) else ""
     return mc, km, every
 
@@ -133,6 +142,7 @@ def main(argv):
         "container planned without the kernel": (mc.replace("RM_KnockbackMath.ContainerThrowCells(one,", "ThrowCellsLocal(one,", 1), km, every),
         "flying off falls through": (mc.replace('"reason", "flying_off"', '"reason", "flying"', 1), km, every),
         "rim good flies on wild alone": (mc.replace("if (kernelCells <= 0 || cells <= 0)", "if (cells <= 0)", 1), km, every),
+        "proof plan wild 1": (mc, km, every.replace("mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);\n            if (cells <= 0)", "mass, k, 1f);\n            if (cells <= 0)", 1)),
     }
     missed = [n for n, (a, b, c) in planted.items() if (a, b, c) == (mc, km, every) or not checks(a, b, c)]
     def w(i, old, new):
@@ -140,7 +150,7 @@ def main(argv):
     wired = {
         "wild constant 1.0": w(0, "GoodsThrowWild = 1.6f;", "GoodsThrowWild = 1.0f;"),
         "gas cap rescaled": w(1, "scaleOwnCap = false };", "scaleOwnCap = true };"),
-        "goods want by the plain kernel": w(2, "int want = mass > k.lightMassLimit ? 0 : RM_KnockbackMath.WildCells((sc.starts[key] - sc.o).LengthHorizontal, 2.9f, 1f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);",
+        "goods want by the plain kernel": w(2, "int want = RM_KnockbackVerdicts.GoodCells((sc.starts[key] - sc.o).LengthHorizontal, 2.9f, mass, k, RimMandrakeExplosiveKnockbackSettings.GoodsThrowWild);",
                                             "int want = mass > k.lightMassLimit ? 0 : RM_KnockbackMath.ThrowCells((sc.starts[key] - sc.o).LengthHorizontal, 2.9f, 1f, mass, k);"),
         "a scene name dropped": w(2, '"goods_fly_rebound", "goods_fly_off",', '"goods_fly_rebound",'),
         "closedGuard lane always own": w(3, 'own = obs["lockerGoods"] == "lost";', "own = true;"),

@@ -32,7 +32,10 @@ checks = [
     ("ItemWillBeThrown decides by WildCells", re.search(r"WildCells\([^;]*GoodsThrowWild", will) is not None),
     ("a container is not thrown wild", "WildCells" not in cont and cont != ""),
     ("GoodsThrowWild ships at 1.6", re.search(r"public const float GoodsThrowWild = 1\.6f;", mod) is not None),
-    ("the proof's goods expectations fly wild", read("RM_KnockbackProof.cs").count("WildCells(") >= 3),
+    # the plans moved into RM_KnockbackVerdicts.GoodCells (RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED)
+    ("the proof's goods expectations fly wild", read("RM_KnockbackProof.cs").count("WildCells(")
+     + len(re.findall(r"RM_KnockbackVerdicts\.GoodCells\([^;]*GoodsThrowWild\)", read("RM_KnockbackProof.cs"))) >= 3
+     and "RM_KnockbackMath.WildCells(dist, radius, 1f, mass, k, wild)" in read("RM_KnockbackVerdicts.cs")),
     ("KbConfig has scaleOwnCap", re.search(r"public bool scaleOwnCap = true;", math) is not None),
     ("Apply honours scaleOwnCap", re.search(r"scaleOwnCap \? ownCapScale : 1f", math) is not None),
     ("GasBurst sets scaleOwnCap = false", "scaleOwnCap = false" in gas),

@@ -117,13 +117,13 @@ namespace RimMandrake.ExplosiveKnockback
                 if (off)
                 {
                     // control: the blast alone (damage, interruption) does not drop the hose
-                    bool still = obs["carry"] == "Carrying" && obs["carrier"] == "p" && obs["pCell"] == at;
-                    return Result(sc, launch.Count == 0 && still && hurt, detail);
+                    return Result(sc, RM_KnockbackVerdicts.HoseControl(launch.Count, obs["carry"], obs["carrier"], obs["pCell"], at, hurt), detail);
                 }
-                bool launched = launch.Count == 1 && launch[0]["hoseDropped"] is bool hd && hd;
-                bool dropped = obs["carry"] == "Dropped" && obs["carrier"] == "none" && obs["end"] == at;
-                bool three = launch.Count == 1 && launch[0]["to"] is IntVec3 lt && Cheb(lt, to) == 3;
-                return Result(sc, launched && dropped && three, "launched=" + launched + " dropped=" + dropped + " three=" + three + " " + detail);
+                bool hd = launch.Count == 1 && launch[0]["hoseDropped"] is bool hdv && hdv;
+                int cheb = launch.Count == 1 && launch[0]["to"] is IntVec3 lt ? Cheb(lt, to) : -1;
+                bool ok = RM_KnockbackVerdicts.HoseDrop(launch.Count, hd, obs["carry"], obs["carrier"], obs["end"], at, cheb,
+                    out bool launched, out bool dropped, out bool three);
+                return Result(sc, ok, "launched=" + launched + " dropped=" + dropped + " three=" + three + " " + detail);
             };
             return null;
         }
@@ -303,7 +303,7 @@ namespace RimMandrake.ExplosiveKnockback
                     bool away = b.Spawned && Cheb(b.Position, sc.o) > Cheb(sc.starts[k], sc.o);
                     bool held = k == "crate" || (GoodsOn(b).Count == (int)sc.numbers["goods_" + k]);
                     bool thrown = line.Count == 1 && (string)line[0]["action"] == "thrown";
-                    bool row = c >= 1 && c <= RimMandrakeExplosiveKnockbackSettings.maxThrowCells && away && thrown && held;
+                    bool row = RM_KnockbackVerdicts.ContainerThrown(c, RimMandrakeExplosiveKnockbackSettings.maxThrowCells, away, thrown, held);
                     ok &= row;
                     rows.Add(k + "=" + (row ? "thrown" : "FAIL") + " cells=" + c + " away=" + away + " held=" + held
                         + " action=" + (line.Count > 0 ? (string)line[0]["action"] : "none") + "x" + line.Count);
