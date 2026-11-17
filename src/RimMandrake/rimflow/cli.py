@@ -3811,7 +3811,8 @@ def _bridge_take_locked(args, seat, evs, w):
     won = _mirror_from_ledger(
         seat, note=("taken from %s: %s" % (holder, why)) if why else None)
     if won == seat:
-        model.write_shared_bridge(seat, args.purpose)
+        model.write_shared_bridge(seat, args.purpose, identity=driver_lock.my_identity(),
+                                  role_unit=os.environ.get("RM_ROLE_UNIT") or None)
     if won != seat:
         # Another clone's ledger write cannot race this lock, but a write that bypasses it can (a hand-run
         # `_emit`, an older rimflow). Both events are in the ledger, the later one holds, and the mirror says so.

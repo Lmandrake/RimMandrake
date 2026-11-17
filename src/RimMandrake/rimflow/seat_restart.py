@@ -842,6 +842,8 @@ def bridge_reading(seat):
     except Exception as e:  # noqa: BLE001 - an unreadable bridge holds the restart
         return {"state": "UNMEASURED", "holders": [], "why": "shared bridge: %s: %s" % (type(e).__name__, e)}
     out = {"state": "MEASURED", "holders": holders, "bridge": list(holders)}
+    if holders:
+        out["shared"] = b                # the record: its taker's identity and role_unit, where the take wrote them
     try:
         import driver_lock
         p = driver_lock.lock_path()
@@ -887,27 +889,54 @@ def in_window_tree(ident, window_pid, ppid=None):
     return None
 
 
+DETACHED_UNIT = "rm-detached-"          # detached_helper.py's unit names: a systemd-run service, outside every window
+
+
+def _holder_hold(seat, what, ident, rec, window_pid, ppid):
+    """One lock's hold reason, or None: its holder process is outside the window's tree, or (no pid recorded) its
+    role_unit is a detached run's. Every reason names the real holder: pid, unit, purpose, clone."""
+    ident = ident or {}
+    who = ", ".join(x for x in (
+        "pid %s" % ident["pid"] if ident.get("pid") else None,
+        "unit %s" % rec["role_unit"] if rec.get("role_unit") else None,
+        "for: %s" % str(rec["purpose"])[:120] if rec.get("purpose") else None,
+        "clone %s" % rec["clone"] if rec.get("clone") else None) if x)
+    inside = in_window_tree(ident, window_pid, ppid) if ident else None
+    if inside is False:
+        return None
+    if inside is None and not ident and str(rec.get("role_unit") or "").startswith(DETACHED_UNIT):
+        return None
+    if inside is True:
+        return "bridge/driver lock held by %s: %s is the window's (%s)" % (seat, what, who)
+    return "bridge/driver lock held by %s: %s holder UNMEASURED against window pid %s (%s; %s)" % (
+        seat, what, window_pid, ident.get("platform") or "no identity", who or "no holder recorded")
+
+
 def bridge_hold(seat, br, window_pid, ppid=None):
     """-> the hold reason a bridge reading puts on the seat's restart, or None.
     RIMMANDRAKE_FIX_RESTART_HELD_BY_OWN_HELPERS_DRIVER_LOCK (measured 2026-11-15: a Conductor held 34 min): the driver
     lock names a SEAT, but its holder is a process; a detached run of the seat survives the window's kill, so its lock
-    is no reason to hold. The shared bridge by the seat, and a driver lock held by the window or a process under it
-    (in-process subagents share the window's pid), still hold; a holder that cannot be placed holds, UNMEASURED."""
+    is no reason to hold. The driver lock held by the window or a process under it (in-process subagents share the
+    window's pid) still holds; a holder that cannot be placed holds, UNMEASURED.
+    RIMMANDRAKE_FREE_GOODBYE_RESTART_HELD_BY_DETACHED_HELPERS_LOCK (measured 2026-11-17: a goodbye held 21 min): the
+    SHARED bridge names a seat too, and a detached run's take wrote it; it is judged the same way, on the identity the
+    take records (cli _bridge_take), or, a record with no pid, on its detached role_unit."""
     if br.get("state") != "MEASURED":
         return "bridge unreadable (%s)" % br.get("why")
     if seat not in (br.get("holders") or []):
         return None
-    d = br.get("driver") or {}
-    if "bridge" not in br or seat in br["bridge"] or d.get("seat") != seat:
+    if "bridge" not in br:
         return "bridge/driver lock held by %s" % seat
-    ident = d.get("identity") or {}
-    inside = in_window_tree(ident, window_pid, ppid)
-    if inside is False:
-        return None
-    if inside is True:
-        return "bridge/driver lock held by %s (holder pid %s is the window's)" % (seat, ident.get("pid"))
-    return "bridge/driver lock held by %s: holder pid %s UNMEASURED against window pid %s (%s)" % (
-        seat, ident.get("pid"), window_pid, ident.get("platform") or "no identity")
+    out = []
+    d = br.get("driver") or {}
+    if seat in br["bridge"]:
+        rec = br.get("shared") or {}
+        out.append(_holder_hold(seat, "shared bridge", rec.get("identity"), rec, window_pid, ppid))
+    if d.get("seat") == seat:
+        out.append(_holder_hold(seat, "driver lock", d.get("identity"), d, window_pid, ppid))
+    elif seat not in br["bridge"]:
+        out.append("bridge/driver lock held by %s" % seat)
+    return "; ".join(x for x in out if x) or None
 
 
 def game_reading(seat, clone, events_since, now, hold_s):
@@ -916,7 +945,26 @@ def game_reading(seat, clone, events_since, now, hold_s):
     for ev in events_since(clone, seat, _iso(now - hold_s)):
         if ev.get("event") == "game":
             last = ev
-    return {"state": last.get("state"), "at": _ts(last.get("ts"))} if last else None
+    if not last:
+        return None
+    out = {"state": last.get("state"), "at": _ts(last.get("ts"))}
+    for k in ("role_unit", "measured", "evidence"):
+        if last.get(k):
+            out[k] = last[k]
+    return out
+
+
+def game_hold(seat, g, now, hold_s):
+    """-> the hold a game reading puts on the seat's restart, or None. Only a transition the WINDOW started holds: a
+    detached run's event (its role_unit) is that run's game, and a measured correction (sync_game_state: the record
+    disagreed with the machine) is a reading of a game nobody here recorded starting; neither is the window's to
+    settle (RIMMANDRAKE_FREE_GOODBYE_RESTART_HELD_BY_DETACHED_HELPERS_LOCK: such a LOADING, "a DEFAULT, not a
+    reading", held a goodbye 21 min)."""
+    if not g or g.get("state") not in TRANSITIONAL or now - (g.get("at") or now) >= hold_s:
+        return None
+    if g.get("role_unit") or g.get("measured"):
+        return None
+    return "game action by %s: %s (since %s)" % (seat, g["state"], _iso(g.get("at") or now))
 
 
 WORK_EVENTS = ("claim", "start", "reclaim")
@@ -2003,6 +2051,12 @@ def _clone_tidy(seat, rs, ro, act):
                 seat, "; ".join("%s (%s)" % (c["path"], ", ".join(c["risks"])) for c in bad)))
 
 
+def _holders_line(rs, limit=400):
+    """The holds without their fixes, cut to one line: the RAISE FIRST line names what holds, not only that it does."""
+    why = rs.get("held_what") or rs.get("held_why") or "?"
+    return why if len(why) <= limit else why[:limit - 3] + "..."
+
+
 def _held_tell(seat, cfg, rs, st, now, act):
     """A held restart is SEEN (RIMMANDRAKE_PUBLISH_HELD_RESTART_LEDGER_LINE_SILENT_TWO_HOURS: 2 h 17 min held on
     2026-11-15, said only in the journal). Its first hold: one Conductor-log line. Held past the bound (held_tell_s
@@ -2015,8 +2069,8 @@ def _held_tell(seat, cfg, rs, st, now, act):
         rs["held_logged"] = now
         alarms.pop("restart:%s:held_first" % seat, None)
         act(do="alarm", kind="restart:%s:held_first" % seat, seat=seat, note=False, conductor_log=True,
-            raise_first="%s's restart (%s) is held; it goes by itself once this clears." % (
-                seat, rs.get("ticket") or rs.get("source")),
+            raise_first="%s's restart (%s) is held by: %s. It goes by itself once this clears." % (
+                seat, rs.get("ticket") or rs.get("source"), _holders_line(rs)),
             why="seat restart of %s held: %s" % (seat, why))
     told = rs.get("handoff") is True or _goodbye(cfg, rs)
     bound, start = (cfg["held_tell_s"], rs.get("ts") or now) if told else (cfg["hold_alarm_s"], rs["held_since"])
@@ -2025,8 +2079,10 @@ def _held_tell(seat, cfg, rs, st, now, act):
     rs["held_alarmed"] = now
     alarms.pop("restart:%s:held" % seat, None)
     act(do="alarm", kind="restart:%s:held" % seat, seat=seat, ticket=rs.get("ticket"), note=True, conductor_log=True,
-        raise_first=("%s said HANDOFF READY or goodbye %d min ago and is still not restarted." % (seat, (now - start) // 60)
-                     if told else "%s's restart has been held %d min." % (seat, (now - start) // 60)),
+        raise_first=("%s said HANDOFF READY or goodbye %d min ago and is still not restarted; held by: %s."
+                     % (seat, (now - start) // 60, _holders_line(rs))
+                     if told else "%s's restart has been held %d min by: %s." % (seat, (now - start) // 60,
+                                                                                 _holders_line(rs))),
         why="seat restart of %s held %d s: %s" % (seat, now - rs["held_since"], why))
 
 
@@ -2132,9 +2188,9 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     bh = bridge_hold(seat, ro["bridge"](seat) or {}, cur.get("pid"), ro.get("ppid"))
     if bh:
         holds.append(bh)
-    g = ro["game"](seat)
-    if g and g.get("state") in TRANSITIONAL and now - (g.get("at") or now) < cfg["game_hold_s"]:
-        holds.append("game action by %s: %s" % (seat, g["state"]))
+    gh = game_hold(seat, ro["game"](seat), now, cfg["game_hold_s"])
+    if gh:
+        holds.append(gh)
     if obs.get("paused"):
         holds.append("PAUSE: %s" % obs["paused"])
     ss = (st.get("seats") or {}).get(seat) or {}
@@ -2162,6 +2218,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
             holds.append("ledger shard unpublished: %s (the restart publishes it itself once the rest clears)" % shard_owed)
         rs.setdefault("held_since", now)
         rs["held_why"] = hold_fixes(holds)
+        rs["held_what"] = "; ".join(holds)
         _held_tell(seat, cfg, rs, st, now, act)
         if hard:
             _no_boundary(seat, cfg, memo, now, act, "; ".join(holds))
@@ -2169,6 +2226,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         return
     rs.pop("held_since", None)
     rs.pop("held_why", None)
+    rs.pop("held_what", None)
     quiet = goodbye or (cur.get("status") == "idle" and tx and killable_turn(tx)
                         and now - (tx.get("last_at") or now) >= cfg["now_quiet_s" if instant else "quiet_s"])
     # a helper's last notice wakes a drain, a ring taken just before a handoff runs its turn out: neither fails the request
@@ -2958,6 +3016,8 @@ def note_shard_refused(rs, why, now):
 
 
 HOLD_FIXES = (("helper(s) alive", "let them finish, or checkpoint them: seat_restart.py checkpoint --seat CONDUCTOR"),
+              ("holder UNMEASURED against window", "place the named holder (rimflow bridge who): the window's -> rimflow "
+               "bridge release; another run's -> it releases it, or rimflow bridge take --force --for \"<what>\""),
               ("bridge/driver lock held", "release it: rimflow bridge release"),
               ("PAUSE", "the Dispatcher is paused; it goes when the pause is lifted"),
               ("background command", "end the named background command (TaskStop), or let it finish"),

@@ -219,15 +219,20 @@ def restart_hold_rows(g):
     check(rc == 0 and g.holder() == "RELENTLESS", "Relentless holds through the real cli: %s" % out[:90])
     relentless_clears(restart_probe(g), "a Relentless hold in the shared file")
     g.rf("relentless", "bridge", "release", "--mine")
-    rc, out = g.rf("conductor", "bridge", "take", "--idle-ok", "--for", "the Conductor driving")
-    check(rc == 0 and g.holder() == "BENCH", "the Conductor holds through the real cli: %s" % out[:90])
-    bench_holds(restart_probe(g), "the Conductor's own hold in the shared file")
-    g.rf("conductor", "bridge", "release", "--mine")
     lock = os.path.join(g.tmp, "DRIVER_LOCK_RESTART.json")
     keep = g.base["RIMFLOW_SHARED_BRIDGE"]
     sleeper = subprocess.Popen(["sleep", "300"])
     sibling = subprocess.Popen(["sleep", "300"])    # a window the holder is NOT under: a detached run
     try:
+        # the shared file records the taker's process (RIMMANDRAKE_FREE_GOODBYE_RESTART_HELD_BY_DETACHED_HELPERS_LOCK):
+        # the window's own take holds its restart, a detached run's take (outside the window's tree) does not
+        for rule, how, win in ((bench_holds, "the Conductor's own hold in the shared file", os.getpid()),
+                               (detached_clears, "the Conductor's detached run's hold in the shared file", sibling.pid)):
+            rc, out = g.rf("conductor", "bridge", "take", "--idle-ok", "--for", "the Conductor driving",
+                           RM_DRIVER_PID=str(sleeper.pid))
+            check(rc == 0 and g.holder() == "BENCH", "%s: the Conductor holds through the real cli: %s" % (how, out[:90]))
+            rule(restart_probe(g, PROBE_WINDOW_PID=str(win)), how)
+            g.rf("conductor", "bridge", "release", "--mine", RM_DRIVER_PID=str(sleeper.pid))
         for who, rule, how, win in (("relentless", relentless_clears, "a Relentless driver lock alone", None),
                                     ("conductor", bench_holds, "the Conductor's driver lock alone", os.getpid()),
                                     ("conductor", detached_clears, "the Conductor's detached run's driver lock alone",

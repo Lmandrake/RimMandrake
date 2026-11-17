@@ -1351,9 +1351,11 @@ def _shared_fence(p):
     return driver_lock._fence(p), driver_lock.FenceBusy
 
 
-def write_shared_bridge(holder, purpose=None, since=None, _check=None):
+def write_shared_bridge(holder, purpose=None, since=None, _check=None, identity=None, role_unit=None, clone=None):
     """Record (or with holder=None clear) the cross-clone holder. Best effort: a failure prints and allows.
-    _check: called on the record read inside the fence; False skips the write (touch_shared_bridge)."""
+    _check: called on the record read inside the fence; False skips the write (touch_shared_bridge).
+    identity (driver_lock.my_identity) and role_unit (RM_ROLE_UNIT) say which PROCESS took it, for a seat shared by a
+    window and its detached runs (RIMMANDRAKE_FREE_GOODBYE_RESTART_HELD_BY_DETACHED_HELPERS_LOCK); clone, the taker's."""
     p = shared_bridge_path()
     if not p:
         return
@@ -1362,13 +1364,17 @@ def write_shared_bridge(holder, purpose=None, since=None, _check=None):
         with fence:
             if _check is not None and not _check(read_shared_bridge()):
                 return
-            _write_shared_bridge(p, holder, purpose, since)
+            _write_shared_bridge(p, holder, purpose, since, identity, role_unit, clone)
     except busy as e:
         sys.stderr.write("rimflow: shared bridge lock %s not written, its fence stayed busy: %s\n" % (p, e))
 
 
-def _write_shared_bridge(p, holder, purpose, since):
-    body = {"holder": holder, "since": since or now(), "touched": now(), "purpose": purpose, "clone": ROOT} if holder else {"holder": None, "touched": now(), "clone": ROOT}
+def _write_shared_bridge(p, holder, purpose, since, identity=None, role_unit=None, clone=None):
+    body = {"holder": holder, "since": since or now(), "touched": now(), "purpose": purpose, "clone": clone or ROOT} if holder else {"holder": None, "touched": now(), "clone": ROOT}
+    if holder and identity:
+        body["identity"] = identity
+    if holder and role_unit:
+        body["role_unit"] = role_unit
     tmp = p + ".%d.tmp" % os.getpid()
     try:
         with open(tmp, "w", encoding="utf-8") as f:
@@ -1381,9 +1387,13 @@ def _write_shared_bridge(p, holder, purpose, since):
 def touch_shared_bridge(seat):
     """A holder's every event keeps its cross-clone lock fresh, the way its ledger events keep it alive locally."""
     d = read_shared_bridge()
-    if d and d.get("holder") == seat:
-        # judged again inside the fence: a holder written since the read above is never overwritten by this heartbeat
-        write_shared_bridge(seat, d.get("purpose"), d.get("since"), _check=lambda now: now == d)
+    # only from the taker's own clone (RIMMANDRAKE_KEEP_BRIDGE_HEARTBEAT_TO_HOLDER_CLONE_ONLY): every detached run is
+    # seat BENCH, so another clone's note kept a finished run's hold alive and stamped itself on it
+    if d and d.get("holder") == seat and d.get("clone") in (None, ROOT):
+        # judged again inside the fence: a holder written since the read above is never overwritten by this heartbeat.
+        # Every process of the seat beats it, so the beat keeps the TAKER's clone, pid and unit, never its own
+        write_shared_bridge(seat, d.get("purpose"), d.get("since"), _check=lambda now: now == d,
+                            identity=d.get("identity"), role_unit=d.get("role_unit"), clone=d.get("clone"))
 
 
 def shared_bridge_age_seconds(d):

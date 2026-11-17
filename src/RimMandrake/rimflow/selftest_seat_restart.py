@@ -642,6 +642,111 @@ def test_driver_lock_detached_holder():
           "bridge_reading names the driver lock's holder identity apart from the shared bridge (%s)" % r)
 
 
+def test_goodbye_not_held_by_a_detached_runs_bridge_or_game():
+    """RIMMANDRAKE_FREE_GOODBYE_RESTART_HELD_BY_DETACHED_HELPERS_LOCK (measured 2026-11-17 07:05-07:27Z): a goodbye and a
+    HANDOFF READY held 21 min on "bridge/driver lock held by BENCH" and "game action by BENCH: LOADING". The SHARED bridge
+    named the seat because a detached run (parent systemd) took it, the driver lock was that run's pid, and the LOADING
+    was a measured correction (probe: "BRIDGE NOT PROBED ... a DEFAULT"), no action of the window's. Neither survives the
+    window's kill or is its to clear: no hold. The window or its child holding either still holds; an unplaceable
+    holder holds UNMEASURED, and every hold names the real holder."""
+    sch, win = sched(), 4242
+    host = __import__("socket").gethostname()
+    tree = {9001: 1500, 1500: 1, 9002: 4242, 9004: 7000}
+    det = "rm-detached-foundry-some-item-1794898927"
+
+    def ident(pid):
+        return {"pid": pid, "start": 1, "boot_id": "b", "platform": "wsl", "host": host}
+
+    def br(shared=None, driver=None):
+        r = {"state": "MEASURED", "holders": [], "bridge": []}
+        if shared is not None:
+            r["holders"].append("FOUNDRY")
+            r["bridge"].append("FOUNDRY")
+            r["shared"] = dict({"holder": "FOUNDRY", "purpose": "launch both games", "clone": "/c/X.det"}, **shared)
+        if driver is not None:
+            r["holders"].append("FOUNDRY")
+            r["driver"] = {"seat": "FOUNDRY", "identity": ident(driver)}
+        return r
+    hold = lambda b: SR.bridge_hold("FOUNDRY", b, win, lambda p: tree.get(p))  # noqa: E731
+    check("held by FOUNDRY" in (hold(br(shared={"identity": ident(win)})) or ""), "shared bridge by the window -> held")
+    check("held by FOUNDRY" in (hold(br(driver=9002)) or ""), "driver lock by a window child -> held")
+    check(hold(br(driver=9001)) is None, "driver lock by a detached run -> no hold")
+    check(hold(br(shared={"identity": ident(9001), "role_unit": det}, driver=9001)) is None,
+          "shared bridge AND driver lock by a detached run (the 07:05Z case) -> no hold (%s)"
+          % hold(br(shared={"identity": ident(9001), "role_unit": det}, driver=9001)))
+    check(hold(br(shared={"role_unit": det})) is None,
+          "a shared record with no pid but a detached run's role_unit -> no hold")
+    h = hold(br(shared={"identity": ident(9004)})) or ""
+    check("UNMEASURED" in h and "9004" in h and "launch both games" in h,
+          "shared bridge holder pid unmeasurable -> held UNMEASURED, naming pid and purpose (%s)" % h)
+    h = hold(br(shared={})) or ""
+    check("UNMEASURED" in h and "launch both games" in h and "/c/X.det" in h,
+          "a shared record with no identity at all -> held UNMEASURED, naming purpose and clone (%s)" % h)
+    h = hold(br(shared={"identity": ident(9001)}, driver=9002)) or ""
+    check("held by FOUNDRY" in h and "driver" in h, "detached shared bridge but the window's driver lock -> held (%s)" % h)
+    # the game hold
+    g = lambda **kw: dict({"state": "LOADING", "at": T0 - 60}, **kw)  # noqa: E731
+    check(SR.game_hold("FOUNDRY", g(), T0, 1800) is not None, "game LOADING by the window -> held")
+    check(SR.game_hold("FOUNDRY", g(role_unit=det), T0, 1800) is None, "game LOADING by a detached run -> no hold")
+    check(SR.game_hold("FOUNDRY", g(measured=True), T0, 1800) is None,
+          "a measured LOADING correction (no action of the window's) -> no hold")
+    check(SR.game_hold("FOUNDRY", g(state="UP"), T0, 1800) is None, "a settled game -> no hold")
+    check(SR.game_hold("FOUNDRY", g(at=T0 - 4000), T0, 1800) is None, "an old transition -> no hold")
+    evs = [{"event": "game", "state": "LOADING", "measured": True, "evidence": "x", "ts": D.iso(T0 - 30)},
+           {"event": "game", "state": "LOADING", "role_unit": det, "ts": D.iso(T0 - 20)}]
+    r = SR.game_reading("FOUNDRY", CLONE, lambda c, s, since: evs, T0, 1800)
+    check(r and r.get("role_unit") == det, "game_reading carries the event's role_unit (%s)" % r)
+    r = SR.game_reading("FOUNDRY", CLONE, lambda c, s, since: evs[:1], T0, 1800)
+    check(r and r.get("measured") is True, "game_reading carries a measured correction's flag (%s)" % r)
+
+    # a whole tick: both holds a detached run's -> the restart goes
+    def tick(b, game):
+        st, o = fresh(), obs(request=req(), bridge=b, game=game)
+        o["seat_restart"]["ppid"] = lambda pid: tree.get(pid)
+        return to_claim(sch, st, o), st
+    a, st = tick(br(shared={"identity": ident(9001), "role_unit": det}, driver=9001), g(measured=True))
+    check("restart_kill" in dos(a), "a tick with only a detached run's bridge, lock and LOADING -> restart goes (%s; %s)"
+          % (dos(a), [x.get("why") for x in a if x.get("do") == "restart_hold"]))
+    a, st = tick(br(shared={"identity": ident(9004)}), None)
+    first = [x for x in a if str(x.get("kind") or "").endswith(":held_first")]
+    rf = first[0].get("raise_first") if first else ""
+    check("9004" in rf and "launch both games" in rf,
+          "the held restart's RAISE FIRST line names the real holder (%s)" % rf)
+
+
+def test_shared_bridge_record_keeps_its_takers_identity():
+    """The shared record is the only cross-clone trace of WHO took the bridge: the take writes the taker's process
+    identity and role unit; a heartbeat from the taker's clone keeps them, and one from another clone of the same seat
+    leaves the record as it was (RIMMANDRAKE_KEEP_BRIDGE_HEARTBEAT_TO_HOLDER_CLONE_ONLY)."""
+    from rimflow import model as M
+    p = os.path.join(TMP, "BRIDGE_SHARED.json")
+    old = os.environ.get("RIMFLOW_SHARED_BRIDGE")
+    os.environ["RIMFLOW_SHARED_BRIDGE"] = p
+    try:
+        me = {"pid": 9001, "start": 1, "platform": "wsl", "host": "h"}
+        M.write_shared_bridge("FOUNDRY", "launch both games", identity=me, role_unit="rm-detached-x-1")
+        rec = M.read_shared_bridge_record()
+        with open(p, "w") as f:
+            json.dump(dict(rec, touched="2000-01-01T00:00:00Z"), f)
+        M.touch_shared_bridge("FOUNDRY")
+        rec = M.read_shared_bridge_record()
+        with open(p, "w") as f:      # as if taken from another clone
+            json.dump(dict(rec, clone="/the/takers/clone", touched="2000-01-01T00:00:00Z"), f)
+        M.touch_shared_bridge("FOUNDRY")
+        other = M.read_shared_bridge_record()
+    finally:
+        if old is None:
+            os.environ.pop("RIMFLOW_SHARED_BRIDGE", None)
+        else:
+            os.environ["RIMFLOW_SHARED_BRIDGE"] = old
+    check(rec.get("identity") == me and rec.get("role_unit") == "rm-detached-x-1",
+          "a heartbeat keeps the taker's identity and role unit (%s)" % rec)
+    check(rec.get("clone") == M.ROOT and rec.get("touched") != "2000-01-01T00:00:00Z",
+          "a heartbeat from the taker's clone refreshes touched (%s)" % rec)
+    check(other.get("clone") == "/the/takers/clone" and other.get("touched") == "2000-01-01T00:00:00Z",
+          "a heartbeat from another clone leaves the record as it was (%s)" % other)
+
+
 def at_kill(sch, st, now=None):
     run(sch, st, obs(request=req()), T0 + 1)
     return run(sch, st, obs(), now or T0 + SR.DEFAULTS["grace_s"] + 5)
