@@ -13,7 +13,10 @@ Two halves:
   source  the stat a player inspects is Filth_Mark.NetBeauty (Verse, cannot be loaded offline), so a narrow source read: NetBeauty's
           crafted branch takes MarkBeauty of the mark's own form (a def with no Graffiti extension, which no shipped mark is, keeps the
           craft alone); the Beauty StatPart, the mark's
-          inspect line and the wall's inspect line all read NetBeauty. Two planted source mutants must each turn it red, every run.
+          inspect line and the wall's inspect line all read NetBeauty, whole (`val = m.NetBeauty;`, not an expression around it).
+          The form passed is the mark's own extension's, bare (`<ext>.form` with <ext> = def.GetModExtension<ModExtension_Graffiti>()):
+          a conditional that hands a scrawl over as another form kept the old read green (blind challenge cycle 2,
+          RIMMANDRAKE_TIGHTEN_GRAFFITI_UGLINESS_READ_SCRAWL_PASSED_AS_TAG). Four planted source mutants must each turn it red, every run.
 
     python3 src/RimMandrake/Utils/selftest_graffiti_ugliness.py [--source-only]
 
@@ -57,16 +60,19 @@ def inspected_rule(sources):
     if not sep:
         return ["UNREAD: NetBeauty has no `if (!hasCraft)` branch for an uncrafted mark"]
     crafted = crafted.split(";", 1)[1] if ";" in crafted else ""
-    if not re.search(r"\bRM_GraffitiKernel\.MarkBeauty\s*\(\s*[^,()]*\bform\b[^,()]*,\s*craft\s*\)", crafted):
+    call = re.search(r"\bRM_GraffitiKernel\.MarkBeauty\s*\(\s*(\w+)\s*\??\.\s*form\s*,\s*craft\s*\)", crafted)
+    if not call:
         fails.append("NetBeauty's crafted branch does not take RM_GraffitiKernel.MarkBeauty(<the mark's form>, craft)")
+    elif not re.search(r"\b%s\s*=\s*def\s*\.\s*GetModExtension\s*<\s*ModExtension_Graffiti\s*>\s*\(\s*\)" % re.escape(call.group(1)), crafted):
+        fails.append("NetBeauty passes %s.form, and %s is not the mark's own def.GetModExtension<ModExtension_Graffiti>()" % (call.group(1), call.group(1)))
     stat = [b for _, _, b in S.find_method(sources, "TransformValue")]
-    if not any(re.search(r"\bval\s*=\s*m\.NetBeauty\b", b) for b in stat):
+    if not any(re.search(r"\bval\s*=\s*m\.NetBeauty\s*;", b) for b in stat):
         fails.append("StatPart_GraffitiCraft.TransformValue does not set the Beauty stat to NetBeauty")
     for name in ("GetInspectString", "Postfix"):
         hits = [b for _, _, b in S.find_method(sources, name) if "BeautyWord" in b]
         if not hits:
             fails.append("UNREAD: no %s that writes a Beauty line" % name)
-        elif not all(re.search(r"\bbeauty\s*=\s*(?:m\.)?NetBeauty\b", b) for b in hits):
+        elif not all(re.search(r"\bbeauty\s*=\s*(?:m\.)?NetBeauty\s*;", b) for b in hits):
             fails.append("%s writes a Beauty line that is not NetBeauty" % name)
     return fails
 
@@ -75,6 +81,10 @@ SOURCE_MUTANTS = [
     ("craft alone (the source before this item)", "Filth_Mark.cs",
      re.compile(r"RM_GraffitiKernel\.MarkBeauty\s*\([^;]*?,\s*craft\s*\)"), "RM_GraffitiKernel.CraftBeauty(craft)"),
     ("the stat line reads the def", "StatPart_GraffitiCraft.cs", re.compile(r"val\s*=\s*m\.NetBeauty"), "val = val"),
+    # blind challenge cycle 2: both survived the old read while the behaviour broke
+    ("a scrawl handed over as a tag", "Filth_Mark.cs", re.compile(r"RM_GraffitiKernel\.MarkBeauty\(ext\.form, craft\)"),
+     "RM_GraffitiKernel.MarkBeauty(ext.form == GraffitiForm.Scrawl ? GraffitiForm.Tag : ext.form, craft)"),
+    ("the stat keeps the def around NetBeauty", "StatPart_GraffitiCraft.cs", re.compile(r"val\s*=\s*m\.NetBeauty;"), "val = m.NetBeauty * 0f + val;"),
 ]
 
 

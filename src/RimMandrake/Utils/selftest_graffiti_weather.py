@@ -9,8 +9,10 @@ Two halves:
           its drawn step never come back. The family also runs its checks on six planted formula mutants and fails if any survives.
   source  the permanent-mark rule lives in Filth_Mark (Verse, cannot be loaded offline), so it is checked by a narrow source read:
           WeatherStepNow returns step 0 with fade 0 for a permanent mark before any weather is worked out; every write of weatherStep
-          comes from WeatherStepNow; the only weathering-away Destroy is gated on WeatherStepNow's fade. Four planted source mutants must
-          each turn that read red, every run.
+          comes from WeatherStepNow; the only weathering-away Destroy is gated on WeatherStepNow's fade. And the life WeatherStepNow asks
+          the kernel for is the mark's own: WeatherDays' `outdoors` is `!Map.roofGrid.Roofed(Position)` (the kernel proves roofed outlasts
+          open, but an inverted argument in the caller turned that round and stayed green: blind challenge cycle 2,
+          RIMMANDRAKE_CHECK_GRAFFITI_WEATHER_CALLER_ROOF_KERNEL_NEVER_SAW). Five planted source mutants must each turn that read red, every run.
 
     python3 src/RimMandrake/Utils/selftest_graffiti_weather.py [--mutants] [--fuzz-seed N]
 
@@ -91,6 +93,17 @@ def permanent_rule(sources):
                 fails.append("%s destroys a weathered mark on something other than WeatherStepNow's fade >= 1" % f)
     if gates == 0:
         fails.append("UNREAD: no weathering-away Destroy found beside a WeatherStepNow call")
+    # the life asked for is this mark's, under its own roof: WeatherDays(form, craft, outdoors = !roofed at the mark's cell, id)
+    call = re.search(r"\bRM_GraffitiKernel\.WeatherDays\s*\(", body)
+    if not call:
+        fails.append("UNREAD: WeatherStepNow does not call RM_GraffitiKernel.WeatherDays")
+    else:
+        close = S._match(body, call.end() - 1, "(", ")")
+        args = S.top_level_terms(body[call.end():close], ",") if close > 0 else []
+        if len(args) != 4:
+            fails.append("UNREAD: WeatherStepNow's WeatherDays call has %d arguments, not 4" % len(args))
+        elif not re.fullmatch(r"!\s*(?:this\.)?Map\s*\.\s*roofGrid\s*\.\s*Roofed\s*\(\s*(?:this\.)?Position\s*\)", args[2].strip()):
+            fails.append("WeatherStepNow passes outdoors = `%s`, not `!Map.roofGrid.Roofed(Position)`: the roof could be read the wrong way round" % args[2].strip())
     return fails
 
 
@@ -99,6 +112,7 @@ SOURCE_MUTANTS = [
     ("the guard inverted", "Filth_Mark.cs", "if (permanent || placedTick == -1", "if (!permanent && placedTick == -1"),
     ("a step written from age, not WeatherStepNow", "GraffitiSocial.cs", "m.weatherStep = step;", "m.weatherStep = 4;"),
     ("weathered away by age alone", "GraffitiSocial.cs", "if (fade >= 1f)", "if (Find.TickManager.TicksGame - m.placedTick > 3600000)"),
+    ("the roof read the wrong way round", "Filth_Mark.cs", "!Map.roofGrid.Roofed(Position), thingIDNumber", "Map.roofGrid.Roofed(Position), thingIDNumber"),
 ]
 
 
