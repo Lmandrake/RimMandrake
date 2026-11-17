@@ -322,9 +322,9 @@
       "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
       "serves": "vent chemistry cycle",
       "fate": "needed_by",
-      "why": "Designer decision: A fictional flyer walking on the ground violates the standing flight ruling and defeats the retained suush identity. Hush must preserve real airborne positional hold and normal flight eligibility; job/flight-tracker reads cover it, with visuals owner-present only.",
+      "why": "Designer decision: A fictional flyer walking on the ground violates the standing flight ruling and defeats the retained suush identity. Preserve ordinary real flight and flight-budget/cooldown behaviour; job/flight-tracker reads cover it, with visuals owner-present only. The hush-specific hover rule moves with native_hush.",
       "needed_by": "life: readable mineral organisms",
-      "ticket": "T30"
+      "ticket": "T38"
     },
     {
       "id": "suush_burst",
@@ -434,7 +434,7 @@
     },
     {
       "id": "vent_cycle_falter",
-      "what": "Weather changes scale vent output. The transition into a bloom provides a falter, native hush jobs and an optional warning, with the hush count saved.",
+      "what": "Weather changes scale vent output. The transition into a bloom provides a visible vent falter and a retained timed warning; native hush is split into native_hush.",
       "built": "present",
       "evidence": [
         "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs"
@@ -443,9 +443,25 @@
       "called_by": "RM_MapComponent_CauldronVents.MapComponentTick; vent Tick; bloom exposure",
       "serves": "vent chemistry cycle",
       "fate": "signature",
-      "why": "Designer decision: The lull, idle native stillness and warning are the necessary preparation stage of the vent bloom chain.",
+      "why": "Designer decision: Reduced active vent puffs and the timed warning are the necessary preparation stage of the vent bloom chain; animal stillness is not needed for readability.",
       "needed_by": "",
       "ticket": ""
+    },
+    {
+      "id": "native_hush",
+      "what": "Eligible idle wild suush/zisska/eskith hold still during falter, with saved hush count; includes the proposed flight-safe suush hover behaviour.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Cauldron/Source/RM_CauldronVents.cs",
+        "src/RimMandrake/Cauldron/Source/RM_CauldronMod.cs"
+      ],
+      "proven": "stale",
+      "called_by": "RM_MapComponent_CauldronVents.MapComponentTick -> faunaHushEnabled -> HushFauna; vent inspect line and hushedThisFalter serialization",
+      "serves": "optional additional fauna warning cue",
+      "fate": "next_version",
+      "why": "Designer decision: Vent puffs and the retained timed message already warn, including maps with no eligible wildlife. Deleting animal stillness leaves land, ordinary animal life and the signature readable; source coupling does not make it necessary.",
+      "needed_by": "",
+      "ticket": "T39"
     },
     {
       "id": "bloom_load",
@@ -798,7 +814,7 @@
     },
     {
       "id": "eskith",
-      "what": "Ground-sensing small flock with native hush role and ordinary animal behaviour/art.",
+      "what": "Ground-sensing small flock with ordinary animal behaviour/art; the optional hush response is split into native_hush.",
       "built": "present",
       "evidence": [
         "src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_CauldronFauna.xml"
@@ -807,7 +823,7 @@
       "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
       "serves": "life",
       "fate": "life",
-      "why": "Designer decision: Flock movement and ground-sensing stillness make native life and the warning legible; deleting movement makes the warning indistinguishable from idle scenery.",
+      "why": "Designer decision: Retain the living flock and its ordinary movement as native life, without requiring it to stop for a warning already supplied by vent puffs and the timed message.",
       "needed_by": "",
       "ticket": ""
     },

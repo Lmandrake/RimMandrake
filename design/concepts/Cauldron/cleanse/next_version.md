@@ -226,4 +226,12 @@ Why outside land, life or the signature: Designer decision: A separate uranium p
 
 Switch-off: T27
 
+### native_hush
+
+What: Falter-induced stillness jobs for eligible idle wild suush/zisska/eskith, saved hush count and the proposed suush hover-in-flight rule.
+
+Why outside land, life or the signature: Active vent puffs and the retained timed message already warn, including when wildlife is absent. Stillness adds optional animal job and flight coupling; deleting it leaves ordinary animal life and the signature readable.
+
+Switch-off: T39
+
 World generation is forbidden in every version. The legacy scorer is inert pending recommended retirement, not parked as a future feature. Bespoke audio and seismometer were already excluded; this proposal does not reopen them.

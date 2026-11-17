@@ -1,0 +1,199 @@
+{
+ "mod": "Cauldron",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "cannot_hold_together",
+     "where": "bars.json rules R_health and R_local, bar whole (range and reject), meeting 'health'; ambiguities.md section 'Persistent versus merely slow metal clearance'",
+     "evidence": "R_health says: 'Designer default medical route is MedicineUltratech in a normal bill'. R_local keeps 'a residual ambient floor', so exposure never reaches zero. R_health also allows 'No natural or ordinary-care removal of positive metal load'. The whole bar's range runs to a 'day-100 state' with 'Starting water, food, medicine, components and cartridges ... finite and declared', and it rejects 'a colony that spends all its time recovering from unavoidable routine exposure'. In vanilla, glitterworld medicine has no crafting recipe and comes only from trade or loot [guess ~85%]. So every unroofed, unsealed errand adds load that never fades, and the only cure is an item the colony cannot make. The health meeting is marked 'argued' but never says where the purge medicine comes from. The owner's words (OWNER:1794373071501926623, 'requires advanced medicine to purge') name no medicine tier. ambiguities.md treats the tier as 'missing construction detail, not a new owner preference', yet that choice decides whether the cure can be reached at all on the fixed desert world. Page two never mentions the tier.",
+     "would_pass": "A purge whose supply route is named and reachable at shipped defaults: either a craftable tier, or an argued trade route (for example, vent reagent sold for medicine) listed as a member of the health and colony_work meetings and an input to the coupled season model. The tier chosen is shown to the owner as a settled ambiguity.",
+     "smallest_fix": "Add an ambiguity 'advanced medicine: industrial versus glitterworld' with its supply consequence. Take a reading that has a supply route, and write that route into R_health. Add medicine supply to the coupled season model's inputs and to the health meeting's argument. Put one line on owner page two."
+    },
+    {
+     "id": "R2",
+     "head": "extra_without_argument",
+     "where": "census.json rows vent_cycle_falter and eskith; bars.json bar warning (says, accept picture 3), rule R_warning, meeting hush_flight",
+     "evidence": "The case for keeping native stillness is census eskith: 'deleting movement makes the warning indistinguishable from idle scenery'. The warning bar's own accept picture contradicts this: 'Already capped sources or absent eligible wildlife do not fake a puff change; the retained timed warning message still gives the worker a chance to shelter.' Vent puffs and the message already make the warning readable without hush. The owner's sourced falter words (record.json s_falter, OWNER:1792108481222070856) are about an hour of warning, not animal stillness; the hush text at record.json:760 is agent text. Keeping hush brings in the whole suush hover-in-flight rule, the hush_flight meeting, part of T30 and a flight-state calibration arm in the situation generator.",
+     "would_pass": "Either a deletion argument showing the default-map warning is not readable from puffs and the message without native hush, or hush moved to the next version and switched off.",
+     "smallest_fix": "Move native hush (with the suush hover rule) to next_version.md with a switch-off ticket. Delete 'eligible wild natives falling still when present' from warning.says and its pictures, and drop the hush_flight meeting and R_warning's hush paragraph."
+    },
+    {
+     "id": "R3",
+     "head": "core_promise_weakened",
+     "where": "bars.json bar living_cast says; ambiguities.md (no entry); source design/RimMandrake/biome_experiences_2026-10-20.md:9",
+     "evidence": "The owner typed the Cauldron experience: 'Water is acid, animals are minerals, and life twists under the load… including you.' living_cast weakens this to 'mineral-adapted wildlife'. No bar picture shows a player seeing a native animal as a mineral body; the mineral reading in the bars is about the forest (place) and diets and products. ambiguities.md settles 'Angry, roils, eternal, breathes' and 'Wet, green, lush and mineral' (about plants), but has no entry for 'animals are minerals' or 'life twists'.",
+     "would_pass": "living_cast (or place) states what 'animals are minerals' means to the player: mineral bodies readable at ordinary zoom, or mineral diet, products and remains. It marks the phrase figurative if it is, keeps the owner-kept imports as a stated exception, and has an accept picture and a reject picture (for example, ordinary-looking fauna that only eats rocks).",
+     "smallest_fix": "Add one ambiguity entry and one figurative entry with an accept picture to living_cast; change 'mineral-adapted' to the reading taken."
+    },
+    {
+     "id": "R4",
+     "head": "figurative_unmarked",
+     "where": "bars.json bar whole says ('dangerous expeditions', 'runaway gas'); its figurative list holds only 'error storm'",
+     "evidence": "The owner's answer was 'Dependable industry, risky expeditions ... exposed discoveries' (ANSWERS_OWNER.md:5). The agent's earlier question read 'expedition' as a trip off the map: 'If the successful life is expeditionary, demonstrate what a trip brings home' (design/RimMandrake/designer_codex_2026-11-09/Cauldron/record.json:1291). The whole bar's accept picture quietly reads it as on-map 'hazardous outdoor tasks'. Those two readings differ in scope (whether caravans or off-map sites are in the season run). 'Runaway gas' is defined only in models.md ('flood: connected gas continually invading normal work routes'), not in the bar.",
+     "would_pass": "'expeditions' marked figurative with what it stands for (on-map outdoor errands beyond shelter), or scoped literally with caravans in range. 'runaway' marked figurative and tied to the flood definition, each with an accept picture.",
+     "smallest_fix": "Add two figurative entries to whole.meant.figurative and one line in ambiguities.md on the expedition reading."
+    },
+    {
+     "id": "C0.1",
+     "head": "self_check",
+     "where": "owner_pages.md",
+     "evidence": "the self-check refuses 1 (counts): owner_pages.md: his pages do not state the capabilities count 82 beside its name",
+     "would_pass": "page one says `capabilities 82` (the name, then the digits, in one clause; a before-and-after pair may sit in it), the number in result.json",
+     "smallest_fix": "page one says `capabilities 82` (the name, then the digits, in one clause; a before-and-after pair may sit in it), the number in result.json"
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Settled advanced medicine as industrial or higher in a dedicated purge bill; specified native herbal harvest, ordinary crafting and reagent-funded orbital ingredient trade, with finite setup reserves. Added the supply route to health/colony_work arguments, season-model inputs/calibration and owner page two; aligned treatment definition and T28.",
+      "where": "bars.json R_health and meetings health/colony_work; ambiguities.md persistent load and advanced-medicine entries; models.md coupled season and exposure models; definition.md health; tickets.md T28; owner_pages.md page two"
+     },
+     {
+      "id": "R2",
+      "changed": "Split native_hush from retained falter, deferred it with the suush hover rule and added audited switch-off ticket T39. Removed hush requirements and the hush_flight meeting from the shipped warning, models and related documents; retained ordinary eskith movement and genuine suush flight. The census split raises capabilities to 83 and next_version to 26; tickets to 39.",
+      "where": "census.json vent_cycle_falter, native_hush, eskith, suush_flight; bars.json warning, R_warning, touches and hush_flight; next_version.md native_hush; tickets.md T30/T36/T38/T39; models.md Situation generator; definition.md; ambiguities.md nearby/stillness; owner_pages.md; result.json counts"
+     },
+     {
+      "id": "R3",
+      "changed": "Restored mineral-bodied native wildlife with ordinary-zoom body pictures, a figurative interpretation and explicit owner-kept import exceptions; settled life twists as adapted native life and existing lasting health harm. Added real visual evidence and a reject picture for ordinary-looking rock eaters. This makes living_cast live-only and the total 4.",
+      "where": "bars.json living_cast; ambiguities.md animals are minerals/life twists; definition.md life; tickets.md T38; owner_pages.md life/page two/counts; result.json live_only_bars"
+     },
+     {
+      "id": "R4",
+      "changed": "Marked expeditions as figurative on-map errands beyond shelter and runaway gas as the connected-gas work-route flood, each with a contrasting accept picture. Made caravan/off-map exclusion explicit and recorded the expedition scope settlement.",
+      "where": "bars.json whole.meant.figurative and whole.range.left_out; ambiguities.md Expeditions on this version; definition.md season story; owner_pages.md page two"
+     },
+     {
+      "id": "C0.1",
+      "changed": "Replaced the ambiguous count clause with name-then-digits: capabilities 82 before, capabilities 83 after the required hush split. The current count matches the 83 census rows and result.json; also reconciled retained/next-version, live-only and ticket totals.",
+      "where": "owner_pages.md page one Counts; result.json counts; census.json rows"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "The tier is now settled and the cure can be reached. ambiguities.md gained a new section 'Advanced medicine: industrial versus glitterworld'. It says 'Taken: industrial or higher, consumed by the dedicated purge bill' and names the supply consequence of the glitterworld-only reading. bars.json R_health now reads 'Designer advanced-medicine default is MedicineIndustrial (or higher) in a dedicated normal purge bill'. It names the route: 'finite arrival industrial medicine covers setup, then ordinary DrugProduction/MedicineProduction research and the vanilla drug-lab recipe use harvested selvix MedicineHerbal, cloth and neutroamine. Sell the retained Filter-Works RM_VentReagent through ordinary orbital trade'. The health meeting's why gives the route and the members that cover it ('R_health and chemical_work'). colony_work's why says 'Medicine supply is an explicit R_health/chemical_work member interaction'. The models.md Coupled season and work model now lists 'Medicine supply is an explicit input' with trade-gap sweeps and calibration. owner_pages.md page two, line 38, says '\"Advanced medicine\" means industrial or higher for a dedicated purge ... craft from selvix herbal harvest and cloth/neutroamine bought with reagent'. I checked the route against source. Vanilla MedicineIndustrial has costList MedicineHerbal 1, Neutroamine 1, Cloth 3, recipeUsers DrugLab and researchPrerequisite MedicineProduction (RimSage def). RM_CauldronFloraExpansion.xml:219 has harvestedThingDef MedicineHerbal. RM_FilterWorksItems.xml:5-6 calls RM_VentReagent 'A trade good (Manufactured, tradeable through ResourceBase)'."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "Hush has moved to the next version and is off by default, which is the second option in would_pass. census.json has a new row native_hush with fate next_version, ticket T39 and the why 'Vent puffs and the retained timed message already warn, including maps with no eligible wildlife'. next_version.md has a new section '### native_hush' (Switch-off: T39). tickets.md T39 sets the faunaHushEnabled field and its save fallback to off; source confirms both are currently true at RM_CauldronMod.cs:82 and :131. The warning bar's says now ends 'with active uncapped vents visibly reducing their puffs' and no longer mentions natives falling still. Its accept pictures drop hush ('Native animals continue ordinary movement'). R_warning's hush paragraph is replaced by 'native hush and its flight-specific positional rule are next-version, default off'. A grep of bars.json finds no 'hush_flight' left in meetings or touches. The eskith and vent_cycle_falter rows no longer argue for stillness."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json living_cast says now reads 'mineral-bodied native wildlife ... with mineral bodies readable at ordinary zoom, owner-kept imports as stated exceptions'. meant.figurative has the word 'mineral-bodied', whose stands_for begins 'The owner’s animals are minerals is figurative for living native bodies visibly bearing stone-like plates, mineral slag or crystal growth', and it has an accept picture. accept[3] names zisska plates and vexxiss slag and crystal fans. reject[2] is 'The native cast looks like ordinary unmineralised fauna at play zoom and only its diet tooltip says it eats rocks'. ambiguities.md has a new section 'Animals are minerals; life twists under the load' that settles both phrases. The zisska and vexxiss pictures match the race descriptions at RM_CauldronFauna.xml:392 ('rough stone-like plates') and :252 ('mineral slag, with crystal fans'). See the regression below on how far the range reaches."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "bars.json whole.meant.figurative now has 'expeditions', standing for 'On-map outdoor errands beyond shelter ... caravans and off-map discovery sites are outside this seasonal scope', with the thornwood-harvest accept picture. It also has 'runaway gas', standing for 'A flood: connected combustible gas continually invading normal work routes, as defined by the coupled season model', with the transient-plume accept picture. whole.range.left_out adds 'no caravan or off-map site is part of this season run'. ambiguities.md has a new section 'Expeditions on this version' that settles the reading."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md 'Nearby', 'stillness' and a forest already quiet",
+    "ambiguities.md Advanced medicine: industrial versus glitterworld",
+    "ambiguities.md Animals are minerals; life twists under the load",
+    "ambiguities.md Expeditions on this version",
+    "ambiguities.md Persistent versus merely slow metal clearance",
+    "bars.json bars/living_cast",
+    "bars.json bars/warning",
+    "bars.json bars/whole",
+    "bars.json meetings",
+    "bars.json rules/R_health",
+    "bars.json rules/R_life",
+    "bars.json rules/R_warning",
+    "census.json rows/eskith",
+    "census.json rows/native_hush",
+    "census.json rows/suush_flight",
+    "census.json rows/vent_cycle_falter",
+    "definition.md Costs, failures and readable signs",
+    "definition.md Four projected stories",
+    "definition.md Life as the player meets it",
+    "definition.md The Cauldron — proposed Design Version 0.1.0",
+    "definition.md What changes in the colony's story",
+    "models.md Coupled season and work model",
+    "models.md Exposure and treatment state walk",
+    "models.md Situation generator",
+    "next_version.md native_hush",
+    "next_version.md ossrith_refinery",
+    "owner_pages.md Page one — what I propose the Cauldron becomes",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T28: Define persistent metal and real purge",
+    "tickets.md T30: Define independent warning clock",
+    "tickets.md T36: Implement the whole-mod seasonal work instrument",
+    "tickets.md T38: Preserve native livelihood across the full roster",
+    "tickets.md T39: Switch off native_hush"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1017636,
+     "output_tokens": 14733
+    }
+   },
+   "author_error": null,
+   "open_after": [
+    {
+     "id": "G1.1",
+     "head": "regression",
+     "where": "bars.json bars/living_cast",
+     "evidence": "range.varies now says 'Mineral-body reading covers the retained native forms at ordinary zoom under the declared weather; admitted owner-kept imports are explicit appearance exceptions'. Reject[2] fails the bar when 'The native cast looks like ordinary unmineralised fauna'. But several retained natives that are not named as imports have no mineral body in their own defs. Suush is 'A translucent globe that floats above the ground' (RM_CauldronFauna.xml:112). Eskith is 'A knee-high animal with broad, feathered foot pads' (:493). Rhossak is 'grown from tightly wound living roots' (RM_Rhossak.xml:101). The bedbug is 'An oversized insect' (RM_BedBug.xml:22). The new ambiguity entry rules out 'a promised new art system', and definition.md says 'this proposal makes no import eviction or art redo'. So the range demands mineral bodies on forms that, by their own design, have none. The bar would then need new art, which the proposal forbids, or it cannot pass. That breaks the changed entry under cannot_hold_together.",
+     "would_pass": "living_cast declares which retained natives carry the mineral-body reading (for example zisska, vexxiss, crystalmit, ossrith) and which natives keep non-mineral forms as stated exceptions alongside the imports, or it scopes the reading to the cast as a whole, with no new art required.",
+     "smallest_fix": "Rewrite the range sentence to name the mineral-bodied natives, and list suush, eskith, rhossak and bedbug (or whichever apply) as non-mineral exceptions with a reason, matching the figurative stands_for."
+    },
+    {
+     "id": "G1.2",
+     "head": "regression",
+     "where": "tickets.md T39: Switch off native_hush",
+     "evidence": "The eskith's shipped in-game description says 'Their sudden silence is a good reason to get under a roof.' (RM_CauldronFauna.xml:493). With faunaHushEnabled off by default, eskith no longer fall silent before a bloom, so the default game tells the player about a warning that never comes. T39's Work gates only 'the call, count and hush inspect wording'. It never mentions this description, and the census eskith row keeps 'ordinary animal behaviour/art' unchanged. Hush is now a moved extra, but the shipped lore text still promises it. That fits contradicts_ruling_or_lore (and moved_extra_relied_on, in player-facing text).",
+     "would_pass": "With hush off at defaults, no shipped description or tooltip promises native silence before a bloom; the hush wording returns only with the opt-in.",
+     "smallest_fix": "Add to T39's Work and acceptance test: make the eskith description's silence clause conditional on faunaHushEnabled, or reword it for the default."
+    }
+   ]
+  }
+ ],
+ "open": [
+  {
+   "id": "G1.1",
+   "head": "regression",
+   "where": "bars.json bars/living_cast",
+   "evidence": "range.varies now says 'Mineral-body reading covers the retained native forms at ordinary zoom under the declared weather; admitted owner-kept imports are explicit appearance exceptions'. Reject[2] fails the bar when 'The native cast looks like ordinary unmineralised fauna'. But several retained natives that are not named as imports have no mineral body in their own defs. Suush is 'A translucent globe that floats above the ground' (RM_CauldronFauna.xml:112). Eskith is 'A knee-high animal with broad, feathered foot pads' (:493). Rhossak is 'grown from tightly wound living roots' (RM_Rhossak.xml:101). The bedbug is 'An oversized insect' (RM_BedBug.xml:22). The new ambiguity entry rules out 'a promised new art system', and definition.md says 'this proposal makes no import eviction or art redo'. So the range demands mineral bodies on forms that, by their own design, have none. The bar would then need new art, which the proposal forbids, or it cannot pass. That breaks the changed entry under cannot_hold_together.",
+   "would_pass": "living_cast declares which retained natives carry the mineral-body reading (for example zisska, vexxiss, crystalmit, ossrith) and which natives keep non-mineral forms as stated exceptions alongside the imports, or it scopes the reading to the cast as a whole, with no new art required.",
+   "smallest_fix": "Rewrite the range sentence to name the mineral-bodied natives, and list suush, eskith, rhossak and bedbug (or whichever apply) as non-mineral exceptions with a reason, matching the figurative stands_for."
+  },
+  {
+   "id": "G1.2",
+   "head": "regression",
+   "where": "tickets.md T39: Switch off native_hush",
+   "evidence": "The eskith's shipped in-game description says 'Their sudden silence is a good reason to get under a roof.' (RM_CauldronFauna.xml:493). With faunaHushEnabled off by default, eskith no longer fall silent before a bloom, so the default game tells the player about a warning that never comes. T39's Work gates only 'the call, count and hush inspect wording'. It never mentions this description, and the census eskith row keeps 'ordinary animal behaviour/art' unchanged. Hush is now a moved extra, but the shipped lore text still promises it. That fits contradicts_ruling_or_lore (and moved_extra_relied_on, in player-facing text).",
+   "would_pass": "With hush off at defaults, no shipped description or tooltip promises native silence before a bloom; the hush wording returns only with the opt-in.",
+   "smallest_fix": "Add to T39's Work and acceptance test: make the eskith description's silence clause conditional on faunaHushEnabled, or reword it for the default."
+  }
+ ],
+ "advisory_late": [
+  {
+   "what": "owner_pages.md, the 'Still refused after the second look' list under Page two still quotes all four records as standing, including 'Page two never mentions the tier'. Page two now does mention it.",
+   "reason": "This section looks pipeline-generated, not written by the author. If it is not refreshed after this verdict, the owner reads refusals that are already resolved.",
+   "round": 1
+  },
+  {
+   "what": "R_health says 'no off-map site, rig discovery or next-version feature is required' for the reagent route, but RM_FilterWorks.xml:13 currently says 'Research: RM_FilterWorksResearch, which needs a corroded filter rig studied first', and the rig is deferred.",
+   "reason": "This is already covered as a known gap: the T33 acceptance test requires Filter-Works to be reachable with all extras absent, and definition.md says ordinary research depends on the moved rig. The medicine route depends on T33 landing, and R_health does not say so.",
+   "round": 1
+  }
+ ],
+ "applyable": false,
+ "digest": "9a8ae139a3e6a4faa1ea88a0fd57aaba4b1f68d61efbd0143330c63b20c215cf",
+ "seconds": 546,
+ "at": "2026-11-17T06:43:38"
+}

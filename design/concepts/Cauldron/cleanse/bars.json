@@ -50,42 +50,49 @@
     },
     {
       "id": "living_cast",
-      "says": "A Cauldron resident meets feeding and reproducing mineral-adapted wildlife, predators and useful native harvests, with flying creatures actually flying and natives able to drink their environmental water.",
+      "says": "A Cauldron resident meets feeding and reproducing mineral-bodied native wildlife, predators and useful native harvests, with mineral bodies readable at ordinary zoom, owner-kept imports as stated exceptions, flying creatures actually flying and natives able to drink their environmental water.",
       "meant": {
         "intent": "Reject if false: a populated roster that starves, cannot drink or only walks despite flying fiction is scenery. Life includes ordinary products and living food chains, not deferred hazard embellishments; product amounts and movement tuning can change freely.",
-        "source": "delegated: from cauldron.md biology and ordinary livelihood, CONDUCTOR:1794804951784038130 and record scope s_imports/s_rhossak; standing rulings on native water, readable lifecycle, flight and stopped evictions.",
-        "figurative": []
+        "source": "delegated: from cauldron.md biology and ordinary livelihood, CONDUCTOR:1794804951784038130 and record scope s_imports/s_rhossak; standing rulings on native water, readable lifecycle, flight and stopped evictions. The owner-typed experience in design/RimMandrake/biome_experiences_2026-10-20.md says animals are minerals and life twists under the load; the body reading and import exception are this Designer’s settlement, not a new owner ruling.",
+        "figurative": [
+          {
+            "word": "mineral-bodied",
+            "stands_for": "The owner’s animals are minerals is figurative for living native bodies visibly bearing stone-like plates, mineral slag or crystal growth, with their retained mineral diets/products/remains; not literally inert rock statues or every organ made of stone. Owner-kept imports retain their admitted appearance as explicit exceptions. Life twists means mineral-shaped native life and the lasting metal/acid consequences in lasting_cost, not a separate mutation engine.",
+            "accept": "At ordinary zoom a living zisska has rough stone-like plates and a vexxiss has mineral slag armour and crystal fans; flesh, movement and reproduction coexist with those mineral bodies. An admitted imported creature beside them keeps its existing non-mineral form."
+          }
+        ]
       },
       "accept": [
         "Crystalmits consume actual loose mineral food, atmospheric suush live without a food need, predators catch prey, and foragers roast harvested tsevrix into food while raw toxic material remains identifiable.",
         "Bound rhossak return toward living thornwood, rebind after its loss or visibly become unbound; galled kin remain seedless and yield edible galls, while a tame vexxiss supplies plate through ordinary shearing.",
-        "Flying natives enter real flight state and natives beside hazardous native water drink without dehydration; milk, eggs, silk, mineral products and carcasses come from actual animal actions."
+        "Flying natives enter real flight state and natives beside hazardous native water drink without dehydration; milk, eggs, silk, mineral products and carcasses come from actual animal actions.",
+        "At ordinary zoom native zisska stone-like plates and vexxiss mineral slag and crystal fans read as parts of living animal bodies, rather than nearby scenery; admitted imports keep their existing forms as exceptions."
       ],
       "reject": [
         "The map has animal portraits but native feeders starve beside their food or dehydrate beside their water, while harmless debug-spawned rations mask the loss.",
-        "A fictional flyer only walks, bound rhossak vanish when the tree dies, or killing a vexxiss is the only practical way to obtain its supposed living shear product."
+        "A fictional flyer only walks, bound rhossak vanish when the tree dies, or killing a vexxiss is the only practical way to obtain its supposed living shear product.",
+        "The native cast looks like ordinary unmineralised fauna at play zoom and only its diet tooltip says it eats rocks, or mineral marks exist only in portraits while the bodies read as ordinary flesh; imports are not an excuse for that native-body failure."
       ],
       "lazy": "none: The rejected shortcuts contradict explicit outcomes in says; no further build satisfying those outcomes was found in the second lazy-build attack.",
       "range": {
-        "varies": "Resolved RM inline roster and current campaign patch-added roster, grouped by atmospheric/mineral/plant/meat diets, predator/prey, wild/tame, adult/young, alive/downed/dead and breeding/product-ready states. Provider-complete support runs; 0, 3 and 40 colonists; scarce and available food, toxic/acid native water, tree present/lost/none, sleep/wake, edge paths and reload. Trace ordinary shared-neighbour behaviours as part of the food chain without local redesign.",
+        "varies": "Resolved RM inline roster and current campaign patch-added roster, grouped by atmospheric/mineral/plant/meat diets, predator/prey, wild/tame, adult/young, alive/downed/dead and breeding/product-ready states. Provider-complete support runs; 0, 3 and 40 colonists; scarce and available food, toxic/acid native water, tree present/lost/none, sleep/wake, edge paths and reload. Trace ordinary shared-neighbour behaviours as part of the food chain without local redesign. Mineral-body reading covers the retained native forms at ordinary zoom under the declared weather; admitted owner-kept imports are explicit appearance exceptions.",
         "left_out": "No roster evictions, new species, new husbandry minigame or exact yield/product cadence. VEF/provider-absent checks cover load safety only and cannot pass a service-dependent life claim. Visible flight judgement is reserved for an owner-present sitting; flight state can be read unattended."
       },
       "sees": {
-        "instrument": "Situation generator plus ordinary animal/job/product/food-water and Pawn_FlightTracker state reads; season model for ecology. Real action attribution, not mere def presence. Ticket T38 defines the roster audit; T34 provides independent observer.",
+        "instrument": "Situation generator plus ordinary animal/job/product/food-water and Pawn_FlightTracker state reads; season model for ecology. Real action attribution, not mere def presence. Ticket T38 defines the roster audit; T34 provides independent observer. Ordinary-zoom live observation supplies the native mineral-body reading; compare the same identified animals with their mineral body features, separate from portraits and adjacent mineral scenery. Non-flight body poses suffice; flyer visuals remain owner-present only, with no flight images.",
         "start": "Full roster resolved, starting native food/water and animal conditions recorded; identify producer and spawned product IDs, food depletion, flight tracker and bound tree before ordinary life is advanced.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
-        "control": "Fresh spawns or infinite nutrition can fake ecology. Use normal needs/AI, per-producer product deltas, actual eating/drinking and an unchanged initially fed control; distinguish spawn churn from survival by IDs and death/remains events.",
+        "control": "Fresh spawns or infinite nutrition can fake ecology. Use normal needs/AI, per-producer product deltas, actual eating/drinking and an unchanged initially fed control; distinguish spawn churn from survival by IDs and death/remains events. Diet labels, mineral drops, portraits or adjacent crystals cannot substitute for mineral features visibly belonging to the native body at ordinary zoom; compare non-flight poses without adding a flight visual hunt.",
         "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
-        "live_only_why": "Not live-only: exported engine state/actions or a model calibrated against those actions can distinguish the claimed outcomes; ordinary loaded state proof remains owed."
+        "live_only_why": "The native mineral-body appearance at ordinary play zoom requires a live look; food/product and flight state reads still establish their separate causal outcomes. Flyer visual judgement remains owner-present only, with no images of flight."
       },
-      "live_only": false,
+      "live_only": true,
       "touches": [
         "ecology",
         "health",
         "forestry_readability",
         "settings_state",
-        "colony_work",
-        "hush_flight"
+        "colony_work"
       ]
     },
     {
@@ -128,33 +135,33 @@
     },
     {
       "id": "warning",
-      "says": "Before a vent bloom harms exposed workers, the player gets a readable warning that allows a nearby worker to reach shelter, with active vents visibly reducing their puffs and eligible wild natives falling still when present.",
+      "says": "Before a vent bloom harms exposed workers, the player gets a readable timed warning that allows a nearby worker to reach shelter, with active uncapped vents visibly reducing their puffs.",
       "meant": {
         "intent": "Reject if false: preventable exposure becomes an unseen tax. The signature needs a readable preparation stage, not merely a faltering Boolean. The owner’s approximate hour remains an explicit source target in rules/checks, independent of interpolation.",
-        "source": "OWNER:1792108481222070856 as preserved in record scope s_falter; delegated visual reading from current vent puffs, native hush and retained warning text; no new bespoke soundscape (record scope s_audio).",
+        "source": "OWNER:1792108481222070856 as preserved in record scope s_falter; delegated visual reading from current vent puffs and retained warning text; no new bespoke soundscape (record scope s_audio). Native hush is deferred.",
         "figurative": []
       },
       "accept": [
-        "A worker already doing an ordinary errand near reachable shelter can be recalled when vent puffs diminish and awake idle native animals stop, before the bloom’s harmful stage starts.",
-        "Sleeping or fighting animals continue their own states while eligible idle natives hush, and the warning message supplements the visible change.",
-        "Already capped sources or absent eligible wildlife do not fake a puff change; the retained timed warning message still gives the worker a chance to shelter."
+        "A worker already doing an ordinary errand near reachable shelter can be recalled when active vent puffs diminish and the timed message appears, before the bloom’s harmful stage starts.",
+        "Native animals continue ordinary movement while the vent-puff change and timed message give the worker a readable warning.",
+        "Already capped sources do not fake a puff change; the retained timed warning message still gives the worker a chance to shelter, including a legacy map without vents."
       ],
       "reject": [
-        "A hidden flag says falter while puffs and animals look unchanged, or a letter arrives after exposed workers have already taken bloom load.",
+        "A hidden flag says falter while active vent puffs look unchanged and no timely message appears, or the message arrives after exposed workers have already taken bloom load.",
         "The warning starts so early or inconsistently that its apparent relation to the coming bloom is lost, or loading a mid-warning save silently skips the remaining warning."
       ],
       "lazy": "none: The rejected shortcuts contradict explicit outcomes in says; no further build satisfying those outcomes was found in the second lazy-build attack.",
       "range": {
-        "varies": "All non-bloom-to-bloom transitions and repeated bloom episodes; stable/leaking, capped/uncapped vents, vent count zero/one/multiple; awake idle wild zisska/eskith for the live look, and suush across grounded, taking-off, flying, landing and cooldown states for job/flight-tracker reads, versus fighting/asleep/downed/owned animals. Worker paths 5, 10 and 20 cells to actually reachable roofs at ordinary mobility, plus obstructed and immobile exclusions. Reload at start/middle/end of warning; 3/40 colonists and early/late season. Approximate hour is nominal 2500 game ticks, checked with 250-tick cue sampling tolerance; 4000 weather-blend ticks are not substituted for it. All-capped and no-eligible-native contexts require the timed text fallback; visible vent/native cue requirements apply where those actors can change.",
-        "left_out": "No guarantee for an immobile pawn or a worker without reachable shelter, no warning before unrelated ordinary acid contact, no interruption of fights or owner jobs, no bespoke audio. No-vent legacy maps use the textual warning and cannot stand in for default-map vent/animal readability. A flying suush's hush is read by job and Pawn_FlightTracker state before, during and after the cue; its visual waits for an owner-present sitting. No unattended flight observation or images of flight."
+        "varies": "All non-bloom-to-bloom transitions and repeated bloom episodes; stable/leaking, capped/uncapped vents, vent count zero/one/multiple; ordinary wildlife present or absent with native hush off. Worker paths 5, 10 and 20 cells to actually reachable roofs at ordinary mobility, plus obstructed and immobile exclusions. Reload at start/middle/end of warning; 3/40 colonists and early/late season. Approximate hour is nominal 2500 game ticks, checked with 250-tick cue sampling tolerance; 4000 weather-blend ticks are not substituted for it. All-capped and no-vent contexts require the timed text fallback; visible vent cues apply where uncapped sources can change.",
+        "left_out": "No guarantee for an immobile pawn or a worker without reachable shelter, no warning before unrelated ordinary acid contact, no interruption of animal or owner jobs, no bespoke audio. No-vent legacy maps use the textual warning and cannot stand in for default-map vent-puff readability. Native hush and its suush hover rule are next-version extras, off."
       },
       "sees": {
-        "instrument": "Tick-stamped vent output, actual job/movement and bloom/dose trace plus ordinary-zoom live observation of vent puffs and walking zisska/eskith across the same transitions. For suush, read Wait_MaintainPosture, position and Pawn_FlightTracker state before, during and after hush; do not judge its flight visually unattended. Any suush flight/hush visual is reserved for an owner-present sitting, with no images of flight. T30 defines timing and flight-safe hush; T34 supplies the observer. Main natural episode and controlled transition cases retain other systems and weather evolution.",
-        "start": "Start in resolved non-bloom weather with worker route/shelter and native eligibility logged, vent recovery normal and no prior injury; save after cue begins for the reload arm.",
+        "instrument": "Tick-stamped vent output, worker movement, message and bloom/dose trace plus ordinary-zoom live observation of vent puffs and the message across the same transitions. T30 defines timing; T34 supplies the observer. Main natural episode and controlled transition cases retain other systems and weather evolution, with native hush off.",
+        "start": "Start in resolved non-bloom weather with worker route/shelter logged, vent recovery normal, native hush off and no prior injury; save after cue begins for the reload arm.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
-        "control": "Idle animals may already stand still and ordinary pauses can fake a cue. Show their preceding ordinary movement and output, then compare an eligible native with sleeping/fighting/owned counterparts in the same episode; read dose opportunity and bloom onset separately. For suush, compare the same flight-tracker/job history with a matched non-falter arm; a wait job alone cannot prove airborne hover or continuing flight eligibility.",
+        "control": "A cap or prior suppression may already have reduced puffs. Show preceding active uncapped output, compare the same source across falter with a non-falter control, and read message, dose opportunity and bloom onset separately. With all sources capped or absent, judge timely message and actual shelter arrival without claiming a visible puff decrease. Native motion is not warning evidence.",
         "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
-        "live_only_why": "Vent-puff and walking zisska/eskith warning readability at ordinary play zoom cannot be inferred from flags or counters. Suush hush/flight uses job and Pawn_FlightTracker state unattended; its visual judgement waits for an owner-present sitting."
+        "live_only_why": "Vent-puff and timed-message warning readability at ordinary play zoom cannot be inferred from flags or counters."
       },
       "live_only": true,
       "touches": [
@@ -162,8 +169,7 @@
         "exposure",
         "ecology",
         "colony_work",
-        "save_state",
-        "hush_flight"
+        "save_state"
       ]
     },
     {
@@ -374,6 +380,16 @@
             "word": "error storm",
             "stands_for": "Repeated attributable errors/exceptions that recur while the shipped systems run, rather than a literal meteorological storm.",
             "accept": "The season has no recurring exception stream even though an isolated unrelated diagnostic line is recorded and explained."
+          },
+          {
+            "word": "expeditions",
+            "stands_for": "On-map outdoor errands beyond shelter, such as forestry, vent work and pool hauling; caravans and off-map discovery sites are outside this seasonal scope.",
+            "accept": "A colonist leaves the roof for a hazardous thornwood harvest and returns with timber on the same local map; no caravan is launched."
+          },
+          {
+            "word": "runaway gas",
+            "stands_for": "A flood: connected combustible gas continually invading normal work routes, as defined by the coupled season model; not any transient plume or an isolated controlled burn.",
+            "accept": "A vent plume briefly occupies an unused outdoor pocket while prepared work routes remain usable across the season; gas exists without a flood."
           }
         ]
       },
@@ -390,10 +406,10 @@
       "lazy": "none: The rejected shortcuts contradict explicit outcomes in says; no further build satisfying those outcomes was found in the second lazy-build attack.",
       "range": {
         "varies": "One whole bar: 15 game days on full 200x200, 250x250 and 325x325 local-map regimes at the supplied fixed-world sites, 3 and 40 colonists, arrival and established-colony starting stocks, early/late continuing saves including day-100 state. Save at the seasonal midpoint during live warning or production, plus active burn in gas_chain; reload same copy. Main orders: shelter/gear -> water/chemistry -> forestry versus forestry -> shelter/gear -> water/chemistry. Later work proceeds only with actual supplied or produced prerequisites; neither order promises immunity before protection. Ordinary raids/predation and weather interactions enabled, no forced god mode. If no natural bloom/burn occurs, the unscripted run remains recorded and is supplemented by an additional cycle, never replaced by a scene with the sky locked. Compression may accelerate real ticks only; preserve needs, AI, weather scheduler, plant growth, animal births/deaths, gas sweeps, dose cadence, work/fuel/storage and RNG/event order.",
-        "left_out": "No claim of profitable play at every arbitrary price/rate, no unassisted barren arrival without imported water/medicine/components, no future extras enabled. Faction catastrophes unrelated to Cauldron do not establish a signature failure, but may not be silently removed; reproduce their Cauldron interaction with an attributable comparison. Flight and suush-hush visuals are judged only in an owner-present sitting; unattended readings use job and Pawn_FlightTracker state, with no images of flight."
+        "left_out": "No claim of profitable play at every arbitrary price/rate, no unassisted barren arrival without imported water/medicine/components, no future extras enabled. Faction catastrophes unrelated to Cauldron do not establish a signature failure, but may not be silently removed; reproduce their Cauldron interaction with an attributable comparison. Flight visuals are judged only in an owner-present sitting; unattended readings use job and Pawn_FlightTracker state, with no images of flight. Expeditions here are on-map errands; no caravan or off-map site is part of this season run."
       },
       "sees": {
-        "instrument": "Calibrated Coupled season and work model finds risky regimes; full-map ordinary-zoom live observation plus actual time-series/identity/stock/job/health/log state records decide the whole experience. T36 is required; no isolated-chain receipt certifies this. Record supplied work time, pending jobs and source-specific harm, not average frame rate alone. Observe the gas-source explosion and goods being flung in the same ignition episode used for displacement traces; a visible burst without visible throwing, or position changes alone, cannot pass. Unattended live looks exclude flight/hush visual judgement; use job/flight-tracker state for flyers and reserve their visuals for an owner-present sitting, with no images of flight.",
+        "instrument": "Calibrated Coupled season and work model finds risky regimes; full-map ordinary-zoom live observation plus actual time-series/identity/stock/job/health/log state records decide the whole experience. T36 is required; no isolated-chain receipt certifies this. Record supplied work time, pending jobs and source-specific harm, not average frame rate alone. Observe the gas-source explosion and goods being flung in the same ignition episode used for displacement traces; a visible burst without visible throwing, or position changes alone, cannot pass. Unattended live looks exclude flight visual judgement; use job/flight-tracker state for flyers and reserve their visuals for an owner-present sitting, with no images of flight.",
         "start": "Fingerprint full candidate, service list, settings, intact intended map, population, inventories, animal IDs, fluid contents, health, research and weather. Starting water, food, medicine, components and cartridges are finite and declared; normal bodies/needs/research, all kept mechanics on and nothing locked.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "Large imported stock, benign clear weather, hidden refills or disabled AI/damage can fake success. Attribute consumed/produced stock and animal lifecycle; demonstrate actual bloom, local exposure, gas ignition, protected work and output. Compare the unprepared exposed branch within the same weather, account for every external supply and show seasonal trajectories rather than final piles.",
@@ -505,13 +521,12 @@
     },
     {
       "id": "R_warning",
-      "rule": "Designer timing default: 2500 ticks nominal cue-to-full-bloom, independent of vanilla 4000-tick blend, with sampling tolerance 250 ticks for the check. First harmful dose is separately timed after onset. Eligible idle wild suush/zisska/eskith hush; asleep, downed, fighting and owned animals do not. The approximate owner hour is not a repeat-acceptance tuning number. Designer choice: hush stops travel; an airborne suush hovers in place in real Pawn_FlightTracker flight rather than being forced to land by Wait_MaintainPosture. Hush must not reset flight time, bypass ordinary exhaustion/cooldown transitions or disable future flight. Grounded or naturally transitioning suush hold horizontal position as their normal flight state permits; ordinary AI resumes after falter. Suush flight/hush is read by job plus flight-tracker state; only vent puffs and walking zisska/eskith are judged by the unattended live look. Flight visuals require the owner present; never capture images of flight.",
+      "rule": "Designer timing default: 2500 ticks nominal cue-to-full-bloom, independent of vanilla 4000-tick blend, with sampling tolerance 250 ticks for the check. First harmful dose is separately timed after onset. The approximate owner hour is not a repeat-acceptance tuning number. Keep the timed warning message even when all sources are capped or absent; native hush and its flight-specific positional rule are next-version, default off.",
       "touches": [
         "weather_cycle",
         "exposure",
         "ecology",
-        "save_state",
-        "hush_flight"
+        "save_state"
       ]
     },
     {
@@ -547,7 +562,7 @@
     },
     {
       "id": "R_health",
-      "rule": "No natural or ordinary-care removal of positive metal load. Designer default medical route is MedicineUltratech in a normal bill, reachable even for hidden saved trace; success removes load, interruption/failure follows vanilla accounting and does not count as purge. Actual acid uses vanilla lasting-part/disfigurement/capacity state; exceptional restoration remains possible.",
+      "rule": "No natural or ordinary-care removal of positive metal load. Designer advanced-medicine default is MedicineIndustrial (or higher) in a dedicated normal purge bill, selectable even for hidden saved traces; ordinary tending with the same medicine does not purge. Success removes load; interruption/failure follows vanilla accounting and does not count as purge. Supply at shipped defaults: finite arrival industrial medicine covers setup, then ordinary DrugProduction/MedicineProduction research and the vanilla drug-lab recipe use harvested selvix MedicineHerbal, cloth and neutroamine. Sell the retained Filter-Works RM_VentReagent through ordinary orbital trade using a powered comms console and trade beacon to replenish cloth/neutroamine; no off-map site, rig discovery or next-version feature is required. Use actual loaded recipe, trader acceptance/stock and prices, never assume reagent is itself neutroamine or medicine. Buffer delivery gaps with declared stock and shelter/sealed duties; quantify shortages and labour in the coupled season model through day 100, with no automatic refills. Actual acid uses vanilla lasting-part/disfigurement/capacity state; exceptional restoration remains possible.",
       "touches": [
         "health",
         "exposure",
@@ -581,8 +596,7 @@
         "ecology",
         "health",
         "colony_work",
-        "forestry_readability",
-        "hush_flight"
+        "forestry_readability"
       ]
     },
     {
@@ -702,7 +716,7 @@
         "R_settings"
       ],
       "holds_together": "argued",
-      "why": "Prevention, persistence and treatment are distinct: shelter prevents new ambient harm, never clears old load; advanced treatment removes only metal; ordinary healing leaves genuine permanent acid part damage, while exceptional restoration remains vanilla. Native water immunity concerns native drinking, not a human cure. Flooding of health over real duties remains unknown in exposure/colony_work.",
+      "why": "Prevention, persistence and treatment are distinct: shelter prevents new ambient harm, never clears old load; advanced treatment removes only metal; ordinary healing leaves genuine permanent acid part damage, while exceptional restoration remains vanilla. Native water immunity concerns native drinking, not a human cure. Flooding of health over real duties remains unknown in exposure/colony_work. R_health supplies the renewable industrial-medicine route: selvix harvest plus ordinary drug-lab production, with cloth/neutroamine bought using chemical_work reagent output through normal on-map orbital trade. These existing members cover medicine supply as well as its use; neither residual exposure nor ordinary tending creates medicine or cures load. Finite setup stock and sheltered/sealed work bridge production/research and trade gaps. This argues reachability, not adequacy at every rate; consumption, trade availability and buffer exhaustion remain unknown in colony_work and must be calibrated.",
       "model": ""
     },
     {
@@ -748,7 +762,7 @@
         "R_evidence"
       ],
       "holds_together": "unknown",
-      "why": "Three-way feedback: lower exposure permits work; tapping/capping and weather change resources/dose; illness and food/water labour reduce protection and production capacity. A roster or converter that works alone cannot establish a manageable prepared colony. Both task orders and late saves must run with ordinary needs.",
+      "why": "Three-way feedback: lower exposure permits work; tapping/capping and weather change resources/dose; illness and food/water labour reduce protection and production capacity. A roster or converter that works alone cannot establish a manageable prepared colony. Both task orders and late saves must run with ordinary needs. Medicine supply is an explicit R_health/chemical_work member interaction: reagent sold for cloth/neutroamine, selvix harvested, normal drug-lab medicine made and consumed by purge bills. Model research/build lead time, power, trader access and finite stock/currency, shared cloth demand from cartridges, trade gaps, treatment demand and medical labour; finite initial medicine cannot conceal a nonrenewing route through day 100.",
       "model": "Coupled season and work model"
     },
     {
@@ -824,18 +838,6 @@
       "holds_together": "unknown",
       "why": "A roof protects ambient bodies but is not a sealed gas wall. Emission overflow, diagonal drift, 3x3 fire offers, capped front scans and blast callbacks meet; current front is transient on save and Ignite does not check the origin-to-target sealed corner. Must enumerate the actual adapter, not just kernel diffusion.",
       "model": "Gas geometry and save walk"
-    },
-    {
-      "thing": "hush_flight",
-      "members": [
-        "living_cast",
-        "warning",
-        "R_warning",
-        "R_life"
-      ],
-      "holds_together": "argued",
-      "why": "Life requires genuine flight capability, not continuous unlimited airtime. Hush stops eligible travel without grounding an airborne suush: it hovers while ordinary tracker flight permits, preserving exhaustion/cooldown and later AI. The source HushFauna forcibly starts Wait_MaintainPosture and alone proves neither hover nor flight continuity; T30/T38 require before/during/after job and tracker traces, including normal flight-limit transitions. The warning live look judges vent puffs and walking zisska/eskith only; suush flight visuals wait for an owner-present sitting and are never captured as images. Thus the two experiences and the observation ruling can coexist; this is a compatibility argument, not runtime proof.",
-      "model": "Situation generator"
     }
   ],
   "old_bars": {
