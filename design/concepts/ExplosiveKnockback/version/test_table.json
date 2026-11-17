@@ -111,11 +111,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.24,
+    "seconds": 1.16,
     "last": "explosive knockback kernel: 246/246 passed",
-    "at": "2026-11-17T14:25:09Z",
+    "at": "2026-11-17T19:10:52Z",
     "result": "PASS",
-    "build": "128e716ad0e07c9a2b85",
+    "build": "a4df482449f02f6b065d",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
    }
   },
@@ -134,11 +134,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.26,
+    "seconds": 3.24,
     "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.35s total -> OK",
-    "at": "2026-11-17T14:25:14Z",
+    "at": "2026-11-17T19:10:55Z",
     "result": "PASS",
-    "build": "1b17e18f6e2d909ec82f",
+    "build": "8afe2c39d6e415af503a",
     "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py"
    }
   },
@@ -158,11 +158,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.25,
+    "seconds": 1.75,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-17T14:25:16Z",
+    "at": "2026-11-17T19:10:57Z",
     "result": "PASS",
-    "build": "8d4d576b80195ac1bf8a",
+    "build": "2d1f270613ba37dc1e6b",
     "command": "python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py"
    }
   },
@@ -180,9 +180,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 37.48,
+    "seconds": 35.74,
     "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
-    "at": "2026-11-17T14:25:53Z",
+    "at": "2026-11-17T19:11:33Z",
     "result": "PASS",
     "build": "17f915b8d7cf62d40e08",
     "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_lint.py"
@@ -202,11 +202,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 9.6,
+    "seconds": 14.14,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-17T14:26:03Z",
+    "at": "2026-11-17T19:11:47Z",
     "result": "PASS",
-    "build": "57a6a0d7874102ad3a7d",
+    "build": "c9870f6e6d6e2aaae543",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py"
    }
   },
@@ -228,9 +228,9 @@
     "rc": 0,
     "seconds": 0.22,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-17T14:26:03Z",
+    "at": "2026-11-17T19:11:47Z",
     "result": "PASS",
-    "build": "440abfdd74ad917d5a3e",
+    "build": "d6e1facfb89b50d1ebc7",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py"
    }
   },
@@ -249,11 +249,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.81,
+    "seconds": 2.03,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-17T14:26:07Z",
+    "at": "2026-11-17T19:11:49Z",
     "result": "PASS",
-    "build": "51c8df6b882cdad4a6e5",
+    "build": "4cbe6ccde8f63fef6103",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py"
    }
   },
@@ -270,11 +270,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.68,
+    "seconds": 7.69,
     "last": "selftest_proof_restore_check: PASS (0 failure(s))",
-    "at": "2026-11-17T14:26:16Z",
+    "at": "2026-11-17T19:11:57Z",
     "result": "PASS",
-    "build": "867ed7b2a364d39ccfe3",
+    "build": "89b8b21cea392571f7f5",
     "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py"
    }
   },
@@ -291,11 +291,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.08,
+    "seconds": 1.85,
     "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-17T14:26:18Z",
+    "at": "2026-11-17T19:11:59Z",
     "result": "PASS",
-    "build": "46e64898d5af25395f3d",
+    "build": "4199c1886e4599a39e6b",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py"
    }
   },
@@ -313,9 +313,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.07,
+    "seconds": 0.06,
     "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the falling cell; intact cover = ground; 4 mutants red",
-    "at": "2026-11-17T14:26:18Z",
+    "at": "2026-11-17T19:11:59Z",
     "result": "PASS",
     "build": "2402b18861ec6812061e",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py"
@@ -340,11 +340,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.41,
-    "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 4/4 switch faults caught | PASS",
-    "at": "2026-11-17T14:26:19Z",
+    "seconds": 1.21,
+    "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 10/10 switch faults caught | PASS",
+    "at": "2026-11-17T19:12:00Z",
     "result": "PASS",
-    "build": "6da4f5dc6b5a77bf899f",
+    "build": "f1bded6f74a84dc6a715",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py"
    }
   },
@@ -364,9 +364,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.53,
+    "seconds": 0.88,
     "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
-    "at": "2026-11-17T14:26:21Z",
+    "at": "2026-11-17T19:12:01Z",
     "result": "PASS",
     "build": "163b4abb86a9ca27b61e",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py"
@@ -387,11 +387,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.05,
-    "last": "explosive knockback gas clumps: PASS (0 faults, 7/7 planted faults caught)",
-    "at": "2026-11-17T14:26:21Z",
+    "seconds": 0.03,
+    "last": "explosive knockback gas clumps: PASS (0 faults, 11/11 planted faults caught)",
+    "at": "2026-11-17T19:12:01Z",
     "result": "PASS",
-    "build": "5a650e5f7c6198e7d5ab",
+    "build": "3d68680cb0f2ede4684b",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py"
    }
   },
@@ -412,11 +412,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.6,
+    "seconds": 1.19,
     "last": "explosive knockback kernel: 246/246 passed",
-    "at": "2026-11-17T14:26:23Z",
+    "at": "2026-11-17T19:12:02Z",
     "result": "PASS",
-    "build": "128e716ad0e07c9a2b85",
+    "build": "a4df482449f02f6b065d",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
    }
   },
@@ -440,9 +440,9 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-17T14:26:23Z",
+    "at": "2026-11-17T19:12:02Z",
     "result": "PASS",
-    "build": "3afecc5e175244c7867f",
+    "build": "493bc22d3a780add438f",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py"
    }
   },
@@ -462,11 +462,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.25,
+    "seconds": 0.22,
     "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
-    "at": "2026-11-17T14:26:23Z",
+    "at": "2026-11-17T19:12:02Z",
     "result": "PASS",
-    "build": "7ffaa7aa475badfe4682",
+    "build": "bd301ad97ed1cefc803e",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py"
    }
   },
