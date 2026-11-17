@@ -1,5 +1,10 @@
 # RimWorld 1.6 — Jawa scavenger clan on a desert world
 
+**Read `PURPOSE.md` first** — what this repo IS: an agentic experimental software factory whose
+product is a game, and the owner's laboratory for agent, factory and orchestration ideas. It is
+the frame every rule below sits in; the domain is low-consequence and human-legible on purpose,
+so agent behaviour here is understandable, interpretable and trustable.
+
 **Read `infrastructure/agents/CHARTER.md`** — the whole process rulebook — and your
 own window file: `infrastructure/agents/CONDUCTOR.md` (the Conductor, with the owner); the
 Conductor launches builds directly as helpers (Relentless, Artisan and Whittle loops retired by the owner 2026-11-13:
