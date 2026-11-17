@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":12244,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=813db13f8c584a5ba6f0c345c202fa6889ede7b8063b4c574f169a1a72dae12b -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":13431,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=5ab93fea9a05c5d6ad8541ec33df7b809f9f55696d625eeea527ef03a22eb29a -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage blind_challenge · 490 events in 9 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 492 events in 9 shards · reducer 1
 holder lease run-1794865314, token 9, last active 2026-11-16T21:43:27Z
 holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 400000
 
@@ -298,6 +298,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - closed findings: 38, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 98, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - open findings in brief: the oldest 12 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 490 events (views/history.md; never read whole)
+- the full history: 492 events (views/history.md; never read whole)
 
-cursor: t=2026-11-17T05:58:35Z.1794895115582635667 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T05:58:35Z.1794895115582635667 prints what changed after this packet)
+cursor: t=2026-11-17T06:02:41Z.1794895361436448929 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T06:02:41Z.1794895361436448929 prints what changed after this packet)

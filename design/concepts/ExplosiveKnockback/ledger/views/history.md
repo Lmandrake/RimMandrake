@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":12244,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=a2a6e32cd3e3c6205356e66cea1fe50a26484f9c01936d26e50b0e7e8d2679df -->
-# ExplosiveKnockback — mod ledger history (490 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":13431,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=eca86844e7c8b86ba7e58b28318a0d2675fe4c20d66e9d362017737408ddc4aa -->
+# ExplosiveKnockback — mod ledger history (492 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -491,3 +491,5 @@
 - 2026-11-17T05:58:35Z JUDGE.judge-1794890427#24 finding.verified finding:RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR v0.1.0: T_KERNEL rerun PASS; lane 1 K_WHICH_BLASTS_AND_LOOKUP: FireSwitchedOff true for hediff ElectricalBurn; PF_K_FIRE_SWITCH_HITS_WEAPONS caught
 - 2026-11-17T05:58:35Z JUDGE.judge-1794890427#25 finding.verified finding:RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE v0.1.0: lane 1 K_CAPS_PER_WEAPON_AND_GAS and K_SETTINGS_SWEEP_RANGES: the gas cap stays gasBurstGoodsCells at scale 0.25-2; PF_K_GAS_CAP_RESCALED caught by T_KERNEL
 - 2026-11-17T05:58:35Z JUDGE.judge-1794890427#26 finding.verified finding:RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE v0.1.0: cycle_2 plant_faults --expect-caught on the six rerun: 'EXPECT CAUGHT: PASS, 6 of 6'. (A different storeroom plan site, PF_SB_PLAN_PLAIN_KERNEL, survives: filed as RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN)
+- 2026-11-17T06:02:41Z DISPATCH#37 judge.sealed judge v0.1.0: 
+- 2026-11-17T06:02:41Z DISPATCH#38 run.end run v0.1.0: 
