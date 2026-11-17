@@ -1,0 +1,77 @@
+# Proposed instruments, not measurements
+
+None is built or run by this cleansing pass. Current source has useful Verse-free kernels (Source/Kernel), selftest drivers, validation.py and historical live proofs. They are components, not evidence that an integrated simulator agrees with the current game. In particular selftest_leaningscrub.py contains a fake bridge implementing its own world: its green rows are assertions about the harness. Production game-state and fingerprint agreement below is mandatory before any model result can support a bar. No alternative planet generation, seed search or world editing is proposed. Enumerated situation grids are proof inputs.
+
+Build in this order. Models can reuse pure production logic, but an independent oracle and corrupt-input controls prevent proving a function against itself. Any disagreement outside the stated tolerance invalidates the model for that regime; retain the discrepancy and repair the model/adapter before citing it. If production scheduling/pathfinding cannot be exported faithfully, the affected bar stays unproved and uses an actual runtime state trace; never make up an offline surrogate.
+
+## Situation and transition generator
+
+Question: Can every declared job, permission, life, feature-gate and save transition be read consistently without a hidden authorization or lost actor?
+
+Informs safe_routine, earned_claims, ordinary_life, tree_care, real_flyers and whole_season; ordinary_intent, contact_boundary, scope_switches, claim_transaction, care_transaction and real_locomotion. Settles the unknown route intent meeting and supplies cases to the other models. First because the absent ordinary/expedition distinction has no credible test until actor/job identity and intermediate cells can be observed.
+
+Inputs/range: effective composed defs/settings, actual route/hazard/AI adapters, all roster species grouped by diet/age/product/flight behavior, actor/target/job IDs and serialized links. Enumerate safe/harmful/blocked cells, below/equal/above each contact/size threshold, normal/explicit/canceled/reassigned/down/dead/mental-broken work, growing/smothered/due/destroyed stand, full/reserved/blocked output, tree/pen/rope states, live/off/reenable and before/after reload. Cross weather transitions with route replans and queued completions; boundary-crossing races are mandatory, not sampled away by pairwise coverage. Use the per-bar range as its manifest and report each unrepresented class. Colony load ranges 3 and40 workers; simultaneous event order has both arrival orders and same-tick cases.
+
+Assumptions: immutable input IDs and transaction receipts; deterministic adapter results for a fixed geometry/event schedule. Production path/job selection is not inferred from a generic path-cost formula. Exhaustive walk is credible only for a bounded finite abstraction checked against actual engine decisions.
+
+Leaves out: pixels/audio, enjoyment, random population trajectories and arbitrary third-party AI. It does not invent the witness engine, design new health systems, or run flyers unattended.
+
+Real-game calibration: TROUTE/TACCOUNT/TCARE/TNATIVE/TFLIGHT observe completed production actions without starting them. Compare actor/job/target, entered cell, permission, actual damage/health delta, ingredient/output ownership and actual post-load links for every abstract transition class. Discrete identity/permission/accept-reject outcomes must agree exactly; timers within the production polling interval, health amounts within recorded numeric precision. A direct helper call is insufficient for autonomy. Deliberately corrupted cell/ID/time/effect receipts must be rejected. A missing game exemplar class remains UNCALIBRATED and cannot pass its bar.
+
+Output/decision: a coverage matrix, shortest counterexample trace per bar, unreachable-state reasons and unsupported adapter list. Output changes permission lifetime, interruption/transaction order or the claimed supported range. It does not tune a bar to a check.
+
+Rough size: [guess] tens of thousands of finite walks, plus a small production observer/serialization adapter; likely the smallest new instrument. Trigger: now, unknown route intent and promised-but-absent intent handling. Also rebuild affected partitions whenever the job/hazard schema changes.
+
+## Geometry and route sweep
+
+Question: Is there a usable actual start and maintained ordinary network as vine geometry, body size, growth and development change?
+
+Informs vine_country, safe_routine, land_read, tree_care, whole_season; one_geometry, one_encroachment, contact_boundary and protected_ground. Settles unknown start and vine field; supplies changing safe-path/forage masks to the whole model.
+
+Inputs/range: exported real local-map masks (not planet seeds) with actual arrival, UsedRects, terrain fertility, water/rock/roofs, floors/underterrain, zones, sown plants and tree trunk/crown geometry. every integer square width200–325, plus explicitly recorded rectangular fixtures of comparable area (other rectangular dimensions are outside this version’s asserted range); all actual fixture arrival cells and translations across each topology equivalence region (centre, edge, corner, bottleneck), both east/west sprite snaps and the full continuous bearing circle partitioned at alignment/snap boundaries, testing those ties and analytic interval extrema rather than assuming a few compass samples cover the circle. Every kept vine form/growth class, size below/equal/above free/block thresholds, default/min/max supported placement/cap settings, empty/initial/capped vine masks, developed and unprotected route states. Sweep each engine-generated local placement decision class with reproducible roll tapes, not a search for an agreeable screenshot. Reject unsupported/impossible geometries explicitly.
+
+Assumptions: cell occupancy and the production NaturalFree/barrier/contact outcomes are fully exported; the independent graph includes expected venom, not only Walkable. Replay existing island/creep kernels but compare reachability against a separately implemented safe-connectivity oracle. Track D0 immutably. Geometry cannot estimate maintenance by itself.
+
+Leaves out: AI scheduling, seasons, user taste, alternate planets, custom tree rescaling and a new sun/shade model. Sun/shade remains the shared engine's geometry; mismatches are dependency findings.
+
+Real-game calibration: compare production actual-start records before/after placement with kernel masks, retained form identity, protected-cell refusal and live pathfinder accepted/blocked/unsafe decisions. Discrete terrain/occupancy/path class must match exactly; independent bearing within0.1 degree of shared production geometry is a proposed check tolerance. Sample points include boundaries/ties and every topology class, not just centre starts. A pixel-only height inference does not calibrate passability; use the joint land read separately.
+
+Output/decision: reachable-region maps, cell-class overlays, shortest unsafe path, blocked starts and worst bottlenecks by body size; change placement refusal, cap denominator, corridor spacing, NaturalFree protection or the supported map-size setting ranges. Does not make vines harmless to fix a path.
+
+Rough size: [guess] hundreds of thousands of grid cases using existing RM_IslandKernel and new independent masks/oracle; a modest batch tool, not a game simulation. Trigger: now, unknown start/field meeting; rerun affected sweeps when placement, protection or contact constants change twice while chasing a check.
+
+## Economy and care walk
+
+Question: Can the local tree, venom, blanket, claim and fuel transactions complete through interruption and reload without loss, duplication or an unreachable no-tree supply chain?
+
+Informs earned_claims, tree_care, ordinary_life and whole_season; claim_transaction, fuel_transaction, care_transaction, scope_switches and ordinary_population. Settles unknown claims and custody and tree supply. Uses situation-generator transaction orderings.
+
+Inputs/range: real effective recipe alternatives (FuzzFiber+SweetlineWool or labelled Cloth substitute), stack limits, coat readiness/share, tree shed/bank/caps, Dripping growth/harvest, claim duration/yield basis, fuel-consumer adapters, medicine/immunity and explicit disease severity mechanisms. Empty/full/fractional inventories, no tree/rare tree, unavailable/imported cloth, alive/dead/canceled jobs, blocked product cells, off/reenable, save/reload immediately before/at/after completion and 1–40 simultaneous transactions. Durations120–600 engine days, sampling every scheduler boundary rather than advancing only the final tick. Add reproduction/butchery identities and optional Bones/Wreckage outputs only as ordinary recorded products.
+
+Assumptions: no global cure API; actual supported disease adapters identify progress, severity, immunity and terminal conditions separately. Free tree shedding is a recorded natural source, not conservation from a nonexistent animal coat. A conserved coat ledger separately accounts actual coat removed = ground material + bark share + explicitly recorded conversion/rounding/overflow. Bank floors and fractional stores must remain conserved over repeated runs. Imported cloth is a real cost/source, not guaranteed aid. A refuelable with no verified adapter cannot supply evidence for premium fuel.
+
+Leaves out: full-map population prediction, market profitability, custom health conditions lacking a supported adapter and arbitrary modded fuel machinery. No instant cure/injury healing or old-save preservation.
+
+Real-game calibration: actual vanilla bill/ingredient consumption, completed harvest/rub, bank output placement and consumer useful output receipts from TACCOUNT/TCARE. Require exact identities/counts/captured duration and no extra transaction after reload; fractional/energy deltas agree to declared representation precision, due-tick execution within one production sweep. Disease deltas agree with the resolved severity adapter to numeric precision; untreated controls distinguish natural immunity/medicine recovery. Reject observer-induced jobs, forced ready coats, injected healing labels and prefilled consumers as autonomy proof.
+
+Output/decision: material/energy/health conservation tables, dependency graph with no-tree supply reachability, minimum operation trace, interrupted-transaction worst case and each supported fuel consumer's comparative curve. Changes recipe fallback, placement/debit order, due-time capture, disease adapter eligibility or removal of an unsupported premium claim for a consumer. Never changes an experience bar just to preserve a favorite numerical yield.
+
+Rough size: [guess] a few thousand exact transaction walks with existing Smother/Coat kernels and new verified adapters; reusable accounting receipts are most work. Trigger: now, unknown custody/tree-supply meetings and missing healing/frozen clocks. Also first duplication, no-tree deadlock, or second retune of an economy constant.
+
+## Whole-map season model
+
+Question: When all kept systems run together, do encroachment, weather/power, food/population, grooming and route upkeep let the home continue operating rather than flood, empty or stall?
+
+Informs working_home, safe_routine, ordinary_life, tree_care and whole_season plus every rule that touches whole runtime, weather and power, colony work or animal lifecycle. Settles their unknown meetings as far as simulation can; whole_season still needs the actual game continuation.
+
+Inputs/range: Geometry sweep's exported full maps and actual initial ecology; situation generator's validated work/transaction adapters; production weather transition timing/eligibility, WindManager and power/storage curves; forage growth/consumption/predation/reproduction/death, ordinary global growth, vine creep with D0 cap, claim clocks, coat/care and competing work queues. All kept switches ON, next-version OFF, all DLC and required shared engines active, sun fixed by actual tile, monolith/weather gates correctly unlocked. Square map widths200–325, 3/40-colonist loads, narrow/open topologies, absent/present tree, resource-scarce/rich and at/under/over available-work/power regimes. Weather includes natural sequences with a long Stall, repeated Gales and ordinary fog; do not keep it clear. Simulate a season15 days and follow-on until every recorded test claim is due (up to600 days), including day100. Save/reload mid-cycle and reverse feasible main actions on the same initial fixture. Treat random process roll tapes as uncertainty, not measurements; use several tapes per regime without replacing the actual planet.
+
+Assumptions: calibrated cell/transaction decisions plus causal, event-scheduled budgets. Time compression executes each relevant timer, growth pulse, AI-work event and health/feeding opportunity in order. Day-level averages may screen rough regimes, but cannot settle same-tick claims or path crossings; they delegate those to finer validated walkers. Fire uses vanilla susceptibility; no deferred quench/stamper or hidden wildlife replacement rescues the map. Only ordinary Wreckage/Bones behavior from actual loadout is integrated.
+
+Leaves out: artistic coherence, subjective enjoyment, expensive engine microbehavior with no validated adapter, arbitrary raids or other mods' private AI. Do not use omitted raid losses to excuse mod-caused starvation. There is no credible purely offline instrument for actual engine exception/performance storms: observe those in the final game run.
+
+Real-game calibration: TWHOLE exports unchanged-save snapshots and causal intervals with current fingerprints; compare several short actual unlocked production windows spanning wind transitions, routine route replans, natural eating/deaths, rubbing and claim boundaries. Discrete conservation, safe-work permission and cap events must agree exactly. Continuous power/nutrition/occupancy/work totals use a proposed relative tolerance5% over matching windows, tightened if that uncertainty could reverse flood/desert/stall classification. Validate all risky regimes, not a friendly average map. Runtime log/AI/save fidelity is validated directly, never inferred from this tolerance. Uncalibrated creature dynamics remain a marked envelope and cannot certify their life bar.
+
+Output/decision: season timeline of vine/forage masks, safe-route connectivity, upkeep versus available labor, food/animal cohorts, stored energy, claim/bank identities, illness and work completion; worst counterexample per bar and uncertainty range. Output changes creep/placement/maintenance tuning, input accessibility or worker priority rules; if a claimed regime cannot be represented faithfully, use production observation and repair the bar's instrument, never silently omit it.
+
+Rough size: [guess] tens of full-map event runs, roughly a few hundred thousand cells each, extending to long claim deadlines. It is larger than the exact walkers and cheaper than using live colonies to search all regimes. Trigger: now, unknown whole runtime/colony work/weather-power/ecology meetings. Build after the smaller walkers establish causal inputs, before further balance tuning; rebuild for the first whole-bar failure or repeated compensating retunes. The first model selects hard situations, this one decides which full-map regimes need the final live continuation.

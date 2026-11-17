@@ -1,0 +1,23 @@
+{
+  "mod": "LeaningScrub",
+  "run": "designer-cleanse-LeaningScrub-2026-11-16",
+  "outcome": "proposed",
+  "signature": "Venomvine advances across wild ground, so the colony maintains safe routes and explicitly prepares dangerous trips to harvest venom or bank slow fuel claims.",
+  "counts": {
+    "capabilities": 83,
+    "kept": 35,
+    "next_version": 44,
+    "recommend_retire": 4,
+    "old_bars": 64,
+    "bars": 9,
+    "live_only_bars": 3,
+    "checks": 15,
+    "rules": 13,
+    "unknown_pairs": 8,
+    "models": 4,
+    "tickets": 58,
+    "questions": 0
+  },
+  "blocked_on": [],
+  "decisions_by": "Designer, delegated by the cleansing brief; no owner approval or fresh reviewer verdict claimed"
+}

@@ -1,0 +1,36 @@
+{
+ "mod": "LeaningScrub",
+ "state": "proposed",
+ "why": "check passes (9 bars, 83 census rows, 878 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-16T23:30:59",
+ "seconds": 2385,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 878,
+  "page_limit": 950,
+  "census_rows": 83,
+  "bars": 9,
+  "bar_numbers": "none",
+  "shared_things": 9,
+  "meetings": 9,
+  "old_bars": "64 mapped of 64 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 5100547,
+    "output_tokens": 49970
+   }
+  }
+ ],
+ "agent_errors": []
+}

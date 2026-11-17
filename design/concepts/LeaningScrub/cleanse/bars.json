@@ -1,0 +1,1052 @@
+{
+  "bars": [
+    {
+      "id": "land_read",
+      "says": "At colony zoom and sound, the player sees a crusted plain of low leaning fuzz, taller vine obstacles and occasional ancient tree landmarks, and can distinguish ordinary wind, a quiet Stall and a driven Gale.",
+      "meant": {
+        "intent": "This is the actual place, not just an arid biome label. Knee-height is a relative canopy read: people stand above it, small animals occupy it, vines interrupt human sightlines and trees rise beyond both. Art quality/variant counts are not acceptance gates. Reject inference: losing these contrasts loses the compose sentence and OWNER integral-vine/wind directions. First-version: land.",
+        "source": "OWNER:1792167263801507527; OWNER:1792525009391726212; biome_mod_architecture.md §7 Q2; arid_shrubland.md §§5–6,9; delegated: current cleanse land/life limit.",
+        "figurative": [
+          {
+            "word": "driven",
+            "stands_for": "dust and fuzz visibly travel downwind rather than a stationary fog tint",
+            "accept": "Dust crosses the screen as broken wisps; it need not form literal streaks or fly in straight lines."
+          },
+          {
+            "word": "ancient",
+            "stands_for": "an established large landmark tree whose identity persists; no simulated age requirement",
+            "accept": "A newly loaded map already has a named full-canopy tree, without centuries of simulated growth."
+          }
+        ]
+      },
+      "accept": [
+        "A person stands above the moving cover; a small native disappears behind ordinary foliage rather than becoming magically invisible; the vine mass interrupts the person’s view.",
+        "Calm makes the wind bed subside; a Gale drives dust along the plants’ shared lean while the map and route warnings remain readable. A tree-free map still reads as Scrub."
+      ],
+      "reject": [
+        "A silver recolor of open sand leaves people hidden by tall ordinary grass, and the Gale is a motionless fog sheet with the ordinary wind audio still playing.",
+        "A tree’s oversized canopy obscures every route warning at colony zoom, or noisy jungle calls drown out the Stall."
+      ],
+      "lazy": "none: The sentence and contrasting pictures require the causal player outcome, including its stated boundary; a label, staged endpoint or inactive mechanism cannot meet it.",
+      "range": {
+        "varies": "Actual authored-world sun bearings across both screen lean sides and north/south ties; all effective ordinary weather twins plus Stall/Gale and transitions; representative flat maps 200–325 cells wide; tree absent/present, young/mature vines, species/art variants, new map and day 100; both colony and close inspect zoom.",
+        "left_out": "Art popularity, palette perfection and count of images; no alternative planets or day/night support; the single global Direct Sun geometry still applies."
+      },
+      "sees": {
+        "instrument": "Attended rendered-and-audible comparison with production weather progression, backed by geometry/model outputs and state receipts. Geometry alone can prove heading, not legibility or sound.",
+        "start": "A fresh full Scrub fixture at an actual tile position, its real terrain/flora and actual start; a person, small native, mature stand and optional tree seen together. Observe the unlocked weather sequence; after natural observations inject only a transition to cover a missing state, release immediately and let the transition finish.",
+        "on": "Every kept feature and shared engine ON at proposed shipped defaults, all DLC present, next-version extras OFF, no sky/weather lock, no disabled AI, no forced invulnerability. Negative controls run separately and never supply the primary passing reading.",
+        "control": "Read current weather/wind/audio state; compare the same camera through the transition. Rule out a global static overlay, unrelated wind soundtrack, wrong terrain and an unused texture. Review a naturally generated landscape, not a planted display row.",
+        "reset": "Use a disposable current-schema fixture, record its build/settings/save fingerprint, and discard it or reload its untouched starting save after exporting the trace; never restore a canonical world or fabricate post-reload actors.",
+        "live_only_why": "Neither static XML nor a kernel can judge overlapping sprites, audible transitions and readable route signs at play zoom. Existing art remains accepted; this tests functional visibility and motion, not new art taste."
+      },
+      "live_only": true,
+      "touches": [
+        "land geometry",
+        "weather and power",
+        "start and vine field",
+        "animal lifecycle",
+        "tree supply",
+        "whole runtime"
+      ]
+    },
+    {
+      "id": "working_home",
+      "says": "A player who connects turbines and storage can run ordinary home work through the windy routine and plan for the visibly calm interruption without a hidden source of electricity.",
+      "meant": {
+        "intent": "Wind power is useful but the phrase never stops is figurative outside Stall; no infinite electricity or guaranteed self-sufficient factory. Reject inference: a wind-powered home is the delegated approved root. First-version: land and vanilla work.",
+        "source": "CONDUCTOR:1794792677711573340; OWNER:1794327080747931066; arid_shrubland.md §§5,7; delegated: ordinary vanilla turbines suffice, scripted surge/breakdown is next version.",
+        "figurative": []
+      },
+      "accept": [
+        "Connected wind generation feeds storage and colony consumers during the windy routine; storage carries chosen essential work through calm or the player sees the power shortfall and reduces demand."
+      ],
+      "reject": [
+        "The inspect pane reports abundant output while the connected workbench has no usable power.",
+        "An unconnected generator or tester-filled battery carries every calm period, hiding whether wind actually supports the home."
+      ],
+      "lazy": "none: The sentence and contrasting pictures require the causal player outcome, including its stated boundary; a label, staged endpoint or inactive mechanism cannot meet it.",
+      "range": {
+        "varies": "Ordinary twins, fog, Stall, Gale, transition ramps; unobstructed/obstructed turbines, broken/healthy vanilla components; 3 and 40 colonists; loads below/near/above available wind supply; empty/full batteries; on/off/reload. Above-supply loads must fail visibly rather than be promised power.",
+        "left_out": "No scripted premium turbine capacity, weather breakdown chance or raid weighting; no promise that arbitrary colony layouts or electricity demands work."
+      },
+      "sees": {
+        "instrument": "Whole-map season model power ledger, after exact calibration of production WindManager/turbine/circuit samples; a disconnected-consumer state read distinguishes output text from energy delivery. TPOWER supplies missing sampling.",
+        "start": "Wind-only circuit with accounted initial battery charge and demand, no solar, chemfuel or dev energy; actual weather transition log and actual connected consumer states.",
+        "on": "Every kept feature and shared engine ON at proposed shipped defaults, all DLC present, next-version extras OFF, no sky/weather lock, no disabled AI, no forced invulnerability. Negative controls run separately and never supply the primary passing reading.",
+        "control": "Conserve produced, stored, lost and consumed energy; an output-only fake or precharged battery cannot account for work and end charge. The offline model uses measured engine curves, never the old fake bridge’s made-up power.",
+        "reset": "Use a disposable current-schema fixture, record its build/settings/save fingerprint, and discard it or reload its untouched starting save after exporting the trace; never restore a canonical world or fabricate post-reload actors.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "weather and power",
+        "colony work",
+        "whole runtime"
+      ]
+    },
+    {
+      "id": "vine_country",
+      "says": "From the actual arrival site the player has buildable ground and a safe way out, while journeys across the plain repeatedly meet tall connected venomvine stands with recognizable venom edges and blunt galleries.",
+      "meant": {
+        "intent": "Abundant means route-scale obstacles encountered across travel directions, not a quota of plants or a ring-wall around the start. Varied means decision-relevant poisonous and blunt passage/harvest forms, not retaining every enriched form. Reject inference: without this, the integral vine disappears into decorative scatter. First-version: signature.",
+        "source": "OWNER:1792167263801507527; OWNER:1794327080747931066; design/RimMandrake/venomvine_design_2026-10-16.md §10; delegated: this cleansing mandate selects thicket, Dripping and Hollow for the current version.",
+        "figurative": []
+      },
+      "accept": [
+        "Several natural journeys require a choice between a clear detour and a visible stand; an actual start supports shelter, work and edge access without threading poison.",
+        "A gallery can be recognized before entering it; the adjacent venom-bearing edge remains a different choice."
+      ],
+      "reject": [
+        "A cleared test disc somewhere else on the map passes while the actual arrival site is trapped.",
+        "Isolated decorative stems satisfy a plant census while ordinary journeys can ignore vines, or a sealed vine wall makes leaving depend on an expedition."
+      ],
+      "lazy": "none: The sentence and contrasting pictures require the causal player outcome, including its stated boundary; a label, staged endpoint or inactive mechanism cannot meet it.",
+      "range": {
+        "varies": "Situation generator topology classes: open plain, narrow rock channel, edge/corner/interior arrival, water/rock/roof obstacles, tree absent/present; every square width from 200 through 325 cells, plus explicitly recorded rectangular fixtures of comparable cell count; both wind snaps, min/default/max placement settings; start reachability classified using actual size and contact policies, not ordinary walkability alone.",
+        "left_out": "No alternative world or seed search to choose a prettier planet; no guaranteed tree or room count per map. Unsupported geometry must be reported, not silently replaced with an empty map. Numbers are checks, not bars."
+      },
+      "sees": {
+        "instrument": "Geometry and route sweep on exported real map masks and the production island kernel with an independent flood/path oracle, calibrated against fresh-map actual-start records. Land appearance is already read by land_read.",
+        "start": "Before local placement: record actual player start, terrain, used rects and pre-existing plants. After placement: export the same cell geometry and actual counted forms; no subsequent manual clearings.",
+        "on": "Every kept feature and shared engine ON at proposed shipped defaults, all DLC present, next-version extras OFF, no sky/weather lock, no disabled AI, no forced invulnerability. Negative controls run separately and never supply the primary passing reading.",
+        "control": "Compare pre/post reachable safe region from the recorded start; refuse a centre surrogate, an unfiltered next-version room, or a flood fill that ignores contact venom. Obstacle-free and no-vine masks are negative controls only.",
+        "reset": "Use a disposable current-schema fixture, record its build/settings/save fingerprint, and discard it or reload its untouched starting save after exporting the trace; never restore a canonical world or fabricate post-reload actors.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "start and vine field",
+        "route intent",
+        "land geometry",
+        "whole runtime"
+      ]
+    },
+    {
+      "id": "safe_routine",
+      "says": "At a maintained home the player’s ordinary work takes safe routes or visibly waits, while a specifically ordered prepared trip can enter traversable venomvine and suffer its warned contact risk without authorizing later work to follow.",
+      "meant": {
+        "intent": "Dependable excludes scripted invasion of developed ground and unbounded maintenance, not deliberate player removal of protection. Prepared is informed consent and ordinary supplies, not a new equipment recipe. Reject is directly sourced home and ordered-trip intent; first-version signature. Death/rescue does not transfer expedition permission.",
+        "source": "OWNER:1794327080747931066; OWNER:1794334503877366549 and ANSWERS_OWNER.md Q2; delegated: a finite job/actor/target-bound permission and visible no-route reason implement that intent.",
+        "figurative": []
+      },
+      "accept": [
+        "The hauler takes the longer safe way; when it closes the pawn waits with a reason. A separately ordered expedition reaches the venom harvest, receives attributable contact harm if exposed, returns and resumes safe hauling.",
+        "New growth approaches a dirt route slowly enough for scheduled clearing; developed ground remains protected. A blunt gallery remains usable by an eligible pawn even during an expedition."
+      ],
+      "reject": [
+        "Path cost prefers a safe detour once, then ordinary work takes poison when the detour becomes blocked.",
+        "A drafted or rescued pawn keeps stale permission for later hauling, or a forbidden body size teleports through a wall because the player clicked it.",
+        "A protected yard is overgrown, or clearing a modest dirt route continuously consumes the colony’s available work."
+      ],
+      "lazy": "none: The sentence and contrasting pictures require the causal player outcome, including its stated boundary; a label, staged endpoint or inactive mechanism cannot meet it.",
+      "range": {
+        "varies": "Size thresholds: below/equal/above free band and block band (current 0.8/1.5; Hollow 1.0/1.5), growth below/equal/above armed threshold (current 0.5); ordinary hauling, construction, harvesting, tending, food, rescue, firefighting and animal hauling; explicit expedition, cancellation, retarget, death/downing, mental break, forced job, reload and target destruction; 3/40 colonists, single/double bottleneck and no-safe-path regimes; protected floors/buildings/roofs/zones/sown plants versus unprotected dirt; day 1–100. Non-colonists obey shared physical hazards but receive no invented colony-intent permissions.",
+        "left_out": "No promise that a dangerous order is harmless, that an oversized pawn can cross, that dirt stays clear without work, or that fleeing during a mental state is an ordinary player work order. Vanilla forced movement/emergency exceptions must be visible, never grant persistent expedition permission."
+      },
+      "sees": {
+        "instrument": "Situation/state-machine generator plus geometry sweep; read-only production job/cell/permission/damage receipts supplied by TROUTE calibrate replay, then enumerate all declared transitions offline. No instrument currently proves this end-to-end.",
+        "start": "Real job givers active; known clear detour plus dangerous shortcut, then remove the clear detour through an ordinary event; a mature and a young vine, actual pawn body sizes and actual reachable target. Separate cloned scenario branches change action order, not the claimed result.",
+        "on": "Every kept feature and shared engine ON at proposed shipped defaults, all DLC present, next-version extras OFF, no sky/weather lock, no disabled AI, no forced invulnerability. Negative controls run separately and never supply the primary passing reading.",
+        "control": "Trace every entered cell and job identity, shared-barrier/contact decision and permission lifetime; endpoints or a cost preference cannot hide a poison step. Subtract health change in an identical stationary or non-vine segment to rule out unrelated injury. No direct Goto injection supplies routine intent.",
+        "reset": "Use a disposable current-schema fixture, record its build/settings/save fingerprint, and discard it or reload its untouched starting save after exporting the trace; never restore a canonical world or fabricate post-reload actors.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "route intent",
+        "colony work",
+        "start and vine field",
+        "claims and custody",
+        "whole runtime"
+      ]
+    },
+    {
+      "id": "earned_claims",
+      "says": "A prepared forager can gather renewable venom and weave and place a visible smother blanket, then collect conserved dry cane from the banked claim after years and obtain more sustained useful fuel than ordinary wood in a matched consumer.",
+      "meant": {
+        "intent": "The signature has immediate venom and delayed fuel payoffs. Claims remain local visible plants until completion; no accelerated early payout hides the cost. Renewable harvest must complete and recover. Reject inference from integral vine rewards, frozen smother scope and accepted root: labels without harvest/economy would make trips pointless. First-version: signature. Premium comparison is stable under retuning.",
+        "source": "arid_shrubland.md §§4,7; CONDUCTOR:1794794271528276351; record.scope frozen_smother_scope; delegated: current fuel comparison and conservation are operational readings, not owner-picked numbers.",
+        "figurative": [
+          {
+            "word": "banked",
+            "stands_for": "a visible delayed claim with a saved due time and a conserved payout, not a bank account or ownership law",
+            "accept": "The blanketed stand sits in the field and pays its dry cane there; no banking building exists."
+          }
+        ]
+      },
+      "accept": [
+        "A completed venom harvest leaves the living stand recovering; an interrupted attempt grants nothing. A crafted blanket becomes a visible claim; its dry payout is delivered after the stated long wait and keeps a matched heater or work consumer useful longer than the ordinary-wood alternative.",
+        "An interrupted or repeated claim cannot create extra cane; a saved claim retains its original due time when later claims use changed tuning."
+      ],
+      "reject": [
+        "A harvest label or canceled job passes as renewable venom, or a spawned blanket bypasses an unusable recipe.",
+        "A few short visits to a claim produce free fuel, a reload pays the same claim again, or fuel-filter acceptance is called premium while the consumer works no longer than with wood."
+      ],
+      "lazy": "none: The sentence and contrasting pictures require the causal player outcome, including its stated boundary; a label, staged endpoint or inactive mechanism cannot meet it.",
+      "range": {
+        "varies": "Dripping unripe/ripe/recovering and canceled/finished harvests; blanket absent/carried/reserved/placed, claim fresh/due/destroyed/off/reenabled; pawn death/downing, target removal, full output cells, same-tick jobs, reload and two action orders; 1–40 simultaneous workers; current-schema default claim 120 engine days, tuning 120–600 frozen per claim; both tree-supply and tree-free imported-cloth supply. Matched consumers campfire/cooking and compatible powered/refuelable processes as applicable; equal chosen item input with accounted mass/work tradeoff in the check.",
+        "left_out": "No instant clearance, preserved legacy dates, stolen property ownership system, hoard cargo or infinite premium fuel. Advanced modded consumers without a verified fuel adapter are explicitly unsupported, never silently advertised as premium."
+      },
+      "sees": {
+        "instrument": "Economy and care state walk uses production claim/harvest/refuel code seams with independent object/energy accounting and calibrated game transaction receipts from TACCOUNT. SmotherKernel alone currently lacks frozen per-claim duration and premium behavior.",
+        "start": "Actual ingredient supply, vanilla tailoring bill, distinct output identities, living Dripping stand, current-schema claim and consumer initial fuel/temperature/work state all recorded; no forced completion or backdated claim used as evidence of the recipe chain.",
+        "on": "Every kept feature and shared engine ON at proposed shipped defaults, all DLC present, next-version extras OFF, no sky/weather lock, no disabled AI, no forced invulnerability. Negative controls run separately and never supply the primary passing reading.",
+        "control": "Account inputs, reservations, output placements, overflow and destruction by identity; compare matched consumers with vanilla wood under the same weather and load, not a hotter room or high-quality stove. Exact scheduling replay around due tick catches retune/reload duplicates. Time compression processes every affected event; never merely sets TicksGame.",
+        "reset": "Use a disposable current-schema fixture, record its build/settings/save fingerprint, and discard it or reload its untouched starting save after exporting the trace; never restore a canonical world or fabricate post-reload actors.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "claims and custody",
+        "tree supply",
+        "colony work",
+        "whole runtime"
+      ]
+    },
+    {
+      "id": "ordinary_life",
+      "says": "The player encounters the native roster as living foragers, grazers, prey and predators whose ordinary feeding, reproduction, products and natural defenses work without a special event to start them.",
+      "meant": {
+        "intent": "Rosters are preserved including currently multi-homed species, never evicted. Ordinary life does not license every bespoke behavior in a def description. Thornhold venom is inherent melee; Cruststar remains edible, but no exclusive grazer engine. Reject inference from the land/life card: a biome of inert species props is incomplete. First-version life.",
+        "source": "Current cleanse land/life card; biome_rulings.md roster/no-eviction/native-water rulings; RM_LeaningScrub_Biome.xml effective roster; delegated: distinguish inherent diet, defense and reproduction from deferred custom AI.",
+        "figurative": []
+      },
+      "accept": [
+        "Naturally present animals feed and hunt through ordinary jobs, produce their ordinary meat, coats or eggs and retain usable carcasses; a thornhold’s actual melee can apply its own venom without a vine nearby.",
+        "A native with access to its environmental water stays hydrated; hunger or predation can still kill animals, leaving a readable body or cause."
+      ],
+      "reject": [
+        "A staged spawn lineup is the only evidence of wildlife, or food-search returns a target but hungry animals never finish eating.",
+        "A native vanishes to maintain a hidden population count, or ordinary eggs cannot hatch because proximity hatching was switched off."
+      ],
+      "lazy": "none: The sentence and contrasting pictures require the causal player outcome, including its stated boundary; a label, staged endpoint or inactive mechanism cannot meet it.",
+      "range": {
+        "varies": "Effective base and all patched-in campaign rosters, newborn/adult/old, tame/wild, predator/herbivore/omnivore and egg/live-birth product classes; accessible/absent food or local environmental water; death/decay, hatch timers, scarcity and abundant supply; new map, day 100, 3/40 colonists, reload. Existing shared opt-ins remain only when inherent ordinary behavior; all explicitly deferred custom behavior stays off.",
+        "left_out": "No new roster eviction, artificial quota of sightings, exclusive diet pairing or spawn-rescue of starving populations; no guarantee ordinary survival under player extermination or food denial."
+      },
+      "sees": {
+        "instrument": "Situation generator plus food/age/product ledger in the season model; calibrate production ingest, hatch, death and butcher receipts and effective composed roster. Natural presence comes from start/cycle records, never only hand-spawned actors. TACCOUNT/TNATIVE supply missing receipts.",
+        "start": "Full real native population record before manual staging, effective composed defs with mod fingerprint and actual food/need state; existing normal spawners and all kept mechanics active.",
+        "on": "Every kept feature and shared engine ON at proposed shipped defaults, all DLC present, next-version extras OFF, no sky/weather lock, no disabled AI, no forced invulnerability. Negative controls run separately and never supply the primary passing reading.",
+        "control": "Link living IDs and parent/egg/product/corpse identities across lifecycle events; source roster membership alone cannot count as a living animal. Food-source selection alone cannot count as eating; observe nutrition/item debit or actual damage/carcass. Separate inherent quill damage from contact-venom cell events.",
+        "reset": "Use a disposable current-schema fixture, record its build/settings/save fingerprint, and discard it or reload its untouched starting save after exporting the trace; never restore a canonical world or fabricate post-reload actors.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "animal lifecycle",
+        "claims and custody",
+        "tree supply",
+        "whole runtime"
+      ]
+    },
+    {
+      "id": "tree_care",
+      "says": "Where a sweetline grows, a free eligible coated animal can reach it and finish rubbing to shed its coat and gradually relieve parasites or disease, while the forager can collect loose wool and the tree’s stored felt without duplicating the animal’s coat.",
+      "meant": {
+        "intent": "This is ordinary native grooming/forage, not a health aura, paid ritual, visitor event or new medicine industry. Coated eligibility is source-backed by CompShearable; sick animals without coats retain ordinary treatment. Reject: OWNER explicitly added healing to explain rubbing; a wool-only animation contradicts that explanation. First-version life and readable supply to the signature blanket.",
+        "source": "OWNER:1794835478275153823; RM_SweetlineScratching.cs WhyNot/Rub; sweetline_guardian_spec.md retained tree/wool directions; delegated: finite eligibility, disease adapters and containment below.",
+        "figurative": []
+      },
+      "accept": [
+        "A ready, unrestrained coated animal chooses a reachable tree, completes its rub, sheds coat and subsequently shows improving eligible disease severity. Harvesting the bark delivers stored felt while loose shedding continues after an earlier harvest.",
+        "A pen-bound animal with no legal path stays in its pen; an interrupted rub grants no wool or healing. A tree-free map has no tree aura and can use the declared imported blanket-material route."
+      ],
+      "reject": [
+        "The hediff name says healing while parasites never improve, or the tree cures a nearby animal that never rubbed.",
+        "An animal escapes a closed pen to groom, or repeat harvests duplicate the same stored coat.",
+        "Harvesting the tree resets maturity history and permanently stops free wool shedding."
+      ],
+      "lazy": "none: The sentence and contrasting pictures require the causal player outcome, including its stated boundary; a label, staged endpoint or inactive mechanism cannot meet it.",
+      "range": {
+        "varies": "Tree absent/immature/ever-mature/harvested/destroyed, coat empty/below/equal/above readiness, wild/tame, penned/roped/allowed-area restricted, reachable/unreachable; healthy/animal flu/plague/gut worms/muscle parasites and unrecognized health condition; 1–40 simultaneous animals, cancellation/death, game reload, full wool-drop area and fractional bank. All shared health engine caps/off controls apply. Current tentative one-day nonstacking refreshed condition, 250-tick pulse and per-condition normalized severity adapter are checks, not promised healing speed.",
+        "left_out": "No healing injuries, missing parts, genes, addictions, non-disease permanent conditions or resurrection; no blanket all-hediff severity reduction. No environmental aura. Unknown disease mechanism needs a visible unsupported adapter result, never a false cure claim."
+      },
+      "sees": {
+        "instrument": "Economy and care walk with actual coat, reservation, pathology and harvest adapters, calibrated to completed production rub/health pulses and output placement from TCARE/TACCOUNT. An unsupported disease never earns a pass merely from a label.",
+        "start": "Existing naturally mature tree plus a positively identified naturally present coated native, recorded coat and named eligible condition; an empty eligible-native set is UNPROVED, never a vacuous pass; closed-pen/no-path branch, eligible untreated comparison and healthy comparison. Jobs start through real AI, not ProofOrderScratch fullness injection.",
+        "on": "Every kept feature and shared engine ON at proposed shipped defaults, all DLC present, next-version extras OFF, no sky/weather lock, no disabled AI, no forced invulnerability. Negative controls run separately and never supply the primary passing reading.",
+        "control": "Compare disease progression with matched untreated animal under identical immunity/medicine; log actual adapter deltas and confirm they occur only after job completion. Conserve ground wool plus bank credit plus explicit capped overflow; no unexplained double coat. Verify real output delivery before debiting bank.",
+        "reset": "Use a disposable current-schema fixture, record its build/settings/save fingerprint, and discard it or reload its untouched starting save after exporting the trace; never restore a canonical world or fabricate post-reload actors.",
+        "live_only_why": ""
+      },
+      "live_only": false,
+      "touches": [
+        "tree supply",
+        "animal lifecycle",
+        "route intent",
+        "claims and custody",
+        "whole runtime"
+      ]
+    },
+    {
+      "id": "real_flyers",
+      "says": "A player watching a native flyer sees it launch, travel airborne with directional body motion and land as part of its ordinary life, including a shirrel gliding downwind and returning to an available home.",
+      "meant": {
+        "intent": "Flyers cannot depend on the deferred crown, bloom or invisibility systems to fly at all. The home return is bounded by normal reachability and a living available home. Reject from the universal real-flight ruling, not a new art wish. First-version life.",
+        "source": "standing_rulings.md and CLAUDE.md: real flight and attended flight testing; RM_ShirrelGlide.cs; delegated: all effective fiction flyers use ordinary flight when bloom/crown are off.",
+        "figurative": []
+      },
+      "accept": [
+        "The flyer’s production tracker becomes airborne for its journey, its body animation follows travel direction and it lands; a gliding shirrel can later reach its living tree home.",
+        "When its tree is removed or the Gale ends, a shirrel lands safely and seeks an available ordinary home rather than disappearing or hovering forever."
+      ],
+      "reject": [
+        "A positive flight stat passes while the creature walks the journey, or the airborne sprite is a motionless walking pose.",
+        "The only successful launch is a direct test call, deferred bloom or summoned crown cloud; ordinary wildlife never flies."
+      ],
+      "lazy": "none: The sentence and contrasting pictures require the causal player outcome, including its stated boundary; a label, staged endpoint or inactive mechanism cannot meet it.",
+      "range": {
+        "varies": "Every fiction flyer in the effective base/campaign roster; available/absent launch/home trees; all wind states and transitions; cardinal/intercardinal directions and native body stages; job interruption, death/downing, mental state and current reload, 3/40-colonist map. Flight limitations inherited from verified shared tracker rules remain physical constraints, not a silent species removal.",
+        "left_out": "No unattended flight staging or screenshots; observer session with the owner only. No new wing-only render layer. No guarantee of return to a destroyed or unreachable tree."
+      },
+      "sees": {
+        "instrument": "Cheapest preliminary evidence is pure tracker/def/state replay, but final motion/landing readability requires an owner-attended ordinary-life observation. TFLIGHT extends existing state-only RM_ShirrelGlideProof without forcing a launch.",
+        "start": "Real native flyer at its normal home, no direct launch call; wait for its normal AI/Gale opportunity while other mechanics run. Capture tracker/job transitions without altering them; joint visual observation only.",
+        "on": "Every kept feature and shared engine ON at proposed shipped defaults, all DLC present, next-version extras OFF, no sky/weather lock, no disabled AI, no forced invulnerability. Negative controls run separately and never supply the primary passing reading.",
+        "control": "Correlate flight tracker, job, destination, body frame and independent movement; CanEverFly or a wired animation prefix cannot pass. Ensure the launch was not caused by next-version events. Death must leave a readable corpse/event.",
+        "reset": "Use a disposable current-schema fixture, record its build/settings/save fingerprint, and discard it or reload its untouched starting save after exporting the trace; never restore a canonical world or fabricate post-reload actors.",
+        "live_only_why": "Offline kernels and tracker reads can establish flight state and choose cases, but cannot judge directional whole-body motion and the visible landing. Owner attendance is the standing condition for that remaining observation."
+      },
+      "live_only": true,
+      "touches": [
+        "animal lifecycle",
+        "weather and power",
+        "tree supply",
+        "whole runtime"
+      ]
+    },
+    {
+      "id": "whole_season",
+      "says": "With the complete shipped biome running, the player can keep a wind-powered home and maintained routes, make informed vine trips and sustain ordinary native life through changing weather and a saved continuation, without runaway vines, missing rewards, frozen work or an error storm.",
+      "meant": {
+        "intent": "Exactly one whole bar: the combined default system, not the conjunction of isolated demonstrations. Whole stretch includes the signature’s long claims as well as the seasonal biome. Reject inference: a home and ecology that only work with a subsystem disabled are not this mod. First-version includes every kept land/life/signature mechanic, no next-version effects. Enjoyment is a prediction, not a gate.",
+        "source": "Current cleanse whole-bar mandate; CONDUCTOR:1794792677711573340; OWNER:1794327080747931066; delegated: model-informed colony survival and bounded route upkeep express the combined promise.",
+        "figurative": [
+          {
+            "word": "error storm",
+            "stands_for": "repeated mod-related runtime exceptions or warnings disrupting play, not weather",
+            "accept": "The sky stays calm while repeated job exceptions prevent work; this is still an error storm."
+          }
+        ]
+      },
+      "accept": [
+        "The weather progresses on its own; routine work and deliberate trips remain distinguishable, new runners approach wild margins, animals feed and mature, and the same colony resumes its unfinished jobs and claims after loading.",
+        "Changing the order of gathering, route clearing, tree harvest and claim placement changes local outcomes without duplicating resources or stranding routine work; the long claim eventually pays its recorded due reward."
+      ],
+      "reject": [
+        "A clear-sky display with creep, health, animal AI or growth disabled is the only successful season.",
+        "The map becomes a vine flood or empty wildlife desert, the colony endlessly repeats blocked jobs, reload loses a banked claim, or repeated exceptions halt progress."
+      ],
+      "lazy": "none: The sentence and contrasting pictures require the causal player outcome, including its stated boundary; a label, staged endpoint or inactive mechanism cannot meet it.",
+      "range": {
+        "varies": "Full maps 200–325 wide, 3 and 40 colonists, naturally varying ordinary twins/Stall/Gale, tree-present/tree-absent and narrow/open topology regimes; at least 15 engine days continuous biome cycle and a follow-on to the latest test claim due time (120–600 days). Save at mid-season with active claim/rub/haul state, unload and load actual save, retain IDs. Repeat main actions in reverse feasible order from a matched starting save. Continuous event-preserving acceleration is allowed, pure clock jumps are not; growth, feeding, health, reservations, power and AI intervals all remain active. Extension includes day 100 and a completed long claim. Legitimate vanilla attacks/crop failure are attributed; tester supplies no invisible relief.",
+        "left_out": "Next-version toggles off, old-save migration and alternative worlds excluded. No survival guarantee for deliberately impossible food/power demands, player extermination or an unrelated catastrophic storyteller raid; those causes must be evidenced, not used to dismiss a mod-caused failure."
+      },
+      "sees": {
+        "instrument": "First build the calibrated Whole-map season model to find high-risk regimes; final deciding instrument is an actual unattended non-flight whole-colony state/log run plus attended flyer/land reads, using read-only receipts throughout. Flight portions are never driven unattended; their ordinary transitions are included in the model and attended segments.",
+        "start": "Fresh full-map colony, recorded actual start/effective defs/defaults and natural flora/fauna, no debug repairs, supported ordinary supplies and reachable food. A tree-free branch has legitimate recorded imported blanket material, not spawned products. Model predicts the risky bottleneck and action orders before the live run.",
+        "on": "Every kept feature and shared engine ON at proposed shipped defaults, all DLC present, next-version extras OFF, no sky/weather lock, no disabled AI, no forced invulnerability. Negative controls run separately and never supply the primary passing reading.",
+        "control": "Export state/cause ledgers through the entire run; compare actual outcomes with model envelopes and look for broken periods, not just end totals. Read weather-unlocked state and all gates at start/mid/end. No disabling fire response needed because stamping is explicitly deferred; vanilla fires, animal AI and shared growth stay active. Errors, missing-body signs and object custody are recorded even if end stock looks fine.",
+        "reset": "Use a disposable current-schema fixture, record its build/settings/save fingerprint, and discard it or reload its untouched starting save after exporting the trace; never restore a canonical world or fabricate post-reload actors.",
+        "live_only_why": "The calibrated model can find flood/stall/economy regimes but cannot prove the integrated game’s scheduler, save rehydration, runtime exceptions and autonomous jobs over the full stretch. This irreducible integrated run replaces isolated live bars; it does not pretend that simulation measures the game."
+      },
+      "live_only": true,
+      "touches": [
+        "whole runtime",
+        "land geometry",
+        "weather and power",
+        "start and vine field",
+        "route intent",
+        "colony work",
+        "claims and custody",
+        "animal lifecycle",
+        "tree supply"
+      ]
+    }
+  ],
+  "whole": "whole_season",
+  "checks": [
+    {
+      "id": "source_and_composition",
+      "what": "Record current source/assembly/composed-def fingerprints; parse XML wildAnimals/wildPlants elements and inherited/patch-added rows. No tile-count acceptance. Existing scripts/proofs are stale or missing, not current runtime measurements."
+    },
+    {
+      "id": "settings_floor",
+      "what": "Enumerate all public setting fields from RM_LeaningScrubMod.cs, not validation.py DEFAULTS. Test per-kept toggle, master/all-off, ResetAllFields, static startup, settings write and actual current-schema reload. New-map-only labels and next-version OFF defaults must agree with producers. No alias/import duties."
+    },
+    {
+      "id": "route_observer_check",
+      "what": "TROUTE must reject an intentionally corrupted intermediate cell, stale job token, lost actor/target and missing damage receipt. Endpoint-only and manual Goto traces are inadequate."
+    },
+    {
+      "id": "witness_observer_check",
+      "what": "Old witness observer becomes later shared-engine instrumentation only; no present fire-attribution pass is claimed."
+    },
+    {
+      "id": "economy_observer_check",
+      "what": "TACCOUNT: resource identity, fractions, reservations, due ticks, full-stack/placement failure, repeated harvest, death, off and reload; reject corrupted event streams. Fake bridge harnesses test their own assertions, not production behavior."
+    },
+    {
+      "id": "geometry_tuning",
+      "what": "Current source candidate target0.15/cap0.22, clearance30, armed growth0.5 and strict0.8/1.0/1.5 size edges; sweep min/default/max. Tune these freely to the route experience; neither target share nor a room count is a passing bar."
+    },
+    {
+      "id": "claim_tuning",
+      "what": "Agent provisional default120 days/range120–600 frozen per current claim, candidate cane2 wood-equivalents/heat1.25; verify adapter conservation and mixed-fuel bookkeeping, not declaring numbers a reason to refuse."
+    },
+    {
+      "id": "care_tuning",
+      "what": "Resolve actual disease HediffDef/mechanism from the composed game before adapters; candidate refreshed nonstacking one-day condition,250-tick pulse,0.01 normalized severity reduction per eligible condition, zero/off control. Check immunity/natural recovery separately. No guessed health def names."
+    },
+    {
+      "id": "native_roster_check",
+      "what": "No roster eviction; parse effective base and campaign animals, body stages/diets/products/flight data and multi-home rows. A native water or ordinary-hatch failure is substantive evidence for ordinary_life, not permission to delete the native."
+    },
+    {
+      "id": "terrain_weather_check",
+      "what": "RM_LeaningScrub_Biome.xml currently maps low fertility to Sand and selects RM_ScrubDryThunderstorm; latter actually carries WeatherEvent_LightningStrike. TTERRAIN must resolve crust/soil and remove natural ignition while preserving the requested wind. Anomaly monolith/overcast weather eligibility is swept; no DLC-absent tier."
+    },
+    {
+      "id": "no_extras_at_default",
+      "what": "At all default producers (wild plant regrowth, island room/crown heart, incident, jobgiver, ritual/meme/research/menu and campaign patch), next-version plant forms/products/jobs/letters/incidents absent. Existing animal species remain. Assert default OFF and ON characterization per ticket."
+    },
+    {
+      "id": "flight_state_check",
+      "what": "Verify actual active flight intervals/jobs/landing, frame prefix/frame availability, launch/home fallback and cancellation from pure production tracker receipts. No forced launch and no unattended flight visual test."
+    },
+    {
+      "id": "whole_observer_check",
+      "what": "Whole-run observer (ticket TWHOLE) records gates/unlocked weather, living IDs, growth/claim inventory, power, completed jobs, error rate and actual save identity throughout15 days plus due extension. Performance readings are current-state evidence; no invented TPS target is a bar."
+    },
+    {
+      "id": "removed_content_check",
+      "what": "Existing guardian/farmer-camp/drying-scar/legacy-preservation cuts stay excluded; do not ask again. No worldgen additions or cross-biome guarantees."
+    },
+    {
+      "id": "work_envelope",
+      "what": "Model reports safe-route upkeep labor versus available work at3/40 colonists, usable work completion, hunger and path replan stalls. Investigate any sustained maintenance consuming all available work. Initial diagnostic budget<one colonist-equivalent per ordinary route is a guess for tuning, not a passing threshold."
+    }
+  ],
+  "rules": [
+    {
+      "id": "scope_switches",
+      "rule": "delegated: Only the census kept fates run by default. Next-version source and defs remain, but producers, discoverability, jobs, letters, incidents and effects are gated OFF. Existing animal rosters remain; extra plant forms are suppressed at all spawn paths. A kept caller of a pure helper does not retain its deferred effect. Universal floor is settings/load/clean log/current-schema reload, never old-save migration. Master/all-off cancels mod jobs safely, releases reservations and owned objects with a sign; it blocks new effects and preserves recorded current claims/banks without paying them. Reenable performs at most the already-earned pending transactions. No global engine switch hides a local extra.",
+      "touches": [
+        "whole runtime",
+        "claims and custody",
+        "route intent",
+        "animal lifecycle",
+        "tree supply",
+        "weather and power"
+      ]
+    },
+    {
+      "id": "one_geometry",
+      "rule": "delegated: Sun elevation and bearing come only from the actual authored tile and shared CreatureBehaviors geometry; Direct Sun uses the shared roof/parasols/tree geometry, not a Scrub heat field. Continuous downwind vector serves creep and overlay; plant sprites use the nearest east/west lean and north/south ties east, per the recorded sun-snap direction. Land is low cover and crust/soil without open sand; native living plants resist easy ignition; no rain or autonomous lightning ignition. Preserve a windy overcast/storm twin if needed for the later weather instruction but remove its damaging ignition event, never infer a new natural-fire permission from a wind request.",
+      "touches": [
+        "land geometry",
+        "weather and power",
+        "start and vine field"
+      ]
+    },
+    {
+      "id": "wind_is_weather",
+      "rule": "delegated: Retain ordinary windy twins, Stall calm and Gale stronger wind, not scripted hearing disease, turbine surge/breakdowns, raid weight, scent or directed fire. Useful power follows vanilla WindManager/circuit/storage. No private supply floor during Stall. Natural/native sound is subdued posture and movement; remove jungle voice beds inconsistent with the quiet-wild sheet while retaining wind.",
+      "touches": [
+        "weather and power",
+        "colony work",
+        "animal lifecycle"
+      ]
+    },
+    {
+      "id": "one_encroachment",
+      "rule": "delegated: Only slow creep advances kept stands. Kept thicket, Dripping and Hollow count explicitly; no Walking jumps or tail cane. Use initial map open-ground denominator D0 saved at placement, and count current vine cells for the cap so later roofs/zones do not raise allowed occupancy. Exempt kept vines from ExplosiveGrowth everyday band and soaking, while ordinary growth of other plants stays on. Fresh runners remain unarmed until the shared threshold. Stop at cap without killing existing stands or animals. A cap below existing occupancy suspends growth rather than removing life.",
+      "touches": [
+        "start and vine field",
+        "route intent",
+        "animal lifecycle",
+        "claims and custody"
+      ]
+    },
+    {
+      "id": "contact_boundary",
+      "rule": "delegated: Use EnvironmentalHazards strict body-size greater-than blocking. Current free/body block bands are thicket/Dripping 0.8/1.5 and Hollow 1.0/1.5; at 1.5 a pawn is not blocked solely by size, though venom can make the route unsafe. Armed threshold current growth 0.5 applies consistently to contact and warning; Hollow has no contact venom, not an invisible tunnel/teleport/crawl job. Intrinsic thornhold melee remains a distinct damage cause. No shared-engine redesign or global disable.",
+      "touches": [
+        "route intent",
+        "start and vine field",
+        "animal lifecycle"
+      ]
+    },
+    {
+      "id": "ordinary_intent",
+      "rule": "delegated: An ordinary player work job cannot authorize expected harmful contact even if no safe route exists. Use an explicit expedition UI acknowledgement tied to actor ID, job ID and target; discard on job finish, cancellation, retarget, down/death or mental break. Across current reload validate the same unfinished actor/job/target and recompute the route; a stale/missing link gives no permission. Drafting alone is not blanket consent. Check route at planning and before entering newly armed cells; wait/replan with a readable reason. Rescue/firefighting/food work cannot silently inherit consent. Physical size barriers still apply to explicit orders. Animal and emergency forced-movement limits are documented separately, not used as hidden ordinary-work exceptions.",
+      "touches": [
+        "route intent",
+        "colony work",
+        "claims and custody"
+      ]
+    },
+    {
+      "id": "protected_ground",
+      "rule": "delegated: Developed ground is a cell under a roof, an existing building, a laid floor/underterrain, a zone or a sown plant. No creep insertion there; a designation alone and Home area alone are not immunity. Dirt routes are actually cut/harvested and checked as maintenance; no invisible dirt-route ward. Plans/blueprints do not clear a pre-existing vine; the construction job waits for safe explicit clearing. Blocking a natural bottleneck cannot make ordinary poison crossing legal.",
+      "touches": [
+        "route intent",
+        "colony work",
+        "start and vine field"
+      ]
+    },
+    {
+      "id": "claim_transaction",
+      "rule": "delegated: Blanket is consumed only on completed placement; claim captures stand ID, growth/yield basis, start and duration/due, never reads a new duration retroactively. Banked claim stops creep and reproduction but is not a safe passage until actually removed; remaining contact hazard is labelled. On completion outside Plant.TickLong replace it once, place actual output before removing custody record, and retry boundedly if placement fails. Destroyed stand loses that claim with readable cause; cancellation before completion costs no blanket. Mature claims held while off pay once on reenable; no legacy conversion. Default120 engine days, range120–600 are provisional check tuning. Supply: current recipe requires FuzzFiber and SweetlineWool; add an explicitly labelled ordinary Cloth substitute so tree-free maps can use legitimate traded/grown-under-cover cloth. No guaranteed merchant or free ingredients.",
+      "touches": [
+        "claims and custody",
+        "tree supply",
+        "route intent",
+        "colony work"
+      ]
+    },
+    {
+      "id": "fuel_transaction",
+      "rule": "delegated: Premium cane uses a verified per-fuel consumer adapter, not filter membership. Conserve mixed-fuel credit and actual useful consumer output; provisional 2 wood-equivalent fuel units/cane and 1.25 heat rate are checks only. UI lists supported consumers; unsupported mods receive ordinary fuel or reject it with that fact visible, never claim premium. Ordinary Dripping harvest uses vanilla regrowing-harvest completion, no unearned venom from canceled jobs.",
+      "touches": [
+        "claims and custody",
+        "colony work"
+      ]
+    },
+    {
+      "id": "care_transaction",
+      "rule": "delegated: Eligible rubbers are living spawned animals with a ready shearable coat, no rope, and a reachable legal tree touch-cell inside pen/allowed-area constraints. At successful completion consume only that coat; divide into ground wool and conserved felt fraction with visible cap overflow (drop the overflow as wool, do not duplicate or silently erase it). Bank payout debits only delivered whole units, preserves fraction. Once-mature free shedding survives harvest. Healing is a nonstacking self condition refreshed only by completed rubbing, never by proximity; adapters cover ordinary animal flu/plague and muscle/gut parasites, clamp normalized severity, do not edit immunity or injuries. Unrecognized disease mechanism remains untreated and readable. No instant cure, resurrection, permanent-condition cure or coatless hospital service; ordinary medicine remains useful. Death/tree destruction/interruption cannot complete a canceled rub.",
+      "touches": [
+        "tree supply",
+        "claims and custody",
+        "animal lifecycle",
+        "route intent"
+      ]
+    },
+    {
+      "id": "ordinary_population",
+      "rule": "delegated: Keep the effective base/campaign animal roster and ordinary lifecycle products. No species eviction to meet the size ladder; note a conflicting adult band or multi-home for the existing human review instead. No new large-band residents. Native environmental water counts for its natives through the shared behavior, never drinking-water safety for colonists. Distinguish ordinary predation/decay/map exit from silent deletion; record corpse, exit or other readable sign. No custom den, ambush, corpse rolling, wet-ground, limb drop or exclusive grazer engine at default.",
+      "touches": [
+        "animal lifecycle",
+        "claims and custody",
+        "start and vine field"
+      ]
+    },
+    {
+      "id": "real_locomotion",
+      "rule": "delegated: Every fiction flyer uses genuine Pawn_FlightTracker state and whole-body directional animation. Retain shirrel Gale launch/home/return as locomotion; detach dustflutter and any other flyer’s basic flight from crown/bloom dependency. On tree loss, off/interruption or wind change safely land and resume ordinary behavior; never vanish. Only owner-attended visual flight tests; unattended proof is non-mutating tracker/state analysis and never drives a flyer. Deferred Surrik burrowing stays off locally without disabling shared flight or sun.",
+      "touches": [
+        "animal lifecycle",
+        "tree supply",
+        "weather and power"
+      ]
+    },
+    {
+      "id": "evidence_and_time",
+      "rule": "delegated: All deciding traces use current composed-build/defs/settings fingerprints and all kept mechanics active. Mutation/direct proof hooks characterize a seam only, never demonstrate natural generation or autonomous choice. The whole bar runs unlocked natural weather for a season and continues to claim due; acceleration preserves every production interval, event order and save identity. Read-only observers do not inject decisions. Metrics and thresholds are attackable checks; a red regression alone is not a refusal.",
+      "touches": [
+        "whole runtime",
+        "colony work",
+        "claims and custody",
+        "weather and power",
+        "animal lifecycle",
+        "route intent",
+        "start and vine field",
+        "tree supply",
+        "land geometry"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "land geometry",
+      "members": [
+        "land_read",
+        "vine_country",
+        "whole_season",
+        "one_geometry",
+        "evidence_and_time"
+      ],
+      "holds_together": "argued",
+      "why": "One tile geometry supplies sun and downwind; visual east/west snap is explicitly an approximation, never fed back as the physical vector. Low fuzz and tall-vine navigation are compatible because only the latter interrupt human sightlines. Terrain/ignition conflicts are implementation tickets, not an invented second sun. Whole-season dynamics are covered by the other shared-state meetings.",
+      "model": ""
+    },
+    {
+      "thing": "weather and power",
+      "members": [
+        "land_read",
+        "working_home",
+        "real_flyers",
+        "whole_season",
+        "scope_switches",
+        "one_geometry",
+        "wind_is_weather",
+        "real_locomotion",
+        "evidence_and_time"
+      ],
+      "holds_together": "unknown",
+      "why": "Calm duration, wind-fed storage, real flight/home return and worker demand can combine to starve work even when their isolated state checks pass. Model actual transition timing, not a weighted-average wind value.",
+      "model": "Whole-map season model"
+    },
+    {
+      "thing": "start and vine field",
+      "members": [
+        "land_read",
+        "vine_country",
+        "safe_routine",
+        "whole_season",
+        "one_geometry",
+        "one_encroachment",
+        "contact_boundary",
+        "protected_ground",
+        "ordinary_population",
+        "evidence_and_time"
+      ],
+      "holds_together": "unknown",
+      "why": "Start clearance, reachable safe topology, cap denominator and new growth may jointly seal the only exit or remove grazing. Pairwise clearance/cap checks cannot exclude a sealed channel later.",
+      "model": "Geometry and route sweep"
+    },
+    {
+      "thing": "animal lifecycle",
+      "members": [
+        "land_read",
+        "ordinary_life",
+        "tree_care",
+        "real_flyers",
+        "whole_season",
+        "scope_switches",
+        "wind_is_weather",
+        "one_encroachment",
+        "contact_boundary",
+        "care_transaction",
+        "ordinary_population",
+        "real_locomotion",
+        "evidence_and_time"
+      ],
+      "holds_together": "unknown",
+      "why": "Vine replacement reduces forage, ordinary predation changes coats/prey, tree care changes illness and reproduction, and real flight changes reachability. A model must expose starving or exploding populations without relying on deferred bloom, invisibility, lures or fire stamping.",
+      "model": "Whole-map season model"
+    },
+    {
+      "thing": "tree supply",
+      "members": [
+        "land_read",
+        "earned_claims",
+        "ordinary_life",
+        "tree_care",
+        "real_flyers",
+        "whole_season",
+        "scope_switches",
+        "claim_transaction",
+        "care_transaction",
+        "real_locomotion",
+        "evidence_and_time"
+      ],
+      "holds_together": "unknown",
+      "why": "Rare/no tree, shedders, animal coats, care, bank harvest and blanket supply meet. The imported Cloth route breaks a logical no-tree deadlock but availability/labor and duplication remain unmeasured.",
+      "model": "Economy and care walk"
+    },
+    {
+      "thing": "whole runtime",
+      "members": [
+        "land_read",
+        "working_home",
+        "vine_country",
+        "safe_routine",
+        "earned_claims",
+        "ordinary_life",
+        "tree_care",
+        "real_flyers",
+        "whole_season",
+        "scope_switches",
+        "evidence_and_time"
+      ],
+      "holds_together": "unknown",
+      "why": "Scheduler/event order, current-schema rehydration, population/food and maintenance feedback with every kept mechanic on have not been observed together. The model selects worst regimes; only the whole bar’s live continuation can settle runtime integration.",
+      "model": "Whole-map season model"
+    },
+    {
+      "thing": "colony work",
+      "members": [
+        "working_home",
+        "safe_routine",
+        "earned_claims",
+        "whole_season",
+        "wind_is_weather",
+        "ordinary_intent",
+        "protected_ground",
+        "claim_transaction",
+        "fuel_transaction",
+        "evidence_and_time"
+      ],
+      "holds_together": "unknown",
+      "why": "Maintenance, food production, cloth supply, power and job retries draw from the same labor budget; each can pass alone while the colony stalls.",
+      "model": "Whole-map season model"
+    },
+    {
+      "thing": "route intent",
+      "members": [
+        "vine_country",
+        "safe_routine",
+        "tree_care",
+        "whole_season",
+        "scope_switches",
+        "one_encroachment",
+        "contact_boundary",
+        "ordinary_intent",
+        "protected_ground",
+        "claim_transaction",
+        "care_transaction",
+        "evidence_and_time"
+      ],
+      "holds_together": "unknown",
+      "why": "Job purpose, shared size/contact gates, tree access, due-claim hazards and changing cover must agree at planning AND the next cell; a saved token can make several otherwise-valid systems unsafe together.",
+      "model": "Situation and transition generator"
+    },
+    {
+      "thing": "claims and custody",
+      "members": [
+        "safe_routine",
+        "earned_claims",
+        "ordinary_life",
+        "tree_care",
+        "whole_season",
+        "scope_switches",
+        "one_encroachment",
+        "ordinary_intent",
+        "claim_transaction",
+        "fuel_transaction",
+        "care_transaction",
+        "ordinary_population",
+        "evidence_and_time"
+      ],
+      "holds_together": "unknown",
+      "why": "Wool division, harvest, claim replacement, premium fuel and death/interruption can lose or duplicate resources via scheduling and reload. All rewards and losses require a single identity ledger, including visible overflow.",
+      "model": "Economy and care walk"
+    }
+  ],
+  "old_bars": {
+    "route_observer": {
+      "to": "check",
+      "as": "route_observer_check",
+      "why": "An instrument fidelity regression belongs to us, not a player acceptance bar; the required present instruments have separate tickets. Witness instrumentation goes with its deferred extra."
+    },
+    "witness_observer": {
+      "to": "check",
+      "as": "witness_observer_check",
+      "why": "An instrument fidelity regression belongs to us, not a player acceptance bar; the required present instruments have separate tickets. Witness instrumentation goes with its deferred extra."
+    },
+    "economy_observer": {
+      "to": "check",
+      "as": "economy_observer_check",
+      "why": "An instrument fidelity regression belongs to us, not a player acceptance bar; the required present instruments have separate tickets. Witness instrumentation goes with its deferred extra."
+    },
+    "wind_plain": {
+      "to": "merged",
+      "as": "land_read",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "gale_drawing": {
+      "to": "merged",
+      "as": "land_read",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "wind_audio": {
+      "to": "merged",
+      "as": "land_read",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "working_wind": {
+      "to": "merged",
+      "as": "working_home",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. Only vanilla wind/circuit usefulness remains; scripted surge/breakdown moves with gale_turbines."
+    },
+    "gale_exposure": {
+      "to": "moved",
+      "as": "gale_exposure",
+      "why": "delegated: A custom hearing/speech ailment is a second weather hazard. Real wind and vanilla power work without it. See census and T2. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "raid_weight": {
+      "to": "moved",
+      "as": "gale_raid_weight",
+      "why": "delegated: Storyteller threat weighting has no causal part in the land, ordinary life or maintained-route signature. See census and T4. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "scent": {
+      "to": "moved",
+      "as": "upwind_scent",
+      "why": "delegated: Directional scent AI is an independent hunting tool; route safety and the ordinary food chain do not depend on it. See census and T5. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "fire_bias": {
+      "to": "moved",
+      "as": "downwind_fire",
+      "why": "delegated: Biased fire spread is an independent landscape hazard; vine route planning works with vanilla fire. See census and T6. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "stall_wait": {
+      "to": "moved",
+      "as": "stall_freeze",
+      "why": "delegated: Idle-wander suppression is part of the rejected wind-camouflage signature; ordinary calm weather and feeding still work without it. See census and T1. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "concealment": {
+      "to": "moved",
+      "as": "ripple",
+      "why": "delegated: Psychological invisibility and shimmer are the runner-up signature, not a prerequisite for dangerous vine journeys. Ordinary cover values remain. See census and T7. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "lee_reveal": {
+      "to": "moved",
+      "as": "windbreak_lee",
+      "why": "delegated: Local reveal is useful only with deferred ripple; walls remain ordinary windbreaks without an invisibility rule. See census and T8. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "stall_predation": {
+      "to": "moved",
+      "as": "stall_hunter",
+      "why": "delegated: Special calm-weather prey selection belongs to deferred camouflage; ordinary predator AI still hunts. See census and T9. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "island_land": {
+      "to": "merged",
+      "as": "vine_country",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "creep": {
+      "to": "merged",
+      "as": "safe_routine",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "home_routes": {
+      "to": "merged",
+      "as": "safe_routine",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "ordered_travel": {
+      "to": "merged",
+      "as": "safe_routine",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "vine_contact": {
+      "to": "merged",
+      "as": "safe_routine",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "dripping": {
+      "to": "merged",
+      "as": "earned_claims",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "twitcher": {
+      "to": "moved",
+      "as": "twitcher",
+      "why": "delegated: A saved lash/recovery attack duplicates the role already supplied by contact venom; deleting the lash leaves the signature intact. See census and T10. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "hollow": {
+      "to": "merged",
+      "as": "vine_country",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "crown": {
+      "to": "moved",
+      "as": "crown_mob",
+      "why": "delegated: A summoned bird cloud is a standalone plant interaction, unnecessary to stand geometry, venom or fuel claims. See census and T11. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "rearing": {
+      "to": "moved",
+      "as": "rearing",
+      "why": "delegated: A disturbance-triggered pose, reveal and alert system adds a second warning game; ordinary visible thorns already tell the route risk. See census and T12. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "walking": {
+      "to": "moved",
+      "as": "walking",
+      "why": "delegated: Gale relocation is a second spread mechanism; slow creep alone supplies encroachment and makes home protection definable. See census and T13. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "hoard": {
+      "to": "moved",
+      "as": "hoard",
+      "why": "delegated: Object theft/storage is a separate salvage economy; venom harvest and fuel claims already motivate trips. See census and T14. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "quench": {
+      "to": "moved",
+      "as": "quench",
+      "why": "delegated: Automatic foam firefighting is a separate resource cycle, unnecessary to a fire-resistant vine obstacle. See census and T15. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "sworn": {
+      "to": "moved",
+      "as": "sworn",
+      "why": "delegated: Sap-mark authorization adds an independent faction-free access system; blunt galleries and explicitly ordered trips already solve passage. See census and T16. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "shedding": {
+      "to": "moved",
+      "as": "shedding",
+      "why": "delegated: Deposited mobile thorn litter adds hazard outside visible vines; the signature remains readable without it. See census and T17. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "strangler": {
+      "to": "moved",
+      "as": "strangler",
+      "why": "delegated: Target selection and wall damage introduce a structure-attack mechanic; ordinary vine growth is sufficient pressure. See census and T18. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "weeper": {
+      "to": "moved",
+      "as": "weeper",
+      "why": "delegated: Pool creation and pollution add an independent wetness/toxicity loop, unnecessary for contact venom. See census and T19. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "sleeper": {
+      "to": "moved",
+      "as": "sleeper",
+      "why": "delegated: Disguised traffic-triggered wake attacks introduce a surprise mechanic; visible hazardous stands suffice. See census and T20. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "lure": {
+      "to": "moved",
+      "as": "lure",
+      "why": "delegated: Fruit attraction is an independent feeding trap; ordinary life can feed and hunt without a lure plant. See census and T21. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "smother_claim": {
+      "to": "merged",
+      "as": "earned_claims",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "cane_fuel": {
+      "to": "merged",
+      "as": "earned_claims",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "tree_landmark": {
+      "to": "merged",
+      "as": "land_read",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "tree_shed": {
+      "to": "merged",
+      "as": "tree_care",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "tree_scratch": {
+      "to": "merged",
+      "as": "tree_care",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "tree_healing": {
+      "to": "merged",
+      "as": "tree_care",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "tree_bank": {
+      "to": "merged",
+      "as": "tree_care",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "felt_comfort": {
+      "to": "moved",
+      "as": "felt_comfort",
+      "why": "delegated: Special furniture/apparel bonuses are extra material perks; wool remains usable stuff and a blanket ingredient. See census and T22. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "tree_traces": {
+      "to": "moved",
+      "as": "sweetline_visits",
+      "why": "delegated: Simulated pilgrims/camps leave tokens without actual visitors. That is a lore event, not ordinary tree or animal life. See census and T23. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "native_cast": {
+      "to": "merged",
+      "as": "ordinary_life",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "bloom": {
+      "to": "moved",
+      "as": "runway_bloom",
+      "why": "delegated: A coordinated cascade of species-specific traffic reactions belongs to the wind-camouflage runner-up; ordinary flight/fleeing persist. See census and T24. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "arm_regrowth": {
+      "to": "moved",
+      "as": "vissler_finite_arm_regrowth",
+      "why": "delegated: Finite shedding/regrowth is required if limbs are dropped, but both dropping and regrowth move together. The native animal is not removed. See census and T45. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "arm_food": {
+      "to": "moved",
+      "as": "vissler_arm_food",
+      "why": "delegated: Special shed-arm scavenging only exists for deferred limb dropping. Ordinary meat/carrion remain food. See census and T25. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "thornhold_quill": {
+      "to": "merged",
+      "as": "ordinary_life",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "thornhold_den": {
+      "to": "moved",
+      "as": "thornhold_den_stand",
+      "why": "delegated: Bespoke den reservation, tether and scoped retaliation are an extra territorial interaction; the animal remains native and defends by ordinary combat. See census and T26. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "surrik": {
+      "to": "moved",
+      "as": "surrik_crustswim",
+      "why": "delegated: Burrow/conceal/surface-strike locomotion is an independent special interaction; the native remains on the roster with ordinary ground movement. See census and T27. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "shokka": {
+      "to": "moved",
+      "as": "shokka_ambush",
+      "why": "delegated: Habitat-triggered edge ambush adds custom AI beyond ordinary predation; retain the predator itself. See census and T39. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "fuzzviper": {
+      "to": "moved",
+      "as": "fuzzviper_ambush",
+      "why": "delegated: Run-wall traffic interception adds custom AI beyond ordinary predation; retain the predator itself. See census and T40. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "ribbon_route": {
+      "to": "moved",
+      "as": "ribbonwhip_canopy_route",
+      "why": "delegated: Canopy-only pathfinding is a separate habitat movement restriction; retain the animal without claiming it is implemented. See census and T41. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "pillowmoss": {
+      "to": "moved",
+      "as": "pillowmoss_wet_spot",
+      "why": "delegated: Fog condensation/terrain conversion is an independent moisture system; the moss remains ordinary ground cover. See census and T42. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "tanglefuzz": {
+      "to": "moved",
+      "as": "tanglefuzz_den_ecology",
+      "why": "delegated: Spawning/anchoring dens is a separate population system; the plant remains ordinary cover. See census and T43. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "cruststar": {
+      "to": "moved",
+      "as": "cruststar_grazing_ecology",
+      "why": "delegated: A bespoke exclusive grazer pairing adds population tuning; ordinary edible Cruststar and vanilla grazing stay. See census and T44. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "shirrel_flight": {
+      "to": "merged",
+      "as": "real_flyers",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "rollbug": {
+      "to": "moved",
+      "as": "rollbug_carrion",
+      "why": "delegated: Autonomous corpse rolling, larder storage and stripping are a separate corpse-handling system; the animal still eats by ordinary AI. See census and T29. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "stamping": {
+      "to": "moved",
+      "as": "fire_stamping",
+      "why": "delegated: Blaze-targeted giant intervention is a separate fire-response system. Native giant presence/ordinary locomotion are retained, not evicted. See census and T33. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "maker": {
+      "to": "moved",
+      "as": "fire_maker_witness_trail",
+      "why": "delegated: Maker attribution and pursuit are a separate social knowledge system; the route/claim signature does not need them. Shared ownership-engine work is not redesigned here. See census and T38. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "cuts": {
+      "to": "check",
+      "as": "removed_content_check",
+      "why": "Absence of already-cut guardians/farmer camps/drying scar and old-save work is inherited scope compliance, not a new player experience. No waiver reopens."
+    },
+    "colony_walk": {
+      "to": "merged",
+      "as": "whole_season",
+      "why": "Re-derived from the root/physical intent as a regional player outcome. Numeric targets, regression observations and implementation choices are no longer acceptance clauses. "
+    },
+    "acoustic_payload": {
+      "to": "moved",
+      "as": "acoustic_payload",
+      "why": "delegated: Bespoke scanner lore readings are an optional interaction; no kept journey requires the scanner. See census and T36. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    },
+    "proximity_hatch": {
+      "to": "moved",
+      "as": "proximity_hatch",
+      "why": "delegated: Near-pawn accelerated hatch duplicates ordinary egg lifecycle with a special trigger. Vanilla timed hatch stays. See census and T37. No declaration that the prior owner-validated detailed showcase is already met by the smaller proposal."
+    }
+  }
+}
