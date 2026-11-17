@@ -827,6 +827,12 @@ def main():
            "wait 1: a locked change with no look after it launches the chain (re-pin, exam retake, one look)")
         ok(any("close an `after` item" in b and "origin/main" in b for b in w.briefs),
            "wait 1: the chain brief closes a landed `after` item of a granted look (a fixer that left its ticket open)")
+        # RIMMANDRAKE_GUARD_ONE_COVERAGE_LOOK_STEWARD_LAUNCHER_BOTH_RAN: the steward claims stage 5 before its hand look,
+        # so the launcher's stage-5 run (whose pre-step is the judge) cannot open beside it; and the plain release IS
+        # what applies a standing grant (coverage_judge.release), so the brief never says "release nothing by hand"
+        ok(any("designer_stage.py open" in b and "stage5-program" in b and "release nothing by hand" not in b
+               for b in w.briefs),
+           "wait 1: the chain brief claims stage 5 before its one look and closes the claim by stage5-program")
         ds2 =dict(ds, history=ds["history"] + [{"at": "2026-11-15T15:00:00Z", "what": "coverage_release"}])
         fresh_state()
         w = World({"P": offline("P", "build", refused=["b1"])}, dstate={"P": ds2})

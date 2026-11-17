@@ -889,10 +889,15 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                  "says re-pinned), retake the Cold Reader exam on the new tree by "
                  "src/RimMandrake/rimflow/roles/designer_exam.md in full (the Challenger's scenarios and the control "
                  "copy included: an exam failing its gate makes the judge skip), then give it ONE coverage-judge look "
-                 "(coverage_judge.py release <dir> --why ..., then run; when stage.json holds coverage_release_granted, "
-                 "the judge applies that grant itself once its `after` items close: release nothing by hand, and close "
-                 "an `after` item whose notes say its work landed, with its published sha, after checking that sha is "
-                 "on origin/main). Never a second look." % (
+                 "(coverage_judge.py release <dir> --why ...; when stage.json holds coverage_release_granted, that plain "
+                 "release applies the grant as the final look and refuses until its `after` items close: add no "
+                 "release of your own, and close an `after` item whose notes say its work landed, with its published "
+                 "sha, after checking that sha is on origin/main). The release lifts the block, so publish it with "
+                 "your stage-4 `designer_stage.py open <dir> --run <id>`; after the stage-4 close, claim stage 5 the "
+                 "same way and publish the claim BEFORE `coverage_judge.py run <dir>`, so the launcher's stage-5 run "
+                 "(whose pre-step is the judge) cannot open beside it; after the look, close the claim with "
+                 "`RM_ROLE_UNIT=<id> python3 src/RimMandrake/rimflow/role_launch.py stage5-program <dir>` "
+                 "(RIMMANDRAKE_GUARD_ONE_COVERAGE_LOOK_STEWARD_LAUNCHER_BOTH_RAN). Never a second look." % (
                      lc.get("at"), str(lc.get("why"))))
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
