@@ -24404,3 +24404,4 @@
 {"seat":"CONDUCTOR","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-11-17T10:04:10Z","tsn":1794909850643394790}
 {"seat":"CONDUCTOR","event":"verify","id":"RIMMANDRAKE_FREE_HANDOFF_GATE_FROM_DETACHED_RUNS_DRIVER_LOCK","result":"pass","config":"run_selftests --only selftest_handoff,selftest_seat_restart","evidence":"src/RimMandrake/Utils/selftest_handoff.py","sha":"1e0fef9db1fc","level":"L0","ts":"2026-11-17T10:11:36Z","tsn":1794910296448847967}
 {"seat":"CONDUCTOR","event":"close","id":"RIMMANDRAKE_FREE_HANDOFF_GATE_FROM_DETACHED_RUNS_DRIVER_LOCK","sha":"1e0fef9db1fc","live":"once: gate reads the holder process via seat_restart.bridge_hold; live --check --force showed no BRIDGE line with detached pid 2360170 holding","ts":"2026-11-17T10:11:42Z","tsn":1794910302887741820}
+{"seat":"CONDUCTOR","event":"seat","state":"ready","ts":"2026-11-17T10:13:57Z","tsn":1794910437679169763}
