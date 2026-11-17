@@ -1,0 +1,1 @@
+A detached run's closing report that never mentions an order it was sent is an order not read: the Slack Fable ended on the close fittings without touching the Conductor's whole-mod order in answers.md. Check each closing report against the orders sent, not only against the item, and resume the session with the order restated.

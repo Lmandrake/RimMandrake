@@ -1,0 +1,1 @@
+The Conductor's question watcher (Monitor) matched itself: a restart:BENCH:held escalation line quotes the watcher's own command, which contains the words it greps for; anchor the grep to the line's leading timestamp, exclude restart:BENCH, and stop the watcher before HANDOFF READY because it holds the context backstop restart.
