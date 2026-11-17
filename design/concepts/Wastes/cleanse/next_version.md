@@ -110,6 +110,9 @@ All release dispositions are Designer calls under this brief. Prior approved mec
 - **Bespoke plant-vault fuel deposits and extraction economy.**
   Why outside the first version: finite harmful root reopening already fulfils the contamination signature; custom ore products/jobs add another economy. Spec ticket: T42.
 
+- **Finite pre-settlement buried salvage and its once-only initializer/manifest.**
+  Why outside the first version: Ordinary Wreckage supplies salvage and kept redistribution changes dangerous ground. Seeding old finds adds a prospecting system beyond the selected signature. Spec-only ticket T46 covers the later initializer, legacy adoption and retry/exhaustion semantics.
+
 ## External scope retained
 
 WasteRun/Throat Cask, the Stenchlands and the Kiln remain their own campaign content; they are not newly cut or folded into Wastes. The legacy nonresident RUT_Radiothermal stays external. The owner-required all-biome scanner interface remains, with truthful targets only. No ruling is retired by this proposal.

@@ -734,7 +734,7 @@
       "built": "unknown",
       "evidence": "RM_Wastes_Biome.xml supplies terrain/storm opt-in but no explicit native-stock initializer; design/Jawa/worldbuilding/biomes/wastes.md \u00a74/\u00a75.",
       "proven": "unknown",
-      "called_by": "Inherited local pollution/map authoring; distribution unproven.",
+      "called_by": "Proposed RM_GenStep_WastesNativeContamination after local terrain, brine and ordinary wreck placement. Existing pollution/stores are adopted into the stock ledger.",
       "serves": "Native contamination mosaic, cleaner construction ground and inherited old bound stores on map entry.",
       "fate": "land",
       "why": "A quiet fresh map must already require a refuge choice rather than wait for an optional quest or storm. No world-tile or planet generation is authorized.",
@@ -903,12 +903,12 @@
       "built": "absent",
       "evidence": "design/Jawa/worldbuilding/biomes/wastes.md sections 4b and 7; src/RimMandrake/MovingDunes/Source/DuneBurialUtility.cs supplies BuryThingsAt but its automatic candidate path only buries haulable items; src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml supplies a cache cap, with no initial-hoard seeder found in Wastes or MovingDunes source/defs.",
       "proven": "missing",
-      "called_by": "No Wastes native-hoard initializer caller found; T40 specifies a once-only local initializer using DuneBurialUtility.BuryThingsAt.",
+      "called_by": "No Wastes native-hoard initializer caller found. T46 parks its proposed DuneBurialUtility.BuryThingsAt integration as a later-version specification.",
       "serves": "Natural storms expose remains older than the colony, making post-storm prospecting meaningful from the first season.",
-      "fate": "signature",
-      "why": "Deleting native buried content reduces the exhumation lottery to recycling colony discards, defeating the sourced changed-map promise on fresh maps.",
+      "fate": "next_version",
+      "why": "Pre-settlement salvage seeding adds an independent prospecting system. Kept redistribution already changes the danger map, and ordinary Wreckage already motivates salvage outings, so this initializer is unnecessary for the selected signature.",
       "needed_by": "",
-      "ticket": "T40"
+      "ticket": "T46"
     },
     {
       "id": "regime_light_horizon",

@@ -1,0 +1,24 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Deferred initial_buried_hoard with spec-only T46. Removed hoard initialization, manifest migration and native entry-season find requirements from kept definition, B5/B8, R2, C4, meetings, tickets and models. Updated owner pages, disposition rationale and counts.",
+      "where": "census.json initial_buried_hoard, next_version.md, tickets.md T40/T43/T46, bars.json B5/B8/R2/C4 and persistence/salvage meetings, definition.md, models.md M1/M2, ambiguities.md 17, owner_pages.md, result.json"
+    },
+    {
+      "id": "R2",
+      "changed": "Chose the proposed once-only local RM_GenStep_WastesNativeContamination initializer. Defined ash-flat/wreck/brine spatial correlation, connected cleaner buildable ground, inherited-state preservation and initial stock accounting. T40 now implements this source and tests unpolluted-tile fresh maps, legacy adoption and no reseeding.",
+      "where": "definition.md Costs and state transitions, bars.json R5, census.json initial_ground, tickets.md T40, models.md M1, ambiguities.md 42, owner_pages.md"
+    },
+    {
+      "id": "R3",
+      "changed": "Added disposable fixed-world scratch-site recipes at measured family arc envelopes with authored existing mutators, independent read-back and geometric lighting. T44 specifies the northstar_site.py extension. Excluded family content available only after final paint from the pre-paint range.",
+      "where": "bars.json B1/B8 sees.start and range.left_out, tickets.md T44, ambiguities.md 34, owner_pages.md"
+    },
+    {
+      "id": "R4",
+      "changed": "Marked uniformly lethal and overwhelmed by errors as figurative, defined viability and repeating play-breaking faults, and added a passing departure from literal reading for each. Aligned the error-storm control wording.",
+      "where": "bars.json B8 meant.figurative and sees.control, ambiguities.md 43"
+    }
+  ]
+}

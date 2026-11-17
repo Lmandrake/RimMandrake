@@ -1,0 +1,143 @@
+{
+ "mod": "Wastes",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "extra_without_argument",
+     "where": "design/concepts/Wastes/cleanse/census.json row initial_buried_hoard (fate \"signature\", built \"absent\"); bars.json B5 says/range/control; R2 hoard clauses; C4; T40 second paragraph",
+     "evidence": "The one-sentence signature on owner_pages.md line 9 and in result.json is \"ash moves and adds mobile contamination, so settlers must read changed ground and maintain a habitable refuge while radiotrophs bind poison beneath the crust\". It says nothing about exhumation or salvage. Yet the hoard row is filed as `signature`, with an empty `needed_by`. It is an unbuilt new system: a versioned once-only initializer with a saved manifest, legacy-map migration and partial-commit retry (definition.md 'Using it'; T40). Its 'why' says deleting it defeats \"the sourced changed-map promise\". But the changed danger map is already carried by the kept `redistribution` row, and the reason to venture out is carried by Wreckage salvage (B7). B5 then turns the hoard into a passing condition (\"naturally exhumed pre-settlement finds\"). wastes.md §7 lists \"the exhumation lottery\" among the 'uniquely available' items, next to excretor refining, the living furnace and the tipping fee, which this same pass deferred.",
+     "would_pass": "Either the census row is `needed_by` with a real deletion argument naming the kept bar that fails without it, citing wastes.md §4b's doctrine-grade note (\"what's out there is a live question twice a season\"), and the signature sentence on his pages names exhumation as part of the one chain. Or the initializer/manifest machinery moves to the next version and B5 no longer requires pre-settlement finds.",
+     "smallest_fix": "Move initial_buried_hoard to next_version.md with a spec-only ticket. Strike \"and naturally exhumed pre-settlement finds\" from B5 says, its accept picture 5 clause and reject picture 3. Drop the entry-season arms from the B5 and B8 ranges and controls, and the hoard clauses from R2, C4 and T40."
+    },
+    {
+     "id": "R2",
+     "head": "kept_mechanic_undefined",
+     "where": "census.json row initial_ground (built \"unknown\", fate \"land\"); definition.md 'Using it' first sentence; bars.json R5 (\"Initial local ground must already express native danger and construction choice\"); T40 (\"First inventory actual inherited ground\")",
+     "evidence": "B1, B3 and B4 all depend on a fresh map that already carries a native contamination pattern with cleaner construction ground. The definition asserts \"the map already contains native mobile pollution\", but no file says where that pollution comes from. RM_BiomeWorker_Wastes.cs has no pollution code. RM_Wastes_Biome.xml has no pollution initializer. The census evidence itself says \"no explicit native-stock initializer\". Two very different builds fit the words: (a) vanilla Biotech pollution inherited from the world tile, which is set only at the final paint (paint_plan row: \"not executed here\"); or (b) a new local-map GenStep with some unstated pattern relative to ash, wrecks and brine. Neither the pattern nor its source is defined, so a builder and a judge would build and test different mods.",
+     "would_pass": "definition.md and R5 name the source of initial native contamination. Either it is inherited tile pollution, stating what a test map uses before the final paint, or it is a named local initializer, stating which terrain or features it correlates with, how cleaner ground is left, and that it runs once per map. T40 carries its acceptance test.",
+     "smallest_fix": "Add one paragraph to definition.md 'Costs and state transitions' and one clause to R5 choosing (a) or (b) and stating the spatial rule in words without numbers. Change initial_ground's ticket scope in T40 from 'inventory' to 'implement the stated source'."
+    },
+    {
+     "id": "R3",
+     "head": "cannot_hold_together",
+     "where": "bars.json B1 (says \"recognizably different basin, margin and cold-scour light\"; range \"Tile lighting uses actual fixed-world position, never a region-name override\"; start \"no debug light overrides\") and B8 range (warm/margin/cold full maps), against the paint-once-at-the-end ruling (CLAUDE.md; biome_rulings.md) and the one-def ruling (wastes.md §0: the wastelands vary \"only by the mutators and Inhabited injections assigned to each family\")",
+     "evidence": "definition.md 'Neighbours' says the regimes \"vary by existing authored local settings, mutators and injections\". Those family assignments are part of the final planet paint (census paint_plan row: dependency, not executed here), and until then an RM_ biome on zero tiles is expected. The only existing site instrument, src/RimMandrake/Wastes/northstar_site.py ensure_wasteland_map, re-tiles one scratch-world tile near the colony and runs `world_mutators_set action=clear`, with a written SITE_TEMPERATURE. So it yields neither a family's mutators nor a chosen arc. With actual fixed-world positions and no overrides required, B1 and B8 have no sanctioned starting state before the final paint. The mod could not pass the pipeline until the planet is painted, which defeats the purpose of the pass.",
+     "would_pass": "B1 and B8 `start` name a sanctioned disposable-site recipe that yields each regime before the paint: a scratch tile at a stated arc with that family's mutators applied, light coming from tile geometry. Or B1's regime clause is limited to what tile geometry gives, with family-specific mutator content declared outside the range until the paint.",
+     "smallest_fix": "Add to B1 and B8 `start`: \"regime sites come from a scratch-world tile at the family's arc with that family's mutators applied in the disposable save (extend northstar_site.py; ticket under T44), never the canonical world\". Add to `left_out`: \"family content that exists only after the final paint\"."
+    },
+    {
+     "id": "R4",
+     "head": "figurative_unmarked",
+     "where": "bars.json B8 says (\"uniformly lethal\", \"overwhelmed by errors\"); figurative: []",
+     "evidence": "B8 says \"without the map becoming uniformly lethal, harmless, stalled or overwhelmed by errors\". Its own control defines these as something else: \"Flood means all reachable refuge/work choices become untenable under ordinary maintained play\" and \"error storm means repeated faults\". Neither is literal lethality everywhere or being literally overwhelmed. A literal reader could pass a map that is untenable but not lethal everywhere, or refuse a run over a single recurring error. Yet `figurative` is empty.",
+     "would_pass": "B8 `figurative` lists \"uniformly lethal\" (stands for: no maintainable refuge or work choice remains under ordinary maintained play) and \"overwhelmed by errors\" (stands for: repeating faults that stop or corrupt ordinary play), each with one accept picture that departs from the literal reading.",
+     "smallest_fix": "Fill B8's `figurative` with those two entries, reusing the control's definitions, and add one accept picture each (for example, a run where some outside cells are lethal but a maintainable refuge and work route remain)."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Deferred initial_buried_hoard with spec-only T46. Removed hoard initialization, manifest migration and native entry-season find requirements from kept definition, B5/B8, R2, C4, meetings, tickets and models. Updated owner pages, disposition rationale and counts.",
+      "where": "census.json initial_buried_hoard, next_version.md, tickets.md T40/T43/T46, bars.json B5/B8/R2/C4 and persistence/salvage meetings, definition.md, models.md M1/M2, ambiguities.md 17, owner_pages.md, result.json"
+     },
+     {
+      "id": "R2",
+      "changed": "Chose the proposed once-only local RM_GenStep_WastesNativeContamination initializer. Defined ash-flat/wreck/brine spatial correlation, connected cleaner buildable ground, inherited-state preservation and initial stock accounting. T40 now implements this source and tests unpolluted-tile fresh maps, legacy adoption and no reseeding.",
+      "where": "definition.md Costs and state transitions, bars.json R5, census.json initial_ground, tickets.md T40, models.md M1, ambiguities.md 42, owner_pages.md"
+     },
+     {
+      "id": "R3",
+      "changed": "Added disposable fixed-world scratch-site recipes at measured family arc envelopes with authored existing mutators, independent read-back and geometric lighting. T44 specifies the northstar_site.py extension. Excluded family content available only after final paint from the pre-paint range.",
+      "where": "bars.json B1/B8 sees.start and range.left_out, tickets.md T44, ambiguities.md 34, owner_pages.md"
+     },
+     {
+      "id": "R4",
+      "changed": "Marked uniformly lethal and overwhelmed by errors as figurative, defined viability and repeating play-breaking faults, and added a passing departure from literal reading for each. Aligned the error-storm control wording.",
+      "where": "bars.json B8 meant.figurative and sees.control, ambiguities.md 43"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "census.json row initial_buried_hoard now has \"fate\": \"next_version\" and \"ticket\": \"T46\". Its why reads \"Kept redistribution already changes the danger map, and ordinary Wreckage already motivates salvage outings, so this initializer is unnecessary for the selected signature.\" next_version.md line 113 lists \"Finite pre-settlement buried salvage and its once-only initializer/manifest\", pointing to spec-only T46. tickets.md T46's acceptance test says \"In 0.1.0 no native-hoard seeder or manifest migration is registered or executed.\" B5 says now ends \"lasting fallout and shifted mobile contamination, so familiar work routes need inspection again\", with no \"naturally exhumed pre-settlement finds\". The hoard clause is gone from accept picture one, reject picture three is removed, and the entry-season arms are gone from the B5 range and control. B5 left_out adds \"Pre-settlement hoard initialization and an entry-season native-find requirement move to next version.\" B8 range drops \"Entry-season maps begin with the native buried-hoard manifest\", and the B8 control drops \"Require a naturally exhumed pre-settlement manifest item\". R2 drops the \"versioned once-only local initializer seeds finite ordinary salvage\" sentences. C4 drops \"Initial cache manifest IDs survive...\". T40 has no hoard clause. A search outside review.json finds hoard wording only in the deferred row, next_version.md, T46, ambiguity 17 (the deferral), owner_pages.md line 24 (the next-version list) and the reviewer quote at line 70. Counts reconcile: the census fates tally 34 kept, 35 next_version and 2 recommend_retire out of 71, which matches result.json, and tickets.md has 38 '## T' headings."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "definition.md 'Costs and state transitions' opens by naming the source: \"Initial native mobile contamination comes from the proposed RM_GenStep_WastesNativeContamination local-map initializer. After terrain, brine and ordinary wreck placement, it seeds patchy polluted ground on ash flats, around wrecks and along brine margins where present. Patches are interleaved with connected cleaner, reachable buildable ground for a roofed occupied footprint and access route ... It runs once per newly generated Wastes map ... and never reseeds\". It also covers the pre-paint case: \"a disposable RM_Wastes map with an unpolluted world tile must acquire this same local mosaic through the real initializer.\" R5 carries the same clause with no numbers. The census initial_ground called_by now names the GenStep. T40's scope is now \"Implement the stated native source as RM_GenStep_WastesNativeContamination ...\", replacing the inventory scope. Its acceptance test covers \"Fresh warm, margin and cold disposable full maps generated from unpolluted world tiles\", the ash-flat/wreck/brine correlation, cleaner reachable footprints, waterless/wreck-free maps, inherited state, booking initial input once, no reseeding on reload, legacy adoption, interrupted generation and an unchanged world tile."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "The B1 and B8 sees.start both now say: \"Regime sites come from a scratch-world tile at the family's arc with that family's existing authored mutators applied in the disposable save (extend northstar_site.py under T44). Use basin arcs 73–92, margin arcs 101–108 and cold-scour arcs 110–129 from wastes.md §0 as test envelopes ... derive light from that position. The canonical world is never edited.\" The arcs match the table at wastes.md lines 70–72, and src/RimMandrake/Wastes/northstar_site.py exists. The B1 and B8 range.left_out add \"Family content that exists only after the final paint is outside this pre-paint range.\" T44 specifies the northstar_site.py extension, with mutator read-back and an acceptance test that \"Canonical save data is unchanged.\""
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "B8 meant.figurative now has two entries. \"uniformly lethal\" stands for \"No maintainable reachable refuge or work choice remains under ordinary maintained play.\", with the accept picture \"Some outside cells are lethal, while a maintained occupied refuge and a usable work route remain through the season.\" \"overwhelmed by errors\" stands for \"Repeating faults that stop or corrupt ordinary play.\", with the accept picture of a regression tool repeatedly reporting a stale assertion failure while jobs, state and the game log stay correct. Both pictures depart from the literal reading. The B8 control now reads \"error storm means repeating faults that stop or corrupt ordinary play\", so it agrees with the figurative entry."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Consequential ambiguities and delegated settlements",
+    "ambiguities.md Final attack on the proposed minimum",
+    "bars.json bars/B1",
+    "bars.json bars/B5",
+    "bars.json bars/B8",
+    "bars.json checks/C4",
+    "bars.json meetings",
+    "bars.json rules/R2",
+    "bars.json rules/R5",
+    "census.json rows/initial_buried_hoard",
+    "census.json rows/initial_ground",
+    "definition.md Costs and state transitions",
+    "definition.md Four stories",
+    "definition.md Settings",
+    "definition.md Using it",
+    "models.md M1: Supported situations and transition generator",
+    "models.md M2: Full-map contamination and refuge season",
+    "next_version.md Next version, default off",
+    "owner_pages.md Page one — what the Wastes becomes",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T40: Define and implement the native contamination cycle",
+    "tickets.md T43: Whole-map recorder and calibrated stock model",
+    "tickets.md T44: Rendered regime and route comparison instrument",
+    "tickets.md T46: Specify next-version pre-settlement buried salvage"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 929355,
+     "output_tokens": 9789
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "owner_pages.md Page one still says \"Review added initial buried salvage and regime/horizon light.\" (line 28)",
+   "reason": "Taken literally the sentence is still true, since review did add the row, but after R1 that row is deferred. Read cold, the line suggests initial buried salvage is in the first version. No regression head fits it. Adding '(now deferred, T46)' would remove the ambiguity.",
+   "round": 1
+  },
+  {
+   "what": "definition.md 'Using it' still opens \"the map already contains native mobile pollution\" without pointing at its source",
+   "reason": "It no longer contradicts anything, because 'Costs and state transitions' now names RM_GenStep_WastesNativeContamination. A cross-reference would save a reader from searching for it. This is an unchanged first sentence, so it is advisory only.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "94709182f8bd60d250354c95905402ee8e60c818fce31aa8e22eda240e0a679d",
+ "seconds": 371,
+ "at": "2026-11-17T06:48:32"
+}

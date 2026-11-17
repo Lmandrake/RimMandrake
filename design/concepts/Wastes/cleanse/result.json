@@ -5,8 +5,8 @@
  "signature": "Ash moves and adds mobile contamination, so settlers must read changed ground and maintain a habitable refuge while radiotrophs bind poison beneath the crust.",
  "counts": {
   "capabilities": 71,
-  "kept": 35,
-  "next_version": 34,
+  "kept": 34,
+  "next_version": 35,
   "recommend_retire": 2,
   "old_bars": 0,
   "bars": 8,
@@ -15,9 +15,9 @@
   "rules": 9,
   "unknown_pairs": 7,
   "models": 4,
-  "tickets": 37,
+  "tickets": 38,
   "questions": 0
  },
  "blocked_on": [],
- "applyable": false
+ "applyable": true
 }
