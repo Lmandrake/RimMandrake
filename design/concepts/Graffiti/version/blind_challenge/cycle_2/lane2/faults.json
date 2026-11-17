@@ -1,0 +1,94 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_TIGHTEN_GRAFFITI_UGLINESS_READ_SCRAWL_PASSED_AS_TAG",
+   "class": "Problem",
+   "bar": "ugliness_visible",
+   "criterion": "tree.json ugliness_visible: when the same hand painted both, the scrawl inspects as uglier (false pass: 'the scrawl is uglier only in its def, while the same hand's scrawl and tally inspect alike'); T_UGLINESS_OFFLINE, a decider, claims 'the Beauty stat and both inspect lines read NetBeauty' and that NetBeauty takes MarkBeauty of the mark's form",
+   "evidence": [
+    "planted fault PF_C_NETBEAUTY_SCRAWL_AS_TAG (Filth_Mark.NetBeauty passes `ext.form == GraffitiForm.Scrawl ? GraffitiForm.Tag : ext.form`: an awful hand's scrawl inspects -6, the same as its tally) left T_UGLINESS_OFFLINE green: lane2/planted_results.jsonl first row for it",
+    "planted fault PF_C_STATPART_KEEPS_DEF (StatPart_GraffitiCraft sets `val = m.NetBeauty * 0f + val`: the Beauty stat is the def's -15/-3, the false pass the bar names) left it green",
+    "cause: the source read accepted any first argument containing the word `form` and any statement starting `val = m.NetBeauty`",
+    "red: python3 design/concepts/Graffiti/version/blind_challenge/cycle_2/lane2/catch_check.py --fault PF_C_NETBEAUTY_SCRAWL_AS_TAG --test T_UGLINESS_OFFLINE rc 1 (MISSED) on the parent of dad3e902ac; lane2/fixes.jsonl"
+   ],
+   "would_pass": "T_UGLINESS_OFFLINE red on both planted faults and green on the shipped source",
+   "smallest_fix": "tighten the read: MarkBeauty's first argument is a bare <ext>.form with <ext> = def.GetModExtension<ModExtension_Graffiti>(); the StatPart and the two inspect lines take NetBeauty whole (`= NetBeauty;`); both faults added as source mutants so the read is shown able to refuse every run",
+   "verdict_on_criterion": "criterion sound; the test was short of it",
+   "status": "FIXED dad3e902ac9d2e7c9a85e0a6d088e2047144ad4d",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_CHECK_GRAFFITI_WEATHER_CALLER_ROOF_KERNEL_NEVER_SAW",
+   "class": "Problem",
+   "bar": "weathering_bounds_marks",
+   "criterion": "tree.json weathering_bounds_marks: a mark disappears after its weather days 'sooner outdoors than under a roof'; T_WEATHER_OFFLINE is a decider (with sc_weathered_raid_mark) and reads Filth_Mark",
+   "evidence": [
+    "planted fault PF_C_WEATHER_ROOF_INVERTED (Filth_Mark.WeatherStepNow passes `Map.roofGrid.Roofed(Position)` as WeatherDays' outdoors: every roofed mark gets the outdoor life) left T_WEATHER_OFFLINE green; the kernel half proves roofed > unroofed only for the kernel's own argument, and the source half read only the permanent rule",
+    "red: python3 design/concepts/Graffiti/version/blind_challenge/cycle_2/lane2/catch_check.py --fault PF_C_WEATHER_ROOF_INVERTED --test T_WEATHER_OFFLINE rc 1 (MISSED) on the parent of dad3e902ac; lane2/fixes.jsonl"
+   ],
+   "would_pass": "T_WEATHER_OFFLINE red on the inverted roof and green on the shipped source",
+   "smallest_fix": "the source half also reads WeatherStepNow's WeatherDays call: 4 arguments, the third exactly `!Map.roofGrid.Roofed(Position)`; a fifth source mutant (the roof read the wrong way round)",
+   "verdict_on_criterion": "criterion sound; the test was short of it",
+   "status": "FIXED dad3e902ac9d2e7c9a85e0a6d088e2047144ad4d",
+   "miss_of": 1
+  },
+  {
+   "id": "RIMMANDRAKE_KEEP_WEATHERED_SCRAWL_UGLIER_THAN_FRESH_TALLY",
+   "class": "Polish",
+   "bar": "ugliness_visible",
+   "criterion": "the same hand's scrawl inspects uglier than its tally (the bar names no age; its scene reads them fresh)",
+   "evidence": [
+    "NetBeauty = MarkBeauty x (1 - 0.6 x Fade) and a scrawl's life is 0.8x a tally's, each +-25% by id: an awful hand's scrawl (id 2) and tally (id 3) painted the same tick outdoors read -5.23 and -6.0 at day 9.5 (scrawl at weather step 3, tally at 0); a poor hand flips at step 4 (-2.4 vs -2.5) [measured, the kernel formulas replayed in python]",
+    "the picture weathers with the stat (eroded paint), so look and stat still move together; lane 1 row L1_UGLINESS_SAME_HAND_EVERY_CRAFT passes fresh"
+   ],
+   "would_pass": "a weathered scrawl never inspects less ugly than the same hand's same-day tally",
+   "smallest_fix": "wear the vandalism separately: NetBeauty = CraftBeauty x worn - ScrawlVandalism (or floor the scrawl's worn beauty at the tally's), with a fuzz case over age",
+   "verdict_on_criterion": "criterion sound; edge outside the scene",
+   "status": "PENDING",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_CLAMP_GRAFFITI_PUSH_ON_LOAD_NAN_REACHES_RAIDS",
+   "class": "Polish",
+   "bar": "raider_pressure",
+   "criterion": "a standing mark makes the faction's next raid larger by the setting's factor",
+   "evidence": [
+    "lane1 row L1_PRESSURE_EDITED_FILE_PUSH: PressureFactor(true, 1, NaN) = NaN; RM_GraffitiSettings.ExposeData loads raiderPressurePush unclamped, and RaiderPressureMod.Postfix writes PressurePoints into AdjustedRaidPoints' result",
+    "only a hand-edited settings file reaches it: the slider is 1.1..3"
+   ],
+   "would_pass": "any loaded push gives a factor in [1, 3]",
+   "smallest_fix": "in PressureFactor treat a non-finite push as PushDefault (or clamp in ExposeData on PostLoadInit), with a kernel case for NaN and infinities",
+   "verdict_on_criterion": "criterion sound",
+   "status": "PENDING",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_HOLD_SOONER_RETURN_WHEN_MODE_FLIPS_MID_CLAIM",
+   "class": "Polish",
+   "bar": "raider_pressure",
+   "criterion": "sooner mode: the faction's next raid comes sooner, by the setting's delay",
+   "evidence": [
+    "RaiderPressure.Refresh: an entry made in Larger mode keeps returnTick -1; switching to Sooner then sets returnTick = since + ret, so a claim older than 15/push days fires its return raid on the next refresh (250 ticks), not ret after the switch [read, not run: game-side]"
+   ],
+   "would_pass": "a mode switch mid-claim schedules the return no earlier than the switch plus ret (or keeps since + ret only when that is still ahead)",
+   "smallest_fix": "returnTick = Math.Max(since + ret, now + some floor) when the entry first enters Sooner, or count from now",
+   "verdict_on_criterion": "criterion sound; a settings edge",
+   "status": "PENDING",
+   "miss_of": 0
+  },
+  {
+   "id": "RIMMANDRAKE_EXTEND_GRAFFITI_FUZZ_RULES_ONLY_LANE_ONE_SAW",
+   "class": "Polish",
+   "bar": "visitors, temperament, sits_on_wall, stories_not_tax",
+   "criterion": "T_FUZZ supports these bars (it decides none of them; their deciders are live scenes)",
+   "evidence": [
+    "planted PF_K_VISIT_CAP_FORGETS, PF_K_PSYCHOPATH_HALF_FEELS, PF_K_EDGE_ON_PAINTS, PF_K_BUDGET_UNCAPPED: T_FUZZ green, lane 1 red (lane2/planted_results.jsonl)"
+   ],
+   "would_pass": "T_FUZZ red on each of the four",
+   "smallest_fix": "add VisitCharge, Combine's numb, PaintsEdgeOn and FitBudget cases to GraffitiFuzz.cs (lane1/BlindLane1.cs has the properties)",
+   "verdict_on_criterion": "no bar criterion is wrong; coverage of a supporting test",
+   "status": "PENDING",
+   "miss_of": 1
+  }
+ ]
+}

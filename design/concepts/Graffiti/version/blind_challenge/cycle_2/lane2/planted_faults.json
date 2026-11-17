@@ -1,0 +1,413 @@
+{
+ "note": "cycle-2 judge's planted faults; each `old` occurs exactly once in `file` (plant_faults.py refuses otherwise). Not planted: journal.md, bars.md, stage_record.json, run_spend.jsonl, in_game/unrun.jsonl, next_version/README.md, test_table.*, make_test_table.py (records and generators, no behaviour); tree.json, scenes.json (locked: may not be edited, even to plant); the DLL and .srchash (binary build output); SelfTest/Program.cs (its only change is a comment).",
+ "faults": [
+  {
+   "id": "PF_K_PRESSURE_ZERO_MARKS_PUSH",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "if (!on || standingMarks <= 0) return 1f;",
+   "new": "if (!on || standingMarks < 0) return 1f;",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_K_PRESSURE_MARKS_STACK",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "return Clamp(push, 1f, PushMax);",
+   "new": "return Clamp(push * standingMarks, 1f, PushMax);",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_K_PRESSURE_MODE_SWAPPED",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "return mode == RM_PressureMode.Larger ? points",
+   "new": "return mode != RM_PressureMode.Larger ? points",
+   "bars": [
+    "raider_pressure",
+    "stands_alone_settings"
+   ]
+  },
+  {
+   "id": "PF_K_PRESSURE_LETTER_EVERY_REFRESH",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "return now && !wasPressured ? 1 :",
+   "new": "return now ? 1 :",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_K_PRESSURE_SOONER_IS_LATER",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "SoonerBaseDays * ticksPerDay / (double)PressureFactor",
+   "new": "SoonerBaseDays * ticksPerDay * (double)PressureFactor",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_K_SCRAWL_VANDALISM_ZERO",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "public const float ScrawlVandalism = 3.5f;",
+   "new": "public const float ScrawlVandalism = 0f;",
+   "bars": [
+    "ugliness_visible"
+   ]
+  },
+  {
+   "id": "PF_K_MARKBEAUTY_FORM_IGNORED",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "return form == GraffitiForm.Scrawl ? b - ScrawlVandalism : b;",
+   "new": "return form == GraffitiForm.Scrawl ? b : b;",
+   "bars": [
+    "ugliness_visible",
+    "inv_beauty_and_craft"
+   ]
+  },
+  {
+   "id": "PF_K_SCRAWL_CEILING_LEGENDARY",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "case GraffitiForm.Scrawl: return Poor;",
+   "new": "case GraffitiForm.Scrawl: return Legendary;",
+   "bars": [
+    "ugliness_visible",
+    "art_skill"
+   ]
+  },
+  {
+   "id": "PF_K_WEATHER_ROOF_SWAPPED",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "float days = outdoors ? 22f : 44f;",
+   "new": "float days = outdoors ? 44f : 22f;",
+   "bars": [
+    "weathering_bounds_marks"
+   ]
+  },
+  {
+   "id": "PF_K_WEATHER_FADE_EARLY",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "float f = (ageDays / lifeDays - 0.6f) / 0.4f;",
+   "new": "float f = (ageDays / lifeDays - 0.2f) / 0.8f;",
+   "bars": [
+    "weathering_bounds_marks"
+   ]
+  },
+  {
+   "id": "PF_K_VISIT_CAP_FORGETS",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "return -Math.Min(-delta, Math.Max(0, VisitLossCap - lostSoFar));",
+   "new": "return -Math.Min(-delta, VisitLossCap);",
+   "bars": [
+    "visitors"
+   ]
+  },
+  {
+   "id": "PF_K_INSULT_ANY_FACTION",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "return namesViewersFaction ? -12 : 0;",
+   "new": "return namesViewersFaction ? -12 : -12;",
+   "bars": [
+    "visitors"
+   ]
+  },
+  {
+   "id": "PF_K_FORCED_CLEAN_PROTECTED",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "if (forced || !settingOn) return false;",
+   "new": "if (!settingOn) return false;",
+   "bars": [
+    "scrub_protection"
+   ]
+  },
+  {
+   "id": "PF_K_PSYCHOPATH_HALF_FEELS",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "t.bad = t.good = t.fine = t.ugly = t.offended = 0f;",
+   "new": "t.bad = t.good = t.fine = t.ugly = t.offended = 0.5f;",
+   "bars": [
+    "temperament"
+   ]
+  },
+  {
+   "id": "PF_K_FAR_SIDE_PAINTABLE",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "public static bool SidePaintable(int side) { return side == 0 || side == 1 || side == 3; }",
+   "new": "public static bool SidePaintable(int side) { return side >= 0; }",
+   "bars": [
+    "sits_on_wall"
+   ]
+  },
+  {
+   "id": "PF_K_EDGE_ON_PAINTS",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "public static bool PaintsEdgeOn(int face) { return !EdgeOn(face); }",
+   "new": "public static bool PaintsEdgeOn(int face) { return true; }",
+   "bars": [
+    "sits_on_wall"
+   ]
+  },
+  {
+   "id": "PF_K_MOCKERY_SUBJECT_SHRUGS",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "if (v.isSubject) return v.kind ? RM_Reaction.ShrugsOff : RM_Reaction.Humiliated;",
+   "new": "if (v.isSubject) return RM_Reaction.ShrugsOff;",
+   "bars": [
+    "mockery"
+   ]
+  },
+  {
+   "id": "PF_K_CONFRONT_ABSENT_PAINTER",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "BaseAnswer(reaction, hot, canFight && makerHere,",
+   "new": "BaseAnswer(reaction, hot, canFight,",
+   "bars": [
+    "fights_reasons",
+    "answer_wall"
+   ]
+  },
+  {
+   "id": "PF_K_BUDGET_UNCAPPED",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "return room >= offset ? 1f : room / offset;",
+   "new": "return 1f;",
+   "bars": [
+    "stories_not_tax"
+   ]
+  },
+  {
+   "id": "PF_K_MEMORIAL_FROM_ANYONE",
+   "file": "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+   "old": "if (hasMourned) mourn =",
+   "new": "if (true) mourn =",
+   "bars": [
+    "tribute_memorial"
+   ]
+  },
+  {
+   "id": "PF_C_PRESSURE_POSTFIX_NEVER_PUSHES",
+   "file": "src/RimMandrake/Graffiti/Source/RaiderPressure.cs",
+   "old": "__result = RM_GraffitiKernel.PressurePoints(__result, true,",
+   "new": "__result = RM_GraffitiKernel.PressurePoints(__result, false,",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_C_PRESSURE_CROSSED_OUT_STANDS",
+   "file": "src/RimMandrake/Graffiti/Source/RaiderPressure.cs",
+   "old": "&& !m.defaced && f != null",
+   "new": "&& f != null",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_C_PRESSURE_NEVER_LIFTS",
+   "file": "src/RimMandrake/Graffiti/Source/RaiderPressure.cs",
+   "old": "if (RM_GraffitiKernel.PressureChange(true, n, on) != -1) continue;",
+   "new": "if (n >= 0) continue;",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_C_PRESSURE_LETTER_NO_TARGET",
+   "file": "src/RimMandrake/Graffiti/Source/RaiderPressure.cs",
+   "old": "new LookTargets(marks.Cast<Thing>())",
+   "new": "LookTargets.Invalid",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_C_NETBEAUTY_SCRAWL_AS_TAG",
+   "file": "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+   "old": "float net = ext != null ? RM_GraffitiKernel.MarkBeauty(ext.form, craft)",
+   "new": "float net = ext != null ? RM_GraffitiKernel.MarkBeauty(ext.form == GraffitiForm.Scrawl ? GraffitiForm.Tag : ext.form, craft)",
+   "bars": [
+    "ugliness_visible",
+    "inv_beauty_and_craft"
+   ]
+  },
+  {
+   "id": "PF_C_NETBEAUTY_DEFACE_NO_RUIN",
+   "file": "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+   "old": "System.Math.Min(net, RM_GraffitiKernel.CraftBeauty(RM_GraffitiKernel.Poor))",
+   "new": "System.Math.Min(net, RM_GraffitiKernel.CraftBeauty(RM_GraffitiKernel.Legendary))",
+   "bars": [
+    "ugliness_visible",
+    "answer_wall"
+   ]
+  },
+  {
+   "id": "PF_C_PERMANENT_FADES",
+   "file": "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+   "old": "if (permanent || placedTick == -1 || !Spawned) return 0;",
+   "new": "if (placedTick == -1 || !Spawned) return 0;",
+   "bars": [
+    "weathering_bounds_marks"
+   ]
+  },
+  {
+   "id": "PF_C_WEATHER_ROOF_INVERTED",
+   "file": "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+   "old": "RM_GraffitiKernel.WeatherDays(ext?.form ?? GraffitiForm.Scrawl, hasCraft ? craft : RM_GraffitiKernel.Normal, !Map.roofGrid.Roofed(Position)",
+   "new": "RM_GraffitiKernel.WeatherDays(ext?.form ?? GraffitiForm.Scrawl, hasCraft ? craft : RM_GraffitiKernel.Normal, Map.roofGrid.Roofed(Position)",
+   "bars": [
+    "weathering_bounds_marks"
+   ]
+  },
+  {
+   "id": "PF_C_WORN_NEVER_WEARS",
+   "file": "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+   "old": "float worn = 1f - 0.6f * Fade;",
+   "new": "float worn = 1f;",
+   "bars": [
+    "weathering_bounds_marks",
+    "ugliness_visible"
+   ]
+  },
+  {
+   "id": "PF_C_STATPART_KEEPS_DEF",
+   "file": "src/RimMandrake/Graffiti/Source/StatPart_GraffitiCraft.cs",
+   "old": "if (req.Thing is Filth_Mark m && m.hasCraft) val = m.NetBeauty;",
+   "new": "if (req.Thing is Filth_Mark m && m.hasCraft) val = m.NetBeauty * 0f + val;",
+   "bars": [
+    "ugliness_visible",
+    "art_skill"
+   ]
+  },
+  {
+   "id": "PF_C_STATPART_SCRAWL_LINE_INVERTED",
+   "file": "src/RimMandrake/Graffiti/Source/StatPart_GraffitiCraft.cs",
+   "old": "?.form == GraffitiForm.Scrawl;",
+   "new": "?.form != GraffitiForm.Scrawl;",
+   "bars": [
+    "ugliness_visible"
+   ]
+  },
+  {
+   "id": "PF_C_MOD_PUSH_DEFAULT_ONE",
+   "file": "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs",
+   "old": "public static float raiderPressurePush = RM_GraffitiKernel.PushDefault;",
+   "new": "public static float raiderPressurePush = 1f;",
+   "bars": [
+    "raider_pressure",
+    "stands_alone_settings"
+   ]
+  },
+  {
+   "id": "PF_C_MOD_PRESSURE_SAVED_OFF",
+   "file": "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs",
+   "old": "Scribe_Values.Look(ref raiderPressureEnabled, \"raiderPressureEnabled\", true);",
+   "new": "Scribe_Values.Look(ref raiderPressureEnabled, \"raiderPressureEnabled\", false);",
+   "bars": [
+    "stands_alone_settings",
+    "inv_settings"
+   ]
+  },
+  {
+   "id": "PF_C_MOD_SLIDER_FLOOR_BELOW_ONE",
+   "file": "src/RimMandrake/Graffiti/Source/RM_GraffitiMod.cs",
+   "old": "list.Slider(raiderPressurePush, RM_GraffitiKernel.PushMin, RM_GraffitiKernel.PushMax)",
+   "new": "list.Slider(raiderPressurePush, 0.5f, RM_GraffitiKernel.PushMax)",
+   "bars": [
+    "raider_pressure",
+    "inv_settings"
+   ]
+  },
+  {
+   "id": "PF_C_STAGE_PAIR_UNCAPPED",
+   "file": "src/RimMandrake/Graffiti/Source/RM_GraffitiStage.cs",
+   "old": "m.craft = System.Math.Min(q, RM_GraffitiKernel.CraftCeiling(def.GetModExtension<ModExtension_Graffiti>().form));",
+   "new": "m.craft = q;",
+   "bars": [
+    "ugliness_visible"
+   ]
+  },
+  {
+   "id": "PF_C_STAGE_PAIR_SKIPS_CLUMSY",
+   "file": "src/RimMandrake/Graffiti/Source/RM_GraffitiStage.cs",
+   "old": "int x = 1 + q * step;",
+   "new": "int x = 1 + q * step; if (q < 2) continue;",
+   "bars": [
+    "ugliness_visible"
+   ]
+  },
+  {
+   "id": "PF_C_SITE_MODE_SOONER",
+   "file": "src/RimMandrake/Graffiti/northstar_site.py",
+   "old": "\"raiderPressureMode\": 0",
+   "new": "\"raiderPressureMode\": 1",
+   "bars": [
+    "stands_alone_settings"
+   ]
+  },
+  {
+   "id": "PF_C_SITE_PUSH_WRONG",
+   "file": "src/RimMandrake/Graffiti/northstar_site.py",
+   "old": "\"raiderPressurePush\": 1.5",
+   "new": "\"raiderPressurePush\": 2.5",
+   "bars": [
+    "stands_alone_settings"
+   ]
+  },
+  {
+   "id": "PF_C_CSPROJ_DROPS_PRESSURE",
+   "file": "src/RimMandrake/Graffiti/Source/Graffiti.csproj",
+   "old": "    <Compile Include=\"RaiderPressure.cs\" />\n",
+   "new": "",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_T_SCENE_LIFT_NOT_CHECKED",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "old": "if ra.get(\"pressured\") != \"False\" or ra.get(\"standing\") != \"0\" or float(ra.get(\"factor\", 0)) != 1.0:",
+   "new": "if False:",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_T_SCENE_PUSH_NOT_CHECKED",
+   "file": "src/RimMandrake/Graffiti/validation.py",
+   "old": "if not _near(off_out, off_van) or (start.get(\"mode\") == \"Larger\" and not _near(on_out, on_van * push)):",
+   "new": "if not _near(off_out, off_van):",
+   "bars": [
+    "stands_alone_settings",
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_T_UGLINESS_IGNORES_SOURCE",
+   "file": "src/RimMandrake/Utils/selftest_graffiti_ugliness.py",
+   "old": "ok = k_rc == 0 and src_rc == 0",
+   "new": "ok = k_rc == 0",
+   "bars": [
+    "ugliness_visible"
+   ]
+  },
+  {
+   "id": "PF_T_FUZZ_PRESSURE_ORACLE_WRONG",
+   "file": "src/RimMandrake/Graffiti/Source/SelfTest/GraffitiFuzz.cs",
+   "old": "float wantP = mode == RM_PressureMode.Larger ? basePts * want : basePts;",
+   "new": "float wantP = basePts * want;",
+   "bars": [
+    "raider_pressure"
+   ]
+  },
+  {
+   "id": "PF_T_FUZZ_PRESSURE_FAMILY_DROPPED",
+   "file": "src/RimMandrake/Graffiti/Source/SelfTest/GraffitiFuzz.cs",
+   "old": "                (\"pressure\", () => Pressure(N(4000), S(1))),\n",
+   "new": "",
+   "bars": [
+    "raider_pressure"
+   ]
+  }
+ ]
+}

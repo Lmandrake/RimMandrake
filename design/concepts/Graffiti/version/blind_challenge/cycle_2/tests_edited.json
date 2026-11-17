@@ -1,0 +1,14 @@
+[
+ {
+  "path": "src/RimMandrake/Utils/selftest_graffiti_ugliness.py",
+  "why": "RIMMANDRAKE_TIGHTEN_GRAFFITI_UGLINESS_READ_SCRAWL_PASSED_AS_TAG: source read tightened (bare <ext>.form from the mark's own extension; NetBeauty taken whole) and two source mutants added; nothing loosened",
+  "before": "f2618b2a60",
+  "after": "dad3e902ac"
+ },
+ {
+  "path": "src/RimMandrake/Utils/selftest_graffiti_weather.py",
+  "why": "RIMMANDRAKE_CHECK_GRAFFITI_WEATHER_CALLER_ROOF_KERNEL_NEVER_SAW: the source half also checks WeatherStepNow's WeatherDays outdoors argument; one source mutant added; nothing loosened",
+  "before": "f2618b2a60",
+  "after": "dad3e902ac"
+ }
+]

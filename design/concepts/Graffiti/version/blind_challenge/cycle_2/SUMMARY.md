@@ -38,28 +38,74 @@ debuff is in the table only for Neurotic:2 (the rest must come from `neat` in th
 viewer at -29..-15 toward its subject.
 
 ## Lane 2 reruns
-(pending)
+`python3 lane2/rerun_offline.py` (prefix-tolerant last-line compare, private WINBUILD_ROOT): **14 offline tests rerun, 14 of 14
+the recorded verdict, 13 of 14 the recorded last line** [measured] (`lane2/reruns.jsonl`). The 14th, T_MSG_COUNTERS_RESET, is red both
+times for the same reason (its file `selftest_graffiti_message_counters.py` does not exist) and its last line differs only in the
+clone path. T_SHIP_CHECK red both times ("Drift found": the game copy is not this tree; never deployed here). Neither decides an
+offline bar. After the fixes, both edited deciders rerun green: `lane2/reruns_after_fix.jsonl` (2 of 2).
 
 ## Planted
-(pending)
+44 faults in `lane2/planted_faults.json` (20 kernel, 19 game-side callers, settings and staging, 5 in tests and scenes),
+run by `lane2/plant_faults.py` against 10 offline suites (+T_LINT for settings/scene files) and lane 1; baseline all green.
+**Before the fixes 27 of 44 caught; after, 30 of 44** [measured] (`lane2/planted_results.jsonl`, the last row per fault counts;
+it ends `tree_clean_after: true`). One first-pass catch of PF_C_WORN_NEVER_WEARS was `OSError: Cannot allocate memory` in
+T_RAID_TAG_BUILT_WALL_ONLY, not a catch: rerun, it survives.
+- Kernel: 20 of 20 caught by lane 1; T_FUZZ 16 of 20 (see RIMMANDRAKE_EXTEND_GRAFFITI_FUZZ_RULES_ONLY_LANE_ONE_SAW).
+- Survivors past a green **offline decider** (the Problems): PF_C_NETBEAUTY_SCRAWL_AS_TAG and PF_C_STATPART_KEEPS_DEF past
+  T_UGLINESS_OFFLINE (decides ugliness_visible), PF_C_WEATHER_ROOF_INVERTED past T_WEATHER_OFFLINE (decides
+  weathering_bounds_marks). All three caught after the fixes.
+- Survivors whose bars have only live deciders (owed to Stage 6, not Problems against an offline test): the four RaiderPressure.cs
+  faults (postfix never pushes, crossed-out marks stand, never lifts, letter with no look-target) and the csproj dropping
+  RaiderPressure.cs (sc_raider_pressure decides); RM_GraffitiStage.Pair uncapped / skipping awful and poor (sc_beauty_pair);
+  validation.py's two weakened pressure checks (no offline test reads that scene); NetBeauty's crossed-out cap lifted and worn
+  removed (no bar pins the number); the inspect line's "a vandal's scrawl" label inverted (cosmetic).
+- Survivors that weaken a test itself (no meta-check exists, none expected): T_UGLINESS ignoring its source half, the fuzz's
+  pressure family dropped.
 
 ## Faults
-(pending)
+`lane2/faults.json`, each filed as a rimflow item [measured: 6 filed]:
+
+| id | class | bar | status | miss_of |
+|---|---|---|---|---|
+| RIMMANDRAKE_TIGHTEN_GRAFFITI_UGLINESS_READ_SCRAWL_PASSED_AS_TAG | Problem | ugliness_visible | FIXED dad3e902ac | 0 |
+| RIMMANDRAKE_CHECK_GRAFFITI_WEATHER_CALLER_ROOF_KERNEL_NEVER_SAW | Problem | weathering_bounds_marks | FIXED dad3e902ac | 1 |
+| RIMMANDRAKE_KEEP_WEATHERED_SCRAWL_UGLIER_THAN_FRESH_TALLY | Polish | ugliness_visible | PENDING | 0 |
+| RIMMANDRAKE_CLAMP_GRAFFITI_PUSH_ON_LOAD_NAN_REACHES_RAIDS | Polish | raider_pressure | PENDING | 0 |
+| RIMMANDRAKE_HOLD_SOONER_RETURN_WHEN_MODE_FLIPS_MID_CLAIM | Polish | raider_pressure | PENDING | 0 |
+| RIMMANDRAKE_EXTEND_GRAFFITI_FUZZ_RULES_ONLY_LANE_ONE_SAW | Polish | visitors, temperament, sits_on_wall, stories_not_tax | PENDING | 1 |
+
+2 Problems (1 miss_of), 4 Polish (1 miss_of). Both Problems are tests short of their own claims; the mod code itself was right in
+every case read. No bar or criterion was found wrong: nothing NOTED_FOR_CONDUCTOR.
 
 ## Fixes
-(pending)
+Both test fixes landed in **dad3e902ac** (`./publish`), red first: `lane2/fixes.jsonl`. Each catching run is
+`python3 lane2/catch_check.py --fault <id> --test <T>` (rc 0 = caught): rc 1 on the parent f2618b2a60 (the old test file from
+that sha; the mod source is byte-identical there), rc 0 at dad3e902ac, and the unplanted test rc 0 at dad3e902ac. Lane 1 rerun
+after the fixes: `lane2/lane1_rows_after_fix.jsonl`, 37 PASS, 0 FAIL, 3 INFO, 15 UNSETTLED (unchanged). Both items closed at
+dad3e902ac. The two test files stay DIRTY in code_review_status (never marked clean before; this pass read the changed functions,
+not the whole files).
 
 ## Steward's decisions enacted
-(pending)
+None written for this cycle; the standing default held (every bar judged as locked, Problems fixed in place red first). No ledger entry under CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM was needed.
 
 ## Tests edited
-(pending)
+`tests_edited.json`: `src/RimMandrake/Utils/selftest_graffiti_ugliness.py`, `src/RimMandrake/Utils/selftest_graffiti_weather.py` (both tightened, mutants added; no assertion weakened, skipped or removed).
 
 ## Unsettled
-(pending)
+- 14 `not_kernel` lane-1 rows: game-side behaviour of every bar, owed to Stage 6 (all 47 bars prove at stage 6).
+- L1_TRIBUTE_RIVAL_BAND: a viewer at -29..-15 toward a tribute's subject takes no reaction; the bar does not say whose rival or where
+  rivalry starts. Settled by the live tribute_memorial scene's rival, read with its opinions.
+- The raider-pressure callers (postfix, lift, letter target, crossed-out marks) have no offline guard; only sc_raider_pressure decides.
 
 ## Exit
-(pending)
+offline_bars: {}
+problems_open: 0
+exit_met: false
+
+No offline bar exists in 0.1.0: all 47 bars prove at stage 6 (`test_table.json` bars[].proves_at), so `offline_bars` is empty.
+Two Problems were found and FIXED in this cycle, so by the brief this cycle's exit is not met: a new blind judge is owed.
 
 ## Owed
-(pending)
+- A new blind judge (cycle 3 of this visit), since this cycle fixed two Problems.
+- Stage 6: every `not_kernel` row and the survivors listed under Planted.
+- The four Polish items (PENDING, not part of passing).
