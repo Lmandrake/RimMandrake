@@ -1,22 +1,23 @@
 {
-  "mod": "BlueDesert",
-  "run": "designer-cleanse-2026-11-17",
-  "outcome": "proposed",
-  "signature": "Cold preserves useful native fuel; disturbing or warming it can propagate a blast from the living field into the colony cargo, so preparation and cold handling matter.",
-  "counts": {
-    "capabilities": 68,
-    "kept": 45,
-    "next_version": 17,
-    "recommend_retire": 6,
-    "old_bars": 0,
-    "bars": 8,
-    "live_only_bars": 1,
-    "checks": 10,
-    "rules": 11,
-    "unknown_pairs": 4,
-    "models": 5,
-    "tickets": 31,
-    "questions": 1
-  },
-  "blocked_on": []
+ "mod": "BlueDesert",
+ "run": "designer-cleanse-2026-11-17",
+ "outcome": "proposed",
+ "signature": "Cold preserves useful native fuel; disturbing or warming it can propagate a blast from the living field into the colony cargo, so preparation and cold handling matter.",
+ "counts": {
+  "capabilities": 68,
+  "kept": 45,
+  "next_version": 17,
+  "recommend_retire": 6,
+  "old_bars": 0,
+  "bars": 8,
+  "live_only_bars": 1,
+  "checks": 10,
+  "rules": 11,
+  "unknown_pairs": 4,
+  "models": 5,
+  "tickets": 31,
+  "questions": 1
+ },
+ "blocked_on": [],
+ "applyable": false
 }

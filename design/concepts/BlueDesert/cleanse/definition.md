@@ -14,7 +14,7 @@ Runner-up: archaeological study and thaw-awakened siege forms. It lost because a
 
 ## Why a player reaches for it
 
-It offers an alien, beautiful place where profitable work changes how the colony plans heat, routes and storage. Premium water ice and old material salvage are useful even before native fuel is collected. The fuel is tempting because it is usable, rather than a decorative dangerous item: a normal cold-work bill must convert wax into ordinary chemfuel. This requires build work; the current item description promises a consumer that the bounded recipe search did not find.
+It offers an alien, beautiful place where profitable work changes how the colony plans heat, routes and storage. Premium water ice and old material salvage are useful even before native fuel is collected. The fuel is tempting because it is usable, rather than a decorative dangerous item: an ordinary bill at the vanilla biofuel refinery (`BiofuelRefinery`) converts wax into usable `Chemfuel` that retains its native warm hazard. This consumer is absent in current source. The bench already serves refinery bills in `src/RimMandrake/Abyss/Defs/RecipeDefs/RM_Recipes_Chemfuel.xml` and `src/RimMandrake/TerminalBiomes/Defs/RecipeDefs/RM_TheChillFuelChain.xml`. Choosing that bench and retaining output reactivity are my delegated implementation decisions.
 
 Prediction, not a bar: deliberate preparation followed by a small avoidable disaster should be more interesting than repeated arbitrary instant losses. The player is choosing exposure and containment, not guessing an invisible mining roll.
 
@@ -26,7 +26,7 @@ Routine: harvest wild flora rather than sowing it. Most plants yield wax; qeshra
 
 Native grazing removes a plant safely through ingestion; normal cut/harvest is also safe. Damage-killing a plant releases its charge. Sustained warming advances a warning state and then releases the charge; a brief harmless temperature excursion must not masquerade as a resolved full warming test. Before irreversible ignition, removing heat/cooling arrests the warming hazard. Once an actual wick or blast has begun, cooling is not promised to undo it. Sound reinforces a locatable inspect/notification state rather than being the only warning.
 
-At 40-colonist scale, use several cold storage areas and deliberate hauling routes. Loose water ice absorbs finite heat without a rack. Door traffic, large rooms and heaters can exhaust it. Reducing traffic and restoring powered cooling are ordinary work; the ice buys a deliberate response under a declared repairable load, not unlimited refrigeration. No new hauling or excavation job is required. A poor stockpile order can carry wax through an apparently safe gap and reconnect the fuel graph. Preparation must consider corpses, animals and carried cargo, not only plants.
+At 40-colonist scale, use several cold storage areas and deliberate hauling routes. Loose water ice absorbs finite heat without a rack. Door traffic, large rooms and heaters can exhaust it. In a prepared closed hold under its declared ordinary heat load, loose ice alone keeps the room cold far longer than an ordinary cooling repair. A matched unrepaired hold must still be cold with substantial reserve after real workers finish the repair. Reducing traffic and restoring powered cooling remain ordinary work. Open-door bursts, exhausted reserves and deliberately excessive heat are separate stress cases. The thermal model must establish the supported room/load regimes. No new hauling or excavation job is required. A poor stockpile order can carry wax through an apparently safe gap and reconnect the fuel graph. Preparation must consider corpses, animals and carried cargo, not only plants.
 
 ## What changes in the colony's story
 
@@ -38,9 +38,15 @@ The existing vhaulk still walks away with a readable sign. Taming, downing, a bl
 
 ## Costs
 
-Cold protection, work-site preparation, ordinary salvage/mining time, separate reactive stockpiles and repairable cooling are the costs. Water ice and heat capacity are finite; every conversion route must account for the same material and residual reserve. Metal and water are inert. Hydrocarbon organs, feed, wax and corpses are not edible human food or warm-safe matter simply because they were processed, carried, split or reloaded. Pure carbon is an inorganic exception in the older char-lace definition, but its production is off in this version.
+Cold protection, work-site preparation, ordinary salvage/mining time, separate reactive stockpiles and repairable cooling are the costs. Water ice and heat capacity are finite; every conversion route must account for the same material and residual reserve. Metal and water are inert. Hydrocarbon organs, feed, wax, refined native chemfuel and corpses retain their cold-dependent hazard through processing, carrying, splitting and reload. Pure carbon is an inorganic exception in the older char-lace definition, but its production is off in this version.
 
 Wild native food is not cultivated. Qeshra roe is native feed; foreign ingestion must be visibly incompatible, rather than merely discouraged by food preference. ColdStorage's preserved-roe recipes are an extra and must be gated separately. Shared Bones output cannot quietly contradict the organic rule: declared mineralized inorganic bone may be inert; organic components must preserve the hazard. This is a local product contract, not a new Bones design.
+
+Wax refining uses the existing refinery and ordinary bill work. A properly cold workspace keeps the input stacks, bench interaction cell and output placement cells at or below the loaded wax safe limit. The current value is -1 °C [measured from `src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/RM_ColdWax.xml`, `maxSafeTemperature`]. The wax bill adds no temperature interlock. If the workspace warms during work, the normal input warning/ruin/wick state continues, and completing the bill preserves that danger in its output. Cooling or cancelling work cannot reset accumulated hazard debt. Recipe quantities remain tuning checks from the life brief.
+
+The output retains the vanilla `Chemfuel` identity and ordinary fuel uses, with local native-source provenance and the same safe limit and warning/ruin/wick continuity as wax. Refining supplies usable cold-dependent fuel. The hard ban on warm-safe native products remains binding. Splitting, mixing with imported chemfuel, hauling, reloading and refueling cannot erase or dilute the native hazard. The reader must identify the native portion and its state in a mixed stack or consumer. Internal unburned fuel remains covered until actually consumed. Only actual fuel consumption removes the consumed portion of hazard debt. Unrelated imported fuel retains its existing behavior. T12/T13 must supply the local provenance and vanilla-consumer adapters as necessary parts of usable native fuel. Shared liquid-network integration beyond the admitted held/container contract requires its own proved adapter before it can carry this fuel.
+
+These decisions follow the biome sheet’s native-product ban and cold-only chemfuel windfall. The life brief already calls the output `Chemfuel` and says ordinary fuel, but never grants a warm-safe exception. I resolve that wording as ordinary use with retained native chemistry. The recipe, its temperature scope and output continuity are implementation rules open to attack before the bars.
 
 ## When it goes wrong and its sign
 
@@ -48,7 +54,7 @@ A warm field has an identified charge warning and crack; it can then propagate d
 
 Native feed makes foreign eaters visibly ill rather than becoming ordinary hay. Warm stored organics show progress and an identified recovery action before their wick; native corpses get the same continuity. The dead do not become safe by bypassing generated-def injection. Departure is an actual exit or transport with a sign; death is a corpse/blast event. No creature vanishes to keep the model stable.
 
-Ice-sand accumulates against structures, obstructs trips and then erodes or can be cleared. This is ordinary local weather land. It is not a bespoke windward-hull burial job. The existing engine is patchy, and whether it achieves the deep-drift picture is an open modeling/live risk. Fog reduces targeting reach/accuracy and movement while present, with normal recovery when it lifts. Its independent shuttle-launch prohibition is off. Haze remains a settling atmospheric veil; its skin/lung exposure meter is off. Weather must rotate naturally during acceptance; a locked clear sky invalidates the whole bar.
+Deep ice-sand piles beside walls, doors and hulls bury approach routes until crews clear them or erosion releases them. Ordinary hauling must require clearing or waiting in the buried-route cases. A thin film producing a slight slowdown fails. “Against” describes adjacent deposits, without requiring the structure to cause accumulation. The existing patchy SandGrid remains an attackable implementation choice. Its ability to produce this obstruction is an open modeling/live risk. Attribute obstruction to deposits through sand path costs and clearance with drift weather ended or matched between routes. The drift weather itself slows movement, so timing an in-storm trip alone cannot prove buildup. Fog reduces targeting reach/accuracy and movement while present, with normal recovery when it lifts. Its independent shuttle-launch prohibition is off. Haze remains a settling atmospheric veil; its skin/lung exposure meter is off. Weather must rotate naturally during acceptance; a locked clear sky invalidates the whole bar.
 
 ## Edges
 
@@ -84,11 +90,11 @@ The crew sees blue distance and clear low shapes near its boots. It marks an old
 
 ## Ordinary week
 
-Dovvik and prey feed in the cold while predators move between patches. Fog interrupts a long shot; drift slows a hauling route until it clears. The colony harvests wild feed and wax, turns gathered resources into water and fuel, and checks whether regrowth or a dropped stack has reconnected yesterday's work site.
+Dovvik and prey feed in the cold while predators move between patches. Fog interrupts a long shot; drift slows a hauling route until it clears. The colony harvests wild feed and wax, turns gathered resources into water and cold-dependent fuel, and checks whether regrowth or a dropped stack has reconnected yesterday's work site.
 
 ## Worst day
 
-Power fails in a busy cold hold. Loose ice absorbs heat while a worker cuts unnecessary traffic and another repairs cooling. A neglected organic stack warns; a crew that ignores it sees a wick and an attributed chain. The same warning and remaining reserve persist across a reload; the game has not secretly reset their chance to respond.
+Power fails in a busy cold hold. Loose ice keeps the closed hold cold with reserve for well beyond the ordinary repair while a worker cuts unnecessary traffic and another restores cooling. A neglected organic stack warns; a crew that ignores it sees a wick and an attributed chain. The same warning and remaining reserve persist across a reload; the game has not secretly reset their chance to respond.
 
 ## Season's turn
 

@@ -724,15 +724,15 @@
     },
     {
       "id": "wax_refinery",
-      "what": "Cold-wax to chemfuel recipe stated by life brief; no recipe consumer located in bounded current source search.",
+      "what": "Ordinary BiofuelRefinery bill converts cold wax to usable Chemfuel retaining native warm-hazard provenance. Bill and product/consumer adapters are absent.",
       "built": "absent",
-      "evidence": "src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/RM_ColdWax.xml",
+      "evidence": "src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/RM_ColdWax.xml; design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md section 7; src/RimMandrake/Abyss/Defs/RecipeDefs/RM_Recipes_Chemfuel.xml confirms existing BiofuelRefinery recipe ownership.",
       "proven": "missing",
       "called_by": "RM_ColdWax.xml names owed refinery; bounded src recipe search found no cold-wax-to-chemfuel consumer.",
-      "serves": "See disposition argument: Cold wax must have an actual fuel consumer, not only a price; deleting fuel use turns the chosen risk into collecting a useless explosive item. Use a normal cold-handled bill, no new machine.",
+      "serves": "Usable cold-dependent native fuel in the signature, including ordinary vanilla fuel consumption.",
       "fate": "needed_by",
-      "why": "Designer decision: Cold wax must have an actual fuel consumer, not only a price; deleting fuel use turns the chosen risk into collecting a useless explosive item. Use a normal cold-handled bill, no new machine.",
-      "needed_by": "signature and inherited floor",
+      "why": "Designer decision. Without actual fuel use, collection produces only a dangerous stockpile. Use the existing BiofuelRefinery with work cells within loaded wax safety, preserve native hazard through refined Chemfuel and unburned consumer storage, and discharge only actually consumed fuel. A warm-safe output would contradict the native-product ban.",
+      "needed_by": "signature",
       "ticket": "T13"
     },
     {
@@ -776,14 +776,14 @@
     },
     {
       "id": "loose_ice_cooling",
-      "what": "Loose blue ice absorbs room heat while warming/melting, without a rack.",
+      "what": "Loose water ice alone keeps a prepared closed hold cold far beyond ordinary cooling repair, through finite sensible and latent reserve without a rack.",
       "built": "absent",
       "evidence": "src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/RM_BlueIce.xml has tickerType Never and no cooling comp; design/RimMandrake/designer_codex_2026-11-09/BlueDesert/ANSWERS_OWNER.md answer two.",
       "proven": "missing",
       "called_by": "Loose RM_BlueIce in enclosed storage/ship rooms; implementation absent.",
       "serves": "signature",
       "fate": "needed_by",
-      "why": "Designer decision: Removing this would retain the superseded rack premise and make emergency cold handling unavailable; required support for the retained cold hold.",
+      "why": "Designer decision from owner answer two. Removing passive cold holding or reducing it to barely finishing repair would lose the explicit very-long-melting promise. Compare actual ordinary repair with continued closed-room holding under the same declared load.",
       "needed_by": "signature",
       "ticket": "T17"
     },

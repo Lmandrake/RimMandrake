@@ -1,0 +1,688 @@
+{
+ "mod": "BlueDesert",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "design/concepts/BlueDesert/cleanse/bars.json B3 (says, accept, reject)",
+     "evidence": "design/Jawa/worldbuilding/biomes/the_blue_desert.md §4b: owner, typed on the card at BLUEDESERT_DESIGN_SITTING_1: \"But we need to do testing to make sure it goes deep\" — a live test proving drifts pile DEEP against structures gates the build item's done. B3 says only 'ice-sand build against structures and impede travel'; accept 1 is 'acquires ice-grain drifts that delay walking'. The word deep is in only one place: T31's acceptance test ('a shallow-grid build fails the owner deep-obstruction picture'). It is not in the bar the judge passes on. A thin, patchy sand film that slows a walk a little passes B3 as written.",
+     "would_pass": "B3's says carries depth as the player sees it: drift piles up against a wall, door or hull until it blocks or buries the route and has to be cleared. A reject picture names the shallow build.",
+     "smallest_fix": "Add 'deep' to B3 says (marked figurative: deep enough to block a doorway or route until cleared, not a depth number). Add the reject picture 'a thin sand film beside a wall slows walking slightly but never piles into an obstruction'."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "design/concepts/BlueDesert/cleanse/bars.json B3 sees.control",
+     "evidence": "src/RimMandrake/BlueDesert/Defs/WeatherDefs/RM_BlueDesertWeathers.xml: RM_IceSandDrift carries <moveSpeedMultiplier>0.8</moveSpeedMultiplier> as well as <sandRate>1.6</sandRate>. While the storm is on, every trip is slowed whether or not any sand has built up. B3's control lumps the two causes together ('log weather/sand-linked cost changes'). A trip timed during the storm reads 'drift delays walking' even with zero deposit.",
+     "would_pass": "The drift's travel delay is credited only to sand path cost. It is read after the drift weather has ended, or against a matched route under the same weather with no deposit. The fog slowdown is read separately the same way.",
+     "smallest_fix": "In B3 sees.control, name the drift weather's own move-speed multiplier as the cheaper explanation. Require the deposit's trip delay to be measured with drift weather off (post-storm, before erosion), or against a deposit-free twin route under the same weather."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "design/concepts/BlueDesert/cleanse/bars.json B1, B3, B4, B5, B6 (every bar has \"figurative\": [])",
+     "evidence": "B1 'blue distance' (a top-down local map has no distance; accept 1 turns it into 'at travel zoom') and 'transparent' (accept 1 says 'translucent'). B3 'build against structures': R5 and ambiguities.md item 22 rule out any structure-driven accumulation, because SandGrid is Perlin-patchy, so 'against' can only mean 'where structures stand'. B4 'carrying that chain into the crew'. B5 'set its surroundings off'. B6 'buys time'. The brief requires each such word to be marked, with one accept picture that departs from the literal reading.",
+     "would_pass": "Each of these words is listed under figurative with what it stands for, plus an accept picture that departs from the literal reading. For example: 'against' means drift lying on the cells by a structure, and the structure does not cause it.",
+     "smallest_fix": "Fill the figurative arrays for B1, B3, B4, B5 and B6 with these words and their meanings. Add one departing accept picture each where none exists."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "design/concepts/BlueDesert/cleanse/bars.json B6 (says, reject); ambiguities.md item 17",
+     "evidence": "design/RimMandrake/designer_codex_2026-11-09/BlueDesert/ANSWERS_OWNER.md, owner write-in: \"Ice itself should simply keep the room cool, no rack needed, until the ice gets dangerously warm. Even then, as it melts, it takes a huge amount of heat to turn ice into water, so it should take a very, very long time.\" B6 shrinks this to 'loose water ice buys time to repair cooling'. Ambiguity 17 reads 'very, very long' only as 'meaningful emergency repair time'. Neither reject picture names ice that melts away fast. A build where a stockpile is gone within an hour, and a quick repair still beats it, passes.",
+     "would_pass": "B6 states the comparison he gave without a number. Loose ice keeps a closed cold room cold on its own, and when power fails it lasts far longer than an ordinary repair. A reject picture names ice exhausted before an ordinary repair crew could reasonably finish.",
+     "smallest_fix": "Reword B6 says to 'loose water ice keeps a cold room cold for a long time without a rack, outlasting an ordinary cooling repair', with 'long' marked figurative. Add the reject picture 'a full ice stockpile melts away within the blackout before an ordinary repair could finish'."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "design/concepts/BlueDesert/cleanse/bars.json B7 accept 2; definition.md 'Why a player reaches for it'; R10; tickets.md T13",
+     "evidence": "B7 relies on 'refine gathered wax using ordinary bills in an appropriately cold workspace', and definition.md says 'a normal cold-work bill must convert wax into ordinary chemfuel'. The census marks this absent (wax_refinery). Three things are never defined. (1) Whether the output is warm-safe vanilla chemfuel, a sanctioned exit from the hazard chain, or still reactive. R3 says 'recipe transitions cannot launder organic hazards', and the lore (the_blue_desert.md §7) calls it 'a chemfuel windfall that explodes if you warm it'. (2) What 'appropriately cold' means, when RM_ColdWax.xml has maxSafeTemperature -1 and ruins in a warm room in about 79 s. (3) Which existing bench it uses. T13 only says 'read actual engine recipe ownership first'. Two builders would build two different mods.",
+     "would_pass": "definition.md and a rule settle it: the bench used, the workspace temperature relative to wax's safe limit, and whether the refined chemfuel keeps the warm hazard or is the declared exit. R3 and B6's reject list then say so consistently.",
+     "smallest_fix": "Add one rule (or extend R10) that defines the wax-to-chemfuel recipe: bench, cold-workspace condition, and the output's hazard status as an explicit exception to R3 or not. Settle it as an ambiguities.md item with the two readings."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A snowy conifer plain or a wall of opaque blue shrubs fills the playable ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "Rust, scorch and mineral glints can interrupt the pale scene at an old work site without coloring ordinary ice and plants blue.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "Only the world icon is blue: the local map is generic white snow with generic plants and unrelated wreck props.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "At travel zoom the plateau reads blue and open; closer inspection reveals grey/clear ice, translucent branching low plants and discontinuous traces of abandoned excavation.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A vrisk enters and leaves actual flight; a starving or weather-stressed native can leave with a readable sign instead of disappearing.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "Natural spawn/growth is absent and only immortal debug animals remain.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "The roster resolves, but natives cannot eat their own available food, cannot stay alive on the cold ice, or the vrisk crosses it only by walking.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Wild low plants grow in darkness; sealed grazers consume them without detonating the food at each bite, prey feeds predators, and harvested native feed supports a tame dovvik in cold care.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "A shot and trip that are possible in clear weather become restricted in fog and recover as the weather changes.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "Weather definitions contain penalties, but the test map stays clear, or fog never releases its restrictions.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "A route beside a wall or hull acquires ice-grain drifts that delay walking; clearing the obstruction restores that route and exposed deposits later wear away.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "A tan storm overlay moves across clean paths but no deposit obstructs a structure or changes a trip.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "At the same uncleared site a flame or native death starts discrete neighboring blasts; sustained warming gives a locatable warning that lets an attentive crew turn heat off and retreat.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "An isolated plant explodes but a connected field never propagates, or an ignition crosses empty ice without a causal fuel or heat path.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "Mining fewer blocks is called careful, yet clearing and retreat cannot change which crew is caught; the only safe proof has native explosions disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The crew cuts and hauls living fuel away from its exit and recovery area before mining ordinary water ice; a later ignition consumes a connected patch without jumping the cleared separation into their retreat.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "An intact cistern explodes on an ordinary kinetic kill, or a living one ignores EMP.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "The scene reports an explosion without identifying the victim or cause, hiding duplicate Burner blasts or a random thunderstorm as the source.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "An EMP hit sets off a living cistern; a heat death does too, while an otherwise equivalent kinetic kill leaves a cold carcass available for normal cold handling.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "A Burner shows its oxidation halo in pursuit/combat and its fatal fuel release can start the surrounding growth; a Swallower gut rupture kills through its normal charge rather than creating a separate reward minigame.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "Unbuffered native cargo and a newly generated native corpse expose a visible warming state before destructive release; split and reloaded cargo do not become newly safe. Water ice melts without exploding.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Only the special rack cools a room, or a warm organic stack goes directly from apparently sound to destruction before the player can locate it and respond.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "The same organic fuel becomes safe as a corpse, newborn product, split stack, carried item or processed food.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "A crew brings native wax and feed into a prepared cold room and uses them; during a blackout melting loose water ice delays warming while workers reduce traffic and restore cooling.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "Only a developer spawn provides mineable ice, or unconnected generic wreck props claim an entire archaeological site.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Mine orders require cold-cutting research, excavation pace secretly changes a loot roll, or the recovered wax has no actual use beyond sitting as an explosive item.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The crew discovers a broken extraction face with accessible ice and frozen equipment showing an abandoned attempt; ordinary salvage and mine orders yield materials the colony can actually use.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "Clearing surrounding live fuel leaves an exit; the same workers can mine ice, melt water and refine gathered wax using ordinary bills in an appropriately cold workspace.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "After a mid-season reload, workers still finish the alternate haul/clear/excavate sequence, cooling reserves and warnings retain their meaning, and the map remains usable without scripted rescues.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Wild growth and predation continue between expeditions; a prepared cold hold weathers a repairable blackout, a careless work site suffers a traceable chain, and the next expedition still finds life, routes and work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "A beautiful proof pad passes only with clear sky or explosions locked off; the full run stalls jobs, floods predators or cargo, loses warning state on reload, silently deletes animals or repeatedly logs errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Routine hunting repeatedly detonates the food web until the whole map is bare, or growth refills every cleared separation before crews can use it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The Haze weather itself (RM_Haze in src/RimMandrake/BlueDesert/Defs/WeatherDefs/RM_BlueDesertWeathers.xml: the settling blue-white hydrocarbon veil, sandRate 0) has no census row. Only its exposure carrier (haze_exposure, moved to next version) is inventoried. Yet definition.md keeps 'Haze remains a settling atmospheric veil', and B1, B3 and B8 range over Haze transitions. A kept weather has no row, fate or evidence.",
+   "loop_or_three_way": "A hunt in the prey's own food patch. B2 has prey feeding predators (the krissek's staple prey is the utikka, a palefloss cropper). R2 and B5 make every non-vhaulk native death one fuel release. B4 makes connected palefloss carry that blast on. So a successful krissek hunt inside the palefloss patch where the utikka feeds sets off a chain that reaches the hunter in melee range. The krissek's own death is another release, which feeds the chain again. B8 forbids routine predation from emptying the map. The ecology meeting names the general predation-to-blast loop, but not this case of a hunter standing in its kill's blast, which decides whether 'prey feeds predators' can hold at all.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 579212
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json B3 (says, accept, figurative 'deep') against R5; tickets.md T14; models.md 'Drift and route geometry'; ambiguities.md item 22",
+     "evidence": "B3 says the piles 'obstruct passage until cleared' and its accept picture says 'workers must clear it before ordinary hauling resumes'. R5 says 'Use Odyssey SandGrid for buildup/path costs and erosion'. That mechanism is an owner card decision, not a rule the proposal can change: design/Jawa/worldbuilding/biomes/the_blue_desert.md §4b amendment, 'decisions taken by question card' at BLUEDESERT_DESIGN_SITTING_1, reads 'Ice-sand drift rides Odyssey's SAND grid (… path-cost burial, auto-erosion after the storm)', and his typed words are 'make sure it goes deep'. The engine was read in RimSage. Verse/WeatherBuildupUtility.MovementTicksAddOn gives the deepest category, Thick (depth 0.75 or more), only +12 movement ticks per cell. Verse/AI/PathGrid.cs:169 uses only that add-on. SandGrid.CanHaveSand sets depth to zero under full-fillage buildings. No SandGrid depth makes a cell impassable or stops a job, so a correct build of the ruled mechanism is B3's own reject picture ('slows walking … but never piles into an obstruction'). The 'weather' meeting calls this 'unknown', but the engine settles it now. T14 and the drift model then say 'revise R5' if SandGrid falls short, which would change his card ruling while bars.json presents R5 as our own attackable rule.",
+     "would_pass": "B3 holds with the ruled mechanism. Deep means the thickest buildup reaching the approach cells beside a wall, door or hull, so the route is heavily slowed until a sand-clear area is worked or the drift erodes. The reject pictures are a dusting or thin layer only, an overlay with no buildup, or a storm-time slowdown with no deposit.",
+     "smallest_fix": "Rewrite B3's says, figurative 'deep' and accept/reject around path-cost burial. Source R5 to the card decision. Delete the 'revise R5 / obstruction' clauses in T14, the drift model and ambiguity 22. If the Designer still believes he meant impassable piles, put that on his pages as a question with this engine evidence."
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json R10, B6 (says 'refined native fuel', accept 2, reject 1), B7 accept 2; C5; tickets.md T12 second paragraph and T13; definition.md Costs; ambiguities.md item 19",
+     "evidence": "The proposal makes refined Chemfuel keep the wax's warm hazard. Ambiguity 19 says the life brief 'grants no explicit hazard waiver'. The life brief the proposal itself cites as ratified says the opposite: design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md §7 lines 637-642 read 'RM_ColdWax ×5 → Chemfuel ×10 at the refinery; no recipe-level temperature gate … a warm workroom ruins the input stack before the bill finishes' and '\"Cold-handled only\" (sheet §7) is therefore a fact about rooms … refine it in a cold room, and it is ordinary fuel'. Hard ban 3 in the_blue_desert.md covers 'plant, produce or creature-product defs', and the brief files wax under Manufactured. The 'delegated' inference therefore overrides the specific ratified design.",
+     "would_pass": "The hazard lives in wax (and corpses and feed) up to the end of the bill. A cold-room bill yields ordinary vanilla Chemfuel, and a warm room ruins or wicks the input before it finishes. B6 and B7 pictures say this.",
+     "smallest_fix": "Drop 'refined native fuel' from B6 says and the Chemfuel-continuity pictures. Make R10's output ordinary Chemfuel. Delete C5's Chemfuel clause and T12's provenance paragraph. Alternatively, keep the reading only as a question on his pages, with the brief's 'it is ordinary fuel' line as the evidence against it."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md Costs paragraph 3; bars.json R10; T12; T13",
+     "evidence": "The proposal says 'The reader must identify the native portion and its state in a mixed stack or consumer. Internal unburned fuel remains covered until actually consumed', and also that the output 'retains the vanilla Chemfuel identity' while 'unrelated imported fuel retains its existing behavior'. Nothing defines what a merged stack does when its native share warms (whole-stack wick or a scaled blast). Nothing defines what a generator holding native fuel does on warming, or how a share is tracked once same-def stacks merge into one Thing and a refuelable building holds a single fuel quantity. The two identity claims also require either a comp on every Chemfuel or a separate def. They cannot both be true as written.",
+     "would_pass": "Either no continuity mechanic at all (see the previous refusal), or a defined one: a separate native fuel def that does not merge with imported Chemfuel, a stated warm outcome for stacks and for loaded consumers, and a stated consumption rule.",
+     "smallest_fix": "Resolve the previous refusal (this mechanic then disappears). Otherwise add a definition paragraph and a rule naming the def, the merge behaviour and the consumer warm outcome."
+    },
+    {
+     "head": "reads_with_mechanic_off",
+     "where": "bars.json B8 accept 1 ('a prepared cold hold weathers a repairable blackout'), sees.start/control; definition.md 'Worst day'",
+     "evidence": "B8's range sets ambient at '-60 to -19 C with heated rooms', and the_blue_desert.md line 58 puts the Blue Desert at −42.6. R4 gives this nightside no sun heat. A blackout switches off electric heaters, so an enclosed hold on this map stays cold with no ice at all. B8's 'ice/no-ice reserves' control pair would read the same in both arms, and the accept picture passes with loose-ice cooling switched off.",
+     "would_pass": "The blackout beat includes a heat source that survives the blackout (a fuelled heater or heated neighbouring room leaking into the hold, or the hold aboard a ship on a warmer layer). The no-ice arm must be seen to warm past the wax safe limit while the ice arm holds.",
+     "smallest_fix": "Add that heat source and the no-ice-arm warming requirement to B8's sees.start and control. Or drop the blackout from B8's accept and leave long cold holding to B6, whose range already reaches +40 C."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B8 says; figurative: []",
+     "evidence": "B8 says 'runaway destruction', 'a dead or stalled biome' and 'a local ignition remains understandable', yet its figurative list is empty. A biome is not literally dead. 'Local' and 'understandable' are the vague words the brief tells the Designer to hunt down. The models.md flood/desert/stall split shows the Designer meant something specific but never wrote it into the bar.",
+     "would_pass": "Each word is marked with what it stands for, for example: 'dead' means no native growth or animals left for the next expedition to meet; 'understandable' means the player can trace the chain's source and path in game. Each gets one accept picture that departs from the literal reading.",
+     "smallest_fix": "Add three figurative entries to B8."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A snowy conifer plain or a wall of opaque blue shrubs fills the playable ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "Only the world icon is blue: the local map is generic white snow with generic plants and unrelated wreck props.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "Rust, scorch and mineral glints can interrupt the pale scene at an old work site without coloring ordinary ice and plants blue.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "At travel zoom the top-down plateau reads blue and open without a horizon or perspective depth. Closer inspection reveals pale ice through translucent branching plant centers, bright refracting edges and discontinuous traces of abandoned excavation.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "The roster resolves, but natives cannot eat their own available food, cannot stay alive on the cold ice, or the vrisk crosses it only by walking.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "Natural spawn/growth is absent and only immortal debug animals remain.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "Wild low plants grow in darkness; sealed grazers consume them without detonating the food at each bite, prey feeds predators, and harvested native feed supports a tame dovvik in cold care.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A vrisk enters and leaves actual flight; a starving or weather-stressed native can leave with a readable sign instead of disappearing.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "A thin sand film beside a wall slows walking slightly but never piles into an obstruction.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "A patchy ice-grain pile beside a wall or hull buries the doorway approach so workers must clear it before ordinary hauling resumes. Clearing restores the route and exposed deposits later erode. The structure need not cause the patch.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "A weapon remains intact but loses a previously available distant shot in fog, and a deposit-free trip also slows. Both recover as fog lifts.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Weather definitions contain penalties, but the test map stays clear, or fog never releases its restrictions.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "A tan storm overlay moves across clean paths but no deposit obstructs a structure or changes a trip.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "Mining fewer blocks is called careful, yet clearing and retreat cannot change which crew is caught; the only safe proof has native explosions disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "The crew cuts and hauls living fuel away from its exit and recovery area before mining ordinary water ice; a later ignition consumes a connected patch without jumping the cleared separation into their retreat.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "At the same uncleared site a flame or native death starts discrete neighboring blasts that reach the work area although the crew carries no burning object. Sustained warming gives a locatable warning that lets an attentive crew turn heat off and retreat.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "An isolated plant explodes but a connected field never propagates, or an ignition crosses empty ice without a causal fuel or heat path.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "An intact cistern explodes on an ordinary kinetic kill, or a living one ignores EMP.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A Burner shows its oxidation halo in pursuit/combat and its fatal fuel release starts neighboring growth while nearby bare water ice remains inert. A Swallower gut rupture kills through its normal charge.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "An EMP hit sets off a living cistern; a heat death does too, while an otherwise equivalent kinetic kill leaves a cold carcass available for normal cold handling.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "The scene reports an explosion without identifying the victim or cause, hiding duplicate Burner blasts or a random thunderstorm as the source.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "Only the special rack cools a room, or a warm organic stack goes directly from apparently sound to destruction before the player can locate it and respond.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "The same organic fuel becomes warm-safe as a corpse, newborn product, split or mixed stack, carried item, refined chemfuel or processed food.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Loose ice alone holds a prepared closed room and its native cargo cold. In an unrepaired blackout arm it continues doing so with substantial reserve well after a matched crew finishes ordinary cooler repair, and eventually melts under continued heat input.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "Wax refined into usable chemfuel still shows its native cold-handling warning when warmed, as do feed and a newly generated native corpse. Splitting, mixing, carrying and reloading preserve that danger. Water ice melts without exploding.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "A full prepared ice stockpile melts away before an ordinary repair crew can finish, or keeps the room cold only until shortly after that repair.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "Only a developer spawn provides mineable ice, or unconnected generic wreck props claim an entire archaeological site.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "The crew discovers a broken extraction face with accessible ice and frozen equipment showing an abandoned attempt; ordinary salvage and mine orders yield materials the colony can actually use.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "Mine orders require cold-cutting research, excavation pace secretly changes a loot roll, or the recovered wax has no actual use beyond sitting as an explosive item.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "Clearing surrounding live fuel leaves an exit. Workers mine ice, melt water and refine gathered wax at the ordinary biofuel refinery in a workspace within the wax safe-temperature limit. The resulting usable chemfuel remains cold-dependent.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "A beautiful proof pad passes only with clear sky or explosions locked off; the full run stalls jobs, floods predators or cargo, loses warning state on reload, silently deletes animals or repeatedly logs errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Routine hunting repeatedly detonates the food web until the whole map is bare, or growth refills every cleared separation before crews can use it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "After a mid-season reload, workers still finish the alternate haul/clear/excavate sequence, cooling reserves and warnings retain their meaning, and the map remains usable without scripted rescues.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Wild growth and predation continue between expeditions; a prepared cold hold weathers a repairable blackout, a careless work site suffers a traceable chain, and the next expedition still finds life, routes and work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Vanilla sand clearing is missing from the census, which has no dependency row for it. It consists of the Area_SnowOrSandClear zone and WorkGiver_ClearSnowOrSand (RimSage: Source/RimWorld/WorkGiver_ClearSnowOrSand.cs, Area_SnowOrSandClear.cs). This is the only 'clear it' job B3, T14 and the drift model can mean. Also missing is gravship landing, which automatically marks the landed footprint as a sand-clear area (Source/RimWorld/GravshipPlacementUtility.cs:416). That changes B3's 'landed hull' case and T23's ship-burial boundary, because colonists are already ordered to clear around a landed hull.",
+   "loop_or_three_way": "Three-way among B6 (loose ice holds a cold room far longer than an ordinary repair), B8 (a prepared hold weathers a repairable blackout on a full Blue Desert map) and the ruled sky (R4 with no nightside sun heat; sheet ambient −42.6 C). On its home map cold is free outdoors, and the only warming comes from the colony's own heaters, which a blackout removes. So B6's mechanism cannot be tested in the B8 scene. It matters only where heat persists: heated living rooms that native cargo strays into, or the ship's cold hold on a warmer layer (sheet §7: 'one cooling failure aboard and the pantry is a bomb'). No bar's scene names the ship hold as where B6 is shown. The 'heat' meeting lists these members but argues door traffic and repair travel, not this.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 710467
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1457582,
+    "output_tokens": 14905
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "cannot_hold_together",
+   "where": "bars.json B3 (says, accept, figurative 'deep') against R5; tickets.md T14; models.md 'Drift and route geometry'; ambiguities.md item 22",
+   "evidence": "B3 says the piles 'obstruct passage until cleared' and its accept picture says 'workers must clear it before ordinary hauling resumes'. R5 says 'Use Odyssey SandGrid for buildup/path costs and erosion'. That mechanism is an owner card decision, not a rule the proposal can change: design/Jawa/worldbuilding/biomes/the_blue_desert.md §4b amendment, 'decisions taken by question card' at BLUEDESERT_DESIGN_SITTING_1, reads 'Ice-sand drift rides Odyssey's SAND grid (… path-cost burial, auto-erosion after the storm)', and his typed words are 'make sure it goes deep'. The engine was read in RimSage. Verse/WeatherBuildupUtility.MovementTicksAddOn gives the deepest category, Thick (depth 0.75 or more), only +12 movement ticks per cell. Verse/AI/PathGrid.cs:169 uses only that add-on. SandGrid.CanHaveSand sets depth to zero under full-fillage buildings. No SandGrid depth makes a cell impassable or stops a job, so a correct build of the ruled mechanism is B3's own reject picture ('slows walking … but never piles into an obstruction'). The 'weather' meeting calls this 'unknown', but the engine settles it now. T14 and the drift model then say 'revise R5' if SandGrid falls short, which would change his card ruling while bars.json presents R5 as our own attackable rule.",
+   "would_pass": "B3 holds with the ruled mechanism. Deep means the thickest buildup reaching the approach cells beside a wall, door or hull, so the route is heavily slowed until a sand-clear area is worked or the drift erodes. The reject pictures are a dusting or thin layer only, an overlay with no buildup, or a storm-time slowdown with no deposit.",
+   "smallest_fix": "Rewrite B3's says, figurative 'deep' and accept/reject around path-cost burial. Source R5 to the card decision. Delete the 'revise R5 / obstruction' clauses in T14, the drift model and ambiguity 22. If the Designer still believes he meant impassable piles, put that on his pages as a question with this engine evidence."
+  },
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "bars.json R10, B6 (says 'refined native fuel', accept 2, reject 1), B7 accept 2; C5; tickets.md T12 second paragraph and T13; definition.md Costs; ambiguities.md item 19",
+   "evidence": "The proposal makes refined Chemfuel keep the wax's warm hazard. Ambiguity 19 says the life brief 'grants no explicit hazard waiver'. The life brief the proposal itself cites as ratified says the opposite: design/Jawa/worldbuilding/creatures/blue_desert_hydrocarbon_life.md §7 lines 637-642 read 'RM_ColdWax ×5 → Chemfuel ×10 at the refinery; no recipe-level temperature gate … a warm workroom ruins the input stack before the bill finishes' and '\"Cold-handled only\" (sheet §7) is therefore a fact about rooms … refine it in a cold room, and it is ordinary fuel'. Hard ban 3 in the_blue_desert.md covers 'plant, produce or creature-product defs', and the brief files wax under Manufactured. The 'delegated' inference therefore overrides the specific ratified design.",
+   "would_pass": "The hazard lives in wax (and corpses and feed) up to the end of the bill. A cold-room bill yields ordinary vanilla Chemfuel, and a warm room ruins or wicks the input before it finishes. B6 and B7 pictures say this.",
+   "smallest_fix": "Drop 'refined native fuel' from B6 says and the Chemfuel-continuity pictures. Make R10's output ordinary Chemfuel. Delete C5's Chemfuel clause and T12's provenance paragraph. Alternatively, keep the reading only as a question on his pages, with the brief's 'it is ordinary fuel' line as the evidence against it."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "definition.md Costs paragraph 3; bars.json R10; T12; T13",
+   "evidence": "The proposal says 'The reader must identify the native portion and its state in a mixed stack or consumer. Internal unburned fuel remains covered until actually consumed', and also that the output 'retains the vanilla Chemfuel identity' while 'unrelated imported fuel retains its existing behavior'. Nothing defines what a merged stack does when its native share warms (whole-stack wick or a scaled blast). Nothing defines what a generator holding native fuel does on warming, or how a share is tracked once same-def stacks merge into one Thing and a refuelable building holds a single fuel quantity. The two identity claims also require either a comp on every Chemfuel or a separate def. They cannot both be true as written.",
+   "would_pass": "Either no continuity mechanic at all (see the previous refusal), or a defined one: a separate native fuel def that does not merge with imported Chemfuel, a stated warm outcome for stacks and for loaded consumers, and a stated consumption rule.",
+   "smallest_fix": "Resolve the previous refusal (this mechanic then disappears). Otherwise add a definition paragraph and a rule naming the def, the merge behaviour and the consumer warm outcome."
+  },
+  {
+   "head": "reads_with_mechanic_off",
+   "where": "bars.json B8 accept 1 ('a prepared cold hold weathers a repairable blackout'), sees.start/control; definition.md 'Worst day'",
+   "evidence": "B8's range sets ambient at '-60 to -19 C with heated rooms', and the_blue_desert.md line 58 puts the Blue Desert at −42.6. R4 gives this nightside no sun heat. A blackout switches off electric heaters, so an enclosed hold on this map stays cold with no ice at all. B8's 'ice/no-ice reserves' control pair would read the same in both arms, and the accept picture passes with loose-ice cooling switched off.",
+   "would_pass": "The blackout beat includes a heat source that survives the blackout (a fuelled heater or heated neighbouring room leaking into the hold, or the hold aboard a ship on a warmer layer). The no-ice arm must be seen to warm past the wax safe limit while the ice arm holds.",
+   "smallest_fix": "Add that heat source and the no-ice-arm warming requirement to B8's sees.start and control. Or drop the blackout from B8's accept and leave long cold holding to B6, whose range already reaches +40 C."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B8 says; figurative: []",
+   "evidence": "B8 says 'runaway destruction', 'a dead or stalled biome' and 'a local ignition remains understandable', yet its figurative list is empty. A biome is not literally dead. 'Local' and 'understandable' are the vague words the brief tells the Designer to hunt down. The models.md flood/desert/stall split shows the Designer meant something specific but never wrote it into the bar.",
+   "would_pass": "Each word is marked with what it stands for, for example: 'dead' means no native growth or animals left for the next expedition to meet; 'understandable' means the player can trace the chain's source and path in game. Each gets one accept picture that departs from the literal reading.",
+   "smallest_fix": "Add three figurative entries to B8."
+  }
+ ],
+ "applyable": false,
+ "seconds": 1165,
+ "at": "2026-11-17T01:09:24"
+}
