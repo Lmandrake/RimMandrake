@@ -2195,10 +2195,11 @@ def prioritise(cfg, st, facts, rows, launches, root=None):
                 ahead.append(mod)
                 continue
             launches = [m for m in launches if m != mod]
-            row.update(decision="slots_full", aut=None, waits_on="a free slot (launch priority: %s first)" % (
-                ", ".join(ahead) or "a run that just ended"),
-                why="%d live runs on advancing mods plus %s ahead of it on the advancing list (launch priority), the "
-                    "most is %d; it was: %s" % (base, ", ".join(ahead) or "a settling mod", most, row.get("why")))
+            row.update(decision="slots_full", aut=None, waits_on="a free slot%s" % (
+                " (launch priority: %s first)" % ", ".join(ahead) if ahead else ""),
+                why="%d live runs on advancing mods%s, the most is %d; it was: %s" % (
+                    base, " plus %s ahead of it on the advancing list (launch priority)" % ", ".join(ahead)
+                    if ahead else "", most, row.get("why")))
             continue
         if row.get("decision") == "settling" and not (facts.get(mod) or {}).get("live_units"):
             if taken < most:

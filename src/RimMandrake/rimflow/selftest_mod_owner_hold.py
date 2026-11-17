@@ -268,8 +268,11 @@ def test_dispatch_tick():
                  for m in every}
         fx = {"autonomy": True, "facts": lambda: facts, "account": lambda: (True, ""), "releases": lambda: [],
               "convergence": lambda root, rd: rd, "code": lambda: "tree"}
-        rd = MD.tick(HERE, dict(MD.load_cfg(), advancing=["Pyrelands", "Contagion"]), False, fx=fx, now=1794880000,
-                     page=False)
+        # slots for all six beside Contagion's live run: this asks whether a hold stops the unheld, not how many slots
+        # there are. The fake decide ignores max_live, and prioritise (RIMMANDRAKE_LAUNCH_PYRELANDS_FIRST_AT_ONE_SLOT)
+        # enforces it after every layer, so at the shipped max_live 1 the held mod's live run fills the slot.
+        rd = MD.tick(HERE, dict(MD.load_cfg(), advancing=["Pyrelands", "Contagion"], max_live=len(UNTOUCHED) + 1),
+                     False, fx=fx, now=1794880000, page=False)
     finally:
         MD.decide, AUT.widen, AUT.resolve, MD.pilot_holders = saved
     check(sorted(seen.get("decide") or []) == sorted(UNTOUCHED),
