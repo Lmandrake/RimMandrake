@@ -92,6 +92,33 @@ def run_cycle(d, repo, run, outcome="done", tokens=1000, **kw):
     return DS.close_run(d, run, tokens, repo=repo.root)
 
 
+def turn_file_fallback(tmp):
+    d = os.path.join(tmp, "turns")
+    check("turn file: a missing folder has no turn", DS.turn_file(d, None) is None)
+    os.mkdir(d)
+    check("turn file: an empty folder has no turn", DS.turn_file(d, {}) is None)
+    put(d, "turn_invalid.md", "")
+    put(d, "turn_1000.md.bak", "")
+    check("turn file: malformed filenames are ignored", DS.turn_file(d, {}) is None)
+    put(d, "turn_99.md", "")
+    put(d, "turn_100.md", "")
+    older, newer = os.path.join(d, "turn_99.md"), os.path.join(d, "turn_100.md")
+    for summary in ("", "Waiting on turn_101.md", "Waiting on turn_invalid.md"):
+        turn = DS.turn_file(d, {"summary": summary})
+        check("turn file: fallback picks turn_100.md for summary %r" % summary, turn == newer, turn)
+    turn = DS.turn_file(d, {"summary": "Waiting on design/concepts/Foo/turn_99.md"})
+    check("turn file: an existing turn named in the summary takes precedence", turn == older, turn)
+
+    os.unlink(newer)
+    os.symlink("missing.md", newer)
+    turn = DS.turn_file(d, {})
+    check("turn file: fallback ignores a dangling turn_100.md symlink", turn == older, turn)
+    os.unlink(newer)
+    os.mkdir(newer)
+    turn = DS.turn_file(d, {"summary": "Waiting on turn_100.md"})
+    check("turn file: fallback ignores a turn_100.md directory", turn == older, turn)
+
+
 def main():
     DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
     tmp = tempfile.mkdtemp(prefix="designer_stage_")
@@ -99,6 +126,7 @@ def main():
     # the test repo has no ledger to fold: the done items are this fixture (the real fold is probed at the end)
     DS.done_items = lambda repo: dict(DONE)
     try:
+        turn_file_fallback(tmp)
         repo = Repo(tmp)
         d = os.path.join(tmp, "design/concepts/Foo")
         DS.init(d, "Foo", ITEM, cap=200000, reserve=20000)

@@ -2620,13 +2620,14 @@ def his_answers(lines, item, since):
 
 
 def turn_file(d, entry):
-    """The turn_NN.md the waiting result names, else the newest one in the folder, else None (repo-relative when
-    the summary names it)."""
+    """The turn_NN.md the waiting result names, else the highest-numbered turn file in the folder, else None."""
     m = re.search(r"(?:[A-Za-z0-9_./-]*/)?turn_[0-9]+\.md", str((entry or {}).get("summary") or ""))
     if m and os.path.isfile(os.path.join(d, os.path.basename(m.group(0)))):
         return os.path.join(d, os.path.basename(m.group(0)))
     try:
-        turns = sorted(n for n in os.listdir(d) if re.fullmatch(r"turn_[0-9]+\.md", n))
+        turns = sorted((n for n in os.listdir(d)
+                        if re.fullmatch(r"turn_[0-9]+\.md", n) and os.path.isfile(os.path.join(d, n))),
+                       key=lambda n: (int(n[5:-3]), n))
     except OSError:
         return None
     return os.path.join(d, turns[-1]) if turns else None
