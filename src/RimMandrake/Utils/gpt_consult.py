@@ -17,6 +17,25 @@ yield per round (GPT_CONSULT_MEASURE_COST_UNLOGGED).
 Every call first passes codex_advice.gate (slot_allocator's Codex advice): on HOLD only a call given
 `--required "<rule that requires this review>"` (or env RM_CODEX_REQUIRED) runs, exit 4 otherwise; on EXHAUSTED
 every call is refused, exit 5. No Claude fallback (owner routing ruling 2026-10-28).
+
+🔴 NO ANSWER IS NEVER EXIT 0, AND EVERY KIND OF NO-ANSWER HAS ITS OWN CODE (owner, 2026-11-17: "make that
+outcome intentionally different than no failure somehow... we must not suffer such errors"). The codes are
+Dispatch's, so one taxonomy covers both consult routes (providers/chatgpt/bin/codex_worker.py EXIT_CODES):
+
+    0   an answer arrived and is non-empty
+    4   Codex advice says HOLD and this call was not --required
+    5   Codex advice says EXHAUSTED
+    20  AUTH: no usable login (no CODEX_HOME, no CLI, 401/invalid_grant)   -> a human logs in
+    21  ALLOWANCE: usage limit, 429, quota                                 -> wait for the reset
+    22  TRANSPORT: the route is broken (no interpreter, bad flag, 400 model_not_found, container down)
+    23  DEADLINE: the call timed out
+    1   no answer, cause unclassified (the catch-all; it means READ THE LOG, not "nothing to say")
+
+The last line of stderr is always `[consult] VERDICT=<name> exit=<n>`, so a caller that captured only
+stderr can still tell an answer from a wall. Measured 2026-11-17: an EnvError here printed a traceback,
+wrote no --out file, and the CALLER's `cmd > log 2>&1; echo` chain reported 0 — the exit status of the
+last command in the chain, not of the consult. A verdict line in the output survives that mistake;
+an exit code alone does not.
 """
 import argparse
 import json
@@ -31,6 +50,54 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CONSULT_MODEL = os.environ.get("CODEX_CONSULT_MODEL", "gpt-6.1-sol")
+
+# One taxonomy with Dispatch (providers/chatgpt/bin/codex_worker.py EXIT_CODES), so a caller that knows one
+# route knows both. The markers are matched against the codex log, lower-cased.
+EXIT_AUTH, EXIT_ALLOWANCE, EXIT_TRANSPORT, EXIT_DEADLINE, EXIT_UNCLASSIFIED = 20, 21, 22, 23, 1
+AUTH_MARKERS = ("401", "unauthorized", "not logged in", "refresh token", "token expired", "please log in",
+                "login again", "re-authenticate", "invalid_grant", "403 forbidden", "auth_required",
+                "cannot find codex_home", "cannot find codex.exe")
+ALLOWANCE_MARKERS = ("429", "usage limit", "rate limit", "quota", "limit reached", "too many requests",
+                     "usage_limit", "insufficient_quota", "purchase more credits")
+TRANSPORT_MARKERS = ("model_not_found", "not supported when using codex", "invalid_request_error",
+                     "not inside a trusted directory", "no such file or directory", "connection refused",
+                     "cannot connect to the docker daemon", "enverror", "traceback (most recent call last)")
+# An answer that is only the model saying it could not read or could not comply is NOT an answer. Measured
+# 2026-11-17: a mounted-packet run returned 331 bytes of "I'm blocked by the session's tool access... I
+# haven't read them and won't invent findings", and a non-empty check called that a success.
+REFUSAL_MARKERS = ("i cannot read", "i can't read", "unable to read", "i haven't read",
+                   "i have not read", "no filesystem-reading", "please attach or paste",
+                   "i'm blocked by", "i am blocked by", "cannot access the files")
+REFUSAL_MAX_CHARS = 2000        # a real review is long; a refusal is short. Only applied with a marker.
+
+
+def classify_failure(log_text, rc):
+    """-> (exit code, VERDICT name) for a call that produced no usable answer. Never 0."""
+    t = (log_text or "").lower()
+    if rc == 124:
+        return EXIT_DEADLINE, "DEADLINE"
+    for markers, code, name in ((ALLOWANCE_MARKERS, EXIT_ALLOWANCE, "ALLOWANCE"),
+                                (AUTH_MARKERS, EXIT_AUTH, "AUTH"),
+                                (TRANSPORT_MARKERS, EXIT_TRANSPORT, "TRANSPORT")):
+        if any(m in t for m in markers):
+            return code, name
+    return EXIT_UNCLASSIFIED, "NO_ANSWER_UNCLASSIFIED"
+
+
+def refusal_in(text):
+    """-> the marker a short answer refused with, or None. A long answer is never read as a refusal: a real
+    review may quote the words 'I cannot read' while reviewing something."""
+    t = (text or "").strip()
+    if len(t) > REFUSAL_MAX_CHARS:
+        return None
+    low = t.lower()
+    return next((m for m in REFUSAL_MARKERS if m in low), None)
+
+
+def verdict(name, code):
+    """The last line of stderr on every path, so a caller that captured only the output can still tell an
+    answer from a wall (owner, 2026-11-17)."""
+    print("[consult] VERDICT=%s exit=%d" % (name, code), file=sys.stderr, flush=True)
 sys.path.insert(0, str(ROOT / "skills" / "generating-images" / "scripts"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))          # review_identity (job receipts)
 import codex_image  # noqa: E402  (find_codex_cli, wsl_to_win, DEFAULT_MODEL, CODEX_SCRATCH)
@@ -225,10 +292,24 @@ def main(argv=None):
               round_name=a.round, secs=time.time() - started, files=[p for p, _ in inlined])
     if not answered:
         tail = (job / "codex.log").read_text(errors="replace")
-        print("ERROR: no answer (exit %d after %.0fs). Job kept: %s\n%s" % (
-            rc, time.time() - started, job, tail), file=sys.stderr)
-        return 1
+        code, name = classify_failure(tail, rc)
+        print("ERROR: no answer (%s, codex rc %d, %.0fs). Job kept: %s\n%s" % (
+            name, rc, time.time() - started, job, tail), file=sys.stderr)
+        verdict(name, code)
+        return code
     text = answer.read_text(encoding="utf-8", errors="replace")
+    # A refusal is not an answer. Written out anyway (--out and stdout) so the caller can read what was
+    # said, but the exit code and the verdict say it did not happen.
+    refused = refusal_in(text)
+    if refused:
+        if a.out:
+            Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+            Path(a.out).write_text(text, encoding="utf-8")
+        print(text)
+        print("ERROR: the model refused rather than answered (%d chars, matched %r). Job kept: %s"
+              % (len(text.strip()), refused, job), file=sys.stderr)
+        verdict("MODEL_REFUSED", EXIT_TRANSPORT)
+        return EXIT_TRANSPORT
     if a.out:
         Path(a.out).parent.mkdir(parents=True, exist_ok=True)
         Path(a.out).write_text(text, encoding="utf-8")
@@ -236,8 +317,33 @@ def main(argv=None):
     print("[consult] answered in %.0fs" % (time.time() - started), file=sys.stderr)
     if not a.keep:
         shutil.rmtree(job, ignore_errors=True)
+    verdict("ANSWERED", 0)
     return 0
 
 
+def cli(argv=None):
+    """main() with no path out that lacks a verdict. An EnvError from codex_image (no CODEX_HOME, no CLI)
+    used to escape as a bare traceback: exit 1, no --out file, no verdict -- indistinguishable from "the
+    model had nothing to say" to a caller that lost the status (measured 2026-11-17)."""
+    try:
+        return main(argv)
+    except KeyboardInterrupt:
+        verdict("INTERRUPTED", EXIT_TRANSPORT)
+        return EXIT_TRANSPORT
+    except SystemExit as e:                     # argparse and the tool's own sys.exit("message")
+        code = e.code if isinstance(e.code, int) else (0 if e.code is None else 2)
+        if code:
+            if not isinstance(e.code, int):
+                print(e.code, file=sys.stderr)
+            verdict("REFUSED_BEFORE_SENDING" if code == 2 else "EXIT_%s" % code, code)
+        return code
+    except Exception as e:                      # noqa: BLE001  the whole point: no silent traceback
+        import traceback
+        traceback.print_exc()
+        code, name = classify_failure("%s: %s" % (type(e).__name__, e), 0)
+        verdict(name, code)
+        return code
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(cli())
