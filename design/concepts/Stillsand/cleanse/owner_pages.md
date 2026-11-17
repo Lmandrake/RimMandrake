@@ -59,9 +59,3 @@ Models specified, first to build first:
 - Provisioning model: actual useful-find routes, buyer acceptance, contention and lost items with every workshop gate off.
 
 There are 4 models, 8 unknown interaction groups, 55 tickets and 0 owner questions. Models require agreement with real game reads. Geometry, ownership, ordinary supply and whole-map feedback remain empirical uncertainties; I have not guessed their results. All reviewer refusals are addressed in this revision, pending the reviewer's second look. No game, bridge, deployment or source edits occurred; no current runtime proof is claimed.
-
-## Still refused after the second look (the reviewer's words)
-
-The proposal cannot be applied until each of these is resolved or you accept it.
-
-- the converge fix broke an entry it changed (the verifier's words) (bars.json bars/B_PRESERVE). range.varies now contains the tuning number itself: "The existing BodySize >= 3 threshold is tracked in C_LAYOUT". The old range said only "threshold tracked as a check". If the size threshold is ever renormalized, this bar's text becomes false and has to be edited and passed again, which the 'a passing bar is an experience, never a tuning number' ruling forbids. R1's own fix placed the number in C_LAYOUT, which now holds it, so the copy in the bar is not needed. Would pass: B_PRESERVE names the threshold only by reference to C_LAYOUT. No numeric size value appears in the bar. Smallest fix: In B_PRESERVE range.varies, replace "The existing BodySize >= 3 threshold is tracked in C_LAYOUT" with "The existing giant-size threshold is tracked in C_LAYOUT".

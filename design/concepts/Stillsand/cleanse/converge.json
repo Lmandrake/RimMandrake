@@ -64,18 +64,49 @@
      "smallest_fix": "In B_PRESERVE range.varies, replace \"The existing BodySize >= 3 threshold is tracked in C_LAYOUT\" with \"The existing giant-size threshold is tracked in C_LAYOUT\"."
     }
    ]
-  }
- ],
- "open": [
+  },
   {
-   "id": "G1.1",
-   "head": "regression",
-   "where": "bars.json bars/B_PRESERVE",
-   "evidence": "range.varies now contains the tuning number itself: \"The existing BodySize >= 3 threshold is tracked in C_LAYOUT\". The old range said only \"threshold tracked as a check\". If the size threshold is ever renormalized, this bar's text becomes false and has to be edited and passed again, which the 'a passing bar is an experience, never a tuning number' ruling forbids. R1's own fix placed the number in C_LAYOUT, which now holds it, so the copy in the bar is not needed.",
-   "would_pass": "B_PRESERVE names the threshold only by reference to C_LAYOUT. No numeric size value appears in the bar.",
-   "smallest_fix": "In B_PRESERVE range.varies, replace \"The existing BodySize >= 3 threshold is tracked in C_LAYOUT\" with \"The existing giant-size threshold is tracked in C_LAYOUT\"."
+   "n": 2,
+   "records": [
+    {
+     "id": "G1.1",
+     "head": "regression",
+     "where": "bars.json bars/B_PRESERVE",
+     "evidence": "range.varies now contains the tuning number itself: \"The existing BodySize >= 3 threshold is tracked in C_LAYOUT\". The old range said only \"threshold tracked as a check\". If the size threshold is ever renormalized, this bar's text becomes false and has to be edited and passed again, which the 'a passing bar is an experience, never a tuning number' ruling forbids. R1's own fix placed the number in C_LAYOUT, which now holds it, so the copy in the bar is not needed.",
+     "would_pass": "B_PRESERVE names the threshold only by reference to C_LAYOUT. No numeric size value appears in the bar.",
+     "smallest_fix": "In B_PRESERVE range.varies, replace \"The existing BodySize >= 3 threshold is tracked in C_LAYOUT\" with \"The existing giant-size threshold is tracked in C_LAYOUT\"."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "G1.1",
+      "changed": "Replaced the numeric BodySize threshold in B_PRESERVE range.varies with giant-size threshold, retaining the reference to C_LAYOUT.",
+      "where": "bars.json bars/B_PRESERVE range.varies"
+     }
+    ]
+   },
+   "verdicts": {
+    "G1.1": {
+     "verdict": "fixed",
+     "evidence": "In design/concepts/Stillsand/cleanse/bars.json, B_PRESERVE range.varies (line 280) now reads \"The existing giant-size threshold is tracked in C_LAYOUT; a smaller threatening resident still prevents a secured refuge without suspending preservation.\" The words \"BodySize >= 3\" are gone from B_PRESERVE. A grep of bars.json finds \"BodySize\" in one place only, C_LAYOUT (line 384: \"BodySize >= 3 and Position in recorded caveCells, ...\"). That is the check the record says should hold the number. The bar's only other mention of size is the qualitative \"below/at/above the size threshold\", which gives no number. So the bar names the threshold only by reference to C_LAYOUT, which is what would_pass asks for, and the author's account (fixes.json G1.1) matches the change."
+    }
+   },
+   "changed_entries": [
+    "bars.json bars/B_PRESERVE"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 163104,
+     "output_tokens": 694
+    }
+   },
+   "author_error": null,
+   "open_after": []
   }
  ],
+ "open": [],
  "advisory_late": [
   {
    "what": "The shipped Mod Setting tooltip (RM_StillsandMod.cs:180, \"Corpses and food lying on a roofed cave cell do not rot ... Acts live, on existing caves too\") does not mention the giant-occupant suspension.",
@@ -86,10 +117,15 @@
    "what": "definition.md signature line 11 still reads \"uncertain caves which, once explored and physically secured, supply refuge and practical discoveries\".",
    "reason": "It is unchanged and can be read as consistent, since refuge is the secured part. A reader could still take it to mean discoveries also wait for securing, which preservation no longer requires.",
    "round": 1
+  },
+  {
+   "what": "B_PRESERVE range.varies still contains \"1/6/40 workers using shared stockpiles\". The same \"1/6/40\" string also appears in bars B_LAND, B_LIFE, B_SUPPLY and B_WHOLE (bars.json lines 21, 104, 194, 325).",
+   "reason": "This text was the same before and after the fix, so it is not a regression. It is a fixed count written into bar ranges, and the number_in_bar head could apply to it. It reads as a fixture sweep rather than a tuning number, but an earlier look could have moved it into a check (such as C_WORK) the same way the size threshold was moved into C_LAYOUT.",
+   "round": 2
   }
  ],
- "applyable": false,
- "digest": "e9e04cf213e2b26aa597ce9a23d37b2f750f0a81123f2f4e2882012fb0a3d692",
- "seconds": 160,
- "at": "2026-11-17T06:37:13"
+ "applyable": true,
+ "digest": "d11d87bb213a15abf126a646335bebdf042b091fad28b97dcbf0789b283f0ee9",
+ "seconds": 253,
+ "at": "2026-11-17T06:38:46"
 }
