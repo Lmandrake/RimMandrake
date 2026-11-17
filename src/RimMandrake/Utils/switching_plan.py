@@ -47,7 +47,8 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PLAN_PATH = Path(os.environ.get("RM_SWITCH_PLAN", HERE / "switching_plan.json"))
-OUT = Path(os.environ.get("RM_SWITCH_PLAN_DIR", "/mnt/d/ClaudeWork/rimmandrake/switching_plan"))
+LIVE_OUT = Path("/mnt/d/ClaudeWork/rimmandrake/switching_plan")
+OUT = Path(os.environ.get("RM_SWITCH_PLAN_DIR", LIVE_OUT))
 CA = os.environ.get("RM_CLAUDE_ACCOUNT") or str(Path.home() / ".local/bin/claude-account")
 SWITCH_LOG = Path(os.environ.get("RM_ACCOUNTS_DIR", Path.home() / ".claude-accounts")) / "log.jsonl"
 UNIT = "account-plan"   # outside the rm-*/testq-* glob of timers_guard on purpose: nothing else restarts or stops it
@@ -689,7 +690,22 @@ def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll) -
         except OSError:
             log({"do": "skip", "why": "another pass holds check.lock", "acted": False})
             return 0
-        return _check(dry, now, meter_fn, poll_fn)
+        rc = _check(dry, now, meter_fn, poll_fn)
+    if not dry and OUT == LIVE_OUT and not (OUT / "HOLD").exists():
+        resume_stopped_runs()
+    return rc
+
+
+def resume_stopped_runs():
+    """After a live pass: start the sweep that resumes the detached runs a fleet stop killed (rimflow/stop_resume.py,
+    RIMMANDRAKE_CHECKPOINT_HARD_STOP_NOT_KILL). Only for the live plan dir, so a test's pass never reads the live runs;
+    never under HOLD (it acts on nothing); never fails the pass. Writes no plan line: headroom reads the plan log."""
+    try:
+        sys.path.insert(0, str(HERE.parent / "rimflow"))
+        import stop_resume
+        print(stop_resume.kick(plan_dir=str(OUT), acct_log=str(SWITCH_LOG)))
+    except Exception as e:  # noqa: BLE001
+        print(f"stop_resume did not run: {type(e).__name__}: {e}", file=sys.stderr)
 
 
 ACTS = ("soft", "stop", "stopped", "switch")

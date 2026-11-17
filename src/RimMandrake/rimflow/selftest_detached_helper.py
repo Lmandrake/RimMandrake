@@ -166,6 +166,9 @@ def test_launch_and_finish():
     unit = argv[argv.index("--unit") + 1]
     rec = DH.read_record(unit)
     check(rec and rec["status"] == "running" and rec["clone"] == CLONE, "record: the run is recorded running")
+    src = (rec or {}).get("brief_src") or ""
+    check(os.path.isfile(src) and open(src, encoding="utf-8").read() == "Build the thing.",
+          "record: the brief as given is saved (brief_src), so a killed run can be relaunched (stop_resume)")
     with open(rec["out"], "w") as f:
         json.dump({"result": "Built it; sha abc123.", "usage": {"input_tokens": 10, "output_tokens": 5,
                    "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0},

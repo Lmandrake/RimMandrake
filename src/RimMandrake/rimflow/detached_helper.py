@@ -920,6 +920,13 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     if getattr(pf, "run_id", None):
         rec["preflight_run"] = pf.run_id
     unit = reserve_record(rec, root)    # a name no other run's record holds; never overwrites one
+    try:    # the brief as given, so a run a fleet stop killed can be relaunched without its transcript (stop_resume)
+        rec["brief_src"] = os.path.join(runs_dir(root), unit + ".brief.src.md")
+        with open(rec["brief_src"], "w", encoding="utf-8") as fh:
+            fh.write(brief)
+        write_record(rec, root)
+    except OSError:
+        rec.pop("brief_src", None)
     msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat,
                                          bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound")
     msg += card_footer(item)
@@ -1056,8 +1063,9 @@ def conductor_log_path():
         return REAL_LOG
 
 
-def conductor_line(text, now, path=None):
-    """One line in the Conductor log. Same guard as dispatcher.conductor_log: a test process never writes the real log."""
+def conductor_line(text, now, path=None, head="DETACHED RUN ENDED"):
+    """One line in the Conductor log. Same guard as dispatcher.conductor_log: a test process never writes the real log.
+    head: the line's kind (stop_resume writes "STOP RESUME")."""
     import doorbell
     path = path or conductor_log_path()
     if (os.path.abspath(path) == os.path.abspath(REAL_LOG)
@@ -1066,7 +1074,7 @@ def conductor_line(text, now, path=None):
     import conductor_log_guard
     conductor_log_guard.refuse_if_test(path)
     with open(path, "a", encoding="utf-8") as f:
-        f.write("\n%s — DETACHED RUN ENDED: %s\n" % (iso(now), text))
+        f.write("\n%s — %s: %s\n" % (iso(now), head, text))
     return path
 
 
