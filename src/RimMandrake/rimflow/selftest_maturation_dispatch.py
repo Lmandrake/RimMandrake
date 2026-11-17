@@ -1984,6 +1984,22 @@ def cert_rerun_gates_main():
         ok(not la and rows[0].get("decision") == "live" and "rm-cert-rerun-1" in str(rows[0].get("why")),
            "cert rerun gates (%s): the next tick, the unit still running, launches nothing (%s: %s)" % (
                stage, rows[0].get("decision"), rows[0].get("why")))
+        # a new build lands while that rerun runs (the stale key moves): never a second worker beside it, since both
+        # would run in one pool clone and one build dir (measured 2026-11-17 11:56 AM PST: two GSS reruns overlapped)
+        rows6 = stale([r["test"] for r in rows5], build="b2")
+        ok(MD.stale_key(facts(stage, rows6)[mod]["certificate"]) not in (None, key),
+           "cert rerun gates (%s): the probe's new build moves the stale key" % stage)
+        rows, la = MD.decide(cfg, json.loads(json.dumps(st)), facts(stage, rows6), now + 120, (True, "ok"), releases=[])
+        ok(not la and rows[0].get("decision") == "live" and "rm-cert-rerun-1" in str(rows[0].get("why")),
+           "cert rerun gates (%s): a new build while the rerun is live launches no second rerun (%s: %s)" % (
+               stage, rows[0].get("decision"), rows[0].get("why")))
+        ended = {"unit": "rm-cert-rerun-1", "key": key, "key_after": key, "ok": True, "published": "abc1234",
+                 "end": now + 600}
+        rows, la = MD.decide(cfg, json.loads(json.dumps(st)), facts(stage, rows6, result=ended), now + 900, (True, "ok"),
+                             releases=[])
+        ok(la == [mod] and rows[0].get("cert_rerun_key") not in (None, key),
+           "cert rerun gates (%s): once it ended, the new build gets its own one rerun (%s: %s)" % (
+               stage, rows[0].get("decision"), rows[0].get("why")))
         done = {"unit": "rm-cert-rerun-1", "key": key, "key_after": key, "ok": False, "published": None,
                 "error": "publish refused: hook", "end": now + 600}
         rows, la = MD.decide(cfg, st, facts(stage, rows5, result=done), now + 900, (True, "ok"), releases=[])
@@ -2019,7 +2035,7 @@ def cert_rerun_gates_main():
     ok(la == [mod, "Twin"] and got == [(mod, "launch", True), ("Twin", "launch", False)],
        "cert rerun gates: at max_live 1 on one game, the rerun ahead spends neither, the next mod's visit launches (%s)"
        % got)
-    print("cert rerun gates: %d checks failed of the cases read (2 gates x 9 + 1)" % len(FAILS) if FAILS else "ALL PASS")
+    print("cert rerun gates: %d checks failed of the cases read (2 gates x 12 + 1)" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
 

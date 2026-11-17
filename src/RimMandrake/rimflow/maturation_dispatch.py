@@ -1058,12 +1058,14 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
         cert_put(put, mod, to, why or f.get("certificate_why"), fix or f.get("certificate_fix"), what)
         row["need"] = "%s; %s, and the step never reruns the same build (%s)" % (row.get("need"), said, lift)
         return "decided"
+    age = now - float((prior or {}).get("at") or 0)
+    if prior and prior.get("unit") and not mine and 0 <= age < RERUN_MAX_S:
+        # still running, on this build or an older one: never a second worker beside it in the one pool clone
+        put("live", "certificate rerun %s (zero tokens) started %d s ago on %s" % (
+            prior["unit"], age, "this build" if prior.get("key") == key else "an older build; this build reruns after it"))
+        return "decided"
     if prior and prior.get("key") == key:
         if prior.get("unit"):
-            age = now - float(prior.get("at") or 0)
-            if not mine and 0 <= age < RERUN_MAX_S:
-                put("live", "certificate rerun %s (zero tokens) started %d s ago on this build" % (prior["unit"], age))
-                return "decided"
             return wait("the zero-token certificate rerun %s on this build %s" % (prior["unit"], (
                 "ended (ok %s, published %s%s)" % (mine.get("ok"), mine.get("published") or "nothing",
                                                    ", error: %s" % mine["error"] if mine.get("error") else "")
