@@ -1,0 +1,22 @@
+run gsspt_20261117T062742_s1  scenarios=cords,soak,ui,save_reload  mode=batch
+  cords        FAIL       1.11s     17 ticks  no cord drawn to a connected lamp (0); a cord still runs to the lamp after every conduit was removed (1); reconnect: live cords != fresh build
+  soak         PASS      22.66s   2000 ticks  8 blasts in wind: cords == fresh, spans symmetric, hose clear after every blast; 1 span cut(s) by explosion
+  ui           FAIL      31.12s      0 ticks  2/24 interface checks failed: Free end toggle cycles three ends and returns; cut span: Re-string shown and restores it Up
+  save_reload  PENDING    2.69s    194 ticks  armed: saved JBPT_gsspt_20261117T062742_s1 at tick 2231 (6 lines); verdict owed by save_reload_b (resume=gsspt_20261117T062742_s1) after loading that save
+
+scenario     status   wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+-----------  -------  ------  -----  ------  -------  ------  ---------  -------
+cords        FAIL     1.11    17     20      0.00     0.98    0.13       21     
+soak         PASS     22.66   2000   291     0.30     21.45   0.91       95     
+ui           FAIL     31.12   0      154     0.00     31.12   0.00       0      
+save_reload  PENDING  2.69    194    15      0.04     0.70    1.95       290    
+RUN TOTAL    done     57.72   2211   483     0.00     0.00    0.00       98     
+tick mode batch (None), frame budget 50 ms, runner overhead 0.14 s, Ultrafast multiplier None
+launcher: 57.96 s wall start->collect, 21 bridge calls
+RUN VERDICT INCOMPLETE  (6 records)  copy \\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE.det\Transient\gss_playtest\gsspt_20261117T062742_s1.jsonl
+
+RESUME: loading JBPT_gsspt_20261117T062742_s1 (tick 2231)
+START REFUSED: No current map.
+
+VERDICT INCOMPLETE
+[bridge split] 59.6 s wall: load 1.4 / ticks 0.0 / reads 0.0 / other 19.2 / outside calls 39.0 s

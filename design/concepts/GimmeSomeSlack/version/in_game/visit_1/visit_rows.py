@@ -139,9 +139,13 @@ def add(a):
             continue
         if tid in last and last[tid]["verdict"] == st and last[tid].get("detail") == det["rows"]:
             continue
+        # a scene whose rows have not all run yet is not a run of that scene: no row until they have (or --final)
+        # (visit 1: interim MISSING-only rows read as UNMEASURED history to maturation.py next)
+        if not a.final and any("MISSING" in v for v in det["rows"].values()):
+            continue
         append({"test": tid, "verdict": st, "site_checked": tier_ok, "game": "archmagi", "mod_sha": sha,
                 "command": "python3 src/RimMandrake/GimmeSomeSlack/validation.py --scenes-from <proof json> (scene_verdict over the latest row of each id across this visit's runs)",
-                "evidence": os.path.relpath(EV, REPO), "run": a.label, "detail": det["rows"]})
+                "evidence": rel_ev, "run": a.label, "detail": det["rows"]})
         m += 1
     print("appended %d proof rows and %d scene rows (evidence %s)" % (n, m, rel_ev))
 
@@ -156,6 +160,7 @@ def main():
     p.add_argument("--only")
     p.add_argument("--command")
     p.add_argument("--override", action="append")
+    p.add_argument("--final", action="store_true", help="write scene rows even where an input row is MISSING (the visit's last add)")
     p.add_argument("--sha", help="the deployed source's sha, for a result that records no run_identity")
     p.add_argument("--env", help="JSON {running: [...], tier: {active_equals_running: bool}} for a result that records no env")
     a = ap.parse_args()

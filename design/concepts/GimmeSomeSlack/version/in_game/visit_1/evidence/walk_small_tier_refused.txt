@@ -1,0 +1,2 @@
+START REFUSED: A companion tool was built against a different RimBridgeServer.Sdk API than the running RimBridgeServer host provides. Rebuild/redeploy RimBridgeServer and the companion mod, then restart RimWorld so both load the same SDK version.
+[bridge split] 0.3 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.1 / outside calls 0.2 s
