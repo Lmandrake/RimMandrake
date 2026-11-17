@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":13431,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=eca86844e7c8b86ba7e58b28318a0d2675fe4c20d66e9d362017737408ddc4aa -->
-# ExplosiveKnockback — mod ledger history (492 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":14103,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=abd6a3e917a95a7634f76fc22dde50650291f74f73b4361f1304dda59b8fcdbe -->
+# ExplosiveKnockback — mod ledger history (494 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -493,3 +493,5 @@
 - 2026-11-17T05:58:35Z JUDGE.judge-1794890427#26 finding.verified finding:RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE v0.1.0: cycle_2 plant_faults --expect-caught on the six rerun: 'EXPECT CAUGHT: PASS, 6 of 6'. (A different storeroom plan site, PF_SB_PLAN_PLAIN_KERNEL, survives: filed as RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN)
 - 2026-11-17T06:02:41Z DISPATCH#37 judge.sealed judge v0.1.0: 
 - 2026-11-17T06:02:41Z DISPATCH#38 run.end run v0.1.0: 
+- 2026-11-17T06:05:50Z DISPATCH#39 lease.grant lease v0.1.0: 
+- 2026-11-17T06:05:50Z DISPATCH#40 run.start run v0.1.0: 
