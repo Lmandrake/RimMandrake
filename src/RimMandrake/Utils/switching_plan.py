@@ -156,6 +156,134 @@ def left(plan: dict, r, now: float):
     return 0.0 if blind_zero(plan, r, now) else (r or {}).get("week_pct_left")
 
 
+# ------------------------------------------------------------------ dated exceptions (pure)
+EXC_KEYS = {"id", "from", "until", "ends_at_reset_of", "order", "accounts"}
+EXC_RULES = {"leave_pct_left", "window_h_after_reset"}
+EXC_MAX_S = WEEK  # [D] an exception is temporary: at most one week from its `from` (a standing change is a plan edit)
+
+
+def _stamp(s):
+    """Epoch of an ISO time that carries its UTC offset, else None (a naive time would be read in the host's zone)."""
+    try:
+        d = datetime.fromisoformat(str(s))
+    except (TypeError, ValueError):
+        return None
+    return d.timestamp() if d.tzinfo is not None else None
+
+
+def exception_problems(plan: dict) -> list:
+    """The guard on plan["exceptions"]: one line per refused exception (by id). A refused exception is never applied;
+    the standing plan stands. Two exceptions whose spans overlap are both refused (which one wins is not data)."""
+    return _guard(plan)[0]
+
+
+def _guard(plan: dict):
+    """-> (problems, the exceptions that pass: [(exception, from, until)])."""
+    exc = plan.get("exceptions", [])
+    if not isinstance(exc, list):
+        return ["exceptions: not a list"], []
+    out, good = [], []
+    order = plan.get("order") or []
+    for i, e in enumerate(exc):
+        eid = e.get("id") if isinstance(e, dict) else None
+        tag = f"exception {eid or '#%d' % i}"
+        if not isinstance(e, dict) or not eid:
+            out.append(f"{tag}: needs an id")
+            continue
+        bad = []
+        f, u = _stamp(e.get("from")), _stamp(e.get("until"))
+        if f is None:
+            bad.append("`from` must be an ISO time with its UTC offset")
+        if u is None:
+            bad.append("`until` (its expiry) must be an ISO time with its UTC offset")
+        if f is not None and u is not None and not 0 < u - f <= EXC_MAX_S:
+            bad.append(f"`until` must fall after `from` and within {EXC_MAX_S // 86400} days of it")
+        if not any(isinstance(v, str) and v.strip() for k, v in e.items() if k.startswith("_")):
+            bad.append("needs its provenance in a `_why`")
+        extra = sorted(k for k in e if k not in EXC_KEYS and not k.startswith("_"))
+        if extra:
+            bad.append(f"unknown keys {extra}")
+        if "order" not in e and "accounts" not in e:
+            bad.append("changes nothing (no `order`, no `accounts`)")
+        if "order" in e and (not isinstance(e["order"], list) or sorted(map(str, e["order"])) != sorted(order)
+                             or len(set(e["order"])) != len(e["order"])):
+            bad.append(f"`order` must reorder the standing accounts {order}")
+        if e.get("ends_at_reset_of") is not None and e["ends_at_reset_of"] not in order:
+            bad.append("`ends_at_reset_of` names no account of the plan")
+        accs = e.get("accounts", {})
+        if not isinstance(accs, dict):
+            bad.append("`accounts` must be a map")
+            accs = {}
+        for n, cfg in accs.items():
+            if n not in order or not isinstance(cfg, dict) or not cfg:
+                bad.append(f"`accounts.{n}` is no account of the plan or sets nothing")
+                continue
+            for k, v in cfg.items():
+                if k.startswith("_"):
+                    continue
+                num = isinstance(v, (int, float)) and not isinstance(v, bool)
+                if k not in EXC_RULES:
+                    bad.append(f"`accounts.{n}.{k}` is not a rule an exception may set {sorted(EXC_RULES)}")
+                elif k == "leave_pct_left" and not (num and 0 <= v <= 100):
+                    bad.append(f"`accounts.{n}.leave_pct_left` must be a number in [0, 100]")
+                elif k == "window_h_after_reset" and v is not None and not (num and 0 < v <= 168):
+                    bad.append(f"`accounts.{n}.window_h_after_reset` must be null or hours in (0, 168]")
+        if bad:
+            out.append(f"{tag}: " + "; ".join(bad))
+        else:
+            good.append((e, f, u))
+    clash = set()
+    for a in range(len(good)):
+        for b in range(a + 1, len(good)):
+            (ea, fa, ua), (eb, fb, ub) = good[a], good[b]
+            if fa < ub and fb < ua:
+                out.append(f"exception {ea['id']} and {eb['id']}: spans overlap; both refused")
+                clash |= {a, b}
+    return out, [g for i, g in enumerate(good) if i not in clash]
+
+
+def _first_reset_after(r, t0: float):
+    """The account's first weekly reset after t0, from any one of its reset instants (rolled by whole weeks)."""
+    rs = epoch((r or {}).get("week_resets_at"))
+    if rs is None:
+        return None
+    while rs - WEEK > t0:
+        rs -= WEEK
+    while rs <= t0:
+        rs += WEEK
+    return rs
+
+
+def active_exception(plan: dict, now: float, meter=None):
+    """-> (exception, end epoch) standing at `now`, or None. Active from `from` to the earlier of `until` and the
+    first reset of `ends_at_reset_of` after `from` (read from the meter; no reading: `until` alone)."""
+    if not plan.get("exceptions"):
+        return None
+    for e, f, end in _guard(plan)[1]:
+        n = e.get("ends_at_reset_of")
+        rs = _first_reset_after((meter or {}).get(n), f) if n else None
+        end = min(end, rs) if rs is not None else end
+        if f <= now < end:
+            return e, end
+    return None
+
+
+def at(plan: dict, now: float, meter=None) -> dict:
+    """The plan in force at `now`: the standing plan, or a copy with the exception standing then applied (its order,
+    its per-account rules; `_exception` names it). The plan read is never edited."""
+    hit = active_exception(plan, now, meter)
+    if hit is None:
+        return plan
+    e, end = hit
+    accs = {n: dict(c or {}) for n, c in plan["accounts"].items()}
+    for n, cfg in (e.get("accounts") or {}).items():
+        for k, v in cfg.items():
+            if not k.startswith("_"):
+                accs[n][k], accs[n]["_" + k] = v, f"exception {e['id']} (until {iso(end)})"
+    return {**plan, "order": list(e.get("order") or plan["order"]), "accounts": accs,
+            "_exception": e["id"], "_exception_until": iso(end)}
+
+
 def in_window(plan: dict, name: str, r, now: float, margin_s: float = 0) -> bool:
     """Inside the account's window (always, for an account without one). margin_s: with that much of it still left,
     so a switch that takes minutes never lands after the window closed."""
@@ -272,6 +400,7 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
     (the HOLD brake is the caller's: check() and status()). manual: manual_switch(), the switch to respect."""
     if not live:
         return {"do": "skip", "why": "live account unknown (claude-account --json status failed)"}
+    raw, plan = plan, at(plan, now, meter)  # the plan in force now: a dated exception, when one stands
     order, fr = plan["order"], plan["fresh"]
     line, elig = lines(meter, plan, now)
     for m in markers.values():  # an account we left at its line is no target again before its reset: no flapping
@@ -295,7 +424,13 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         target = live
     respected = f"; {manual.get('from')} -> {live} at {manual.get('ts')} was not the plan's: respected" if held else ""
     blind = blind_zero(plan, lr, now)
-    base = {"account": live, "line": line.get(live), "pct_left": left(plan, lr, now), "to": None}
+    base = {"account": live, "line": line.get(live), "pct_left": left(plan, lr, now), "to": None,
+            "exception": plan.get("_exception")}
+    if plan.get("_exception"):
+        base["exception_until"] = plan["_exception_until"]
+    refused = exception_problems(raw)
+    if refused:
+        base["exception_refused"] = refused
 
     # fresh readings before any act; reasons are kept per account so an unrelated account never blocks
     stale = {}
@@ -415,8 +550,9 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
         fresh = {**r, "source": "MEASURED", "stale": False, "week_pct_left": 100.0, "age_min": 0,
                  "hours_to_week_reset": 168.0, "week_resets_at": iso((next_reset(r, now) or now) + WEEK)}
         after = {**meter, n: fresh}
-        _l, el = lines(after, plan, now + h * 3600)
-        if pick(after, plan, now + h * 3600, el) not in (live, None):
+        then = at(raw, now + h * 3600, after)
+        _l, el = lines(after, then, now + h * 3600)
+        if pick(after, then, now + h * 3600, el) not in (live, None):
             return {**base, "do": "soft", "why": f"{n}'s reset in {round(h * 60)} min will pull the machine to it: "
                                                  "switch pending, publish and finish"}
     return {**base, "do": "normal", "why": f"{live} at {p}% above its {line[live]}% line"}
@@ -431,7 +567,10 @@ def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
     expiry, since pick() burns them first), and
     its next refill (100 - line) at the refill's own expiry. The rate is the max over deadlines of cumulative spend /
     hours; pct and deadline_h are the binding deadline's. -> {pct, rate_pct_h, deadline_h, total_pct, parts}; rate
-    None when no account has a reset time. `live` is unused (kept for the allocator's call)."""
+    None when no account has a reset time. `live` is unused (kept for the allocator's call).
+    Present budgets follow the plan in force now (a dated exception, when one stands); each refill follows the plan
+    in force just after the reset that brings it."""
+    raw, plan = plan, at(plan, now, meter)
     fl = plan["floors"]
     plain = [n for n in plan["order"] if (plan["accounts"].get(n) or {}).get("window_h_after_reset") is None]
     exp = {n: expiry(plan, n, meter.get(n), now) for n in plan["order"]}
@@ -453,9 +592,14 @@ def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
         ln = leave if leave is not None else (fl["wait_pct_left"] if n == last else fl["switch_away_pct_left"])
         if e > now and (cfg.get("window_h_after_reset") is None or in_window(plan, n, r, now)):
             present[n] = (max(0.0, (p if p is not None else 0.0) - ln), e)
-        k = 1
-        while k == 1 or (horizon is not None and e + k * WEEK <= horizon):
-            refills.append((n, 100.0 - ln, e + k * WEEK))
+        rs = next_reset(r, now)
+        fut = at(raw, rs + 1, meter)  # the refill's rules: the plan in force once its reset has landed
+        fleave = (fut["accounts"].get(n) or {}).get("leave_pct_left")
+        fln = fleave if fleave is not None else (fl["wait_pct_left"] if n == last else fl["switch_away_pct_left"])
+        ef = expiry(fut, n, r, rs + 1)
+        k = 0
+        while k == 0 or (horizon is not None and ef + k * WEEK <= horizon):
+            refills.append((n, 100.0 - fln, ef + k * WEEK))
             k += 1
 
     def pace(parts):
@@ -530,11 +674,16 @@ def simulate(meter: dict, now: float, plan: dict, live, rate_pct_h: float, hours
                    "hours_to_week_reset": (rs[n] - t) / 3600 if rs[n] else None}
                   if pct[n] is not None else {"source": "UNMEASURED", "week_pct_left": None})
               for n in plan["order"]}
-        ln, el = lines(sm, plan, t)
-        tgt = pick(sm, plan, t, el)
-        if tgt != cur:
-            ev.append({"kind": "target", "at": t, "target": tgt, "pct": snap()})
-            cur = tgt
+        ep = at(plan, t, meter)  # the plan in force at t: a dated exception ends inside the week ahead
+        ln, el = lines(sm, ep, t)
+        tgt = pick(sm, ep, t, el)
+        key = (tgt, ep.get("_exception"))
+        if key != cur:
+            a = (ep["accounts"].get(tgt) or {}) if tgt else {}
+            ev.append({"kind": "target", "at": t, "target": tgt, "pct": snap(), "to": a.get("leave_pct_left"),
+                       "window": a.get("window_h_after_reset") is not None, "exception": ep.get("_exception"),
+                       "exception_until": ep.get("_exception_until")})
+            cur = key
         dt = step_min * 60
         if tgt is not None:
             pct[tgt] = max(ln[tgt], pct[tgt] - rate_pct_h * dt / 3600)
@@ -549,13 +698,22 @@ def week_lines(ev: list, plan: dict) -> list:
         pc = ", ".join(f"{n} {'?' if v is None else v}%" for n, v in e["pct"].items())
         if e["kind"] == "reset":
             out.append(f"{when}  reset   {e['account']} refills to 100%  [{pc}]")
-        elif e["target"] is None:
-            out.append(f"{when}  IDLE    no account above its line: hard stop until a reset  [{pc}]")
         else:
-            a = plan["accounts"].get(e["target"]) or {}
-            to = a.get("leave_pct_left")
-            out.append(f"{when}  target  {e['target']}" + (f" (to {to}% left, inside its window)" if to is not None else "")
-                       + f"  [{pc}]")
+            by = ""
+            if e.get("exception"):
+                u = datetime.fromtimestamp(epoch(e["exception_until"]), timezone.utc).astimezone()
+                by = f"  (exception {e['exception']} until {u.strftime('%a %H:%M %Z')})"
+            if e["target"] is None:
+                out.append(f"{when}  IDLE    no account above its line: hard stop until a reset{by}  [{pc}]")
+                continue
+            if "to" in e:
+                to, win = e["to"], e.get("window")
+            else:  # an event from before exceptions: the standing rules
+                a = plan["accounts"].get(e["target"]) or {}
+                to, win = a.get("leave_pct_left"), a.get("window_h_after_reset") is not None
+            out.append(f"{when}  target  {e['target']}"
+                       + (f" (to {to}% left{', inside its window' if win else ''})" if to is not None else "")
+                       + f"{by}  [{pc}]")
     return out
 
 
@@ -607,7 +765,7 @@ def next_refill(meter: dict, plan: dict, now: float) -> dict:
     for rs, name in candidates:
         rec = {"source": "MEASURED", "stale": False, "age_min": 0,
                "week_pct_left": 100, "week_resets_at": iso(rs + WEEK)}
-        _, eligible = lines({name: rec}, plan, rs)
+        _, eligible = lines({name: rec}, at(plan, rs, meter), rs)
         if eligible.get(name):
             return {"reset_at": iso(rs), "reset_account": name}
     return {}

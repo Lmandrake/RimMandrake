@@ -993,11 +993,30 @@ def _lent_view(sp):
     return used, sp.get("pct_left"), sp.get("hours_to_reset"), sp.get("resets_at")
 
 
-def lent_allowance(sp, rules, now):
+def _plan_exception(name, now, h, plan=None):
+    """(exception id, until, leave line) when the switching plan's dated exception (switching_plan.json
+    `exceptions`, its own guard and expiry) sets this account's line now, else None. One source: the plan file.
+    Unreadable plan -> None: the standing lent rule (the stricter one) applies."""
+    try:
+        import switching_plan as SP
+        plan = plan if plan is not None else SP.load_plan()
+        meter = {name: {"week_resets_at": SP.iso(now + h * HOUR)}} if h is not None else {}
+        eff = SP.at(plan, now, meter)
+    except Exception:  # noqa: BLE001
+        return None
+    cfg = eff.get("accounts", {}).get(name) or {}
+    if not eff.get("_exception") or cfg.get("leave_pct_left") is None or cfg.get("window_h_after_reset") is not None:
+        return None
+    return eff["_exception"], eff["_exception_until"], cfg["leave_pct_left"]
+
+
+def lent_allowance(sp, rules, now, plan=None):
     """(max % of his week we may still draw now, why) for an account under lent_accounts, or (None, '') if none.
     The owner's rule for a lent account (2026-10-27): only in the first prefer_start_of_week_h after his weekly reset,
     at most max_used_by_us_pct of the week used (all of it counted as ours), never under the floor; 0 otherwise;
-    off-limits through off_limits_through."""
+    off-limits through off_limits_through. A dated exception of the switching plan that lifts his window and sets his
+    line (owner 2026-11-17, steven until his reset) replaces the window and the cap with that line; the floor and
+    off_limits_through still bind. plan: the switching plan to read (a seam; default the file)."""
     pol = (rules.get("lent_accounts") or {}).get(sp.get("account"))
     if not pol:
         return None, ""
@@ -1009,6 +1028,11 @@ def lent_allowance(sp, rules, now):
     if off is not None and now < off:
         return 0.0, f"{name}: off-limits until {pol['off_limits_through']} (his rule: this week's share is already used)"
     by_floor = left - pol["floor_pct_left"]
+    ex = _plan_exception(name, now, h, plan)
+    if ex is not None:
+        eid, until, line = ex
+        return max(0.0, min(by_floor, left - line)), (f"{name}: by the switching plan's exception {eid} until {until}: "
+                                                      f"down to {line}% left, floor {pol['floor_pct_left']}%")
     if h < 168 - pol["prefer_start_of_week_h"]:
         return 0.0, (f"{name}: {h:.0f} h to his reset, outside the {pol['prefer_start_of_week_h']} h after it "
                      "(owner 2026-10-27: his account only right after a fresh reset)")
