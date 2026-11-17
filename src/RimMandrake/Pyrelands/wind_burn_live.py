@@ -9,7 +9,9 @@ What it reads, on two grassed strips of the real map (each 60 x 21 cells of embe
      south of the lit lanes by more than 3 burned. (Bar burn_line_walks: fire that moves; never a flood.)
   B  wind off (windCarriesFireEnabled false): the same line. The burn spreads to both sides (more than 3 lanes beyond the
      lit ones): the control that shows the instrument can see vanilla's even spread.
-Then black rain on a third strip under the wind: every fire out within 2,000 ticks (bar three_skies).
+Then black rain on a third strip under the wind: every fire out within 2,000 ticks (bar three_skies). Row C counts only
+when the line actually lit under the rain (firesStarted > 0): an unlit line reads 0 fires from the first sample and
+used to pass (first live run, 2026-11-16, RIMMANDRAKE_RUN_PYRELANDS_WEEK_SKY_FREE_NEVER_ONCE_SEEN).
 Writes Transient/wind_burn_live.json and prints PASS or FAIL with each reading. Settings, weather and fires are put back.
 """
 import json
@@ -18,7 +20,6 @@ import sys
 sys.path.insert(0, r"src\RimMandrake\Utils")
 from rimbridge_client import RimBridge, resolve_endpoint  # noqa: E402
 
-h, p, tk = resolve_endpoint()
 S = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 BURN = "RimMandrake.Pyrelands.MapComponent_BurnLine"
 SET = {"burnLineEnabled": "True", "fireHawkSpreadEnabled": "False", "fireClockEnabled": "False", "burrowOnFireEnabled": "False",
@@ -27,7 +28,20 @@ W = "0,0,250,250"
 out = {}
 
 
+def verdict_rows(a, b, c):
+    """The five rows from the three readings. C counts only a line that lit: 0 fires from an unlit line is no reading."""
+    ser = c["fires_at_0_then_every_250"]
+    return [
+        ("A the burn moves downwind", a["east_cells"] >= 4, a["east_cells"]),
+        ("A never more fires than 3 x the cells lit", a["lit"] > 0 and a["peak_fires"] <= 3 * a["lit"], a["peak_fires"]),
+        ("A nothing burns beside the lit lanes", a["fires_in_outer_lanes"] == 0, a["fires_in_outer_lanes"]),
+        ("B CONTROL even spread reaches the outer lanes", b["fires_in_outer_lanes"] > 0, b["fires_in_outer_lanes"]),
+        ("C black rain puts the line out", c["lit"] > 0 and ser[0] > 0 and ser[-1] == 0, "lit %d, %s" % (c["lit"], ser)),
+    ]
+
+
 def main():
+    h, p, tk = resolve_endpoint()
     with RimBridge(h, p, tk) as rb:
         prior = {f: rb.call("jawa/mod_settings_field", {"typeName": S, "action": "get", "field": f}).get("value")
                  for f in list(SET) + ["windCarriesFireEnabled"]}
@@ -84,19 +98,13 @@ def main():
             rb.call("jawa/map_fire", {"action": "extinguish", "rect": W})
             rb.call("jawa/weather_set", {"weather": "RM_FE_BlackRain", "lockWeather": True})
             adv(4500)
-            rb.call("jawa/map_fire", {"action": "start", "rect": "62,146,1,9", "fireSize": 0.35})
-            ser = []
+            c_lit = rb.call("jawa/map_fire", {"action": "start", "rect": "62,146,1,9", "fireSize": 0.35}).get("firesStarted") or 0
+            ser = [fires(rect)]                                   # tick 0: what the rain is given to put out
             for _ in range(8):
                 adv(250)
                 ser.append(fires(rect))
-            out["C_black_rain"] = {"fires_every_250": ser}
-            rows = [
-                ("A the burn moves downwind", a["east_cells"] >= 4, a["east_cells"]),
-                ("A never more fires than 3 x the cells lit", a["lit"] > 0 and a["peak_fires"] <= 3 * a["lit"], a["peak_fires"]),
-                ("A nothing burns beside the lit lanes", a["fires_in_outer_lanes"] == 0, a["fires_in_outer_lanes"]),
-                ("B CONTROL even spread reaches the outer lanes", b["fires_in_outer_lanes"] > 0, b["fires_in_outer_lanes"]),
-                ("C black rain puts the line out", ser[-1] == 0, ser),
-            ]
+            out["C_black_rain"] = {"lit": c_lit, "fires_at_0_then_every_250": ser}
+            rows = verdict_rows(a, b, out["C_black_rain"])
             out["rows"] = [[n, bool(ok), v] for n, ok, v in rows]
             out["verdict"] = "PASS" if all(ok for _, ok, _ in rows) else "FAIL"
             for n, ok, v in rows:
