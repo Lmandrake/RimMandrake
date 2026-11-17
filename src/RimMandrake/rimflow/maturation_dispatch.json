@@ -2,14 +2,14 @@
   "_doc": "maturation_dispatch.py's settings (item RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE). The owner, 2026-11-14 ~9 PM PST: \"So can we wire up Operations/Dispatch such that they do advance on these offline builders? ... As long as we don't have automated loops rejecting/cycling things, we can't get into too much trouble.\"",
   "enabled": true,
   "advancing": [
+    "Pyrelands",
     "ExplosiveKnockback",
     "FlowWorks",
     "GimmeSomeSlack",
-    "Pyrelands",
     "Graffiti",
     "Contagion"
   ],
-  "_advancing_doc": "The four by his card of 2026-11-14 (spec §5 Dispatch), Graffiti by his word the same night (it is at the Designer, which is never auto-launched), and Contagion by his order of 2026-11-15 ('pick the next most mature biome mod to add', item RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME). Order is launch priority when slots are short.",
+  "_advancing_doc": "The four by his card of 2026-11-14 (spec §5 Dispatch), Graffiti by his word the same night (it is at the Designer, which is never auto-launched), and Contagion by his order of 2026-11-15 ('pick the next most mature biome mod to add', item RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME). Order is launch priority when slots are short, over every layer's launches (prioritise: a run that just ended keeps its mod's slot through settle_s). Pyrelands first by his card of 2026-11-17 (\"Which mod gets the next run\" at max_live 1 -> \"Pyrelands (Recommended)\").",
   "model": "opus",
   "cap_usd": 15,
   "seat": "BENCH",

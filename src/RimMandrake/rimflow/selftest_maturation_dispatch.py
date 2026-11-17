@@ -1961,7 +1961,79 @@ def kill_clear_main():
     return 1 if FAILS else 0
 
 
+def priority_main():
+    """RIMMANDRAKE_LAUNCH_PYRELANDS_FIRST_AT_ONE_SLOT: launch priority is the advancing list's order over every layer.
+    At max_live 1, mod P (first) owes a fixer run that maturation_autonomy.resolve adds, and mod G (second) owes a launch
+    decide() gave it: P's fixer launches and G waits slots_full, in either input order of the launches; with G first, G
+    keeps it. A settling P (its run just ended) keeps the slot from G; a pilot holder on P beats G's build; a zero-token
+    certificate rerun takes no slot. Watched failing 5 of 7 on 4d4dad7bcf's maturation_dispatch.py with prioritise as the
+    identity (P read slots_full, G launched)."""
+    print("== launch priority across layers (max_live 1) ==")
+    if not hasattr(MD, "prioritise"):
+        ok(False, "priority: maturation_dispatch has no prioritise pass (a later mod's launch takes an earlier mod's "
+           "fixer slot)")
+        return 1
+    now = 1794750000.0
+    stop = {"status": "blocked", "stage": 5, "item": "CONCEPT_P", "blocked_on": "x",
+            "history": [{"at": "2026-11-15T14:05:35Z", "what": "coverage_stop", "why": "round 6"}]}
+    cfg = {"enabled": True, "cap_usd": 15, "max_live": 1, "fix_cap_usd": 10, "steward_cap_usd": 5, "seat": "BENCH",
+           "steward_model": "opus", "stalled_min": 10, "settle_s": 180}
+    fx = {"designer_state": lambda m: stop if m == "P" else None, "version_locked": lambda m: False,
+          "open_items": lambda ids: [], "version_evidence": lambda m: [], "designer_unit": lambda m: None,
+          "designer_chain": lambda m: None, "stop_tickets": lambda m, d, s: [{"id": "FIX_T"}],
+          "ticket_runs": lambda i: []}
+
+    def tick_of(order, g_extra=None, p_row=None, base_live=0):
+        facts = {"P": {"version": "0.1.0", "live_units": []}, "G": {"version": "0.1.0", "live_units": []},
+                 "L": {"version": "0.1.0", "live_units": ["rm-u%d" % i for i in range(base_live)]}}
+        rows = {"P": dict(p_row or {"mod": "P", "stage": "offline_build", "decision": "ready", "why": "r"}),
+                "G": dict({"mod": "G", "stage": "blind_challenge", "decision": "launch", "why": "cycle owed"},
+                          **(g_extra or {}))}
+        rs = [rows[m] for m in order]
+        st = {"mods": {}}
+        c = dict(cfg, advancing=list(order))
+        rs, la = MD.AUT.resolve("/nonexistent", c, st, facts, rs, ["G"], now, fx)
+        la = MD.prioritise(c, st, facts, rs, la)
+        return la, {r["mod"]: r for r in rs}
+
+    la, r = tick_of(["P", "G"])
+    ok(la == ["P"] and r["P"].get("aut") == "fixer" and r["G"].get("decision") == "slots_full",
+       "priority: P first owes a fixer, G second owes a decide launch: P's fixer gets the one slot, G waits (read "
+       "launches %s, P %s, G %s)" % (la, r["P"].get("decision"), r["G"].get("decision")))
+    ok("P" in str(r["G"].get("waits_on")), "priority: G's wait names the mod ahead of it (read %s)" % r["G"].get(
+        "waits_on"))
+    la, r = tick_of(["G", "P"])
+    ok(la == ["G"] and r["P"].get("decision") == "slots_full",
+       "priority: with G first, G keeps the slot and P's fixer waits (read %s, P %s)" % (la, r["P"].get("decision")))
+    la, r = tick_of(["P", "G"], base_live=1)
+    ok(la == [] and r["P"].get("decision") == "slots_full" and r["G"].get("decision") == "slots_full",
+       "priority: one run already live: neither launches (read %s, P %s, G %s)" % (
+           la, r["P"].get("decision"), r["G"].get("decision")))
+    la, r = tick_of(["P", "G"], p_row={"mod": "P", "stage": "blind_challenge", "decision": "settling", "why": "ended"})
+    ok(la == [] and r["G"].get("decision") == "slots_full",
+       "priority: P settling (its run ended under settle_s ago) keeps the slot from G (read %s, G %s)" % (
+           la, r["G"].get("decision")))
+    la, r = tick_of(["P", "G"], g_extra={"cert_rerun_key": "k"})
+    ok("G" in la, "priority: G's zero-token certificate rerun takes no slot and still launches (read %s)" % la)
+    # a pilot holder on P (its road-back fixers spent) and a decide launch on G
+    facts = {"P": {"version": "0.1.0", "live_units": []}, "G": {"version": "0.1.0", "live_units": []}}
+    st = {"mods": {"P": {"road_back": {"caused_by": "ROUTE_P"}}}}
+    rs = [{"mod": "P", "stage": "blind_challenge", "decision": "fixer_spent", "why": "spent"},
+          {"mod": "G", "stage": "blind_challenge", "decision": "launch", "why": "cycle owed"}]
+    c = dict(cfg, advancing=["P", "G"])
+    rs, la = MD.pilot_holders(".", c, st, facts, rs, ["G"], now, {
+        "open_items": lambda ids: [{"id": "RB_1"}], "pilot": lambda root, m: True, "account": lambda: (True, "ok")})
+    la = MD.prioritise(c, st, facts, rs, la)
+    ok(la == ["P"] and rs[0].get("holder_items") and rs[1].get("decision") == "slots_full",
+       "priority: P's pilot holder beats G's later launch (read %s, P %s, G %s)" % (
+           la, rs[0].get("decision"), rs[1].get("decision")))
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 if __name__ == "__main__":
+    if "--priority" in sys.argv[1:]:
+        sys.exit(priority_main())
     if "--cert-rerun" in sys.argv[1:]:
         sys.exit(cert_rerun_main())
     if "--kill-clear" in sys.argv[1:]:
@@ -1982,4 +2054,5 @@ if __name__ == "__main__":
     rc = item_names_main() or rc
     rc = cert_rerun_main() or rc
     rc = kill_clear_main() or rc
+    rc = priority_main() or rc
     sys.exit(ingame_main() or rc)

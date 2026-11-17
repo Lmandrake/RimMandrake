@@ -2120,13 +2120,15 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
     fx = fx or {}
     open_items = fx.get("open_items", lambda ids: M.ledger_items_caused_by(root, ids))
     account = fx["account"]() if "account" in fx else account_gate()
-    planned = occupancy(facts)
-    planned = None if planned is None else planned + len(launches)
+    base = occupancy(facts)
     for row in rows:
         mod = row["mod"]
         s = st.setdefault("mods", {}).setdefault(mod, {})
         if row.get("decision") != "fixer_spent" or not s.get("road_back") or (facts.get(mod) or {}).get("live_units"):
             continue
+        # only the launches ahead of it on the advancing list count against it: a later mod's launch is evicted by
+        # prioritise, never the other way round (RIMMANDRAKE_LAUNCH_PYRELANDS_FIRST_AT_ONE_SLOT)
+        planned = None if base is None else base + slots_ahead(rows, launches, mod)
         if not (fx.get("pilot") or pilot_ledger)(root, mod):
             continue
         items = open_items(AUT._road_back_ids(s, s["road_back"]))
@@ -2148,12 +2150,80 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
             continue
         if no_slot(cfg, planned, put):
             continue
-        planned += 1
         row.update(holder_items=items, cap=cfg.get("cap_usd"))
         put("launch", "its road-back fixers are spent and its ledger is ready: one holder run on all %d open items "
             "(%s), nothing live on it (%s)" % (len(ids), ", ".join(ids), account[1]))
         launches = [m for m in launches if m != mod] + [mod]
     return rows, launches
+
+
+NO_SLOT_AUT = ("autolock", "autorepin")     # the pipeline's acts on a concept, not runs: they take no slot
+
+
+def takes_slot(row):
+    """True when ROW's launch takes a run slot: a zero-token certificate rerun and the pipeline's acts take none."""
+    return not row.get("cert_rerun_key") and row.get("aut") not in NO_SLOT_AUT
+
+
+def slots_ahead(rows, launches, mod):
+    """-> the slot-taking launches in LAUNCHES on mods ahead of MOD in ROWS (ROWS run in advancing-list order)."""
+    order = [r["mod"] for r in rows]
+    cut = order.index(mod) if mod in order else len(order)
+    return sum(1 for r in rows[:cut] if r["mod"] in launches and takes_slot(r))
+
+
+def prioritise(cfg, st, facts, rows, launches, root=None):
+    """Launch priority is the advancing list's order across every layer (item
+    RIMMANDRAKE_LAUNCH_PYRELANDS_FIRST_AT_ONE_SLOT; the owner by card 2026-11-17, "Which mod gets the next run" ->
+    "Pyrelands"). decide grants slots in list order, but the steward and fixer runs maturation_autonomy.resolve adds
+    were gated on every launch of the tick, a later mod's included: at max_live 1 a later mod's build or blind cycle
+    took the slot from an earlier mod's fixer (measured 2026-11-17). One pass, in list order: a mod whose run just
+    ended (settling, read again in settle_s) keeps its slot; a steward or fixer run refused only for a slot a later
+    mod took is granted again; a launch past max_live is put back to slots_full. -> launches."""
+    base = occupancy(facts)
+    if base is None:
+        return launches
+    most = int(cfg.get("max_live", 2))
+    taken, ahead = base, []
+    for row in rows:
+        mod = row["mod"]
+        if mod in launches:
+            if not takes_slot(row):
+                continue
+            if taken < most:
+                taken += 1
+                ahead.append(mod)
+                continue
+            launches = [m for m in launches if m != mod]
+            row.update(decision="slots_full", aut=None, waits_on="a free slot (launch priority: %s first)" % (
+                ", ".join(ahead) or "a run that just ended"),
+                why="%d live runs on advancing mods plus %s ahead of it on the advancing list (launch priority), the "
+                    "most is %d; it was: %s" % (base, ", ".join(ahead) or "a settling mod", most, row.get("why")))
+            continue
+        if row.get("decision") == "settling" and not (facts.get(mod) or {}).get("live_units"):
+            if taken < most:
+                taken += 1
+                ahead.append("%s (settling)" % mod)
+            continue
+        w = str(row.get("waits_on") or "")
+        aut = next((a for a in ("fixer", "steward") if w.startswith("a free slot for the %s run" % a)), None)
+        if row.get("decision") == "slots_full" and aut and taken < most:
+            s = st.setdefault("mods", {}).setdefault(mod, {})
+            f = facts.get(mod) or {}
+            ver = f.get("version") or ((M.load(root, mod) or {}).get("version") if root else None)
+            trial = dict(row, aut=aut)
+            ok, why = AUT._gate(cfg, s, trial, taken, ver)
+            if ok:
+                trial.pop("waits_on", None)
+                trial.update(decision=aut, why="its %s run on %s, first on the advancing list for the slot%s" % (
+                    aut, trial.get("fix_item") or trial.get("steward_kind"),
+                    "; it was for: %s" % trial["steward_why"] if trial.get("steward_why") else ""))
+                row.clear()
+                row.update(trial)
+                taken += 1
+                ahead.append(mod)
+                launches = launches + [mod]
+    return launches
 
 
 def end_ledger_runs(root, st, facts, now, fx=None):
@@ -2662,6 +2732,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     if aut:
         rows, launches = AUT.resolve(root, cfg, st, facts, rows, launches, now, fx)
         rows, launches = pilot_holders(root, cfg, st, facts, rows, launches, now, dict(fx, account=lambda: account))
+    launches = prioritise(cfg, st, facts, rows, launches, root)     # one slot order over every layer: the list's
     if not cfg.get("enabled"):
         for r in rows:
             if r["mod"] in launches:
