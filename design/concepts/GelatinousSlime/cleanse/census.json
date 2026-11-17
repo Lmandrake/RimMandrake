@@ -313,6 +313,19 @@
       "ticket": null
     },
     {
+      "id": "colonist_resistance_acquisition",
+      "what": "Colonist resistance acquisition through RM_Gene_SlimeResistance; RM_SlimeResistant is the separate race-extension resistance identity.",
+      "built": "present",
+      "evidence": "src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes.xml; src/RimMandrake/GelatinousSlime/Defs/GeneArchiveDefs/DefaultArchive.xml; src/RimMandrake/GelatinousSlime/Source/SlimeBiome.cs; src/RimMandrake/GelatinousSlime/Source/Slimification.cs; design/RimMandrake/RM_gelatinous_slime_mod.md §3 law 1 (2026-09-10)",
+      "proven": "stale",
+      "called_by": "DefaultArchive target list -> seeker extraction/injection -> AddGene; SlimeUtility resistance lookup checks active RM_Gene_SlimeResistance or RM_SlimeResistant race extension.",
+      "serves": "elective acquired immunity to the material/contact signature",
+      "fate": "next_version",
+      "why": "Designer scope proposal: Removing new colonist resistance acquisition leaves floors, processing, drying and toxic antidote as workable preparation/escape routes, but gives up law 1’s explicit acquirable-resistance economy in 0.1.0. This conflict is disclosed in owner_pages.md Q1, not treated as a changed ruling. No replacement acquisition route is promised. Keep existing active genes, race-extension resistance and their checks functional.",
+      "needed_by": null,
+      "ticket": "T4"
+    },
+    {
       "id": "archive_selection",
       "what": "Priority-selected GeneArchiveDef provides universal target/rider lists, with an optional campaign archive overriding it.",
       "built": "present",
@@ -618,10 +631,10 @@
       "evidence": "src/RimMandrake/GelatinousSlime/Defs/TerrainDefs/SlimeTerrain.xml",
       "proven": "missing",
       "called_by": "takeFootprints currently relies on snow; bounded search src/RimMandrake C# footprint/decal/Slime terms found no warm-ground delivery",
-      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
-      "fate": "needed_by",
-      "why": "Designer decision: Without visible passage marks the frozen ordinary-ground promise is missing. Def comment explicitly says takeFootprints is not delivery; this is a gap, not permission for an art project.",
-      "needed_by": "land: readable wet passage",
+      "serves": "optional passage-mark presentation",
+      "fate": "next_version",
+      "why": "Designer decision: Removing passage marks leaves firm shelves, soft mats, liquid channels and their building/travel choices readable. A bespoke warm-ground decal system is a separable detail, so it moves unbuilt to the next version; nothing needs switching off.",
+      "needed_by": null,
       "ticket": "T18"
     },
     {

@@ -34,7 +34,9 @@ Acceptance test: Default fresh local-map content/state has no new farm-ruin site
 
 Source/callers: `GeneArchive.cs` Active/Dialog; `CompGeneSeeker` gizmo; `SlimeMod.WriteSettings` cache invalidation; default and campaign GeneArchiveDefs. Add/route next-version gene journey master OFF, with target archive selection unavailable. Retain data/classes so existing saved genes and companion mods load. No current contact, resistance check, poison cure, antidote or basic workbench depends on choosing an archive.
 
-Acceptance test: Default normal player cannot open a target/rider selection action or obtain its output/job/letter/incident; no new selection state and clean log. ON with ordinary blank seeker and loaded archive opens the real list and preserves chosen identity; campaign-priority selection remains data-driven.
+This also defers the archive's RM_Gene_SlimeResistance acquisition, with T5–T7 gating its seeker/injection route. No replacement acquisition is promised in 0.1.0. The loss conflicts with law 1 and is presented in owner_pages.md Q1 before application. Preserve existing active resistance genes and RM_SlimeResistant race-extension checks independently of archive availability.
+
+Acceptance test: Default normal player cannot open a target/rider selection action or obtain its output/job/letter/incident; no new selection state and clean log. Existing active resistance genes and race-extension resistance still block film with the archive OFF. ON with ordinary blank seeker and loaded archive opens the real list, including RM_Gene_SlimeResistance, and preserves chosen identity; campaign-priority selection remains data-driven.
 
 ## T5: Switch off seeker acquisition and gene localisation
 
@@ -114,11 +116,11 @@ Source/callers: `RM_Oomb.xml` uses the SAME VEF EatWeirdFood comp for customThin
 
 Acceptance test: Default eligible oombs eat actual refuse with no promotion/replacement/offspring, promotion job/letter/incident and clean log; all roster forms still exist. ON sufficient real feeding exposes the authored advancement and tame-only split, with readable old/new identity accounting. OFF mid-count/reload preserves counters and living animal, no hidden offspring.
 
-## T18: Deliver and witness warm-ground passage marks
+## T18: Next version — specify warm-ground passage marks
 
-Retained land gap, not an art commission on this pass. `SlimeTerrain.xml` comment documents snow-only takeFootprints; bounded cross-source footprint/decal/Slime search did not find a warm-ground provider. Specify smallest real passage-mark route using existing rendering/terrain facilities: actor/cell keyed transient wet-ground witness, no elastic terrain physics. It must respect ground/floor/water ownership, save/reload validity and normal visibility; no persistent mark buildup or repeated event logging.
+Deferred unbuilt presentation, with nothing to switch off and no first-version delivery obligation. `SlimeTerrain.xml` documents snow-only takeFootprints; bounded cross-source footprint/decal/Slime search found no warm-ground provider. Firm shelves, soft mats and channels remain readable without marks. If commissioned in the next version, specify the smallest transient passage-mark route using existing rendering/terrain facilities, respecting ground/floor/water ownership, visibility, save/reload and bounded buildup.
 
-Acceptance test: On warm snow-free primary wet slime and each declared owned legacy wet surface, an actual walk leaves observable recent passage associated with its route, absent in a same-light no-walk/floor control. Marks do not rely on snow or preplaced art, obscure play after a season or introduce log errors. Repeated route and reload are readable.
+Acceptance test: none, no warm-ground renderer exists and no first-version bar needs it. A next-version commission must supply warm snow-free walk/no-walk and floor controls, reload and buildup witnesses before enabling it.
 
 ## T19: Keep the optional body overlay as a future presentation specification
 
@@ -178,7 +180,9 @@ Acceptance test: Planted cancelled-job-as-completion, missing read, wrong id/ass
 
 Implement M1 using existing production kernels/shrinker and T27 records. Include all declared early/advanced/drying/cure/raw/resistance/holder/caravan/OFF transitions and their own signs/item accounting; invalid/unsupported holders are unknown until grounded. This is an offline model plus calibration reader, not new game behaviour.
 
-Acceptance test: M1 output covers the declared state/transition regions, shrinks a failing sequence and rejects all named planted clinical mutants. Recorded actual contact/UseItem/caravan/terminal/save receipts meet M1 calibration bounds before any offline acceptance; an uncalibrated wrapper branch stays unknown.
+Before any M1 output counts for escape, collect running-game treatment rows separately for walking on map, in bed, downed on map bare ground, held/released and caravan. Each row records actual ordinary targeting/action availability, reach/travel, start/cancel/finish, same patient alive with cleared film, consumed antidote identity and toxic cost. For held prey, read targeting while held and, if required, witness release and subsequent ordinary helper completion. Caravan treatment must use its actual supported action, never an assumed map job. Direct effect calls and another class's success cannot fill a missing row; every uncalibrated class is UNKNOWN and blocks full-range acceptance.
+
+Acceptance test: M1 output covers the declared state/transition regions, shrinks a failing sequence and rejects all named planted clinical mutants. Recorded actual contact/UseItem/caravan/terminal/save receipts meet M1 calibration bounds before any offline acceptance. Treatment has successful ordinary-action and delayed/cancelled controls per holder class; an omitted class or a class where treatment cannot be completed cannot be accepted by model prediction. M1 covers timing and severity only between calibrated classes; an uncalibrated wrapper branch stays UNKNOWN.
 
 ## T29: Build rain route, conservation and geometry readers
 

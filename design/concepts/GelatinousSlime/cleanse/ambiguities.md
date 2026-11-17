@@ -6,6 +6,10 @@ Every selection below is mine as Designer under the current brief. Source establ
 
 Two readings: the mod is the selected-gene expedition, with ordinary biome content as its stage; or the first version is ordinary life on a useful, absorbing body. Consequence: the former needs archive curation, navigation, extraction, coma, inheritance and social state before any biome can pass. I select the ordinary material/contact chain and defer the expedition. The concrete counterargument is the original owner instruction in `RM_gelatinous_slime_mod.md` and the later delegated flagship pick, not a lack of imagination. The new cleansing card explicitly delegates scope and requires land, life and one signature. Deferring this request preserves it without requiring both signatures now. The fresh reviewer correctly identified concrete evidence against this default, so owner_pages.md page two now carries Q1: the choice, verbatim-flow/centerpiece/showcase evidence, the material/contact default and the required redefinition if he chooses the expedition. The default remains in force for this proposal; no owner answer or acceptance is invented.
 
+### Colonists acquiring resistance (R1)
+
+Two readings: moving the archive journey leaves an unspecified first-version colonist immunity route; or it also defers new resistance acquisition. Consequence: the latter gives up the owner's explicit acquirable-resistance economy, law 1 (2026-09-10, RM_gelatinous_slime_mod.md §3). I take the latter as a scope proposal and disclose the conflict under Q1 before application, without changing the ruling or claiming a replacement route. Floors, processing, drying and antidote still permit ordinary settlement. If the owner keeps acquirable resistance, retain a priced RM_Gene_SlimeResistance route independently of the expedition if needed, with a use_body or escape picture and delivery ticket. SlimeGenes.xml and DefaultArchive.xml establish the promised gene and acquisition; RM_SlimeResistant is a race-extension identity, not a colonist acquisition action. Existing active genes and native resistance checks stay functional. The reviewer is right that this loss needed its own census row and explicit disclosure.
+
 ### “A living, spreading superorganism”
 
 Two readings: a strategic organism conquers neighbouring world tiles; or the existing terrain, native organisms and shared plant tops express local assimilation. Consequence: the first introduces world mutation and a new spread engine. I select local terrain/life/contact, including existing Slime growth tops, never world-tile conquest. Source: CASE root line, `RM_TopResolver.Slime`, fixed-world/no-worldgen rulings, frozen sheet's little-to-no-sentience and connected-body lore. No planet-scale expansion model is requested.
@@ -36,7 +40,11 @@ Two readings: any shelter or furniture blocks slime; or current top terrain at t
 
 ### “Footprints always”
 
-Two readings: `takeFootprints=true` proves passage marks on the biome; or actual warm-ground passage must visibly leave marks. Consequence: a snow-only engine feature passes a snowless Slime map. I select the latter; T18 is retained land work. Evidence: `SlimeTerrain.xml` explicitly documents its snow dependency and missing decal pass; bounded cross-source footprint/decal/Slime search found no warm-ground provider. Exact mark lifetime and sheet count are not bars.
+Two readings: the frozen passage-mark request is essential land; or it is a separable custom detail under the cleansing brief. Consequence: the former requires a new warm-ground renderer before the terrain can pass. I move it unbuilt to the next version under T18 (R2). Removing marks leaves firm shelves, soft mats, liquid channels and their building/travel affordances readable, so the reviewer is right that the old rationale only repeated the request. `SlimeTerrain.xml` documents snow-only footprints and no warm-ground provider was found; nothing needs switching off. Ground no longer requires marks.
+
+### Outsiders “visibly” absorbed (R3)
+
+Two readings: a body overlay marks every filmed outsider; or health, inspect and actual impairment expose absorption while the sprite is unchanged. Consequence: the first restores the explicitly deferred film renderer. I take the second and make residents.says literal: “readably being absorbed (health and inspect).” Its accepting picture explicitly leaves the sprite unchanged. The reviewer is right that “visibly” could demand the moved extra.
 
 ### “The ground strikes back” / slime in the eyes
 
@@ -69,6 +77,8 @@ Two readings: even a resistant native must acquire film for fairness, and cooked
 ### Antidote “works”
 
 Two readings: a direct `DoEffectOn` call removes a hediff; or a capable helper can target, reach and finish an ordinary UseItem action while the patient lives, consuming the item and paying toxicity. Consequence: a comatose/downed patient is advertised as savable but cannot receive the item job. I select completed normal treatment, paired with delayed/untreated arms. Source: existing targetable antidote and owner existing-UI answer. No pre-injection safety veto or guaranteed rescue is invented; injected gene rescue itself moves.
+
+R4 exposes a second ambiguity: one real treatment receipt could calibrate every holder, or each engine availability class needs its own witness. I require T28 running-game rows for walking on map, bed, downed on bare map ground, held/released and caravan before any M1 escape output counts. Read actual action availability, targeting, reach/travel, completion, cleared film on the same living patient, consumption and toxic cost, with cancelled/delayed controls. If held treatment needs release, witness that release and subsequent ordinary helper job; caravan needs its actual supported action. An unavailable or uncalibrated class stays UNKNOWN and blocks full-range acceptance. M1 only extends timing/severity coverage between calibrated classes. The reviewer is right that the clinical kernel cannot establish engine job availability.
 
 ### Hazard OFF with established film
 

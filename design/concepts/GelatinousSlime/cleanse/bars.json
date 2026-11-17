@@ -2,9 +2,9 @@
   "bars": [
     {
       "id": "ground",
-      "says": "On the Slime, a builder can distinguish firm building shelves from yielding ground and liquid channels, sees passage marks on wet ground, and finds local stone through production rather than quarrying.",
+      "says": "On the Slime, a builder can distinguish firm building shelves from yielding ground and liquid channels, and finds local stone through production rather than quarrying.",
       "meant": {
-        "intent": "Ordinary terrain must look and act like the body, with readable building/travel choices; no natural bedrock and no decorative footprints claim supported only by snow.",
+        "intent": "Ordinary terrain must look and act like the body, with readable building/travel choices; no natural bedrock.",
         "source": "delegated: from design/Jawa/worldbuilding/biomes/the_slime.md \u00a7\u00a75-6,9; RM_gelatinous_slime_mod.md \u00a72; roads owner card reported in that sheet; standing no-worldgen/Direct Sun rules.",
         "figurative": [
           {
@@ -15,25 +15,25 @@
         ]
       },
       "accept": [
-        "A route leaves marks in warm wet slime; a wall can stand on a crust shelf while the liquid channel makes the builder choose a different site.",
+        "A wall can stand on a crust shelf while the liquid channel makes the builder choose a different site.",
         "A heavy building can be placed on the firm shelf but is refused on the soft mat; the compressor supplies blocks that a worker uses for construction instead of quarrying local rock."
       ],
       "reject": [
-        "A green soil recolour offers identical building ground everywhere and its advertised footprints appear only in snow.",
+        "A green soil recolour offers identical building ground everywhere.",
         "A convenient natural quarry substitutes for producing the local building stone."
       ],
-      "lazy": "none: The sentence requires visual differentiation coupled to actual building choices, warm-ground marks and productive stone, so recolour-only and snow-only builds fail.",
+      "lazy": "none: The sentence requires visual differentiation coupled to actual building choices and productive stone, so recolour-only builds fail.",
       "range": {
-        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Each primary terrain and packaged legacy terrain; contact under roof and constructed floor separately; footprints of standing/walking flesh and native animals; light/medium/heavy build footprints, orientations and shore boundaries; current art, play zoom and inspection zoom.",
-        "left_out": "No additional art styles, exact footprint lifetime, fixed wet area or planet placement is required. Imported blocks and existing authored wrecks are allowed. No new world/map generator."
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Each primary terrain and packaged legacy terrain; contact under roof and constructed floor separately; light/medium/heavy build footprints, orientations and shore boundaries; current art, play zoom and inspection zoom.",
+        "left_out": "No additional art styles, fixed wet area or planet placement is required. Imported blocks and existing authored wrecks are allowed. No new world/map generator."
       },
       "sees": {
-        "instrument": "T26 normal-play terrain/build preview and visual review plus T18 warm-ground passage witness; state affordance/contact reads identify why the visible choice matters. C1/C7 check ground identities and owned paths.",
-        "start": "Existing authored no-rock slime map with dry shelves, wet ground, a liquid channel, constructed floor and known build orders; footprint surface free of snow.",
+        "instrument": "T26 normal-play terrain/build preview and visual review; state affordance/contact reads identify why the visible choice matters. C1/C7 check ground identities and owned paths.",
+        "start": "Existing authored no-rock slime map with dry shelves, wet ground, a liquid channel, constructed floor and known build orders.",
         "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
-        "control": "Compare same pawn, light and route on ordinary floor versus body ground, and footprint before/after its actual walk. No snow, smear-spawn helper or preplaced artwork can count. Compare normal wall placement with its underlying terrain affordance.",
+        "control": "Compare normal wall placement on shelf, soft ground and channel with each underlying terrain affordance. Compare the same pawn and route on ordinary floor versus body ground for the contact reading.",
         "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
-        "live_only_why": "Nothing cheaper distinguishes actual ordinary engine jobs, rendered affordances or shared-engine integration from a correct pure kernel and inert defs; this bar therefore needs the specified running-game reading. The sentence requires visual differentiation coupled to actual building choices, warm-ground marks and productive stone, so recolour-only and snow-only builds fail."
+        "live_only_why": "Nothing cheaper distinguishes actual ordinary engine jobs, rendered affordances or shared-engine integration from a correct pure kernel and inert defs; this bar therefore needs the specified running-game reading. The sentence requires visual differentiation coupled to actual building choices and productive stone, so recolour-only builds fail."
       },
       "live_only": true,
       "touches": [
@@ -181,12 +181,12 @@
         "left_out": "Treatment is possible with supplies and time, not guaranteed regardless of distance, blocked doors or every colonist being incapacitated. It does not cure a dead pawn, undo independent coma or promise resurrection. All DLC present."
       },
       "sees": {
-        "instrument": "M1 state-machine and timing walk with T28 real UseItem/consumption/travel and caravan tick calibration. Calibration records distinguish targetability and work completion from invoking DoEffectOn directly; predicted deadline is derived, not hard-coded.",
+        "instrument": "M1 state-machine and timing walk only after T28 records real treatment calibration rows for every holder class: walking on map, in bed, downed on map bare ground, held/released, and caravan. Each row witnesses ordinary action availability, targeting, reach/travel, job start and completion, the same patient alive with film cleared, actual antidote consumption and toxic cost. For held prey, record targeting while held and, if release is necessary, actual release followed by ordinary helper completion. Caravan requires its actual supported treatment action, not a map-job assumption. Direct DoEffectOn calls do not count. Any uncalibrated class is UNKNOWN and blocks acceptance across the declared range; one class cannot calibrate another. M1 covers timing and severity between these calibrated classes, including measured delays and caravan tick calibration; the predicted deadline is derived, not hard-coded.",
         "start": "Matching early/advanced patients from witnessed contact, known route/floor/drying tag, helper capability and labelled antidote; sufficient prepared route in successful arm and delayed route in failure arm.",
         "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
         "control": "Read patient still alive, item actually consumed by finished job and toxic cost incurred. Drying branch compares equivalent neutral geography; treatment versus untreated branches share contact and elapsed ticks. Revoke reachability in negative branch and reject a reported cure.",
         "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
-        "live_only_why": "A game-calibrated deterministic state/geometry instrument can discriminate these pictures; until calibration is recorded, its output is a prediction, not acceptance. No live look is required to distinguish the defined outcomes."
+        "live_only_why": "Running-game treatment availability and completion witnesses are mandatory per holder class under T28. Once every class is calibrated, M1 can discriminate timing/severity outcomes over the declared sweep without a live look at each case. Uncalibrated classes remain UNKNOWN; model timing cannot establish engine job availability."
       },
       "live_only": false,
       "touches": [
@@ -254,14 +254,14 @@
     },
     {
       "id": "residents",
-      "says": "A player living on the Slime meets resistant grazers and corrosive scavengers, a hunting fubbum and a flying dwommo, with native animals able to drink their environmental water and outsiders visibly being absorbed.",
+      "says": "A player living on the Slime meets resistant grazers and corrosive scavengers, a hunting fubbum and a flying dwommo, with native animals able to drink their environmental water and outsiders readably being absorbed (health and inspect).",
       "meant": {
         "intent": "Ordinary native roles and outsider contrast must function, not just be listed; no roster eviction or new ecological minigame. Oomb refuse feeding and wuum reproductive renewal count as life, but channel paving and oomb multiplication are deferred.",
         "source": "Frozen the_slime.md \u00a74; current BiomeDef roster and oomb/wuum source; standing flyer and native environmental-water rulings. delegated: test natural AI by role and actual flight tracker, not a staged lineup.",
         "figurative": []
       },
       "accept": [
-        "Native grazers feed, an oomb eats refuse, and a thirsty native beside local liquid drinks without accumulating dehydration; a susceptible outsider carries readable film.",
+        "Native grazers feed, an oomb eats refuse, and a thirsty native beside local liquid drinks without accumulating dehydration; a susceptible outsider carries film shown in health and inspect with real impairment while its sprite remains unchanged.",
         "A fubbum selects permitted prey through normal hunting and a dwommo enters flight according to its tracker while keeping its native resistance.",
         "A dying corrosive native causes visible acid injury in its affected area, while a matched animal beyond that area escapes that death burst."
       ],
@@ -475,7 +475,7 @@
     },
     {
       "id": "C7",
-      "what": "Kit paths/facings, Dwommo numbered-animation prefix resolution and whole-body flight fields; warm-ground footprint renderer witness. Asset counts/extra styles never passing requirements. Owner Titanoslime stage-one/five visual obligation remains owed."
+      "what": "Kit paths/facings, Dwommo numbered-animation prefix resolution and whole-body flight fields. Asset counts/extra styles never passing requirements. Owner Titanoslime stage-one/five visual obligation remains owed."
     },
     {
       "id": "C8",
@@ -689,7 +689,7 @@
         "R_scope"
       ],
       "holds_together": "argued",
-      "why": "Existing UI is the required display, not a second simulation. Patient/captor/weather/terrain identities and causes are shared observations. Warning payloads describe current rate/location and never imply a universal pause or peaceful ecology. Ground silhouettes/footprints and real actions satisfy distinct readings; no new UI or sentience is necessary.",
+      "why": "Existing UI is the required display, not a second simulation. Patient/captor/weather/terrain identities and causes are shared observations. Warning payloads describe current rate/location and never imply a universal pause or peaceful ecology. Ground silhouettes and real actions satisfy distinct readings; no new UI or sentience is necessary.",
       "model": null
     },
     {

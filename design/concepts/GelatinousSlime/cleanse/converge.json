@@ -1,0 +1,143 @@
+{
+ "mod": "GelatinousSlime",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "core_promise_weakened",
+     "where": "census.json (no row for colonist resistance acquisition); next_version.md archive_selection; definition.md 'Using it' and 'Settings'",
+     "evidence": "The owner's law 1 (2026-09-10) in design/RimMandrake/RM_gelatinous_slime_mod.md §3 reads: 'The resistance economy is therefore real: the mod ships resistance as an acquirable state (§5's archive carries a slime-resistance gene at the machine's standard price...)'. src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes.xml says RM_Gene_SlimeResistance is 'deliberately in the archive'. The proposal moves archive_selection, seeker and injection to the next version, switched off. No census row, bar, rule or ticket says how a colonist gains resistance in 0.1.0, and nothing names this law as given up. In the proposal resistance belongs only to natives ('resistant flesh still gets the benefit'), so a sourced owner law is dropped silently. Q1 on page two does not mention it.",
+     "would_pass": "Either (a) a kept, defined first-version route by which a colonist becomes resistant (for example the gene through ordinary Biotech genepack or implant handling, decoupled from the archive dialog), with a census row and a picture under use_body or escape; or (b) the loss stated plainly on the owner's pages, citing law 1, as part of Q1 or as Q2, with what changes if he keeps it.",
+     "smallest_fix": "Add a census row 'colonist resistance acquisition' (RM_Gene_SlimeResistance plus the RM_SlimeResistant extension) with a fate and a deletion argument. If it moves, add one line to owner_pages.md page two citing law 1 and the default taken."
+    },
+    {
+     "id": "R2",
+     "head": "extra_without_argument",
+     "where": "census.json row 'footprints' (fate needed_by 'land: readable wet passage', ticket T18); bars.json bar 'ground' says and accept picture 1",
+     "evidence": "The row reads built 'absent'. Its why is 'Without visible passage marks the frozen ordinary-ground promise is missing', which repeats the sheet's words ('footprints always show', the_slime.md §5) and is not a deletion argument. Without marks, land still has firm shelves, soft mats, liquid channels and no quarry. A warm-ground decal system nobody has built is the kind of 'little custom detail that wasn't strictly necessary' he asked to move. Keeping it adds new build work to a live-only bar.",
+     "would_pass": "A deletion argument showing that, with passage marks removed, a player could no longer read land as land; or the marks moved to the next version and taken out of the ground bar.",
+     "smallest_fix": "Change footprints to next_version in census.json and next_version.md (nothing to switch off, since nothing is built). Delete 'sees passage marks on wet ground' from ground.says and 'A route leaves marks in warm wet slime;' from its accept picture. Mark T18 as next version."
+    },
+    {
+     "id": "R3",
+     "head": "figurative_unmarked",
+     "where": "bars.json bar 'residents' says: 'outsiders visibly being absorbed'; figurative list is []",
+     "evidence": "The proposal moves the bespoke body film/tint/drip overlay to the next version (next_version.md film_overlay: 'Existing health labels, real impairments and necessary alerts can expose the whole hazard'). The bar still says 'visibly', and its accept picture only asks for 'readable film'. A cold reader would expect a visible mark on the animal's body, which is the moved extra. A builder could rebuild the overlay, or a judge could refuse its absence.",
+     "would_pass": "Either the says uses the literal word, or 'visibly' is listed as figurative, standing for 'readable through health, inspect and impairment state, with no body overlay', with an accept picture of a filmed outsider whose sprite is unchanged.",
+     "smallest_fix": "Replace 'visibly being absorbed' with 'readably being absorbed (health and inspect)', or add a figurative entry for 'visibly' with that accept picture."
+    },
+    {
+     "id": "R4",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json bar 'escape': live_only false, sees.instrument 'M1 state-machine and timing walk with T28 ... calibration', live_only_why 'No live look is required'",
+     "evidence": "One reject picture is 'The cure function works in isolation while a normal helper cannot target, reach and finish treating the patient.' The range covers 'walking/bed/downed/held/caravan states', 'helper contention with reachability/travel/work delays'. M1 models RM_SlimeLadder transitions. Whether UseItem can target a downed pawn on bare ground, in a bed or in a caravan is an engine job-availability fact the model does not contain. One calibration run in one holder state leaves a plausible false pass: M1 predicts cure for a holder class where the job can never be given.",
+     "would_pass": "The helper-completion arm is read in the running game for each holder class in the range (bed, downed on the map, held or released, caravan), with consumption and toxic cost observed. M1 covers only timing and severity between those calibrated classes.",
+     "smallest_fix": "In escape.sees, require T28 calibration rows per holder class before any M1 output counts, and name the uncalibrated classes UNKNOWN. Or set escape live_only true and update the live-only count on the owner's pages and in result.json."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Added colonist resistance acquisition as a next-version capability with source evidence and deletion argument. Q1 now explicitly discloses giving up law 1’s acquirable-resistance economy, the default taken, the conflict requiring owner acceptance before application, and the priced route/bar/ticket needed if resistance stays. Existing genes and race-extension resistance remain effective; counts updated.",
+      "where": "census.json colonist_resistance_acquisition; owner_pages.md Q1 and counts; definition.md Using it and Settings; next_version.md colonist_resistance_acquisition; tickets.md T4; ambiguities.md Colonists acquiring resistance; result.json counts"
+     },
+     {
+      "id": "R2",
+      "changed": "Moved unbuilt footprints to next version with a deletion argument and no switch-off work. Removed passage-mark requirements and witnesses from ground, the kept check and meeting, and current-version land descriptions. T18 is a deferred specification; counts updated.",
+      "where": "census.json footprints; next_version.md footprints; bars.json ground, C7 and player_information meeting; tickets.md T18; definition.md Land running whole; owner_pages.md land, next-version list and counts; ambiguities.md Footprints always; result.json counts"
+     },
+     {
+      "id": "R3",
+      "changed": "Replaced visibly with literal health/inspect readability and added an accepting outsider picture whose sprite is unchanged.",
+      "where": "bars.json residents.says and accept[0]; ambiguities.md Outsiders visibly absorbed"
+     },
+     {
+      "id": "R4",
+      "changed": "Required running-game treatment calibration rows for every holder class before any M1 escape output counts, witnessing ordinary availability, targeting, completion, consumption and toxic cost. Held/released and caravan paths require their actual actions; uncalibrated classes stay UNKNOWN and block full-range acceptance. M1 covers timing/severity only between calibrated classes.",
+      "where": "bars.json escape.sees; models.md M1 calibration; tickets.md T28; owner_pages.md Unsettled delivery; ambiguities.md Antidote works"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "census.json now has a row colonist_resistance_acquisition: fate next_version, ticket T4. Its why reads 'Removing new colonist resistance acquisition leaves floors, processing, drying and toxic antidote as workable preparation/escape routes, but gives up law 1's explicit acquirable-resistance economy in 0.1.0. This conflict is disclosed in owner_pages.md Q1.' owner_pages.md page two adds: 'Q1 also gives up law 1's acquirable colonist-resistance economy (2026-09-10, RM_gelatinous_slime_mod.md §3). Default: acquisition next version, no replacement route in 0.1.0; this conflict requires your acceptance. Keeping acquisition requires a priced RM_Gene_SlimeResistance route... with a use_body/escape picture and ticket.' That meets would_pass (b): the loss is stated, law 1 is cited, the default is given and so is what changes if he keeps it. definition.md 'Using it' and 'Settings', next_version.md, T4 and ambiguities.md agree with it. The source backs the claim that existing resistance stays effective: Slimification.cs:363-366 checks RM_Gene_SlimeResistance and SlimeResistantExtension, and DefaultArchive.xml:53 lists the gene. The counts add up: 37 kept + 23 next + 1 retire = 61, matching result.json."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "census.json footprints now reads fate 'next_version', needed_by null, why 'Removing passage marks leaves firm shelves, soft mats, liquid channels and their building/travel choices readable... moves unbuilt to the next version; nothing needs switching off.' next_version.md has a new entry '### footprints' with 'Delivery: absent... Nothing exists to switch off.' In bars.json ground, says no longer contains 'sees passage marks on wet ground', and accept[0] is now 'A wall can stand on a crust shelf while the liquid channel makes the builder choose a different site.' The T18 witness is gone from the instrument and from C7. tickets.md T18 is retitled 'Next version — specify warm-ground passage marks' with 'Acceptance test: none, ...'."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json residents.says now ends 'outsiders readably being absorbed (health and inspect)', which is the literal wording would_pass asks for. accept[0] adds 'a susceptible outsider carries film shown in health and inspect with real impairment while its sprite remains unchanged'. So the says is literal and has an accept picture with the sprite unchanged."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "bars.json escape.sees.instrument now reads 'M1 state-machine and timing walk only after T28 records real treatment calibration rows for every holder class: walking on map, in bed, downed on map bare ground, held/released, and caravan', each witnessing 'ordinary action availability, targeting, reach/travel, job start and completion... actual antidote consumption and toxic cost'. It continues: 'Any uncalibrated class is UNKNOWN and blocks acceptance across the declared range; one class cannot calibrate another. M1 covers timing and severity between these calibrated classes.' live_only_why now says 'model timing cannot establish engine job availability.' models.md M1 and tickets.md T28 repeat the per-class rows and the UNKNOWN rule. This is the reviewer's smallest_fix option 1, so live_only staying false with an unchanged count is consistent."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Antidote “works”",
+    "ambiguities.md Colonists acquiring resistance (R1)",
+    "ambiguities.md Outsiders “visibly” absorbed (R3)",
+    "ambiguities.md “Footprints always”",
+    "bars.json bars/escape",
+    "bars.json bars/ground",
+    "bars.json bars/residents",
+    "bars.json checks/C7",
+    "bars.json meetings",
+    "census.json rows/colonist_resistance_acquisition",
+    "census.json rows/footprints",
+    "definition.md Land running whole",
+    "definition.md Say the mod",
+    "definition.md Settings",
+    "definition.md Using it",
+    "models.md M1: Situation and clinical transition generator",
+    "next_version.md colonist_resistance_acquisition",
+    "next_version.md footprints",
+    "owner_pages.md Page one — the proposed Slime",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T18: Deliver and witness warm-ground passage marks",
+    "tickets.md T18: Next version — specify warm-ground passage marks",
+    "tickets.md T28: Build the situation and clinical instrument",
+    "tickets.md T4: Switch off target/rider archive selection"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 941186,
+     "output_tokens": 10757
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "definition.md 'Four short stories' (The first hour) still reads 'The player lays a floor, sees the recent wet footprints outside, and orders the first harvest.'",
+   "reason": "Warm-ground footprints moved unbuilt to the next version (R2), so this current-version story describes a feature 0.1.0 will not have. The fix did not change this entry, so it is the earlier look's miss. Delete that clause.",
+   "round": 1
+  },
+  {
+   "what": "footprints is the frozen the_slime.md §5 land request ('footprints always show'), yet unlike law 1 it is not disclosed on owner_pages.md page two as a sourced request given up. It appears only in the page-one next-version list.",
+   "reason": "The reviewer prescribed the move, so it is not a regression. A one-line note in page two's defaults would keep the owner's reading consistent with how R1 was handled.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "59ab1037c44943a77fa853c4704e22453b600138f6240ab221a0dc8f1630db49",
+ "seconds": 330,
+ "at": "2026-11-17T06:45:03"
+}

@@ -4,9 +4,9 @@
  "outcome": "proposed",
  "signature": "The living material supplies food, stone and poison relief, but touching or eating it raw absorbs susceptible flesh, making preparation and reversal part of gathering and using the body.",
  "counts": {
-  "capabilities": 60,
-  "kept": 38,
-  "next_version": 21,
+  "capabilities": 61,
+  "kept": 37,
+  "next_version": 23,
   "recommend_retire": 1,
   "old_bars": 13,
   "bars": 9,
@@ -19,5 +19,5 @@
   "questions": 1
  },
  "blocked_on": [],
- "applyable": false
+ "applyable": true
 }

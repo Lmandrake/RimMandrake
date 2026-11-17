@@ -34,6 +34,22 @@ Why outside land, life or signature: Choosing target/rider archives starts a sep
 
 Delivery: present; switch/spec ticket T4.
 
+### colonist_resistance_acquisition
+
+What: RM_Gene_SlimeResistance is acquired through the archive/seeker journey; RM_SlimeResistant is the separate race-extension identity, not a colonist acquisition job.
+
+Why outside land, life or signature: Floors, processing, drying and antidote keep settlement workable without acquired immunity. Deferring acquisition nevertheless gives up the explicitly required resistance economy of law 1 (2026-09-10, RM_gelatinous_slime_mod.md §3). This is a disclosed scope conflict in owner_pages.md Q1, requiring acceptance before application, not a changed ruling or an invented replacement route. Keep existing active genes and native extension resistance functional.
+
+Delivery: present; acquisition switch/spec ticket T4, with seeker/injection gates T5–T7.
+
+### footprints
+
+What: Warm wet passage marks independent of snow.
+
+Why outside land, life or signature: Firm shelves, soft mats, liquid channels and their building/travel choices remain readable without marks. A bespoke decal system is a separable presentation detail.
+
+Delivery: absent; next-version specification T18. Nothing exists to switch off.
+
 ### seeker_scanner
 
 What: Blank handheld seeker is primed through an archive dialog and reports nearest slime world tile or a time-limited in-map extraction mark.

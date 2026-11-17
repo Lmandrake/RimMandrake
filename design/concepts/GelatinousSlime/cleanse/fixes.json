@@ -1,0 +1,24 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Added colonist resistance acquisition as a next-version capability with source evidence and deletion argument. Q1 now explicitly discloses giving up law 1’s acquirable-resistance economy, the default taken, the conflict requiring owner acceptance before application, and the priced route/bar/ticket needed if resistance stays. Existing genes and race-extension resistance remain effective; counts updated.",
+      "where": "census.json colonist_resistance_acquisition; owner_pages.md Q1 and counts; definition.md Using it and Settings; next_version.md colonist_resistance_acquisition; tickets.md T4; ambiguities.md Colonists acquiring resistance; result.json counts"
+    },
+    {
+      "id": "R2",
+      "changed": "Moved unbuilt footprints to next version with a deletion argument and no switch-off work. Removed passage-mark requirements and witnesses from ground, the kept check and meeting, and current-version land descriptions. T18 is a deferred specification; counts updated.",
+      "where": "census.json footprints; next_version.md footprints; bars.json ground, C7 and player_information meeting; tickets.md T18; definition.md Land running whole; owner_pages.md land, next-version list and counts; ambiguities.md Footprints always; result.json counts"
+    },
+    {
+      "id": "R3",
+      "changed": "Replaced visibly with literal health/inspect readability and added an accepting outsider picture whose sprite is unchanged.",
+      "where": "bars.json residents.says and accept[0]; ambiguities.md Outsiders visibly absorbed"
+    },
+    {
+      "id": "R4",
+      "changed": "Required running-game treatment calibration rows for every holder class before any M1 escape output counts, witnessing ordinary availability, targeting, completion, consumption and toxic cost. Held/released and caravan paths require their actual actions; uncalibrated classes stay UNKNOWN and block full-range acceptance. M1 covers timing/severity only between calibrated classes.",
+      "where": "bars.json escape.sees; models.md M1 calibration; tickets.md T28; owner_pages.md Unsettled delivery; ambiguities.md Antidote works"
+    }
+  ]
+}
