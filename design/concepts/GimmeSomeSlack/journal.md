@@ -81,6 +81,12 @@ The nine-line version vision (shock rule, Wire down, the tap, four looks, switch
 8. **The held statements are about FlowWorks pits.** All three GSS statements were said during FlowWorks under-liquid looks;
    the cords' draw order under liquid lives in `src/RimMandrake/GimmeSomeSlack/Source/CordUnderLiquid.cs`, the liquid in
    FlowWorks.
+9. **Three small facts noted by blind cycle 3, kept here, not as tickets** (`version/blind_challenge/cycle_3/lane2/faults.json`,
+   Polish, noted 2026-11-16; tickets dropped in the GSS ticket sweep that night):
+   - 1 in 800 multi-wire drops ends two fallen tips 0.045 cell apart.
+   - A north-south overhead span draws on its chord; `sc_spans`' "sag above zero" would still pass it.
+   - `T_STATICS_CENSUS` reads source text only: an early return in `GssSessionReset` would pass it; the live
+     `sc_statics_new_game` row decides.
 
 ### Questions for him (open; each written here, no bar edited)
 
