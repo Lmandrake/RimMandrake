@@ -450,7 +450,11 @@ def gallery(t):
 
 @suite.chain("beauty_pair")
 def beauty_pair(t):
-    """Bar 8: Vandal (Beauty -15) left, TallyMarks (-3) right, Beauty read off the spawned things."""
+    """sc_beauty_pair (ugliness_visible; owner by card 2026-11-16, "Look and stat agree"): a vandal scrawl looks worse than a tally AND
+    inspects as uglier when the same hand made both. The picture: the pair side by side, unlabelled, for the blind judge. The stat: one
+    colonist's hand paints a scrawl and a tally at each of the seven crafts it can roll (RM_GraffitiStage.Pair, capped by form as
+    Filth_Mark.MakeMark caps it); at every one the scrawl's inspect-line beauty (NetBeauty) is below the tally's, and the Beauty stat the
+    info card shows is that same number. No beauty value is named here: the order is the bar."""
     x, z = t.anchor
     with t.component("site_ready_beauty_pair"):
         _prep_site(t, 40)
@@ -460,23 +464,33 @@ def beauty_pair(t):
                       % (VANDAL_DEF, x - 4, z + 1, x + 4, z + 1))
 
     with t.component("beauty_pair", shows=["mark_ugliness_is_visible"]):
-        r = t.bridge_call("jawa/list_things", defName="%s,RM_Graffiti_TallyMarks" % VANDAL_DEF,
-                          rect="%d,%d,17,3" % (x - 8, z))
-        if t._guard():
-            rows = {(a.get("def") or a.get("defName")): a.get("id") for a in ((r or {}).get("things") or [])}
-            want = {VANDAL_DEF: -15.0, "RM_Graffiti_TallyMarks": -3.0}
-            for d, beauty in want.items():
-                if d not in rows:
-                    raise ExpectationFailed("%s not placed in the pair" % d)
-                st = t.bridge_call("jawa/thing_stats", thing=rows[d], stats="Beauty")
-                val = None
-                for th in (st or {}).get("things") or []:
-                    for s in th.get("stats") or []:
-                        if s.get("defName") == "Beauty":
-                            val = s.get("value")
-                if val is None or abs(float(val) - beauty) > 0.01:
-                    raise ExpectationFailed("%s Beauty read %r, expected %s" % (d, val, beauty))
         t.screenshot(rect=(x - 8, z - 1, 17, 4), padding=0, ppc=PLAY_PPC)
+
+    with t.component("beauty_pair_same_hand_inspects_uglier", shows=["mark_ugliness_is_visible"]):
+        text, _ = _static(t, STAGE, "Pair")
+        if t._guard():
+            head, _, body = text.partition("|")
+            rows = body.split()
+            if len(rows) != 7:
+                raise ExpectationFailed("RM_GraffitiStage.Pair gave %d hands, want 7: %r" % (len(rows), text))
+            bad = []
+            for row in rows:
+                q, _, pair = row.partition(":")
+                marks = [p.split(":") for p in pair.split("/")]
+                if len(marks) != 2 or any(len(m) != 3 for m in marks):
+                    raise ExpectationFailed("RM_GraffitiStage.Pair row %r is not scrawl/tally craft:inspect:stat" % row)
+                (sc, si, ss), (tc, ti, ts) = marks
+                si, ss, ti, ts = float(si), float(ss), float(ti), float(ts)
+                if abs(si - ss) > 0.01 or abs(ti - ts) > 0.01:
+                    bad.append("%s hand: the Beauty stat (%s, %s) is not the inspect line (%s, %s)" % (CRAFTS[int(q)], ss, ts, si, ti))
+                if not si < ti:
+                    bad.append("%s hand: scrawl (%s craft) inspects %s, not uglier than the tally (%s craft) %s"
+                               % (CRAFTS[int(q)], sc, si, tc, ti))
+            t._current.detail = body.strip()
+            if bad:
+                raise ExpectationFailed("; ".join(bad))
+            r = head.split()[1].split(",")
+            t.screenshot(rect=(int(r[0]), int(r[1]), int(r[2]), int(r[3])), padding=0, ppc=PLAY_PPC)
 
 
 # ------------------------------------------------------------------ settings (all six)
@@ -2611,8 +2625,8 @@ def _held(t, nick, defs):
 @suite.chain("scene_art_skill")
 def scene_art_skill(t):
     """sc_art_skill (art_skill, inv_beauty_and_craft): in two identical closed rooms painters of Artistic 2 and 16 each paint ART_DEF on the
-    front face; room Beauty falls for the skill-2 hand and rises for the skill-16 one (a crafted mark's Beauty is CraftBeauty(craft),
-    RM_GraffitiKernel.cs:1029, through StatPart_GraffitiCraft); the skill-2 room's viewer holds RM_Graffiti_UglyMark (negative), the skill-16
+    front face; room Beauty falls for the skill-2 hand and rises for the skill-16 one (a crafted mark's Beauty is MarkBeauty(form, craft),
+    RM_GraffitiKernel.cs, through StatPart_GraffitiCraft); the skill-2 room's viewer holds RM_Graffiti_UglyMark (negative), the skill-16
     room's RM_Graffiti_FineArt (positive) (GraffitiSocial.cs:436). A third pair: a skilled feuding painter's mockery of a named colonist; its
     subject holds anger (RM_Graffiti_Humiliated, as in scene_mockery) and beauty (RM_Graffiti_FineArt) together. Control: the same def with
     craft at Normal (spawned with no maker: hasCraft false, Filth_Mark.cs:422) in a second identical pair gives equal Beauty and no

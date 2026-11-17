@@ -1035,7 +1035,8 @@ namespace RimMandrake.Graffiti
         /// player would believe. A tally or a scratch is a tally however good the hand; a tag can have style; a throw-up can be very good;
         /// a stencil, a poster, a sigil or a piece can be a masterwork. A scrawl is never better than poor work: it is the ugliest thing on the
         /// wall, so it is drawn smeared and muddy and its Beauty is below a tally's whoever holds the can (pass 9: a scrawl by a steady hand had
-        /// been worth 0, the same as a tally, while its picture was the loudest on the wall).</summary>
+        /// been worth 0, the same as a tally, while its picture was the loudest on the wall; the cap alone still tied them for an awful or poor
+        /// hand, so MarkBeauty adds ScrawlVandalism).</summary>
         public static int CraftCeiling(GraffitiForm form)
         {
             switch (form)
@@ -1078,6 +1079,20 @@ namespace RimMandrake.Graffiti
                 case Masterwork: return 18f;
                 default: return quality > Masterwork ? 30f : -6f;
             }
+        }
+
+        /// <summary>What a scrawl's vandalism costs on top of its painter's craft. Owner by card 2026-11-16 ("Look and stat agree"): a scrawl looks
+        /// worse than a tally and inspects as uglier when the same hand made both. With its craft capped at poor and a tally's at normal, the
+        /// craft alone tied them for an awful or a poor hand (and for any hand once both were crossed out); this keeps every scrawl below the
+        /// same hand's tally while a steadier hand's scrawl stays less ugly than a shaky one's.</summary>
+        public const float ScrawlVandalism = 3.5f;
+
+        /// <summary>A painted mark's net beauty in its cell: its painter's craft, and for a scrawl the vandalism on top
+        /// (T_UGLINESS_OFFLINE, the kernel fuzz harness's beauty family).</summary>
+        public static float MarkBeauty(GraffitiForm form, int quality)
+        {
+            float b = CraftBeauty(quality);
+            return form == GraffitiForm.Scrawl ? b - ScrawlVandalism : b;
         }
 
         /// <summary>How far a mark's meaning reaches, by craft: a clumsy insult is laughed off and a great one sticks.</summary>

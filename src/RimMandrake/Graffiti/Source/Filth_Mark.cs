@@ -207,14 +207,16 @@ namespace RimMandrake.Graffiti
             return Spawned && Map.roofGrid.Roofed(Position) ? net / 0.3f : net;
         }
 
-        /// <summary>What this mark does to its cell's beauty, roofs aside: its craft, or a crossed-out ruin of it.</summary>
+        /// <summary>What this mark does to its cell's beauty, roofs aside: its craft as its form takes it (a scrawl's vandalism costs more:
+        /// RM_GraffitiKernel.MarkBeauty), or a crossed-out ruin of it. This is the number the Beauty stat and both inspect lines show.</summary>
         public float NetBeauty
         {
             get
             {
                 float worn = 1f - 0.6f * Fade;
                 if (!hasCraft) return this.GetStatValue(StatDefOf.Beauty) * worn;
-                float net = RM_GraffitiKernel.CraftBeauty(craft);
+                ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
+                float net = ext != null ? RM_GraffitiKernel.MarkBeauty(ext.form, craft) : RM_GraffitiKernel.CraftBeauty(craft);
                 return (defaced ? System.Math.Min(net, RM_GraffitiKernel.CraftBeauty(RM_GraffitiKernel.Poor)) : net) * worn;
             }
         }

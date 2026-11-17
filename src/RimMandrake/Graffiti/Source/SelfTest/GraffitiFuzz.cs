@@ -8,6 +8,7 @@
 //   lure    the breach-lure choice: nearest wins, ties by key, order does not matter
 //   wall    the wall-face draw: side priority over all 16 neighbour masks, offset onto that wall, angle facing it
 //   weather the fade curve: roofed life > open for every form and craft, alpha 1 to 60% of life, 0 at its end, monotone; planted mutants must go red
+//   beauty  a same-hand scrawl inspects uglier than a tally at every craft, fresh or crossed out; craft counts in every form; mutants go red
 //   pressure a raider faction's standing marks: no mark or switch off -> 1.0 exactly, one mark -> the push (capped, never stacked), larger vs sooner, letter/lift; mutants go red
 // A failing case is printed as `family seed N: message | detail`; --fuzz-seed N replays it.
 using System;
@@ -544,6 +545,60 @@ namespace RimMandrake.Graffiti.SelfTest
             return fails;
         }
 
+        // ════════════════════════ beauty ════════════════════════
+        // T_UGLINESS_OFFLINE (RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS; owner by card 2026-11-16, "Look and stat agree"): a
+        // vandal scrawl inspects uglier than a tally when the same hand made both, at every craft the hand can roll, fresh or crossed out, and
+        // craft still counts inside each form. Exhaustive over the seven crafts. The hand's roll is capped by the form as Filth_Mark.MakeMark
+        // caps it. Planted mutants must go red; "craft alone" is the formula before this item (it ties at awful and poor).
+        private static readonly string[] CraftNames = { "awful", "poor", "normal", "good", "excellent", "masterwork", "legendary" };
+
+        private static List<string> BeautyFails(Func<GraffitiForm, int, float> beauty)
+        {
+            var fails = new List<string>();
+            float crossed = RM_GraffitiKernel.CraftBeauty(RM_GraffitiKernel.Poor);
+            for (int q = RM_GraffitiKernel.Awful; q <= RM_GraffitiKernel.Legendary; q++)
+            {
+                Cases++;
+                int sc = Math.Min(q, RM_GraffitiKernel.CraftCeiling(GraffitiForm.Scrawl)), tc = Math.Min(q, RM_GraffitiKernel.CraftCeiling(GraffitiForm.Glyph));
+                float s = beauty(GraffitiForm.Scrawl, sc), g = beauty(GraffitiForm.Glyph, tc);
+                if (!(s < g)) fails.Add($"beauty {CraftNames[q]} hand: scrawl {s} is not uglier than tally {g}");
+                else if (!(Math.Min(s, crossed) < Math.Min(g, crossed))) fails.Add($"beauty {CraftNames[q]} hand, both crossed out: scrawl {Math.Min(s, crossed)} is not uglier than tally {Math.Min(g, crossed)}");
+            }
+            foreach (GraffitiForm form in Enum.GetValues(typeof(GraffitiForm)))
+            {
+                Cases++;
+                int top = RM_GraffitiKernel.CraftCeiling(form);
+                for (int q = RM_GraffitiKernel.Awful; q < top; q++)
+                    if (beauty(form, q + 1) < beauty(form, q)) fails.Add($"beauty {form}: a {CraftNames[q + 1]} hand ({beauty(form, q + 1)}) is uglier than a {CraftNames[q]} one ({beauty(form, q)})");
+                if (top > RM_GraffitiKernel.Awful && !(beauty(form, RM_GraffitiKernel.Awful) < beauty(form, top)))
+                    fails.Add($"beauty {form}: craft does not count, awful {beauty(form, RM_GraffitiKernel.Awful)} vs {CraftNames[top]} {beauty(form, top)}");
+                for (int q = RM_GraffitiKernel.Awful; q <= RM_GraffitiKernel.Legendary; q++)
+                    if (float.IsNaN(beauty(form, q)) || float.IsInfinity(beauty(form, q))) fails.Add($"beauty {form} {CraftNames[q]}: not a number");
+            }
+            return fails;
+        }
+
+        private static List<string> Beauty()
+        {
+            Func<GraffitiForm, int, float> real = RM_GraffitiKernel.MarkBeauty;
+            var fails = BeautyFails(real);
+            Steps++;
+            var mutants = new (string name, Func<GraffitiForm, int, float> b)[]
+            {
+                ("craft alone (the formula before this item)", (f, q) => RM_GraffitiKernel.CraftBeauty(q)),
+                ("a scrawl ignores its hand", (f, q) => f == GraffitiForm.Scrawl ? real(f, RM_GraffitiKernel.Awful) : real(f, q)),
+                ("a scrawl's vandalism only at an awful hand", (f, q) => f == GraffitiForm.Scrawl && q > RM_GraffitiKernel.Awful ? RM_GraffitiKernel.CraftBeauty(q) : real(f, q)),
+                ("a tally as ugly as a scrawl", (f, q) => f == GraffitiForm.Glyph ? real(GraffitiForm.Scrawl, Math.Min(q, RM_GraffitiKernel.Poor)) : real(f, q)),
+            };
+            foreach (var m in mutants)
+            {
+                var hit = BeautyFails(m.b);
+                Console.WriteLine($"  beauty mutant '{m.name}': {(hit.Count > 0 ? "RED (caught): " + string.Join("; ", hit) : "GREEN (survived)")}");
+                if (hit.Count == 0) fails.Add($"beauty mutant '{m.name}' survived every check: the family is blind to it");
+            }
+            return fails;
+        }
+
         // ════════════════════════ pressure ════════════════════════
         // RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS: a raider faction's standing marks push its raids. No mark -> 1.0
         // exactly; switch off -> 1.0 exactly; one mark -> the setting's push (clamped to [1, PushMax]); more marks never stack past it.
@@ -627,6 +682,7 @@ namespace RimMandrake.Graffiti.SelfTest
                 ("wall", () => Wall()),
                 ("paint", () => Paint()),
                 ("weather", () => Weather(N(400), S(1))),
+                ("beauty", () => Beauty()),
                 ("pressure", () => Pressure(N(4000), S(1))),
             };
             foreach (var f in fam)

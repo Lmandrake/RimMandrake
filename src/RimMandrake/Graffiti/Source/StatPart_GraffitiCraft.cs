@@ -17,7 +17,8 @@ namespace RimMandrake.Graffiti
         public override string ExplanationPart(StatRequest req)
         {
             if (!(req.Thing is Filth_Mark m) || !m.hasCraft) return null;
-            return "Painted with " + m.CraftLabel + " craft" + (m.defaced ? ", then crossed out" : "") + ": " + m.NetBeauty.ToString("+0.#;-0.#;0");
+            bool scrawl = m.def.GetModExtension<ModExtension_Graffiti>()?.form == GraffitiForm.Scrawl;
+            return "Painted with " + m.CraftLabel + " craft" + (scrawl ? ", a vandal's scrawl" : "") + (m.defaced ? ", then crossed out" : "") + ": " + m.NetBeauty.ToString("+0.#;-0.#;0");
         }
     }
 

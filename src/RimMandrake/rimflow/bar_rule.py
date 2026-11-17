@@ -47,7 +47,10 @@ _TUNING = [r"\byield (rates?|fields?|values?|amounts?|numbers?)\b", r"\byield an
            r"\bstat (values?|bases?|numbers?)\b", r"\bstatbases\b",
            r"\b(yield|burn|spawn|growth|drop|regen\w*|decay|heal\w*|hunger|commonality|fire) ?rates?\b",
            r"\b(spawn|commonality|density) (weights?|values?)\b",
-           r"\bexact (number|value|count|amount)s?\b"]
+           r"\bexact (number|value|count|amount)s?\b",
+           # a stat named with its number: "the beauty stats read -15 and -3", "Beauty -15" (Graffiti ugliness_visible as locked)
+           r"\bstats? (reads?|of|at|=)\s*[-\u2212+]?\d",
+           r"\b(beauty|cleanliness|comfort|mass|nutrition|armou?r|wealth)\s*[-\u2212+]\d"]
 _VARIANT = [r"\b(graphic|texture|sprite|art) ?variants?\b", r"\bvariant (art|graphics?|textures?|sprites?|count)s?\b",
             r"\bmore than one (graphic|variant|texture|sprite)s?\b", r"\b\d+ (graphic|texture|sprite|art) variants?\b",
             r"\bgraphic ?count\b"]

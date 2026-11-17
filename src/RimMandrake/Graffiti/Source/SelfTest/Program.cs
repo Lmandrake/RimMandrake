@@ -1,5 +1,5 @@
 // Graffiti offline fuzz entry. Knobs (forwarded by selftest_graffiti_fuzz.py): --fuzz-scale F (multiplies every
-// case count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (social|pick|gates|react|misc|cells|lure|wall|paint|weather).
+// case count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (social|pick|gates|react|misc|cells|lure|wall|paint|weather|pressure|beauty).
 using System;
 
 namespace RimMandrake.Graffiti.SelfTest

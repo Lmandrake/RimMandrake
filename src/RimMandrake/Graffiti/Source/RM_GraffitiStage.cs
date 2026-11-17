@@ -511,6 +511,43 @@ namespace RimMandrake.Graffiti
             return "CRAFTS " + origin.x + "," + origin.z + "," + len + ",5 | " + string.Join(" ", parts);
         }
 
+        /// <summary>ugliness_visible (owner by card 2026-11-16, "Look and stat agree"): one colonist's hand paints a vandal scrawl and a tally side by
+        /// side, once for each of the seven crafts the hand can roll, each capped by its form as MakeMark caps it. -> PAIR rect | per hand
+        /// q:scrawl craft:inspect beauty:Beauty stat/tally craft:inspect beauty:Beauty stat, left (scrawl) to right.</summary>
+        public static string Pair(string args)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "REFUSED no current map";
+            Pawn hand = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+            if (hand == null) return "REFUSED no colonist";
+            ThingDef scrawl = RMGraffitiDefOf.RM_Graffiti_Vandal, tally = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Graffiti_TallyMarks");
+            if (scrawl == null || tally == null) return "REFUSED no scrawl or tally def";
+            origin = new IntVec3(6, 0, map.Size.z - 36);
+            int ws = (int)System.Math.Ceiling(GraffitiPool.WidthOf(scrawl)), wt = (int)System.Math.Ceiling(GraffitiPool.WidthOf(tally));
+            int step = ws + wt + 3, len = 7 * step + 1;
+            Clear(map, new CellRect(origin.x, origin.z, len, 5), TerrainDefOf.Concrete);
+            WallRun(map, ThingDefOf.BlocksGranite, 0, 3, len - 1, 3);
+            foreach (IntVec3 c in new CellRect(origin.x, origin.z, len, 5)) map.areaManager.Home[c] = false;
+            var parts = new List<string>();
+            for (int q = 0; q < 7; q++)
+            {
+                int x = 1 + q * step;
+                var row = new List<string>();
+                foreach (var (def, at) in new[] { (scrawl, x + ws / 2), (tally, x + ws + 1 + wt / 2) })
+                {
+                    Filth_Mark m = Filth_Mark.MakeMark(C(at, 2), map, def, hand);
+                    if (m == null) { row.Add("none"); continue; }
+                    m.hasCraft = true;
+                    m.craft = System.Math.Min(q, RM_GraffitiKernel.CraftCeiling(def.GetModExtension<ModExtension_Graffiti>().form));
+                    row.Add(m.CraftLabel + ":" + m.NetBeauty.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + ":"
+                            + m.GetStatValue(StatDefOf.Beauty).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture));
+                }
+                parts.Add(q + ":" + string.Join("/", row));
+            }
+            map.mapDrawer.RegenerateEverythingNow();
+            return "PAIR " + origin.x + "," + origin.z + "," + len + ",5 | " + string.Join(" ", parts);
+        }
+
         /// <summary>One small room in every wall material, each wall carrying marks: the front, both side faces, the hidden south wall from inside and the
         /// front from outside, a wide mark run into a corner, a door in the run, and a free wall end. -> SWEEP rect | rows.</summary>
         public static string Sweep(string args)

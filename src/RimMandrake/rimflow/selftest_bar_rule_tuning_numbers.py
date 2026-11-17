@@ -69,13 +69,32 @@ CONTAGION_CONTROL = {
     "observed": "The start has 'a native corpse in the open', and the control expects 'the old slime death and no "
                 "print'. A corpse already exists, so a slime death cannot follow."}
 
+# RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS: Graffiti's ugliness_visible control as locked ("the beauty stats
+# read -15 and -3 from the defs") passed this detector, which knew "stat values" but not a stat named with its number.
+GRAFFITI_PINNED_BEAUTY = {
+    "what": "ugliness_visible's control does not read the pair's beauty", "where": "tree.json ugliness_visible",
+    "ids": ["ugliness_visible"],
+    "would_pass": "The control reads Beauty -15 for the vandal scrawl and Beauty -3 for the tally: the beauty stats read "
+                  "-15 and -3 from the defs.",
+    "smallest_fix": {"attainable": "yes", "cost": "edit", "what": "scenes.json sc_beauty_pair control"},
+    "criterion_verdict": "sound", "observed": "The control reads nothing."}
+GRAFFITI_SAME_HAND = {
+    "what": "a same-hand scrawl and tally inspect alike at an awful or poor hand", "where": "tree.json ugliness_visible",
+    "ids": ["ugliness_visible"],
+    "would_pass": "One colonist paints a scrawl and a tally at each craft the hand can roll, and at every one the scrawl "
+                  "inspects as uglier than the tally.",
+    "smallest_fix": {"attainable": "yes", "cost": "code", "what": "Filth_Mark.NetBeauty"},
+    "criterion_verdict": "sound", "observed": "At awful both inspect -6; at poor both -2.5."}
+
 
 def gate_cases():
     import bar_rule as BR
     for name, g, blocks in (("Contagion yield fields and Halfmade variant count", CONTAGION_YIELD_VARIANT, False),
                             ("Contagion 'each with its field and expected value' table", CONTAGION_FIELD_TABLE, False),
                             ("Contagion recovery workers never staged (a true experience gap)", CONTAGION_WORKERS, True),
-                            ("Contagion bodyprints control unreachable (a true experience gap)", CONTAGION_CONTROL, True)):
+                            ("Contagion bodyprints control unreachable (a true experience gap)", CONTAGION_CONTROL, True),
+                            ("Graffiti control pinning Beauty -15 and -3", GRAFFITI_PINNED_BEAUTY, False),
+                            ("Graffiti same-hand scrawl inspects uglier (a true experience gap)", GRAFFITI_SAME_HAND, True)):
         b, why = BR.blocks(dict(g))
         check("gate: %s %s" % (name, "blocks" if blocks else "does not block"), b is blocks, (b, why))
     b, _ = BR.blocks(dict(CONTAGION_YIELD_VARIANT, bar_kind="experience"))
