@@ -8609,3 +8609,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"broken","detail":"Ops alarm CLONE_POOL_BREACH: disk.pool_breach = 2 pool breaches: over count, over bytes, stranded unpushed clones (MEASURED), line > 0","ts":"2026-11-17T23:26:49Z","tsn":1794958009712284728}
 {"seat":"RUNNER","event":"raise","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-17T23:26:55Z","tsn":1794958015182738807}
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"kept","detail":"sweep: running again","ts":"2026-11-17T23:33:05Z","tsn":1794958385564218368}
+{"seat":"RUNNER","event":"note","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","text":"ops_watch: cleared at 2026-11-17T23:51:17Z (wrapup.debris_standing now 0)","ts":"2026-11-17T23:51:26Z","tsn":1794959486292045500}
