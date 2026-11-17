@@ -289,7 +289,7 @@ def test_author_lines(job, cause):
     loop). [] for any other class, or when git cannot tell."""
     if IC.class_of_cause(cause) != IC.TEST:
         return []
-    import repeat_guard as G
+    G = T._own_repeat_guard()  # never rimflow's repeat_guard.py, which shadows it once rimflow is on sys.path
     paths = [p for p in G.relevant(job.get("mod") or "", IC.TEST, REPO)
              if p.endswith(".md") or os.path.isdir(os.path.join(REPO, p)) and "/Utils/" not in p]
     out = G.git("log", "-1", "--format=%h %ad %s", "--date=short", "--", *paths) if paths else None

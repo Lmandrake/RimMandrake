@@ -216,7 +216,33 @@ MUTANTS = {
     "unreadable_calm": lambda: setattr(P, "_holds", lambda: {}),
     "fill_held": lambda: setattr(T, "held_fill", lambda mod: None),
     "fill_mods_held": lambda: setattr(C, "unheld", lambda mods: list(mods)),
+    "moh_syspath": lambda: setattr(P, "_moh", lambda: (sys.path.insert(0, os.path.join(HERE, "..", "..", "rimflow")),
+                                                       __import__("mod_owner_hold"))[1]),
+    "rg_plain_import":lambda: setattr(T, "_own_repeat_guard", lambda: __import__("repeat_guard")),
 }
+
+
+def import_checks():
+    """2026-11-17: _moh() put rimflow first on sys.path, rimflow/repeat_guard.py then shadowed testq's, and every
+    submit logged 'repeat guard could not read <mod>: ... no attribute hold' (the guard failed open)."""
+    before = list(sys.path)
+    sys.modules.pop("mod_owner_hold", None)
+    P._moh()
+    check(sys.path == before, "loading the hold list leaves sys.path alone")
+    T._rimflow()  # puts rimflow on sys.path, as the tick does when it reads the bridge holder
+    sys.modules.pop("repeat_guard", None)
+    sys.modules.pop("testq_repeat_guard", None)
+    g = T._own_repeat_guard()
+    check(hasattr(g, "hold") and os.path.dirname(os.path.abspath(g.__file__)) == HERE,
+          "testq reads its own repeat_guard.py after rimflow is on sys.path: %s" % getattr(g, "__file__", None))
+    logged = []
+    real_log, T.log = T.log, logged.append
+    try:
+        T.repeat_holds("Nomod", ["c_x"], recs=[])
+    finally:
+        T.log = real_log
+    check(not any("could not read" in str(x) for x in logged), "repeat_holds runs the guard: %s" % logged[:1])
+    sys.path[:] = before
 
 
 def main():
@@ -234,7 +260,7 @@ def main():
         return 1 if bad else 0
     if "--mutant" in sys.argv:
         MUTANTS[sys.argv[sys.argv.index("--mutant") + 1]]()
-    for f in (record_checks, admission_checks, testq_checks, steward_checks):
+    for f in (record_checks, admission_checks, testq_checks, steward_checks, import_checks):
         f()
     print("%d failed" % len(FAILS))
     return 1 if FAILS else 0

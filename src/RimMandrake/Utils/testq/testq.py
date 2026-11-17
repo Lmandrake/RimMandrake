@@ -1332,10 +1332,23 @@ def held_fill(mod):
     return r["text"] if r else None
 
 
+def _own_repeat_guard():
+    """testq's repeat_guard.py, never rimflow's namesake: _rimflow() puts rimflow first on sys.path, and a plain
+    `import repeat_guard` after it got rimflow's module (no .hold), so the guard failed open on every job."""
+    m = sys.modules.get("repeat_guard")
+    if m is not None and os.path.dirname(os.path.abspath(getattr(m, "__file__", "") or "")) == os.path.abspath(HERE):
+        return m
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("testq_repeat_guard", os.path.join(HERE, "repeat_guard.py"))
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
 def repeat_holds(mod, chains, recs=None):
     """-> {chain: reason}: chains whose last run the test or the delivery machinery killed, with nothing relevant
     changed since (repeat_guard.py). An unreadable ledger only drops the "its repair item closed" release."""
-    import repeat_guard
+    repeat_guard = _own_repeat_guard()
     try:
         import gaps
         items = gaps.ledger()[2].items

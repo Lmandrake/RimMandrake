@@ -37,11 +37,18 @@ def repo_root():
 
 
 def _moh():
-    d = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow")
-    if d not in sys.path:
-        sys.path.insert(0, d)
-    import mod_owner_hold
-    return mod_owner_hold
+    """rimflow/mod_owner_hold.py, loaded by its path. Never put rimflow on sys.path here: rimflow has its own
+    repeat_guard.py, and testq's `import repeat_guard` then got it (no .hold), so the repeat guard failed open."""
+    m = sys.modules.get("mod_owner_hold")
+    if m is not None:
+        return m
+    import importlib.util
+    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow", "mod_owner_hold.py")
+    spec = importlib.util.spec_from_file_location("mod_owner_hold", os.path.abspath(p))
+    m = importlib.util.module_from_spec(spec)
+    sys.modules["mod_owner_hold"] = m
+    spec.loader.exec_module(m)
+    return m
 
 
 def _holds():
