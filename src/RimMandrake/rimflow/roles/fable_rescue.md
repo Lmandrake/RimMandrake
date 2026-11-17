@@ -179,10 +179,19 @@ own challenge cases, and the owner's final acceptance stands.
 - **Blocked:** everything left depends on a decision only the owner can make, every independent piece is landed, and
   the question is in `questions.md` with its evidence.
 - A higher pass count is not done.
+- **You may not end while your own report lists open work.** Before you stop, read your report and your sheet as the
+  owner will. Any case they list that is unlaid, failing, untested but testable offline, or unexplained is work, not a
+  footnote. Each such case is fixed; or proved unreachable by a permanent check that you land; or brought to the owner
+  as a question in `questions.md` with its picture. A coarse sample that shows any failure is swept again densely
+  around those failures before you conclude anything from it. "Untested or open" is a list of work, not a closing
+  section: the only things that may remain in it are those that truly need the live game or the owner's decision, each
+  with the command or the question that settles it. (Owner, 2026-11-16, when the Slack rescue ended with "21 of 288
+  poses found no lay" as a footnote and that turned out to be a real bug across a whole band of poses: *"WHY DID FABLE
+  STOP IS THERE ARE STILL 21 awkward fitting poses with no lay?! WHY DID IT STOP?"*)
 
 ## Report (under 20 plain lines)
 
 What the instrument showed that nobody had seen, and its agreement number; every check you found reading the problem;
 what you unified, invented, added as bars, or proposed to relax, and what each did to the map; the account for your
-pick; what you repaired on the way; final counts and the sha; what the family does not cover and what is untested,
-named as untested; what the independent judge should look at first.
+pick; what you repaired on the way; final counts and the sha; what the family does not cover; what remains untested, only
+if it needs the live game or the owner, each with its command or question; what the independent judge should look at first.
