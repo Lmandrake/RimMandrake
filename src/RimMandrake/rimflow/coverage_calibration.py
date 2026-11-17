@@ -16,8 +16,11 @@ in a temp tree (the real role files copied in), puts each to the coverage judge 
                           reads -> must pass: a judge that blocks on a tuning number or a variant count is not calibrated
   bad_leaf_no_scene       the oil leaf and its capability have no scene -> must be refused
   bad_scene_no_control    the light scene has no control and no asserted start -> must be refused
-  bad_conflict_routing    a second leaf, never_dark, that cannot hold beside oil_out -> must be refused AND routed to the
-                          criteria (a flawed or unattainable criterion, the neutral fixer), not sent to the Designer
+  bad_conflict_routing    his own words twice, with no precedence between them: "go out when it runs dry" (oil_out) and
+                          "never goes dark, oil or none" (never_dark) -> must be refused AND routed to criteria review (a
+                          flawed or unattainable criterion, the neutral fixer) or to his answer (return_to 2), never to
+                          the Designer's rework. (First plant, 2026-11-17 run at 5f9fdb20: never_dark had no words of his,
+                          so his words took precedence and the judge rightly sent the Designer to fix that leaf.)
   bad_mixed_row           an inventory row pinning numbers (3 oil, 120 ticks) beside an experience no scene tests (a pawn
                           refuels the lantern) -> must be refused on the experience; the number alone is waived
   bad_late_serious        a round-2 look after a refusing round-1 verdict that passed oil_out on an acceptance scene that
@@ -152,11 +155,20 @@ def _tuning_bait(c):
 
 
 def _never_dark(c):
-    """Two leaves that cannot both hold (GPT point 17): oil_out says an unfuelled lantern goes dark, never_dark says it
-    never does. A correct refusal names the criteria, not the Designer's scenes."""
+    """Two leaves that cannot both hold, each his words (GPT point 17, "a genuinely incompatible criterion set"):
+    oil_out says an unfuelled lantern goes dark, never_dark says it never does. No precedence settles it, so no Designer
+    rework can pass both: a correct refusal goes to criteria review or to him."""
+    c["sheet.md"] = c["sheet.md"].replace(
+        "\n\n## does", "\n- 2026-11-03: \"A hung lantern never goes dark, oil or none: nobody wants a dark room.\" "
+        "OWNER:3\n\n## does", 1)
+    c["record.json"]["inventory"].append({
+        "id": "inv_never_dark", "what": "A hung lantern never goes dark, whether or not it holds oil", "impl": "present",
+        "impl_evidence": ["src/RimMandrake/Lanterns/Source/CompLanternGlow.cs"], "proof": "current",
+        "scope": "approved", "source": ["OWNER:3"]})
     c["tree.json"]["leaves"].append(dict(
         LEAF, id="never_dark", experience="A hung lantern never goes dark: its cells stay lit at every hour for as long "
         "as it hangs, whether or not it holds any oil", scenario="a lit lantern with 0 oil, a day passing",
+        source=["OWNER:3"],
         false_pass=["a lantern refuelled during the day"], red="a hung lantern whose cells go dark"))
     c["sheet.md"] = c["sheet.md"].replace(
         "\n\n## does not", "\n- [leaf:never_dark] A hung lantern never goes dark, oil or none\n\n## does not")
@@ -220,7 +232,7 @@ CASES = (("good_lanterns", "pass", None, None), ("good_lanterns_tuning", "pass",
          ("good_round2_repaired", "pass", _repaired, None),
          ("bad_leaf_no_scene", "refuse", _no_oil_scene, "designer"),
          ("bad_scene_no_control", "refuse", _no_control, "designer"),
-         ("bad_conflict_routing", "refuse", _never_dark, "criteria"),
+         ("bad_conflict_routing", "refuse", _never_dark, ("criteria", "owner")),
          ("bad_mixed_row", "refuse", _refuel_row, "designer"),
          ("bad_late_serious", "refuse", _late_red, "late"))
 ROUTE = {cid: route for cid, _e, _m, route in CASES}
@@ -233,21 +245,23 @@ def planted():
 
 
 def route_of(g):
-    """Where production sends one blocking gap: the criteria (the neutral fixer: coverage_judge's criteria_suspect) or
-    the Designer."""
-    return "criteria" if (g.get("criterion_verdict") in FAULTED or g.get("judge_criterion_verdict") in FAULTED) \
-        else "designer"
+    """Where production sends one blocking gap: the criteria (the neutral fixer: coverage_judge's criteria_suspect), his
+    answer (return_to 2: stage 2 asks him) or the Designer's rework."""
+    if g.get("criterion_verdict") in FAULTED or g.get("judge_criterion_verdict") in FAULTED:
+        return "criteria"
+    return "owner" if g.get("return_to") == 2 else "designer"
 
 
 def outcome(route, blocking):
     """-> "pass" with no blocking gap; "refuse" when a blocking gap takes the planted route (any route for a pass case:
-    its refusal is wrong anyway); else "refuse, misrouted (<routes>)", which is not the planted refusal."""
+    its refusal is wrong anyway; a tuple of routes accepts any of them); else "refuse, misrouted (<routes>)", which is
+    not the planted refusal."""
     if not blocking:
         return "pass"
     routes = {route_of(g) for g in blocking}
     if any(g.get("new_since") == "late" and g.get("late_confirmed") is True for g in blocking):
         routes.add("late")
-    if route is None or route in routes:
+    if route is None or set(route if isinstance(route, tuple) else (route,)) & routes:
         return "refuse"
     return "refuse, misrouted (%s)" % ", ".join(sorted(routes))
 
@@ -316,6 +330,8 @@ def judge(root, d, route=None, reader="auto"):
     detail.update(verdict=so["verdict"], gaps=[str(g.get("what"))[:200] for g in gaps][:8],
                   advisory=[str(g.get("what"))[:200] for g in adv][:8],
                   routes=[{"what": str(g.get("what"))[:120], "route": route_of(g), "new_since": g.get("new_since"),
+                           "ids": g.get("ids"), "return_to": g.get("return_to"),
+                           "judge_criterion_verdict": g.get("judge_criterion_verdict"),
                            "criterion_verdict": g.get("criterion_verdict"), "severity": g.get("severity"),
                            "late_confirmed": g.get("late_confirmed")} for g in gaps][:8])
     if unread:   # no second read: the refusal binds nothing in production, so it is not the planted refusal either

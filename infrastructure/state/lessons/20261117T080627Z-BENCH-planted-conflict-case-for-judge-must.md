@@ -1,0 +1,1 @@
+A planted conflict case for a judge must give its two demands equal standing: with the owner's words on one side only, the judge rightly routes the other side to the Designer as a leaf to fix, and the plant reads misrouted (coverage calibration 2026-11-17, run at 5f9fdb20, published 8c657dac).

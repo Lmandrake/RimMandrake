@@ -223,8 +223,13 @@ def calibration_cases():
     late_ok = {"criterion_verdict": "sound", "new_since": "late", "late_confirmed": True}
     for name, route, gaps, want in (
             ("no blocking gap is a pass", "designer", [], "pass"),
-            ("a criteria-routed refusal on the conflict case", "criteria", [flawed], "refuse"),
-            ("a Designer-routed refusal on the conflict case is misrouted", "criteria", [sound], "misrouted"),
+            ("a criteria-routed refusal on the conflict case", ("criteria", "owner"), [flawed], "refuse"),
+            ("a refusal sent to his answer (return_to 2) on the conflict case", ("criteria", "owner"),
+             [dict(sound, return_to=2)], "refuse"),
+            ("a Designer-routed refusal on the conflict case is misrouted", ("criteria", "owner"),
+             [dict(sound, return_to=3)], "misrouted"),
+            ("a his-answer refusal on a bad scene case is misrouted", "designer", [dict(sound, return_to=2)],
+             "misrouted"),
             ("a judge confessing the criterion flawed routes to criteria", "criteria",
              [dict(sound, judge_criterion_verdict="unattainable")], "refuse"),
             ("a Designer-routed refusal on a bad scene case", "designer", [sound], "refuse"),
@@ -245,6 +250,13 @@ def calibration_cases():
             rec = json.load(open(os.path.join(mixed_d, "record.json"), encoding="utf-8"))
         except OSError:
             rec = {}
+        conf_d = staged.get("bad_conflict_routing", (None, root))[1]
+        try:
+            sheet = open(os.path.join(conf_d, "sheet.md"), encoding="utf-8").read()
+        except OSError:
+            sheet = ""
+        check("calibration: the conflict case puts both demands in his words (no precedence settles it)",
+              "OWNER:3" in sheet and "OWNER:1" in sheet, sheet[:300])
         check("calibration: the mixed row pins numbers beside an uncovered experience",
               any(r.get("id") == "inv_refuel" for r in rec.get("inventory") or []), rec.get("inventory"))
 
