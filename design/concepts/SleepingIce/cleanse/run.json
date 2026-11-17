@@ -1,0 +1,36 @@
+{
+ "mod": "SleepingIce",
+ "state": "proposed",
+ "why": "check passes (8 bars, 59 census rows, 827 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-17T01:23:52",
+ "seconds": 1675,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 827,
+  "page_limit": 950,
+  "census_rows": 59,
+  "bars": 8,
+  "bar_numbers": "none",
+  "shared_things": 7,
+  "meetings": 7,
+  "old_bars": "0 mapped of 0 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 6730052,
+    "output_tokens": 52590
+   }
+  }
+ ],
+ "agent_errors": []
+}

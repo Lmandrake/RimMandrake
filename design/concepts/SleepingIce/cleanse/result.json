@@ -1,0 +1,22 @@
+{
+  "mod": "SleepingIce",
+  "run": "cleanse-SleepingIce-2026-11-17",
+  "outcome": "proposed",
+  "signature": "Warmth exposed to the ice raises pressure, opening warned attackable breaches whose shivven approach reachable warmth under the ice and can be stopped by cold, constructed protection or fighting.",
+  "counts": {
+    "capabilities": 59,
+    "kept": 39,
+    "next_version": 19,
+    "recommend_retire": 1,
+    "old_bars": 0,
+    "bars": 8,
+    "live_only_bars": 2,
+    "checks": 10,
+    "rules": 12,
+    "unknown_pairs": 3,
+    "models": 4,
+    "tickets": 31,
+    "questions": 0
+  },
+  "blocked_on": []
+}

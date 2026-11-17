@@ -1,0 +1,616 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "A traveller crosses open hard dirty-white ice with geological ridges and ice crystals under cold overhead light, without an interior wind, snowfall, liquid pools, soil or a native surface glow.",
+      "meant": {
+        "intent": "Land: this must be the still impure upland, distinguishable from a blue ice basin, a snowfield and a farmable arctic map.",
+        "source": "design/Jawa/worldbuilding/biomes/sleeping_ice.md §§1–3,5–6,4c.7, owner-ratified 2026-09-06 and 2026-09-24; delegated composition of those land rulings.",
+        "figurative": []
+      },
+      "accept": [
+        "A traveller walks between dirty-white slabs, frost crystals and a low ridge; the sky lights their upper edges while the ground remains bare hard ice.",
+        "A local artificial lamp warms the colour beside the camp; the distant interior remains under cold sky light."
+      ],
+      "reject": [
+        "The biome has the right name and weather table, but the colony stands on a blue snowy plain containing a prefab puddle and a fertile patch.",
+        "The only dirty-white view is a camera fixture while ordinary ticking brings interior wind or snowfall."
+      ],
+      "lazy": "The biome has the right name and weather table, but the colony stands on a blue snowy plain containing a prefab puddle and a fertile patch.",
+      "range": {
+        "varies": "Full 200, 250 and 300 cell square supported colony maps; flat, small/large-hill and mountainous local terrain, open/interior/camp and prefab footprints, interior versus identifiable escarpment; coldest and warmest saved upland positions, ordinary aurora active/inactive; fresh arrival and days 7,15,100. View at routine play zoom and close inspection. These are local-map fixtures on the fixed planet, not generated planets.",
+        "left_out": "Unrestricted dev placement of foreign soil/water and foreign biome replacement are unsupported; own generators, injected prefabs and enabled shared-engine defaults are included. Margin event mechanics are deferred, never substituted across the interior."
+      },
+      "sees": {
+        "instrument": "Cheapest complete instrument: terrain/weather/room-state census plus a live visual/audio look at ordinary full-map samples (T3). State-only absence probes precede the look.",
+        "start": "An ordinary SleepingIce local map, not repainted proof strips; natural weather scheduler and fixed tile geometry running; no debug lighting override.",
+        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
+        "control": "Read the terrain and weather history at the viewed cells and inspect distant quadrants after ordinary ticking. This rules out a white overlay, Clear lock, cropped puddle-free view or invented aurora condition.",
+        "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
+        "live_only_why": "Rendered light, silhouette, moving marks and audible spatial cues can be present as state yet unusable to a player. State exports cannot decide this perceptual distinction."
+      },
+      "live_only": true,
+      "touches": [
+        "plateau",
+        "ordinary-life",
+        "colony-cycle"
+      ],
+      "qualification": {
+        "reject": "delegated: false alone defeats the specific land, life or signature experience named in meant.intent; cited rulings supply the boundary.",
+        "renormalize": "The pictures compare behaviours and readable outcomes, not declared quantities, variant counts, speeds, sizes or yields. Tuning checks remain separate.",
+        "first_version": "Land: this must be the still impure upland, distinguishable from a blue ice basin, a snowfield and a farmable arctic map."
+      }
+    },
+    {
+      "id": "B2",
+      "says": "A colony on the ice must bring food and feed its livestock, while its admitted visitors and stationary mineable life remain distinct from a self-sustaining surface herd or garden.",
+      "meant": {
+        "intent": "Life: emptiness is ecological, not missing content; ordinary milk and cargo roles work, and a catalytic ridge never starts behaving as a creature.",
+        "source": "sleeping_ice.md §§4,6–7 and closed cast §4c; rosters/sleeping_ice.json visitor law; bedazzle review §8 hessarund only a landform; delegated first-version life boundary.",
+        "figurative": []
+      },
+      "accept": [
+        "A supplied zhissa gives milk and an imported tellurox carries cargo; outside their shelter the player finds no pasture or foraging crop, and mining a hessarund yields its crust.",
+        "A wandering visitor is injured by the cold or leaves normally with a readable account; no resident arctic food herd replaces it."
+      ],
+      "reject": [
+        "The animal defs resolve, but the player can live on renewing wild pasture, or the shell pack beast cannot carry a caravan load.",
+        "A stationary ridge starts chasing a miner, or a cold casualty disappears to imply an unbuilt rescue below."
+      ],
+      "lazy": "The animal defs resolve, but the player can live on renewing wild pasture, or the shell pack beast cannot carry a caravan load.",
+      "range": {
+        "varies": "Both franchise-free and campaign-patched Biomes loads, with all DLC in each; admitted patch visitors individually and ordinary spawner population together; 1–6 traveller pawns and 40 colonists, fed/unfed imported livestock, birth, milking, caravan loading, casualty and ordinary departure; days 1–15 and day100 snapshot. All current roster memberships retained. No demand that every random map rolls every scarce visitor.",
+        "left_out": "No new wild admission for tellurox and no restoration of historically evicted donor residents; named deferred special organisms retain admission but their encounter systems are next-version content. Foreign farming cheats excluded; own soil/crop or growth-engine leaks included."
+      },
+      "sees": {
+        "instrument": "Ordinary job, need, inventory, corpse and terrain state reads, with M1 situation generator and T28 roster/compatibility adapter. Use completed milk/pack/mining jobs, not only defs.",
+        "start": "Supplied and unsupplied livestock cohorts on an ordinary barren map; no trader injections except the imported livestock fixture; hessarund and ordinary visitors placed by their proper owned generators.",
+        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
+        "control": "Compare food inventory before/after completed jobs, forbidding imported food only in the starvation branch; distinguish milk from hidden grazing and distinguish an ordinary corpse from missing custody. Check resolved campaign patch rows rather than inline XML alone.",
+        "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
+        "live_only_why": "Not live-only: state/trace or a game-calibrated offline instrument distinguishes the pictures; runtime calibration is still required."
+      },
+      "live_only": false,
+      "touches": [
+        "ordinary-life",
+        "recovery",
+        "colony-cycle"
+      ],
+      "qualification": {
+        "reject": "delegated: false alone defeats the specific land, life or signature experience named in meant.intent; cited rulings supply the boundary.",
+        "renormalize": "The pictures compare behaviours and readable outcomes, not declared quantities, variant counts, speeds, sizes or yields. Tuning checks remain separate.",
+        "first_version": "Life: emptiness is ecological, not missing content; ordinary milk and cargo roles work, and a catalytic ridge never starts behaving as a creature."
+      }
+    },
+    {
+      "id": "B3",
+      "says": "A party stopping on the ice can recover usable preserved material from frozen wrecks and mineable ridges, then carry it onward without unlocking a separate progression system.",
+      "meant": {
+        "intent": "Land and life: preserved debris and the behaviourless living ridge make a chosen stop useful using ordinary salvage and mining.",
+        "source": "sleeping_ice.md §§7–8; bedazzle §8 hessarund catalyst yield; src/RimMandrake/SleepingIce/Defs/ThingDefs_Buildings/RM_NightsideWrecks.xml; delegated payoff inferred from owner-chosen crossing/digging experience, 2026-10-20.",
+        "figurative": []
+      },
+      "accept": [
+        "A party deconstructs a frost-locked hull, mines the ridge, loads the resulting useful material and continues its journey.",
+        "Later arrivals still find unworked preserved objects where they were left; harvested ground stays worked."
+      ],
+      "reject": [
+        "Pretty wrecks can be selected but an ordinary salvage job produces no usable haul, or the ridge has a mining order with no recoverable material.",
+        "Useful salvage appears only as a recurring free delivery, or depends on a new rite, tablet or research unlock."
+      ],
+      "lazy": "Pretty wrecks can be selected but an ordinary salvage job produces no usable haul, or the ridge has a mining order with no recoverable material.",
+      "range": {
+        "varies": "All hull/tank/rig families, accessible and initially obstructed placements, cluster and isolated layouts, player skill 0–20 as regression input not a reward bar; ridge edge/interior mining, ordinary hauling/storage/full inventory, caravan capacity empty/full; fresh and partly worked saves, work orders reversed and mid-job reload.",
+        "left_out": "No guaranteed premium item or immortal loot quality after player damage; no regenerating wreck field, calving delivery, buried-person extraction, learned technology or rites. Deeps shares wreck defs, but its own salvage ecology remains its owner’s."
+      },
+      "sees": {
+        "instrument": "Wreckage resolved-def read plus ordinary completed deconstruct/mine/haul inventory trace; T4 for ridge definition and T28 for resolved engine integration.",
+        "start": "An untouched naturally placed frozen field and hessarund; party carries known empty cargo slots and no starting test reward.",
+        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
+        "control": "Tag output provenance by destroyed/mined object identity; compare ordinary completion with cancellation and destructive smashing. Read inventory before the job and after hauling, eliminating debug gifts or unrelated loot as the cause.",
+        "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
+        "live_only_why": "Not live-only: state/trace or a game-calibrated offline instrument distinguishes the pictures; runtime calibration is still required."
+      },
+      "live_only": false,
+      "touches": [
+        "plateau",
+        "ordinary-life",
+        "recovery",
+        "colony-cycle"
+      ],
+      "qualification": {
+        "reject": "delegated: false alone defeats the specific land, life or signature experience named in meant.intent; cited rulings supply the boundary.",
+        "renormalize": "The pictures compare behaviours and readable outcomes, not declared quantities, variant counts, speeds, sizes or yields. Tuning checks remain separate.",
+        "first_version": "Land and life: preserved debris and the behaviourless living ridge make a chosen stop useful using ordinary salvage and mining."
+      }
+    },
+    {
+      "id": "B4",
+      "says": "A camp that exposes more warmth to the ice draws greater breach pressure, while cooling or insulating a working refuge reduces that pressure and the thermal readout explains the change.",
+      "meant": {
+        "intent": "Signature: the cost of comfortable stopping is a controllable thermal cause, not a fixed raid schedule; insulation preserves useful warmth indoors.",
+        "source": "sleeping_ice.md §4 thermal threat and §8 cold exterior; §4c.4 continuous dial; bedazzle §4 row1; delegated exterior-exposure reading reconciles those promises without treating current formula as authority.",
+        "figurative": []
+      },
+      "accept": [
+        "A warm refuge retains its indoor comfort after its exterior is better insulated; the readout falls and the unsaturated breach trace becomes less threatening.",
+        "An exposed campfire or opened warm room raises the thermal trend and subsequent pressure; an unpowered cold machine does not."
+      ],
+      "reject": [
+        "The displayed dial changes, but naturally rolled breaches ignore it and keep following a fixed schedule.",
+        "The dial counts indoor warmth identically through an open doorway and an insulating enclosure, so a cold exterior has no benefit."
+      ],
+      "lazy": "The displayed dial changes, but naturally rolled breaches ignore it and keep following a fixed schedule.",
+      "range": {
+        "varies": "Same source cohorts at 0–100 percent duty; raw pressure below threshold, threshold neighbourhood, unsaturated and saturated; heat scale 25–600, frequency scale 0.1–4; no-source, fires, working/off pushers, powered/off consumers and warm enclosed rooms; equal indoor temperature with door open/closed, wall depth1/2, source outdoors/inside. Fixed plateau outdoors -80 to -20 C as stress envelope, not a claim about current tile census. Colony sizes 1,6,40; original and reversed heat/floor sequences; count-cap saturation explicitly removes strict increase demand. Stochastic pressure uses paired distributions, never a guarantee in a particular hour.",
+        "left_out": "No new air-temperature, sun, material-insulation or geothermal physics; a pressure sensor can use an explicit proxy. The proxy must match the cold-exterior ordering in the calibrated thermal model. Surface reconnection and thaw mechanics are off as extras."
+      },
+      "sees": {
+        "instrument": "M3 exterior-heat model calibrated to ordinary room/source state, then paired unforced breach-event traces from M4. Existing pure kernel math is a check, not enough evidence (T5,T10,T11).",
+        "start": "Equal supplied camps on the same saved climate geometry and random-state cohorts, no active crack initially; indoor temperatures stabilized by normal heater duty. Record raw components and actual outside exposure.",
+        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
+        "control": "Pressure observations include natural tick gates and event rolls; never call ProofDial/TryOpen. Match source work and indoor comfort, then change only exterior protection or source duty. This distinguishes insulation from simply switching the heater off; paired cohorts distinguish monotonic pressure from a lucky silent hour.",
+        "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
+        "live_only_why": "Not live-only: state/trace or a game-calibrated offline instrument distinguishes the pictures; runtime calibration is still required."
+      },
+      "live_only": false,
+      "touches": [
+        "thermal-pressure",
+        "ice-boundary",
+        "colony-cycle"
+      ],
+      "qualification": {
+        "reject": "delegated: false alone defeats the specific land, life or signature experience named in meant.intent; cited rulings supply the boundary.",
+        "renormalize": "The pictures compare behaviours and readable outcomes, not declared quantities, variant counts, speeds, sizes or yields. Tuning checks remain separate.",
+        "first_version": "Signature: the cost of comfortable stopping is a controllable thermal cause, not a fixed raid schedule; insulation preserves useful warmth indoors."
+      }
+    },
+    {
+      "id": "B5",
+      "says": "The camp’s first breach teaches the heat cause and gives an exact attackable countdown with time to recall an exposed worker and respond, while later breaches warn of danger without supplying an exact time or direction.",
+      "meant": {
+        "intent": "Needed by signature: the warning makes the hazard a decision; later uncertainty must retain a discoverable physical crack.",
+        "source": "sleeping_ice.md §4c.4; Source/RM_BreachCracks.cs first teaching implementation; delegated recall-and-response standard from travelling/camp experience and frozen hull rule.",
+        "figurative": []
+      },
+      "accept": [
+        "The first warning names warmth, points to the attackable crack and states its countdown; a recalled worker reaches shelter and the crew either breaks the crack or prepares for emergence.",
+        "A later warning says danger is near the camp without an arrow or deadline; searching the open perimeter can still find and attack the visible crack."
+      ],
+      "reject": [
+        "A tutorial letter mentions heat and a timer, but the crack cannot be attacked before the exposed worker can return.",
+        "Later warnings omit the time in prose but their look target or inspect string still reveals the exact direction or countdown."
+      ],
+      "lazy": "A tutorial letter mentions heat and a timer, but the crack cannot be attacked before the exposed worker can return.",
+      "range": {
+        "varies": "FirstTaught false/true; first timer supported range2–72h with shipped default24h qualifying for the response picture, other settings accurately labelled; later timer8–16h as current tuning; workers at camp and at 30/60 cell work sites over passable ordinary ice, not trapped or incapacitated. Attack with ordinary available ranged/melee means, no debug Destroy; stop/ignore, saved before/after warning boundaries and expiry. Later discovery via manual search or installed scanner is allowed, but warning itself supplies neither location target nor exact time.",
+        "left_out": "Exact later direction may be learned by looking, scouting or scanner; the warning does not supply it. No promise to recall an immobile pawn or one beyond the declared working radius; no extra ritual or bespoke quest tutorial."
+      },
+      "sees": {
+        "instrument": "M1 lifecycle walk plus actual warning text/target/inspect state and ordinary job completion traces, including a deadline crossed after destruction (T7,T8). UI rendering can reuse B7 live readability session without a separate live-only bar.",
+        "start": "An unforced first crack on a working camp; exposed worker has a valid return route and ordinary equipment. Later branch starts from the saved taught flag with prior crack resolved.",
+        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
+        "control": "Check letter target metadata and all countdown surfaces, not text alone; step beyond the original expiry after a completed attack and compare with the ignored branch. Forced-open helpers cannot prove response time or natural warning order.",
+        "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
+        "live_only_why": "Not live-only: state/trace or a game-calibrated offline instrument distinguishes the pictures; runtime calibration is still required."
+      },
+      "live_only": false,
+      "touches": [
+        "warning-state",
+        "ice-boundary",
+        "colony-cycle",
+        "thermal-pressure"
+      ],
+      "qualification": {
+        "reject": "delegated: false alone defeats the specific land, life or signature experience named in meant.intent; cited rulings supply the boundary.",
+        "renormalize": "The pictures compare behaviours and readable outcomes, not declared quantities, variant counts, speeds, sizes or yields. Tuning checks remain separate.",
+        "first_version": "Needed by signature: the warning makes the hazard a decision; later uncertainty must retain a discoverable physical crack."
+      }
+    },
+    {
+      "id": "B6",
+      "says": "Built floors and the gravship hull stop emergence and under-ice passage even when completed during a breach, and a shivven redirects from inaccessible warmth toward reachable warmth it can sense.",
+      "meant": {
+        "intent": "Signature defence: protection holds through state changes; its success does not create a protected decoy that disables pursuit of an exposed source.",
+        "source": "sleeping_ice.md §4c hull rule; NightsideIce/ANSWERS_OWNER.md owner card 2026-11-10 reachable warmth answer; delegated seal transition and local-source eligibility from those rulings.",
+        "figurative": []
+      },
+      "accept": [
+        "Finishing a floor over a pending crack visibly seals that opening; it releases nothing at the old deadline, while a continuing warm camp can later draw a different legal crack.",
+        "A stronger protected or distant heater does not distract a shivven from a weaker reachable source in its sensing range; its actual route stays on ice around the flooring."
+      ],
+      "reject": [
+        "Crack placement checks bare ice, but its expired release chooses a neighbouring floor cell or emerges through a newly built deck.",
+        "A correct ice-only planned endpoint is reported while the actual pawn repeatedly attempts a shorter floor shortcut and stalls, or a global inaccessible heater suppresses all local targets."
+      ],
+      "lazy": "Crack placement checks bare ice, but its expired release chooses a neighbouring floor cell or emerges through a newly built deck.",
+      "range": {
+        "varies": "All translated placements within supported full maps and all rotations of loaded source footprints; diagonal/cardinal bearings, rings, concave/U-shaped floors, walls/doors, narrow isthmuses, disconnected ice and map edges. Sense distance just below/at/above shipped60 and supported10–150; alive/off/destroyed/tied sources; no reachable source; heat removed mid-path; floor/roof/hull completed or removed before/at/after deadline; local legal emergence candidates zero/partial/full; reloading in each pending state; wild/downed/fighting/tame cases. Off-ice externally spawned pawns are recovery cases, never legitimate emergence evidence.",
+        "left_out": "No promise of a crack when legal open ice is absent; no relocation of the old deadline or immunity to ranged raids. Standing on bare ice beside a heater can permit a surfaced adjacent strike without travelling through its floor. All-native-shivven mechanics are promised on SleepingIce, not arbitrary foreign biomes."
+      },
+      "sees": {
+        "instrument": "M2 geometry sweep calibrated against actual per-step path and spawn-cell reads, with M1 transition trace. Existing IcePath fuzz and a final terrain sample alone are insufficient (T6,T9).",
+        "start": "Valid pending crack, source list and footprint masks exported from an ordinary map; no debug repaint after starting the read; actual construction/terrain change at a declared game tick.",
+        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
+        "control": "Record each actual occupied and released cell plus source eligibility and reachable strike position. Compare the same footprint with a real opening restored. A planner saying seeking, teleporting onto ice or never releasing anything fails the control; demonstrate legal release in the unsealed branch.",
+        "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
+        "live_only_why": "Not live-only: state/trace or a game-calibrated offline instrument distinguishes the pictures; runtime calibration is still required."
+      },
+      "live_only": false,
+      "touches": [
+        "thermal-pressure",
+        "ice-boundary",
+        "warning-state",
+        "colony-cycle"
+      ],
+      "qualification": {
+        "reject": "delegated: false alone defeats the specific land, life or signature experience named in meant.intent; cited rulings supply the boundary.",
+        "renormalize": "The pictures compare behaviours and readable outcomes, not declared quantities, variant counts, speeds, sizes or yields. Tuning checks remain separate.",
+        "first_version": "Signature defence: protection holds through state changes; its success does not create a protected decoy that disables pursuit of an exposed source."
+      }
+    },
+    {
+      "id": "B7",
+      "says": "A player can follow a moving shivven’s cracking trace and rumble while its body is concealed in the ice, then see it surface to strike reachable warmth or retaliate, with casualties left visibly accounted for.",
+      "meant": {
+        "intent": "Needed by signature and its harmful outcome: player-facing sign replaces the hidden body, and neither attack nor death becomes an unexplained disappearance.",
+        "source": "sleeping_ice.md §4c.1 rumble-tell and §4 thermal sensing; standing no-vanish ruling in CLAUDE.md; CreatureBehaviors swim contract; delegated no-larder casualty boundary.",
+        "figurative": []
+      },
+      "accept": [
+        "Moving cracks and a positional rumble approach an exposed heater; the animal is hidden until it surfaces and damages it.",
+        "A struck shivven surfaces and fights; a dead worker leaves a corpse and named readable account rather than vanishing below."
+      ],
+      "reject": [
+        "The hediff says submerged and a fleck exists in the state dump, but it is invisible against the dirty-white ice or its sound cannot locate movement.",
+        "The animal remains visibly walking on the surface throughout its approach, or a debug seek job never completes a damaging strike."
+      ],
+      "lazy": "The hediff says submerged and a fleck exists in the state dump, but it is invisible against the dirty-white ice or its sound cannot locate movement.",
+      "range": {
+        "varies": "All approach bearings and life stages currently constructible, moving/stationary/strike/hit/downed/dead; ordinary play zoom and declared normal audio mix; empty ice, wreck clutter, aurora on/off and artificial camp light; source power toggles, edge striking, reload during submersion; 1 through proposed cap24 simultaneous wild shivven with 1–40 colonists. Distinguish admitted visitor silhouettes from concealed native shivven.",
+        "left_out": "No custom ambient choir or native sound-sensing. Player sound reception does not grant animal hearing. No promise of the same spatial perception with game audio muted; the visible trace and inspect state must still account for hidden movement. No abduction or rescue pocket map in this version."
+      },
+      "sees": {
+        "instrument": "Live ordinary movement/strike/audio observation backed by per-tick source, job, visibility and damage state; T12 adds synchronized observation anchors. Existing ProofSeek does not inspect continuous motion or prove a damaging strike.",
+        "start": "A naturally released or independently placed test cohort with an actual reachable working source; default ice, lighting, speed and mix, and an unaltered game-ticking approach.",
+        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
+        "control": "Compare trace position with the concealed pawn’s real trajectory and sound with its move/stop history; the same cohort must reach and damage its source. A looping ambient sound, stationary fleck, forced surface or hidden-name overlay cannot supply the passing reading.",
+        "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
+        "live_only_why": "Rendered light, silhouette, moving marks and audible spatial cues can be present as state yet unusable to a player. State exports cannot decide this perceptual distinction."
+      },
+      "live_only": true,
+      "touches": [
+        "ice-boundary",
+        "warning-state",
+        "ordinary-life",
+        "colony-cycle",
+        "thermal-pressure"
+      ],
+      "qualification": {
+        "reject": "delegated: false alone defeats the specific land, life or signature experience named in meant.intent; cited rulings supply the boundary.",
+        "renormalize": "The pictures compare behaviours and readable outcomes, not declared quantities, variant counts, speeds, sizes or yields. Tuning checks remain separate.",
+        "first_version": "Needed by signature and its harmful outcome: player-facing sign replaces the hidden body, and neither attack nor death becomes an unexplained disappearance."
+      }
+    },
+    {
+      "id": "B8",
+      "says": "Across a season a supplied camp can salvage, protect its warmth and finish ordinary work between readable breaches, with the same consequences after reloading and changing the order of its preparations.",
+      "meant": {
+        "intent": "Whole first version: the journey and exceptional refuge remain usable with every retained land, life and signature component active together.",
+        "source": "Owner-chosen experience in design/RimMandrake/biome_experiences_2026-10-20.md; NightsideIce/ANSWERS_OWNER.md 2026-11-10 lasting refuge answer; delegated whole-mod bar under the 2026-11-16 cleanse brief.",
+        "figurative": []
+      },
+      "accept": [
+        "The party crosses, chooses salvage, warms a camp, reads and stops a crack, later meets a breach, improves protection and still completes normal work; a saved continuation preserves that history.",
+        "A prepared supplied refuge keeps working as cold reduces new pressure; its animals still need supplies and its unworked finds remain preserved."
+      ],
+      "reject": [
+        "Default play turns into a backlog of cracks or multiplying animals that consumes ordinary work, strips the plateau of its recoverable identity, or fills the log with repeated failures.",
+        "The combined run stays silent because a kept mechanic is disabled, timers are skipped or the sky is locked, or reloading repeats the tutorial and erases an active threat."
+      ],
+      "lazy": "Default play turns into a backlog of cracks or multiplying animals that consumes ordinary work, strips the plateau of its recoverable identity, or fills the log with repeated failures.",
+      "range": {
+        "varies": "A full 15-day RimWorld season on each supported map-size/topology regime from B1, traveller camp1–6 and prepared40-colonist refuge; all retained native content, ordinary visitors, livestock, wreckage and enabled default shared services together. Each cohort includes a save/reload near the midpoint with a pending or seeking state, then the remaining actions in another order: heat then floor versus floor then heat, salvage before warning versus after. Day100 starts also run a full season. M4 sweeps statistical event regimes; at least ordinary unforced game traces calibrate each distinct source/geometry/colony regime. Compression may omit wall-clock waiting only: every room, weather, job, needs, path, damage, hourly roll and save transition ticks normally; no delta-skipping gameplay ticks.",
+        "left_out": "No self-sufficiency guarantee without imported food/fuel, no immunity to vanilla raids, no guarantee a random cold camp must roll a breach. For signature evidence choose matched exposed-warm cohorts with sufficient natural events, never force an opening; preserve naturally quiet cohorts as controls."
+      },
+      "sees": {
+        "instrument": "M4 game-calibrated whole-map simulation plus actual ordinary season state traces, with B1/B7 perceptual samples taken during the same full run. T11 supplies event/work/resource/log accounting. This is not live-only: continuous outcomes can be read in state; the distinct perception-only judgements are B1 and B7.",
+        "start": "Full supplied plateau map with untouched salvage and legal thermal sources; recorded shipped setting snapshot, resolved roster, climate/geometry and seeds; no dev locks or canned incident calendar.",
+        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
+        "control": "Trace actual raw heat, natural roll eligibility, crack outcomes, jobs completed, provenance of resources, pawn identities and warnings. Replay matching save branches across preparation orders; include a warm exposed untreated branch and a cooled/insulated branch. Count no signature evidence from a branch whose natural clocks did not run or whose all-on snapshot is missing.",
+        "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
+        "live_only_why": "Not live-only: state/trace or a game-calibrated offline instrument distinguishes the pictures; runtime calibration is still required."
+      },
+      "live_only": false,
+      "touches": [
+        "plateau",
+        "ordinary-life",
+        "recovery",
+        "thermal-pressure",
+        "ice-boundary",
+        "warning-state",
+        "colony-cycle"
+      ],
+      "qualification": {
+        "reject": "delegated: false alone defeats the specific land, life or signature experience named in meant.intent; cited rulings supply the boundary.",
+        "renormalize": "The pictures compare behaviours and readable outcomes, not declared quantities, variant counts, speeds, sizes or yields. Tuning checks remain separate.",
+        "first_version": "Whole first version: the journey and exceptional refuge remain usable with every retained land, life and signature component active together."
+      }
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Resolve the current composed defs, assemblies, textures, patch guard matches and bogus-name negative control; load/log/settings floor applies independently of bars. No new worker or world placement check."
+    },
+    {
+      "id": "C2",
+      "what": "Current kernel regression baseline: hourly2500 ticks offsets71/76, ease0.5, sensitivity150, threshold0.15, cooldown120000, chance=dial²/24 times scale, release2+round(6*dial), first24h/later8–16h. Tuning snapshots, not passing bars; proposed capacity24 is new provisional rule data."
+    },
+    {
+      "id": "C3",
+      "what": "Check source/room transmission and per-source eligibility tables against the approved current proxy; current HottestSource global argmax is an identified mismatch, not an acceptance oracle."
+    },
+    {
+      "id": "C4",
+      "what": "Read exact actual movement/spawn footprint cells, roof/floor/hull changes, seal status and saved deadlines, including timers crossed after stopping. End-cell-only reads are insufficient."
+    },
+    {
+      "id": "C5",
+      "what": "Read resolved inline and campaign-patched animal memberships, positive density, empty plant/fish lists, roads allowed and zero own/prefab liquid/soil/geothermal violations. Preserve the recorded cave-lemming ratio waiver; never demand a new quota."
+    },
+    {
+      "id": "C6",
+      "what": "Record per-feature toggles, resets, persistence, scope labels and combinations; two-phase off/on reads include existing pending cracks and seeking pawns, not only a fresh idle map."
+    },
+    {
+      "id": "C7",
+      "what": "Inventory provenance and shared Frozen weathering output reads for salvage, mining, milk, pack load and corpse/butchery; numerical yields and art variants are regression data only."
+    },
+    {
+      "id": "C8",
+      "what": "Existing SleepingIceFuzz and lint wiring are reusable regression instruments; attach current fingerprints and non-vacuous case counts when run. Historical 2026-10 reports are stale; no current execution is claimed."
+    },
+    {
+      "id": "C9",
+      "what": "Whole trace records source duty, rooms, dial, stochastic roll eligibility, reservations and animal identity ledger, warnings, jobs, supplies, state serialization and logs. Failed checks diagnose possible bars and do not independently refuse the mod."
+    },
+    {
+      "id": "C10",
+      "what": "At default settings resolve shock/hexplate definitions but show no active shock manoeuvre/effect, build option, recipe, placed hexplate, extra job, letter or incident on a fresh map; opt-in enables their declared capabilities and log remains clean."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Local-map generators and shared defaults must respect frozen interior bans; roads remain allowed, no native plants/farming/water/geothermal or biome-specific sun. Margin effects require a real escarpment and are deferred.",
+      "touches": [
+        "plateau",
+        "ordinary-life"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Pressure is a thermal-exposure proxy, never air heat. Use the explicit exterior transmission proxy in definition.md; aggregate actual working pushers/fires/consumer waste/warm rooms without summing the same indoor heat twice. Retain continuous saturation and hourly easing provisionally; validate insulation ordering before using the proxy.",
+      "touches": [
+        "thermal-pressure",
+        "colony-cycle"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Filter thermal sources by current sense range and a reachable legal ice strike/approach cell before ranking their exposed thermal strength; stable thing identity breaks ties. Recompute after source, geometry or pawn-state change. Warm-room boundary targets require an unobstructed open boundary onto reachable bare ice; wall/closed-door leakage contributes pressure without creating a protected decoy target. Healthy walking pawns are not hunted; exposed downed living pawns can be approached by existing shivven, while cold corpses emit no invented signal.",
+      "touches": [
+        "thermal-pressure",
+        "ice-boundary",
+        "ordinary-life"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Bare unroofed unfogged standable Ice, no blocking edifice, at the camp perimeter is required when a crack starts and when each animal emerges. A floor/hull/roof sealing the pending opening resolves it visibly as sealed; it never relocates the old timer. Do not spawn when legal ice cells are absent.",
+      "touches": [
+        "ice-boundary",
+        "warning-state"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "A shivven travels on legal ice at actual steps, not merely at Goto endpoints; no diagonal corner cutting. Invalid next legs replan along the legal detour. A protected source is ineligible when it has no reachable ice strike cell; surfaced retaliation never grants passage through the hull.",
+      "touches": [
+        "ice-boundary",
+        "thermal-pressure"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "The first teaching state is per map and persists even if its crack is stopped; the first letter can target it. Later warning, inspect and notification metadata reveal neither exact deadline nor direction; a visible crack or deliberate scanner search may reveal its location. No later pop-up arrow.",
+      "touches": [
+        "warning-state"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Master off cancels pending cracks visibly with no release and stops owned seek/strike jobs; existing animals remain accounted for and safely surfaced. Heat dial off also prevents new/pending breach release; breach off cancels cracks while existing shivven keep their separately enabled behaviour. Re-enable starts fresh eligibility without retaught warnings or queued expiry. Shared swim off is a labelled degraded configuration, never valid evidence for default concealed pursuit.",
+      "touches": [
+        "warning-state",
+        "ice-boundary",
+        "colony-cycle"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Use shared Frozen salvage and ordinary mining for hessarund; its catalyst crust is an ordinary output with no custom research, wall insulation or bargain. Wreckage owns loot, density, weathering and settings; no repeated field regeneration.",
+      "touches": [
+        "recovery",
+        "ordinary-life",
+        "plateau"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Provisional per-map wild shivven capacity is24, with active crack reservations counted. No reproduction or hidden culling; at capacity new rolls reserve nothing, and readout explains saturation. Reuse legal slots when an animal dies or ordinarily leaves, with its identity accounted for. Cooling reduces future pressure; living survivors may wait concealed with inspectable last-known sign.",
+      "touches": [
+        "thermal-pressure",
+        "ordinary-life",
+        "colony-cycle"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Native shivven kill/injury leaves the victim/corpse in the surface map with readable identity/sign. No transfer, despawn, larder store or narrative abduction until the separate rescue system is enabled in a later version. Downed visitors obey ordinary needs and corpse rules.",
+      "touches": [
+        "warning-state",
+        "ordinary-life",
+        "colony-cycle"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "Shipped master/heat/alert/seek/ice-only/strike/breach/warning are on; next-version shock and hexplate are off and labelled. Local landform scatter settings apply to new local maps; existing contents survive. All-off stops owned behaviour without deleting animals/defs. Existing scanner/Deeps/Wreckage settings remain their engines’ controls.",
+      "touches": [
+        "plateau",
+        "ordinary-life",
+        "warning-state",
+        "colony-cycle"
+      ]
+    },
+    {
+      "id": "R12",
+      "rule": "A whole reading retains normal ordering of room heat, weather, jobs, needs, movement, damage and stochastic rolls, including save serialization and action-order reversal. Source guards and natural event provenance are part of the trace; math fuzz cannot stand in for an actual serialized save.",
+      "touches": [
+        "thermal-pressure",
+        "ice-boundary",
+        "warning-state",
+        "recovery",
+        "colony-cycle"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "plateau",
+      "members": [
+        "B1",
+        "B3",
+        "B8",
+        "R1",
+        "R8",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "Empty plant/soil/water ground, authored inert ridges/crystals and frozen debris are compatible local-map layers. Work removes objects without adding new weather or fertile terrain; imported camp objects are allowed. Deeps surface glow remains an injected neighbour exception, not native light.",
+      "model": ""
+    },
+    {
+      "thing": "ordinary-life",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B7",
+        "B8",
+        "R1",
+        "R3",
+        "R8",
+        "R9",
+        "R10",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "Visitors and imported livestock are explicitly separated from stationary natives and hidden shivven. Their ordinary hunger/cold/corpse jobs neither grow pasture nor unlock a second signature. Hiding is never identity deletion; admissions and the old ratio waiver remain unchanged.",
+      "model": ""
+    },
+    {
+      "thing": "colony-cycle",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R2",
+        "R7",
+        "R9",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Salvage labour needs heat, heat raises pressure, breaches damage heat sources, repairs need work and surviving animals consume capacity. Shared weather, cold, animal needs and reloading can turn the combined loop into an attention flood, resource desert or scheduler stall. No season trace is current.",
+      "model": "M4: Whole plateau season"
+    },
+    {
+      "thing": "recovery",
+      "members": [
+        "B2",
+        "B3",
+        "B8",
+        "R8",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "Ordinary mining and shared salvage consume finite placed objects into inventoried cargo. Neither needs a tablet, thaw, rite, shell floor or larder; reversing jobs cannot regenerate an already consumed object.",
+      "model": ""
+    },
+    {
+      "thing": "thermal-pressure",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R2",
+        "R3",
+        "R5",
+        "R9",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Exterior insulation, source ranking, thermal saturation and finite animal reservations can remove useful feedback or leave permanent saturation even though each isolated formula is monotone. The current room-volume sum does not settle the cold-exterior bargain.",
+      "model": "M3: Exterior heat and pressure"
+    },
+    {
+      "thing": "ice-boundary",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R3",
+        "R4",
+        "R5",
+        "R7",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "A legal path plan, actual vanilla Goto legs, source eligibility, footprint resizing and late construction can disagree together: the barrier can protect while also stalling every reachable pursuit or placing releases on neighbouring floor. Resolve against actual per-step traces.",
+      "model": "M2: Ice boundary and source geometry"
+    },
+    {
+      "thing": "warning-state",
+      "members": [
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R4",
+        "R6",
+        "R7",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "The saved taught flag, one pending opening, mutually exclusive stopped/sealed/released/cancelled outcomes and persistent casualty identity support both precise teaching and later vague warnings. Discovery by searching is separate from notification metadata. Disabling cancels instead of preserving an expired release.",
+      "model": ""
+    }
+  ],
+  "old_bars": {}
+}
