@@ -1,0 +1,826 @@
+{
+ "mod": "Cauldron",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json bar `warning` (sees.instrument, live_only_why, range.varies), read with bar `living_cast` range.left_out and rule R_warning",
+     "evidence": "`warning` is live-only. Its decisive reading is \"ordinary-zoom live observation of the same transitions\", and part of what is watched is \"awake idle suush/zisska/eskith\" holding still. Suush is a real flyer: RM_CauldronFauna.xml:121 has `<MaxFlightTime>600</MaxFlightTime>`, and census row suush_flight is kept. RM_CauldronVents.cs:355-371 HushFauna sends every wild awake hush-race pawn, suush included, into `Wait_MaintainPosture` with InterruptForced every 240 ticks. So an unattended live look at whether a flying suush 'falls still' is a live visual test of a flyer's flight behaviour. CLAUDE.md: \"NEVER live-test a flyer's flight without the owner present\" and \"Don't try to capture images of flight.\" The proposal knows the rule (living_cast left_out: \"Visible flight judgement is reserved for an owner-present sitting\"), but `warning` has no such carve-out, and no meeting covers hush × flight.",
+     "would_pass": "The warning's live look judges only walking natives (zisska, eskith) and vent puffs. The suush part of the hush is decided by a state read (the job is Wait_MaintainPosture plus Pawn_FlightTracker state before and after) and its visual is kept for an owner-present sitting. A meeting or rule says what a hushed flyer does: lands, or hovers in place.",
+     "smallest_fix": "Add to warning.range.left_out: \"a flying suush's hush is read by job and flight-tracker state; its visual waits for an owner-present sitting\". Name zisska/eskith as the live-look natives. Add warning and living_cast to a meeting on hush × flight."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json bar `place`, says \"beneath a dusk sky\" (figurative: [])",
+     "evidence": "The proposal does not take \"dusk\" literally. owner_pages.md page two: \"'Dusk' describes diffuse appearance; shared Direct Sun geometry still governs heat.\" ambiguities.md 'Permanent dusk': \"the source's four day/night colour tables also do not prove a fixed supplied site's light.\" RM_CauldronWeathers.xml gives every weather separate skyColorsDay/Dusk/NightEdge/NightMid tables, so the sky follows the planet's clock. RM_ScatterDusk is a weather name. Yet `place` lists no figurative words. A builder could lock sky brightness to the dusk table, or a judge could refuse a day-phase frame on a terminator-tail site, and both would be reading the words literally. 'Wet' in the same sentence is also unmarked, and the two systems that showed wetness on the ground and plants (dew_beads, dew_saturation) are moved.",
+     "would_pass": "`place.meant.figurative` lists \"dusk\" (stands for: a diffuse, shadowless, dim weather-tinted sky in the ruled weathers, not a fixed dusk light level or time of day) and \"wet\" (stands for: fog, dewfall weather and the existing plant art, with no dew filth or plant swap). Each gets one accept picture that departs from the literal reading, e.g. a day-phase frame on a terminator-tail tile that still reads as shadowless scatter-dusk.",
+     "smallest_fix": "Fill `place.meant.figurative` with the two entries above and their accept pictures."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json bar `gas_chain`, says \"throwing nearby loose goods in readable blasts\"; sees.instrument; bar `whole` accept/reject",
+     "evidence": "`gas_chain` is not live-only, and its instrument is state traces (\"actual engine ignition and shared displacement event/position traces\"). It hands the visual half elsewhere: \"whole run checks visible blast readability\". But no picture on `whole` mentions a blast or thrown goods. Its rejects are haze, dead forest, starvation, clear-sky lock, double-paid stock and log floods. A build whose knockback events fire with no visible explosion (goods slide, or vanish and reappear) passes every gas_chain trace, and nothing in `whole` would refuse it. The owner's word is the visual: \"absolutely it should be dramatic and should blow back items like an explosion\" (record.json s_lasting_health, OWNER:1794373071501926623).",
+     "would_pass": "Some bar's pictures decide readability. Either `whole` gets an accept/reject pair about a gas blast (a visible explosion at the burning gas with goods flung away, against goods relocating with no visible burst), or `gas_chain` marks \"readable\" and reads it by a state read of the explosion effect spawned at the source cell alongside the displacement event.",
+     "smallest_fix": "Add one reject picture to `whole`: \"Gas ignition moves loose goods with no visible explosion at the burning cloud.\" Add a matching accept clause, so the deferred readability check has something to refuse."
+    },
+    {
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json bar `protection`, says \"…and material acid-proofing protects the thing rather than its wearer\"; accept picture 2",
+     "evidence": "This clause is a build choice. It is already stated as rule R_protect (\"Partial resistance is actual loaded stats, not faction or item acid-proofing\"), and its source is the agent decision d_stage2_protection_routes plus RM_VexxithAcidImmunity.cs. No owner word asks for it. It fails the Reject test: if acid-proof armour also shielded its wearer, the owner's lasting-harm and dependable-industry choices still stand, so he would not reject the mod over it. Accept picture 2 also says \"acid-compatible vexxith vessel\", which collides with the moved extra \"Vexxith filter vessel\" (next_version.md lined_machines). A cold reader cannot tell whether the kept bottle/barrel or the moved machine is meant.",
+     "would_pass": "`protection` says only the player-facing outcome (roof or complete seal stops new ambient harm; exposed bodies still take it). Item-versus-wearer stays in R_protect and C_seal. If a container picture is kept, it names \"vexxith bottle, bucket or barrel\".",
+     "smallest_fix": "Delete the clause from `protection.says` and the second accept picture. Keep the wearer-versus-item distinction only in R_protect and C_seal."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json bar `protection` and rule R_protect, \"a functioning complete environmental seal\"; ambiguities.md 'Sealed, acid-proof armour and native immunity'",
+     "evidence": "Nowhere does the proposal say what makes a seal complete. The source has a definition: RM_AcidAirKernel.BurnChance takes seal = clamp(max(VacuumResistance, ToxicEnvironmentResistance)), and its own comment says a vacsuit plus helmet (1.01) is safe and a gas mask is partial. C_seal says bloom does not use VacuumResistance at all. So the two kept hazards disagree on what sealed means. Every DLC is assumed, which also leaves open whether a pawn at full ToxicEnvironmentResistance from any source, a gene for example, counts as sealed with no suit. T29's acceptance test cannot settle this while the mechanic it tests is unnamed.",
+     "would_pass": "R_protect defines the seal as one read used by both acid air and bloom (for example, the pawn's VacuumResistance or ToxicEnvironmentResistance at full). It says whether non-gear sources count, and gives one accept/reject picture on that edge.",
+     "smallest_fix": "Add one sentence to R_protect defining \"complete environmental seal\" as a single named stat read shared by RM_AcidAir and RM_VentBloomExposure, including which sources count. Point T29 at it."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "chemical_work",
+     "n": 1,
+     "text": "A completed research flag is debug-forced while the default rig-off research route is unreachable, a staged reagent pile substitutes for conversion, or capping only hides the cloud renderer.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "chemical_work",
+     "n": 2,
+     "text": "A normally built tap caps further gas emission, banks real condensate and delivers it to a touching compatible tank; ordinary researched works consume real input and cartridges to produce reagent or drinkable water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "chemical_work",
+     "n": 3,
+     "text": "A full tank silently deletes accepted fluid, a stalled converter burns cartridges indefinitely, or the only working setup needs an enabled next-version lined machine.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "chemical_work",
+     "n": 4,
+     "text": "Missing power, cartridges, input or output room explains a stopped machine; restoring the missing requirement resumes work without hidden stock loss or duplicate output.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "gas_chain",
+     "n": 1,
+     "text": "A gas-free separating corridor and a closed sealed compartment remain unlit while the reachable cloud burns, including when the run resumes from an active mid-burn save.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "gas_chain",
+     "n": 2,
+     "text": "Flame crosses a sealed diagonal wall corner, the empty gap is secretly refilled before the claim is judged, or a reload loses the active front while saved gas alone is called continuity.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "gas_chain",
+     "n": 3,
+     "text": "A normal ignition lights the near end of a continuous combustible cloud; the burn reaches the far bank across water, consumes its fuel, leaves toxic smoke and blasts identified goods away from the source.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "gas_chain",
+     "n": 4,
+     "text": "The harness independently ignites each cell or moves goods, a water surface stops an otherwise connected combustible cloud, or only the initially lit patch burns.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "lasting_cost",
+     "n": 1,
+     "text": "Poison fades slowly enough to look permanent in a short test, a debug removal stands in for treatment, or a hidden saved trace cannot be treated normally.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "lasting_cost",
+     "n": 2,
+     "text": "Acid-caused facial scars and injured or lost sensory parts remain visible in Health and retain their consequence after other wounds heal; ordinary nonpermanent injuries in the comparison recover.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "lasting_cost",
+     "n": 3,
+     "text": "A permanent-sounding acid label has no disfigurement or sensory consequence, or debug-added scars are presented as if actual exposure caused them.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "lasting_cost",
+     "n": 4,
+     "text": "A bloom-dosed worker carries the same positive load after shelter, ordinary tending, map departure and save/load, then a normal successful advanced-medicine operation consumes medicine and removes it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 1,
+     "text": "Bound rhossak return toward living thornwood, rebind after its loss or visibly become unbound; galled kin remain seedless and yield edible galls, while a tame vexxiss supplies plate through ordinary shearing.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 2,
+     "text": "The map has animal portraits but native feeders starve beside their food or dehydrate beside their water, while harmless debug-spawned rations mask the loss.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 3,
+     "text": "Crystalmits consume actual loose mineral food, atmospheric suush live without a food need, predators catch prey, and foragers roast harvested tsevrix into food while raw toxic material remains identifiable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 4,
+     "text": "A fictional flyer only walks, bound rhossak vanish when the tree dies, or killing a vexxiss is the only practical way to obtain its supposed living shear product.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 5,
+     "text": "Flying natives enter real flight state and natives beside hazardous native water drink without dehydration; milk, eggs, silk, mineral products and carcasses come from actual animal actions.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 1,
+     "text": "A steam geyser warms the forest, a dry storm rains, or ordinary and rich ground blend so the player cannot tell their usable patches apart.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 2,
+     "text": "The trunks have chemical filter fronds instead of a conventional leaf canopy; the sky can shift between the ruled chemical weathers without becoming sunny or volcanic.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 3,
+     "text": "An intact map has ragged mineral trunks, attached metal crust/flecks and non-green cover above dark soils the player can distinguish while placing work; fog and condensation change the atmosphere and lightning arrives without rain.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 4,
+     "text": "Only labels distinguish ordinary green woodland and generic grey fog, or mineral nuggets float beside unmineralised trees.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "pool_use",
+     "n": 1,
+     "text": "A misleading label calls the pool acid while actual transferred liquid and contact properties are harmless.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "pool_use",
+     "n": 2,
+     "text": "A coloured pool damages apparel but filling it silently gives fresh water, or an injected tank is offered as proof that the intended site contains a real hazardous pool.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "pool_use",
+     "n": 3,
+     "text": "Protected handling carries dangerous input to the works; only completed detoxification yields potable output, and native animals can still use their environmental water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "pool_use",
+     "n": 4,
+     "text": "A pool at the intended supplied site is identified as hazardous before use; filled vessels and pumped tanks retain its actual toxicity or acidity, and contact consequences agree with the read chemistry.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "protection",
+     "n": 1,
+     "text": "Switching a feature off clears existing poisoning or a roof is treated as immunity to walking through acid liquid or to a separate smoke cloud.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "protection",
+     "n": 2,
+     "text": "An acid-compatible vexxith vessel survives handling acid while an unsealed body wearing only an acid-proof armour piece can still be harmed; faction grants no free protection.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "protection",
+     "n": 3,
+     "text": "Clothes retain their hit points while their supposedly fully sealed wearer gains ambient metal load, or healthy protected actors pass only because no dose occurred.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "protection",
+     "n": 4,
+     "text": "Roofed and fully sealed workers retain their starting ambient health while matched exposed workers receive new bloom load or acid injury; taking off a necessary seal piece makes exposure relevant again.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "timber",
+     "n": 1,
+     "text": "Pre-existing steel beside an ordinary tree is offered as the harvest, assay advertises metal when disabled, or a cancelled task pays the full materials.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "timber",
+     "n": 2,
+     "text": "The assay favours the younger trunk while actual normal harvesting consistently rewards the older one, so the player’s selection cue lies.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "timber",
+     "n": 3,
+     "text": "The worker takes longer than ordinary easy timber work in matched conditions; interrupting before completion produces no free harvest, and repeating work after reload cannot pay twice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "timber",
+     "n": 4,
+     "text": "A mineral-rich mature trunk has the stronger assay and visible attached metal than an eligible younger trunk; a completed normal harvest adds wood and steel from that tree.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 1,
+     "text": "Sleeping or fighting animals continue their own states while eligible idle natives hush, and the warning message supplements the visible change.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 2,
+     "text": "The warning starts so early or inconsistently that its apparent relation to the coming bloom is lost, or loading a mid-warning save silently skips the remaining warning.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 3,
+     "text": "A hidden flag says falter while puffs and animals look unchanged, or a letter arrives after exposed workers have already taken bloom load.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 4,
+     "text": "A worker already doing an ordinary errand near reachable shelter can be recalled when vent puffs diminish and awake idle native animals stop, before the bloom’s harmful stage starts.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 5,
+     "text": "Already capped sources or absent eligible wildlife do not fake a puff change; the retained timed warning message still gives the worker a chance to shelter.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 1,
+     "text": "Only a cleared demonstration pad works while a full map becomes continuous combustible haze, a dead forest, a starving native population or a colony that spends all its time recovering from unavoidable routine exposure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 2,
+     "text": "The saved colony resumes during the vent cycle with its health, binding, fluids and work intact, then performs the main tasks in another order with the same available livelihood.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 3,
+     "text": "The seasonal presentation locks clear sky, disables damage or feeds need-free workers, or reload/reordered production double-pays stock, loses poisoning or floods the log with errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 4,
+     "text": "Across the changing weather, the colony shelters or seals workers when necessary, harvests actual native supplies, processes water and condensate and still chooses hazardous outdoor tasks; live animals, mineral forest and contained work routes remain present.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Shadow suppression for the whole biome. The header of RM_CauldronWeathers.xml says \"no direct sunlight cues (§6): every shadow colour sits near white … so nothing casts a hard shadow in any weather here\", and all four weathers carry this. This is a built land behaviour. The census `weather` row lists only sky, visibility, wind and no rain or snow, so the shadow suppression has no row, no fate and no meeting with R_sun. Yet the Direct Sun ruling says low sun produces longer shade and depends on a readable tree-shade model. A forced shadowless look on terminator-tail tiles is exactly the place where 'dusk appearance' and 'shade is geometry' can conflict.",
+   "loop_or_three_way": "Three-way meeting: warning × living_cast × the flyer live-test ruling. The warning's live-only cue includes wild suush falling still. HushFauna forces Wait_MaintainPosture on suush, which living_cast keeps as a real MaxFlightTime flyer. The flyer ruling forbids watching or capturing that flight live without the owner present. Taken pairwise each looks fine: warning and living_cast share the `ecology` meeting, and living_cast reserves visual flight for the owner. Together they ask for an unattended live look at a hushed flyer, and no meeting says what a hushed airborne suush does or how its stillness may be observed.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 717822
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json rules R_health and R_local, bar whole (range and reject), meeting 'health'; ambiguities.md section 'Persistent versus merely slow metal clearance'",
+     "evidence": "R_health says: 'Designer default medical route is MedicineUltratech in a normal bill'. R_local keeps 'a residual ambient floor', so exposure never reaches zero. R_health also allows 'No natural or ordinary-care removal of positive metal load'. The whole bar's range runs to a 'day-100 state' with 'Starting water, food, medicine, components and cartridges ... finite and declared', and it rejects 'a colony that spends all its time recovering from unavoidable routine exposure'. In vanilla, glitterworld medicine has no crafting recipe and comes only from trade or loot [guess ~85%]. So every unroofed, unsealed errand adds load that never fades, and the only cure is an item the colony cannot make. The health meeting is marked 'argued' but never says where the purge medicine comes from. The owner's words (OWNER:1794373071501926623, 'requires advanced medicine to purge') name no medicine tier. ambiguities.md treats the tier as 'missing construction detail, not a new owner preference', yet that choice decides whether the cure can be reached at all on the fixed desert world. Page two never mentions the tier.",
+     "would_pass": "A purge whose supply route is named and reachable at shipped defaults: either a craftable tier, or an argued trade route (for example, vent reagent sold for medicine) listed as a member of the health and colony_work meetings and an input to the coupled season model. The tier chosen is shown to the owner as a settled ambiguity.",
+     "smallest_fix": "Add an ambiguity 'advanced medicine: industrial versus glitterworld' with its supply consequence. Take a reading that has a supply route, and write that route into R_health. Add medicine supply to the coupled season model's inputs and to the health meeting's argument. Put one line on owner page two."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json rows vent_cycle_falter and eskith; bars.json bar warning (says, accept picture 3), rule R_warning, meeting hush_flight",
+     "evidence": "The case for keeping native stillness is census eskith: 'deleting movement makes the warning indistinguishable from idle scenery'. The warning bar's own accept picture contradicts this: 'Already capped sources or absent eligible wildlife do not fake a puff change; the retained timed warning message still gives the worker a chance to shelter.' Vent puffs and the message already make the warning readable without hush. The owner's sourced falter words (record.json s_falter, OWNER:1792108481222070856) are about an hour of warning, not animal stillness; the hush text at record.json:760 is agent text. Keeping hush brings in the whole suush hover-in-flight rule, the hush_flight meeting, part of T30 and a flight-state calibration arm in the situation generator.",
+     "would_pass": "Either a deletion argument showing the default-map warning is not readable from puffs and the message without native hush, or hush moved to the next version and switched off.",
+     "smallest_fix": "Move native hush (with the suush hover rule) to next_version.md with a switch-off ticket. Delete 'eligible wild natives falling still when present' from warning.says and its pictures, and drop the hush_flight meeting and R_warning's hush paragraph."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json bar living_cast says; ambiguities.md (no entry); source design/RimMandrake/biome_experiences_2026-10-20.md:9",
+     "evidence": "The owner typed the Cauldron experience: 'Water is acid, animals are minerals, and life twists under the load… including you.' living_cast weakens this to 'mineral-adapted wildlife'. No bar picture shows a player seeing a native animal as a mineral body; the mineral reading in the bars is about the forest (place) and diets and products. ambiguities.md settles 'Angry, roils, eternal, breathes' and 'Wet, green, lush and mineral' (about plants), but has no entry for 'animals are minerals' or 'life twists'.",
+     "would_pass": "living_cast (or place) states what 'animals are minerals' means to the player: mineral bodies readable at ordinary zoom, or mineral diet, products and remains. It marks the phrase figurative if it is, keeps the owner-kept imports as a stated exception, and has an accept picture and a reject picture (for example, ordinary-looking fauna that only eats rocks).",
+     "smallest_fix": "Add one ambiguity entry and one figurative entry with an accept picture to living_cast; change 'mineral-adapted' to the reading taken."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json bar whole says ('dangerous expeditions', 'runaway gas'); its figurative list holds only 'error storm'",
+     "evidence": "The owner's answer was 'Dependable industry, risky expeditions ... exposed discoveries' (ANSWERS_OWNER.md:5). The agent's earlier question read 'expedition' as a trip off the map: 'If the successful life is expeditionary, demonstrate what a trip brings home' (design/RimMandrake/designer_codex_2026-11-09/Cauldron/record.json:1291). The whole bar's accept picture quietly reads it as on-map 'hazardous outdoor tasks'. Those two readings differ in scope (whether caravans or off-map sites are in the season run). 'Runaway gas' is defined only in models.md ('flood: connected gas continually invading normal work routes'), not in the bar.",
+     "would_pass": "'expeditions' marked figurative with what it stands for (on-map outdoor errands beyond shelter), or scoped literally with caravans in range. 'runaway' marked figurative and tied to the flood definition, each with an accept picture.",
+     "smallest_fix": "Add two figurative entries to whole.meant.figurative and one line in ambiguities.md on the expedition reading."
+    }
+   ],
+   "reviewer_refusals": 4,
+   "stranger": [
+    {
+     "bar": "chemical_work",
+     "n": 1,
+     "text": "A normally built tap caps further gas emission, banks real condensate and delivers it to a touching compatible tank; ordinary researched works consume real input and cartridges to produce reagent or drinkable water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "chemical_work",
+     "n": 2,
+     "text": "A completed research flag is debug-forced while the default rig-off research route is unreachable, a staged reagent pile substitutes for conversion, or capping only hides the cloud renderer.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "chemical_work",
+     "n": 3,
+     "text": "A full tank silently deletes accepted fluid, a stalled converter burns cartridges indefinitely, or the only working setup needs an enabled next-version lined machine.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "chemical_work",
+     "n": 4,
+     "text": "Missing power, cartridges, input or output room explains a stopped machine; restoring the missing requirement resumes work without hidden stock loss or duplicate output.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "gas_chain",
+     "n": 1,
+     "text": "The harness independently ignites each cell or moves goods, a water surface stops an otherwise connected combustible cloud, or only the initially lit patch burns.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "gas_chain",
+     "n": 2,
+     "text": "A normal ignition lights the near end of a continuous combustible cloud; the burn reaches the far bank across water, consumes its fuel, leaves toxic smoke and blasts identified goods away from the source.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "gas_chain",
+     "n": 3,
+     "text": "Flame crosses a sealed diagonal wall corner, the empty gap is secretly refilled before the claim is judged, or a reload loses the active front while saved gas alone is called continuity.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "gas_chain",
+     "n": 4,
+     "text": "A gas-free separating corridor and a closed sealed compartment remain unlit while the reachable cloud burns, including when the run resumes from an active mid-burn save.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "lasting_cost",
+     "n": 1,
+     "text": "A bloom-dosed worker carries the same positive load after shelter, ordinary tending, map departure and save/load, then a normal successful advanced-medicine operation consumes medicine and removes it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "lasting_cost",
+     "n": 2,
+     "text": "Poison fades slowly enough to look permanent in a short test, a debug removal stands in for treatment, or a hidden saved trace cannot be treated normally.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "lasting_cost",
+     "n": 3,
+     "text": "A permanent-sounding acid label has no disfigurement or sensory consequence, or debug-added scars are presented as if actual exposure caused them.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "lasting_cost",
+     "n": 4,
+     "text": "Acid-caused facial scars and injured or lost sensory parts remain visible in Health and retain their consequence after other wounds heal; ordinary nonpermanent injuries in the comparison recover.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 1,
+     "text": "A fictional flyer only walks, bound rhossak vanish when the tree dies, or killing a vexxiss is the only practical way to obtain its supposed living shear product.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 2,
+     "text": "The map has animal portraits but native feeders starve beside their food or dehydrate beside their water, while harmless debug-spawned rations mask the loss.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 3,
+     "text": "Crystalmits consume actual loose mineral food, atmospheric suush live without a food need, predators catch prey, and foragers roast harvested tsevrix into food while raw toxic material remains identifiable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 4,
+     "text": "Bound rhossak return toward living thornwood, rebind after its loss or visibly become unbound; galled kin remain seedless and yield edible galls, while a tame vexxiss supplies plate through ordinary shearing.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "living_cast",
+     "n": 5,
+     "text": "Flying natives enter real flight state and natives beside hazardous native water drink without dehydration; milk, eggs, silk, mineral products and carcasses come from actual animal actions.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 1,
+     "text": "The trunks have chemical filter fronds instead of a conventional leaf canopy; the sky can shift between the ruled chemical weathers without becoming sunny or volcanic.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 2,
+     "text": "A steam geyser warms the forest, a dry storm rains, or ordinary and rich ground blend so the player cannot tell their usable patches apart.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 3,
+     "text": "An intact map has ragged mineral trunks, attached metal crust/flecks and non-green cover above dark soils the player can distinguish while placing work; fog and condensation change the atmosphere and lightning arrives without rain.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 4,
+     "text": "Only labels distinguish ordinary green woodland and generic grey fog, or mineral nuggets float beside unmineralised trees.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "pool_use",
+     "n": 1,
+     "text": "A misleading label calls the pool acid while actual transferred liquid and contact properties are harmless.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "pool_use",
+     "n": 2,
+     "text": "A pool at the intended supplied site is identified as hazardous before use; filled vessels and pumped tanks retain its actual toxicity or acidity, and contact consequences agree with the read chemistry.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "pool_use",
+     "n": 3,
+     "text": "Protected handling carries dangerous input to the works; only completed detoxification yields potable output, and native animals can still use their environmental water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "pool_use",
+     "n": 4,
+     "text": "A coloured pool damages apparel but filling it silently gives fresh water, or an injected tank is offered as proof that the intended site contains a real hazardous pool.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "protection",
+     "n": 1,
+     "text": "Switching a feature off clears existing poisoning or a roof is treated as immunity to walking through acid liquid or to a separate smoke cloud.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "protection",
+     "n": 2,
+     "text": "Clothes retain their hit points while their supposedly fully sealed wearer gains ambient metal load, or healthy protected actors pass only because no dose occurred.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "protection",
+     "n": 3,
+     "text": "Roofed and fully sealed workers retain their starting ambient health while matched exposed workers receive new bloom load or acid injury; removing the last source of complete sealing makes exposure relevant again.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "timber",
+     "n": 1,
+     "text": "Pre-existing steel beside an ordinary tree is offered as the harvest, assay advertises metal when disabled, or a cancelled task pays the full materials.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "timber",
+     "n": 2,
+     "text": "The worker takes longer than ordinary easy timber work in matched conditions; interrupting before completion produces no free harvest, and repeating work after reload cannot pay twice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "timber",
+     "n": 3,
+     "text": "The assay favours the younger trunk while actual normal harvesting consistently rewards the older one, so the player’s selection cue lies.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "timber",
+     "n": 4,
+     "text": "A mineral-rich mature trunk has the stronger assay and visible attached metal than an eligible younger trunk; a completed normal harvest adds wood and steel from that tree.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 1,
+     "text": "Already capped sources or absent eligible wildlife do not fake a puff change; the retained timed warning message still gives the worker a chance to shelter.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 2,
+     "text": "A worker already doing an ordinary errand near reachable shelter can be recalled when vent puffs diminish and awake idle native animals stop, before the bloom’s harmful stage starts.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 3,
+     "text": "Sleeping or fighting animals continue their own states while eligible idle natives hush, and the warning message supplements the visible change.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 4,
+     "text": "The warning starts so early or inconsistently that its apparent relation to the coming bloom is lost, or loading a mid-warning save silently skips the remaining warning.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 5,
+     "text": "A hidden flag says falter while puffs and animals look unchanged, or a letter arrives after exposed workers have already taken bloom load.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 1,
+     "text": "The seasonal presentation locks clear sky, disables damage or feeds need-free workers, or reload/reordered production double-pays stock, loses poisoning or floods the log with errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 2,
+     "text": "The saved colony resumes during the vent cycle with its health, binding, fluids and work intact, then performs the main tasks in another order with the same available livelihood.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 3,
+     "text": "Across the changing weather, the colony shelters or seals workers when necessary, harvests actual native supplies, processes water and condensate and still chooses hazardous outdoor tasks; live animals, mineral forest and contained work routes remain present.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 4,
+     "text": "A visible explosion at the burning gas flings loose goods away from its source; their movement is seen as part of that burst.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 5,
+     "text": "Gas ignition moves loose goods with no visible explosion at the burning cloud, or goods vanish and reappear rather than visibly being flung.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 6,
+     "text": "Only a cleared demonstration pad works while a full map becomes continuous combustible haze, a dead forest, a starving native population or a colony that spends all its time recovering from unavoidable routine exposure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Filter cartridge crafting. src/RimMandrake/Cauldron/Defs/ThingDefs_Items/RM_FilterWorksItems.xml defines RM_FilterCartridge, made at TableMachining from Steel and Cloth behind RM_FilterWorksResearch, and burned at one per working day. The census has no row for it; it is mentioned only as 'cartridge-fed' inside filter_works. The whole bar treats cartridges as a finite declared import ('Starting water, food, medicine, components and cartridges are finite and declared'). That hides a kept local supply chain (thornwood steel plus cloth, possibly sikka silk) that chemical_work and whole depend on. Its research gate also sits behind the moved rig study (T33).",
+   "loop_or_three_way": "R_local (a residual ambient floor, so every unroofed, unsealed errand adds load) meets R_health (load never fades; the only cure is MedicineUltratech, which cannot be crafted) and the whole bar (a day-100 run with finite declared medicine, where workers still choose dangerous outdoor work). The only renewable source of the cure is trading vent reagent (chemical_work's product, a trade good with a provisional market value) for medicine. That makes a loop: chemical output → trade → purge → labour → chemical output. The health meeting is marked 'argued' without naming it, and the colony_work meeting's model does not list medicine supply or trade among its inputs.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 520649
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1017082,
+    "output_tokens": 10280
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "cannot_hold_together",
+   "where": "bars.json rules R_health and R_local, bar whole (range and reject), meeting 'health'; ambiguities.md section 'Persistent versus merely slow metal clearance'",
+   "evidence": "R_health says: 'Designer default medical route is MedicineUltratech in a normal bill'. R_local keeps 'a residual ambient floor', so exposure never reaches zero. R_health also allows 'No natural or ordinary-care removal of positive metal load'. The whole bar's range runs to a 'day-100 state' with 'Starting water, food, medicine, components and cartridges ... finite and declared', and it rejects 'a colony that spends all its time recovering from unavoidable routine exposure'. In vanilla, glitterworld medicine has no crafting recipe and comes only from trade or loot [guess ~85%]. So every unroofed, unsealed errand adds load that never fades, and the only cure is an item the colony cannot make. The health meeting is marked 'argued' but never says where the purge medicine comes from. The owner's words (OWNER:1794373071501926623, 'requires advanced medicine to purge') name no medicine tier. ambiguities.md treats the tier as 'missing construction detail, not a new owner preference', yet that choice decides whether the cure can be reached at all on the fixed desert world. Page two never mentions the tier.",
+   "would_pass": "A purge whose supply route is named and reachable at shipped defaults: either a craftable tier, or an argued trade route (for example, vent reagent sold for medicine) listed as a member of the health and colony_work meetings and an input to the coupled season model. The tier chosen is shown to the owner as a settled ambiguity.",
+   "smallest_fix": "Add an ambiguity 'advanced medicine: industrial versus glitterworld' with its supply consequence. Take a reading that has a supply route, and write that route into R_health. Add medicine supply to the coupled season model's inputs and to the health meeting's argument. Put one line on owner page two."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json rows vent_cycle_falter and eskith; bars.json bar warning (says, accept picture 3), rule R_warning, meeting hush_flight",
+   "evidence": "The case for keeping native stillness is census eskith: 'deleting movement makes the warning indistinguishable from idle scenery'. The warning bar's own accept picture contradicts this: 'Already capped sources or absent eligible wildlife do not fake a puff change; the retained timed warning message still gives the worker a chance to shelter.' Vent puffs and the message already make the warning readable without hush. The owner's sourced falter words (record.json s_falter, OWNER:1792108481222070856) are about an hour of warning, not animal stillness; the hush text at record.json:760 is agent text. Keeping hush brings in the whole suush hover-in-flight rule, the hush_flight meeting, part of T30 and a flight-state calibration arm in the situation generator.",
+   "would_pass": "Either a deletion argument showing the default-map warning is not readable from puffs and the message without native hush, or hush moved to the next version and switched off.",
+   "smallest_fix": "Move native hush (with the suush hover rule) to next_version.md with a switch-off ticket. Delete 'eligible wild natives falling still when present' from warning.says and its pictures, and drop the hush_flight meeting and R_warning's hush paragraph."
+  },
+  {
+   "head": "core_promise_weakened",
+   "where": "bars.json bar living_cast says; ambiguities.md (no entry); source design/RimMandrake/biome_experiences_2026-10-20.md:9",
+   "evidence": "The owner typed the Cauldron experience: 'Water is acid, animals are minerals, and life twists under the load… including you.' living_cast weakens this to 'mineral-adapted wildlife'. No bar picture shows a player seeing a native animal as a mineral body; the mineral reading in the bars is about the forest (place) and diets and products. ambiguities.md settles 'Angry, roils, eternal, breathes' and 'Wet, green, lush and mineral' (about plants), but has no entry for 'animals are minerals' or 'life twists'.",
+   "would_pass": "living_cast (or place) states what 'animals are minerals' means to the player: mineral bodies readable at ordinary zoom, or mineral diet, products and remains. It marks the phrase figurative if it is, keeps the owner-kept imports as a stated exception, and has an accept picture and a reject picture (for example, ordinary-looking fauna that only eats rocks).",
+   "smallest_fix": "Add one ambiguity entry and one figurative entry with an accept picture to living_cast; change 'mineral-adapted' to the reading taken."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json bar whole says ('dangerous expeditions', 'runaway gas'); its figurative list holds only 'error storm'",
+   "evidence": "The owner's answer was 'Dependable industry, risky expeditions ... exposed discoveries' (ANSWERS_OWNER.md:5). The agent's earlier question read 'expedition' as a trip off the map: 'If the successful life is expeditionary, demonstrate what a trip brings home' (design/RimMandrake/designer_codex_2026-11-09/Cauldron/record.json:1291). The whole bar's accept picture quietly reads it as on-map 'hazardous outdoor tasks'. Those two readings differ in scope (whether caravans or off-map sites are in the season run). 'Runaway gas' is defined only in models.md ('flood: connected gas continually invading normal work routes'), not in the bar.",
+   "would_pass": "'expeditions' marked figurative with what it stands for (on-map outdoor errands beyond shelter), or scoped literally with caravans in range. 'runaway' marked figurative and tied to the flood definition, each with an accept picture.",
+   "smallest_fix": "Add two figurative entries to whole.meant.figurative and one line in ambiguities.md on the expedition reading."
+  }
+ ],
+ "applyable": false,
+ "seconds": 1290,
+ "at": "2026-11-17T00:01:39"
+}

@@ -6,7 +6,18 @@
       "meant": {
         "intent": "Reject if false: without the sourced mineral place this is vanilla forest in fog. Land, rederived from the experience sentence and frozen chemistry sheet; new art variants do not change the experience.",
         "source": "delegated: from record scope s_experience_anchor (original owner event unlocated), CONDUCTOR:1794804951784038130, OWNER:1792370870264139349 and OWNER:1792525010750756319; cauldron.md R13 and weather ratification. Direct Sun standing ruling controls heat/geometry.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "dusk",
+            "stands_for": "A diffuse, shadowless, dim weather-tinted sky in the ruled weathers, not a fixed dusk light level or time of day; shared Direct Sun geometry remains unchanged.",
+            "accept": "A day-phase frame on a supplied terminator-tail site still reads as diffuse scatter-dusk even though its light level is not the dusk colour table."
+          },
+          {
+            "word": "wet",
+            "stands_for": "Fog, dewfall weather and existing plant art give the place its moisture impression; no dew filth, decorative beads or weather-swapped plant colours are required.",
+            "accept": "The forest reads as moist under fog and dewfall while its ground has no dew-bead filth and its plant textures remain unchanged."
+          }
+        ]
       },
       "accept": [
         "An intact map has ragged mineral trunks, attached metal crust/flecks and non-green cover above dark soils the player can distinguish while placing work; fog and condensation change the atmosphere and lightning arrives without rain.",
@@ -26,7 +37,7 @@
         "start": "Fingerprint an unaltered intended Cauldron local save before clearing anything; inventory its starting plants, animals, soils and actual pools. Advance unlocked weather; if a weather does not occur in the observed cycle, use a separate transition sample without disabling other mechanics.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "Labels and a hand-painted showcase could fake identity. Describe the intact scene before reading labels, match the actual terrain/weather IDs, and contrast ordinary forest/steam/rain cues; verify actual precipitation rather than trusting a WeatherDef name.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
         "live_only_why": "Actual scene readability at ordinary play zoom cannot be inferred from asset paths, flags, state counters or an offline picture."
       },
       "live_only": true,
@@ -64,7 +75,7 @@
         "start": "Full roster resolved, starting native food/water and animal conditions recorded; identify producer and spawned product IDs, food depletion, flight tracker and bound tree before ordinary life is advanced.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "Fresh spawns or infinite nutrition can fake ecology. Use normal needs/AI, per-producer product deltas, actual eating/drinking and an unchanged initially fed control; distinguish spawn churn from survival by IDs and death/remains events.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
         "live_only_why": "Not live-only: exported engine state/actions or a model calibrated against those actions can distinguish the claimed outcomes; ordinary loaded state proof remains owed."
       },
       "live_only": false,
@@ -73,7 +84,8 @@
         "health",
         "forestry_readability",
         "settings_state",
-        "colony_work"
+        "colony_work",
+        "hush_flight"
       ]
     },
     {
@@ -90,7 +102,7 @@
       ],
       "reject": [
         "Pre-existing steel beside an ordinary tree is offered as the harvest, assay advertises metal when disabled, or a cancelled task pays the full materials.",
-        "The assay favours the younger trunk while actual normal harvesting consistently rewards the older one, so the player\u2019s selection cue lies."
+        "The assay favours the younger trunk while actual normal harvesting consistently rewards the older one, so the player’s selection cue lies."
       ],
       "lazy": "none: The rejected shortcuts contradict explicit outcomes in says; no further build satisfying those outcomes was found in the second lazy-build attack.",
       "range": {
@@ -102,7 +114,7 @@
         "start": "Identify standing trunks and nearby existing stacks, growth/grade and matched vanilla timber work; record start resources, worker stats and success/failure. No new products are staged after start.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "Other harvesters or old ground stock can fake yield. Trace the completing worker/tree and products, reserve the plot, compare interrupted matched work and separate failed harvests; use the same worker/light/tool conditions for work comparison.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
         "live_only_why": "Not live-only: exported engine state/actions or a model calibrated against those actions can distinguish the claimed outcomes; ordinary loaded state proof remains owed."
       },
       "live_only": false,
@@ -118,12 +130,12 @@
       "id": "warning",
       "says": "Before a vent bloom harms exposed workers, the player gets a readable warning that allows a nearby worker to reach shelter, with active vents visibly reducing their puffs and eligible wild natives falling still when present.",
       "meant": {
-        "intent": "Reject if false: preventable exposure becomes an unseen tax. The signature needs a readable preparation stage, not merely a faltering Boolean. The owner\u2019s approximate hour remains an explicit source target in rules/checks, independent of interpolation.",
+        "intent": "Reject if false: preventable exposure becomes an unseen tax. The signature needs a readable preparation stage, not merely a faltering Boolean. The owner’s approximate hour remains an explicit source target in rules/checks, independent of interpolation.",
         "source": "OWNER:1792108481222070856 as preserved in record scope s_falter; delegated visual reading from current vent puffs, native hush and retained warning text; no new bespoke soundscape (record scope s_audio).",
         "figurative": []
       },
       "accept": [
-        "A worker already doing an ordinary errand near reachable shelter can be recalled when vent puffs diminish and awake idle native animals stop, before the bloom\u2019s harmful stage starts.",
+        "A worker already doing an ordinary errand near reachable shelter can be recalled when vent puffs diminish and awake idle native animals stop, before the bloom’s harmful stage starts.",
         "Sleeping or fighting animals continue their own states while eligible idle natives hush, and the warning message supplements the visible change.",
         "Already capped sources or absent eligible wildlife do not fake a puff change; the retained timed warning message still gives the worker a chance to shelter."
       ],
@@ -133,16 +145,16 @@
       ],
       "lazy": "none: The rejected shortcuts contradict explicit outcomes in says; no further build satisfying those outcomes was found in the second lazy-build attack.",
       "range": {
-        "varies": "All non-bloom-to-bloom transitions and repeated bloom episodes; stable/leaking, capped/uncapped vents, vent count zero/one/multiple; awake idle suush/zisska/eskith versus fighting/asleep/downed/owned animals. Worker paths 5, 10 and 20 cells to actually reachable roofs at ordinary mobility, plus obstructed and immobile exclusions. Reload at start/middle/end of warning; 3/40 colonists and early/late season. Approximate hour is nominal 2500 game ticks, checked with 250-tick cue sampling tolerance; 4000 weather-blend ticks are not substituted for it. All-capped and no-eligible-native contexts require the timed text fallback; visible vent/native cue requirements apply where those actors can change.",
-        "left_out": "No guarantee for an immobile pawn or a worker without reachable shelter, no warning before unrelated ordinary acid contact, no interruption of fights or owner jobs, no bespoke audio. No-vent legacy maps use the textual warning and cannot stand in for default-map vent/animal readability."
+        "varies": "All non-bloom-to-bloom transitions and repeated bloom episodes; stable/leaking, capped/uncapped vents, vent count zero/one/multiple; awake idle wild zisska/eskith for the live look, and suush across grounded, taking-off, flying, landing and cooldown states for job/flight-tracker reads, versus fighting/asleep/downed/owned animals. Worker paths 5, 10 and 20 cells to actually reachable roofs at ordinary mobility, plus obstructed and immobile exclusions. Reload at start/middle/end of warning; 3/40 colonists and early/late season. Approximate hour is nominal 2500 game ticks, checked with 250-tick cue sampling tolerance; 4000 weather-blend ticks are not substituted for it. All-capped and no-eligible-native contexts require the timed text fallback; visible vent/native cue requirements apply where those actors can change.",
+        "left_out": "No guarantee for an immobile pawn or a worker without reachable shelter, no warning before unrelated ordinary acid contact, no interruption of fights or owner jobs, no bespoke audio. No-vent legacy maps use the textual warning and cannot stand in for default-map vent/animal readability. A flying suush's hush is read by job and Pawn_FlightTracker state before, during and after the cue; its visual waits for an owner-present sitting. No unattended flight observation or images of flight."
       },
       "sees": {
-        "instrument": "Tick-stamped vent output, actual job/movement and bloom/dose trace plus ordinary-zoom live observation of the same transitions. T30 defines timing; T34 observer. Main natural episode and controlled transition cases retain other systems and weather evolution.",
+        "instrument": "Tick-stamped vent output, actual job/movement and bloom/dose trace plus ordinary-zoom live observation of vent puffs and walking zisska/eskith across the same transitions. For suush, read Wait_MaintainPosture, position and Pawn_FlightTracker state before, during and after hush; do not judge its flight visually unattended. Any suush flight/hush visual is reserved for an owner-present sitting, with no images of flight. T30 defines timing and flight-safe hush; T34 supplies the observer. Main natural episode and controlled transition cases retain other systems and weather evolution.",
         "start": "Start in resolved non-bloom weather with worker route/shelter and native eligibility logged, vent recovery normal and no prior injury; save after cue begins for the reload arm.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
-        "control": "Idle animals may already stand still and ordinary pauses can fake a cue. Show their preceding ordinary movement and output, then compare an eligible native with sleeping/fighting/owned counterparts in the same episode; read dose opportunity and bloom onset separately.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
-        "live_only_why": "Actual scene readability at ordinary play zoom cannot be inferred from asset paths, flags, state counters or an offline picture."
+        "control": "Idle animals may already stand still and ordinary pauses can fake a cue. Show their preceding ordinary movement and output, then compare an eligible native with sleeping/fighting/owned counterparts in the same episode; read dose opportunity and bloom onset separately. For suush, compare the same flight-tracker/job history with a matched non-falter arm; a wait job alone cannot prove airborne hover or continuing flight eligibility.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "live_only_why": "Vent-puff and walking zisska/eskith warning readability at ordinary play zoom cannot be inferred from flags or counters. Suush hush/flight uses job and Pawn_FlightTracker state unattended; its visual judgement waits for an owner-present sitting."
       },
       "live_only": true,
       "touches": [
@@ -150,20 +162,20 @@
         "exposure",
         "ecology",
         "colony_work",
-        "save_state"
+        "save_state",
+        "hush_flight"
       ]
     },
     {
       "id": "protection",
-      "says": "In the Cauldron a roof or a functioning complete environmental seal prevents new ambient bloom load and acid injury during ordinary work, while eligible exposed bodies remain vulnerable and material acid-proofing protects the thing rather than its wearer.",
+      "says": "In the Cauldron a roof or a functioning complete environmental seal prevents new ambient bloom load and acid injury during ordinary work, while eligible exposed bodies remain vulnerable.",
       "meant": {
-        "intent": "Reject if false: preparation cannot buy the dependable work the owner selected. Complete sealing, roof protection and material immunity are separate outcomes, not inferred from labels. Existing injuries remain even under new protection.",
-        "source": "OWNER:1794373071501926623 and CONDUCTOR:1794804951784038130; record d_stage2_protection_routes and source RM_AcidAir.cs owner context; standing settings rule.",
+        "intent": "Reject if false: preparation cannot buy the dependable work the owner selected. A roof or complete sealing must protect the worker, not merely leave their clothes intact. Existing injuries remain even under new protection; the seal predicate and item-versus-wearer distinction are attackable build choices in R_protect, not separate passing demands.",
+        "source": "OWNER:1794373071501926623 and CONDUCTOR:1794804951784038130 for lasting harm and dependable work; delegated protection outcome from record d_stage2_protection_routes and RM_AcidAir.cs context. Seal and material implementation choices are in R_protect; standing settings rule remains.",
         "figurative": []
       },
       "accept": [
-        "Roofed and fully sealed workers retain their starting ambient health while matched exposed workers receive new bloom load or acid injury; taking off a necessary seal piece makes exposure relevant again.",
-        "An acid-compatible vexxith vessel survives handling acid while an unsealed body wearing only an acid-proof armour piece can still be harmed; faction grants no free protection."
+        "Roofed and fully sealed workers retain their starting ambient health while matched exposed workers receive new bloom load or acid injury; removing the last source of complete sealing makes exposure relevant again."
       ],
       "reject": [
         "Clothes retain their hit points while their supposedly fully sealed wearer gains ambient metal load, or healthy protected actors pass only because no dose occurred.",
@@ -171,15 +183,15 @@
       ],
       "lazy": "none: The rejected shortcuts contradict explicit outcomes in says; no further build satisfying those outcomes was found in the second lazy-build attack.",
       "range": {
-        "varies": "Roof/open-sky cells and roof-edge crossing, complete/partial/no gear, equipped/removing/destroyed gear, loaded sealing aggregates, player/visitor/hostile flesh pawns and native/non-native animals; ambient acid outside bloom and bloom overlap, near/far/capped vents, 3/40-colonist normal duty cycles. Save/load protected and already-injured bodies. Direct contact, item corrosion and combustion smoke measured as distinct shared routes.",
+        "varies": "Roof/open-sky cells and roof-edge crossing, complete/partial/no gear, equipped/removing/destroyed gear, loaded sealing aggregates below/at/above full, gear-only/non-gear/mixed sources including genes and hediffs, player/visitor/hostile flesh pawns and native/non-native animals; ambient acid outside bloom and bloom overlap, near/far/capped vents, 3/40-colonist normal duty cycles. Save/load protected and already-injured bodies. Direct contact, item corrosion and combustion smoke measured as distinct shared routes.",
         "left_out": "No claim that environmental sealing grants blanket immunity to direct liquid immersion, bites, fire or vanilla toxic smoke; the shared systems define those routes. No biome-specific heat protection law; Direct Sun is unchanged."
       },
       "sees": {
-        "instrument": "Paired actual hediff/injury and item HP reads after witnessed exposure opportunities, plus resolved worn stats and component-source trace. Exposure and treatment state walk calibrated against these transitions; T29 addresses implementation gap.",
+        "instrument": "Paired actual hediff/injury reads after witnessed exposure opportunities, plus resolved pawn stats and their gear/non-gear contributors and component-source trace. Exposure and treatment state walk calibrated against these transitions; T29 addresses implementation gap.",
         "start": "Matched bodies have recorded starting load, wounds, gear/seal stats and material; an exposed sentinel is eligible, in the same weather and at matched vent weight. Existing conditions are never erased to make protection pass.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "A native/immune control, missed damage roll or inactive weather makes everyone look protected. Include eligible exposed positive controls, enough actual acid opportunities and bloom cadence, then swap roof/gear on the same bodies. Distinguish prevention from healing by recording old wounds.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
         "live_only_why": "Not live-only: exported engine state/actions or a model calibrated against those actions can distinguish the claimed outcomes; ordinary loaded state proof remains owed."
       },
       "live_only": false,
@@ -219,7 +231,7 @@
         "start": "Identify uninjured or baseline-injured subjects, acquire load and acid wounds through actual supported exposure/contact; snapshot actual cause, part and permanent-state path before observation. Provide real ordinary and advanced medicine with normal surgery conditions.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "Existing scars, random unrelated damage, only observing the next tick, debug removal or lack of natural healing time can fake lasting cost. Attribute each wound/dose, follow ordinary wounds to recovery, read decay transition over elapsed intervals, and show actual completed purge against ordinary-care and unavailable-ingredient arms.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
         "live_only_why": "Not live-only: exported engine state/actions or a model calibrated against those actions can distinguish the claimed outcomes; ordinary loaded state proof remains owed."
       },
       "live_only": false,
@@ -257,7 +269,7 @@
         "start": "Find and record the actual pool on the intended saved site before staging. Read its actual terrain/liquid/fluid/contact properties, identify empty vessels and input/output tank contents and record existing safe-water stock.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "A label, acid apparel test or compatibility fixture cannot prove the intended source and transferred fluid. Require the real source path, source-specific component contents and matched clean-water transfer; separate fixture compatibility from delivered site presence.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
         "live_only_why": "Not live-only: exported engine state/actions or a model calibrated against those actions can distinguish the claimed outcomes; ordinary loaded state proof remains owed."
       },
       "live_only": false,
@@ -297,7 +309,7 @@
         "start": "Identify connected and separated clouds from real cell density, the intended initial ignition, all pre-existing fires/goods/other-gas states and barrier passability. Start a natural vent-produced cloud for delivery, then controlled geometry cases; no independent ignitions or item moves after the start action.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "Ordinary ground fire spread or explosion splash can fake gas continuity or a breach. Use fuel-less ground/water, source-event and per-cell burn traces, maintained separation and no-gas counterparts; distinguish combustion topology from nearby blast damage. Compare saved/uninterrupted histories at equal ticks and instigator.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
         "live_only_why": "Not live-only: exported engine state/actions or a model calibrated against those actions can distinguish the claimed outcomes; ordinary loaded state proof remains owed."
       },
       "live_only": false,
@@ -316,7 +328,7 @@
       "says": "By capping a vent and completing normal research, a prepared colony can collect condensate, refine useful reagent and detoxify local hazardous water with powered cartridge-fed Filter-Works, with readable stoppages that preserve stock.",
       "meant": {
         "intent": "Reject if false: the chosen successful day needs dependable useful production from the local danger. The converter, collector and necessary handling form the positive branch of the signature; discovery, shrine and machine upgrades are not needed.",
-        "source": "OWNER:1792111463695647001 keeps Filter-Works; OWNER:1794373071501926623 selects dependable industry; delegated ordinary research decoupling from current requiredAnalyzed and the user\u2019s first-version pruning authority.",
+        "source": "OWNER:1792111463695647001 keeps Filter-Works; OWNER:1794373071501926623 selects dependable industry; delegated ordinary research decoupling from current requiredAnalyzed and the user’s first-version pruning authority.",
         "figurative": []
       },
       "accept": [
@@ -337,7 +349,7 @@
         "start": "Unresearched colony has Electricity route, normal bench/resources and initial imported safe water/cartridges; identify empty compatible tanks and machine output space. Complete research normally, build and run the unlined machines; log all external supplies and no debug-spawned output.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "An injected tank/research/product or unrelated water line could make a broken loop appear useful. Follow identified source/input/output/fuel deltas from ordinary actions, separate reagent and water recipes and no-power/fuel/output-room counterfactuals, with all other kept systems active.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
         "live_only_why": "Not live-only: exported engine state/actions or a model calibrated against those actions can distinguish the claimed outcomes; ordinary loaded state proof remains owed."
       },
       "live_only": false,
@@ -353,10 +365,10 @@
     },
     {
       "id": "whole",
-      "says": "Through a season of the complete Cauldron, prepared settlers keep useful forestry, food, drinking water and chemical work going amid recurring warned blooms and dangerous expeditions, and resume the same livelihood after saving, reloading and reordering the work without runaway gas, ecological collapse, stalled work or an error storm.",
+      "says": "Through a season of the complete Cauldron, prepared settlers keep useful forestry, food, drinking water and chemical work going amid recurring warned blooms, visible gas blasts that fling loose goods and dangerous expeditions, and resume the same livelihood after saving, reloading and reordering the work without runaway gas, ecological collapse, stalled work or an error storm.",
       "meant": {
-        "intent": "Reject if false: isolated successful scenes do not supply the owner\u2019s dependable livelihood. This alone is the whole bar; all kept mechanics meet under actual weather and normal needs. Enjoyment is predicted, not certified.",
-        "source": "OWNER:1794373071501926623 successful-day answer and CONDUCTOR:1794804951784038130; delegated seasonal scope from the cleansing brief\u2019s whole requirement.",
+        "intent": "Reject if false: isolated successful scenes do not supply the owner’s dependable livelihood. This alone is the whole bar; all kept mechanics meet under actual weather and normal needs. Enjoyment is predicted, not certified.",
+        "source": "OWNER:1794373071501926623 successful-day answer and CONDUCTOR:1794804951784038130; delegated seasonal scope from the cleansing brief’s whole requirement.",
         "figurative": [
           {
             "word": "error storm",
@@ -367,23 +379,25 @@
       },
       "accept": [
         "Across the changing weather, the colony shelters or seals workers when necessary, harvests actual native supplies, processes water and condensate and still chooses hazardous outdoor tasks; live animals, mineral forest and contained work routes remain present.",
-        "The saved colony resumes during the vent cycle with its health, binding, fluids and work intact, then performs the main tasks in another order with the same available livelihood."
+        "The saved colony resumes during the vent cycle with its health, binding, fluids and work intact, then performs the main tasks in another order with the same available livelihood.",
+        "A visible explosion at the burning gas flings loose goods away from its source; their movement is seen as part of that burst."
       ],
       "reject": [
         "Only a cleared demonstration pad works while a full map becomes continuous combustible haze, a dead forest, a starving native population or a colony that spends all its time recovering from unavoidable routine exposure.",
-        "The seasonal presentation locks clear sky, disables damage or feeds need-free workers, or reload/reordered production double-pays stock, loses poisoning or floods the log with errors."
+        "The seasonal presentation locks clear sky, disables damage or feeds need-free workers, or reload/reordered production double-pays stock, loses poisoning or floods the log with errors.",
+        "Gas ignition moves loose goods with no visible explosion at the burning cloud, or goods vanish and reappear rather than visibly being flung."
       ],
       "lazy": "none: The rejected shortcuts contradict explicit outcomes in says; no further build satisfying those outcomes was found in the second lazy-build attack.",
       "range": {
         "varies": "One whole bar: 15 game days on full 200x200, 250x250 and 325x325 local-map regimes at the supplied fixed-world sites, 3 and 40 colonists, arrival and established-colony starting stocks, early/late continuing saves including day-100 state. Save at the seasonal midpoint during live warning or production, plus active burn in gas_chain; reload same copy. Main orders: shelter/gear -> water/chemistry -> forestry versus forestry -> shelter/gear -> water/chemistry. Later work proceeds only with actual supplied or produced prerequisites; neither order promises immunity before protection. Ordinary raids/predation and weather interactions enabled, no forced god mode. If no natural bloom/burn occurs, the unscripted run remains recorded and is supplemented by an additional cycle, never replaced by a scene with the sky locked. Compression may accelerate real ticks only; preserve needs, AI, weather scheduler, plant growth, animal births/deaths, gas sweeps, dose cadence, work/fuel/storage and RNG/event order.",
-        "left_out": "No claim of profitable play at every arbitrary price/rate, no unassisted barren arrival without imported water/medicine/components, no future extras enabled. Faction catastrophes unrelated to Cauldron do not establish a signature failure, but may not be silently removed; reproduce their Cauldron interaction with an attributable comparison."
+        "left_out": "No claim of profitable play at every arbitrary price/rate, no unassisted barren arrival without imported water/medicine/components, no future extras enabled. Faction catastrophes unrelated to Cauldron do not establish a signature failure, but may not be silently removed; reproduce their Cauldron interaction with an attributable comparison. Flight and suush-hush visuals are judged only in an owner-present sitting; unattended readings use job and Pawn_FlightTracker state, with no images of flight."
       },
       "sees": {
-        "instrument": "Calibrated Coupled season and work model finds risky regimes; full-map ordinary-zoom live observation plus actual time-series/identity/stock/job/health/log state records decide the whole experience. T36 is required; no isolated-chain receipt certifies this. Record supplied work time, pending jobs and source-specific harm, not average frame rate alone.",
+        "instrument": "Calibrated Coupled season and work model finds risky regimes; full-map ordinary-zoom live observation plus actual time-series/identity/stock/job/health/log state records decide the whole experience. T36 is required; no isolated-chain receipt certifies this. Record supplied work time, pending jobs and source-specific harm, not average frame rate alone. Observe the gas-source explosion and goods being flung in the same ignition episode used for displacement traces; a visible burst without visible throwing, or position changes alone, cannot pass. Unattended live looks exclude flight/hush visual judgement; use job/flight-tracker state for flyers and reserve their visuals for an owner-present sitting, with no images of flight.",
         "start": "Fingerprint full candidate, service list, settings, intact intended map, population, inventories, animal IDs, fluid contents, health, research and weather. Starting water, food, medicine, components and cartridges are finite and declared; normal bodies/needs/research, all kept mechanics on and nothing locked.",
         "on": "All kept mechanics at the proposed shipped defaults; all DLC and retained service providers loaded, including ExplosiveGrowth, FlowWorks, CreatureBehaviors, EnvironmentalHazards and ExplosiveKnockback; next-version extras off. Actual resolved settings and candidate/dependency hashes recorded. Weather, AI, needs, damage, ecology and research are unlocked; no god mode. A causal counterfactual may alter only its named setting/geometry after checkpoint; the main reading keeps all other mechanics on.",
         "control": "Large imported stock, benign clear weather, hidden refills or disabled AI/damage can fake success. Attribute consumed/produced stock and animal lifecycle; demonstrate actual bloom, local exposure, gas ignition, protected work and output. Compare the unprepared exposed branch within the same weather, account for every external supply and show seasonal trajectories rather than final piles.",
-        "reset": "Restore the disposable scene\u2019s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
+        "reset": "Restore the disposable scene’s durable entry-save checkpoint and exact entry settings, then compare actor IDs, health, inventories, liquids and map manifest. No destructive pad preparation before checkpoint; interrupted runs recover from it or report UNMEASURED and hold the copy. Never substitute defaults for entry settings.",
         "live_only_why": "Actual scene readability at ordinary play zoom cannot be inferred from asset paths, flags, state counters or an offline picture."
       },
       "live_only": true,
@@ -418,7 +432,7 @@
     },
     {
       "id": "C_seal",
-      "what": "Read actual complete seal and loaded resistance aggregates; compare exposed dose and partial equipment. Local source currently does not use VacuumResistance for bloom. Read intended protection as an outcome."
+      "what": "Read R_protect shared complete-seal predicate at actual dose opportunities: max(final loaded VacuumResistance, final loaded ToxicEnvironmentResistance) >= 1.0 for both ambient acid and bloom. Sweep below/at/above full and gear-only, gene/hediff/race-only and mixed contributors, including no apparel; full ToxicResistance alone is not the seal. Compare eligible exposed controls and partial resistance routes. Material acid-proofing applies to the vexxith bottle, bucket, barrel or armour item, not its wearer without qualifying stats. Current bloom source omits VacuumResistance; this is an implementation gap, not a new passing bar."
     },
     {
       "id": "C_persistence",
@@ -491,17 +505,18 @@
     },
     {
       "id": "R_warning",
-      "rule": "Designer timing default: 2500 ticks nominal cue-to-full-bloom, independent of vanilla 4000-tick blend, with sampling tolerance 250 ticks for the check. First harmful dose is separately timed after onset. Eligible idle wild suush/zisska/eskith hush; asleep, downed, fighting and owned animals do not. The approximate owner hour is not a repeat-acceptance tuning number.",
+      "rule": "Designer timing default: 2500 ticks nominal cue-to-full-bloom, independent of vanilla 4000-tick blend, with sampling tolerance 250 ticks for the check. First harmful dose is separately timed after onset. Eligible idle wild suush/zisska/eskith hush; asleep, downed, fighting and owned animals do not. The approximate owner hour is not a repeat-acceptance tuning number. Designer choice: hush stops travel; an airborne suush hovers in place in real Pawn_FlightTracker flight rather than being forced to land by Wait_MaintainPosture. Hush must not reset flight time, bypass ordinary exhaustion/cooldown transitions or disable future flight. Grounded or naturally transitioning suush hold horizontal position as their normal flight state permits; ordinary AI resumes after falter. Suush flight/hush is read by job plus flight-tracker state; only vent puffs and walking zisska/eskith are judged by the unattended live look. Flight visuals require the owner present; never capture images of flight.",
       "touches": [
         "weather_cycle",
         "exposure",
         "ecology",
-        "save_state"
+        "save_state",
+        "hush_flight"
       ]
     },
     {
       "id": "R_protect",
-      "rule": "Roof and a functional complete environmental seal independently block ambient acid/bloom on eligible bodies. Existing load remains. Partial resistance is actual loaded stats, not faction or item acid-proofing. Native adaptation, condition immunity, direct contact and combustion smoke retain named shared routes.",
+      "rule": "Roof and a functional complete environmental seal independently block ambient acid/bloom on eligible bodies. Designer seal predicate, shared by RM_AcidAir and RM_VentBloomExposure at each exposure opportunity: max(pawn.GetStatValue(VacuumResistance), pawn.GetStatValue(ToxicEnvironmentResistance)) >= 1.0. Both use these same final loaded pawn stats, counting all contributing sources, including apparel, genes, hediffs and race; no suit-piece requirement is added. Accept edge: an unroofed otherwise eligible pawn with full ToxicEnvironmentResistance supplied by a gene is sealed without a suit. Reject edge: treating that pawn as unsealed solely because it lacks apparel, or treating full ToxicResistance alone as the complete seal. Existing load remains. Below full seal, each hazard retains its actual loaded partial-resistance math and named immunity routes. Acid-proof material protects the bottle, bucket, barrel or armour item itself; it grants the wearer no body immunity apart from actual pawn stats. Native adaptation, condition immunity, direct contact and combustion smoke retain named shared routes. These are Designer build choices, not additional owner bars.",
       "touches": [
         "exposure",
         "health",
@@ -566,7 +581,8 @@
         "ecology",
         "health",
         "colony_work",
-        "forestry_readability"
+        "forestry_readability",
+        "hush_flight"
       ]
     },
     {
@@ -808,6 +824,18 @@
       "holds_together": "unknown",
       "why": "A roof protects ambient bodies but is not a sealed gas wall. Emission overflow, diagonal drift, 3x3 fire offers, capped front scans and blast callbacks meet; current front is transient on save and Ignite does not check the origin-to-target sealed corner. Must enumerate the actual adapter, not just kernel diffusion.",
       "model": "Gas geometry and save walk"
+    },
+    {
+      "thing": "hush_flight",
+      "members": [
+        "living_cast",
+        "warning",
+        "R_warning",
+        "R_life"
+      ],
+      "holds_together": "argued",
+      "why": "Life requires genuine flight capability, not continuous unlimited airtime. Hush stops eligible travel without grounding an airborne suush: it hovers while ordinary tracker flight permits, preserving exhaustion/cooldown and later AI. The source HushFauna forcibly starts Wait_MaintainPosture and alone proves neither hover nor flight continuity; T30/T38 require before/during/after job and tracker traces, including normal flight-limit transitions. The warning live look judges vent puffs and walking zisska/eskith only; suush flight visuals wait for an owner-present sitting and are never captured as images. Thus the two experiences and the observation ruling can coexist; this is a compatibility argument, not runtime proof.",
+      "model": "Situation generator"
     }
   ],
   "old_bars": {

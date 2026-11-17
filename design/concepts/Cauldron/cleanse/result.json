@@ -1,22 +1,23 @@
 {
-  "mod": "Cauldron",
-  "run": "designer-cleanse-Cauldron-2026-11-16",
-  "outcome": "proposed",
-  "signature": "The vent cycle warns of poisonous release, and the colony turns the same chemistry from exposure and fire risk into dependable supplies by sheltering, sealing, capping and refining.",
-  "counts": {
-    "capabilities": 82,
-    "kept": 54,
-    "next_version": 25,
-    "recommend_retire": 3,
-    "old_bars": 18,
-    "bars": 10,
-    "live_only_bars": 3,
-    "checks": 12,
-    "rules": 15,
-    "unknown_pairs": 6,
-    "models": 5,
-    "tickets": 38,
-    "questions": 0
-  },
-  "blocked_on": []
+ "mod": "Cauldron",
+ "run": "designer-cleanse-Cauldron-2026-11-16",
+ "outcome": "proposed",
+ "signature": "The vent cycle warns of poisonous release, and the colony turns the same chemistry from exposure and fire risk into dependable supplies by sheltering, sealing, capping and refining.",
+ "counts": {
+  "capabilities": 82,
+  "kept": 54,
+  "next_version": 25,
+  "recommend_retire": 3,
+  "old_bars": 18,
+  "bars": 10,
+  "live_only_bars": 3,
+  "checks": 12,
+  "rules": 15,
+  "unknown_pairs": 6,
+  "models": 5,
+  "tickets": 38,
+  "questions": 0
+ },
+ "blocked_on": [],
+ "applyable": false
 }

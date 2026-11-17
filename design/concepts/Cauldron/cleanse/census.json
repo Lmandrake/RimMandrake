@@ -322,9 +322,9 @@
       "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
       "serves": "vent chemistry cycle",
       "fate": "needed_by",
-      "why": "Designer decision: A fictional flyer walking on the ground violates the standing flight ruling and defeats the retained suush identity.",
+      "why": "Designer decision: A fictional flyer walking on the ground violates the standing flight ruling and defeats the retained suush identity. Hush must preserve real airborne positional hold and normal flight eligibility; job/flight-tracker reads cover it, with visuals owner-present only.",
       "needed_by": "life: readable mineral organisms",
-      "ticket": ""
+      "ticket": "T30"
     },
     {
       "id": "suush_burst",
@@ -775,7 +775,7 @@
       "called_by": "RM_Cauldron.xml wildPlants/wildAnimals -> vanilla growth, animal jobs, reproduction and product comps in the cited def",
       "serves": "life",
       "fate": "life",
-      "why": "Designer decision: Periodic edible galls are the galled animal\u2019s ordinary food product; deleting them removes its livelihood role while no new job or growth system is needed.",
+      "why": "Designer decision: Periodic edible galls are the galled animal’s ordinary food product; deleting them removes its livelihood role while no new job or growth system is needed.",
       "needed_by": "",
       "ticket": ""
     },
@@ -1022,7 +1022,7 @@
       "called_by": "RM_VentBloomExposure adds RM_VentMetalLoad; no purge recipe located",
       "serves": "vent chemistry cycle",
       "fate": "needed_by",
-      "why": "Designer decision: The owner explicitly requires persistent poisoning and an advanced medical purge. Deleting persistence would make exposure a temporary cost and defeat the signature\u2019s lasting consequence.",
+      "why": "Designer decision: The owner explicitly requires persistent poisoning and an advanced medical purge. Deleting persistence would make exposure a temporary cost and defeat the signature’s lasting consequence.",
       "needed_by": "signature: protected chemical livelihood",
       "ticket": "T28"
     },
