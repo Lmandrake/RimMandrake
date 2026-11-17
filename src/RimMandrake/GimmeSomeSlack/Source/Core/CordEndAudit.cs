@@ -105,7 +105,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     double tip = 55.5 / 128.0 * d.Scale;
                     if (d.Kind == DecalKind.JunctionTin)
                         o.Add(new Fitted { Name = $"box X@({d.Pos.X:0.0},{d.Pos.Z:0.0})", M = d.Pos, Tip = tip,
-                                           Arms = Enumerable.Range(0, 4).Select(k => Rot(new V2(1, 0), d.Angle + k * Math.PI / 2)).ToList(),
+                                           Arms = Enumerable.Range(0, 4).Where(k => d.Ports == 0 || (d.Ports & (1 << k)) != 0)
+                                                             .Select(k => Rot(new V2(1, 0), d.Angle + k * Math.PI / 2)).ToList(),
                                            EmptyOk = devStubs.Any(f => V2.Dist(f, d.Pos) < 0.5) });
                     else
                     {
@@ -175,6 +176,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         V2 dir = (x - f.M).Norm();
                         int arm = Enumerable.Range(0, f.Arms.Count).OrderByDescending(k => Dot(dir, f.Arms[k])).First();
                         V2 u = f.Arms[arm];
+                        // a connector drawn with fewer arms (the one-port device box, CordDecal.Ports) owns only the ends out along a drawn arm: another
+                        // cord ending beside it (its battery's lead) is not its cord
+                        if (f.Arms.Count < 3 && Dot(dir, u) < 0.5) continue;
                         taken.Add(arm);
                         r.Taken++;
                         double gap = V2.Dist(e, f.M) - f.Tip;

@@ -239,8 +239,6 @@ for k, t in NEW.items():
         row["runs_today"] = dict(tests["T_CORE"]["runs_today"], via="T_CORE")
     else:
         row["runs_today"] = run([sys.executable] + argv)
-    if k == "T_CORD_GEOMETRY_OFFLINE":
-        row["known_red"] = "RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR"
     tests[k] = row
     print(k, row["runs_today"].get("result"), row["runs_today"].get("seconds"), flush=True)
 

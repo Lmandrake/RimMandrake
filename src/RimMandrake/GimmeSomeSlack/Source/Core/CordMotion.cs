@@ -19,6 +19,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public const double WireWhipLen = 1.3, WireWhipAmp = 0.3;
         /// <summary>Seconds a bend takes to run from the joint out to the tip: the end snakes, it does not swing like a stick.</summary>
         public const double WhipLag = 0.16;
+        /// <summary>How the swing grows from the joint (u^WhipPow): the tip swings as far as ever; u^1.6 bent without bound at the joint and pinched the
+        /// cord there (owner 2026-11-16 station 25; RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE).</summary>
+        public const double WhipPow = 4.0;
 
         /// <summary>The first Value() of new CordRng(seed ^ k*golden), computed without allocating: Whip calls this
         /// per snap interval every frame (thousands of times late in a session), so a CordRng per call was per-frame garbage.</summary>
@@ -34,7 +37,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>
         /// The whipping tail of a live floor terminal (phase 1b B3). tail[0] is where the tail joins the
-        /// static cord and never moves; the free tip moves most (weight u^1.6). The bend is a sum of three
+        /// static cord and never moves; the free tip moves most (weight u^WhipPow). The bend is a sum of three
         /// sines plus a seeded random SNAP every 0.6-2.0 s (a sharp kick that decays in ~0.15 s), all
         /// perpendicular to the tail's own direction, and each runs out along the tail (<see cref="WhipLag"/>). t is seconds (real time in game, so a broken line is
         /// findable while paused). |displacement| never exceeds 1.9 x amp.
@@ -114,7 +117,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 double wave = 0.5 * Math.Sin(w1 * tu + p1) + 0.25 * Math.Sin(w2 * tu + p2) + 0.15 * Math.Sin(w3 * tu + p3);
                 // the kick swells in as it arrives: a step here drew a sharp zigzag at its front, running out along the tail
                 double snap = since >= lag ? kick * (1 - Math.Exp(-(since - lag) / 0.035)) * Math.Exp(-(since - lag) / 0.15) : 0;
-                double d = amp * Math.Pow(u, 1.6) * Geo.Clamp(wave + snap, -1.9, 1.9);
+                double d = amp * Math.Pow(u, WhipPow) * Geo.Clamp(wave + snap, -1.9, 1.9);
                 o.Add(tail[i] + nrm * (d * (d > 0 ? ampPos : ampNeg)));
             }
         }
@@ -138,7 +141,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             for (int i = 1; i < n; i++)
             {
                 Geo.TanNorm(tail, i, out V2 tg, out V2 nrm);
-                double d = swing * Math.Pow(i / (double)(n - 1), 1.6);
+                double d = swing * Math.Pow(i / (double)(n - 1), WhipPow);
                 // every cell the point sweeps through on its way out, not only where it ends (Codex review 2026-11-09)
                 if (!SweepOpen(tail[i], tail[i] + nrm * d, open)) return false;
             }

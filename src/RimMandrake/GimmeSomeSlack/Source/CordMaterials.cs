@@ -139,6 +139,7 @@ namespace RimMandrake.GimmeSomeSlack
             {
                 case "Junction_T": return "Junction_Tape";
                 case "Junction_X": return "Junction_Tin";
+                case "Junction_X_p4": return "Junction_Tin_p4";
                 default: return slot;
             }
         }
@@ -200,6 +201,7 @@ namespace RimMandrake.GimmeSomeSlack
             d[DecalKind.Plug] = SlotMat(style, "Plug", PieceQueue);
             d[DecalKind.JunctionTape] = SlotMat(style, "Junction_T", PieceQueue);
             d[DecalKind.JunctionTin] = SlotMat(style, "Junction_X", PieceQueue);
+            d[OnePortBox] = SlotMat(style, "Junction_X_p4", PieceQueue);
             d[DecalKind.StubWall] = SlotMat(style, "StubWall", FaceQueue);
             d[DecalKind.StubRock] = SlotMat(style, "StubRock", FaceQueue);
             d[DecalKind.PowerStrip] = SlotMat(style, "PowerStrip", PieceQueue);
@@ -324,6 +326,7 @@ namespace RimMandrake.GimmeSomeSlack
                 d[DecalKind.Plug] = SlotMat(style, "Plug", PieceQueue, null, null, false);
                 d[DecalKind.JunctionTape] = SlotMat(style, "Junction_T", PieceQueue, null, null, false);
                 d[DecalKind.JunctionTin] = SlotMat(style, "Junction_X", PieceQueue, null, null, false);
+                d[OnePortBox] = SlotMat(style, "Junction_X_p4", PieceQueue, null, null, false);
                 d[DecalKind.StubWall] = SlotMat(style, "StubWall", FaceQueue, null, null, false);
                 d[DecalKind.StubRock] = SlotMat(style, "StubRock", FaceQueue, null, null, false);
                 d[DecalKind.PowerStrip] = SlotMat(style, "PowerStrip", PieceQueue, null, null, false);
@@ -440,7 +443,7 @@ namespace RimMandrake.GimmeSomeSlack
         /// <summary>The extension-cord pieces whose art carries a cord stub, and so must follow the cord colour (B14).</summary>
         public static readonly Dictionary<DecalKind, string> ColourSlots = new Dictionary<DecalKind, string>
         {
-            { DecalKind.Plug, "Plug" }, { DecalKind.JunctionTape, "Junction_T" }, { DecalKind.JunctionTin, "Junction_X" },
+            { DecalKind.Plug, "Plug" }, { DecalKind.JunctionTape, "Junction_T" }, { DecalKind.JunctionTin, "Junction_X" }, { OnePortBox, "Junction_X_p4" },
             { DecalKind.FrayDead, "EndFrayed_Dead" }
         };
 
@@ -453,6 +456,13 @@ namespace RimMandrake.GimmeSomeSlack
 
         /// <summary>The texture behind a piece variant (state read for the probe), or null.</summary>
         public static string DecalTexName(DecalKind k, int variant) => Decal(k, variant)?.mainTexture?.name;
+
+        /// <summary>The material key of the one-port device box (CordDecal.Ports): not a DecalKind of its own, so every audit that counts
+        /// + boxes still counts it; only the art differs.</summary>
+        public const DecalKind OnePortBox = (DecalKind)64;
+
+        /// <summary>The material a decal prints with: a + box with some arms left out draws its one-port art.</summary>
+        public static DecalKind MatKey(CordDecal d) => d.Kind == DecalKind.JunctionTin && d.Ports == CordBuilder.DeviceBoxPorts ? OnePortBox : d.Kind;
 
         public static bool IsFace(DecalKind k) => k == DecalKind.StubWall || k == DecalKind.StubRock || k == DecalKind.WallOutlet;
 

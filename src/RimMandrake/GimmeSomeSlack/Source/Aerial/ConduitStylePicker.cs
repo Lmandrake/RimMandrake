@@ -238,14 +238,14 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>State read: the switch art path per look and state that resolved (null = art missing, vanilla shown).</summary>
         public static readonly Dictionary<string, string> SwitchPaths = new Dictionary<string, string>();
 
-        public static string SwitchPath(string look, bool on) =>
-            (look == "Scrapper" ? ConduitVisuals.SwitchTexPathOurs : CordMaterials.StyleDir + look + "/PowerSwitch") + (on ? "" : "_Off");
+        public static string SwitchPath(string look, bool on, int drawn = Core.SwitchStubs.All) =>
+            (look == "Scrapper" ? ConduitVisuals.SwitchTexPathOurs : CordMaterials.StyleDir + look + "/PowerSwitch") + (on ? "" : "_Off") + Core.SwitchStubs.Suffix(drawn);
 
         /// <summary>The switch drawn in a look and state (held clamped and with the same shader / size ConduitVisuals gives
-        /// the Scrapper switch), or null when that art is missing.</summary>
-        public static Graphic SwitchGraphic(ThingDef switchDef, string look, bool on)
+        /// the Scrapper switch), or null when that art is missing. <paramref name="drawn"/>: the stubs it draws (SwitchStubs).</summary>
+        public static Graphic SwitchGraphic(ThingDef switchDef, string look, bool on, int drawn = Core.SwitchStubs.All)
         {
-            string path = SwitchPath(look, on);
+            string path = SwitchPath(look, on, drawn);
             if (switchGraphics.TryGetValue(path, out Graphic g)) return g;
             Texture2D tex = ContentFinder<Texture2D>.Get(path, false);
             GraphicData gd = switchDef.graphicData;
@@ -430,9 +430,20 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             if (!ConduitVisuals.Applied) return;
             string look = ConduitStylePicker.RawLook(__instance);
-            if (look == null || look == "Scrapper") return;
+            // only the stubs a cord leaves by are drawn (bar cords_join_stubs_on_position_and_slope); a legacy (unstyled) switch draws the
+            // Scrapper art when ConduitVisuals gave it ours, and keeps vanilla's otherwise
+            int drawn = Core.SwitchStubs.All;
+            Map map = __instance.MapHeld;
+            if (map != null && __instance.def.size.x == 1 && __instance.def.size.z == 1)
+                drawn = map.GetComponent<RM_MapComponent_CordGraph>()?.SwitchDrawnMask(__instance.Position) ?? Core.SwitchStubs.All;
+            if (look == null)
+            {
+                if (drawn == Core.SwitchStubs.All || ConduitVisuals.SwitchTexPath() != ConduitVisuals.SwitchTexPathOurs) return;
+                look = "Scrapper";
+            }
+            if (look == "Scrapper" && drawn == Core.SwitchStubs.All) return;
             bool on = __instance.GetComp<CompFlickable>()?.SwitchIsOn ?? true;
-            Graphic g = ConduitStylePicker.SwitchGraphic(__instance.def, look, on);
+            Graphic g = ConduitStylePicker.SwitchGraphic(__instance.def, look, on, drawn);
             if (g != null) __result = g;
         }
     }

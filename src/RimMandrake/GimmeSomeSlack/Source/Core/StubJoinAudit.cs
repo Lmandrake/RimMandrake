@@ -30,9 +30,39 @@ namespace RimMandrake.GimmeSomeSlack.Core
             ("Junction_X", Join.Stubs, "four arms, tips 55.5 px of 128 from the centre (selftest_gss_junction_necks.py SLOTS)"),
             ("Junction_Tin", Join.Stubs, "the + box's file name (CordMaterials maps Junction_X to it)"),
             ("Junction_T", Join.Stubs, "three arms, tips 55.5 px of 128 from the meeting point"),
+            ("Junction_X_p4", Join.Stubs, "the device box: the + box with only its -X arm (CordDecal.Ports, make_switch_masks.py)"),
+            ("Junction_Tin_p4", Join.Stubs, "as Junction_X_p4"),
             ("Junction_Tape", Join.Stubs, "the T box's file name (CordMaterials maps Junction_T to it)"),
             ("PowerSwitch", Join.Stubs, "a stub mid-side on each of four sides, tips 54-58 px of 64 (CordEndAudit.SwitchStubTip)"),
             ("PowerSwitch_Off", Join.Stubs, "as PowerSwitch"),
+            ("PowerSwitch_p1", Join.Stubs, "as PowerSwitch, only the stubs in mask 1 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p2", Join.Stubs, "as PowerSwitch, only the stubs in mask 2 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p3", Join.Stubs, "as PowerSwitch, only the stubs in mask 3 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p4", Join.Stubs, "as PowerSwitch, only the stubs in mask 4 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p5", Join.Stubs, "as PowerSwitch, only the stubs in mask 5 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p6", Join.Stubs, "as PowerSwitch, only the stubs in mask 6 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p7", Join.Stubs, "as PowerSwitch, only the stubs in mask 7 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p8", Join.Stubs, "as PowerSwitch, only the stubs in mask 8 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p9", Join.Stubs, "as PowerSwitch, only the stubs in mask 9 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p10", Join.Stubs, "as PowerSwitch, only the stubs in mask 10 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p11", Join.Stubs, "as PowerSwitch, only the stubs in mask 11 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p12", Join.Stubs, "as PowerSwitch, only the stubs in mask 12 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p13", Join.Stubs, "as PowerSwitch, only the stubs in mask 13 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_p14", Join.Stubs, "as PowerSwitch, only the stubs in mask 14 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p1", Join.Stubs, "as PowerSwitch, only the stubs in mask 1 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p2", Join.Stubs, "as PowerSwitch, only the stubs in mask 2 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p3", Join.Stubs, "as PowerSwitch, only the stubs in mask 3 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p4", Join.Stubs, "as PowerSwitch, only the stubs in mask 4 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p5", Join.Stubs, "as PowerSwitch, only the stubs in mask 5 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p6", Join.Stubs, "as PowerSwitch, only the stubs in mask 6 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p7", Join.Stubs, "as PowerSwitch, only the stubs in mask 7 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p8", Join.Stubs, "as PowerSwitch, only the stubs in mask 8 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p9", Join.Stubs, "as PowerSwitch, only the stubs in mask 9 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p10", Join.Stubs, "as PowerSwitch, only the stubs in mask 10 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p11", Join.Stubs, "as PowerSwitch, only the stubs in mask 11 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p12", Join.Stubs, "as PowerSwitch, only the stubs in mask 12 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p13", Join.Stubs, "as PowerSwitch, only the stubs in mask 13 (E1 N2 W4 S8): SwitchStubs"),
+            ("PowerSwitch_Off_p14", Join.Stubs, "as PowerSwitch, only the stubs in mask 14 (E1 N2 W4 S8): SwitchStubs"),
             ("Plug", Join.Stubs, "the strain-relief boot, along the plug's axis, CordBuilder.PlugBootU per look"),
             ("PlugTop", Join.Stubs, "the boot of a plug seen from above, PlugTopReach out of its socket"),
             ("PowerStrip", Join.Stubs, "its own lead out of the end cap (StripLeadX, StripLeadZ); the sockets take PlugTops"),
@@ -93,8 +123,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 fit++;
                 V2 c = new V2(m.X0 + 0.5, m.Z0 + 0.5);
-                foreach (V2 u in new[] { new V2(1, 0), new V2(-1, 0), new V2(0, 1), new V2(0, -1) })
-                    o.Add(new Stub { Kind = "switch", Piece = $"switch@({c.X:0.0},{c.Z:0.0})", T = c + u * CordEndAudit.SwitchStubTip, U = u, Fitting = fit });
+                // the art drawn is the variant with only the stubs that carry a cord (SwitchStubs): only those stubs are on the map
+                int drawn = SwitchStubs.Drawn(SwitchStubs.Mask(m, ps));
+                for (int b = 0; b < 4; b++)
+                    if ((drawn & (1 << b)) != 0)
+                    {
+                        V2 u = SwitchStubs.Dirs[b];
+                        o.Add(new Stub { Kind = "switch", Piece = $"switch@({c.X:0.0},{c.Z:0.0})", T = c + u * CordEndAudit.SwitchStubTip, U = u, Fitting = fit });
+                    }
             }
             return o;
         }
@@ -115,7 +151,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         {
                             string k = d.Scale == CordBuilder.DeviceBoxScale ? "device box" : "box X";
                             fit++;
-                            for (int a = 0; a < 4; a++) { V2 u = CordEndAudit.Rot(x, a * Math.PI / 2); Add(k, d.Pos, d.Pos + u * (BoxArm * d.Scale), u, fit); }
+                            for (int a = 0; a < 4; a++)
+                            {
+                                if (d.Ports != 0 && (d.Ports & (1 << a)) == 0) continue;   // an arm the art does not draw
+                                V2 u = CordEndAudit.Rot(x, a * Math.PI / 2); Add(k, d.Pos, d.Pos + u * (BoxArm * d.Scale), u, fit);
+                            }
                             break;
                         }
                         case DecalKind.JunctionTape:
@@ -156,6 +196,64 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             break;
                     }
                 }
+        }
+    }
+
+    /// <summary>The power switch's art paints a stub on each side; a stub with no cord is not drawn (owner 2026-11-16, holding file row 2,
+    /// bar cords_join_stubs_on_position_and_slope). Which sides carry a cord is read off the laid cords (each cord ending in the switch's cell
+    /// leaves it on one side); the game draws PowerSwitch[_Off]_p&lt;mask&gt; (art_source/switch_stub_masks_2026-11-16/make_switch_masks.py),
+    /// the full art when no cord or every side has one.</summary>
+    internal static class SwitchStubs
+    {
+        /// <summary>Bit b is the stub along Dirs[b]: E 1, N 2, W 4, S 8.</summary>
+        internal static readonly V2[] Dirs = { new V2(1, 0), new V2(0, 1), new V2(-1, 0), new V2(0, -1) };
+        public const int All = 15;
+
+        /// <summary>The art's mask for the sides in use: none or all draws the full art.</summary>
+        public static int Drawn(int used) => used == 0 ? All : used;
+
+        /// <summary>The texture suffix for a drawn mask ("" for the full art).</summary>
+        public static string Suffix(int drawn) => drawn == All || drawn == 0 ? "" : "_p" + drawn;
+
+        /// <summary>The sides of switch <paramref name="m"/> a laid cord leaves by: walking each strand in from an end inside the switch's cell,
+        /// the side it crosses the 0.3-cell ring on, snapped to the nearest axis.</summary>
+        public static int Mask(MachineInfo m, IEnumerable<LaidPiece> ps)
+        {
+            Dictionary<Cell, int> all = Masks(new[] { m }, ps);
+            return all.TryGetValue(new Cell(m.X0, m.Z0), out int k) ? k : 0;
+        }
+
+        /// <summary>The used sides of every 1x1 side-port machine (a power switch) in one pass over the strands, by the switch's cell.</summary>
+        public static Dictionary<Cell, int> Masks(IEnumerable<MachineInfo> ms, IEnumerable<LaidPiece> ps)
+        {
+            var o = new Dictionary<Cell, int>();
+            foreach (MachineInfo m in ms)
+                if (m.SidePorts) o[new Cell(m.X0, m.Z0)] = 0;
+            if (o.Count == 0) return o;
+            foreach (LaidPiece p in ps)
+                foreach (CordStrand s in p.Strands)
+                {
+                    if (s.OverFace || s.Lifted || s.Pts == null || s.Pts.Count < 2) continue;
+                    int n = s.Pts.Count;
+                    for (int end = 0; end < 2; end++)
+                    {
+                        V2 e = end == 0 ? s.Pts[0] : s.Pts[n - 1];
+                        Cell cell = e.Floor;
+                        if (!o.TryGetValue(cell, out int mask)) continue;
+                        V2 c = new V2(cell.X + 0.5, cell.Z + 0.5);
+                        V2 q = end == 0 ? s.Pts[n - 1] : s.Pts[0];
+                        for (int k = 1; k < n; k++)
+                        {
+                            V2 a = end == 0 ? s.Pts[k] : s.Pts[n - 1 - k];
+                            if (V2.Dist(a, c) >= 0.3) { q = a; break; }
+                        }
+                        V2 d = q - c;
+                        if (d.Len < 1e-6) continue;
+                        int b = Math.Abs(d.X) >= Math.Abs(d.Z) ? (d.X >= 0 ? 0 : 2) : (d.Z >= 0 ? 1 : 3);
+                        o[cell] = mask | (1 << b);
+                    }
+                }
+            return o;
         }
     }
 

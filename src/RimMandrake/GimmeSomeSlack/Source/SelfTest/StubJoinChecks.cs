@@ -78,6 +78,19 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 wallDeadEnds += g.Nodes.Values.Count(n => n.WallTerminal);
                 live.Add(StubJoins.LiveEnds(ps, name));
                 if (plantPs == null && name.StartsWith("Industrial box4", StringComparison.Ordinal)) { plantPs = ps; plantW = w; plantOpt = opt; }
+                string dump = Environment.GetEnvironmentVariable("GSS_JOINS_DUMP");
+                if (!string.IsNullOrEmpty(dump) && name.Contains(dump))
+                    foreach (LaidPiece p in ps)
+                    {
+                        Console.WriteLine($"  DUMP {name} piece {p.EndA}|{p.EndB} decals " + string.Join(" ", p.Decals.Select(d => $"{d.Kind}@({d.Pos.X:0.000},{d.Pos.Z:0.000})a{d.Angle * 180 / Math.PI:0}s{d.Scale:0.00}{(d.OverFace ? " over" : "")}")));
+                        foreach (CordStrand st in p.Strands.Where(x => x.WhipA > 0 || x.WhipB > 0))
+                        {
+                            StubJoins.LiveRead one = StubJoins.LiveEnds(new List<LaidPiece> { new LaidPiece { EndA = p.EndA, EndB = p.EndB, Strands = new List<CordStrand> { st } } }, name);
+                            Console.WriteLine($"  DUMP   live minR {one.MinR:0.000} pinched {one.Pinched} static minR {StubJoins.MinRadius(st.Pts):0.000}");
+                        }
+                        foreach (CordStrand st in p.Strands)
+                            Console.WriteLine($"  DUMP   strand whip={st.WhipA}/{st.WhipB} lay={st.Lay} ties={(st.Ties == null ? 0 : st.Ties.Count)} over={st.OverFace} lifted={st.Lifted} diveA={st.DiveA} diveB={st.DiveB}: " + string.Join(" ", st.Pts.Select(q => $"({q.X:0.000},{q.Z:0.000})")));
+                    }
             }
             foreach (string look in Looks)
             {

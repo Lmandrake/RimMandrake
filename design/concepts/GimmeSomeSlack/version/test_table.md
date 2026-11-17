@@ -12,7 +12,7 @@ Generated 2026-11-16T07:39:13-08:00 from `test_table.json` (the record; this is 
 - decided offline only (no game needed): 2
 - in-game scenes: 26 named in scenes.json plus 2 specified here; entry exists 28, absent 0
 - older proof rows (supports): 170 mapped in proof_leaves.ROW_LEAVES (2 of them gravship_scene), code found for 170; last live run J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard); mapped rows and run rows not reconciled one to one
-- offline tests: 25 built before Stage 3 (ran today: 24 PASS, 1 FAIL); 4 specified at the lock, built in Stage 3: T_SETTINGS_SWEEP_OFFLINE PASS, T_SHOCK_RULE_OFFLINE PASS, T_CORD_GEOMETRY_OFFLINE PASS (known red, RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR), T_STATICS_CENSUS PASS
+- offline tests: 25 built before Stage 3 (ran today: 24 PASS, 1 FAIL); 4 specified at the lock, built in Stage 3: T_SETTINGS_SWEEP_OFFLINE PASS, T_SHOCK_RULE_OFFLINE PASS, T_CORD_GEOMETRY_OFFLINE PASS, T_STATICS_CENSUS PASS
 
 ## Bars
 

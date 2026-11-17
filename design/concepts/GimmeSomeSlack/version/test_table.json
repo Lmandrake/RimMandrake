@@ -1011,8 +1011,7 @@
     "result": "PASS",
     "build": "2888a1046f41c04ae75b",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry"
-   },
-   "known_red": "RIMMANDRAKE_SLACKEN_GSS_SHORT_LEADS_UNDER_BAR"
+   }
   },
   "T_STATICS_CENSUS": {
    "id": "T_STATICS_CENSUS",

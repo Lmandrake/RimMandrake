@@ -41,7 +41,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>A wall outlet with a plug seated in it: printed from the plugged art, no receptacle outline left to peek out beside
         /// the plug's head (owner 2026-11-09 "Yes all": the tabs beside the east/west wall plugs).</summary>
         public bool Plugged;
-        internal CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; Squash = 0; U0 = U1 = V0 = V1 = 0; OverFace = false; Plugged = false; }
+        /// <summary>A + box drawn with only these arms, bits in the art's own frame (+X 1, +Z 2, -X 4, -Z 8); 0 = all four. The device stub's
+        /// box carries one cord, so it draws only the arm that cord leaves by (bar cords_join_stubs_on_position_and_slope: no stub drawn
+        /// bare while its piece has a cord): CordMaterials.OnePortBox, art Junction_X_p4.</summary>
+        public int Ports;
+        internal CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; Squash = 0; U0 = U1 = V0 = V1 = 0; OverFace = false; Plugged = false; Ports = 0; }
         public bool Cropped => U1 > 0;
         public double ScaleX => Scale * (Squash > 0 ? Squash : 1);
     }
@@ -1597,14 +1601,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     off = off ?? SlackClear(g, e);
                     // a strand the floor rule laid on its planned centreline (FellBack) is a taut straight cord; it takes the slack lobe too, on clear ground
                     // (blind cycle 1, 2000 seeded scenes: 2 of the 7 strands under 1.4, a 6-cell rod to a heap's port), and nothing else
-                    List<V2> eased = s.FellBack ? null : CordSlacken.Unbend(w, s.Pts, FairPin(na, isLive), FairPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, s.WhipA, s.WhipB,
+                    // a plug end SeatPlugTails laid along its axis keeps that run, past its boot by the slope chord (a Modern corner wall plug's seat was re-bent
+                    // here and left 51-63 deg off its slope: RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE)
+                    double seatA = SeatedPin(piece, opt, s.Pts, true), seatB = SeatedPin(piece, opt, s.Pts, false);
+                    List<V2> eased = s.FellBack ? null : CordSlacken.Unbend(w, s.Pts, Math.Max(FairPin(na, isLive), seatA), Math.Max(FairPin(nb, isLive), seatB), piece.EndA, piece.EndB, off, s.Ties, s.WhipA, s.WhipB,
                                                         FittedTip(na, opt), FittedTip(nb, opt));
                     if (eased != null) { s.Pts = eased; s.Lay += "+unbend"; }
                     StepTrace?.Invoke("unbend", piece.EndA, piece.EndB, s.Pts);
                     // a cut end's lead is slack too (cords_lie_slack names no exception; blind cycle 1 found 6 of 679 under 1.4, every one a cut lead): its
                     // limp curl or live run is pinned (FairPin) and its writhing tail kept whole (WhipA/WhipB), the lobe lies between
                     line = line ?? ConduitLine(e);
-                    List<V2> loose = CordSlacken.Slacken(w, s.Pts, CutPin(na, isLive), CutPin(nb, isLive), piece.EndA, piece.EndB, off, s.Ties, slackSide, s.WhipA, s.WhipB, line,
+                    List<V2> loose = CordSlacken.Slacken(w, s.Pts, Math.Max(CutPin(na, isLive), seatA), Math.Max(CutPin(nb, isLive), seatB), piece.EndA, piece.EndB, off, s.Ties, slackSide, s.WhipA, s.WhipB, line,
                                                          jitter: CordRng.Of(opt.Seed, "slackshape", key, piece.Strands.IndexOf(s)));
                     if (loose != null) { s.Pts = loose; s.Lay += "+slack"; }
                     StepTrace?.Invoke("slack", piece.EndA, piece.EndB, s.Pts);
@@ -1615,7 +1622,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         // the length a varied lead may come to: its slack budget (path and MaxExtra) and a loop's worth, under the fuzz's own limit
                         double most = 1.25 * (L + prm.MaxExtra) + VaryLoopAllowance;
                         int si = piece.Strands.IndexOf(s);
-                        double va = VaryPin(na, opt, isLive), vb = VaryPin(nb, opt, isLive);
+                        double va = Math.Max(VaryPin(na, opt, isLive), seatA), vb = Math.Max(VaryPin(nb, opt, isLive), seatB);
                         List<V2> pre = s.Pts;
                         List<V2> varied = CordSlacken.Slacken(w, s.Pts, va, vb, piece.EndA, piece.EndB, off, s.Ties, slackSide, 0, 0, line,
                                                               CordRng.Of(opt.Seed, "vary", key, si), maxAudits: CordSlacken.VaryAudits);
@@ -1651,6 +1658,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     StepTrace?.Invoke(piece.TwinPts != null && ReferenceEquals(s, piece.Strands[0]) ? "twin" : "vary", piece.EndA, piece.EndB, s.Pts);
                 }
             }
+            RoundLiveJoins(piece);
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
             double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
             foreach (CordStrand s in piece.Strands)
@@ -2944,6 +2952,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             EndDecor(w, g, e, e.A, na, piece, true, opt, isLive);
             EndDecor(w, g, e, e.B, nb, piece, false, opt, isLive);
             SeatPlugTails(g, e, piece, opt);
+            RoundLiveJoins(piece);
             // a dived cord's route depends on walls anywhere (a door opened far off may give it a surface route): its corridor
             // is the whole map, so any walkability change re-plans it
             piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
@@ -3100,6 +3109,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public const double ExtPlugBootU = 0.102, SeatBlend = 0.4, SeatStiff = 1.6;
         /// <summary>How short (cells) the laid course left past a seated plug's ease may be before the ease runs on to the far end.</summary>
         private const double SeatTail = 0.2;
+        /// <summary>How far past the boot a seated cord stays on the plug's axis before its ease turns it: past the slope rule's chord.</summary>
+        private const double SeatNeck = 0.1;
         private static readonly Dictionary<(PileArt, double), string> pileBootTags = new Dictionary<(PileArt, double), string>();
         /// <summary>The cache key's per-end fitting tag: pile art plus the device plug's boot (a look changes where its plug ends).
         /// Interned per pair so an all-reused Build allocates nothing for it.</summary>
@@ -3239,22 +3250,152 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     }
                 }
                 V2 Tan(int j) => (j <= 0 ? P[1] - P[0] : j >= n - 1 ? P[n - 1] - P[n - 2] : P[j + 1] - P[j - 1]).Norm();
-                if (a != null) Line(P[0], bootA); else Put(P[0]);
+                // the cord holds the plug's axis straight a neck's length past the boot before the ease turns it (the slope rule reads the heading
+                // over the first SlopeChord out of the boot: a cord coming in from the side turned 14 deg inside it, RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE),
+                // never further than half the way out to where the ease rejoins the cord
+                V2 neckA = bootA, neckB = bootB;
+                // (not on a whole-lead ease, which runs to the far fitting's own tip: a 0.54-cell box-to-battery lead then left the box arm backwards)
+                if (a != null && !bridge && jA < n - 1) neckA = bootA + a.Out * Math.Min(SeatNeck, 0.5 * Math.Max(0, Dot(P[jA] - bootA, a.Out)));
+                if (b != null && !bridge && jB > 0) neckB = bootB + b.Out * Math.Min(SeatNeck, 0.5 * Math.Max(0, Dot(P[jB] - bootB, b.Out)));
+                if (a != null) { Line(P[0], bootA); Line(bootA, neckA); } else Put(P[0]);
                 double headCut = 0;
                 if (bridge) Ease(bootA, a.Out, bootB, -b.Out, true, true);
                 else
                 {
-                    if (a != null) Ease(bootA, a.Out, P[jA], Tan(jA), true, false);
+                    if (a != null) Ease(neckA, a.Out, P[jA], Tan(jA), true, false);
                     headCut = Geo.Length(q) - cum[jA];
                     for (int i = jA; i <= jB; i++) Put(P[i]);
-                    if (b != null) Ease(P[jB], Tan(jB), bootB, -b.Out, false, true);
+                    if (b != null) Ease(P[jB], Tan(jB), neckB, -b.Out, false, true);
                 }
-                if (b != null) Line(bootB, P[n - 1]); else Put(P[n - 1]);
+                if (b != null) { Line(neckB, bootB); Line(bootB, P[n - 1]); } else Put(P[n - 1]);
                 if (q.Count < 2) continue;
                 if (s.Ties != null && headCut != 0)
                     for (int i = 0; i < s.Ties.Count; i++) { CordTie t = s.Ties[i]; t.S0 += headCut; t.S1 += headCut; s.Ties[i] = t; }
                 s.Pts = q;
             }
+        }
+
+        /// <summary>The cord (cells from this end of <paramref name="P"/>) a later pass must leave as laid when the end sits in a side-view plug: up to the
+        /// plug's boot and the slope chord past it, plus a margin; 0 when the end is in no plug.</summary>
+        private static double SeatedPin(LaidPiece piece, BuildOptions opt, List<V2> P, bool atStart)
+        {
+            if (P == null || P.Count < 2 || Geo.Length(P) < 1.0 || SeatPinOff) return 0;   // a short lead is one ease, fitting to fitting
+            var stubs = new List<StubArt.Stub>();
+            int fit = 0;
+            StubArt.OfPiece(piece, opt, stubs, ref fit);
+            V2 tip = atStart ? P[0] : P[P.Count - 1];
+            foreach (StubArt.Stub st in stubs)
+            {
+                if (st.Kind != "plug" && st.Kind != "wall plug") continue;
+                V2 d = tip - st.T;
+                double al = Dot(d, st.U), lat = Math.Abs(Dot(d, st.U.Perp));
+                if (lat >= 0.03 || al <= -0.6 || al >= 0.03) continue;
+                return V2.Dist(tip, st.T) + CordEndAudit.SlopeChord + SeatPinMargin;
+            }
+            return 0;
+        }
+        private const double SeatPinMargin = 0.06;
+        private static readonly bool SeatPinOff = Environment.GetEnvironmentVariable("GSS_SEATPIN_OFF") == "1";
+
+        /// <summary>The laid cord where a whipping live end joins it, and the tail itself, holds no bend under <see cref="LiveJoinMinR"/>: every corner in
+        /// that window (LiveJoinBack before the joint to the tip, the tip fixed) is eased by a local relaxation until it does. A cut lead kept its laid corner
+        /// there (radius 0.05-0.06) and the whip grafted onto it pinched (owner 2026-11-16, station 25: "a tight pinched effect that is nonphysical").
+        /// Points only move; the count, and so the tail's WhipA/WhipB, stays. Python first: the whip prototype of
+        /// RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE (36 tails x 90 frames x 2 seeds: 0 pinched with CordMotion.WhipPow 3).</summary>
+        internal static void RoundLiveJoins(LaidPiece piece)
+        {
+            foreach (CordStrand s in piece.Strands)
+            {
+                if (s.Pts == null) continue;
+                if (s.WhipA > 0 && s.WhipA < s.Pts.Count) { s.Pts.Reverse(); RoundTailWindow(s.Pts, s.WhipA); s.Pts.Reverse(); }
+                if (s.WhipB > 0 && s.WhipB < s.Pts.Count) RoundTailWindow(s.Pts, s.WhipB);
+            }
+        }
+
+        public const double LiveJoinMinR = 0.14, LiveJoinBack = 0.45, LiveRunKeep = 0.62, LiveRunKeepShort = 0.3, LiveRunTurnMax = 12;
+
+        /// <summary>P ends at the live tip; its last <paramref name="cnt"/> points whip. Every corner under LiveJoinMinR from LiveJoinBack before the joint up to
+        /// the kept live run is eased by a local relaxation. The live run out of the conduit end is kept as laid for LiveRunKeep (CordAudit reads it
+        /// straight); only when a corner cannot be eased that way (a cord arriving nearly reversed just behind the run) is more of the run freed.</summary>
+        private static void RoundTailWindow(List<V2> P, int cnt)
+        {
+            int n = P.Count, j = n - cnt, lo = j;
+            double acc = 0;
+            while (lo > 1 && acc < LiveJoinBack) { acc += V2.Dist(P[lo], P[lo - 1]); lo--; }
+            lo = Math.Max(1, lo);
+            List<V2> best = null;
+            double bestR = -1;
+            // CordAudit reads a live run of a lead of a cell or more straight out of the conduit end (TipTurn, 15 deg): a reach that bends it more is not taken
+            bool runRead = Geo.Length(P) >= 1.0;
+            int loNear = lo, loWide = lo;
+            acc = 0;
+            while (loWide > 1 && acc < LiveJoinBack * 2.5) { acc += V2.Dist(P[loWide], P[loWide - 1]); loWide--; }
+            loWide = Math.Max(1, loWide);
+            foreach (double keep in new[] { LiveRunKeep, 0.55, 0.5, 0.45, LiveRunKeepShort, 0.0 })
+                foreach (int l in new[] { loNear, loWide })
+                {
+                    int hi = n - 2;
+                    acc = 0;
+                    while (hi > l && acc < keep) { acc += V2.Dist(P[hi], P[hi + 1]); hi--; }
+                    if (hi <= l) continue;
+                    var Q = new List<V2>(P);
+                    double r = RelaxWindow(Q, l, hi);
+                    if (LiveJoinLog) Console.Error.WriteLine($"GSS_LIVEJOIN tip ({P[n - 1].X:0.00},{P[n - 1].Z:0.00}) keep {keep:0.00} lo {l} hi {hi} n {n} r {r:0.000}");
+                    if (runRead && CordAudit.TipTurn(Q) * 180 / Math.PI > LiveRunTurnMax) continue;
+                    if (r > bestR) { bestR = r; best = Q; }
+                    if (r >= LiveJoinMinR) goto done;
+                }
+            done:
+            if (best != null) for (int i = 0; i < n; i++) P[i] = best[i];
+        }
+
+        private static readonly bool LiveJoinLog = Environment.GetEnvironmentVariable("GSS_LIVEJOIN_LOG") == "1";
+        private static double RelaxWorstOf(List<V2> P, int lo, int hi)
+        {
+            double m = double.MaxValue;
+            for (int i = lo; i <= Math.Min(hi + 1, P.Count - 2); i++) m = Math.Min(m, VertexRadius(P[i - 1], P[i], P[i + 1]));
+            return m;
+        }
+
+        /// <summary>Eases corners under LiveJoinMinR among P[lo..hi] (the points either side fixed); the tightest vertex radius left from lo to hi + 1.</summary>
+        private static double RelaxWindow(List<V2> P, int lo, int hi)
+        {
+            int n = P.Count;
+            var mark = new bool[n];
+            var nxt = new V2[n];
+            double Worst()
+            {
+                double m = double.MaxValue;
+                for (int i = lo; i <= Math.Min(hi + 1, n - 2); i++) m = Math.Min(m, VertexRadius(P[i - 1], P[i], P[i + 1]));
+                return m;
+            }
+            // fourth order (bi-Laplacian) where two fixed points stand either side, so the eased cord meets the fixed cord tangent to it: a plain
+            // relaxation left a corner at the first fixed point of a straight live run
+            bool quartic = lo >= 2 && hi <= n - 3;
+            for (int it = 0; it < 1500; it++)
+            {
+                bool any = false;
+                Array.Clear(mark, 0, n);
+                for (int i = lo; i <= Math.Min(hi + 1, n - 2); i++)
+                {
+                    if (VertexRadius(P[i - 1], P[i], P[i + 1]) >= LiveJoinMinR) continue;
+                    any = true;
+                    for (int d = -4; d <= 4; d++) if (i + d >= lo && i + d <= hi) mark[i + d] = true;
+                }
+                if (!any) break;
+                for (int i = lo; i <= hi; i++)
+                    nxt[i] = !mark[i] ? P[i]
+                        : quartic ? P[i] - (P[i - 2] - P[i - 1] * 4 + P[i] * 6 - P[i + 1] * 4 + P[i + 2]) * 0.08
+                        : P[i] + (P[i - 1] + P[i + 1] - P[i] * 2) * 0.25;
+                for (int i = lo; i <= hi; i++) P[i] = nxt[i];
+            }
+            return Worst();
+        }
+
+        private static double VertexRadius(V2 a, V2 b, V2 c)
+        {
+            double area2 = Math.Abs((b.X - a.X) * (c.Z - a.Z) - (b.Z - a.Z) * (c.X - a.X));
+            return area2 < 1e-12 ? double.MaxValue : V2.Dist(a, b) * V2.Dist(b, c) * V2.Dist(c, a) / (2 * area2);
         }
 
         private static PlugSeat SeatOf(List<PlugSeat> seats, V2 tip)
@@ -3545,6 +3686,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // before it bends, so it leaves the arm on the arm's line (owner 2026-11-09 slope rule, 2026-11-16 junction box stubs)
                 if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) != PileArt.Strips)
                     straight = DeviceBoxBack + DeviceBoxArm + 0.15;
+                // the device stub's strip (Modern) lies along the cord, its lead toward it: the cord ends in the lead's tip, along it
+                // (it lay across the cord with its lead pointing aside, a bare lead: RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE)
+                else if (nd.Type == NodeType.StubDevice)
+                {
+                    target = DeviceStripLeadTip(nd.Face, nd.Into);
+                    straight = 0.2;
+                }
             }
             else if (nd.Type == NodeType.Tangle && nd.Cells != null)
             {
@@ -4043,6 +4191,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>The device stub's little box: drawn this far back from the face, at this scale; its arm reaches DeviceBoxArm from its middle
         /// (55.5 px of 128 at the box's scale, selftest_gss_junction_necks.py).</summary>
         public const double DeviceBoxBack = 0.2, DeviceBoxScale = 0.6, DeviceBoxArm = 55.5 / 128.0 * DeviceBoxScale;
+        /// <summary>The device stub's strip: its centre this far back off the face, lying along the cord with its lead (+X) toward it.</summary>
+        public const double DeviceStripBack = 0.45, DeviceStripScale = 0.8;
+        internal static V2 DeviceStripLeadTip(V2 face, V2 into)
+        {
+            V2 x = -into, z = new V2(-x.Z, x.X);
+            return face - into * DeviceStripBack + x * (StripLeadX * DeviceStripScale) + z * (StripLeadZ * DeviceStripScale);
+        }
+        /// <summary>The device box's one arm, art -X (CordDecal.Ports).</summary>
+        public const int DeviceBoxPorts = 4;
 
         /// <summary>Round 3: under the side-view plug of a Modern cord plugged into a side or the hidden north face of a wall, the cord runs dead
         /// straight along into for the plug's whole length (head face to boot end), so nothing of a bend shows past the plug's body.</summary>
@@ -4222,13 +4379,13 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 else if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) == PileArt.Strips)
                 {
                     // the strip's LEDs read the net (phase 1b B6): lit when live, dark when not
-                    piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.PowerStrip : DecalKind.PowerStripDark, nd.Face - nd.Into * 0.2, ang + Math.PI / 2, 0.8));
+                    piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.PowerStrip : DecalKind.PowerStripDark, nd.Face - nd.Into * DeviceStripBack, ang + Math.PI, DeviceStripScale));
                     piece.LiveKeys.Add(nd.Cell);
                 }
                 else if (nd.Type == NodeType.StubDevice)
-                    // no strips outside the modern look (B1/B15): the cord ends in a small junction box, an arm along it. Its other three
-                    // arms carry no cord: there is no one-port box art (RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO keeps them, named)
-                    piece.Decals.Add(new CordDecal(DecalKind.JunctionTin, nd.Face - nd.Into * DeviceBoxBack, ang, DeviceBoxScale));
+                    // no strips outside the modern look (B1/B15): the cord ends in a small junction box, an arm along it. The box draws
+                    // that one arm only (art -X, toward the cord; the others would be bare stubs: RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE)
+                    piece.Decals.Add(new CordDecal(DecalKind.JunctionTin, nd.Face - nd.Into * DeviceBoxBack, ang, DeviceBoxScale) { Ports = DeviceBoxPorts });
             }
         }
 

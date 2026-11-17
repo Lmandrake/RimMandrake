@@ -358,6 +358,8 @@ namespace RimMandrake.GimmeSomeSlack
                 bySection = nextBy;
                 Dictionary<LaidPiece, int> prevSeeds = netSeeds;
                 tSeeds = System.Diagnostics.Stopwatch.GetTimestamp();
+                try { PublishSwitchMasks(next); }
+                catch (Exception ex) { Log.ErrorOnce("[GimmeSomeSlack] switch stubs: " + ex, 0x4d43_5357); }
                 try { netSeeds = ComputeNetSeeds(next, b.Graph); }
                 catch (Exception ex) { netSeeds = new Dictionary<LaidPiece, int>(); Log.ErrorOnce("[GimmeSomeSlack] net seeds: " + ex, 0x4d43_5345); }
                 Dictionary<LaidPiece, int> prevMat = matIdx;
@@ -435,6 +437,28 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         private readonly Dictionary<IntVec2, ulong> printedSig = new Dictionary<IntVec2, ulong>();
+
+        // ------------------------------------------------------------------ the power switch's stubs
+        // A switch draws only the stubs a cord leaves by (SwitchStubs; bar cords_join_stubs_on_position_and_slope). Its art is printed in the
+        // Things map mesh, so a switch whose set of used sides changed is dirtied there.
+        private Dictionary<Cell, int> switchDrawn = new Dictionary<Cell, int>();
+
+        /// <summary>The stubs the switch at <paramref name="c"/> draws (SwitchStubs mask; all four when no cords are laid there).</summary>
+        public int SwitchDrawnMask(IntVec3 c) => switchDrawn.TryGetValue(new Cell(c.x, c.z), out int m) ? m : SwitchStubs.All;
+
+        private void PublishSwitchMasks(List<LaidPiece> ps)
+        {
+            if (LastWorld == null) return;
+            Dictionary<Cell, int> used = SwitchStubs.Masks(LastWorld.Machines, ps);
+            var next = new Dictionary<Cell, int>(used.Count);
+            foreach (var kv in used) next[kv.Key] = SwitchStubs.Drawn(kv.Value);
+            Dictionary<Cell, int> prev = switchDrawn;
+            switchDrawn = next;
+            if (Current.ProgramState != ProgramState.Playing) return;
+            foreach (var kv in next)
+                if (!prev.TryGetValue(kv.Key, out int was) ? kv.Value != SwitchStubs.All : was != kv.Value)
+                    map.mapDrawer.MapMeshDirty(new IntVec3(kv.Key.X, 0, kv.Key.Z), MapMeshFlagDefOf.Things);
+        }
         private readonly HashSet<IntVec2> sigKeys = new HashSet<IntVec2>();
 
         /// <summary>

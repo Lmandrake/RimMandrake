@@ -151,7 +151,7 @@ namespace RimMandrake.GimmeSomeSlack
                     foreach (CordDecal d in p.Decals)
                     {
                         if (whip && d.OnWhip) continue;          // the live fray rides the whipping tail
-                        Material m = CordMaterials.DecalG(d.Kind, g);
+                        Material m = CordMaterials.DecalG(CordMaterials.MatKey(d), g);
                         if (m == null) continue;
                         if (d.Plugged && CordMaterials.OutletPlugged != null) m = CordMaterials.OutletPlugged;
                         bool face = CordMaterials.IsFace(d.Kind);
