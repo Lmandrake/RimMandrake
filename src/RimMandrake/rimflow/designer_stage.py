@@ -2380,9 +2380,9 @@ def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST, repo=N
     head = [
         "[designer_stage.py packet: concept %s, stage %d %s, run %s]" % (
             st.get("mod"), s, STAGE_NAMES[s], (st.get("running") or {}).get("run")),
-        "Folder: %s. Budget: task cap %d, spent %d, reserve %d; this run %d weighted tokens. The launcher charges "
-        "it; a fresh run does not reset it." % (d, st["budget"]["cap"], st["budget"]["spent"],
-                                                st["budget"]["reserve"], budget),
+        # no cap, spend or share figure (owner 2026-11-16, RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN:
+        # the agent is never told its spend); the launcher still charges the task, stage.json keeps the figures
+        "Folder: %s. The launcher keeps this task's accounting; a fresh run does not reset it." % d,
         "End by writing result.json in the folder: {\"run\": \"%s\", \"stage\": %d, \"outcome\": "
         "\"done|waiting_owner|return|blocked\", ...}. Check it with `designer_stage.py check <folder>`. The launcher "
         "validates it when the run ends; nothing else advances the stage." % ((st.get("running") or {}).get("run"), s),
@@ -2689,7 +2689,7 @@ def main(argv=None):
                 return 1
         elif a.cmd == "charge":
             st = charge(a.dir, a.tokens, a.kind, a.ref)
-            print("charged %d; spent %d of %d" % (a.tokens, st["budget"]["spent"], st["budget"]["cap"]))
+            print("charged %d" % a.tokens)     # no task total: the Designer runs this (owner 2026-11-16; `status` shows it)
         elif a.cmd == "check":
             st = load_state(a.dir)
             errs = result_errors(read_json(os.path.join(a.dir, "result.json")), a.dir, st)

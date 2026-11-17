@@ -68,6 +68,7 @@ import concept_tree as CT  # noqa: E402
 import designer_stage as DS  # noqa: E402
 import refusal_contract as RC  # noqa: E402
 import bar_rule as BR  # noqa: E402
+import spend_watchdog  # noqa: E402  (the hard spend stop, from outside the agent; owner 2026-11-16)
 
 CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
@@ -76,7 +77,7 @@ TIMEOUT_S = 1500        # the judge's own wall bound; the Designer schedule's pr
 MODEL = "opus"
 READER_BUDGET_USD = 2   # the second reader of the refusals' criteria (second_read)
 READER_TIMEOUT_S = 600
-BUDGET_USD = 8          # hard spend stop per judge run (claude --max-budget-usd; owner 2026-11-12: "Don't let any burn go to 90M this time ok?")
+BUDGET_USD = 8          # hard spend stop per judge call (spend_watchdog.py, from outside: the judge is never told its spend; owner 2026-11-12: "Don't let any burn go to 90M this time ok?")
 REASK_MIN_S = 120       # less judge time than this left: no re-ask, the missing rows go on file as unchecked
 ROW_REASK_MAX = 2       # re-asks of only the broken refusal records; one still broken is kept on file as malformed
 # The loop limit (RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL, spec 2026-11-12 refusal contract §3). EK's judge said
@@ -675,9 +676,10 @@ def llm_reader(d, repo, unit, charge=True, runner=None):
     def reader(items):
         argv = [CLAUDE, "-p", reader_prompt(items), "--model", MODEL, "--name", "COVERAGE SECOND READER %s" % unit,
                 "--output-format", "json", "--json-schema", json.dumps(READER_SCHEMA, separators=(",", ":")),
-                "--dangerously-skip-permissions", "--max-budget-usd", "%g" % READER_BUDGET_USD]
+                "--dangerously-skip-permissions"]
         try:
-            code, out = (runner or default_runner)(argv, repo, dict(os.environ, RM_ROLE_UNIT=unit), READER_TIMEOUT_S)
+            code, out = (runner or default_runner)(spend_watchdog.wrap(argv, READER_BUDGET_USD), repo,
+                                                   dict(os.environ, RM_ROLE_UNIT=unit), READER_TIMEOUT_S)
             res = json.loads(out or "null")
         except (OSError, subprocess.SubprocessError, ValueError):
             return None
@@ -1065,8 +1067,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
 
     def tail_for(schema):
         return ["--model", MODEL, "--name", "COVERAGE JUDGE %s" % unit, "--output-format", "json",
-                "--json-schema", json.dumps(schema, separators=(",", ":")), "--dangerously-skip-permissions",
-                "--max-budget-usd", "%g" % BUDGET_USD]
+                "--json-schema", json.dumps(schema, separators=(",", ":")), "--dangerously-skip-permissions"]
     tail = tail_for(SCHEMA)
     round_no = len(rounds(st0, d)) + 1
     text = delta_prompt(d, repo, dp, round_no) if dp is not None else prompt(d, repo, ids, prior is not None, round_no)
@@ -1083,7 +1084,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         """-> (exit code, the well-formed verdict (or, gaps_only, a {gaps} answer) or None, session id). Charges what
         the call spent."""
         try:
-            code, out = runner(call, repo, env, wall)
+            code, out = runner(spend_watchdog.wrap(call, BUDGET_USD), repo, env, wall)   # the cap, from outside
             res = json.loads(out or "null")
         except (OSError, subprocess.SubprocessError, ValueError) as e:
             rec["error"] = "the judge did not answer: %s" % e

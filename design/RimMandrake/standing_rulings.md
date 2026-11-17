@@ -773,7 +773,7 @@ testing when I can't go to the desktop such as now."*
 - **Weighted tokens, never money.** Every line a person reads states spend in weighted tokens (input-equivalent,
   `role_launch.TOKEN_WEIGHTS`): the DETACHED RUN ENDED lines and notes, `maturation_dispatch.py` status, pause, release
   and `releases` lines, the maturation status page, `maturation_hands.py list`, and the Conductor's own words to him.
-  List dollars stay only inside, where a tool needs them (claude's `--max-budget-usd`, the run record's `cost_usd`, the
+  List dollars stay only inside, where a tool needs them (`spend_watchdog.py --cap-usd`, the run record's `cost_usd`, the
   stage ceiling and caps); a line about a dollar-kept limit converts at `maturation_dispatch.WT_PER_USD` (measured
   2026-11-16) and marks the figure `≈`. Moving the ceiling and caps themselves into tokens:
   `RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS`.
@@ -783,6 +783,26 @@ testing when I can't go to the desktop such as now."*
   (`maturation_dispatch.retriable` counts kills, not launch faults), and `maturation_dispatch.py clear` lifts the stop
   an ended automatic run left. The in-game driver's brief keeps every `*OWNER_LOOK*` save. His own OWNER bridge hold
   while he is walking a look stays his (§The bridge is passed through one file).
+
+## No launched agent is told its spend; the hard cap is enforced from outside — owner, 2026-11-16
+
+His words (Mon 2026-11-16, ~6:25 PM PST, watching a live builder; item `RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN`):
+*"I don't like how you're telling the agent how much it's spent. This has been shown to reduce their creativity and
+obsess on cost savings..."* and *"You're telling it constantly"*.
+
+- **The agent is blind to its spend.** No launch states its spend, cap or what remains: not a harness flag, a brief, a
+  footer, a hook, a packet, a resume prompt or a tool's output the agent reads. `claude --max-budget-usd` is banned in
+  every launcher: it makes the harness inject `USD budget: $used/$cap; $left remaining` every turn (attachment
+  `budget_usd`; 143 in one 11-16 builder run), and Claude 2.1.311 has no switch that keeps the cap without the
+  reminder (`CLAUDE_CODE_DISABLE_ATTACHMENTS` drops every attachment, hooks included).
+- **The hard per-run stop stays** (owner 2026-11-12: *"Don't let any burn go to 90M this time ok?"*), enforced from
+  OUTSIDE by `src/RimMandrake/rimflow/spend_watchdog.py`: it wraps the claude argv, pins the session, reads the
+  transcript usage (`role_launch.transcript_usage`, weighted by `TOKEN_WEIGHTS`), and at the cap stops the run and
+  writes the result claude writes at its own cap (`error_max_budget_usd`, `stopped_by: spend_watchdog`), so the run
+  is recorded as stopped on cap, raises the same alarms and stays resumable. Its rates err early, never late.
+  Launchers call `spend_watchdog.wrap(argv, cap_usd)`; `selftest_spend_blind_agents.py` sweeps the tree for the flag.
+- **Humans still see spend**, in weighted tokens: run records, the DETACHED RUN ENDED lines, the status page. An
+  Operations run is still told the ACCOUNT's throttle band (its job), never its own budget or spend.
 
 ## Owner hold: six biome mods stop, Pyrelands stays — owner, 2026-11-16
 

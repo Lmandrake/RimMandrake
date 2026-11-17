@@ -15,7 +15,8 @@ THE CONTRACT IT FIXES: `src/RimMandrake/rimflow/light_scan.py`, one bounded ques
     - model anything but "sonnet" or "opus": ValueError (Haiku is banned; this is a light scan, not a judge).
     - the runner is called once as runner(argv, input=prompt, capture_output=True, text=True, timeout=...), where argv
       starts with the `claude` CLI in print mode and carries "--model" (an alias or an ANTHROPIC_DEFAULT_*_MODEL value
-      read from the environment, never a host or account name) and "--max-budget-usd" with max_usd; the prompt holds
+      read from the environment, never a host or account name), and never "--max-budget-usd" (it tells the model its
+      spend every turn, owner 2026-11-16; one tool-less call cannot loop, so max_usd is a record); the prompt holds
       every question's text and every input under its name.
     - the model's stdout must be one JSON object {"answers": [{"q", "answer": "yes"|"no"|"cannot_tell", "evidence"}]}
       with exactly the list's question ids; anything else (not JSON, a missing or extra id, another answer word, a
@@ -78,8 +79,8 @@ def main():
     check(r.get("ran") is True and r.get("ok") is True and r.get("refusals") == [] and len(f.calls) == 1, "all yes: ok, one model call")
     argv, kw = (f.calls or [([], {})])[0]
     flat = " ".join(str(a) for a in argv)
-    check("claude" in os.path.basename(str(argv[0] if argv else "")) and "--model" in argv and "--max-budget-usd" in argv
-          and "0.25" in flat and "haiku" not in flat.lower(), "the call is the claude CLI with a model and the hard dollar cap")
+    check("claude" in os.path.basename(str(argv[0] if argv else "")) and "--model" in argv and "--max-budget-usd" not in argv
+          and "haiku" not in flat.lower(), "the call is the claude CLI with a model, never told its spend")
     prompt = str(kw.get("input") or "") + flat
     check(all(q["text"] in prompt for q in qs) and inputs["bar"] in prompt and "B.call('set', on=True)" in prompt,
           "the prompt holds every question and every declared input")

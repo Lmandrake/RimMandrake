@@ -116,7 +116,7 @@ def main():
             d = concept(root)
             argvs = []
             rec, _ = CJ.run(d, root, script([answer("not_covered", [good_gap()])], argvs))
-            first = argvs[0][2]
+            first = argvs[0][argvs[0].index("-p") + 1]
             check("the prompt asks for would_pass, smallest_fix and a verdict on the criterion itself",
                   all(w in first for w in ("would_pass", "smallest_fix", "criterion_verdict")), first[-600:])
             check("a well-formed not_covered stands, one call, the contract accepted it",
@@ -147,7 +147,7 @@ def main():
                                              answer("not_covered", [good_gap(new_since="unfixed")])], argvs))
             check("a malformed refusal is re-asked once, same session, with the check's errors",
                   len(argvs) == 2 and argvs[1][argvs[1].index("--resume") + 1] == "sess"
-                  and "would_pass says nothing checkable" in argvs[1][2], argvs[1][2][:400] if len(argvs) > 1 else argvs)
+                  and "would_pass says nothing checkable" in argvs[1][argvs[1].index("-p") + 1], argvs[1][argvs[1].index("-p") + 1][:400] if len(argvs) > 1 else argvs)
             check("fixed on the re-ask -> the not_covered stands", rec["verdict"] == "not_covered"
                   and rec["contract"]["ok"], rec.get("contract"))
 
@@ -168,7 +168,7 @@ def main():
             rec, _ = CJ.run(d, root, script([answer("not_covered", [good_gap(new_since="unfixed"), throw_bad]),
                                              json.dumps({"structured_output": {"gaps": [throw_ok]},
                                                          "session_id": "sess"})], argvs))
-            ask2 = argvs[1][2] if len(argvs) > 1 else ""
+            ask2 = argvs[1][argvs[1].index("-p") + 1] if len(argvs) > 1 else ""
             check("bad row fixed on re-ask: one row re-ask, only the broken record, its complaint and its cited text",
                   len(argvs) == 2 and "observed quotes no token of its evidence" in ask2 and "# Foo" in ask2
                   and "leaf_wall" not in ask2 and '"gaps"' in argvs[1][argvs[1].index("--json-schema") + 1]

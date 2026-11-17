@@ -265,6 +265,10 @@ workaround without the permanent fix is not allowed. A mod's gaps still go throu
 
 *"The mod passing bars should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its bars... drop that!"* No bar pins a yield rate, a stat value, any tuning number or an asset-variant count. The test: would this bar have to be re-passed after we renormalize numbers or add an art variant? Then it is not a bar. Gate: `src/RimMandrake/rimflow/bar_rule.py`; full text: `standing_rulings.md` §A passing bar is an experience.
 
+## 🔴 No launched agent is told its spend — owner, 2026-11-16
+
+*"I don't like how you're telling the agent how much it's spent. This has been shown to reduce their creativity and obsess on cost savings..."* Never pass `claude --max-budget-usd` (the harness then states the spend every turn) and never write spend, cap or remainder into a brief, footer, packet or resume prompt; a hard cap goes through `spend_watchdog.wrap(argv, cap_usd)`, which stops the run from outside. Full text: `standing_rulings.md` §No launched agent is told its spend.
+
 ## 🔴 Spend in weighted tokens; never hold the game for his look while he is away — owner, 2026-11-16
 
 *"Please speak in terms of weighted tokens not money. The money quotes don't translate meaningfully. Do not hold live testing when I can't go to the desktop such as now."* Every line a person reads states spend in weighted tokens, never dollars. A staged owner look is kept as a save and re-staged when he sits down; the game goes back to the tick. Full text: `standing_rulings.md` §Spend in weighted tokens.

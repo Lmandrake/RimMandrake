@@ -4,7 +4,7 @@
 All in a temp state dir with a faked runner: no systemd unit, no claude, no clone, no rimflow write, no real log.
   refuse     an unknown item, a blind ledger read, a bad model, an empty brief, an out-of-range bound: nothing starts
   argv       role_launch's shape: systemd-run --user, claude_bounded.sh -p, the model, RuntimeMaxSec and the scope
-             bound, --max-budget-usd, ExecStopPost=finish, RM_DISPATCHER_STATE for the finish step, the brief footer
+             bound, spend_watchdog --cap-usd (never --max-budget-usd), ExecStopPost=finish, RM_DISPATCHER_STATE for the finish step, the brief footer
   record     a launch records the run; a systemd-run refusal marks it launch_failed
   same-second  a second launch of one item in the same second gets its own unit name; its failure never
              overwrites the first (running) run's record (DETACHED_LAUNCH_FIX_SAME_SECOND_CLOBBER)
@@ -144,7 +144,8 @@ def test_launch_and_finish():
     check(argv[argv.index("--model") + 1] == "opus" and "-p" in argv[argv.index("--"):], "argv: the model, -p")
     check("RuntimeMaxSec=%d" % (1800 + DH.GRACE_S) in argv and "CLAUDE_SCOPE_RUNTIME_MAX=%d" % (1800 + DH.GRACE_S) in argv,
           "argv: wall time bounded twice (unit and scope)")
-    check(argv[argv.index("--max-budget-usd") + 1] == "12", "argv: spend bounded by --max-budget-usd")
+    check("--max-budget-usd" not in argv and argv[argv.index("--cap-usd") + 1] == "12",
+          "argv: spend bounded from outside by spend_watchdog --cap-usd, never --max-budget-usd")
     calls2, run2 = recorder()
     rc2, _ = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "Build the thing.", "opus", DH.DEFAULT_MAX_S, 12, now=T0,
                        runner=run2, known=KNOWN, clone=CLONE)
@@ -154,7 +155,7 @@ def test_launch_and_finish():
           "unbounded: argv carries no RuntimeMaxSec and no scope bound")
     msg2 = a2[a2.index("--") :][a2[a2.index("--"):].index("-p") + 1]
     check("no wall-time bound" in msg2 and "Wall-time bound" not in msg2, "unbounded: footer says no wall-time bound")
-    check(a2[a2.index("--max-budget-usd") + 1] == "12", "unbounded: spend bound kept")
+    check(a2[a2.index("--cap-usd") + 1] == "12", "unbounded: spend bound kept")
     check(DH.parse_max_s("none") is None and DH.parse_max_s("0") is None and DH.parse_max_s("900") == 900, "parse_max_s")
     check(any(a.startswith("ExecStopPost=/usr/bin/python3 ") and a.endswith("finish --unit " + argv[argv.index("--unit") + 1])
               for a in argv), "argv: ExecStopPost runs finish for this unit")

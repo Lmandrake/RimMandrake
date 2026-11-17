@@ -88,7 +88,7 @@ ops_watch's death is covered by the dead-man timer.
 How the caps really bind (code, `role_launch.py`): `claude -p` cannot be stopped at a token budget. For you they
 are advisory (above); for a role without `caps_advisory` a run is REFUSED at launch when today's spend plus its budget
 would pass `daily_token_cap`; its usage is counted after it
-finishes, and a run over its budget raises an alarm after the fact. The one real stop is wall time: a run still going
+finishes, and a run over its budget raises an alarm after the fact. A role with `run_budget_usd` has a hard dollar stop, enforced from outside by `spend_watchdog.py` (no run is told its spend: owner 2026-11-16). The other real stop is wall time: a run still going
 after `run_max_s` is stopped by the Dispatcher with an alarm. So: keep your run short, and do not rely on being cut off
 at a token count. If you are stopped, say in your note what was left undone. The caps are read from the schedule, never
 raised by you.

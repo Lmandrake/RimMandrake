@@ -41,7 +41,7 @@ class Judge:
         self.script, self.prompts = [], []
 
     def __call__(self, argv, cwd, env, timeout):
-        self.prompts.append(argv[2])
+        self.prompts.append(argv[argv.index("-p") + 1])
         return 0, self.script.pop(0)
 
 

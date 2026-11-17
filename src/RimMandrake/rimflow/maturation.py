@@ -2006,7 +2006,7 @@ def blind_brief_text(root, mod, cap_usd=None):
     sdir = _src_dir(root, mod)
     bars = offline_bars(tt)
     when = pac_heading(now_ts())
-    cap = ("$%g" % cap_usd) if cap_usd else "the --budget-usd the launch carries"
+    # no spend bound in the brief (owner 2026-11-16): the launch's --budget-usd is enforced by spend_watchdog.py
     L = ["# Blind challenge (Stages 4 and 5): %s %s, cycle %d" % (mod, ver, n), "",
          "Written by `maturation.py brief %s` at %s: the mechanical half, from the mod's own files (item "
          "RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED; spec §4 Stages 4 and 5)." % (mod, when), "",
@@ -2020,9 +2020,8 @@ def blind_brief_text(root, mod, cap_usd=None):
          "commit.",
          "- Foreground commands only, each with a timeout of 540 s or less.",
          "- Write progress to your skeleton at least every 8 minutes.", "",
-         "**Spend bound: %s.** The pilot's cycle 1 cost about $9 [measured, FORMAT_NOTES]. If you cannot see your spend, "
-         "stop at 3 hours of wall time. At the bound, record where you are, commit, publish, and report what is owed."
-         % cap, "",
+         "**Wall-time bound: 3 hours.** At the bound, record where you are, commit, publish, and report what is owed.",
+         "",
          "## Precondition (check first; stop if it fails)", "",
          "```",
          "python3 -c \"import json;d=json.load(open('design/concepts/%s/%s'));print(d['stage'],d.get('cycles'))\""
@@ -2822,7 +2821,7 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
     n, ver = f.get("visit", 1), f.get("version", UNM)
     vdir = "design/concepts/%s/%s/visit_%d" % (mod, INGAME_DIR, n)
     when = pac_heading(now_ts())
-    cap = ("$%g" % cap_usd) if cap_usd else "the --budget-usd the launch carries"
+    # no spend bound in the brief (owner 2026-11-16): the launch's --budget-usd is enforced by spend_watchdog.py
     purpose = "%s in-game acceptance visit %d" % (mod, n)
     checks = f.get("checks") or []
     full = [k for k in checks if (tt.get("tests") or {}).get(k, {}).get("kind") == "live_full"]
@@ -2839,8 +2838,8 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
          "- Foreground commands only, each with a timeout of 540 s or less. Never `pkill -f`.",
          "- Write progress to your skeleton (`%s/SUMMARY.md`) at least every 8 minutes, and a note on your item at "
          "least every 20." % vdir, "",
-         "**Spend bound: %s.** If you cannot see your spend, stop at 3 hours of wall time. At the bound, record where "
-         "you are, release the bridge, commit, publish, and report what is owed." % cap, "",
+         "**Wall-time bound: 3 hours.** At the bound, record where you are, release the bridge, commit, publish, and "
+         "report what is owed.", "",
          "## Precondition (check first; stop if it fails)", "",
          "```",
          "python3 -c \"import json;d=json.load(open('design/concepts/%s/%s'));print(d['stage'],d['version'])\""

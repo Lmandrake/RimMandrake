@@ -86,7 +86,7 @@ result is a retry that has spent budget.
   fixer, not to you.
 - **An input that changes invalidates what depended on it.** A new owner event on the item reopens stage 2 and every
   stage after it; an edited tree, sheet, scene or floor file reopens stage 3. The packet tells you when and why.
-- **The budget is the launcher's.** The packet states the task's cap, what is spent, the reserve and this run's share.
+- **The budget is the launcher's.** The packet states no cap or spend (owner 2026-11-16: no agent is told its spend).
   A fresh run does not reset it; helpers and consults you start are charged with `designer_stage.py charge` (kind
   `review`, `helper` or `consult`). When only the reserve is left the launcher refuses new runs. Budget exhaustion never
   waives a gate and never authorises a handoff.

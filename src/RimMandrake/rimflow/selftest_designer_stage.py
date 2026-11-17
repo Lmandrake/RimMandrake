@@ -1538,8 +1538,10 @@ def wiring(tmp, repo):
     acts = []
     RL.decide_roles({"roles": [rowc]}, stc, robs, now, lambda **kw: acts.append(kw), set(), None)
     lac = [a for a in acts if a.get("do") == "role_launch"]
-    check("decide: a role cap under the task budget's remainder is the run's budget, and the packet says so",
-          len(lac) == 1 and lac[0]["budget"] == 40000 and "this run 40000 weighted tokens" in lac[0]["message"],
+    # the packet no longer states it: no agent is told its budget (owner 2026-11-16, spend_watchdog.py)
+    check("decide: a role cap under the task budget's remainder is the run's budget, and the packet does not say so",
+          len(lac) == 1 and lac[0]["budget"] == 40000 and "weighted tokens" not in lac[0]["message"]
+          and "40000" not in lac[0]["message"],
           [(a.get("do"), a.get("budget"), a.get("why")) for a in acts])
     DS.charge(d, 95000, "consult", "gpt")
     st = {"roles": {row["name"]: {"run_now": dict(req, at=now - 5)}}}

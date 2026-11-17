@@ -130,9 +130,11 @@ claude_slim() {   # claude_slim <log> <prompt>: one headless sonnet with only wh
     local hook
     hook=$(printf '{"hooks":{"PreToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"python3 %s %s"}]}]}}' \
         "$HERE/gate.py" "$BRIEF")
-    timeout -k 120 2400 claude -p "$2" --model sonnet --output-format json --setting-sources "" --strict-mcp-config \
+    # the dollar cap is enforced from outside (spend_watchdog.py): --max-budget-usd tells the agent its spend every turn
+    timeout -k 120 2400 python3 "$HERE/../../src/RimMandrake/rimflow/spend_watchdog.py" --cap-usd "${WC_MAX_USD:-2}" -- \
+        claude -p "$2" --model sonnet --output-format json --setting-sources "" --strict-mcp-config \
         --mcp-config '{"mcpServers":{}}' --disable-slash-commands --tools "Bash,Read" --settings "$hook" \
-        --max-turns "${WC_MAX_TURNS:-40}" --max-budget-usd "${WC_MAX_USD:-2}" --dangerously-skip-permissions \
+        --max-turns "${WC_MAX_TURNS:-40}" --dangerously-skip-permissions \
         >"$1" 2>"$1.err"
 }
 spend_line() {   # the round's spend: rounds/<N>/spend.json, one readable log line, and the key=value tail for the end line

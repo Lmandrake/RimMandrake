@@ -70,7 +70,7 @@ def one_pass(root, calls, runner_of, signed):
 
     n = len(calls)
     rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("covered", checklist=full)))
-    first = calls[n][0][2]
+    first = calls[n][0][calls[n][0].index("-p") + 1]
     check("the prompt names every owed id and says one pass lists every gap",
           all(i in first for i in ("inv_a", "inv_b", "leaf_c")) and "EVERY gap" in first, first[-400:])
     check("a first judge is not told of a previous verdict", "previous judge" not in first, first[-300:])
@@ -91,8 +91,8 @@ def one_pass(root, calls, runner_of, signed):
     del signed[:]
     rec, _ = CJ.run(d, os.path.join(root, "onepass"), script)
     check("a missing row -> one re-ask, same session, naming only that row",
-          len(argvs) == 2 and argvs[1][argvs[1].index("--resume") + 1] == "sess" and "leaf_c" in argvs[1][2]
-          and "inv_a" not in argvs[1][2] and rec["reasked"] == ["leaf_c"], argvs[1:])
+          len(argvs) == 2 and argvs[1][argvs[1].index("--resume") + 1] == "sess" and "leaf_c" in argvs[1][argvs[1].index("-p") + 1]
+          and "inv_a" not in argvs[1][argvs[1].index("-p") + 1] and rec["reasked"] == ["leaf_c"], argvs[1:])
     check("answered on the re-ask -> signed", rec["signed"] and signed and "unchecked" not in rec, rec)
     check("both calls are charged", rec["tokens"] == 2 * RL.run_tokens(json.loads(answer("covered"))), rec.get("tokens"))
 
@@ -150,13 +150,13 @@ def one_pass(root, calls, runner_of, signed):
     # A re-judge carries the last verdict forward; a judge that reached none leaves nothing to carry.
     n = len(calls)
     CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
-    again = calls[n][0][2]
+    again = calls[n][0][calls[n][0].index("-p") + 1]
     check("a re-judge is pointed at the previous verdict, and a passed unchanged part needs a quoted defect",
           "previous judge" in again and CJ.VERDICT_FILE in again and "quote the defect" in again, again[-400:])
     CJ.run(d, os.path.join(root, "onepass"), runner_of("not json"))
     n = len(calls)
     CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
-    check("an errored earlier run is no previous verdict", "previous judge" not in calls[n][0][2], calls[n][0][2][-300:])
+    check("an errored earlier run is no previous verdict", "previous judge" not in calls[n][0][calls[n][0].index("-p") + 1], calls[n][0][calls[n][0].index("-p") + 1][-300:])
 
 
 def bare(gaps):
@@ -208,9 +208,9 @@ def main():
                   rec["signed"] and signed == [("CoverageJudge", "rm-coverage-judge-1793900000")], (rec, signed))
             check("the judge ran opus with a json schema and its own unit",
                   calls and "--json-schema" in calls[-1][0] and "opus" in calls[-1][0]
-                  and "--max-budget-usd" in calls[-1][0]
+                  and "--max-budget-usd" not in calls[-1][0] and "--cap-usd" in calls[-1][0]
                   and calls[-1][1] == "rm-coverage-judge-1793900000", calls[-1:])
-            prompt = calls[-1][0][2]
+            prompt = calls[-1][0][calls[-1][0].index("-p") + 1]
             check("the prompt names the contract and the lock packet, and keeps the maker's account out",
                   "designer_scene_contract.md" in prompt and "designer_lock.md" in prompt and "result.*.json" in prompt)
             check("RM_ROLE_UNIT is restored after signing", os.environ.get("RM_ROLE_UNIT") != "rm-coverage-judge-1793900000")

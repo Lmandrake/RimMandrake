@@ -19,7 +19,8 @@ It takes a pool clone <pool>/clones/<ITEM>.det through scratch_clone.py
 (reused, synced, when it exists), then starts role_launch's path: systemd-run --user + claude_bounded.sh -p, the
 model passed, NO wall-time limit by default (owner, 2026-11-08: "No time limits please"; --max-s none or 0). An explicit
 --max-s SECONDS still bounds it twice (the unit's RuntimeMaxSec and claude_bounded's scope). Spend is bounded by
-claude --max-budget-usd. The brief gets a footer: work in the clone, land with ./publish, put state, evidence and one
+spend_watchdog.py, from outside the agent (never claude --max-budget-usd, which tells the agent its spend every turn:
+owner 2026-11-16, RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN); the brief states no spend or cap. The brief gets a footer: work in the clone, land with ./publish, put state, evidence and one
 imperative NEXT on the item as a rimflow note and publish the shard.
 finish: runs when the unit stops for any reason (done, failed, killed at its bound). It first KILLs and stops the run's
 claude_bounded scope (claude-seat-<seat>-<unit>.scope): claude lives there, outside the unit, so a stopped unit alone left
@@ -93,7 +94,7 @@ FOOTER = """
 
 ---
 You are a DETACHED helper: you run in your own systemd unit, outside any window, in the clone {clone} (your cwd).
-Ledger item: {item}. Seat: {seat}. {bound_text}; spend bound ${budget}.
+Ledger item: {item}. Seat: {seat}. {bound_text}.
 - Work only in that clone. Land code with `./publish -m "subject" <explicit paths>` (never git add -A, never --force).
 - First, claim your item: `python3 src/RimMandrake/rimflow/cli.py claim {item} --seat {seat} --why "detached run"`.
 - At the end, close it with the sha ./publish printed: `python3 src/RimMandrake/rimflow/cli.py close {item} --sha <sha>
@@ -679,10 +680,15 @@ def launch_argv(rec, msg, claude):
     cmd = [bounded, "-p"] + ([] if via_file else [msg]) + [
            "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--output-format", "json", "--dangerously-skip-permissions"]
-    if rec["budget_usd"] > 0:           # --budget-usd 0: no harness flag, so the agent is not told its spend every turn (owner
-        cmd += ["--max-budget-usd", "%g" % rec["budget_usd"]]   # 2026-11-16; the outside stop is RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN)
     if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
         cmd += ["--resume", rec["resume_session"]]
+    # the spend cap is enforced from outside: the agent is never told its spend (owner 2026-11-16, spend_watchdog.py);
+    # --budget-usd 0 launches with no cap at all
+    if rec["budget_usd"] > 0:
+        import spend_watchdog
+        cmd = spend_watchdog.wrap(cmd, rec["budget_usd"], python="python3")
+        mine = os.path.join(clone, "src", "RimMandrake", "rimflow", "spend_watchdog.py")
+        cmd[1] = mine if os.path.exists(mine) else cmd[1]     # the clone's own copy, as with claude_bounded.sh
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             # append:, never file: — file: hands every ExecStopPost the file at offset 0 and finish's line overwrote the
             # head of claude's JSON (RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER); finish also moves its own
@@ -915,7 +921,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         rec["preflight_run"] = pf.run_id
     unit = reserve_record(rec, root)    # a name no other run's record holds; never overwrites one
     msg = brief.rstrip() + FOOTER.format(clone=clone, item=item, seat=seat,
-                                         bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound", budget="%g" % budget)
+                                         bound_text=("Wall-time bound: %d s" % max_s) if max_s else "no wall-time bound")
     msg += card_footer(item)
     if runner is subprocess.run:        # its own TMPDIR, deleted by run_tmp.sweep when the unit is gone
         rec["tmp"] = run_tmp.prepare(unit)

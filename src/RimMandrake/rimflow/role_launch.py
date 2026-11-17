@@ -75,9 +75,10 @@ Tokens: a finished run's `claude -p --output-format json` usage, ALL FOUR fields
 cache_read, output), each weighted by its price class (TOKEN_WEIGHTS, run_tokens: input-equivalent tokens, so a cap
 measures cost, not context re-reads; ROLE_CAPS_REMEASURE_ON_REAL_RUNS). Every cap, budget, daily spend and overbudget
 alarm here is in these units; the raw sum is kept beside it on the run as `raw_tokens`. A run over its budget is an ALARM after the fact: `claude -p` has no
-token stop and nothing here stops a run at its budget: the budget is checked on its result. Only a `token_aware` role
-(Operations, the Conductor) is told its band and budget in its launch message; every other role is token-blind and is told
-neither (owner 2026-10-27; review T, F1/F2). A run still going after
+token stop and nothing here stops a run at its token budget: the budget is checked on its result (the dollar
+run_budget_usd stop is spend_watchdog.py's, from outside). No role is told its budget or spend (owner 2026-11-16); only a
+`token_aware` role (Operations, the Conductor) is told the account's band in its launch message; every other role is
+token-blind and is told neither (owner 2026-10-27; review T, F1/F2). A run still going after
 `run_max_s` is stopped (its claude_bounded scope and its unit) with an alarm; it stays `running` and the stop is
 re-issued each tick until systemd says the unit AND its claude_bounded scope are inactive/failed (claude lives in the
 scope, outside the unit; the scope is resolved while the unit runs). supervise_roles() does this for every persisted
@@ -333,7 +334,8 @@ def validate_role(role):
     for k in ("run_token_cap", "quick_token_cap", "economy_token_cap", "daily_token_cap", "incident_token_cap"):
         if role.get(k) is not None and not (_num(role[k]) and role[k] >= 0):
             raise ValueError("%s %r is not a number >= 0" % (k, role[k]))
-    # run_budget_usd: the HARD per-run spend stop, claude's --max-budget-usd (owner 2026-11-12: "Don't let any burn go
+    # run_budget_usd: the HARD per-run spend stop, enforced from outside by spend_watchdog.py (was claude's --max-budget-usd
+    # until owner 2026-11-16: the agent is never told its spend) (owner 2026-11-12: "Don't let any burn go
     # to 90M this time ok?"); the token caps above stay advisory
     if role.get("run_budget_usd") is not None and not (_num(role["run_budget_usd"]) and role["run_budget_usd"] > 0):
         raise ValueError("run_budget_usd %r is not a number > 0" % (role["run_budget_usd"],))
@@ -770,8 +772,9 @@ def overspend_day(name, rs, item, daily, spent, budget, now, act, did):
 
 
 def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit, rows=None, reasons=None):
-    """The launch message. Every role but those whose schedule entry says `token_aware: true` (Operations; the
-    Conductor, owner 2026-10-31) is token-blind (owner 2026-10-27): its message carries no band, runway, week, budget or cap,
+    """The launch message. Every role is spend-blind (owner 2026-11-16): no message states its budget, cap or spend. Only
+    a `token_aware: true` role (Operations; the Conductor, owner 2026-10-31) is told the ACCOUNT's band; every other
+    role is token-blind (owner 2026-10-27): its message carries no band, runway, week, budget or cap,
     and no order to watch one (review T, F1). Nothing stops a run at its budget mid-run: the real bounds are
     `run_max_s` (wall time) and the after-the-fact accounting (supervise_roles), both the Dispatcher's (F2)."""
     lines = ["[RimFlow Dispatcher — a program, not a person; role launch %s]" % unit,
@@ -793,11 +796,9 @@ def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, 
         lines += ["Throttle band: %s (account runway %.2f %s, week left %.0f%% %s; ops_watch status at %s)." % (
                       band_name, reading["runway"], reading["runway_m"], reading["week_left"], reading["week_left_m"],
                       reading["at"]),
-                  ("DEGRADED READING: %s. The ops reading is UNMEASURED (runway and week left above are placeholders for the most cautious band, not readings): diagnose the watch first (ops_watch status.json, its unit and timer) and report it before any work that relies on the reading." % reading["degraded"]) if reading.get("degraded") else "",
-                  "Token budget for this run: %d weighted tokens (cap %d x %.1f); daily cap %d, %d already used today. "
-                  "Weighted = input-equivalent: a cache read counts 0.1, a cache write 1.25 (5m) or 2 (1h), an "
-                  "output token 5. The Dispatcher checks it after the run; it does not stop you at it." % (
-                      budget, cap, factor, role.get("daily_token_cap") or 0, spent)]
+                  ("DEGRADED READING: %s. The ops reading is UNMEASURED (runway and week left above are placeholders for the most cautious band, not readings): diagnose the watch first (ops_watch status.json, its unit and timer) and report it before any work that relies on the reading." % reading["degraded"]) if reading.get("degraded") else ""]
+        # no line on this run's own budget or spend (owner 2026-11-16: "I don't like how you're telling the agent how
+        # much it's spent"): the band above is the account's state, the run's own spend stays on its record
     lines = [x for x in lines if x]
     lines.append("You work as seat %s in %s. Never take the bridge, restart the game or deploy." % (
         role["seat"], role["clone"]))
@@ -1134,12 +1135,11 @@ def resume_account(obs):
 
 def resume_prompt(cfg, rec, unit):
     """The continue message a resumed run gets (its session already holds the original task and its work)."""
-    return ("You are %s, resumed. Your run %s was cut off by the account (%s) after %s weighted tokens; the account "
-            "answers again. Continue exactly where you left off: finish the task this session was given, within its "
-            "budget of %s weighted tokens, and end the way that task says a run ends. Do not start the task over. "
-            "This is resume %d of at most %d (unit %s)." % (
-                cfg.get("name"), rec["unit"], rec["error"], rec.get("tokens"), rec.get("budget") or 0, rec["n"],
-                RESUME_MAX, unit))
+    # states no spend or budget (owner 2026-11-16, RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN)
+    return ("You are %s, resumed. Your run %s was cut off by the account (%s); the account answers again. Continue "
+            "exactly where you left off: finish the task this session was given, and end the way that task says a run "
+            "ends. Do not start the task over. This is resume %d of at most %d (unit %s)." % (
+                cfg.get("name"), rec["unit"], rec["error"], rec["n"], RESUME_MAX, unit))
 
 
 def resume_due(name, rs, cfg, now, act, busy, gate, account=None, tick_launch=None):
@@ -2945,7 +2945,6 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
         + list(role.get("launch_args") or []) + ["--output-format", "json", "--dangerously-skip-permissions"] \
-        + (["--max-budget-usd", "%g" % role["run_budget_usd"]] if role.get("run_budget_usd") is not None else []) \
         + (["--resume", role["resume_session"]] if role.get("resume_session")      # continues that session (resume_due)
            else ["--session-id", session] if session else [])     # its transcript, found when no result is
     selected = role.get("runner", "claude")
@@ -2962,6 +2961,13 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
             value = role.get(key) or os.environ.get(key.upper())
             if value:
                 cmd += [flag, value]
+    elif role.get("run_budget_usd") is not None:
+        # the hard per-run stop, enforced from outside: never --max-budget-usd, which tells the agent its spend every
+        # turn (owner 2026-11-16, RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN; spend_watchdog.py)
+        import spend_watchdog
+        cmd = spend_watchdog.wrap(cmd, role["run_budget_usd"], python="python3")
+        mine = os.path.join(role["clone"], "src", "RimMandrake", "rimflow", "spend_watchdog.py")
+        cmd[1] = mine if os.path.exists(mine) else cmd[1]
     pre = None if role.get("resume_session") else role.get("pre_launch")    # a resume re-screens nothing
     if pre:
         # one argv, or a list of argvs run in order, each only if the one before exited 0

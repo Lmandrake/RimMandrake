@@ -173,7 +173,8 @@ def judge(root, d):
     text = CJ.prompt(d, root, CJ.required_ids(d, tree), False, 1)
     argv = [CJ.CLAUDE, "-p", text, "--model", CJ.MODEL, "--output-format", "json",
             "--json-schema", json.dumps(CJ.SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions",
-            "--max-budget-usd", "%g" % CASE_BUDGET_USD, "--name", "COVERAGE CALIBRATION %s" % os.path.basename(d)]
+            "--name", "COVERAGE CALIBRATION %s" % os.path.basename(d)]
+    argv = CJ.spend_watchdog.wrap(argv, CASE_BUDGET_USD)     # the cap from outside: the judge is not told its spend
     try:
         p = subprocess.run(argv, cwd=root, capture_output=True, text=True, timeout=CASE_TIMEOUT_S)
         res = json.loads(p.stdout or "null")

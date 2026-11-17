@@ -66,7 +66,8 @@ The LLM wake (the owner's card ruling 2026-10-26 12:27 PDT, "Yes, after 30 min",
 once an incident has been raised (T+30) and no claim holds its item, the steward MAY start ONE headless Claude session
 to diagnose and restart the lane. ON by default, with these guards:
   one at a time   a fixed transient unit (systemd-run --user --unit testq-steward-wake); an active one blocks another
-  hard caps       --max-budget-usd TESTQ_WAKE_BUDGET_USD (5) and RuntimeMaxSec TESTQ_WAKE_MAX_S (2700 s)
+  hard caps       spend_watchdog --cap-usd TESTQ_WAKE_BUDGET_USD (5), from outside the agent (never --max-budget-usd:
+                  the agent is not told its spend, owner 2026-11-16) and RuntimeMaxSec TESTQ_WAKE_MAX_S (2700 s)
   no loop         one wake per incident, and TESTQ_WAKE_COOLDOWN_S (4 h) between any two (QHOME/wake.json)
   login           held while `claude auth status` says the login is gone; a wake that dies on auth anyway gives its
                   cooldown back and goes again, at most TESTQ_WAKE_RETRIES (2) times (OPS_ALARM_RETRY_AFTER_AUTH_DEATH:
@@ -477,8 +478,10 @@ def launch_wake(clone, brief_path, log_path, budget, max_s):
     """Start the capped session in its own transient unit (it outlives this oneshot pass; systemd kills it at
     RuntimeMaxSec). -> (ok, text)."""
     exe = os.environ.get("TESTQ_WAKE_CLAUDE") or shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
-    cmd = "%s -p \"$(cat %s)\" --max-budget-usd %s%s > %s 2>&1; echo $? > %s" % (
-        shlex.quote(exe), shlex.quote(brief_path), shlex.quote(str(budget)),
+    sys.path.insert(0, RIMFLOW_DIR)
+    import spend_watchdog
+    cmd = "%s%s > %s 2>&1; echo $? > %s" % (
+        spend_watchdog.wrap_shell("%s -p \"$(cat %s)\"" % (shlex.quote(exe), shlex.quote(brief_path)), budget),
         (" --model " + shlex.quote(os.environ["TESTQ_WAKE_MODEL"])) if os.environ.get("TESTQ_WAKE_MODEL") else "",
         shlex.quote(log_path), shlex.quote(exit_path(log_path)))
     try:

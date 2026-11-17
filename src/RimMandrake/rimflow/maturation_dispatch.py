@@ -1109,8 +1109,8 @@ def cert_item_id(mod, test, known):
 
 def cert_brief(mod, chosen, cap, bars):
     lines = ["# Make %s's red offline deciders green (Stage 3: the certificate before the blind challenge)" % mod, "",
-             "Items: %s. Seat BENCH. Spend bound $%s. Offline only: no game, no bridge, no helpers." % (
-                 ", ".join(sorted(set(chosen.values()))), cap), "",
+             "Items: %s. Seat BENCH. Offline only: no game, no bridge, no helpers." % (
+                 ", ".join(sorted(set(chosen.values()))),), "",
              "`maturation.py certificate %s` refuses the move into the blind challenge: these offline deciders are "
              "recorded red, and no open item owed them until the Dispatch step filed these (item "
              "RIMMANDRAKE_DISPATCH_PILOT_HOLDER_RUN_ITSELF_HAND_LAUNCHED_TWICE):" % mod, ""]

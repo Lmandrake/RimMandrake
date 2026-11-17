@@ -1142,7 +1142,7 @@ def steward_brief(root, mod, row):
     return "\n".join([
         "# Maturation steward run: %s, %s (%s)" % (mod, M.label(row.get("stage")) if row.get("stage") in M.WORDS
                                                    else row.get("stage"), kind),
-        "", "Item: %(item)s. Seat BENCH. Spend bound $%(cap)s.", "",
+        "", "Item: %(item)s. Seat BENCH.", "",
         "## The state the Dispatch tick read", "", "- decision: %s" % row.get("decision"),
         "- why: %s" % row.get("why"), "- maturation.py next: %s" % nxt, refs, "",
         "## Your task", "", str(task), "", "Detail: %s" % (row.get("steward_need") or ""), "",
@@ -1194,7 +1194,7 @@ OFFLINE_CLOSE = (
 
 def fixer_brief(item, mod, cap, fix_for=None, live=False):
     if fix_for == "blocked":
-        return ("# Pipeline-defect fix: %s (%s)\n\nItem: %s. Seat BENCH. Spend bound $%s.\n\nRead `python3 "
+        return ("# Pipeline-defect fix: %s (%s)\n\nItem: %s. Seat BENCH.\n\nRead `python3 "
                 "src/RimMandrake/rimflow/cli.py show %s` to its end: %s's Designer ended blocked on it, a defect in the "
                 "pipeline's own machinery, and the mod is PAUSED until it is fixed. Fix it, its acceptance test first "
                 "(watch it fail on the base), land with `./publish -m ... <paths>`, close the item with the published "
@@ -1202,13 +1202,13 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False):
                 "design/concepts/%s --why \"%s fixed at <sha>\"` and land design/concepts/%s/stage.json. If it cannot "
                 "be fixed offline, or the fix is the owner's (a bar, a ruling, a spend cap), write that in a note "
                 "starting LEFT OPEN: and drop nothing. Never take the bridge or a game.\n%s\n" % (
-                    item, mod, item, cap, item, mod, mod, item, mod, M.SELF_FIX_RULE))
-    return ("# Road-back fix: %s (%s)\n\nItem: %s. Seat BENCH. Spend bound $%s.\n\nRead `python3 "
+                    item, mod, item, item, mod, mod, item, mod, M.SELF_FIX_RULE))
+    return ("# Road-back fix: %s (%s)\n\nItem: %s. Seat BENCH.\n\nRead `python3 "
             "src/RimMandrake/rimflow/cli.py show %s` to its end: it is one failed line of %s's in-game visit or blind "
             "cycle, sent back by the steward. Fix it, run its acceptance test (watch it fail first if it is new), land "
             "with `./publish -m ... <paths>`, and close the item with the published sha. If it cannot be fixed "
             "offline, or the fix is the owner's (a bar, a ruling, a classification), write that in a note and drop "
-            "nothing. %s\n%s\n" % (item, mod, item, cap, item, mod, "Its acceptance test needs the live game: use it "
+            "nothing. %s\n%s\n" % (item, mod, item, item, mod, "Its acceptance test needs the live game: use it "
                                     "as the section below says, and write a note starting LEFT OPEN: on what still "
                                     "fails." if live else OFFLINE_CLOSE % {"mod": mod, "item": item}, M.SELF_FIX_RULE)
             + (live_rules("%s holder run on %s" % (mod, item), mod) if live else ""))

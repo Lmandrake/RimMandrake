@@ -249,14 +249,15 @@ def test_band():
 
 
 def test_run_budget_usd_hard_stop():
-    # RIMMANDRAKE_RESTORE_PAUSED_WORK_KEEP_EVERY_SPEND_CAP: run_budget_usd becomes claude's --max-budget-usd
+    # RIMMANDRAKE_RESTORE_PAUSED_WORK_KEEP_EVERY_SPEND_CAP: run_budget_usd is a hard stop, enforced from outside by
+    # spend_watchdog --cap-usd (never --max-budget-usd: RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN)
     role = {"name": "r", "seat": "SEAT", "clone": "/c", "model": "opus", "run_max_s": 1000}
     a = RL.launch_argv(role, "U", "MSG", "/o", "/e", "/bin/claude")
-    check("--max-budget-usd" not in a, "no budget flag when unset")
+    check("--max-budget-usd" not in a and "--cap-usd" not in a, "no budget flag when unset")
     a = RL.launch_argv(dict(role, run_budget_usd=6), "U", "MSG", "/o", "/e", "/bin/claude")
-    check("--max-budget-usd" in a and a[a.index("--max-budget-usd") + 1] == "6", "budget flag carries the cap %r" % a[-6:])
+    check("--max-budget-usd" not in a and a[a.index("--cap-usd") + 1] == "6", "the watchdog carries the cap %r" % a[:6])
     a = RL.launch_argv(dict(role, run_budget_usd=2.5), "U", "MSG", "/o", "/e", "/bin/claude")
-    check(a[a.index("--max-budget-usd") + 1] == "2.5", "a fractional cap is kept")
+    check(a[a.index("--cap-usd") + 1] == "2.5", "a fractional cap is kept")
     RL.validate_role(dict(good(), run_budget_usd=6))
     for bad in (0, -1, "6", True):
         check(raises(lambda: RL.validate_role(dict(good(), run_budget_usd=bad)), "run_budget_usd"),

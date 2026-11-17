@@ -57,7 +57,7 @@ loud, and dangerous exactly where it is silent.
 
 | | Alias | For |
 |---|---|---|
-| **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist; design from a blank page; one escalation attempt on a clean ticket Opus failed at high effort. Hard dollar budget on every run. Never a helper, a rerun, a fleet worker or a game-waiter. Price: 2× Opus fresh, 1× cached. |
+| **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist; design from a blank page; one escalation attempt on a clean ticket Opus failed at high effort. Hard dollar budget on every run, enforced from outside by `spend_watchdog.py` (never `--max-budget-usd`; no agent is told its spend, owner 2026-11-16). Never a helper, a rerun, a fleet worker or a game-waiter. Price: 2× Opus fresh, 1× cached. |
 | **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from the Conductor. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world.  |
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches** — greps, globs, censuses, existence checks, inventories (folded in 2026-10-01; see below). FOUNDRY's default |
 ### 🔴 Sonnet vs Opus — owner ruling, 2026-10-29 (replaces "Sonnet default, self-escalate after one failed attempt")
