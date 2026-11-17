@@ -14,3 +14,4 @@
 {"id": "PF_ST3_CONTAINER_ZERO_CELLS_OK", "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackVerdicts.cs", "bars": ["inv_proof_scenes", "closed_container_holds"], "suites_red": ["T_KERNEL"], "lane1_new_fail": [], "caught": true, "caught_by_builder": true, "caught_by_lane1": false, "seconds": 60.9}
 {"id": "PF_ST3_FIREHALF_LANE_NOOP", "file": "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof_StageThree.cs", "bars": ["inv_proof_scenes", "settings_scale_and_switch"], "suites_red": ["T_STAGE3_SCENES"], "lane1_new_fail": [], "caught": true, "caught_by_builder": true, "caught_by_lane1": false, "seconds": 45.5}
 {"tree_clean_after": false}
+{"tree_clean_after": true}
