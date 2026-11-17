@@ -236,3 +236,21 @@ What: Campaign darkness rites
 
 Why: Designer delegated: Rituals do not operate the land, life or Dark cycle. Ticket: T42.
 
+
+### outdoor drifting pockets
+
+What: The built Perlin effective-temperature offset opens and closes outdoor clear patches without changing the ordinary outdoor thermometer; retain its code behind a labelled next-version switch, off.
+
+Why: Designer delegated: Ordinary warm rooms and map-wide temperature/weather clearance suffice for land and the Dark/light/feeder/grain signature; an outdoor microclimate system is additional scope. A later supported cause must be specified consistently with ordinary temperature, not guessed on this pass. Ticket: T43.
+
+### nevarithia carried Dark
+
+What: The owned grazer's promised local carried knot, including where ambient Dark cannot form; unbuilt, deferred off. Its ordinary roster presence and appearance stay.
+
+Why: Designer delegated: Removing the knot leaves ordinary life and the complete ambient Dark/light/feeder/grain chain intact; a ruled description constrains future behavior rather than establishing first-version necessity. Ticket: T44.
+
+### nevarithia death release
+
+What: The promised release/dispersal of the carried knot on death; unbuilt, deferred off with its halo parent.
+
+Why: Designer delegated: Without a carried knot there is nothing to release; ordinary death/corpse evidence already makes life readable. This is a second part of the deferred creature system, not ambient land or signature. Ticket: T45.

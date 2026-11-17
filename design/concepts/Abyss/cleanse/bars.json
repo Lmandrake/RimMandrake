@@ -2,30 +2,31 @@
   "bars": [
     {
       "id": "B1",
-      "says": "The player can distinguish black etched highland relief, ordinary walking and building ground, living illumination and clear-air openings beside the local Dark.",
+      "says": "The player can distinguish black etched relief, usable ground, living illumination and heated-room clear-air edges while the Dark dims terrain, buildings and non-colony creatures without removing their silhouettes or obscuring the colony's pawns.",
       "meant": {
-        "intent": "The compose line and frozen sheet require a country the player can inhabit and visually read, rather than a dark color filter.",
-        "source": "CASE Biomes.compose.json line; design/Jawa/worldbuilding/biomes/abyss.md sections 1, 5 and 9; delegated: require usable local ground and a spatial boundary to make the material-air description playable.",
+        "intent": "The compose line and frozen sheet require inhabitable, visually readable country. This carries the protection/nearby-terror clause through reduced visual detail and partially expresses the beauty clause through briefly revealed relief; it does not carry beauty turning into nightmares or the source-of-nightmares dread, which are deferred with cryptid content.",
+        "source": "CASE Biomes.compose.json line; design/Jawa/worldbuilding/biomes/abyss.md sections 1, 5 and 9; delegated: require usable local ground and a spatial boundary to make the material-air description playable; owner Abyss experience in design/RimMandrake/biome_experiences_2026-10-20.md; delegated: dimming with retained silhouettes, rather than sprite removal, preserves readable danger under the standing no-unreadable-vanishing ruling.",
         "figurative": []
       },
       "accept": [
-        "A worker sees black etched crags above a dark-sand route and a warm open-air edge; living plants light the nearby ground while a workshop remains findable.",
-        "Unveiling shows the explored etched country; returning ambient Dark conceals that view while the maintained nearby light and selected pawn remain readable."
+        "From a heated room, an open doorway shows clear indoor air against the Dark outside; black etched crags stand above a dark-sand route, and living plants light nearby ground while the workshop remains findable.",
+        "Unveiling reveals the explored etched country in detail; returning ambient Dark reduces that detail and dims buildings and a wild predator, but their silhouettes, the colony's pawns and maintained nearby light remain readable."
       ],
       "reject": [
         "A flat black sand map and a uniformly dark sky contain all the named terrain labels but no etched standing relief or local air boundary.",
-        "Fog art hides the selected worker and controls as completely as the distant country."
+        "Fog art hides the selected worker and controls as completely as the distant country.",
+        "A predator in the Dark is drawn exactly as in clear air, or disappears entirely instead of retaining a dim silhouette."
       ],
-      "lazy": "none: the words require etched relief, spatial clear-air boundaries and visible ordinary routes, excluding a flat tinted map.",
+      "lazy": "none: the words require relief, usable ground, heated-room boundaries and density-dependent dimming with retained silhouettes; a uniform sky tint, unchanged predator or culled sprite fails.",
       "range": {
-        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Camera at near/ordinary/far playable zoom; day/night palette slots for the same fixed solar geometry; roofed/unroofed and polluted/clean terrain; sparse/dense native cover; normal Dark, Witchfire, Unveiling and carried-halo overlaps.",
+        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Camera at near/ordinary/far playable zoom; day/night palette slots for the same fixed solar geometry; roofed/unroofed and polluted/clean terrain; sparse/dense native cover; normal Dark, Witchfire and Unveiling; room/outdoor thermal boundaries, map-wide outdoor clearance/closure, terrain, relief, buildings, colony colonists/tame animals/mechs, wild animals and hostile/neutral visitor pawns; selected/unselected states. Outdoor air has a shared temperature; no spontaneous outdoor pockets or carried halo are active.",
         "left_out": "Alternative planets and tile painting are prohibited. Exact art variants, crag dimensions and color values are checks/art choices, not independent bars. Unexplored map fog remains unexplored."
       },
       "sees": {
         "instrument": "Live look at state-annotated capture sites selected by M3, with resolved terrain/rock and local density/temperature reads (T29/T30). Existing world face is inspected in the same look; no tile census.",
         "start": "An already authored Abyss local map with ordinary ground, native lamps and a warmed shelter; a matched density-disabled capture at the same camera/sky. World-face swirls use existing BiomesShell defaults.",
-        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, spatial halo, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
-        "control": "A sky palette alone could look dark: hold sky/time/camera fixed while moving the local heat/halo and verify the visible boundary follows actual density. Flat-sand and UI-obscuring controls are blind-sorted as rejects.",
+        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
+        "control": "A sky palette alone could look dark: hold sky/time/camera fixed while heating a room and verify that its visible boundary follows density. Compare the same predator in clear/Dark air; unchanged rendering and full sprite culling must both be rejected. Colony pawns remain fully drawn in both states. Flat-sand and UI-obscuring controls are blind-sorted as rejects.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "State geometry cannot decide whether etched relief, the dark medium and the usable foreground actually read to a player; this is the bounded visual bar."
       },
@@ -39,7 +40,7 @@
         "map time"
       ],
       "tests": {
-        "reject": "Owner would reject if false: The compose line and frozen sheet require a country the player can inhabit and visually read, rather than a dark color filter.",
+        "reject": "Owner would reject if false: the compose line and frozen sheet require readable black relief and material Dark, with nearby danger perceptible through retained silhouettes rather than an unchanged sprite or invisible animal.",
         "renormalize": "No yield, speed, dimensions, market value, tuning percentage or variant count is fixed by says or pictures; the same comparison survives retuning/art variants.",
         "first_version": "Land, ordinary life or the single Dark/light/fuel signature as classified in census.json; necessary presentation/warning deletion arguments are recorded there."
       }
@@ -54,23 +55,23 @@
       },
       "accept": [
         "An unheated work room has impaired visitor sight; ordinary heating clears its air and the same visitor can work and aim normally inside it.",
-        "A warm observer and a warm target separated by Dark still lack clean long-range targeting; a carried nevarithia knot remains locally opaque in otherwise clear ambient air.",
-        "An evacuated visitor leaves the biome and loses air-caused murk; a beast dying leaves a corpse and a visible local release that disperses in warm air."
+        "An observer and target in heated rooms separated by outdoor Dark still lack clean long-range targeting; during Unveiling the same intervening air clears without moving the sun or revealing unexplored fog.",
+        "An evacuated visitor leaves the biome and loses air-caused murk; an ordinary animal killed in the Dark leaves a corpse and combat evidence, while the air continues to follow temperature and weather."
       ],
       "reject": [
         "A warm room loses the murk hediff but its shots still suffer the unchanged Abyss blanket penalty through entirely clear air.",
         "The screen shows a clear pocket whose ordinary thermometer is still as cold as the opaque cell beside it, solely because an unseen effective-temperature noise offset was added.",
-        "A warm rooftop shooter gets clean aim across the gunk, or a dead/despawned beast leaves a permanent invisible halo."
+        "An observer in a heated room gets clean aim through intervening outdoor Dark, or map exit leaves a visitor carrying a permanent air-caused murk penalty."
       ],
       "lazy": "none: the words require the same air to obstruct intervening sight and release impairment under actual warmth, excluding endpoint-only or fake-temperature success.",
       "range": {
-        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. All temperature-curve regions including threshold boundaries, warm/cold roofs and outdoor air; short and long obstructed sight paths, closed/open doors, injured/healthy visitor controls; ambient weather transitions, living/downed/carried/dead/despawned/overlapping halos; map exit, carried evacuation and save/load.",
-        "left_out": "No new heat kind, universal sensory rewrite or clean orbital localization. Ordinary injury/weapon/storm penalties are separated from Dark. The living stabilized halo is an explicit local exception to ambient Unveiling."
+        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. All temperature-curve regions including threshold boundaries, warm/cold roofs and outdoor air; short and long obstructed sight paths, closed/open doors, injured/healthy visitor controls; ambient weather transitions, room temperature changes and shared outdoor temperature crossing the formation band; map exit, carried evacuation and save/load.",
+        "left_out": "No new heat kind, universal sensory rewrite or clean orbital localization. Ordinary injury/weapon/storm penalties are separated from Dark. Outdoor drifting pockets and the carried halo/death release are next-version extras, off; there is no first-version exception to ambient Unveiling."
       },
       "sees": {
         "instrument": "M3 calibrated field/geometry/target-consumer sweep with M1 transitions and game temperature/murk/aim/density state reads (T31).",
         "start": "Same pawn, health, weapon, roof, target and ordinary light; paired cold/warm room and clear endpoints separated by a recorded Dark segment. Local warmth is ordinary game temperature.",
-        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, spatial halo, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
+        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
         "control": "Healing, weapon changes or bright sky could improve aim: keep them fixed and compare the exact Dark contribution and intervening path; an endpoint-only and flat-weather-penalty mutation must fail. Off-map murk removal is traced for the same pawn.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "Not live-only: calibrated production-kernel/state traces can decide this comparison; live state reads calibrate engine integration, no subjective look is required."
@@ -115,7 +116,7 @@
       "sees": {
         "instrument": "M1 plant/substrate transition generator plus M2 calibrated growth/food/harvest traces and glow/overlight reads; resolved-def reads determine inherited fields (T33A/T37A).",
         "start": "Paired plots share soil, temperature and crop age; one has a living emitter and one has no emitter. Natural native clusters are sampled separately from player-planted plots, with no hidden cheat light or food delivery.",
-        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, spatial halo, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
+        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
         "control": "Fertility, artificial sunlamps or inventory injections could grow/feed the plot: hold soil/heat fixed, remove other glowers and record harvested item origin and actual crop-growth eligibility. Hollow and equally fertile sand controls separate substrate from fertility.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "Not live-only: calibrated production-kernel/state traces can decide this comparison; live state reads calibrate engine integration, no subjective look is required."
@@ -160,7 +161,7 @@
       "sees": {
         "instrument": "M1 lifecycle/action traces, M3 reach/line/light composition and M2 lit-food/predator trace; inspect actual jobs, crop eligibility and individual LightLedger shares (T35A).",
         "start": "A warmed productive lit plot with accessible glower, a reachable dark retreat and an approaching wild ishvarith; actual ordinary moth approach/feeding, not a direct Feed proof call. Matched sealed-room and tame controls.",
-        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, spatial halo, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
+        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
         "control": "Lamp breakage, a power cut, hunger or unrelated predator interruption could explain the effect: hold those constant and compare actual feeding/aversion jobs, effective light and the same predator with moth access open/closed. Recovery must clear only the feeder-owned share.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "Not live-only: calibrated production-kernel/state traces can decide this comparison; live state reads calibrate engine integration, no subjective look is required."
@@ -205,7 +206,7 @@
       "sees": {
         "instrument": "M1 action/job/flight transitions and M4 food-pulse replay feed M2 calibrated food-web and cause-of-loss traces. Pawn_FlightTracker state verifies flight; ordinary cargo/milk/training job results verify utility (T34A/T37A).",
         "start": "A real native population on a full map plus controlled examples of each functional role, ordinary edible plants and feeding resources; training/handling unlocked. A same-input no-predator/no-gust trace is a diagnostic control, never the accepting whole setup.",
-        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, spatial halo, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
+        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
         "control": "Forced nutrition/spawn replenishment could hide a dead food chain: record all nutrition sources, ordinary spawn/migration and losses; compare unforced wind/needs. A flight graphic cannot substitute for the tracker state. Killing leaves corpse/combat records with pawn identity.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "Not live-only: calibrated production-kernel/state traces can decide this comparison; live state reads calibrate engine integration, no subjective look is required."
@@ -249,7 +250,7 @@
       "sees": {
         "instrument": "M1 substrate/material/roof cases and M2 calibrated erosion-attempt/resource-flow model, with actual damage, terrain, item-origin and refinery/fuel state reads (T33A/T37A).",
         "start": "Matched roofed/exposed eligible and ineligible edifices under actual grain weather; known hit points/materials, no other damage sources in the local control, ordinary hauler and refinery available. Whole-map run keeps ordinary weather risks on.",
-        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, spatial halo, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
+        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
         "control": "Vanilla deterioration, fire, mining or spawned fuel could explain the result: tag grain-caused damage and tholin origin, hold other damage absent only in paired local controls, track bill consumption/products and physical hollow terrain. No guaranteed random hit is inferred from a short no-hit run.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "Not live-only: calibrated production-kernel/state traces can decide this comparison; live state reads calibrate engine integration, no subjective look is required."
@@ -275,10 +276,16 @@
       "meant": {
         "intent": "The Dark must have a listener-local sensory presence without erasing information needed to survive it; silence is a rhythm rather than a global mute.",
         "source": "closed ABYSS_SOUNDSCAPE_BUILD_1.md; closed ABYSS_DARK_MUFFLE_ALL_SOUNDS_1.md; earlier record decision OWNER:1793468468383798501 ships muffling on; delegated: readable alternate warning channels avoid opaque deaths.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "stillness",
+            "stands_for": "No steady environmental wind bed between actual gusts; ordinary colony, fire and combat sounds continue.",
+            "accept": "Between gusts workers and combat remain audible while the unrelated steady wind bed is absent."
+          }
+        ]
       },
       "accept": [
-        "The same map sound is muffled with the camera in Dark and becomes clearer in a warm pocket; gust impact and feeding rustle follow the actual wind pulse and grain ticks identify exposed work.",
+        "The same map sound is muffled with the camera in Dark and becomes clearer in a heated room; gust impact and feeding rustle follow the actual wind pulse and grain ticks identify exposed work.",
         "A close predator\u2019s text tell and the interface remain readable while environmental sound is muffled, and a quiet map does not keep playing an unrelated steady wind bed."
       ],
       "reject": [
@@ -287,13 +294,13 @@
       ],
       "lazy": "none: the words require listener-local clarity and readable warning channels, excluding global muffling or muted danger.",
       "range": {
-        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Listener/camera clear/Dark/halo/boundary cells; placed gunshot/footstep/animal call, environmental impact/rustle/grain and camera/UI sounds; warm/cold source versus warm/cold listener; viewed/unviewed maps and map switch, pause/speed changes, new/reloaded mid-gust state; single and forty-pawn activity.",
+        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Listener/camera heated-room clear/outdoor Dark/boundary cells and map-wide Unveiling; placed gunshot/footstep/animal call, environmental impact/rustle/grain and camera/UI sounds; warm/cold source versus warm/cold listener; viewed/unviewed maps and map switch, pause/speed changes, new/reloaded mid-gust state; single and forty-pawn activity.",
         "left_out": "No demanded equal beauty/terror event counts, exact audio cutoff or number of variants; ordinary colony/fire/combat sounds need not cease during environmental stillness. Owner-present listening remains the existing judging condition, not an approval question."
       },
       "sees": {
         "instrument": "Live listen/look in the existing owner-present sound judging condition, with M4 timestamps, actual sample/listener-density state and interface controls (T29/T34A/T37A).",
         "start": "One fixed sound source and unchanged camera gain; camera moves between paired actual air states. Natural gust/grain periods observed with all kept mechanics on, plus a forced event as a causal diagnostic only.",
-        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, spatial halo, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
+        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
         "control": "Global volume/equalizer or unrelated weather could mimic muffling: keep gain/clip fixed, move only listener air state, inspect per-sample filter ownership and compare UI/other-map samples. Compare natural wind/feed/sound timelines so a forced hook cannot stand in for the environment.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "Filter and timestamp state cannot establish whether sounds remain distinguishable or warning text remains readable in the actual mix. Offline models only select and annotate the bounded listener cases."
@@ -316,9 +323,20 @@
       "id": "B8",
       "says": "Across a complete season of ordinary full-map play the colony can keep warm lit work and farms usable amid recurring Dark, native predation and grain wear, without runaway residue, emptied native life, stalled work or cascading errors after reload or reordered work.",
       "meant": {
-        "intent": "The first version must run as a whole: protection, living light, nearby danger and the price of staying must coexist over time, not only in isolated forced scenes.",
+        "intent": "The first version must run as a whole: protection, living light, nearby danger and material maintenance must coexist over time, not only in isolated forced scenes. It carries sustained refuge and nearby ordinary predation, not the deferred beauty-to-nightmare reversal or long-stay discovery of a nightmare source; erosion is a material cost, not that dread.",
         "source": "Owner 2026-10-20 Abyss experience in biome_experiences_2026-10-20.md; cleanse whole-bar requirement; delegated: classify flood/desert/stall/error outcomes using actual colony/material/ecology trajectories.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "runaway",
+            "stands_for": "Residue accumulates faster than ordinary hauling, storage and refining can use or manage it during maintained play.",
+            "accept": "Residue rises after exposed work, then ordinary hauling and refining bring the backlog under control; no stack moves by itself."
+          },
+          {
+            "word": "cascading",
+            "stands_for": "Exceptions repeat or spread to other consumers after a fault instead of ordinary play resuming.",
+            "accept": "A mid-cycle reload resumes warming, planting and hauling with a clean log; no literal cascade is required."
+          }
+        ]
       },
       "accept": [
         "During routine residence, workers roof and heat a refuge, maintain a living-light farm, handle a local feeder failure and use recovered grain; native life continues and the explored country periodically clears and closes.",
@@ -337,7 +355,7 @@
       "sees": {
         "instrument": "M2 whole-map model after calibration, complete state/flow/cause log and bounded live look/listen across B1/B7 cases on actual default maps (T37A). Model predictions select worst regimes; live natural whole runs confirm them.",
         "start": "Full map with real native population, ordinary imported startup supplies, all kept unlocks available, no pending developer jobs/forced weather/cheat nutrition; explicit settings hash. Use a recorded mid-cycle save and a matched start snapshot for alternate orders.",
-        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, spatial halo, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
+        "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
         "control": "Artificial stock injections, locked mechanics, disabled hazards or compressed tick omissions could fake stability: audit settings and resource/event sources, allow no developer grants, keep all growth/temperature/AI/erosion/light/audio scheduling active. Compression may accelerate wall-clock only by executing the ordinary ticks; it must preserve RNG ordering, needs, temperatures, jobs, weather and save state. Natural trajectories and intermediate checkpoints rule out endpoint-only abundance.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "Calibrated models identify runaway regimes, but the complete visible country and audible warning mix across an actual natural season cannot be established by a table or isolated state trace."
@@ -357,7 +375,7 @@
         "external sensing"
       ],
       "tests": {
-        "reject": "Owner would reject if false: The first version must run as a whole: protection, living light, nearby danger and the price of staying must coexist over time, not only in isolated forced scenes.",
+        "reject": "Owner would reject if false: refuge, living light, nearby ordinary danger and material maintenance must coexist over a full season; isolated forced scenes cannot establish that.",
         "renormalize": "No yield, speed, dimensions, market value, tuning percentage or variant count is fixed by says or pictures; the same comparison survives retuning/art variants.",
         "first_version": "Land, ordinary life or the single Dark/light/fuel signature as classified in census.json; necessary presentation/warning deletion arguments are recorded there."
       }
@@ -391,7 +409,7 @@
     },
     {
       "id": "C7",
-      "what": "Every settings field initializer, Scribe default, reset snapshot, composed default and next-version gate agree; worldgen UI/scoring inert. Muffle/deepfire owner defaults preserved."
+      "what": "Every settings field initializer, Scribe default, reset snapshot, composed default and next-version gate agree; worldgen UI/scoring inert. Muffle/deepfire owner defaults preserved. Outdoor noise pockets default off; absent halo/release effects are not required to be built to audit their absence."
     },
     {
       "id": "C8",
@@ -411,7 +429,7 @@
     },
     {
       "id": "C12",
-      "what": "Native kill/down/despawn/corpse causes, map-exit murk removal, halo lifecycle and warning job identity/order recorded with game/save hashes."
+      "what": "Native kill/down/despawn/corpse causes, map-exit murk removal, warning job identity/order recorded with game/save hashes."
     },
     {
       "id": "C13",
@@ -429,7 +447,7 @@
   "rules": [
     {
       "id": "R1",
-      "rule": "Ordinary local air temperature causes ambient density; Unveiling clears ambient particles, not solar geometry. Real cold/warm temperature readings must agree with pocket boundaries.",
+      "rule": "Outdoor ambient Dark density follows the map's shared ordinary outdoor temperature; each room's density follows that room's ordinary temperature. Unveiling clears ambient particles, not solar geometry. Outdoor drifting noise pockets, fold lanes, phantom clearance and carried halos are next-version extras, off; no outdoor microclimate is promised.",
       "touches": [
         "dark field",
         "weather and gust",
@@ -438,7 +456,7 @@
     },
     {
       "id": "R2",
-      "rule": "Use a common bounded final density for view, targeting and sensory consumers; clear endpoints do not bypass intervening Dark. Existing normal wall occlusion remains. Local warmth removes Dark-caused aim loss, not unrelated storm/injury penalties.",
+      "rule": "Use a common bounded final density for view, targeting and sensory consumers; clear endpoints do not bypass intervening Dark. Existing normal wall occlusion remains. Local warmth removes Dark-caused aim loss, not unrelated storm/injury penalties. Presentation uses density-scaled detail/contrast loss for terrain/buildings and non-colony creatures with retained silhouettes; player-owned colonists, tame animals and mechs stay fully drawn, and selection/inspect/UI/warnings remain readable. Ordinary unexplored fog is unchanged.",
       "touches": [
         "dark field",
         "external sensing",
@@ -490,16 +508,6 @@
         "dark field",
         "weather and gust",
         "native lifecycle"
-      ]
-    },
-    {
-      "id": "R8",
-      "rule": "A living nevarithia stabilizes a local trailing carried knot in warm/Unveiled air. Death releases it locally and ordinary ambient conditions disperse it; no global eclipse, stale tail or pawn deletion.",
-      "touches": [
-        "dark field",
-        "light grid",
-        "native lifecycle",
-        "map time"
       ]
     },
     {
@@ -572,11 +580,10 @@
         "R2",
         "R3",
         "R7",
-        "R8",
         "R12"
       ],
       "holds_together": "unknown",
-      "why": "Warmth, ambient weather, carried halo, target obstruction, visible boundary and listener muffling all consume this field. Clear endpoints can produce clean targeting while lamp shrink and a moving halo leave stale density; pairwise agreement misses that exploit. The entire consumer group needs M3 calibration.",
+      "why": "Room temperature, shared outdoor temperature, ambient weather, target obstruction, visible boundary and listener muffling all consume this field. Outdoor uniformity is settled by R1, not an unknown. Clear endpoints may still bypass an intervening Dark segment or disagree with lamp/light/audio updates; the entire retained consumer group needs M3 calibration. No carried-halo or outdoor-pocket implementation is required.",
       "model": "M3: Dark geometry, optical paths and composition sweep"
     },
     {
@@ -589,11 +596,10 @@
         "B8",
         "R3",
         "R4",
-        "R8",
         "R9"
       ],
       "holds_together": "unknown",
-      "why": "Dark shrink, protected biological emitters, krizzak bite/recovery, halo, overlight and aversion form a three-way feedback: reduced useful light can admit predators which remove caretakers, preventing light recovery. Ledger arithmetic alone cannot show actual overlight or path integration. M3 gives local consistency; M2 carries its calibrated result into season recovery.",
+      "why": "Dark shrink, protected biological emitters, krizzak bite/recovery, overlight and aversion form a three-way feedback: reduced useful light can admit predators which remove caretakers, preventing light recovery. Ledger arithmetic alone cannot show actual overlight or path integration. M3 gives local consistency; M2 carries its calibrated result into season recovery.",
       "model": "M3: Dark geometry, optical paths and composition sweep"
     },
     {
@@ -610,7 +616,7 @@
         "R7"
       ],
       "holds_together": "argued",
-      "why": "Visual foreground/control readability, intervening optical obstruction and camera-local sound clarity are different channels driven by the same declared air state. Independent text and unchanged UI samples preserve warning access when environmental vision/audio is impaired. No rule requires invisible UI or silent attacks. Local halo persists through ambient clearing and therefore neither visual nor audio consumers can assume an Unveiling always means zero final density. Live sorting/listening remains necessary.",
+      "why": "Terrain, relief and buildings lose detail with density; non-colony creatures retain dim silhouettes while colony pawns, controls and warning text remain readable. These visual channels and listener-local muffling share the declared air state without requiring sprite culling or silent attacks. Unveiling clears all first-version Dark; no carried knot survives it. Live sorting/listening remains necessary.",
       "model": ""
     },
     {
@@ -643,12 +649,11 @@
         "B6",
         "B7",
         "B8",
-        "R8",
         "R9",
         "R11"
       ],
       "holds_together": "unknown",
-      "why": "Save/reload, transient ledger ownership, halo rebuild, crop/prey recovery, erosion and routine labor meet across a season. A safe light reset may rescue a bad economy during every reload while stale jobs accumulate after reordered actions; local tests cannot exclude that. M2 compares intermediates, alternate orders and unforced continuation.",
+      "why": "Save/reload, transient ledger ownership, room/outdoor density refresh, crop/prey recovery, erosion and routine labor meet across a season. A safe light reset may rescue a bad economy during every reload while stale jobs accumulate after reordered actions; local tests cannot exclude that. M2 compares intermediates, alternate orders and unforced continuation.",
       "model": "M2: Whole-map season, light-food-material feedback"
     },
     {
@@ -661,13 +666,12 @@
         "B8",
         "R4",
         "R7",
-        "R8",
         "R9",
         "R10",
         "R11"
       ],
       "holds_together": "argued",
-      "why": "Diet/locomotion/ordinary attack are retained; special expedition behavior is gated before side effects, without removing species. Dead/downed/despawned animals stop feeding/halo ownership; a corpse/exit sign remains. Murk is air, so map exit removes it. These disjoint lifecycle cases permit every touching bar; M1 must still verify each implementation transition.",
+      "why": "Diet/locomotion/ordinary attack are retained; special expedition behavior is gated before side effects, without removing species. Dead/downed/despawned animals stop feeding ownership; a corpse/exit sign remains. Murk is air, so map exit removes it. These disjoint lifecycle cases permit every touching bar; M1 must still verify each implementation transition.",
       "model": ""
     },
     {

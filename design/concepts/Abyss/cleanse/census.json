@@ -54,16 +54,29 @@
     },
     {
       "id": "dark_field",
-      "what": "Temperature-structured Dark: outdoor drifting pockets, warm roofed rooms clear, fold-lane and phantom clearance compose. The numeric field is built; no spatial Dark renderer was located here.",
+      "what": "Ambient Dark follows shared outdoor temperature and each room's ordinary temperature, with map-wide Unveiling. The numeric field is built; the current noise offset is separated into a deferred capability, and no spatial Dark renderer was located here.",
       "built": "present",
       "evidence": "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs; src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs; src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs; ITEM:ABYSS_DARK_BUILD_1",
       "proven": "missing",
       "called_by": "RM_MapComponentDark.cs: MurkPass, LampPass; RM_AbyssSoundscape.cs: ValueFor",
       "serves": "first-version signature",
       "fate": "signature",
-      "why": "Designer delegated: Temperature-structured material Dark is the cause of the light economy; deleting it defeats the signature.",
+      "why": "Designer delegated: Temperature-driven material Dark causes the light economy; deleting it defeats the signature. Ordinary room/outdoor temperatures suffice; drifting outdoor pockets do not.",
       "needed_by": "none: not a needed_by classification",
       "ticket": "T31"
+    },
+    {
+      "id": "outdoor_drifting_pockets",
+      "what": "Built Perlin offset creates drifting outdoor clear/Dark pockets without changing ordinary outdoor temperature. This offset is split from ambient Dark and deferred, off.",
+      "built": "present",
+      "evidence": "src/RimMandrake/Abyss/Source/RM_MapComponentDark.cs:68-75; src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs:62-73; src/RimMandrake/Abyss/Source/RM_AbyssLight.cs:147",
+      "proven": "missing",
+      "called_by": "RM_MapComponent_Dark.DarknessAt -> RM_DarkKernel.DarknessAt -> PocketOffset; downstream MurkPass, LampPass and RM_AbyssSoundscape.ValueFor",
+      "serves": "deferred outdoor pocket variation",
+      "fate": "next_version",
+      "why": "Designer delegated: Outdoor microclimate/pocket variation is not needed for land, ordinary life or the light/feeder/grain chain; heated rooms and map-wide weather/temperature clearance suffice. The existing offset cannot be advertised as ordinary warm air.",
+      "needed_by": "none: removing the player-facing behavior leaves the first version whole",
+      "ticket": "T43"
     },
     {
       "id": "murk",
@@ -490,22 +503,22 @@
       "called_by": "RM_Abyss.xml -> RM_Nevarithia.xml",
       "serves": "first-version life",
       "fate": "life",
-      "why": "Designer delegated: Keep the rostered grazer; its separately inventoried halo is an unfinished part of the Dark, not grounds for eviction.",
+      "why": "Designer delegated: Keep the rostered grazer with ordinary life, melee and appearance. Removing its unbuilt carried halo/death-release behavior leaves land, life and the Dark/light/feeder/grain signature whole; no eviction.",
       "needed_by": "none: not a needed_by classification",
       "ticket": ""
     },
     {
       "id": "nevarithia_halo",
-      "what": "A portable knot of Dark and its release on death are promised in the current description but absent from the port implementation.",
+      "what": "The promised portable knot of Dark is absent from the port implementation; its separately inventoried death release is deferred with it.",
       "built": "absent",
-      "evidence": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Nevarithia.xml:8; ",
+      "evidence": "src/RimMandrake/Abyss/Defs/ThingDefs_Races/RM_Nevarithia.xml:8",
       "proven": "missing",
-      "called_by": "RM_Nevarithia.xml description; no halo comp present; RM_MapComponentDark.DarknessAt needs consumer",
-      "serves": "first-version signature",
-      "fate": "signature",
-      "why": "Designer delegated: The frozen sheet explicitly rules a moving knot of blindness even in otherwise clear air; deleting it would make the signature's local-geometry boundary false. Needs spec and implementation.",
-      "needed_by": "none: not a needed_by classification",
-      "ticket": "T31"
+      "called_by": "RM_Nevarithia.xml description only; no halo comp or current density consumer exists",
+      "serves": "deferred carried-Dark creature system",
+      "fate": "next_version",
+      "why": "Designer delegated: Deleting this player-facing behavior leaves the ordinary grazer and the ambient Dark \u2192 living light/warmth \u2192 feeder pressure \u2192 recoverable grain chain whole. A ruled description constrains a future implementation; it does not make this extra necessary for the first version.",
+      "needed_by": "none: removing the player-facing behavior leaves the first version whole",
+      "ticket": "T44"
     },
     {
       "id": "giant_glow_globe",
@@ -1042,14 +1055,14 @@
     },
     {
       "id": "local_dark_presentation",
-      "what": "Spatially visible Dark/clear boundaries and unobscured UI for surviving nearby danger",
+      "what": "Density-scaled dimming of terrain, relief, buildings and non-colony creatures, with retained silhouettes, fully drawn colony pawns and unobscured controls/warnings; room/outdoor boundaries and map-wide Unveiling remain visible.",
       "built": "absent",
       "evidence": "RM_MapComponentDark.cs applies numerical field only; RM_Weathers_Abyss.xml applies sky palette; no local field renderer located",
       "proven": "missing",
       "called_by": "future consumer of DarknessAt; no renderer caller found",
       "serves": "material Dark readability",
       "fate": "needed_by",
-      "why": "Designer delegated: Without a visible boundary the player cannot distinguish usable clear air from a dark palette with invisible penalties.",
+      "why": "Designer delegated: Without visible density-dependent loss of detail and readable silhouettes, the player cannot distinguish clear air, material Dark and nearby danger; sprite removal would undermine readable danger.",
       "needed_by": "signature and land",
       "ticket": "T29"
     },
@@ -1068,16 +1081,16 @@
     },
     {
       "id": "halo_release",
-      "what": "Nevarithia death releases its carried Dark with a readable local dissipating sign",
+      "what": "The promised death release of nevarithia's carried Dark is absent and deferred with the halo.",
       "built": "absent",
       "evidence": "RM_Nevarithia.xml description; no death/halo comp present",
       "proven": "missing",
       "called_by": "future halo death transition; no current caller found",
-      "serves": "same mobile Dark geometry",
-      "fate": "signature",
-      "why": "Designer delegated: Deleting death handling leaves an unexplained vanished halo and violates the later port description; it is not a world eclipse.",
-      "needed_by": "none",
-      "ticket": "T31"
+      "serves": "deferred carried-Dark creature system",
+      "fate": "next_version",
+      "why": "Designer delegated: Deleting this player-facing behavior leaves the ordinary grazer and the ambient Dark \u2192 living light/warmth \u2192 feeder pressure \u2192 recoverable grain chain whole. A ruled description constrains a future implementation; it does not make this extra necessary for the first version.",
+      "needed_by": "none: removing the player-facing behavior leaves the first version whole",
+      "ticket": "T45"
     },
     {
       "id": "lirrith_decay_disease",

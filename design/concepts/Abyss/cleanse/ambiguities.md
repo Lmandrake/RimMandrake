@@ -1,6 +1,6 @@
 # Ambiguities settled by the Designer
 
-Every disposition here is **delegated**, inferred from cited owner words, standing rulings and observed source. No new owner preference is claimed. No question is pending. Where evidence conflicts, the stated first-version default applies now; deferred mechanics retain their existing constraints. The proposal has not had the launcher's fresh review.
+Every disposition here is **delegated**, inferred from cited owner words, standing rulings and observed source. No new owner preference is claimed. No question is pending. Where evidence conflicts, the stated first-version default applies now; deferred mechanics retain their existing constraints. The fresh review supplied with this correction refused outdoor pocket consistency, undefined visual concealment, the unargued halo, the overstated owner experience and unmarked figures. Each is repaired below; no objection is disputed or knowingly left unresolved. A later review still decides whether these repairs are sufficient.
 
 ## Evidence and authority
 
@@ -14,7 +14,7 @@ Reading A: the Dark obstructs information and slows the existing campaign search
 
 ## “A tide” and “just as often”
 
-A literal fluid front and equal beauty/terror event counts versus an enveloping condition that opens/closes and repeatedly changes how the place reads. Literal quotas would invent a tide engine and an attack scheduler. Take the latter: owner's 2026-10-20 imagery is figurative, grounded in temperature structure and Unveiling. Nothing mandates equal random counts, a sweeping linear wave or a monster per clearing. Retain those interpretations in the bar's figurative glossary where the words occur; bar text otherwise uses physical language.
+A literal fluid front and equal beauty/terror event counts versus an enveloping condition that opens/closes and repeatedly changes how the place reads. Literal quotas would invent a tide engine and an attack scheduler. Take the latter for the first-version ambient opening/closing: the owner's 2026-10-20 imagery does not impose equal random counts, a sweeping linear wave or a monster per clearing. This interpretation does not claim to fulfill the separate swift beauty-to-nightmare reversal or long-stay nightmare-source dread; those promises are explicitly deferred with cryptid content, rather than erased as mere imagery. Retain those interpretations in the bar's figurative glossary where the words occur; bar text otherwise uses physical language.
 
 ## “Light eaten in transit”
 
@@ -22,7 +22,11 @@ Palette plus endpoint sight penalties versus obstruction by the air between obse
 
 ## “Pockets” and the thermometer
 
-Hidden Perlin-added effective temperature versus ordinary warm air that can be read and affects ordinary heat consumers. Current `DarknessAt` adds a noise offset without changing GetTemperature; a clear cell can be falsely cold on the thermometer. Take ordinary measurable air temperature as the cause, under frozen §3 and standing one-heat ruling; pocket movement must agree with it. The current offsets cannot form unheated clear pockets on the coldest maps anyway. Cold land may remain opaque until heated; no promise of free naturally clear refuge at every temperature. Physical outdoor warmth integration remains an implementation risk, not an unanswered taste question.
+Reading A: spontaneous open-air clear patches remain, with a local temperature system still to build. Reading B: outdoor density follows the map's shared ordinary outdoor temperature, rooms follow their own temperatures, and spontaneous drifting patches are deferred off. Consequence: A commits the first version to outdoor microclimates that do not exist in the current game temperature model. Take B, a settled Designer scope default, not an unknown measurement. Source: RM_MapComponentDark.cs:68–75 reads GetTemperature and adds the only spontaneous spatial variation via PerlinNoise; RM_AbyssLight.cs:147 reads OutdoorTemp directly. Fold lanes and cryptid pockets are separately deferred. The frozen sheet's collapse mechanism remains ordinary-temperature-driven; this smaller version expresses clear/Dark boundaries at maintained heated rooms and map-wide outdoor thinning/closure, not at warm open-air edges. T43 gates the built offset, T31 specifies the retained query, and B1's doorway picture no longer promises an outdoor pocket. No new heat rule is invented.
+
+## What “conceals” removes from the player's view
+
+Reading A: a sky tint or density-scaled terrain tint leaves predators untouched. Reading B: Dark culls wild/hostile sprites and can make nearby threats completely invisible. Both were plausible under the earlier text, with materially different play. Take neither: local density reduces terrain/relief detail, dims buildings with outlines/footprints retained, and dims wild animals, hostile pawns and neutral visitors with discernible silhouettes. Player-owned colonists, tame animals and mechs stay fully drawn. Selection outlines, inspect access, controls and warning text stay readable. This delegated presentation choice supplies material local loss of detail without silent disappearance; existing silhouettes and close-attack tells keep danger perceptible. Nothing is completely hidden by Dark, and vanilla unexplored fog is unchanged. B1 now rejects both an unchanged predator and full sprite culling; T29 implements exactly this contract. The map-view silhouette does not grant simulated clean sight/aim through the same air.
 
 ## Warmth, light and crops
 
@@ -36,9 +40,17 @@ Removing murk but leaving global weather accuracy reduction versus actual sight/
 
 A new solar day/unfog everything versus clear ambient particles and show explored country under a brighter presentation. Take the latter from frozen §4b plus Direct Sun geometry ruling. Actual sun angle, terrain temperature, unexplored fog and solar heat do not change merely because the palette clears. Current commonality/duration are checks; “rare/brief” means the opening interrupts a mostly Dark routine, not a permanent clear biome. M4 will settle recurrence/dwell regimes.
 
-## Halo versus clearing
+## Halo versus clearing: scope before geometry
 
-Unveiling annihilates all Dark including the beast's halo versus ambient particles fold while a living nevarithia retains its stabilized carried knot. Consequence: the former violates frozen “even where the Dark normally cannot form.” Take retained carried halo, a local exception explicitly disclosed in the definition and Unveiling bar. On death its unbound release disperses by ambient conditions, never a global eclipse or eternal stain. The port description promises death release; its comment says donor death eclipse omitted. The cast bible's older “never admitted” note loses to the frozen halo ruling and later owned description. M3 must test transitions and overlaps, not infer scale from wording.
+Reading A: the frozen halo description forces a new carried-Dark/death-release system into this version. Reading B: it constrains the mechanic when built, while first-version ordinary nevarithia life remains intact without it. Consequence: A adds an unbuilt moving density source and lifecycle exceptions that the ambient signature does not need. Take B under the explicit smaller-first-version delegation. RM_Nevarithia.xml:8–10 says these mechanics are owed, not built; frozen abyss.md describes the knot even where ambient Dark cannot form, not its release schedule. Removing both leaves ambient Dark → warmth/living light → feeder pressure → grain/fuel whole; no species is evicted. T44/T45 preserve the future knot/release constraints, including no donor global eclipse. R8 is removed from first-version rules, and B2/M3/T31 no longer require any halo. Unveiling therefore clears all first-version Dark. This deferral changes no standing ruling.
+
+## Which clauses of the owner's experience this version carries
+
+Reading A: erosion and an Unveiling alone fulfill all of the 2026-10-20 experience. Reading B: they carry refuge, nearby ordinary danger and a visual reveal but leave the swift nightmare reversal and source dread for later content. Consequence: A could pass a calm clearing with material upkeep while implying the owner has received an uncanny narrative that is absent. Take B and disclose the loss on page one. Protection/nearby terror is carried by B1/B2/B4/B7 and sustained in B8; B1's revealed etched relief is only a partial visual expression of the beauty clause, not a mandatory beautiful-to-dangerous sequence. “Twist into nightmares” and staying long enough to find their source are deferred with cryptid sites, phantom events, whispers/tales and long-stay dreams. B1/B8 meant fields say this explicitly; material erosion is not a substitute for dread. No new event system is added to hide this scope cut.
+
+## Figures in the remaining bars
+
+“Hears stillness” means the absence of a steady wind bed between gusts, while colony/fire/combat sounds continue; it cannot mean total mute. “Runaway” residue means accumulation beyond ordinary hauling/refining capacity, not moving stacks. “Cascading” errors means exceptions that repeat or spread after a fault, not a literal cascade. B7/B8 now list each word, its operational meaning and a contrasting literal-departure accept picture. These are presentation/whole-run meanings, not added mechanics.
 
 ## “Reliable” living lamps
 
