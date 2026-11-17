@@ -1,0 +1,814 @@
+{
+ "mod": "FeverWood",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "design/concepts/FeverWood/cleanse/next_version.md, the fw_suppression row; owner_pages.md page two, 'Questions: 0'; bars.json, the response bar",
+     "evidence": "The owner's own ladder, quoted verbatim in fever_wood_deep_and_mud_2026-09-23.md:181-188, ends with: \"Fouling the water with specific poisons or radioactive material will cause it to be supressed for several days as the material diffuses away.\" The validated north star (design/validation_walks/RimMandrake/FeverWood.md:101, feverwood_water_memory, state VALIDATED) promises that consequences \"remain legible through rescue, treatment and reload\". His November card answer (OWNER:1794374372850231423) says \"the only thing you could do is poison the water of that pool if you have the right poison on hand\". The proposal moves the built treatment chain (Designator_FoulPool -> WorkGiver_FoulPool -> JobDriver_FoulPool -> SuppressPoolWithRadioactiveMaterial) to the next version. The response bar keeps only combat. Nowhere does the proposal mention that the north-star line names treatment. Under CLAUDE.md, \"loosening a bar stays his\", yet the pages ask no question.",
+     "would_pass": "Either keep the no-fight water treatment in 0.1.0 as part of the response bar (it is built, and it is his ladder's answer for a colony that will not fight), or put the deferral on page two as a question: his verbatim ladder line and the north-star word 'treatment' as the evidence, the default taken, and what changes if he says keep.",
+     "smallest_fix": "Add one question to owner_pages.md page two quoting the ladder line and feverwood_water_memory's 'treatment', with default 'next version, switched off' and the consequence. Set result.json counts.questions to 1."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json, shore bar (says, accept picture 2, sees.control); rules R_REACH",
+     "evidence": "Shore says \"the colony sees danger reach farther from larger water\". The instrument only reads strike membership: \"The same exposed work site is outside the smaller pool reach and inside the larger pool reach\", and C_WATER records the effective radius. The card decision this rests on (fever_wood_deep_and_mud_2026-09-23.md:224-227) says \"Pool size reads as threat level at a glance ... This must be taught to the player or it looks inconsistent\", and :575 says \"Settling beside a great pool must be a warned gamble, never a surprise.\" Two of the documented ways a player learned this are gone from 0.1.0: the town pool-list is recommended for retirement and the arrival letter is moved. Nothing replaces them. A build where reach scales correctly, but no player can tell before the first seizure which pool reaches the work site, passes every reading the shore bar names.",
+     "would_pass": "A reject picture for exactly that build. An accept picture where, before any seizure, a player can tell at play zoom (or from an inspect line or overlay) that the larger pool reaches the work site and the smaller does not. A reading of that pre-seizure sign with all water mechanics on.",
+     "smallest_fix": "Add the reject picture 'reach scales but nothing visible before a seizure tells the player which pool reaches the site' to shore. Name the pre-seizure sign in R_REACH and the reading in shore.sees."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json, response bar, says",
+     "evidence": "Says: \"push an exposed eye for stronger relief across the map\". Its figurative list is empty. 'Push' is not literal: R_RELIEF and the owner's ladder mean damaging the eye (moderate damage gives a map-wide quiet; severe damage before it withdraws kills it). A literal reader could build a shove or knock-back interaction.",
+     "would_pass": "'push' either replaced by the plain act (damage the exposed eye before it withdraws), or listed as figurative with what it stands for and one accept picture departing from the literal reading.",
+     "smallest_fix": "Change 'push an exposed eye' to 'damage an exposed eye before it withdraws', or add a figurative entry for 'push'."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "census.json fw_cistrel_drinking (fate life, built absent) and fw_native_drinking (built unknown); definition.md 'A reachable cistrel cup ...'; bars.json life, accept picture 2",
+     "evidence": "The life bar accepts \"a colonist uses an accessible cistrel cup instead of treating a black pool as safe\". The definition says the cup works \"through the owning thirst interface\" and \"Until that adapter is found or supplied, drinking is missing implementation\". Vanilla has no thirst need. The provider named in the record (FlowWorks RM_Thirst) is called absent from this checkout and is never named as a dependency with what the mod needs from it. Its interface, how stored water is read, and what the cup does when no thirst need exists are all undefined. The mechanic is kept in 0.1.0 without a definition a builder could implement.",
+     "would_pass": "The thirst provider is named as a dependency (which mod, which need, which drink job or interface the cup must expose) and the cup's behaviour is stated for both provider-present and provider-absent. Or cistrel drinking moves to the next version and leaves the life accept picture.",
+     "smallest_fix": "Add a dependency row naming the thirst provider and the interface the cup uses. Or move fw_cistrel_drinking to next_version and drop the cistrel clause from life accept picture 2."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json, warning bar, sees.instrument and live_only_why",
+     "evidence": "The instrument is \"timed listening at ordinary play zoom ... a listener must determine audible separation and hush\", and sound-event counts are declared regression evidence only. No listener is named. Pipeline agents cannot hear the game. Holding the game for the owner's ear conflicts with \"Do not hold live testing when I can't go to the desktop\" (CLAUDE.md, 2026-11-16). The plausible false pass is a judge reading per-emitter event counts and hush flags while the bird calls are inaudible under the crown hum. The bar admits the counts cannot rule this out, and it names no other reader.",
+     "would_pass": "A named instrument that can hear: an owner-attended sitting, staged as a save and recorded as such; or a captured audio stream compared for loudness with the flock present and absent, the bed and volumes held constant.",
+     "smallest_fix": "Name the listener or the capture-and-compare measure in warning.sees.instrument, with who runs it."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "land",
+     "n": 1,
+     "text": "A settler follows a wood route away from a solid trunk, plants in crown soil and finishes heavy construction on crown ground or completed stilts while untreated marsh and mirror water refuse it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "land",
+     "n": 2,
+     "text": "At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "land",
+     "n": 3,
+     "text": "Dark ordinary soil is called a mirror pool and the supposed giant trunk is a painted floor with no solid body.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "land",
+     "n": 4,
+     "text": "Branches form a decorative network but normal heavy buildings stand freely on the untreated marsh.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 1,
+     "text": "The herd yields under actual local fear, or a distant raid dries up a sheltered herd solely because the map is in danger.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 2,
+     "text": "All predators are harmless wandering pawns, or the bark ambusher follows fleeing prey across the holding.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 3,
+     "text": "Normal workers bring fruit, tubers, herbal medicine and peaceful-herd nectar home; a frightened herd refuses gathering and later recovers, while a distant sheltered herd still yields.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 4,
+     "text": "A stockpile is filled by the fixture while normal harvesting or gathering cannot deliver the promised local food.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 5,
+     "text": "An animal with no thirst need is reported as having drunk, or the entire water hazard is disabled to protect natives.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 6,
+     "text": "A tameable crown flock lives and produces its ordinary goods, a carrion feeder eats a corpse, and a bark ambusher lets prey escape beyond its original ambush site.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 7,
+     "text": "A native drinks home water through a real thirst job without being seized; a colonist uses an accessible cistrel cup instead of treating a black pool as safe.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "memory",
+     "n": 1,
+     "text": "Loot appears through a debug stack while attacking the decorative porter merely sets a map-wide no-gifts flag and changes no local danger.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "memory",
+     "n": 2,
+     "text": "A recognisable delicate porter deposits obtainable goods and withdraws; attacking its counterpart leaves a warned hostile pool that no longer offers porter goods after the save is reloaded.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "memory",
+     "n": 3,
+     "text": "An untouched neighbouring pool continues its own gift-and-danger cycle despite the attacked pool grievance.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "memory",
+     "n": 4,
+     "text": "A reload clears the attacked pool grievance or shifts it to the nearest unrelated water cluster.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 1,
+     "text": "The visible limbs disappear after victory but invisible shared water strikes still take shore workers.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 2,
+     "text": "The eye exists only in a debug menu, so an ordinary colony can never earn the promised map-wide relief.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 3,
+     "text": "A fatal hit skips the final outcome, or unrelated dormant captive code revives the defeated adult with extras switched off.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 4,
+     "text": "A defeated eye leaves an adult-free map across reload and continued shore work, while another map retains its own danger.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 5,
+     "text": "Damaged limbs withdraw, a sever leaves harvestable flesh and a longer quiet interval, and damaging the exposed eye drives the map quiet.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 1,
+     "text": "The same exposed work site is outside the smaller pool reach and inside the larger pool reach; moving help behind a long detour can make rescue fail with a visible water-loss sign.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 2,
+     "text": "The helper touches the victim but never carries them, yet the active water loss is silently forgiven.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 3,
+     "text": "The pool-size setting changes only eye eligibility while real seizures and lashes reach equally far from small and large water.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 4,
+     "text": "A companion reaches an actually seized shore worker by the ordinary route and carries them away before the active obligation expires; the colony can read the victim and remaining danger.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 5,
+     "text": "A manually downed pawn is carried from shore and called rescued even though water created no active deadline.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 1,
+     "text": "Birds actually present contribute local calls over the working hum; a raised sentinel hushes them and the hum, and sound returns only after the remaining warning reason ends.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 2,
+     "text": "The same bird recording loops over an empty crown and a populated flock while a hush flag changes only a readout.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 3,
+     "text": "After the flock is lost the water still points out an actual seized victim and a later loss, so silence is not the only notice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 4,
+     "text": "Ending a warning restores bird calls while another water warning is still active.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 5,
+     "text": "A wild victim disappears at water without a splash, sound, message or other readable sign of the loss.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 1,
+     "text": "A season appears stable because water, shared growth or animal needs are disabled or because the runner skips all consequence ticks.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 2,
+     "text": "Reloading clears active danger, rerolled history conceals losses, or food and useful routes vanish while a synthetic colony counter reports completed work.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 3,
+     "text": "Across ordinary weather and changing work sites, workers finish crown and shore trips, local provisions remain usable, and the water episodes can be noticed and answered while daily work continues.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 4,
+     "text": "A beautiful short walk passes while the complete season becomes permanent hush and repeated seizures that prevent ordinary provisioning.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 5,
+     "text": "After loading a save made during a real rescue obligation, the same colony continues it; repeating shore work before harvest and harvest before shore work retains the actual pool history and earned relief.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "work",
+     "n": 1,
+     "text": "A missing climb interaction strands workers or a friendly-only branch path lets raiders enter by different terrain rules.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "work",
+     "n": 2,
+     "text": "Workers complete the harvest on a debug pad beside storage while the displayed branch network connects no useful destinations.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "work",
+     "n": 3,
+     "text": "A crowded holding still completes routine work; builders can extend a home with stilts instead of waiting for a scripted ascent.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "work",
+     "n": 4,
+     "text": "Workers carry a crown harvest home along the connecting wood route; moving the destination changes which branch they use, and a ground detour remains possible when that route is blocked.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The biome's disease profile. src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:68-97 sets diseaseMtbDays 20 with malaria weighted highest (commonality 140), plus plague, flu, gut worms, muscle parasites and animal flu/plague. That is the 'fever' of Fever Wood, an ordinary land/life trait a player meets. No census row covers it, no bar or rule names it, and the Coupled colony season model leaves illness out. Yet sick workers remove the companions the shore bar's rescue depends on and the labour the whole bar's 'stall' reading counts.",
+   "loop_or_three_way": "response + memory + whole, through R_RELIEF. Defeating the eye gives permanent map quiet (response, R_RELIEF), and R_RELIEF says \"Quiet gates both hostile water and porter rewards\". So after victory no pool on that map gives porter goods again. The memory bar's \"untouched neighbouring pool continues its own gift-and-danger cycle\" and the signature's shore temptation both end for the rest of the save, and the warning hush never fires again. The whole bar sets eye victory aside as \"a separate terminal branch\" and never says what 0.1.0 is after it: a branch colony with no signature left, which by the proposal's own definitions sits close to a 'desert' of the signature. memory.range does not exclude the post-defeat state, so the two bars agree in pairs only while the adult lives.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 525035
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "definition.md:41 and :47; bars.json rules R_RELIEF and R_MEMORY; bar response accept[0]; bar memory",
+     "evidence": "definition.md:41 counts the porter among the 'ordinary limbs' (feeler, snare, lash, porter, sentinel). definition.md:47 and R_RELIEF say damaging an ordinary limb makes it withdraw and a sever leaves flesh and longer local quiet that 'gates both hostile water and porter rewards'. R_MEMORY says grievance 'cannot override earned quiet'. So hitting the porter would quiet the very pool the memory bar says must become more hostile, and its control ('compare matched production danger eligibility/weight at the attacked and untouched pools') would read the attacked pool as safer. The source settles this the other way, but the proposal never states it: RM_CompTentacleLimb.cs:293-302 says 'attacking the porter angers the pool and permanently ends its trickle — it does NOT run the ordinary ladder'.",
+     "would_pass": "A rule saying porter damage never runs the withdrawal/sever ladder: it ends that pool's gifts, raises its grievance and removes the porter, with no quiet and no flesh. Then the memory and response bars read the same porter hit the same way.",
+     "smallest_fix": "Take 'porter' out of the ordinary-limb list at definition.md:41. Add one sentence to R_MEMORY and R_RELIEF: 'Porter damage is exempt from ordinary withdrawal/sever relief; it earns no quiet or flesh (as RM_CompTentacleLimb.cs:293-302 already does).'"
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json bar land, accept[1]",
+     "evidence": "'At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain.' That is also true of the bar's own lazy reject, 'normal heavy buildings stand freely on the untreated marsh', and of a build with no connected routes. The picture is there to cover the figurative word 'above', but as written it accepts a build with ground refusal switched off. A cold reader sorted it reject.",
+     "would_pass": "The figurative picture still shows the parts of the bar that are not figurative: walk-on/off crown access together with heavy foundations refused on untreated marsh and a usable wood route.",
+     "smallest_fix": "Append to the picture: '…while a heavy blueprint on the adjoining untreated marsh is still refused and the crown patch lies on a connected wood route.'"
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json bar work, accept[1]",
+     "evidence": "'A crowded holding still completes routine work; builders can extend a home with stilts instead of waiting for a scripted ascent.' Nothing in it involves the branch routes connecting work and home. It holds equally for the bar's lazy reject ('the displayed branch network connects no useful destinations').",
+     "would_pass": "The crowded-holding picture shows the routes still carrying the work under congestion, for example hauls queuing on the shared branch or detouring over costly wet ground, not just work completing.",
+     "smallest_fix": "Rewrite it: 'In a crowded holding, hauls between crown harvest and storage still run along the shared branch route or take the costlier wet detour when it is congested; builders extend the home with stilts rather than waiting for a scripted ascent.'"
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json bars warning (says, figurative: []), response (says, figurative: []), land (says)",
+     "evidence": "warning: 'A working crown and its living birds audibly fall quiet': 'working crown' stands for the biome's work-bed ambient sound (definition.md:57, census fw_chorus), not trees or colonists. response: 'keep its pools free of the adult': the adult is never a body on the map (definition.md:41 'not a body pawn in each pond'), so the phrase stands for 'every water attack service is permanently off on this map'. land: 'still black pools': ambiguities.md 'Still, hot and tree-canopied' says 'still' means no flowing-water mechanic, not halted animals or weather, but the land bar lists only 'above'.",
+     "would_pass": "Each of these words has a figurative entry saying what it stands for, with one accept picture that departs from the literal reading.",
+     "smallest_fix": "Add figurative entries. 'working crown' = the retained work-bed ambience; accept picture: the hum hushes with no birds present. 'free of the adult' = no Tenant strike, snare, lash or porter on that map after defeat; accept picture: a pool still visible and inspectable, labelled defeated. 'still' = no flowing-water mechanic; accept picture: wildlife moves and a dry storm passes over the pools."
+    },
+    {
+     "head": "authority_unsourced",
+     "where": "owner_pages.md:9; definition.md:15",
+     "evidence": "owner_pages.md:9: 'it loses because your recorded November answer makes ordinary branch work and shore interruptions the centre.' His words (record.json OWNER:1794374372850231423; ANSWERS_OWNER.md item 1): '1:2 and a little 3 when tentacles emerge from the water', i.e. routes shape the day, plus 'a little' water changing plans. He did not make shore interruptions the centre. Choosing the shore chain as the one signature, with water carrying four of eight bars, is the Designer's own call, but it is presented as his.",
+     "would_pass": "The pages quote his answer as given (routes first, a little water when tentacles emerge) and label the shore-chain signature and the hive's loss as the Designer's delegated choice, with that inference stated.",
+     "smallest_fix": "Replace the clause with: 'it loses because your November answer puts branch routes first and \"a little\" water when tentacles emerge; making that water chain the signature is my call.' Make the same correction at definition.md:15."
+    },
+    {
+     "head": "stranger",
+     "where": "bars.json land",
+     "evidence": "a cold reader sorted 'At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain.' as reject; the proposal labels it accept",
+     "would_pass": "pictures a cold reader sorts as the proposal does",
+     "smallest_fix": "rewrite those pictures, or the bar's says, so the line between accept and reject is plain from the words alone"
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "land",
+     "n": 1,
+     "text": "A settler follows a wood route away from a solid trunk, plants in crown soil and finishes heavy construction on crown ground or completed stilts while untreated marsh and mirror water refuse it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "land",
+     "n": 2,
+     "text": "Branches form a decorative network but normal heavy buildings stand freely on the untreated marsh.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "land",
+     "n": 3,
+     "text": "At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain.",
+     "labelled": "accept",
+     "sorted": "reject",
+     "mismatch": true
+    },
+    {
+     "bar": "land",
+     "n": 4,
+     "text": "Dark ordinary soil is called a mirror pool and the supposed giant trunk is a painted floor with no solid body.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 1,
+     "text": "A stockpile is filled by the fixture while normal harvesting or gathering cannot deliver the promised local food.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 2,
+     "text": "A native drinks home water through a real thirst job without being seized while a non-native at the same exposed pool remains subject to water danger.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 3,
+     "text": "A tameable crown flock lives and produces its ordinary goods, a carrion feeder eats a corpse, and a bark ambusher lets prey escape beyond its original ambush site.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 4,
+     "text": "The herd yields under actual local fear, or a distant raid dries up a sheltered herd solely because the map is in danger.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 5,
+     "text": "An animal with no thirst need is reported as having drunk, or the entire water hazard is disabled to protect natives.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 6,
+     "text": "All predators are harmless wandering pawns, or the bark ambusher follows fleeing prey across the holding.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "life",
+     "n": 7,
+     "text": "Normal workers bring fruit, tubers, herbal medicine and peaceful-herd nectar home; a frightened herd refuses gathering and later recovers, while a distant sheltered herd still yields.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "memory",
+     "n": 1,
+     "text": "A recognisable delicate porter deposits obtainable goods and withdraws; attacking its counterpart leaves a warned hostile pool that no longer offers porter goods after the save is reloaded.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "memory",
+     "n": 2,
+     "text": "Loot appears through a debug stack while attacking the decorative porter merely sets a map-wide no-gifts flag and changes no local danger.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "memory",
+     "n": 3,
+     "text": "An untouched neighbouring pool continues its own gift-and-danger cycle despite the attacked pool grievance.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "memory",
+     "n": 4,
+     "text": "A reload clears the attacked pool grievance or shifts it to the nearest unrelated water cluster.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 1,
+     "text": "The visible limbs disappear after victory but invisible shared water strikes still take shore workers.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 2,
+     "text": "A defeated eye leaves an adult-free map across reload and continued shore work, while another map retains its own danger.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 3,
+     "text": "Damaged limbs withdraw, a sever leaves harvestable flesh and a longer quiet interval, and damaging the exposed eye drives the map quiet.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 4,
+     "text": "A fatal hit skips the final outcome, or unrelated dormant captive code revives the defeated adult with extras switched off.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "response",
+     "n": 5,
+     "text": "The eye exists only in a debug menu, so an ordinary colony can never earn the promised map-wide relief.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 1,
+     "text": "A manually downed pawn is carried from shore and called rescued even though water created no active deadline.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 2,
+     "text": "Before any seizure, inspecting each pool shows its danger boundary at ordinary play zoom: the same exposed work site is visibly outside the smaller pool reach and inside the larger pool reach; a later actual strike agrees, and a helper behind a long detour can arrive too late with a visible water-loss sign.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 3,
+     "text": "A companion reaches an actually seized shore worker by the ordinary route and carries them away before the active obligation expires; the colony can read the victim and remaining danger.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 4,
+     "text": "Reach scales but nothing visible before a seizure tells the player which pool reaches the work site.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 5,
+     "text": "The helper touches the victim but never carries them, yet the active water loss is silently forgiven.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "shore",
+     "n": 6,
+     "text": "The pool-size setting changes only eye eligibility while real seizures and lashes reach equally far from small and large water.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 1,
+     "text": "The same bird recording loops over an empty crown and a populated flock while a hush flag changes only a readout.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 2,
+     "text": "After the flock is lost the water still points out an actual seized victim and a later loss, so silence is not the only notice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 3,
+     "text": "Living calls fire in the event log but are inaudible beneath the crown hum in the captured mix, so the apparent hush exists only in counters.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 4,
+     "text": "Birds actually present contribute local calls over the working hum; a raised sentinel hushes them and the hum, and sound returns only after the remaining warning reason ends.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 5,
+     "text": "Ending a warning restores bird calls while another water warning is still active.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "warning",
+     "n": 6,
+     "text": "A wild victim disappears at water without a splash, sound, message or other readable sign of the loss.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 1,
+     "text": "A beautiful short walk passes while the complete season becomes permanent hush and repeated seizures that prevent ordinary provisioning.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 2,
+     "text": "Across ordinary weather and changing work sites, workers finish crown and shore trips, local provisions remain usable, and the water episodes can be noticed and answered while daily work continues.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 3,
+     "text": "A season appears stable because water, shared growth or animal needs are disabled or because the runner skips all consequence ticks.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 4,
+     "text": "Reloading clears active danger, rerolled history conceals losses, or food and useful routes vanish while a synthetic colony counter reports completed work.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 5,
+     "text": "After loading a save made during a real rescue obligation, the same colony continues it; repeating shore work before harvest and harvest before shore work retains the actual pool history and earned relief.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "work",
+     "n": 1,
+     "text": "A crowded holding still completes routine work; builders can extend a home with stilts instead of waiting for a scripted ascent.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "work",
+     "n": 2,
+     "text": "A missing climb interaction strands workers or a friendly-only branch path lets raiders enter by different terrain rules.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "work",
+     "n": 3,
+     "text": "Workers complete the harvest on a debug pad beside storage while the displayed branch network connects no useful destinations.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "work",
+     "n": 4,
+     "text": "Workers carry a crown harvest home along the connecting wood route; moving the destination changes which branch they use, and a ground detour remains possible when that route is blocked.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The severed-tentacle product has no census row: src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_SeveredTentacleFlesh.xml (RM_SeveredTentacleFlesh, ResourcesRaw). Its description promises 'Traders who know the biome pay well for it; it renders into a rich meat and a strange, purple-tinged tea.' The response bar and its first accept picture rely on 'harvestable flesh', yet nothing decides whether its rendering into meat and tea (canon Star Wars Cuisine material per fever_wood_deep_and_mud_2026-09-23.md section 2b) is kept, deferred, or removed from the default text.",
+   "loop_or_three_way": "A loop between the memory bar, the shore bar and R_RELIEF that bars.json does not name. In source, a peaceful porter deposit ends with Watch.OnLimbRetreated(retreatCooldownTicks) and the comment 'same ordinary cooldown as a clean retreat' (RM_CompTentacleLimb.cs:246-248). R_RELIEF says that quiet gates both hostile water and porter rewards. So each gift buys a quiet window in which its goods can be collected with no water danger, and the gift-and-danger cycle the memory bar describes never puts the danger at the moment of collection. That would hollow out the shore bar's 'tempt workers into the reach'. The economy and water meetings should list this gift-then-quiet cycle, and the Situations and water transitions model should settle it (does deposit-quiet cover the drop cell, and for how long compared with ordinary pickup time).",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 603390
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1938534,
+    "output_tokens": 16616
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "cannot_hold_together",
+   "where": "definition.md:41 and :47; bars.json rules R_RELIEF and R_MEMORY; bar response accept[0]; bar memory",
+   "evidence": "definition.md:41 counts the porter among the 'ordinary limbs' (feeler, snare, lash, porter, sentinel). definition.md:47 and R_RELIEF say damaging an ordinary limb makes it withdraw and a sever leaves flesh and longer local quiet that 'gates both hostile water and porter rewards'. R_MEMORY says grievance 'cannot override earned quiet'. So hitting the porter would quiet the very pool the memory bar says must become more hostile, and its control ('compare matched production danger eligibility/weight at the attacked and untouched pools') would read the attacked pool as safer. The source settles this the other way, but the proposal never states it: RM_CompTentacleLimb.cs:293-302 says 'attacking the porter angers the pool and permanently ends its trickle — it does NOT run the ordinary ladder'.",
+   "would_pass": "A rule saying porter damage never runs the withdrawal/sever ladder: it ends that pool's gifts, raises its grievance and removes the porter, with no quiet and no flesh. Then the memory and response bars read the same porter hit the same way.",
+   "smallest_fix": "Take 'porter' out of the ordinary-limb list at definition.md:41. Add one sentence to R_MEMORY and R_RELIEF: 'Porter damage is exempt from ordinary withdrawal/sever relief; it earns no quiet or flesh (as RM_CompTentacleLimb.cs:293-302 already does).'"
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json bar land, accept[1]",
+   "evidence": "'At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain.' That is also true of the bar's own lazy reject, 'normal heavy buildings stand freely on the untreated marsh', and of a build with no connected routes. The picture is there to cover the figurative word 'above', but as written it accepts a build with ground refusal switched off. A cold reader sorted it reject.",
+   "would_pass": "The figurative picture still shows the parts of the bar that are not figurative: walk-on/off crown access together with heavy foundations refused on untreated marsh and a usable wood route.",
+   "smallest_fix": "Append to the picture: '…while a heavy blueprint on the adjoining untreated marsh is still refused and the crown patch lies on a connected wood route.'"
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json bar work, accept[1]",
+   "evidence": "'A crowded holding still completes routine work; builders can extend a home with stilts instead of waiting for a scripted ascent.' Nothing in it involves the branch routes connecting work and home. It holds equally for the bar's lazy reject ('the displayed branch network connects no useful destinations').",
+   "would_pass": "The crowded-holding picture shows the routes still carrying the work under congestion, for example hauls queuing on the shared branch or detouring over costly wet ground, not just work completing.",
+   "smallest_fix": "Rewrite it: 'In a crowded holding, hauls between crown harvest and storage still run along the shared branch route or take the costlier wet detour when it is congested; builders extend the home with stilts rather than waiting for a scripted ascent.'"
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json bars warning (says, figurative: []), response (says, figurative: []), land (says)",
+   "evidence": "warning: 'A working crown and its living birds audibly fall quiet': 'working crown' stands for the biome's work-bed ambient sound (definition.md:57, census fw_chorus), not trees or colonists. response: 'keep its pools free of the adult': the adult is never a body on the map (definition.md:41 'not a body pawn in each pond'), so the phrase stands for 'every water attack service is permanently off on this map'. land: 'still black pools': ambiguities.md 'Still, hot and tree-canopied' says 'still' means no flowing-water mechanic, not halted animals or weather, but the land bar lists only 'above'.",
+   "would_pass": "Each of these words has a figurative entry saying what it stands for, with one accept picture that departs from the literal reading.",
+   "smallest_fix": "Add figurative entries. 'working crown' = the retained work-bed ambience; accept picture: the hum hushes with no birds present. 'free of the adult' = no Tenant strike, snare, lash or porter on that map after defeat; accept picture: a pool still visible and inspectable, labelled defeated. 'still' = no flowing-water mechanic; accept picture: wildlife moves and a dry storm passes over the pools."
+  },
+  {
+   "head": "authority_unsourced",
+   "where": "owner_pages.md:9; definition.md:15",
+   "evidence": "owner_pages.md:9: 'it loses because your recorded November answer makes ordinary branch work and shore interruptions the centre.' His words (record.json OWNER:1794374372850231423; ANSWERS_OWNER.md item 1): '1:2 and a little 3 when tentacles emerge from the water', i.e. routes shape the day, plus 'a little' water changing plans. He did not make shore interruptions the centre. Choosing the shore chain as the one signature, with water carrying four of eight bars, is the Designer's own call, but it is presented as his.",
+   "would_pass": "The pages quote his answer as given (routes first, a little water when tentacles emerge) and label the shore-chain signature and the hive's loss as the Designer's delegated choice, with that inference stated.",
+   "smallest_fix": "Replace the clause with: 'it loses because your November answer puts branch routes first and \"a little\" water when tentacles emerge; making that water chain the signature is my call.' Make the same correction at definition.md:15."
+  },
+  {
+   "head": "stranger",
+   "where": "bars.json land",
+   "evidence": "a cold reader sorted 'At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain.' as reject; the proposal labels it accept",
+   "would_pass": "pictures a cold reader sorts as the proposal does",
+   "smallest_fix": "rewrite those pictures, or the bar's says, so the line between accept and reject is plain from the words alone"
+  }
+ ],
+ "applyable": false,
+ "seconds": 966,
+ "at": "2026-11-17T00:28:02"
+}

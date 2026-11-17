@@ -9,7 +9,7 @@ All allocations are the Designer’s delegated proposal for this first version. 
   Why outside land/life/signature: Recommend retiring the duplicate information economy: the core already needs readable current water signs, and buying a consumable adds no essential experience. No deletion is authorised by this proposal. Ticket: T_MIRROR_LIST.
 
 - **Next version, switched off** — Crafted radioactive treatment, designation, hauling and map-wide adult quiet. (fw_suppression).
-  Why outside land/life/signature: A second, reagent-based response is not required when the combat ladder remains complete. Preserve the ruled reagent and campaign restrictions for its return. Ticket: T_SUPPRESSION.
+  Why proposed outside this first version: retain the combat-only branch-and-shore scope, subject to the owner-pages treatment question. The owner’s no-fight ladder and validated water-memory “treatment” wording are contrary evidence; this deferral is proposed weakening, not a settled extra classification or authority to loosen his bar. Preserve the ruled reagent and campaign restrictions. Ticket: T_SUPPRESSION, held from application pending that decision.
 
 - **Next version, switched off** — Captive tank upkeep, products, teaching benefit and breach/deconstruction outcomes. (fw_tank).
   Why outside land/life/signature: The shore loop remains understandable and escapable without a prison industry. Keeping the teaching discount would covertly make the signature depend on a moved economy. Ticket: T_TANK.
@@ -105,3 +105,6 @@ All allocations are the Designer’s delegated proposal for this first version. 
   Why outside land/life/signature: Ordinary carrion feeding supplies its life niche; a persistent terrain/acid disposal effect is a separate mechanic described but not wired in the inspected race. Ticket: T_GROLTH.
 
 Ordinary animal/plant bodies and harvests are not evicted with their moved behavior. In particular, seepril still yields ordinary oil, static boles still anchor routes, birds still fly/call, native predators still feed, and frightened thornbugs still refuse nectar. The forbidden local-heat declaration cannot be re-enabled even while its retirement awaits the owner. A literal whole-body adult rise remains reserved to the separate campaign plot and is neither an ambient feature nor a newly commissioned next-version event.
+
+- **Next version, switched off** — Finite potable cistrel cup and its thirst/drink/reservation adapter. (fw_cistrel_drinking).
+  Why outside land/life/signature: the plant remains ordinary roster life without a custom cup interaction; vanilla has no thirst and the actual historical FlowWorks adapter is unavailable. Keeping an undefined safe-water action is not necessary to the shore signature. Align default text with the absent action; normal water provision belongs to the loaded thirst owner. Ticket: T_CISTREL.

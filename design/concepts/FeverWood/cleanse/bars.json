@@ -98,13 +98,13 @@
       "id": "life",
       "says": "The colony can forage the crown and margins, keep calm nectar herds and useful flying birds, while native wildlife feeds and drinks at home and its predators wait rather than pursue across the holding.",
       "meant": {
-        "intent": "ordinary life must supply accessible food, safe drinking where thirst is active, tameable value and a functioning local food chain without breaking the thornbug safety contract.",
+        "intent": "ordinary life must supply accessible food, native home-water drinking where thirst is active, tameable value and a functioning local food chain without breaking the thornbug safety contract.",
         "source": "delegated: from the CASE land/life scope, the_fever_wood.md sections 4 and 6, existing roster/harvest defs; standing flight ruling and OWNER:1793542983826647230 native-water ruling.",
         "figurative": []
       },
       "accept": [
         "Normal workers bring fruit, tubers, herbal medicine and peaceful-herd nectar home; a frightened herd refuses gathering and later recovers, while a distant sheltered herd still yields.",
-        "A native drinks home water through a real thirst job without being seized; a colonist uses an accessible cistrel cup instead of treating a black pool as safe.",
+        "A native drinks home water through a real thirst job without being seized while a non-native at the same exposed pool remains subject to water danger.",
         "A tameable crown flock lives and produces its ordinary goods, a carrion feeder eats a corpse, and a bark ambusher lets prey escape beyond its original ambush site."
       ],
       "reject": [
@@ -137,42 +137,43 @@
         "save"
       ],
       "tests": {
-        "reject": "Without this experience, ordinary life must supply accessible food, safe drinking where thirst is active, tameable value and a functioning local food chain without breaking the thornbug safety contract.",
+        "reject": "Without this experience, ordinary life must supply accessible food, native home-water drinking where thirst is active, tameable value and a functioning local food chain without breaking the thornbug safety contract.",
         "renormalize": "No exact yield, stat, rate, size or variant count is pinned by says or its pictures; tuning checks and rules may change while this comparison remains true.",
         "first_version": "life"
       }
     },
     {
       "id": "shore",
-      "says": "At a pool the colony sees danger reach farther from larger water, and a seized worker or tame animal can be saved by a companion working alongside before a readable loss if nobody reaches them.",
+      "says": "Before any seizure, a colony inspecting a pool can see whether its work site lies within water danger that reaches farther from larger pools, and a seized worker or tame animal can be saved by a companion working alongside before a readable loss if nobody reaches them.",
       "meant": {
         "intent": "shore work rewards bringing reachable help and judging pool geometry; seizures cannot be instant deletion or staged generic downing.",
-        "source": "OWNER:1794374372850231423 for nearby companion rescue; delegated from documented pool-size/reach ruling in fever_wood_deep_and_mud_2026-09-23.md section 3 and standing readable-loss ruling.",
+        "source": "OWNER:1794374372850231423 for nearby companion rescue; delegated from documented pool-size/reach ruling in fever_wood_deep_and_mud_2026-09-23.md section 3 and standing readable-loss ruling. The pre-seizure teaching requirement is documented in the same source section 3 and section 6i; the read-only inspection implementation is delegated.",
         "figurative": []
       },
       "accept": [
         "A companion reaches an actually seized shore worker by the ordinary route and carries them away before the active obligation expires; the colony can read the victim and remaining danger.",
-        "The same exposed work site is outside the smaller pool reach and inside the larger pool reach; moving help behind a long detour can make rescue fail with a visible water-loss sign."
+        "Before any seizure, inspecting each pool shows its danger boundary at ordinary play zoom: the same exposed work site is visibly outside the smaller pool reach and inside the larger pool reach; a later actual strike agrees, and a helper behind a long detour can arrive too late with a visible water-loss sign."
       ],
       "reject": [
         "A manually downed pawn is carried from shore and called rescued even though water created no active deadline.",
         "The pool-size setting changes only eye eligibility while real seizures and lashes reach equally far from small and large water.",
-        "The helper touches the victim but never carries them, yet the active water loss is silently forgiven."
+        "The helper touches the victim but never carries them, yet the active water loss is silently forgiven.",
+        "Reach scales but nothing visible before a seizure tells the player which pool reaches the work site."
       ],
-      "lazy": "A manually downed pawn is carried from shore and called rescued even though water created no active deadline.",
+      "lazy": "Reach scales but nothing visible before a seizure tells the player which pool reaches the work site.",
       "range": {
-        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Connected pools from a single legal cell to the largest possible cluster on each declared map; compact, long, concave, diagonal-touching and separated shapes; positions at, inside and outside each effective boundary; walls, roofs, raised terrain and route obstructions. Rescue helper travel/work time sweeps from below half the current deadline to beyond expiry, including loss of the helper, death/removal of the victim, multiple simultaneous victims, carrying start/drop and mid-deadline reload. Both shared Tenant and visible-snare callers must obey this range; ordinary player and tame animals are included and eligible native fauna excluded.",
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Connected pools from a single legal cell to the largest possible cluster on each declared map; compact, long, concave, diagonal-touching and separated shapes; positions at, inside and outside each effective boundary; walls, roofs, raised terrain and route obstructions. Rescue helper travel/work time sweeps from below half the current deadline to beyond expiry, including loss of the helper, death/removal of the victim, multiple simultaneous victims, carrying start/drop and mid-deadline reload. Both shared Tenant and visible-snare callers must obey this range; ordinary player and tame animals are included and eligible native fauna excluded. Pre-seizure inspection with both audio and birds absent, first arrival and later visits, active/quiet/defeated pools, different pool sizes at the same work site, obstacle changes and mid-inspection reload; the UI must refresh from effective authority.",
         "left_out": "No guaranteed rescue for a helper across an obstructed settlement or already incapacitated; no falling/climbing, mud trap, underwater body pawn or whole-body emergence. Normal combat injuries outside water remain vanilla."
       },
       "sees": {
-        "instrument": "Land and rescue geometry plus Situations and water transitions models, calibrated against T_WATER independent actual deadline, positions, path and carrier state. This needs game state reads, not an aesthetic live judgment.",
-        "start": "Registered pools with independently exported geometry and an active natural or controlled production water seizure; healthy ordinary helper at an asserted work site, no prespawned downed victim or artificial carry flag.",
+        "instrument": "Land and rescue geometry plus Situations and water transitions models, calibrated against T_WATER independent actual deadline, positions, path and carrier state. Those membership and rescue readings use independent game state; the pre-seizure UI also needs rendered evidence. T_WARNING also reads the player-facing Show water reach inspection overlay before any seizure: record the ordinary UI command, displayed boundary cells and site inclusion, then compare with independent effective strike membership from T_WATER. A developer-only radius export is insufficient. The Test Pilot captures the actual ordinary-zoom pool-inspection view before a seizure and a judge reads the inside/outside contrast from that capture; no owner-attended sitting or flight observation is required.",
+        "start": "Registered pools with independently exported geometry and an active natural or controlled production water seizure; healthy ordinary helper at an asserted work site, no prespawned downed victim or artificial carry flag. The pre-seizure arm starts from an unvisited map with no attack history, no purchased list and no arrival letter; use ordinary pool inspection before exposing a target.",
         "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
-        "control": "Observe deadline creation by the real strike/snare, then normal pickup before deadline; replay with blocked helper and no helper, and replay pool-size geometry while holding pawn/terrain states constant. Read eligibility/reason directly so a quiet random window cannot masquerade as safety.",
+        "control": "Observe deadline creation by the real strike/snare, then normal pickup before deadline; replay with blocked helper and no helper, and replay pool-size geometry while holding pawn/terrain states constant. Read eligibility/reason directly so a quiet random window cannot masquerade as safety. Capture the actual player-visible overlay before the first attack, at unchanged ordinary zoom for both pool sizes, and compare the displayed site classification with later production strike eligibility. A hidden, stale or fixed-size overlay, a sign supplied only after an attack, or reliance on the deferred list/letter fails even if radii are correct. Inspect obstacle-blocked cells and quiet/defeated states as well as active reach.",
         "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
-        "live_only_why": "A calibrated model or independent runtime state/job read can decide this relational experience; running the game for calibration does not make it a live-look-only bar."
+        "live_only_why": "Geometry and independent state can establish reach membership and rescue, but cannot prove that a player can find the ordinary inspection command and read its boundary at play zoom. The pre-seizure rendered UI capture is required for that part of shore; the Test Pilot supplies it and a judge can read it without holding the game for the owner."
       },
-      "live_only": false,
+      "live_only": true,
       "touches": [
         "water",
         "rescue",
@@ -202,20 +203,21 @@
       "reject": [
         "The same bird recording loops over an empty crown and a populated flock while a hush flag changes only a readout.",
         "Ending a warning restores bird calls while another water warning is still active.",
-        "A wild victim disappears at water without a splash, sound, message or other readable sign of the loss."
+        "A wild victim disappears at water without a splash, sound, message or other readable sign of the loss.",
+        "Living calls fire in the event log but are inaudible beneath the crown hum in the captured mix, so the apparent hush exists only in counters."
       ],
       "lazy": "The same bird recording loops over an empty crown and a populated flock while a hush flag changes only a readout.",
       "range": {
-        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Flock absent, sparse, spread and crowded; wild and tamed birds; camera at flock, work site, remote pool and another map. Sentinel up/down, overlapping warning reasons, despawn, defeat, off/on and reload while hushed; machine/weather sounds continue naturally. Independent threat/victim visual cue is tested with audio muted and birds absent. Repeated listening windows span configured call intervals rather than silence between random calls.",
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Flock absent, sparse, spread and crowded; wild and tamed birds; camera at flock, work site, remote pool and another map. Sentinel up/down, overlapping warning reasons, despawn, defeat, off/on and reload while hushed; machine/weather sounds continue naturally. Independent threat/victim visual cue is tested with audio muted and birds absent. Repeated capture windows span configured call intervals rather than silence between random calls.",
         "left_out": "No synthetic chorus-level mechanic, detector item requirement or globally muffled machines/weather; no live flight evaluation. The existing crown work bed may persist, but must not fake population-dependent bird calls."
       },
       "sees": {
-        "instrument": "T_WARNING timed listening at ordinary play zoom with simultaneous per-emitter sound events, hush reasons and actual victim/message targets. Audio event counts are regression evidence; a listener must determine audible separation and hush.",
-        "start": "Known living flock at an ordinary work site, working ambient sound, then a real sentinel/water-warning transition; sound channel volumes documented and unchanged across arms.",
+        "instrument": "The Test Pilot running T_WARNING captures the actual rendered game audio output as lossless PCM and runs a matched capture-and-compare analysis; no owner attendance is required. Record living flock present/absent, warning inactive/active and overlapping-reason restoration at the same camera position, ordinary play zoom and unchanged mixer/device volumes. Retain waveform/spectrogram, call-band loudness and work-bed attenuation alongside synchronized emitter/reason/victim records. C_SOUND declares the engineering audibility and hush comparisons; absent capture or an uncalibrated analysis returns unknown, never PASS from event counts.",
+        "start": "Known living flock at an ordinary work site, working ambient sound, then a real sentinel/water-warning transition; sound channel volumes documented and unchanged across arms. Assert a working unmuted capture device with an audible reference signal and no clipping/automatic gain control; save the camera, mixer and deterministic replay start. Hold the work bed and volumes constant for flock-present/absent comparison; weather and machinery remain enabled with the same replay inputs.",
         "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
-        "control": "Compare the same site with flock present/absent, same audio settings, then overlap reasons and remove them in reverse order. Keep machinery audible and verify a victim target without audio; this rules out master mute and canned bird recordings.",
+        "control": "Compare the same site with flock present/absent, same audio settings, then overlap reasons and remove them in reverse order. Keep machinery audible and verify a victim target without audio; this rules out master mute and canned bird recordings. Compare foreground call-band level against the matched flock-absent bed, not merely detected waveform correlation or event counts: calls masked by crown hum fail. Compare warning captures with inactive-warning replay at matching ticks; a master mute or dropped capture fails the independent machinery/weather reference. Pair captures through reason overlap and reload. Preserve the raw mixed stream; a synthetic mix of event logs or isolated call assets is not the evidence.",
         "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
-        "live_only_why": "Silent flags and sound-event counts cannot establish that living calls are audible against the bed or that their cessation is a usable audible warning. No offline audio model can certify that listening experience."
+        "live_only_why": "This rendered-output reading needs the game’s actual mixed audio; offline scheduler flags and event counts cannot reveal masking or a silent output bus. The Test Pilot’s unattended audio capture and comparison supplies the hearing instrument without holding a sitting for the owner. The offline timing model alone cannot certify it."
       },
       "live_only": true,
       "touches": [
@@ -276,10 +278,10 @@
     },
     {
       "id": "response",
-      "says": "At the water a colony can fight emerging limbs for relief, push an exposed eye for stronger relief across the map, and keep its pools free of the adult after defeating that eye.",
+      "says": "At the water a colony can fight emerging limbs for relief, damage an exposed eye before it withdraws for stronger relief across the map, and keep its pools free of the adult after defeating that eye.",
       "meant": {
         "intent": "the single signature has a reachable conclusion, and every water attack service must honour earned relief.",
-        "source": "Documented owner ladder in fever_wood_deep_and_mud_2026-09-23.md section 2b, later than its earlier never-killable line; delegated inclusion as necessary signature response.",
+        "source": "Documented owner ladder in fever_wood_deep_and_mud_2026-09-23.md section 2b, later than its earlier never-killable line; delegated inclusion as necessary signature response. Chemical treatment from that same ladder is proposed for deferral, not silently superseded: the owner-pages treatment question discloses the contrary validated treatment promise; allocation remains unapplied.",
         "figurative": []
       },
       "accept": [
@@ -397,7 +399,7 @@
     },
     {
       "id": "C_SOUND",
-      "what": "Record emitter identity, current live population, call intervals, active hush reasons and restore order including sentinel fatal despawn/load. Counts do not replace listening."
+      "what": "Record emitter identity, live population, call intervals, active hush reasons and restore order including fatal sentinel removal/load. The Test Pilot retains actual mixed PCM with synchronized events and matched flock-present/absent and warning-active/inactive replays. Proposed engineering comparisons, not bars: call-dominated audible bands exceed the matched bed by at least 6 dB during ordinary calls; warning suppresses call and work-bed components by at least 12 dB, while independent machinery/weather reference levels agree within 1 dB at matching replay ticks. Declare sample windows and spectral masks from existing assets before comparison, span configured call intervals and test each warning.range regime; missing reference/capture, clipping, automatic gain or unmatched weather is unknown. Thresholds are attackable mix-calibration choices; source-event counts or asset-only audio never certify audibility. If overlapping spectra or replay drift prevent attribution of the mixed components, return unknown and repair the capture/analysis; do not substitute emitter flags for an ambiguous audio result."
     },
     {
       "id": "C_SETTINGS",
@@ -441,12 +443,13 @@
     },
     {
       "id": "R_REACH",
-      "rule": "Use cardinal-connected registered water clusters, Euclidean cell-centre distance from the nearest water cell and an unobstructed line to the pawn. Proposed engineering start: reach r(A)=min(12,1+sqrt(A)/4) cells for area A; expose the curve through the owning water profile. Both implicit Tenant and visible snare/lash use that same size envelope, with role timers/line targeting inside it. Roof and raised paint alone grant no water immunity; solid intervening obstacles block strikes. Attack the curve before weakening shore or work bars.",
+      "rule": "Use cardinal-connected registered water clusters, Euclidean cell-centre distance from the nearest water cell and an unobstructed line to the pawn. Proposed engineering start: reach r(A)=min(12,1+sqrt(A)/4) cells for area A; expose the curve through the owning water profile. Both implicit Tenant and visible snare/lash use that same size envelope, with role timers/line targeting inside it. Roof and raised paint alone grant no water immunity; solid intervening obstacles block strikes. Attack the curve before weakening shore or work bars. Selecting/inspecting any registered pool cell exposes a read-only Show water reach command, available on first arrival without an attack, consumable or letter. Its ordinary play-zoom overlay outlines that pool’s effective strike cells, including obstacle exclusions, with distinguishable inside/outside cells and a visible active/quiet/defeated status. Potential reach stays labelled during quiet rather than implying permanent safety. It reads the same effective authority without changing pressure/history or advancing ticks; UI membership is independently tested against actual strike eligibility. This minimal warning is necessary signature legibility, not the deferred purchased pool-list snapshot.",
       "touches": [
         "water",
         "routes",
         "rescue",
-        "terrain"
+        "terrain",
+        "warning"
       ]
     },
     {
@@ -502,7 +505,7 @@
     },
     {
       "id": "R_LIFE",
-      "rule": "Preserve every retained roster row; no terrain-biased spawn split. Use ordinary plant harvest, vanilla glow, shearing, tree diet and corpse ingestion; silloch attacks remain bounded to its saved initial ambush origin. Tamed silloch only ambushes hostiles. No native chase predator or acid-trail disposal. With operative thirst, eligible roster natives drink home water and neither Tenant nor snares seize them; cistrel supplies ordinary safe local drinking for non-natives.",
+      "rule": "Preserve every retained roster row; no terrain-biased spawn split. Use ordinary plant harvest, vanilla glow, shearing, tree diet and corpse ingestion; silloch attacks remain bounded to its saved initial ambush origin. Tamed silloch only ambushes hostiles. No native chase predator or acid-trail disposal. With operative thirst, eligible roster natives drink home water and neither Tenant nor snares seize them. Cistrel remains an ordinary roster plant; its potable-cup action is next-version-off until the owning thirst interface is specified. Non-native taming grants no pool immunity.",
       "touches": [
         "ecology",
         "water",
@@ -749,6 +752,7 @@
         "memory",
         "response",
         "whole",
+        "R_REACH",
         "R_RESCUE",
         "R_MEMORY",
         "R_SCHEDULE",
@@ -758,7 +762,7 @@
         "R_PROOF"
       ],
       "holds_together": "unknown",
-      "why": "Overlapping sentinel reasons, population calls, linger and reload may create permanent silence or premature restore. The timing/state model precedes an audible comparison; a flag alone is not warning proof.",
+      "why": "Overlapping sentinel reasons, population calls, linger and reload may create permanent silence or premature restore. The timing/state model precedes an audible comparison; a flag alone is not warning proof. The pre-seizure pool overlay must agree with actual geometry and current quiet/defeat through reload without requiring the moved list/letter; T_WARNING supplies independent visible-UI and mixed-audio evidence.",
       "model": "Crown and encounter timing"
     },
     {
@@ -876,7 +880,7 @@
     "crown_livelihood": {
       "to": "merged",
       "as": "life",
-      "why": "Normal harvest and calm-gated nectar remain; cistrel ordinary water receives T_LIFE. Guild defenses and independent plant roles defer explicitly."
+      "why": "Normal harvest and calm-gated nectar remain in life. After review, the undefined cistrel cup interaction moves to next version under T_CISTREL; the plant stays and default prose must match. Guild defenses and independent plant roles defer explicitly."
     },
     "native_life": {
       "to": "merged",

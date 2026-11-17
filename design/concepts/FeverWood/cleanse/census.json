@@ -4,11 +4,7 @@
       "id": "fw_package",
       "what": "Loadable franchise-free Fever Wood member of the Biomes composition.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/About/About.xml",
-        "src/RimMandrake/Biomes.compose.json:41",
-        "src/RimMandrake/FeverWood/Assemblies/RimMandrake.FeverWood.dll.srchash"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/About/About.xml; src/RimMandrake/Biomes.compose.json:41; src/RimMandrake/FeverWood/Assemblies/RimMandrake.FeverWood.dll.srchash",
       "proven": "stale",
       "called_by": "Biomes.compose.json member FeverWood; game def and assembly loader",
       "serves": "All kept experience",
@@ -21,10 +17,7 @@
       "id": "fw_placement",
       "what": "Hand-authored biome identity and inert natural-placement worker.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_BiomeWorker_FeverWood.cs:11",
-        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:27"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_BiomeWorker_FeverWood.cs:11; src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:27",
       "proven": "stale",
       "called_by": "BiomeDef workerClass",
       "serves": "Land on the fixed world",
@@ -37,12 +30,7 @@
       "id": "fw_routes",
       "what": "Static bole-anchored boughways, bough-soil and wet ground causeways.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:127",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs:114",
-        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_Boughway.xml:54",
-        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_BoughSoil.xml:44"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:127; src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_RootCauseways.cs:114; src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_Boughway.xml:54; src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_BoughSoil.xml:44",
       "proven": "stale",
       "called_by": "RM_RootCausewayBiomeExtension -> EnvironmentalHazards RM_GenStep_RootCauseways",
       "serves": "Branch home",
@@ -55,12 +43,7 @@
       "id": "fw_foundations",
       "what": "Marsh refuses heavy construction; completed stilts support it; mirror water is not bridgeable.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:55",
-        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:164",
-        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_StiltPlatform.xml:44",
-        "src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_FeverWoodMirrorPool.xml:54"
-      ],
+      "evidence": "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:55; src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:164; src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_StiltPlatform.xml:44; src/RimMandrake/FeverWood/Defs/TerrainDefs/RM_FeverWoodMirrorPool.xml:54",
       "proven": "stale",
       "called_by": "RM_GroundRefusalBiomeExtension -> RM_GenStep_GroundRefusal; ordinary blueprint placement",
       "serves": "Branch home",
@@ -73,11 +56,7 @@
       "id": "fw_trunks",
       "what": "Broad solid mineable fever trunks and their core anchors; static after excavation in this version.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkHeartwood.xml",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkCore.xml:77",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs:248"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkHeartwood.xml; src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkCore.xml:77; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs:248",
       "proven": "stale",
       "called_by": "RM_LivingBoleBiomeExtension -> shared living-bole placement; mining jobs",
       "serves": "Land and branch anchors",
@@ -90,11 +69,7 @@
       "id": "fw_pools",
       "what": "Still black registered mirror-pool terrain, connected-pool identity and size.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWood_ScatterPoolsGenStep.xml",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_ScatterPools.cs:38",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:214"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWood_ScatterPoolsGenStep.xml; src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_ScatterPools.cs:38; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:214",
       "proven": "stale",
       "called_by": "RM_MirrorPoolBiomeExtension -> RM_GenStep_ScatterPools; TentacleWatch.PoolCells; Tenant.IsRegisteredWater",
       "serves": "Land and signature",
@@ -107,12 +82,7 @@
       "id": "fw_shore_rescue",
       "what": "Actual water seizure of player pawns and tamed animals, carrying rescue and unresolved loss.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:204",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:289",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:310",
-        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:185"
-      ],
+      "evidence": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:204; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:289; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:310; src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:185",
       "proven": "missing",
       "called_by": "TheTenant.ScanExposure/Strike and RM_CompTentacleLimb.TickSnare -> BeginRescueWindow",
       "serves": "Shore risk and response",
@@ -125,10 +95,7 @@
       "id": "fw_mirror_break",
       "what": "Standalone mirror-break incident raising agitation and hush.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/IncidentDefs/RM_FeverWood_MirrorBreak.xml:31",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_MirrorBreak.cs:33"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/IncidentDefs/RM_FeverWood_MirrorBreak.xml:31; src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_MirrorBreak.cs:33",
       "proven": "stale",
       "called_by": "RM_FeverWood_MirrorBreak IncidentDef -> shared RM_IncidentWorker_MirrorBreak",
       "serves": "Extra warning incident",
@@ -141,11 +108,7 @@
       "id": "fw_mirror_list",
       "what": "Consumable mirror-list item, use effect and purchased intelligence overlay.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_FeverWood_MirrorList.xml:53",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs:32",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:144"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_FeverWood_MirrorList.xml:53; src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs:32; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:144",
       "proven": "stale",
       "called_by": "RM_FeverWood_MirrorList comps -> RM_CompUseEffect_RevealHazards -> Tenant.RaiseAgitation",
       "serves": "Extra information market",
@@ -158,13 +121,7 @@
       "id": "fw_limbs",
       "what": "Ordinary feeler, snare, lash, porter and sentinel encounters, finite presence and drive-off.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:80",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:277",
-        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:129",
-        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:282",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_Sekkulaath_Tentacles.xml:77"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:80; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:277; src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:129; src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:282; src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_Sekkulaath_Tentacles.xml:77",
       "proven": "stale",
       "called_by": "TentacleWatch.SpawnEncounter/SpawnEncounterAt -> limb comps",
       "serves": "Shore risk and response",
@@ -177,12 +134,7 @@
       "id": "fw_porter",
       "what": "Visible slender loot-depositing porter and pool-local grievance after attack.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:216",
-        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:293",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:403",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:531"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:216; src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:293; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:403; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:531",
       "proven": "stale",
       "called_by": "RM_CompTentacleLimb.TickPorter/PostPostApplyDamage -> TentacleWatch.OnPorterAttacked",
       "serves": "Temptation and remembered choice",
@@ -195,11 +147,7 @@
       "id": "fw_great_emergence",
       "what": "Large-pool eye encounter and progressively stronger combat relief, ending in map-wide adult defeat.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:156",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:318",
-        "src/RimMandrake/FeverWood/Source/RM_CompTentacleEye.cs:24"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:156; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:318; src/RimMandrake/FeverWood/Source/RM_CompTentacleEye.cs:24",
       "proven": "stale",
       "called_by": "TentacleWatch.GreatEmergenceEligible/SpawnGreatEmergence; RM_CompTentacleEye",
       "serves": "Response and conclusion",
@@ -212,18 +160,12 @@
       "id": "fw_suppression",
       "what": "Crafted radioactive treatment, designation, hauling and map-wide adult quiet.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_Designator_FoulPool.cs",
-        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs:17",
-        "src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:51",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_Designator_FoulPool.cs; src/RimMandrake/FeverWood/Source/RM_WorkGiver_FoulPool.cs:17; src/RimMandrake/FeverWood/Source/RM_JobDriver_FoulPool.cs:51; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:549; src/RimMandrake/FeverWood/Defs/ThingDefs_Items/RM_RadioactiveSuppressant.xml",
       "proven": "stale",
       "called_by": "Designator_FoulPool -> WorkGiver_FoulPool -> JobDriver_FoulPool -> TentacleWatch.SuppressPoolWithRadioactiveMaterial",
-      "serves": "Extra chemical response",
+      "serves": "Sourced no-fight response proposed for deferral, subject to owner decision",
       "fate": "next_version",
-      "why": "Designer decision, delegated: A second, reagent-based response is not required when the combat ladder remains complete. Preserve the ruled reagent and campaign restrictions for its return.",
+      "why": "Designer decision proposed for owner decision: next-version-off keeps the smaller combat-only version. The documented no-fight ladder and validated water-memory treatment wording are concrete evidence against this deferral. Combat does not supersede that promise. Preserve the ruled reagent/campaign restrictions; the owner-pages treatment question explicitly seeks disposition of this proposed weakening before application, with no change to the validated bar here.",
       "needed_by": "",
       "ticket": "T_SUPPRESSION"
     },
@@ -231,13 +173,7 @@
       "id": "fw_tank",
       "what": "Captive tank upkeep, products, teaching benefit and breach/deconstruction outcomes.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:130",
-        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:221",
-        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:475",
-        "src/RimMandrake/FeverWood/Source/Kernel/RM_TankKernel.cs:116",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml:88"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:130; src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:221; src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:475; src/RimMandrake/FeverWood/Source/Kernel/RM_TankKernel.cs:116; src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml:88",
       "proven": "stale",
       "called_by": "RM_SekkulaathTank -> RM_CompCapturedSpecimen -> TheTenant.Notify_Taught and escaped-young comp",
       "serves": "Extra captive industry",
@@ -250,11 +186,7 @@
       "id": "fw_escape_install",
       "what": "Armed escapee travels to water and currently installs an adult immediately.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:63",
-        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:100",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:584"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:63; src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:100; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:584",
       "proven": "stale",
       "called_by": "CapturedSpecimen.Escape -> EscapedCaptive.Notify_JustEscaped/CompTick -> TentacleWatch.Notify_SekkulaathInstalled",
       "serves": "Extra captive consequence",
@@ -267,10 +199,7 @@
       "id": "fw_maturation",
       "what": "Several-day establishment at a particular pool; only the right poison there intervenes.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:22",
-        "OWNER:1794374372850231423"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:22; OWNER:1794374372850231423",
       "proven": "missing",
       "called_by": "Promised successor to RM_CompEscapedCaptive water-arrival path",
       "serves": "Future captive consequence",
@@ -283,12 +212,7 @@
       "id": "fw_brood",
       "what": "World-held-young census makes water encounters bolder.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:161",
-        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:80",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:170",
-        "src/RimMandrake/FeverWood/Source/Kernel/RM_BroodKernel.cs"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:161; src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:80; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:170; src/RimMandrake/FeverWood/Source/Kernel/RM_BroodKernel.cs",
       "proven": "stale",
       "called_by": "RM_WorldComponent_DeepYoung -> TentacleWatch.EffectiveAmbientMtbHours and WeightOf",
       "serves": "Extra ransom pressure",
@@ -301,13 +225,7 @@
       "id": "fw_return_gift",
       "what": "Peaceful release, reachable water return and durable owed-gift queue.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:452",
-        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:213",
-        "src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:279",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:181",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:452; src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:213; src/RimMandrake/FeverWood/Source/RM_CompEscapedCaptive.cs:279; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:181; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660",
       "proven": "stale",
       "called_by": "CapturedSpecimen release and RM_CompUseEffect_ReleaseYoung -> EscapedCaptive.ArriveReleased -> ScheduleDeepGift",
       "serves": "Extra return bargain",
@@ -320,11 +238,7 @@
       "id": "fw_display_campaign",
       "what": "Campaign Sporefall display stock, goodwill and trade story hooks, claimed in history.",
       "built": "unknown",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:529",
-        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:414",
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_display_campaign: src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml is absent from this checkout; not current evidence."
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs:529; src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:414; Historical claim only in design/concepts/FeverWood/record.json, inventory fw_display_campaign: src/RimUtinni/UtinniPatches/Patches/RUT_BroodRansom_Campaign.xml is absent from this checkout; not current evidence.",
       "proven": "stale",
       "called_by": "Historical campaign patch claims in record.json; generic RM_DeepYoungKeeperExtension consumers",
       "serves": "Extra campaign bargain",
@@ -337,13 +251,7 @@
       "id": "fw_lure_bait",
       "what": "Live bait stake designation, nonlethal downing, hauling, restraint and release.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_Designator_StakeLure.cs",
-        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_StunForStaking.cs",
-        "src/RimMandrake/FeverWood/Source/RM_WorkGiver_HaulToStake.cs",
-        "src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs:43",
-        "src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs:181"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_Designator_StakeLure.cs; src/RimMandrake/FeverWood/Source/RM_WorkGiver_StunForStaking.cs; src/RimMandrake/FeverWood/Source/RM_WorkGiver_HaulToStake.cs; src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs:43; src/RimMandrake/FeverWood/Source/RM_CompLureStake.cs:181",
       "proven": "stale",
       "called_by": "StakeLure designator -> StunForStaking/HaulToStake workgivers and job -> RM_CompLureStake",
       "serves": "Extra raid wager",
@@ -356,12 +264,7 @@
       "id": "fw_two_fronts",
       "what": "Delayed hostile fronts converge on bait; pending waves persist.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:35",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:151",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:216",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:296"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:35; src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:151; src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:216; src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:296",
       "proven": "stale",
       "called_by": "RM_CompLureStake -> RM_MapComponent_TwoFrontLure -> raid lords",
       "serves": "Extra raid wager",
@@ -374,12 +277,7 @@
       "id": "fw_hive_geometry",
       "what": "Reactive inland ant-dungeon layout and walls/roof/queen rooms.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:74",
-        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:125",
-        "src/RimMandrake/FeverWood/Source/Kernel/RM_HiveLayoutKernel.cs",
-        "src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs:28"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:74; src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:125; src/RimMandrake/FeverWood/Source/Kernel/RM_HiveLayoutKernel.cs; src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs:28",
       "proven": "stale",
       "called_by": "AntHive registration patch -> RM_GenStep_AntHiveDungeon -> RM_HiveLayoutKernel",
       "serves": "Runner-up dungeon",
@@ -392,11 +290,7 @@
       "id": "fw_hive_reaction",
       "what": "Kurreth notice, alarm, home tether and rally in dungeon encounters.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Kurreth_Race.xml:140",
-        "src/RimMandrake/FeverWood/validation.py:1732",
-        "src/RimMandrake/CreatureBehaviors/Source/RM_CompReactionSource.cs"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Kurreth_Race.xml:140; src/RimMandrake/FeverWood/validation.py:1732; src/RimMandrake/CreatureBehaviors/Source/RM_CompReactionSource.cs",
       "proven": "stale",
       "called_by": "Kurreth race extensions -> CreatureBehaviors reaction bus; hive generation and future lure raids",
       "serves": "Extra dungeon response",
@@ -409,10 +303,7 @@
       "id": "fw_hive_farm",
       "what": "Dungeon thornbug herd and return-to-room husbandry.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:388",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:59"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:388; src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:59",
       "proven": "stale",
       "called_by": "GenStep_AntHiveDungeon.PlaceFarm -> MapComponent_AntHive farm return",
       "serves": "Extra dungeon economy",
@@ -425,12 +316,7 @@
       "id": "fw_hive_guard",
       "what": "Deep bostrach guards, choke homes and worker-dependent feeding.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:428",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:107",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Bostrach_Race.xml:110",
-        "src/RimMandrake/FeverWood/validation.py:1856"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:428; src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:107; src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Bostrach_Race.xml:110; src/RimMandrake/FeverWood/validation.py:1856",
       "proven": "stale",
       "called_by": "GenStep_AntHiveDungeon.PlaceGuards -> MapComponent_AntHive guard food/tether",
       "serves": "Extra dungeon defense",
@@ -443,10 +329,7 @@
       "id": "fw_hive_sealing",
       "what": "Alarm-driven temporary resin closing a retreat corridor.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs:29",
-        "src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs:67"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs:29; src/RimMandrake/FeverWood/Source/RM_HiveSealing.cs:67",
       "proven": "stale",
       "called_by": "RM_HiveSealing alarm subscription -> MapComponent_AntHive corridor/resin data",
       "serves": "Extra dungeon retreat",
@@ -459,10 +342,7 @@
       "id": "fw_theft_retired",
       "what": "Existing exclusion of kurreth theft, live raid-back, hive parasitism and rite.",
       "built": "absent",
-      "evidence": [
-        "design/RimMandrake/fluff_cuts_2026-10-23.md:29",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:238"
-      ],
+      "evidence": "design/RimMandrake/fluff_cuts_2026-10-23.md:29; src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:238",
       "proven": "stale",
       "called_by": "Current lure assault lord disables stealing/kidnapping; no parasite comp/generator placement",
       "serves": "First-version boundaries",
@@ -475,11 +355,7 @@
       "id": "fw_glomvar_residual",
       "what": "Dormant glomvar race and owner-kept art references load without a feeding parasite.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Glomvar_Race.xml:24",
-        "design/RimMandrake/fluff_cuts_2026-10-23.md:35",
-        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:118"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_Glomvar_Race.xml:24; design/RimMandrake/fluff_cuts_2026-10-23.md:35; src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:118",
       "proven": "stale",
       "called_by": "Def loader; RM_Glomvar home-tether/unseen extensions; no located first-version spawner",
       "serves": "Dormant compatibility",
@@ -492,11 +368,7 @@
       "id": "fw_nectar",
       "what": "Normal calm-gated thornbug nectar and drommath sap gathering.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml:159",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:90",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:123"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml:159; src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:90; src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:123",
       "proven": "stale",
       "called_by": "SapSuckerGuild comps -> EnvironmentalHazards RM_CompGatherableCalmGated -> vanilla gather jobs",
       "serves": "Crown food and tameable livestock",
@@ -509,12 +381,7 @@
       "id": "fw_guild",
       "what": "Vaulm seal, drommath swelling and ollareth alarm on damage/mishandling.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:18",
-        "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:50",
-        "src/RimMandrake/FeverWood/Source/RM_Patch_SapSuckerMishandle.cs:24",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:18; src/RimMandrake/FeverWood/Source/RM_CompSapSuckerRefusal.cs:50; src/RimMandrake/FeverWood/Source/RM_Patch_SapSuckerMishandle.cs:24; src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_SapSuckerGuild.xml",
       "proven": "stale",
       "called_by": "RM_CompSapSuckerRefusal; RM_Patch_SapSuckerMishandle; ollareth RM_CompPlantAlarm",
       "serves": "Extra guild reactions",
@@ -527,11 +394,7 @@
       "id": "fw_native_cast",
       "what": "Retained native roster, carrion feeding and bounded bark ambush.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:213",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml",
-        "src/RimMandrake/FeverWood/Source/RM_CompSillochAmbush.cs:121"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:213; src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml; src/RimMandrake/FeverWood/Source/RM_CompSillochAmbush.cs:121",
       "proven": "stale",
       "called_by": "BiomeDef wildAnimals -> wild spawner; SillochAmbush; ordinary ingestion",
       "serves": "Ordinary wildlife",
@@ -544,10 +407,7 @@
       "id": "fw_borer_diet",
       "what": "Brathek vanilla tree-eating with its existing switch.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml:143"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7; src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml:143",
       "proven": "stale",
       "called_by": "RM_BrathekBoring.ApplySettings -> race foodType Tree -> vanilla food jobs",
       "serves": "Ordinary wood-feeder",
@@ -560,10 +420,7 @@
       "id": "fw_borer_galleries",
       "what": "Slow visibly advancing galleries through inhabited living heartwood.",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:750",
-        "src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:750; src/RimMandrake/FeverWood/Source/RM_BrathekBoring.cs:7",
       "proven": "missing",
       "called_by": "Documented promise; local RM_BrathekBoring only edits Tree foodType",
       "serves": "Extra living excavation",
@@ -576,11 +433,7 @@
       "id": "fw_birds",
       "what": "Retained chellow, murrelith and skellick, real flight and ordinary murrelith plumage shearing.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:13",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:195",
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_birds: src/RimMandrake/RimProperty/Patches/AnimalTheft/SkellickWildTheft.xml:25 is absent from this checkout; not current evidence."
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:13; src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml:195; Historical claim only in design/concepts/FeverWood/record.json, inventory fw_birds: src/RimMandrake/RimProperty/Patches/AnimalTheft/SkellickWildTheft.xml:25 is absent from this checkout; not current evidence.",
       "proven": "stale",
       "called_by": "Biome roster; bird race flight flags/stats and CompShearable",
       "serves": "Crown movement and tameable wildlife",
@@ -593,12 +446,7 @@
       "id": "fw_chorus",
       "what": "Working-crown ambience plus shared water hush authority; individual calls separately missing.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:59",
-        "src/RimMandrake/FeverWood/Defs/SoundDefs/RM_FeverWoodSoundscape.xml",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:619",
-        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs:102"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:59; src/RimMandrake/FeverWood/Defs/SoundDefs/RM_FeverWoodSoundscape.xml; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:619; src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_SilenceCue.cs:102",
       "proven": "stale",
       "called_by": "Biome soundsAmbient; TentacleWatch.Notify_SentinelUp/Down -> CreatureBehaviors SilenceCue",
       "serves": "Readable signature",
@@ -611,12 +459,7 @@
       "id": "fw_oil",
       "what": "Oil-boil weather, bonus harvesting, connected ground ignition and forced emergence.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:52",
-        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:92",
-        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:190",
-        "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:314"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:52; src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:92; src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:190; src/RimMandrake/FeverWood/Source/RM_OilBoil.cs:314",
       "proven": "stale",
       "called_by": "RM_OilBoil.ApplySettings; weather map component; YieldNow/projectile/fire/lightning hooks -> ForceEmergenceNear",
       "serves": "Extra fire economy",
@@ -629,13 +472,7 @@
       "id": "fw_flora",
       "what": "Retained alien plant roster, existing normal harvests and static habitat placement.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:134",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:231",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:388",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:473",
-        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:263"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:134; src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:231; src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:388; src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml:473; src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:263",
       "proven": "stale",
       "called_by": "Biome wildPlants; RM_FeverWoodFlora and dedicated plant defs -> vanilla growth/harvest",
       "serves": "Ordinary land and food",
@@ -648,11 +485,7 @@
       "id": "fw_wrecks",
       "what": "Fever Wood overgrown wreck field and hull/carapace salvage children.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWoodWreckField.xml",
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverWoodWrecks.xml:14",
-        "src/RimMandrake/FeverWood/Patches/RM_FeverWood_WreckField_Register.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/MapGeneration/RM_FeverWoodWreckField.xml; src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverWoodWrecks.xml:14; src/RimMandrake/FeverWood/Patches/RM_FeverWood_WreckField_Register.xml",
       "proven": "stale",
       "called_by": "RM_WreckField_FeverWood register -> Wreckage GenStep; inherited salvage comps",
       "serves": "Extra salvage opportunity",
@@ -665,9 +498,7 @@
       "id": "fw_scanner",
       "what": "Optional acoustic payload for limbs, core, resin and wrecks.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Patches/RM_AcousticPayload_FeverWood.xml:15"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Patches/RM_AcousticPayload_FeverWood.xml:15",
       "proven": "missing",
       "called_by": "FindMod-gated RM_AcousticPayload_FeverWood.xml -> AcousticScanner payload consumer",
       "serves": "Extra instrument content",
@@ -680,12 +511,7 @@
       "id": "fw_tier_mapping",
       "what": "Tier-safe base roster and optional campaign dianoga/roster remapping contract.",
       "built": "unknown",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:48",
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_tier_mapping: src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml:75 is absent from this checkout; not current evidence.",
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_tier_mapping: src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml is absent from this checkout; not current evidence.",
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_tier_mapping: src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml is absent from this checkout; not current evidence."
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml:48; Historical claim only in design/concepts/FeverWood/record.json, inventory fw_tier_mapping: src/RimUtinni/UtinniPatches/Patches/WildAnimals_FeverWood.xml:75 is absent from this checkout; not current evidence.; Historical claim only in design/concepts/FeverWood/record.json, inventory fw_tier_mapping: src/RimStarWars/SWBestiary/Patches/RSW_Sekkulaath_DianogaGiant.xml is absent from this checkout; not current evidence.; Historical claim only in design/concepts/FeverWood/record.json, inventory fw_tier_mapping: src/RimStarWars/SWBestiary/Patches/RSW_SekkulaathTank_DianogaSwap.xml is absent from this checkout; not current evidence.",
       "proven": "stale",
       "called_by": "Biome base defs and historical external patches named by record.json",
       "serves": "Naming and composition compatibility",
@@ -698,12 +524,7 @@
       "id": "fw_settings",
       "what": "Saved effective on/off controls for major features with shipped defaults.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:278",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:36",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:135",
-        "src/RimMandrake/FeverWood/validation.py:999"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs:278; src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:36; src/RimMandrake/EnvironmentalHazards/Source/RM_CompGatherableCalmGated.cs:135; src/RimMandrake/FeverWood/validation.py:999",
       "proven": "stale",
       "called_by": "RM_FeverWoodMod settings UI/ExposeData; shared-owner setting consumers",
       "serves": "User control of land, life and signature",
@@ -716,10 +537,7 @@
       "id": "fw_proof_hooks",
       "what": "Existing limb/hive readout methods and validation/kernel selftests.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs:7",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:523"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs:7; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:523",
       "proven": "stale",
       "called_by": "validation.py; northstar_site.py; selftest_feverwood.py; Source/SelfTest/FeverWoodFuzz.cs",
       "serves": "Acceptance instruments",
@@ -732,14 +550,7 @@
       "id": "fw_persistence",
       "what": "Saved kept consequences, especially per-pool grievance and active rescue obligations.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:349",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660",
-        "src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:499",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:148",
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:296",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:353"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_CompTentacleLimb.cs:349; src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs:660; src/RimMandrake/FeverWood/Source/RM_CompCapturedSpecimen.cs:499; src/RimMandrake/FeverWood/Source/RM_MapComponent_AntHive.cs:148; src/RimMandrake/FeverWood/Source/RM_MapComponent_TwoFrontLure.cs:296; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs:353",
       "proven": "missing",
       "called_by": "TheTenant.ExposeData; TentacleWatch.ExposeData; limb PostExposeData",
       "serves": "Remembered signature",
@@ -752,11 +563,7 @@
       "id": "fw_sink_mud",
       "what": "Weight-dependent mud trapping, self-release and companion extraction without intrinsic damage.",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:220",
-        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:525",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:55"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:220; design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:525; src/RimMandrake/EnvironmentalHazards/Source/RM_GenStep_GroundRefusal.cs:55",
       "proven": "missing",
       "called_by": "Documentary promise; inspected GroundRefusal paints terrain only; no located trap consumer",
       "serves": "Extra mud trap",
@@ -769,10 +576,7 @@
       "id": "fw_abandoned_hives",
       "what": "Lootable broken mirror-side ant ruins distinct from living inland hives.",
       "built": "unknown",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:772",
-        "src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:118"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:772; src/RimMandrake/FeverWood/Source/RM_GenStep_AntHiveDungeon.cs:118",
       "proven": "missing",
       "called_by": "Historical amendment; current GenStep fills live chambers only",
       "serves": "Extra ruin encounter",
@@ -783,20 +587,14 @@
     },
     {
       "id": "fw_native_drinking",
-      "what": "Native environmental-water drinking through the owning thirst service.",
+      "what": "FlowWorks dependency: RM_Thirst need, native environmental-water drink jobs and terrain eligibility.",
       "built": "unknown",
-      "evidence": [
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Defs/Thirst/RM_Thirst_Need.xml:10 is absent from this checkout; not current evidence.",
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstProvider.cs:46 is absent from this checkout; not current evidence.",
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs is absent from this checkout; not current evidence.",
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstJobs.cs:112 is absent from this checkout; not current evidence.",
-        "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_DrinkableTerrain_ForeignTerrains.xml:204 is absent from this checkout; not current evidence."
-      ],
+      "evidence": "Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Defs/Thirst/RM_Thirst_Need.xml:10 is absent from this checkout; not current evidence.; Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstProvider.cs:46 is absent from this checkout; not current evidence.; Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstUtility.cs is absent from this checkout; not current evidence.; Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstJobs.cs:112 is absent from this checkout; not current evidence.; Historical claim only in design/concepts/FeverWood/record.json, inventory fw_native_drinking: src/RimMandrake/FlowWorks/Patches/LiquidTypes/RM_DrinkableTerrain_ForeignTerrains.xml:204 is absent from this checkout; not current evidence.",
       "proven": "stale",
       "called_by": "Historical FlowWorks RM_Thirst integration in record.json; no local provider source",
       "serves": "Life with an active thirst service",
       "fate": "dependency",
-      "why": "Designer decision, delegated: The November native-water ruling applies. Current provider is unavailable here; absence of a thirst need cannot prove successful drinking. No replacement thirst engine.",
+      "why": "Designer decision, delegated: The November native-water ruling applies. Current provider is unavailable here; absence of a thirst need cannot prove successful drinking. No replacement thirst engine. Needs from FlowWorks: its RM_Thirst need and normal terrain-drink job must accept the registered native home water, reserve/reach a drink target and update the real need; FeverWood supplies native eligibility to both water attack services. No new thirst engine or cistrel job is commissioned. With provider absent retain the native seizure exemption, offer no invented thirst/drink action and make no drinking proof claim. Historical RM_ThirstJobs is evidence of an owning adapter, not a verified public method signature; T_INTEGRATIONS must identify actual loaded symbols before integration.",
       "needed_by": "",
       "ticket": "T_INTEGRATIONS"
     },
@@ -804,10 +602,7 @@
       "id": "fw_regrowth",
       "what": "Living-trunk regrowth, crush warning and toxin-sealed cuts.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkCore.xml",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Buildings/RM_FeverTrunkCore.xml; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingRegrowth.cs",
       "proven": "missing",
       "called_by": "FeverTrunkCore living-bole marker -> EnvironmentalHazards LivingRegrowth",
       "serves": "Extra trunk maintenance",
@@ -820,10 +615,7 @@
       "id": "fw_living_calls",
       "what": "Calls emitted by living birds and silenced by active water warning.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml",
-        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:611"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodBirds.xml; design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:611",
       "proven": "missing",
       "called_by": "Promised bird call producer; current bird defs lack a located individual-call implementation",
       "serves": "Readable signature",
@@ -836,9 +628,7 @@
       "id": "fw_soil_making",
       "what": "Plennith creates or replenishes fertile bough soil.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml",
       "proven": "missing",
       "called_by": "Description only; no custom comp in RM_FeverWoodFlora",
       "serves": "Extra terrain ecology",
@@ -851,24 +641,20 @@
       "id": "fw_cistrel_drinking",
       "what": "Accessible potable cistrel cup using the supported thirst service.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml",
       "proven": "missing",
       "called_by": "Documented cistrel role; no local drinkable comp/product; integrate owning thirst service",
-      "serves": "Ordinary safe drinking",
-      "fate": "life",
-      "why": "Designer decision, delegated: Ordinary life must include a safe local drink when thirst is active. Deleting this behaviour leaves the named safe-water plant inert and pushes dependent colonists at lethal pools.",
+      "serves": "Deferred potable-cup interaction",
+      "fate": "next_version",
+      "why": "Designer revision after review: normal roster life and the shore signature remain whole without a new safe-water cup action. Vanilla has no thirst need and the historical FlowWorks interface is unavailable here; keeping the plant does not justify an undefined finite-store/reservation/drink mechanic. Preserve the body/roster, defer the cup and correct default descriptive claims.",
       "needed_by": "",
-      "ticket": "T_LIFE"
+      "ticket": "T_CISTREL"
     },
     {
       "id": "fw_fed_pool_plant",
       "what": "Corvath appears only after feeding, as persistent botanical information.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml",
       "proven": "missing",
       "called_by": "Description only; no local fed-pool spawn gate",
       "serves": "Extra botanical intelligence",
@@ -881,9 +667,7 @@
       "id": "fw_mud_cover",
       "what": "Skimmel deliberately disguises trapping sink-mud.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml",
       "proven": "missing",
       "called_by": "Description only; no current sink-mud system",
       "serves": "Extra terrain deception",
@@ -896,9 +680,7 @@
       "id": "fw_nubrith_light",
       "what": "Nubrith emits warm ordinary light.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Plants/RM_FeverWoodFlora.xml",
       "proven": "missing",
       "called_by": "RM_Nubrith CompProperties_Glower -> vanilla glow grid",
       "serves": "Ordinary visible crown life",
@@ -911,9 +693,7 @@
       "id": "fw_bird_theft",
       "what": "Optional skellick property theft, claimed by historical external patch.",
       "built": "unknown",
-      "evidence": [
-        "design/concepts/FeverWood/record.json inventory fw_birds; src/RimMandrake/RimProperty is absent from this checkout"
-      ],
+      "evidence": "design/concepts/FeverWood/record.json inventory fw_birds; src/RimMandrake/RimProperty is absent from this checkout",
       "proven": "missing",
       "called_by": "Historical RimProperty patch unavailable in checkout",
       "serves": "Extra property encounter",
@@ -926,9 +706,7 @@
       "id": "fw_arrival_letter",
       "what": "Bespoke biome arrival letter and flavour exposition.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml",
       "proven": "missing",
       "called_by": "Biome RM_BiomeArrivalLetterExtension -> EnvironmentalHazards arrival-letter consumer",
       "serves": "Extra arrival exposition",
@@ -941,10 +719,7 @@
       "id": "fw_local_heat",
       "what": "Legacy per-biome ambient heat-kind and offset declaration.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml",
-        "design/RimMandrake/standing_rulings.md:142"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/BiomeDefs/RM_FeverWood.xml; design/RimMandrake/standing_rulings.md:142",
       "proven": "missing",
       "called_by": "Biome RM_SunHeatExtension -> CreatureBehaviors sun-heat consumer",
       "serves": "Forbidden local heat",
@@ -957,10 +732,7 @@
       "id": "fw_moving_routes",
       "what": "Routes physically move or reroute as living growth changes the crown.",
       "built": "absent",
-      "evidence": [
-        "design/concepts/FeverWood/sheet.md later",
-        "design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md"
-      ],
+      "evidence": "design/concepts/FeverWood/sheet.md later; design/Jawa/worldbuilding/biomes/kits/fever_wood_kit_spec.md",
       "proven": "missing",
       "called_by": "Later encroachment-engine promise, no local route-movement implementation located",
       "serves": "Extra changing infrastructure",
@@ -973,10 +745,7 @@
       "id": "fw_display_hooks",
       "what": "Generic display keeper, map generation hook and cask trading support in the RM layer.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs",
-        "src/RimMandrake/FeverWood/Patches/RM_FeverWood_YoungCaskTraders.xml"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_BroodRansom.cs; src/RimMandrake/FeverWood/Patches/RM_FeverWood_YoungCaskTraders.xml",
       "proven": "missing",
       "called_by": "RM_BroodRansom.cs keeper extension, stock generator and map-generation patch; YoungCaskTraders patch",
       "serves": "Extra display/trade support",
@@ -989,10 +758,7 @@
       "id": "fw_water_signs",
       "what": "Action-linked water warnings, victim loss sign and visible current consequence.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs",
-        "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs"
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Source/RM_MapComponent_TentacleWatch.cs; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_TheTenant.cs",
       "proven": "missing",
       "called_by": "Existing sentinel messages and watch messages; bare wild Destroy(Vanish) is insufficient",
       "serves": "Readable signature",
@@ -1005,9 +771,7 @@
       "id": "engine_creatures",
       "what": "CreatureBehaviors shared silence reasons, flight/behavior integration and existing settings.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/CreatureBehaviors/About/About.xml"
-      ],
+      "evidence": "src/RimMandrake/CreatureBehaviors/About/About.xml",
       "proven": "missing",
       "called_by": "Biomes composition and corresponding engine consumers",
       "serves": "Shared engine contract",
@@ -1020,9 +784,7 @@
       "id": "engine_growth",
       "what": "ExplosiveGrowth plant growth, aging and growth-top semantics.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/ExplosiveGrowth/About/About.xml"
-      ],
+      "evidence": "src/RimMandrake/ExplosiveGrowth/About/About.xml",
       "proven": "missing",
       "called_by": "Biomes composition and corresponding engine consumers",
       "serves": "Shared engine contract",
@@ -1035,9 +797,7 @@
       "id": "engine_hazards",
       "what": "EnvironmentalHazards shared local land placement, water strikes/rescue, calm gathering and biome profiles.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/EnvironmentalHazards/About/About.xml"
-      ],
+      "evidence": "src/RimMandrake/EnvironmentalHazards/About/About.xml",
       "proven": "missing",
       "called_by": "Biomes composition and corresponding engine consumers",
       "serves": "Shared engine contract",
@@ -1050,9 +810,7 @@
       "id": "engine_wreckage",
       "what": "Wreckage inherited hull/carapace identities and salvage service.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Wreckage/About/About.xml"
-      ],
+      "evidence": "src/RimMandrake/Wreckage/About/About.xml",
       "proven": "missing",
       "called_by": "Biomes composition and corresponding engine consumers",
       "serves": "Shared engine contract",
@@ -1065,9 +823,7 @@
       "id": "engine_bones",
       "what": "Bones ordinary butchery outputs and compatibility.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Bones/About/About.xml"
-      ],
+      "evidence": "src/RimMandrake/Bones/About/About.xml",
       "proven": "missing",
       "called_by": "Biomes composition and corresponding engine consumers",
       "serves": "Shared engine contract",
@@ -1080,10 +836,7 @@
       "id": "fw_summon",
       "what": "Deliberate offering/noise summons and the expanded provocation pressure model.",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:450",
-        "Search: local source and race comps contain no corresponding producer; description/documentary promise is not implementation."
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:450; Search: local source and race comps contain no corresponding producer; description/documentary promise is not implementation.",
       "proven": "missing",
       "called_by": "Documentary promise only; no current local caller located",
       "serves": "Future secondary interaction",
@@ -1096,10 +849,7 @@
       "id": "fw_grolth_trail",
       "what": "Grolth lays an acid trail that dissolves corpses independently of eating.",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml",
-        "Search: local source and race comps contain no corresponding producer; description/documentary promise is not implementation."
-      ],
+      "evidence": "src/RimMandrake/FeverWood/Defs/ThingDefs_Races/RM_FeverWoodCast.xml; Search: local source and race comps contain no corresponding producer; description/documentary promise is not implementation.",
       "proven": "missing",
       "called_by": "Documentary promise only; no current local caller located",
       "serves": "Future secondary interaction",
@@ -1107,6 +857,19 @@
       "why": "Designer decision, delegated: Ordinary carrion feeding supplies its life niche; a persistent terrain/acid disposal effect is a separate mechanic described but not wired in the inspected race.",
       "needed_by": "",
       "ticket": "T_GROLTH"
+    },
+    {
+      "id": "fw_reach_signs",
+      "what": "Read-only pre-seizure Show water reach pool-inspection command and ordinary-zoom effective boundary/status overlay.",
+      "built": "absent",
+      "evidence": "design/Jawa/worldbuilding/biomes/fever_wood_deep_and_mud_2026-09-23.md:224-227 and :575 require taught reach and a warned settlement choice.; src/RimMandrake/FeverWood/Source/RM_FeverWoodProof.cs supplies developer limb/hive summaries, not this player-facing reach sign.; src/RimMandrake/EnvironmentalHazards/Source/RM_CompUseEffect_RevealHazards.cs is the separately deferred consumable snapshot route; no always-available size-scaled player reach overlay was located.",
+      "proven": "missing",
+      "called_by": "Proposed ordinary pool-cell inspection -> Show water reach -> current effective water authority mask/status; no consumable or attack callback prerequisite.",
+      "serves": "Pre-seizure shore legibility",
+      "fate": "needed_by",
+      "why": "Designer revision after review: deleting this sign leaves correct size-scaled attacks unknowable at the work site when the pool-list and arrival letter are off. The shore signature requires a readable warned gamble before exposing workers; this is minimal current-state inspection, not a purchased catalogue or a new danger mechanic.",
+      "needed_by": "shore; warning",
+      "ticket": "T_WARNING"
     }
   ]
 }
