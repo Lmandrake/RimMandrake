@@ -247,11 +247,21 @@ def inputs(d, st, repo=REPO):
 def stale_stage(d, st, repo=REPO):
     """(earliest stage whose accepted result no longer matches its inputs, [changed input names]) or (None, [])."""
     cur = inputs(d, st, repo)
+    uncited = owner_uncited(repo, st.get("item"), d)
     for r in sorted(accepted(st), key=lambda r: r["stage"]):
-        changed = [k for k in DEPS[r["stage"]] if r["inputs"].get(k) != cur.get(k)]
+        changed = [k for k in DEPS[r["stage"]] if r["inputs"].get(k) != cur.get(k)
+                   and not (k == "owner" and _owner_only_taken_in(r, uncited))]
         if changed:
             return r["stage"], changed
     return None, []
+
+
+def _owner_only_taken_in(r, uncited):
+    """True when the owner feed moved only because words the stage froze uncited were cited since (a later stage took
+    them in): nothing new for that stage (RIMMANDRAKE_KEEP_STAGE_TWO_WHEN_CITED_WORDS_ARE_OLD). An unreadable
+    shard, or a result that never recorded its frozen words, is still a change."""
+    frozen = r.get("owner_uncited")
+    return uncited is not None and frozen is not None and not set(uncited) - set(frozen)
 
 
 def accepted(st):

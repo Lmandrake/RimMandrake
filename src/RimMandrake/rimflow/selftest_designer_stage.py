@@ -373,6 +373,7 @@ def main():
         refusals_showcases(repo, root_src, good, flood, tree)
         evidence_for_ask(repo, root_src, good, flood, tree)
         evidence_for_ask_intake(tmp, repo)
+        citing_frozen_words_is_not_new(tmp, repo)
         show = [{"id": "ladder_show", "scenes": ["climb"], "exercises": ["ladder"], "source": [root_src],
                  "decision": "d_flag"}]
         flag = {"id": "d_flag", "text": "judged first on the ladder climb", "source": [root_src], "speaker": "owner",
@@ -702,6 +703,35 @@ def evidence_for_ask_intake(tmp, repo):
     put(d, "record.json", rec)
     check("intake: the ruling without a delegated reason is not consumed as CONDUCTOR",
           DS.owner_uncited(repo.root, item, d) == [bad_tsn], DS.owner_uncited(repo.root, item, d))
+
+
+def citing_frozen_words_is_not_new(tmp, repo):
+    """RIMMANDRAKE_KEEP_STAGE_TWO_WHEN_CITED_WORDS_ARE_OLD: an accepted stage froze his words uncited (a repin
+    records them so); a later stage citing them takes them in and must not reopen the earlier stage with nothing new
+    (Graffiti 2026-11-17: stage 4 cited four card backfills, stage 2 reopened 'his new words to take in: ' empty)."""
+    item = "FROZEN_CITE_ITEM"
+    d = os.path.join(tmp, "design/concepts/FrozenCite")
+    DS.init(d, "FrozenCite", item)
+    root_src = repo.said("FrozenCite paints a wall", item=item)
+    word = repo.said("FrozenCite card backfill", item=item).split(":")[1]
+    rec = {"root": {"text": "paints a wall", "source": root_src, "speaker": "owner"}}
+    put(d, "record.json", rec)
+    st = DS.load_state(d)
+    st["stage"], st["status"] = 5, "ready"
+    st["results"] = [{"stage": 2, "outcome": "done", "owner_uncited": [word],
+                      "inputs": {"root": DS.input_hash(d, "root"), "owner": DS._feed_of([word])}}]
+    DS.write_json(DS.state_path(d), st)
+    check("frozen cite: control, the frozen uncited word leaves stage 2 current",
+          DS.stale_stage(d, DS.load_state(d), repo.root) == (None, []), DS.stale_stage(d, DS.load_state(d), repo.root))
+    rec["decisions"] = [{"id": "backfill", "speaker": "owner", "source": "OWNER:" + word, "text": "card backfill"}]
+    put(d, "record.json", rec)
+    check("frozen cite: citing the frozen word later does not reopen stage 2",
+          DS.stale_stage(d, DS.load_state(d), repo.root) == (None, []), DS.stale_stage(d, DS.load_state(d), repo.root))
+    check("frozen cite: reopen_if_stale leaves the stage where it is",
+          DS.reopen_if_stale(d, DS.load_state(d), repo.root) is None, "")
+    fresh = repo.said("FrozenCite a new reply", item=item).split(":")[1]
+    check("frozen cite: a genuinely new uncited word still reopens stage 2",
+          DS.stale_stage(d, DS.load_state(d), repo.root) == (2, ["owner"]), (fresh, DS.stale_stage(d, DS.load_state(d), repo.root)))
 
 
 def evidence_for_ask(repo, root_src, good, flood, tree):
