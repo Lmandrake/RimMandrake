@@ -1,0 +1,64 @@
+You are an independent reviewer. You wrote none of this material and have no stake in it. Nobody
+else has reviewed it; there is no prior verdict to agree or disagree with. Your job is to find what
+is wrong, not to validate. A review that finds nothing is a failed review.
+
+CONTEXT. This is an agentic software pipeline ("the Maturation Pipeline") that builds RimWorld game
+mods using LLM agents at each of eight stages. The owner is one human. He pays for the agents and
+has been spending, in his words, "dozens of hours and entire weekly allotments of tokens" fixing
+"foolish decisions" the pipeline makes. Measured failures behind this: one work item took 314
+consecutive non-pass runs before a human sitting found the cause; a predecessor pipeline recorded
+1039 "closes" of which a sample found 25 of 65 were actually red; of 1363 live-proof rows, 195
+PASSED, 134 FAILED and 659 were UNMEASURED.
+
+You are given four documents:
+  1. PROPOSAL — three changes to how the pipeline records evidence about its own runs.
+  2. PROCESS — the pipeline as it stands today (its stage tables and binding rules).
+  3. ITEMS — the open work tickets in the pipeline's own machinery that these changes would join.
+  4. CODE — verbatim excerpts of the code the changes would touch.
+
+CONVENTIONS, so you do not flag them as errors: work items carry named ids of the form
+PROJECT_VERB_INTENTION_TWIST, never numbers. Claims are tagged [measured] or [guess ~N%]. Spend is
+stated in weighted tokens, not dollars. An agent is deliberately never told its own spend, to keep
+cost anxiety out of its reasoning. Items are filed with acceptance tests. "The pipeline fixes its
+own defects" is a standing rule: an agent that finds a defect in the pipeline's machinery fixes it
+in the same run.
+
+THE REVIEW. Answer these, hardest first, citing file:line from CODE or section from PROCESS/ITEMS:
+
+1. Will these three changes actually reduce the owner's burden, or will they add ceremony that
+   produces more records without changing a single decision? Be concrete about which decision each
+   change alters. If a change cannot be traced to a decision it changes, say so.
+
+2. The PROPOSAL adds fields to a finding record. Trace in CODE whether those fields survive being
+   written and read back. Say plainly if they do not.
+
+3. Change one's `--ruled-out` is honesty-dependent in part. Is shipping a partly-unverifiable
+   rigour signal a net negative — does a field that LOOKS like proof make readers less careful than
+   no field at all?
+
+4. Part A classifies a failed run as "the mod's fault" or "the pipeline's fault". Attack the
+   classification. Where does it misfile a genuine mod defect as a pipeline fault, or vice versa?
+   Consider specifically: a mod whose real defect is that the game will not load.
+
+5. Part A says a pipeline fault "does not consume a visit". Trace the CODE and say whether the
+   proposal's named change sites are sufficient to achieve that, or whether consumption happens
+   somewhere it has not named. Name the functions.
+
+6. Part A's repeat-detector stops a mod after "the third occurrence of the same cause". How should
+   "the same cause" be compared? What breaks under each obvious implementation?
+
+7. Does any pair of these changes contradict each other? Does any make an existing gate redundant
+   or unreachable?
+
+8. ORDER AND NECESSITY. If only ONE of these could be built, which, and why? Is any one of them not
+   worth building at all? Should any of the existing ITEMS be built BEFORE any of this proposal?
+
+9. What is the proposal silent about that will bite within a week of landing? Consider: migration of
+   the 659 existing UNMEASURED rows; rendering; and concurrency — several agents share one git
+   working tree AND one git index.
+
+10. Is there a cheaper intervention, already present in CODE or PROCESS, that would get most of the
+    benefit? Name it if so.
+
+Be specific and brief where the proposal is right; spend your words on what is wrong. Rank findings
+most-severe first.
