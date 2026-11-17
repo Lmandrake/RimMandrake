@@ -403,6 +403,7 @@ def live_facts(mods):
         import owner_queue  # noqa: E402
         evs, world = fleet_mods.ledger()
         out["notes"] = [e for e in evs if isinstance(e, dict) and e.get("event") == "note"]
+        out["titles"] = {k: str(getattr(v, "title", "") or "") for k, v in (world.items or {}).items()}
         rel = fleet_mods.relentless_states(strict=True)
         n = owner_queue.needs_you(world.items, rel, evs=evs, turns=owner_queue.designer_turns())
         out["intake"] = len(n["awaiting_designer"])
@@ -508,19 +509,32 @@ def mod_tokens(folder):
     return out
 
 
-def item_mod(item, folders, notes=None):
-    """The mod an item id names, else the one its ledger notes cite most by concept path, else None."""
-    words = [w for w in str(item).upper().split("_") if w]
+def _named_mod(words, folders):
+    """-> (named, mod): whether the words name any mod, and the one they name best (None on a tie)."""
     cands = {"".join(words[i:i + n]) for i in range(len(words)) for n in (1, 2, 3) if i + n <= len(words)}
     score = {}
     for f in folders:
         s = max([v for k, v in mod_tokens(f).items() if k in cands] or [0])
         if s:
             score[f] = s
-    if score:
-        top = max(score.values())
-        win = [f for f, s in score.items() if s == top]
-        return win[0] if len(win) == 1 else None
+    if not score:
+        return False, None
+    top = max(score.values())
+    win = [f for f, s in score.items() if s == top]
+    return True, (win[0] if len(win) == 1 else None)
+
+
+def item_mod(item, folders, notes=None, titles=None):
+    """The mod an item id names, else the one its title names, else the one its ledger notes cite most by concept
+    path, else None. The title step: RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID (title "Gimme Some Slack:
+    ...") names GSS by a 5-letter word only, and its notes cite FlowWorks's concept paths more often than GSS's, so the GSS
+    Fable rescue was placed on no mod and its steward read spent after it (RIMMANDRAKE_SEE_RESCUE_RUN_ON_ITS_MOD)."""
+    named, mod = _named_mod([w for w in str(item).upper().split("_") if w], folders)
+    if named:
+        return mod
+    named, mod = _named_mod(re.findall(r"[A-Z0-9]+", str((titles or {}).get(item) or "").upper()), folders)
+    if named:
+        return mod
     cites = {}
     for e in notes or []:
         if e.get("id") != item:
@@ -614,8 +628,8 @@ def run_view(rec, now, spend=read_spend):
             "stages": [], "placed": ""}
 
 
-def runs_for_mods(folders, records, notes, journals, now, spend=read_spend):
-    """-> {folder: [run]} with each run's stages placed (see the block comment above)."""
+def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titles=None):
+    """-> {folder: [run]} with each run's stages placed (see the block comment above). titles: {item id: title}."""
     out = {f: [] for f in folders}
     notes = notes or []
     by_unit = {}
@@ -626,7 +640,7 @@ def runs_for_mods(folders, records, notes, journals, now, spend=read_spend):
     for rec in records or []:
         item = str(rec.get("item") or "")
         if item not in cache:
-            cache[item] = item_mod(item, folders, notes)
+            cache[item] = item_mod(item, folders, notes, titles)
         f = cache[item]
         if not f:
             continue
@@ -904,7 +918,8 @@ def gather(root, live=True):
                                              "errors": ["live reads off (--no-live)"]}
     now = time_now()
     journals = {m["name"]: m.pop("_journal") for m in mods}
-    runs = None if lf["records"] is None else runs_for_mods(versioned, lf["records"], lf["notes"], journals, now)
+    runs = None if lf["records"] is None else runs_for_mods(versioned, lf["records"], lf["notes"], journals, now,
+                                                               titles=lf.get("titles"))
     for m in mods:
         m["held_statements"] = held["per_mod"].get(m["name"], UNM)
         if m["held_statements"] == UNM and m["table"] and isinstance(m["table"].get("held"), int):
@@ -913,7 +928,7 @@ def gather(root, live=True):
         m["runs"] = UNM if runs is None else runs.get(m["name"], [])
         for e in lf["notes"] or []:        # the same line form in a ledger note on one of the mod's items
             if "CONDUCTOR INTERVENED" in str(e.get("text") or "").upper() and \
-                    item_mod(e.get("id"), versioned, lf["notes"]) == m["name"]:
+                    item_mod(e.get("id"), versioned, lf["notes"], lf.get("titles")) == m["name"]:
                 g, b = parse_interventions(e.get("text"), "ledger note on %s" % e.get("id"))
                 m["ivs"] += g
                 m["iv_bad"] += b

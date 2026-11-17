@@ -550,7 +550,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             queue.setdefault(mod, now)
         elif dec in LAUNCH or f.get("owed") != "run":
             queue.pop(mod, None)
-        _mark_worked(s, ver, row.get("stage"), f.get("live_units"), now)
+        _mark_worked(s, ver, row.get("stage"), f.get("live_units"), now, f.get("ended_runs"))
         dst = None if dec in ("live", "settling") else dstate(mod)
         fs, cs = final_stop(dst), coverage_stopped(dst)
         if fs:
@@ -746,18 +746,31 @@ def _after_road_backs(s, key):
     return key, after
 
 
-def _mark_worked(s, ver, stage, live, now):
+def _mark_worked(s, ver, stage, live, now, ended=None):
     """A steward run that ended on an unmoved state is spent for that state, but a run of another unit (a builder, a
     fixer) live on the mod at the same stage after it ended is new work: the next reading of that state is a new state.
     Pyrelands 2026-11-16: its 'ready' steward refused a false pass, builders closed the owed tickets, and the same
-    'every exit test passes' key read steward_spent for good (RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING)."""
+    'every exit test passes' key read steward_spent for good (RIMMANDRAKE_UNSTICK_FIVE_STILL_MODS_TWO_OF_TWELVE_MOVING).
+    A run that began and ended between two ticks of this reading is never seen live, so an ended run of another unit
+    whose end is later than the steward's own end counts too (`ended`, the mod's ended runs with their `end`): Gimme
+    Some Slack 2026-11-17, a Fable run worked stage 6 for hours after the visit steward ended and the key still read
+    steward_spent (RIMMANDRAKE_SEE_RESCUE_RUN_ON_ITS_MOD)."""
     live = [u for u in live or [] if u]
-    if not live:
+    ends = {r.get("unit"): r.get("end") for r in ended or []
+            if isinstance(r, dict) and r.get("unit") and isinstance(r.get("end"), (int, float))}
+    if not live and not ends:
         return
     for k, v in (s.get("steward") or {}).items():
-        if (isinstance(v, dict) and v.get("unit") and not v.get("worked_after") and v["unit"] not in live
+        if not (isinstance(v, dict) and v.get("unit") and not v.get("worked_after") and v["unit"] not in live
                 and str(k).startswith("%s|%s|" % (ver, stage))):
+            continue
+        if live:
             v["worked_after"] = now
+            continue
+        mine = ends.get(v["unit"])          # the steward's own end; unread means it is not known to have ended
+        later = [e for u, e in ends.items() if u != v["unit"] and mine is not None and e > mine]
+        if later:
+            v["worked_after"] = max(later)
 
 
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,

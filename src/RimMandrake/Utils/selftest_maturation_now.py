@@ -373,6 +373,15 @@ def p9_cycles():
           and M.item_mod("RIMMANDRAKE_SOMETHING_ELSE", ["Pyrelands"]) is None)
     notes = [{"id": "RIMMANDRAKE_DESIGN_PIPELINE", "text": "see design/concepts/FooMod/journal.md and design/concepts/FooMod/x"}]
     check("9 an item naming no mod is the one its notes cite", M.item_mod("RIMMANDRAKE_DESIGN_PIPELINE", ["FooMod", "BarMod"], notes) == "FooMod")
+    # RIMMANDRAKE_SEE_RESCUE_RUN_ON_ITS_MOD: SLACK is too short a word and the notes cite FlowWorks more; the title says
+    notes2 = [{"id": "RIMMANDRAKE_LAY_SLACK_X", "text": "design/concepts/FlowWorks/a design/concepts/FlowWorks/b "
+               "design/concepts/GimmeSomeSlack/c"}]
+    check("9 an item its id does not name is the mod its title names, before its notes",
+          M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"], notes2) == "FlowWorks"
+          and M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"], notes2,
+                         {"RIMMANDRAKE_LAY_SLACK_X": "Gimme Some Slack: the 21 close-fitting poses"}) == "GimmeSomeSlack"
+          and M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"], notes2,
+                         {"RIMMANDRAKE_LAY_SLACK_X": "lay the poses"}) == "FlowWorks")
     check("9 'stopped before Stage 3' names no Stage 3", M.stages_named("Rows 1-3 done, stopped before Stage 3.") == [])
 
 

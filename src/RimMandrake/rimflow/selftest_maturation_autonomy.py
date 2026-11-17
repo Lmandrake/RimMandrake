@@ -610,9 +610,21 @@ def worked_after_checks(root):
     rd, g = run(w, ["P"], root, now=CLOCK + 1800)
     ok(g("P").get("klass") == "launch" and len(briefs()) == 2,
        "worked-after: a builder worked it after the steward ended: the same reading is a new state, one more steward")
+    own2 = "rm-fake-%d" % len(w.launched)
+    done = [{"unit": own2, "end": CLOCK + 2000}, {"unit": "rm-detached-bench-autobuild-p-1", "end": CLOCK + 1500}]
+    w.facts = {"P": dict(offline("P", "ready to advance"), ended_runs=done)}
     rd, g = run(w, ["P"], root, now=CLOCK + 2400)
     ok(g("P").get("klass") == "paused" and len(briefs()) == 2,
-       "worked-after: that second steward is spent too: paused, never a third without new work")
+       "worked-after: that second steward is spent too (a run that ended before it is no new work): paused")
+    # RIMMANDRAKE_SEE_RESCUE_RUN_ON_ITS_MOD: a run seen only as ended, after the steward ended, is new work
+    w.facts = {"P": dict(offline("P", "ready to advance"),
+                         ended_runs=done + [{"unit": "rm-detached-bench-lay-p-1", "end": CLOCK + 2900}])}
+    rd, g = run(w, ["P"], root, now=CLOCK + 3000)
+    ok(g("P").get("klass") == "launch" and len(briefs()) == 3,
+       "worked-after: a run never seen live that ended after the steward ended: one more steward")
+    rd, g = run(w, ["P"], root, now=CLOCK + 3600)
+    ok(g("P").get("klass") == "paused" and len(briefs()) == 3,
+       "worked-after: that third steward is spent too: paused, never a fourth without new work")
 
 
 def main():
