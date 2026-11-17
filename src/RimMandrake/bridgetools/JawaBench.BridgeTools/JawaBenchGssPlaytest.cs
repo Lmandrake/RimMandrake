@@ -1118,6 +1118,7 @@ namespace JawaBench.BridgeTools
             DateTime before = DateTime.UtcNow.AddSeconds(-1);
             GameDataSaveLoader.SaveGame(save);
             if (!(File.Exists(path) && File.GetLastWriteTimeUtc(path) >= before)) { c.Invalid("SaveGame wrote no fresh file at " + path); yield break; }
+            gSavedGame = new WeakReference(Current.Game);
             var cp = new List<string> { "runId " + c.run.id, "save " + save, "ticksAtSave " + ticksAtSave, "rect " + r.minX + " " + r.minZ + " " + r.Width + " " + r.Height };
             cp.AddRange(s0.Select(l => "s0 " + l));
             File.WriteAllLines(GCheckpointPath(c.run.id), cp.ToArray());
@@ -1127,9 +1128,30 @@ namespace JawaBench.BridgeTools
             c.reason = "armed: saved " + save + " at tick " + ticksAtSave + " (" + s0.Count + " lines); verdict owed by save_reload_b (resume=" + c.run.id + ") after loading that save";
         }
 
+        /// <summary>The Game that save_reload saved (weak: never keeps an unloaded game alive). save_reload_b on that same
+        /// object has read the pre-load map against its own snapshot, which proves nothing (visit 1, full list: the
+        /// launcher's readiness poll accepted the old map, paused at the save's tick, before the load began).</summary>
+        private static WeakReference gSavedGame;
+
+        /// <summary>A snapshot line without its polyline hash: the owner struck the walk bar "same polylines after load"
+        /// (2026-10-22, KNOWN_LIMITS C1), so after a load a cord is compared by its key (edge, live/dead ends, look) and a
+        /// reel by its state and trail cells; a changed polyline is recorded, never failed.</summary>
+        private static string GTopo(string l)
+        {
+            if (l.StartsWith("cord ", StringComparison.Ordinal)) { int i = l.LastIndexOf(' '); return i > 4 ? l.Substring(0, i) : l; }
+            if (l.StartsWith("reel ", StringComparison.Ordinal))
+            {
+                int g = l.IndexOf(" geom ", StringComparison.Ordinal), s = g < 0 ? -1 : l.IndexOf(" style ", g, StringComparison.Ordinal);
+                if (g >= 0 && s > g) return l.Substring(0, g) + l.Substring(s);
+            }
+            return l;
+        }
+
         private static IEnumerable<PWait> GScnSaveReloadB(GCtx c)
         {
-            c.ev["route"] = "the loaded save's cords, hoses and spans re-derived by the mod after load, compared line by line with the snapshot taken before saving";
+            c.ev["route"] = "the loaded save's cords, hoses and spans re-derived by the mod after load, compared line by line with the snapshot taken before saving (polyline hashes recorded, not compared)";
+            if (gSavedGame != null && gSavedGame.Target is Game g0 && ReferenceEquals(g0, Current.Game))
+            { c.Invalid("NOT_RELOADED: this is the game save_reload saved, not the loaded save (the load has not happened yet)"); yield break; }
             string cpPath = GCheckpointPath(c.run.resume ?? "");
             if (!File.Exists(cpPath)) { c.Invalid("no checkpoint " + cpPath); yield break; }
             string[] cp = File.ReadAllLines(cpPath);
@@ -1143,11 +1165,15 @@ namespace JawaBench.BridgeTools
             foreach (PWait x in GFrames(6)) yield return x;           // let the cord layer rebuild from the loaded map
             var s0 = cp.Where(l => l.StartsWith("s0 ")).Select(l => l.Substring(3)).ToList();
             var l0 = GSnapshot(c.map, r.ExpandedBy(2).ClipInsideMap(c.map));
-            var missing = s0.Except(l0).ToList();
-            var extra = l0.Except(s0).ToList();
+            var t0 = s0.Select(GTopo).ToList();
+            var t1 = l0.Select(GTopo).ToList();
+            var missing = t0.Except(t1).ToList();
+            var extra = t1.Except(t0).ToList();
+            int geomChanged = s0.Except(l0).Count() - missing.Count;   // lines equal but for their polyline hash
             c.ev["savedLines"] = s0.Count; c.ev["loadedLines"] = l0.Count; c.ev["missingAfterLoad"] = missing.Take(12).ToList(); c.ev["newAfterLoad"] = extra.Take(12).ToList();
+            c.ev["geomChanged"] = geomChanged;
             c.ev["fresh"] = GFresh(c.map);
-            if (missing.Count == 0 && extra.Count == 0) c.Pass("all " + s0.Count + " cord/hose/span lines identical after the load");
+            if (missing.Count == 0 && extra.Count == 0) c.Pass("all " + s0.Count + " cord/hose/span lines the same after the load (" + geomChanged + " polyline(s) redrawn, not a bar)");
             else c.Defect(missing.Count + " line(s) changed or lost and " + extra.Count + " new after the load (first: " + string.Join(" || ", missing.Take(2)) + " => " + string.Join(" || ", extra.Take(2)) + ")");
         }
     }

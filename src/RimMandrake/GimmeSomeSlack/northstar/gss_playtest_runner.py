@@ -93,6 +93,62 @@ def run_once(s, calls, a, recipe, resume=None):
     return recs
 
 
+ON_MAP_POLLS = 3        # visit 1 (full list): the readiness that held was "Playing three polls running"
+RESUME_RETRY_S = 5.0
+
+
+def _state(gi):
+    st = gi.get("state") if isinstance(gi, dict) else None
+    return st.get("programState") if isinstance(st, dict) else (gi.get("programState") if isinstance(gi, dict) else None)
+
+
+def wait_for_map(poll, ticks_at_save, limit_s=600.0, clock=time.time, sleep=time.sleep):
+    """After load_game_ready: wait for ON_MAP_POLLS polls running that read a map at the save's tick (Playing when the
+    reply says). One such poll is not enough: on the full list (STRANGE_WALK_RESUME_RACED_THE_LOAD) the OLD map, paused at
+    that tick, answered before the load began. Even three can be the old map, so save_reload_b itself refuses the saved
+    game (NOT_RELOADED) and resume_loop retries it. A poll that raises (main thread busy loading) breaks a run."""
+    t0, run, n, last = clock(), 0, 0, None
+    while clock() - t0 < limit_s:
+        try:
+            gi = poll() or {}
+        except Exception as ex:   # noqa: BLE001 - a busy main thread is part of a load
+            gi = {"error": str(ex)}
+        n += 1
+        last = gi
+        tk, st = gi.get("ticksGame"), _state(gi)
+        on = ((gi.get("mapCount") or 0) >= 1 and st in (None, "Playing") and isinstance(tk, int)
+              and 0 < tk <= (ticks_at_save or 0) + 5 and not gi.get("error"))
+        run = run + 1 if on else 0
+        if run >= ON_MAP_POLLS:
+            return {"ready": True, "polls": n, "seconds": round(clock() - t0, 1), "last": last}
+        sleep(1.0)
+    return {"ready": False, "polls": n, "seconds": round(clock() - t0, 1), "last": last}
+
+
+def not_reloaded(recs):
+    """save_reload_b ran on the game that was saved, not on the loaded one (its C# guard)."""
+    return bool(recs) and any(r.get("type") == "scenario" and r.get("status") == "INVALID"
+                              and str(r.get("reason") or "").startswith("NOT_RELOADED") for r in recs)
+
+
+def resume_loop(wait, start_b, limit_s=600.0, clock=time.time, sleep=time.sleep):
+    """Run save_reload_b once the loaded map is there; retry while the start is refused (no map yet: run_once None) or
+    B reads the saved game (NOT_RELOADED), bounded by limit_s. Returns the last records (None when never started)."""
+    t0, tries, recs = clock(), 0, None
+    while True:
+        w = wait()
+        tries += 1
+        recs = start_b()
+        if recs is not None and not not_reloaded(recs):
+            break
+        if clock() - t0 >= limit_s:
+            break
+        print("RESUME: %s; retry in %.0f s" % ("start refused" if recs is None else "save_reload_b read the saved game (NOT_RELOADED)",
+                                               RESUME_RETRY_S))
+        sleep(RESUME_RETRY_S)
+    return {"recs": recs, "tries": tries, "wait": w, "seconds": round(clock() - t0, 1)}
+
+
 def scene_walk(B=None, V=None, rows=None):
     """scenes.json sc_walk (leaf walk_scavenger_base): the playtest walk is a Stage 8 look by the owner, staged by this runner's recipe.
     Its machine half is the save/load and census rows of the one dense proof; with `rows` it appends SCENE_sc_walk over those
@@ -119,6 +175,7 @@ def main(argv=None):
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--resume", default=None)
     ap.add_argument("--no-resume", action="store_true")
+    ap.add_argument("--load-wait", type=float, default=600.0, help="seconds the resume waits for the loaded save (full list: minutes)")
     ap.add_argument("--out-dir", default=os.path.join(REPO, "Transient", "gss_playtest"))
     a = ap.parse_args(argv)
     expand(a.recipe)   # refuse a typo before touching the game
@@ -140,13 +197,13 @@ def main(argv=None):
                 lr = json.loads(lr["content"][0]["text"])
             except (ValueError, KeyError, IndexError, TypeError):
                 pass
-        while lr.get("success") and time.time() - t < 180:
-            gi = P._call(s, calls, "rimworld/get_game_info")
-            tk = gi.get("ticksGame")
-            if (gi.get("mapCount") or 0) >= 1 and isinstance(tk, int) and 0 < tk <= (ev.get("ticksAtSave") or 0) + 5:
-                break
-            time.sleep(1.0)
-        second = run_once(s, calls, a, ev.get("resumeRecipe"), pend.get("runId")) if lr.get("success") else None
+        second = None
+        if lr.get("success"):
+            r = resume_loop(lambda: wait_for_map(lambda: P._call(s, calls, "rimworld/get_game_info"), ev.get("ticksAtSave"),
+                                                 limit_s=a.load_wait),
+                            lambda: run_once(s, calls, a, ev.get("resumeRecipe"), pend.get("runId")), limit_s=a.load_wait)
+            print("RESUME: %d tr%s, %.0f s" % (r["tries"], "y" if r["tries"] == 1 else "ies", r["seconds"]))
+            second = r["recs"]
         final = P.combine(recs, second)
     elif pend:
         print("save_reload armed and NOT resumed (--no-resume): verdict stays INCOMPLETE")
