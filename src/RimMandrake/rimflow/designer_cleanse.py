@@ -17,9 +17,17 @@ and dispatch it on every remaining biome other than Pyrelands! Every single one.
         the whole-mod check (spec §4): a fresh reviewer on the OTHER model, read-only, given his words and the source
         before the proposal; it sorts each bar's pictures blind; one fix run by the author, one second look; what the
         second look still refuses goes on his pages in the reviewer's words and result.json reads applyable false.
-  designer_cleanse.py fleet --all-biomes-but Pyrelands [--parallel 4] [--only A,B] [--runner codex]
+  designer_cleanse.py converge <Mod>
+        the converge round (Conductor 2026-11-17): the latest verdict's open records only, to the author for a fix and
+        fixes.json; a read-only verifier on the other model judges each record against its would_pass, shown only the
+        entries the fix changed; a finding on an entry the fix did not change is advisory_late (the earlier look's
+        miss), never open. Stranger records are sorted cold again, self_check records are the self-check's. At most two
+        rounds; converge.json is the verdict; applyable = nothing open and the check passes.
+  designer_cleanse.py fleet --all-biomes-but Pyrelands [--parallel 4] [--only A,B] [--runner codex] [--converge]
         detached in its own systemd user unit (--foreground runs it here); resumable; status in
-        D:\\ClaudeWork\\rimmandrake\\designer_cleanse\\status.json and status.md, per-mod logs beside them.
+        D:\\ClaudeWork\\rimmandrake\\designer_cleanse\\status.json and status.md, per-mod logs beside them. --converge
+        runs the converge round on every reviewed mod, fewest open records first.
+  designer_cleanse.py gather      every mod's pages, questions and retirements in one ALL_BIOMES.md beside the status
   designer_cleanse.py status
 
 The owner's hold (mod_owner_hold.json) stays on builds; `run` refuses a held mod unless its hold row carries his words
@@ -102,8 +110,11 @@ HEADS = {   # spec §4, the whole-mod check's heads, and only these (plus the la
     "authority_unsourced": "a claim of his authority with no source",
     "stranger": "a cold reader sorted a bar's pictures differently from the proposal (the Stranger test: repair)",
     "self_check": "after the author's fix the self-check refuses the proposal's shape",
+    "regression": "the converge fix broke an entry it changed (the verifier's words)",
 }
 LAUNCHER_HEADS = ("stranger", "self_check")     # written by this program from its own readings, never by the reviewer
+CONVERGE_HEADS = ("regression",)                # written only from a converge verifier's answer
+CONVERGE_ROUNDS = 2     # the Conductor 2026-11-17: "At most two converge rounds per mod"
 
 
 def rel_out(mod):
@@ -111,7 +122,11 @@ def rel_out(mod):
 
 
 def status_dir():
-    return os.environ.get("RM_CLEANSE_STATUS_DIR") or "/mnt/d/ClaudeWork/rimmandrake/designer_cleanse"
+    """The fleet's status, logs and ALL_BIOMES.md: RM_CLEANSE_STATUS_DIR, else the agent-storage helper's folder."""
+    if os.environ.get("RM_CLEANSE_STATUS_DIR"):
+        return os.environ["RM_CLEANSE_STATUS_DIR"]
+    import rmpaths
+    return str(rmpaths.rm_path("designer_cleanse"))
 
 
 def _read(path, default=None):
@@ -168,19 +183,30 @@ def page_words(text):
     return len(re.findall(r"\S+", text or ""))
 
 
+def open_records(out):
+    """-> the reviewer's records still open on this proposal: the latest verdict's (converge.json's open, else
+    review.json's remaining), or None when neither file holds a list of records."""
+    cv = _json_file(os.path.join(out, "converge.json"))
+    if isinstance(cv, dict) and isinstance(cv.get("open"), list):
+        rem = cv["open"]
+    else:
+        rv = _json_file(os.path.join(out, "review.json"))
+        rem = rv.get("remaining") if isinstance(rv, dict) else None
+    return rem if isinstance(rem, list) and all(isinstance(r, dict) for r in rem) else None
+
+
 def page_body(out, pages):
     """-> (the run's own part of his pages, defect or None). The reviewer's still-refused block is cut off only when it is
-    exactly what review.json's remaining refusals write (it is the reviewer's, not the run's); any other text under that
-    heading is the run's and counts, and the heading itself is then a defect (an author cannot hide words under it)."""
+    exactly what the latest verdict's open records write (converge.json's open, else review.json's remaining: it is the
+    reviewer's, not the run's); any other text under that heading is the run's and counts, and the heading itself is then
+    a defect (an author cannot hide words under it)."""
     i = (pages or "").find(STILL_REFUSED_HEAD)
     if i < 0:
         return pages or "", None
-    rv = _json_file(os.path.join(out, "review.json"))
-    rem = rv.get("remaining") if isinstance(rv, dict) else None
-    if isinstance(rem, list) and rem and all(isinstance(r, dict) for r in rem) \
-            and pages[i:].strip() == _still_refused_block(rem).strip():
+    rem = open_records(out)
+    if rem and pages[i:].strip() == _still_refused_block(rem).strip():
         return pages[:i], None
-    return pages, ("his pages hold the heading %r but what follows it is not review.json's remaining refusals word for "
+    return pages, ("his pages hold the heading %r but what follows it is not the latest verdict's open records word for "
                    "word" % STILL_REFUSED_HEAD)
 
 
@@ -274,7 +300,7 @@ def check_dir(out):
             refuse("census_fate", where, "fate %r is not one of %s" % (r.get("fate"), ", ".join(FATES)),
                    "fate one of %s" % ", ".join(FATES))
         for k in ("id", "what", "why", "evidence", "called_by", "serves"):
-            if _blank(r.get(k)):
+            if _blank(r.get(k)) and (k in ("id", "fate") or not _text_list(r.get(k))):    # a list of paths is filled
                 refuse("census_row", where, "%s is blank" % k, "%s filled (the brief's census columns; `none` and why, "
                        "when there is none)" % k)
         if r.get("built") not in BUILT:
@@ -876,6 +902,12 @@ class Effects:
             out.append(p)
         return out
 
+    def head_text(self, cwd, rel):
+        """-> the file as the clone's HEAD holds it (the published proposal), or None when HEAD has no such file."""
+        r = subprocess.run(["git", "-C", cwd, "show", "HEAD:" + rel], capture_output=True, timeout=120,
+                           stdin=subprocess.DEVNULL)
+        return r.stdout.decode("utf-8", "replace") if r.returncode == 0 else None
+
     def publish(self, cwd, paths, msg):
         _git(cwd, "add", "--", *paths, timeout=300)
         r = subprocess.run(["./publish", "-m", msg] + list(paths), cwd=cwd, capture_output=True, text=True,
@@ -975,7 +1007,7 @@ def unreview(out):
     """A run that writes the proposal again makes every earlier review of it stale: review.json and review_attempt.json
     go (their deletion is committed with the new proposal), the reviewer's block leaves his pages and applyable leaves
     result.json. Nothing then reads the old verdict as this proposal's."""
-    for name in ("review.json", "review_attempt.json"):
+    for name in ("review.json", "review_attempt.json", "converge.json", "fixes.json"):
         p = os.path.join(out, name)
         if os.path.exists(p):
             os.unlink(p)
@@ -1112,7 +1144,7 @@ def review_prompt(repo, mod):
     if os.path.isdir(os.path.join(repo, "design/concepts/%s" % mod)):
         src.append("design/concepts/%s/ (record.json, sheet.md, tree.json: the mod's earlier definition)" % mod)
     lore = [p for p in LORE if os.path.exists(os.path.join(repo, p))]
-    heads = "\n".join("- %s: %s" % (k, v) for k, v in HEADS.items() if k not in LAUNCHER_HEADS)
+    heads = "\n".join("- %s: %s" % (k, v) for k, v in HEADS.items() if k not in LAUNCHER_HEADS + CONVERGE_HEADS)
     return """You are the fresh reviewer of one mod's cleansing proposal, the whole-mod check. You did not write it. You
 read and refuse; you change no file and run nothing that writes. Read in this order.
 
@@ -1188,7 +1220,7 @@ def validate_review(doc):
             bad.append("refusal %d is not an object" % (i + 1))
             continue
         head = r.get("head")
-        if not isinstance(head, str) or head not in HEADS or head in LAUNCHER_HEADS:
+        if not isinstance(head, str) or head not in HEADS or head in LAUNCHER_HEADS + CONVERGE_HEADS:
             bad.append("refusal %d: head %r is not one of the spec's heads" % (i + 1, head))
         for k in ("where", "evidence", "would_pass", "smallest_fix"):
             if not isinstance(r.get(k), str) or _blank(r.get(k)):
@@ -1404,6 +1436,488 @@ def review_mod(mod, fx, author="codex", author_model=None, effort=None, clone=No
     return {"mod": mod, "state": state, "why": why, "sha": sha, "clone": clone, "review": review}
 
 
+# ------------------------------------------------------------------------------------------------ converge
+
+
+ENTRY_CAP = 6000        # our own rule: one changed entry shown to the verifier at most this many characters (it can Read)
+ENTRIES_CAP = 120000    # our own rule: all the changed entries shown at most this many (the real proposals: 157 to 349
+#                         entries each, measured 2026-11-17; a fix touching every census row would pass 100k)
+
+
+def _entries(name, text):
+    """-> {entry name: text} of one proposal file. A JSON file splits per list item with an id ("bars.json bars/B1"),
+    per value of a dict of objects ("bars.json old_bars/<id>") and per other top-level key; markdown splits per heading.
+    The launcher's own writes (his pages' reviewer block, result.json's applyable) are no entry."""
+    if text is None:
+        return {}
+    E = {}
+
+    def put(key, val):
+        k, n = key, 1
+        while k in E:
+            n += 1
+            k = "%s (%d)" % (key, n)
+        E[k] = val
+
+    if name.endswith(".json"):
+        doc = _json_text(text)
+        if not isinstance(doc, dict):
+            put(name, text)
+            return E
+        dump = lambda v: json.dumps(v, sort_keys=True, ensure_ascii=False, indent=1)     # noqa: E731
+        for k, v in doc.items():
+            if name == "result.json" and k == "applyable":
+                continue
+            if isinstance(v, list) and v and all(isinstance(x, dict) and isinstance(x.get("id"), str) for x in v):
+                for x in v:
+                    put("%s %s/%s" % (name, k, x["id"]), dump(x))
+            elif isinstance(v, dict) and v and all(isinstance(x, dict) for x in v.values()):
+                for kk, x in v.items():
+                    put("%s %s/%s" % (name, k, kk), dump(x))
+            else:
+                put("%s %s" % (name, k), dump(v))
+        return E
+    if name == "owner_pages.md":
+        text = text.split(STILL_REFUSED_HEAD)[0].rstrip() + "\n"
+    head, buf = "(top)", []
+    for line in text.splitlines():
+        m = re.match(r"^#{1,6}\s+(.+?)\s*#*\s*$", line)
+        if m:
+            if head != "(top)" or "".join(buf).strip():
+                put("%s %s" % (name, head), "\n".join(buf).strip())
+            head, buf = m.group(1), [line]
+        else:
+            buf.append(line)
+    if head != "(top)" or "".join(buf).strip():
+        put("%s %s" % (name, head), "\n".join(buf).strip())
+    return E
+
+
+def proposal_entries(get):
+    """-> every entry of the proposal, `get(name)` giving a file's text or None."""
+    E = {}
+    for name in FILES:
+        E.update(_entries(name, get(name)))
+    return E
+
+
+def changed_entries(before, after):
+    """-> [(entry, before text or None, after text or None)] for every entry added, removed or changed."""
+    return [(k, before.get(k), after.get(k)) for k in sorted(set(before) | set(after)) if before.get(k) != after.get(k)]
+
+
+def _entry_key(s):
+    s = _norm(s).strip("`'\" ")
+    m = re.match(r"^(\S+\.(?:json|md))[:\s]*(.*)$", s)
+    if not m:
+        return ("", s)
+    rest = m.group(2).strip()
+    return (m.group(1), rest.split("/")[-1].strip() if rest else "")
+
+
+def entry_changed(name, changed):
+    """-> the changed entry `name` names (exactly, or the same file and last path part), or None."""
+    k = _entry_key(name)
+    for c in changed:
+        if _norm(c) == _norm(name) or _entry_key(c) == k:
+            return c
+    return None
+
+
+def _bar_of(rec, bars):
+    """-> the id of the bar a stranger record names, or None when no bar of bars.json is named in its where."""
+    where = str(rec.get("where") or "")
+    for b in bars:
+        bid = b.get("id")
+        if isinstance(bid, str) and bid and re.search(r"(?<![\w])%s(?![\w])" % re.escape(bid), where):
+            return bid
+    return None
+
+
+def check_records(refs, outcome, prefix):
+    """-> the self-check's refusals as self_check records, one per rule (a rule refusing 82 census rows is one record
+    naming them, so the author's prompt and his pages stay readable)."""
+    recs, by = [], {}
+    if outcome != "proposed":
+        recs.append({"head": "self_check", "where": "result.json", "evidence": "the outcome is %r, not proposed"
+                     % outcome, "would_pass": "outcome proposed", "smallest_fix": "restore the proposal"})
+    for f in refs:
+        by.setdefault(f["rule"], []).append(f)
+    for rule, fs in by.items():
+        shown = "; ".join("%s: %s" % (f["where"], f["what"]) for f in fs[:12])
+        more = " (and %d more of the same rule)" % (len(fs) - 12) if len(fs) > 12 else ""
+        recs.append({"head": "self_check", "where": ", ".join(sorted({f["where"].split(" row ")[0].split(" ")[0]
+                                                                       for f in fs})),
+                     "evidence": "the self-check refuses %d (%s): %s%s" % (len(fs), rule, shown, more),
+                     "would_pass": fs[0]["would_pass"], "smallest_fix": fs[0]["would_pass"]})
+    return [_record("%s.%d" % (prefix, i), r) for i, r in enumerate(recs, 1)]
+
+
+def _record(rid, r):
+    return {"id": rid, "head": r.get("head"), "where": r.get("where"), "evidence": r.get("evidence"),
+            "would_pass": r.get("would_pass"), "smallest_fix": r.get("smallest_fix")}
+
+
+def converge_fix_prompt(mod, records, rnd):
+    out = rel_out(mod)
+    return """CONVERGE FIX, round %d of at most %d, of the cleansing proposal of %s.
+
+Your proposal in %s is written and published. A reviewer on another model refused the records below; they are all that
+stands between it and the owner's look. Fix each record in that folder and change nothing a record does not need: every
+entry you change is read again, and a change that breaks an entry is refused as a regression. Each record says what
+would pass (would_pass) and the smallest fix (smallest_fix). Where you are sure a record is wrong, change nothing for it
+and say why in fixes.json and in ambiguities.md; the verifier weighs that.
+
+The brief you followed is %s (what a bar is, the fate of an extra, the file table); read it again where a record needs
+it. Keep result.json's counts equal to the files. Do not write review.json or converge.json, and do not write the
+heading "%s" on owner_pages.md: the launcher writes those. Write nothing outside the folder. Then run the self-check:
+python3 src/RimMandrake/rimflow/designer_cleanse.py check %s
+
+RECORDS:
+%s
+END RECORDS
+
+Last, write %sfixes.json, one object:
+{"fixes": [{"id": "<record id>", "changed": "<what you changed, or why you changed nothing>",
+  "where": "<file and entry>"}]}
+with one fix per record.
+""" % (rnd, CONVERGE_ROUNDS, mod, out, BRIEF, STILL_REFUSED_HEAD, out, json.dumps(records, indent=1,
+                                                                              ensure_ascii=False), out)
+
+
+def converge_verify_prompt(mod, records, fixes_text, changed, rnd):
+    heads = "\n".join("- %s: %s" % (k, v) for k, v in HEADS.items() if k not in LAUNCHER_HEADS + CONVERGE_HEADS)
+    shown, room = [], ENTRIES_CAP
+    for name, b, a in changed:
+        if room <= 0:
+            shown.append("### %s\n(not shown: the changed entries pass %d characters; Read the file)\n" % (name, ENTRIES_CAP))
+            continue
+        room -= len(b or "") + len(a or "")
+        cut = lambda t: "(absent)" if t is None else (t if len(t) <= ENTRY_CAP else t[:ENTRY_CAP] +   # noqa: E731
+                                                      "\n... (cut; Read the file for the rest)")
+        shown.append("### %s\nBEFORE:\n%s\nAFTER:\n%s\n" % (name, cut(b), cut(a)))
+    return """VERIFY THE FIX, converge round %d, of the cleansing proposal of %s. You did not write it. You read and judge;
+you change no file and run nothing that writes.
+
+A reviewer refused the records below. The author was asked to fix them in %s and to change nothing else. Judge each
+record: "fixed" when the proposal now does what its would_pass says (or when the author's account shows the record does
+not stand), "not_fixed" otherwise. Your evidence names the file and the words.
+
+RECORDS:
+%s
+END RECORDS
+
+THE AUTHOR'S ACCOUNT (fixes.json):
+%s
+
+THE ENTRIES THE FIX CHANGED (each before, then after; no other entry changed):
+%s
+A regression is a change above that breaks its own entry under one of these heads:
+%s
+Name a regression's entry exactly as it is headed above. A gap you notice in an entry the fix did not change is not a
+regression: it is the earlier look's miss; put it in advisory_late, which blocks nothing. Do not invent a quotation, an
+event or a path.
+
+Your last message is one JSON object and nothing else:
+{"verdicts": [{"id": "<record id>", "verdict": "fixed" or "not_fixed", "evidence": "..."}],
+ "regressions": [{"entry": "<a changed entry as headed above>", "evidence": "...", "would_pass": "...",
+   "smallest_fix": "..."}],
+ "advisory_late": [{"what": "...", "reason": "..."}]}
+""" % (rnd, mod, rel_out(mod), json.dumps(records, indent=1, ensure_ascii=False),
+       (fixes_text or "(the author wrote no fixes.json)")[:8000], "\n".join(shown) or "(none)\n", heads)
+
+
+def _verify(fx, mod, clone, rv_runner, rv_model, records, fixes_text, changed, rnd, base):
+    """The verifier's answer. -> (verdicts {id: {verdict, evidence}}, regressions, advisory_late, defects). A record the
+    verifier gives no readable verdict for after one retry stays not_fixed."""
+    prompt = converge_verify_prompt(mod, records, fixes_text, changed, rnd)
+    kw = {"model": rv_model, "tools": "Read,Grep,Glob"} if rv_runner == "claude" else {"sandbox": "read-only"}
+    ids = [r["id"] for r in records]
+    got, regs, late, missing = {}, [], [], ids
+    for attempt in (1, 2):
+        p = prompt if attempt == 1 else prompt + ("\n\nYour last answer gave no readable verdict for %s. Answer again "
+                                                  "with the one JSON object only, a verdict for every record.\n"
+                                                  % ", ".join(missing))
+        res = _agent(fx, mod, rv_runner, clone, p, base + (".verify.retry" if attempt == 2 else ".verify"), **kw)
+        doc = parse_review((res or {}).get("result"))
+        if isinstance(doc, dict):
+            for v in _dicts(doc.get("verdicts")):
+                if v.get("id") in ids and v.get("verdict") in ("fixed", "not_fixed"):
+                    got[v["id"]] = {"verdict": v["verdict"], "evidence": str(v.get("evidence") or "")}
+            regs = _dicts(doc.get("regressions")) or regs
+            late = [x for x in (doc.get("advisory_late") or []) if isinstance(x, (dict, str))] or late
+        missing = [i for i in ids if i not in got]
+        if not missing:
+            break
+    defects = ["no readable verdict for %s after one retry" % ", ".join(missing)] if missing else []
+    for i in missing:
+        got[i] = {"verdict": "not_fixed", "evidence": "the verifier gave no readable verdict (asked twice)"}
+    return got, regs, late, defects
+
+
+def converge_done(repo, mod):
+    """Resume: converged, or two rounds behind it, or blocked; of these very bytes."""
+    out = os.path.join(repo, rel_out(mod))
+    res = _json_file(os.path.join(out, "result.json"))
+    if isinstance(res, dict) and res.get("outcome") == "blocked":
+        return True
+    name, doc = latest_verdict(out)
+    if doc is None or not verdict_current(out, doc):
+        return False
+    if name == "converge.json":
+        return doc.get("open") == [] or len(_dicts(doc.get("rounds"))) >= CONVERGE_ROUNDS
+    return not doc.get("remaining")
+
+
+def _converge_state(name, doc):
+    if name == "converge.json":
+        return "converged" if doc.get("applyable") is True else "open-after-converge"
+    return "converged" if not doc.get("remaining") else "open-after-converge"
+
+
+def converge_mod(mod, fx, clone=None):
+    """The converge round. -> {state: converged | open-after-converge | blocked, ...}."""
+    t0 = time.time()
+    why = _hold_refusal(mod)
+    if why:
+        fx.status(mod, "blocked", why)
+        fx.log(mod, "converge refused: " + why)
+        return {"mod": mod, "state": "blocked", "why": why}
+    clone = clone or fx.clone(mod)
+    out_rel = rel_out(mod)
+    out = os.path.join(clone, out_rel)
+
+    def blocked(why):
+        fx.status(mod, "blocked", why)
+        fx.log(mod, "converge blocked: " + why)
+        return {"mod": mod, "state": "blocked", "why": why, "clone": clone}
+
+    result = _json_file(os.path.join(out, "result.json"))
+    if not isinstance(result, dict) or result.get("outcome") != "proposed":
+        return blocked("no proposed result.json to converge (%s)" % (result.get("outcome") if isinstance(result, dict)
+                                                                     else "unreadable or missing"))
+    name, doc = latest_verdict(out)
+    if doc is None:
+        return blocked("no readable first look (review.json) to converge from: review it first")
+    if not verdict_current(out, doc):
+        return blocked("%s is a verdict of other bytes (its digest is not the proposal's): stale; review it again"
+                       % name)
+    if converge_done(clone, mod):
+        state = _converge_state(name, doc)
+        fx.status(mod, state, "already done (resumed): %s%s" % (out_rel, name))
+        return {"mod": mod, "state": state, "why": "already done", "clone": clone}
+    run = _dict(_json_file(os.path.join(out, "run.json")))
+    if name == "converge.json":
+        cv = doc
+        rounds, open_ = list(_dicts(cv.get("rounds"))), list(_dicts(cv.get("open")))
+        author, late = cv.get("author") or "codex", list(cv.get("advisory_late") or [])
+    else:
+        cv, rounds, late = {}, [], []
+        open_ = [_record("R%d" % i, r) for i, r in enumerate(_dicts(doc.get("remaining")), 1)
+                 if r.get("head") != "self_check"]
+        pre_refs, pre_stats = check_dir(out)       # what today's check refuses is open before any fix: round one's
+        open_ += check_records(pre_refs, "proposed", "C0")
+        author = doc.get("author") if doc.get("author") in ("codex", "claude") else run.get("runner") or "codex"
+    a_model, a_effort = (run.get("model"), run.get("effort")) if run.get("runner") == author else (None, None)
+    akw = {"model": a_model, "effort": a_effort} if author == "codex" else {"model": a_model or "opus"}
+    rv_runner, rv_model = reviewer_for(author)
+    base = os.path.join(status_dir(), "runs", mod, time.strftime("%Y%m%d-%H%M%S") + ".converge")
+    rng = random.Random("%s %s" % (mod, time.time()))
+    sha = None
+    final_refs = []
+    def finish(rnd, open_, late, rounds, sha):
+        """His pages' block, converge.json, result.json's applyable, and one publish of the cleanse folder."""
+        pages_p = os.path.join(out, "owner_pages.md")
+        pages = (_read(pages_p) or "").split(STILL_REFUSED_HEAD)[0].rstrip() + "\n"
+        if open_:
+            pages += "\n" + _still_refused_block(open_)
+        with open(pages_p, "w", encoding="utf-8") as f:
+            f.write(pages)
+        cv = {"mod": mod, "author": author, "verifier": {"runner": rv_runner, "model": rv_model},
+              "first_look": "review.json", "rounds": rounds, "open": open_, "advisory_late": late}
+        _write_json(os.path.join(out, "converge.json"), cv)
+        final_refs, _ = check_dir(out)
+        cur = _dict(_json_file(os.path.join(out, "result.json")))
+        cur["applyable"] = not open_ and not final_refs
+        _write_json(os.path.join(out, "result.json"), cur)
+        cv.update(applyable=cur["applyable"], digest=proposal_digest(out), seconds=int(time.time() - t0),
+                  at=datetime.datetime.now().isoformat(timespec="seconds"))
+        _write_json(os.path.join(out, "converge.json"), cv)
+        paths = sorted(p for p in fx.changed(clone) if p.startswith(out_rel))
+        sha = fx.publish(clone, paths, "designer cleanse: %s converge round %d (%d open)" % (mod, rnd, len(open_))) \
+            if paths else sha
+        fx.log(mod, "converge round %d: %d open, %d advisory late, check %s (published %s)"
+               % (rnd, len(open_), len(late), "refuses" if final_refs else "passes", sha))
+        return cv, sha
+
+    if not open_ and not rounds:     # nothing stands open from the first look (its only records were the self-check's)
+        cv, sha = finish(0, open_, late, rounds, sha)
+    while len(rounds) < CONVERGE_ROUNDS and open_:
+        why = _hold_refusal(mod)
+        if why:
+            return blocked(why)
+        rnd = len(rounds) + 1
+        fx.status(mod, "running", "converge round %d: author fixing %d records" % (rnd, len(open_)))
+        before = proposal_entries(lambda n: fx.head_text(clone, out_rel + n))
+        pre = _dict(_json_file(os.path.join(out, "result.json"))) or dict(result)
+        fp = os.path.join(out, "fixes.json")
+        if os.path.exists(fp):
+            os.unlink(fp)
+        res = _agent(fx, mod, author, clone, converge_fix_prompt(mod, open_, rnd), base + ".r%d.fix" % rnd, **akw)
+        now = _json_file(os.path.join(out, "result.json"))
+        if not isinstance(now, dict):      # the fix broke result.json: its bytes stay beside, the counts before return
+            bad_p = os.path.join(out, "result.json")
+            if os.path.exists(bad_p):
+                os.replace(bad_p, os.path.join(out, "result.broken-by-fix.txt"))
+            now = dict(pre)
+            now["note"] = "result.json as it stood before converge round %d: the fix left it unreadable (kept as " \
+                          "result.broken-by-fix.txt)" % rnd
+            _write_json(os.path.join(out, "result.json"), now)
+        fixes_text = _read(fp)
+        changed = changed_entries(before, proposal_entries(lambda n: _read(os.path.join(out, n))))
+        names = [c[0] for c in changed]
+        refs, _ = check_dir(out)
+        verdicts = {}
+        bars = _dicts(_dict(_json_file(os.path.join(out, "bars.json"))).get("bars"))
+        to_verify = []
+        for r in open_:
+            if r.get("head") == "self_check":
+                continue           # the self-check's own: superseded by this round's reading below
+            bar = _bar_of(r, bars) if r.get("head") == "stranger" else None
+            if r.get("head") == "stranger" and bar:
+                items, truth = blind([b for b in bars if b.get("id") == bar], rng)
+                sort, _u = _blind_sort(fx, mod, rv_runner, rv_model, items, base + ".r%d.%s" % (rnd, r["id"]))
+                if sort is None:
+                    verdicts[r["id"]] = {"verdict": "not_fixed", "evidence": "the cold sort was unreadable twice"}
+                    continue
+                _rows, srefs = score_blind(sort, truth)
+                verdicts[r["id"]] = {"verdict": "not_fixed" if srefs else "fixed",
+                                     "evidence": srefs[0]["evidence"] if srefs else "a cold reader sorts every picture "
+                                     "of %s as the proposal labels it" % bar, "by": "cold sort"}
+                if srefs:
+                    r = dict(r, evidence=srefs[0]["evidence"])
+                    verdicts[r["id"]]["record"] = r
+            else:
+                to_verify.append(r)
+        regs, defects = [], []
+        if to_verify:
+            fx.status(mod, "running", "converge round %d: verifier on %d records" % (rnd, len(to_verify)))
+            got, regs, rlate, defects = _verify(fx, mod, clone, rv_runner, rv_model, to_verify, fixes_text, changed,
+                                                rnd, base + ".r%d" % rnd)
+            verdicts.update(got)
+            for x in rlate:
+                late.append(dict(x, round=rnd) if isinstance(x, dict) else {"what": x, "round": rnd})
+        new_open = []
+        for r in open_:
+            v = verdicts.get(r["id"])
+            if r.get("head") != "self_check" and v and v["verdict"] != "fixed":
+                new_open.append(v.get("record") or r)
+        k = 0
+        for g in regs:
+            hit = entry_changed(str(g.get("entry") or g.get("where") or ""), names)
+            if hit and not _blank(g.get("evidence")):
+                k += 1
+                new_open.append({"id": "G%d.%d" % (rnd, k), "head": "regression", "where": hit,
+                                 "evidence": g.get("evidence"), "would_pass": g.get("would_pass") or "the entry as "
+                                 "it stood before the fix, with the record's fix kept",
+                                 "smallest_fix": g.get("smallest_fix") or g.get("would_pass") or "undo the break"})
+            else:
+                late.append({"round": rnd, "entry": g.get("entry") or g.get("where"), "what": g.get("evidence"),
+                             "would_pass": g.get("would_pass"), "reason": "named as a regression on an entry the fix "
+                             "did not change: the earlier look's miss"})
+        cur = _dict(_json_file(os.path.join(out, "result.json")))
+        new_open += check_records(refs, cur.get("outcome"), "C%d" % rnd)
+        rounds.append({"n": rnd, "records": open_, "fixes": _json_text(fixes_text) if fixes_text else None,
+                       "verdicts": verdicts, "changed_entries": names, "verifier_defects": defects,
+                       "author_usage": _usage(res), "author_error": str(res.get("result"))[:400]
+                       if (res or {}).get("is_error") else None, "open_after": new_open})
+        open_ = new_open
+        cv, sha = finish(rnd, open_, late, rounds, sha)
+    state = "converged" if cv.get("applyable") is True else "open-after-converge"
+    why = "%d rounds; %d open; %d advisory late; %s" % (len(rounds), len(open_), len(late),
+                                                       "applyable" if state == "converged" else "not applyable")
+    fx.status(mod, state, why)
+    return {"mod": mod, "state": state, "why": why, "sha": sha, "clone": clone, "converge": cv}
+
+
+# ------------------------------------------------------------------------------------------------ gather
+
+
+def page_questions(pages):
+    """-> his questions on one mod's pages: each `Q<n>.` line (bold or not) with the lines that follow it up to a blank
+    line or a heading, joined into one line."""
+    qs, cur = [], None
+    for line in (pages or "").split(STILL_REFUSED_HEAD)[0].splitlines():
+        s = line.strip()
+        m = re.match(r"^(?:[-*>]\s+)?(?:\*\*|__)?Q(\d+)\.(?:\*\*|__)?\s*(.*)$", s)
+        if m:
+            if cur:
+                qs.append(cur)
+            cur = [m.group(2)]
+        elif cur is not None:
+            if not s or s.startswith("#"):
+                qs.append(cur)
+                cur = None
+            else:
+                cur.append(s)
+    if cur:
+        qs.append(cur)
+    return [t for t in (" ".join(x).strip() for x in qs) if t]
+
+
+def gather(repo):
+    """-> (text, totals): every mod's cleanse in one page, ALL_BIOMES.md in the status folder. A top table (applyable and
+    the reviewer's open records per mod), every question numbered once with its mod, every recommended retirement in
+    words (no id he has not been shown), then each mod's two pages in full."""
+    root = os.path.join(repo, "design", "concepts")
+    mods = sorted(m for m in os.listdir(root) if os.path.exists(os.path.join(root, m, "cleanse", "result.json"))) \
+        if os.path.isdir(root) else []
+    rows, qlines, rlines, parts = [], [], [], []
+    tot = {"mods": len(mods), "applyable": 0, "questions": 0, "retirements": 0, "open": 0}
+    for m in mods:
+        out = os.path.join(root, m, "cleanse")
+        res = _dict(_json_file(os.path.join(out, "result.json")))
+        c = _dict(res.get("counts"))
+        name, doc = latest_verdict(out)
+        rem = open_records(out)
+        if doc is None:
+            ap = "not reviewed"
+        elif not verdict_current(out, doc):
+            ap = "stale review"
+        else:
+            ap = "yes" if res.get("applyable") is True else "no"
+        tot["applyable"] += ap == "yes"
+        tot["open"] += len(rem or [])
+        pages = _read(os.path.join(out, "owner_pages.md")) or ""
+        qs = page_questions(pages)
+        for q in qs:
+            tot["questions"] += 1
+            qlines.append("%d. **%s**: %s" % (tot["questions"], m, q))
+        census = _dicts(_dict(_json_file(os.path.join(out, "census.json"))).get("rows"))
+        for r in census:
+            if r.get("fate") == "recommend_retire":
+                tot["retirements"] += 1
+                rlines.append("- **%s**: %s. Why: %s" % (m, str(r.get("what") or "").rstrip("."),
+                                                         str(r.get("why") or "").strip()))
+        rows.append("| %s | %s | %s -> %s | %s | %s | %d | %s | %s |" % (
+            m, res.get("outcome") or "?", c.get("old_bars", "?"), c.get("bars", "?"), c.get("next_version", "?"),
+            c.get("recommend_retire", "?"), len(qs), ap, "-" if rem is None else len(rem)))
+        parts.append("## %s\n\n(%s)\n\n%s" % (m, os.path.join("design", "concepts", m, "cleanse", "owner_pages.md"),
+                                              pages.strip()))
+    text = "\n".join([
+        "# Designer Cleanse: every biome (gathered %s)" % datetime.datetime.now().strftime("%Y-%m-%d %H:%M"), "",
+        "%d mods; %d applyable; %d open reviewer records; %d questions; %d recommended retirements." % (
+            tot["mods"], tot["applyable"], tot["open"], tot["questions"], tot["retirements"]), "",
+        "| mod | outcome | bars before -> after | next version | retire | questions | applyable | open |",
+        "|---|---|---|---|---|---|---|---|"] + rows + [
+        "", "## Every question", ""] + (qlines or ["(none)"]) + [
+        "", "## Every recommended retirement", ""] + (rlines or ["(none)"]) + [""] + [p + "\n" for p in parts])
+    os.makedirs(status_dir(), exist_ok=True)
+    with open(os.path.join(status_dir(), "ALL_BIOMES.md"), "w", encoding="utf-8") as f:
+        f.write(text)
+    return text, tot
+
+
 # ------------------------------------------------------------------------------------------------ fleet and status
 
 
@@ -1461,9 +1975,31 @@ def fleet_order(repo, but=(), only=None):
     return [m for m in order if m in set(only)] if only else order
 
 
+def latest_verdict(out):
+    """-> (name, doc) of the latest verdict on the proposal: converge.json when it exists, else review.json; doc None when
+    neither reads as an object."""
+    for name in ("converge.json", "review.json"):
+        if os.path.exists(os.path.join(out, name)):
+            doc = _json_file(os.path.join(out, name))
+            return name, doc if isinstance(doc, dict) else None
+    return None, None
+
+
+def verdict_current(out, doc):
+    """A verdict of these very bytes: its digest equals the proposal's. A verdict with no digest at all was written by the
+    launcher before 2026-11-17 (the 23 first looks of 445c1012a5): the Conductor, 2026-11-17, rules it the first look, not
+    stale ("an old review with no digest is accepted as the first look for converge")."""
+    if not isinstance(doc, dict):
+        return False
+    if "digest" not in doc:
+        return True
+    return doc.get("digest") == proposal_digest(out)
+
+
 def done(repo, mod):
-    """Resume: a mod whose proposal passes check and has a review of these very bytes (its digest), or says it is
-    blocked, is skipped. A review of other bytes (an older proposal, or a review that recorded no digest) is stale."""
+    """Resume: a mod whose proposal passes check and whose latest verdict (converge.json, else review.json) is of these
+    very bytes, or that says it is blocked, is skipped. A verdict whose digest is of other bytes is stale; one with no
+    digest is an older launcher's first look and is kept (verdict_current)."""
     out = os.path.join(repo, rel_out(mod))
     if not os.path.exists(os.path.join(out, "result.json")):
         return False
@@ -1472,8 +2008,7 @@ def done(repo, mod):
         return False
     if stats.get("outcome") == "blocked":
         return True
-    rv = _json_file(os.path.join(out, "review.json"))
-    return isinstance(rv, dict) and rv.get("digest") == proposal_digest(out)
+    return verdict_current(out, latest_verdict(out)[1])
 
 
 def fleet_unit_argv(args, unit):
@@ -1496,10 +2031,12 @@ def fleet_unit_argv(args, unit):
             "python3", os.path.abspath(__file__), "fleet"] + list(args) + ["--foreground"]
 
 
-def fleet(mods, fx_for, runner="codex", parallel=4, model=None, effort=None):
+def fleet(mods, fx_for, runner="codex", parallel=4, model=None, effort=None, converge=False):
     st = Status(status_dir())
+    keep = ("converged", "open-after-converge", "running") if converge else (
+        "reviewed", "refused-after-second-look", "running")
     for m in mods:     # a running line may be another invocation's live mod: its owner rewrites it, not this queue
-        if (st.read()["mods"].get(m) or {}).get("state") not in ("reviewed", "refused-after-second-look", "running"):
+        if (st.read()["mods"].get(m) or {}).get("state") not in keep:
             st.set(m, "queued", "")
 
     def one(mod):
@@ -1516,6 +2053,8 @@ def fleet(mods, fx_for, runner="codex", parallel=4, model=None, effort=None):
         try:
             clone = fx.clone(mod)
             out = os.path.join(clone, rel_out(mod))
+            if converge and latest_verdict(out)[0]:
+                return mod, converge_mod(mod, fx, clone=clone)["state"]
             if done(clone, mod):
                 prev = _dict(_json_file(os.path.join(out, "review.json")))
                 state = "reviewed" if prev.get("applyable") is True else (
@@ -1534,6 +2073,8 @@ def fleet(mods, fx_for, runner="codex", parallel=4, model=None, effort=None):
                 if ran.get("runner") in ("codex", "claude"):
                     author, a_model, a_effort = ran["runner"], ran.get("model"), ran.get("effort")
             rec = review_mod(mod, fx, author=author, author_model=a_model, effort=a_effort, clone=clone)
+            if converge and rec["state"] in ("reviewed", "refused-after-second-look"):
+                return mod, converge_mod(mod, fx, clone=clone)["state"]
             return mod, rec["state"]
         except Exception as e:      # noqa: BLE001  one mod's crash is its own line, never the fleet's end
             import traceback
@@ -1556,6 +2097,10 @@ def _main_one(o):
         rec = run_mod(o.mod, Effects(), runner=o.runner, model=o.model, effort=o.effort)
         print(json.dumps({k: rec.get(k) for k in ("mod", "state", "why", "sha", "seconds", "stray")}, indent=1))
         return 0 if rec["state"] in ("proposed", "blocked") else 1
+    if o.cmd == "converge":
+        rec = converge_mod(o.mod, Effects())
+        print(json.dumps({k: rec.get(k) for k in ("mod", "state", "why", "sha")}, indent=1))
+        return 0 if rec["state"] in ("converged", "open-after-converge") else 1
     rec = review_mod(o.mod, Effects(), author=o.author, author_model=o.model, effort=o.effort)
     print(json.dumps({k: rec.get(k) for k in ("mod", "state", "why", "sha")}, indent=1))
     return 0
@@ -1584,6 +2129,9 @@ def main(argv=None):
     fp.add_argument("--model")
     fp.add_argument("--effort")
     fp.add_argument("--foreground", action="store_true", help="run here (the detached unit runs this)")
+    fp.add_argument("--converge", action="store_true", help="the converge round on every reviewed mod")
+    sub.add_parser("converge").add_argument("mod")
+    sub.add_parser("gather")
     sub.add_parser("status")
     o = ap.parse_args(argv)
     if o.cmd == "case":
@@ -1593,7 +2141,11 @@ def main(argv=None):
         refs, text = check_report(o.dir)
         print(text)
         return 1 if refs else 0
-    if o.cmd in ("run", "review"):
+    if o.cmd == "gather":
+        text, tot = gather(ROOT)
+        print("%s (%s)" % (os.path.join(status_dir(), "ALL_BIOMES.md"), ", ".join("%s %s" % kv for kv in tot.items())))
+        return 0
+    if o.cmd in ("run", "review", "converge"):
         try:
             with mod_lock(o.mod):
                 return _main_one(o)
@@ -1603,8 +2155,11 @@ def main(argv=None):
     if o.cmd == "fleet":
         only = [x for x in o.only.split(",") if x.strip()]
         mods = fleet_order(ROOT, but=o.all_biomes_but, only=only)
+        if o.converge:     # fewest open records first: the most likely to converge take the quota first
+            mods.sort(key=lambda m: len(open_records(os.path.join(ROOT, rel_out(m))) or []))
         if not o.foreground:
             args = ["--all-biomes-but"] + o.all_biomes_but + ["--parallel", str(o.parallel), "--runner", o.runner]
+            args += ["--converge"] if o.converge else []
             args += (["--only", o.only] if only else []) + (["--model", o.model] if o.model else []) + (
                 ["--effort", o.effort] if o.effort else [])
             unit = "rm-designer-cleanse-fleet-%s" % time.strftime("%Y%m%d-%H%M%S")
@@ -1615,7 +2170,8 @@ def main(argv=None):
                                                                 os.path.join(status_dir(), "status.md")))
             return r.returncode
         st = Status(status_dir())
-        fleet(mods, lambda m: Effects(st), runner=o.runner, parallel=o.parallel, model=o.model, effort=o.effort)
+        fleet(mods, lambda m: Effects(st), runner=o.runner, parallel=o.parallel, model=o.model, effort=o.effort,
+              converge=o.converge)
         return 0
     if o.cmd == "status":
         print(_read(os.path.join(status_dir(), "status.md")) or "no status yet: %s" % status_dir(), end="")
