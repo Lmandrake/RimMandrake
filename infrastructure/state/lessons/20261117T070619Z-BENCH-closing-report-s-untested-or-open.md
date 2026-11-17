@@ -1,0 +1,1 @@
+A closing report's 'untested or open' list is work, not a footnote: the Slack Fable rescue ended with '21 of 288 poses found no lay' and called them unreachable; resumed, it found a real lay bug across 1,969 of 13,248 poses the game can make. Before telling the owner a run is done, resume it on every open line (2026-11-16).

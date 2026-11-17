@@ -1,0 +1,1 @@
+Times told to the owner must be read from date in the same turn: four messages on 2026-11-16 were stamped 2 to 6 minutes ahead because I estimated. Also a Monitor grep over the Conductor log matches the Dispatcher's 'restart held' lines because they quote the monitor's own command text: exclude restart:BENCH lines first.

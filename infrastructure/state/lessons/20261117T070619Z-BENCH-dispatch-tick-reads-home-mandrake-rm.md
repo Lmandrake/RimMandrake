@@ -1,0 +1,1 @@
+The Dispatch tick reads /home/mandrake/rm/dispatch (origin), not the seat clone: a Conductor 'kind hold' journal line holds nothing until it is published. And when a Fable is handed a whole mod, hold the pipeline's stages for that mod (kind hold on 6, 3 and 4+5) or the tick launches an Opus fixer per failed line under it; file the owed release at once (2026-11-16).
