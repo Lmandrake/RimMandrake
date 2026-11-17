@@ -1484,6 +1484,13 @@ def refusals_launcher(tmp, repo):
 
 def wiring(tmp, repo):
     import role_launch as RL
+    import subprocess
+    # RIMMANDRAKE_REQUIRE_TOKENS_ON_HAND_CLOSE_PHANTOM_RESERVATION: a hand `close` with no --tokens charged the run's
+    # whole reservation as unmeasured (Pyrelands 2026-11-17: 3,940,000 phantom tokens tripped the loop-ceiling park)
+    p = subprocess.run([sys.executable, os.path.join(HERE, "designer_stage.py"), "close", tmp, "--run", "x"],
+                       capture_output=True, text=True, timeout=60)
+    check("cli: a hand close names its tokens (no silent reservation charge)",
+          p.returncode == 2 and "--tokens" in p.stderr, (p.returncode, p.stderr[-200:]))
     sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8"))
     row = next(r for r in sch["roles"] if isinstance(r, dict) and r.get("ledger_item") ==
                "CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING")

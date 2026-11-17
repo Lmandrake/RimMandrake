@@ -2747,7 +2747,9 @@ def main(argv=None):
         x = sub.add_parser(name)
         x.add_argument("dir")
         x.add_argument("--run", required=True)
-        x.add_argument("--run-cap" if name == "open" else "--tokens", type=int)
+        # a hand close states its spend: with no --tokens close_run charges the whole reservation as unmeasured,
+        # which a steward's hand exam does not spend (RIMMANDRAKE_REQUIRE_TOKENS_ON_HAND_CLOSE_PHANTOM_RESERVATION)
+        x.add_argument("--run-cap" if name == "open" else "--tokens", type=int, required=name == "close")
     x = sub.add_parser("charge")
     x.add_argument("dir")
     x.add_argument("--tokens", type=int, required=True)
