@@ -1,0 +1,2 @@
+ops_episodes notes on a counter reading (ops_memory KINDS counter: *.days_since_advance, *.week_used_pct) are graded on its per-hour RATE, not its level: memory.json 'v' is the rate, 'level'/'last' the value the digest shows. A note 'plan.days_since_advance > 15' can never hold (the rate sits near 0.042/h while nothing advances, and goes negative on a reset); write '> 0.03' for 'still no advance'. Two Operations runs (2026-11-16 13:55Z, 2026-11-17 01:55Z) wrote the level by mistake.
+home: src/RimMandrake/rimflow/roles/operations.md
