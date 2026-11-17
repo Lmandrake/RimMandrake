@@ -1,0 +1,2 @@
+rm-deploy-update failed 3 runs (18:27-18:47 PST 2026-11-16): load ~15 made drvfs git status ~60s so the 80s pass budget never reached the ff-pull, which was also blocked by landed dirt (BENCH.jsonl, a conversation md) and a stale index.lock; fix by hand: delete stale lock/tmp_pack, git checkout the dirt, pull, touch .git/pulse_update_last_good, reset-failed. Permanent fix (not done): update_code should clean landed dirt before the status call and raise UPDATE_BUDGET_S.
+home: skills/rimworld-modding
