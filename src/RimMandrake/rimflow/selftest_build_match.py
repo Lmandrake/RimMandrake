@@ -191,6 +191,13 @@ def io_checks(tmp):
     write(os.path.join(mods2, "Solo", "About", "About.xml"), ABOUT % "mandrake.rm.solo")
     check(B._mod_folder(root2, "Solo", mods2)[1] == os.path.join(mods2, "Solo"),
           "a mod the composition does not name is read from its own folder")
+    # fourth GPT review (D:\ClaudeWork\rimmandrake\conductor\bm_gpt_review4.log, the job's own probes): a composition
+    # file that is there but cannot be read must not send a composed mod to its stale standalone copy
+    for bad_json in ("{not json", json.dumps({"compose_wave": 1, "entries": ["Comp"]})):
+        write(os.path.join(root2, "src", "RimMandrake", "Biomes.compose.json"), bad_json)
+        got4 = B._mod_folder(root2, "Comp", mods2)[1]
+        check(got4 is None, "an unreadable Biomes.compose.json (%s) gives no folder, never the standalone copy: %s"
+              % (bad_json[:12], got4))
 
     # ---- ModsConfig.xml is parsed, in order; a commented-out line is not a mod ---------------------------------------
     cfg = os.path.join(tmp, "ModsConfig.xml")
@@ -265,6 +272,15 @@ def io_checks(tmp):
     check(wr["why"] and B.STANDIN_ENV in " ".join(wr["why"]),
           "a stand-in left in the environment is refused against the real repo (it cannot pass a live exit): %s"
           % wr["why"])
+    clone = os.path.join(tmp, "poolclone")                  # another checkout of the repo (or its case alias)
+    os.makedirs(os.path.join(clone, ".git"))
+    os.environ[B.STANDIN_ENV] = stand
+    try:
+        wc = B.walk_build(clone, "TestMod", sv, host="Archmagi")
+    finally:
+        os.environ.pop(B.STANDIN_ENV, None)
+    check(wc["why"] and B.STANDIN_ENV in " ".join(wc["why"]),
+          "a stand-in is refused in any git checkout, not only the one this file sits in: %s" % wc["why"])
 
     # ---- the tier list is built fresh each reading: no on-disk cache can hand back a list the builder now refuses -----
     calls = {"scan": 0}
@@ -486,6 +502,19 @@ def _fallback_mod_folder(root, mod, mods_dir):
     return pid, folder or B.deployed_folder(mods_dir, pid, mod)
 
 
+def _compose_error_ignored(root, mod):
+    """the third build: an unreadable composition file read as composing nothing."""
+    try:
+        with open(os.path.join(root, "src", "RimMandrake", "Biomes.compose.json"), encoding="utf-8") as f:
+            d = json.load(f)
+        cw = d.get("compose_wave", 0)
+        if any(e.get("key") == mod and e.get("wave", 99) <= cw for e in d.get("entries") or ()):
+            return B.norm_pid((d.get("about") or {}).get("packageId")), d.get("target")
+    except (OSError, ValueError, AttributeError):
+        pass
+    return None
+
+
 def _old_last_rows(rows):
     return {r.get("test") or r.get("id"): r for r in rows or [] if r.get("test") or r.get("id")}
 
@@ -499,7 +528,10 @@ MUTANTS = {
     "any_file_read": lambda: setattr(B, "_digest_file", _any_file_digest),
     "cycle_by_path_string": lambda: setattr(B, "_files", _path_chain_files),
     "composed_falls_back": lambda: setattr(B, "_mod_folder", _fallback_mod_folder),
-    "standin_on_real_repo": lambda: setattr(B, "REPO", "/nonexistent/repo"),
+    "standin_on_real_repo": lambda: setattr(B, "_standin_refused", lambda root: False),
+    "standin_by_path_only": lambda: setattr(
+        B, "_standin_refused", lambda root: os.path.realpath(root) == os.path.realpath(B.REPO)),
+    "compose_error_ignored": lambda: setattr(B, "composed_into", _compose_error_ignored),
     "idless_rows_dropped": lambda: setattr(B, "last_rows", _old_last_rows),
     "tier_scans_every_tier": lambda: setattr(B, "_resolve_tier", (lambda o: lambda t, i: o(t, []))(B._resolve_tier)),
     "hash_ignored": lambda: setattr(B, "CHECKED", ("game_build",)),

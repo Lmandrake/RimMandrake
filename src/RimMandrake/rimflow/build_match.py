@@ -195,16 +195,30 @@ def mod_package_id(root, mod):
     return _first_package_id(os.path.join(root, "src", "RimMandrake", mod, "About", "About.xml"))
 
 
+COMPOSE_UNREADABLE = (None, None)   # the composition file is there but cannot be read: which folder loads is unknown
+
+
+def compose_file(root):
+    return os.path.join(root, "src", "RimMandrake", "Biomes.compose.json")
+
+
 def composed_into(root, mod):
-    """(packageId, folder name) of Baroque Biomes when Biomes.compose.json composes `mod` into it; else None."""
+    """(packageId, folder name) of Baroque Biomes when Biomes.compose.json composes `mod` into it; None when it does
+    not or there is no such file; COMPOSE_UNREADABLE when the file is there but cannot be read or has the wrong shape,
+    so a composed mod is never sent to a stale standalone copy (fourth GPT review, 2026-11-17)."""
     try:
-        with open(os.path.join(root, "src", "RimMandrake", "Biomes.compose.json"), encoding="utf-8") as f:
+        with open(compose_file(root), encoding="utf-8") as f:
             d = json.load(f)
-    except (OSError, ValueError):
+    except FileNotFoundError:
         return None
-    cw = d.get("compose_wave", 0)
-    if any(e.get("key") == mod and e.get("wave", 99) <= cw for e in d.get("entries") or ()):
-        return norm_pid((d.get("about") or {}).get("packageId")), d.get("target")
+    except (OSError, ValueError):
+        return COMPOSE_UNREADABLE
+    try:
+        cw = d.get("compose_wave", 0)
+        if any(e.get("key") == mod and e.get("wave", 99) <= cw for e in d.get("entries") or ()):
+            return norm_pid((d.get("about") or {}).get("packageId")), d.get("target")
+    except (AttributeError, TypeError):
+        return COMPOSE_UNREADABLE
     return None
 
 
@@ -236,6 +250,8 @@ def _mod_folder(root, mod, mods_dir):
     deployed (third)."""
     pid = mod_package_id(root, mod)
     comp = composed_into(root, mod)
+    if comp == COMPOSE_UNREADABLE:                      # composed or not is unknown: no folder (fourth GPT review)
+        return pid, None
     if comp:                                            # composed: Biomes or nothing (third GPT review)
         return pid, deployed_folder(mods_dir, comp[0], comp[1] or "")
     return pid, deployed_folder(mods_dir, pid, mod)
@@ -260,6 +276,9 @@ def identity(root, mod, tier=None, full=False, mods_dir=None, config=None, versi
     why = []
     pid, folder = _mod_folder(root, mod, mods_dir)
     h = deployed_hash(folder, cache_dir=cache_dir)
+    if composed_into(root, mod) == COMPOSE_UNREADABLE:
+        why.append("%s cannot be read, so which folder the game loads %s from is unknown: repair it"
+                   % (compose_file(root), mod))
     if h is None:
         why.append("%s is not deployed in %s (no folder whose About.xml names %s), or a part of it cannot be read: "
                    "deploy it first" % (mod, mods_dir, pid or "its packageId"))
@@ -285,6 +304,12 @@ def identity(root, mod, tier=None, full=False, mods_dir=None, config=None, versi
     return out
 
 
+def _standin_refused(root):
+    """A stand-in walk build is for a test tree only: refused in this repo and in any git checkout (a pool clone, or
+    this repo reached by another spelling on a case-insensitive drive; fourth GPT review, 2026-11-17)."""
+    return os.path.realpath(root) == os.path.realpath(REPO) or os.path.exists(os.path.join(root, ".git"))
+
+
 def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, cache_dir=None):
     """The build he will walk: {game, mod_hash, game_build, active_mods, why[]} (why non-empty: unreadable here)."""
     sp = os.environ.get(STANDIN_ENV)
@@ -294,10 +319,10 @@ def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, 
         d.setdefault("game", WALK_HOST)
         d["standin"] = sp
         d["why"] = [w for w in (None if d.get(k) else "the stand-in names no %s" % k for k in REQUIRED) if w]
-        if os.path.realpath(root) == os.path.realpath(REPO):
+        if _standin_refused(root):
             # selftests read temp trees; a stand-in left in a shell's environment must not pass a live exit
-            d["why"].append("%s=%s is set while reading the real repo %s; a stand-in counts only for a test tree: "
-                            "unset it" % (STANDIN_ENV, sp, REPO))
+            d["why"].append("%s=%s is set while reading the repo checkout %s; a stand-in counts only for a test tree: "
+                            "unset it" % (STANDIN_ENV, sp, root))
         return d
     out = {"game": (host or socket.gethostname()).strip().lower(), "why": []}
     if WALK_HOST and out["game"] != WALK_HOST:
