@@ -8367,3 +8367,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"broken","detail":"Ops alarm WRAPUP_DEBRIS: wrapup.debris_standing = 2 filed wrap-up rows still standing (MEASURED), line > 0","ts":"2026-11-17T09:44:09Z","tsn":1794908649260942628}
 {"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-17T09:44:15Z","tsn":1794908655007801304}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-17T09:48:05Z","tsn":1794908885523100241}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","result":"broken","detail":"Ops alarm MATURATION_HAND_ACT: maturation.hand_acts_overdue = 1 acts (MEASURED), line > 0","ts":"2026-11-17T09:56:40Z","tsn":1794909400655025107}
+{"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-17T09:56:46Z","tsn":1794909406711731077}
