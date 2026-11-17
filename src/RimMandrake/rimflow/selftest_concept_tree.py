@@ -754,9 +754,15 @@ def main():
             sched = json.load(f)
         # found by its ledger item, never by name: the owner is still choosing the name, and a rename must be
         # one edit to the row (name, instructions, off_file) plus a git mv of the role file
-        row = [r for r in sched["roles"] if r.get("ledger_item") == "CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING"]
+        # one row per runner: the Claude lane (no runner field) and the DesignerCodex lane (runner codex) share the item
+        rows = [r for r in sched["roles"] if r.get("ledger_item") == "CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING"]
+        row = [r for r in rows if r.get("runner", "claude") == "claude"]
         check("Designer row exists, off, no slots", len(row) == 1 and row[0]["enabled"] is False
               and not row[0].get("runs_local"), row)
+        runners = [r.get("runner", "claude") for r in rows]
+        check("Designer lanes: one row per runner, every lane off, none local",
+              len(runners) == len(set(runners)) and all(r["enabled"] is False and not r.get("runs_local") for r in rows),
+              [(r["name"], r.get("runner"), r["enabled"]) for r in rows])
         name = row[0]["name"] if row else None
         check("Designer not in golive", name is not None and name not in sched["golive"]["roles"])
         inst = row[0].get("instructions", "") if row else ""
