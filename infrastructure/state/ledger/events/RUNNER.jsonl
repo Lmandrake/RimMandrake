@@ -8437,3 +8437,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"kept","detail":"sweep: running again","ts":"2026-11-17T15:33:05Z","tsn":1794929585790793100}
 {"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"broken","detail":"Ops alarm STEVE_SEATS: unreachable -- steve.seats_absent_min = 12.5 min a Steve seat has been absent (MEASURED), line > 10","ts":"2026-11-17T15:34:02Z","tsn":1794929642926926827}
 {"seat":"RUNNER","event":"raise","id":"OPS_STEVE_SEATS_RESTORE_QTWK","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-17T15:34:09Z","tsn":1794929649132350068}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_SEATS_RESTORE_QTWK","result":"broken","detail":"Ops alarm STEVE_SEATS: unreachable -- steve.seats_absent_min = 12.5 min a Steve seat has been absent (MEASURED), line > 10","ts":"2026-11-17T15:36:31Z","tsn":1794929791459681763}
+{"seat":"RUNNER","event":"raise","id":"OPS_STEVE_SEATS_RESTORE_QTWK","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-17T15:36:37Z","tsn":1794929797158056968}
