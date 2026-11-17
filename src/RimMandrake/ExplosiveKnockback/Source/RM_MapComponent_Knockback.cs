@@ -44,15 +44,10 @@ namespace RimMandrake.ExplosiveKnockback
             }
             if (RM_KnockbackCompat.IsSuperdeep(map, c))
             {
-                if (RM_KnockbackCompat.CoverAt(map, c) != null)
-                {
-                    return KbCell.CoveredPit;
-                }
-                if (forPawn && OtherPawnAt(c))
-                {
-                    return KbCell.Pawn; // a pit cell that is occupied counts as blocked (GPT #15)
-                }
-                return KbCell.Pit;
+                // an occupied pit cell blocks a thrown pawn (GPT #15), a covered one too: a pawn on the deck is in the way
+                // (blind cycle 5, RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER); one beneath the lid is not
+                bool covered = RM_KnockbackCompat.CoverAt(map, c) != null;
+                return RM_KnockbackMath.PitCell(covered, forPawn, forPawn && OtherPawnAt(c, covered));
             }
             if (ed != null && !(ed is Building_Door) && ed.def.Fillage == FillCategory.Partial)
             {
@@ -74,12 +69,12 @@ namespace RimMandrake.ExplosiveKnockback
             return KbCell.Open;
         }
 
-        private bool OtherPawnAt(IntVec3 c)
+        private bool OtherPawnAt(IntVec3 c, bool onDeckOnly = false)
         {
             List<Thing> things = c.GetThingList(map);
             for (int i = 0; i < things.Count; i++)
             {
-                if (things[i] is Pawn p && p != self)
+                if (things[i] is Pawn p && p != self && !(onDeckOnly && RM_KnockbackCompat.IsBeneathCover(p)))
                 {
                     return true;
                 }

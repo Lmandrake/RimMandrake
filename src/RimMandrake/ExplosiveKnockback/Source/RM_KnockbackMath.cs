@@ -359,6 +359,18 @@ namespace RimMandrake.ExplosiveKnockback
             return covered && !container && kind != KbKind.Pawn && explosionId >= 0;
         }
 
+        /// <summary>What a superdeep cell is for the path (RM_MapKbGrid): another pawn there (on the cover's deck, or on an open
+        /// pit's floor) blocks a thrown pawn as on any ground (bar pawn_hits_pawn_stops; blind cycle 5,
+        /// RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER); else an intact cover is ground and an open pit a pit.</summary>
+        public static KbCell PitCell(bool covered, bool forPawn, bool pawnThere)
+        {
+            if (forPawn && pawnThere)
+            {
+                return KbCell.Pawn;
+            }
+            return covered ? KbCell.CoveredPit : KbCell.Pit;
+        }
+
         /// <summary>The cell a shove may enter: only open ground with nothing on it. Never a pit (open or covered), a wall,
         /// a door, sandbags, water, the map edge or a pawn.</summary>
         public static bool ShoveCellFree(KbCell c, bool hasThings)

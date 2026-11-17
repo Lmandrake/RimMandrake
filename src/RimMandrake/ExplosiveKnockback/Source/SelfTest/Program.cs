@@ -631,6 +631,20 @@ internal static class Program
             Check("K-24 a pawn's landing is not this rule (pawns fall by FlowWorks' own trap)", !RM_KnockbackMath.LandingBreaksCover(KbKind.Pawn, true, false, 7));
         }
 
+        // K-25 a pawn standing on a pit cover blocks a thrown pawn as on any ground (bar pawn_hits_pawn_stops; blind cycle 5,
+        // RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER: the grid answered CoveredPit before it looked for a pawn)
+        {
+            Check("K-25 a pawn on a cover blocks a thrown pawn", RM_KnockbackMath.PitCell(true, true, true) == KbCell.Pawn);
+            Check("K-25 a pawn in an open pit blocks a thrown pawn", RM_KnockbackMath.PitCell(false, true, true) == KbCell.Pawn);
+            Check("K-25 an empty cover is ground", RM_KnockbackMath.PitCell(true, true, false) == KbCell.CoveredPit);
+            Check("K-25 an empty open pit is a pit", RM_KnockbackMath.PitCell(false, true, false) == KbCell.Pit);
+            Check("K-25 goods pass a pawn on a cover", RM_KnockbackMath.PitCell(true, false, true) == KbCell.CoveredPit);
+            Check("K-25 goods fall past a pawn in an open pit", RM_KnockbackMath.PitCell(false, false, true) == KbCell.Pit);
+            var g = new Grid(10, 3).Set(3, 1, KbCell.Pawn);   // the grid's answer for a cover with a pawn on it
+            var r = RM_KnockbackMath.Resolve(g, 1, 1, 1f, 0f, 3, KbKind.Pawn, 70f, new KbSettings());
+            Check("K-25 the thrown pawn stops on the cell before, both hit", r.destX == 2 && r.stop == KbStop.Pawn && r.hitOther && r.impact > 0f);
+        }
+
         Console.WriteLine("explosive knockback kernel: " + pass + "/" + (pass + fail) + " passed");
         return fail == 0 ? 0 : 1;
     }

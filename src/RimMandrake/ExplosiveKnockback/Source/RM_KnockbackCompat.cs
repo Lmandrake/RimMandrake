@@ -155,6 +155,10 @@ namespace RimMandrake.ExplosiveKnockback
 
         public static bool IsCover(Thing t) => coverType != null && t != null && coverType.IsInstanceOfType(t);
 
+        /// <summary>FlowWorks' own read: is this pawn in the pit beneath a cover's lid (not standing on its deck)? False without
+        /// FlowWorks' probe.</summary>
+        public static bool IsBeneathCover(Pawn p) => coverIsBeneath != null && p != null && (bool)coverIsBeneath.Invoke(null, new object[] { p });
+
         /// <summary>RIMMANDRAKE_BREAK_COVER_UNDER_LANDING_STACK_STILL_WHOLE: the cover at c gives way under a landed stack, through
         /// FlowWorks' own Building_PitCover.Spring, so the whole deck goes and everyone standing on it falls, exactly as FlowWorks'
         /// blast rule springs it (RM_Patch_ExplosionBreaksPitCover; whoever is beneath the lid stays below). FlowWorks' deck load
@@ -177,7 +181,7 @@ namespace RimMandrake.ExplosiveKnockback
                 }
                 foreach (Thing t in d.Position.GetThingList(map))
                 {
-                    if (t is Pawn p && (coverIsBeneath == null || !(bool)coverIsBeneath.Invoke(null, new object[] { p })))
+                    if (t is Pawn p && !IsBeneathCover(p))
                     {
                         riders.Add(p);
                     }
