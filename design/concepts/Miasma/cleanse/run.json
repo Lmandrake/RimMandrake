@@ -1,0 +1,36 @@
+{
+ "mod": "Miasma",
+ "state": "proposed",
+ "why": "check passes (9 bars, 85 census rows, 869 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-17T01:09:48",
+ "seconds": 1973,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 869,
+  "page_limit": 950,
+  "census_rows": 85,
+  "bars": 9,
+  "bar_numbers": "none",
+  "shared_things": 8,
+  "meetings": 8,
+  "old_bars": "0 mapped of 0 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 5132308,
+    "output_tokens": 52607
+   }
+  }
+ ],
+ "agent_errors": []
+}

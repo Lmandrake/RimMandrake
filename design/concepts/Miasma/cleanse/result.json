@@ -1,0 +1,22 @@
+{
+  "mod": "Miasma",
+  "run": "2026-11-17-designer-cleanse",
+  "outcome": "proposed",
+  "signature": "Storm recession creates nursery rescues whose treatment determines maternal tolerance and the chance of a juvenile inheritance.",
+  "counts": {
+    "capabilities": 85,
+    "kept": 58,
+    "next_version": 22,
+    "recommend_retire": 5,
+    "old_bars": 0,
+    "bars": 9,
+    "live_only_bars": 1,
+    "checks": 13,
+    "rules": 12,
+    "unknown_pairs": 6,
+    "models": 4,
+    "tickets": 36,
+    "questions": 0
+  },
+  "blocked_on": ""
+}

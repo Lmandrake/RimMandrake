@@ -1,0 +1,757 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "On an inhabited Miasma map the player recognises a stilt-root forest in brackish channels, reads fresh mud and sea-side salt, and sees benign rainbow plants through the green-gold haze.",
+      "meant": {
+        "intent": "a readable place to settle with usable passages and construction ground",
+        "source": "design/Jawa/worldbuilding/biomes/the_miasma.md sections 1, 3 and 9, September 7 ratified sheet. September 23 flora roster gives the distinct benign blooms. Delegated from those descriptions for the ordinary colony-view contrast.",
+        "figurative": []
+      },
+      "accept": [
+        "From a working settlement, prop-root cages and low crowns enclose channels, pale salt banks mark the seaward side and saturated blooms remain distinguishable through warm haze. Workers can reach the fresh buildable patches.",
+        "After recession, older dead ilbareen stand beyond the current water margin while the current water colours still reveal where brine is now."
+      ],
+      "reject": [
+        "A generic green forest covers blue ponds under a green filter, with root forms and salt banks indistinguishable at colony zoom.",
+        "A legible showcase corner sits beside the base while the ordinary inhabited map is an impassable wall of roots or loses its blooms in opaque haze."
+      ],
+      "lazy": "none: Recognition includes the actual canopy, channels, fresh/salt contrast, benign blooms and simultaneous haze in inhabited regions. A generic tinted forest omits named visible content.",
+      "range": {
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Camera at ordinary settlement zoom and closer inspection, daylight at each actual fixed site solar angle, intact and harvested canopy, pre-surge/advance/recede and sparse/dense accepted native cover. Current and historical salt marks both included.",
+        "left_out": "World-view tile art and future art-variant counts do not decide this colony-map experience. No alternative-planet geometry is generated."
+      },
+      "sees": {
+        "instrument": "Live rendered-map look with the simultaneous terrain/salinity and access overlay supplied by T19. Sample inhabited, channel and salt-margin regions chosen from the state manifest. Rendered species and movement-plane data must agree.",
+        "start": "A loaded inhabited authored Miasma site, its actual trees and weather, routes to workshop and field, and a recorded salinity field before a natural event.",
+        "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
+        "control": "Exclude a staged pretty corner by sampling every inhabited/worked region and the route connecting them, with identical camera colour settings throughout. Confirm the haze is the game weather and the roots are actual map plants. The dry/clear negative view is supplementary only.",
+        "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
+        "live_only_why": "Current state and geometry can verify presence and access but cannot establish that the canopy, colour and haze remain recognisable together at normal colony zoom. A live look of the rendered map is the cheapest credible discriminator."
+      },
+      "live_only": true,
+      "touches": [
+        "surface",
+        "life biomass",
+        "weather",
+        "information",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Designer inference from the cited source. Losing this experience alone defeats a readable place to settle with usable passages and construction ground",
+        "renormalize": "The accepted and rejected pictures compare consequences, causality or affordances. No tuning value, exact count or asset variant is necessary to distinguish them.",
+        "first_version": "Land/life or the nursery signature, as defined in definition.md. Necessary signs and controls carry the deletion arguments in census.json."
+      }
+    },
+    {
+      "id": "B2",
+      "says": "In Miasma the colony can harvest ordinary food and animal products while wild scuttlers replenish as prey for animals and carnivorous plants, with harmless blooms and real flight for the swarm.",
+      "meant": {
+        "intent": "ordinary renewable life that can feed and reward a settlement",
+        "source": "September 23 Miasma fauna and flora roster rulings, standing flyers-fly and native-drinking rulings, admitted roster in RM_Miasma.xml. Delegated for the sustainable ordinary-harvest interpretation.",
+        "figurative": []
+      },
+      "accept": [
+        "A hunter takes edible scuttlers, animal predators feed, a plant visibly feeds on an eligible wild scuttler, and later ordinary life replenishes the worked channel.",
+        "The keeper obtains liliana silk and eggs and karrobel castings through ordinary jobs while a swarm’s flight tracker enters flight and a native beside its own water drinks successfully.",
+        "A colonist, a tame scuttler and a rainbow bloom share the worked patch safely while the separate carnivorous plant takes wild prey."
+      ],
+      "reject": [
+        "Scuttlers are painted or spawned for a showcase and disappear from routine channels after ordinary hunting and predation.",
+        "The plant kills a colonist, a tame animal or prey behind a sealed wall, or silently deletes the prey with no feeding sign.",
+        "Products exist in defs but ordinary harvest/husbandry cannot obtain them, or a fictional flyer only walks on the ground."
+      ],
+      "lazy": "none: The sentence requires obtainable ordinary products, actual replenishing prey and both consumers, benign blooms and actual flight. Static roster entries or a one-time spawn grant omit those actions.",
+      "range": {
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Species grouped by the actual feeding, breeder, harvest, husbandry and flight implementation paths. Plants eligible prey karravel/karrimeth/karrolun/karrobel at radius boundary, tame/wild/dead/hostile controls, solid-wall and open-path geometry. Low/normal/high native cover and predator pressure, ordinary daily hunting, empty/full product stores, water grades fresh/brackish/brine, hatch/shear/gather/save transitions. Use full admitted roster for native-water reads.",
+        "left_out": "Deliberate player extermination, indefinitely sealed starvation pens and unsupported absent-DLC configurations are outside ordinary replenishment. Flyer visual review follows its existing owner-present ruling."
+      },
+      "sees": {
+        "instrument": "Cheapest initial discriminator is the Whole-map season and Food and rescue budget models after calibration. T16/T19 obtain ordinary hunt, plant feed, birth, gather, hatch and native-drink state events, item conservation and deterministic Pawn_FlightTracker state. Existing art tests provide asset checks only.",
+        "start": "An unedited native population and plant roster recorded across the full map, identifiable individual prey, genuine ordinary workers and valid stores. No direct product grants or forced prey kills.",
+        "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
+        "control": "Follow individual prey into the killer/feeding event and product into a normal harvest job. Distinguish reproduction from map-edge immigration and corpse meat from grant helpers. Flight requires movement plus flight-tracker state, water survival requires actual need recovery. Off-feature arms are diagnostic supplements.",
+        "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
+        "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "life biomass",
+        "colony effort",
+        "information",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Designer inference from the cited source. Losing this experience alone defeats ordinary renewable life that can feed and reward a settlement",
+        "renormalize": "The accepted and rejected pictures compare consequences, causality or affordances. No tuning value, exact count or asset variant is necessary to distinguish them.",
+        "first_version": "Land/life or the nursery signature, as defined in definition.md. Necessary signs and controls carry the deletion arguments in census.json."
+      }
+    },
+    {
+      "id": "B3",
+      "says": "During Miasma storms advancing brine changes channel reach and salt-sensitive unfloored ground, gives workers time to withdraw, and leaves floors and bridges usable as it recedes.",
+      "meant": {
+        "intent": "a changing shore the colony must plan around",
+        "source": "Frozen sheet breath-tide and gradient, September 12 ruled crop card in kits/miasma_kit_spec.md. Delegated for actionable worker withdrawal and colony construction continuity.",
+        "figurative": [
+          {
+            "word": "reach",
+            "stands_for": "the extent of water and salt influence on the local colony map",
+            "accept": "Brine spreads around irregular banks and roots in a broken front with several channel branches. It need not form a straight line."
+          }
+        ]
+      },
+      "accept": [
+        "The weather and warning change, a worker returns from a nearby channel job, brine wets a previously exposed margin and the fresh crop patch it reaches fails while constructed surfaces remain usable.",
+        "The new water withdraws from that margin into disconnected low spots, and removing a bridge later reveals the correctly updated natural ground beneath it."
+      ],
+      "reject": [
+        "A warning and water recolour occur on a permanently fixed water footprint, so recession cannot create a newly isolated pool.",
+        "The front instantly traps a worker after its first sign, or it replaces the player’s completed floor with raw crust.",
+        "The tide repeats on a fixed calendar while the sky stays clear, or all brine advance fails to affect exposed crops."
+      ],
+      "lazy": "none: Storm timing, changed channel extent, unfloored salt consequences, worker withdrawal and intact construction are all explicit. A recolour, instant trap or overwritten floor loses a named consequence.",
+      "range": {
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. All fixed authored seaward orientations, storm probability inputs at minimum/normal/maximum, repeated surges with no/short/long gaps, arrival and recede overlap requests, floor/bridge/gravship foundation/bare natural cells, crop stages and native salt-tolerant controls, floored-ground removal mid-event. Sweep sea-to-fresh reach across the shipped parameter bounds and cumulative residual shifts through 100 events.",
+        "left_out": "No simulated planetary ocean, moon, worldgen or real-world kilometre requirement. Deliberately disabled event settings belong to settings checks."
+      },
+      "sees": {
+        "instrument": "Shore and route sweep, followed by T11/T19 ordinary incident-to-terrain trace. Record warning, worker route and arrival, natural/top/under/foundation terrain, crop death and pool topology through normal event ticks.",
+        "start": "A saved pre-storm channel with a dry margin connected to the sea during advance, live salt-sensitive crops, a freshwater crop control and completed constructed surfaces. The manifest declares the exposed worker’s ordinary return route.",
+        "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
+        "control": "Keep the pre-event water mask and compare topology after ordinary terrain transitions. No manual pond paint or forced post-recede spawn counts. Match crop damage to saline transition against untouched fresh soil and rule out construction destruction by other incidents using event provenance.",
+        "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
+        "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "surface",
+        "water routes",
+        "life biomass",
+        "weather",
+        "colony effort",
+        "information",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Designer inference from the cited source. Losing this experience alone defeats a changing shore the colony must plan around",
+        "renormalize": "The accepted and rejected pictures compare consequences, causality or affordances. No tuning value, exact count or asset variant is necessary to distinguish them.",
+        "first_version": "Land/life or the nursery signature, as defined in definition.md. Necessary signs and controls carry the deletion arguments in census.json."
+      }
+    },
+    {
+      "id": "B4",
+      "says": "When Miasma surge water withdraws, occupied cut-off pools leave identifiable young that call for help, can be rescued before drying, and retain a readable outcome if help fails.",
+      "meant": {
+        "intent": "the surge actually causing a readable nursery rescue",
+        "source": "Frozen sheet nursery and stranded rings, September 23 stranded-condition ruling, closed MIASMA_YOUNG_CALL_1, and standing no-unreadable-vanish ruling. Delegated for rescue effort range and saved individual tracking.",
+        "figurative": []
+      },
+      "accept": [
+        "A formerly sea-connected branch becomes a shrinking pool after recession, an existing juvenile is visibly stranded and a prepared party returns it before the pool dries.",
+        "A rescued young remains identifiable after its former pool expires, while a delayed wild young dies visibly or has its departure explicitly reported at that pool.",
+        "The call remains locatable during an unresolved carry and stops when that individual’s rescue is accepted."
+      ],
+      "reject": [
+        "A young is spawned in a pre-existing painted pond by a proof helper while the surge itself changes no connectivity.",
+        "The pool expiry destroys a rescued colony animal elsewhere on the map, or only a developer log reveals the missing animal.",
+        "The first call opens a letter but the animal is silent and unlocatable through the actual rescue, or all ordinary rescues time out before a ready party can arrive."
+      ],
+      "lazy": "none: Surge withdrawal must cause the cut-off occupied pool, the named young must be locatable and rescuable, and failure must remain readable. A prepainted pond, replacement pawn or silent expiry cannot meet it.",
+      "range": {
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. No occupied pool/small/big occupied outcomes, all free and campaign juvenile implementation paths, normal and deformed young, at 0/1/many nurseries, pool thresholds and map edges, carried/owned/wild/downed/dead young, pools split/merge/reconnect and expire while occupants move. Start at each event transition and reload before/after rescue, sale and expiry. Party 1-4 colonists at both near and far natural reachable pools, ordinary work and path congestion active.",
+        "left_out": "Deliberately impossible sealed routes can fail with signs. Not every random recession must create an occupied pool. No new stranded species is allowed."
+      },
+      "sees": {
+        "instrument": "Shore and route sweep establishes topology. Nursery transition generator and Food and rescue budget then test identities and effort. T13/T19 calibrated state traces follow exact pool and pawn IDs from pre-advance water to completed ordinary rescue or recorded loss.",
+        "start": "A legitimate channel and receding margin with its previous sea connection recorded, ordinary spawned juveniles, an available carrying party and a nursery. Distress is created by the ordinary recession, never by adding a hediff solely for the reading.",
+        "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
+        "control": "Pair identical start-state action orders with prompt rescue and delayed/no rescue. The pool’s known water history must prove causal isolation. Pawn IDs and pool membership exclude duplicate replacements and saved rescued animals being counted as fresh occupants.",
+        "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
+        "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "surface",
+        "water routes",
+        "nursery record",
+        "colony effort",
+        "information",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Designer inference from the cited source. Losing this experience alone defeats the surge actually causing a readable nursery rescue",
+        "renormalize": "The accepted and rejected pictures compare consequences, causality or affordances. No tuning value, exact count or asset variant is necessary to distinguish them.",
+        "first_version": "Land/life or the nursery signature, as defined in definition.md. Necessary signs and controls carry the deletion arguments in census.json."
+      }
+    },
+    {
+      "id": "B5",
+      "says": "Miasma’s warden mother and affectionate young keep their movement and work in water, enter new water through sea-connected routes, and become visibly stranded when a canal severs that connection.",
+      "meant": {
+        "intent": "the water limitation that makes rescue and canal engineering matter",
+        "source": "September 23 fauna roster sections 6, 6a and 6b, including the owner’s FlowWorks sea-connection ruling. Delegated for bridge and split-component edge semantics.",
+        "figurative": []
+      },
+      "accept": [
+        "A continuous sea-fed canal extends a permitted water route, the mother swims along the part within her nursery reach and stops where dry ground interrupts it.",
+        "A child follows its keeper along the water and stops when the keeper goes inland, while a trained child completes ordinary water-side hauling along an eligible route.",
+        "After a canal is cut the mother stays visibly in the wet isolated component, and restoring the water route makes it usable again."
+      ],
+      "reject": [
+        "A valid water destination causes a path across a dry shortcut, followed by a periodic teleport or recovery walk.",
+        "A fresh river exit or any large closed pond is treated as a sea connection, or an isolated-pool flag deletes the trapped mother.",
+        "A trained child offers general land hauling and repeatedly starts impossible jobs, or a canal grants command of the wild mother."
+      ],
+      "lazy": "none: The sentence covers executed movement and work in water, sea-connected entry and visible severance. Water destinations followed by dry shortcuts or an arbitrary large pond omit a named constraint.",
+      "range": {
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Flood-fill components exhaustively on small synthetic grids, then all bearings and actual map sizes from common range. Orthogonal/diagonal contacts, channel throats 1-8 cells, shortest dry shortcuts, shallow/deep/FlowWorks water, bridge top and under-water, slopes absent from flat movement plane, walls/doors/impassable occupants, canal cut/repair during movement, call/defence/haul/wander and exit jobs, wild/tolerant/betrayed/tame/stranded state. Hydrological sea-connectedness and usable movement surfaces are recorded separately.",
+        "left_out": "An unresolved distressed young may be carried across land for rescue. The affectionate water-bound young have no carry-home upgrade. No new canal engine or body-footprint system is commissioned."
+      },
+      "sees": {
+        "instrument": "Shore and route sweep first, then T12/T15/T19 full engine path-cell and executed-movement traces across the same fixtures with all kept jobs enabled. State enumeration checks path changes after water topology changes.",
+        "start": "Known seaward boundary and water component, a real mother and affiliated young with normal duties, canal/water destinations and a shorter forbidden dry route. A separate closed pond has equal or greater area than the real sea-fed branch.",
+        "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
+        "control": "Trace every executed movement cell and rejected path request so a water destination or sampled resting positions cannot mask dry steps. Cut only the sea connection while keeping the destination wet, then repair it. Test fresh-edge-only connectivity separately.",
+        "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
+        "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "surface",
+        "water routes",
+        "nursery record",
+        "colony effort",
+        "information",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Designer inference from the cited source. Losing this experience alone defeats the water limitation that makes rescue and canal engineering matter",
+        "renormalize": "The accepted and rejected pictures compare consequences, causality or affordances. No tuning value, exact count or asset variant is necessary to distinguish them.",
+        "first_version": "Land/life or the nursery signature, as defined in definition.md. Necessary signs and controls carry the deletion arguments in census.json."
+      }
+    },
+    {
+      "id": "B6",
+      "says": "Returning a stranded young to its own Miasma mother’s reachable water earns her colony-wide tolerance, while a completed sale permanently costs that nursery’s tolerance and inheritance.",
+      "meant": {
+        "intent": "the nursery choice having a durable and local consequence",
+        "source": "September 23 befriending ruling and closed MIASMA_MOTHERS_PRICE_1 for the October 2 owner card. Delegated for completed-transaction commit and durable known parentage.",
+        "figurative": []
+      },
+      "accept": [
+        "A carried or canal-freed young reaches its own mother’s accessible water, distress ends and she stops targeting colonists while remaining wild.",
+        "A buyer completes a meaningful sale, payment and the child’s transfer occur, and that nursery permanently refuses later forgiveness while an unrelated nursery can still accept its own young.",
+        "Cancelling a sale leaves both the child and the nursery’s standing intact, and harming the nursery later ends previously earned tolerance."
+      ],
+      "reject": [
+        "Any nearby mother accepts any child and awards colony-wide protection, or the return removes the only identity record needed for later consent.",
+        "Opening a trade window or an unaffordable offer voids succession before a sale completes.",
+        "A success letter appears while the mother still targets the colony, or a reload or setting cycle forgives a completed betrayal."
+      ],
+      "lazy": "none: The child must enter its own mother’s reachable water, earn actual colony-wide tolerance, and completed sale must permanently close that nursery’s trust and inheritance. A message or cancelled trade cannot meet it.",
+      "range": {
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Mother/child sites 0, 1 and 2-8, near/far/wrong parent, mother living/downed/dead or already betrayed, carried/spawned/downed child, direct and canal rescue, hostile player pawn/turret and unrelated wildlife damage. Actual completed/cancelled/rejected/unfunded trade with ordinary traders and unavailable trader factions. Return-before-sale/sale-before-return, simultaneous actors, interrupted transfer and save/reload on each commit boundary.",
+        "left_out": "No promise that an ordinary trader arrives on a fixed schedule or through an impossible route. The custom held-young buyer incident is deferred. No global morality or faction reputation system is added."
+      },
+      "sees": {
+        "instrument": "Nursery transition generator plus T14/T19 state reads of genuine carrying/canal jobs and actual trade transaction outcomes, payment, ownership, mother targets, nursery ledger and notification history.",
+        "start": "Known mother-child links at distinct nurseries, an initially intolerant wild mother, a held distressed young and an ordinary solvent trader when testing sale. No direct Notify_Sold, TryReturn or GrantColonyTolerance invocation may stand in for the ordinary action.",
+        "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
+        "control": "Use wrong-nursery and cancelled-trade branches with identical proximity and price. Read targets before and after a successful return with the same colonist positions. Confirm real trade payment and transferred pawn identity before the nursery changes permanently.",
+        "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
+        "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "nursery record",
+        "water routes",
+        "colony effort",
+        "information",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Designer inference from the cited source. Losing this experience alone defeats the nursery choice having a durable and local consequence",
+        "renormalize": "The accepted and rejected pictures compare consequences, causality or affordances. No tuning value, exact count or asset variant is necessary to distinguish them.",
+        "first_version": "Land/life or the nursery signature, as defined in definition.md. Necessary signs and controls carry the deletion arguments in census.json."
+      }
+    },
+    {
+      "id": "B7",
+      "says": "In a clean-record Miasma nursery, young sometimes choose the colony and do useful water-bound work, and a rescued juvenile can inherit a weaker watch after the mother’s visibly foreshadowed decline and death during colony life.",
+      "meant": {
+        "intent": "hopeful continuity with an earned, visibly weaker successor",
+        "source": "September 23 fauna roster section 6a for self-taming, useful water work, foreshadowed old-age death and juvenile succession. Later fluff digest explicitly retains succession. Delegated for persistence, old-save reconciliation and single promotion semantics.",
+        "figurative": []
+      },
+      "accept": [
+        "The mother is visibly failing from first encounter, the keeper receives a plain age warning, a registered unharmed young chooses the colony and works along the water.",
+        "After the anticipated age-related loss a living eligible juvenile actually guards that nursery with less reach and threat than the mother, and the saved watch continues after reload.",
+        "An empty or betrayed nursery remains without an heir and tells the player why."
+      ],
+      "reject": [
+        "A saved heir name and celebratory message appear while no juvenile takes guard duty.",
+        "The mother never declines within colony play, dies without prior warning, or her child instantly becomes an equal adult sea giant.",
+        "A returned child loses its nursery link and can never consent or inherit, or a killed/traded young is resurrected or replaced to force succession."
+      ],
+      "lazy": "none: Actual consent, useful water work, rescued-juvenile guarding, weaker protection and anticipated campaign-visible decline are explicit. A saved heir name, adult replacement or unreachable chance omits the experience.",
+      "range": {
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Clean/harmed/betrayed and no/multiple eligible young, normal/deformed/recovered/carried history, old and new saves with and without ledger fields, juvenile alive/downed/dead/away or sold at promotion. Test age decline, age death and unrelated violent death separately, heir duty through later surge, call, canal severance and repair. Use ordinary time until the actual age cycle closes, delegated tuning target 30-60 game days from encounter with full warning already present. Alternative action orders rescue/train/canal and canal/rescue/train.",
+        "left_out": "No guaranteed consent on a particular random roll. No adult maturation, new full-strength mother, repeat heir manufacture or general land work. Violence against the mother by the colony cannot earn a clean succession."
+      },
+      "sees": {
+        "instrument": "Nursery transition generator for exhaustive eligibility/commit logic. T14/T15/T19 then trace actual self-tame, ordinary water work, maternal age/health progression, death cause, anchor/duty transfer and real guard action. Existing aged-render proof supports the selected life stage only.",
+        "start": "A naturally generated old mother with declared age/health and at least a reachable nursery rescue opportunity, no artificially learned general hauling, and clean versus harmful records branched from the same disposable baseline.",
+        "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
+        "control": "A name/message-only mutant must fail the executed guard trace. Compare clean record with no-rescue, harm and completed-sale branches. Compare juvenile and prior mother reachable defence area and attacks without pinning an exact radius or stat. Preserve pawn identity through return and every reload.",
+        "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
+        "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "nursery record",
+        "water routes",
+        "life biomass",
+        "colony effort",
+        "information",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Designer inference from the cited source. Losing this experience alone defeats hopeful continuity with an earned, visibly weaker successor",
+        "renormalize": "The accepted and rejected pictures compare consequences, causality or affordances. No tuning value, exact count or asset variant is necessary to distinguish them.",
+        "first_version": "Land/life or the nursery signature, as defined in definition.md. Necessary signs and controls carry the deletion arguments in census.json."
+      }
+    },
+    {
+      "id": "B8",
+      "says": "Colonists living in Miasma can read the health cost of outdoor haze and ordinary disease, recover haze exposure under a roof, and continue working through the dry weather cycle with tending and shelter.",
+      "meant": {
+        "intent": "inhabitable sick air with a usable ordinary response",
+        "source": "Frozen sheet the Working and no-rain boundary, kit M4 exposure as ambient tax with real diseases using ordinary systems. Standing Direct Sun and DLC rulings. Delegated for manageable ongoing routine.",
+        "figurative": []
+      },
+      "accept": [
+        "An outdoor worker accumulates visible exposure, spends time under a roof and recovers that exposure while a genuinely diseased colonist still needs ordinary tending.",
+        "Surge weather takes over during the advance, dry haze returns after it and a sheltered team continues necessary colony and rescue work.",
+        "A native drinks from its own brackish water without a dehydration spiral while the colonists still pay their normal water and disease costs."
+      ],
+      "reject": [
+        "Rain supplies the swamp, a clear-sky test conceals the haze cost, or a biome-specific sun immunity makes the worker safe.",
+        "The roof clears a real disease instantly, or routine dry weather permanently incapacitates the colony despite ordinary shelter and tending.",
+        "A recovered disease quietly grants a deferred boon at default settings."
+      ],
+      "lazy": "none: The sentence links visible health cost, roof recovery and continued ordinary work with tending through dry weather. A cosmetic haze or roof-based disease cure omits that cause and response.",
+      "range": {
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Flesh humanlikes, native animals, mechs and ghouls by actual hazard targeting path, relevant breathing vulnerabilities, fresh/mid/brine exposure bands and fixed-site ambient/solar conditions. Roofed/unroofed transitions, haze/surge/haze priority, disease onset/tending/immunity/death and reload at exposed-to-sheltered switch. Long routine including forty-colonist simultaneous work.",
+        "left_out": "Extreme pre-existing incapacity or deliberately untreated lethal disease may end badly. No immunity or treatment balance for unsupported other biomes, no DLC-absence path."
+      },
+      "sees": {
+        "instrument": "Whole-map season and Food and rescue budget after calibration, then T17/T19 normal work/shelter/tending state trace reading actual capacities, exposure severity, disease state, targeting and weather precipitation. Geometry inputs and native-drink need events remain visible.",
+        "start": "Workers in known weather and salinity bands with ordinary clothing and a real roofed shelter. Separate disease state is recorded before shelter, with ordinary tending jobs available.",
+        "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
+        "control": "Same worker/outdoor period then shelter distinguishes recovery from pawn selection. Track haze carrier separately from disease and Heatstroke. Confirm weather transitions and native need recovery occurred normally, and inspect post-recovery hediffs to detect forbidden default boon activity.",
+        "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
+        "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "weather",
+        "life biomass",
+        "colony effort",
+        "information",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Designer inference from the cited source. Losing this experience alone defeats inhabitable sick air with a usable ordinary response",
+        "renormalize": "The accepted and rejected pictures compare consequences, causality or affordances. No tuning value, exact count or asset variant is necessary to distinguish them.",
+        "first_version": "Land/life or the nursery signature, as defined in definition.md. Necessary signs and controls carry the deletion arguments in census.json."
+      }
+    },
+    {
+      "id": "B9",
+      "says": "With the complete default Miasma running across a season and its nursery cycle, the colony sees recurring changed shores, recoverable life and consequential rescues through reload and reordered work, without ecological engulfment, permanent barren collapse, stalled duties or recurring errors.",
+      "meant": {
+        "intent": "the first version functioning as a whole colony experience",
+        "source": "Owner’s November 16 cleansing instruction for the whole bar, combined with the frozen biome’s lived cycle. Delegated integration reading and stretch long enough for inheritance.",
+        "figurative": []
+      },
+      "accept": [
+        "A working settlement hunts, builds, tends, rescues and trades through repeated natural storm advances and recessions, saves during an unresolved pool and resumes with the same animals, history and viable routes.",
+        "Over the full stretch, harvested channels regain ordinary life, warnings lead to actions, betrayal remains local and permanent, and an age-related loss either transfers a real smaller watch or leaves a plainly explained empty nursery.",
+        "A replay that builds its canal before rescuing and a replay that rescues before finishing its canal each reaches coherent recorded outcomes with the rest of colony work still functioning."
+      ],
+      "reject": [
+        "Isolated demonstration scenes pass while the running map fills with breeders, loses its ordinary canopy to accumulated crust, or produces an endless queue of rescue warnings.",
+        "Reload revives an expired pool, forgets a sale, erases a saved child or breaks the relationship between a mother and her nursery.",
+        "The mother spends the season restarting call jobs, the child repeatedly fails land hauling, or errors recur while a laboratory scene succeeds with weather and growth disabled."
+      ],
+      "lazy": "none: The complete default system must run the season and nursery cycle, maintain actual rescue consequences and ecological/work continuity, and survive reload and reordered actions. Isolated scenes leave explicit requirements unobserved.",
+      "range": {
+        "varies": "All admitted free roster entries and, when the campaign layer is present, its patch-added entries, with all DLC. Fresh and older-save states. Colony sizes 1, 8 and 40. Local map sizes 150x150, 250x250 and 325x325, plus the largest supplied authored local site if larger. Boundary values and transitions are generated, not inferred from a representative screenshot. Full map and colony sizes in common range, 15 game days minimum and continuation through the old-age nursery cycle, target 30-60 days and extend to 120 if the age model requires it. Baseline ordinary hunt/gather/tend/build schedule plus rescue-first and canal-first orders, spare versus occupied stockpiles, rare and frequent allowed storms, low/high native fertility and predator pressure. At least one save during a live pool before decision and another after a permanent sale, ordinary replay from those saves. Accelerate wall-clock with normal tick execution only, preserving all job, weather, growth, disease, age, breeder and incident clocks and their ordering.",
+        "left_out": "An unlimited future campaign is beyond a finite observation. Aggressive extermination and intentionally destroying all shelter are outside this routine. An insufficient event draw extends the observation or is reported unobserved, never declared a pass by directly forcing the missing outcome."
+      },
+      "sees": {
+        "instrument": "Whole-map season is the cheapest risk-finder after its game agreement is demonstrated. T19 supplies the actual whole-map chronological state trace and save/replay comparison through normal entry points. T16/T17 supply population and health/job readings. No isolated proof helper alone can decide this bar.",
+        "start": "An inhabited full local Miasma map with the actual admitted flora/fauna, old mother and nursery, available ordinary tools and all default kept mechanics active and unlocked. Record initial biomass, water masks, known identities, item quantities, roof/canal/construction and job state. Next-version extras absent from active availability.",
+        "on": "All kept Miasma mechanics at shipped defaults, shared CreatureBehaviors, ExplosiveGrowth, EnvironmentalHazards, FlowWorks, Wreckage, native water use and geometric Direct Sun active, all DLC loaded. Next-version extras off. No weather lock imposed by the instrument, no freeze of populations, duties, jobs or clocks. Auxiliary negative-control branches may alter an input and must be labelled, their readings never substitute for this all-on branch.",
+        "control": "Compare uninterrupted/reloaded action timelines from the same saved state, retaining RNG state. Attribute population changes to births, predation, harvest and immigration, water to actual event/canal transitions, and status to committed transactions. The whole run uses normal weather priorities and every kept mechanic, with no paused producer or direct success-state write.",
+        "reset": "Use a disposable local-map fixture cloned from an authored-site save. Keep an untouched baseline and an exact settings/state manifest. Reload that baseline after each alternative action order, remove test-only fixtures by discarding the disposable save, and restore the recorded settings snapshot. No canonical-world mutation is required.",
+        "live_only_why": "A calibrated model plus the named ordinary-entry-point state trace can discriminate this experience. A separate visual sitting is unnecessary for this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "surface",
+        "water routes",
+        "nursery record",
+        "life biomass",
+        "weather",
+        "colony effort",
+        "information",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Designer inference from the cited source. Losing this experience alone defeats the first version functioning as a whole colony experience",
+        "renormalize": "The accepted and rejected pictures compare consequences, causality or affordances. No tuning value, exact count or asset variant is necessary to distinguish them.",
+        "first_version": "Land/life or the nursery signature, as defined in definition.md. Necessary signs and controls carry the deletion arguments in census.json."
+      }
+    }
+  ],
+  "whole": "B9",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Resolved runtime defs, source/DLL fingerprint, all-DLC composed load, actual patch-added roster and naming tiers. Parse wildAnimals/wildPlants XML elements and compare resolved race/kind availability. No current pass inferred from a historical close."
+    },
+    {
+      "id": "C2",
+      "what": "Settings initialisers, persistence, reset/search/scope labels and Apply paths match shipped defaults. Test queued old bills, running jobs, existing map objects and older-save missing fields through off/on/reload. Include lastvineRearingEnabled previously omitted by validation.DEFAULTS."
+    },
+    {
+      "id": "C3",
+      "what": "Snapshot salinity thresholds, front/recede/residual controls, pool weights, lifetime/threshold/edge rules and terrain under/top/foundation writes as regression data. Tune without changing B3/B4."
+    },
+    {
+      "id": "C4",
+      "what": "Snapshot ordinary plant yields/growth, animal diets/products, density/pressure values and product stack conservation. Neither numbers nor field-completeness are passing bars."
+    },
+    {
+      "id": "C5",
+      "what": "Record each model calibration residual, inputs, map/runtime fingerprint and exact game event trace. A model without agreement is untrusted."
+    },
+    {
+      "id": "C6",
+      "what": "Existing kernel fuzz and mutation checks for nearest selection, trust, ordinary trade outcomes, refusal quieting and no duplicate committed transitions. Add real transaction/callback seams and preserve parentage across distress removal."
+    },
+    {
+      "id": "C7",
+      "what": "No default grant of fever-forged or strange hediffs, growth aura or inspiration, including after natural disease removal. No pollination gate restored. Haze exposure is independently active."
+    },
+    {
+      "id": "C8",
+      "what": "No default custom nursery-buyer incident, decay meter/research availability, cell construction/feed/conversion, corpse processing or Cuisine output, attar production/application or loose flotsam restocking. Existing code/defs remain stable and inert. Read game availability and active state, not DefDatabase absence."
+    },
+    {
+      "id": "C9",
+      "what": "Full executed path traces, sea-source and hydrological components, movement-surface eligibility and actual guard anchor/duty. Include bridge, cut/repair and dry-shortcut mutants."
+    },
+    {
+      "id": "C10",
+      "what": "Pool references never remove rescued/traded/out-of-pool animals at expiry. Sound source/first warning and loss notice name real individuals. No duplicate warning on polling/reload."
+    },
+    {
+      "id": "C11",
+      "what": "Existing warden age texture/render-state tests and negative verdict mutants. Record actual initial age, health decline, death cause, known warning time and smaller heir defence footprint. No graphic count as a bar."
+    },
+    {
+      "id": "C12",
+      "what": "Native water need recovery by each admitted targeting path, deterministic real flight state for fictional flyers, and identical Direct Sun output at equal geometry across biomes."
+    },
+    {
+      "id": "C13",
+      "what": "No live whole-run helper directly sets success, disables a kept mechanic, locks sky clear or freezes incident/life clocks. Chronological event and RNG/save manifests support same-start replay."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Use fixed authored local-site geography and a declared seaward boundary. No world tile, planet generation, river-link repair, rarity option or alternate-planet sweep. Sites without a sea boundary report missing local input. The held mod remains design-only.",
+      "touches": [
+        "surface",
+        "water routes"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "The surge contract includes temporary wetting and recession capable of changing water connectivity. Salinity and residual crust may persist, but repeated allowed surges must leave habitable fresh ground and recoverable native life. Keep normal incident/weather clocks irregular and storm-weighted. Derive a reversible inundation mask from local geography using the existing shared-engine seam, its owner chooses internals.",
+      "touches": [
+        "surface",
+        "water routes",
+        "life biomass",
+        "weather"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Apply natural terrain changes beneath floors/bridges, preserving their constructed top and foundation state. Bare gravship foundations are preserved. Unfloored salt-sensitive crops and ilbareen in newly reached brine fail, leaving readable signs. Historical dead ilbareen record past reach, current water/soil records present salt.",
+      "touches": [
+        "surface",
+        "life biomass",
+        "information"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Use the shared fluid connectivity representation with explicit seaward sources and orthogonal contact. A freshwater edge, diagonal touch or area threshold alone never proves sea connection. Movement also requires an executable water-only route on the movement plane. A bridge preserves its underlying fluid connection but can obstruct a swimmer’s movement surface. Existing trapped animals may move inside their wet component, receive distress and drying outcomes, and regain outside routes after repair. No new entry into isolated water is permitted.",
+      "touches": [
+        "surface",
+        "water routes",
+        "nursery record"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Assign a young’s nursery once from its spawn site and persist identity separately from the distress hediff. Returning clears distress, preserves the known child and records return once. Reconnection retires pool tracking without destroying occupants. Pool expiry excludes returned, owned, sold, departed or out-of-pool animals and gives unresolved loss a player-visible sign. Honour the permitted fallback without granting rescue credit.",
+      "touches": [
+        "water routes",
+        "nursery record",
+        "information"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Only the child’s own reachable mother accepts return. Commit payment/ownership and permanent betrayal atomically after completed trade. Cancel/refusal cannot betray. Colony pawn, turret and harvest/butchery harm to nursery members breaks the clean record and revokes tolerance. Unrelated disease or wildlife harm does not. Betrayal survives reload and toggle. Group notifications by nursery and changed reason. Evaluate a legitimate offered return before routine maternal acquisition of that carrier as a target at the acceptance water, so the normal rescue action can complete without changing the mother’s general hostility.",
+      "touches": [
+        "nursery record",
+        "water routes",
+        "information",
+        "colony effort"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Keep the mother wild and anchored. Young consent is probabilistic while the affiliated record is clean, is never conventional taming, and remains possible after a genuine return. Preserve Guard, water-side haul and release/attack with full-route eligibility, hide general Haul/Rescue. An age-related death can promote a living eligible juvenile once, with less reach and combat threat. No rescue means no manufactured heir. Colony killing the mother bars a clean inheritance. Initial mother age is plainly failing, with a delegated tuning target of loss within 30-60 game days and warning already present on encounter. Use ordinary age/health progression, calibrated before choosing a final constant. Consent without rescue is allowed, but inheritance requires that individual’s actual successful rescue/return history, clean affiliation, living colony ownership and a legitimate local water route to the nursery. A known away pawn waits as an absent candidate until the death decision, and cannot be replaced or teleported into the nursery. The single promotion decision at death records an absent heir if no eligible local young exists.",
+      "touches": [
+        "nursery record",
+        "water routes",
+        "colony effort",
+        "information",
+        "life biomass"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Plant prey selection stays on the existing wild scuttler whitelist with a genuine unobstructed feeding reach and visible kill/feeding event. Radius is a tuning check. Use shared population accounting with ordinary predators, hunting and ExplosiveGrowth active. Keep ordinary meat, wood/salt, silk/egg and castings jobs. Native drinking and real fictional flight remain standing obligations. Ordinary canopy recruitment respects current fresh/brackish/brine bands, with ilbareen fresh, brelloch brine, thessamor brackish and quennath fresh/brackish as delegated initial defaults. Do not teleport established life when bands move. Specialist host/castings/pollination gates remain deferred.",
+      "touches": [
+        "life biomass",
+        "surface",
+        "colony effort",
+        "information"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Surge weather overrides the standing haze during advance and returns to it after recession. Both remain dry and exposure uses the active weather’s declared treatment. Roofs recover haze exposure through the shared hazard path. Ordinary diseases stay ordinary, biome-specific Direct Sun changes are forbidden. Keep the shared geometric sun/shade rule and native water use active.",
+      "touches": [
+        "weather",
+        "surface",
+        "life biomass",
+        "colony effort",
+        "information"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Settings default to the kept behaviour. Every major kept mechanic has an effective on/off control and accurate scope/application label. Existing shared controls expose their cross-biome scope. All-off suspends active producers and safely retains terrain, objects, identities and irreversible records. Missing older-save state is reconciled once with visible uncertainty when no historical nursery can be recovered.",
+      "touches": [
+        "settings",
+        "nursery record",
+        "water routes",
+        "information"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "All deferred and recommended-for-retirement active behaviours default off and are absent from fresh-map availability. Preserve their defs, code, assets and saved progress inertly. Keep return/consent operational independently of optional sale or succession controls. Turn off decay/cuisine, attar and boons at every actual execution and availability entry point. The retired pollination gate remains retired. Worldgen has no next-version mode.",
+      "touches": [
+        "settings",
+        "life biomass",
+        "nursery record",
+        "colony effort"
+      ]
+    },
+    {
+      "id": "R12",
+      "rule": "Retain admitted rosters and present naming tiers, without eviction or new giants. Shared Wreckage, creature pressure, native growth, environmental hazards, Bones references, TerminalBiomes juveniles, FlowWorks and the standing AcousticScanner payload remain dependencies. Diagnostics are checks and instruments. A clean log or resolved def alone proves no experience.",
+      "touches": [
+        "life biomass",
+        "surface",
+        "information",
+        "settings"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "surface",
+      "members": [
+        "B1",
+        "B3",
+        "B4",
+        "B5",
+        "B9",
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R8",
+        "R9",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Temporary inundation, floor preservation, historical crust and current water can combine to make either no new pools or cumulative barren collapse. The current repaint never wets dry cells.",
+      "model": "Shore and route sweep"
+    },
+    {
+      "thing": "water routes",
+      "members": [
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B9",
+        "R1",
+        "R2",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "The same surge, canal, pool and work graph drives isolation, calls, rescue and defence. Endpoint-only checks and any-edge heuristics cannot establish the whole invariant.",
+      "model": "Shore and route sweep"
+    },
+    {
+      "thing": "nursery record",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B9",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R10",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Return removes the hediff holding identity while trade callbacks and promotion can race or lose prior state. Several nurseries and an expiring pool expose the combined failure.",
+      "model": "Nursery transition generator"
+    },
+    {
+      "thing": "life biomass",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B7",
+        "B8",
+        "B9",
+        "R2",
+        "R3",
+        "R7",
+        "R8",
+        "R9",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "ExplosiveGrowth, salt loss, scuttler breeding, ordinary predation and colony harvest share the map over time. Pairwise good rates can still destroy the food floor or fill the map.",
+      "model": "Whole-map season"
+    },
+    {
+      "thing": "weather",
+      "members": [
+        "B1",
+        "B3",
+        "B8",
+        "B9",
+        "R2",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Standing haze and surge forcing, exposure recovery, native growth and Direct Sun must run together with their normal priorities and clocks. No all-on season trace is current.",
+      "model": "Whole-map season"
+    },
+    {
+      "thing": "colony effort",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "B9",
+        "R6",
+        "R7",
+        "R8",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Concurrent tending, slow travel, blocked work, several pools, buyers and juvenile hauling can consume rescue windows and restart duties. Ordinary party success cannot be inferred from individual job methods.",
+      "model": "Food and rescue budget"
+    },
+    {
+      "thing": "information",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "B9",
+        "R3",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R9",
+        "R10",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "Every relevant transition has a named inspectable current state and bounded locatable sign. Current water and old salt gauges describe different times, distinct nursery identities keep their signs local, and roof recovery is distinguished from disease. Actual rendering and notification implementation are still owed in the named tickets.",
+      "model": ""
+    },
+    {
+      "thing": "settings",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "B9",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "The default kept-mechanic manifest defines every bar’s on state. Controls pause producers while stable records remain authoritative, so no successful branch relies on an enabled deferred feature. Independent return, sale and succession gates are explicitly required, and off/on/reload checks reject silent resets.",
+      "model": ""
+    }
+  ],
+  "old_bars": {}
+}
