@@ -338,10 +338,17 @@
     "ref": "run rm-role-designer-1794938752",
     "stage": 2,
     "tokens": 397698
+   },
+   {
+    "at": "2026-11-17T18:24:30Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794939319",
+    "stage": 3,
+    "tokens": 589625
    }
   ],
   "reserve": 60000,
-  "spent": 10919921
+  "spent": 11509546
  },
  "coverage_rounds": [
   {
@@ -782,6 +789,24 @@
    "stage": 3,
    "what": "close",
    "why": "run rm-role-designer-1794938752: stage 2 done"
+  },
+  {
+   "at": "2026-11-17T18:15:23Z",
+   "stage": 3,
+   "what": "over_budget",
+   "why": "10919921 of 4000000 spent; run rm-role-designer-1794939319 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T18:15:23Z",
+   "stage": 3,
+   "what": "open",
+   "why": "run rm-role-designer-1794939319, stage 3, budget 400000"
+  },
+  {
+   "at": "2026-11-17T18:24:31Z",
+   "stage": 4,
+   "what": "close",
+   "why": "run rm-role-designer-1794939319: stage 3 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -797,7 +822,6 @@
    "why": "the coverage judge refused 2 times while you are away (no sitting: the owner has not interacted for 45+ min (last: 2026-11-15T08:37:31Z (chat prompt, 54 min ago)))"
   }
  ],
- "pending_decision": "Fix every gap of coverage verdict rm-coverage-judge-1794730911 (tree cc00c622) in one stage-3 run and write coverage_fixes.json against that judge, one claim per gap: g1 (inv_viewer_mood/inv_player_orders/inv_weathering), g2 (), g3 (art_skill/inv_beauty_and_craft), g4 (reads_at_play_zoom/not_dirt), g5 (ugliness_visible/inv_beauty_and_craft), g6 (answer_wall/inv_social_layer), g7 (fights_reasons/inv_social_layer), g8 (mockery/inv_social_layer), g9 (tribute_memorial/inv_social_layer), g10 (raider_pressure/inv_raider_future_marks), g11 (inv_weathering/weathering_bounds_marks/raider_pressure/inv_raider_future_marks), g12 (inv_settings/stands_alone_settings/raider_pressure), g13 (inv_breach_bias), g14 (inv_joy_and_idle_tag), g15 (inv_ideo_sigils), g16 (inv_viewer_mood), g17 (inv_player_orders), g18 (inv_mark_on_wall/sits_on_wall), g19 (raid_mark_troubles/inv_raid_marks), g20 (going_over), g21 (own_fun/temperament/ideo_sigil/inv_temperament), g22 (stands_alone_settings/inv_standalone), g23 (walk_lived_in), g24 (walk_lived_in). Each gap's smallest_fix in coverage_verdict.json is an edit (all criterion_verdict sound, return_to 3). Biggest: drop the unsupported showcase claims (spree_corridor inv_viewer_mood; after_the_raid inv_player_orders, inv_weathering) or add the scene actions, and keep after_the_raid at min_new_after_first 3; give inv_weathering and breach-bias behaviour their own scenes; make sits_on_wall and inv_mark_on_wall agree on paintable sides (WallPlane.cs).",
  "recovery": [],
  "results": [
   {
@@ -1005,12 +1029,34 @@
    "run": "rm-role-designer-1794938752",
    "stage": 2,
    "summary": "Spurious reopen: stage 2 came back with no new words to take in. The 2026-11-17 repin froze four OWNER card backfills (1794790746864442914, 1794790752285697966, 1794790788426165373, 1794790829027694796) uncited; stage 4 then cited them in record.json, which emptied the owner feed and stale_stage read that as a change. Nothing new from him: no ask is sent (all four answered), the one core contradiction (c_vandal_signage) is resolved by measurement, and c_proof_home and c_site_settings are stage-3 build and script items, not open design. The defect is filed and fixed in this run (RIMMANDRAKE_KEEP_STAGE_TWO_WHEN_CITED_WORDS_ARE_OLD: an owner-feed change counts only when a word the stage did not freeze is uncited; selftest_designer_stage.py 4 new checks, 2 failed on base). The old coverage-fix pending decision was settled at the 2026-11-15 lock; stages 3 and 4 face unchanged tree, sheet, scenes and exam, so each should re-close at once."
+  },
+  {
+   "at": "2026-11-17T18:24:30Z",
+   "inputs": {
+    "exam": "d2eafd2f45adc568544b32b44a3412f07fff492acfe189d46b733994a41e674d",
+    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
+    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
+    "scenes": "0ce1b0ed0644ebed3f1ff06632f3bdb71de7ddef1424cf3c57144afcaca4857b",
+    "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
+    "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894"
+   },
+   "manifest": {
+    "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
+    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
+    "designer_write.md": "6fe74fbb02bcf0aa8e63f66868152f42e2f873c23ddfcb2f0c6e55d5f192a4b4"
+   },
+   "outcome": "done",
+   "owner_uncited": [],
+   "run": "rm-role-designer-1794939319",
+   "stage": 3,
+   "summary": "Fixed both gaps of the live coverage verdict rm-coverage-judge-1794936862 (tree e6507f3b) in scenes.json and wrote coverage_fixes.json against it: g1 sc_spree_variety now captures the lanes unlabelled for a judge and calibrates it on a recolour set; g2 sc_lived_in_soak starts with a sensitive and a clean-freak colonist, reads every colonist against the control, and requires one unforced story. Both MEND acceptance tests PASS. The proof-script work is filed as RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN and RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE (acceptance tests watched failing on 6632657a9e), named as each scene's entry_point_item. The packet's 24-gap list (rm-coverage-judge-1794730911) was stale, settled at the 2026-11-15 lock: close_run never cleared pending_decision. Filed and fixed as RIMMANDRAKE_CLEAR_SETTLED_RETURN_DECISION_RESENT_TWO_DAYS_LATE (a done close pops it; selftest red on base, ALL PASS now). Tree and sheet unchanged; lint PASS, showcase set accepted."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 3,
+ "stage": 4,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
