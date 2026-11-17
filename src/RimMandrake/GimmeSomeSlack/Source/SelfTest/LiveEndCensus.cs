@@ -140,7 +140,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-1, 1), new Cell(-1, 2), new Cell(0, 2), new Cell(1, 2) },
             new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-1, 1), new Cell(-1, 2), new Cell(0, 2), new Cell(1, 2), new Cell(2, 2), new Cell(2, 1) },
         };
-        internal static readonly string[] Fits = { "battery", "lamp", "consumer", "source", "wall", "rock", "box", "boxX", "switch", "device", "cut" };
+        // (2026-11-17, the three families the first report named as not built: a heap of cable as the far fitting; a run that goes under
+        // water at the far cell; and a second obstacle at once, a wall right ahead of the end besides the fitting, "+ahead")
+        internal static readonly string[] Fits = { "battery", "lamp", "consumer", "source", "wall", "rock", "box", "boxX", "switch", "device", "cut",
+                                                   "heap", "water", "battery+ahead", "lamp+ahead", "consumer+ahead", "box+ahead", "boxX+ahead", "wall+ahead", "switch+ahead", "heap+ahead" };
 
         /// <summary>One placement, or null when the grid cannot hold it (a body on the conduit, or the end no longer an end). Local cells: the cut
         /// end at (0, 0), the conduit running out of it toward +X.</summary>
@@ -153,6 +156,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 for (int k = 0; k < rot; k++) { int t = x; x = -z; z = t; }
                 return new Cell(22 + x, 22 + z);
             }
+            bool crowd = fit.EndsWith("+ahead", StringComparison.Ordinal);
+            if (crowd) fit = fit.Substring(0, fit.Length - 6);
             Cell[] path = Shapes[shape];
             var onPath = new HashSet<Cell>(path);
             Cell F = path[path.Length - 1], d = Dirs[side], perp = Left(d), body = Add(F, d, 1);
@@ -166,12 +171,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 for (int i = 0; i < size; i++) for (int j = 0; j < size; j++) bodies.Add(Add(Add(F, d, 1 + i), perp, j - offset));
                 if (bodies.Any(onPath.Contains)) return null;
             }
-            else if (fit == "wall" || fit == "rock")
+            else if (fit == "wall" || fit == "rock" || fit == "water")
             {
                 if (size != 1) return null;
                 for (int t = -3; t <= 3; t++) bodies.Add(Add(body, perp, t));
                 if (bodies.Any(onPath.Contains)) return null;
                 for (int k = 1; k <= 4; k++) conduit.Add(Add(F, d, k));
+            }
+            else if (fit == "heap")
+            {
+                // a 3x3 block of conduit against the far cell: nine cells, a heap (CordGraph.TangleMin), its supply on the far side
+                if (size != 1) return null;
+                for (int i = 1; i <= 3; i++) for (int j = -1; j <= 1; j++) bodies.Add(Add(Add(F, d, i), perp, j));
+                if (bodies.Any(onPath.Contains)) return null;
+                foreach (Cell c in bodies) conduit.Add(c);
+                conduit.Add(Add(F, d, 4));
             }
             else if (fit == "box" || fit == "boxX")
             {
@@ -198,6 +212,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 if (conduit.Contains(q) && !(path.Length > 1 && q == path[1])) return null;
                 if (bodies.Contains(q) && fit == "device") return null;
             }
+            // the second obstacle: a wall across the cell right ahead of the end (the end at path[0], its conduit running back to path[1];
+            // a lone end cell runs along +X)
+            Cell ahead = path.Length > 1 ? new Cell(2 * path[0].X - path[1].X, 2 * path[0].Z - path[1].Z) : new Cell(path[0].X - 1, path[0].Z);
+            if (crowd && (conduit.Contains(ahead) || bodies.Contains(ahead))) return null;
             foreach (Cell c in conduit) w.SetConduit(W(c));
             if (machine)
             {
@@ -206,9 +224,15 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 w.Machines.Add(new MachineInfo { Id = "m", Kind = fit == "lamp" ? MachineKind.Lamp : fit == "source" ? MachineKind.Source : fit == "battery" ? MachineKind.Battery : MachineKind.Consumer,
                                                  X0 = wc.Min(c => c.X), Z0 = wc.Min(c => c.Z), W = size, H = size, Hookups = new List<Cell> { W(F) } });
             }
-            else if (fit == "wall" || fit == "rock")
+            else if (fit == "heap")
             {
-                foreach (Cell c in bodies) w.SetBlocked(W(c), fit == "wall" ? BlockKind.Wall : BlockKind.Rock);
+                Cell bat = W(Add(F, d, 5));
+                w.SetBlocked(bat, BlockKind.Device);
+                w.Machines.Add(new MachineInfo { Id = "bat", Kind = MachineKind.Battery, X0 = bat.X, Z0 = bat.Z, Hookups = new List<Cell> { W(Add(F, d, 4)) } });
+            }
+            else if (fit == "wall" || fit == "rock" || fit == "water")
+            {
+                foreach (Cell c in bodies) w.SetBlocked(W(c), fit == "wall" ? BlockKind.Wall : fit == "rock" ? BlockKind.Rock : BlockKind.Water);
                 Cell bat = W(Add(F, d, 5));
                 w.SetBlocked(bat, BlockKind.Device);
                 w.Machines.Add(new MachineInfo { Id = "bat", Kind = MachineKind.Battery, X0 = bat.X, Z0 = bat.Z, Hookups = new List<Cell> { W(Add(F, d, 4)) } });
@@ -231,6 +255,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 w.Machines.Add(new MachineInfo { Id = "switch", Kind = MachineKind.Transmitter, X0 = W(body).X, Z0 = W(body).Z, Hookups = new List<Cell> { W(F) }, SidePorts = true });
             }
             else if (fit == "device") w.SetBlocked(W(body), BlockKind.Device);
+            if (crowd) w.SetBlocked(W(ahead), BlockKind.Wall);
             return w;
         }
 

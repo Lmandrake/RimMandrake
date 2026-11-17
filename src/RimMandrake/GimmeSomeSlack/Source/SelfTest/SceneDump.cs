@@ -73,6 +73,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 x = (t[1], lw, lo, c => ll.Contains(c));
             }
             else if (t[0] == "live") x = ("the live scene", RebuildPerDigChecks.LiveScene(), new BuildOptions(), c => false);
+            else if (t[0] == "placedname") x = LiveEndCensus.Placements(false).First(q => q.name.Contains(Environment.GetEnvironmentVariable("GSS_SCENE_NAME")));   // the first placement whose name holds the text
             else if (t[0] == "placed") x = LiveEndCensus.Placements(false).Skip(int.Parse(t[1])).First();
             else if (t[0] == "familyname")      // a family scene by its name (GSS_SCENE_NAME: names hold spaces and commas), second draws included
                 x = LiveEndCensus.Family(2).First(q => q.name == Environment.GetEnvironmentVariable("GSS_SCENE_NAME"));

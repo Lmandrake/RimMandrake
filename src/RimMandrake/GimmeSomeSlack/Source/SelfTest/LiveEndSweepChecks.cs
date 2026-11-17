@@ -203,6 +203,16 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(p.Straight == 0 && p.Pinched == 0 && p.BadTail == 0 && p.None == 0 && p.Thin == 0,
                   $"every fitting the game can place beside a cut end is laid to: {p.None} unlaid, {p.Straight} not straight, {p.Pinched} pinched, {p.BadTail} tails off length, {p.Thin} under the margin, of {p.Ends} (tightest bend {p.MinR:0.000})");
             Check(p.StillWithRoom == 0, $"placements: an end lies still only where no whipping tail holds the bars: {p.StillWithRoom} of {p.Still} still ends could whip");
+            // the three families the first report named as not built, each read on its own so none can go missing from the placements unseen
+            foreach ((string tag, string what) in new[] { (" heap ", "a heap of cable as the far fitting"), (" water ", "a run that goes under water at the far cell"),
+                                                         ("+ahead ", "a wall right ahead of the end besides its fitting") })
+            {
+                Tally f = Sweep(LiveEndCensus.Placements(true).Where(x => x.name.Contains(tag)));
+                foreach (string x in f.Bad.Take(4)) Console.WriteLine("  live end placements refused: " + x);
+                Console.WriteLine($"  live end placements, {what}: {f.Worlds} worlds, {f.Ends} live ends, {f.Joined} joined, {f.Kept} kept, {f.Still} lying still, {f.None} unlaid");
+                Check(f.Ends >= 10 && f.Straight == 0 && f.Pinched == 0 && f.BadTail == 0 && f.None == 0 && f.Thin == 0,
+                      $"placements, {what}: {f.Ends} live ends in {f.Worlds} worlds, {f.None} unlaid, {f.Straight} not straight, {f.Pinched} pinched, {f.BadTail} tails off length, {f.Thin} under the margin");
+            }
             // THE PROOF that the unlaid poses of the abstract sweep are not the game's (selftest_gss_live_end_sweep.py: over 13,248 fitting poses, the
             // fitting's body modelled, the lay fails only where that body crowds the end's own straight run: a box, plate or strip whose middle is
             // within 0.749 cell of the run; a machine whose footprint lies on the run or within 0.219 of it with its plug right there). On the grid:
