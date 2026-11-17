@@ -75,7 +75,10 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
   2026-10-04
 - D3. The silhouette sits inside the def's footprint; a picture that overflows or floats inside it is REDO. —
   `generating-rimworld-sprites`
-- D4. Real alpha: no backdrop, halo, ground shadow or scenery. — `generating-rimworld-sprites`; B1's prompt
+- D4. Real alpha: no backdrop, halo, ground shadow or scenery. Ground matter the subject's own description says it
+  makes where it stands (the fermatalis's mounds of mash) is the subject, not scenery; any other prop on the ground is
+  scenery. — `generating-rimworld-sprites`; B1's prompt; Owner 2026-10-24 picked `RM_DecayDrake` r2 with its mash
+  mounds (criteria_ledger CL-035, owner_escalations_cauldron)
   - D4 exception: `RM_LadderPortable` west/east facings may carry a small soft floor shadow attached to the foot. — Owner card 2026-10-22 ("How should we resolve the side walls? → Keep side walls, add a shadow")
 
 ### E. Provenance

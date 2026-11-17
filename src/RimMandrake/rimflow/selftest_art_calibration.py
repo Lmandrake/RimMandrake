@@ -124,6 +124,11 @@ def criteria_cases(AC):
     check("criteria: a sub-bullet stays with its constraint", "RM_LadderPortable" in crit.get("D4", ""), crit.get("D4"))
     check("criteria: C1 is the brief's own line", crit.get("C1", "").startswith(
         "North is the creature's rear (no face, no eyes); south looks at the camera"), crit.get("C1"))
+    # RIMMANDRAKE_RECONCILE_ART_BRIEF_SIZE_RULE_THREE_PICKS_REFUSED: his DecayDrake r2 pick (CL-035) carries mash mounds
+    # its description says it makes; D4 names that ground matter as the subject, and still refuses every other prop
+    d4 = crit.get("D4", "")
+    check("criteria: D4 keeps every refused kind", all(w in d4 for w in ("backdrop", "halo", "ground shadow", "scenery")), d4)
+    check("criteria: D4 names description-made ground matter, with his pick", "description" in d4 and "CL-035" in d4, d4)
 
 
 def stage_cases(AC):
