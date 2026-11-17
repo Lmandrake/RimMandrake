@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":12244,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"OWNER":1207} body_sha256=88b73e6326fb1767cacccd327643223a7a07e1e05956d26632b95de8ec5cecf0 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":12244,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=813db13f8c584a5ba6f0c345c202fa6889ede7b8063b4c574f169a1a72dae12b -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage blind_challenge · 464 events in 8 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 490 events in 9 shards · reducer 1
 holder lease run-1794865314, token 9, last active 2026-11-16T21:43:27Z
 holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 400000
 
@@ -9,50 +9,19 @@ holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 40
 - next: Run blind cycle 1 of this visit (Stages 4 and 5, tests first) on the files changed since the last cycle, cover break included
 - ruled out: any not-met reason to sort: maturation.py next listed none
 
-## Open findings (56)
-(claimed fixes, awaiting a judge, on one line each with the oldest 5 open findings, named without their 'finding:': `modledger.py show --mod ExplosiveKnockback finding:<NAME>`)
-- RIMMANDRAKE_FLING_GOODS_WILD_FACTOR_NEVER_SHIPPED on 81392aea384e9105a92263aea39b2d08c844c1f4
-- RIMMANDRAKE_UNCOUPLE_GAS_GOODS_CAP_FROM_WEAPON_SCALE on 81392aea384e9105a92263aea39b2d08c844c1f4
-- RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT on 81392aea384e9105a92263aea39b2d08c844c1f4
+## Open findings (46)
 - RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish · bars closed_container_holds]: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter lightMassLimit) is called by no game code; ThrowContainer thr…
 - RIMMANDRAKE_STAGE_KERNEL_SELFTEST_COPY_INSIDE_LOCK [open, polish · bars inv_kernel]: selftest_explosiveknockback_kernel.py copies RM_KnockbackMath.cs into the machine-wide ExplosiveKnockbackSelfTest build…
 - RIMMANDRAKE_RECORD_FULL_LAST_LINE_IN_TEST_TABLE_RUNS [open, polish]: test_table.json runs_today.last is truncated at 200 characters (T_FW_COVER) and for T_RESTORE holds a Python SyntaxWarn…
 - RIMMANDRAKE_ASK_GOODS_WILD_FACTOR_BECOME_A_SLIDER [open, polish · bars settings_scale_and_switch, goods_arc_spin_rebound]: The goods wild factor ships as a constant 1.6 because adding a saved setting (goodsThrowWild) turns T_STAGE3_SCENES red…
 - RIMMANDRAKE_REPAIR_WILD_RATIO_BAND_FOR_INTEGER_CELLS [open, problem · bars goods_arc_spin_rebound]: scenes.json sc_storeroom_mortar requires every wild-to-kernel ratio between 1.3 and 2.0, but integer cells make any cor…
-- finding:RIMMANDRAKE_READ_WILD_CELLS_FROM_ITEM_MOVE_NOT_REQUEST [open, polish] by BACKFILL, 2026-11-16T11:37:17Z · bars goods_arc_spin_rebound: scenes.json says each good's request line carries its kernel cells and wild cells, but the request line is written at Enqueue, before the good's mass and throw are known.
-  proposed fix: Change the scene text from the request line to the item_move line.
-  accept: none, no acceptance test filed.
-- RIMMANDRAKE_RESTORE_ON_THROW_IN_KNOCKBACK_PROOF_TWO_LEAKS on 587529cee173
-- RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED on 587529cee173
-- RIMMANDRAKE_BUILD_CLOSED_GUARD_FIRE_HALF_SWITCHES_SHEET_NAMED on 587529cee173
-- RIMMANDRAKE_DRAW_CONTAINER_JOLT_DUST_PUFF_WAS_ALL on 587529cee173
-- RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG on 587529cee173
-- RIMMANDRAKE_PIN_KNOCKBACK_NONPUSH_FORCES_IN_LINT_TABLE on 587529cee173
-- RIMMANDRAKE_CORRECT_FLYING_OFF_WALK_ROW_TO_ITS_BAR on 587529cee173
-- RIMMANDRAKE_DECIDE_RIM_THROW_BY_KERNEL_NOT_WILD_FACTOR on 587529cee173
-- RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER on 04bb4c93faca
-- RIMMANDRAKE_WIRE_CHECKS_SIX_PLANTED_FAULTS_PASSED_OFFLINE on 04bb4c93faca
-- finding:RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST [open, polish] by BACKFILL, 2026-11-16T11:37:17Z · bars inv_proof_scenes: proof_restore_check.py does not see a proof's static_call Settings with a variable args= (storeroom_pit_proof.py arm(): args=kv) as a poke: py_poke_kind falls back to the tool name.
-  proposed fix: In py_poke_kind, fall back to call.args[-1] only when no args= keyword exists.
-  accept: none yet; a planted Settings(args=kv) outside a try must be flagged (widening may surface new repo hits).
-- finding:RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER [open, polish] by BACKFILL, 2026-11-16T11:37:17Z: setting(typ, field, *value) writes settings through a vararg wrapper the restore checker misses, and liquidPumpEnabled is flipped back to a fixed True instead of its prior value (pump_outflow_live.py:174, tank_theft_live.py:80); baselined in proof_restore_check.BASELINE.
-  proposed fix: Restore liquidPumpEnabled to its prior value and make the wrapper visible to the checker.
-  accept: Remove both baseline keys from proof_restore_check.BASELINE and selftest_proof_restore_check.py stays GREEN.
-- RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR on bace1c29cc
-- RIMMANDRAKE_PROVE_PROOF_GATE_EXIT_AN_OR_PASSED_GREEN on f181d3b6ea
-- RIMMANDRAKE_RUN_STOREROOM_RESTORE_WAIVER_TAKEN_ON_TRUST on f181d3b6ea
-- finding:RIMMANDRAKE_GUARD_PROOF_VERDICTS_FIVE_WEAKENED_STAYED_GREEN [open, polish] by BACKFILL, 2026-11-16T11:37:17Z · bars inv_proof_scenes: Five proof-scene live verdicts were weakened (flying_off skip, goods wall position, deep water, container 0 cells, fireHalf lane no-op) and pass every offline suite; only a live run sees them. A correct mod still passes; a broken mod plus a weakened check would slip.
-  proposed fix: Extend validation.py --mock with one wrong-journal case per scene.
-  accept: A mock-verdict harness feeding each scene's verdict a wrong journal; each of the five weakened verdicts must flip to FAIL.
-- finding:RIMMANDRAKE_CLEAR_KNOCKBACK_HAUL_MEMORY_STATIC_OUTLIVES_GAME [open, polish] by BACKFILL, 2026-11-16T11:37:17Z · bars pawn_flight_arc: RM_PawnFlyerPatches.cs holds a static Dictionary<Pawn,Job> Hauling, set at every launch and removed only at a knockback landing. It is never cleared on load and not saved: a pawn dying mid-flight keeps its entry, and a save mid-flight loses the resume (read, not run).
-  proposed fix: Clear Hauling in a GameComponent's FinalizeInit, or key it by thingIDNumber.
-  accept: none filed as a command; would_pass: entries dropped on game load and on a flight that never lands.
-- finding:RIMMANDRAKE_TEST_JOLT_DECAY_DOC_PROMISES_UNTESTED [open, polish] by BACKFILL, 2026-11-16T11:37:17Z · bars closed_container_holds: RM_KnockbackMath.JoltOffset's doc promises a decaying shake, but only the bound is tested; a planted no-decay (PF_MATH_JOLT_NO_DECAY) passed T_KERNEL and lane 1.
-  proposed fix: Add one T_KERNEL check that a late tick's offset is smaller than an early one's.
-  accept: none filed; would pass with a K check that a late tick's offset is smaller than an early one's.
-- finding:RIMMANDRAKE_STOP_KNOCKBACK_HIT_ACROSS_SANDBAG_NO_CONTACT [open, polish] by BACKFILL, 2026-11-16T11:37:17Z · bars pawn_hits_pawn_stops: In RM_KnockbackMath.Resolve, a pawn thrown over a sandbag into a pawn, wall or door backs off the sandbag (often to 0 cells) yet still reports the hit; ThrowPawn applies impact, otherImpact and door damage before its !res.Moved check.
-  proposed fix: In Resolve after the back-off: if the backed-off cell is not adjacent to the hit cell, clear hitOther/hitDoor and impact and report stop Distance (or None at 0 cells).
-  accept: python3 design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_4/lane1/run_lane1.py --out /tmp/ek_c4_l1.jsonl exits 0, L1_PATH_RANDOM_CONSERVATION PASS (0 FAIL rows); T_KERNEL and T_FUZZ stay green.
+- RIMMANDRAKE_READ_WILD_CELLS_FROM_ITEM_MOVE_NOT_REQUEST [open, polish · bars goods_arc_spin_rebound]: scenes.json says each good's request line carries its kernel cells and wild cells, but the request line is written at E…
+- RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST [open, polish · bars inv_proof_scenes]: proof_restore_check.py does not see a proof's static_call Settings with a variable args= (storeroom_pit_proof.py arm():…
+- RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER [open, polish]: setting(typ, field, *value) writes settings through a vararg wrapper the restore checker misses, and liquidPumpEnabled…
+- RIMMANDRAKE_GUARD_PROOF_VERDICTS_FIVE_WEAKENED_STAYED_GREEN [open, polish · bars inv_proof_scenes]: Five proof-scene live verdicts were weakened (flying_off skip, goods wall position, deep water, container 0 cells, fire…
+- RIMMANDRAKE_CLEAR_KNOCKBACK_HAUL_MEMORY_STATIC_OUTLIVES_GAME [open, polish · bars pawn_flight_arc]: RM_PawnFlyerPatches.cs holds a static Dictionary<Pawn,Job> Hauling, set at every launch and removed only at a knockback…
+- RIMMANDRAKE_TEST_JOLT_DECAY_DOC_PROMISES_UNTESTED [open, polish · bars closed_container_holds]: RM_KnockbackMath.JoltOffset's doc promises a decaying shake, but only the bound is tested; a planted no-decay (PF_MATH_…
+- RIMMANDRAKE_STOP_KNOCKBACK_HIT_ACROSS_SANDBAG_NO_CONTACT [open, polish · bars pawn_hits_pawn_stops]: In RM_KnockbackMath.Resolve, a pawn thrown over a sandbag into a pawn, wall or door backs off the sandbag (often to 0 c…
 - finding:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS [open, problem] by BACKFILL, 2026-11-16T11:37:18Z: Task: Explosive Knockback draws its own bigger blasts (own RM_KnockbackBlast* FleckDefs for debris, smoke, soot, sparks; shockwave/quake for big blasts) via a Harmony hook at explosion start. Visuals only, no change to damage, radius, trigger or throw.
   proposed fix: Add >=4 own FleckDefs with own textures under ExplosiveKnockback/Textures, a Harmony patch on Explosion.StartExplosion or GenExplosion.DoExplosion, and saved/drawn settings blastShow and blastShowBig (both on by default). Art goes through the art judge.
   accept: python3 src/RimMandrake/ExplosiveKnockback/proof/absorb_blast_show_check.py exits 0 with "PASS absorb blast show: 0 failing line(s)" (A1-A6); red on c20328a876 (A1, A3, A4, A5).
@@ -137,6 +106,24 @@ holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 40
 - finding:RIMMANDRAKE_READ_WALK_TICK_COST_RUNNING_PAUSED_READ_ZERO [open, problem] by BACKFILL, 2026-11-16T11:45:06Z · bars walk_storeroom_raid: Walk row CARRIER_TICK_COST scored PASS on 0.0/0.0 ms in all 9 runs on record because jawa/time_perf reads 0 on a paused clock (perfprobe paused 0.0, speed 1 4.29 ms).
   proposed fix: Take both readings in the frame act on a running clock; score the row UNMEASURED when the reading is 0 or none.
   accept: python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py: W21 (perf always 0.0 -> CARRIER_TICK_COST UNMEASURED) FAILs on 8839d0987c (got PASS); all 22 checks PASS after.
+- finding:RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER [open, problem] by JUDGE.judge-1794890427, 2026-11-17T05:49:20Z · bars pawn_hits_pawn_stops: RM_MapKbGrid.At answered CoveredPit before looking for a pawn: a thrown pawn passed through a pawn standing on a pit cover and could land on its cell (open pits already blocked). FIXED 42225e0686 red-first; miss_of 4.
+  proposed fix: RM_KnockbackMath.PitCell(covered, forPawn, pawnThere) (a pawn there blocks a thrown pawn, open or covered); RM_MapKbGrid.At answers superdeep cells through it, counting only pawns not beneath the lid (RM_KnockbackCompat.IsBeneathCover); K-25 in SelfTest/Program.cs
+  accept: python3 design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_5/lane2/check_pit_pawn.py -> rc 0 PASS 6 of 6
+- finding:RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND [open, problem] by JUDGE.judge-1794890427, 2026-11-17T05:49:20Z · bars thrown_into_pit_falls: The kernel treats a covered pit as ground (K-08 pins it): a throw planned beyond a covered pit flies over it, and a thrown pawn landing on a cover never breaks it (pawns excluded; FlowWorks only springs on mass, own faction spared). sc_pit_fall's covered lane is not staged. miss_of 4.
+  proposed fix: Resolve: a covered cell stops a throw IN it (wall when into-pits off); LandingBreaksCover lets a blast-thrown pawn break it; the pawn landing patch breaks the cover via BreakCoverUnder; K-08 follows; pit_colonist gains the covered lane and filled control. Full: faults.json
+  accept: python3 design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_5/lane2/accept_covered_pit.py -> rc 0, covered pit acceptance: 6 of 6
+- finding:RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN [open, problem] by JUDGE.judge-1794890427, 2026-11-17T05:49:21Z · bars inv_proof_scenes: 9 planted faults in the proof scenes' verdicts and plans (calibration any cells, hose control always passes, goods-obstacle control never fails, pit probe INVALID never, ...) survived every offline test: no offline decider runs a verdict. NOTED for a re-pin.
+  proposed fix: steward re-pin: inv_proof_scenes' offline half is staging, gate and restore; verdict honesty moves to Stage 6 as a per-scene planted-break run (or lift verdict arithmetic into the kernel). Full: faults.json
+  accept: after the re-pin or fix: lane2/plant_faults.py on the 9 PF_P/PF_SB/PF_GO/PF_S3/PF_PP faults -> each caught (offline) or each scene FAILs its planted break live
+- finding:RIMMANDRAKE_SHOVE_PAWNS_STANDING_ON_COVERS_IN_BURNING_GAS [open, polish] by JUDGE.judge-1794890427, 2026-11-17T05:49:21Z · bars gas_goes_clump_by_clump: Anything on a superdeep cell is skipped in_pit, and IsSuperdeep is true under an intact cover: a gas burst never shoves a pawn standing on a pit cover nor scatters goods on one. Blasts break the cover so it shows only for gas. miss_of 4.
+  proposed fix: in_pit = IsSuperdeep && (no cover || the thing is beneath the lid, RM_KnockbackCompat.IsBeneathCover)
+  accept: live sc_gas_chain variant: a pawn on a deck beside a burning clump moves one cell; goods on the deck scatter
+- finding:RIMMANDRAKE_TEST_WALK_FRAME_JUDGE_OFFLINE_TWO_MUTANTS_LIVED [open, polish] by JUDGE.judge-1794890427, 2026-11-17T05:49:21Z · bars walk_storeroom_raid: validation.py's FRAME_BUDGET judge (mod-on p99 within 10% of mod-off) has no offline case: loosening 10% to 50%, or always PASS, survived every offline suite.
+  proposed fix: a --selftest in validation.py (or a selftest file) that calls the FRAME_BUDGET judge with fixed arm dicts
+  accept: an offline case: on/off p99 +9% PASS, +11% FAIL, a missing or unlike arm UNMEASURED; PF_V_* then caught
+- finding:RIMMANDRAKE_NOTE_KNOCKBACK_CALLER_MUTANTS_OWED_TO_STAGE_SIX [open, polish] by JUDGE.judge-1794890427, 2026-11-17T05:49:21Z · bars the_spared, heavier_flies_less, goods_arc_spin_rebound, heavy_stack_knocks, thrown_into_pit_falls, pawn_flight_arc, every_harmful_blast_throws: 10 planted faults in game-side callers survived offline as expected for Verse code (grid pawn read, in-bed skip, inventory mass, rebound, heavy knock, landing cover break, no-redirect, landing door, unpatched percent, fire switch): hand them to Stage 6 as planted breaks.
+  proposed fix: hand the 10 to Stage 6's brief as planted breaks to run live
+  accept: Stage 6 runs each of the 10 as a planted break and its scene FAILs
 
 ## Traps (65) — what a reader would otherwise get wrong
 - trap:judge-round-count-has-three-answers (design/concepts/ExplosiveKnockback/journal.md:58): Judge round count has three answers (12 / 13 / 19); not reconciled (spec §10).
@@ -308,10 +295,9 @@ spend recorded: USD 98.24, 140077376 tokens
 
 ## Left out
 - decisions: 3, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
-- closed findings: 22, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
-- tests: 94, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
-- claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 5 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 464 events (views/history.md; never read whole)
+- closed findings: 38, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
+- tests: 98, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
+- open findings in brief: the oldest 12 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
+- the full history: 490 events (views/history.md; never read whole)
 
-cursor: t=2026-11-17T04:40:47Z.1794890447600312240 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T04:40:47Z.1794890447600312240 prints what changed after this packet)
+cursor: t=2026-11-17T05:58:35Z.1794895115582635667 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T05:58:35Z.1794895115582635667 prints what changed after this packet)

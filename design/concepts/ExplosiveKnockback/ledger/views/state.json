@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "7b53ddb5d586ff5dc678cde3aefaf4074770dea6251a6d449f0115411c46f983",
+  "body_sha256": "4f6818fcf36264a1a78336b1f8f7a7e919067a937a7919cd5067d67cff247ef2",
   "reducer": 1,
   "shards": {
    "BACKFILL": 302988,
@@ -10,6 +10,7 @@
    "HOLDER.run-1794830532": 2304,
    "HOLDER.run-1794860741": 975,
    "HOLDER.run-1794865314": 728,
+   "JUDGE.judge-1794890427": 18837,
    "OWNER": 1207
   }
  },
@@ -834,7 +835,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 464,
+  "events": 490,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -918,12 +919,12 @@
     "by": "BACKFILL",
     "claim": "Built the saved switches closedContainerGuard (read by HeldReason, InClosedContainer, ThrowContainer goods) and fireAtHalf (read by ConfigOf), with checkboxes, Scribe and Reset, and wired the sweep lanes; switch faults now 4/4 caught.",
     "class": "problem",
-    "code_sha": "587529cee173",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Add closedContainerGuard (read in HeldReason, InClosedContainer, ThrowContainer goods) and fireAtHalf (read in ConfigOf) with checkboxes, Scribe and Reset; wire the sweep lanes.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "The sheet's 'closed guard off' and 'fire at half off' switches had no Mod Setting: RM_KnockbackMod.cs saved 46 settings and none switched either.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:31Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_BUILD_KNOCKBACK_CREATURE_MASS_AND_BLAST_POWER": {
@@ -1023,12 +1024,12 @@
     "by": "BACKFILL",
     "claim": "Renamed the row to flying_goods.off_goods_unthrown in validation.py, the walk's must-be-true list, bar_lists_map.json and required_checks.json; proof scene goods_fly_off now expects no throw (587529cee1).",
     "class": "problem",
-    "code_sha": "587529cee173",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Rename the row to flying_goods.off_goods_unthrown everywhere; proof scene goods_fly_off expects no throw.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Walk row flying_goods.off_is_the_instant_move contradicted settings_scale_and_switch (flying goods off means goods unthrown). It was carried in validation.py, bar_lists_map.json, the walk's must-be-true list and required_checks.json.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:32Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_CORRECT_REBOUND_ALWAYS_RUNS_OUT_COMMENT": {
@@ -1039,12 +1040,12 @@
     "by": "BACKFILL",
     "claim": "Corrected the kernel ReboundCells comment and the settings goodsReboundKeepPercent field comment (81392aea384e).",
     "class": "polish",
-    "code_sha": "81392aea384e9105a92263aea39b2d08c844c1f4",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Correct the two comments (kernel ReboundCells, settings goodsReboundKeepPercent) to say rounding bounds the chain below 100 percent and MaxBounces at 100; lane 1 row checks the kernel below 100 and MaxBounces at 100.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "The kernel comment on ReboundCells says it is 'rounded DOWN so a throw always runs out', which is false at goodsReboundKeepPercent 100: ReboundCells(6,100) = 6 and the kernel never ends the chain. Only MaxBounces (6) in RM_ThingFlyer_Knockback.cs bounds play.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:32Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_COVER_WILD_GAS_CAP_IN_KERNEL_DECIDER": {
@@ -1055,12 +1056,12 @@
     "by": "BACKFILL",
     "claim": "Added K-23 and K-24 to the kernel tests, so planted PF_MATH_WILD_IGNORED (WildCells ignored) and PF_MATH_GAS_CAP_RESCALED (scaleOwnCap ignored) are now caught: 2 of 2 (04bb4c93fa).",
     "class": "problem",
-    "code_sha": "04bb4c93faca",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Add kernel tests K-23 and K-24 so T_KERNEL goes red on both planted faults.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_KERNEL (inv_kernel's decider) and T_FUZZ passed planted breaks where WildCells is ignored and where scaleOwnCap is ignored.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:32Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_DECIDE_EXPLOSION_MODS_KEEP_ABSORB": {
@@ -1090,12 +1091,12 @@
     "by": "BACKFILL",
     "claim": "Execute and ItemWillBeThrown now require a kernel throw of at least one cell, so a rim good with kernel 0 is skipped too_weak instead of flying on the wild factor (587529cee1).",
     "class": "problem",
-    "code_sha": "587529cee173",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Require kernelCells >= 1 in Execute and ItemWillBeThrown, so kernel 0 is skipped too_weak for goods too.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "A rim good whose kernel throw rounds to 0 cells flew 1 cell on the 1.6 wild factor alone: Execute threw goods by the wild count, against inv_too_weak_skip and every_good_moves' 'reached' (kernel >= 1). 14 of 291 distances (70 kg, r 2.9) hit it.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:32Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_DELETE_DEAD_CONTAINER_SHOVE_KERNEL_TESTED_75_KG": {
@@ -1106,12 +1107,12 @@
     "by": "BACKFILL",
     "claim": "Deleted the dead ContainerShove/KbShove kernel. ThrowContainer now plans with ContainerThrowCells, the kernel-tested throw the game calls; K-14 was rewritten (587529cee1).",
     "class": "problem",
-    "code_sha": "587529cee173",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Delete ContainerShove/KbShove; ThrowContainer plans with ContainerThrowCells; rewrite K-14; cycle-1 lane 1 and KnockbackSweep follow.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "ContainerShove/KbShove was called by nothing in the game, and its K-14 tests pinned the 75 kg goods limit instead of the sheet's 250 kg container limit, so the tests did not test the rule the game runs.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:33Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_DEPLOY_KNOCKBACK_DRAWING_STORAGE_OPEN": {
@@ -1178,12 +1179,12 @@
     "by": "BACKFILL",
     "claim": "Fixed at 587529cee173: a non-flying blocked container now starts a jolt via StartJolt, and MapComponentUpdate draws it through RM_KnockbackMath.JoltOffset (20 ticks, <= 0.15 cells, <= 64 at once). The selftest was red on the parent and green on the fix.",
     "class": "problem",
-    "code_sha": "587529cee173",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "StartJolt plus MapComponentUpdate drawing JoltOffset: offset <= 0.15 cells, 20 ticks, <= 64 at once.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "A blocked closed container that does not fly was jolted with only a dust puff and a journal line (ThrowContainer's !flew path); nothing was drawn on the container, so sc_closed_containers' drawn-offset criterion failed.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:33Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_DRIVE_EXPLOSIVEKNOCKBACK_IN_GAME_ACCEPTANCE_FIRST": {
@@ -1332,12 +1333,12 @@
     "by": "BACKFILL",
     "claim": "Added RM_KnockbackMath.WildCells and GoodsThrowWild = 1.6; Execute and ItemWillBeThrown throw items and corpses wild; item_move carries kernelCells and wildCells; containers and pawns keep the kernel.",
     "class": "problem",
-    "code_sha": "81392aea384e9105a92263aea39b2d08c844c1f4",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Add kernel RM_KnockbackMath.WildCells(dist, radius, force, mass, s, wild); Execute and ItemWillBeThrown use it for items and corpses; journal kernel/wild fields.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Goods and corpses used the same RM_KnockbackMath.ThrowCells as pawns in Execute: no goods-distance factor, no wild cells on request or item_move line, so a 60 kg corpse flew 3 cells like a colonist.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:33Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_FLING_KNOCKBACK_CARRY_ON_OWN_ARC": {
@@ -1507,6 +1508,28 @@
     "ts": "2026-11-16T11:37:19Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_NOTE_KNOCKBACK_CALLER_MUTANTS_OWED_TO_STAGE_SIX": {
+    "accept": "Stage 6 runs each of the 10 as a planted break and its scene FAILs",
+    "bars": [
+     "the_spared",
+     "heavier_flies_less",
+     "goods_arc_spin_rebound",
+     "heavy_stack_knocks",
+     "thrown_into_pit_falls",
+     "pawn_flight_arc",
+     "every_harmful_blast_throws"
+    ],
+    "by": "JUDGE.judge-1794890427",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "hand the 10 to Stage 6's brief as planted breaks to run live",
+    "status": "open",
+    "tags": [],
+    "text": "10 planted faults in game-side callers survived offline as expected for Verse code (grid pawn read, in-bed skip, inventory mass, rebound, heavy knock, landing cover break, no-redirect, landing door, unpatched percent, fire switch): hand them to Stage 6 as planted breaks.",
+    "ts": "2026-11-17T05:49:21Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE": {
     "accept": "none, no acceptance test filed; cycle exit was NOT met (inv_proof_scenes red with T_RESTORE known red, and Problems found).",
     "bars": [
@@ -1531,12 +1554,28 @@
     "by": "BACKFILL",
     "claim": "ek-pins now pins Flame 0.5 and EMP/Smoke/Extinguish/ToxGas 0, so T_LINT goes red (rc 1) on the planted copy; red on ecd0b23322, green at 587529cee1.",
     "class": "problem",
-    "code_sha": "587529cee173",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Extend the ek-pins table to pin Flame 0.5 and EMP/Smoke/Extinguish/ToxGas 0.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_LINT returned rc 0 on a copy of RM_Knockback_DamageDefs.xml with Flame planted at 0.7, because the lint table did not pin each non-push force.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:33Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN": {
+    "accept": "after the re-pin or fix: lane2/plant_faults.py on the 9 PF_P/PF_SB/PF_GO/PF_S3/PF_PP faults -> each caught (offline) or each scene FAILs its planted break live",
+    "bars": [
+     "inv_proof_scenes"
+    ],
+    "by": "JUDGE.judge-1794890427",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "steward re-pin: inv_proof_scenes' offline half is staging, gate and restore; verdict honesty moves to Stage 6 as a per-scene planted-break run (or lift verdict arithmetic into the kernel). Full: faults.json",
+    "status": "open",
+    "tags": [],
+    "text": "9 planted faults in the proof scenes' verdicts and plans (calibration any cells, hose control always passes, goods-obstacle control never fails, pit probe INVALID never, ...) survived every offline test: no offline decider runs a verdict. NOTED for a re-pin.",
+    "ts": "2026-11-17T05:49:21Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PROVE_KNOCKBACK_ALL_FLY_PERF": {
@@ -1617,12 +1656,12 @@
     "by": "BACKFILL",
     "claim": "G1 now checks both the and->or gate fault and the require_proof_build exit; red rc 1 at f0863c4a49, green rc 0 at f181d3b6ea.",
     "class": "problem",
-    "code_sha": "f181d3b6ea",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Add two more G1 answers and a require_proof_build exit/return check.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_PROOFGATE passed proof_build_gate with and->or (PF_GATE_RELEASE_OR) and with require_proof_build never exiting (PF_GATE_NO_EXIT); G1's three answers never named the proof type and require_proof_build was never called.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:34Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_READ_CONTAINER_JOLT_OFFSET_IN_PROOF": {
@@ -1763,12 +1802,12 @@
     "by": "BACKFILL",
     "claim": "Fixed at 587529cee173: red on dce1db1f1fba (rc 1), green after (rc 0, FAIL 0 and CRASH 0); settings snapshot/restore added and the two FlowWorks hits baselined under a filed item.",
     "class": "problem",
-    "code_sha": "587529cee173",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Snapshot the player's settings before the first reset and restore in a finally; add reviewed annotations where a restore exists; baseline the two FlowWorks hits under a filed item.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "selftest_proof_restore_check.py was red: restore leaks outside the filed baseline, in storeroom_pit_proof.py (resets lose the player's settings values) and in pump_outflow_live.py, tank_theft_live.py, showcase_common.py, wrapup_debt.py (unrestored on throw).",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:34Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_RESTORE_PUMP_TANK_SETTINGS_PRIOR_VARARG_HIDES_SETTER": {
@@ -1845,12 +1884,28 @@
     "by": "BACKFILL",
     "claim": "Fixed at f181d3b6ea: T_RESTORE section 7 now runs the two functions against a fake bridge with two mutants, catching the partial snapshot and the swallowed failed write; red-first rc 1, then rc 0 with 2 of 2 caught.",
     "class": "problem",
-    "code_sha": "f181d3b6ea",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Add T_RESTORE section 7: run the two real-source functions against a fake bridge, with two in-memory mutants.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_RESTORE took the 'restore-check: ok' waiver on storeroom_pit_proof.py's resets on trust, so a partial snapshot (unreadable field skipped, never restored) and a swallowed failed write stayed green in T_RESTORE and S_JOURNAL_JOLT.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:34Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_SHOVE_PAWNS_STANDING_ON_COVERS_IN_BURNING_GAS": {
+    "accept": "live sc_gas_chain variant: a pawn on a deck beside a burning clump moves one cell; goods on the deck scatter",
+    "bars": [
+     "gas_goes_clump_by_clump"
+    ],
+    "by": "JUDGE.judge-1794890427",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "in_pit = IsSuperdeep && (no cover || the thing is beneath the lid, RM_KnockbackCompat.IsBeneathCover)",
+    "status": "open",
+    "tags": [],
+    "text": "Anything on a superdeep cell is skipped in_pit, and IsSuperdeep is true under an intact cover: a gas burst never shoves a pawn standing on a pit cover nor scatters goods on one. Blasts break the cover so it shows only for gas. miss_of 4.",
+    "ts": "2026-11-17T05:49:21Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_SKIP_GOODS_WHEN_FLIGHT_OFF_OLD_HOP_LINGERED": {
@@ -1861,12 +1916,12 @@
     "by": "BACKFILL",
     "claim": "Goods and corpses are now skipped with reason flying_off when flyingGoods is off, so no item_move instant hop happens; ItemWillBeThrown is false in that case.",
     "class": "problem",
-    "code_sha": "587529cee173",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Skip goods and corpses with reason flying_off; ItemWillBeThrown returns false.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "With flyingGoods off, RM_MapComponent_Knockback.Execute fell through to DeSpawn + PlaceLanding, the old instant hop, instead of leaving goods unthrown; the goods_fly_off proof expected the instant move.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:34Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_SPARE_THROWN_GOODS_SO_THEY_SCATTER": {
@@ -1968,6 +2023,38 @@
     "ts": "2026-11-16T11:37:17Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER": {
+    "accept": "python3 design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_5/lane2/check_pit_pawn.py -> rc 0 PASS 6 of 6",
+    "bars": [
+     "pawn_hits_pawn_stops"
+    ],
+    "by": "JUDGE.judge-1794890427",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "RM_KnockbackMath.PitCell(covered, forPawn, pawnThere) (a pawn there blocks a thrown pawn, open or covered); RM_MapKbGrid.At answers superdeep cells through it, counting only pawns not beneath the lid (RM_KnockbackCompat.IsBeneathCover); K-25 in SelfTest/Program.cs",
+    "status": "open",
+    "tags": [],
+    "text": "RM_MapKbGrid.At answered CoveredPit before looking for a pawn: a thrown pawn passed through a pawn standing on a pit cover and could land on its cell (open pits already blocked). FIXED 42225e0686 red-first; miss_of 4.",
+    "ts": "2026-11-17T05:49:20Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND": {
+    "accept": "python3 design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_5/lane2/accept_covered_pit.py -> rc 0, covered pit acceptance: 6 of 6",
+    "bars": [
+     "thrown_into_pit_falls"
+    ],
+    "by": "JUDGE.judge-1794890427",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "Resolve: a covered cell stops a throw IN it (wall when into-pits off); LandingBreaksCover lets a blast-thrown pawn break it; the pawn landing patch breaks the cover via BreakCoverUnder; K-08 follows; pit_colonist gains the covered lane and filled control. Full: faults.json",
+    "status": "open",
+    "tags": [],
+    "text": "The kernel treats a covered pit as ground (K-08 pins it): a throw planned beyond a covered pit flies over it, and a thrown pawn landing on a cover never breaks it (pawns excluded; FlowWorks only springs on mass, own faction spared). sc_pit_fall's covered lane is not staged. miss_of 4.",
+    "ts": "2026-11-17T05:49:20Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_SWITCH_ELECTRICAL_BURN_WITH_FIRE_HALF_FLAME_HEIR": {
     "accept": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py 180/180 passed (179/180 red at 7450887f29, FAIL K-23 ElectricalBurn).",
     "bars": [
@@ -1976,12 +2063,12 @@
     "by": "BACKFILL",
     "claim": "Moved the fire rule into RM_KnockbackMath.FireSwitchedOff so that with fireAtHalf off every damage type inheriting the Flame patch's force, including ElectricalBurn, resolves to force 0; added K-23. Fixed at bace1c29cc.",
     "class": "problem",
-    "code_sha": "bace1c29cc",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Put the switch decision in the kernel (FireSwitchedOff / IsFireDamage, ElectricalBurn named) and add T_KERNEL K-23 over the vanilla fire family.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "With fireAtHalf off, Anomaly's ElectricalBurn (ParentName Flame, force 0.5 inherited, hediff ElectricalBurn) kept throwing because IsFire knew only Flame or hediff Burn.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:35Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_TEST_JOLT_DECAY_DOC_PROMISES_UNTESTED": {
@@ -1998,6 +2085,22 @@
     "tags": [],
     "text": "RM_KnockbackMath.JoltOffset's doc promises a decaying shake, but only the bound is tested; a planted no-decay (PF_MATH_JOLT_NO_DECAY) passed T_KERNEL and lane 1.",
     "ts": "2026-11-16T11:37:17Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_TEST_WALK_FRAME_JUDGE_OFFLINE_TWO_MUTANTS_LIVED": {
+    "accept": "an offline case: on/off p99 +9% PASS, +11% FAIL, a missing or unlike arm UNMEASURED; PF_V_* then caught",
+    "bars": [
+     "walk_storeroom_raid"
+    ],
+    "by": "JUDGE.judge-1794890427",
+    "claim": null,
+    "class": "polish",
+    "code_sha": null,
+    "proposed_fix": "a --selftest in validation.py (or a selftest file) that calls the FRAME_BUDGET judge with fixed arm dicts",
+    "status": "open",
+    "tags": [],
+    "text": "validation.py's FRAME_BUDGET judge (mod-on p99 within 10% of mod-off) has no offline case: loosening 10% to 50%, or always PASS, survived every offline suite.",
+    "ts": "2026-11-17T05:49:21Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_THROW_ALL_HARMFUL_BLASTS": {
@@ -2059,12 +2162,12 @@
     "by": "BACKFILL",
     "claim": "Fixed at 81392aea: KbConfig.scaleOwnCap added and GasBurst sets it false, so the gas goods cap no longer follows the weapon-scale slider. L1 red on 8292600eec, green with wiring 11/11.",
     "class": "problem",
-    "code_sha": "81392aea384e9105a92263aea39b2d08c844c1f4",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Add KbConfig.scaleOwnCap (default true); KbLookup.Apply scales the own cap only when set; GasBurst sets it false.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "GasBurst builds KbConfig{ownCap=gasBurstGoodsCells} and Kernel -> KbLookup.Apply -> CapFor(ownCap, maxThrowCells, ownCapScale) rescales it by the weapons-own-maximum slider: at 2.0 gas throws goods 4 cells, at 0.25 one, not 2.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:35Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_WIDEN_RESTORE_CHECK_VARIABLE_SETTINGS_ARGS_SLIP_PAST": {
@@ -2091,12 +2194,12 @@
     "by": "BACKFILL",
     "claim": "journal_jolt wiring() now catches all six planted faults; red on parent 57e61fef0b (all six missed), green at 04bb4c93fa (6 of 6 caught).",
     "class": "problem",
-    "code_sha": "04bb4c93faca",
+    "code_sha": "42225e0686a331386267dfe27628448d52039610",
     "proposed_fix": "Add wiring() checks in selftest_explosiveknockback_journal_jolt.py that catch all six.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Six planted faults passed every offline suite: GoodsThrowWild 1.0, gas cap rescaled, proof goods want by the plain kernel, a scene name dropped, the fireHalf lane always own, the storeroom restore dropped.",
-    "ts": "2026-11-16T11:37:17Z",
+    "ts": "2026-11-17T05:58:35Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD": {
@@ -2184,6 +2287,7 @@
    "HOLDER.run-1794830532",
    "HOLDER.run-1794860741",
    "HOLDER.run-1794865314",
+   "JUDGE.judge-1794890427",
    "OWNER"
   ],
   "spend_tokens": 140077376,
@@ -3036,6 +3140,42 @@
     "subject": "bar:inv_items_teleport",
     "text": "visit_3 sc_storeroom_mortar PASS (runner PASS)",
     "ts": "2026-11-16T11:37:21Z"
+   },
+   {
+    "by": "JUDGE.judge-1794890427",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "a898e049d49d47d0100cbc1a7742453b55f8467a",
+    "subject": "bar:inv_kernel",
+    "text": "T_KERNEL and T_FUZZ rerun with their recorded commands: PASS, PASS, verdicts match runs_today",
+    "ts": "2026-11-17T05:50:34Z"
+   },
+   {
+    "by": "JUDGE.judge-1794890427",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "a898e049d49d47d0100cbc1a7742453b55f8467a",
+    "subject": "bar:inv_proof_scenes",
+    "text": "T_SCRIPT, T_PROOFGATE, T_RESTORE rerun with their recorded commands: PASS x3, verdicts match runs_today",
+    "ts": "2026-11-17T05:50:35Z"
+   },
+   {
+    "by": "JUDGE.judge-1794890427",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "42225e0686a331386267dfe27628448d52039610",
+    "subject": "bar:inv_kernel",
+    "text": "after the fix: T_KERNEL 198/198 (K-25 added), T_FUZZ PASS; all 16 offline tests PASS",
+    "ts": "2026-11-17T05:50:35Z"
+   },
+   {
+    "by": "JUDGE.judge-1794890427",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "a898e049d49d47d0100cbc1a7742453b55f8467a",
+    "subject": "judge",
+    "text": "blind lane 1: 96 rows, 33 PASS, 6 INFO, 0 FAIL, 57 not_kernel UNSETTLED; 55 planted faults: 35 caught, 20 survived (9 proof verdicts, 11 game-side)",
+    "ts": "2026-11-17T05:50:35Z"
    }
   ],
   "traps": {

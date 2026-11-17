@@ -26,28 +26,54 @@ Lane-1 inputs read: tree.json, sheet.md, plan.md, version/VERSION.json, version/
 `python3 lane1/run_lane1.py` (BlindLane1.cs on the shipped RM_KnockbackMath.cs, built with the Windows dotnet under `D:\ClaudeWork\rimmandrake\scratch\explosiveknockback_blind_c5_lane1\`; BlindLane1.py on the settings, the type patch, the proof gate and the scenes' entry points): **96 rows: 33 PASS, 6 INFO, 0 FAIL, 57 UNSETTLED** [measured], every UNSETTLED a `not_kernel` row on a stage-6 bar (none names inv_kernel or inv_proof_scenes). Seeds 50501-50510 are in each random row's detail. On my first runs three rows FAILED on my own oracle bugs, fixed before recording (wall impact expected for the wrong cell count; the entry-point tokenizer read `src` out of a path; fall-through `case` labels with a trailing comment). Six INFO rows name things lane 2 must read in the callers: a thrown pawn landing on a cover (the kernel leaves it to FlowWorks), the gas shove onto a pit (ShoveCellFree refuses pits, so the gas shove must not use it), the max-6 cap clipping goods' 1.6x near a blast, fire's exact half rounding to 1 cell of 3 at the calibration point, independent landing-stun min/max sliders, no extra tuned types.
 
 ## Lane 2 reruns
-(pending)
+`python3 lane2/rerun_offline.py` at a898e049d4: **16 of 16 offline tests PASS; verdicts match runs_today 16 of 16** [measured]; last lines match 15 of 16 strictly (T_FUZZ differs only in its timing figure, 1.49 s vs 1.63 s; the compare now masks seconds). Deciders of the offline bars: T_KERNEL 191/191, T_FUZZ OK (inv_kernel); T_SCRIPT, T_PROOFGATE, T_RESTORE PASS (inv_proof_scenes). After the fix at 42225e0686: 16 of 16 PASS (`lane2/reruns_after_fix.jsonl`; T_KERNEL 198/198 with K-25, so 14 of 16 last lines match).
 
 ## Planted
-(pending)
+`lane2/plant_faults.py` (WINBUILD_ROOT private), 55 faults over 13 offline suites plus blind lane 1, baseline all green, **tree clean after** [measured]:
+- **Kernel RM_KnockbackMath.cs: 20 of 20 caught** by the builder's T_KERNEL/T_FUZZ, and 20 of 20 by blind lane 1 too.
+- Proof gate: 2 of 2 caught (T_PROOFGATE). Proof scenes: a dropped scene name (T_STAGE3_SCENES) and the proof type not built (T_PROOFGATE) caught; **9 verdict/plan faults survived** every offline test (calibration any cells, storeroom plan mass limit and plain kernel, goods-obstacle control never fails and door lane without rebound, hose control always passes and three-cells dropped, pit probe INVALID never and INVALID text) -> RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN.
+- Settings (RM_KnockbackMod.cs): 3 of 3 caught. csproj: 2 of 2 caught.
+- Game-side callers: 7 caught offline (gas cap 3, gas reburst, closed-guard switch, vent-gas burst, closed-container read), **11 survived**: 10 Verse callers (grid pawn read, in-bed skip, inventory mass, rebound, heavy knock, landing cover break, no-redirect, landing door, unpatched percent, fire switch) and validation.py's FRAME_BUDGET judge (2 faults).
+- Totals: **34 of 55 caught** (34 by a builder suite, 26 by lane 1) [measured].
 
 ## Faults
-(pending)
+`lane2/faults.json`, each filed as a rimflow item (`--caused-by RIMMANDRAKE_JUDGE_EXPLOSIVEKNOCKBACK_BLIND_CYCLE_FIVE`) and as a mod-ledger finding.open:
+
+| id | class | bar | status | miss_of |
+|---|---|---|---|---|
+| RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER | Problem | pawn_hits_pawn_stops | FIXED 42225e0686 | 4 |
+| RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND | Problem | thrown_into_pit_falls | PENDING (acceptance test `lane2/accept_covered_pit.py`, 2 of 6 on 42225e0686) | 4 |
+| RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN | Problem | inv_proof_scenes | NOTED_FOR_CONDUCTOR (re-pin: verdict honesty is a live read) | - |
+| RIMMANDRAKE_SHOVE_PAWNS_STANDING_ON_COVERS_IN_BURNING_GAS | Polish | gas_goes_clump_by_clump | PENDING | 4 |
+| RIMMANDRAKE_TEST_WALK_FRAME_JUDGE_OFFLINE_TWO_MUTANTS_LIVED | Polish | walk_storeroom_raid | PENDING | - |
+| RIMMANDRAKE_NOTE_KNOCKBACK_CALLER_MUTANTS_OWED_TO_STAGE_SIX | Polish | stage-6 caller bars | NOTED_FOR_CONDUCTOR | - |
+
+Both code Problems are in material unchanged since cycle 4 (RM_MapKbGrid.At, the kernel's CoveredPit rule, K-08, the pit_colonist scene), so they are misses of the earlier judges. Both came from reading the callers after lane 1's INFO rows on pits (as FORMAT_NOTES predicted: the kernel was right in itself; the grid and the landing were short).
+
+**Verification of claimed fixes** (`maturation_dispatch.py judge-verify`): 16 findings, **16 verified, 0 reopened** [measured], each by rerunning its claim's test or my own planted faults and lane-1 rows at 42225e0686 (mod-ledger finding.verified).
 
 ## Fixes
-(pending)
+`lane2/fixes.jsonl`: RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER at **42225e0686**: `RM_KnockbackMath.PitCell` (a pawn on a cover's deck or an open pit's floor blocks a thrown pawn), `RM_MapKbGrid.At` answers superdeep cells through it and ignores a pawn beneath the lid (`RM_KnockbackCompat.IsBeneathCover`), K-25 in SelfTest/Program.cs, release DLL and .srchash rebuilt (proof build compiles too). Red: `lane2/check_pit_pawn.py --rev a898e049d4` rc 1, and T_KERNEL with K-25 against the parent kernel rc 1 (CS0117, no PitCell). Green at 42225e0686: check rc 0 (6 of 6 and the wiring), T_KERNEL 198/198. Lane 1 rerun after the fix: `lane2/lane1_rows_after_fix.jsonl` 33 PASS, 0 FAIL. The four changed source files were already DIRTY by `code_review_status.py` before this cycle; not marked clean (no full-file review here).
 
 ## Steward's decisions enacted
-(pending)
+- 2026-11-15 7:37 PM PST re-pin (sc_barrage_perf, RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO): barrage_frame_budget judged as the p99 unpaused frame inside 0.9-8.25 s at most 50 ms. Lane 1 K_BARRAGE_P99_AND_PROBE tests KbFrameStats that way (PASS); planted worst-frame and window-ignored faults are caught by T_KERNEL. Recorded `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` (OWNER.jsonl).
 
 ## Tests edited
-(pending)
+`tests_edited.json`: `src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs`, K-25 added (7 checks); no assertion changed or removed. New judge-side checks (not builder tests): `lane2/check_pit_pawn.py`, `lane2/accept_covered_pit.py`.
 
 ## Unsettled
-(pending)
+- 57 lane-1 `not_kernel` rows (every stage-6 bar's game-side half), owed to Stage 6; none names an offline bar.
+- Whether the proof scenes' verdicts are honest cannot be shown offline (NOTED, above).
+- K-08's "cover is ground" encodes the older design; the fix for the covered-pit Problem must change it to follow sc_pit_fall (a test edit the next fixer lists).
 
 ## Exit
-(pending)
+offline_bars: {inv_kernel: green, inv_proof_scenes: green}
+problems_open: 2
+exit_met: false
 
 ## Owed
-(pending)
+- RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND: the holder fixes it (smallest fix in faults.json; acceptance `lane2/accept_covered_pit.py` 6 of 6; live sc_pit_fall covered lane).
+- RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN: the steward re-pins inv_proof_scenes' offline half, or the verdicts are lifted into a kernel.
+- A new blind judge (this cycle fixed a Problem).
+- test_table.json's runs_today predate the fix: `maturation.py next` refuses the judge certificate on T_KERNEL's build hash (now d0aad1b433, recorded c7742f1424); the table's next refresh takes the reruns in `lane2/reruns_after_fix.jsonl`.
+- `maturation.py next` after this record: only substance reasons remain (exit_met false; the two Problems not FIXED). Wall time: 04:41-~06:15 UTC [measured from `date`].

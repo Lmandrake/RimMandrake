@@ -1,0 +1,99 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER",
+   "class": "Problem",
+   "bar": "pawn_hits_pawn_stops",
+   "criterion": "sheet: 'A thrown person stops at another pawn in the way and takes an impact hit, as at a wall'",
+   "evidence": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_MapComponent_Knockback.cs RM_MapKbGrid.At at a898e049d4: a superdeep cell with a cover returned KbCell.CoveredPit before OtherPawnAt was asked, so a pawn standing on a pit cover was ground to a thrown pawn (the open-pit branch below it did check: GPT #15)",
+    "the kernel then passes a thrown pawn over that pawn and can set it down on its cell; the open-pit case already blocked",
+    "planted PF_MC_GRID_IGNORES_PAWNS (the grid never reports a pawn) survived all 13 offline suites and lane 1: the grid had no offline test",
+    "red: lane2/check_pit_pawn.py --rev a898e049d4 rc 1"
+   ],
+   "would_pass": "a thrown pawn whose line crosses a pit cover with a pawn standing on its deck stops on the cell before, both take the split impact; a pawn beneath the lid does not block",
+   "smallest_fix": "RM_KnockbackMath.PitCell(covered, forPawn, pawnThere) (a pawn there blocks a thrown pawn, open or covered); RM_MapKbGrid.At answers superdeep cells through it, counting only pawns not beneath the lid (RM_KnockbackCompat.IsBeneathCover); K-25 in SelfTest/Program.cs",
+   "verdict_on_criterion": "right: a pawn on a cover is a pawn in the way",
+   "status": "FIXED 42225e0686",
+   "miss_of": 4
+  },
+  {
+   "id": "RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND",
+   "class": "Problem",
+   "bar": "thrown_into_pit_falls",
+   "criterion": "sheet: 'Anything thrown toward an open pit falls to its floor, and onto a covered cell falls through and breaks the cover; nothing is thrown across'; locked scene sc_pit_fall: 'a second colonist and stack aimed at a covered pit cell ... the kernel's planned landing cell ... lies beyond the pit's far rim ... on the covered cell the colonist and the stack fall through, one descent each, and the cover is broken'",
+   "evidence": [
+    "RM_KnockbackMath.Resolve treats KbCell.CoveredPit as ground ('a pit under an intact cover: ground for the path'): a throw planned beyond a covered pit flies over it and lands on the far side; the builder's K-08 pins it ('K-08 cover is ground', SelfTest/Program.cs:326)",
+    "a thrown PAWN that does land on a cover never breaks it: LandingBreaksCover excludes KbKind.Pawn ('FlowWorks' own trap's business'), but FlowWorks' RM_Patch_PawnFlyer_LandInPit acts only on an open hole (RM_PitPathing.IsOpenHole) and CompPitCoverTrigger springs on a mass sum that spares the own faction by default, so a thrown colonist stands on the cover",
+    "RM_KnockbackProof.cs case pit_colonist stages only the open-pit lane: sc_pit_fall's covered lane, its planned-beyond-the-rim start assertion and its filled-pit control are not built, so the live proof cannot see this",
+    "lane2/accept_covered_pit.py on 42225e0686: 2 of 6, rc 1 (A1-A4 fail)",
+    "unchanged since cycle 4 (d3cf239cf2): the kernel's CoveredPit rule, K-08 and pit_colonist"
+   ],
+   "would_pass": "lane2/accept_covered_pit.py 6 of 6; live sc_pit_fall: on the covered cell the colonist and the stack fall through, one descent each, cover broken; the filled control lands beyond the rim; a gas shove onto a cover still stands on it, the cover whole",
+   "smallest_fix": "RM_KnockbackMath.Resolve: a CoveredPit cell stops the throw IN it when intoPits (a wall when off), as an open pit; LandingBreaksCover: drop the Pawn exclusion for blast ids (id >= 0); RM_MapComponent_Knockback.ThrowPawn remembers the explosion id per pawn and RM_Patch_PawnFlyer_KnockbackLanding breaks the cover under a landed pawn through RM_KnockbackCompat.BreakCoverUnder when that id >= 0; K-08's 'cover is ground' becomes 'a throw over a cover ends in it'; RM_KnockbackProof pit_colonist gains the covered lane, the planned-beyond-the-rim assertion and the filled-pit control",
+   "verdict_on_criterion": "right: the scene's words are explicit and the bar's 'nothing is thrown across' follows; the kernel's older design note (cover = ground) predates the leaf",
+   "status": "PENDING",
+   "miss_of": 4
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN",
+   "class": "Problem",
+   "bar": "inv_proof_scenes",
+   "criterion": "test_table: inv_proof_scenes proves_at 4-5, offline_decides T_SCRIPT, T_PROOFGATE, T_RESTORE",
+   "evidence": [
+    "9 planted faults in the proof scenes' verdict and planning code survived every offline suite and lane 1: PF_P_CALIBRATION_ANY_CELLS, PF_SB_PLAN_IGNORES_MASS_LIMIT, PF_SB_PLAN_PLAIN_KERNEL, PF_GO_CONTROL_NEVER_FAILS, PF_GO_DOOR_LANE_NO_REBOUND, PF_S3_HOSE_CONTROL_ALWAYS_PASSES, PF_S3_HOSE_THREE_DROPPED, PF_PP_INVALID_NEVER, PF_PP_INVALID_TEXT (lane2/planted_results.jsonl)",
+    "T_SCRIPT runs validation.py STATIC and --mock (scenes stage through a fake session); no offline test runs a scene's verdict, which is Verse code; a verdict loosened to always pass reads green offline and PASS live",
+    "caught offline: a dropped scene name (T_STAGE3_SCENES), the proof type not built (T_PROOFGATE), the gate (T_PROOFGATE)"
+   ],
+   "would_pass": "either an offline decider that sees a loosened verdict (e.g. each scene's verdict thresholds read against scenes.json's numbers, or the verdict logic lifted into a Verse-free kernel the selftest runs), or the steward re-pins which half of inv_proof_scenes is offline: staging, gate and restore offline; verdict honesty at Stage 6, each scene run with its planted break (Plant) and seen to FAIL",
+   "smallest_fix": "re-pin (steward): inv_proof_scenes' offline deciders prove staging, the release gate and restore; verdict honesty moves to Stage 6 as a per-scene planted-break run. A code-side alternative is larger: lift each verdict's arithmetic into RM_KnockbackMath and test it",
+   "verdict_on_criterion": "the criterion asks an offline decider for something only a live run can show; the bar keeps its meaning under a re-pin",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_SHOVE_PAWNS_STANDING_ON_COVERS_IN_BURNING_GAS",
+   "class": "Polish",
+   "bar": "gas_goes_clump_by_clump",
+   "criterion": "sheet: 'A flammable gas cloud that a fire touches goes off clump by clump, scattering goods and shoving people one cell unhurt'",
+   "evidence": [
+    "RM_MapComponent_Knockback.PawnSkipReason and Execute skip anything on a superdeep cell as in_pit (RM_KnockbackCompat.IsSuperdeep is FlowWorks' depth test, true under an intact cover), so a pawn standing on a pit cover, or goods lying on one, are never moved by a gas burst",
+    "for a damaging blast it does not matter (the blast breaks the cover and they fall); a gas burst breaks no cover, so they simply stay"
+   ],
+   "would_pass": "a pawn on a cover's deck beside a burning clump is shoved one cell (onto open ground, or onto an open pit where he falls); goods on a deck scatter",
+   "smallest_fix": "in_pit = IsSuperdeep && (no cover || the thing is beneath the lid, RM_KnockbackCompat.IsBeneathCover)",
+   "verdict_on_criterion": "right",
+   "status": "PENDING",
+   "miss_of": 4
+  },
+  {
+   "id": "RIMMANDRAKE_TEST_WALK_FRAME_JUDGE_OFFLINE_TWO_MUTANTS_LIVED",
+   "class": "Polish",
+   "bar": "walk_storeroom_raid",
+   "criterion": "tree leaf walk_storeroom_raid: the frame row passes when the mod-on p99 is within 10% of the same run's mod-off arm",
+   "evidence": [
+    "PF_V_FRAME_OVER_LOOSE (10% -> 50%) and PF_V_FRAME_ROW_ALWAYS_PASS in validation.py survived every offline suite: the judging is plain Python but no offline test feeds it two arms"
+   ],
+   "would_pass": "an offline case: on/off p99 at +9%, +11%, a missing arm (UNMEASURED) and unlike arms (UNMEASURED) give PASS, FAIL, UNMEASURED, UNMEASURED",
+   "smallest_fix": "a --selftest in validation.py (or a selftest file) that calls the FRAME_BUDGET judge with fixed arm dicts",
+   "verdict_on_criterion": "right",
+   "status": "PENDING",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_KNOCKBACK_CALLER_MUTANTS_OWED_TO_STAGE_SIX",
+   "class": "Polish",
+   "bar": "the_spared",
+   "criterion": "the stage-6 bars of the callers (the_spared, heavier_flies_less, goods_arc_spin_rebound, heavy_stack_knocks, thrown_into_pit_falls, pawn_flight_arc, every_harmful_blast_throws)",
+   "evidence": [
+    "10 planted faults in game-side callers survived offline, as expected for Verse code: PF_MC_GRID_IGNORES_PAWNS, PF_MC_SLEEPER_THROWN, PF_MC_PAWN_MASS_WITH_INVENTORY, PF_TF_NO_REBOUND, PF_TF_NO_HEAVY_KNOCK, PF_TF_LANDING_KEEPS_COVER, PF_PF_REDIRECT_ALLOWED, PF_PF_LAND_THROUGH_DOOR, PF_DW_UNPATCHED_PERCENT_IGNORED, PF_DW_FIRE_SWITCH_IGNORED",
+    "7 caller faults were caught offline (gas cap, gas reburst, closed-guard switch, vent-gas burst, closed-container read, two csproj drops)"
+   ],
+   "would_pass": "Stage 6 runs each of these as a planted break and sees its scene FAIL",
+   "smallest_fix": "hand the 10 to Stage 6's brief as planted breaks to run live",
+   "verdict_on_criterion": "right",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": null
+  }
+ ]
+}

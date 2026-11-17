@@ -1,0 +1,9 @@
+[
+ {
+  "path": "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/Program.cs",
+  "why": "K-25 added (7 checks): RM_KnockbackMath.PitCell's truth table and a thrown pawn stopping before a pawn-blocked cell; no existing assertion changed or removed",
+  "before": "35e77081e194e4652e6d26dfcba782f387d8e12b",
+  "after": "f35284b2ad1258dc55a5bc142cba9a2ee87a5fe5",
+  "fault": "RIMMANDRAKE_STOP_KNOCKBACK_THROW_AT_PAWN_ON_PIT_COVER"
+ }
+]

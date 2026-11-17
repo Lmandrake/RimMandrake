@@ -11,7 +11,7 @@ import argparse, glob, os, re, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, *[".."] * 7))
 SRC = "src/RimMandrake/ExplosiveKnockback/Source/"
-STAGE = "/mnt/d/ClaudeWork/rimmandrake/scratch/explosiveknockback_blind_c5_lane1/pitcheck"
+STAGE = "/mnt/d/ClaudeWork/rimmandrake/scratch/explosiveknockback_blind_c5_pitcheck"
 HARNESS = r"""
 using System; using System.Reflection; using RimMandrake.ExplosiveKnockback;
 public static class P { public static int Main() {
