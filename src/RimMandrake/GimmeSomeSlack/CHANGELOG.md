@@ -4,6 +4,8 @@ Version here must match `<modVersion>` in `About/About.xml`. Never deployed (`.m
 
 ## Unreleased
 
+- A cord end that turns live or dead off screen is laid again at once (it kept its old cord until that part of the map was next redrawn).
+- The same rule under every look and default look: a heap's junction boxes draw only the arms in use; a device's power strip points its lead the way the conduit comes, and gives way to the small box where a cut end shares its cell; a strip's plug points at water, a wall or a machine in its own cell; a box beside a pole brings its lead down to the pole's foot in one turn; a tied slack loop keeps off the far fitting's own run.
 - Every cord end at a fitting leaves it on the fitting's line and slope, in crowded rooms too (in-game visit 1 read 19 of 399 joins off slope on the owner's review map; 0 of 393 now): one lay for every fitted end, run last, the live cut end's own. A junction box draws only the arms its cords leave by (two conduits side by side, a box in a crowd). A machine with conduit running under it is connected by that conduit, with no second lead. A conduit run that turns a corner into a machine enters its small box from the side. A machine or lamp standing at the tip of the box arm its lead leaves by takes the lead straight in. In a heap of power strips every strip is plugged into another by its own lead. A needless spur's spare loop leaves its box by an arm of its own.
 - The setting "Live wires hanging out of walls drip sparks in bursts" is gone: no cord hangs out of a wall since the owner's ruling of 2026-11-16, and the switch did nothing.
 - A texture asked for by a path no file system takes is refused with its text in the log instead of throwing inside the game's loader.

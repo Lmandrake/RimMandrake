@@ -66,16 +66,34 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         private static void OwnerMap()
         {
             using System.Text.Json.JsonDocument doc = System.Text.Json.JsonDocument.Parse(System.IO.File.ReadAllText(System.IO.Path.Combine(AppContext.BaseDirectory, "owner_look_20261116.json")));
-            CordWorld w = LabWorld.Read(doc.RootElement, out BuildOptions opt, out HashSet<Cell> live);
-            var b = new CordBuilder();
-            List<LaidPiece> ps = b.Build(w, opt, c => live.Contains(c));
-            StubJoins.JoinRead j = StubJoins.Joins(w, ps, opt, "owner's map");
-            CordEndAudit.SlopeRead sl = CordEndAudit.Slopes(w, b.Graph, ps, "owner's map");
-            foreach (string x in j.Bad.Concat(sl.Bad).Take(8)) Console.WriteLine("  stub joins refused: " + x);
-            Check(j.Stubs >= 300 && j.Taken >= 300, $"the owner's review map is read: {j.Stubs} stubs, {j.Taken} cords on them ({j.Summary()})");
-            Check(j.OffLine == 0 && j.OffSlope == 0 && j.Empty == 0 && sl.OffLine + sl.OffSlope + sl.Short + sl.Empty == 0,
-                  $"the owner's review map: every cord on its stub's line and slope, no stub bare: {j.OffSlope} off slope, {j.OffLine} off line, {j.Empty} bare of {j.Stubs} stubs (worst {j.WorstDeg:0.0} deg, {j.WorstPos:0.000} cell); "
-                  + $"box arms {sl.OffSlope} off slope, {sl.OffLine} off line, {sl.Short} short, {sl.Empty} bare");
+            // the map as dumped (default look Modern, the nets live), and the same map under every default look and with every net dead: the
+            // runs he styled keep their look, the unstyled ones (most of the map) take the default; an end's look differs live and dead.
+            // (The live check passed on this map under the dumped settings and failed under another default look an hour later:
+            // 2 leads off slope, 2 heap boxes with a bare arm, 2026-11-17.)
+            int stubs = 0, taken = 0, offSlope = 0, offLine = 0, bare = 0, arms = 0, builds = 0;
+            double worstDeg = 0, worstPos = 0;
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            foreach (string look in new[] { "", "Scrapper", "Industrial", "Futuristic", "Modern" })
+                foreach (bool dead in new[] { false, true })
+                {
+                    if (look == "" && dead) continue;
+                    CordWorld w = LabWorld.Read(doc.RootElement, out BuildOptions opt, out HashSet<Cell> live);
+                    if (look != "") { opt.Pile = look == "Modern" ? PileArt.Strips : PileArt.Junctions; opt.PlugBoot = CordBuilder.PlugBootU(look); }
+                    var b = new CordBuilder();
+                    List<LaidPiece> ps = b.Build(w, opt, c => !dead && live.Contains(c));
+                    string name = "owner's map" + (look == "" ? "" : ", default look " + look) + (dead ? ", nets dead" : "");
+                    StubJoins.JoinRead j = StubJoins.Joins(w, ps, opt, name);
+                    CordEndAudit.SlopeRead sl = CordEndAudit.Slopes(w, b.Graph, ps, name);
+                    foreach (string x in j.Bad.Concat(sl.Bad).Take(8)) Console.WriteLine("  stub joins refused: " + x);
+                    builds++; stubs += j.Stubs; taken += j.Taken; offSlope += j.OffSlope; offLine += j.OffLine; bare += j.Empty;
+                    arms += sl.OffLine + sl.OffSlope + sl.Short + sl.Empty;
+                    worstDeg = Math.Max(worstDeg, j.WorstDeg); worstPos = Math.Max(worstPos, j.WorstPos);
+                }
+            Console.WriteLine($"  stub joins, owner's review map: {builds} builds (as dumped; four default looks, nets live and dead) in {sw.Elapsed.TotalSeconds:0.0} s, {stubs} stubs, {taken} cords");
+            Check(builds == 9 && stubs >= 2700 && taken >= 2700, $"the owner's review map is read under every default look, live and dead: {builds} builds, {stubs} stubs, {taken} cords on them");
+            Check(offLine == 0 && offSlope == 0 && bare == 0 && arms == 0,
+                  $"the owner's review map: every cord on its stub's line and slope, no stub bare: {offSlope} off slope, {offLine} off line, {bare} bare of {stubs} stubs (worst {worstDeg:0.0} deg, {worstPos:0.000} cell); "
+                  + $"box arms {arms} refused");
         }
 
         /// <summary>Lamps standing on the conduit line they are hooked to (RebuildPerDigChecks.LiveScene, the lattice measured live: 84 lamps):

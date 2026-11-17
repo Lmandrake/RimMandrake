@@ -518,7 +518,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     h = (h ^ CellSig(w, c) ^ (w.IsConduit(c) ? 1UL << 60 : 0UL) ^ (machine.Contains(c) ? 1UL << 59 : 0UL)) * 1099511628211UL;
                 }
             return nd.Cell + "|" + h + "|" + opt.Seed + "|" + opt.PileFor(nd.Cell) + "|" + (isLive(nd.Cell) ? 'L' : 'D') + "|" + (opt.Lay.FairBends ? 'F' : '-') + "|" + comp.Count
-                + "|" + (opt.PileFor(nd.Cell) == PileArt.Strips ? string.Join(";", IncidentEnds(g, v).Select(end => end.Key)) : "");
+                + "|" + string.Join(";", IncidentEnds(g, v).Select(end => end.Key));      // (a box heap too: its boxes draw the arms arriving cords take)
         }
 
         /// <summary>The piece each edge (by endpoint key) last showed: what a deferred edge keeps showing.</summary>
@@ -1592,6 +1592,21 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 bool cut = (na.Type == NodeType.Terminal && !na.Seam) || (nb.Type == NodeType.Terminal && !nb.Seam);
                 Func<V2, bool> off = null;
                 List<V2> line = null;
+                // every fitted end is laid to its stub BEFORE the slack is laid, and the stub's own run is that end's pin through the passes
+                // below. (They ran before the fitting's lay, pinned 0.2 from the end whatever the fitting: a box's short lead to its
+                // machine leaned out of the arm, the slack pass tied its loop a quarter cell from the box, and the last pass then had no
+                // cord left to join with: 16 degrees off the arm, twice on the owner's review map under the Scrapper look.)
+                FitEnds(w, g, e, piece, na, nb, isLive, opt, SlackClear(g, e, opt));
+                Func<CordStrand, bool, StubArt.Stub> stubOf = StubPicker(w, g, e, piece, na, nb, opt);
+                double StubPin(CordStrand s, bool atStart)
+                {
+                    CordNode nd = atStart ? na : nb;
+                    if (stubOf == null || (nd.Type == NodeType.Terminal && !nd.Seam) || (atStart ? s.DiveA : s.DiveB) || UnderOwnMachine(nd, atStart ? nb : na)) return 0;
+                    StubArt.Stub st = stubOf(s, atStart);
+                    if (st == null || !OnStub(s.Pts, atStart, st, CordEndAudit.SlopeMaxDeg / 2)) return 0;
+                    double run = StubRun(atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1], st);
+                    return run <= 0 ? 0 : run + CordLiveEnd.Step;
+                }
                 foreach (CordStrand s in piece.Strands)
                 {
                     if (s.Lifted || s.OverFace || s.Pts == null || s.Pts.Count < 3) continue;
@@ -1600,9 +1615,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     // (blind cycle 1, 2000 seeded scenes: 2 of the 7 strands under 1.4, a 6-cell rod to a heap's port), and nothing else
                     // a plug end SeatPlugTails laid along its axis keeps that run, past its boot by the slope chord (a Modern corner wall plug's seat was re-bent
                     // here and left 51-63 deg off its slope: RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE)
-                    double seatA = SeatedPin(piece, opt, s.Pts, true), seatB = SeatedPin(piece, opt, s.Pts, false);
+                    double seatA = Math.Max(SeatedPin(piece, opt, s.Pts, true), StubPin(s, true)), seatB = Math.Max(SeatedPin(piece, opt, s.Pts, false), StubPin(s, false));
                     List<V2> eased = s.FellBack ? null : CordSlacken.Unbend(w, s.Pts, Math.Max(FairPin(na, isLive), seatA), Math.Max(FairPin(nb, isLive), seatB), piece.EndA, piece.EndB, off, s.Ties, s.WhipA, s.WhipB,
-                                                        FittedTip(na, opt), FittedTip(nb, opt));
+                                                        // (an end laid on its stub keeps the stub's run: the window never starts at its tip.
+                                                        // It did, and bent a box arm's lead to a mast's foot 31 degrees off the arm.)
+                                                        FittedTip(na, opt) && StubPin(s, true) == 0, FittedTip(nb, opt) && StubPin(s, false) == 0);
                     if (eased != null) { s.Pts = eased; s.Lay += "+unbend"; }
                     StepTrace?.Invoke("unbend", piece.EndA, piece.EndB, s.Pts);
                     // a cut end's lead is slack too (cords_lie_slack names no exception; blind cycle 1 found 6 of 679 under 1.4, every one a cut lead): its
@@ -2086,8 +2103,23 @@ namespace RimMandrake.GimmeSomeSlack.Core
         {
             tip = sp.PlugTip(arm, socket);
             outward = sp.PlugOut(arm);
-            if (e.Knots.Count != 0 || e.A == e.B) return false;
+            if (e.A == e.B) return false;
             CordNode here = g.Nodes[atA ? e.A : e.B], far = g.Nodes[atA ? e.B : e.A];
+            // a run that goes into water, a machine or a wall in the strip's own cell: the plug's boot points at that face and the cord
+            // runs straight from it (a plug seen from above turns any way). It pointed along the strip, and half a cell of cord could not
+            // leave it straight and still turn into the face: random world 48, a strip at the water's edge
+            if (here.Type == NodeType.Junction && far.IsStub && far.Cell == here.Cell && far.Into.Len > 0.5 && opt.PileFor(here.Cell) == PileArt.Strips)
+            {
+                V2 so = sp.SocketAt(socket);
+                if (Dot(far.Face - so, far.Into) > PlugTopReach)
+                {
+                    outward = far.Into;
+                    tip = so + far.Into * PlugTopReach;
+                    return true;
+                }
+                return false;
+            }
+            if (e.Knots.Count != 0) return false;
             if (here.Type != NodeType.Junction || far.Type != NodeType.Junction || here.Cell == far.Cell
                 || opt.PileFor(here.Cell) != PileArt.Strips || opt.PileFor(far.Cell) != PileArt.Strips) return false;
             // A socket tip is less than 0.81 cell from its node, including the wall stand-back.
@@ -3974,6 +4006,25 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     target = LampEntry(nd.Machine, BackAlong(P, !atA, LampLook));
                 arrive = IntoMachine(nd.Machine, target);
                 if (g.Slides(nd.Machine) || baseLamp) arrive = CordGraph.SlideArrive(nd.Machine, target, arrive);
+                // a pole or mast right against the tip of the box arm its lead leaves by, the box beside or above it: the lead comes
+                // down to the foot from the arm's side (one quarter turn), where it came round to rise into the foot from below. Half a
+                // cell from the arm there is no room to come round: the lead left the arm 31 degrees off (the owner's review map under
+                // two looks). It still ends under the foot (owner's sitting 2026-11-08); a box below the pole keeps the rise.
+                if (nd.Machine.Foot && !nd.Machine.HasHome)
+                {
+                    CordNode fbox = g.Nodes[atA ? e.B : e.A];
+                    if (fbox.Type == NodeType.Junction && !fbox.IsBlob && opt.PileFor(fbox.Cell) != PileArt.Strips)
+                    {
+                        V2 farm = ArmDir(g, e, !atA);
+                        V2 ftip = fbox.Pos + farm * (StubArt.BoxArm * JunctionScale);
+                        if (farm.Z < 0.5 && nd.Machine.Contains((ftip + farm * 0.05).Floor))
+                        {
+                            target = new V2(nd.Machine.X0 + nd.Machine.W / 2.0, nd.Machine.Z0 + FootTuck) + Side(new V2(0, 1)) * (lat * 0.03);
+                            arrive = new V2(0, -1);
+                            straight = 0.05;
+                        }
+                    }
+                }
                 // a machine (a standing lamp too) against the tip of the box arm its lead leaves by takes the lead straight in on the arm's
                 // line, just inside its edge; IntoArt carries it on under the art
                 if (ArmInto(g, e, atA, opt) is V2 armIn)
@@ -4002,6 +4053,16 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     // with no fitting of its own on the face (a machine, water: a wall has its plate) the junction's arm is the fitting, and
                     // the cord runs on out of the arm's tip under what it goes into, the slope rule's chord and a sample past the face
                     if (nd.Type != NodeType.StubWall && nd.Type != NodeType.StubRock) basePos = nd.Face + nd.Into * StubDip;
+                    // the junction is a power strip whose plug points at this face (StripSocketPose): the cord enters the face on that plug's line
+                    if (opt.PileFor(other.Cell) == PileArt.Strips)
+                    {
+                        VId ov = atA ? e.B : e.A;
+                        StripPose osp = PoseStrip(g, ov, opt.Seed);
+                        int osock = StripSocketFor(g, ov, e, !atA, osp);
+                        V2 oad = ArmDir(g, e, !atA);
+                        if (osock >= 0 && StripSocketPose(g, e, !atA, opt, osp, new Cell((int)oad.X, (int)oad.Z), osock, out V2 otip, out V2 oout) && Dot(oout, nd.Into) > 0.99)
+                            basePos = otip + nd.Into * Dot(basePos - otip, nd.Into);
+                    }
                 }
                 // two stubs in one cell (a conduit cell between a machine and water): the machine's end wears no box (AtOwnJunction) and runs
                 // on under the machine the same way
@@ -4014,19 +4075,22 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // the device box's arm points the way the conduit comes: where the run turns the corner into the machine in the stub's own
                 // cell, the cord goes into the box from the side (it had to turn a quarter in half a cell to meet an arm that always
                 // pointed straight out from the machine, against a wall there it could not: random world 94)
-                else if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) != PileArt.Strips && DeviceArm(g, e, atA, nd) is V2 da && Dot(da, nd.Into) > -0.5)
+                else if (nd.Type == NodeType.StubDevice && DeviceWearsBox(g, e, nd, opt) && DeviceArm(g, e, atA, nd) is V2 da && Dot(da, nd.Into) > -0.5)
                 {
                     target = nd.Face - nd.Into * DeviceBoxBack + Side(da) * (lat * 0.03);
                     arrive = -da;
                     straight = DeviceBoxArm + 0.15;
                 }
-                else if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) != PileArt.Strips)
+                else if (nd.Type == NodeType.StubDevice && DeviceWearsBox(g, e, nd, opt))
                     straight = DeviceBoxBack + DeviceBoxArm + 0.15;
                 // the device stub's strip (Modern) lies along the cord, its lead toward it: the cord ends in the lead's tip, along it
                 // (it lay across the cord with its lead pointing aside, a bare lead: RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE)
                 else if (nd.Type == NodeType.StubDevice)
                 {
-                    target = DeviceStripLeadTip(nd.Face, nd.Into);
+                    // (its lead points the way the conduit comes, as the device box's arm does: DeviceArm)
+                    V2 lead = DeviceArm(g, e, atA, nd);
+                    target = DeviceStripLeadTip(nd.Face, nd.Into, lead);
+                    arrive = -lead;
                     straight = 0.2;
                 }
             }
@@ -4426,6 +4490,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private static V2? ArmInto(CordGraph g, CordEdge e, bool machineAtA, BuildOptions opt)
         {
             CordNode nd = g.Nodes[machineAtA ? e.A : e.B], box = g.Nodes[machineAtA ? e.B : e.A];
+            // (never a pole or mast: its floor cord ends under its foot, the owner's sitting of 2026-11-08)
             if (!nd.IsMachine || nd.Machine == null || nd.Machine.Foot || nd.Machine.HasHome || nd.Machine.SidePorts) return null;
             if (box.Type != NodeType.Junction || box.IsBlob || opt.PileFor(box.Cell) == PileArt.Strips) return null;
             V2 arm = ArmDir(g, e, !machineAtA);
@@ -4460,6 +4525,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             {
                 // a pole or mast: just in under its foot and no further (on to the centroid it ran up the pole's art: owner 2026-11-08)
                 c = new V2(m.X0 + m.W / 2.0, m.Z0 + FootTuck);
+                if (V2.Dist(tip, c) < 0.04) return P;      // already at the foot (laid there from a box beside the pole: EndPose)
                 int kf = Math.Max(1, (int)Math.Ceiling(V2.Dist(tip, c) / 0.05));
                 for (int i = 1; i <= kf; i++) ext.Add(tip + (c - tip) * (i / (double)kf));
                 var of = new List<V2>(P);
@@ -4557,9 +4623,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public const double DeviceBoxBack = 0.2, DeviceBoxScale = 0.6, DeviceBoxArm = 55.5 / 128.0 * DeviceBoxScale;
         /// <summary>The device stub's strip: its centre this far back off the face, lying along the cord with its lead (+X) toward it.</summary>
         public const double DeviceStripBack = 0.45, DeviceStripScale = 0.8;
-        internal static V2 DeviceStripLeadTip(V2 face, V2 into)
+        internal static V2 DeviceStripLeadTip(V2 face, V2 into, V2? lead = null)
         {
-            V2 x = -into, z = new V2(-x.Z, x.X);
+            V2 x = lead ?? -into, z = new V2(-x.Z, x.X);
             return face - into * DeviceStripBack + x * (StripLeadX * DeviceStripScale) + z * (StripLeadZ * DeviceStripScale);
         }
         /// <summary>The device box's one arm, art -X (CordDecal.Ports).</summary>
@@ -4654,6 +4720,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>How far past the face a cord runs on under what it goes into, where a junction's own arm is its fitting (EndPose).</summary>
         public const double StubDip = CordEndAudit.SlopeChord + CordLiveEnd.Step;
+
+        /// <summary>Whether a device stub wears the look's small one-arm box: every look but Modern, and Modern too where the stub's cord
+        /// runs to a cut end in the stub's own cell (the strip is most of a cell long: with a cut end's run in the same cell it has no room;
+        /// 16 such cords off their strip's lead over the random worlds). Else Modern's strip.</summary>
+        private static bool DeviceWearsBox(CordGraph g, CordEdge e, CordNode nd, BuildOptions opt)
+        {
+            if (opt.PileFor(nd.Cell) != PileArt.Strips) return true;
+            CordNode a = g.Nodes[e.A], b = g.Nodes[e.B];
+            CordNode other = ReferenceEquals(a, nd) ? b : a;
+            return other.Type == NodeType.Terminal && !other.Seam && other.Cell == nd.Cell;
+        }
 
         /// <summary>Whether a stub's cord runs to a junction, or to another stub, in the stub's own cell: the cord has no cell of its own to
         /// arrive in, and the fitting it would wear there has no room for its straight run.</summary>
@@ -4778,10 +4855,11 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // a run that goes under a machine right at a junction: the junction's own arm reaches the machine's face and is the fitting
                 // (as at a wall); a box or strip of its own would lie on top of the junction's
                 else if (nd.Type == NodeType.StubDevice && AtOwnJunction(g, e, nd)) { }
-                else if (nd.Type == NodeType.StubDevice && opt.PileFor(nd.Cell) == PileArt.Strips)
+                else if (nd.Type == NodeType.StubDevice && !DeviceWearsBox(g, e, nd, opt))
                 {
                     // the strip's LEDs read the net (phase 1b B6): lit when live, dark when not
-                    piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.PowerStrip : DecalKind.PowerStripDark, nd.Face - nd.Into * DeviceStripBack, ang + Math.PI, DeviceStripScale));
+                    V2 lead = DeviceArm(g, e, atStart, nd);
+                    piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.PowerStrip : DecalKind.PowerStripDark, nd.Face - nd.Into * DeviceStripBack, Math.Atan2(lead.Z, lead.X), DeviceStripScale));
                     piece.LiveKeys.Add(nd.Cell);
                 }
                 else if (nd.Type == NodeType.StubDevice)
@@ -5563,6 +5641,34 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     List<V2> eased = CordSlacken.Unbend(w, s.Pts, 0.22, 0.22, null, null, heap, s.Ties, 0, 0, !strips, !strips);
                     if (eased != null) { s.Pts = eased; s.Lay += "+unbend"; }
                 }
+            // a heap's box draws only the arms a cable or an arriving cord is on (the bar: no stub drawn bare while a cord is attached
+            // elsewhere on its piece; PoseJunction's rule for a junction's own box). A heap's cables are capped and a walk can fail, so
+            // an arm could be left over: two bare arms in one heap on the owner's review map under every junction-box look.
+            if (!strips)
+            {
+                List<PilePort> allPorts = PortsOf(cons);
+                var taken = new List<V2>();
+                foreach (CordStrand s in p.Strands) if (s.Pts != null && s.Pts.Count > 1) { taken.Add(s.Pts[0]); taken.Add(s.Pts[s.Pts.Count - 1]); }
+                if (allPorts.Count > 0)
+                    foreach (var end in IncidentEnds(g, v)) taken.Add(EntryPort(allPorts, end.AtA ? end.Edge.PA : end.Edge.PB).Tip);
+                for (int ci = 0; ci < cons.Count; ci++)
+                {
+                    CordDecal d = cons[ci];
+                    bool tape = d.Kind == DecalKind.JunctionTape;
+                    int[] bits = tape ? new[] { 1, 4, 8 } : new[] { 1, 2, 4, 8 };
+                    List<PilePort> mine = PortsOf(new List<CordDecal> { d });
+                    int mask = 0, all = 0;
+                    for (int k = 0; k < mine.Count; k++)
+                    {
+                        all |= bits[k];
+                        foreach (V2 t in taken) if (V2.Dist(t, mine[k].Tip) < 0.06) { mask |= bits[k]; break; }
+                    }
+                    if (mask == 0 || mask == all) continue;
+                    // the same arms, at the same tips: the + box at the T's meeting point, cut to the arms in use
+                    V2 meet = d.Pos + CordAudit.Rot(new V2(0, tape ? TapeAnchorZ * d.Scale : 0), d.Angle);
+                    cons[ci] = new CordDecal(DecalKind.JunctionTin, meet, d.Angle, d.Scale) { Ports = mask };
+                }
+            }
             // ---- connectors are printed over the cables; a strip gets a plug in every socket a cable uses
             p.Decals.AddRange(cons);
             if (strips)

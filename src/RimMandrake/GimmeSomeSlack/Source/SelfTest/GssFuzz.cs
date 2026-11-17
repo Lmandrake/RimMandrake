@@ -200,6 +200,12 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             o.Lay.CordsMax = r.Int(1, 3);
             o.Lay.MaxExtra = r.Int(2, 40);
             o.Lay.MinExtra = Math.Min(o.Lay.MinExtra, o.Lay.MaxExtra);
+            // the look (drawn last, so every scene before 2026-11-17 keeps its ground, wiring and settings): power strips or junction boxes,
+            // and where that look's device plug ends. The fuzz built the default look alone, and the owner's review map then failed the stub
+            // rules under another one
+            string look = new[] { "Scrapper", "Industrial", "Futuristic", "Modern" }[r.Int(0, 3)];
+            o.Pile = look == "Modern" ? PileArt.Strips : PileArt.Junctions;
+            o.PlugBoot = CordBuilder.PlugBootU(look);
             s.Opt = o;
             return s;
         }

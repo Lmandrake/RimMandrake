@@ -37,6 +37,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 i.InsetS = m.GetProperty("insets")[0].GetDouble(); i.InsetN = m.GetProperty("insets")[1].GetDouble(); i.InsetE = m.GetProperty("insets")[2].GetDouble(); i.InsetW = m.GetProperty("insets")[3].GetDouble();
                 if (m.TryGetProperty("home", out JsonElement home)) { i.HasHome = true; i.HomeX = home[0].GetInt32(); i.HomeZ = home[1].GetInt32(); }
                 if (m.TryGetProperty("foot", out JsonElement foot)) i.Foot = foot.GetBoolean();
+                // a power switch takes its cords on its side stubs (the adapter's own rule; a world dumped before 2026-11-17 carries no "side",
+                // and the owner's review map then read its eleven switches as plain machines: a lead 46 degrees off a wall plate went unseen)
+                i.SidePorts = m.TryGetProperty("side", out JsonElement side) ? side.GetBoolean() : i.DefName == "PowerSwitch" && i.W == 1 && i.H == 1;
                 w.Machines.Add(i);
             }
             live = new HashSet<Cell>();
@@ -59,6 +62,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             foreach (JsonElement t in o.GetProperty("straight").EnumerateArray()) opt.StraightPlugIds.Add(t.GetString());
             opt.PileAt = c => strips.Contains(c) ? PileArt.Strips : boxes.Contains(c) ? PileArt.Junctions : (PileArt?)null;
             if (o.TryGetProperty("look", out JsonElement lk)) opt.PlugBoot = CordBuilder.PlugBootU(lk.GetString());   // which look's device plug
+            if (o.TryGetProperty("boot", out JsonElement bt)) opt.PlugBoot = bt.GetDouble();
+            // each styled cell's look decides where its device plug ends (dumped since 2026-11-17: an older world reads as none)
+            if (r.TryGetProperty("looks", out JsonElement lks))
+            {
+                var boots = new Dictionary<Cell, double>();
+                foreach (JsonElement a in lks.EnumerateArray()) boots[C(a)] = CordBuilder.PlugBootU(a[2].GetString());
+                opt.PlugBootAt = c => boots.TryGetValue(c, out double b) ? b : (double?)null;
+            }
             return w;
         }
 

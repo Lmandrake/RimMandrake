@@ -261,6 +261,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
     {
         /// <summary>How far (cells) from a stub's tip a cord end may lie and still be read as that stub's cord.</summary>
         public const double Reach = 0.75;
+        /// <summary>How far off a stub's axis (cells) a cord end may lie and still be read as that stub's: the widest arm's thickness.</summary>
+        public const double AxisReach = 0.25;
         /// <summary>The cord's minimum bend radius, cells: CordShape's repair floor, the tightest bend the cord is ever laid at.</summary>
         public const double MinBendR = 0.10;
 
@@ -334,6 +336,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 // an end on a stub lies inside its piece, behind the tip: the far end of a short lead that leaves this stub (a box
                 // beside its own machine) lies out along it, and is its own stub's end
                 if (Dot(e - st.T, st.U) > 0.1) continue;
+                // and on its axis: an end more than the widest arm's own thickness (0.25 cell, the box art) off the stub's line is in no way
+                // inside that stub. (A cord running straight from its own plug into the water beside a strip was read, at its water end,
+                // as the cord of the next socket's plug 0.13 away: random world 48.) A cord that misses its stub this far leaves it bare.
+                if (Math.Abs(Cross(e - st.T, st.U)) > AxisReach) continue;
                 if (!Nearest(P, atStart, st.T, V2.Dist(e, st.T) + 0.5, out V2 q, out V2 h, out double dd)) continue;
                 // a tie (two stubs equally near: the + box's arms meet at its centre) goes to the stub the cord heads along
                 double score = dd - 0.001 * Dot(h, st.U);

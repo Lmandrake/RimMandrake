@@ -1001,7 +1001,12 @@ namespace RimMandrake.GimmeSomeSlack
                 RM_MapComponent_CordGraph lc = mapOf(__instance)?.GetComponent<RM_MapComponent_CordGraph>();
                 if (lc != null && lc.NoteDirty(loc, dirtyFlags & layerMask, benignFlags)) return;
             }
-            if ((dirtyFlags & mask) == 0UL)
+            // a liveness flip (PollLive dirties our own layer's flag alone, and not as a reprint) is a change like any other: it falls
+            // through to the on-screen / off-screen rule below. It returned here, so an end that went live or dead OFF SCREEN kept its
+            // old cord until vanilla happened to redraw that section; a fresh build differed from the live cords by that one edge
+            // (D2_fresh_builder_same, about one run in five; live_flip_fresh.py: every flip, before this)
+            bool flip = (dirtyFlags & (ulong)GimmeSomeSlackDefOf.RM_MessyCords) != 0UL && !RM_MapComponent_CordGraph.OwnDirty;
+            if ((dirtyFlags & mask) == 0UL && !flip)
             {
                 // GSS pre-release A4: a tree is a route cost (CordWorldAdapter), but felling or planting one dirties only Things,
                 // which neither this mask nor the layer listens to; a Things event re-plans when the cell's tree changed

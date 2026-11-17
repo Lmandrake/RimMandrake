@@ -70,7 +70,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 // a world the live probe dumped ("worlddump:NAME"), kept beside the oracle scenes: world:owner_look_20261116
                 using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, t[1] + ".json")));
                 CordWorld lw = LabWorld.Read(doc.RootElement, out BuildOptions lo, out HashSet<Cell> ll);
-                x = (t[1], lw, lo, c => ll.Contains(c));
+                string lookEnv = Environment.GetEnvironmentVariable("GSS_LOOK");      // the default look to build it under (unstyled runs)
+                if (!string.IsNullOrEmpty(lookEnv)) { lo.Pile = lookEnv == "Modern" ? PileArt.Strips : PileArt.Junctions; lo.PlugBoot = CordBuilder.PlugBootU(lookEnv); }
+                x = (t[1] + (string.IsNullOrEmpty(lookEnv) ? "" : " " + lookEnv), lw, lo, c => ll.Contains(c));
             }
             else if (t[0] == "live") x = ("the live scene", RebuildPerDigChecks.LiveScene(), new BuildOptions(), c => false);
             else if (t[0] == "placedname") x = LiveEndCensus.Placements(false).First(q => q.name.Contains(Environment.GetEnvironmentVariable("GSS_SCENE_NAME")));   // the first placement whose name holds the text
@@ -87,7 +89,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 CordBuilder.StepTrace = (stage, a, b2, pts) =>
                 {
                     if (pts == null || !((a ?? "") + "|" + (b2 ?? "")).Contains(tp[2])) return;
-                    Console.WriteLine($"trace {stage} {a}|{b2} {pts.Count} pts, {Geo.Length(pts):0.00} long, nearest {pts.Min(q => V2.Dist(q, at)):0.00}");
+                    Console.WriteLine($"trace {stage} {a}|{b2} {pts.Count} pts, {Geo.Length(pts):0.00} long, nearest {pts.Min(q => V2.Dist(q, at)):0.00}; starts " + string.Join(" ", pts.Take(5).Select(q => $"({q.X:0.000},{q.Z:0.000})")) + " ends " + string.Join(" ", pts.Skip(Math.Max(0, pts.Count - 3)).Select(q => $"({q.X:0.000},{q.Z:0.000})")));
                 };
             }
             var b = new CordBuilder();

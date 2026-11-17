@@ -204,6 +204,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
                             V2 tip = loop[loop.Count - 1];
                             int jn = im + 1;
                             while (jn < n - 1 && Dot(P[jn] - tip, tan) < 0) jn++;
+                            // the loop comes back onto the cord before the far end's own run, and where it lands: a loop a quarter cell
+                            // from a wall plate landed inside the plate's run and was joined to the cord's last points by a jump across
+                            // it (46 degrees off the plate, twice on the owner's review map)
+                            if (jn > ib || V2.Dist(tip, P[jn]) > 0.1) { no.Add("tied loop lands in the far pin"); continue; }
                             var Q = new List<V2>(n + loop.Count);
                             for (int i = 0; i < im; i++) Q.Add(P[i]);
                             Q.AddRange(loop);

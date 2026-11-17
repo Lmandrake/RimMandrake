@@ -593,12 +593,14 @@ namespace RimMandrake.GimmeSomeSlack
                 + ",\"links\":[" + string.Join(",", m.MachineLinks.Select(J.S)) + "],\"insets\":[" + m.InsetS.ToString(inv) + "," + m.InsetN.ToString(inv) + "," + m.InsetE.ToString(inv) + "," + m.InsetW.ToString(inv) + "]"
                 + ParentFields(m.Id) + ",\"hasHookup\":" + J.B(m.Hookups.Count > 0)
                 + ",\"hasLink\":" + J.B(m.MachineLinks.Count > 0 || incoming.Contains(m.Id))
-                + (m.HasHome ? ",\"home\":[" + m.HomeX + "," + m.HomeZ + "]" : "") + (m.Foot ? ",\"foot\":true" : "") + "}");
+                + (m.HasHome ? ",\"home\":[" + m.HomeX + "," + m.HomeZ + "]" : "") + (m.Foot ? ",\"foot\":true" : "") + ",\"side\":" + J.B(m.SidePorts) + "}");
             string text = "{\"w\":" + w.Width + ",\"h\":" + w.Height + ",\"conduit\":" + L(conduit) + ",\"blocked\":[" + string.Join(",", blocked) + "],\"doors\":" + L(doors) + ",\"buried\":" + L(buried) + ",\"busy\":" + L(busy) + ",\"furniture\":" + L(furniture) + ",\"costs\":[" + string.Join(",", costs) + "]"
                 + ",\"connectParentData\":true,\"unhooked\":[" + string.Join(",", unhooked) + "]"
                 + ",\"machines\":[" + string.Join(",", machines) + "],\"live\":" + L(conduit.Where(c => CordWorldAdapter.IsLive(map, c)))
                 + ",\"strips\":" + L(styled.Where(kv => kv.Value.Look == "Modern").Select(kv => kv.Key)) + ",\"boxes\":" + L(styled.Where(kv => kv.Value.Look != "Modern").Select(kv => kv.Key))
-                + ",\"opt\":{\"tangles\":" + J.B(opt.Tangles) + ",\"needless\":" + J.B(opt.NeedlessLoops) + ",\"tangleMin\":" + opt.TangleMin + ",\"strips\":" + J.B(opt.Pile == PileArt.Strips) + ",\"dive\":" + J.B(opt.DiveThrough)
+                // each styled cell's look, and the default look's plug boot: a look decides where its device plug ends (BuildOptions.PlugBootAt)
+                + ",\"looks\":[" + string.Join(",", styled.Select(kv => "[" + kv.Key.X + "," + kv.Key.Z + "," + J.S(kv.Value.Look) + "]")) + "]"
+                + ",\"opt\":{\"boot\":" + opt.PlugBoot.ToString("0.###", inv) + ",\"tangles\":" + J.B(opt.Tangles) + ",\"needless\":" + J.B(opt.NeedlessLoops) + ",\"tangleMin\":" + opt.TangleMin + ",\"strips\":" + J.B(opt.Pile == PileArt.Strips) + ",\"dive\":" + J.B(opt.DiveThrough)
                 + ",\"slide\":" + J.B(opt.SlideUnder) + ",\"seed\":" + opt.Seed + ",\"slack\":" + opt.Lay.SlackScale.ToString(inv) + ",\"maxExtra\":" + opt.Lay.MaxExtra.ToString(inv) + ",\"cordsMax\":" + opt.Lay.CordsMax
                 + ",\"straight\":[" + string.Join(",", opt.StraightPlugIds.Select(J.S)) + "]}}";
             string dir = System.IO.Path.Combine(GenFilePaths.SaveDataFolderPath, "GssWorlds");
