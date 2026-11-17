@@ -69,6 +69,46 @@ def io_checks(tmp):
     write(os.path.join(d, "Defs", "a.xml"), "<Defs>!</Defs>")
     check(B.deployed_hash(d, cache_dir=cache) not in (None, h1), "the cache misses when a file's bytes change")
     write(os.path.join(d, "Defs", "a.xml"), "<Defs/>")
+    # GPT review 2026-11-17 (D:\ClaudeWork\rimmandrake\conductor\bm_gpt_review.md): the cache must not hide a rewrite
+    # whose size and mtime were kept, nor lend one folder's hash to another.
+    a = os.path.join(d, "Defs", "a.xml")
+    B.deployed_hash(d, cache_dir=cache)
+    st = os.stat(a)
+    write(a, "<Defz/>")                                                     # same size, other bytes
+    os.utime(a, ns=(st.st_atime_ns, st.st_mtime_ns))                        # its mtime put back
+    check(B.deployed_hash(d, cache_dir=cache) == B.deployed_hash(d) != h1,
+          "a same-size rewrite with its mtime put back misses the cache (the key holds the change time)")
+    write(a, "<Defs/>")
+    twin_a, twin_b = os.path.join(tmp, "TwinA"), os.path.join(tmp, "TwinB")
+    write(os.path.join(twin_a, "x"), "A")
+    write(os.path.join(twin_b, "x"), "B")
+    os.utime(os.path.join(twin_a, "x"), ns=(1, 10 ** 18))
+    os.utime(os.path.join(twin_b, "x"), ns=(1, 10 ** 18))
+    ha = B.deployed_hash(twin_a, cache_dir=cache)
+    check(B.deployed_hash(twin_b, cache_dir=cache) == B.deployed_hash(twin_b) != ha,
+          "two folders whose files share names, sizes and mtimes do not share a cache entry")
+    ext = os.path.join(tmp, "External")
+    write(os.path.join(ext, "e.xml"), "<Defs/>")
+    lk = os.path.join(tmp, "Linked")
+    write(os.path.join(lk, "About", "About.xml"), "x")
+    os.symlink(ext, os.path.join(lk, "Defs"))
+    os.symlink(lk, os.path.join(ext, "loop"))                                # a cycle must not hang the walk
+    hl = B.deployed_hash(lk)
+    write(os.path.join(ext, "e.xml"), "<Defs> </Defs>")
+    check(hl and B.deployed_hash(lk) not in (None, hl),
+          "a linked directory's files are hashed (the game follows the link), and a cycle ends: %s" % (hl or "")[:20])
+    if os.geteuid() != 0:
+        locked = os.path.join(d, "Locked")
+        write(os.path.join(locked, "l.xml"), "<Defs/>")
+        os.chmod(locked, 0)
+        try:
+            got = B.deployed_hash(d)
+        finally:
+            os.chmod(locked, 0o755)
+        check(got is None, "a folder with an unreadable subfolder hashes to None, never to the readable part: %s" % got)
+        shutil.rmtree(locked)
+    else:
+        check(True, "unreadable subfolder: running as root, not testable here")
 
     # ---- the deployed folder is found by packageId, not by name ------------------------------------------------------
     root = os.path.join(tmp, "repo")
@@ -142,6 +182,50 @@ def io_checks(tmp):
           "%s stands in for the live machine and is named on the reading" % B.STANDIN_ENV)
     check(B.tier_lister(ws)("t1") == (["a"], None) and B.tier_lister(ws)("t9")[0] is None,
           "a stand-in's tiers answer the tier lists; a tier it lacks resolves to nothing, with a reason")
+    os.environ[B.STANDIN_ENV] = stand
+    try:
+        # the repo this selftest sits in, found from its own path, not from build_match
+        wr = B.walk_build(os.path.abspath(os.path.join(HERE, "..", "..", "..")), "TestMod", sv, host="Archmagi")
+    finally:
+        os.environ.pop(B.STANDIN_ENV, None)
+    check(wr["why"] and B.STANDIN_ENV in " ".join(wr["why"]),
+          "a stand-in left in the environment is refused against the real repo (it cannot pass a live exit): %s"
+          % wr["why"])
+
+    # ---- the tier list is built fresh each reading: no on-disk cache can hand back a list the builder now refuses -----
+    calls = {"scan": 0}
+
+    class FakeMB:
+        refuse = False
+
+        @staticmethod
+        def tier_def(t):
+            return {} if t in ("bridge", "other") else None
+
+        @staticmethod
+        def scan():
+            calls["scan"] += 1
+            return {}
+
+        @staticmethod
+        def resolve_tier(t, installed):
+            return (["ludeon.rimworld"], ["gone.mod"] if FakeMB.refuse else [], [])
+    real = sys.modules.get("modset_builder")
+    sys.modules["modset_builder"] = FakeMB
+    try:
+        live = {"game": "archmagi", "why": []}
+        f1 = B.tier_lister(live)
+        first = (f1("bridge"), f1("other"), f1("bridge"))
+        FakeMB.refuse = True
+        again = B.tier_lister(live)("bridge")
+    finally:
+        if real is None:
+            sys.modules.pop("modset_builder", None)
+        else:
+            sys.modules["modset_builder"] = real
+    check(first[0] == (["ludeon.rimworld"], None) and calls["scan"] == 2 and again[0] is None and "gone.mod" in again[1],
+          "one reading scans the installed mods once; the next reading sees a mod gone and refuses the tier "
+          "(scans %d, then %s)" % (calls["scan"], again))
 
 
 WALK = {"game": "archmagi", "mod_hash": "sha256:aaaa", "game_build": "1.6.4871 rev590",
@@ -218,6 +302,14 @@ def compare_checks():
     line = B.summary(res)
     check(all(w in line for w in ("read 2", "1 count", "limit", "worst")),
           "the summary line names the cases read, the count, the limit and the worst: %s" % line)
+    ok, why = one("min_t", row("min_t"))
+    check("named by the row" in why, "a minimal-list check whose table names no tier says the row named it: %s" % why)
+    lr = B.last_rows([row("full_t"), row("unknown_t"), {"verdict": "PASS"}])
+    res = B.compare([("full_t", TESTS["full_t"])], lr, WALK, tiers)
+    line = B.summary(res)
+    check(res["count"] == 1 and res["unmatched"] == 2 and "2 row(s) name no check" in line,
+          "rows naming no check in the table, or none at all, are counted and printed, never silently dropped: %s"
+          % line)
 
 
 def cli_checks(tmp):
@@ -243,7 +335,31 @@ def _regex_active(path):
     return re.findall(r"<li>([^<]*)</li>", open(path).read().split("<activeMods>")[-1].split("</activeMods>")[0])
 
 
+def _old_files(folder):
+    """the first build's walk: links not followed, unreadable directories skipped in silence."""
+    return sorted((os.path.relpath(os.path.join(d, n), folder).replace(os.sep, "/"), os.path.join(d, n))
+                  for d, _, names in os.walk(folder) for n in names)
+
+
+def _old_key(folder, files, cache_dir):
+    """the first build's cache key: each file's path, size and mtime only."""
+    sig = B.hashlib.sha256()
+    for r, p in files:
+        st = os.stat(p)
+        sig.update(("%s\0%d\0%d\n" % (r, st.st_size, st.st_mtime_ns)).encode())
+    return os.path.join(cache_dir, "hash_%s.txt" % sig.hexdigest()[:32])
+
+
+def _old_last_rows(rows):
+    return {r.get("test") or r.get("id"): r for r in rows or [] if r.get("test") or r.get("id")}
+
+
 MUTANTS = {
+    "links_and_errors_skipped": lambda: setattr(B, "_files", _old_files),
+    "cache_key_size_mtime": lambda: setattr(B, "_cache_key", _old_key),
+    "standin_on_real_repo": lambda: setattr(B, "REPO", "/nonexistent/repo"),
+    "idless_rows_dropped": lambda: setattr(B, "last_rows", _old_last_rows),
+    "tier_scans_every_tier": lambda: setattr(B, "_resolve_tier", (lambda o: lambda t, i: o(t, []))(B._resolve_tier)),
     "hash_ignored": lambda: setattr(B, "CHECKED", ("game_build",)),
     "build_ignored": lambda: setattr(B, "CHECKED", ("mod_hash",)),
     "list_as_set": lambda: setattr(B, "same_list", lambda a, b: set(B.norm_list(a)) == set(B.norm_list(b))),

@@ -76,28 +76,55 @@ def _digest_file(path, h):
 
 
 def _files(folder):
-    out = []
-    for d, dirs, names in os.walk(folder):
-        dirs.sort()
-        for n in sorted(names):
-            p = os.path.join(d, n)
-            out.append((os.path.relpath(p, folder).replace(os.sep, "/"), p))
+    """(posix relative path, path) of every file, sorted. Linked directories are followed, as the game follows them
+    (each real directory once, so a cycle ends); an unreadable directory raises OSError, never drops out of the hash.
+    Empty directories are not hashed: the game loads files, and a folder holding no file changes nothing it loads.
+    A plain directory's real path is its parent's plus its name; only a link is resolved (realpath on every directory
+    of RimMandrake.Biomes made the walk 81 s against 21 s, measured on /mnt/c 2026-11-17)."""
+    out, seen = [], set()
+    stack = [(folder, "", os.path.realpath(folder))]
+    while stack:
+        d, rel, real = stack.pop()
+        if real in seen:
+            continue
+        seen.add(real)
+        with os.scandir(d) as it:
+            entries = list(it)
+        for e in entries:
+            r = rel + e.name
+            if e.is_dir():                              # follows a link, as the game does
+                stack.append((e.path, r + "/", os.path.realpath(e.path) if e.is_symlink()
+                              else os.path.join(real, e.name)))
+            else:
+                out.append((r, e.path))
     return sorted(out)
 
 
 def deployed_hash(folder, cache_dir=None):
-    """sha256:<hex> over the folder's files, or None when there is no folder. With cache_dir, a hash is kept under a key
-    of every file's path, size and mtime, so an unchanged folder is not read twice."""
+    """sha256:<hex> over the folder's files, or None when there is no folder or a part of it cannot be read. With
+    cache_dir, a hash is kept under a key of the folder's real path and every file's path, size, mtime and change time
+    (ctime: a write moves it and no utime can put it back; measured on drvfs 2026-11-17), so an unchanged folder is not
+    read twice (RimMandrake.Biomes, 704 MB, 4761 files: 72 s uncached, measured 2026-11-17)."""
     if not folder or not os.path.isdir(folder):
         return None
-    files = _files(folder)
+    try:
+        return _hash_files(folder, _files(folder), cache_dir)
+    except OSError:
+        return None
+
+
+def _cache_key(folder, files, cache_dir):
+    sig = hashlib.sha256(os.path.realpath(folder).encode("utf-8") + b"\n")
+    for r, p in files:
+        st = os.stat(p)
+        sig.update(("%s\0%d\0%d\0%d\n" % (r, st.st_size, st.st_mtime_ns, st.st_ctime_ns)).encode("utf-8"))
+    return os.path.join(cache_dir, "hash_%s.txt" % sig.hexdigest()[:32])
+
+
+def _hash_files(folder, files, cache_dir):
     key = None
     if cache_dir:
-        sig = hashlib.sha256()
-        for r, p in files:
-            st = os.stat(p)
-            sig.update(("%s\0%d\0%d\n" % (r, st.st_size, st.st_mtime_ns)).encode())
-        key = os.path.join(cache_dir, "hash_%s.txt" % sig.hexdigest()[:32])
+        key = _cache_key(folder, files, cache_dir)
         try:
             with open(key) as f:
                 got = f.read().strip()
@@ -212,8 +239,8 @@ def identity(root, mod, tier=None, full=False, mods_dir=None, config=None, versi
     pid, folder = _mod_folder(root, mod, mods_dir)
     h = deployed_hash(folder, cache_dir=cache_dir)
     if h is None:
-        why.append("%s is not deployed in %s (no folder whose About.xml names %s): deploy it first" % (
-            mod, mods_dir, pid or "its packageId"))
+        why.append("%s is not deployed in %s (no folder whose About.xml names %s), or a part of it cannot be read: "
+                   "deploy it first" % (mod, mods_dir, pid or "its packageId"))
     am = active_mods(config)
     if not am:
         why.append("no activeMods read from %s" % config)
@@ -245,6 +272,10 @@ def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, 
         d.setdefault("game", WALK_HOST)
         d["standin"] = sp
         d["why"] = [w for w in (None if d.get(k) else "the stand-in names no %s" % k for k in REQUIRED) if w]
+        if os.path.realpath(root) == os.path.realpath(REPO):
+            # selftests read temp trees; a stand-in left in a shell's environment must not pass a live exit
+            d["why"].append("%s=%s is set while reading the real repo %s; a stand-in counts only for a test tree: "
+                            "unset it" % (STANDIN_ENV, sp, REPO))
         return d
     out = {"game": (host or socket.gethostname()).strip().lower(), "why": []}
     if WALK_HOST and out["game"] != WALK_HOST:
@@ -277,52 +308,37 @@ def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, 
 
 def tier_lister(walk, cache_dir=None):
     """-> f(tier) -> (ordered packageIds, None) or (None, why): the stand-in's tiers, else modset_builder's on this
-    machine (scan() of the installed mods, ~13 s; kept under cache_dir keyed on modset_builder.py and the Mods listing)."""
+    machine. Built fresh for each reading, never from a file: modset_builder reads more than its own source (each
+    installed mod's About.xml, Biomes.compose.json), so no key short of a scan proves a kept list current. One scan()
+    of the installed mods (~13 s) serves every tier in the reading. cache_dir is accepted and unused."""
     if walk.get("standin"):
         tiers = walk.get("tiers") or {}
         return lambda t: (list(tiers[t]), None) if t in tiers else (None, "the stand-in has no tier %s" % t)
-    memo = {}
+    memo, installed = {}, []
 
     def f(t):
         if t not in memo:
-            memo[t] = _resolve_tier(t, cache_dir)
+            memo[t] = _resolve_tier(t, installed)
         return memo[t]
     return f
 
 
-def _resolve_tier(t, cache_dir):
+def _resolve_tier(t, installed):
+    """installed: [] until the first tier of a reading scans; then [scan()] for the rest of it."""
     sys.path.insert(0, UTILS) if UTILS not in sys.path else None
     import modset_builder as MB
-    key = None
-    if cache_dir:
-        sig = hashlib.sha256(open(MB.__file__, "rb").read())
-        try:
-            sig.update("\n".join(sorted(os.listdir(MB.LOCAL_MODS))).encode())
-        except OSError:
-            pass
-        sig.update(t.encode())
-        key = os.path.join(cache_dir, "tier_%s.json" % sig.hexdigest()[:32])
-        try:
-            with open(key) as f:
-                d = json.load(f)
-            return d["list"], d["why"]
-        except (OSError, ValueError, KeyError):
-            pass
     try:
         if MB.tier_def(t) is None:
-            res = (None, "modset_builder has no tier %s" % t)
-        else:
-            ordered, missing, refusals = MB.resolve_tier(t, MB.scan())
-            res = (None, "modset_builder refuses tier %s: %s" % (t, "; ".join(map(str, (missing and [
-                "missing %s" % ", ".join(missing)] or []) + list(refusals or []))))) if missing or refusals \
-                else (list(ordered), None)
+            return None, "modset_builder has no tier %s" % t
+        if not installed:
+            installed.append(MB.scan())
+        ordered, missing, refusals = MB.resolve_tier(t, installed[0])
+        if missing or refusals:
+            return None, "modset_builder refuses tier %s: %s" % (t, "; ".join(map(str, (missing and [
+                "missing %s" % ", ".join(missing)] or []) + list(refusals or []))))
+        return list(ordered), None
     except Exception as e:                  # a tier that cannot be built gives no list; the row does not count
-        res = (None, "modset_builder could not build tier %s (%s: %s)" % (t, type(e).__name__, e))
-    if key:
-        os.makedirs(cache_dir, exist_ok=True)
-        with open(key, "w") as f:
-            json.dump({"list": res[0], "why": res[1]}, f)
-    return res
+        return None, "modset_builder could not build tier %s (%s: %s)" % (t, type(e).__name__, e)
 
 
 # ---- the comparison --------------------------------------------------------------------------------------------------
@@ -370,7 +386,8 @@ def judge_row(test, spec, r, walk, tiers):
     if not same_list(r.get("active_mods"), ref):
         return False, "a minimal-list test whose list is not tier %s's: %s" % (tier, _first_diff(
             r.get("active_mods"), ref))
-    return True, "mod hash, game build and tier %s's list (%d mods)" % (tier, len(ref))
+    return True, "mod hash, game build and tier %s's list (%d mods)%s" % (
+        tier, len(ref), "" if spec.get("tier") else "; tier named by the row, the test table names none")
 
 
 def compare(tests, last_rows, walk, tiers):
@@ -385,21 +402,28 @@ def compare(tests, last_rows, walk, tiers):
             out["worst"] = out["worst"] or "%s: %s" % (t, why)
     out["read"] = len(tests)
     out["count"] = out["read"] - len(out["rerun"])
+    known = {t for t, _ in tests}
+    out["unmatched"] = sum(len(v) if k == "" else 1 for k, v in last_rows.items() if k not in known)
     return out
 
 
 def summary(res):
-    return "build match: read %d case(s), %d count, %d to re-run; limit: %s; worst: %s%s" % (
+    return "build match: read %d case(s), %d count, %d to re-run; limit: %s; worst: %s%s%s" % (
         res["read"], res["count"], len(res["rerun"]), LIMIT, res["worst"] or "none (every one counts)",
+        "; %d row(s) name no check in the test table (read, not counted)" % res["unmatched"]
+        if res.get("unmatched") else "",
         "; walk from stand-in %s" % res["standin"] if res.get("standin") else "")
 
 
 def last_rows(rows):
+    """{check id: its last row}; rows naming no check are kept as a list under "" so a reading can count them."""
     out = {}
     for r in rows or []:
         t = r.get("test") or r.get("id")
         if t:
             out[t] = r
+        else:
+            out.setdefault("", []).append(r)
     return out
 
 
