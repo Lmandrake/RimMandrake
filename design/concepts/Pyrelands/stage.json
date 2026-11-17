@@ -2,6 +2,7 @@
  "aliases": [
   "PYRELANDS"
  ],
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 8; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -655,10 +656,38 @@
     "ref": "run bench-pyre-exam-st4-r8-20261117",
     "stage": 4,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-17T18:03:43Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794938280",
+    "stage": 5,
+    "tokens": 601582
+   },
+   {
+    "at": "2026-11-17T18:05:18Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794938280",
+    "stage": 5,
+    "tokens": 719665
+   },
+   {
+    "at": "2026-11-17T18:05:35Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794938280-reader",
+    "stage": 5,
+    "tokens": 113690
+   },
+   {
+    "at": "2026-11-17T18:05:54Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1794938276",
+    "stage": 5,
+    "tokens": 400000
    }
   ],
   "reserve": 60000,
-  "spent": 17142948
+  "spent": 18977885
  },
  "coverage_releases": [
   {
@@ -866,8 +895,30 @@
    "tokens": 241440,
    "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5",
    "verdict": "covered"
+  },
+  {
+   "at": "2026-11-17T17:58:00Z",
+   "error": null,
+   "gaps": 3,
+   "ids": [
+    "burn_line_walks",
+    "fire_walks_with_wind",
+    "inv_burn_line_fire_clock"
+   ],
+   "judge": "rm-coverage-judge-1794938280",
+   "late": [],
+   "tags": {
+    "changed": 3
+   },
+   "tokens": 1321247,
+   "tree": "c1b1d874f8b1855f4308b54067d17a2ad1bcc207f539f525f2d1cbdcbeacff08",
+   "verdict": "not_covered"
   }
  ],
+ "coverage_stop": {
+  "at": "2026-11-17T18:05:37Z",
+  "why": "released for one more look at round 8; that look was not_covered"
+ },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -1552,6 +1603,30 @@
    "stage": 5,
    "what": "close",
    "why": "run bench-pyre-exam-st4-r8-20261117: stage 4 done"
+  },
+  {
+   "at": "2026-11-17T17:57:59Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "17142948 of 4000000 spent; run rm-role-designer-1794938276 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T17:58:00Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794938276, stage 5, budget 400000"
+  },
+  {
+   "at": "2026-11-17T18:05:37Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 8; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-17T18:05:54Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designer-1794938276 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -2035,12 +2110,21 @@
    "run": "bench-pyre-exam-st4-r8-20261117",
    "stage": 4,
    "summary": "Cold Reader exam retaken on the tree and sheet as re-pinned for the locked change of 2026-11-17 (his card: bars become experiences, the wind bar fire_walks_with_wind added; repair d2a3509a53 unlocked stage 4 for the retake): 40 frozen scenarios (Examiner a493484933e059c8f e1-e32, Challenger a2a221d98bd0fd4cd c1-c8; 32 rejects), Readers aa114da353c51393a and abdfee8b72caccb97 agree on all 40, 40/40, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with fire_walks_with_wind removed (ada115ab92a506f36) accepted e2, e5 and c1, wind rejects both Readers caught, so the set discriminates. exam.json carries it."
+  },
+  {
+   "at": "2026-11-17T18:05:54Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794938276",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
