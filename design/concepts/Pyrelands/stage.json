@@ -1473,6 +1473,12 @@
    "stage": 5,
    "what": "locked_change",
    "why": "his card 2026-11-17 (numbers become experiences, the wind bar); his 2026-11-16 burn-line words carried out by the rescue 49e11870b4; his 2026-11-15 gap-fix cards on the stage-2 item; re-pinned stage 2 (owner); stage 3 (sheet, tree, scenes); stage 5 (tree, sheet); stage 4 left stale, its exam void (sheet, tree, scenes, owner changed): the next open retakes it; sources OWNER:1794926128945577969@1d7b17ad85ce, OWNER:1794926130118775229@1d7b17ad85ce, OWNER:1794842055508243067@1d7b17ad85ce, OWNER:1794790810777772480, OWNER:1794790871101885625, OWNER:1794894282613045211@49e11870b4, OWNER:1794894288587863659@49e11870b4"
+  },
+  {
+   "at": "2026-11-17T17:26:00Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "repair (RIMMANDRAKE_UNLOCK_REPIN_VOIDED_EXAM_NEXT_OPEN_REFUSED, d2a3509a53): the re-pin of 2026-11-17 voided stage 4's exam on a locked concept and left it locked, so no open or chain could retake it; unlocked for the retake as the fixed repin does, stage 5 locks it again; sources as the re-pin above"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -2017,6 +2023,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "locked",
+ "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }

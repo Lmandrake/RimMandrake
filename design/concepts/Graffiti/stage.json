@@ -679,6 +679,12 @@
    "stage": 5,
    "what": "locked_change",
    "why": "a passing bar is an experience: four oracles reworded (d1542a3675); the ugliness_visible card (1bee0c2e96); the in-version hidden-face fix his lock card kept open (68f199064a); 2026-11-15 card answers on the stage item; re-pinned stage 2 (owner); stage 3 (sheet, tree, scenes); stage 5 (tree, sheet); stage 4 left stale, its exam void (sheet, tree, scenes, owner changed): the next open retakes it; sources OWNER:1794842055508243067@d1542a3675, OWNER:1794889675303725702@1bee0c2e96, OWNER:1794771556666342734@68f199064a, OWNER:1794790746864442914, OWNER:1794790752285697966, OWNER:1794790788426165373, OWNER:1794790829027694796"
+  },
+  {
+   "at": "2026-11-17T17:26:00Z",
+   "stage": 5,
+   "what": "locked_change",
+   "why": "repair (RIMMANDRAKE_UNLOCK_REPIN_VOIDED_EXAM_NEXT_OPEN_REFUSED, d2a3509a53): the re-pin of 2026-11-17 voided stage 4's exam on a locked concept and left it locked, so no open or chain could retake it; unlocked for the retake as the fixed repin does, stage 5 locks it again; sources as the re-pin above"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -1052,6 +1058,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "locked",
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
