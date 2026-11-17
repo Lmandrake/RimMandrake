@@ -1,19 +1,19 @@
 {
   "fixes": [
     {
-      "id": "R1",
-      "changed": "Replaced comfort onset with harmful felt heat above the safe maximum and building Heatstroke; specified pre-Serious intervention/lower recovery severity hysteresis, safe-temperature release, destination-based hot-air recovery and useful work headroom. Added explicit roof/haul oscillation rejection, repeated-haul acceptance and M2 planted defects.",
-      "where": "definition.md colonist contract; tickets.md T44; bars.json B7 and heat/pawn-response meetings; models.md M2; ambiguities.md colonist repair; owner_pages.md overheating/cooling"
+      "id": "G1.1",
+      "changed": "Corrected the vanilla recovery bands and excluded frozen-band cells from recovery targets. Added retarget-or-end handling if a refuge warms into that band, without indefinite waiting or futile retries. Restricted recovery-cycle acceptance to below-comfort destinations; added frozen-band selection, target-warming, unchanged-severity and planted forever-waiting defect tests.",
+      "where": "tickets.md T44: Build the shared colonist onset-of-overheating response"
     },
     {
-      "id": "R2",
-      "changed": "Marked cooling as Direct Sun exposure reduction, living shelter as animal refuges including nonliving casters, and fixed sunset as the permanently low tile-derived dayside sun with weather dimming. Each figurative entry includes a nonliteral accept picture.",
-      "where": "bars.json B1.meant.figurative and B6.meant.figurative"
+      "id": "G1.2",
+      "changed": "Replaced the false recovery claim with the vanilla falling/frozen bands and the same recovery-target exclusion and non-stalling target-warming handling used in T44.",
+      "where": "bars.json meetings: heat"
     },
     {
-      "id": "R3",
-      "changed": "Moved only the dewfringe rim gate to next_version, off under new T45, with default ordinary-spawn and enabled rim-recruitment state-read tests. Retained plant/sprig as native_plants life, narrowed R4 and dependent meeting/check/model references, removed the boundary deletion argument and updated scope lists and counts (32 kept, 31 next version, 45 tickets).",
-      "where": "census.json dewfringe_rim/native_plants; definition.md dewfringe/settings; bars.json R4/C3/C5 and affected meetings; models.md M1; tickets.md T45; next_version.md dewfringe_rim; ambiguities.md item 11; owner_pages.md; result.json counts"
+      "id": "G1.3",
+      "changed": "Defined recovery-capable targets as protected felt temperature strictly below the comfortable maximum. Excluded frozen-band targets and specified retargeting or ending an invalid refuge job without claiming recovery, indefinite waiting or futile retries. Corrected both copied claims and recorded the accepted reviewer evidence and frozen-band decision in ambiguities.md.",
+      "where": "definition.md Kept mechanic contracts and deletion arguments, first bullet; ambiguities.md Reviewer repair: the missing colonist contract; owner_pages.md Page two \u2014 what to check, Cooling"
     }
   ]
 }
