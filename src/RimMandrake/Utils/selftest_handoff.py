@@ -296,5 +296,35 @@ if _old[1] is None:
 else:
     os.environ["RIMFLOW_SEAT"] = _old[1]
 
+print("handoff: the bridge gate judges the holder's process, not the seat name")
+# RIMMANDRAKE_FREE_HANDOFF_GATE_FROM_DETACHED_RUNS_DRIVER_LOCK: measured 2026-11-17, handoff refused "BRIDGE still held by
+# BENCH ... driver lock: HELD BENCH 2360170" while 2360170 was a detached run (parent systemd). Process tree below is
+# fake: window 100 -> child 150; detached run 900 -> parent 1 (init).
+_TREE = {150: 100, 100: 50, 50: 1, 900: 1}
+_ident = lambda pid: {"platform": "wsl", "pid": pid}
+_real = (handoff.sh, getattr(handoff, "read_bridge", None), getattr(handoff, "window_pid", None),
+         getattr(handoff, "ppid_of", None))
+handoff.sh = lambda *a, **k: ("bridge held by BENCH since now" if a[-2:] == ("bridge", "who") else _real[0](*a, **k))
+handoff.window_pid = lambda: 100
+handoff.ppid_of = lambda p: _TREE.get(p)
+
+
+def _gate(reading):
+    handoff.read_bridge = lambda me: reading
+    return [p for p in handoff.gates(future) if "BRIDGE" in p]
+
+
+_drv = lambda pid: {"state": "MEASURED", "holders": ["BENCH"], "bridge": [], "driver": {"seat": "BENCH", "identity": _ident(pid)}}
+_r = _gate(_drv(900))
+check(not _r, "driver lock held by a detached run (pid 900, parent init) does not refuse: %s" % _r)
+for _pid in (100, 150):
+    _r = _gate(_drv(_pid))
+    check(len(_r) == 1 and "window" in _r[0], "driver lock held by the window / its child (pid %d) refuses: %s" % (_pid, _r))
+_r = _gate({"state": "MEASURED", "holders": ["BENCH"], "bridge": ["BENCH"], "shared": {"identity": _ident(100)}})
+check(len(_r) == 1 and "shared bridge" in _r[0], "shared bridge held by the window refuses: %s" % _r)
+_r = _gate(_drv(777))       # 777 has no parent entry: ancestry unreadable
+check(len(_r) == 1 and "UNMEASURED" in _r[0], "an unplaceable holder pid refuses and says UNMEASURED: %s" % _r)
+handoff.sh, handoff.read_bridge, handoff.window_pid, handoff.ppid_of = _real
+
 print("\n%s: %d failure(s)" % (os.path.basename(__file__), len(fails)))
 sys.exit(1 if fails else 0)

@@ -253,6 +253,8 @@ tail -n 40 /mnt/d/ClaudeWork/rimmandrake/conductor/log.md
 python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR
 ```
 
+**The question watcher (a Monitor) is armed with a grep anchored to the log line's leading timestamp that excludes the log text "restart:BENCH"** (its own command text and the backstop's restart line otherwise match it), **and is stopped before HANDOFF READY**, because a live watcher holds the context backstop restart.
+
 **Anything you owe is an owed item, filed when the sentence that creates the debt is written** (a launch you promise, a
 decision you call yours, a question you put to him, a page you say you will write):
 `rimflow file <ID> --for BENCH --kind owed --title "<the act>" --caused-by <item it acts on>`. Park one on a trigger with

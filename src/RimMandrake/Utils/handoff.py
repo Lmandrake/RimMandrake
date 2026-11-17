@@ -122,6 +122,44 @@ def own_hold(who, me):
     return bridge_holder.held_by(who) == bridge_holder.identity(me)
 
 
+def _seat_restart():
+    sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake"))
+    from rimflow import seat_restart
+    return seat_restart
+
+
+def read_bridge(me):
+    """The shared bridge and driver lock, read as the restart gate reads them (seat_restart.bridge_reading)."""
+    return _seat_restart().bridge_reading(me)
+
+
+def ppid_of(pid):
+    return _seat_restart()._proc_ppid(pid)
+
+
+def window_pid():
+    """The Claude window this process runs under: the nearest ancestor with a ~/.claude/sessions/<pid>.json, else None
+    (then a holder cannot be placed against the window and the gate refuses, UNMEASURED)."""
+    sr, p = _seat_restart(), os.getpid()
+    for _ in range(64):
+        if p is None or p <= 1:
+            return None
+        if sr.session_file(p):
+            return p
+        p = ppid_of(p)
+    return None
+
+
+def bridge_gate(who, me):
+    """-> the refusal for a bridge or driver lock held by this seat's WINDOW, or None. Judged by the holder's process
+    (seat_restart.bridge_hold, the one copy): a detached run's lock survives the reboot and is no reason to refuse."""
+    hold = _seat_restart().bridge_hold(me, read_bridge(me) or {}, window_pid(), ppid_of)
+    if not hold:
+        return None
+    return "BRIDGE still held by %s — release it before rebooting:\n      %s\n      (%s)" % (
+        me, who.splitlines()[0] if who else "?", hold)
+
+
 def seat():
     """Which seat is rebooting. REFUSES rather than guessing.
 
@@ -363,9 +401,9 @@ def gates(since_ts=None, handoff_path=None, doing_is_fatal=True):
     # even though `bridge give` only offers BENCH/FOUNDRY; `bridge take` gates on
     # no such list) would have this seat wrongly told IT holds the bridge and
     # must release something it never took.
-    if own_hold(who, seat()):
-        bad.append("BRIDGE still held by %s — release it before rebooting:\n      %s"
-                   % (seat(), who.splitlines()[0] if who else "?"))
+    refusal = bridge_gate(who, seat())
+    if refusal:
+        bad.append(refusal)
 
     open_doing = open_this_window(since_ts)
 
