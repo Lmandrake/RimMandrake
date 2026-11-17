@@ -1,0 +1,91 @@
+# LongShade — proposed Design Version 0.1.0
+
+This is a Designer proposal, not an applied change or an owner ruling. All new scope choices and interpretations below are mine, delegated by this cleansing brief. No game, bridge, deployment, build, art edit or outside-folder write was performed. The owner hold stays in force. Application follows owner reading and the separate fresh review; this proposal grants no permission to advance a held mod.
+
+## The mod in player language
+
+You live in a dry dayside desert where a low, fixed sun makes shelter the useful geography.
+Native animals recover in shade and cross exposed gaps within their endurance; you make routes with ordinary roofs and parasols while responding to ordinary heat.
+A Gloomcast carries real shelter through the landscape, while a Mirrak offers shelter that only looks real and can be identified before commitment.
+
+Land: sand, buildable soil and rock, walkable slow DeepSand, sparse vegetation, dry unlocked weather and a fixed sunset; physical shade follows the tile's geometry.
+Life: the existing native and patch-added cast, ordinary edible plants, ground prey, grazers, hunters, scavengers and tameable stock, with real feeding, flight, reproduction and attributable loss.
+Signature: real or apparent shelter changes exposure, which makes native animals cross, recover and choose their next refuge while the colony can alter those routes with ordinary shelter.
+Runner-up: Shipfall Commons, the landed ship gathering successive classes of wildlife. It lost because attraction stages, arrival messages and pilot dispersal form another cause-and-effect chain; ordinary roof shade and native shelter seeking work without it.
+
+## Why a player reaches for it
+
+This is a colony built around exposed gaps and places to recover, rather than another desert with a different colour. A working roof changes the ground a pawn can use. An enduring giant changes it temporarily. A dark animal tests whether the player reads the ground or trusts a silhouette. Prediction: these visible local choices will be interesting without a calendar of bespoke incidents. Enjoyment is not an acceptance bar.
+
+The root is the owner's card-selected experience in design/RimMandrake/biome_experiences_2026-10-20.md. Its currency/gamble language is figurative: no money conversion, dice-roll crossing failure, or requirement that every step be lethal. The November owner answer in designer_codex_2026-11-09/LongShade/ANSWERS_OWNER.md takes precedence over the rehearsal's questions. Colonists need not predict routes. They react when overheating through the shared rule; native animals have evolved thermal movement. No LongShade-specific human planner is kept.
+
+## Using it
+
+First hour: identify sand and a firm site; build ordinary roofed shelter, gather nearby dewfringe/ordinary forage, and watch native movement. Parasols and ordinary shared gear research remain accessible without studying a special object. Watch suspicious shelter, then inspect from outside its attack range before committing. The ordinary health display shows heat; no special tutorial quest is required.
+
+Routine: route normal work around shelter, extend a roof where exposed work is inconvenient, monitor ordinary Heatstroke, and let healthy natives alternate shelter and crossings as needs permit. Shade reduces Direct Sun exposure; air can remain lethally hot under a roof. There is no artificial cooling field, no new heat disease, no independent biome heat offset. A failed hunt ends in thermal retreat instead of indefinite pursuit. Fleeing, hunger and mating must be considered, not just staged idle wander.
+
+At a 40-colonist base, ordinary undrafted work must make progress without repeatedly hand-ordering every warming pawn to a roof. The shared reactive response must run; the player still provides reachable shelter and chooses jobs. Drafted/mental-state orders and deliberately unsheltered work can be dangerous. Crowding does not invent shelter capacity or a strongest-animal throne. There is no social patch hierarchy in this release.
+
+## What changes in the colony's story
+
+Building a wall, growing or cutting a shadespire, losing a roof and watching a giant depart have thermal consequences the player can read. The colony learns which work areas need shelter. A corpse, blood, drag marks or a named attack explains an animal lost near a Mirrak; ordinary deaths and departures stay attributable. Harvesting the last edible plants remains a colony choice, not proof that a fake population spawner should replace the food web.
+
+There is no compulsory wreck road, treasure excursion, ship gathering, clan negotiation, tick rent or special recipe in the first release. Their approval as earlier ideas is preserved in history; the version boundary is this Designer's call.
+
+## Costs and failure signs
+
+Costs are ordinary construction and materials, carrying a parasol instead of another loadout, time spent recovering, food taken from local animals, and exposure when work leaves shelter. Useful tameable creatures have ordinary care/feed costs; Chorn/Gennok caravan pack capability must be checked against the effective whitelist, not inferred from a pack flag.
+
+Heat failure is visible through the normal health/temperature path before collapse. A wrong refuge has inspectable identity and an ambush sign. A disappearing giant removes its living shade but does not delete its corpse. A blocked refuge or dangerous air cannot promise rescue; a worker visibly overheating beside reachable useful shelter without reacting is a failed experience. Repeated job churn, blanket starvation, uncontrolled population growth and recurring exceptions are whole-run failures, not acceptable balancing flavour.
+
+## Kept mechanic contracts and deletion arguments
+
+- Physical terrain and ordinary weather use the existing def and FlowWorks terrain, never a new hardpan or heat terrain. Deleting terrain readability/buildability defeats land. Sunset colour is aesthetic; direction/elevation are tile-derived shared geometry, without the current biome clamps. Haze and weather do not lengthen the sun vector artificially.
+- Dewfringe supplies food and a sparse established-shade boundary. Existing recruitment uses a shade-fraction band, not a literal contour. Deleting that gate makes the boundary vegetation generic and defeats its signature read. Once established it grows/dies normally after shade moves; it does not jump with the giant. No instant death/teleport system is promised.
+- Ordinary plants remain: Maidenbloom heart, Pavecrust fuel, Shadespire wood and physical shade, SurraGrass graze, VellaraBloom ornament, Thrannagourd food, and the visible Vorrel plant. Delete ordinary products and food/building life loses its resources; do not add dung-only/hardpan-only simulation. Vorrel ingestion, harvestable fruit and prepared food are unavailable in defaults, with honest inspect/description text. A dormant dangerous recipe must not become a free safe fruit.
+- Khorrak's metal diet and Gloomcast's sand filter feeding stay because their retained bodies need actual nutrition. Khorrak's periodic vacstone output moves. Plain giant dung stays as the already-accepted feeding sign, with no separate scar. Dung fertilisation, plant seeding and young-creature creation move; shared code coupling must be split at the consumer, not used to keep their effects.
+- Real moving shelter and intermittent Pirrik/Chorn/Gennok/Tebbra following stay. Delete them and there is no living refuge/use of that refuge. A hungry or nearby follower can do something else; it is not a permanent convoy. Shared body geometry updates on movement, death, despawn, downing and reload; a downed living caster uses its real current geometry, not an immortal upright pole. No new flight or follower engine is designed here.
+- Mirrak stays as a false destination in the same thermal chain; deleting deception removes the explicit distrust clause. It affects perception and ambush, never actual heat protection. Observation can raise suspicion and safe inspection confirms even when it aligns with the sun. Signs survive loss long enough for a normal local return and are attributable. Its ordinary hide stays; the special shade-cloth bonus moves.
+- Dakkra burst/fatigue/retreat stays because a retained shade hunter that chases until it cooks defeats both its life role and bounded crossings. Native hunting is positional/bounded, not a licence for endless pursuit. Real flight and supported life-stage graphics stay for fictional flyers. Delete those and life contradicts the standing flight ruling.
+- Harrok remains in its roster with body shade and ordinary carnivore/corpse feeding; its forced waiting and special shadow-strip strike move together. Vrekka remains an ordinary scavenger when heap jobs move. Tazzok remains an ordinary grazer without the obsolete ash-only schedule. These are scope defaults, not animal evictions or art reversals. The situation generator must establish viable ordinary feeding after each decoupling.
+- Ordinary animal products, reproduction, tameability, combat and sound effects stay. The bespoke camera heat beds, pre-dash calls and distant footfalls move; normal health and geometry are the necessary information. We preserve owner-kept assets, not their requirement to run in this version.
+- Mod Settings and truthful ordinary inspect/health feedback are the only kept supporting UI: deleting them makes the chain uncontrollable or unreadable. Existing scanner payload is a required integration under the recorded all-biomes scanner card; it reports real present targets only, with honest quiet text. It is not a reveal system required to spot a Mirrak.
+
+## Edges
+
+No worldgen, planetary seed sweep, repaint, world migration, alternate planet, unique start-site demand or finding about zero tiles. Local-map terrain generation already exists and is ordinary biome land, distinct from prohibited planet generation. No rituals, bespoke research discounts, additional rosters, gnomons or heliograph. Earlier cuts to ash growth and sand-lock stay cut. No protected art redo. Existing exported Ommok/TruffleMole/Ulgga/Vosska/Ultriss defs retain their homes; they do not return here because their files do.
+
+Ordinary species are not all identical shade-dependent machines. Heat tolerance and body mass vary. Claims that nothing lives in the sun or survives leaving shelter are obsolete absolutes. The defined experience is exposed cost, resting and bounded movement where heat is actually costly. If fixed-world climate plus the global Direct Sun model yields no meaningful crossing cost anywhere in the intended band, report that evidence as a conflict for the owner; never restore a private heat offset to fake the signature.
+
+## Neighbours
+
+Read: CLAUDE.md; biome_rulings.md; standing_rulings.md; biome_mod_architecture.md; NAMING_SCHEME_PLAN.md; ASHKARR_WORLD_DEFINITION.md; the_one_map.md; Alien_Bestiary.md. Planet geometry is angular distance from the substellar point, not a normal latitude band. Water/green zoning and the desert default prohibit a lush private ecosystem. The bestiary register is aspirational lore, not a current spawn inventory. Later rulings beat old architecture cross-biome settings advice. All DLC remain prerequisites.
+
+CreatureBehaviors supplies exposure/grid/graphs, physical and false shelter, routing, thermal movement, followers, feeding and flight consumers. EnvironmentalHazards supplies existing roof/parasol gear and shared interactions; local venom/moss behaviour and lessons defer. ExplosiveGrowth supplies any existing ordinary growth/wet-source integration, with no new LongShade bursts. Wreckage supplies ordinary salvage and weathering, independent of the deferred road. Bones appends ordinary butchery products without a new LongShade economy. FlowWorks supplies walkable DeepSand. SolarMirrors light subtraction must continue to use the shared exposure contract. These are consumed contracts, not engine redesigns.
+
+Vanilla already supplies jobs, construction, ordinary food and births, Heatstroke, research and caravans. Reuse these. No popular-mod replacement is needed. The Sarlacc journey remains an external dependency of a deferred campaign extra, not a second RM monster. Canon vehicle/clan content remains in the campaign tiers. Qorrax is explicitly shared with Stillsand in current defs; shared Leachmoss/Venomvine and the canon patch cast also have other homes. Preserve all memberships; the resolved-roster audit records remaining multi-homing without evictions.
+
+## Settings
+
+Defaults: core biome content, rim recruitment and required shared shelter/heat/native response/flight/feeding on; all next-version effects off. Each major kept feature has its existing shared or owned toggle, clear effect/scope labels, reset to shipped defaults and save persistence. No duplicate private heat dial. A LongShade master stops its owned behaviour and opts out its local consumers without disabling the same shared engine for other biomes; the fixed world's sun itself is not redefined by this switch.
+
+Existing future booleans in RM_LongShadeMod.cs currently initialise and Scribe to true; tickets change both defaults and reset values and add missing local gates. Labels say Next version, off by default. Build-menu entries/recipes/incident eligibility/jobs/letters and active effects must all respect the gate; merely stopping the incident roll is insufficient. Passive species and saved dormant defs remain loadable. Existing saves retain objects, but their extra jobs/effects stop safely and do not silently resume on reload. No silent removal of animals. All-off gives ordinary terrain/life/weather with no scripted LongShade hazard, with shared global features governed by their own settings. Label local generation settings New local maps, never WORLDGEN-AFFECTING. No new cross-biome switch; existing unsupported ones stay off.
+
+## Four short stories
+
+First hour. The landing leaves a strip of open sand between supplies and a rock. The player puts a small roof over the work site and harvests nearby forage. A tebbra waits in shade, then crosses. A worker gets warm while hauling and seeks the available refuge; the player learns from the health panel and the moving animal, not a mandatory lesson.
+
+Ordinary week. Covered work areas grow into a usable route. Grazers eat the real plants instead of debug food. A Dakkra gives up its unsuccessful rush and returns. A Gloomcast passes with followers sometimes close and sometimes feeding; the old lee warms behind it. The player can use it, but cannot order it to wait.
+
+Worst day. A roof is destroyed while hauling continues. Exposed workers show heat and react; the player repairs shelter and prioritises a rescue where air permits it. A dark patch with no caster looks wrong. Safe inspection confirms a Mirrak before a further worker is sent through; a careless prey animal's attack leaves a sign. No tow incident erases the colony's roof from a rectangular hull footprint.
+
+Season's turn. The light stays dayside; season means elapsed ecological time, not a cold night or mandatory storm. After a save mid-season, feeding, recruitment, deaths and shelter decisions continue. Building before harvesting and harvesting before building give different paths to a functioning colony, not duplicated wildlife or stale shade. If life strips the map or work stalls, the season model supplies the worst case and the responsible feedback loop.
+
+## Evidence and bar qualification
+
+The named concept folder contains no record.json, sheet.md, log.md, next-version file or tree leaves. Its predecessor at designer_codex_2026-11-09/LongShade supplies an explicitly unapproved inventory and useful history, not a root approval or waiver. Old bars are empty, as the CASE says. Missing transient receipts are not recreated. Current source was searched before each built/absent judgement; no runtime proof is current. Bare DLL/hash presence does not establish deployment.
+
+Each bar's Reject test: B1 loses the biome land read; B2 loses real shelter/heat truth; B3 loses the owner's explicit native behaviour; B4 loses ordinary life; B5 loses mobile refuge; B6 loses fair distrust and readable loss; B7 loses the owner's reactive colonist rule and practical colony use; B8 loses the running whole. Sources/inference are separately recorded in bars.json. Each survives retuning and valid art variants: comparisons, causation and readable roles remain, with no pinned yields/speeds/sizes/variant counts in its pictures. First-version test: B1 is land, B4 life, B2/B3/B5/B6 the shelter signature and B7 necessary use; B8 is their joint trajectory. Settings/log/load remain the inherited floor, not disguised extra refusal bars. The whole bar describes stalled jobs/error storms as player-visible failure of the running system; a red regression row alone never refuses it.
+
+Adversarial second pass: a sunset overlay, an idle-only dash, full-needs spawn census, permanent follower job, hidden real shade on the Mirrak, stale moving shelter and a pretty return ring each looked plausible under shorter wording. The contrasting pictures now reject each. Their remaining risks are instruments and unknown meetings, not questions about owner taste. No fresh independent reviewer has yet judged this proposal; no review verdict is claimed.

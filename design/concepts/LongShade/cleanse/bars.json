@@ -1,0 +1,603 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "On the desert map the player can distinguish walkable sand, buildable ground and sparse living shelter, beneath a fixed sunset whose physical casters cast shade away from the sun.",
+      "meant": {
+        "intent": "Land must read as an exposed dry place with useful shelter, rather than an orange overlay hiding an ordinary green map. Physical caster means rock, wall or plant; Mirrak appearance is separately tested. Retuning colour or swapping a valid art variant does not change this comparison.",
+        "source": "Owner golden-hour words, design/Jawa/worldbuilding/biomes/longshade_shade_ideation_2026-09-29.md \u00a70; root line in src/RimMandrake/Biomes.compose.json; delegated from dry planet lore and ordinary land needs.",
+        "figurative": []
+      },
+      "accept": [
+        "The player identifies a slow sand tract and a firm building site, with bare gaps between shaded rocks; a wall and a shadespire cast into the same lee direction.",
+        "Dry weather can dim the sky while the map remains dayside and the ground and physical shade remain distinguishable."
+      ],
+      "reject": [
+        "An orange sky covers a grassy meadow; rock darkness circles the rock while the useful shade lies elsewhere.",
+        "The image suggests a walkable sand route but its ordinary terrain is impassable, or all firm ground looks indistinguishable from loose sand."
+      ],
+      "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
+      "range": {
+        "varies": "Full local maps 150x150 through 400x400; flat, small/large hills and mountainous land; dry weather table including Sandstorm/GrayPall; actual tile positions across the low-sun dayside band and diagnostic higher elevations; new map and day 100; default zoom and close inspection.",
+        "left_out": "No planetary placement or repaint, no new ground type, no green-growth spectacle, no judgement of protected art style. Missing world tiles are expected."
+      },
+      "sees": {
+        "instrument": "Live visual comparison plus terrain/standability/affordance reads; geometry sweep supplies caster-direction overlays but cannot decide the ground/sky readability. T38 supplies annotated captures.",
+        "start": "Unedited generated local map with its original terrain and native plants; full sun/lee/roof samples marked only in the observer overlay.",
+        "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
+        "control": "Use the same map and camera in normal weather changes, read actual terrain IDs and caster exposure masks; a coloured sky alone cannot pass. Compare against the mechanical mask without painting it into the judged image.",
+        "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
+        "live_only_why": "A state mask cannot show whether the ordinary ground and sunset picture communicate those distinctions to a player."
+      },
+      "live_only": true,
+      "touches": [
+        "terrain",
+        "shelter geometry",
+        "weather"
+      ]
+    },
+    {
+      "id": "B2",
+      "says": "A pawn exposed beside genuine shelter gains more Direct Sun heat than the same pawn under that shelter, while shaded hot air can still overheat it and the ordinary health display explains the danger.",
+      "meant": {
+        "intent": "The sun adds felt heat; shelter does not refrigerate the air or create a LongShade disease. This is the same geometric rule at the same position in any biome. Reject if the shade is only cosmetic or falsely promises immunity.",
+        "source": "Standing Direct Sun ruling, design/RimMandrake/standing_rulings.md \u00a7Direct Sun, owner 2026-09-29/2026-10-19.",
+        "figurative": []
+      },
+      "accept": [
+        "An exposed worker warms while a matched sheltered worker avoids that extra load; both remain vulnerable when the air itself is too hot.",
+        "A parasol reduces exposure on the outward trip and ordinary Heatstroke tells the player when the trip has gone badly."
+      ],
+      "reject": [
+        "Shade clears Heatstroke immediately or makes a pawn safe in dangerously hot air.",
+        "A health label says Direct Sun but a hidden biome damage effect causes the injury, or the matched sheltered pawn gains the same sun load."
+      ],
+      "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
+      "range": {
+        "varies": "Geometric elevations 0, 2, 14, 30, 60, 90 degrees as diagnostics, all bearings; outdoor air 10..65 C; vanilla thermal-comfort boundaries plus/minus a small epsilon; children/adults and native animal life stages, naked/clothed/parasol; moving/static/roof shade and overlaps; new/load/off/on transitions.",
+        "left_out": "No promise that shade cures disease or that every tile is dangerous; no redesign of vanilla ambient temperature or shared body-size response. Non-primary day/night worlds use the standing fallback, not a new validation tier."
+      },
+      "sees": {
+        "instrument": "M1 geometry/thermal sweep calibrated against felt-temperature and Heatstroke trajectory reads from matched runtime pawns; T35 captures the readings and source of heat.",
+        "start": "Matched healthy pawns cloned from the same pawn state, no other heat injury or treatment, same air/needs/comfort, positioned on adjacent exposed and genuine sheltered cells.",
+        "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
+        "control": "Log air temperature, comfort, exposure, felt heat, severity and treatment together. Matched-control copy disabling only Direct Sun removes the sun-related difference; hot-air control retains vanilla Heatstroke. Relocate the caster, not the thermometer.",
+        "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
+        "live_only_why": "Not live-only: calibrated offline results or runtime state traces can decide the outcome; staged wiring alone cannot."
+      },
+      "live_only": false,
+      "touches": [
+        "shelter geometry",
+        "heat",
+        "pawn response",
+        "weather"
+      ]
+    },
+    {
+      "id": "B3",
+      "says": "The player sees healthy native animals recover in shelter and make exposed crossings toward genuine refuge within their endurance, returning from failed hunts instead of pursuing prey into thermal collapse.",
+      "meant": {
+        "intent": "Native adaptation must govern food and hunting as well as idle wander. When a reachable real refuge exists and an animal can act, avoidable AI cooking is failure; false-shade mistakes remain possible and readable. Retuning budgets leaves the behavioural comparison intact.",
+        "source": "Owner strict animal dashing, design/Jawa/worldbuilding/biomes/longshade_shade_ideation_2026-09-29.md \u00a70; later colonist/animal distinction in design/RimMandrake/designer_codex_2026-11-09/LongShade/ANSWERS_OWNER.md answer 1.",
+        "figurative": []
+      },
+      "accept": [
+        "A hot grazer pauses in shade before another crossing; a Dakkra abandons a fleeing target to reach real shelter and recover.",
+        "Hunger sends a native toward reachable food without turning its shelter-to-shelter movement into endless exposed wandering."
+      ],
+      "reject": [
+        "An idle animal performs a convincing dash, then its eating or hunting job ignores heat and walks past reachable refuge until it collapses.",
+        "An exhausted hunter keeps its burst advantage and pursues across the open while its shelter-rest job never runs."
+      ],
+      "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
+      "range": {
+        "varies": "All retained native races in actual effective roster, juvenile/adult and supported baby stages; hungry/rested/hot, wander/graze/feed/mate/hunt/flee; isolated and crowded patches; reachable, blocked, full and removed destinations; baseline and tolerance-boundary heat; game days 1..100; death/load/toggle during jobs. Group states with the same think-tree priority; M2 enumerates each priority class.",
+        "left_out": "Drafted, roped, downed, mental-state and combat-forced animals obey their explicit control/health states, with readable injury rather than guaranteed safety. No refuge left, lethal ambient air or a player-ordered attack is not a promise of survival. No fixed dash animation rhythm in thermally mild conditions."
+      },
+      "sees": {
+        "instrument": "M2 situation generator and T36 multi-tick job/path/health traces, calibrated to actual native think trees. Use runtime state reads where kernel traces cannot resolve vanilla priority.",
+        "start": "Healthy wild natives with genuine reachable refuge, actual edible resources and a predator/prey path through exposed ground; repeated runs start from fixed needs, temperature and RNG.",
+        "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
+        "control": "Require movement, exposure, Heatstroke and the destination to agree; a sleeping animal or frozen needs is not a crossing. Follow the whole hunt into retreat; compare identical path geometry with shelter removed on a separate copy.",
+        "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
+        "live_only_why": "Not live-only: calibrated offline results or runtime state traces can decide the outcome; staged wiring alone cannot."
+      },
+      "live_only": false,
+      "touches": [
+        "heat",
+        "pawn response",
+        "food web",
+        "population",
+        "shelter geometry"
+      ]
+    },
+    {
+      "id": "B4",
+      "says": "The player encounters sparse forage, feeding grazers, ground prey, hunters and useful tameable animals without needing a deferred reward or reproduction mechanic to keep ordinary life running.",
+      "meant": {
+        "intent": "Life must have food and roles in the existing roster, not merely names. Tebbra/Sippra already answer the alleged missing ground-prey role. Ordinary feeding, products, reproduction and trading suffice; this does not demand self-sufficiency for an arbitrarily large colony.",
+        "source": "Delegated from owner land/life/signature card 2026-11-16, no-evictions ruling, actual native defs and LONGSHADE_GRAZER_FOODWEB_EXPLAIN_PLANTS / LONGSHADE_SMALL_PREY_ROLE_DESIGN_GROUND findings.",
+        "figurative": [
+          {
+            "word": "running",
+            "stands_for": "Ordinary feeding, birth/recruitment and resource use continue; no literal continuous movement.",
+            "accept": "A fed animal rests in shade while other animals forage; its life is functioning without moving."
+          }
+        ]
+      },
+      "accept": [
+        "A forager harvests dewfringe or thrannagourd; small ground grazers eat real plants and provide prey, while a tameable herd animal supplies ordinary food or carrying work.",
+        "Khorrak eats mineral feed and the Gloomcast feeds on sand while the other grazers use local edible plants; ordinary newborns and recruits replace normal losses."
+      ],
+      "reject": [
+        "Animals spawn with full needs but their diets accept none of the map food, so ordinary grazers starve as the only greenery remains inedible.",
+        "The roster persists only because a dung event creates free young animals or every food need is locked."
+      ],
+      "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
+      "range": {
+        "varies": "Effective free-tier roster and composed campaign patch-added roster; all ordinary diet/plant categories; local maps 150x150..400x400, sparse/dense natural shade and settled/unsettled habitat; baseline populations 0.5x..2x saved spawn target; 0, 1 and 40 colonists; whole-season and day-100 continuations; allowed ordinary harvesting/taming/hunting and no debug food.",
+        "left_out": "No roster evictions, new species, exact sustainable colony population, fixed yields, or infinite wildlife under deliberate extermination. Off-map trading and farming remain vanilla; exported animals are not recast here."
+      },
+      "sees": {
+        "instrument": "T37 resolved diet/edibility/pack whitelist audit plus food-consumption and birth/death/spawn traces in M3 whole-season model calibrated to runtime records; state reads decide feeding without a subjective look.",
+        "start": "Unmodified local map roster, real needs/growth/spawn timers and finite recorded starting resources; separately record campaign-added species and products.",
+        "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
+        "control": "Record ingestion source IDs and nutrition gained, distinguish natural birth/recruitment from debug/dung spawns, trace the stock of edible plants and prey. A population count alone or the same spawn roll endlessly replayed cannot pass.",
+        "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
+        "live_only_why": "Not live-only: calibrated offline results or runtime state traces can decide the outcome; staged wiring alone cannot."
+      },
+      "live_only": false,
+      "touches": [
+        "food web",
+        "population",
+        "terrain",
+        "persistence"
+      ]
+    },
+    {
+      "id": "B5",
+      "says": "The player can use a passing Gloomcast as real shelter, watch its followers adjust as it moves, and see exposure return where that shelter has left.",
+      "meant": {
+        "intent": "The moving body changes exposure rather than leaving an invisible road; following is intermittent and subject to needs, not permanent FollowClose. Its plain dung is a feeding trace, not a population generator.",
+        "source": "Owner-picked enrichment recorded in src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Gloomcast.xml; follower selection and dung waiver in infrastructure/state/items/closed/GLOOMCAST_WAKE_RIDERS_1.md; intermittent evidence in prove_gloomcast_follow.py is stale.",
+        "figurative": []
+      },
+      "accept": [
+        "A pawn warms less inside the moving lee, then warms again when the Gloomcast leaves; Pirrik and the already-selected ground followers resume following between feeding and resting.",
+        "The giant dies or leaves the map and its body shelter is removed without deleting its corpse or leaving protected cells behind."
+      ],
+      "reject": [
+        "Followers are permanently ordered to FollowClose while the body casts no mechanical shelter.",
+        "The old path remains protected after the animal has moved, died or loaded elsewhere."
+      ],
+      "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
+      "range": {
+        "varies": "Baby/juvenile/adult Gloomcast at all current supported body scales; stationary/moving/turning, map edge, roof/rock/plant overlaps; Pirrik/Chorn/Gennok/Tebbra alone and mixed, hungry/rested/hot; isolated/adjacent/missing host; death/downed/despawn/save-load/toggle in a crossing; full local-map crowding up to saved target doubled.",
+        "left_out": "No guaranteed escort for an unfit pawn, player command to steer the giant, planet migration or world-scale giant travel; no newly invented follow species or separate feeding scar."
+      },
+      "sees": {
+        "instrument": "M1 moving geometry and M2 host/follower transition traces, then T35 synchronized moving-layer/health/host/follower state samples. Existing follower replay can seed cases, not prove thermal survival.",
+        "start": "Gloomcast with reachable sand feeding area, healthy matched pawn in its projected lee, named followers on both sides of follow range with real needs.",
+        "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
+        "control": "Read moving shade separately from roof/static shade and remove those confounders in diagnostic cells; track caster ID and vacated-cell heat. Require followers to traverse with host movement, not just have a FollowClose label.",
+        "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
+        "live_only_why": "Not live-only: calibrated offline results or runtime state traces can decide the outcome; staged wiring alone cannot."
+      },
+      "live_only": false,
+      "touches": [
+        "shelter geometry",
+        "heat",
+        "pawn response",
+        "population",
+        "persistence"
+      ]
+    },
+    {
+      "id": "B6",
+      "says": "Before committing to a Mirrak the player can suspect and inspect its false shelter, and an ambush leaves a readable sign while that false shelter provides no cooling.",
+      "meant": {
+        "intent": "Retain the shade deception the owner chose, with fair pre-commitment discovery and attributable loss. A wrong-way silhouette is a clue, not an infallible compass test; actual inspection must resolve even an aligned animal.",
+        "source": "Owner look-then-inspect answer 2 in design/RimMandrake/designer_codex_2026-11-09/LongShade/ANSWERS_OWNER.md; readable-loss ruling in standing_rulings.md and longshade_shade_ideation_2026-09-29.md volley turn 4.",
+        "figurative": []
+      },
+      "accept": [
+        "A watcher notices a dark shape with no plausible caster, inspects it from outside reach and identifies the Mirrak; a careless animal enters, suffers an attack and leaves drag marks or remains.",
+        "A Mirrak aligned with real shade still identifies itself to safe inspection; its apparent shelter never reduces the victim\u2019s sun exposure."
+      ],
+      "reject": [
+        "The dark patch is indistinguishable from genuine shelter until the first injury, and inspection outside the strike area says nothing useful.",
+        "An ambushed pawn disappears without remains, marks or an attributable message, or the Mirrak body actually protects it from sun."
+      ],
+      "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
+      "range": {
+        "varies": "All bearings including exact alignment and anti-alignment to sun, ordinary terrain backgrounds and live weather, roof/rock/moving shade overlap, juvenile/adult and allowed prey boundaries; wild/tamed, with/without victim, corpse eaten in place, reload during attack and after a kill. Normal zoom then inspect; camera position does not change protection.",
+        "left_out": "No new danger scanner, guaranteed animal recognition, automatic rescue or custom warning quest. Creature controls remain shared; player pawn warnings name the responsible attacker."
+      },
+      "sees": {
+        "instrument": "T38 live labelled look/inspect/approach comparisons plus T35 real/perceived-shade and victim identity/health/death-sign reads; M2 verifies loss-sign persistence transitions.",
+        "start": "Live Mirrak on ordinary exposed ground next to a genuine caster, undrafted wildlife with normal needs, observer outside strike range, no forced reveal or debug highlight in the judged image.",
+        "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
+        "control": "Compare real and false shelter with identical health states; require suspicion from normal art/context and confirmation from safe inspection before damage. Remove debug overlays for the blind sort; a log line alone cannot prove readable ground evidence.",
+        "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
+        "live_only_why": "Only seeing the actual rendered animal, context and normal inspect surface can distinguish a fair clue from hindsight; a perception flag cannot."
+      },
+      "live_only": true,
+      "touches": [
+        "shelter perception",
+        "shelter geometry",
+        "heat",
+        "pawn response",
+        "persistence"
+      ]
+    },
+    {
+      "id": "B7",
+      "says": "The player can establish ordinary work around built shelter, recover an overheating worker through the shared shade response, and change a crossing by adding or removing real shelter without a LongShade planning chore.",
+      "meant": {
+        "intent": "Colony scale requires understandable reactive heat management rather than biome-specific forecasting. Work stays player-directed; the shared response interrupts ordinary work when overheating and shelter is reachable. Exposed work still has a cost and shade never cures hot air.",
+        "source": "Owner answer 1 in design/RimMandrake/designer_codex_2026-11-09/LongShade/ANSWERS_OWNER.md; parasols/roofs and settings standing rulings; delegated colony-scale usability.",
+        "figurative": []
+      },
+      "accept": [
+        "Workers haul and build between covered work areas; a warming worker stops to seek available shade and can resume after recovering.",
+        "Removing a shelter exposes the former stop, and erecting a roof or wearing a parasol makes an otherwise dangerous part of the route usable."
+      ],
+      "reject": [
+        "A beautiful return-range circle is displayed while ordinary undrafted workers keep hauling into collapse despite reachable cool refuge.",
+        "A cancelled or destroyed shelter remains safe in the path cache, or a special lesson, awning or mast is required before ordinary roofs help."
+      ],
+      "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
+      "range": {
+        "varies": "Colonies 1..40, day 1 through day 100, local maps 150x150..400x400; hauling/building/gathering/ordinary transport, low/near/over comfort heat, injury/slowed movement/child/adult, roofs added/removed midjob, lost/changed parasol, reachable/blocked shelter, reload midjob, toggles off/on. Reorder roof-build and harvest actions. Reactive response also sampled on a shared-rule control biome at same geometry.",
+        "left_out": "Drafted orders, emergency rescue in lethal air, mental states and deliberately unsheltered maps can injure/kill; no guarantee of perfect productivity, automatic building placement, forecast routing, or passive colony immunity."
+      },
+      "sees": {
+        "instrument": "M2 worker transition generator and T36 actual job/health/exposure traces; T35 shelter-change reads. Use paired state traces to decide whether reachable refuge triggered the shared response.",
+        "start": "Ordinary colony jobs and reachable shelter outside dangerous ambient air, default priorities and real needs; no queued forced-seek-shade command.",
+        "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
+        "control": "Observe the original work job interrupted by the shared heat response, not a manual Goto, drafted command or locked rest need. Freshly invalidate/move shelter and prove both new protection and former-cell exposure.",
+        "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
+        "live_only_why": "Not live-only: calibrated offline results or runtime state traces can decide the outcome; staged wiring alone cannot."
+      },
+      "live_only": false,
+      "touches": [
+        "pawn response",
+        "shelter geometry",
+        "heat",
+        "persistence",
+        "settings"
+      ]
+    },
+    {
+      "id": "B8",
+      "says": "Across a season with the complete default biome running, the player keeps making and using shelter among feeding wildlife, with understandable heat and ambush losses, while reload and reordered work preserve that cycle without a population flood, stripped habitat, stalled jobs or recurring errors.",
+      "meant": {
+        "intent": "Exactly the whole bar. The player sees exposed gaps, recoverable shelter use, replenishing ordinary life and meaningful changes of shelter over a season, not hand-picked scenes with other systems off. Mild weather may relax pressure; it must not erase the experienced cycle for the whole run.",
+        "source": "Owner whole-system cleansing brief 2026-11-16; owner chosen experience in biome_experiences_2026-10-20.md; delegated from named retained interactions and colony-scale failure modes.",
+        "figurative": [
+          {
+            "word": "population flood",
+            "stands_for": "Uncontrolled population accumulation or free repeated creation that overwhelms habitat.",
+            "accept": "A larger herd is acceptable when it feeds and stabilises; no literal water is involved."
+          },
+          {
+            "word": "stripped habitat",
+            "stands_for": "Ordinary feeding/recruitment collapses because the combined consumers exhaust their food; normal local harvesting is allowed.",
+            "accept": "The colony clears plants at a building site while wildlife elsewhere continues feeding."
+          }
+        ]
+      },
+      "accept": [
+        "A colony harvests, builds shelter and hunts while natives feed, dash and recover; a moving refuge and an inspected false refuge matter, and the pattern continues after reload and a changed work order.",
+        "Ordinary weather changes exposure and some animals die or leave with visible causes, while food, shade decisions and colony work continue."
+      ],
+      "reject": [
+        "A staged first crossing succeeds, then continued growth covers the gaps or hungry wildlife strips its food and dies while colony jobs repeat without progress.",
+        "The save reloads into stale shelter, renewed ambush injury without a cause, runaway wildlife creation or a repeating exception storm."
+      ],
+      "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
+      "range": {
+        "varies": "Full maps 150x150..400x400 for a 15-day season, all kept mechanics/defaults active, no research or weather lock; sparse/typical/crowded shade, actual fixed-world tile climates plus thermal-boundary diagnostics; unsettled, starting and 40-colonist settled maps. Save/reload between days 6..9; run build-then-harvest and harvest-then-build from the same start. Continue worst cases to day 100. Compression may batch observation, never omit needs, weather, pathing, attacks, growth, recruitment, death or Scribe transitions; preserve event ordering and RNG state.",
+        "left_out": "No alternative planets or tile generation; model inputs vary local situations on the same fixed world. Deliberate extermination, lethal debug heat, forced combat and research still locked are not accepted baselines. No staged spawn repeatedly resets the season population."
+      },
+      "sees": {
+        "instrument": "M3 calibrated whole-season model plus T39 runtime cohort/food/cover/job/event/error and save-continuation trace. T38 supplies normal-view checkpoints for B1/B6; their appearance is separately live-only, this whole trajectory is state-decidable.",
+        "start": "Fresh local map made from recorded fixed-world conditions; full native life plus the normal colony and inherited shared settings, research unrestricted; export initial resources, shade, needs and RNG. Ensure an actual Gloomcast and Mirrak opportunity through a recorded initial lawful roster sample, never repeat injection.",
+        "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
+        "control": "Account every population gain/loss and edible stock change; attribute heat to exposure/air and attacks to actual actors. Compare uninterrupted and reloaded continuation and reversed-order run; report worst cases, never average away local collapse. Baseline has extras absent by T01..T34 checks, not silently disabled retained mechanics.",
+        "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
+        "live_only_why": "Not live-only: calibrated offline results or runtime state traces can decide the outcome; staged wiring alone cannot."
+      },
+      "live_only": false,
+      "touches": [
+        "terrain",
+        "shelter geometry",
+        "shelter perception",
+        "heat",
+        "pawn response",
+        "food web",
+        "population",
+        "weather",
+        "persistence",
+        "settings"
+      ]
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Resolve effective XML/patch roster, animalDensity/plantDensity, diets, pack-animal whitelist, body/life stages and products; record values from the loaded build. No every-file pass gate."
+    },
+    {
+      "id": "C2",
+      "what": "Shared formula is 55 C at zenith times sin(elevation) and weather factor at default strength; identical geometry yields identical sun in control biome. Scan legacy per-biome fields as regression evidence."
+    },
+    {
+      "id": "C3",
+      "what": "Existing rim thresholds MinRimShade=0.05 and MaxRimShade=0.85 are current checks, not bars; record any tuning and recalibrate M1/M3."
+    },
+    {
+      "id": "C4",
+      "what": "Default, write, save, reload and reset every major-feature switch, including all future defaults; inspect active jobs/conditions after off. Correct Now/New local maps/Next pulse/Next load labels."
+    },
+    {
+      "id": "C5",
+      "what": "State-read absence/presence acceptance of T01..T34 plus clean log; preserve dormant defs/code/art and prevent active queued extras surviving a switch-off."
+    },
+    {
+      "id": "C6",
+      "what": "Existing LongShade kernel fuzz, planted-defect validation selftests and proof drivers are regression tools. Old counts/comments/clauses are stale where they demand deferred extras."
+    },
+    {
+      "id": "C7",
+      "what": "Calibration tolerances and matched-control attributions specified in models.md; a model not matching game is untrusted, never a game measurement."
+    },
+    {
+      "id": "C8",
+      "what": "Record geometry grid versions, sun vector, exposure layers, felt temperature, Heatstroke, job/path/target, food ingested, population event reasons and inspect/kill signs for bar evidence."
+    },
+    {
+      "id": "C9",
+      "what": "No RSW/campaign leakage into RM tier, no missing textures, all required DLC active, actual MaxFlightTime/motion for fictional flyers; keep protected art."
+    },
+    {
+      "id": "C10",
+      "what": "Ordinary scanner resolves actual targets, quiet text does not assert absence of hidden threats, and deferred heaps/cart/letters never become phantom readings."
+    },
+    {
+      "id": "C11",
+      "what": "Two work action orders and season reload checkpoints preserve causal outcomes; exact RNG continuation is checked when game serialization makes it deterministic, otherwise compare attributed events and qualitative regimes."
+    },
+    {
+      "id": "C12",
+      "what": "Report repeating exceptions and stuck-job/no-progress intervals with actor and cause; fixing a failed check may require fixing the tool. Judge rejects on failed experience bars alone."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Use the shared tile-to-sun geometry and ordinary felt-temperature/Heatstroke path. No LongShade heat kind, offset, elevation clamp or weather-driven shadow-length multiplier; keep the standing global formula rather than retune privately.",
+      "touches": [
+        "shelter geometry",
+        "heat",
+        "weather"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Real static, moving, roof and gear layers resolve through the shared grid; invalidate vacated/removed/dead sources. Perceived Mirrak shade is separate and cannot alter real exposure.",
+      "touches": [
+        "shelter geometry",
+        "shelter perception",
+        "heat",
+        "persistence"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Native needs/hunt priority must obey thermal retreat when it can act; player colonists use the shared reactive overheating rule. No LongShade work forecaster, social shade hierarchy or enforced universal dash rhythm.",
+      "touches": [
+        "pawn response",
+        "heat",
+        "food web"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Dewfringe recruitment uses the existing shade-fraction rim gate; established plants persist by ordinary growth/death after shelter moves. No forced relocation or instant death. Keep pale sparse recruitment rather than a compulsory ring.",
+      "touches": [
+        "shelter geometry",
+        "food web",
+        "terrain",
+        "persistence"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Keep all present roster memberships, including multi-homed Qorrax and campaign species; preserve exported defs and owner-kept art. Separate ordinary recruitment and birth from deferred seeding, and log attributable deaths/despawns.",
+      "touches": [
+        "population",
+        "food web",
+        "persistence"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Master/per-major-feature settings persist; default retained systems on, future extras off and labelled Next version, resets use those same defaults. Off stops new orders/effects and releases active owners safely; existing content remains loadable. No new cross-biome switch.",
+      "touches": [
+        "settings",
+        "persistence",
+        "pawn response"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Use normal terrain affordances, vanilla building, parasols/any roof and shared salvage. Local map creation is not planetary worldgen; never repaint or roll an alternative planet.",
+      "touches": [
+        "terrain",
+        "shelter geometry"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Observe normal needs, weather and AI; qualify offline output with game calibration and use disposable scratch saves with durable cleanup manifests. Tests of a moved extra are checks and never refusal bars.",
+      "touches": [
+        "weather",
+        "settings",
+        "persistence",
+        "population"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "food web",
+      "members": [
+        "B3",
+        "B4",
+        "B8",
+        "R3",
+        "R4",
+        "R5"
+      ],
+      "holds_together": "unknown",
+      "why": "Rim-limited plant recruitment, all grazer diets, metal feeding, giant feeding, hunts and colony harvest may collectively strip food even if each consumer works alone.",
+      "model": "M3: Whole-map season and food ledger"
+    },
+    {
+      "thing": "heat",
+      "members": [
+        "B2",
+        "B3",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R2",
+        "R3"
+      ],
+      "holds_together": "argued",
+      "why": "All readers use the same exposure and ordinary health; recovery is conditional on air below the comfort boundary. Mirrak changes perceived destinations only. Higher native endurance changes tolerated time, not the biome sun. Geometry and priorities are separately unknown, not claimed solved here.",
+      "model": "none: construction argument; generator tests its transitions"
+    },
+    {
+      "thing": "pawn response",
+      "members": [
+        "B2",
+        "B3",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R3",
+        "R6"
+      ],
+      "holds_together": "unknown",
+      "why": "Vanilla hunger, hunter retreat, follower pursuit and worker jobs may pre-empt each other; a shade label or pairwise job test cannot settle the combined priority chain.",
+      "model": "M2: Situation and transition generator"
+    },
+    {
+      "thing": "persistence",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R2",
+        "R4",
+        "R5",
+        "R6",
+        "R8"
+      ],
+      "holds_together": "argued",
+      "why": "Persist durable pawn health/identity and setting state, reconstruct all derived shade/graph caches after load and restore active jobs consistently. No bar demands caches be saved. Death removes living shade, leaves a corpse/sign and releases followers. The generator must verify these transitions; this is a construction argument, not a measurement.",
+      "model": "none: construction argument; generator tests its transitions"
+    },
+    {
+      "thing": "population",
+      "members": [
+        "B3",
+        "B4",
+        "B5",
+        "B8",
+        "R5",
+        "R8"
+      ],
+      "holds_together": "unknown",
+      "why": "Ordinary births/recruits, predation and starvation may drive a flood or extinction after removing artificial seeding; no claim of balance without a calibrated trajectory.",
+      "model": "M3: Whole-map season and food ledger"
+    },
+    {
+      "thing": "settings",
+      "members": [
+        "B7",
+        "B8",
+        "R6",
+        "R8"
+      ],
+      "holds_together": "argued",
+      "why": "A nondefault off switch is a graceful degradation configuration, never evidence for default bars. Scope to LongShade consumers so deferring local extras does not turn off retained shared services or another biome. Counterfactual controls are separate copies.",
+      "model": "none: construction argument; generator tests its transitions"
+    },
+    {
+      "thing": "shelter geometry",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R2",
+        "R4",
+        "R7"
+      ],
+      "holds_together": "unknown",
+      "why": "Static/moving/roof overlaps, stale caches and rendering can agree in isolated examples yet disagree after source deletion; this affects all thermal and movement users together.",
+      "model": "M1: Shelter geometry and exposure sweep"
+    },
+    {
+      "thing": "shelter perception",
+      "members": [
+        "B6",
+        "B8",
+        "R2"
+      ],
+      "holds_together": "argued",
+      "why": "False shelter changes an animal choice but not physics. Safe inspect confirmation and persistent kill signs distinguish deception from engine disagreement; normal real shelter remains genuine. Human visual acceptance remains outstanding.",
+      "model": "none: construction argument; generator tests its transitions"
+    },
+    {
+      "thing": "terrain",
+      "members": [
+        "B1",
+        "B4",
+        "B8",
+        "R4",
+        "R7"
+      ],
+      "holds_together": "argued",
+      "why": "Normal walkability and affordances are shared inputs, not secret path exemptions. DeepSand can slow a route and require more shade; no bar promises a crossing everywhere or a hardpan specialist.",
+      "model": "none: construction argument; generator tests its transitions"
+    },
+    {
+      "thing": "weather",
+      "members": [
+        "B1",
+        "B2",
+        "B8",
+        "R1",
+        "R8"
+      ],
+      "holds_together": "unknown",
+      "why": "Unlocked weather changes sun load, growth and thermally safe movement together. Need an actual climate trajectory, including whether the chosen geometric sun leaves the signature perceptible.",
+      "model": "M3: Whole-map season and food ledger"
+    }
+  ],
+  "old_bars": {}
+}

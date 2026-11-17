@@ -1,0 +1,243 @@
+# Proposal tickets — not filed or executed
+
+Each ticket is future builder work. Nothing here changes code or authorises a game/bridge session now. Keep code, defs and art in the tree. A switch-off means fresh-default state reads show that extra’s objects/effects/jobs/letters/incidents absent (passive roster/content exceptions named below), the log is clean, and a qualifying opt-in fixture proves actual presence rather than just def resolution. Change initialisers, Scribe fallback and reset together; label Next version, off by default and Now/New local maps/Next pulse correctly. Test an existing active save switching off and reloading as well as a fresh map. These are regression checks, not passing bars. Enablement of contradictory mechanics is diagnostic only, never a ruling change.
+
+## T01: Leachmoss competition and Venomvine contact venom
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml; design/Jawa/worldbuilding/desert_shade_plants_design.md; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#defending_plants; BiomeDef wildPlants opts into EnvironmentalHazards; shared spawn gate and CompContactVenom.
+Scope the existing EnvironmentalHazards contact/spawn/fertility behaviours to dormant LongShade opt-ins, leaving ordinary Leachmoss/Venomvine visuals and other-biome consumers intact. No extra poison or fertility pressure at defaults.
+Acceptance test: A native crosses Venomvine and moss grows without the deferred contact injury/competition effect; with Next version enabled in a qualifying fixture those specific effects occur and are attributable, while ordinary growth still works in both arms. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T02: Vorrel lethal ingestion, shade-stagger and corpse germination
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_Vorrel.xml; src/RimMandrake/LongShade/Defs/ThingDefs_Items/RM_Vorrel_Items.xml; src/RimMandrake/LongShade/Defs/HediffDefs/RM_Vorrel_Hediffs.xml; src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_ShadeStagger.cs; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#vorrel_raw_cycle; RM_Vorrel direct ingestion plus RM_VorrelFruit outcome -> RM_VorrelBrood -> shared ShadeStagger.
+Gate raw fruit harvesting, direct plant ingestion, item ingestion outcomes, Brood progression, shade-stagger and corpse germination together. Keep the visible Vorrel plant, dormant fruit/hediff defs and saved data. Never convert lethal fruit to harmless default food. Disable pending brood effects safely when off; do not delete a host.
+Acceptance test: Fresh defaults contain visible plants but no generated/harvested VorrelFruit, direct plant ingest job, Brood, stagger job or germinated corpse plant. On, a finite valid fruit/host fixture enters the documented chain; off after onset stops future extra jobs/effects with an explained dormant status and no host disappearance. No other plant forage is suppressed. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T03: Prepared Vorrel dish, stove recipe, euphoria and thought
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/RecipeDefs/RM_Vorrel_Recipes.xml; src/RimMandrake/LongShade/Defs/ThingDefs_Items/RM_Vorrel_Items.xml; src/RimMandrake/LongShade/Defs/ThoughtDefs/RM_Vorrel_Thoughts.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#vorrel_preparation; RM_Vorrel_Recipes.xml stove recipe -> RM_VorrelSeedDish outcomes and thought.
+Gate recipe availability, prepared dish production/use, euphoria and thought, including trade/stock generation of the extra dish. Off must not leave a bill that manufactures free food; preserve saved defs. Coordinate raw Vorrel gate without removing ordinary cooking.
+Acceptance test: Defaults offer no Vorrel preparation bill or dish in generation, trade or colony work, and no euphoria/thought. On with raw-cycle dependency enabled, the stove produces an actual dish with its effects; toggling off stops future output and queued extra bills safely. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T04: Study/crossing research discounts
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/EnvironmentalHazards/Patches/RM_ShadeLessons_Sources.xml; src/RimMandrake/EnvironmentalHazards/Source/RM_ShadeLessons.cs; src/RimMandrake/EnvironmentalHazards/Defs/ResearchProjectDefs/RM_ShadeLessons_Research.xml; src/RimMandrake/CreatureBehaviors/Source/RM_ShadeHop.cs:47; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#shade_lessons; EnvironmentalHazards RM_ShadeLessons_Sources.xml adds study comps; CrossingLanded event subscriber; research availability patch.
+EnvironmentalHazards sources patch and study comps, CrossingLanded subscription and research discount/availability patches are callers. Gate the LongShade discount/study path, not the generic CrossingLanded event or standard research. Delete no shared engine.
+Acceptance test: Defaults have no LongShade study job or hidden lesson grant, and ordinary shelter research remains available and unlocks gear. On, valid study/crossing opportunities grant actual research discount while ordinary path remains; other-biome users and crossing events still work. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T05: Procedural wreck crossing
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_LongShadeMapgen.cs:229; src/RimMandrake/LongShade/Defs/MapGeneration/RM_LongShade_GenSteps.xml; src/RimMandrake/LongShade/Defs/RM_WreckListDefs/RM_CrawlerRoadWreckList.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#crawler_road; RM_LongShade.extraGenSteps -> RM_GenStep_CrawlerRoad -> RM_CrawlerRoadLogic.Lay -> mapgen survey/kernel.
+Set crawlerRoadEnabled default/Scribe/reset false and label New local maps, Next version. Gate Lay and all fallback/terminus paths. Keep RM_LongShadeMapgen.Build for any retained/dependency consumer; its presence is coupling, not a road requirement. Future enablement needs a post-placement graph check, with skipped links not advertised as a road.
+Acceptance test: A fresh default map has no CrawlerRoad-created links or terminus (distinguish shared ordinary wreck IDs by creation provenance); enabling it on a qualifying gap fixture creates an actual reachable wreck chain. It must not report success when no legal gap exists or placement skipped a required link. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T06: LongShade road cart/speeder placement and local salvage package
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_CrawlerRoad_Wrecks.xml; src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LongShadeRoadWrecks.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#wreck_salvage; CrawlerRoad wreck list and linkDefs fallback; Wreckage weathering/salvage; Acoustic payload cart target.
+Gate road-specific automatic placement and any local build/trade availability of RM_WreckedCart/RM_LongShadeWreckSpeeder. Keep Wreckage generic salvage/weathering active. Scanner must not invent a cart in an empty map. On requires road feature or an explicitly placed diagnostic object; dormant defs alone are not an on result.
+Acceptance test: Fresh defaults have no locally auto-created road carts/speeders, road loot or scanner cart reading; ordinary shared wrecks still exist when its engine places them. On with road prerequisite, actual cart/speeder objects cast real shade and can be salvaged; the generic salvage engine is active in both arms. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T07: Dead-crawler terminus injection and hull registration
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_LongShadeMapgen.cs:304; src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_CrawlerRoad_Wrecks.xml; src/RimStarWars/StructureInjectionsSW/Patches/CrawlerRoad_LongShade.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#crawler_terminus; RM_CrawlerRoadLogic.Lay -> terminusStep -> StructureInjectionsSW patch -> CrawlerHull.Register.
+Gate campaign terminus injection, marker placement and hull registration under the future road/terminus settings. Keep lower-tier road types loadable; do not move canon content into RM.
+Acceptance test: Fresh defaults have no terminus marker, injected dead-crawler structure, registration or hull-specific jobs. On with campaign layer and road fixture, the actual terminus is made/registered and its transient marker is cleared; no hull is required in the free-tier run. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T08: Long Carry remains, supplies and novel placement
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_LongShadeMapgen.cs:409; src/RimMandrake/LongShade/Defs/MapGeneration/RM_LongShade_GenSteps.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#sun_graves; Biome extraGenSteps -> RM_GenStep_SunGraves -> HumanRingCost/GearCover/GraveBand.
+Set sunGravesEnabled false in initializer/Scribe/reset, gate the generation and load/reward/novel paths, retain mapgen arithmetic only as dormant regression code. No gnomon pointer.
+Acceptance test: Fresh defaults show no LongCarry-generated corpses, supplies, novel or jobs/letters. On in a legal thermal/distance-band fixture generates attributable remains and load; no fallback may advertise a gear-only reach when the same bare pawn can make it. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T09: Shipfall timed animal gathering
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_ShipfallCommons.cs; src/RimMandrake/LongShade/Defs/ThinkTreeDefs/RM_LongShade_ShipfallCommons.xml; src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#shipfall_ladder; Biome RM_ShipfallCommonsExtension; ThinkTreeDef insertion -> RM_JobGiver_ShipfallCommons; MapComponent clock.
+Set shipfallCommonsEnabled false; gate the biome extension consumer, clock, ThinkTree insertion, attraction jobs, staged messages, saved-state resumption and cache. Physical ship roof shade remains real. Future spec must prevent Pirrik being admitted by the wrong earlier size rung and preserve real flight.
+Acceptance test: Default landed ship has real shade but no Commons stage clocks/orders/arrival messages; ordinary native shade seeking remains. On, actual eligible animals gather outside the deck in their intended stage, with saved progress continuing after reload. Clock advancement alone is not presence. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T10: Pilot-console dispersal and arrival messages
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_ShipfallCommons.cs:141; src/RimMandrake/LongShade/Source/RM_ShipfallCommons.cs:290; ITEM:LONGSHADE_MASTER_SWITCH_FIX_SHIPFALL_IGNORES; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#shipfall_departure; RM_MapComponent_ShipfallCommons.MapComponentTick -> pilot check -> Disperse; saved arrivedTick/stages.
+Disperse and pilot messages depend on the same dormant Commons opt-in; do not leave a separate departure hook running. Off releases existing owned gather orders without cancelling ordinary pilot/launch jobs or deleting animals.
+Acceptance test: At defaults a colonist using the console produces no Commons dispersal order/message and launch works. On after an actual gathering, the console disperses the eligible occupants with its intended message and never blocks launch; off mid-gather releases owned jobs and cannot reissue them on reload. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T11: Old lee-side heap seeding
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_LongShadeMiddenMapgen.cs:24; src/RimMandrake/LongShade/Defs/MapGeneration/RM_LongShade_GenSteps.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#midden_seed; extraGenSteps -> RM_GenStep_Middens -> shared mapgen survey.
+Set middenMapgenEnabled false and gate the old-heap creation path. Retain mapgen survey code if a core/dependency actually calls it; do not keep heaps to satisfy scanner payload.
+Acceptance test: Fresh defaults contain no seeded LongShadeMidden, search designation or heap-related letter. On in a rock-lee fixture produces actual layered heaps; shared ordinary ground debris is not mistaken for a heap. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T12: Search designation, Mining job and spent-once loot
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_LongShadeMiddens.cs:102; src/RimMandrake/LongShade/Source/RM_LongShadeMiddens.cs:321; src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LongShade_Middens.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#midden_search; RM_LongShade_Middens.xml jobs/designation/workgiver -> WorkGiver_RM_SearchMidden -> JobDriver_RM_SearchMidden -> heap.Search.
+Gate designation/gizmos, WorkGiver, JobDriver, search payout and spent-state resume under the future midden setting, not merely master. Saved heaps stay inspectable as dormant, with no payout; no removal of pawns. Preserve spent-once ruling; no autonomous regrowth of searched heaps.
+Acceptance test: Defaults contain no available search work/designation or new heap loot. On with an unspent layered heap, actual search yields its items and then remains spent after reload; interruption/reservation/concurrent workers cannot duplicate payout. Off mid-search releases work without paying. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T13: Vrekka heap building and tending
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_LongShadeMiddens.cs:203; src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LongShade_Middens.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#vrekka_middens; RM_LongShadeMiddens.cs JobGiver_RM_VrekkaMidden via ThinkTreeDef; ShouldBuildHeap/NearestTendable/Tend.
+Gate Vrekka tending/building ThinkTree jobs together with heap creation and layer mutation. Vrekka normal corpse feeding continues. Future model must account for spent heaps in capacity/spacing; they must not permanently prevent all new heaps while presenting tending as renewable.
+Acceptance test: Defaults have no Vrekka heap jobs/new heaps/layer gain while actual Vrekka can feed. On with legal lee and capacity, it builds or tends a real unsearched heap, never regrows a spent one; off during a tend prevents mutation and resumes ordinary needs. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T14: Mapgen clean-lair markers
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_LongShadeMiddenMapgen.cs:111; src/RimMandrake/LongShade/Defs/MapGeneration/RM_LongShade_GenSteps.xml; src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LongShade_Middens.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#clean_patch_tell; extraGenSteps -> RM_GenStep_CleanPatches after Animals -> RM_CompCleanPatchTell inspect.
+Set cleanPatchTellEnabled false; gate post-Animals mapgen marker creation and stale inspector promise. Mirrak fairness is independent safe inspection, not this static marker.
+Acceptance test: Fresh defaults have no RM_LongShadeCleanPatch things or empty-patch guarantees; Mirrak remains safely identifiable through ordinary inspection. On in a valid occupied generated lair fixture creates a marker honestly labelled historical when occupancy changes, rather than a continuing current-danger certificate. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T15: Tollok stationary-shade infestation
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_ShadeExtras.cs:67; src/RimMandrake/LongShade/Defs/HediffDefs/RM_Tollok_Hediffs.xml; src/RimMandrake/LongShade/Source/Kernel/RM_ShadeExtrasKernel.cs; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#tollok; RM_MapComponent_Tollok.MapComponentTick -> dwell -> RM_TollokInfestation.
+Set tollokTicksEnabled false in defaults/Scribe/reset; stop dwell, infestation application and active damage/tending/saved progression attributable to this extra. Roof/gear exclusions stay future controls. Preserve hediff defs and explain dormant status rather than deleting hosts.
+Acceptance test: Defaults produce no TollokInfestation, bleed/pain from that chain, or special tending work after wild-shade dwell. On a valid wild-deep-shade fixture, an ordinary subject gains attributable infestation while roof/gear controls do not; off/reload never resumes the future hazard. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T16: Lure awning building and nearby-game counter
+Status: present; recommend_retire.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LureAwning.xml; src/RimMandrake/LongShade/Source/RM_ShadeExtras.cs:128; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#lure_awning; RM_LureAwning.xml shade-gear comp + RM_CompLureAwning registration/inspect.
+Recommendation only: keep awning code/defs/art but quarantine build availability, spawned gear registration, animal counter and inspect hooks behind Next version off. Existing generic shade-gear comp can still register even if the local counter gate is off: scope-gate the producer too. Use ordinary roof/parasol for kept shelter.
+Acceptance test: Fresh defaults have no buildable/generated LureAwning, awning gear field or counter. In an explicit diagnostic opt-in fixture the dormant awning object/counter can be inspected as present; its activation is not first-version approval and cannot substitute for ordinary roof proof. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T17: Herd stampede-for-roof incident and runner orders
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_ShadeExtras.cs:177; src/RimMandrake/LongShade/Defs/IncidentDefs/RM_ShadeStampede.xml; src/RimMandrake/LongShade/Source/Kernel/RM_ShadeExtrasKernel.cs; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#stampede; IncidentWorker_RM_ShadeStampede -> RM_MapComponent_Stampede.Start/MapComponentTick; saved runners.
+Set stampedeEnabled false; add runtime cancellation/release to MapComponent_Stampede because its current runner loop ignores the toggle. Gate incident eligibility, letter, Sprint/bash orders and saved runners. No new herd incident is needed for core native retreat.
+Acceptance test: Defaults have no stampede incident/letter/runner jobs. On a qualifying hot same-race herd/roof fixture, the incident issues actual attributed orders; off during running and after reload releases them and prevents reissue. A dry-run canFireNow alone is insufficient. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T18: Harrok stationary shadow-strip ambush
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Harrok.xml; src/RimMandrake/LongShade/Source/RM_ShadeExtras.cs:310; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#harrok; Harrok comp -> Scan -> InShadowStrip/HarrokCanStrike; overrides idle with Wait.
+Set harrokEnabled false; gate both special damage and the idle-to-Wait override, preserving ordinary corpse feeding and body shade. Do not remove Harrok from any roster. Future strike region must derive from actual body shadow, not the current independent fixed strip.
+Acceptance test: Defaults retain live Harrok, actual physical shade and corpse ingestion but no special resting-prey strike or ambush message/forced idle loop. On in a matching-shadow diagnostic fixture, resting prey receives the actual attributed strike with cooldown; outside actual shadow/off controls do not. Default Harrok must not starve because its old Wait loop persists. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T19: Returning-clan hull claim and tow
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Source/RM_ShadeExtras.cs:389; src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_JawaReturnTow.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#crawler_hull_tow; RUT_JawaReturnTow -> IncidentWorker_RM_HullTow -> ClanArrived -> CrawlerHull.MapComponentTick/Tow.
+Set jawaReturnEnabled false; gate worker, visitors, letter, hull ticking and any saved active tow. Current Tow removes roofs and unrelated factionless buildings in the rectangle: future removal needs original-hull identities and T34 negotiation before enablement. Existing saved claims cannot remove later player work when off.
+Acceptance test: Defaults create no clan return group, tow job/message, removed hull roof/building or pending timer. Opt-in presence can be tested as a read-only claimant/negotiation state on a scratch fixture, but destructive completion remains disallowed until original-hull ownership, T34 and safe cancellation tests exist. Off/reload pauses/releases any prior claim without erasure. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T20: Smoke-haze incident, dimming and start/end messages
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/IncidentDefs/RM_SmokeHaze.xml; src/RimMandrake/LongShade/Source/RM_ShadeExtras.cs:585; src/RimMandrake/CreatureBehaviors/Source/RM_ShadeHaze.cs; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#smoke_haze; RM_SmokeHazeFront -> plain GameCondition; RM_ShadeHaze -> shade-grid/render/audio consumers.
+Set smokeHazeFrontEnabled false; gate incident eligibility, condition creation/resume, dimming and bespoke start/end messages. Distinguish ordinary unlocked vanilla weather. Existing manual/loaded condition must not keep applying a deferred local effect. Optical multiplier is separately T28 and may not return.
+Acceptance test: Defaults have no SmokeHazeFront condition, related letters, local intensity or sound effect; ordinary weather continues. On in a qualifying fixture a plain haze/dimming condition is present and ends cleanly, with sun geometry unchanged; no ash pulse/sand-lock follows. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T21: Camera heat beds, pre-dash calls and far footfalls
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/SoundDefs/RM_LongShade_HeatSounds.xml; src/RimMandrake/CreatureBehaviors/Source/RM_HeatSoundscape.cs; src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Gloomcast.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#soundscape; Biome RM_HeatSoundscapeExtension; Dash calls TryHerdCall; Gloomcast RM_CompProperties_Footfalls.
+Gate LongShade heat-soundscape extension consumption, Dash.TryHerdCall and Gloomcast footfall producer as local future audio opts. Do not globally silence other biomes or ordinary animal sounds. A no-op consumer of moved code is allowed; an active playing sound is not.
+Acceptance test: Defaults have no LongShade heat-bed sustainer, pre-dash call event or distant-footfall event and no related letters/jobs; ordinary animal sounds continue. On a lit/shade/dash/walking fixture, actual sustainers/events are present. Verify state/event provenance plus log; optional listening is future polish, not a first-version bar. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T22: Bespoke biome arrival letter
+Status: unknown; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/BiomeDefs/RM_LongShade.xml; src/RimMandrake/LongShade/Patches/RM_AcousticPayload_LongShade.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#arrival_and_scanner; EnvironmentalHazards biome arrival hook; LongShade configuration if present; validation walk historical promise.
+Inventory describes an arrival-letter integration, but current LongShade XML does not show an explicit arrival extension. Locate runtime caller/configuration before naming it built. Any found bespoke welcome is future/off; necessary heat/attack inspect messages remain. Scanner payload is kept separately.
+Acceptance test: Defaults produce no bespoke LongShade welcome letter on map entry. If a caller is found, opt-in must produce the actual letter; if absent, record absent rather than manufacture a letter solely to pass the toggle test. No test result is claimed now. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T23: Campaign swimmer journey, rooting and tenancy evacuation
+Status: present; next_version.
+Evidence/callers: src/RimStarWars/Sarlacc/Source/RSW_SwimmerRoad.cs; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#sarlacc_road; RimStarWars/Sarlacc/Source/RSW_SwimmerRoad.cs LongShade gate, journey/rooting consumers.
+Coordinate a dormant LongShade opt-in with the Sarlacc-owned journey gate; do not change independent Sarlacc behaviour elsewhere. Its one-ever-per-map state, rooting, evacuation and kill signs remain the external owner contract. Off blocks pending LongShade travel/rooting jobs, preserves live animals without disappearance.
+Acceptance test: Fresh default LongShade maps show no road-swimmer event, journey/rooting/evacuation jobs or associated letters; ordinary external species remain legal by their own roster. On with campaign prerequisites a real eligible swimmer enters the actual journey; force no repeated spawn and retain readable signs and one-per-map state. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T24: Dung plant growth boost, Maidenbloom seeding and young-animal creation
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Gloomcast.xml; src/RimMandrake/CreatureBehaviors/Source/RM_CompDungSeeder.cs; src/RimMandrake/LongShade/Defs/ThingDefs_Items/RM_LongShade_FaunaSupport.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#gloomcast_dung; Gloomcast RM_CompProperties_DungSeeder -> RM_CompDungSeeder.DoDungEvent -> Fertilise/SeedYoungPlants/SeedYoungCreature.
+Split plain feeding dung from RM_CompDungSeeder growth boost/SeedYoungPlants/SeedYoungCreature; current dungSeedingEnabled returns before all effects. Keep only plain leavings for this consumer, not a duplicated new scar. Do not disable moving shade, normal feeding or followers to turn off seeding; keep shared engine available for other consumers.
+Acceptance test: Defaults still show attributable plain Gloomcast feeding leavings but zero plant-growth increment/seed plant/young-pawn creation from the dung event. On with valid shade and recorded RNG, the actual extra growth/seeding effects occur; sunny/no-shade controls remain plain dung. Ordinary births/recruits are distinguished by provenance. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T25: Periodic vacstone output from Khorrak
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fauna.xml; Khorrak CompProperties_Spawner -> vanilla CompSpawner.
+Scope-gate only Khorrak CompSpawner ChunkVacstone output, not MetalEater nutrition or the material def used by other mods. Existing global spawner type is coupling, not need.
+Acceptance test: Default Khorrak actually eats steel/slag but creates no spawner vacstone; on across a qualifying spawner interval, actual vacstone appears with actor/timer provenance. No nutrition or stock replenishment is locked to fake the result. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T26: Mirrak hide bespoke shade-depth bonus (ordinary leather stays)
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Mirrak.xml; RM_ShadeClothExtension -> shared ShadeGear.DepthOf.
+Gate the local RM_ShadeClothExtension bonus without removing ordinary Mirrak leather or generic material handling; deferred study path is T04. Core shelter works with ordinary stuff.
+Acceptance test: Defaults permit ordinary Mirrak leather but no special shade-depth advantage or study work. On a matched-stuff gear fixture the special depth comparison is present; ordinary roofs and parasols protect in both arms and no heat-kind exception returns. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T27: Buildable chitin long-shade mast
+Status: present; recommend_retire.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Buildings/RM_LongShadeMast.xml; Temperature build menu -> ShadeGear lee mode; ship_contributions.py check.
+Recommendation only: quarantine mast build/trade/generation availability and its lee-mode registration, retaining all directional art. Do not change generic ShadeGear for other consumers. Do not silently retain mast as a bar-required ship gift.
+Acceptance test: Defaults have no available/generated LongShadeMast or mast gear field. A diagnostic opt-in can establish the dormant object as present; it is not a compliant shipping gear option until the owner resolves the standing keep-only-parasols-and-roofs conflict. Protected art remains in the tree in both arms. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T28: Haze multiplies shadow length independently of sun geometry
+Status: present; recommend_retire.
+Evidence/callers: src/RimMandrake/CreatureBehaviors/Source/RM_ShadeHaze.cs; src/RimMandrake/LongShade/Defs/IncidentDefs/RM_SmokeHaze.xml; ShadeGrid.ShadowLengthFactor; pinned-sun render and audio consumers.
+Recommendation only: isolate the LongShade haze shadow-length multiplier from grid/render consumers. Plain future dimming is T20. A retained heat path may call RM_ShadeHaze only if a disabled multiplier is the identity; no duplicate local sun.
+Acceptance test: Defaults and ordinary weather retain identical geometric length at the same tile/caster while haze-extra consumers are absent; a diagnostic opt-in may confirm the quarantined multiplier exists, but that conflicting behaviour cannot be approved for play by this ticket. No valid enabled shipping behaviour can satisfy the standing ruling as written. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T29: Colonist go-and-return range overlay
+Status: present; next_version.
+Evidence/callers: src/RimMandrake/CreatureBehaviors/Source/RM_ShadeHop.cs; Selection/drafted pawn drawing -> ColonistRingCost.
+Gate only the colonist return-range drawing; preserve native path-cost and shared reactive heat response. A root sentence about shade never mandates human forecasting.
+Acceptance test: Default selected/drafted worker has no LongShade return ring, while normal health and heat response continue. On with an eligible selected pawn, an actual overlay is present; rendering a ring is no proof that a round-trip budget is correct. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T30: Exact-rim Sippra walking and drinking
+Status: absent; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fills.xml; Description/history promises it; searched current defs/LongShade sources, no enforcing implementation located.
+Future-spec ticket, not current missing code: define whether contour following is worth keeping, eligible jobs/species/stages, geometric contour tolerance, interruptions, lost shade, food/water sources and settings. Do not demand a new thirst engine merely from the prose. Current ordinary grazing remains.
+Acceptance test: A future design can produce contrasting accepted/rejected movement pictures, terrain/shade ranges and a real diet/water-source audit with a proposed instrument. Before that spec and opt-in, no exact-rim behaviour is required or enabled; no animal is evicted. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T31: Skiralim scarp-roost drop attack and corpse dragging
+Status: absent; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fills.xml; Description/history promises it; searched current defs/LongShade sources, no enforcing implementation located.
+Future-spec ticket: distinguish real flight (kept) from scarp roost selection, drop-attack geometry and corpse carrying (deferred). Specify targets, control states, release/death signs, recovery and interrupts before new jobs.
+Acceptance test: Future specification identifies a valid/invalid roost and attack/carry transition for each supported terrain/flight state and a discriminating instrument. Defaults retain actual flight and ordinary bounded thermal hunting with no new scarp/carry jobs. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T32: Tazzok ash-only emergence/dormancy
+Status: absent; recommend_retire.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fills.xml; design/RimMandrake/fluff_cuts_2026-10-23.md; Description/history promises it; searched current defs/LongShade sources, no enforcing implementation located.
+Recommend retiring the ash-only Tazzok promise; no new ash act or dormancy engine. The existing ordinary grazer remains. Correct its default description so missing ash does not promise an invisible or permanently dormant population.
+Acceptance test: Default Tazzok exists, feeds and is described as its ordinary retained form, with no ash-triggered spawn/dormancy job. There is no enabled acceptance for the obsolete ash promise because the dependent ash act is already cut; do not implement it for a test. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T33: Maidenbloom dung-only and Pavecrust hardpan-only generation
+Status: absent; next_version.
+Evidence/callers: src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_LongShade_FillPlants.xml; Description/history promises it; searched current defs/LongShade sources, no enforcing implementation located.
+Future-spec ticket: first decide whether exclusive substrate recruitment is necessary; specify real substrate identifiers, source lifetime/cleanup, soil/cell gate, growth versus spawn, setting and seasonal food consequences. No hardpan terrain exists solely by naming Pavecrust.
+Acceptance test: Future specification supplies source-ground pass/fail fixtures and a calibrated food-web consequence. Defaults use ordinary plant recruitment, products and shade where already configured, with no dung-only or hardpan-only gate silently assumed. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T34: Pay, trade or argue to retain a claimed crawler
+Status: absent; next_version.
+Evidence/callers: design/RimMandrake/designer_codex_2026-11-09/LongShade/ANSWERS_OWNER.md; src/RimMandrake/LongShade/Source/RM_ShadeExtras.cs; Description/history promises it; searched current defs/LongShade sources, no enforcing implementation located.
+Owner answer 3 requires a chance to pay/trade/argue to keep the hulk. Future spec must name claimant/target identity, how the player responds, when tow can start, resource transactions, refusal, delay, death, departure, save/reload and cancellation. Default: no tow without a concluded readable claim; permanent keep if no safe conclusion.
+Acceptance test: A spec and state-machine walk cover payment/trade/argument success and refusal, original-hulk identity, later player roofs, interrupted claim and reload without duplicate payment/removal. Only original hulk objects can ever be removed; enabled destructive test waits for this and T19. Defaults have no negotiation/tow incident. In both arms, read actor/object/job/letter/incident state and the log; absence must not be inferred from silence or a failed prerequisite.
+
+## T35: Synchronized geometry, heat and sign export
+B2/B5/B6/B7 and M1 need a coherent runtime frame, not unrelated scalar probes. Extend the existing shared ShadeGrid probe interfaces used by LongShade to capture map/thing identity, tick, sun vector, real/static/roof/gear/moving/perceived masks, felt/air temperature, Heatstroke, caster lifecycle and visible sign identities. Export normal-state snapshots and invalidate measurements with missing prerequisites; no new bridge editing on this pass.
+Acceptance test: On a scratch runtime fixture, a caster movement/removal/death and false-shade control produce distinguishable synchronized traces; M1 calibration tolerances hold or the instrument reports untrusted. Planted stale-cell and fake-cooling defects must fail attribution. Recovery manifest removes fixture changes after normal and interrupted execution.
+
+## T36: Native and worker priority trace adapter
+B3/B5/B7 and M2 need actual multi-tick needs, selected jobs/targets, path/exposure and interruption reasons. Existing follower offline replay is stale and cannot prove survival. Trace vanilla hunter/needs classes and common worker jobs; require shared reactive heat-seeking under the owner November answer, not a local planner. A null job or failed fixture is unmeasured.
+Acceptance test: M2 covers each effective native policy class and worker job class through feeding/retreat/rest, blocked refuge, death, off and reload; traces expose an idle-only dash implementation and a worker who never interrupts work for reachable shade. Override states remain attributable without imposing safety on a drafted order.
+
+## T37: Resolved food and role audit
+B4/M3 need loaded diets, edible plants/products, natural replacement, nutrition stock and effective caravan whitelist. Read both RM XML and real campaign patches, not source-folder count. Tebbra/Sippra already exist; audit before proposing plants/species. Check default Harrok/Vrekka corpse feeding after extra gates, Khorrak metal supply and Gloomcast sand feeding.
+Acceptance test: An explicit source-to-consumer table and runtime ingestion/nutrition records cover every distinct retained diet and supported life stage; report missing food as a finding rather than adding debug food. Chorn/Gennok actual tame/pack use is either demonstrated or its effective whitelist fixed within the inherited role; multi-homing is noted without edits to rosters.
+
+## T38: Normal-view shelter and Mirrak comparison
+B1/B6 need labelled normal-view comparisons and safe inspect surfaces. No current proof probe establishes visual suspicion. Use existing kept art; add honest ordinary inspect feedback only where it is missing, not a new scan job. Include sun-aligned Mirrak and ordinary weather.
+Acceptance test: A cold reader separates the B1/B6 accept/reject captures with debug overlays hidden and can confirm the suspect through ordinary inspection outside strike reach before damage; actor/sign state agrees with T35. Captures remain interpretable after permitted colour/art variants and normal zoom changes. Record disagreements and repair wording/feedback instead of fabricating a pass.
+
+## T39: Whole-season trace and recovery runner
+B8/M3 lack a current calibrated whole-map run with every kept mechanic active. Existing scripts stage specific extras and generic validation often reports behaviour UNMEASURED. Build M3 trace/reload/action-order driver with durable scratch-state manifest, actor/resource ledger and exit/recovery assertions.
+Acceptance test: The runner proves all retained mechanics/default settings on, future extras absent, no sky/research/needs locks, full local map through season with mid-save reload and reversed action order, then reports B8 outcomes and each calibrated worst case. It detects planted free-spawn, food exhaustion, stale shade and no-progress job loops, and recovers scratch state after interruption.
+
+## T40: Consume compliant shared Direct Sun
+Current RM_LongShade.xml still has overhead/30 C heat and min/max sun clamps; ShadeGrid.EffectiveHeatOffsetC reads the legacy extension unless angle scaling is enabled, and mapgen HumanRingCost has another direct offset read. Migrate LongShade consumers to the standing shared geometric contract; fix/map out legacy reads even in dormant helpers so future enablement cannot revive private heat. This is an engine dependency request, not a replacement engine design.
+Acceptance test: Same tile/sun/air/pawn in LongShade and control biome receives the same Direct Sun result under the standing formula; no per-biome kind/offset/sun clamps or haze length changes remain active. M1 matches real exposure/health. A low-angle reading that makes crossings thermally mild is honestly reported, never repaired with another private offset.
+
+## T41: Coherent defaults, scope labels and live-off cleanup
+Retained settings/floor and every switch-off ticket need one coherent defaults screen. Current LongShade bool defaults/Scribe are true and UI says WORLDGEN-AFFECTING for local maps. Supply missing local consumer gates for shared extras, master behaviour, per-major-feature links/toggles and safe release of active owned jobs/effects. Do not globally disable required shared shelter/feeding/flight or other biomes.
+Acceptance test: Fresh defaults/reset/reload agree with census fates, every major feature is controllable with honest effect timing, all-off degrades gracefully and no new cross-biome switch exists. Deferred craft/job/letter/condition paths stay off after a prior enabled save. The settings screen says New local maps, with no claim of worldgen.
+
+## T42: Honest public text and required scanner integration
+Update future builder-facing About/description/walk/check text for actual effective roster and this version boundary, preserving owner quotes and record. Remove nothing from ## his words. Scanner quiet text currently claims none is hiding and targets deferred midden/cart; retain the all-biomes payload but resolve real targets without phantom outputs.
+Acceptance test: At defaults normal text explains conditional heat and reactive colonists, visible retained species and unavailable future content without obsolete counts or lethal absolutes. Scanner reads actual retained targets or honest quiet results and never announces an absent extra or asserts there are no hidden threats. Ordinary inspect/health remains sufficient without Scanner.
+
+## T43: Build and calibrate the specified models
+Implement M1, M2 and M3 in order, using existing kernels/probes where credible and runtime adapters where not. They are currently specified, not built; earlier LongShadeFuzz tests many deferred kernels but is no substitute for these retained-system questions.
+Acceptance test: Each model has a fingerprinted independent game calibration and held-out fixtures, declared tolerances, assumption/coverage report and worst counterexample per relevant bar. Uncalibrated/mismatched output says untrusted and cannot close an unknown meeting; model output is never labelled a game measurement.
