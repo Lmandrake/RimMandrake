@@ -11,7 +11,7 @@ Prime95 is missing. Yields (stops cleanly) between CPUs when a job arrives, RimW
 Prime95 is killed on every exit path (try/finally on Steve, and again here). fault_monitor / watch2 are never touched.
 Usage: steve_cpu_sweep.py run [--secs N] [--cpus LO-HI] [--out FILE.json]  |  merge A.json B.json --out FILE.json     (the pure decisions are what selftest_steve_cpu_retest checks)
 """
-import json, os, re, sys, time
+import argparse, json, os, re, sys, time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import steve_cpu_retest as rt
@@ -159,9 +159,21 @@ def kill_prime95():
     return rt.ps(r"Get-Process prime95 -EA 0|Stop-Process -Force; 'KILLED'", 60)
 
 
+def parse_cpus(value):
+    match = re.fullmatch(r"(\d+)(?:-(\d+))?", value)
+    if not match:
+        raise argparse.ArgumentTypeError("expected a nonnegative CPU number or inclusive LO-HI range")
+    lo, hi = int(match.group(1)), int(match.group(2) or match.group(1))
+    if lo > hi:
+        raise argparse.ArgumentTypeError("CPU range must have LO <= HI")
+    return list(range(lo, hi + 1))
+
+
 def run(secs=60, out=None, cpus=None):
+    if cpus is not None and not cpus:
+        raise ValueError("CPU selection must not be empty")
     out = out or OUT_DEFAULT % time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
-    os.makedirs(os.path.dirname(out), exist_ok=True)
+    os.makedirs(os.path.dirname(out) or ".", exist_ok=True)
     rc, o = rt.ps(PRE_PS.replace("@D@", D), 90)
     pre = parse_pre(o)
     ok, why = decide_start(pre, rt.lane_job_running(), rt.worker_busy())
@@ -241,13 +253,12 @@ def merge(paths, out):
 if __name__ == "__main__":
     a = sys.argv[1:]
     if a and a[0] == "run":
-        secs = int(a[a.index("--secs") + 1]) if "--secs" in a else 60
-        out = a[a.index("--out") + 1] if "--out" in a else None
-        cp = None
-        if "--cpus" in a:
-            lo, _, hi = a[a.index("--cpus") + 1].partition("-")
-            cp = list(range(int(lo), int(hi or lo) + 1))
-        run(secs, out, cp)
+        parser = argparse.ArgumentParser(description="Per-core CPU load sweep of SteveDesktop")
+        parser.add_argument("--secs", type=int, default=60)
+        parser.add_argument("--out")
+        parser.add_argument("--cpus", type=parse_cpus, metavar="LO-HI")
+        args = parser.parse_args(a[1:])
+        run(args.secs, args.out, args.cpus)
     elif a and a[0] == "allcore":
         allcore(int(a[a.index("--secs") + 1]) if "--secs" in a else 30, a[a.index("--out") + 1] if "--out" in a else None)
     elif a and a[0] == "merge":

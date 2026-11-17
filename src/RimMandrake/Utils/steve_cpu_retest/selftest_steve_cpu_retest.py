@@ -108,4 +108,107 @@ check("sweep: job arriving mid-sweep yields", sw.decide_continue(["J2.json"], Fa
 check("sweep: quiet lane continues; a changed boot stops", sw.decide_continue([], False, 0, "1000", "1000")[0] is True and sw.decide_continue([], False, 0, "1000", "2000")[0] is False)
 ry = sw.summarize(cs[:5], 1.033, "yielded: job J2 arrived")
 check("sweep: a yielded sweep is YIELDED, 5 read, never PASS", ry["verdict"] == "YIELDED" and ry["n_read"] == 5)
-sys.exit(0 if all(ok) else 1)
+
+# Exercise the sweep's normal entry points with every Steve call stubbed.
+import contextlib, io, runpy, unittest
+from unittest.mock import Mock, patch
+
+
+class SweepInputTests(unittest.TestCase):
+    def setUp(self):
+        self.cwd = os.getcwd()
+        self.work = tempfile.TemporaryDirectory(dir=tmp)
+        os.chdir(self.work.name)
+        self.addCleanup(self.work.cleanup)
+        self.addCleanup(os.chdir, self.cwd)
+        self.remote = Mock(side_effect=self.remote_answer)
+        self.stubs = patch.multiple(sw.rt, ps=self.remote, lane_job_running=lambda: [],
+                                    worker_busy=lambda: False,
+                                    steve_facts=lambda: {"boot": "1000", "rimworld": "0"})
+        self.stubs.start()
+        self.addCleanup(self.stubs.stop)
+        self.default = patch.object(sw, "OUT_DEFAULT", "default_%s.json")
+        self.default.start()
+        self.addCleanup(self.default.stop)
+        self.output = contextlib.redirect_stdout(io.StringIO())
+        self.output.__enter__()
+        self.addCleanup(self.output.__exit__, None, None, None)
+
+    def remote_answer(self, script, timeout=90):
+        if script == sw.PRE_PS.replace("@D@", sw.D):
+            return 0, PRE_OK.replace("n=18", "n=3")
+        match = sw.re.search(r"SWEEPCORE cpu=(\d+)", script)
+        return (0, core_line(int(match.group(1)))) if match else (0, "KILLED")
+
+    def cli(self, args):
+        with patch.object(sys, "argv", [sw.__file__, "run", "--out", "cli/result.json"] + args), \
+                contextlib.redirect_stderr(io.StringIO()):
+            runpy.run_path(sw.__file__, run_name="__main__")
+
+    def test_bare_output_filename(self):
+        result = sw.run(out="sweep.json", cpus=[0])
+        with open("sweep.json") as f:
+            self.assertEqual(json.load(f), result)
+        self.assertEqual(result["verdict"], "PASS")
+        self.assertEqual(result["n_read"], 1)
+
+    def test_bare_output_records_refusal(self):
+        with patch.object(sw.rt, "worker_busy", return_value=True):
+            result = sw.run(out="refused.json", cpus=[0])
+        with open("refused.json") as f:
+            self.assertEqual(json.load(f)["verdict"], "REFUSED")
+        self.assertEqual(result["n_read"], 0)
+        self.assertEqual(self.remote.call_count, 1)
+
+    def test_nested_output_and_default_cpu_selection(self):
+        result = sw.run(out="new/nested/sweep.json")
+        self.assertTrue(os.path.isfile("new/nested/sweep.json"))
+        self.assertEqual([c["cpu"] for c in result["cores"]], [0, 1, 2])
+
+    def test_missing_or_empty_output_uses_default(self):
+        for out in (None, ""):
+            with self.subTest(out=out):
+                result = sw.run(out=out, cpus=[0])
+                paths = glob.glob("default_*.json")
+                self.assertEqual(len(paths), 1)
+                with open(paths[0]) as f:
+                    self.assertEqual(json.load(f), result)
+
+    def test_invalid_output_parent_remains_an_error(self):
+        with open("file", "w") as f:
+            f.write("occupied")
+        with self.assertRaises(OSError):
+            sw.run(out="file/sweep.json", cpus=[0])
+        self.remote.assert_not_called()
+
+    def test_empty_cpu_list_rejected_before_preflight(self):
+        with self.assertRaises(ValueError):
+            sw.run(out="empty/result.json", cpus=[])
+        self.remote.assert_not_called()
+        self.assertFalse(os.path.exists("empty"))
+
+    def test_cli_rejects_reversed_empty_missing_and_invalid_cpus(self):
+        for args in (["--cpus", "5-3"], ["--cpus", ""], ["--cpus"],
+                     ["--cpus", "abc"], ["--cpus", "-1"], ["--cpus", "1-"],
+                     ["--cpus", "1-2-3"]):
+            with self.subTest(args=args):
+                self.remote.reset_mock()
+                with self.assertRaises(SystemExit) as error:
+                    self.cli(args)
+                self.assertEqual(error.exception.code, 2)
+                self.remote.assert_not_called()
+                self.assertFalse(os.path.exists("cli"))
+
+    def test_cli_default_single_and_inclusive_ranges(self):
+        for args, expected in (([], [0, 1, 2]), (["--cpus", "0"], [0]),
+                               (["--cpus", "1-1"], [1]), (["--cpus", "1-2"], [1, 2])):
+            with self.subTest(args=args):
+                self.cli(args)
+                with open("cli/result.json") as f:
+                    result = json.load(f)
+                self.assertEqual([c["cpu"] for c in result["cores"]], expected)
+                self.assertEqual(result["verdict"], "PASS")
+
+
+inputs = unittest.TextTestRunner().run(unittest.defaultTestLoader.loadTestsFromTestCase(SweepInputTests))
+sys.exit(0 if all(ok) and inputs.wasSuccessful() else 1)
