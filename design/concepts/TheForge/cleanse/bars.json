@@ -1,0 +1,697 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "On an ordinary Forge surface map, a colonist’s resource journeys meet recognisable foundry towers and manufactured remains among ash, visible vent-steam and lava seams, while permanent banks still let the colony shelter and move.",
+      "meant": {
+        "intent": "A volcanic industrial place is the land itself, including useful physical route consequences. Reject test: an otherwise excellent cycle in a bare volcano would fail the owner’s ordinary-works answer. First version: land. No implied new dungeon or machine explanation.",
+        "source": "Owner experience in design/RimMandrake/biome_experiences_2026-10-20.md, TheForge row; owner answers in design/RimMandrake/designer_codex_2026-11-09/TheForge/ANSWERS_OWNER.md, answer 1; frozen the_forge.md §§1,5,6; delegated: permanent routes follow from inhabiting this land.",
+        "figurative": []
+      },
+      "accept": [
+        "A hauler detours around an unmistakably manufactured tower base beside steaming seams, reaches a resource patch and returns along permanent cool banks; distant moving machinery gives no explanation of its work.",
+        "At colony zoom the dark vertical works, ash ground, pale steam and red open seams remain distinguishable during the cycle’s rain and fog as well as still heat."
+      ],
+      "reject": [
+        "The biome is named Forge and its arrival letter describes towers, but the resource trip crosses only ordinary volcanic rock.",
+        "A manufactured prop technically exists behind inaccessible lava, while ordinary journeys never encounter it, or the placed works close the colony’s only permanent exit."
+      ],
+      "lazy": "none: ordinary routes must physically meet manufactured remains; a label or generic rock cannot satisfy that, and the banks must still work.",
+      "range": {
+        "varies": "Existing authored Forge surface-map corpus: cone, flow and skirt contexts represented by local terrain/height, not newly generated planets; square map sides 200, 250, 325; all legal rotations/footprints of retained remains; sparse and overlapping vent fields; every cycle phase; vanilla and advanced colony zoom; first landing and an occupied 40-colonist settlement. Machine motion must be nonliving and noninteractive.",
+        "left_out": "No requirement that every tiny remote pocket contains a tower; the connected settled/workable part must carry the encounter. Campaign interiors, new world tiles, new planet seeds and flyer visual acceptance are excluded."
+      },
+      "sees": {
+        "instrument": "Paused in-game ground/ruin look against the accept/reject pictures, paired with M2 route/footprint state read; T16 and T27 provide missing local content and capture recipe.",
+        "start": "Disposable ordinary surface save, revealed only to the normal explored area for the visual reading, permanent shelter/work origins and resource targets recorded; no staged tower added by the judge.",
+        "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
+        "control": "Remove the foundry content on a duplicate while keeping terrain/weather identical; the visual distinction and route detour must disappear together. A letter or named generic wreck is insufficient. Read whether the route intersects actual occupied footprints.",
+        "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
+        "live_only_why": "Manufactured form, volcanic ground and visible steam must be recognisable at ordinary colony zoom. A def, path graph or still mock cannot prove their simultaneous in-game visual distinction. Observe paused ground scenes; flight state is read separately, not live-tested here."
+      },
+      "live_only": true,
+      "touches": [
+        "landscape",
+        "crust",
+        "routes",
+        "sky_habitat",
+        "lore"
+      ]
+    },
+    {
+      "id": "B2",
+      "says": "Boiling rain on the Forge scalds exposed colonists but a roof stops its direct scald, and an otherwise healthy newcomer can survive the first surprise long enough for a prompt shelter response.",
+      "meant": {
+        "intent": "Rain is a dangerous local phase, with comprehensible shelter and no unavoidable instant first-burst kill. Ambient hot air still threatens roofed rooms. Reject test: harmless rain or surprise execution defeats the ruled closed-rain experience. First version: signature.",
+        "source": "Frozen design/Jawa/worldbuilding/biomes/the_forge.md §3 and ban 6; survivable-first-burst rule reported in designer_codex_2026-11-09/TheForge/record.json scope s_rain_bar, citing forge_kit_spec.md:438; standing Direct Sun ruling. Delegated: prompt shelter response operationalises survivable rather than promising immunity for a full rain phase.",
+        "figurative": []
+      },
+      "accept": [
+        "The exposed newcomer acquires scald injuries and may need help; an immediate shelter or rescue response can still save them, and the matching roofed newcomer takes no direct rain scald.",
+        "During a prolonged boiling phase, people can work under a roof but still need ordinary heat management; an open-sided roof is not a cooled room."
+      ],
+      "reject": [
+        "Rain particles and a weather label appear while the scald switch is silently off.",
+        "A healthy newcomer dies at the first damage opportunity before a prompt response could occur, or a roofed control receives the same direct rain scald."
+      ],
+      "lazy": "none: the rain must actually injure exposed people and roofed controls must escape that direct scald; first-surprise survival excludes lethal weather theatre.",
+      "range": {
+        "varies": "Naturally rolled short bursts (current def 20–40 minutes) and full Rain phases (current def 6–9 hours); flesh adult colonists with healthy default anatomy, unarmoured/lightly equipped/heat-armoured; open ground, open-sided roofs, enclosed rooms, geometric shade without roof; 42–56 C recorded Forge ambient band plus measured room/lava temperatures; immediate movement and prompt carried-rescue paths of 5, 20 and 60 cells. These are declared scenario ranges, not fixed tuning bars.",
+        "left_out": "Pre-existing lethal injuries, deliberate refusal to respond and staying exposed through a full long phase need not survive; infancy, non-flesh and modded anatomies get applicability checks rather than the healthy adult survival promise. No DLC-absent tier."
+      },
+      "sees": {
+        "instrument": "Independent pawn injury/health and damage-source state reads, weather/roof/temperature snapshots and event ticks; M4 forecasts exposure; T27 builds the natural-burst and rescue reader.",
+        "start": "Matched healthy pawns in disposable map copies; actual rain is due naturally, normal armour/temperature/needs active, recorded roofs and response paths; initial injuries empty.",
+        "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
+        "control": "A matched roofed pawn and a no-rain time-matched copy isolate direct scald from Direct Sun, ambient Heatstroke, fire and combat. Capture real HP/injury changes, not only Stat counters or inspect wording; scald-disabled copy must fail the positive arm.",
+        "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
+        "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
+      },
+      "live_only": false,
+      "touches": [
+        "weather_heat",
+        "cycle_clock",
+        "routes",
+        "pawn_identity",
+        "defaults"
+      ]
+    },
+    {
+      "id": "B3",
+      "says": "When the Forge’s rain crusts open lava, a prepared crew can reach naturally ripened floatstone gardens, harvest and haul usable building stone home, and return to permanent ground before the gardens depart and the crust melts.",
+      "meant": {
+        "intent": "One complete resource trip must be practicable, not merely a count of spawned gardens. Reject test: a wholly decorative or unreachable reward empties the signature. First version: signature. Progress is qualitative; no trip yield or harvest quota is pinned.",
+        "source": "FORGE_RULED_CONTENT_1 reported owner floatstone admission in src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml; cycle sources RM_GameCondition_ForgeCycle.cs and About/About.xml; delegated from these: reachable work and a return route are necessary to use the admitted opportunity.",
+        "figurative": []
+      },
+      "accept": [
+        "The crew waits out the rain, crosses visibly cooled crust, cuts mature gardens and hauls floatstone onto permanent ground; the material can enter ordinary construction.",
+        "A colony sends haulers before cutters on a later trip; the naturally ripened work still completes while unused isolated growth can be left behind."
+      ],
+      "reject": [
+        "The phase counter says Growth and gardens exist, but they never ripen before drifting away.",
+        "Gardens only grow on isolated crust unreachable from permanent ground, or hauling and retreat cannot finish before the warning closes the useful work window."
+      ],
+      "lazy": "none: natural maturity, actual harvesting, hauling, ordinary construction and a return route are explicit; spawning decorative gardens or unreachable loot cannot satisfy them.",
+      "range": {
+        "varies": "Full-map corpus sides 200/250/325; freezable lava populations 0, 1, 5999, 6000, 6001 and full-map stress; connected banks, islands, necks, alternate routes, existing temp terrain/foundations, occupied candidate sites and all garden growth/cell eligibility states. Eligible resource regions must include usable connected sites; zero eligible lava/candidates is a labelled no-op, not a promised expedition. Crews 1, 4 and 12 within colonies 1–40; ordinary work/hauling speed from 0.5–1.5 of healthy adult baseline; already accessible return paths, heat gear and shelter. No forced maturity.",
+        "left_out": "No guarantee every garden is reachable or every possible crew/impairment succeeds. Qualifying generated situations need a prepared crew and a permanent base region; lack of any safe connected expedition on an otherwise ordinary eligible map fails, rather than being discarded as a bad example."
+      },
+      "sees": {
+        "instrument": "M2 geometry/work-time sweep calibrated to actual vanilla path costs, plant ticks and harvest/haul jobs, followed by direct inventory, job, terrain and maturity state reads on its worst cases; T27 adds the reader.",
+        "start": "Map starts before rain with no imported floatstone, genuine ordinary ground, natural gardens absent until cycle seeds them, recorded healthy prepared crew and material ledger.",
+        "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
+        "control": "No debug garden spawn, growth set, research unlock, teleport, removed hot air or infinite carry capacity. A no-bloom duplicate yields no garden-derived stone; trace each stack from actual harvest through haul; include deliberately disconnected geometry as a failing control.",
+        "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
+        "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
+      },
+      "live_only": false,
+      "touches": [
+        "crust",
+        "cycle_clock",
+        "routes",
+        "flora_food",
+        "floatstone",
+        "weather_heat"
+      ]
+    },
+    {
+      "id": "B4",
+      "says": "The Forge warns workers in plain text before gas ignites exposed growth and before crust melts, leaving time for prompt recall and orderly retreat, while delay can cost the harvest, possessions or lives with a readable account.",
+      "meant": {
+        "intent": "Warnings purchase useful action, not just atmosphere. Reject test: late warnings make the cycle arbitrary, and consequence-free melt removes its deadline. First version: signature with necessary warning UI.",
+        "source": "Owner answers in design/RimMandrake/designer_codex_2026-11-09/TheForge/ANSWERS_OWNER.md, answer 2; standing no-unreadable-disappearance ruling; delegated: text supplies equivalent warning with audio muted and while viewing another map.",
+        "figurative": []
+      },
+      "accept": [
+        "Workers respond at the hiss, interrupt outdoor work and reach a roof or bare permanent safe ground before gas-driven fire reaches them.",
+        "At cracks the crew abandons the remaining globes and retreats; a crew that ignores the warning loses goods to returning lava and can identify the cause and place of losses."
+      ],
+      "reject": [
+        "A warning letter appears at the same moment the crew is already surrounded by ignited growth or the return crossing melts.",
+        "The player must hear a bespoke sound or watch the right map to know the deadline; leaving items or a colonist on melting crust silently deletes them."
+      ],
+      "lazy": "none: the stated prompt recall and retreat must finish before their hazards; an immediate or inaudible-only warning cannot satisfy that.",
+      "range": {
+        "varies": "Colonies 1–40; crews on every reachable resource-region extremum; response begins on the next available job interrupt after the cue; recall targets roofed nonflammable shelter or nonflammable permanent open ground with a usable route; ordinary speed band as B3; flammable fuel sparse/dense/absent; all retained growth and fire spread on; cracked bridge/bank/island routes; sound normal/muted, camera on/off map, save/reload just before and after each cue; prompt response versus measured delays up to and beyond the available window.",
+        "left_out": "No promise to save an entire delayed rescue or last load, combat-pinned crews, or crews deliberately already standing in open lava. In a fuel-free region gas need not create phantom fuel. Loss messages may be batched, but pawn deaths require ordinary death state and accessible evidence."
+      },
+      "sees": {
+        "instrument": "Event-time and path/job interruption reader plus M2 latest-safe-departure sweep; letter/message history and direct world-state injury/loss records. Text content can be read without judging bespoke audio. T27 provides timed response automation.",
+        "start": "Unwarned StillHeat save with ready reachable shelters and recorded dispersed workers; second arm before cracks with crews actually on owned crust and possessions on it.",
+        "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
+        "control": "Use immediate-response and delayed-response copies under identical hazards. Subtract ordinary lightning/fire and unrelated raid casualties from causal attribution. If no fuel, use a separate legally vegetated region rather than accepting a warning-only gas arm. A warning-after-hazard mutation must fail.",
+        "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
+        "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
+      },
+      "live_only": false,
+      "touches": [
+        "routes",
+        "warnings",
+        "cycle_clock",
+        "weather_heat",
+        "crust",
+        "pawn_identity"
+      ]
+    },
+    {
+      "id": "B5",
+      "says": "Forge natives feed and move as local animals, the julmox can support ordinary husbandry, aerial creatures actually stay aloft or fly, and wild rain-sealed natives visibly wake and seal without being replaced.",
+      "meant": {
+        "intent": "Life must function in the running environment: heat-adapted ground fauna between rains, actual sky life around columns, useful tameable grazing, predators with ordinary counterplay. Reject test: a roster that starves, walks despite flight fiction, or swaps pawns for nodules fails the standing rulings and frozen biology. First version: life and its link to signature.",
+        "source": "Frozen the_forge.md §§4–6; src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml and RM_Ummisk.xml owner-attributed native frames; standing flight, native environmental-water and no-unreadable-disappearance rulings; delegated: sustained food/need viability is necessary ordinary life, not a fixed productivity promise.",
+        "figurative": []
+      },
+      "accept": [
+        "Wild julmox and resident dhuvvox wake into the wet feeding interval and later become the same identifiable sealed animals; tamed julmox remain available for ordinary feeding and handling.",
+        "Fleet fliers and jossurs record real flight, bulloos drift aloft, and wild small bulloo herds gather at visible columns without hunger being overridden by an endless homing job; the ummisk follows the accessible lava bank as its edge changes."
+      ],
+      "reject": [
+        "Wildlife defs resolve and a staged flock appears, but the live animals repeatedly starve beside their own habitat or a tamed animal is sealed beyond the player’s control.",
+        "Flight-fiction animals merely walk with a high drawn sprite, or a resident nodule is a new replacement pawn that loses the original animal’s injuries or ownership."
+      ],
+      "lazy": "none: living feeding, husbandry, actual aerial movement and persistent sealing/waking are observable actions; a populated def list is insufficient.",
+      "range": {
+        "varies": "All ten inline animal species and four inline ordinary plants, plus confirmed patch-added campaign species without eviction; ordinary predation/taming, juveniles/adults, wild/faction-owned, hungry/rested/urgent needs, healthy/injured/downed/dead, awake/sealed/damage-woken, map/caravan/reload. Field empty/sparse/overlapping, reachable/unreachable and moving lava edges; local water present/absent and shared thirst consumers active. Habitat/home-range test for bulloo/fleet flier/jossur only; greater bulloo retains real floating without inventing its missing column comp. Full default season and an extended day-100 sample; 40-colonist hunting/feed pressure and no hunting control.",
+        "left_out": "No new escort AI, no new animal, no roster eviction, no perpetual food output guarantee under player overhunting or imported off-biome creatures. Supplied checkout lacks other biome/campaign rosters: multi-homing is unknown beyond available source and must be annotated from merged defs, never used to cut a species."
+      },
+      "sees": {
+        "instrument": "Direct pawn identity, needs, food-source, job, dormancy Awake and Pawn_FlightTracker state reader; floating-comp state/position evidence; M1 transition generator and M3 population traces. Flight visual tests remain owner-present only; no attempt to film flight. T18 and T27 supply missing habitat/needs evidence.",
+        "start": "Unmodified native population with recorded IDs/needs and real habitat sources; tamed julmox matched to wild controls, no debug food, no suppression of scald, no hidden god mode. Deliberate flyer scenarios are state-only and follow existing owner-presence limits for any live flight experiment.",
+        "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
+        "control": "Need changes and consumed food are measured rather than inferred from inspect text or an immunity comp. Toggle only habitat/dormancy in control copies; urgent hunger must beat homing. Keep dead pawns in death audit rather than treating their absence as successful resealing. Prove flight by flight tracker and floating by actual locomotion contract, not texPath or MaxFlightTime alone.",
+        "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
+        "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
+      },
+      "live_only": false,
+      "touches": [
+        "flora_food",
+        "pawn_identity",
+        "sky_habitat",
+        "cycle_clock",
+        "weather_heat",
+        "defaults"
+      ]
+    },
+    {
+      "id": "B6",
+      "says": "Floatstone brought home from the Forge builds ordinary colony structures as lighter, stronger, nonflammable stone that improves their beauty, without requiring study or a special ship part.",
+      "meant": {
+        "intent": "The expedition reward is visibly useful ordinary building material. Reject test: an unusable souvenir or material no different in its stated qualities empties the admitted reward. First version: signature payoff. Comparative qualities survive retuning; no yield, price, health factor, mass value or graphic count is a bar. Beauty here means the ordinary in-game Beauty contribution to the same structure/room, not an unmeasurable taste claim; material pictorial identity belongs to the ordinary visual content read.",
+        "source": "Owner-attributed floatstone words in src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml, FORGE_RULED_CONTENT_1 turn 7; delegated: vanilla stuff route already exists, so use it as the minimum payoff. Historical optional wall-atlas follow-on in forge_bedazzle_cast_2026-09-29.md §4 is not reopened.",
+        "figurative": []
+      },
+      "accept": [
+        "A builder spends hauled floatstone on an ordinary wall using the normal stone-building workflow; compared at the same structure and quality, it is lighter and stronger than ordinary stone, does not burn, and contributes to the room’s beauty.",
+        "The special study, door and hull remain off and the expedition material still has an ordinary construction use."
+      ],
+      "reject": [
+        "Floatstone stacks have an ornate description but cannot be selected for ordinary construction until the deferred study completes.",
+        "It is a generic heavy combustible building resource despite its admitted qualities, or the player has to enable a deferred hull to spend it."
+      ],
+      "lazy": "none: the material has to be spent in ordinary construction and compared with ordinary stone; an inventory ornament cannot satisfy that.",
+      "range": {
+        "varies": "Default material rules for ordinary Stony-compatible structures; compare same recipe/shape/quality against granite stone blocks and comparable ordinary stone under actual loaded stats; construction materials sufficient through legitimate repeated trips; new and existing stock, fresh/reloaded saves and special research settings off/on; ordinary loaded Beauty contribution from the material to built structures/rooms. No variant or custom-atlas count is required.",
+        "left_out": "No guarantee a single trip constructs a building; no minimum yield, sale profit, fuel saving or bespoke swirl atlas owed. Economy normalization constrains values through checks; owner’s original very-light/strong/nonflammable identity is not discarded."
+      },
+      "sees": {
+        "instrument": "Resolved stuff/designator and actual build-job/material-consumption state reads, comparative derived mass/strength/flammability and ordinary Beauty contribution; static material asset inspection needs no live-only visual judgment. T27 adds origin and expenditure audit. No art-variant counting.",
+        "start": "Hauled garden-origin stone on permanent ground, no injected stock or reveal; deferred parts and research off; matched ordinary stone build available.",
+        "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
+        "control": "Confirm material stack decreases because the build job consumed it, not because it burned or was deleted; match structure/quality to isolate stuff factors. A plain recoloured stone substitute and a research-required ordinary build must fail.",
+        "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
+        "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
+      },
+      "live_only": false,
+      "touches": [
+        "floatstone",
+        "flora_food",
+        "defaults",
+        "lore"
+      ]
+    },
+    {
+      "id": "B7",
+      "says": "Reloading, disabling or ending a Forge cycle preserves identifiable animals and possessions with readable outcomes, resolves its temporary ground without stranding survivors, and lets a resumed cycle continue without duplicating its rewards or hazards.",
+      "meant": {
+        "intent": "Transitions are part of living with temporary land, not solely settings hygiene. Reject test: a silent lost animal, stranded survivor or duplicated harvest is a player-visible signature failure even if steady-state stages work. First version: signature and necessary safe controls; settings-existence remains a floor/check.",
+        "source": "Standing settings and no-unreadable-disappearance rulings; cycle and dormancy saved state in RM_GameCondition_ForgeCycle.cs and RM_CompForgeCycleDormancy.cs; delegated: temporary-ground ownership and restart continuity follow from that experience.",
+        "figurative": []
+      },
+      "accept": [
+        "The save resumes during growth with the same crust and gardens and the same sealed animal identities; harvesting and later melt happen as continued events rather than fresh duplicates.",
+        "Turning the cycle off resolves its ground with survivors and haulable possessions safe or with an explicit pending safe-cleanup state where no landing cell exists; normal destructive play still accounts visibly for genuine deaths and losses."
+      ],
+      "reject": [
+        "The log is clean after loading but the game seeds a fresh reward or erases a resident animal.",
+        "The master is off yet scald or flash penalties continue, or gentle cleanup removes the floor beneath a survivor with no reachable safe landing and leaves them on open lava."
+      ],
+      "lazy": "none: pawn identity, information and safe transition outcomes are explicit across a resumed or disabled cycle; mere absence of an exception is insufficient.",
+      "range": {
+        "varies": "Every phase and phase boundary; save before/after batched work and during a pending cleanup; master/pulse/cycle/gas/freeze/bloom/dormancy/destructive-melt toggles separately and in combinations; global dependency gates off/on; premature condition End; pawn ownership/death/downing/carrying; unrelated temp terrain/foundations; items/buildings/projectiles/filth/gas; safe cells near/far/none; map side 200–325 and up to full-map crust stress. Read both disabling and subsequent re-enabling in second order.",
+        "left_out": "No removal of shared engines or DLC from existing saves. Existing built deferred doors/hulls remain loaded when their menu switch is off. Gentle mode need not preserve rooted plants or intact unsupported buildings, but it must declare and account for those outcomes and preserve movable leavings."
+      },
+      "sees": {
+        "instrument": "M1 enumerated lifecycle/ownership walk, direct object/terrain ledger and save-load state reader at transition boundaries. T17 defines required safe fallback and T27 supplies the reader.",
+        "start": "Disposable recorded save with owned crust, mature/immature gardens, identifiable native and colonist pawns, haulable items and unrelated temporary terrain; copied before transition. No cleanup performed before making the mid-cycle save.",
+        "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
+        "control": "Compare continuation with reload and no-reload branches by causal event and conserved identity/material, allowing harmless RNG-order differences. Compare underlying/top/temp terrain independently; counters/inspect strings alone cannot prove preservation. Inject no-safe-cell, duplicate-seed and End-with-crust cases and require their failures to be detected.",
+        "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
+        "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
+      },
+      "live_only": false,
+      "touches": [
+        "pawn_identity",
+        "crust",
+        "defaults",
+        "cycle_clock",
+        "floatstone",
+        "warnings"
+      ]
+    },
+    {
+      "id": "B8",
+      "says": "Across a full-map Forge season at shipped defaults, colonists repeatedly shelter, gather and build from the mountain’s temporary opportunities among functioning native life and foundry remains, including a mid-cycle reload and a changed order of work, without runaway destruction, lifeless ground, stalled cycles or an error storm.",
+      "meant": {
+        "intent": "Exactly the whole bar: one integrated running system, not a union of isolated successful scenes. Reject test: feedback-driven collapse, no usable opportunities or broken continuity defeats the version even if targeted bars pass. First version: whole land, life and signature; enjoyment is a prediction, not asserted here.",
+        "source": "User cleansing brief whole-bar requirement; historical owner experience sentence in biome_experiences_2026-10-20.md; delegated: repeated workable opportunities and functioning natives, rather than unchecked fire/growth or meaningless phase counters, express the complete promise.",
+        "figurative": [
+          {
+            "word": "mountain’s temporary opportunities",
+            "stands_for": "Cycle-created accessible crust and harvest work, not a new opportunity subsystem.",
+            "accept": "A low skirt map still offers the crust trip even when no summit fits on the local map."
+          },
+          {
+            "word": "error storm",
+            "stands_for": "Recurring mechanic exceptions during the integrated run, not literal weather or a pinned error count.",
+            "accept": "A single recurring exception source that interrupts the cycle is a failure even without many different error types."
+          }
+        ]
+      },
+      "accept": [
+        "The established colony shelters through danger, cuts and hauls naturally grown gardens, builds with the returned stone and sees another usable interval after saving mid-cycle and resuming. Life remains visible between crises and the works shape routine journeys.",
+        "In a matched continuation the colony secures shelter before gathering instead of gathering before shelter improvements; the resource opportunity, warning, retreat and subsequent cycle still function under the changed work order."
+      ],
+      "reject": [
+        "Targeted scenes pass separately, but default rain kills the forage and natives while gas and accelerated growth feed a destructive feedback loop over the season.",
+        "The season is apparently peaceful because damage, weather or growth was disabled or locked; reload resets the cycle, no garden work completes, or repeated exceptions consume the log."
+      ],
+      "lazy": "none: the full default season, actual colony actions, changed order and resumed mid-cycle run are explicit; separately staged successes cannot satisfy that.",
+      "range": {
+        "varies": "Season = 15 full game days/900000 simulated ticks, extended until a complete natural gas/rain/crust/growth/cracks/melt chain is observed if phase timing requires; full surface maps 200/250/325 and representative cone/flow/skirt geometry, no planetary generation. Fresh colony and established colonies up to 40, with first-day and day-100 start saves. Every retained mechanic at defaults including damage, growth, needs, shared Direct Sun/ambient heat, native husbandry/predation, Wreckage and Bones; extra switches off. Midway save made while crust/work is live; branch A improve shelter then harvest/haul/build, branch B harvest/haul then improve permanent shelter/build on an already safe base. Normal job ticks and natural phase lengths retained. Compressed wall-clock playback is allowed only by processing all game ticks, not phase jumps or rescaling growth/AI relative to hazards.",
+        "left_out": "No performance/FPS threshold, guaranteed profit or complete native immortality. Flood = escalating default fire/terrain/population/material pressure that removes repeated workable intervals; desert = cycle-caused loss of ordinary forage/native viability, distinguished from deliberate clearcutting/overhunting and naturally bare lava; stall = no next natural opportunity when eligible ground exists; error storm = recurring mechanic exceptions. No next-version feature is used to rescue a passing reading."
+      },
+      "sees": {
+        "instrument": "M3 calibrated season forecast selects worst regimes, then whole-map causal state/event trace plus log and material/job/population ledger over real game ticks, reusing the bar readers. B1 supplies separate visual identity acceptance; this bar is decidable from the integrated state trace without a season-long human look. T27 implements the integrated run recipe.",
+        "start": "Ordinary full-map saves with permanent shelter, real fauna/flora and legal foundry content, no preharvested floatstone for fresh-arm start, default settings fingerprint and no weather lock. Save baseline, halfway snapshot, log cursor and action schedule stored before the run.",
+        "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
+        "control": "Use no-action/no-hunting control plus no-cycle diagnostic copies to attribute ecology trends; only the all-on default branches qualify. Check real cells/needs/injuries/jobs and log sources against self-reported counters. Any hidden disabling of scald, Direct Sun, dependency growth or predator needs invalidates the evidence. A run with cycle off must not masquerade as a quiet success.",
+        "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
+        "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
+      },
+      "live_only": false,
+      "touches": [
+        "landscape",
+        "weather_heat",
+        "cycle_clock",
+        "crust",
+        "routes",
+        "warnings",
+        "flora_food",
+        "pawn_identity",
+        "floatstone",
+        "sky_habitat",
+        "defaults",
+        "lore"
+      ]
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Parse the resolved merged XML roster, shorthand element names included: source inline animalDensity 1.2, ten animals and four ordinary plants are a current source reading, not a game measurement or a passing quota. Track provenance/multi-home placements without eviction; read campaign patches only when available."
+    },
+    {
+      "id": "C2",
+      "what": "Snapshot declared phase ranges from RM_ForgePulse.xml: StillHeat 48–72h, GasWash 2–3h, Rain 6–9h, Freeze 10–14h, Growth 54–66h, Cracks 6–8h, Melt 1.5–2.5h, hissLeadHours 1.5. Changes update regression expectations, not bar wording."
+    },
+    {
+      "id": "C3",
+      "what": "Track freezable LavaDeep only, cap 6000, current gardens 5–10 at growth 0.35, maturity 0.9, growDays 2, yield 1 and work 600 from current defs; retain plant-economy normalization. These are tuning/check facts, not a guaranteed expedition yield."
+    },
+    {
+      "id": "C4",
+      "what": "Regression read scald RM_Scald, amount 4 each 60 ticks, onlyUnroofed true; prove amount/category/armour sources from resolved defs. Never infer healthy survival from these declared numbers alone."
+    },
+    {
+      "id": "C5",
+      "what": "Settings floor: saved meaningful switches per major retained feature, defaults reset to proposal manifest; all extras default off with next-version labels. Read all-on/default and all-off in fresh and reload states; no stale exposed inert knobs; log clean and load resolutions present."
+    },
+    {
+      "id": "C6",
+      "what": "Assert no Forge biome heatKind/heatOffsetC/per-biome sun setting and no shade-does-nothing prose. Shared Direct Sun geometry agrees with the standing common rule; volcanic/steam warmth is ordinary thermometer temperature."
+    },
+    {
+      "id": "C7",
+      "what": "Object conservation ledger: pawn IDs, death/corpse/loss reasons, top/base/temp terrain ownership, stack origins/uses, garden seed/departure and consumed material; cross-check counters with actual state, including no safe landing and premature End."
+    },
+    {
+      "id": "C8",
+      "what": "Offline kernel/fuzz/mutation suites and selftest_theforge.py check the readers and local algorithms only. Existing mock hardcodes its own cycle; it is not independent gameplay evidence. Retain deliberately broken controls and label legacy script checks that disable damage nonqualifying for B2/B8."
+    },
+    {
+      "id": "C9",
+      "what": "At default, deferred actors/jobs/letters/incidents/menus and resource outputs are absent as enumerated in tickets. With each extra enabled on a separate copy its positive entry point is reachable; presence of inert defs alone is not activation."
+    },
+    {
+      "id": "C10",
+      "what": "Resolved material comparison: current floatstone mass 0.1, granite reference cited in def 1.25, HP factor 2.2, flammability zero; obtain actual comparison stats from loaded ordinary structures, not header claims. No price/profit/fuel bar."
+    },
+    {
+      "id": "C11",
+      "what": "Observe actual Awake/job/needs, flight tracker and framework floating state, not inspect prose alone. No live visual flight test without the owner. No Metallo weird-eater tree or explosive ability may leak through a deferred gate."
+    },
+    {
+      "id": "C12",
+      "what": "Floor manifests and logs carry code/assembly, composed package, dependency, DLC, settings and content fingerprints. No current proof is claimed on this source-only pass; historical closes/waivers remain stale evidence and are not reopened."
+    },
+    {
+      "id": "C13",
+      "what": "Forbidden worldgen: no exposed world-creation UI, variant planet or automatic biome scoring promise. Any retained worker must return an inert result for automatic assignment; no tile-count condition can fail the mod."
+    },
+    {
+      "id": "C14",
+      "what": "Locate actual loaded external campaign content before accepting any integration claim: this checkout has no src/RimUtinni, src/RimStarWars, rosters or FlowWorks implementation. Unavailable is unknown, not absent in the owner’s installation."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Use the existing seven-state cycle and shared pulse; random short bursts belong in StillHeat. Full Rain is the same closed boiling-water source. No forced ordinary ash-rain may run independently; ambient atmosphere can vary without creating another weather mechanic. Numbers remain checks.",
+      "touches": [
+        "cycle_clock",
+        "weather_heat",
+        "flora_food",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Freeze only eligible LavaDeep via an owned temporary layer; never overwrite foundations or another owner’s temp terrain. Garden seeding must include a reachable workable region on ordinary eligible maps; random selection and the crust cap are attackable implementation choices.",
+      "touches": [
+        "crust",
+        "routes",
+        "floatstone"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Use vanilla fire propagation from actual exposed plant fuel and shared heat-armour scald; a roof stops direct rain scald, not ambient hot air. Direct Sun is only the shared geometry function, with no Forge heatKind/offset and no blanket shade immunity.",
+      "touches": [
+        "weather_heat",
+        "routes",
+        "flora_food",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Hiss and cracks carry plain-text actionable warnings independent of sound/camera and retain their deadline across reload. Timing is chosen against the supported crew routes and normal job interruption; no magical haul/rescue priority is presumed.",
+      "touches": [
+        "warnings",
+        "routes",
+        "cycle_clock",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Default destructive melt affects real occupants, not transient bullets/gas/filth. It restores only owned crust and records losses. Gentle/off/End cleanup preserves surviving pawns and movable possessions; search the permanent safe connected region, and if none exists retain a labelled pending safe-support state instead of exposing occupants to lava. On re-enable settle that state before restarting rewards.",
+      "touches": [
+        "crust",
+        "pawn_identity",
+        "defaults",
+        "warnings",
+        "cycle_clock"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Resident rain-natives stay the same pawns; wild sealing yields to ownership, damage, danger/downing and active mental states. Native local water must satisfy native thirst under the standing ruling. Column homing yields to urgent needs. No species is removed from any roster; unknown multi-homing waits for the merged roster read.",
+      "touches": [
+        "pawn_identity",
+        "flora_food",
+        "sky_habitat",
+        "cycle_clock",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Keep actual core flight and permanent floating independent of the deferred stoop/hunt bonuses. Retain existing small-bulloo/fleet-flier/jossur habitat cast without inventing greater-bulloo escort or column membership. Ummisk bank movement stays on safe terrain and yields when no edge exists.",
+      "touches": [
+        "sky_habitat",
+        "pawn_identity",
+        "routes",
+        "weather_heat"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Floatstone keeps ordinary Stony construction at default with no research gate. Defer found-tech study and special door/hull menus independently; keep save types/old instances. Current normalized yield is not silently restored to an older amount; economy changes must obey the existing plant-economy rule.",
+      "touches": [
+        "floatstone",
+        "flora_food",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Surface industrial form is land; full towers and unexplained nonliving melt motion retain the frozen image. Use Wreckage’s placement/salvage contracts for mundane remains, no new bespoke reward or dungeon. Lore/tier partition and beldon-only tibanna prohibition persist even while campaign extras are off. No world generation or zero-tile finding.",
+      "touches": [
+        "landscape",
+        "routes",
+        "crust",
+        "lore",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Retain dependencies at their actual shipped settings; do not disable ExplosiveGrowth or damage to make a Forge bar pass. Read resolved rates instead of assuming the old everyday/soaked multipliers. A local master/pulse-off must release Forge flash penalties while leaving other biomes alone.",
+      "touches": [
+        "flora_food",
+        "weather_heat",
+        "defaults",
+        "cycle_clock"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "Every moved built extra is inert behind a next-version-labelled default-off gate, including external study patches and callbacks from kept code. Existing serialized data remains loadable; global engines and unrelated biome features remain independent. Disabling a feature is not proof of inertness until the state/negative control reads agree.",
+      "touches": [
+        "defaults",
+        "lore",
+        "floatstone",
+        "pawn_identity",
+        "crust"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "crust",
+      "members": [
+        "B1",
+        "B3",
+        "B4",
+        "B7",
+        "B8",
+        "R2",
+        "R5",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "A cap-selected crust set can fragment a path, fail its own return deadline or be removed under survivors during End/off cleanup; a shared temp layer and saved queues need a complete ownership/geometry walk.",
+      "model": "M2: Expedition geometry and work windows"
+    },
+    {
+      "thing": "cycle_clock",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B7",
+        "B8",
+        "R1",
+        "R4",
+        "R5",
+        "R6",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Rain opens shared flash windows, dormancy reads them, gardens have separate natural growth, and reload can restart batched work. Pairwise phase tests cannot establish order, continuity and natural opportunity recurrence.",
+      "model": "M1: Situation and transition generator"
+    },
+    {
+      "thing": "defaults",
+      "members": [
+        "B2",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R8",
+        "R9",
+        "R10",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Local gates, shared pulse/growth gates, default-off extras, serialized keys, master toggles and condition End must agree through a reload. Current shared flash plants ignore the local master and several extras share retained startup/comp code.",
+      "model": "M1: Situation and transition generator"
+    },
+    {
+      "thing": "floatstone",
+      "members": [
+        "B3",
+        "B6",
+        "B7",
+        "B8",
+        "R2",
+        "R8",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Natural maturity, departure timing, haul work and normalized yield may make construction progress impossible, even though a spawned stack builds a valid wall and a garden exists. Special research must not mask that missing opportunity.",
+      "model": "M2: Expedition geometry and work windows"
+    },
+    {
+      "thing": "flora_food",
+      "members": [
+        "B3",
+        "B5",
+        "B6",
+        "B8",
+        "R1",
+        "R3",
+        "R6",
+        "R8",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Growth stacked with flash windows feeds herbivores, fuel, predators and harvested resources; scald/fire reduce that stock. Sustained food and recurring harvest may fail together despite every local growth/feeding check.",
+      "model": "M3: Whole Forge season"
+    },
+    {
+      "thing": "landscape",
+      "members": [
+        "B1",
+        "B8",
+        "R9"
+      ],
+      "holds_together": "argued",
+      "why": "Surface form and ordinary paths share a static placement contract; no dungeon/portal is required. Permanent routes and no-lava-life bans constrain placement before visuals are judged. Geometry risk is handled in the routes meeting.",
+      "model": ""
+    },
+    {
+      "thing": "lore",
+      "members": [
+        "B1",
+        "B6",
+        "B8",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "Franchise-free surface manufacture and unexplained nonliving machinery express the frozen world without making tibanna, new bioweapon fauna, taking sacred fire or revealing the machines’ task. External cast/ore are preserved; plot mechanics are versioned extras, not new rules.",
+      "model": ""
+    },
+    {
+      "thing": "pawn_identity",
+      "members": [
+        "B2",
+        "B4",
+        "B5",
+        "B7",
+        "B8",
+        "R5",
+        "R6",
+        "R7",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Dormancy, urgent needs, ownership changes, injury/death, flight, melt relocation and disabled-feature cleanup cross saved pawn state. A correct phase counter and a clean log do not prove identity or physical safety.",
+      "model": "M1: Situation and transition generator"
+    },
+    {
+      "thing": "routes",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B8",
+        "R2",
+        "R3",
+        "R4",
+        "R7",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Manufactured obstacles, fire spread, roof locations, path costs, plant work, changed job order and progressive melt meet at escape necks. None of their separate passing scenes proves recall and a usable harvest-return region together.",
+      "model": "M2: Expedition geometry and work windows"
+    },
+    {
+      "thing": "sky_habitat",
+      "members": [
+        "B1",
+        "B5",
+        "B8",
+        "R6",
+        "R7"
+      ],
+      "holds_together": "unknown",
+      "why": "A derived column field and need-yielding jobs can still maroon hungry animals, especially when crust removes terrain-sourced columns or a framework float comp is absent. Population/job traces must distinguish ordinary mortality from habitat failure.",
+      "model": "M3: Whole Forge season"
+    },
+    {
+      "thing": "warnings",
+      "members": [
+        "B4",
+        "B7",
+        "B8",
+        "R4",
+        "R5"
+      ],
+      "holds_together": "argued",
+      "why": "Plain-text warnings, a visible ground change and a saved phase deadline can be shared by recall, retreat, loss reporting and reload without requiring audio/animal clocks; timings remain attackable through routes, not assumed here.",
+      "model": ""
+    },
+    {
+      "thing": "weather_heat",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B8",
+        "R1",
+        "R3",
+        "R7",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Rain exposure, native survival, lava ambient heat, Direct Sun and flash/ordinary growth can jointly make shelter insufficient even if their individual comparisons hold. No current all-on health/temperature record establishes the combined regime.",
+      "model": "M4: Heat and shelter response"
+    }
+  ],
+  "old_bars": {}
+}
