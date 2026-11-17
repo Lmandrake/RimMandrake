@@ -842,7 +842,9 @@ def test_q1_recheck_reapplies_quiet_at_kill():
                                 ("no timestamp", None, True)):
             SR.tx_summary = lambda path, *a, **k: {"last_kind": "assistant_end", "last_at": at, "last_user_at": 0}
             holds = SR.recheck_at_kill("FOUNDRY", sch, rs, sf, paused=lambda: None, work=lambda s_, ts: [])
-            got = any(("quiet" in h) or ("unknown" in h) for h in holds)
+            # the temp path leaves the hold text first: under an unresolved seat it is .seat-tmp/unknown/..., and the
+            # word "unknown" in a path is not an unknown-quiet hold
+            got = any(("quiet" in h) or ("unknown" in h.replace(TMP, "")) for h in holds)
             check(got == want, "Q1 kill-time recheck, assistant_end %s: quiet hold=%s want %s (%s)" % (label, got, want, holds))
     finally:
         SR.tx_summary = old
