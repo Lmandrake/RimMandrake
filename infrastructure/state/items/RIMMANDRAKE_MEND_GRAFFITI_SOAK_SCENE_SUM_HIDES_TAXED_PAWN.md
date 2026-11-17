@@ -21,3 +21,9 @@ The soak scene checks every colonist against the control, with a trait mix in it
 
 Acceptance test: `python3 design/concepts/Graffiti/acceptance/soak_scene_per_colonist.py design/concepts/Graffiti/scenes.json`
 prints PASS (1 check). Watched failing on 842c8a43dc.
+Second return (coverage judge rm-coverage-judge-1794940039, gap g1): `python3 design/concepts/Graffiti/acceptance/soak_scene_shape_not_size.py design/concepts/Graffiti/scenes.json`
+prints PASS (13 checks). Watched failing on 8e5243f7e0 (8 of 13).
+
+## refs
+file: design/concepts/Graffiti/scenes.json
+file: design/concepts/Graffiti/acceptance/soak_scene_shape_not_size.py

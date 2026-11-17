@@ -634,12 +634,12 @@
     "among the six, at least one colonist the temperament table reads as sensitive and one as a clean freak (Very Neurotic), plus ordinary ones (asserted from GraffitiTemperament per colonist)",
     "all 8 shipped settings, and the 3 raider-pressure settings (switch, sooner-or-larger mode, push size) once RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_LETTER_NAMES_THE_WALL lands, at shipped defaults (asserted by northstar_site.preflight; social pair unchecked until RIMMANDRAKE_CHECK_GRAFFITI_SITE_SETTINGS_SIX_OF_EIGHT lands, INVALID until then)"
    ],
-   "action": "run three in-game weeks at top speed, no forcing; read each colonist's own Graffiti mood thoughts daily, and every Graffiti mark, thought and answer",
-   "expect": "every colonist, each read on their own, stays below the control's standing tax for a colonist of the same temperament: no colonist's mood is ruled by marks; Graffiti messages and letters are few per week; and at least one unforced graffiti story happens in the three weeks: a mark painted, read with a thought, or answered",
+   "action": "run three in-game weeks at top speed, no forcing; read each colonist's own Graffiti mood thoughts daily (their negative ones summed per colonist, and what caused each), and every Graffiti mark, thought and answer",
+   "expect": "every colonist, each read on their own, has a negative Graffiti mood total (their negative Graffiti thoughts only, positive ones not netted against them) that returns to zero between stories: it is not held on most days of weeks two and three, whatever its source, so a rotating run of different marks counts the same as one mark that stays; the only days not counted are those a mockery of that colonist or a raid's departing marks cause, while that mockery's thought runs or until that raid's marks are answered or weathered, and each such day is listed per colonist; no colonist's mood is ruled by marks; Graffiti messages and letters are few per week; and at least one unforced graffiti story happens in the three weeks: a mark painted, read with a thought, or answered",
    "control": {
     "case": "the same start with painting forced every hour, read per colonist",
-    "expect": "a visible standing tax on each colonist, the sensitive and clean-freak ones heaviest",
-    "rules_out": "an instrument blind to thoughts, or one that averages a taxed colonist away"
+    "expect": "the sensitive and the clean-freak colonists each hold a negative Graffiti total that does not return to zero on most days of weeks two and three, read the same way as the soak",
+    "rules_out": "an instrument blind to thoughts, one that averages a taxed colonist away, or one that compares size against the forced cap and misses a small debuff held every day"
    },
    "restore": "load the save from before the soak",
    "hold": "immediate",
