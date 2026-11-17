@@ -4,9 +4,9 @@
  "outcome": "proposed",
  "signature": "Expedition light draws the living Deep’s attention, revealing crystal minds through the dead machines they use to greet visitors and defend their galleries.",
  "counts": {
-  "capabilities": 73,
+  "capabilities": 74,
   "kept": 41,
-  "next_version": 29,
+  "next_version": 30,
   "recommend_retire": 3,
   "old_bars": 0,
   "bars": 8,
@@ -15,9 +15,9 @@
   "rules": 11,
   "unknown_pairs": 7,
   "models": 4,
-  "tickets": 39,
+  "tickets": 40,
   "questions": 0
  },
  "blocked_on": [],
- "applyable": false
+ "applyable": true
 }

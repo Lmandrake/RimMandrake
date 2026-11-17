@@ -258,6 +258,14 @@ Why outside this version: Interrupting colony machines is a separate interaction
 
 Disposition: T39; next-version switch defaults off, including Biotech mechs.
 
+### Drinker wrong-blood poison and rapid death
+
+What: A wrong-blood bite poisons the moth itself and can rapidly kill it; code and definitions stay. Ordinary body, bite feeding, sacs and stored-fluid drops on ordinary death remain life.
+
+Why outside this version: Deleting this independent poison/death consequence leaves the flying hunter and light-drawn attention intact; neither land, ordinary life nor crystal recognition needs it.
+
+Disposition: T40; independent next-version switch defaults off without disabling feeding.
+
 ### Before any later enabling
 
 Each experimental switch remains labelled next version. No default bar relies on it; enabling one requires its owning validation, not a claimed first-version pass. The Answering’s existing v2 waiver remains closed to re-asking. Old cut bodies and Blinker flash are exclusion-history rows, not new retirement demands. Donor-eviction compatibility cannot activate in defiance of stopped evictions, even experimentally. No automated planetary worldgen appears here: it remains prohibited in every version.

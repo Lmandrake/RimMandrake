@@ -1,0 +1,154 @@
+{
+ "mod": "LanternDeeps",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "core_promise_weakened",
+     "where": "bars.json B5 (says, accept picture three, meant.intent); definition.md 'Why a player reaches for it'; R4, R10",
+     "evidence": "The owner typed the experience himself (design/RimMandrake/biome_experiences_2026-10-20.md, LanternDeeps row): \"Mineral riches for kings, until you realize they are both alive and intelligent.\" B5 only asks that the gallery's crystal be \"more desirable to take than ordinary rock outside it\". Its accept picture says the party \"would rather take [it] for useful luminous construction or trade than ordinary stone\". The census row lanternstone_rock and check C6 record RM_Lanternstone MarketValue as 1. A build where lanternstone blocks are a little more useful than granite blocks passes B5 as written. That is a small upgrade over plain stone, not the riches that make the later turn to 'alive and intelligent' land. Treating 'for kings' as figurative is fine. But the bar keeps no anchor for 'riches', so the owner's own promise is weakened to beating the worst comparison available.",
+     "would_pass": "B5 still compares against reachable unprotected rock, and it also requires the gallery haul to be a prize. The colony would count it among the most valuable things the expedition brings home, worth the trip and the risk on its own. A reject picture says the protected crystal is only marginally better than ordinary building stone. No price or number appears in the bar.",
+     "smallest_fix": "Add 'riches' to B5.meant.figurative, standing for 'a haul the colony would mount an expedition for, among the most valuable things it brings home'. Add the reject picture 'the gallery's crystal is merely a slightly better building stone than the granite outside; nobody would risk the trip for it'. Keep the existing no-salvage-substitution clause."
+    },
+    {
+     "id": "R2",
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json R5 ('Only actual damage or completed protected extraction provokes existing chassis'); definition.md Routine ('actual damage to a mind or its associated chassis'); B5 says 'a warning before extraction or attack provokes defence'",
+     "evidence": "R5 and the definition never say whose damage counts. Three kept things damage chassis without any colony warning: B7/R8 vanilla roof falls (including falls caused by ordinary mining outside the marked gallery, which the definition says 'do not provoke territorial defence'), the drawn manhunter RM_BloodropMoth under R3, and ordinary predators. As written, an unprotected miner whose roof falls on a chassis inside a mind's 7-cell reach provokes defence with no designation warning. Neither the defence target nor the warning is defined in that case. Either reading passes R5, and only one keeps B5's 'warning before'.",
+     "would_pass": "R5 names the provoking instigators: damage dealt by a colony pawn or by a player order, and a roof fall caused by completed protected extraction counts as that extraction. Environmental, wild-animal and roof-fall damage from unprotected work does not provoke, or it provokes only after the same visible warning. The defence target is the instigating intruder.",
+     "smallest_fix": "Add one sentence to R5 defining the provoking damage source and the target. Add a B5 range case: a roof fall from unprotected mining hits a chassis, and the predator-damaged chassis case."
+    },
+    {
+     "id": "R3",
+     "head": "extra_without_argument",
+     "where": "census.json row 'drinker' (fate life); R7 list of excluded special powers",
+     "evidence": "The drinker row keeps 'Bite marker -> CreatureBehaviors FluidSacs gauge/nutrition or wrong-blood poison and death drop'. Its why only argues feeding ('Deleting feeding defeats the hunter role'). Source: RM_BloodropMoth in RM_LanternDeeps_Fauna_ThingDefs_Races.xml has RM_CompProperties_FluidSacs with poisonousFleshTypes <li>Normal</li> and poisonHediff RM_FluidSacPoison, and the description says it 'dies rapidly afterward'. That bespoke poison-death power is the same class as the Shoal wound-link/KinMending powers the proposal moves (T2). R7's list of powers not required at defaults leaves it out. No deletion argument shows land, life or the signature needs it.",
+     "would_pass": "Either a needed_by deletion argument for the wrong-blood poison death, or the power is split into its own row moved to next version with a T-ticket, while the moth body, bite and feeding stay as life.",
+     "smallest_fix": "Split census row 'drinker_wrong_blood_poison' out of 'drinker' with fate next_version (or a written needed_by argument). Add it to R7's excluded list and to next_version.md with a switch-off ticket."
+    },
+    {
+     "id": "R4",
+     "head": "figurative_unmarked",
+     "where": "bars.json B6 says ('chosen company'); accept picture one ('before choosing their company'); R6 ('resume harmless company/rounds')",
+     "evidence": "B6.meant.figurative marks only 'befriend'. 'Chosen company' is the owner's card wording (ANSWERS_OWNER.md: 'choosing the visitors' company'), but the proposal never says what behaviour it stands for: how near, how long, under whose job-giver. B6's own control admits 'A random wander toward a pawn can imitate company'. Without a stated reading, a cold reader cannot tell company from a wander that happens to end near a colonist.",
+     "would_pass": "A figurative entry: 'chosen company' stands for Orun's own rounds preferring to stay near a present familiar colonist for a while, over its other destinations, by its own choice and never under player command. Accept example: it drifts along beside the researcher for part of the visit, then wanders off to a mind.",
+     "smallest_fix": "Add a 'chosen company' entry to B6.meant.figurative and mirror its reading in R6."
+    },
+    {
+     "id": "R5",
+     "head": "contradicts_ruling_or_lore",
+     "where": "definition.md Settings ('Existing host selection remains, labelled unsupported outside shipped cold hosts'); ambiguities.md item 4 ('not default validation of warm hosts'); R1 ('Default host eligibility is the intersection ...')",
+     "evidence": "Frozen sheet design/Jawa/worldbuilding/biomes/the_lantern_deeps.md section 6, hard ban 2: \"No injection above −40 °C — a Deep beneath a warmer host map is a violation.\" The proposal applies the ≤ −40 °C test only to default eligibility. Ambiguity 4 contemplates warm hosts reached through the existing host list. The owner's 2026-10-15 ruling lets existing cross-biome switches stay, labelled unsupported. It does not license breaking a frozen fiction ban, and both can be honoured at once.",
+     "would_pass": "R1 applies the fixed source-tile ≤ −40 °C nightside test to every host, custom-selected ones included. The existing host list can widen which cold biomes are eligible, labelled unsupported, but can never place a Deep under a warmer host.",
+     "smallest_fix": "In R1, change 'Default host eligibility is' to 'Host eligibility is always', and state that custom host selection only widens the biome list inside the temperature test. Strike 'warm hosts' from ambiguity 4."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Restored riches as an expedition-worthy prize among the colony’s most valuable returns, worth the trip and risk itself, with a figurative reading and marginal-building-stone reject; retained the unprotected-rock comparison and no-salvage substitution. Mirrored the requirement in definition, rules and build acceptance.",
+      "where": "bars.json B5, R4, R10; definition.md Why a player reaches for it; ambiguities.md 7; tickets.md T22/T24; owner_pages.md"
+     },
+     {
+      "id": "R2",
+      "changed": "Limited provoking damage to colony pawns/player orders and targeted the instigating intruder. Protected-extraction roof falls count as that extraction; environmental, wild-animal and unprotected-work roof damage do not provoke. Added the unprotected roof-fall and predator/moth range cases and discriminating controls.",
+      "where": "bars.json R5 and B5 range/sees.control; definition.md Routine; ambiguities.md 16; tickets.md T22; owner_pages.md"
+     },
+     {
+      "id": "R3",
+      "changed": "Split wrong-blood poison/rapid death into a next-version capability with default-off T40, decoupled from retained bite feeding and sacs; excluded it in R7 and updated dependency wording, next-version list and counts (74 capabilities, 41 kept, 30 next version, 40 tickets).",
+      "where": "census.json drinker, drinker_wrong_blood_poison, engine_creatures; bars.json R7; next_version.md; tickets.md T40; definition.md Edges and neighbours; ambiguities.md 23; result.json; owner_pages.md"
+     },
+     {
+      "id": "R4",
+      "changed": "Marked chosen company figurative: Orun’s own rounds voluntarily prefer staying near a familiar visitor for part of the visit, then leave; no player command. Added the researcher example and a preference control, mirrored in R6 and greeting acceptance.",
+      "where": "bars.json B6 and R6; definition.md Routine; ambiguities.md 20; tickets.md T23; owner_pages.md"
+     },
+     {
+      "id": "R5",
+      "changed": "Made the fixed source-tile nightside temperature test mandatory for all hosts; unsupported custom selection widens only the biome list within that test. Removed the warm-host customization implication and required custom warm selections to reject injection.",
+      "where": "bars.json R1; definition.md Settings; ambiguities.md 4; tickets.md T24; owner_pages.md"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json B5 now has a 'riches' figurative entry that stands for 'a haul the colony would mount an expedition for, among the most valuable things it brings home, worth the trip and risk on its own'. B5 also has the reject picture 'The gallery’s crystal is merely a slightly better building stone than the granite outside; nobody would risk the trip for it.' B5.says now reads 'offers expedition-worthy riches more desirable to take than reachable unprotected ordinary rock'. The accept picture and intent add 'a prize the colony would mount an expedition for … worth the trip and risk on its own'. The unprotected-rock comparison and 'useful stone somewhere else cannot substitute' are kept, and the bar holds no price. The change is mirrored in R4, R10, definition.md 'Why a player reaches for it' ('Merely slightly better building stone fails'), ambiguity 7 and T22/T24."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "R5 now reads 'Only completed protected extraction or actual mind/chassis damage dealt by a colony pawn or through a player order provokes existing chassis. Defence targets the instigating intruder. A roof fall caused by completed protected extraction counts as that extraction and targets the extracting pawn; environmental damage, wild-animal damage (including a drawn moth) and roof-fall damage from unprotected work do not provoke.' B5.range.varies adds 'a roof fall from unprotected mining hitting a chassis, predator-damaged chassis (ordinary predator or light-drawn moth), and a roof fall caused by completed protected extraction'. B5.sees.control tags 'its instigator and defence target' and requires that 'unprotected-roof-fall and wild-animal-damage forks stay unprovoked'. definition.md Routine and the T22 acceptance test mirror this."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "census.json has a new row drinker_wrong_blood_poison, fate next_version, ticket T40, which cites poisonousFleshTypes Normal / RM_FluidSacPoison. Its why reads 'Deleting wrong-blood poisoning leaves the flying hunter, feeding, readable sacs and light-drawn attention intact'. The drinker row no longer claims the poison ('wrong-blood poison/death is separately deferred'). R7 now lists 'No wrong-blood poison/death … is required at defaults'. next_version.md has a 'Drinker wrong-blood poison and rapid death' section, and tickets.md T40 gates the poison branch default-off without disabling feeding, with a matched-fork acceptance test. The counts are consistent: census.json has 74 fate rows, 30 of them next_version, matching result.json."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "B6.meant.figurative adds the word 'chosen company'. It stands for 'Orun’s own rounds preferring to stay near a present familiar colonist for a while over its other destinations, by its own choice and never under player command'. Its accept example is 'It drifts along beside the researcher for part of the visit, then wanders off to a mind.' The same sentence was appended to accept picture one. B6.sees.control adds 'the suit’s own rounds choosing continued proximity over other destinations'. R6 mirrors the reading ('its own rounds prefer staying near a present familiar colonist for part of the visit over other destinations, voluntarily and never under player command'), and T23 adds a matched check that unfamiliar rounds show no such preference."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "R1 now reads 'Host eligibility is always the intersection … Custom host selection may widen the biome list, labelled unsupported outside shipped hosts, but every selected host must still pass that same fixed nightside temperature test; it can never admit a warmer host.' The definition.md Settings section reads 'Every host, custom-selected ones included, must pass that test; warmer hosts can never receive a Deep.' Ambiguity 4 drops 'warm hosts' and states that 'The frozen sheet’s section 6 hard ban on injection above minus forty applies to custom hosts too.' The T24 test requires 'Warm hosts reject injection under every host selection, including explicit unsupported customization'."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Decisions that change scope, construction or passing",
+    "bars.json bars/B5",
+    "bars.json bars/B6",
+    "bars.json rules/R1",
+    "bars.json rules/R10",
+    "bars.json rules/R4",
+    "bars.json rules/R5",
+    "bars.json rules/R6",
+    "bars.json rules/R7",
+    "census.json rows/drinker",
+    "census.json rows/drinker_wrong_blood_poison",
+    "census.json rows/engine_creatures",
+    "definition.md Edges and neighbours",
+    "definition.md Settings",
+    "definition.md Using it",
+    "definition.md Why a player reaches for it",
+    "next_version.md Drinker wrong-blood poison and rapid death",
+    "owner_pages.md Page one — what Lantern Deeps becomes",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T22: Build bounded remote defence",
+    "tickets.md T23: Make remembered greeting real",
+    "tickets.md T24: Make cave entry and initial life satisfy the land",
+    "tickets.md T40: Switch off Drinker wrong-blood poison/death independently of feeding"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 632361,
+     "output_tokens": 8615
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "Ambiguities 16, 20 and 23, which fixes.json says were edited, were not shown in the changed-entry text and their long lines were cut in my reads, so I did not check their wording.",
+   "reason": "All five fixes were judged from the bars, rules, definition, census and tickets entries. Any slip in those ambiguity items would sit in the cut text I did not see.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "340c26f3ca49d707586eac875d599785f04666b824e357377831a3bd22f38c5b",
+ "seconds": 268,
+ "at": "2026-11-17T06:52:38"
+}

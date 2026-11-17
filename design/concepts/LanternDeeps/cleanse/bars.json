@@ -186,9 +186,9 @@
     },
     {
       "id": "B5",
-      "says": "An explorer sees stationary crystals control dead machines that turn toward expedition light and defend a marked living gallery whose native crystal is more desirable to take than ordinary rock outside it, with a warning before extraction or attack provokes defence and a reachable retreat.",
+      "says": "An explorer sees stationary crystals control dead machines that turn toward expedition light and defend a marked living gallery whose native crystal offers expedition-worthy riches more desirable to take than reachable unprotected ordinary rock outside it, with a warning before extraction or attack provokes defence and a reachable retreat.",
       "meant": {
-        "intent": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise. The protected native crystal must tempt extraction before its inhabitants answer: useful stone somewhere else cannot substitute for this riches-to-inhabitants turn. Desirability is a practical construction/trade opportunity compared with reachable unprotected rock, not a prescribed price or guaranteed fortune.",
+        "intent": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise. The protected native crystal must tempt extraction before its inhabitants answer: useful stone somewhere else cannot substitute for this riches-to-inhabitants turn. The gallery haul must be a prize the colony would mount an expedition for, among the most valuable things it brings home and worth the trip and risk on its own, as well as a better practical construction/trade opportunity than reachable unprotected rock. No prescribed price or guaranteed fortune is required.",
         "source": "Owner event OWNER:1794375005355305543, 2026-11-11; owner experience 2026-10-20; the_lantern_deeps.md Shard-minds and Working Dead; delegated: precise territorial trigger and finite defence/retreat scope.",
         "figurative": [
           {
@@ -200,30 +200,36 @@
             "word": "dead machines",
             "stands_for": "supplied unpowered chassis with no mind or power of their own, moved only by their linked crystal; not arbitrary wreckage or living colony mechs",
             "accept": "An empty chassis stands, turns and fights while its crystal controls it; its motion does not make it an independent living machine."
+          },
+          {
+            "word": "riches",
+            "stands_for": "a haul the colony would mount an expedition for, among the most valuable things it brings home, worth the trip and risk on its own",
+            "accept": "Useful native crystal for luminous construction can be the expedition’s prize without being royal treasure or guaranteeing a fortune."
           }
         ]
       },
       "accept": [
         "Dead metal stands and turns when the party brings light to an aware crystal; selecting the body identifies its crystal controller. A protected mining designation warns before work; carrying it out sends those existing bodies against the intrusion.",
         "The expedition stops work and withdraws along the shown passage; defenders return to their gallery. Destroying the controlling mind visibly ends its control, and surviving bodies remain accounted for.",
-        "The marked gallery holds the cave’s most desirable native crystal, which the party would rather take for useful luminous construction or trade than ordinary stone; the reachable unprotected rock offers no equivalent haul for comparable work."
+        "The marked gallery holds the cave’s most desirable native crystal, a prize for useful luminous construction or trade that the colony would mount an expedition for and count among the most valuable things it brings home, worth the trip and risk on its own as well as more desirable than ordinary stone; the reachable unprotected rock offers no equivalent haul for comparable work."
       ],
       "reject": [
         "A mind’s label says sentient and a stationary chassis emits dust, but mining changes nothing except a lore message.",
         "Mining summons an unrelated raid or endless fresh droids, or peaceful Orun-Ghal becomes a boss, or a defender chases the expedition through the return portal.",
         "The warning is printed after the first injury, a designation alone instantly starts combat, or all retreat paths are sealed by the very response being demonstrated.",
-        "The protected cells offer the same ordinary stone or an equivalent lanternstone haul already available unprotected nearby, so the party has no practical reason to risk extraction there."
+        "The protected cells offer the same ordinary stone or an equivalent lanternstone haul already available unprotected nearby, so the party has no practical reason to risk extraction there.",
+        "The gallery’s crystal is merely a slightly better building stone than the granite outside; nobody would risk the trip for it."
       ],
       "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
       "range": {
-        "varies": "Controller/body counts 0/1/multiple; intact/blocked/destroyed/downed bodies; overlapping mind reaches; ordinary light, Lantern-only light and dark changes; protected concentrated RM_LanternstoneWall deposits vs reachable unprotected ordinary rock and any scattered lanternstone; fresh and partly worked deposits; construction-led and trade-led expedition needs; limited vs ample native-resource stocks, attack to mind/chassis, designation cancel and completed extraction; friendly/hostile/no relationship, injury, target death, retreat, simultaneous miners up to 40, save/reload during warn/defend/return. Include depleted-body and blocked-path cases; no bodies means visibly unable to defend, not an invented army.",
+        "varies": "Controller/body counts 0/1/multiple; intact/blocked/destroyed/downed bodies; overlapping mind reaches; ordinary light, Lantern-only light and dark changes; protected concentrated RM_LanternstoneWall deposits vs reachable unprotected ordinary rock and any scattered lanternstone; fresh and partly worked deposits; construction-led and trade-led expedition needs; limited vs ample native-resource stocks, colony-pawn and player-ordered damage to mind/chassis; environmental damage, a roof fall from unprotected mining hitting a chassis, predator-damaged chassis (ordinary predator or light-drawn moth), and a roof fall caused by completed protected extraction; designation cancel and completed extraction; friendly/hostile/no relationship, injury, target death, retreat, simultaneous miners up to 40, save/reload during warn/defend/return. Include depleted-body and blocked-path cases; no bodies means visibly unable to defend, not an invented army.",
         "left_out": "No recruitable body, resurrection of human corpse, sentience in every stone, colony-droid theft, mindstone manufacture, global reputation war or path-cutting boss. Ordinary Lantern harvest outside protected mineral is safe from territorial defence."
       },
       "sees": {
         "instrument": "Encounter walk state trace plus live view of warning, body response and controller sign; compare actual mining/attack jobs and no-intrusion forks. Reads new defence instrument specified in tickets. Compare ordinary mining, hauling and cutting jobs on matched save forks, identify resulting RM_Lanternstone and its actual loaded building/trade uses, and read the game’s work, route and sale information for protected and unprotected alternatives. Whole cave season supplies the calibrated native-resource opportunity comparison.",
         "start": "A generated reachable mind gallery with associated finite chassis, intact return route, unprovoked state, same roster/light history across forks. No manual attack order assigned to defenders; future instrument must read real production controller links. Use actual generated native lanternstone deposits and loaded construction/trade uses, not debug-added campaign crystals or valuables. Journal reachable unprotected alternatives, work/path costs and the party’s declared material use before extraction.",
         "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
-        "control": "Preposed art, vanilla manhunter or a script-started raid can imitate defence. Record the same body/controller IDs before/after, tag the triggering completed job/damage and show cancellation/unprotected-rock forks stay unprovoked. Visibly disable controller on another fork and compare. A rich salvage pile elsewhere cannot make worthless protected mineral pass. Compare only material obtained from the marked cells with reachable unprotected alternatives under the same workforce, cutter, trader/use and work opportunity; a label or higher nominal MarketValue without practical advantage fails.",
+        "control": "Preposed art, vanilla manhunter or a script-started raid can imitate defence. Record the same body/controller IDs before/after, tag the triggering completed job/damage, its instigator and defence target, and show cancellation, unprotected-roof-fall and wild-animal-damage forks stay unprovoked. Visibly disable controller on another fork and compare. A rich salvage pile elsewhere cannot make worthless protected mineral pass. Compare only material obtained from the marked cells with reachable unprotected alternatives under the same workforce, cutter, trader/use and work opportunity; a label, marginally improved building stone or higher nominal MarketValue without an expedition-worthy prize fails.",
         "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
         "live_only_why": "State can prove controller links and combat, but a live view is required to judge whether warning, possession and retreat read as the crystal inhabitants acting rather than an unexplained attack."
       },
@@ -237,7 +243,7 @@
         "resources"
       ],
       "eligibility": {
-        "reject_test": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise. The protected native crystal must tempt extraction before its inhabitants answer: useful stone somewhere else cannot substitute for this riches-to-inhabitants turn. Desirability is a practical construction/trade opportunity compared with reachable unprotected rock, not a prescribed price or guaranteed fortune.",
+        "reject_test": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise. The protected native crystal must tempt extraction before its inhabitants answer: useful stone somewhere else cannot substitute for this riches-to-inhabitants turn. The gallery haul must be a prize the colony would mount an expedition for, among the most valuable things it brings home and worth the trip and risk on its own, as well as a better practical construction/trade opportunity than reachable unprotected rock. No prescribed price or guaranteed fortune is required.",
         "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
         "first_version_test": "signature: observable intelligent agency and remote defence"
       }
@@ -253,11 +259,16 @@
             "word": "befriend",
             "stands_for": "earn remembered peaceful familiarity and voluntary company, not ownership or a vanilla recruitable social bond",
             "accept": "The familiar suit greets the colony and then leaves to resume its own rounds."
+          },
+          {
+            "word": "chosen company",
+            "stands_for": "Orun’s own rounds preferring to stay near a present familiar colonist for a while over its other destinations, by its own choice and never under player command",
+            "accept": "It drifts along beside the researcher for part of the visit, then wanders off to a mind."
           }
         ]
       },
       "accept": [
-        "A colonist completes ordinary study visits; when the colony later returns, the skeleton-bearing suit walks over, stops to face them and gives its recognisable harmless greeting before choosing their company.",
+        "A colonist completes ordinary study visits; when the colony later returns, the skeleton-bearing suit walks over, stops to face them and gives its recognisable harmless greeting before choosing their company. It drifts along beside the researcher for part of the visit, then wanders off to a mind.",
         "An interrupted visit grants no acquaintance, while a completed visit still matters after the studier dies and another colonist returns; a downed suit cannot pretend to greet."
       ],
       "reject": [
@@ -273,7 +284,7 @@
         "instrument": "Live ordinary encounter look backed by Encounter walk and actual study/reservation/job-completion/day/relationship state reads; observe return via portal, not a teleport and direct CompleteSession calls.",
         "start": "Generated Orun and mind gallery, unacquainted colony, accessible study target. Credit only completed normal research-work jobs. Independently seeded already-familiar fixture is allowed solely for greeting geometry checks, never progression proof.",
         "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
-        "control": "A random wander toward a pawn can imitate company. Compare wary and familiar forks at matched positions, identify greeting state/target and saved completion history, then leave and return after reload. ProofStudy and debug-set tiers invalidate progression evidence.",
+        "control": "A random wander toward a pawn can imitate company. Compare wary and familiar forks at matched positions, identify greeting state/target, the suit’s own rounds choosing continued proximity over other destinations, and saved completion history, then leave and return after reload. ProofStudy and debug-set tiers invalidate progression evidence.",
         "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
         "live_only_why": "Saved standing is readable offline, but peaceful curiosity and a distinctive recognisable greeting require seeing the encounter. No screenshot of flight is required."
       },
@@ -437,7 +448,7 @@
   "rules": [
     {
       "id": "R1",
-      "rule": "Use persistent vanilla MapPortal/CaveExit on the fixed world. Default host eligibility is the intersection of loaded supported cold-host biomes and fixed source-tile annual temperature <= -40 C on the nightside; indoor temperature/cold snap never qualifies. Local cave/entrance map generation is allowed, automated planetary generation is prohibited. Multiple mouths create independent cave identities unless explicitly linked; never silently merge or replace an occupied Deep.",
+      "rule": "Use persistent vanilla MapPortal/CaveExit on the fixed world. Host eligibility is always the intersection of loaded supported cold-host biomes and fixed source-tile annual temperature <= -40 C on the nightside; indoor temperature/cold snap never qualifies. Custom host selection may widen the biome list, labelled unsupported outside shipped hosts, but every selected host must still pass that same fixed nightside temperature test; it can never admit a warmer host. Local cave/entrance map generation is allowed, automated planetary generation is prohibited. Multiple mouths create independent cave identities unless explicitly linked; never silently merge or replace an occupied Deep.",
       "touches": [
         "map identity",
         "cave geometry",
@@ -467,7 +478,7 @@
     },
     {
       "id": "R4",
-      "rule": "Each mind has a visible inspect/select overlay for its protected gallery: current starting reach 7 cells in horizontal Euclidean distance, clipped to this map and native RM_LanternstoneWall cells bordering reachable open floor; radio/crystal control may cross rock within that reach. Ordinary light facing uses actual received light and a visible target, not seeing through rock. Associate finite existing chassis by stable mind/body IDs; overlap belongs to nearest living mind, ties stable ID. No body duplication, corpse erasure or colony-droid conversion. Protected deposits are concentrated workable native lanternstone, mined to RM_ChunkLanternstone and cut into RM_Lanternstone; they must offer a more desirable construction/trade opportunity than reachable unprotected ordinary rock, without an equivalent easy unguarded lanternstone haul nearby. Scattered unprotected lanternstone may remain, with no new mineral type or campaign dependency.",
+      "rule": "Each mind has a visible inspect/select overlay for its protected gallery: current starting reach 7 cells in horizontal Euclidean distance, clipped to this map and native RM_LanternstoneWall cells bordering reachable open floor; radio/crystal control may cross rock within that reach. Ordinary light facing uses actual received light and a visible target, not seeing through rock. Associate finite existing chassis by stable mind/body IDs; overlap belongs to nearest living mind, ties stable ID. No body duplication, corpse erasure or colony-droid conversion. Protected deposits are concentrated workable native lanternstone, mined to RM_ChunkLanternstone and cut into RM_Lanternstone; they must offer a more desirable construction/trade opportunity than reachable unprotected ordinary rock, without an equivalent easy unguarded lanternstone haul nearby. The gallery haul must also be a prize the colony would mount an expedition for, among the most valuable things it brings home and worth the trip and risk on its own; a marginal improvement over building stone fails. Scattered unprotected lanternstone may remain, with no new mineral type or campaign dependency.",
       "touches": [
         "controller state",
         "attention state",
@@ -479,7 +490,7 @@
     },
     {
       "id": "R5",
-      "rule": "Designating protected native lanternstone (the R4 deposit) or attacking the mind/chassis exposes a warning and controller relation. Only actual damage or completed protected extraction provokes existing chassis; no remote defence for unprotected ordinary stone or standing Lantern harvest. Defenders use ordinary melee jobs, remain within their controller reach, return when intruders retreat, and visibly slump when no living controller remains. A blocked path means visible guarding, never teleportation. Mine and withdraw can repeat without creating bodies. Orun never defends. Initial proposed wind-up is 250 production ticks with visible activation before retaliation; it is a tuning rule, never a bar number.",
+      "rule": "Designating protected native lanternstone (the R4 deposit) or attacking the mind/chassis exposes a warning and controller relation. Only completed protected extraction or actual mind/chassis damage dealt by a colony pawn or through a player order provokes existing chassis. Defence targets the instigating intruder. A roof fall caused by completed protected extraction counts as that extraction and targets the extracting pawn; environmental damage, wild-animal damage (including a drawn moth) and roof-fall damage from unprotected work do not provoke. No remote defence for unprotected ordinary stone or standing Lantern harvest. Defenders use ordinary melee jobs, remain within their controller reach, return when intruders retreat, and visibly slump when no living controller remains. A blocked path means visible guarding, never teleportation. Mine and withdraw can repeat without creating bodies. Orun never defends. Initial proposed wind-up is 250 production ticks with visible activation before retaliation; it is a tuning rule, never a bar number.",
       "touches": [
         "attention state",
         "controller state",
@@ -490,7 +501,7 @@
     },
     {
       "id": "R6",
-      "rule": "Orun acquaintance is saved per colony per Deep, earned only by completed reachable study visits, limited to one credited visit per in-game day (existing stricter cooldown may be retained as tuning). Greeting when a familiar colony returns: walk to a reachable visitor, stop facing them, give a brief distinctive blue greeting pulse, then resume harmless company/rounds. Never forcibly interrupt drafted/medical/emergency player work. Downed suit has no greeting/study; destroyed suit stays dead. Gallery hostility defers greeting until safe, but does not erase acquaintance.",
+      "rule": "Orun acquaintance is saved per colony per Deep, earned only by completed reachable study visits, limited to one credited visit per in-game day (existing stricter cooldown may be retained as tuning). Greeting when a familiar colony returns: walk to a reachable visitor, stop facing them, give a brief distinctive blue greeting pulse, then its own rounds prefer staying near a present familiar colonist for part of the visit over other destinations, voluntarily and never under player command, before it wanders off to a mind or another destination. Never forcibly interrupt drafted/medical/emergency player work. Downed suit has no greeting/study; destroyed suit stays dead. Gallery hostility defers greeting until safe, but does not erase acquaintance.",
       "touches": [
         "controller state",
         "attention state",
@@ -501,7 +512,7 @@
     },
     {
       "id": "R7",
-      "rule": "Keep ordinary animal bodies, products and current admission status; no evictions, new dormant placements or global duplicate sweeps. Use ordinary food/grazing/predation/reproduction, real fictional flight and native-water compatibility. Maintain cave-native initial flora/animals and regrowth through existing engine APIs. Ordinary body glow is life. No special breeder, wound linking, battery, heat, hide/lunge, fuel trail, splitting or storm modifier is required at defaults.",
+      "rule": "Keep ordinary animal bodies, products and current admission status; no evictions, new dormant placements or global duplicate sweeps. Use ordinary food/grazing/predation/reproduction, real fictional flight and native-water compatibility. Maintain cave-native initial flora/animals and regrowth through existing engine APIs. Ordinary body glow is life. No wrong-blood poison/death, special breeder, wound linking, battery, heat, hide/lunge, fuel trail, splitting or storm modifier is required at defaults.",
       "touches": [
         "ecology",
         "resources",
@@ -533,7 +544,7 @@
     },
     {
       "id": "R10",
-      "rule": "Native lanternstone remains useful for construction/trade, with the R4 protected deposits a better expedition opportunity than ordinary unprotected rock. Puffer remains edible and lace supplies cloth; no guaranteed fortune or mushroom logs. Fuel milk/butcher products must resolve at their existing provider. Keep Wreckage field policy and Bones remains lifecycle as dependencies; no second salvage ladder. Do not expose campaign mindstone/Kindled/kyber/Force plots at defaults or leak late Cathedral knowledge.",
+      "rule": "Native lanternstone remains useful for construction/trade, with the R4 protected deposits a better expedition opportunity than ordinary unprotected rock. The gallery haul must also be a prize the colony would mount an expedition for, among the most valuable things it brings home and worth the trip and risk on its own; a marginal improvement over building stone fails. Puffer remains edible and lace supplies cloth; no guaranteed fortune or mushroom logs. Fuel milk/butcher products must resolve at their existing provider. Keep Wreckage field policy and Bones remains lifecycle as dependencies; no second salvage ladder. Do not expose campaign mindstone/Kindled/kyber/Force plots at defaults or leak late Cathedral knowledge.",
       "touches": [
         "resources",
         "ecology",

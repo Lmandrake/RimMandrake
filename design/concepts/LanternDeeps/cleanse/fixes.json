@@ -1,0 +1,29 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Restored riches as an expedition-worthy prize among the colony’s most valuable returns, worth the trip and risk itself, with a figurative reading and marginal-building-stone reject; retained the unprotected-rock comparison and no-salvage substitution. Mirrored the requirement in definition, rules and build acceptance.",
+      "where": "bars.json B5, R4, R10; definition.md Why a player reaches for it; ambiguities.md 7; tickets.md T22/T24; owner_pages.md"
+    },
+    {
+      "id": "R2",
+      "changed": "Limited provoking damage to colony pawns/player orders and targeted the instigating intruder. Protected-extraction roof falls count as that extraction; environmental, wild-animal and unprotected-work roof damage do not provoke. Added the unprotected roof-fall and predator/moth range cases and discriminating controls.",
+      "where": "bars.json R5 and B5 range/sees.control; definition.md Routine; ambiguities.md 16; tickets.md T22; owner_pages.md"
+    },
+    {
+      "id": "R3",
+      "changed": "Split wrong-blood poison/rapid death into a next-version capability with default-off T40, decoupled from retained bite feeding and sacs; excluded it in R7 and updated dependency wording, next-version list and counts (74 capabilities, 41 kept, 30 next version, 40 tickets).",
+      "where": "census.json drinker, drinker_wrong_blood_poison, engine_creatures; bars.json R7; next_version.md; tickets.md T40; definition.md Edges and neighbours; ambiguities.md 23; result.json; owner_pages.md"
+    },
+    {
+      "id": "R4",
+      "changed": "Marked chosen company figurative: Orun’s own rounds voluntarily prefer staying near a familiar visitor for part of the visit, then leave; no player command. Added the researcher example and a preference control, mirrored in R6 and greeting acceptance.",
+      "where": "bars.json B6 and R6; definition.md Routine; ambiguities.md 20; tickets.md T23; owner_pages.md"
+    },
+    {
+      "id": "R5",
+      "changed": "Made the fixed source-tile nightside temperature test mandatory for all hosts; unsupported custom selection widens only the biome list within that test. Removed the warm-host customization implication and required custom warm selections to reject injection.",
+      "where": "bars.json R1; definition.md Settings; ambiguities.md 4; tickets.md T24; owner_pages.md"
+    }
+  ]
+}
