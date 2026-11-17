@@ -1,0 +1,683 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "Colonists enter green canopy above low standing steam, with firm root routes through slow churnmud and foliage that obstructs pawn sight while close inspection still identifies the footing.",
+      "meant": {
+        "intent": "Ordinary land is a steaming, obstructed but readable place in which route choice matters.",
+        "source": "the_greentide.md sections 1, 4c, 8b; composition root; delegated from these pictures, subject to later Direct Sun and fixed-world rulings",
+        "figurative": []
+      },
+      "accept": [
+        "Low steam obscures ground detail while tree crowns and silhouettes remain readable; inspecting a cell identifies mud or root footing, and a colonist takes the root route around boggy undergrowth.",
+        "A shot or witnessed act is blocked by the mature sight-blocking understory; the player can still inspect the map and an open lane restores pawn sight."
+      ],
+      "reject": [
+        "A green recolour of an open swamp, or a screen-wide grey fog that erases crowns and ground equally, leaves no distinct low-steam jungle.",
+        "Root texture is painted over mud but has the same footing, or a visible thicket allows pawn sight straight through it."
+      ],
+      "lazy": "none: Low steam versus readable crowns, real footing contrast and pawn sight obstruction all occur in the sentence; recoloured clear terrain or flat opaque fog cannot satisfy it.",
+      "range": {
+        "varies": "Full local maps 150x150, 250x250, 325x325; flat, large-hill and mountain relief; river, river edge and authored riverless-remnant contexts; leaf stages before/at/after sight threshold; approach bearings 0..359 degrees; camera normal/close; Roil, clearing and return; colony 1..40.",
+        "left_out": "Planet generation and painting are excluded. A riverless remnant is not automatically a wet living-river example; no invented water or rosters. Artistic variants need the same legibility, not a fixed count."
+      },
+      "sees": {
+        "instrument": "Live still/short-motion walk for ground-versus-crown reading, backed by terrain/LOS/path-cost state reads and M3 geometry sweep (T34/T36).",
+        "start": "Authored or disposable local map with recorded terrain, canopy and sight-block grid; camera and labels usable; no injected weather lock; root-route cells and mud cells identified independently.",
+        "on": "All kept Greentide mechanics and their shared-engine gates at shipped defaults, all research/work prerequisites available, all DLC installed; next-version extras off. Natural weather clock unlocked. A paired mechanism-off control is supplemental, never the accepted run. Capture actual loaded content/settings fingerprints.",
+        "control": "Compare current overlay depth to ground and crown landmarks in the same camera frame, not a green screenshot; compare an open lane and matched mature thicket with equal weapon/pawn and terrain. Cell labels and path state disallow a texture-only false pass.",
+        "reset": "Disposable baseline save plus settings/derived-def snapshot: reload baseline and restore prior values after each arm. Record loaded fingerprints and verify subjects, property, queues, weather and registrations match baseline. Never restore guessed defaults over prior user settings.",
+        "live_only_why": "Rendering/audio and the meaning of the running player scene cannot be inferred from defs or kernel outputs; model/state readings supply corroboration, not this judgment."
+      },
+      "live_only": true,
+      "touches": [
+        "ground_routes",
+        "vegetation",
+        "weather_sun",
+        "settings_lifecycle"
+      ],
+      "tests": {
+        "reject": "Required by the_greentide.md sections 1, 4c, 8b; composition root; delegated from these pictures, subject to later Direct Sun and fixed-world rulings; a false outcome removes Ordinary land is a steaming, obstructed but readable place in which route choice matters.",
+        "renormalize": "No yield/stat/size/variant quota in the experience or pictures; retuning checks does not rewrite or re-pass this bar.",
+        "first_version": "Land, life, signature or explicit needed_by arguments in census.json; no deferred capability is assumed."
+      }
+    },
+    {
+      "id": "B2",
+      "says": "Colonists can bring useful alien food, timber and tameable grazing life out of a jungle whose falling trees, hunting predators and defending insects make the harvest dangerous, with readable signs and practical retreat.",
+      "meant": {
+        "intent": "The binding risk/reward exchange is present in ordinary life, not a zoo or a harmless larder.",
+        "source": "GREENTIDE_RISK_REWARD_EXCHANGE_1 owner ruling/card confirmation 2026-09-22; tree/understory rosters; kit silence card 2026-09-11; delegated practical harvest/retreat interpretation",
+        "figurative": [
+          {
+            "word": "out of a jungle",
+            "stands_for": "from dangerous living surroundings into useful colony stock and work, not compulsory departure from the biome",
+            "accept": "A colony inside the jungle brings harvested fruit into its own kitchen and cooks it without leaving the biome."
+          }
+        ]
+      },
+      "accept": [
+        "A forager finds edible fruit and roots, a fisher returns an exotic catch, a hunter brings meat and a herder keeps a grazer; fallen timber and resin are useful at home, while a cracking tree, concealed water hunt and disturbed gall each force a legible decision.",
+        "A gall found naturally beside its living host releases defending wasps when disturbed; retreat ends pursuit without erasing the insects, and a concealed hunt hushes biome ambience with a visible warning before the player can respond."
+      ],
+      "reject": [
+        "Every pictured plant is decoration, useful catches require a debug spawn, or all danger exists in descriptions while harvesting is carefree.",
+        "Every route is permanently lethal even to a prepared party, warnings arrive only after unavoidable loss, or a threat vanishes silently when the party retreats.",
+        "A flying native walks throughout its ordinary travel, or the hum of machinery is muted instead of the biome hunt warning."
+      ],
+      "lazy": "none: Actual useful return, natural plant/predator/insect danger, readable signs and retreat are jointly required; a decorative zoo or debug-only harvest cannot satisfy those words.",
+      "range": {
+        "varies": "Natural mixed ecology across the map sizes and relief of B1, first day through day 60, colony 1/8/40; grazers wild/tamed/dead; flyers grounded/airborne; tree crack/gnaw/herd fall; gall intact/disturbed/spent; aquatic predator deep/shallow/land, hungry/fed, hunts started/ended/overlapping, native water and mud exposure; actual harvest, cooking, butchery, fishing and hauling with ordinary work priorities. Rare species need not occur in every map; their available behaviors are covered in generated situations.",
+        "left_out": "No eviction, new cuisine crafting system, vurrak disguise, illisk armor, ant raid, extra plant attack or Greatbole harvest is needed. Gristle remains an ordinary predator and ookala an ordinary canopy-themed pawn until special travel is built later. Catch-only fish waiver is preserved."
+      },
+      "sees": {
+        "instrument": "Live ordinary resource outing and return-to-kitchen sequence plus sound check; state traces for natural source/ownership/use, flight tracker, hunting job, hush reason, sting severity and capped spawns (T34/T37). M1/M2 support causal coverage.",
+        "start": "No manually seeded harvest inventory, no pre-spawned gall or threats used as natural-placement proof; normal populated map and trained party with equipment obtainable without extras; record held stock, nearby host plants and current hunt reasons.",
+        "on": "All kept Greentide mechanics and their shared-engine gates at shipped defaults, all research/work prerequisites available, all DLC installed; next-version extras off. Natural weather clock unlocked. A paired mechanism-off control is supplemental, never the accepted run. Capture actual loaded content/settings fingerprints.",
+        "control": "Trace produce to harvested or caught source, then consumption/build use. Compare intact versus disturbed naturally present gall and hunt-start versus idle predator, holding other threats running; read per-source damage, jobs and hush reason. Standard same-purpose swamp play is context for usefulness, never a numerical pass threshold. Silent UI warning must remain understandable with sound off.",
+        "reset": "Disposable baseline save plus settings/derived-def snapshot: reload baseline and restore prior values after each arm. Record loaded fingerprints and verify subjects, property, queues, weather and registrations match baseline. Never restore guessed defaults over prior user settings.",
+        "live_only_why": "Rendering/audio and the meaning of the running player scene cannot be inferred from defs or kernel outputs; model/state readings supply corroboration, not this judgment."
+      },
+      "live_only": true,
+      "touches": [
+        "ground_routes",
+        "vegetation",
+        "wildlife",
+        "weather_sun",
+        "property",
+        "care_work",
+        "settings_lifecycle"
+      ],
+      "tests": {
+        "reject": "Required by GREENTIDE_RISK_REWARD_EXCHANGE_1 owner ruling/card confirmation 2026-09-22; tree/understory rosters; kit silence card 2026-09-11; delegated practical harvest/retreat interpretation; a false outcome removes The binding risk/reward exchange is present in ordinary life, not a zoo or a harmless larder.",
+        "renormalize": "No yield/stat/size/variant quota in the experience or pictures; retuning checks does not rewrite or re-pass this bar.",
+        "first_version": "Land, life, signature or explicit needed_by arguments in census.json; no deferred capability is assumed."
+      }
+    },
+    {
+      "id": "B3",
+      "says": "Repeated natural wet growth obstructs exposed routes and entrance approaches to an inhabited home, allowing warned recovery before prolonged neglect can force the colony to leave supplies behind.",
+      "meant": {
+        "intent": "Defend an inhabited foothold; growth causes the maintenance burden and neglect causes recoverable loss before abandonment.",
+        "source": "ANSWERS_OWNER.md answers by card 2026-11-10: inhabited access and recovery-first neglect; the_greentide.md growth/door promise; delegated exterior-approach interpretation constrained by later ExplosiveGrowth built-ground law",
+        "figurative": []
+      },
+      "accept": [
+        "After colonists repeatedly use an exposed dirt approach, untreated vegetation returns and hauling slows or an entrance approach becomes unusable; visible encroachment alerts the player, who clears a usable rescue and retrieval path.",
+        "After continued neglect the colony can lose practical working access while a deliberately maintained route still allows reaching a stranded person; restoring upkeep recovers the foothold without resetting the map."
+      ],
+      "reject": [
+        "Plants grow faster in a specimen garden but an occupied home never needs route maintenance, or only a forced growth explosion produces encroachment.",
+        "The jungle instantly bricks the only exit or strands rescuers beyond recovery before a visible warning, or secretly spawns through sealed floors and walls to fake pressure."
+      ],
+      "lazy": "none: Repeated natural obstruction of access to an inhabited home plus warned recovery excludes fast specimen growth, a forced burst and immediate enclosure.",
+      "range": {
+        "varies": "Light above/below shared growth threshold; wet-native immature/mature/wither/seed passage; exposed dirt route width 1..5, entrance approaches to occupied rooms, cleared/neglected/recleared; day 1..60, colony 1/8/40, grazing present/lost, blower active/outage/repaired, storm clearing/return and save mid-cycle. Source footprint/eligible spawn cells recorded; complete enclosed paved access may be earned and need not be invaded.",
+        "left_out": "Growth through floors, walls or enclosed rooms is deliberately excluded by the shared ruled engine. No new humidity/blackout-root law. No guarantee of abandonment in a completely maintained engineered base, nor automatic difficulty escalation as the colony learns."
+      },
+      "sees": {
+        "instrument": "Natural-cycle state trace of plant births/maturity and route cost/reachability with causal source IDs, plus M2 season model calibrated to it. Existing forced-top script cannot supply this reading (T33/T34).",
+        "start": "Occupied home with initially usable exterior dirt approach and independent firm rescue route; naturally cycling nearby wet plants, no debug top firing; initial path, water/light, suppression cells, maintained/neglected zones and stock recorded.",
+        "on": "All kept Greentide mechanics and their shared-engine gates at shipped defaults, all research/work prerequisites available, all DLC installed; next-version extras off. Natural weather clock unlocked. A paired mechanism-off control is supplemental, never the accepted run. Capture actual loaded content/settings fingerprints.",
+        "control": "Matched source/route with identical workers, weather and threats but one treatment maintained and one untreated; attribute changed paths to plant occupancy/cost, not a fallen trunk, mire or raider. Supplemental suppression-off arm proves that default protection was causal, then restore all defaults for acceptance.",
+        "reset": "Disposable baseline save plus settings/derived-def snapshot: reload baseline and restore prior values after each arm. Record loaded fingerprints and verify subjects, property, queues, weather and registrations match baseline. Never restore guessed defaults over prior user settings.",
+        "live_only_why": "Not live-only: deterministic gameplay state and calibrated production-kernel/geometry readings distinguish the outcomes; the necessary game adapter is ticketed. No current passing claim."
+      },
+      "live_only": false,
+      "touches": [
+        "ground_routes",
+        "vegetation",
+        "property",
+        "care_work",
+        "weather_sun",
+        "settings_lifecycle"
+      ],
+      "tests": {
+        "reject": "Required by ANSWERS_OWNER.md answers by card 2026-11-10: inhabited access and recovery-first neglect; the_greentide.md growth/door promise; delegated exterior-approach interpretation constrained by later ExplosiveGrowth built-ground law; a false outcome removes Defend an inhabited foothold; growth causes the maintenance burden and neglect causes recoverable loss before abandonment.",
+        "renormalize": "No yield/stat/size/variant quota in the experience or pictures; retuning checks does not rewrite or re-pass this bar.",
+        "first_version": "Land, life, signature or explicit needed_by arguments in census.json; no deferred capability is assumed."
+      }
+    },
+    {
+      "id": "B4",
+      "says": "An operating blower maintains a cleared doorway approach and cools the enclosed room behind it, while grazing limits regrowth where animals actually eat; loss of either defence is visible early enough to restore protection and access.",
+      "meant": {
+        "intent": "Local care buys working space; outage and herd loss expose a recoverable weakness, without a map-wide immunity.",
+        "source": "the_greentide.md blower/grazing; BLOWER_ROOM_COOLER_1 card 2026-10-08; owner recovery-first answer 2026-11-10; delegated bounded geometry/recovery default",
+        "figurative": []
+      },
+      "accept": [
+        "New seedlings return outside a working blower field while its previously cleared approach stays usable; the back room cools, a grazer suppresses cells it actually consumes, and distant jungle keeps growing.",
+        "Fuel or power loss stops the working tell; retained protection expires, new growth begins visibly, and refuelling plus clearing restores access before practical rescue is lost. Losing a grazing herd ends that source of protection."
+      ],
+      "reject": [
+        "A settings checkbox or suppression-grid write changes but plants continue to obstruct the protected approach, or the blower protects the entire base regardless of direction.",
+        "A named grazer suppresses cells without eating, an empty pen grants permanent immunity, or blower cooling heats an exhaust room.",
+        "Outage gives no readable sign until the entrance and all rescue paths have already failed."
+      ],
+      "lazy": "none: The sentence requires effective local prevention, actual eating, correct-side cooling and visible recoverable interruption, excluding checkbox/grid-only or global-immunity builds.",
+      "range": {
+        "varies": "All cardinal blower rotations; field boundary cells and occluders; power/fuel/flick combinations 0/1; room open/enclosed/unroofed; actual grazers 0/1/herd, interruption/death/taming; suppressed hold just before/at/after expiry; reload during active hold and outage; multiple overlapping fields; daily work for 1/8/40 colonists; all other kept mechanics on.",
+        "left_out": "A blower prevents new encroachment on its field, not removal of existing thickets, terrain drainage or deletion of hostiles. No invented roof/floor bypass, portable weapon or grazing order. No heat immunity outside a cooled enclosure."
+      },
+      "sees": {
+        "instrument": "M3 geometry sweep plus actual plant-birth/path, suppression-expiry, consumed-plant and room-temperature state trace (T34/T36); engine-only registration counts cannot pass it.",
+        "start": "Cleared doorway approach with field coverage asserted, matched untreated dirt, functioning power AND fuel AND flick state, known enclosed back room, nearby eatable plants and a hungry grazer; no other cooler or suppression source in comparison cells.",
+        "on": "All kept Greentide mechanics and their shared-engine gates at shipped defaults, all research/work prerequisites available, all DLC installed; next-version extras off. Natural weather clock unlocked. A paired mechanism-off control is supplemental, never the accepted run. Capture actual loaded content/settings fingerprints.",
+        "control": "Log each suppression writer and consumed plant; remove only one source in a matched supplemental control while retaining natural weather and other threats. Use a same-shape unpowered blower control and matched room to exclude shade, roof insulation or a second cooler as the cause.",
+        "reset": "Disposable baseline save plus settings/derived-def snapshot: reload baseline and restore prior values after each arm. Record loaded fingerprints and verify subjects, property, queues, weather and registrations match baseline. Never restore guessed defaults over prior user settings.",
+        "live_only_why": "Not live-only: deterministic gameplay state and calibrated production-kernel/geometry readings distinguish the outcomes; the necessary game adapter is ticketed. No current passing claim."
+      },
+      "live_only": false,
+      "touches": [
+        "ground_routes",
+        "vegetation",
+        "wildlife",
+        "weather_sun",
+        "care_work",
+        "settings_lifecycle"
+      ],
+      "tests": {
+        "reject": "Required by the_greentide.md blower/grazing; BLOWER_ROOM_COOLER_1 card 2026-10-08; owner recovery-first answer 2026-11-10; delegated bounded geometry/recovery default; a false outcome removes Local care buys working space; outage and herd loss expose a recoverable weakness, without a map-wide immunity.",
+        "renormalize": "No yield/stat/size/variant quota in the experience or pictures; retuning checks does not rewrite or re-pass this bar.",
+        "first_version": "Land, life, signature or explicit needed_by arguments in census.json; no deferred capability is assumed."
+      }
+    },
+    {
+      "id": "B5",
+      "says": "Churnmud visibly slows and traps vulnerable travellers and buries loose belongings, while prepared footing, extraction to firm ground and digging recover people and the same belongings without silent loss.",
+      "meant": {
+        "intent": "An engineering cost with readable, practical rescue and conserved possessions, not arbitrary deletion.",
+        "source": "the_greentide.md floor; stockpile ruling 2026-09-11 in greentide_kit_spec.md; owner firm-ground rescue answer 2026-11-10; standing no silent pawn disappearance; delegated object-conservation interpretation",
+        "figurative": []
+      },
+      "accept": [
+        "A traveller crossing mud becomes visibly mired; a helper uses an in-place extraction followed by usable escape so both reach nearby firm footing; a prepared floor avoids the trap.",
+        "A loose stockpiled object sinks with a persistent cell marker; after reload, digging returns the same damaged, styled or perishable belonging, and blocked placement retains recoverable contents until room is made."
+      ],
+      "reject": [
+        "The helper resets a health condition but both pawns immediately become trapped again, or natural colonist work selection never reaches the rescue job.",
+        "Digging creates a new pristine replacement, changes quality or biocode, duplicates a partially merged stack, or loses buried contents on reload.",
+        "Native wildlife is progressively mired at home, airborne animals sink while flying, or a corpse or carried object is silently swallowed as if it were loose cargo."
+      ],
+      "lazy": "none: Firm-ground extraction, prepared-footing contrast and the same recovered belongings exclude the known severity-reset and pristine-replacement shortcuts.",
+      "range": {
+        "varies": "Mud/root/constructed/sealed cells and transition boundaries; vulnerable human/guest/prisoner and reachable native animals; grounded/airborne; 1/8/40 colonists; jobs auto/ordered/cancelled/helper dead/target dead/downed/reservation conflict; stacks before/during/after dwell, partial merge, blocked placement, corpse/minified/carried exclusion; quality/stuff/HP/rot/biocode/style/components; stockpile or unzoned; reload before burial, buried, during dig and extraction; toggles off after effects begin.",
+        "left_out": "No pawn burial, underground prisoner storage or special corpse/minified-item recovery is introduced. Excluded objects remain visible and receive ordinary environmental effects. Buried-time decay is off in this version, as the minimal-form kit already specifies; identity is frozen, never refreshed."
+      },
+      "sees": {
+        "instrument": "Production-kernel M1 transition walk plus actual Thing-holder/Scribe roundtrip and path/job state adapter (T34/T35); existing def/stuff/count caches are insufficient.",
+        "start": "Safe baseline with no Mired, distinct full-object fingerprints and exact quantities, empty buried registry, natural work priorities, helper route and safe destination asserted. Vulnerable pawn crosses rather than receiving a seeded condition for the positive run.",
+        "on": "All kept Greentide mechanics and their shared-engine gates at shipped defaults, all research/work prerequisites available, all DLC installed; next-version extras off. Natural weather clock unlocked. A paired mechanism-off control is supplemental, never the accepted run. Capture actual loaded content/settings fingerprints.",
+        "control": "Matched firm-floor subjects and unzoned/stockpile mud objects; compare full object fingerprints before/after, accounting only for declared frozen buried time. Track the actual target, reservation, completed work and safe destination; absence of a hediff alone cannot pass. Dead/airborne/native controls keep the hazard enabled.",
+        "reset": "Disposable baseline save plus settings/derived-def snapshot: reload baseline and restore prior values after each arm. Record loaded fingerprints and verify subjects, property, queues, weather and registrations match baseline. Never restore guessed defaults over prior user settings.",
+        "live_only_why": "Not live-only: deterministic gameplay state and calibrated production-kernel/geometry readings distinguish the outcomes; the necessary game adapter is ticketed. No current passing claim."
+      },
+      "live_only": false,
+      "touches": [
+        "ground_routes",
+        "wildlife",
+        "property",
+        "care_work",
+        "settings_lifecycle"
+      ],
+      "tests": {
+        "reject": "Required by the_greentide.md floor; stockpile ruling 2026-09-11 in greentide_kit_spec.md; owner firm-ground rescue answer 2026-11-10; standing no silent pawn disappearance; delegated object-conservation interpretation; a false outcome removes An engineering cost with readable, practical rescue and conserved possessions, not arbitrary deletion.",
+        "renormalize": "No yield/stat/size/variant quota in the experience or pictures; retuning checks does not rewrite or re-pass this bar.",
+        "first_version": "Land, life, signature or explicit needed_by arguments in census.json; no deferred capability is assumed."
+      }
+    },
+    {
+      "id": "B6",
+      "says": "When the Roil clears, colonists see the exposed floor and shade-seeking native animals move toward available shade; the steam returns under the same common sunlight and ambient-heat rules used elsewhere.",
+      "meant": {
+        "intent": "A readable variation of standing steam with the explicitly required animal response; no biome-specific heat exception.",
+        "source": "greentide_kit_spec.md card 2026-09-11 requires seek-shade in first playable; standing Direct Sun ruling 2026-10-19 supersedes local heat fiction; delegated weather/thermal reconciliation",
+        "figurative": []
+      },
+      "accept": [
+        "The low steam lifts, ground detail becomes visible and a shade-seeking grazer leaves exposed footing for reachable canopy or roof shade; when the clearing ends the low steam returns.",
+        "A roof shades direct radiation but an outdoor shaded worker still faces hot air; an enclosed cooled room answers the air heat, and no reachable shade produces a readable failed search rather than invented cooling."
+      ],
+      "reject": [
+        "A clear-sky screenshot with weather locked permanently hides the return, or the grazer only seeks shade after a debug job is assigned.",
+        "The clearing multiplies a private Greentide sun value, steam creates a separate wet-bulb disease, or a roof instantly cools the surrounding outdoor air."
+      ],
+      "lazy": "none: Exposed-floor reading, autonomous shade response, return and common heat rules are explicit; a locked clear sky or private sun multiplier cannot satisfy them.",
+      "range": {
+        "varies": "Actual condition priority Roil/Breaklight/return including nested start/expiry and reload mid-clearing; native seek-shade carriers idle/hungry/hunted/downed, shade present/blocked/destroyed; low/high sun angle 5..90 degrees as fixed-world geometry supplies; roof/canopy/open/enclosed cooled rooms; air 28..65 C as a scenario envelope, not a new tile-temperature prescription; colony 1..40.",
+        "left_out": "No local sun multiplier, new heat species, per-biome cloud heat exemption or second thermoregulation simulation. Non-carrier animals and drafted human orders do not owe automatic seek-shade. Broken geometry-only tree shade is a shared dependency gap, not permission for a local substitute."
+      },
+      "sees": {
+        "instrument": "Weather/condition, natural AI job/destination, common Direct Sun inputs and vanilla room/Heatstroke state trace; M4 calibrated timing/thermal model, supported by B1 visual clearing reading (T34/T38).",
+        "start": "Natural weather clock unlocked, no artificial heat hediff, recorded shared sun/roof/canopy state and hot air, known shade-seeking carrier with accessible safe shade. No forced AI job.",
+        "on": "All kept Greentide mechanics and their shared-engine gates at shipped defaults, all research/work prerequisites available, all DLC installed; next-version extras off. Natural weather clock unlocked. A paired mechanism-off control is supplemental, never the accepted run. Capture actual loaded content/settings fingerprints.",
+        "control": "At identical geometry compare exposed/shaded cells and carrier/non-carrier without changing air temperature; read both weather priority and active condition. A supplemental unavailable-shade control distinguishes a pathing search from a hardcoded destination or scripted teleport.",
+        "reset": "Disposable baseline save plus settings/derived-def snapshot: reload baseline and restore prior values after each arm. Record loaded fingerprints and verify subjects, property, queues, weather and registrations match baseline. Never restore guessed defaults over prior user settings.",
+        "live_only_why": "Not live-only: deterministic gameplay state and calibrated production-kernel/geometry readings distinguish the outcomes; the necessary game adapter is ticketed. No current passing claim."
+      },
+      "live_only": false,
+      "touches": [
+        "weather_sun",
+        "vegetation",
+        "wildlife",
+        "care_work",
+        "settings_lifecycle"
+      ],
+      "tests": {
+        "reject": "Required by greentide_kit_spec.md card 2026-09-11 requires seek-shade in first playable; standing Direct Sun ruling 2026-10-19 supersedes local heat fiction; delegated weather/thermal reconciliation; a false outcome removes A readable variation of standing steam with the explicitly required animal response; no biome-specific heat exception.",
+        "renormalize": "No yield/stat/size/variant quota in the experience or pictures; retuning checks does not rewrite or re-pass this bar.",
+        "first_version": "Land, life, signature or explicit needed_by arguments in census.json; no deferred capability is assumed."
+      }
+    },
+    {
+      "id": "B7",
+      "says": "The Frenzy offers faster work followed by a dangerous treatable collapse and lasting earned resistance, while learned stellock lace temporarily arrests bleeding without replacing wound care.",
+      "meant": {
+        "intent": "The already-ruled disease bargain and unique medicine make dangerous life worth learning, without another reward progression.",
+        "source": "GREENTIDE_FRENZY_DISEASE_1 owner words/route ruling 2026-09-22; GREENTIDE_FEVER_SPECIALISTS_1 selected payoff 2026-09-25; GREENTIDE_STELLOCK_LACE_BUILD_1 selected discoverable medicine 2026-10-02",
+        "figurative": [
+          {
+            "word": "offers",
+            "stands_for": "a player can choose deliberate infection for its temporary work benefit and later medical cost",
+            "accept": "A doctor administers a stored dose at the player\u2019s order; the disease makes no proposal or dialogue choice."
+          }
+        ]
+      },
+      "accept": [
+        "Natural disease and a deliberately administered harvested dose lead to the same visible surge, collapse and treatment-or-death fork; a survivor of collapse earns a visible persistent mark and resists later exposure, while an early cure or death earns nothing.",
+        "A doctor studies a self-sealed branch from a naturally felled jungle tree, learns lace, then uses it on bleeding wounds and a stump; bleeding stops while wounds remain untended, and returns when the effect expires unless care intervened."
+      ],
+      "reject": [
+        "A permanent work buff has a decorative fever name, collapse never costs real downtime, untreated collapse is harmless, or an early cure grants the survivor reward.",
+        "Lace is a renamed heal-all medicine, the discovery was pre-unlocked for the proof, or only the first cut stops bleeding while another injury continues.",
+        "Disabling the survivor feature leaves its resistance active on an already marked pawn."
+      ],
+      "lazy": "none: Faster work followed by dangerous treatable collapse and earned resistance cannot be a harmless buff; temporary bleeding arrest without replacing wound care excludes healing or partial bleed control.",
+      "range": {
+        "varies": "Ambient/dose exposure; onset/escalation/collapse/recovery/death/early removal; mark absent/present/master off/subtoggle off; repeated dose; 1/8/40 workers with available/tied-up/dead doctors; save at stage boundaries; study/research before/after and independent found-tech project; lace self/administered, cuts/stumps/multiple wounds, tended/untended, expiry/reload; already-ruled out-of-biome lace use is a narrow portability check, not whole-biome support.",
+        "left_out": "No additional jungle cuisine, resistance job lock, extra disease, weapon progression or new doctrine reaction. Existing flu/malaria replacements stand. Numbers of days, dose strength and lace duration remain checks/tuning; real downtime and the treatment fork remain the experience."
+      },
+      "sees": {
+        "instrument": "M1 illness/study/medicine state-machine walk plus actual work, ingestion, tending, bleeding and saved-Hediff state adapter (T34/T39). No regex/kernel mirror alone accepts completed player jobs.",
+        "start": "Unmarked healthy subjects, recorded work speed and task progress, real dose stock from harvest/refining, clean medical supplies, undiscovered stellock project and separate found-tech counter. No debug-granted mark, disease or recipe used as positive-route proof.",
+        "on": "All kept Greentide mechanics and their shared-engine gates at shipped defaults, all research/work prerequisites available, all DLC installed; next-version extras off. Natural weather clock unlocked. A paired mechanism-off control is supplemental, never the accepted run. Capture actual loaded content/settings fingerprints.",
+        "control": "Require completed ingestion/work/tend/use jobs, actual work contribution before collapse and natural stage transitions; compare untreated, treated and early-cure subjects. Before/after bleed totals with wounds still present exclude tending/healing as explanation. Independent study project excludes shared-counter cross-talk.",
+        "reset": "Disposable baseline save plus settings/derived-def snapshot: reload baseline and restore prior values after each arm. Record loaded fingerprints and verify subjects, property, queues, weather and registrations match baseline. Never restore guessed defaults over prior user settings.",
+        "live_only_why": "Not live-only: deterministic gameplay state and calibrated production-kernel/geometry readings distinguish the outcomes; the necessary game adapter is ticketed. No current passing claim."
+      },
+      "live_only": false,
+      "touches": [
+        "property",
+        "care_work",
+        "settings_lifecycle"
+      ],
+      "tests": {
+        "reject": "Required by GREENTIDE_FRENZY_DISEASE_1 owner words/route ruling 2026-09-22; GREENTIDE_FEVER_SPECIALISTS_1 selected payoff 2026-09-25; GREENTIDE_STELLOCK_LACE_BUILD_1 selected discoverable medicine 2026-10-02; a false outcome removes The already-ruled disease bargain and unique medicine make dangerous life worth learning, without another reward progression.",
+        "renormalize": "No yield/stat/size/variant quota in the experience or pictures; retuning checks does not rewrite or re-pass this bar.",
+        "first_version": "Land, life, signature or explicit needed_by arguments in census.json; no deferred capability is assumed."
+      }
+    },
+    {
+      "id": "B8",
+      "says": "A colony living through the complete Greentide cycle can earn and maintain a productive foothold, recover from neglect and continue after saving and returning, while the jungle remains threatening without overrunning the map, becoming barren, trapping routine work or filling the log with errors.",
+      "meant": {
+        "intent": "The first version running whole: abundance, pressure, defence, retrieval and recovery coexist rather than passing in isolated scenes.",
+        "source": "Owner cleanse brief whole-bar requirement 2026-11-16; owner inhabited-home/recovery/rescue answers 2026-11-10; binding danger/reward and flat-danger choice in GREENTIDE_RISK_REWARD_EXCHANGE_1",
+        "figurative": [
+          {
+            "word": "foothold",
+            "stands_for": "a productive inhabited home with maintained working access, not a literal foot-sized hold",
+            "accept": "An enclosed workshop and kitchen with maintained firm approaches is a productive home even though nobody stands on a special ledge."
+          }
+        ]
+      },
+      "accept": [
+        "During ordinary work the colony gathers, cooks, fishes, builds, studies, treats illness and maintains exposed access; a defence interruption produces a visible problem, people and property are recovered, and upkeep restores productive work while living jungle persists outside.",
+        "After a mid-cycle reload the same threats, belongings, suppression expiry and work remain intelligible; doing harvest before upkeep or upkeep before harvest both permit a maintained foothold, and a clearing returns naturally to steam."
+      ],
+      "reject": [
+        "A lush opening scene turns into unchecked vegetation or insect takeover, a stripped barren map, perpetual rescue/dig loops or repeated exceptions once growth, weather, predators and work run together.",
+        "The demonstration locks the sky clear, removes predators, forces every job or top event, leaves research locked, omits a mid-cycle reload, or depends on a deferred tool or landmark.",
+        "Everything resumes after load only because threats or buried belongings were reset, or the colony stays safe only while the script replenishes supplies."
+      ],
+      "lazy": "none: The complete cycle, maintained/recoverable home, continued save return and explicit flood/barren/stall/error exclusions rule out a staged safe afternoon or reload that erases the threats.",
+      "range": {
+        "varies": "Full maps 150/250/325 per side, each relief/water context from B1; a season of 15 game days per arm, extended beyond that until the required natural growth and Roil/clearing/return cycle has completed; an uneventful short run cannot be called a whole-cycle reading; small/new, working 8-colonist and 40-colonist colonies; maintained/outage/repaired/prolonged-neglect policies; no repeated population/difficulty inflation. Save after day 7 during active suppression/burial/illness where feasible, reload and finish. Repeat from same baseline in the second action order. Rare conditional behavior gets B2/B6/B7 transition arms in addition to, never instead of, the default-season run. Main-action schedules preserve real prerequisites: stabilize/clear then gather/process/study/care/retrieve versus gather/retrieve/care then stabilize/clear/study/process; all main actions occur in both, without manufactured success or waived failures.",
+        "left_out": "Worldgen, alternative worlds, deferred extras and absent-DLC configurations. Riverless remnants without enough water cannot stand in for an inhabited wet-river positive case. Engine tick acceleration is allowed; skipping growth, weather, hunger, job, illness, spawn or expiry ticks is not. No claim of enjoyment as a pass condition."
+      },
+      "sees": {
+        "instrument": "Live full-season ordinary-play audit with timestamped state/work/economy/log trace and M2 calibrated whole-mod simulation. T34/T40 supply the replay and comparative orders. Compressed wall time must preserve game tick ordering and all named cycles.",
+        "start": "Fresh local map in the fixed-world context, or specified authored remnant negative arm; normal non-dev-supplied colony resources, enough preparatory unlocked technology to exercise the kept actions, loaded-content/settings fingerprints and initial ecosystem/property/work ledger; neither weather nor growth locked.",
+        "on": "All kept Greentide mechanics and their shared-engine gates at shipped defaults, all research/work prerequisites available, all DLC installed; next-version extras off. Natural weather clock unlocked. A paired mechanism-off control is supplemental, never the accepted run. Capture actual loaded content/settings fingerprints.",
+        "control": "Paired maintained/neglected zones and policy replays on the same saved local geometry isolate management from lucky terrain. Source-tagged births, damage, food and work account for outcomes; inspect all kept master gates and rates at start/mid/end so a disabled mechanism cannot explain apparent balance. Record interruptions rather than cleaning them away.",
+        "reset": "Disposable baseline save plus settings/derived-def snapshot: reload baseline and restore prior values after each arm. Record loaded fingerprints and verify subjects, property, queues, weather and registrations match baseline. Never restore guessed defaults over prior user settings.",
+        "live_only_why": "Rendering/audio and the meaning of the running player scene cannot be inferred from defs or kernel outputs; model/state readings supply corroboration, not this judgment."
+      },
+      "live_only": true,
+      "touches": [
+        "ground_routes",
+        "vegetation",
+        "weather_sun",
+        "wildlife",
+        "property",
+        "care_work",
+        "settings_lifecycle"
+      ],
+      "tests": {
+        "reject": "Required by Owner cleanse brief whole-bar requirement 2026-11-16; owner inhabited-home/recovery/rescue answers 2026-11-10; binding danger/reward and flat-danger choice in GREENTIDE_RISK_REWARD_EXCHANGE_1; a false outcome removes The first version running whole: abundance, pressure, defence, retrieval and recovery coexist rather than passing in isolated scenes.",
+        "renormalize": "No yield/stat/size/variant quota in the experience or pictures; retuning checks does not rewrite or re-pass this bar.",
+        "first_version": "Land, life, signature or explicit needed_by arguments in census.json; no deferred capability is assumed."
+      }
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Parse actual BiomeDef wildAnimals/wildPlants as element-name records, including available patch payloads; do not count li. Record current weights, density and forage values and a same-purpose vanilla swamp baseline as context, not bars."
+    },
+    {
+      "id": "C2",
+      "what": "Current literal baseline: plantDensity 0.99, movementDifficulty 4, animalDensity 3.2 in RM_Greentide_Biome.xml. movementDifficulty is world travel, not local footing. Sentinel-change/readback plus restore must discriminate a dead density applier."
+    },
+    {
+      "id": "C3",
+      "what": "Resolve all local defs/recipes/aliases/compile includes and assets against the actual load composition; current source hashes do not prove deployed hashes. Historical campaign paths are absent, so patched cast and cross-biome dependencies remain unmeasured."
+    },
+    {
+      "id": "C4",
+      "what": "Keep production-kernel C# fuzz (swallow/mire/ladder/vurrak/rules) as regression readings, including deferred mechanisms. Static parsing, mocked plans and Python mirrors never accept gameplay."
+    },
+    {
+      "id": "C5",
+      "what": "Read individual settings flips and effect scopes, derive effective gates through shared kits, persist/reload/reset and verify cleanup on existing effects. Distinct sentinel values, not equality at shipped defaults. Log clean/load/settings are the inherited floor, never extra bars."
+    },
+    {
+      "id": "C6",
+      "what": "Freeze a census of native low-flammability flora including own grass/tall grass; verify inherited flammability and burn spread under shared rules. A gall can burn as a papery insect structure without redefining green native foliage as fuel."
+    },
+    {
+      "id": "C7",
+      "what": "Verify complete object fingerprints and quantity conservation across Scribe, partial stack merge, full map, cancellation, death, settings off and disposal. This catches the current def/stuff/count-only reconstruction risk."
+    },
+    {
+      "id": "C8",
+      "what": "Read field membership per blower rotation, suppression source/expiry, actual grazing writes, weather condition priority, native/airborne immunity and environmental-water eligibility."
+    },
+    {
+      "id": "C9",
+      "what": "Trace completed job source and destination for automatic rescue/dig, doses and lace; preserve initial disease/mark/study counters and confirm Frenzy replacement of flu and malaria."
+    },
+    {
+      "id": "C10",
+      "what": "State-read flight tracker for all kept fictional flyers and verify directional whole-body animation paths. Visual flight sessions require the owner; no screenshot claim."
+    },
+    {
+      "id": "C11",
+      "what": "Default-off extra tests read both absent activation and present enabled activation, including indirect incident, damage-trigger, recipe, job, letter and startup-patch routes. Alias resolution and other-biome shared services remain present."
+    },
+    {
+      "id": "C12",
+      "what": "Season trace records hourly eligible cells/plants, edible produce, timber, grazing intake, suppression, wildlife births/deaths/hunts/stings, route cost/reachability, job backlog, warning-to-loss times, buried property and unique log signatures; export settings/content fingerprints alongside it."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Only local maps on the existing fixed world are in scope; map-local terrain placement is not planet generation. No alternative planet scoring, new worldgen, repaint or tile-count finding. Root causeways stay static and use the existing fallback-anchor path when living landmarks are off.",
+      "touches": [
+        "ground_routes",
+        "settings_lifecycle"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Ordinary wet-native regrowth respects floors, edifices and enclosed rooms under ExplosiveGrowth. Define doorway pressure on exposed eligible approach cells; do not break that law or substitute debug bursts. Normal light-gated maturation replaces old dark-roots wording.",
+      "touches": [
+        "vegetation",
+        "ground_routes"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Newly cleared approaches require maintenance under natural cycles. Initial candidate check envelope: untreated exposed routes show renewed impediment over 1..3 game days; recovery after a 6-hour defence outage is possible. These are Designer tuning hypotheses, not owner numbers or bars; M2 may change them while preserving recovery-first.",
+      "touches": [
+        "vegetation",
+        "care_work",
+        "ground_routes"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Blower protection uses the existing forward arc and suppression expiry; active requires all installed power/fuel/flick prerequisites. It prevents new growth rather than deleting existing thickets. Room cooling is behind it, never deliberate exhaust heating. Grazing writes only on actual ingestion.",
+      "touches": [
+        "vegetation",
+        "weather_sun",
+        "wildlife",
+        "care_work",
+        "ground_routes"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Vulnerable grounded travellers mire; Greentide natives and airborne pawns do not. Freeing must yield a reachable nearby firm destination for both subjects and must fail readably when no such destination exists. No new custom job if extending the existing one suffices.",
+      "touches": [
+        "wildlife",
+        "ground_routes",
+        "care_work"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Burial transfers full object state to a saved holder, never reconstructs only def/stuff/count. Stockpiles have no exemption. Corpse, minified and held objects remain visibly excluded; frozen buried time, retained unplaceable remainder and recoverable designations prevent loss/duplication. Turning off new burial never locks old contents away.",
+      "touches": [
+        "property",
+        "ground_routes",
+        "care_work",
+        "settings_lifecycle"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Common Direct Sun is geometric with shared tree/roof shade; ambient heat is vanilla air temperature. The legacy per-biome felt-offset extension/prose is not an authorized heat mechanism. Roil/Breaklight change the visible weather and shared AI response, never a local sun value.",
+      "touches": [
+        "weather_sun",
+        "vegetation"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Roil is ordinary weather, Breaklight temporarily wins and then returns. No permanent proof-scene lock. Keep the explicitly first-playable shade response and predator hush; hush applies to biome ambience, not machinery, with overlapping reasons owned by the existing shared silence service.",
+      "touches": [
+        "weather_sun",
+        "wildlife",
+        "settings_lifecycle"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Keep every current roster placement; record multi-homing without eviction. Off-by-default abilities leave ordinary species and old save instances intact. A fictional flyer uses actual flight and directional whole-body animation; proof is flight state, no unattended visual flight test. Natives can use their environmental water.",
+      "touches": [
+        "wildlife",
+        "settings_lifecycle"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Keep Frenzy ambient and portable-dose routes, work/collapse/treatment-death fork, earned collapse-survivor resistance; masters govern existing marks as well as new awards. Keep only the selected stellock discovery/bleed-stop medicine chain, using shared study and vanilla care; lace is not treatment.",
+      "touches": [
+        "care_work",
+        "property",
+        "settings_lifecycle"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "Shared settings name the actual owner of each gate. Defaults enable retained mechanics and disable next-version extras. Label Now/new-map/next-start; snapshot prior settings plus derived defs for checks. All-off stops new harm and releases existing traps/protection cleanly without deleting pawns, inventory, or recoverable buried contents.",
+      "touches": [
+        "settings_lifecycle",
+        "property",
+        "care_work"
+      ]
+    },
+    {
+      "id": "R12",
+      "rule": "Do not compensate for experience or population with growing biome danger. Ordinary management uses vanilla work priorities; no forty-pawn manual-order requirement, periodic inventory grants or secret threat cleanup. Bounded shared response budgets remain intact.",
+      "touches": [
+        "care_work",
+        "wildlife",
+        "vegetation"
+      ]
+    },
+    {
+      "id": "R13",
+      "rule": "Natural host-associated galls are adjacent standalone Things using existing reaction events. On host removal stop future hosting, preserve visible gall/wasp lifecycle and shared population limits. No automatic whole-map replacement loop.",
+      "touches": [
+        "vegetation",
+        "wildlife",
+        "ground_routes"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "ground_routes",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B8",
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R13"
+      ],
+      "holds_together": "unknown",
+      "why": "Footing, growth, fallen trunks and rescues can jointly cut the only usable route even if each works alone. Keep a firm rescue route and test full geometry, not pairwise claims.",
+      "model": "M3 Footing and doorway geometry"
+    },
+    {
+      "thing": "vegetation",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B6",
+        "B8",
+        "R2",
+        "R3",
+        "R4",
+        "R7",
+        "R12",
+        "R13"
+      ],
+      "holds_together": "unknown",
+      "why": "Wet sprouts feed grazers, grazing suppresses sprouts, falls change canopy/light, fruit passage adds seedlings, and defence changes hauling capacity. Population and coverage can oscillate or collapse in combination.",
+      "model": "M2 Season of an inhabited foothold"
+    },
+    {
+      "thing": "weather_sun",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B6",
+        "B8",
+        "R4",
+        "R7",
+        "R8"
+      ],
+      "holds_together": "unknown",
+      "why": "The rules exclude a private heat species, but canopy loss plus clearing, room cooling and work timing may still make practical recovery impossible. Actual geometric shading and weather order need calibration.",
+      "model": "M4 Clearing and heat timing"
+    },
+    {
+      "thing": "wildlife",
+      "members": [
+        "B2",
+        "B4",
+        "B5",
+        "B6",
+        "B8",
+        "R4",
+        "R5",
+        "R8",
+        "R9",
+        "R12",
+        "R13"
+      ],
+      "holds_together": "unknown",
+      "why": "Native feeding, water, immunity, canopy gnawing, tree turnover, predator warning and bounded gall responses must support a continuing population and practical retreat with forty colonists.",
+      "model": "M2 Season of an inhabited foothold"
+    },
+    {
+      "thing": "property",
+      "members": [
+        "B2",
+        "B3",
+        "B5",
+        "B7",
+        "B8",
+        "R6",
+        "R10",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Burial, seed-food traffic, dose/lace inventory and reload/cancellation can lose identity or duplicate a partial merge. The present cache stores insufficient state.",
+      "model": "M1 Situations and transitions"
+    },
+    {
+      "thing": "care_work",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Hauling, maintenance, rescue, digging and medicine draw on the same workers; dose-induced collapse or a blocked approach can create a three-way rescue/food/health stall.",
+      "model": "M2 Season of an inhabited foothold"
+    },
+    {
+      "thing": "settings_lifecycle",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R6",
+        "R8",
+        "R9",
+        "R10",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Startup patches, map conditions, derived defs and live gates have different lifetimes. All-off and mid-cycle reload must not leave stuck pawns, active deferred triggers or lost belongings.",
+      "model": "M1 Situations and transitions"
+    }
+  ],
+  "old_bars": {}
+}
