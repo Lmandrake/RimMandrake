@@ -16,6 +16,7 @@ Cases:
   taken      an item we claimed and the supervisor (or another session) started after us is carried by its taker
   legacy     unstamped lines keep the old rule (seat, not supervisor's start, not a role run)
   remeasure  a filed session claims row whose item the supervisor took stops standing (row_standing uses the key)
+  parked     a claim we then parked with `rimflow wait` (latest event a wait) is not debris; a later start un-parks it
   mutation   without the session filter (seat rule alone) the instance yields 11 rows: the test can fail
 """
 import json
@@ -162,6 +163,13 @@ def remeasure():
     check(not wrapup.row_standing(Fake(evs[:1], {"MINE": "doing"}), row, other),
           "remeasure: another session's record never stands on our claim")
 
+def parked():
+    evs = [ev("claim", "PARK", session=ME), ev("wait", "PARK", ts="2026-11-04T01:01:00Z", until="2026-11-05T00:00:00Z",
+                                               reason="his word: after Wednesday")]
+    check(ids(evs, {"PARK": "doing"}) == [], "parked: a claim parked by `wait` is not a still-doing claim")
+    evs.append(ev("start", "PARK", ts="2026-11-04T02:00:00Z", session=ME))
+    check(ids(evs, {"PARK": "doing"}) == ["PARK"], "parked: a start after the wait counts again")
+
 
 def main():
     stamp_cases()
@@ -169,6 +177,7 @@ def main():
     instance()
     windows_and_taken()
     remeasure()
+    parked()
     print("selftest_wrapup_session_claims: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 

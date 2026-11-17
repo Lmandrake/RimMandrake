@@ -315,11 +315,15 @@ def own_event(e, seat, session=None):
 
 def claims_of(evs, states, seat, since, session=None):
     """-> [(item, ts)] this session's own claims/starts (own_event) at or after `since`, still doing, whose LATEST
-    claim/start is also its own: an item the supervisor (or another window) took after us is carried by its taker."""
-    out, last = {}, {}
+    claim/start is also its own: an item the supervisor (or another window) took after us is carried by its taker,
+    and one we parked with `rimflow wait` after it is a deliberate park, not debris."""
+    out, last, parked = {}, {}, set()
     for e in evs:
+        if e.get("event") == "wait" and e.get("id"):
+            parked.add(e["id"])
         if e.get("event") not in ("claim", "start") or not e.get("id"):
             continue
+        parked.discard(e["id"])
         last[e["id"]] = e
         if not own_event(e, seat, session):
             continue
@@ -327,7 +331,7 @@ def claims_of(evs, states, seat, since, session=None):
         if ts >= _iso(since):
             out[e["id"]] = ts
     return sorted((i, t) for i, t in out.items()
-                  if states.get(i) == "doing" and own_event(last[i], seat, session))
+                  if states.get(i) == "doing" and own_event(last[i], seat, session) and i not in parked)
 
 
 # ---------------------------------------------------------------- the census
