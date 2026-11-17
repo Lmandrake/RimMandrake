@@ -1,0 +1,1 @@
+rimworld/list_architect_designators 'visible' is list membership, and jawa/architect_designator_visible reads true for everything while god mode is on: turn godMode off (jawa/debug_settings action=set field=godMode) before reading a build menu. A proof block leaves god mode on.

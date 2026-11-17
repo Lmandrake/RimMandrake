@@ -1,0 +1,1 @@
+Gimme Some Slack: an offline replay of a live map is only as wide as its dump. The owner-map world carried no switches and no per-cell looks, and the fuzz built one look: the live check then failed three times on regimes offline could not see. When live disagrees with an offline replay of the same map, diff what the dump carries before touching the lay.
