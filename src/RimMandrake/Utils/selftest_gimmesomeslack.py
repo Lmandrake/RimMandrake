@@ -77,7 +77,7 @@ def main(argv):
             print("selftest build FAILED")
             return rc
         dll = winbuild.staged_win(rec, SELFTEST) + "\\bin\\Release\\net8.0\\RimMandrakeGimmeSomeSlack.SelfTest.dll"
-        args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else [])
+        args = [winbuild.dotnet_exe(), dll] + (["--probe"] if "--probe" in argv else []) + (["--perdig-only"] if "--perdig-only" in argv else []) + (["--slice-repeat"] if "--slice-repeat" in argv else []) + (["--old-form"] if "--old-form" in argv else []) + (["--lay-profile"] if "--lay-profile" in argv else []) + (["--shape-diag"] if "--shape-diag" in argv else []) + (["--endkind-only"] if "--endkind-only" in argv else []) + (["--joins-only"] if "--joins-only" in argv else []) + (["--live-sweep-only"] if "--live-sweep-only" in argv else []) + (["--geometry"] if "--geometry" in argv else []) + (["--geometry-only"] if "--geometry-only" in argv else []) + (["--no-slacken"] if "--no-slacken" in argv else [])
         for i, a in enumerate(argv):   # approach B fuzz knobs (GssFuzz.cs): --fuzz-scale F, --fuzz-only NAME, --fuzz-seed N
             if a.startswith("--fuzz") and i + 1 < len(argv):
                 args += [a, argv[i + 1]]
@@ -87,6 +87,9 @@ def main(argv):
         if "--unroutable-census" in argv:   # A7 census (UnroutableCensus.cs): --unroutable-census OUT.json [SEEDS]
             i = argv.index("--unroutable-census")
             args += ["--unroutable-census", winbuild.win(os.path.abspath(argv[i + 1]))] + argv[i + 2:i + 3]
+        if "--live-census" in argv:   # LiveEndCensus.cs: --live-census OUT.jsonl [FUZZ_SEEDS [FAMILY_SEEDS]], every live cut end read by the three bars
+            i = argv.index("--live-census")
+            args += ["--live-census", winbuild.win(os.path.abspath(argv[i + 1]))] + [a for a in argv[i + 2:i + 4] if not a.startswith("--")]
         if "--lab" in argv:   # LabWorld.cs: --lab WORLD.json OUT.json, the shape lab on a world the live probe dumped
             i = argv.index("--lab")
             args += ["--lab", winbuild.win(os.path.abspath(argv[i + 1])), winbuild.win(os.path.abspath(argv[i + 2]))]

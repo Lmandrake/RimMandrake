@@ -4,6 +4,7 @@ Version here must match `<modVersion>` in `About/About.xml`. Never deployed (`.m
 
 ## Unreleased
 
+- A live cut end is laid by one rule and whips as a bend running out along a cord that cannot stretch: it leaves the conduit end straight, joins its cord by a round bend (broad where there is room), and never folds at the join. A short pigtail whips whole, right from its fitting; one with no room for a whipping tail lies still and only sparks (owner 2026-11-16). A lone conduit cell beside a machine ends facing away from that machine. A short lead whose fittings hold most of its cord takes its slack as a wire-tied loop.
 - A run of conduit that ends inside a wall or rock enters the face exactly as a run through it does (plate, hole or outlet), with no loose or sparking end; power switch cords come in straight along the switch's stubs (owner 2026-11-16).
 - Every cord leaving a plug (every wall face, device and pile plugs) or a strip plug leaves along the plug's own axis, read from one per-art stub table that the acceptance check also reads (owner 2026-11-16).
 - One connection draws one cord by default: `cordsPerConnection` ships at 1, stays a slider (owner 2026-11-07).

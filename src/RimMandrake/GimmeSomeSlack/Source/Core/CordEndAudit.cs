@@ -154,6 +154,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
             return true;
         }
 
+        /// <summary>Whether this end of a strand (<paramref name="e"/>; <paramref name="other"/> its far end) is the one plugged into a machine
+        /// its piece runs to: the end nearer that machine's plug point.</summary>
+        private static bool MachineEnd(CordGraph g, LaidPiece p, V2 e, V2 other)
+        {
+            foreach (string name in new[] { p.EndA, p.EndB })
+            {
+                if (name == null) continue;
+                foreach (CordNode nd in g.Nodes.Values)
+                    if (nd.IsMachine && nd.OracleName + ":" + nd.Cell.X + "," + nd.Cell.Z == name && V2.Dist(e, nd.Pos) < V2.Dist(other, nd.Pos)) return true;
+            }
+            return false;
+        }
+
         internal static SlopeRead Slopes(CordWorld w, CordGraph g, List<LaidPiece> ps, string scene, Func<V2, bool> keep = null)
         {
             var r = new SlopeRead();
@@ -170,15 +183,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     {
                         V2 e = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
                         if (V2.Dist(e, f.M) > f.Tip + 0.25) continue;
+                        // an end seated in a machine's plug is that machine's, never a box arm's (a battery beside a one-port device box: its lead's
+                        // plug end lies within reach of the box). The exact ownership, in place of "a box with few arms owns only ends within 60
+                        // degrees of an arm", which would also have excused a cord that misses its arm
+                        if (MachineEnd(g, owner[s], e, atStart ? s.Pts[s.Pts.Count - 1] : s.Pts[0])) continue;
                         // an end belongs to the connector it is nearest (two boxes a cell apart share one short cord)
                         if (all.Any(o => o != f && V2.Dist(e, o.M) < V2.Dist(e, f.M))) continue;
                         if (!Crossing(s.Pts, atStart, f.M, f.Tip, out V2 x, out V2 head)) continue;
                         V2 dir = (x - f.M).Norm();
                         int arm = Enumerable.Range(0, f.Arms.Count).OrderByDescending(k => Dot(dir, f.Arms[k])).First();
                         V2 u = f.Arms[arm];
-                        // a connector drawn with fewer arms (the one-port device box, CordDecal.Ports) owns only the ends out along a drawn arm: another
-                        // cord ending beside it (its battery's lead) is not its cord
-                        if (f.Arms.Count < 3 && Dot(dir, u) < 0.5) continue;
+
                         taken.Add(arm);
                         r.Taken++;
                         double gap = V2.Dist(e, f.M) - f.Tip;

@@ -1,0 +1,3 @@
+In an impossibility proof, tag every constraint as a bar or as our own rule, and attack our own rules first. 'Only the outer half of a cord whips' (CordBuilder.TailCount) was the builder's habit, not a bar: with it, a cut end 0.9 cell from its fitting provably could not hold the 0.7 whip bar and a tied service loop looked necessary; without it the bare cord holds every bar (the owner's 'a2'). Also: a pre-existing check that goes red after your change is evidence about your change (LaneAChecks' sharp-snap count caught the bend-wave whip smearing its kick); find the cause before touching the check.
+item: RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN
+home: NONE

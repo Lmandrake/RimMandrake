@@ -212,11 +212,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 188.79,
-    "last": "4514/4514 checks passed",
-    "at": "2026-11-16T09:18:18Z",
+    "seconds": 250.03,
+    "last": "4544/4544 checks passed",
+    "at": "2026-11-17T04:39:58Z",
     "result": "PASS",
-    "build": "54a4f02a7bbebafd21aa",
+    "build": "f79bd8c95a4f8d63d685",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py"
    }
   },
@@ -234,11 +234,13 @@
    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
    "runs_today": {
     "ran": true,
-    "rc": 1,
-    "seconds": 9.81,
-    "last": "3/6 checks passed (stub joins only)",
-    "at": "2026-11-16T07:39:13-08:00",
-    "result": "FAIL"
+    "rc": 0,
+    "seconds": 8.93,
+    "last": "6/6 checks passed (stub joins only)",
+    "at": "2026-11-17T04:40:07Z",
+    "result": "PASS",
+    "build": "3c477927c8bdef9af268",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only"
    }
   },
   "T_STUB_ART_CENSUS": {
@@ -255,10 +257,12 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.01,
     "last": "PASS",
-    "at": "2026-11-16T07:39:13-08:00",
-    "result": "PASS"
+    "at": "2026-11-17T04:40:07Z",
+    "result": "PASS",
+    "build": "cc60cbaf90552dfb3688",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py"
    }
   },
   "T_GATE": {
@@ -276,11 +280,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 202.97,
-    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"wall_s\": 175.6}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"58/58 checks passed (17 negative controls among them)\"], \"wall_s\": 14.2}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/bench/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 0, \"tail\": [\"41/41 checks passed\"], \"wall_s\": 0.0}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 12.5}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.4}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
-    "at": "2026-11-16T09:21:41Z",
+    "seconds": 256.12,
+    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"wall_s\": 230.3}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"57/57 checks passed (17 negative controls among them)\"], \"wall_s\": 8.4}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/relentless/clones/RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN.det/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 0, \"tail\": [\"41/41 checks passed\"], \"wall_s\": 0.0}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 16.7}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.4}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
+    "at": "2026-11-17T04:44:23Z",
     "result": "PASS",
-    "build": "db7db09c2920c744a66e",
+    "build": "14aa420f4bdaf3fe2dcf",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate"
    }
   },
@@ -307,9 +311,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 13.65,
-    "last": "58/58 checks passed (17 negative controls among them)",
-    "at": "2026-11-16T09:21:54Z",
+    "seconds": 11.81,
+    "last": "57/57 checks passed (17 negative controls among them)",
+    "at": "2026-11-17T04:44:35Z",
     "result": "PASS",
     "build": "f695554c102894a1148e",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py"
@@ -330,11 +334,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.83,
+    "seconds": 3.84,
     "last": "PASS  G0_clean_copy  want=green got=[]",
-    "at": "2026-11-16T09:21:56Z",
+    "at": "2026-11-17T04:44:39Z",
     "result": "PASS",
-    "build": "41f221d55bb258e25e60",
+    "build": "092ddfd35688bffb20f4",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py"
    }
   },
@@ -380,11 +384,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.06,
+    "seconds": 0.12,
     "last": "ALL PASS",
-    "at": "2026-11-16T09:21:56Z",
+    "at": "2026-11-17T04:44:39Z",
     "result": "PASS",
-    "build": "e4fb222bb7ca32d9e854",
+    "build": "f53d89d37335ab71191d",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire.py"
    }
   },
@@ -430,11 +434,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.03,
+    "seconds": 13.58,
     "last": "ALL PASS",
-    "at": "2026-11-16T09:22:04Z",
+    "at": "2026-11-17T04:44:52Z",
     "result": "PASS",
-    "build": "b5ae22f8bc34f7d26db3",
+    "build": "5560263811f7696a7aed",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire_binding.py"
    }
   },
@@ -480,11 +484,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.41,
+    "seconds": 0.64,
     "last": "ALL PASS",
-    "at": "2026-11-16T09:22:05Z",
+    "at": "2026-11-17T04:44:53Z",
     "result": "PASS",
-    "build": "b1c2b19619fab3e74d14",
+    "build": "7e5cd38b7315fe7d152a",
     "command": "python3 src/RimMandrake/Utils/selftest_gss_shock_still_bites_binding.py"
    }
   },
@@ -522,11 +526,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.03,
     "last": "gss end-heap budget: ok",
-    "at": "2026-11-16T09:22:05Z",
+    "at": "2026-11-17T04:44:53Z",
     "result": "PASS",
-    "build": "9e354be6fb5c1060d001",
+    "build": "d3366ae692cc038cdcc6",
     "command": "python3 src/RimMandrake/Utils/selftest_gss_end_heap_budget.py"
    }
   },
@@ -558,9 +562,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.14,
+    "seconds": 0.21,
     "last": "12/12 junction PNGs pass",
-    "at": "2026-11-16T09:22:05Z",
+    "at": "2026-11-17T04:44:53Z",
     "result": "PASS",
     "build": "f4ad821eaac05cf84d69",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_junction_necks.py"
@@ -580,9 +584,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.05,
+    "seconds": 0.1,
     "last": "PASS",
-    "at": "2026-11-16T09:22:05Z",
+    "at": "2026-11-17T04:44:53Z",
     "result": "PASS",
     "build": "652afb30042fdfc3686e",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_strip_art.py"
@@ -603,11 +607,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.17,
+    "seconds": 0.34,
     "last": "PASS",
-    "at": "2026-11-16T09:22:05Z",
+    "at": "2026-11-17T04:44:54Z",
     "result": "PASS",
-    "build": "9151527c964824e01264",
+    "build": "60514724f317f13739a7",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py"
    }
   },
@@ -624,12 +628,12 @@
    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 0.08,
-    "last": "GREEN: every row cites a leaf, every leaf has a row or a live item owing it (0 owed)",
-    "at": "2026-11-16T09:22:05Z",
-    "result": "PASS",
-    "build": "8960843737e7246f2bde",
+    "rc": 1,
+    "seconds": 0.11,
+    "last": "RED: 6",
+    "at": "2026-11-17T04:44:54Z",
+    "result": "FAIL",
+    "build": "a5afd1b22ba4c96f0cc9",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py"
    }
   },
@@ -647,9 +651,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.15,
+    "seconds": 0.23,
     "last": "{\"fault\": null, \"row\": {\"id\": \"M15f_restring_joined_run_one_look\", \"status\": \"PASS\", \"class\": \"MOD\", \"detail\": {\"schema\": 1, \"jobDef\": \"RM_RestringSpan\", \"readings\": [{\"cmd\": \"colonists\", \"reply\": {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}]}}, {\"cmd\": \"cstyles\", \"reply\": {\"success\": true, \"cmd\": \"cstyles\", \"defaultKey\": \"Scrapper\", \"members\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"look\": \"Scrapper\", \"rawStyle\": \"Style_Scrapper\", \"colour\": null, \"run\": 2}, {\"id\": 3, \"x\": 116, \"z\": 185, \"look\": \"Scrapper\", \"rawStyle\": \"Style_Scrapper\", \"colour\": null, \"run\": 3}]}}, {\"cmd\": \"cut:2,3\", \"reply\": {\"success\": true, \"cmd\": \"cut:2,3\", \"done\": true}}, {\"cmd\": \"cprocess\", \"reply\": {\"success\": true, \"cmd\": \"cprocess\"}}, {\"cmd\": \"census\", \"reply\": {\"success\": true, \"cmd\": \"census\", \"anchors\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"net\": 11, \"links\": [{\"other\": 3, \"state\": \"Cut\"}]}, {\"id\": 3, \"x\": 116, \"z\": 185, \"net\": 22, \"links\": [{\"other\": 2, \"state\": \"Cut\"}]}]}}, {\"cmd\": \"crestyle:104,185:Modern_Orange\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:104,185:Modern_Orange\"}}, {\"cmd\": \"crestyle:116,185:Industrial\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:116,185:Industrial\"}}, {\"cmd\": \"cstyles\", \"reply\": {\"success\": true, \"cmd\": \"cstyles\", \"defaultKey\": \"Scrapper\", \"members\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"look\": \"Modern\", \"rawStyle\": \"Style_Modern\", \"colour\": null, \"run\": 2}, {\"id\": 3, \"x\": 116, \"z\": 185, \"look\": \"Industrial\", \"rawStyle\": \"Style_Industrial\", \"colour\": null, \"run\": 3}]}}, {\"cmd\": \"restringorder:2\", \"reply\": {\"success\": true, \"cmd\": \"restringorder:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0}}, {\"cmd\": \"pawn:7=undraft\", \"reply\": {\"success\": true, \"cmd\": \"pawn:7=undraft\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": false, \"downed\": false, \"job\": null}}}, {\"cmd\": \"restringjob:2\", \"reply\": {\"success\": true, \"cmd\": \"restringjob:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0, \"by\": \"Human7\"}}, {\"cmd\": \"colonists\", \"reply\": {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": false, \"downed\": false, \"job\": \"RM_RestringSpan\"}]}}, {\"cmd\": \"restringstate:2\", \"reply\": {\"success\": true, \"cmd\": \"restringstate:2\", \"cut\": 0, \"designated\": false, \"jobsDone\": 1, \"spansRestrung\": 1}}, {\"cmd\": \"cprocess\", \"reply\": {\"success\": true, \"cmd\": \"cprocess\"}}, {\"cmd\": \"census\", \"reply\": {\"success\": true, \"cmd\": \"census\", \"anchors\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"net\": 11, \"links\": [{\"other\": 3, \"state\": \"Up\"}]}, {\"id\": 3, \"x\": 116, \"z\": 185, \"net\": 11, \"links\": [{\"other\": 2, \"state\": \"Up\"}]}]}}, {\"cmd\": \"cstyles\", \"reply\": {\"success\": true, \"cmd\": \"cstyles\", \"defaultKey\": \"Scrapper\", \"members\": [{\"id\": 2, \"x\": 104, \"z\": 185, \"look\": \"Industrial\", \"rawStyle\": \"Style_Industrial\", \"colour\": null, \"run\": 2}, {\"id\": 3, \"x\": 116, \"z\": 185, \"look\": \"Industrial\", \"rawStyle\": \"Style_Industrial\", \"colour\": null, \"run\": 2}]}}, {\"cmd\": \"crestyle:104,185:Scrapper\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:104,185:Scrapper\"}}, {\"cmd\": \"crestyle:116,185:Scrapper\", \"reply\": {\"success\": true, \"cmd\": \"crestyle:116,185:Scrapper\"}}, {\"cmd\": \"cprocess\", \"reply\": {\"success\": true, \"cmd\": \"cprocess\"}}], \"cleanup\": [{\"colonists\": [{\"success\": true, \"cmd\": \"pawn:7=draft\", \"pawn\": {\"id\": 7, \"pos\": [110, 185], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"pawn:7=tp:80,180\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}]}]}], \"parkBeforeCut\": [{\"success\": true, \"cmd\": \"pawn:7=draft\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"pawn:7=tp:80,180\", \"pawn\": {\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}}, {\"success\": true, \"cmd\": \"colonists\", \"pawns\": [{\"id\": 7, \"pos\": [80, 180], \"drafted\": true, \"downed\": false, \"job\": null}]}], \"splitNets\": [11, 22], \"before\": [[\"Modern\", null, \"Style_Modern\"], [\"Industrial\", null, \"Style_Industrial\"]], \"splitRuns\": [2, 3], \"order\": {\"success\": true, \"cmd\": \"restringorder:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0}, \"job\": {\"success\": true, \"cmd\": \"restringjob:2\", \"cut\": 1, \"designated\": true, \"jobsDone\": 0, \"spansRestrung\": 0, \"by\": \"Human7\"}, \"worker\": {\"success\": true, \"pawns\": [{\"thingId\": \"Human7\", \"thingIdNumber\": 7}]}, \"completion\": {\"success\": true, \"cmd\": \"restringstate:2\", \"cut\": 0, \"designated\": false, \"jobsDone\": 1, \"spansRestrung\": 1}, \"joinedNets\": [11, 11], \"after\": [[\"Industrial\", null, \"Style_Industrial\"], [\"Industrial\", null, \"Style_Industrial\"]], \"joinedRuns\": [2, 2]}}, \"calls\": [\"colonists\", \"pawn:7=draft\", \"pawn:7=tp:80,180\", \"colonists\", \"cstyles\", \"cut:2,3\", [\"ticks\", 2], \"cprocess\", \"census\", \"crestyle:104,185:Modern_Orange\", \"crestyle:116,185:Industrial\", \"cstyles\", \"restringorder:2\", \"pawn:7=undraft\", \"restringjob:2\", [\"jawa/pawn_get\", {\"pawn\": \"Human7\"}], \"colonists\", [\"ticks\", 250], \"restringstate:2\", [\"ticks\", 3], \"cprocess\", \"census\", \"cstyles\", \"pawn:7=draft\", \"pawn:7=tp:80,180\", \"colonists\", \"crestyle:104,185:Scrapper\", \"crestyle:116,185:Scrapper\", \"cprocess\"]}",
-    "at": "2026-11-16T09:22:05Z",
+    "at": "2026-11-17T04:44:54Z",
     "result": "PASS",
     "build": "cf30cff164913cc6c4e3",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_restring_proof.py"
@@ -669,9 +673,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.42,
+    "seconds": 0.64,
     "last": "M22b_kinetic_sway_off_does_nothing FAIL      {'schema': 1, 'setting': 'kineticSway', 'enabled': False, 'damageSelector': 'RM_Repulse_Palm', 'damageDef': 'RM_Repulse_Palm', 'readings': [{'cmd': 'set:kineticSway=False', 'reply': {'success': True, 'cmd': 'set:kineticSway=False', '_probeSerial': 5, 'value': 'False'}}, {'cmd': 'census', 'reply': {'success': True, 'cmd': 'census', '_probeSerial': 6, 'kineticSways': 8, 'explosionCuts': 4, 'settings': {'kineticSway': 'False', 'dripLoops': 'True', 'cutWiresOnOwnerChange': 'True', 'keepWiresOnGravship': 'True'}, 'anchors': [{'id': 4, 'x': 92, 'z': 135, 'net': 11, 'links': [{'other': 5, 'state': 'Up', 'hp': 30.0}]}, {'id': 5, 'x': 104, 'z': 135, 'net': 11, 'links': [{'other': 4, 'state': 'Up', 'hp': 30.0}]}]}}, {'cmd': 'explode:98,135,2.5,50,RM_Repulse_Palm', 'reply': {'success': True, 'cmd': 'explode:98,135,2.5,50,RM_Repulse_Palm', '_probeSerial': 7, 'cuts': 0, 'sways': 0, 'damageDef': 'RM_Repulse_Palm', 'synthetic': False, 'kinetic': True, 'harmsHealth': True, 'spansReached': 1}}, {'cmd': 'census', 'reply': {'success': True, 'cmd': 'census', '_probeSerial': 8, 'kineticSways': 9, 'explosionCuts': 4, 'settings': {'kineticSway': 'False', 'dripLoops': 'True', 'cutWiresOnOwnerChange': 'True', 'keepWiresOnGravship': 'True'}, 'anchors': [{'id': 4, 'x': 92, 'z': 135, 'net': 11, 'links': [{'other': 5, 'state': 'Up', 'hp': 30.0}]}, {'id': 5, 'x': 104, 'z': 135, 'net': 11, 'links': [{'other': 4, 'state': 'Up', 'hp': 30.0}]}]}}], 'anchors': [4, 5], 'censusSwayDelta': 1, 'censusCutDelta': 0, 'spanStillUp': True, 'synthetic': False, 'kinetic': True, 'harmsHealth': True, 'spansReached': 1, 'settingBefore': 'False', 'settingAfter': 'False', 'hpBefore': [30.0, 30.0], 'hpAfter': [30.0, 30.0], 'error': 'ValueError: wrong kineticSways delta'}",
-    "at": "2026-11-16T09:22:06Z",
+    "at": "2026-11-17T04:44:55Z",
     "result": "PASS",
     "build": "1338a068485080a3499e",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py"
@@ -691,9 +695,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.61,
+    "seconds": 0.7,
     "last": "PASS: 0 failed",
-    "at": "2026-11-16T09:22:06Z",
+    "at": "2026-11-17T04:44:55Z",
     "result": "PASS",
     "build": "63a6c9fbde3afe925f38",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_aerial_probe_batch.py"
@@ -712,11 +716,11 @@
    "support_only": true,
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 1.33,
-    "last": "failures=0",
-    "at": "2026-11-16T09:22:08Z",
-    "result": "PASS",
+    "rc": 1,
+    "seconds": 1.37,
+    "last": "D:\\ClaudeWork\\rimmandrake\\build\\gss-explode-checks\\parse-vidr0xrx\\Program.cs(89,22): error CS1061: 'Component' does not contain a definition for 'SetReviewStations' and no accessible extension method 'SetReviewStations' accepting a first argument of type 'Component' could be found (are you missing a using directive or an assembly reference?) [D:\\ClaudeWork\\rimmandrake\\build\\gss-explode-checks\\parse-vidr0xrx\\Parse.csproj]",
+    "at": "2026-11-17T04:44:57Z",
+    "result": "FAIL",
     "build": "2edd6ba26c36901c5ff0",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_explode_parse.py"
    }
@@ -735,9 +739,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.03,
     "last": "GREEN: 5 cases",
-    "at": "2026-11-16T09:22:08Z",
+    "at": "2026-11-17T04:44:57Z",
     "result": "PASS",
     "build": "2cf36faaca54b76e0284",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_two_alike_short.py"
@@ -757,9 +761,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.03,
     "last": "12/12 passed",
-    "at": "2026-11-16T09:22:08Z",
+    "at": "2026-11-17T04:44:57Z",
     "result": "PASS",
     "build": "c8092551c9e8d964006e",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py"
@@ -779,9 +783,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.18,
+    "seconds": 0.26,
     "last": "gss proof drivers: all ok",
-    "at": "2026-11-16T09:22:08Z",
+    "at": "2026-11-17T04:44:57Z",
     "result": "PASS",
     "build": "cf23db6f421fbd6e55ca",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_proof_drivers.py"
@@ -801,11 +805,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.26,
+    "seconds": 0.38,
     "last": "PT_A3_goodwill_day           UNMEASURED UNFINISHED: phase 'day' stopped before its row; rerun the same command with the same --out",
-    "at": "2026-11-16T09:22:08Z",
+    "at": "2026-11-17T04:44:57Z",
     "result": "PASS",
-    "build": "3a190cc79027e12ba9a9",
+    "build": "21fd023550c5fd3e1eb0",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_review_leftovers.py"
    }
   },
@@ -823,9 +827,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.01,
+    "seconds": 0.02,
     "last": "selftest_gss_weakclose_guards: PASS",
-    "at": "2026-11-16T09:22:08Z",
+    "at": "2026-11-17T04:44:57Z",
     "result": "PASS",
     "build": "5d01af6d5dd1cdfb2a65",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_weakclose_guards.py"
@@ -845,9 +849,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.05,
     "last": "41/41 checks passed",
-    "at": "2026-11-16T09:22:08Z",
+    "at": "2026-11-17T04:44:57Z",
     "result": "PASS",
     "build": "17792a8c0a98e8c5fcf8",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_human_review.py"
@@ -867,9 +871,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 12.81,
+    "seconds": 14.58,
     "last": "ALL PASS",
-    "at": "2026-11-16T09:22:21Z",
+    "at": "2026-11-17T04:45:12Z",
     "result": "PASS",
     "build": "6c50eb91b1d180c2f64c",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py"
@@ -906,11 +910,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.31,
+    "seconds": 2.95,
     "last": "PASS",
-    "at": "2026-11-16T09:22:23Z",
+    "at": "2026-11-17T04:45:15Z",
     "result": "PASS",
-    "build": "324ce83a51e1d9202c19",
+    "build": "e1810326cbc1e94c2f7e",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py"
    }
   },
@@ -959,11 +963,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 182.09,
-    "last": "4514/4514 checks passed",
-    "at": "2026-11-16T09:25:25Z",
+    "seconds": 229.39,
+    "last": "4542/4542 checks passed",
+    "at": "2026-11-17T04:49:04Z",
     "result": "PASS",
-    "build": "7d6bf66777f025822383",
+    "build": "794872bec7e9c379e52b",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py"
    }
   },
@@ -1005,11 +1009,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 190.03,
-    "last": "4523/4523 checks passed",
-    "at": "2026-11-16T09:28:36Z",
+    "seconds": 254.48,
+    "last": "4553/4553 checks passed",
+    "at": "2026-11-17T04:53:19Z",
     "result": "PASS",
-    "build": "2888a1046f41c04ae75b",
+    "build": "0155a8cc102e6863b09f",
     "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry"
    }
   },
@@ -1140,11 +1144,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.11,
+    "seconds": 0.13,
     "last": "PASS",
-    "at": "2026-11-16T09:28:36Z",
+    "at": "2026-11-17T04:53:19Z",
     "result": "PASS",
-    "build": "2962037efba693d2dcdf",
+    "build": "f930d4c79da99c17a8ab",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py"
    }
   },

@@ -52,7 +52,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// strand's tied loops, kept inside the ends and moved along with the tail; <paramref name="side"/>: which side the lobe tries first.</summary>
         internal static List<V2> Slacken(CordWorld w, List<V2> P, double pinA, double pinB, string endA, string endB,
                                          Func<V2, bool> clear, List<CordTie> ties, int side, int whipA = 0, int whipB = 0, List<V2> line = null, CordRng vary = null,
-                                         CordRng jitter = null, int maxAudits = MaxAudits)
+                                         CordRng jitter = null, int maxAudits = MaxAudits, List<CordTie> tieInto = null)
         {
             if (Off || P == null || P.Count < 3) return null;
             int n = P.Count;
@@ -184,6 +184,46 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     if (ok != null) return ok;
                 }
             }
+            // neither a lobe nor a broad loop lies between the pins (a lead whose fittings hold most of it: a box arm a cell from a machine's
+            // seated plug): the spare cord is the owner's wire-tied loop (2026-11-08, "a tight wire-tied strain-relief LOOP"), an emergency device,
+            // tried only here, after every bare lay has failed (RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN: the seated plug and the
+            // 1.4 slack bar could not both hold on such a lead). The bars leave a tied loop's own arc out, as they do at a strip's plugs
+            if (tieInto != null)
+                foreach (double at in LoopAt)
+                {
+                    int im = ia;
+                    double sMid = cum[ia] + (cum[ib] - cum[ia]) * at;
+                    while (im < ib && cum[im] < sMid) im++;
+                    V2 tan = (P[Math.Min(n - 1, im + 1)] - P[Math.Max(0, im - 1)]).Norm();
+                    foreach (double rad in CordLiveEnd.LoopR)
+                        foreach (int sg in new[] { s0, -s0 })
+                        {
+                            List<V2> loop = CordLayer.Loop(P[im], tan, tan.Perp, rad, sg);
+                            string bad = Ground(loop, 0, loop.Count);
+                            if (bad != null) { no.Add("tied loop " + bad); continue; }
+                            V2 tip = loop[loop.Count - 1];
+                            int jn = im + 1;
+                            while (jn < n - 1 && Dot(P[jn] - tip, tan) < 0) jn++;
+                            var Q = new List<V2>(n + loop.Count);
+                            for (int i = 0; i < im; i++) Q.Add(P[i]);
+                            Q.AddRange(loop);
+                            for (int i = jn; i < n; i++) Q.Add(P[i]);
+                            if (Ratio(Q) < Bar) { no.Add("tied loop ratio " + Ratio(Q).ToString("0.00")); continue; }
+                            double a0 = im > 0 ? Geo.Length(Q.GetRange(0, im + 1)) : 0;
+                            // the band sits where the loop comes back over its own start (CordLayer.Loop lands 0.25 on along the cord)
+                            var tie = new CordTie { S0 = a0, S1 = a0 + Geo.Length(loop), At = P[im] + tan * 0.12 + tan.Perp * (sg * 0.03), Angle = Heading(tan) + Math.PI / 2 };
+                            var all = new List<CordTie>();
+                            double grow = Geo.Length(Q) - L;
+                            if (ties != null) foreach (CordTie t0 in ties) { CordTie t = t0; if (t.S0 + t.S1 >= L) { t.S0 += grow; t.S1 += grow; } all.Add(t); }
+                            all.Add(tie);
+                            int uNew = 0;
+                            foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(Q, all)) if (CordShapeAudit.Why(w, endA, endB, Q, b) == "unforced") uNew++;
+                            if (uNew > uOld || CordShapeAudit.Corners(Q, 0.05, all).Count > kOld) { no.Add("tied loop bends"); continue; }
+                            if (ties != null) for (int i = 0; i < ties.Count; i++) ties[i] = all[i];
+                            tieInto.Add(tie);
+                            return Q;
+                        }
+                }
             Why?.Invoke(endA + "|" + endB + $" ha {ha * 180 / Math.PI:0} hb {hb * 180 / Math.PI:0} W {W:0.00} keep {keep:0.00} chord {chordAll:0.00}: " + string.Join("; ", no));
             return null;
         }

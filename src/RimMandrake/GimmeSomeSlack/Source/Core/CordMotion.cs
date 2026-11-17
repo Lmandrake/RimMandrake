@@ -19,9 +19,14 @@ namespace RimMandrake.GimmeSomeSlack.Core
         public const double WireWhipLen = 1.3, WireWhipAmp = 0.3;
         /// <summary>Seconds a bend takes to run from the joint out to the tip: the end snakes, it does not swing like a stick.</summary>
         public const double WhipLag = 0.16;
-        /// <summary>How the swing grows from the joint (u^WhipPow): the tip swings as far as ever; u^1.6 bent without bound at the joint and pinched the
-        /// cord there (owner 2026-11-16 station 25; RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE).</summary>
-        public const double WhipPow = 4.0;
+        /// <summary>Seconds a snap's kick takes to swell in; it crosses the tail in that time too.</summary>
+        public const double WhipSnapRise = 0.035;
+        /// <summary>The whip's sideways reach grows as u^WhipPow from the joint: the shape of a cord whose bend grows evenly from nothing at the joint
+        /// to its most at the tip (<see cref="WhipInto"/>). <see cref="WhipRoom"/> sweeps that envelope for walls.</summary>
+        public const double WhipPow = 3.0;
+        /// <summary>The tightest bend the whip may leave anywhere on the tail, laid bend and wave together: twice the pinch bar
+        /// (StubJoins.MinBendR, the owner's "tight pinched effect that is nonphysical").</summary>
+        public const double WhipBendR = 2 * StubJoins.MinBendR;
 
         /// <summary>The first Value() of new CordRng(seed ^ k*golden), computed without allocating: Whip calls this
         /// per snap interval every frame (thousands of times late in a session), so a CordRng per call was per-frame garbage.</summary>
@@ -37,10 +42,10 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>
         /// The whipping tail of a live floor terminal (phase 1b B3). tail[0] is where the tail joins the
-        /// static cord and never moves; the free tip moves most (weight u^WhipPow). The bend is a sum of three
-        /// sines plus a seeded random SNAP every 0.6-2.0 s (a sharp kick that decays in ~0.15 s), all
-        /// perpendicular to the tail's own direction, and each runs out along the tail (<see cref="WhipLag"/>). t is seconds (real time in game, so a broken line is
-        /// findable while paused). |displacement| never exceeds 1.9 x amp.
+        /// static cord and never moves; the free tip moves most. The bend is a sum of three
+        /// sines plus a seeded random SNAP every 0.6-2.0 s (a sharp kick that decays in ~0.15 s), a curvature that
+        /// runs out along the tail (<see cref="WhipLag"/>); the cord keeps its length. t is seconds (real time in game, so a broken line is
+        /// findable while paused). The tip's sideways reach is about 1.9 x amp at most; no bend is tighter than <see cref="WhipBendR"/>.
         /// </summary>
         internal static List<V2> Whip(IList<V2> tail, double t, ulong seed, double amp)
         {
@@ -109,16 +114,45 @@ namespace RimMandrake.GimmeSomeSlack.Core
                 idx++;
             }
             cur.Valid = true; cur.Acc = acc; cur.Idx = idx; cur.T = tt;
-            for (int i = 0; i < n; i++)
+            // the whip is a BEND WAVE on a cord that cannot stretch (RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN): each inner point of the
+            // tail turns by its own laid bend plus a travelling curvature K u f(t - lag u), the sum held within 1 / WhipBendR, and the tail is
+            // drawn again from the joint with every segment its own length. The old whip pushed each point sideways: that stretched the cord and
+            // let a snap's front fold it under the pinch bar even on a dead straight cord (radius 0.105 at tail 0.95, under 0.10 on some seeds;
+            // live_end_sweep.py). K = 6 amp / len^2: a steady f = 1 carries the tip amp to the side, as before. tail[0] and the first segment
+            // never move, so the tail leaves the joint as the laid cord does.
+            double ell = 0;
+            for (int i = 1; i < n; i++) ell += V2.Dist(tail[i - 1], tail[i]);
+            if (ell < 1e-9) { for (int i = 0; i < n; i++) o.Add(tail[i]); return; }
+            double K = 6 * amp / (ell * ell), cap = 1 / WhipBendR, s = 0, dth = 0;
+            o.Add(tail[0]);
+            V2 at = tail[0];
+            for (int i = 1; i < n; i++)
             {
-                double u = i / (double)(n - 1);
-                Geo.TanNorm(tail, i, out V2 tg, out V2 nrm);
-                double lag = WhipLag * u, tu = t - lag;
-                double wave = 0.5 * Math.Sin(w1 * tu + p1) + 0.25 * Math.Sin(w2 * tu + p2) + 0.15 * Math.Sin(w3 * tu + p3);
-                // the kick swells in as it arrives: a step here drew a sharp zigzag at its front, running out along the tail
-                double snap = since >= lag ? kick * (1 - Math.Exp(-(since - lag) / 0.035)) * Math.Exp(-(since - lag) / 0.15) : 0;
-                double d = amp * Math.Pow(u, WhipPow) * Geo.Clamp(wave + snap, -1.9, 1.9);
-                o.Add(tail[i] + nrm * (d * (d > 0 ? ampPos : ampNeg)));
+                V2 seg = tail[i] - tail[i - 1];
+                double len = seg.Len;
+                if (i >= 2)
+                {
+                    // the turn at point i - 1, between the segment before it and this one
+                    V2 prev = tail[i - 1] - tail[i - 2];
+                    double hbar = (prev.Len + len) / 2, u = s / ell;
+                    double turn0 = Math.Atan2(prev.X * seg.Z - prev.Z * seg.X, prev.X * seg.X + prev.Z * seg.Z), k0 = hbar > 1e-9 ? turn0 / hbar : 0;
+                    double lag = WhipLag * u, tu = t - lag;
+                    double wave = 0.5 * Math.Sin(w1 * tu + p1) + 0.25 * Math.Sin(w2 * tu + p2) + 0.15 * Math.Sin(w3 * tu + p3);
+                    // the kick swells in as it arrives: a step here drew a sharp zigzag at its front, running out along the tail
+                    // (and it runs out along the tail in its own rise time, not the slow waves' lag: the tip is carried by the bend of the
+                    // whole tail, so a kick spread over WhipLag reached the tip smeared: 0 sharp snaps in 20 s where the old whip had 3)
+                    double sl = WhipSnapRise * u;
+                    double snap = since >= sl ? kick * (1 - Math.Exp(-(since - sl) / WhipSnapRise)) * Math.Exp(-(since - sl) / 0.15) : 0;
+                    double kw = K * u * Geo.Clamp(wave + snap, -1.9, 1.9);
+                    kw *= kw > 0 ? ampPos : ampNeg;
+                    // a laid bend already at the cap takes none of the wave
+                    kw = Geo.Clamp(kw, Math.Min(0, -cap - k0), Math.Max(0, cap - k0));
+                    dth += kw * hbar;
+                }
+                double c = Math.Cos(dth), sn = Math.Sin(dth);
+                at = at + new V2(seg.X * c - seg.Z * sn, seg.X * sn + seg.Z * c);
+                o.Add(at);
+                s += len;
             }
         }
 

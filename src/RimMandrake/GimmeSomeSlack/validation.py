@@ -470,7 +470,9 @@ def o6_review_round1(rows):
     # which falls back to Decal(kind); the per-variant table itself is still Decal(kind, variant)
     sl = open(os.path.join(HERE, "Source", "SectionLayer_RM_MessyCords.cs"), encoding="utf-8").read()
     if "public static Material Decal(DecalKind k, int variant)" not in cm or not (
-            "CordMaterials.Decal(d.Kind, variant)" in sl or ("CordMaterials.DecalG(d.Kind, g)" in sl and "public static Material DecalG(" in cm)):
+            "CordMaterials.Decal(d.Kind, variant)" in sl
+            # (2026-11-16: the decal's material key now also carries a switch's stub mask, CordMaterials.MatKey(d); still drawn by look x variant, g)
+            or (("CordMaterials.DecalG(d.Kind, g)" in sl or "CordMaterials.DecalG(CordMaterials.MatKey(d), g)" in sl) and "public static Material DecalG(" in cm)):
         probs.append("B14: the section layer does not draw pieces per cord variant")
     # B6/B16/B19: the per-look pole geometry table matches the wired art
     rp = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "wire_pole_art.py"), "--check"],

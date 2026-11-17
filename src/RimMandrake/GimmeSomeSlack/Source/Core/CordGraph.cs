@@ -692,6 +692,15 @@ namespace RimMandrake.GimmeSomeSlack.Core
             VId o = e.A == v ? e.B : e.A;
             VId nxt = e.Via.Count > 0 ? (e.A == v ? e.Via[0] : e.Via[e.Via.Count - 1]) : o;
             V2 p = nxt.IsCellish ? nxt.A.Centre : v.A.Centre + new V2(1, 0);
+            // a lone conduit cell at a machine's hookup: its open end faces away from that machine (it faced west whatever stood where, into
+            // the machine it is plugged into when that stood west of it: RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN's census)
+            if (!nxt.IsCellish && MachineOf.TryGetValue(nxt, out MachineInfo m))
+            {
+                V2 c = v.A.Centre;
+                var near = new V2(Math.Max(m.X0, Math.Min(m.X0 + m.W, c.X)), Math.Max(m.Z0, Math.Min(m.Z0 + m.H, c.Z)));
+                V2 d = c - near;
+                if (d.Len > 1e-6) p = c - (Math.Abs(d.X) >= Math.Abs(d.Z) ? new V2(Math.Sign(d.X), 0) : new V2(0, Math.Sign(d.Z)));
+            }
             return (v.A.Centre - p).Norm();
         }
 

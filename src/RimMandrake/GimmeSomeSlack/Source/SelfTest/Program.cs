@@ -47,6 +47,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (args.Contains("--lay-profile")) { SliceGateChecks.LayProfile(); return 0; }
             if (args.Contains("--slice-repeat")) return SliceGateChecks.SliceRepeat(20, args.Contains("--old-form"));
             if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); SliceGateChecks.Run(); RebuildTailChecks.Run(); SnapshotPoolChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
+            if (args.Contains("--live-sweep-only")) { LiveEndSweepChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (live end sweep only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--endkind-only")) { CordEndKindChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (end kind + slope only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--shape-diag")) { CordShapeChecks.Diag(); return 0; }
@@ -58,10 +59,12 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (args.Contains("--no-slacken")) { CordSlacken.Off = true; Console.WriteLine("slacken: OFF (--no-slacken, the builder before CordSlacken)"); }
             int di = Array.IndexOf(args, "--dump");
             if (di >= 0) { dumpDir = args[di + 1]; Directory.CreateDirectory(dumpDir); }
-            string path = args.Where((a, i) => !a.StartsWith("--") && (i == 0 || (args[i - 1] != "--dump" && !args[i - 1].StartsWith("--fuzz")))).FirstOrDefault() ?? Path.Combine(AppContext.BaseDirectory, "oracle_scenes.json");
+            int lc = Array.IndexOf(args, "--live-census");
+            string path = args.Where((a, i) => !a.StartsWith("--") && (lc < 0 || i < lc) && (i == 0 || (args[i - 1] != "--dump" && !args[i - 1].StartsWith("--fuzz")))).FirstOrDefault() ?? Path.Combine(AppContext.BaseDirectory, "oracle_scenes.json");
             using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(path));
             var scenes = doc.RootElement.GetProperty("scenes").EnumerateArray().ToList();
             Console.WriteLine($"oracle: {path} ({scenes.Count} scenes)");
+            if (lc >= 0) return LiveEndCensus.Run(args[lc + 1], lc + 2 < args.Length ? int.Parse(args[lc + 2]) : 60, lc + 3 < args.Length ? int.Parse(args[lc + 3]) : 2, scenes);
             if (args.Contains("--geometry-only")) { CordGeometryChecks.Run(scenes); Console.WriteLine($"{checks - fails}/{checks} checks passed (geometry only)"); return fails == 0 ? 0 : 1; }
             int probeFails = 0;
             foreach (JsonElement s in scenes)
@@ -124,6 +127,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             CordShapeChecks.Run();         // cords_never_repeat instrument: CordShapeChecks.cs + ../Core/CordShape.cs
             SittingChecks.Run();           // owner live sitting 2026-11-08 12:20 PM (Modern hooks, heap density, pole foot, pole-top kinks): SittingChecks.cs
             StubJoinChecks.Run();          // RIMMANDRAKE_BIND_SLACK_STUB_ANGLE_RULE_FOURTH_ASK (owner 2026-11-16): position AND slope at every stub
+            LiveEndSweepChecks.Run();      // RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN: every live cut end the game can lay, by the three bars, with margin
             CordEndKindChecks.Run(scenes); // RIMMANDRAKE_FIX_SLACK_CORD_ENDS_OWNER_CAUGHT_TWO (owner look 2026-11-16): CordEndKindChecks.cs
             JunctionStripChecks.Run();     // d_modern_junction_strip (owner 2026-11-05): JunctionStripChecks.cs
             WaterStubChecks.Run();         // GSS_WATER_STUB_FIX_PASSED_LAST_WEEK (bridge run 1 2026-10-23): WaterStubChecks.cs

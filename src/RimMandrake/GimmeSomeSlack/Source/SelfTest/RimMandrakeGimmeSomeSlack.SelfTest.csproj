@@ -32,7 +32,10 @@
     <Compile Include="..\Core\CordShapeAudit.cs" />
     <Compile Include="..\Core\CordSlacken.cs" />
     <Compile Include="..\Core\CordPlugExit.cs" />
+    <Compile Include="..\Core\CordLiveEnd.cs" />
     <Compile Include="LabWorld.cs" />
+    <Compile Include="LiveEndCensus.cs" />
+    <Compile Include="LiveEndSweepChecks.cs" />
     <Compile Include="..\Core\SnapshotBlock.cs" />
     <Compile Include="WaterStubChecks.cs" />
     <Compile Include="JunctionStripChecks.cs" />

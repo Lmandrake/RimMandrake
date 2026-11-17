@@ -410,7 +410,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Every whipping tail, frame by frame: the cord's last <paramref name="lead"/> cells before the joint plus the bent tail. The tail is
         /// the same list the game's component bends (tail[0] = the joint), bent by the same function at the full swing (the game only ever narrows
         /// it beside a wall), so a pose that is bad here is bad there.</summary>
-        internal static LiveRead LiveEnds(List<LaidPiece> ps, string scene, int frames = 90, double fps = 30, double lead = 0.4, Func<V2, bool> keep = null)
+        internal static LiveRead LiveEnds(List<LaidPiece> ps, string scene, int frames = 90, double fps = 30, double lead = 0.4, Func<V2, bool> keep = null, ulong salt = 0)
         {
             var r = new LiveRead();
             int idx = 0;
@@ -433,7 +433,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                         before.Reverse();                                    // ... -> joint
                         if (before.Count < 2) continue;
                         r.Tails++;
-                        ulong seed = unchecked((ulong)(idx++ * 2654435761L + 17));
+                        ulong seed = unchecked((ulong)(idx++ * 2654435761L + 17) + salt * 2654435761UL);
                         // the join's own direction is the laid cord's there (the static cord and the laid tail are one polyline): a frame keeps it
                         // when its bent tail leaves the joint the same way; a curve through the joint is the cord's shape, read by the bend radius
                         V2 jIn = (Ahead(tail, CordEndAudit.SlopeChord) - tail[0]).Norm();

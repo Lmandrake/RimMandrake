@@ -67,6 +67,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// B3): the section layer leaves them out of the static mesh while whipping is on, and the map
         /// component draws them bent per frame. 0 = no tail.</summary>
         public int WhipA, WhipB;
+        /// <summary>How <see cref="CordLiveEnd"/> laid this strand's live cut end at its start / end (null: no live end there, or the lay was off): the
+        /// sweep check and the census read it.</summary>
+        internal CordLiveEnd.Result LiveLaidA, LiveLaidB;
         /// <summary>A lifted piece (wall-hanging tail). Wind never moves it (owner 2026-11-16: wind sway is for pole wires only).</summary>
         public bool Lifted;
         /// <summary>Rope-settle diagnostics (phase 1b B1); null when the strand was not settled.</summary>
@@ -1611,9 +1614,17 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     // a cut end's lead is slack too (cords_lie_slack names no exception; blind cycle 1 found 6 of 679 under 1.4, every one a cut lead): its
                     // limp curl or live run is pinned (FairPin) and its writhing tail kept whole (WhipA/WhipB), the lobe lies between
                     line = line ?? ConduitLine(e);
+                    var slackTies = new List<CordTie>();
                     List<V2> loose = CordSlacken.Slacken(w, s.Pts, Math.Max(CutPin(na, isLive), seatA), Math.Max(CutPin(nb, isLive), seatB), piece.EndA, piece.EndB, off, s.Ties, slackSide, s.WhipA, s.WhipB, line,
-                                                         jitter: CordRng.Of(opt.Seed, "slackshape", key, piece.Strands.IndexOf(s)));
-                    if (loose != null) { s.Pts = loose; s.Lay += "+slack"; }
+                                                         jitter: CordRng.Of(opt.Seed, "slackshape", key, piece.Strands.IndexOf(s)),
+                                                         // the tied loop only on a lead between two fittings (they can hold most of its cord); a cut lead keeps its lay
+                                                         tieInto: cut ? null : slackTies);
+                    if (loose != null) { s.Pts = loose; s.Lay += slackTies.Count > 0 ? "+slack-tied" : "+slack"; }
+                    if (slackTies.Count > 0)
+                    {
+                        (s.Ties = s.Ties ?? new List<CordTie>()).AddRange(slackTies);
+                        foreach (CordTie t in slackTies) piece.Decals.Add(new CordDecal(DecalKind.CableTie, t.At, t.Angle, CableTieScale));
+                    }
                     StepTrace?.Invoke("slack", piece.EndA, piece.EndB, s.Pts);
                     // a short lead's shape from its own draw (cords_never_repeat; the owner's card exempts cords under 3 cells): equal runs side by side otherwise
                     // settle to one curve, the room clamping every excursion alike (blind cycle 1)
@@ -1658,7 +1669,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     StepTrace?.Invoke(piece.TwinPts != null && ReferenceEquals(s, piece.Strands[0]) ? "twin" : "vary", piece.EndA, piece.EndB, s.Pts);
                 }
             }
-            RoundLiveJoins(piece);
+            LiveEnds(w, piece, na, nb, isLive, opt);
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
             double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
             foreach (CordStrand s in piece.Strands)
@@ -2952,7 +2963,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             EndDecor(w, g, e, e.A, na, piece, true, opt, isLive);
             EndDecor(w, g, e, e.B, nb, piece, false, opt, isLive);
             SeatPlugTails(g, e, piece, opt);
-            RoundLiveJoins(piece);
+            LiveEnds(w, piece, na, nb, isLive, opt);
             // a dived cord's route depends on walls anywhere (a door opened far off may give it a surface route): its corridor
             // is the whole map, so any walkability change re-plans it
             piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
@@ -3277,9 +3288,9 @@ namespace RimMandrake.GimmeSomeSlack.Core
 
         /// <summary>The cord (cells from this end of <paramref name="P"/>) a later pass must leave as laid when the end sits in a side-view plug: up to the
         /// plug's boot and the slope chord past it, plus a margin; 0 when the end is in no plug.</summary>
-        private static double SeatedPin(LaidPiece piece, BuildOptions opt, List<V2> P, bool atStart)
+        private static double SeatedPin(LaidPiece piece, BuildOptions opt, List<V2> P, bool atStart, bool anyLength = false)
         {
-            if (P == null || P.Count < 2 || Geo.Length(P) < 1.0 || SeatPinOff) return 0;   // a short lead is one ease, fitting to fitting
+            if (P == null || P.Count < 2 || (!anyLength && Geo.Length(P) < 1.0) || SeatPinOff) return 0;   // a short lead is one ease, fitting to fitting
             var stubs = new List<StubArt.Stub>();
             int fit = 0;
             StubArt.OfPiece(piece, opt, stubs, ref fit);
@@ -3297,105 +3308,93 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private const double SeatPinMargin = 0.06;
         private static readonly bool SeatPinOff = Environment.GetEnvironmentVariable("GSS_SEATPIN_OFF") == "1";
 
-        /// <summary>The laid cord where a whipping live end joins it, and the tail itself, holds no bend under <see cref="LiveJoinMinR"/>: every corner in
-        /// that window (LiveJoinBack before the joint to the tip, the tip fixed) is eased by a local relaxation until it does. A cut lead kept its laid corner
-        /// there (radius 0.05-0.06) and the whip grafted onto it pinched (owner 2026-11-16, station 25: "a tight pinched effect that is nonphysical").
-        /// Points only move; the count, and so the tail's WhipA/WhipB, stays. Python first: the whip prototype of
-        /// RIMMANDRAKE_FINISH_SLACK_TONIGHT_TWO_DECIDERS_RED_AT_CERTIFICATE (36 tails x 90 frames x 2 seeds: 0 pinched with CordMotion.WhipPow 3).</summary>
-        internal static void RoundLiveJoins(LaidPiece piece)
+        /// <summary>The census reads the cord the live-end lay is handed (SelfTest/LiveEndCensus.cs); never set in game.</summary>
+        internal static bool LiveEndLayOff;
+
+        private static List<CordTie> FlipTies(List<CordTie> ties, double L)
         {
+            if (ties == null) return null;
+            var o = new List<CordTie>(ties.Count);
+            foreach (CordTie t in ties) { CordTie x = t; x.S0 = L - t.S1; x.S1 = L - t.S0; o.Add(x); }
+            return o;
+        }
+
+        /// <summary>Every live cut end of the piece is laid by <see cref="CordLiveEnd.Lay"/>, last, on the cord as every other pass left it: the straight
+        /// run out of the conduit end, its join to the cord, the whip's joint (WhipA / WhipB are set here, on the final points). A dead end keeps
+        /// its limp curl. Replaces the live-join easing and its tuned constants (RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN).</summary>
+        internal static void LiveEnds(CordWorld w, LaidPiece piece, CordNode na, CordNode nb, Func<Cell, bool> isLive, BuildOptions opt)
+        {
+            if (LiveEndLayOff) return;
+            bool cutA = na.Type == NodeType.Terminal && !na.Seam, cutB = nb.Type == NodeType.Terminal && !nb.Seam;
+            bool liveA = cutA && isLive(na.Cell), liveB = cutB && isLive(nb.Cell);
+            if (!liveA && !liveB) return;
+            List<MachineInfo> own = CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB);
+            bool Clear(V2 q)
+            {
+                Cell c = q.Floor;
+                if (!w.IsWalkable(c) || w.IsFurniture(c) || w.IsDoor(c)) return own.Any(m => m.Contains(c));
+                if (w.Clearance(q) >= LayParams.RC) return true;
+                // close to something: clear only when that is the cord's own machine (it plugs into it)
+                for (int dx = -1; dx <= 1; dx++)
+                    for (int dz = -1; dz <= 1; dz++)
+                    {
+                        var n = new Cell(c.X + dx, c.Z + dz);
+                        if (w.IsWalkable(n) || CordShapeAudit.RectDist(n.X, n.Z, 1, 1, q) >= LayParams.RC) continue;
+                        if (!own.Any(m => m.Contains(n))) return false;
+                    }
+                return true;
+            }
             foreach (CordStrand s in piece.Strands)
             {
-                if (s.Pts == null) continue;
-                if (s.WhipA > 0 && s.WhipA < s.Pts.Count) { s.Pts.Reverse(); RoundTailWindow(s.Pts, s.WhipA); s.Pts.Reverse(); }
-                if (s.WhipB > 0 && s.WhipB < s.Pts.Count) RoundTailWindow(s.Pts, s.WhipB);
-            }
-        }
-
-        public const double LiveJoinMinR = 0.14, LiveJoinBack = 0.45, LiveRunKeep = 0.62, LiveRunKeepShort = 0.3, LiveRunTurnMax = 12;
-
-        /// <summary>P ends at the live tip; its last <paramref name="cnt"/> points whip. Every corner under LiveJoinMinR from LiveJoinBack before the joint up to
-        /// the kept live run is eased by a local relaxation. The live run out of the conduit end is kept as laid for LiveRunKeep (CordAudit reads it
-        /// straight); only when a corner cannot be eased that way (a cord arriving nearly reversed just behind the run) is more of the run freed.</summary>
-        private static void RoundTailWindow(List<V2> P, int cnt)
-        {
-            int n = P.Count, j = n - cnt, lo = j;
-            double acc = 0;
-            while (lo > 1 && acc < LiveJoinBack) { acc += V2.Dist(P[lo], P[lo - 1]); lo--; }
-            lo = Math.Max(1, lo);
-            List<V2> best = null;
-            double bestR = -1;
-            // CordAudit reads a live run of a lead of a cell or more straight out of the conduit end (TipTurn, 15 deg): a reach that bends it more is not taken
-            bool runRead = Geo.Length(P) >= 1.0;
-            int loNear = lo, loWide = lo;
-            acc = 0;
-            while (loWide > 1 && acc < LiveJoinBack * 2.5) { acc += V2.Dist(P[loWide], P[loWide - 1]); loWide--; }
-            loWide = Math.Max(1, loWide);
-            foreach (double keep in new[] { LiveRunKeep, 0.55, 0.5, 0.45, LiveRunKeepShort, 0.0 })
-                foreach (int l in new[] { loNear, loWide })
+                if (s.Pts == null || s.Pts.Count < 3 || s.OverFace || s.Lifted) continue;
+                foreach (bool atStart in new[] { false, true })
                 {
-                    int hi = n - 2;
-                    acc = 0;
-                    while (hi > l && acc < keep) { acc += V2.Dist(P[hi], P[hi + 1]); hi--; }
-                    if (hi <= l) continue;
-                    var Q = new List<V2>(P);
-                    double r = RelaxWindow(Q, l, hi);
-                    if (LiveJoinLog) Console.Error.WriteLine($"GSS_LIVEJOIN tip ({P[n - 1].X:0.00},{P[n - 1].Z:0.00}) keep {keep:0.00} lo {l} hi {hi} n {n} r {r:0.000}");
-                    if (runRead && CordAudit.TipTurn(Q) * 180 / Math.PI > LiveRunTurnMax) continue;
-                    if (r > bestR) { bestR = r; best = Q; }
-                    if (r >= LiveJoinMinR) goto done;
+                    if (!(atStart ? liveA : liveB) || (atStart ? s.DiveA : s.DiveB)) continue;
+                    CordNode nd = atStart ? na : nb;
+                    bool farLive = atStart ? liveB : liveA, farCutEnd = atStart ? cutB : cutA, farDive = atStart ? s.DiveB : s.DiveA;
+                    // the far end's own: a fitting's stiff bit, a dead end's limp curl (CutKeep); a live far end shares the cord by halves
+                    // (a plug's own boot, and the cord under its machine's art, are the fitting: the stiff bit starts where the cord leaves the boot)
+                    double farOff = farDive ? CordLiveEnd.FarKeep : farCutEnd && !farLive ? CutKeep
+                        : Math.Max(CordLiveEnd.FitOff, SeatedPin(piece, opt, s.Pts, !atStart, anyLength: true));
+                    List<V2> P = atStart ? Enumerable.Reverse(s.Pts).ToList() : new List<V2>(s.Pts);
+                    List<CordTie> ties = atStart ? FlipTies(s.Ties, Geo.Length(P)) : s.Ties;
+                    // the cord bars are read on the strand the way it is stored (its ends' names in order)
+                    List<V2> Native(List<V2> q) => atStart ? Enumerable.Reverse(q).ToList() : q;
+                    List<CordTie> NativeTies(List<V2> q, List<CordTie> t) => atStart ? FlipTies(t, Geo.Length(q)) : t;
+                    var site = new CordLiveEnd.Site
+                    {
+                        Clear = Clear,
+                        Bends = (q, t) => { List<V2> n = Native(q); int k = 0; foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(n, NativeTies(q, t))) if (CordShapeAudit.Why(w, piece.EndA, piece.EndB, n, b) == "unforced") k++; return k; },
+                        Kinks = (q, t) => CordShape.Kinks(q).Count
+                    };
+                    V2 o = new V2(nd.Out.X, nd.Out.Z);
+                    if (o.Len < 1e-9) continue;
+                    V2 oldTip = P[P.Count - 1];
+                    CordLiveEnd.Result r = CordLiveEnd.Lay(P, nd.Pos, o, site, ties, farLive && !farDive, farOff);
+                    s.Pts = Native(r.Pts);
+                    s.Ties = r.Ties == null || r.Ties.Count == 0 ? null : NativeTies(r.Pts, r.Ties);
+                    if (atStart) s.WhipA = r.Count; else s.WhipB = r.Count;
+                    if (r.Kind != CordLiveEnd.Kind.Kept) s.Lay += "+live-" + r.Kind.ToString().ToLowerInvariant();
+                    // a tied loop the lay made wears its band
+                    if (r.Kind == CordLiveEnd.Kind.TurnLoop && r.Ties != null && r.Ties.Count > 0)
+                    {
+                        CordTie t = r.Ties[r.Ties.Count - 1];
+                        piece.Decals.Add(new CordDecal(DecalKind.CableTie, t.At, t.Angle, CableTieScale));
+                    }
+                    // the frayed end rides the tail when there is one, and stays on the tip
+                    V2 newTip = r.Pts[r.Pts.Count - 1];
+                    for (int k = 0; k < piece.Decals.Count; k++)
+                    {
+                        CordDecal d = piece.Decals[k];
+                        if (d.Kind != DecalKind.FrayLive || V2.Dist(d.Pos, oldTip) > 1e-6) continue;
+                        d.OnWhip = r.Count > 0;
+                        d.Pos = newTip;
+                        d.Angle = EndAngle(s.Pts, atStart);
+                        piece.Decals[k] = d;
+                    }
+                    if (atStart) s.LiveLaidA = r; else s.LiveLaidB = r;
                 }
-            done:
-            if (best != null) for (int i = 0; i < n; i++) P[i] = best[i];
-        }
-
-        private static readonly bool LiveJoinLog = Environment.GetEnvironmentVariable("GSS_LIVEJOIN_LOG") == "1";
-        private static double RelaxWorstOf(List<V2> P, int lo, int hi)
-        {
-            double m = double.MaxValue;
-            for (int i = lo; i <= Math.Min(hi + 1, P.Count - 2); i++) m = Math.Min(m, VertexRadius(P[i - 1], P[i], P[i + 1]));
-            return m;
-        }
-
-        /// <summary>Eases corners under LiveJoinMinR among P[lo..hi] (the points either side fixed); the tightest vertex radius left from lo to hi + 1.</summary>
-        private static double RelaxWindow(List<V2> P, int lo, int hi)
-        {
-            int n = P.Count;
-            var mark = new bool[n];
-            var nxt = new V2[n];
-            double Worst()
-            {
-                double m = double.MaxValue;
-                for (int i = lo; i <= Math.Min(hi + 1, n - 2); i++) m = Math.Min(m, VertexRadius(P[i - 1], P[i], P[i + 1]));
-                return m;
             }
-            // fourth order (bi-Laplacian) where two fixed points stand either side, so the eased cord meets the fixed cord tangent to it: a plain
-            // relaxation left a corner at the first fixed point of a straight live run
-            bool quartic = lo >= 2 && hi <= n - 3;
-            for (int it = 0; it < 1500; it++)
-            {
-                bool any = false;
-                Array.Clear(mark, 0, n);
-                for (int i = lo; i <= Math.Min(hi + 1, n - 2); i++)
-                {
-                    if (VertexRadius(P[i - 1], P[i], P[i + 1]) >= LiveJoinMinR) continue;
-                    any = true;
-                    for (int d = -4; d <= 4; d++) if (i + d >= lo && i + d <= hi) mark[i + d] = true;
-                }
-                if (!any) break;
-                for (int i = lo; i <= hi; i++)
-                    nxt[i] = !mark[i] ? P[i]
-                        : quartic ? P[i] - (P[i - 2] - P[i - 1] * 4 + P[i] * 6 - P[i + 1] * 4 + P[i + 2]) * 0.08
-                        : P[i] + (P[i - 1] + P[i + 1] - P[i] * 2) * 0.25;
-                for (int i = lo; i <= hi; i++) P[i] = nxt[i];
-            }
-            return Worst();
-        }
-
-        private static double VertexRadius(V2 a, V2 b, V2 c)
-        {
-            double area2 = Math.Abs((b.X - a.X) * (c.Z - a.Z) - (b.Z - a.Z) * (c.X - a.X));
-            return area2 < 1e-12 ? double.MaxValue : V2.Dist(a, b) * V2.Dist(b, c) * V2.Dist(c, a) / (2 * area2);
         }
 
         private static PlugSeat SeatOf(List<PlugSeat> seats, V2 tip)

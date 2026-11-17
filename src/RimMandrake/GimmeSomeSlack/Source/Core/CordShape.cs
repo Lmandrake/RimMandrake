@@ -1536,6 +1536,8 @@ namespace RimMandrake.GimmeSomeSlack.Core
             }
             // LSL, LSR, RSL, RSR, RLR, LRL
             private static readonly string[] Words = { "LSL", "LSR", "RSL", "RSR", "RLR", "LRL" };
+            /// <summary>The path's three legs as letters (L, R, S).</summary>
+            internal static string WordOf(Path p) => Words[p.Word];
             private static double Mod2Pi(double a) { a %= 2 * Math.PI; return a < 0 ? a + 2 * Math.PI : a; }
 
             internal static List<Path> All(V2 a, double ha, V2 b, double hb, double r, List<Path> into = null)

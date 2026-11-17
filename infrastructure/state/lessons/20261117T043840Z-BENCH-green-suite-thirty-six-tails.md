@@ -1,0 +1,3 @@
+A check that reads one seed for three seconds is not a bar reading. Gimme Some Slack's pinch bar passed at 0.101 against 0.10 on the suite's 36 whipping tails; a census of the worlds the game can make near a cut end (LiveEndCensus.Family: what the cord comes from x run length x last turn x walls x settings x look) read 3,935 of 30,768 live ends failing on the same build, and the whip alone folded a dead straight cord to 0.105. Before tuning a lay against a bar: (1) enumerate the family and read it with the bar's own instrument, (2) run the motion on the simplest possible input to split motion from lay, (3) gate on margin, not on a pass count.
+item: RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN
+home: skills/rimworld-modding
