@@ -129,9 +129,9 @@
     },
     {
       "id": "B4",
-      "says": "A lit expedition draws cave danger during sustained ordinary-light work, while dim work or standing living Lantern light avoids that draw, and harvesting the Lantern removes its safe-light shelter.",
+      "says": "A lit expedition draws an existing reachable cave hunter during sustained ordinary-light work, while dim work or standing living Lantern light avoids that draw, and harvesting the Lantern removes its safe-light shelter.",
       "meant": {
-        "intent": "Ordinary usable work-light must have a legible risk, and standing Lantern light must be genuinely different. Danger is native attention, not arbitrary hidden punishment. Safe means exemption from light-triggered draw only, not immunity to ordinary hunting or roof collapse. Delegated reject test: no usable risk contrast violates the frozen no-free-light constraint.",
+        "intent": "Ordinary usable work-light must have a legible risk, and standing Lantern light must be genuinely different. Danger is native attention, not arbitrary hidden punishment. Safe means exemption from light-triggered draw only, not immunity to ordinary hunting or roof collapse. Delegated reject test: no usable risk contrast violates the frozen no-free-light constraint. The draw recruits a resident, never creates a pawn; no eligible resident or no legal route yields a readable quiet state.",
         "source": "the_lantern_deeps.md sections 4, 5 and hard ban 6; LANTERNDEEPS_LANTERN_LIGHT_BUILD_1; MapComponent_LanternDeepDarkness.cs quotes the ruled 2026-09-02 light-beacon intent.",
         "figurative": [
           {
@@ -148,23 +148,25 @@
       },
       "accept": [
         "On comparable inhabited cave routes, a sustained lamp-lit work party visibly attracts an approaching native predator; a dim or Lantern-only work party avoids the light-triggered approach.",
-        "A lamp blocked by solid rock does not spoil Lantern-only shelter; an ordinary lamp that actually lights the sheltered worker does, and harvesting its Lantern removes that shelter."
+        "A lamp blocked by solid rock does not spoil Lantern-only shelter; an ordinary lamp that actually lights the sheltered worker does, and harvesting its Lantern removes that shelter.",
+        "After the reachable hunters have been killed or shut out, sustained lamp work shows that no hunter can answer; no animal appears. A later ordinary resident can answer only after it actually lives on the map and has a legal route."
       ],
       "reject": [
         "Only extraordinary proof lamps can trigger danger while ordinary standing lamps are always free, or Lantern-only workers receive the same light-triggered attacks as lamp workers.",
         "A lamp behind solid rock cancels safe light, or adding a Lantern excuses ordinary light that reaches the worker.",
-        "An unexplained predator appears inside a sealed occupied room, with no readable approach or light-related sign."
+        "An unexplained predator appears inside a sealed occupied room, with no readable approach or light-related sign.",
+        "The light response creates a fresh predator off-screen or outside the room and calls its walk toward the party a resident approach."
       ],
       "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
       "range": {
-        "varies": "Engine-reachable glow values 0 to roof cap and overlight; equal-brightness controls; Lantern/ordinary terrain/item/formation/mobile lights singly and mixed; rock occlusion, open doors, corners, overlapping source radii; 0/1/8/40 free colonists, downed/carried/dead removal and empty-map decay; sampling/threshold/cooldown boundaries, timer interruption/reload, harvest/replant, enough native prey/predators or explicit depletion. Geometry sweep includes source toggles without disabling kept systems.",
-        "left_out": "Safe light does not prevent unprovoked ordinary hunting, injury or collapse. Empty eradicated caves are not promised to conjure a hunter. No light-metabolism simulation, Sipper drain or Hush invisibility."
+        "varies": "Engine-reachable glow values 0 to roof cap and overlight; equal-brightness controls; Lantern/ordinary terrain/item/formation/mobile lights singly and mixed; rock occlusion, open doors, corners, overlapping source radii; 0/1/8/40 free colonists, downed/carried/dead removal and empty-map decay; sampling/threshold/cooldown boundaries, timer interruption/reload, harvest/replant, enough native prey/predators or explicit depletion. Geometry sweep includes source toggles without disabling kept systems. Eligible resident RM_BloodropMoth: alive/wild/mobile/not already drawn, absent/dead/downed/tame/already drawn, and legal route open/closed/reopened; ordinary births/spawns remain independently attributed. Exhausted and blocked cases require a quiet-state sign and no attention-created pawn.",
+        "left_out": "Safe light does not prevent unprovoked ordinary hunting, injury or collapse. Empty eradicated caves and caves with no eligible reachable hunter show a quiet response and create no hunter; a danger contrast requires an eligible reachable resident. No light-metabolism simulation, Sipper drain or Hush invisibility."
       },
       "sees": {
-        "instrument": "Light geometry calibrated against glow/contribution state plus natural exposure/timer and predator-path state trace. Track exposure changes and approaches under matched light histories; never call DrawSomethingToTheLight directly as proof.",
-        "start": "Comparable forks of a real inhabited cave with a legal reachable predator, no raid, no pre-existing manhunter and equal worker histories; risk state recorded before each fork. Obtain Lantern through defined natural/sowing route, not debug spawning for availability proof.",
+        "instrument": "Light geometry calibrated against glow/contribution state plus natural exposure/timer and predator-path state trace. Track exposure changes and approaches under matched light histories; never call DrawSomethingToTheLight directly as proof. Record eligible resident IDs before exposure, chosen pawn ID, legal path, quiet-state sign and birth/spawn cause ledger.",
+        "start": "Comparable forks of a real inhabited cave with a legal reachable predator, no raid, no pre-existing manhunter and equal worker histories; risk state recorded before each fork. Obtain Lantern through defined natural/sowing route, not debug spawning for availability proof. Depleted/blocked forks use ordinary killing/taming or route closure, record the resulting eligibility loss, and create no replacement fixture hunter.",
         "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
-        "control": "An unrelated hunt can look like light draw. Tag actual attention cause and target, compare dim and only-Lantern forks at matched native population/time, and show no other incident or forced manhunter. An ordinary lamp placed out of reach behind rock must have zero contribution, not merely nominal radius.",
+        "control": "An unrelated hunt can look like light draw. Tag actual attention cause and target, compare dim and only-Lantern forks at matched native population/time, and show no other incident or forced manhunter. An ordinary lamp placed out of reach behind rock must have zero contribution, not merely nominal radius. A new off-screen pawn with a legal route is still a false pass: the drawn ID must predate the attention event. Empty/blocked/depleted forks must create no pawn and display the quiet reason; ordinary spawning must not be requested or accelerated by attention.",
         "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
         "live_only_why": "State transitions, identities and comparative outcomes are available to the specified calibrated model and game state read; no visual-only judgement is asserted by this bar."
       },
@@ -177,38 +179,51 @@
         "settings"
       ],
       "eligibility": {
-        "reject_test": "Ordinary usable work-light must have a legible risk, and standing Lantern light must be genuinely different. Danger is native attention, not arbitrary hidden punishment. Safe means exemption from light-triggered draw only, not immunity to ordinary hunting or roof collapse. Delegated reject test: no usable risk contrast violates the frozen no-free-light constraint.",
+        "reject_test": "Ordinary usable work-light must have a legible risk, and standing Lantern light must be genuinely different. Danger is native attention, not arbitrary hidden punishment. Safe means exemption from light-triggered draw only, not immunity to ordinary hunting or roof collapse. Delegated reject test: no usable risk contrast violates the frozen no-free-light constraint. The draw recruits a resident, never creates a pawn; no eligible resident or no legal route yields a readable quiet state.",
         "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
         "first_version_test": "necessary frozen light-attention/safe-Lantern stages of the signature"
       }
     },
     {
       "id": "B5",
-      "says": "An explorer sees stationary crystals control dead machines that turn toward expedition light and visibly defend a marked living gallery when it is mined or attacked, with a readable warning and a reachable route for retreat.",
+      "says": "An explorer sees stationary crystals control dead machines that turn toward expedition light and defend a marked living gallery whose native crystal is more desirable to take than ordinary rock outside it, with a warning before extraction or attack provokes defence and a reachable retreat.",
       "meant": {
-        "intent": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise.",
+        "intent": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise. The protected native crystal must tempt extraction before its inhabitants answer: useful stone somewhere else cannot substitute for this riches-to-inhabitants turn. Desirability is a practical construction/trade opportunity compared with reachable unprotected rock, not a prescribed price or guaranteed fortune.",
         "source": "Owner event OWNER:1794375005355305543, 2026-11-11; owner experience 2026-10-20; the_lantern_deeps.md Shard-minds and Working Dead; delegated: precise territorial trigger and finite defence/retreat scope.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "living gallery",
+            "stands_for": "the marked native lanternstone mineral cells protected by a living aware crystal, as defined by the controller overlay in R4",
+            "accept": "A bare-walled gallery with no fungi is still a living gallery because an aware crystal protects its marked mineral cells."
+          },
+          {
+            "word": "dead machines",
+            "stands_for": "supplied unpowered chassis with no mind or power of their own, moved only by their linked crystal; not arbitrary wreckage or living colony mechs",
+            "accept": "An empty chassis stands, turns and fights while its crystal controls it; its motion does not make it an independent living machine."
+          }
+        ]
       },
       "accept": [
         "Dead metal stands and turns when the party brings light to an aware crystal; selecting the body identifies its crystal controller. A protected mining designation warns before work; carrying it out sends those existing bodies against the intrusion.",
-        "The expedition stops work and withdraws along the shown passage; defenders return to their gallery. Destroying the controlling mind visibly ends its control, and surviving bodies remain accounted for."
+        "The expedition stops work and withdraws along the shown passage; defenders return to their gallery. Destroying the controlling mind visibly ends its control, and surviving bodies remain accounted for.",
+        "The marked gallery holds the cave’s most desirable native crystal, which the party would rather take for useful luminous construction or trade than ordinary stone; the reachable unprotected rock offers no equivalent haul for comparable work."
       ],
       "reject": [
         "A mind’s label says sentient and a stationary chassis emits dust, but mining changes nothing except a lore message.",
         "Mining summons an unrelated raid or endless fresh droids, or peaceful Orun-Ghal becomes a boss, or a defender chases the expedition through the return portal.",
-        "The warning is printed after the first injury, a designation alone instantly starts combat, or all retreat paths are sealed by the very response being demonstrated."
+        "The warning is printed after the first injury, a designation alone instantly starts combat, or all retreat paths are sealed by the very response being demonstrated.",
+        "The protected cells offer the same ordinary stone or an equivalent lanternstone haul already available unprotected nearby, so the party has no practical reason to risk extraction there."
       ],
       "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
       "range": {
-        "varies": "Controller/body counts 0/1/multiple; intact/blocked/destroyed/downed bodies; overlapping mind reaches; ordinary light, Lantern-only light and dark changes; protected ordinary mineral vs unprotected rock, attack to mind/chassis, designation cancel and completed extraction; friendly/hostile/no relationship, injury, target death, retreat, simultaneous miners up to 40, save/reload during warn/defend/return. Include depleted-body and blocked-path cases; no bodies means visibly unable to defend, not an invented army.",
+        "varies": "Controller/body counts 0/1/multiple; intact/blocked/destroyed/downed bodies; overlapping mind reaches; ordinary light, Lantern-only light and dark changes; protected concentrated RM_LanternstoneWall deposits vs reachable unprotected ordinary rock and any scattered lanternstone; fresh and partly worked deposits; construction-led and trade-led expedition needs; limited vs ample native-resource stocks, attack to mind/chassis, designation cancel and completed extraction; friendly/hostile/no relationship, injury, target death, retreat, simultaneous miners up to 40, save/reload during warn/defend/return. Include depleted-body and blocked-path cases; no bodies means visibly unable to defend, not an invented army.",
         "left_out": "No recruitable body, resurrection of human corpse, sentience in every stone, colony-droid theft, mindstone manufacture, global reputation war or path-cutting boss. Ordinary Lantern harvest outside protected mineral is safe from territorial defence."
       },
       "sees": {
-        "instrument": "Encounter walk state trace plus live view of warning, body response and controller sign; compare actual mining/attack jobs and no-intrusion forks. Reads new defence instrument specified in tickets.",
-        "start": "A generated reachable mind gallery with associated finite chassis, intact return route, unprovoked state, same roster/light history across forks. No manual attack order assigned to defenders; future instrument must read real production controller links.",
+        "instrument": "Encounter walk state trace plus live view of warning, body response and controller sign; compare actual mining/attack jobs and no-intrusion forks. Reads new defence instrument specified in tickets. Compare ordinary mining, hauling and cutting jobs on matched save forks, identify resulting RM_Lanternstone and its actual loaded building/trade uses, and read the game’s work, route and sale information for protected and unprotected alternatives. Whole cave season supplies the calibrated native-resource opportunity comparison.",
+        "start": "A generated reachable mind gallery with associated finite chassis, intact return route, unprovoked state, same roster/light history across forks. No manual attack order assigned to defenders; future instrument must read real production controller links. Use actual generated native lanternstone deposits and loaded construction/trade uses, not debug-added campaign crystals or valuables. Journal reachable unprotected alternatives, work/path costs and the party’s declared material use before extraction.",
         "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
-        "control": "Preposed art, vanilla manhunter or a script-started raid can imitate defence. Record the same body/controller IDs before/after, tag the triggering completed job/damage and show cancellation/unprotected-rock forks stay unprovoked. Visibly disable controller on another fork and compare.",
+        "control": "Preposed art, vanilla manhunter or a script-started raid can imitate defence. Record the same body/controller IDs before/after, tag the triggering completed job/damage and show cancellation/unprotected-rock forks stay unprovoked. Visibly disable controller on another fork and compare. A rich salvage pile elsewhere cannot make worthless protected mineral pass. Compare only material obtained from the marked cells with reachable unprotected alternatives under the same workforce, cutter, trader/use and work opportunity; a label or higher nominal MarketValue without practical advantage fails.",
         "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
         "live_only_why": "State can prove controller links and combat, but a live view is required to judge whether warning, possession and retreat read as the crystal inhabitants acting rather than an unexplained attack."
       },
@@ -222,7 +237,7 @@
         "resources"
       ],
       "eligibility": {
-        "reject_test": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise.",
+        "reject_test": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise. The protected native crystal must tempt extraction before its inhabitants answer: useful stone somewhere else cannot substitute for this riches-to-inhabitants turn. Desirability is a practical construction/trade opportunity compared with reachable unprotected rock, not a prescribed price or guaranteed fortune.",
         "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
         "first_version_test": "signature: observable intelligent agency and remote defence"
       }
@@ -392,7 +407,7 @@
     },
     {
       "id": "C6",
-      "what": "Products resolve through their actual owning packages; current RM_ColdWax provider is unknown in this checkout. Thrakk/Vellok currently yield no wood. Distinguish older insect meat/blood from wave hydrocarbon animals."
+      "what": "Products resolve through their actual owning packages; current RM_ColdWax provider is unknown in this checkout. Thrakk/Vellok currently yield no wood. Distinguish older insect meat/blood from wave hydrocarbon animals. Read loaded RM_Lanternstone MarketValue (currently 1 in RM_LanternstoneItems.xml), stuff/construction uses, drop/cutting data and reachable protected/unprotected deposit work/path costs; these numbers regress tuning and cannot replace B5’s practical desirability comparison."
     },
     {
       "id": "C7",
@@ -442,7 +457,7 @@
     },
     {
       "id": "R3",
-      "rule": "Classify light by actual engine contributions after occlusion, not distance to nominal glower. Only standing RM_Lantern contribution exempts attention; ordinary formation, fungal, terrain, item and animal light does not. No colonial lamps means ambient native glow alone does not conjure attacks on absent colonists. For colonists use brightest exposed worker, not summed headcount; current 250-tick sample, roof-normalized squared glow, exposure threshold 60, decay 1.5 and cooldown 15000 ticks are attackable tuning checks.",
+      "rule": "Classify light by actual engine contributions after occlusion, not distance to nominal glower. Only standing RM_Lantern contribution exempts attention; ordinary formation, fungal, terrain, item and animal light does not. No colonial lamps means ambient native glow alone does not conjure attacks on absent colonists. For colonists use brightest exposed worker, not summed headcount; current 250-tick sample, roof-normalized squared glow, exposure threshold 60, decay 1.5 and cooldown 15000 ticks are attackable tuning checks. A light draw never creates a pawn: it recruits only an existing alive, wild, mobile RM_BloodropMoth not already drawn, on this map with a legal traversable route to the exposed worker. With none eligible or reachable, inspect shows the cave is quiet and why; nothing spawns. Ordinary births and existing population replenishment remain independent: attention never requests, accelerates or reserves them.",
       "touches": [
         "light provenance",
         "attention state",
@@ -452,7 +467,7 @@
     },
     {
       "id": "R4",
-      "rule": "Each mind has a visible inspect/select overlay for its protected gallery: current starting reach 7 cells in horizontal Euclidean distance, clipped to this map and mineral cells bordering reachable open floor; radio/crystal control may cross rock within that reach. Ordinary light facing uses actual received light and a visible target, not seeing through rock. Associate finite existing chassis by stable mind/body IDs; overlap belongs to nearest living mind, ties stable ID. No body duplication, corpse erasure or colony-droid conversion.",
+      "rule": "Each mind has a visible inspect/select overlay for its protected gallery: current starting reach 7 cells in horizontal Euclidean distance, clipped to this map and native RM_LanternstoneWall cells bordering reachable open floor; radio/crystal control may cross rock within that reach. Ordinary light facing uses actual received light and a visible target, not seeing through rock. Associate finite existing chassis by stable mind/body IDs; overlap belongs to nearest living mind, ties stable ID. No body duplication, corpse erasure or colony-droid conversion. Protected deposits are concentrated workable native lanternstone, mined to RM_ChunkLanternstone and cut into RM_Lanternstone; they must offer a more desirable construction/trade opportunity than reachable unprotected ordinary rock, without an equivalent easy unguarded lanternstone haul nearby. Scattered unprotected lanternstone may remain, with no new mineral type or campaign dependency.",
       "touches": [
         "controller state",
         "attention state",
@@ -464,7 +479,7 @@
     },
     {
       "id": "R5",
-      "rule": "Designating protected mineral or attacking the mind/chassis exposes a warning and controller relation. Only actual damage or completed protected extraction provokes existing chassis; no remote defence for unprotected ordinary stone or standing Lantern harvest. Defenders use ordinary melee jobs, remain within their controller reach, return when intruders retreat, and visibly slump when no living controller remains. A blocked path means visible guarding, never teleportation. Mine and withdraw can repeat without creating bodies. Orun never defends. Initial proposed wind-up is 250 production ticks with visible activation before retaliation; it is a tuning rule, never a bar number.",
+      "rule": "Designating protected native lanternstone (the R4 deposit) or attacking the mind/chassis exposes a warning and controller relation. Only actual damage or completed protected extraction provokes existing chassis; no remote defence for unprotected ordinary stone or standing Lantern harvest. Defenders use ordinary melee jobs, remain within their controller reach, return when intruders retreat, and visibly slump when no living controller remains. A blocked path means visible guarding, never teleportation. Mine and withdraw can repeat without creating bodies. Orun never defends. Initial proposed wind-up is 250 production ticks with visible activation before retaliation; it is a tuning rule, never a bar number.",
       "touches": [
         "attention state",
         "controller state",
@@ -518,7 +533,7 @@
     },
     {
       "id": "R10",
-      "rule": "Native stone remains useful for construction/trade, puffer edible and lace cloth; no guaranteed fortune or mushroom logs. Fuel milk/butcher products must resolve at their existing provider. Keep Wreckage field policy and Bones remains lifecycle as dependencies; no second salvage ladder. Do not expose campaign mindstone/Kindled/kyber/Force plots at defaults or leak late Cathedral knowledge.",
+      "rule": "Native lanternstone remains useful for construction/trade, with the R4 protected deposits a better expedition opportunity than ordinary unprotected rock. Puffer remains edible and lace supplies cloth; no guaranteed fortune or mushroom logs. Fuel milk/butcher products must resolve at their existing provider. Keep Wreckage field policy and Bones remains lifecycle as dependencies; no second salvage ladder. Do not expose campaign mindstone/Kindled/kyber/Force plots at defaults or leak late Cathedral knowledge.",
       "touches": [
         "resources",
         "ecology",
@@ -601,7 +616,7 @@
         "R11"
       ],
       "holds_together": "argued",
-      "why": "No kept feature duplicates or silently erases occupants: finite body transitions conserve identity, Orun is excluded from defence and death persists, listening is temporary and player-interruptible. Population sustainability remains explicitly unresolved in ecology, and action-order/controller races in controller state.",
+      "why": "No kept feature duplicates or silently erases occupants: finite body transitions conserve identity, Orun is excluded from defence and death persists, colony-machine listening is default-off; light attention recruits only an existing reachable resident and creates no pawn. Population sustainability remains explicitly unresolved in ecology, and action-order/controller races in controller state.",
       "model": ""
     },
     {
@@ -653,9 +668,9 @@
         "R10",
         "R11"
       ],
-      "holds_together": "argued",
-      "why": "Protection covers marked living gallery minerals, not every ordinary resource. Puffer, cloth, fuel milk, native stone and technological remains still provide ordinary reasons to visit without campaign wealth or optional blasts. Economical abundance remains an ecology model question, not a promised number.",
-      "model": ""
+      "holds_together": "unknown",
+      "why": "The protected native lanternstone must be practically more desirable to extract than reachable unprotected rock while ordinary construction/forage/fuel remain usable. Existing low-value stone data, scattered unguarded lanternstone, deposit placement, work/haul costs and colony stocks could remove that temptation despite individually correct defence and resources. Campaign minerals or distant salvage cannot substitute; real-job comparison and a native-resource budget must settle it.",
+      "model": "Whole cave season"
     },
     {
       "thing": "roof state",
@@ -685,7 +700,7 @@
         "R11"
       ],
       "holds_together": "unknown",
-      "why": "Initial placement, roof-limited flora, ordinary grazing, bounded light-triggered predators, taming and external supplies can form a depletion/arrival loop at colony scale; pairwise correct feeding and draw do not settle that season.",
+      "why": "Initial placement, roof-limited flora, ordinary grazing, resident-only light-triggered approaches with no attention-created pawns, taming and external supplies can form a depletion/arrival loop at colony scale; pairwise correct feeding and draw do not settle that season. Ordinary replenishment must remain independent of attention; intentional eradication is an explicit B8 exclusion, while unintentional season depletion is still a failure.",
       "model": "Whole cave season"
     },
     {
@@ -703,7 +718,7 @@
         "R11"
       ],
       "holds_together": "unknown",
-      "why": "Exposure/cooldown, visible warning, gallery defence, listening, retreat and peaceful greetings may overlap or starve each other when orders change or save intervenes. The causal chain must continue without turning its peaceful representative hostile.",
+      "why": "Exposure/cooldown, visible warning, gallery defence, retreat and peaceful greetings may overlap or starve each other when orders change or save intervenes. The causal chain must continue without turning its peaceful representative hostile. Resident depletion and route closure must produce the explicit quiet state, not spawn a replacement or starve peaceful encounters.",
       "model": "Encounter walk"
     },
     {

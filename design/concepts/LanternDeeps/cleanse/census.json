@@ -72,11 +72,11 @@
       "evidence": "src/RimMandrake/LanternDeeps/Source/GenStep_LanternstoneRock.cs; src/RimMandrake/LanternDeeps/Defs/ThingDefs_Natural/RM_LanternstoneWall.xml; src/RimMandrake/LanternDeeps/Defs/TerrainDefs/RM_LanternstoneTerrain.xml; src/RimMandrake/LanternDeeps/Defs/ThingDefs_Items/RM_LanternstoneItems.xml",
       "proven": "stale",
       "called_by": "RM_LanternDeepGenerator -> RM_LanternstoneRock -> GenStep_LanternstoneRock; Mineable wall / vanilla mining and stonecutting / construction defs",
-      "serves": "Adds lanternstone rock noise before rocks form. Mineable walls yield chunks; chunks -> lanternstone through stone-block idiom; owned rough/smooth/built walls and constructed glowing floor. Item is stuff and sellable resource; current MarketValue is 1, not a demonstrated fortune.",
+      "serves": "Adds lanternstone rock noise before rocks form. Mineable walls yield chunks; chunks -> lanternstone through stone-block idiom; owned rough/smooth/built walls and constructed glowing floor. Item is stuff and sellable resource; current MarketValue is 1, not a demonstrated fortune. Proposal requires concentrated protected deposits of this same native mineral to be a better practical construction/trade opportunity than reachable unprotected ordinary rock; current price and placement do not establish that comparison.",
       "fate": "land",
       "why": "Mineable luminous rock and usable construction material make the cavern mineral land rather than a decorative floor.",
       "needed_by": "none: this row has its own stated fate, not a needed_by exception.",
-      "ticket": null
+      "ticket": "T24"
     },
     {
       "id": "formations",
@@ -128,7 +128,7 @@
       "fate": "signature",
       "why": "Deleting ordinary-light consequences breaks hard ban six of the frozen sheet; this is the initial attention stage of the signature, not an unrelated combat event.",
       "needed_by": "none: this row has its own stated fate, not a needed_by exception.",
-      "ticket": null
+      "ticket": "T25"
     },
     {
       "id": "flora_content",
@@ -448,12 +448,12 @@
       "built": "present",
       "evidence": "src/RimMandrake/LanternDeeps/Source/RM_WorkingDead.cs:315",
       "proven": "missing",
-      "called_by": "RM_ShardMind ThingDef comp -> CompRM_ShardMind.CompTickRare -> Pull -> RM_ListenToShardMind JobDriver",
+      "called_by": "RM_ShardMind ThingDef comp -> CompRM_ShardMind.CompTickRare -> Pull -> RM_ListenToShardMind JobDriver; RM_WorkingDeadProof.ProofPull also calls Pull(true). LanternDeepsMod.cs initializes/scribes shardMindDroidPullEnabled true and displays its checkbox; inspect counts listeners. No retained chassis-control caller requires a listen job.",
       "serves": "Nearby undrafted player mechanoid-fleshed or Droidworks droid pawn can be given timed listen job, facing mind, job/inspect and mote signs. Draft/forced order breaks listening; no transport of consciousness or exit-wipe mechanic built here.",
-      "fate": "signature",
-      "why": "The frozen gallery lore includes living machines stopping. Keep a bounded, readable, player-interruptible listening response as evidence of electronic communication; no permanent conversion or loss of colony ownership.",
+      "fate": "next_version",
+      "why": "Stopping living colony machines is a separate interruption mechanic. Deleting it leaves the crystal’s controller-linked chassis, light-facing, remote defence and Orun greeting fully readable; lore mention alone does not make it necessary to land, life or the signature. Includes Biotech colony mechs, not just franchise droids.",
       "needed_by": "none: this row has its own stated fate, not a needed_by exception.",
-      "ticket": null
+      "ticket": "T39"
     },
     {
       "id": "orun_rounds",

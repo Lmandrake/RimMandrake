@@ -1,0 +1,729 @@
+{
+ "mod": "LanternDeeps",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B5 (says, accept, R4/R5); definition.md 'Why a player reaches for it'",
+     "evidence": "His experience sentence is the root: 'Mineral riches for kings, until you realize they are both alive and intelligent' (design/RimMandrake/biome_experiences_2026-10-20.md row LanternDeeps). His 2026-11-11 card answer ties the turn to taking riches: '1:1 especially as the crystals start to defend themselves with droid bodies remote controlled' (OWNER.jsonl tsn 1794375005355305543). The proposal moves every special mineral to the next version: campaign_mindstone, campaign_crystals (kyber), pyrinth and imported_orange_crystal. What remains is lanternstone, whose MarketValue is 1 (src/RimMandrake/LanternDeeps/Defs/ThingDefs_Items/RM_LanternstoneItems.xml:36). definition.md concedes 'If they are worthless in play, the resource experience fails', but no bar holds that. R4 defines the protected gallery only as 'mineral cells bordering reachable open floor' within reach of a mind. Nothing says what that mineral is, or why an expedition would want it more than the unprotected rock beside it. Lazy build: the gallery holds the same lanternstone as the open cave; no player ever mines it; B5 passes in a staged mining fork, but the turn from riches to inhabitants never happens in play.",
+     "would_pass": "A bar (B5 or B3) stating a comparison the player can see: the marked living gallery holds mineral (or salvage) the expedition visibly wants more than the ordinary rock outside it. Its reject picture is a protected gallery no different in worth from the unprotected stone, so nobody has a reason to provoke it. R4/R5 name what the protected mineral is, without pinning any price.",
+     "smallest_fix": "Add one accept/reject pair to B5: 'the marked gallery holds the cave's most desirable native crystal, which the party would rather take than ordinary stone' versus 'the protected cells are the same stone available unprotected nearby'. Add one line to R4 naming the protected mineral's identity. Price stays a check."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "rules R3; bars.json B4 range; definition.md 'Using it' (first hour); tickets.md T25",
+     "evidence": "The current light draw creates new animals: DrawSomethingToTheLight calls PawnGenerator.GeneratePawn with forceGenerateNewPawn: true and spawns 1–2 manhunter RM_BloodropMoth (MapComponent_LanternDeepDarkness.cs:178-220). The proposal gives three readings of where the drawn danger comes from. definition.md says 'Existing reachable residents answer first' ('first' leaves spawning open as a fallback). B4 range says 'Empty eradicated caves are not promised to conjure a hunter' (spawning permitted, not required). T25 says 'Naturally reachable finite predators; no spawn inside sealed occupied rooms' (which implies spawning elsewhere is fine). B8 rejects 'repeated light draws fill passages with new attackers'. A builder who keeps off-screen spawning and one who recruits residents only build two different mods: the first floods under B8 at 40 colonists, the second depletes so that B4's contrast cannot be seen by mid-season.",
+     "would_pass": "R3 states once whether a light draw may ever create a new pawn. Either: never, only existing residents on legal routes, with depletion shown as a readable sign. Or: yes, under a stated bound and placement (outside sight, on a legal route, through the existing spawning budget). B4 and T25 are worded to match.",
+     "smallest_fix": "One sentence in R3 ('A draw recruits only an existing reachable resident; with none, the cave shows it is quiet and spawns nothing', or the bounded-spawn alternative). Delete 'first' from definition.md and 'not promised' from B4 range."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json row droid_listening (fate signature); definition.md 'Routine' paragraph on living colony machines; Settings 'bounded machine listening' default on",
+     "evidence": "Row why: 'The frozen gallery lore includes living machines stopping. Keep a bounded, readable, player-interruptible listening response as evidence of electronic communication'. definition.md: 'That bounded response is needed to make the frozen electronic-contact lore readable.' Lore is not land, life or the signature. The stated signature ('revealing crystal minds through the dead machines they use to greet visitors and defend their galleries') is met by chassis turning and defending (B5) without it. No bar, check or ticket covers it, yet it ships on by default. Code: IsDroid also matches any mechanoid-fleshed pawn (RM_WorkingDead.cs:319-338), so with every DLC assumed, a Biotech mechanitor's colony mechs are pulled off work near every mind during B5 defence and the B8 season. The owner pages do not mention it.",
+     "would_pass": "Either a deletion argument showing that, without listening, a player could not tell the crystals are minds, together with a bar or check that covers it. Or the row moves to next_version with a switch-off ticket and acceptance test.",
+     "smallest_fix": "Set droid_listening's fate to next_version, add a switch-off ticket (default: no RM_ListenToShardMind job is ever assigned to a colony mech or droid; on: it is), and list it on page one."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B5 says/meant.figurative ([])",
+     "evidence": "B5 says 'stationary crystals control dead machines ... visibly defend a marked living gallery', with figurative: []. A gallery is not alive. 'Living gallery' stands for the protected mineral cells within a living mind's reach (R4), which a cold reader cannot get from the word. 'Dead machines' are machines that then stand, turn and fight; the phrase means unpowered chassis with no mind of their own. Read literally, a builder could mark a gallery that has living fungi in it, or treat any wrecked machine as eligible.",
+     "would_pass": "B5's figurative list names 'living gallery' (the mineral cells a living aware crystal protects, marked on selection) and 'dead machines' (chassis with no mind or power of their own, moved only by a crystal), each with one accept picture that departs from the literal reading.",
+     "smallest_fix": "Add two figurative entries to B5, each with an accept picture, e.g. 'a bare-walled gallery with no fungi is still a living gallery because a mind guards it'."
+    }
+   ],
+   "reviewer_refusals": 4,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "The mouth returns a fresh cave bearing the same name while the earlier excavation, supplies and animal are gone.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "A bare shaft is scattered in empty desert, or a return/cleanup silently deletes the occupied cave.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "After an expedition mines a passage, leaves supplies and escorts a wounded animal down, a later return through its mouth finds the opened passage, supplies and that surviving animal; a save made below preserves the same place.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "The shaft is part of a visible failed technological expedition site; cancelling a closure warning leaves those below and the way back intact.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A crowded worked gallery still separates the walking skeleton suit, rooted mind and inert metal from the stone being mined.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A generic cave is uniformly blue and its crystals, bodies and walls overlap so that selecting names is the only way to tell what is alive or traversable.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "At ordinary colony view a visitor can follow a dark passage into blue mineral and fungal patches, pick out rock faces to mine, and see equipped remains and living shapes without a surface sun lighting the room.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "The cave fills with a bright outdoor sky, surface rain or wind while its underground label remains correct.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "After foraging and a return visit, suitable unbuilt ground can carry native pasture again; the native fuel animals are not treated as ordinary meat or left dehydrating beside their own water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "Native flora exists only in the definition list and later visits grow only generic cave mushrooms, or animal entries never produce living residents.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "The expedition can milk the native fuel grazer but receives an unresolved product, or hydrocarbon animals supply the colony’s ordinary meat as if their biology were cosmetic.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "The forager harvests edible puffer and lace for cloth, gathers native stone, and keeps a fuel-producing animal while ordinary cave hunters move and feed nearby.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "A lamp behind solid rock cancels safe light, or adding a Lantern excuses ordinary light that reaches the worker.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "Only extraordinary proof lamps can trigger danger while ordinary standing lamps are always free, or Lantern-only workers receive the same light-triggered attacks as lamp workers.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "A lamp blocked by solid rock does not spoil Lantern-only shelter; an ordinary lamp that actually lights the sheltered worker does, and harvesting its Lantern removes that shelter.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "On comparable inhabited cave routes, a sustained lamp-lit work party visibly attracts an approaching native predator; a dim or Lantern-only work party avoids the light-triggered approach.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "An unexplained predator appears inside a sealed occupied room, with no readable approach or light-related sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "A mind’s label says sentient and a stationary chassis emits dust, but mining changes nothing except a lore message.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "The expedition stops work and withdraws along the shown passage; defenders return to their gallery. Destroying the controlling mind visibly ends its control, and surviving bodies remain accounted for.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "Mining summons an unrelated raid or endless fresh droids, or peaceful Orun-Ghal becomes a boss, or a defender chases the expedition through the return portal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Dead metal stands and turns when the party brings light to an aware crystal; selecting the body identifies its crystal controller. A protected mining designation warns before work; carrying it out sends those existing bodies against the intrusion.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "The warning is printed after the first injury, a designation alone instantly starts combat, or all retreat paths are sealed by the very response being demonstrated.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "The only friendship change is inspect text or a letter; the same aimless wandering continues on later visits.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "A colonist completes ordinary study visits; when the colony later returns, the skeleton-bearing suit walks over, stops to face them and gives its recognisable harmless greeting before choosing their company.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "A proof helper awards familiarity without study, or the friendly suit mines for the colony, attacks a protected miner, or is replaced after death with a new cheerful copy.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "An interrupted visit grants no acquaintance, while a completed visit still matters after the studier dies and another colonist returns; a downed suit cannot pretend to greet.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "A prop that restores vanilla support is ignored in an ordinary collapse, or a warning far from the threatened cells is the only sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "The roof is merely held forever after a warning, or falls before any practical escape or support job can complete.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "After support is mined away, dust, sand and rumble point to the endangered roof while the miner can still move into safe passage; a completed timely prop prevents that ordinary fall.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "If nobody props it, the warned unsupported roof falls and leaves visible damage or rubble rather than silently erasing the miner.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Doing study and safe harvesting before protected mining, then doing protected mining and retreat before study, preserves the causal warning, danger and peaceful inhabitant behaviour rather than silently skipping a branch.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "With the complete cave enabled, repeated light draws fill passages with new attackers, grazing and mining strip the remaining living encounters, or duplicate controlled bodies block the return route.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "During a season the party gathers, lights work areas, studies, provokes a gallery and withdraws, props a roof, leaves and returns; after a mid-season save and reload the cave remains recognisably the worked inhabited place with safe-light and ordinary-light choices still useful.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "After reload the warning queue never resolves, the friend forgets the colony, a disabled extra resumes jobs, or a recurring exception makes the cave unusable.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Deep-drilling lanternstone inside the Deep. RM_LanternstoneItems.xml gives lanternstone deepCommonality 1, deepCountPerPortion 45 and deepLumpSizeRange 20~30. Patch_GateLanternstoneDeep.cs swaps it for steel only off the Deep, so on the Deep's own map a ground-penetrating scanner and deep drill extract native mineral without mining a wall. The census row deep_gate records only the off-Deep substitution. No row says whether drilling under or beside a marked living gallery counts as 'completed protected extraction' (R5). As written it is an unprotected route to the gallery's mineral that bypasses B5.",
+   "loop_or_three_way": "Three-way meeting of B3/R7, R3 and B4. B3 and R7 keep luminous hydrocarbon animals alive and moving ('Ordinary body glow is life'; mobile_glow kept as life). R3 classes animal light as ordinary light that does not exempt. B4 rejects 'Lantern-only workers receive the same light-triggered attacks as lamp workers'. A glowing grazer, drifter or drawn predator wandering into a Lantern-only work cell turns it into a mixed-light cell, spoils the shelter and builds exposure. The resulting draw then brings more native traffic, possibly luminous, into that cell, so on a populated cave the mod's own kept life can feed the very failure B4 rejects. The bars.json light provenance meeting lists B2, B4, B5, B8, R2, R3, R4 and R11, but not B3 or R7, and B3's touches omit light provenance, so this group has no holds_together. Light geometry sweeps 'moving animal glowers' singly, but only Whole cave season, with populations running, could show how often it happens.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 617444
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B5 (says, accept picture three, meant.intent); definition.md 'Why a player reaches for it'; R4, R10",
+     "evidence": "The owner typed the experience himself (design/RimMandrake/biome_experiences_2026-10-20.md, LanternDeeps row): \"Mineral riches for kings, until you realize they are both alive and intelligent.\" B5 only asks that the gallery's crystal be \"more desirable to take than ordinary rock outside it\". Its accept picture says the party \"would rather take [it] for useful luminous construction or trade than ordinary stone\". The census row lanternstone_rock and check C6 record RM_Lanternstone MarketValue as 1. A build where lanternstone blocks are a little more useful than granite blocks passes B5 as written. That is a small upgrade over plain stone, not the riches that make the later turn to 'alive and intelligent' land. Treating 'for kings' as figurative is fine. But the bar keeps no anchor for 'riches', so the owner's own promise is weakened to beating the worst comparison available.",
+     "would_pass": "B5 still compares against reachable unprotected rock, and it also requires the gallery haul to be a prize. The colony would count it among the most valuable things the expedition brings home, worth the trip and the risk on its own. A reject picture says the protected crystal is only marginally better than ordinary building stone. No price or number appears in the bar.",
+     "smallest_fix": "Add 'riches' to B5.meant.figurative, standing for 'a haul the colony would mount an expedition for, among the most valuable things it brings home'. Add the reject picture 'the gallery's crystal is merely a slightly better building stone than the granite outside; nobody would risk the trip for it'. Keep the existing no-salvage-substitution clause."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json R5 ('Only actual damage or completed protected extraction provokes existing chassis'); definition.md Routine ('actual damage to a mind or its associated chassis'); B5 says 'a warning before extraction or attack provokes defence'",
+     "evidence": "R5 and the definition never say whose damage counts. Three kept things damage chassis without any colony warning: B7/R8 vanilla roof falls (including falls caused by ordinary mining outside the marked gallery, which the definition says 'do not provoke territorial defence'), the drawn manhunter RM_BloodropMoth under R3, and ordinary predators. As written, an unprotected miner whose roof falls on a chassis inside a mind's 7-cell reach provokes defence with no designation warning. Neither the defence target nor the warning is defined in that case. Either reading passes R5, and only one keeps B5's 'warning before'.",
+     "would_pass": "R5 names the provoking instigators: damage dealt by a colony pawn or by a player order, and a roof fall caused by completed protected extraction counts as that extraction. Environmental, wild-animal and roof-fall damage from unprotected work does not provoke, or it provokes only after the same visible warning. The defence target is the instigating intruder.",
+     "smallest_fix": "Add one sentence to R5 defining the provoking damage source and the target. Add a B5 range case: a roof fall from unprotected mining hits a chassis, and the predator-damaged chassis case."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json row 'drinker' (fate life); R7 list of excluded special powers",
+     "evidence": "The drinker row keeps 'Bite marker -> CreatureBehaviors FluidSacs gauge/nutrition or wrong-blood poison and death drop'. Its why only argues feeding ('Deleting feeding defeats the hunter role'). Source: RM_BloodropMoth in RM_LanternDeeps_Fauna_ThingDefs_Races.xml has RM_CompProperties_FluidSacs with poisonousFleshTypes <li>Normal</li> and poisonHediff RM_FluidSacPoison, and the description says it 'dies rapidly afterward'. That bespoke poison-death power is the same class as the Shoal wound-link/KinMending powers the proposal moves (T2). R7's list of powers not required at defaults leaves it out. No deletion argument shows land, life or the signature needs it.",
+     "would_pass": "Either a needed_by deletion argument for the wrong-blood poison death, or the power is split into its own row moved to next version with a T-ticket, while the moth body, bite and feeding stay as life.",
+     "smallest_fix": "Split census row 'drinker_wrong_blood_poison' out of 'drinker' with fate next_version (or a written needed_by argument). Add it to R7's excluded list and to next_version.md with a switch-off ticket."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B6 says ('chosen company'); accept picture one ('before choosing their company'); R6 ('resume harmless company/rounds')",
+     "evidence": "B6.meant.figurative marks only 'befriend'. 'Chosen company' is the owner's card wording (ANSWERS_OWNER.md: 'choosing the visitors' company'), but the proposal never says what behaviour it stands for: how near, how long, under whose job-giver. B6's own control admits 'A random wander toward a pawn can imitate company'. Without a stated reading, a cold reader cannot tell company from a wander that happens to end near a colonist.",
+     "would_pass": "A figurative entry: 'chosen company' stands for Orun's own rounds preferring to stay near a present familiar colonist for a while, over its other destinations, by its own choice and never under player command. Accept example: it drifts along beside the researcher for part of the visit, then wanders off to a mind.",
+     "smallest_fix": "Add a 'chosen company' entry to B6.meant.figurative and mirror its reading in R6."
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "definition.md Settings ('Existing host selection remains, labelled unsupported outside shipped cold hosts'); ambiguities.md item 4 ('not default validation of warm hosts'); R1 ('Default host eligibility is the intersection ...')",
+     "evidence": "Frozen sheet design/Jawa/worldbuilding/biomes/the_lantern_deeps.md section 6, hard ban 2: \"No injection above −40 °C — a Deep beneath a warmer host map is a violation.\" The proposal applies the ≤ −40 °C test only to default eligibility. Ambiguity 4 contemplates warm hosts reached through the existing host list. The owner's 2026-10-15 ruling lets existing cross-biome switches stay, labelled unsupported. It does not license breaking a frozen fiction ban, and both can be honoured at once.",
+     "would_pass": "R1 applies the fixed source-tile ≤ −40 °C nightside test to every host, custom-selected ones included. The existing host list can widen which cold biomes are eligible, labelled unsupported, but can never place a Deep under a warmer host.",
+     "smallest_fix": "In R1, change 'Default host eligibility is' to 'Host eligibility is always', and state that custom host selection only widens the biome list inside the temperature test. Strike 'warm hosts' from ambiguity 4."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "The mouth returns a fresh cave bearing the same name while the earlier excavation, supplies and animal are gone.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "A bare shaft is scattered in empty desert, or a return/cleanup silently deletes the occupied cave.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "The shaft is part of a visible failed technological expedition site; cancelling a closure warning leaves those below and the way back intact.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "After an expedition mines a passage, leaves supplies and escorts a wounded animal down, a later return through its mouth finds the opened passage, supplies and that surviving animal; a save made below preserves the same place.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A generic cave is uniformly blue and its crystals, bodies and walls overlap so that selecting names is the only way to tell what is alive or traversable.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "At ordinary colony view a visitor can follow a dark passage into blue mineral and fungal patches, pick out rock faces to mine, and see equipped remains and living shapes without a surface sun lighting the room.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "The cave fills with a bright outdoor sky, surface rain or wind while its underground label remains correct.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A crowded worked gallery still separates the walking skeleton suit, rooted mind and inert metal from the stone being mined.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Native flora exists only in the definition list and later visits grow only generic cave mushrooms, or animal entries never produce living residents.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "The forager harvests edible puffer and lace for cloth, gathers native stone, and keeps a fuel-producing animal while ordinary cave hunters move and feed nearby.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "After foraging and a return visit, suitable unbuilt ground can carry native pasture again; the native fuel animals are not treated as ordinary meat or left dehydrating beside their own water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "The expedition can milk the native fuel grazer but receives an unresolved product, or hydrocarbon animals supply the colony’s ordinary meat as if their biology were cosmetic.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "A lamp behind solid rock cancels safe light, or adding a Lantern excuses ordinary light that reaches the worker.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "After the reachable hunters have been killed or shut out, sustained lamp work shows that no hunter can answer; no animal appears. A later ordinary resident can answer only after it actually lives on the map and has a legal route.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "Only extraordinary proof lamps can trigger danger while ordinary standing lamps are always free, or Lantern-only workers receive the same light-triggered attacks as lamp workers.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The light response creates a fresh predator off-screen or outside the room and calls its walk toward the party a resident approach.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "On comparable inhabited cave routes, a sustained lamp-lit work party visibly attracts an approaching native predator; a dim or Lantern-only work party avoids the light-triggered approach.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 6,
+     "text": "A lamp blocked by solid rock does not spoil Lantern-only shelter; an ordinary lamp that actually lights the sheltered worker does, and harvesting its Lantern removes that shelter.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 7,
+     "text": "An unexplained predator appears inside a sealed occupied room, with no readable approach or light-related sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "The warning is printed after the first injury, a designation alone instantly starts combat, or all retreat paths are sealed by the very response being demonstrated.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A mind’s label says sentient and a stationary chassis emits dust, but mining changes nothing except a lore message.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "The protected cells offer the same ordinary stone or an equivalent lanternstone haul already available unprotected nearby, so the party has no practical reason to risk extraction there.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Mining summons an unrelated raid or endless fresh droids, or peaceful Orun-Ghal becomes a boss, or a defender chases the expedition through the return portal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "The marked gallery holds the cave’s most desirable native crystal, which the party would rather take for useful luminous construction or trade than ordinary stone; the reachable unprotected rock offers no equivalent haul for comparable work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 6,
+     "text": "Dead metal stands and turns when the party brings light to an aware crystal; selecting the body identifies its crystal controller. A protected mining designation warns before work; carrying it out sends those existing bodies against the intrusion.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 7,
+     "text": "The expedition stops work and withdraws along the shown passage; defenders return to their gallery. Destroying the controlling mind visibly ends its control, and surviving bodies remain accounted for.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "An interrupted visit grants no acquaintance, while a completed visit still matters after the studier dies and another colonist returns; a downed suit cannot pretend to greet.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "A proof helper awards familiarity without study, or the friendly suit mines for the colony, attacks a protected miner, or is replaced after death with a new cheerful copy.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "The only friendship change is inspect text or a letter; the same aimless wandering continues on later visits.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "A colonist completes ordinary study visits; when the colony later returns, the skeleton-bearing suit walks over, stops to face them and gives its recognisable harmless greeting before choosing their company.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "A prop that restores vanilla support is ignored in an ordinary collapse, or a warning far from the threatened cells is the only sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "After support is mined away, dust, sand and rumble point to the endangered roof while the miner can still move into safe passage; a completed timely prop prevents that ordinary fall.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The roof is merely held forever after a warning, or falls before any practical escape or support job can complete.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "If nobody props it, the warned unsupported roof falls and leaves visible damage or rubble rather than silently erasing the miner.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Doing study and safe harvesting before protected mining, then doing protected mining and retreat before study, preserves the causal warning, danger and peaceful inhabitant behaviour rather than silently skipping a branch.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "During a season the party gathers, lights work areas, studies, provokes a gallery and withdraws, props a roof, leaves and returns; after a mid-season save and reload the cave remains recognisably the worked inhabited place with safe-light and ordinary-light choices still useful.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "With the complete cave enabled, repeated light draws fill passages with new attackers, grazing and mining strip the remaining living encounters, or duplicate controlled bodies block the return route.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "After reload the warning queue never resolves, the friend forgets the colony, a disabled extra resumes jobs, or a recurring exception makes the cave unusable.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Wild-animal population renewal on the Deep's pocket map. R3, B4 accept picture three ('A later ordinary resident can answer only after it actually lives on the map'), B3 return visits and B8 all rely on 'ordinary births and existing population replenishment'. The census has a row with built/called_by/proven for plant regrowth (flora_renewal, MapComponent_DeepFloraRegrowth). It has none for animal arrival or respawn on this pocket map: whether the vanilla wild-animal spawner runs on an underground pocket map with animalDensity 2.5, or whether only egg-laying replenishes. T24 covers initial placement only.",
+   "loop_or_three_way": "R3 + the kept drinker poison + B4/B8. R3 lets a light draw recruit only RM_BloodropMoth and send it manhunter at the brightest colonist. The drinker row keeps FluidSacs with poisonousFleshTypes Normal, so a moth that feeds on a colonist is poisoned and 'dies rapidly afterward'. B8 refuses 'unintended loss of native life', and B4's danger contrast needs an eligible resident. So each successful draw kills the one species the draw can use. Sustained lamp work becomes a depletion engine that empties the hunter pool, turning B4 into its quiet state and failing B8. This happens without any deliberate extermination, and the missing animal-renewal row above means nothing documents a refill.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 482700
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1456953,
+    "output_tokens": 12200
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "core_promise_weakened",
+   "where": "bars.json B5 (says, accept picture three, meant.intent); definition.md 'Why a player reaches for it'; R4, R10",
+   "evidence": "The owner typed the experience himself (design/RimMandrake/biome_experiences_2026-10-20.md, LanternDeeps row): \"Mineral riches for kings, until you realize they are both alive and intelligent.\" B5 only asks that the gallery's crystal be \"more desirable to take than ordinary rock outside it\". Its accept picture says the party \"would rather take [it] for useful luminous construction or trade than ordinary stone\". The census row lanternstone_rock and check C6 record RM_Lanternstone MarketValue as 1. A build where lanternstone blocks are a little more useful than granite blocks passes B5 as written. That is a small upgrade over plain stone, not the riches that make the later turn to 'alive and intelligent' land. Treating 'for kings' as figurative is fine. But the bar keeps no anchor for 'riches', so the owner's own promise is weakened to beating the worst comparison available.",
+   "would_pass": "B5 still compares against reachable unprotected rock, and it also requires the gallery haul to be a prize. The colony would count it among the most valuable things the expedition brings home, worth the trip and the risk on its own. A reject picture says the protected crystal is only marginally better than ordinary building stone. No price or number appears in the bar.",
+   "smallest_fix": "Add 'riches' to B5.meant.figurative, standing for 'a haul the colony would mount an expedition for, among the most valuable things it brings home'. Add the reject picture 'the gallery's crystal is merely a slightly better building stone than the granite outside; nobody would risk the trip for it'. Keep the existing no-salvage-substitution clause."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "bars.json R5 ('Only actual damage or completed protected extraction provokes existing chassis'); definition.md Routine ('actual damage to a mind or its associated chassis'); B5 says 'a warning before extraction or attack provokes defence'",
+   "evidence": "R5 and the definition never say whose damage counts. Three kept things damage chassis without any colony warning: B7/R8 vanilla roof falls (including falls caused by ordinary mining outside the marked gallery, which the definition says 'do not provoke territorial defence'), the drawn manhunter RM_BloodropMoth under R3, and ordinary predators. As written, an unprotected miner whose roof falls on a chassis inside a mind's 7-cell reach provokes defence with no designation warning. Neither the defence target nor the warning is defined in that case. Either reading passes R5, and only one keeps B5's 'warning before'.",
+   "would_pass": "R5 names the provoking instigators: damage dealt by a colony pawn or by a player order, and a roof fall caused by completed protected extraction counts as that extraction. Environmental, wild-animal and roof-fall damage from unprotected work does not provoke, or it provokes only after the same visible warning. The defence target is the instigating intruder.",
+   "smallest_fix": "Add one sentence to R5 defining the provoking damage source and the target. Add a B5 range case: a roof fall from unprotected mining hits a chassis, and the predator-damaged chassis case."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json row 'drinker' (fate life); R7 list of excluded special powers",
+   "evidence": "The drinker row keeps 'Bite marker -> CreatureBehaviors FluidSacs gauge/nutrition or wrong-blood poison and death drop'. Its why only argues feeding ('Deleting feeding defeats the hunter role'). Source: RM_BloodropMoth in RM_LanternDeeps_Fauna_ThingDefs_Races.xml has RM_CompProperties_FluidSacs with poisonousFleshTypes <li>Normal</li> and poisonHediff RM_FluidSacPoison, and the description says it 'dies rapidly afterward'. That bespoke poison-death power is the same class as the Shoal wound-link/KinMending powers the proposal moves (T2). R7's list of powers not required at defaults leaves it out. No deletion argument shows land, life or the signature needs it.",
+   "would_pass": "Either a needed_by deletion argument for the wrong-blood poison death, or the power is split into its own row moved to next version with a T-ticket, while the moth body, bite and feeding stay as life.",
+   "smallest_fix": "Split census row 'drinker_wrong_blood_poison' out of 'drinker' with fate next_version (or a written needed_by argument). Add it to R7's excluded list and to next_version.md with a switch-off ticket."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B6 says ('chosen company'); accept picture one ('before choosing their company'); R6 ('resume harmless company/rounds')",
+   "evidence": "B6.meant.figurative marks only 'befriend'. 'Chosen company' is the owner's card wording (ANSWERS_OWNER.md: 'choosing the visitors' company'), but the proposal never says what behaviour it stands for: how near, how long, under whose job-giver. B6's own control admits 'A random wander toward a pawn can imitate company'. Without a stated reading, a cold reader cannot tell company from a wander that happens to end near a colonist.",
+   "would_pass": "A figurative entry: 'chosen company' stands for Orun's own rounds preferring to stay near a present familiar colonist for a while, over its other destinations, by its own choice and never under player command. Accept example: it drifts along beside the researcher for part of the visit, then wanders off to a mind.",
+   "smallest_fix": "Add a 'chosen company' entry to B6.meant.figurative and mirror its reading in R6."
+  },
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "definition.md Settings ('Existing host selection remains, labelled unsupported outside shipped cold hosts'); ambiguities.md item 4 ('not default validation of warm hosts'); R1 ('Default host eligibility is the intersection ...')",
+   "evidence": "Frozen sheet design/Jawa/worldbuilding/biomes/the_lantern_deeps.md section 6, hard ban 2: \"No injection above −40 °C — a Deep beneath a warmer host map is a violation.\" The proposal applies the ≤ −40 °C test only to default eligibility. Ambiguity 4 contemplates warm hosts reached through the existing host list. The owner's 2026-10-15 ruling lets existing cross-biome switches stay, labelled unsupported. It does not license breaking a frozen fiction ban, and both can be honoured at once.",
+   "would_pass": "R1 applies the fixed source-tile ≤ −40 °C nightside test to every host, custom-selected ones included. The existing host list can widen which cold biomes are eligible, labelled unsupported, but can never place a Deep under a warmer host.",
+   "smallest_fix": "In R1, change 'Default host eligibility is' to 'Host eligibility is always', and state that custom host selection only widens the biome list inside the temperature test. Strike 'warm hosts' from ambiguity 4."
+  }
+ ],
+ "applyable": false,
+ "seconds": 839,
+ "at": "2026-11-17T01:24:17"
+}

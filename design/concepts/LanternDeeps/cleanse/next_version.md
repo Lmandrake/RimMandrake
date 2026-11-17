@@ -222,7 +222,7 @@ Disposition: T34
 
 What: Later campaign machine-identity consequences
 
-Why outside this version: Permanent allegiance/memory loss is another progression and control system; temporary readable electronic contact suffices for the first encounter. No lore ruling is rewritten.
+Why outside this version: Permanent allegiance/memory loss is another progression and control system; controller-linked dead chassis and defence suffice for the first encounter; temporary colony-machine listening is separately deferred. No lore ruling is rewritten.
 
 Disposition: T35
 
@@ -249,6 +249,14 @@ What: Later additional mineral integration
 Why outside this version: An unidentified second special mineral is not necessary for native blue land, ordinary useful stone or recognition; do not silently identify it as Pyrinth.
 
 Disposition: T38
+
+### Living colony machines stop and listen
+
+What: Shard-minds assign RM_ListenToShardMind to living colony mechs/droids, with associated inspect/mote signs; code and definitions stay.
+
+Why outside this version: Interrupting colony machines is a separate interaction. Removing it leaves crystal control, light-facing, remote defence and Orun greeting readable; lore mention alone is not a deletion argument.
+
+Disposition: T39; next-version switch defaults off, including Biotech mechs.
 
 ### Before any later enabling
 
