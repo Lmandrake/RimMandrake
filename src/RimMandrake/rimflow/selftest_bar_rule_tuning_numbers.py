@@ -244,8 +244,11 @@ def run_cases():
               rec["verdict"] == "not_covered" and "second reader" in str(rec.get("advisory")) and CJ.stop_exit(rec),
               rec.get("advisory"))
 
-        # 5. a later look may not raise a new gap on material that did not change
+        # 5. a later look may not raise a new gap on material that did not change. Only a CALIBRATED brief's refusal is
+        # not advisory, and only a non-advisory refusal gets a delta look: the case stubs the status, so the live registry
+        # (infrastructure/state/judge_calibration.json, UNTESTED after any brief edit) does not decide it.
         CJ.delta_plan = real_delta
+        real_status, CJ.RC.status = CJ.RC.status, (lambda family: "CALIBRATED")
         d = concept(root, "Foo5")
         rec, _ = CJ.run(d, root, script([answer("not_covered", [true_gap()])]), reader=None)
         late = true_gap(ids=["inv_throw"], what="the throw distance is unread", new_since="late",
@@ -260,6 +263,7 @@ def run_cases():
         check("run: a new gap on unchanged material at a later look is advisory (a miss), not a blocking gap",
               not rec2.get("gaps") and any(a.get("ids") == ["inv_throw"] for a in rec2.get("advisory_gaps") or []),
               (rec2.get("verdict"), rec2.get("gaps"), rec2.get("advisory_gaps"), rec2.get("dropped")))
+        CJ.RC.status = real_status
 
 
 def main():
