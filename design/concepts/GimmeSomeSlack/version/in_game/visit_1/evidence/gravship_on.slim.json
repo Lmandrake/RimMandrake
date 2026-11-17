@@ -1,0 +1,49 @@
+{
+ "label": "gravship_on",
+ "order": 4,
+ "source": "/mnt/d/ClaudeWork/scratch/gss_v1/gravship_on.json",
+ "mode": "live",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.patches"
+  ],
+  "tier": {
+   "active_equals_running": true,
+   "note": "gravship ran on the same load as proof run 4 (tier gimmesomeslack, 11 mods)"
+  }
+ },
+ "active_mods": [
+  "brrainz.harmony",
+  "ludeon.rimworld",
+  "ludeon.rimworld.royalty",
+  "ludeon.rimworld.ideology",
+  "ludeon.rimworld.biotech",
+  "ludeon.rimworld.anomaly",
+  "ludeon.rimworld.odyssey",
+  "brrainz.rimbridgeserver",
+  "ray1203.simplecamerasetting",
+  "mandrake.rm.gimmesomeslack",
+  "mandrake.rm.patches"
+ ],
+ "game_build": "1.6.4871 rev590",
+ "run_identity": null,
+ "mod_hash": null,
+ "rows": [
+  {
+   "id": "GS1_keep_wires_on_gravship_on_aboard_span_flies",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "{'setting': 'keepWiresOnGravship', 'value': True, 'mode': 'on', 'before': {'spansUp': 2}, 'after': {'spansUp': 1, 'spansCut': 0}, 'aboardSpanUp': True, 'groundLinkKept': False, 'cords': {'cordEdges': 1, 'cordsAcrossNets': 0, 'verticesInUnwalkable': 0, 'conduitCells': 7}, 'links': [[40617, 40618, 'Up'], [40618, 40617, 'Up']], 'ids': [40617, 40618, 40619], 'verdict': 'PASS'}"
+  }
+ ]
+}

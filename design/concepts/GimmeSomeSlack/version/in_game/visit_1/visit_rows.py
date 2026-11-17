@@ -76,6 +76,20 @@ def add(a):
             r2["status_recorded"] = r2["status"]
             r2["status"], r2["override_why"] = over[r["id"]]
         rows.append(r2)
+    # proof_all keeps some PASS rows of a shared session in its notes (S7_save_load_styles sits in d4_save_notes); a row-shaped
+    # dict there is the same row, so it is read too (visit 1, 2026-11-16: sc_four_looks read S7 MISSING without this)
+    have = {r["id"] for r in rows}
+    for k, v in res.items():
+        if k.endswith("_notes") and isinstance(v, list):
+            for r in v:
+                if isinstance(r, dict) and isinstance(r.get("id"), str) and r.get("status") in ("PASS", "FAIL", "UNMEASURED") \
+                        and r["id"] not in have:
+                    r2 = {"id": r["id"], "status": r["status"], "class": r.get("class"), "detail": str(r.get("detail"))[:600], "from_notes": k}
+                    if r["id"] in over:
+                        r2["status_recorded"] = r2["status"]
+                        r2["status"], r2["override_why"] = over[r["id"]]
+                    rows.append(r2)
+                    have.add(r["id"])
     if a.gate:
         g = json.load(open(a.gate))
         st = ((g.get("steps") or {}).get("validation_offline") or {}).get("statuses") or {}
@@ -83,6 +97,8 @@ def add(a):
         rows += [{"id": k, "status": v, "class": "OFFLINE_GATE", "detail": "proof_all.py --offline-gate"} for k, v in sorted(st.items())
                  if k not in have]
     env = res.get("env") or {}
+    if not env and a.env:                     # a one-row result (gravship_scene, --removal-check) records no env: the list it ran on, read at the run
+        env = json.load(open(a.env))
     os.makedirs(EV, exist_ok=True)
     order = len(glob.glob(os.path.join(EV, "*.slim.json")))
     game = open(GAME_VERSION).read().strip() if os.path.exists(GAME_VERSION) else "UNMEASURED"
@@ -92,7 +108,7 @@ def add(a):
     ev = os.path.join(EV, a.label + ".slim.json")
     json.dump(slim, open(ev, "w"), indent=1)
     ident = res.get("run_identity") or {}
-    sha = ((ident.get("git") or {}).get("sha") or "UNMEASURED")[:10]
+    sha = ((ident.get("git") or {}).get("sha") or a.sha or "UNMEASURED")[:10]
     tier_ok = bool((env.get("tier") or {}).get("active_equals_running"))
     only = set(a.only.split(",")) if a.only else None
     tests = stage6()
@@ -117,7 +133,10 @@ def add(a):
     for tid in sorted(tests):
         if not tid.startswith("sc_") or tests[tid].get("file", "").endswith("gss_playtest_runner.py"):
             continue
-        st, det = V.scene_verdict(tid, merged)
+        try:
+            st, det = V.scene_verdict(tid, merged)
+        except KeyError:                      # not a scenes.json scene (sc_stub_joins): its own command writes its row
+            continue
         if tid in last and last[tid]["verdict"] == st and last[tid].get("detail") == det["rows"]:
             continue
         append({"test": tid, "verdict": st, "site_checked": tier_ok, "game": "archmagi", "mod_sha": sha,
@@ -137,6 +156,8 @@ def main():
     p.add_argument("--only")
     p.add_argument("--command")
     p.add_argument("--override", action="append")
+    p.add_argument("--sha", help="the deployed source's sha, for a result that records no run_identity")
+    p.add_argument("--env", help="JSON {running: [...], tier: {active_equals_running: bool}} for a result that records no env")
     a = ap.parse_args()
     if a.cmd != "add":
         ap.print_help()

@@ -1,0 +1,107 @@
+{
+ "row": "sc_stub_joins",
+ "result": "FAIL",
+ "save": "GSS_OWNER_LOOK_20261116",
+ "rect": "0,0,400,400",
+ "probe": {
+  "success": true,
+  "cmd": "joins",
+  "stubs": 381,
+  "taken": 399,
+  "offLine": 1,
+  "offSlope": 19,
+  "empty": 4,
+  "worstDeg": 83.327,
+  "worstPos": 0.132,
+  "byKind": {
+   "box T": [
+    135,
+    148,
+    1,
+    15,
+    3
+   ],
+   "box X": [
+    28,
+    34,
+    0,
+    2,
+    0
+   ],
+   "plug": [
+    160,
+    160,
+    0,
+    2,
+    0
+   ],
+   "rock hole": [
+    2,
+    2,
+    0,
+    0,
+    0
+   ],
+   "strip lead": [
+    6,
+    4,
+    0,
+    0,
+    1
+   ],
+   "strip plug": [
+    15,
+    15,
+    0,
+    0,
+    0
+   ],
+   "switch": [
+    11,
+    12,
+    0,
+    0,
+    0
+   ],
+   "wall plate": [
+    22,
+    22,
+    0,
+    0,
+    0
+   ],
+   "wall plug": [
+    2,
+    2,
+    0,
+    0,
+    0
+   ]
+  },
+  "liveTails": 15,
+  "liveOffSlope": 0,
+  "livePinched": 0,
+  "liveWorstDeg": 0.15,
+  "liveMinR": 0.331,
+  "wallTerminalsLoose": 0,
+  "bad": [
+   "live box T@(16.5,240.5) stub (0,1) cord junction:16,240|battery:16,240: leaves the stub 38 deg off its slope",
+   "live box T@(18.5,240.5) stub (0,1) cord junction:18,240|battery:18,240: leaves the stub 38 deg off its slope",
+   "live box T@(20.5,240.5) stub (0,1) cord junction:20,240|battery:20,240: leaves the stub 38 deg off its slope",
+   "live box T@(30.5,157.5) stub (1,0) cord junction:30,157|transmitter:33,157: leaves the stub 12 deg off its slope",
+   "live box T@(33.5,157.5) stub (0,-1) cord junction:33,157|battery:33,157: leaves the stub 38 deg off its slope",
+   "live box T@(33.5,157.5) stub (-1,0) cord junction:33,157|transmitter:33,157: leaves the stub 31 deg off its slope",
+   "live box T@(34.5,157.5) stub (0,1) cord junction:34,157|consumer:34,157: leaves the stub 16 deg off its slope",
+   "live box T@(37.5,165.5) stub (0,1) cord junction:37,165|consumer:37,165: passes the stub's tip 0.13 cell off it",
+   "live box T@(50.5,235.5) stub (0,1) cord junction:50,235|battery:50,235: leaves the stub 38 deg off its slope",
+   "live box T@(57.5,202.5) stub (-1,0) cord junction:57,202|battery:57,202: leaves the stub 54 deg off its slope",
+   "live box T@(57.5,202.5) stub (0,-1) cord junction:57,202|transmitter:57,202: leaves the stub 17 deg off its slope",
+   "live box X@(68.5,154.5) stub (0,-1) cord junction:68,154|battery:68,154: leaves the stub 38 deg off its slope",
+   "live box T@(87.5,154.5) stub (0,-1) cord junction:87,154|consumer:87,154: leaves the stub 16 deg off its slope",
+   "live box X@(89.5,154.5) stub (0,1) cord junction:89,154|battery:89,154: leaves the stub 38 deg off its slope",
+   "live box T@(102.5,95.5) stub (-1,0) cord junction:102,95|battery:101,95: leaves the stub 16 deg off its slope",
+   "live box T@(178.5,95.5) stub (1,0) cord junction:178,95|consumer:178,95: leaves the stub 83 deg off its slope"
+  ]
+ },
+ "utc": "2026-11-17T05:58:31Z"
+}
