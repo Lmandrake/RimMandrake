@@ -1,0 +1,36 @@
+{
+ "mod": "Contagion",
+ "state": "proposed",
+ "why": "check passes (11 bars, 109 census rows, 801 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-16T23:31:02",
+ "seconds": 2402,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 801,
+  "page_limit": 950,
+  "census_rows": 109,
+  "bars": 11,
+  "bar_numbers": "none",
+  "shared_things": 9,
+  "meetings": 9,
+  "old_bars": "25 mapped of 25 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 4731475,
+    "output_tokens": 49462
+   }
+  }
+ ],
+ "agent_errors": []
+}
