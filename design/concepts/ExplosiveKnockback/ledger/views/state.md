@@ -1,7 +1,7 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":14103,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=20735084ff4cdcb02312810b6bda614f66547becae97844aeeae8fc7d422f024 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":14103,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":983,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=f4da5876b7943623d23955f00af2f026740a5bba12d6be7ff3a4fd0a55e1ffed -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage blind_challenge · 494 events in 9 shards · reducer 1
-holder lease run-1794895533, token 10, last active 2026-11-17T06:05:50Z
+version 0.1.0 · stage blind_challenge · 496 events in 10 shards · reducer 1
+holder lease run-1794895533, token 10, last active 2026-11-17T06:20:39Z
 holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 400000
 
 ## Last checkpoint (HOLDER.run-1794865314, 2026-11-16T21:43:27Z)
@@ -22,9 +22,7 @@ holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 40
 - RIMMANDRAKE_CLEAR_KNOCKBACK_HAUL_MEMORY_STATIC_OUTLIVES_GAME [open, polish · bars pawn_flight_arc]: RM_PawnFlyerPatches.cs holds a static Dictionary<Pawn,Job> Hauling, set at every launch and removed only at a knockback…
 - RIMMANDRAKE_TEST_JOLT_DECAY_DOC_PROMISES_UNTESTED [open, polish · bars closed_container_holds]: RM_KnockbackMath.JoltOffset's doc promises a decaying shake, but only the bound is tested; a planted no-decay (PF_MATH_…
 - RIMMANDRAKE_STOP_KNOCKBACK_HIT_ACROSS_SANDBAG_NO_CONTACT [open, polish · bars pawn_hits_pawn_stops]: In RM_KnockbackMath.Resolve, a pawn thrown over a sandbag into a pawn, wall or door backs off the sandbag (often to 0 c…
-- finding:RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS [open, problem] by BACKFILL, 2026-11-16T11:37:18Z: Task: Explosive Knockback draws its own bigger blasts (own RM_KnockbackBlast* FleckDefs for debris, smoke, soot, sparks; shockwave/quake for big blasts) via a Harmony hook at explosion start. Visuals only, no change to damage, radius, trigger or throw.
-  proposed fix: Add >=4 own FleckDefs with own textures under ExplosiveKnockback/Textures, a Harmony patch on Explosion.StartExplosion or GenExplosion.DoExplosion, and saved/drawn settings blastShow and blastShowBig (both on by default). Art goes through the art judge.
-  accept: python3 src/RimMandrake/ExplosiveKnockback/proof/absorb_blast_show_check.py exits 0 with "PASS absorb blast show: 0 failing line(s)" (A1-A6); red on c20328a876 (A1, A3, A4, A5).
+- RIMMANDRAKE_ABSORB_EXTRA_EXPLOSION_EFFECTS_OWN_FLECKS [open, problem]: Task: Explosive Knockback draws its own bigger blasts (own RM_KnockbackBlast* FleckDefs for debris, smoke, soot, sparks…
 - finding:RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY [open, problem] by BACKFILL, 2026-11-16T11:37:18Z · bars thrown_into_pit_falls, inv_pits_receive: sc_storeroom_bomb_pit expects a thrown stack landing on a covered pit cell to fall through with one descent and destroy the cover, but Building_SpanDeck's load sums living walking pawns only and RM_ThingFlyer_Knockback never touches a cover.
   proposed fix: Build it where the builder chooses; the flyer's landing on a covered pit cell (Knockback side) touches the least. Widening SpanDeck's load would change FlowWorks for every item dropped on a deck.
   accept: Live cover row of knockback_runner.py --scenes storeroom_bomb_pit --ticks 900 (cover=True), plus an offline check that a stack landing on a covered cell destroys the cover and descends once; watch it fail on the base.
@@ -125,7 +123,7 @@ holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 40
   proposed fix: hand the 10 to Stage 6's brief as planted breaks to run live
   accept: Stage 6 runs each of the 10 as a planted break and its scene FAILs
 
-## Traps (65) — what a reader would otherwise get wrong
+## Traps (66) — what a reader would otherwise get wrong
 - trap:judge-round-count-has-three-answers (design/concepts/ExplosiveKnockback/journal.md:58): Judge round count has three answers (12 / 13 / 19); not reconciled (spec §10).
 - trap:97-2-million-tokens (version/VERSION.json): 97.2 million tokens were charged to the Designer stage, 86.5 million of them estimates (`version/VERSION.json`).
 - trap:proof-build-versus-release-build (RM_KnockbackProof.cs): Proof build versus release build. Most live scenes exist only in the proof build (`RM_KnockbackProof.cs`, `proof_build_gate.py`); the test queue cannot deploy a proof build today (RIMMANDRAKE_ROUTE_TESTQ_PROOF_BUILD_JOBS_TO_STEVE).
@@ -191,6 +189,7 @@ holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 40
 - trap:expect-the-live-cover-row-to-fail-as (RM_KnockbackProof_StoreroomBombPit.cs; knockback_runner.py --scenes storeroom_bomb_pit,storeroom_bomb_pit_control --ticks 900): Expect the live cover row to FAIL as MOD: no code breaks a pit cover under a landing stack (filed as RIMMANDRAKE_BREAK_PIT_COVER_UNDER_THROWN_STACK_PAWNS_ONLY). FlowWorks journals pawn descents only, so goods descents come from the scene's own per-tick thing trace.
 - trap:it-is-held-for-rimmandrake-recertify-knockback-tree (tree.json, sheet.md): It is held for RIMMANDRAKE_RECERTIFY_KNOCKBACK_TREE_AFTER_HIS_OWN_REWORDING.
 - trap:carrier-tick-cost-pass-in-all-9-recorded (walk_storeroom_raid row CARRIER_TICK_COST; jawa/time_perf): CARRIER_TICK_COST PASS in all 9 recorded walk runs was green for the wrong reason: it compared 0.0 to 0.0 ms because jawa/time_perf returns 0 on a paused clock; real reading at speed 1 was 4.29 ms.
+- trap:t-restore-scans-whole-repo (src/RimMandrake/Utils/selftest_proof_restore_check.py (T_RESTORE)): T_RESTORE scans the whole repo: another mod's commit can turn EK's inv_proof_scenes decider red (Pyrelands wind_burn_live.py:56, 49e11870b4, a checker false positive fixed under RIMMANDRAKE_TEACH_RESTORE_CHECK_CLOSURES_PYRELANDS_TRIPPED_EK). Read the failing row's path before blaming the mod.
 
 ## Causes refuted (11) — do not chase these again
 - cause:portable-ladder-placement-is-not-the-cause-rm: Portable ladder placement is not the cause: RM_Building_Ladder.SpawnSetup re-hangs it toward the rim O(1,0) and LadderReaches(4,0,6) is true. (on f03d8d4f4a, depends on src/RimMandrake/ExplosiveKnockback)
@@ -297,7 +296,7 @@ spend recorded: USD 98.24, 140077376 tokens
 - decisions: 3, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - closed findings: 38, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 98, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
-- open findings in brief: the oldest 12 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 494 events (views/history.md; never read whole)
+- open findings in brief: the oldest 13 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
+- the full history: 496 events (views/history.md; never read whole)
 
-cursor: t=2026-11-17T06:05:50Z.1794895550622551779 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T06:05:50Z.1794895550622551779 prints what changed after this packet)
+cursor: t=2026-11-17T06:20:39Z.1794896439494721644 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T06:20:39Z.1794896439494721644 prints what changed after this packet)

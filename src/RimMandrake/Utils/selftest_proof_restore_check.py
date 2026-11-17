@@ -174,6 +174,30 @@ check("py: a setter wrapper called in a finally with a POSITIONAL literal restor
 check("py: the same finally with a positional captured prior is clean; a keyword literal is still a hit",
       [py(POSITIONAL % "was"), kinds(py(POSITIONAL.replace("setting(f, %s)", "setting(f, value=True)")))]
       == [[], ["restores-fixed-value"]])
+CLOSURE = '''
+         def main(b):
+             def setf(f, v):
+                 b.call("jawa/mod_settings_field", {"typeName": T, "action": "set", "field": f, "value": str(v)})
+             def lane(on):
+                 setf("wind", on)
+                 scenes(b)
+             prior = {"wind": b.call("jawa/mod_settings_field", {"typeName": T, "action": "get", "field": "wind"})}
+             try:
+                 lane(True)
+                 lane(False)
+             finally:
+                 for f, v in prior.items():
+                     setf(f, v)
+             %s
+         '''
+check("py: a closure's poke is judged at its call sites: every call inside the guarded try is clean "
+      "(Pyrelands wind_burn_live.py shape, RIMMANDRAKE_TEACH_RESTORE_CHECK_CLOSURES_PYRELANDS_TRIPPED_EK)",
+      py(CLOSURE % "pass") == [])
+check("py: the same closure called once after the try is still a hit, at the poke inside it",
+      [(h["line"], h["kind"]) for h in py(CLOSURE % "lane(True)")] == [(6, "unrestored-on-throw")])
+check("py: a closure never called is still judged where it pokes",
+      [(h["line"], h["kind"]) for h in py(CLOSURE.replace("lane(True)\n", "scenes(b)\n")
+                                           .replace("lane(False)", "scenes(b)") % "pass")] == [(6, "unrestored-on-throw")])
 check("py: the mailbox field `request` is not a setting",
       py('def run(b):\n    b.call("jawa/mod_settings_field", typeName=T, action="set", field="request", value="x")\n') == [])
 check("py: Settings(\"reset\") outside any guard loses the player's values",

@@ -503,6 +503,34 @@ def _remembered_before(call: ast.Call, chain) -> bool:
                and c.lineno <= call.lineno for c in ast.walk(fn))
 
 
+def _chain_of(node, parents):
+    """-> [(parent, child), ...] from the node up to the module."""
+    chain, n = [], node
+    while n in parents:
+        chain.append((parents[n], n))
+        n = parents[n]
+    return chain
+
+
+def _guarded(chain, setters) -> bool:
+    """The poke sits in a try whose finally writes settings back, or the statement right after the poke's statement is
+    such a try."""
+    if any(isinstance(p, ast.Try) and ch in p.body and p.finalbody and _has_settings_write(p.finalbody, setters)
+           for p, ch in chain):
+        return True
+    stmt = next(((p, ch) for p, ch in chain if isinstance(ch, ast.stmt)), None)
+    if stmt is not None:
+        parent, st = stmt
+        for field in ("body", "orelse", "finalbody", "handlers"):
+            seq = getattr(parent, field, None)
+            if isinstance(seq, list) and st in seq:
+                i = seq.index(st)
+                if i + 1 < len(seq) and isinstance(seq[i + 1], ast.Try) and seq[i + 1].finalbody and \
+                        _has_settings_write(seq[i + 1].finalbody, setters):
+                    return True
+    return False
+
+
 def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool = False):
     try:
         tree = ast.parse(text)
@@ -565,20 +593,18 @@ def check_py(rel: str, text: str, harness_restores: bool, harness_tracks: bool =
             if kind == "reset" or (kind.startswith("raw") and _value_is_literal(c, _locals(fn), setter_params.get(getattr(c.func, "id", None)))) or (kind == "harness" and _value_is_literal(c)):
                 hits.append({"path": rel, "line": line, "kind": "restores-fixed-value", "target": kind, "text": src})
             continue
-        guarded = any(isinstance(p, ast.Try) and ch in p.body and p.finalbody and _has_settings_write(p.finalbody, setters)
-                      for p, ch in chain)
-        if not guarded:
-            # the statement right after the poke's statement is a try whose finally writes settings back
-            stmt = next(((p, ch) for p, ch in chain if isinstance(ch, ast.stmt)), None)
-            if stmt is not None:
-                parent, st = stmt
-                for field in ("body", "orelse", "finalbody", "handlers"):
-                    seq = getattr(parent, field, None)
-                    if isinstance(seq, list) and st in seq:
-                        i = seq.index(st)
-                        if i + 1 < len(seq) and isinstance(seq[i + 1], ast.Try) and seq[i + 1].finalbody and \
-                                _has_settings_write(seq[i + 1].finalbody, setters):
-                            guarded = True
+        guarded = _guarded(chain, setters)
+        if not guarded and fn is not None:
+            # one level of closures: a poke inside a function nested in another is judged at that function's call
+            # sites in its enclosing function; guarded when there is one and every one is guarded or in a finally
+            # (Pyrelands wind_burn_live.py:56, RIMMANDRAKE_TEACH_RESTORE_CHECK_CLOSURES_PYRELANDS_TRIPPED_EK)
+            outer = next((p for p, _ in chain if isinstance(p, (ast.FunctionDef, ast.AsyncFunctionDef)) and p is not fn),
+                         None)
+            sites = [s for s in ast.walk(outer) if isinstance(s, ast.Call) and isinstance(s.func, ast.Name)
+                     and s.func.id == fn.name] if outer is not None else []
+            guarded = bool(sites) and all(_guarded(_chain_of(s, parents), setters) or
+                                          any(isinstance(p, ast.Try) and ch in p.finalbody for p, ch in _chain_of(s, parents))
+                                          for s in sites)
         if kind == "reset" and not guarded:
             hits.append({"path": rel, "line": line, "kind": "reset-loses-player-values", "target": kind, "text": src})
         elif not guarded:
