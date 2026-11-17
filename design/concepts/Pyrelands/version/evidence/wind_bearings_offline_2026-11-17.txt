@@ -1,0 +1,37 @@
+at 314117207ec9
+-- 1. planted readings: each wrong game, the row that must refuse it
+ok   the shipped reading passes all 9 rows
+ok   the wind never set: ProbeWind reads the map's own 213 refused by 'start the wind reads back as set, carries as its switch' (F asked 90 set 90 probe wind=213.0;carries=True;carried=0;fires=0; R asked 270 set 270 probe wind=270.0;carries=True;carried=0;fires=0; B asked 90 set 90 probe wind=90.0;carries=False;carried=0;fires=0)
+ok   SetWindForTest found no component (-1)               refused by 'start the wind reads back as set, carries as its switch' (F asked 90 set 90 probe wind=90.0;carries=True;carried=0;fires=0; R asked 270 set -1 probe wind=270.0;carries=True;carried=0;fires=0; B asked 90 set 90 probe wind=90.0;carries=False;carried=0;fires=0)
+ok   carries=False with the wind switch on                refused by 'start the wind reads back as set, carries as its switch' (F asked 90 set 90 probe wind=90.0;carries=False;carried=0;fires=0; R asked 270 set 270 probe wind=270.0;carries=True;carried=0;fires=0; B asked 90 set 90 probe wind=90.0;carries=False;carried=0;fires=0)
+ok   carries=True with the wind switch off                refused by 'start the wind reads back as set, carries as its switch' (F asked 90 set 90 probe wind=90.0;carries=True;carried=0;fires=0; R asked 270 set 270 probe wind=270.0;carries=True;carried=0;fires=0; B asked 90 set 90 probe wind=90.0;carries=True;carried=0;fires=0)
+ok   a probe that answers nothing                         refused by 'start the wind reads back as set, carries as its switch' (F asked 90 set 90 probe None; R asked 270 set 270 probe wind=270.0;carries=True;carried=0;fires=0; B asked 90 set 90 probe wind=90.0;carries=False;carried=0;fires=0)
+ok   a strip already burning before it is lit             refused by 'start every strip holds no fire before it is lit' ([0, 4, 0, 0])
+ok   an unmoved fire (down 0, up 0)                       refused by 'F wind east: the burn runs further downwind than upwind' (down 0 up 0)
+ok   fire runs both ways along the axis (down 8, up 8)    refused by 'F wind east: the burn runs further downwind than upwind' (down 8 up 8)
+ok   fire walks east whatever the wind (R down 0, up 10)  refused by 'R wind reversed: the burn turns and runs west' (down 0 up 10)
+ok   a fire that makes two (peak 30 of 9 lit)             refused by 'F,R never more fires than 3 x the cells lit' (F 30/9 R 18/9)
+ok   even spread with the wind on (outer lanes 31)        refused by 'F,R nothing burns beside the lit lanes' (F 31 R 0)
+ok   a control that never spreads (outer lanes 0)         refused by 'B CONTROL even spread reaches the outer lanes' (0)
+ok   a control leaning east like the wind (down 20, up 2) refused by 'B CONTROL runs both ways, leaning less than the wind runs' (down 20 up 2, wind lean 10)
+ok   a control that only goes one way (up 0)              refused by 'B CONTROL runs both ways, leaning less than the wind runs' (down 12 up 0, wind lean 10)
+ok   C never lit under the rain (the old false pass)      refused by 'C black rain puts the line out' (lit 0, [0, 0, 0, 0, 0, 0, 0, 0, 0])
+ok   C reported lit, no fire at tick 0                    refused by 'C black rain puts the line out' (lit 9, [0, 0, 0, 0, 0, 0, 0, 0, 0])
+ok   C still burning at the end                           refused by 'C black rain puts the line out' (lit 9, [9, 9, 8, 8, 7, 7, 6, 5, 3])
+ok   C out, then relit by the end                         refused by 'C black rain puts the line out' (lit 9, [9, 3, 0, 0, 0, 0, 0, 1, 2])
+ok   C strip burning before the rain line                 refused by 'start every strip holds no fire before it is lit' ([0, 0, 0, 3])
+ok   the model's wind step is RM_BurnKernel.WindProbes: checksum 181470088 == 181470088 (2,304 bearing x roll cases)
+-- 2. the scene's layout through the shipped carry: wind 90, wind 270, wind off; 40 seeds
+ok   every seed passes all 9 rows: 0 of 40 seeds fail
+     worst: wind lean (down - up) 8 cells, must > 0 | outer-lane fires with the wind 0, must 0 | peak 2.0 x lit, must <= 3 | control outer lanes 34, must > 0 | control lean below the wind's by 5, must > 0
+-- 3. planted model faults on the same layout: each refused on every seed
+ok   the carry walks east whatever the wind           refused on 40 of 40 seeds
+ok   the carry lights downwind and upwind (one axis)  refused on 40 of 40 seeds
+ok   vanilla's even spread with the wind on           refused on 40 of 40 seeds
+-- 4. the wider range: every 15 degrees x cover 1.0/0.97/0.80/0.70 x 3 seeds, 69 x 69 field
+ok   the burn runs further downwind than upwind at every bearing: worst lean 8 cells (cover 1.00 bearing 0 seed 0), upwind reach at most 0; must > 0 | 288 cases
+ok   the widest sideways burn with the wind (2 fires in the outer lanes) stays below the narrowest with it off (41) | 288 wind cases, 12 off
+27 of 27 ok
+rc=0
+PASS wind_bearings
+rc=0
