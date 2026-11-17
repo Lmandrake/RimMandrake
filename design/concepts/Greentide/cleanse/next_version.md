@@ -200,6 +200,24 @@ What: Portable Greentide growth extract.
 
 Why outside this version: A player-invoked growth tool/export beyond the natural lifecycle; the signature works without bottled activation or sabotage. Ticket: T50.
 
+### Portable deliberate Frenzy dosing
+
+What: Harvest/refine a portable gorbeleth-toxin dose and choose who to infect, preserving the ruled later delivery route.
+
+Why outside this version: Ambient illness already supplies the disease axis; voluntary delivery is a separate player bargain and is unnecessary to land, ordinary life or unpaved-ground upkeep. Built; switch off and decouple under T51.
+
+### Fever survivor mark and resistance
+
+What: Collapse survivors earn a permanent visible mark and resistance to repeat Frenzy, preserved for the later enabled package.
+
+Why outside this version: Removing lasting qualification leaves ambient danger, recovery, useful medicine and the upkeep signature intact. Built; switch off awards and existing-mark immunity under T52.
+
+### Stellock branch-study discovery
+
+What: Felling produces a rotting specimen whose study reveals hidden lace research, with independent points and a reveal letter.
+
+Why outside this version: The unique-medicine reward remains obtainable through ordinary visible MedicineProduction research and crafting; specimen progression is an extra. Built; switch off producers/study and decouple the hidden gate under T53.
+
 ### Recommendations to retire, not enacted
 
 - **Recommend retiring Legacy alternative-planet scoring**: Designer decision (delegated): Alternative-planet scoring has no permitted experience. Worldgen is permanently out, not deferred; recommend removal of this legacy worker capability. No deletion is performed or authorized by this proposal.
@@ -208,3 +226,5 @@ Why outside this version: A player-invoked growth tool/export beyond the natural
 
 
 The living Greatbole package is the runner-up signature, deferred intact: no weakened healing/catastrophe, harmless grubs or partial fruit economy masquerading as the ruled version. Fellable Greatbole trees remain ordinary life. Rites were already deferred. Thalquith is already Chill content and stays a neighbour dependency. Worldgen is permanently forbidden, never a next-version entry.
+
+The deferred plant attacks leave only tree falls for the plant-danger axis. Ordinary forage/meat/catch variety supplies this proposal’s cuisine ingredients, without a new combination system. Both are explicitly raised against the binding danger/reward ruling on owner_pages.md; neither is treated as an already-granted waiver.

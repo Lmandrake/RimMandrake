@@ -1,0 +1,766 @@
+{
+ "mod": "Greentide",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "result.json and definition.md signature; bars.json B3 range.left_out and rule R2; tickets.md T33; census.json sealant_chain",
+     "evidence": "The signature says holding a home 'requires local clearing, dry-air protection and grazing', and B3 has growth 'obstruct exposed routes and entrance approaches to an inhabited home'. But R2 says regrowth 'respects floors, edifices and enclosed rooms', B3's left_out says 'complete enclosed paved access may be earned and need not be invaded', and T33 keeps 'Paved/enclosed controls stay exempt'. In source, RM_ChurnmudSealed has <fertility>0</fertility> plus a Heavy affordance (src/RimMandrake/Greentide/Defs/TerrainDefs/RM_Churnmud_Terrains.xml), and vanilla WoodPlankFloor has <fertility>0</fertility>. So one floor or seal laid in front of a door permanently ends regrowth on that approach. After that the blower (B4) and grazing are never needed, and B3's upkeep stops in the first hour. M2's policies are only 'maintained, outage/repaired and neglected policies'; no paving policy is modelled, so nothing tests this.",
+     "would_pass": "Pick one: (a) a rule saying how a built approach still takes ongoing care (for example, overgrowth from the edges or other upkeep that floors do not escape), or (b) a signature and B3 reworded to say paving is the earned permanent answer and clearing, blowers and grazing serve the unpaved working ground (fields, harvest routes, river access). Either way, M2 needs a 'pave the approaches early' policy arm, with the meeting argued or left unknown.",
+     "smallest_fix": "Add the paving policy to M2 and to the vegetation/ground_routes meetings. Then reword the signature and B3 so they agree with R2 (option b), and say so on page two as a settled ambiguity."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json rows frenzy (dose route), fever_survivor, stellock_discovery; bars.json B7",
+     "evidence": "The needed_by fields are circular. fever_survivor says 'life: selected disease payoff; B7', stellock_discovery says 'life: selected unique medicine; B7', and frenzy's why says 'Deleting either route changes it.' None of these argues that deleting the player-facing behaviour would defeat land, life or the signature. The binding ruling GREENTIDE_RISK_REWARD_EXCHANGE_1 requires a disease axis and 'unique medicines'. The ambient Frenzy and lace already meet that. The deliberate dose route, the survivor mark and resistance, and the branch-study discovery gate are extra bargains. The proposal's own logic also defers the whole Greatbole package even though its rulings are owner card decisions ('Deferring Greatbole preserves its ruled behaviour'). By that logic, 'it was ruled' is not a deletion argument.",
+     "would_pass": "Either a real deletion argument for each of the three (how land, life or the signature fails without it), or the three move to next_version, switched off, with switch-off tickets. B7 would then keep only the ambient Frenzy (disease axis) and lace (unique medicine).",
+     "smallest_fix": "Move the dose route, the survivor mark/resistance and the branch-study gate to next_version.md, with T-tickets. Cut B7 down to the ambient Frenzy and lace bleed-stop. Or write the three deletion arguments into needed_by."
+    },
+    {
+     "head": "reads_with_mechanic_off",
+     "where": "bars.json B6 accept[1] and control; models.md M4",
+     "evidence": "B6 accept[1] says: 'A roof shades direct radiation but an outdoor shaded worker still faces hot air'. The control compares 'exposed/shaded cells ... without changing air temperature'. Greentide is named among the five tree-heavy biomes in design/RimMandrake/tree_shade_model_2026-10-19.md, and the standing ruling says Direct Sun may be 'turned off on tree-heavy maps' without an excellent tree shade model (standing_rulings.md near line 169). With Direct Sun off, exposed and shaded cells read the same and a shaded worker still faces hot air, so the picture passes with the mechanic absent. B6 left_out and M4 call broken tree shade 'a shared dependency gap' but never say whether Direct Sun is on in Greentide.",
+     "would_pass": "B6 says whether Direct Sun runs on Greentide maps at 0.1.0. If it runs, the control requires a measured radiation difference between exposed and shaded cells, so a Direct-Sun-off build refuses. If it is off, the radiation picture is removed and that choice goes on his pages as a question, with the tree-shade evidence.",
+     "smallest_fix": "Add to B6 'on' the line 'Direct Sun active on this map', and a control that refuses when exposed and shaded radiation are equal. Put the tree-shade on/off choice on page two."
+    },
+    {
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json B6 says (second clause) and accept[1], reject[1]",
+     "evidence": "'the steam returns under the same common sunlight and ambient-heat rules used elsewhere' and the pictures about 'a private Greentide sun value' and 'a separate wet-bulb disease' say that a standing ruling is obeyed. That is already rule R7 ('Common Direct Sun is geometric ... never a local sun value'). It is a build constraint, not an experience the player notices.",
+     "would_pass": "B6 is an experience only: the steam lifts, the floor shows, shade-seekers move to shade, and the steam returns. The heat-law compliance stays in R7 and C-checks (T38).",
+     "smallest_fix": "Remove the heat clause and the heat-only pictures from B6 and rely on R7 and T38."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "next_version.md 'Extra plant interactions'; ambiguities.md item 21; definition.md 'Why a player reaches for it'; owner_pages.md",
+     "evidence": "The binding ruling (infrastructure/state/items/closed/GREENTIDE_RISK_REWARD_EXCHANGE_1.md) says: 'really intimidating dangers in terms of plants, beasts, diseases, and insects ... countered with tremendous food abundance, unique medicines, a seemingly endless possibility for Star Wars cuisine ingredients', bound 'all of it' by card on 2026-09-22. The proposal defers every plant attack, trap and cloud and keeps only shared tree falls as the plant axis, mostly set off by animal gnawing and felling. The definition says 'There is no requirement for a new cooking/ingredient combinator'. The brief requires that a conflict with a standing ruling be reported on his pages. Page two lists neither the weakened plant axis nor the cuisine side, and says 'Questions: 0.'",
+     "would_pass": "Page two states plainly that the plant-danger axis is met only by tree falls and that the cuisine-ingredient promise is met only by the ordinary forage and catch variety. Each is either argued as meeting the binding words or raised as a question, with the ruling as the evidence against the obvious answer.",
+     "smallest_fix": "Add two lines to page two, naming the binding ruling, what 0.1.0 keeps for 'plants' and 'cuisine ingredients', and the default taken."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "Root texture is painted over mud but has the same footing, or a visible thicket allows pawn sight straight through it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "Low steam obscures ground detail while tree crowns and silhouettes remain readable; inspecting a cell identifies mud or root footing, and a colonist takes the root route around boggy undergrowth.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "A shot or witnessed act is blocked by the mature sight-blocking understory; the player can still inspect the map and an open lane restores pawn sight.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "A green recolour of an open swamp, or a screen-wide grey fog that erases crowns and ground equally, leaves no distinct low-steam jungle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A forager finds edible fruit and roots, a fisher returns an exotic catch, a hunter brings meat and a herder keeps a grazer; fallen timber and resin are useful at home, while a cracking tree, concealed water hunt and disturbed gall each force a legible decision.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "Every route is permanently lethal even to a prepared party, warnings arrive only after unavoidable loss, or a threat vanishes silently when the party retreats.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "Every pictured plant is decoration, useful catches require a debug spawn, or all danger exists in descriptions while harvesting is carefree.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A flying native walks throughout its ordinary travel, or the hum of machinery is muted instead of the biome hunt warning.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "A gall found naturally beside its living host releases defending wasps when disturbed; retreat ends pursuit without erasing the insects, and a concealed hunt hushes biome ambience with a visible warning before the player can respond.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Plants grow faster in a specimen garden but an occupied home never needs route maintenance, or only a forced growth explosion produces encroachment.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "After continued neglect the colony can lose practical working access while a deliberately maintained route still allows reaching a stranded person; restoring upkeep recovers the foothold without resetting the map.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "After colonists repeatedly use an exposed dirt approach, untreated vegetation returns and hauling slows or an entrance approach becomes unusable; visible encroachment alerts the player, who clears a usable rescue and retrieval path.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "The jungle instantly bricks the only exit or strands rescuers beyond recovery before a visible warning, or secretly spawns through sealed floors and walls to fake pressure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "Outage gives no readable sign until the entrance and all rescue paths have already failed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A named grazer suppresses cells without eating, an empty pen grants permanent immunity, or blower cooling heats an exhaust room.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "A settings checkbox or suppression-grid write changes but plants continue to obstruct the protected approach, or the blower protects the entire base regardless of direction.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "Fuel or power loss stops the working tell; retained protection expires, new growth begins visibly, and refuelling plus clearing restores access before practical rescue is lost. Losing a grazing herd ends that source of protection.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "New seedlings return outside a working blower field while its previously cleared approach stays usable; the back room cools, a grazer suppresses cells it actually consumes, and distant jungle keeps growing.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "A loose stockpiled object sinks with a persistent cell marker; after reload, digging returns the same damaged, styled or perishable belonging, and blocked placement retains recoverable contents until room is made.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "The helper resets a health condition but both pawns immediately become trapped again, or natural colonist work selection never reaches the rescue job.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "Native wildlife is progressively mired at home, airborne animals sink while flying, or a corpse or carried object is silently swallowed as if it were loose cargo.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Digging creates a new pristine replacement, changes quality or biocode, duplicates a partially merged stack, or loses buried contents on reload.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "A traveller crossing mud becomes visibly mired; a helper uses an in-place extraction followed by usable escape so both reach nearby firm footing; a prepared floor avoids the trap.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A clear-sky screenshot with weather locked permanently hides the return, or the grazer only seeks shade after a debug job is assigned.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "A roof shades direct radiation but an outdoor shaded worker still faces hot air; an enclosed cooled room answers the air heat, and no reachable shade produces a readable failed search rather than invented cooling.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "The clearing multiplies a private Greentide sun value, steam creates a separate wet-bulb disease, or a roof instantly cools the surrounding outdoor air.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "The low steam lifts, ground detail becomes visible and a shade-seeking grazer leaves exposed footing for reachable canopy or roof shade; when the clearing ends the low steam returns.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "Lace is a renamed heal-all medicine, the discovery was pre-unlocked for the proof, or only the first cut stops bleeding while another injury continues.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Disabling the survivor feature leaves its resistance active on an already marked pawn.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "A permanent work buff has a decorative fever name, collapse never costs real downtime, untreated collapse is harmless, or an early cure grants the survivor reward.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "Natural disease and a deliberately administered harvested dose lead to the same visible surge, collapse and treatment-or-death fork; a survivor of collapse earns a visible persistent mark and resists later exposure, while an early cure or death earns nothing.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "A doctor studies a self-sealed branch from a naturally felled jungle tree, learns lace, then uses it on bleeding wounds and a stump; bleeding stops while wounds remain untended, and returns when the effect expires unless care intervened.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Everything resumes after load only because threats or buried belongings were reset, or the colony stays safe only while the script replenishes supplies.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "A lush opening scene turns into unchecked vegetation or insect takeover, a stripped barren map, perpetual rescue/dig loops or repeated exceptions once growth, weather, predators and work run together.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "The demonstration locks the sky clear, removes predators, forces every job or top event, leaves research locked, omits a mid-cycle reload, or depends on a deferred tool or landmark.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "After a mid-cycle reload the same threats, belongings, suppression expiry and work remain intelligible; doing harvest before upkeep or upkeep before harvest both permit a maintained foothold, and a clearing returns naturally to steam.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "During ordinary work the colony gathers, cooks, fishes, builds, studies, treats illness and maintains exposed access; a defence interruption produces a visible problem, people and property are recovered, and upkeep restores productive work while living jungle persists outside.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Flooring as permanent growth immunity. Vanilla floors (WoodPlankFloor fertility 0) on ordinary soil, and RM_ChurnmudSealed (fertility 0, which also gives the Heavy affordance that other floors need on churnmud), stop all regrowth on a cell for good under R2. The census lists sealant_chain only as 'the costed engineering answer to mud', not as the player's main answer to the signature's regrowth.",
+   "loop_or_three_way": "Paving meets three bars at once: R2 (regrowth respects floors) + B5's 'prepared footing' (sealed churnmud stops mire and burial) + B3/B4 (regrowth, blower, grazing). One resin-sealed or floored approach answers mud, burial and regrowth together, so the blower and grazing in B4 lose their job and the signature's ongoing care disappears. No meeting groups these three as one, and M2 runs no early-paving policy.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 455142
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B6 (says, accept, range); census.json row seek_shade; rules R7/R8; ambiguities.md item 11",
+     "evidence": "In src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekShade.cs:30-41 an animal looks for shade only when the air temperature at its cell is at or above tempThreshold (RM_Sulleth.xml:74 sets <tempThreshold>38</tempThreshold>), and the only cells it counts as shade are roofed ones (map.roofGrid.Roofed). It never reads the Roil, Breaklight, Direct Sun or tree canopy. The one thing that ties the clearing to the animals moving is RM_BreaklightCondition's <tempOffset>12</tempOffset> (RM_Greentide_Conditions.xml:45). The proposal never names that offset, and ambiguities.md item 11 says 'Another local heat multiplier ... violates the shared sun law; keep clearing/AI, no private heat.' B6's accept picture sends the grazer to 'reachable canopy or roof shade', but the code cannot target canopy. Nothing in the proposal says what makes the clearing start shade-seeking, or what counts as shade.",
+     "would_pass": "A rule that names what starts shade-seeking during a clearing and what the animal looks for. Either: Breaklight's existing +12 °C stays as ordinary hotter air, sourced to the 2026-10-19 Direct Sun ruling 'Hotter air on the thermometer', and the shade is roofed cells only. Or: the job reads Direct Sun exposure and shared tree shade, with that rebuild ticketed. B6's accept picture must match whichever is chosen.",
+     "smallest_fix": "Add a rule (R14): 'Breaklight raises ordinary air temperature through its existing condition offset; seek-shade carriers above their threshold path to reachable roofed cells; canopy counts only once shared tree shade supplies it.' Then remove the word 'canopy' from B6's accept picture, or ticket the canopy target."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B6 sees.control and reject",
+     "evidence": "B6's control compares 'a natural carrier with a non-carrier at matched starting exposure'. It never compares steam against clearing. In the source, a carrier seeks roof whenever the air is at or above 38 °C, under the Roil too (RM_JobGiver_SeekShade.cs:34-35). So an animal that already shelters every hot steamy hour, with no change when the Roil clears, passes B6's reading. The only reject picture covers a locked sky and a debug job.",
+     "would_pass": "A matched pair, same carrier, same cells, same time of day: one arm under the Roil, one under Breaklight. The animal moves toward shade measurably more in the clearing arm. Add a reject picture: 'the carrier shelters just the same under the Roil, so the clearing changes nothing it does'.",
+     "smallest_fix": "Add the Roil-versus-clearing arm to B6's control and that one picture to B6's reject list."
+    },
+    {
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json B6 sees.on and sees.control; check C8; owner_pages.md page two",
+     "evidence": "B6's 'on' requires Direct Sun to be active and shared tree shade to have passed its adopt-or-fall-back qualification. Its control says 'Equal radiation or an inactive Direct Sun gate invalidates the evidence even if the visible clearing/shade-search picture looks right.' Yet ambiguities.md item 10 says 'Heat-law compliance stays a rule/check; B6's player experience is only clearing, visible floor, natural shade-seeking and return.' The brief says a failed check is evidence, never a refusal by itself. The shade-seeking job reads neither Direct Sun nor tree shade (RM_JobGiver_SeekShade.cs). So B6, and through it the whole bar B8, cannot pass until a separate shared dependency qualifies (TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT).",
+     "would_pass": "B6 is judged only on its own experience: the steam lifts, the floor shows, carriers head for shade, the steam returns. Direct Sun runs at whatever default R7 sets. The radiation contrast and the tree-shade qualification stay in C8/T38 as checks and readiness work for R7, not as a gate on B6's evidence.",
+     "smallest_fix": "Delete the radiation-contrast and qualification sentences from B6's sees.on and sees.control, and leave a pointer to C8/T38."
+    },
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json B4 (says, accept 1) and R2, R4; B3 reject 2; census.json row yearning_fruit (fate: signature)",
+     "evidence": "Seed passage plants new RM_YearningFruit seedlings 'wherever the eater happens to' be (RM_YearningFruit_Hediffs.xml:18, :50-54). It checks only InBounds, whether a plant is already there, and CanEverPlantAt (RM_HediffComp_SeedPassage.cs:88-102). It ignores the suppression grid and whether the cell is inside an enclosed room. R2 says regrowth 'respects floors, edifices and enclosed rooms'. B4 promises that an operating blower 'maintains a cleared ... approach'. B3 rejects a jungle that 'secretly spawns through ... enclosed rooms'. Two cases break this: a colonist who eats the fruit and then walks through a working blower's field, and one who eats it in an enclosed room with a dirt floor. Both sprout plants that the kept rules say cannot appear there. The vegetation meeting does not list this bypass.",
+     "would_pass": "Seed passage uses the same eligibility test as the shared sprout path: the built-ground and enclosed-room exemption plus the suppression grid. Or R2 and B4 state openly that eaten-seed sprouting overrides both, and their pictures change to match.",
+     "smallest_fix": "Add one line to R2: 'Seed-passage germination uses the shared SproutRing respectBuiltGround/enclosed-room predicate and honours active suppression.' Add a ticket with its acceptance test (no germination inside an active blower field or an enclosed room), and add these cases to M1/M3."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json row yearning_fruit (fate: signature, why)",
+     "evidence": "The deletion argument is 'Deleting eat-pass-sprout severs this cause of encroachment.' But the census's own signature row daily_base_takeover gives the renewal path as 'RM_TopResolver.Wither -> RM_SproutRing.Sow(respectBuiltGround=true)', and definition.md gives the shared ExplosiveGrowth fruit/wither/sprout cycle. Remove seed passage and renewal still works, so the signature is not defeated. The brief requires the deletion to defeat land, life or the signature. The row also keeps a bespoke digestive mechanic (faster hunger, a brief movement penalty), and no bar needs it.",
+     "would_pass": "Either evidence that renewal on used routes depends on seed passage (for example, an M2 result where Wither→Sow alone produces no route pressure), or the row moves to the next version with a switch-off ticket and the fruit stays as ordinary forage.",
+     "smallest_fix": "Change yearning_fruit's fate to next_version, add a switch-off ticket for the digestive accelerant and seed passage (the harvestable fruit stays in life), and remove 'yearning fruit seed passage' from definition.md's Life line."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "owner_pages.md page two ('Paving permanently stops regrowth on covered cells, including home entrances'); bars.json B3 accept 2, B8 accept 3; ambiguities.md item 3",
+     "evidence": "His card answer, design/RimMandrake/designer_codex_2026-11-09/Greentide/ANSWERS_OWNER.md answer 1 (2026-11-10): 'Defend an inhabited foothold: maintaining access to a rich home is the central bargain, with daily work clearing routes and protecting entrances.' The proposal settles, as a delegated interpretation and not as a question, that a paved entrance needs no protection at all from then on. A shared-engine rule (R2, which is ours and open to challenge) overrides half of his stated daily work. His card's own wording is concrete evidence against the obvious engine-law reading, so the Evidence-for-Ask rule requires this to be a question on his pages, not a settled interpretation.",
+     "would_pass": "Either entrances keep some recurring care (for example, pressure on the unpaved approach just outside the paved cells) and a bar shows it, or page two puts the narrowing to him with the card's quote, the default taken, and what changes if he says otherwise.",
+     "smallest_fix": "Add a third question to page two: 'Your 2026-11-10 card names protecting entrances as daily work; under the shared built-ground rule a paved entrance needs no protection afterwards. Default: paving is a permanent answer at the entrance, and care moves to unpaved routes. If not, entrance approaches need recurring pressure.' Update the question count in result.json."
+    }
+   ],
+   "reviewer_refusals": 6,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A shot or witnessed act is blocked by the mature sight-blocking understory; the player can still inspect the map and an open lane restores pawn sight.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "Low steam obscures ground detail while tree crowns and silhouettes remain readable; inspecting a cell identifies mud or root footing, and a colonist takes the root route around boggy undergrowth.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "Root texture is painted over mud but has the same footing, or a visible thicket allows pawn sight straight through it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "A green recolour of an open swamp, or a screen-wide grey fog that erases crowns and ground equally, leaves no distinct low-steam jungle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "Every route is permanently lethal even to a prepared party, warnings arrive only after unavoidable loss, or a threat vanishes silently when the party retreats.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A flying native walks throughout its ordinary travel, or the hum of machinery is muted instead of the biome hunt warning.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "A forager finds edible fruit and roots, a fisher returns an exotic catch, a hunter brings meat and a herder keeps a grazer; fallen timber and resin are useful at home, while a cracking tree, concealed water hunt and disturbed gall each force a legible decision.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Every pictured plant is decoration, useful catches require a debug spawn, or all danger exists in descriptions while harvesting is carefree.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "A gall found naturally beside its living host releases defending wasps when disturbed; retreat ends pursuit without erasing the insects, and a concealed hunt hushes biome ambience with a visible warning before the player can respond.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "The jungle instantly bricks the only rescue route before a visible warning, or secretly spawns through paving, walls and enclosed rooms to fake pressure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "After colonists repeatedly use an unpaved harvest or river approach, untreated vegetation returns and hauling slows or stops; visible encroachment alerts the player, who clears a usable rescue and retrieval path.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "After prolonged neglect of used unpaved working ground, supplies can become impractical to reach while a maintained firm rescue route still reaches stranded people; ordinary clearing restores access without resetting the map.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Paving the home entrance early permanently removes regrowth there even without blower suppression or grazing; workers still face returning vegetation on the unpaved routes they use outside it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "Plants mature faster in a specimen garden but used plant-eligible unpaved harvest and river routes never need maintenance, or only a forced growth explosion produces encroachment.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "A settings checkbox or suppression-grid write changes but plants continue to obstruct the protected approach, or the blower protects the entire base regardless of direction.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A named grazer suppresses cells without eating, an empty pen grants permanent immunity, or blower cooling heats an exhaust room.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "New seedlings return outside a working blower field while its previously cleared approach stays usable; the back room cools, a grazer suppresses cells it actually consumes, and distant jungle keeps growing.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "Fuel or power loss stops the working tell; retained protection expires, new growth begins visibly, and refuelling plus clearing restores access before practical rescue is lost. Losing a grazing herd ends that source of protection.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "Outage gives no readable sign until the entrance and all rescue paths have already failed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "Native wildlife is progressively mired at home, airborne animals sink while flying, or a corpse or carried object is silently swallowed as if it were loose cargo.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A loose stockpiled object sinks with a persistent cell marker; after reload, digging returns the same damaged, styled or perishable belonging, and blocked placement retains recoverable contents until room is made.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "Digging creates a new pristine replacement, changes quality or biocode, duplicates a partially merged stack, or loses buried contents on reload.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "The helper resets a health condition but both pawns immediately become trapped again, or natural colonist work selection never reaches the rescue job.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "A traveller crossing mud becomes visibly mired; a helper uses an in-place extraction followed by usable escape so both reach nearby firm footing; a prepared floor avoids the trap.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A clear-sky screenshot with weather locked permanently hides the return, or the grazer only seeks shade after a debug job is assigned.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "The low steam lifts, ground detail becomes visible and a shade-seeking grazer leaves exposed footing for reachable canopy or roof shade; when the clearing ends the low steam returns.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "The medicine cannot be researched or crafted without enabling branch discovery, so the default colony never obtains the promised reward.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "A permanent work buff has a decorative fever name, collapse never costs real downtime, or untreated collapse is harmless.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "After ordinary medicine research and crafting from resin and medical materials, a doctor or patient applies lace; bleeding stops across cuts and a stump while wounds remain untended, and can return on expiry unless ordinary care intervenes.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "An ordinary ambient illness produces visible faster work followed by collapse and real lost work; coma-stage care permits recovery while untreated collapse can kill, without deliberate dosing or an earned resistance reward.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "Lace merely reduces bleeding from a cut while a stump still bleeds, or heals or tends the wounds instead of providing a temporary hold.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "A lush opening scene turns into unchecked vegetation or insect takeover, a stripped barren map, perpetual rescue/dig loops or repeated exceptions once growth, weather, predators and work run together.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "The demonstration locks the sky clear, removes predators, forces every job or top event, leaves research locked, omits a mid-cycle reload, or depends on a deferred tool or landmark.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "A colony paves its home entrances early and keeps them free of regrowth without suppression; returning plants still contest its used unpaved harvest and river routes, and care or further paving earns safe access without hidden escalation.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "During ordinary work the colony gathers, cooks, fishes, builds, researches medicine, treats illness and maintains used unpaved working routes; a defence interruption there produces a visible problem, people and property are recovered, and upkeep restores productive work while living jungle persists outside.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "After a mid-cycle reload the same threats, belongings, suppression expiry and work remain intelligible; doing harvest before upkeep or upkeep before harvest both permit a maintained foothold, and a clearing returns naturally to steam.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 6,
+     "text": "Everything resumes after load only because threats or buried belongings were reset, or the colony stays safe only while the script replenishes supplies.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Breaklight's own air heating and light change. In src/RimMandrake/Greentide/Defs/GameConditionDefs/RM_Greentide_Conditions.xml:43-50, RM_BreaklightCondition carries <tempOffset>12</tempOffset> ramped over <temperatureTransitionTicks>2500</temperatureTransitionTicks>, plus an RM_GlowMultiplierOverrideExtension set to 1.0. The census breaklight row ('Temporary clearing condition/weather ... overrides Roil and returns to it') records neither. The +12 °C is the only thing that makes the kept shade-seeking job respond to a clearing, and the proposal's ambiguity 11 reads it as forbidden private heat. The glow override does nothing on Greentide, because RM_Greentide carries no BiomeGlowMultiplierExtension.",
+   "loop_or_three_way": "Three things meet here: grazing suppression (B4/R4), yearning-fruit seed passage (kept as signature), and the protected or exempt ground in R2 and B4 (blower field, enclosed rooms). Grazers and colonists who eat yearning fruit carry it into the blower's protected field or into unfloored rooms. RM_HediffComp_SeedPassage then sprouts new fruit there, skipping both the suppression grid and the room exemption. The new fruit draws grazers, whose eating writes fresh suppression around it while their seed passage plants the next crop. So the living defence and the fruit it eats keep moving growth into exactly the ground the kept bars promise stays clear. The vegetation meeting (members B1-B4, B6, B8, R2-R4, R7, R12, R13) does not name this path, and M2/M3 do not model germination by seed passage.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 654257
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1936845,
+    "output_tokens": 23791
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "bars.json B6 (says, accept, range); census.json row seek_shade; rules R7/R8; ambiguities.md item 11",
+   "evidence": "In src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekShade.cs:30-41 an animal looks for shade only when the air temperature at its cell is at or above tempThreshold (RM_Sulleth.xml:74 sets <tempThreshold>38</tempThreshold>), and the only cells it counts as shade are roofed ones (map.roofGrid.Roofed). It never reads the Roil, Breaklight, Direct Sun or tree canopy. The one thing that ties the clearing to the animals moving is RM_BreaklightCondition's <tempOffset>12</tempOffset> (RM_Greentide_Conditions.xml:45). The proposal never names that offset, and ambiguities.md item 11 says 'Another local heat multiplier ... violates the shared sun law; keep clearing/AI, no private heat.' B6's accept picture sends the grazer to 'reachable canopy or roof shade', but the code cannot target canopy. Nothing in the proposal says what makes the clearing start shade-seeking, or what counts as shade.",
+   "would_pass": "A rule that names what starts shade-seeking during a clearing and what the animal looks for. Either: Breaklight's existing +12 °C stays as ordinary hotter air, sourced to the 2026-10-19 Direct Sun ruling 'Hotter air on the thermometer', and the shade is roofed cells only. Or: the job reads Direct Sun exposure and shared tree shade, with that rebuild ticketed. B6's accept picture must match whichever is chosen.",
+   "smallest_fix": "Add a rule (R14): 'Breaklight raises ordinary air temperature through its existing condition offset; seek-shade carriers above their threshold path to reachable roofed cells; canopy counts only once shared tree shade supplies it.' Then remove the word 'canopy' from B6's accept picture, or ticket the canopy target."
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json B6 sees.control and reject",
+   "evidence": "B6's control compares 'a natural carrier with a non-carrier at matched starting exposure'. It never compares steam against clearing. In the source, a carrier seeks roof whenever the air is at or above 38 °C, under the Roil too (RM_JobGiver_SeekShade.cs:34-35). So an animal that already shelters every hot steamy hour, with no change when the Roil clears, passes B6's reading. The only reject picture covers a locked sky and a debug job.",
+   "would_pass": "A matched pair, same carrier, same cells, same time of day: one arm under the Roil, one under Breaklight. The animal moves toward shade measurably more in the clearing arm. Add a reject picture: 'the carrier shelters just the same under the Roil, so the clearing changes nothing it does'.",
+   "smallest_fix": "Add the Roil-versus-clearing arm to B6's control and that one picture to B6's reject list."
+  },
+  {
+   "head": "check_or_rule_as_bar",
+   "where": "bars.json B6 sees.on and sees.control; check C8; owner_pages.md page two",
+   "evidence": "B6's 'on' requires Direct Sun to be active and shared tree shade to have passed its adopt-or-fall-back qualification. Its control says 'Equal radiation or an inactive Direct Sun gate invalidates the evidence even if the visible clearing/shade-search picture looks right.' Yet ambiguities.md item 10 says 'Heat-law compliance stays a rule/check; B6's player experience is only clearing, visible floor, natural shade-seeking and return.' The brief says a failed check is evidence, never a refusal by itself. The shade-seeking job reads neither Direct Sun nor tree shade (RM_JobGiver_SeekShade.cs). So B6, and through it the whole bar B8, cannot pass until a separate shared dependency qualifies (TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT).",
+   "would_pass": "B6 is judged only on its own experience: the steam lifts, the floor shows, carriers head for shade, the steam returns. Direct Sun runs at whatever default R7 sets. The radiation contrast and the tree-shade qualification stay in C8/T38 as checks and readiness work for R7, not as a gate on B6's evidence.",
+   "smallest_fix": "Delete the radiation-contrast and qualification sentences from B6's sees.on and sees.control, and leave a pointer to C8/T38."
+  },
+  {
+   "head": "cannot_hold_together",
+   "where": "bars.json B4 (says, accept 1) and R2, R4; B3 reject 2; census.json row yearning_fruit (fate: signature)",
+   "evidence": "Seed passage plants new RM_YearningFruit seedlings 'wherever the eater happens to' be (RM_YearningFruit_Hediffs.xml:18, :50-54). It checks only InBounds, whether a plant is already there, and CanEverPlantAt (RM_HediffComp_SeedPassage.cs:88-102). It ignores the suppression grid and whether the cell is inside an enclosed room. R2 says regrowth 'respects floors, edifices and enclosed rooms'. B4 promises that an operating blower 'maintains a cleared ... approach'. B3 rejects a jungle that 'secretly spawns through ... enclosed rooms'. Two cases break this: a colonist who eats the fruit and then walks through a working blower's field, and one who eats it in an enclosed room with a dirt floor. Both sprout plants that the kept rules say cannot appear there. The vegetation meeting does not list this bypass.",
+   "would_pass": "Seed passage uses the same eligibility test as the shared sprout path: the built-ground and enclosed-room exemption plus the suppression grid. Or R2 and B4 state openly that eaten-seed sprouting overrides both, and their pictures change to match.",
+   "smallest_fix": "Add one line to R2: 'Seed-passage germination uses the shared SproutRing respectBuiltGround/enclosed-room predicate and honours active suppression.' Add a ticket with its acceptance test (no germination inside an active blower field or an enclosed room), and add these cases to M1/M3."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json row yearning_fruit (fate: signature, why)",
+   "evidence": "The deletion argument is 'Deleting eat-pass-sprout severs this cause of encroachment.' But the census's own signature row daily_base_takeover gives the renewal path as 'RM_TopResolver.Wither -> RM_SproutRing.Sow(respectBuiltGround=true)', and definition.md gives the shared ExplosiveGrowth fruit/wither/sprout cycle. Remove seed passage and renewal still works, so the signature is not defeated. The brief requires the deletion to defeat land, life or the signature. The row also keeps a bespoke digestive mechanic (faster hunger, a brief movement penalty), and no bar needs it.",
+   "would_pass": "Either evidence that renewal on used routes depends on seed passage (for example, an M2 result where Wither→Sow alone produces no route pressure), or the row moves to the next version with a switch-off ticket and the fruit stays as ordinary forage.",
+   "smallest_fix": "Change yearning_fruit's fate to next_version, add a switch-off ticket for the digestive accelerant and seed passage (the harvestable fruit stays in life), and remove 'yearning fruit seed passage' from definition.md's Life line."
+  },
+  {
+   "head": "core_promise_weakened",
+   "where": "owner_pages.md page two ('Paving permanently stops regrowth on covered cells, including home entrances'); bars.json B3 accept 2, B8 accept 3; ambiguities.md item 3",
+   "evidence": "His card answer, design/RimMandrake/designer_codex_2026-11-09/Greentide/ANSWERS_OWNER.md answer 1 (2026-11-10): 'Defend an inhabited foothold: maintaining access to a rich home is the central bargain, with daily work clearing routes and protecting entrances.' The proposal settles, as a delegated interpretation and not as a question, that a paved entrance needs no protection at all from then on. A shared-engine rule (R2, which is ours and open to challenge) overrides half of his stated daily work. His card's own wording is concrete evidence against the obvious engine-law reading, so the Evidence-for-Ask rule requires this to be a question on his pages, not a settled interpretation.",
+   "would_pass": "Either entrances keep some recurring care (for example, pressure on the unpaved approach just outside the paved cells) and a bar shows it, or page two puts the narrowing to him with the card's quote, the default taken, and what changes if he says otherwise.",
+   "smallest_fix": "Add a third question to page two: 'Your 2026-11-10 card names protecting entrances as daily work; under the shared built-ground rule a paved entrance needs no protection afterwards. Default: paving is a permanent answer at the entrance, and care moves to unpaved routes. If not, entrance approaches need recurring pressure.' Update the question count in result.json."
+  }
+ ],
+ "applyable": false,
+ "seconds": 1111,
+ "at": "2026-11-17T01:23:00"
+}
