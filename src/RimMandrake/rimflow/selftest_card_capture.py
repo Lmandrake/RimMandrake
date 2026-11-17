@@ -15,6 +15,9 @@ items dir, temp card store, an empty transcript dir; the real ledger and store a
   plain       a non-card item: no `card`, no section, no launch or close refusal
   transcript  a card found only in a session transcript (hook never ran) is still found and stamped
   bare        a bare --by-card takes the card answered last
+  overflow    a four-question card of the tool's maximum size records whole: every line under 4096 bytes, `show` prints
+              all four with the picked descriptions verbatim; a one-question card stays one event; his typed note
+              travels; an empty card store refuses by name
 """
 import json
 import os
@@ -109,6 +112,67 @@ def hook(tmp, question, answer):
     p = subprocess.run([sys.executable, HOOK], input=json.dumps(payload), capture_output=True, text=True,
                        env=env(tmp), cwd=REPO, timeout=60)
     return p.returncode, p.stdout, p.stderr
+
+
+def big_card(n=4, tag="q"):
+    qs = [{"question": ("%s%d " % (tag, i)) + "Q" * 500, "header": "H%d" % i, "multiSelect": False,
+           "options": [{"label": "L%d%s" % (i, c), "description": ("D%d%s " % (i, c)) + "d" * 335} for c in "abc"]}
+          for i in range(n)]
+    return qs
+
+
+def hook_card(tmp, qs, answers, annotations=None):
+    payload = {"session_id": "sess-big", "tool_name": "AskUserQuestion", "tool_use_id": "toolu_%d" % time.time_ns(),
+               "tool_input": {"questions": qs},
+               "tool_response": {"questions": qs, "answers": answers, "annotations": annotations or {}}}
+    return subprocess.run([sys.executable, HOOK], input=json.dumps(payload), capture_output=True, text=True,
+                          env=env(tmp), cwd=REPO, timeout=60)
+
+
+def overflow_cases(tmp):
+    qs = big_card(4)
+    hook_card(tmp, qs, {q["question"]: q["options"][1]["label"] for q in qs},
+              {qs[0]["question"]: {"notes": "his typed note"}})
+    G = "RIMMANDRAKE_PROBE_FOUR_QUESTION_CARD_FIXTURE"
+    run(tmp, "file", G, "--for", "BUILD", "--title", "t")
+    rc, out, err = run(tmp, "note", G, "--text", "x", "--by-card")
+    lines = []
+    for dp, _, fs in os.walk(tmp):
+        if os.sep + "cards" in dp or "transcripts" in dp:
+            continue
+        for f in fs:
+            if f.endswith(".jsonl"):
+                lines += open(os.path.join(dp, f), "rb").read().splitlines(True)
+    check(rc == 0 and lines and max(len(l) for l in lines) < 4096,
+          "overflow: a four-question card records with a bare --by-card, every line < 4096 (%d %s)" % (rc, (out + err).strip()[-160:]))
+    p = subprocess.run([sys.executable, os.path.join(HERE, "card_capture.py"), "show", G, "--events", os.path.join(tmp, "events")],
+                       capture_output=True, text=True, env=env(tmp), cwd=REPO, timeout=60)
+    shown = p.stdout
+    check(p.returncode == 0 and all(q["question"] in shown and q["options"][1]["description"] in shown for q in qs)
+          and "his typed note" in shown,
+          "overflow: show prints all four questions, the picked descriptions verbatim and his typed note (%s)" % p.stderr.strip()[-120:])
+    md = prose(tmp, G)
+    check(all(q["options"][1]["description"] in md for q in qs), "overflow: the item prose holds all four descriptions")
+
+    J = "RIMMANDRAKE_PROBE_FOUR_QUESTION_FILE_FIXTURE"
+    rc, out, err = run(tmp, "file", J, "--for", "BUILD", "--title", "t", "--by-card")
+    mine = [e for e in events(tmp) if e.get("id") == J]
+    check(rc == 0 and len(mine) == 4 and sum(len(e["card"]["questions"]) for e in mine if e.get("card")) == 4,
+          "overflow: the file path splits into one event per question (%d, %d events)" % (rc, len(mine)))
+
+    q1 = big_card(1, "solo")
+    hook_card(tmp, q1, {q1[0]["question"]: q1[0]["options"][0]["label"]})
+    H = "RIMMANDRAKE_PROBE_ONE_QUESTION_BIG_CARD_FIXTURE"
+    run(tmp, "file", H, "--for", "BUILD", "--title", "t")
+    before = len([e for e in events(tmp) if e.get("id") == H])
+    rc, out, err = run(tmp, "note", H, "--text", "x", "--by-card")
+    after = len([e for e in events(tmp) if e.get("id") == H])
+    check(rc == 0 and after - before == 1, "overflow: a one-question card is one event (%d)" % (after - before))
+
+    empty = os.path.join(tmp, "empty")
+    os.makedirs(os.path.join(empty, "transcripts"))
+    rc, out, err = run(empty, "note", H, "--text", "x", "--by-card", "no such question → nope")
+    check("no answered card" in err, "overflow: an empty card store is named in the warning")
 
 
 def main():
@@ -223,6 +287,8 @@ def main():
                                           "registered. Costs: needs a person there once."}]}]}
         check(CC.consequences(neg) == ["needs a person there once"],
               "owed: a negation owes nothing, a real cost does (%r)" % CC.consequences(neg))
+
+        overflow_cases(tmp)
 
         import model  # noqa: E402
         check("card" in model.UNIVERSAL_FIELDS, "model: card is a universal field")

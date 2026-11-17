@@ -335,6 +335,32 @@ def _stamp_session(ev, env=None):
     return ev
 
 
+def _split_card(ev):
+    """A stamped card too big for one ledger line (a four-question card is ~4.8 KB; RIMMANDRAKE_SPLIT_CARD_STAMP_FOUR_
+    QUESTIONS_OVERFLOW_LEDGER_LINE) is split: `ev` keeps the first question, and each other question rides its own
+    `note` on the same item, every event carrying its question, picked description, his words and the other labels.
+    Mutates `ev`. -> (the whole card or None when not split, the continuation events)."""
+    card = ev.get("card")
+    qs = card.get("questions") if isinstance(card, dict) else None
+    if not qs or len(qs) < 2 or not ev.get("id"):
+        return None, []
+    probe = dict(ev)
+    for k in model.SPILL_FIELDS:        # prose spills to a side file; only the rest must fit
+        if isinstance(probe.get(k), str):
+            probe[k] = probe[k][:model.SPILL_KEEP]
+    if len(json.dumps(probe, separators=(",", ":"), ensure_ascii=False).encode("utf-8")) < model.PIPE_BUF - 256:
+        return None, []
+    ev["card"] = dict(card, questions=qs[:1])
+    rest = []
+    for i, q in enumerate(qs[1:], 2):
+        extra = {k: ev[k] for k in ("seat", "id", "byCard", "perRuling", "why", "ownerSaid", "role_unit", "ts") if k in ev}
+        extra.update(event="note", text="card question %d of %d, split from the %s that stamped it (a card over one "
+                     "ledger line is one event per question)" % (i, len(qs), ev.get("event")),
+                     card=dict(card, questions=[q]))
+        rest.append(extra)
+    return card, rest
+
+
 def _write_one(ev):
     """check() then append() ONE event, no rendering. `_emit`'s core, split out (step 3)
     so a lease group — `lease` + `claim` + `start` — can land as several checked writes
@@ -345,12 +371,18 @@ def _write_one(ev):
     try:
         model.check(ev, _replay_now())
         _stamp_owner_and_override(ev)
+        whole, rest = _split_card(ev)
         # 🔴 NO PATH: the event goes to THIS SEAT'S shard, `<ledger>/events/<SEAT>.
         # jsonl`, so BENCH and FOUNDRY never append to the same git-tracked file and
         # can never conflict in one on rebase. See `model.SHARD_DIR`.
         model.append(ev)
+        for extra in rest:
+            model.check(extra, _replay_now())
+            model.append(extra)
     except model.LedgerError as e:
         die(str(e))                     # verbatim, non-zero — see the module docstring
+    if whole is not None:
+        ev = dict(ev, card=whole)       # the prose below records the card whole, whichever events carried it
     if isinstance(ev.get("card"), dict) and ev.get("event") in ("file", "note") and ev.get("id") \
             and getattr(model.replay(model.read()).items.get(ev["id"]), "state", None) not in model.TERMINAL:
         # (a closed item gets no live prose: items/*.md is the live set)

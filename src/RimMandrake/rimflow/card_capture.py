@@ -446,6 +446,7 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd")
     s = sub.add_parser("show")
     s.add_argument("item")
+    s.add_argument("--events", default=EVENTS)
     s = sub.add_parser("ingest")
     s.add_argument("paths", nargs="+")
     s = sub.add_parser("recent")
@@ -458,7 +459,7 @@ def main(argv=None):
     if a.cmd == "hook":
         return hook_main()
     if a.cmd == "show":
-        cards = item_cards(a.item)
+        cards = item_cards(a.item, events_dir=a.events)
         if not cards:
             print("card_capture: no ledger event on %s carries a card (measured over %s)" % (a.item, EVENTS))
             return 1
