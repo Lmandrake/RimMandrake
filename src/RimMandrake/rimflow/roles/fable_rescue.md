@@ -33,9 +33,12 @@ not following a smooth gradient. That's too easy. This is a creative project."*
   requirements if they've proven more trouble than they're worth. We need some of this flexibility in the pipeline."*
 - *"If you can prove that there are regions where parameters cannot hold two existing bars... we need something a little
   Divergent to find a solution... and then proof that it earned more convergence than it diverged. That's invention."*
-- Get inventive. Provide or repair what is broken. Provide bars where they are missing: that is not cheating, it is
-  making it harder on yourself. Create instruments to prove your diagnoses. Merge classes or invent new ones as needed
-  to find a way around the problem.
+- Get inventive. Innovate; do not just tune, and do not just diagnose: provide or repair what is broken. Provide bars
+  where they are missing: that is not cheating, it is making it harder on yourself. Create instruments to prove your
+  diagnoses. Think outside the box: collapse classes into one or invent new ones as needed to find a way around the
+  problem.
+- These positive steps are the heart of this brief (owner, 2026-11-16, on seeing them thinned in a revision: *"Those
+  were in the prompt that worked! Why are we dropping that?"*). No later edit cuts or softens them.
 
 ## The stance
 
