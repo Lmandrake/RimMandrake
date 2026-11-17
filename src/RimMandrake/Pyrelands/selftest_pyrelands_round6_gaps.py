@@ -300,7 +300,11 @@ def g15(c):
     s = c.scene("sc_grass_regreens")
     st, ex, ctl = words(s.get("start")), words(s.get("expect")), words(s.get("control"))
     need("before any test action" in st, "sc_grass_regreens' cover census is not on a fresh map before any test action", e)
-    need("0.85" in ex and "dense cover on open ground" not in ex, "sc_grass_regreens states no grass share tied to the bar", e)
+    # his card 2026-11-17 (OWNER:1794926128945577969): the grass shares are tuning, the bar is the experience
+    need("carpeted" in ex and "dense cover on open ground" not in ex,
+         "sc_grass_regreens does not say open ground reads carpeted", e)
+    need(not re.search(r"\d%|\b0\.\d", ex), "sc_grass_regreens pins a grass share in its expect (tuning, not a bar)", e)
+    need("grey ash over grass" in ex, "sc_grass_regreens does not rule out grass hidden under ash", e)
     need("plantDensity" in ctl and "lower" in ctl, "sc_grass_regreens control has no same-seed lower-density map", e)
     need("density enforcer" in words(s.get("control", {}).get("rules_out")), "sc_grass_regreens rules_out does not name the enforcer", e)
     return e

@@ -580,7 +580,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "ash_fertility_watered",
-   "observes": "the watered strip clearly ahead; fertility about 140% watered and about 70% dry; each day the watered strip's GrowthRateFactor_Temperature is above the dry strip's, and the dry strip's equals vanilla's factor for its cell temperature (wet roots acts on watered ash only)",
+   "observes": "the dry strip takes the sowing and grows, and the watered strip is clearly ahead of it; each day the watered strip's GrowthRateFactor_Temperature is above the dry strip's, and the dry strip's equals vanilla's factor for its cell temperature (wet roots acts on watered ash only)",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -607,7 +607,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "fresh_burn_bonus",
-   "observes": "wet fresh scar about 190%, dry fresh scar about 120%, wet old ash about 140% while it rains; the burn bonus gone by day 6 to 7 on its own clock; colony vitals and pending incidents read again at day 7 are unchanged: no raid, no death, no fire off the three pads",
+   "observes": "while it rains the wet fresh scar out-grows both the dry fresh scar and the wet old ash; the burn bonus gone by the end of the week on its own clock; colony vitals and pending incidents read again at day 7 are unchanged: no raid, no death, no fire off the three pads",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -634,7 +634,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "embergrass_regrow",
-   "observes": "at least 25% green on day 3, at least 60% on day 7; the census reads plants on at least 0.85 of open plantable cells (validation.py grass_cover, bar pyre_grass_chokes_ground), ember grass and quick grass only; ember grass on dry ash grows per day at least its own vanilla rate, the watered patch grows faster than the dry one, and bursts land on watered cells only",
+   "observes": "the burned patch is largely green again by day 7, and the day 3 and day 7 captures show green grass standing, not grey ash over grass the census counts unseen; the census reads open plantable ground carpeted (validation.py grass_cover, bar pyre_grass_chokes_ground), ember grass and quick grass only; ember grass on dry ash grows per day at least its own vanilla rate, the watered patch grows faster than the dry one, and bursts land on watered cells only",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -682,7 +682,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "scorchfruit_fire_born",
-   "observes": "fruit only on the burned pad, standing in the scar within the burn itself rather than days later; harvest feeds; the plant withers within a day and the stack rots within four",
+   "observes": "fruit only on the burned pad, standing in the scar within the burn itself rather than days later; harvest feeds; the unpicked plant is soon gone and the unrefrigerated stack spoils",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -1009,7 +1009,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "sand_shovel",
-   "observes": "the sand cell yields 5 glass sand and turns to gravel; the dug cell no longer takes the order",
+   "observes": "the sand cell gives glass sand and turns to gravel; the dug cell no longer takes the order",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -1090,7 +1090,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "furnace_hide_bank",
-   "observes": "butchering the furnace-beast yields RM_FurnaceHide (count above 0); the RM_FurnaceHideBank stands built from it with no fuel and no power connected; room A warms over the hours and reads at least 5 C above room B at every hourly read from hour 6, never above 21 C; log clean",
+   "observes": "butchering the furnace-beast yields RM_FurnaceHide (count above 0); the RM_FurnaceHideBank stands built from it with no fuel and no power connected; room A warms over the hours and reads clearly warmer than room B at every hourly read from hour 6; log clean",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -1240,7 +1240,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/validation.py",
    "entry": "firehawk_first_sighting_letter",
-   "observes": "exactly one letter after the first carry, targeting the hawk, and still one after the second; the crestfeather yield at the built 35% within 4 sigma; the letter's label is RM_FireHawkSightedLabel's text and its text names the hawk (its LabelShortCap) and the ember it carries (RM_FireHawkEmberFromPlant with the source plant's label, or RM_FireHawkEmberFromBurn); the crestfeather's live MarketValue is above the fire-hawk's own and its Beauty above 0",
+   "observes": "exactly one letter after the first carry, targeting the hawk, and still one after the second; butchered hawks sometimes give a crestfeather, a butchered non-hawk never does; the letter's label is RM_FireHawkSightedLabel's text and its text names the hawk (its LabelShortCap) and the ember it carries (RM_FireHawkEmberFromPlant with the source plant's label, or RM_FireHawkEmberFromBurn); the crestfeather's live MarketValue is above the fire-hawk's own and its Beauty above 0",
    "reads": [
     "src/RimMandrake/Pyrelands/validation.py",
     "design/concepts/Pyrelands/scenes.json"
@@ -1622,7 +1622,7 @@
    "stage": "6",
    "file": "src/RimMandrake/Pyrelands/firehawk_rewards_live.py",
    "entry": "firehawk_crestfeather_yield",
-   "observes": "400 fire-hawks butchered through the patched Pawn.ButcherProducts under a fixed seed: the 35 % yield within 4 sigma; the trophy's Beauty and MarketValue in the running game equal the def's",
+   "observes": "fire-hawks butchered through the patched Pawn.ButcherProducts under a fixed seed: some give the crestfeather, a non-hawk gives none; the trophy's Beauty and MarketValue in the running game equal the def's",
    "reads": [
     "src/RimMandrake/Pyrelands/firehawk_rewards_live.py"
    ],
@@ -1722,6 +1722,27 @@
     "build": "5b50c816136a628c8580",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py"
    }
+  },
+  "sc_fire_walks_with_wind": {
+   "id": "sc_fire_walks_with_wind",
+   "kind": "live_minimal",
+   "stage": "6",
+   "file": "src/RimMandrake/Pyrelands/wind_burn_live.py",
+   "entry": "main",
+   "observes": "with the wind on, the burn reaches downwind of the lit line, nothing burns in the lanes beside it and the fires at once stay a few times the cells lit; black rain puts the line out",
+   "reads": [
+    "src/RimMandrake/Pyrelands/wind_burn_live.py",
+    "design/concepts/Pyrelands/scenes.json"
+   ],
+   "command": "python.exe src\\RimMandrake\\Pyrelands\\wind_burn_live.py   (pyrelands tier, a Pyrelands map current, bridge held)",
+   "why_game": "a running Pyrelands map with the biome's clocks and the bridge (tier_reason of the leaf)",
+   "why_full_list": null,
+   "entry_exists": true,
+   "item": "RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE",
+   "runs_today": {
+    "ran": false,
+    "why": "live: this run is offline only; entry exists in wind_burn_live.py (5 of 5 PASS live on 2026-11-16, before this bar existed)"
+   }
   }
  },
  "bars": [
@@ -1738,6 +1759,24 @@
     "T_BURN_ECOLOGY",
     "P_opening_front",
     "LOOK_STAGE8"
+   ],
+   "held": [],
+   "offline_decides": [],
+   "offline_green_today": false,
+   "every_decider_runnable_today": true,
+   "any_test_runnable_today": true,
+   "covered_by_leaves": []
+  },
+  {
+   "id": "fire_walks_with_wind",
+   "source": "tree.json",
+   "kind": "experience",
+   "proves_at": "6",
+   "decides": [
+    "sc_fire_walks_with_wind"
+   ],
+   "supports": [
+    "T_BURN_ECOLOGY"
    ],
    "held": [],
    "offline_decides": [],

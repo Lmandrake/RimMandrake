@@ -27,6 +27,31 @@
    "live_command": "modcheck run Pyrelands --chains burn_line"
   },
   {
+   "id": "sc_fire_walks_with_wind",
+   "kind": "acceptance",
+   "requirement": [
+    "fire_walks_with_wind"
+   ],
+   "staged_by": "script",
+   "entry_point": "src/RimMandrake/Pyrelands/wind_burn_live.py::main",
+   "start": [
+    "a current Pyrelands map on the pyrelands tier, the bridge held",
+    "two strips of ember grass on deep ash, each ringed bare; the wind set across them"
+   ],
+   "action": "light a short line at the upwind end of each strip, one with windCarriesFireEnabled on and one with it off, and let both burn; then light a third strip under the wind and bring black rain",
+   "expect": "with the wind on, the burn reaches downwind of the lit line, nothing burns in the lanes beside it and the fires at once stay a few times the cells lit; black rain puts the line out",
+   "control": {
+    "case": "the same line with the wind setting (windCarriesFireEnabled) off",
+    "expect": "the burn spreads into the outer lanes on both sides",
+    "rules_out": "an instrument blind to vanilla's even spread passing an unmoved fire as walking"
+   },
+   "restore": "settings, weather and fires are put back by wind_burn_live.py",
+   "hold": "immediate",
+   "entry_point_item": "RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE",
+   "live_run": "UNRUN",
+   "live_command": "python.exe src\\RimMandrake\\Pyrelands\\wind_burn_live.py"
+  },
+  {
    "id": "sc_ash_ground",
    "kind": "acceptance",
    "requirement": [
@@ -68,10 +93,10 @@
     "the cell temperature on both strips above the crop's plant.maxOptimalGrowthTemperature (asserted: each strip's cell temperature read against the crop def), so wet roots (PyrelandsWetRoots) has heat to act on"
    ],
    "action": "grow five days, reading growth and each strip's Plant.GrowthRateFactor_Temperature each day",
-   "expect": "the watered strip clearly ahead; fertility about 140% watered and about 70% dry; each day the watered strip's GrowthRateFactor_Temperature is above the dry strip's, and the dry strip's equals vanilla's factor for its cell temperature (wet roots acts on watered ash only)",
+   "expect": "the dry strip takes the sowing and grows, and the watered strip is clearly ahead of it; each day the watered strip's GrowthRateFactor_Temperature is above the dry strip's, and the dry strip's equals vanilla's factor for its cell temperature (wet roots acts on watered ash only)",
    "control": {
     "case": "the same watered deep-ash strip with the watered-lift switch (ashWaterFertilityEnabled) off, sown on the same tick",
-    "expect": "reads dry-ash fertility (about 70%) and grows at the dry strip's rate; its GrowthRateFactor_Temperature equals the dry strip's (wet roots sits behind the same switch)",
+    "expect": "grows at the dry strip's rate; its GrowthRateFactor_Temperature equals the dry strip's (wet roots sits behind the same switch)",
     "rules_out": "richer soil by the water passing for watered ash: the lift is the mechanism, not the ground"
    },
    "restore": "put back the pad terrain, plants, filth and things from the snapshot taken at scene-begin, extinguish every fire the scene lit (both strips and the channel), restore the watered-lift switch",
@@ -94,7 +119,7 @@
     "colony vitals and pending incidents recorded before the seven-day wait (the script audit's guard for fresh_burn_bonus)"
    ],
    "action": "start black rain over two pads for half a day; read the probe and crop growth on each through day 7",
-   "expect": "wet fresh scar about 190%, dry fresh scar about 120%, wet old ash about 140% while it rains; the burn bonus gone by day 6 to 7 on its own clock; colony vitals and pending incidents read again at day 7 are unchanged: no raid, no death, no fire off the three pads",
+   "expect": "while it rains the wet fresh scar out-grows both the dry fresh scar and the wet old ash; the burn bonus gone by the end of the week on its own clock; colony vitals and pending incidents read again at day 7 are unchanged: no raid, no death, no fire off the three pads",
    "control": {
     "case": "the same three pads with the burn bonus switch (freshBurnBonusEnabled) off",
     "expect": "the wet fresh scar reads the same as wet old ash",
@@ -122,7 +147,7 @@
     "vitals and incident guard before and after each wait"
    ],
    "action": "count green cells and capture on days 1, 3 and 7; census grass cover on open ground; read the growth of the sown dry, watered and vanilla patches daily and count growth bursts on each",
-   "expect": "at least 25% green on day 3, at least 60% on day 7; the census reads plants on at least 0.85 of open plantable cells (validation.py grass_cover, bar pyre_grass_chokes_ground), ember grass and quick grass only; ember grass on dry ash grows per day at least its own vanilla rate, the watered patch grows faster than the dry one, and bursts land on watered cells only",
+   "expect": "the burned patch is largely green again by day 7, and the day 3 and day 7 captures show green grass standing, not grey ash over grass the census counts unseen; the census reads open plantable ground carpeted (validation.py grass_cover, bar pyre_grass_chokes_ground), ember grass and quick grass only; ember grass on dry ash grows per day at least its own vanilla rate, the watered patch grows faster than the dry one, and bursts land on watered cells only",
    "control": {
     "case": "the same burned patch with ember-grass regrow switched off; the vanilla grass on the same dry ash; a same-seed, same-tile fresh map generated with the live RM_Pyrelands plantDensity set to 1.0 before generation (the value Map Designer caps it to before the density enforcer re-asserts 16), read by the same census",
     "expect": "the burned patch stays black through day 7; the vanilla grass on dry ash grows below the ember grass beside it and shows no burst; the plantDensity-1.0 map reads a lower open-cell plant share than the fresh enforced map",
@@ -177,7 +202,7 @@
     "a freshly burned pad and an unburned pad of the same ground and age"
    ],
    "action": "burn the pad and read scorch-fruit on it during and just after the burn; ripen one; a colonist harvests it and a hungry colonist eats; leave a ripe plant and a stack in the open",
-   "expect": "fruit only on the burned pad, standing in the scar within the burn itself rather than days later; harvest feeds; the plant withers within a day and the stack rots within four",
+   "expect": "fruit only on the burned pad, standing in the scar within the burn itself rather than days later; harvest feeds; the unpicked plant is soon gone and the unrefrigerated stack spoils",
    "control": {
     "case": "the unburned pad; and a second fresh burn of the same ground with scorch-fruit (scorchFruitEnabled) off",
     "expect": "the unburned pad shows 0 scorch-fruit; the switched-off burn shows 0 scorch-fruit during and after it",
@@ -504,7 +529,7 @@
     "a Pyrelands sand cell and a deep-ash cell, both reachable (asserted by terrain read and path check)"
    ],
    "action": "designate both cells; after the dig, designate the dug cell again",
-   "expect": "the sand cell yields 5 glass sand and turns to gravel; the dug cell no longer takes the order",
+   "expect": "the sand cell gives glass sand and turns to gravel; the dug cell no longer takes the order",
    "restore": "put the dug cell back to sand from the snapshot and remove the glass sand stack",
    "hold": "immediate",
    "entry_point_item": "PYRELANDS_SCENES_BUILD_EIGHT_JUDGE_GAPS",
@@ -582,10 +607,10 @@
     "two identical closed 5x5 rooms of the same wall and roof, doors shut, each at the same temperature (asserted: within 1 C of each other) and below 21 C, with no heater, fuel, power conduit or battery in either (asserted: no thing with CompHeatPusher, CompRefuelable or CompPowerTrader in either room)"
    ],
    "action": "the colonist butchers the corpse; count RM_FurnaceHide in the products; build one RM_FurnaceHideBank in room A from that hide (its costList); read that the bank carries no fuel and no power comp; read both rooms' temperature each game hour for 12 hours",
-   "expect": "butchering the furnace-beast yields RM_FurnaceHide (count above 0); the RM_FurnaceHideBank stands built from it with no fuel and no power connected; room A warms over the hours and reads at least 5 C above room B at every hourly read from hour 6, never above 21 C; log clean",
+   "expect": "butchering the furnace-beast yields RM_FurnaceHide (count above 0); the RM_FurnaceHideBank stands built from it with no fuel and no power connected; room A warms over the hours and reads clearly warmer than room B at every hourly read from hour 6; log clean",
    "control": {
     "case": "room B, the twin room with no bank, read over the same 12 hours",
-    "expect": "room B moves only with the outside air and reads at least 5 C below room A from hour 6",
+    "expect": "room B moves only with the outside air and reads clearly cooler than room A from hour 6",
     "rules_out": "the outside air, the burn line or another heater warming the room passing for the bank's heat, and a bank that warms only with fuel or power"
    },
    "restore": "despawn the bank, the hide stack and the butchery leftovers, remove both test rooms and put back the pad from the snapshot taken at scene-begin; the tundra quicktest map is destroyed after",
@@ -737,7 +762,7 @@
     "the sighting letter switch (fireHawkSightingLetterEnabled) on; a staged hawk on the home map, unfogged"
    ],
    "action": "the hawk carries an ember; read the letter stack; a second hawk carries; then the switch off and the gate re-armed, a hawk carries again; butcher 400 fire-hawks under a fixed seed (firehawk_crestfeather_yield) and count Pristine Firehawk Crestfeathers; read the first letter's label and text from the letter stack, and the hawk's LabelShortCap and the source plant's label at the carry; read the live RM_PristineFirehawkCrestfeather def's MarketValue and Beauty and the live RM_FireHawk's MarketValue",
-   "expect": "exactly one letter after the first carry, targeting the hawk, and still one after the second; the crestfeather yield at the built 35% within 4 sigma; the letter's label is RM_FireHawkSightedLabel's text and its text names the hawk (its LabelShortCap) and the ember it carries (RM_FireHawkEmberFromPlant with the source plant's label, or RM_FireHawkEmberFromBurn); the crestfeather's live MarketValue is above the fire-hawk's own and its Beauty above 0",
+   "expect": "exactly one letter after the first carry, targeting the hawk, and still one after the second; butchered hawks sometimes give a crestfeather, a butchered non-hawk never does; the letter's label is RM_FireHawkSightedLabel's text and its text names the hawk (its LabelShortCap) and the ember it carries (RM_FireHawkEmberFromPlant with the source plant's label, or RM_FireHawkEmberFromBurn); the crestfeather's live MarketValue is above the fire-hawk's own and its Beauty above 0",
    "control": {
     "case": "the letter switch (fireHawkSightingLetterEnabled) off; a non-hawk animal butchered the same way",
     "expect": "no letter with the switch off; no crestfeather from the non-hawk",

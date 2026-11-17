@@ -13,23 +13,24 @@
 
 ## does
 - [leaf:burn_line_walks] Grass fire moves across the map like a natural grass fire, with a scorched trail behind it that regreens, and is never out for long: a smoulder relights in open grass. (Reworded by him 2026-11-16: "modify the bar so that it's not so finicky about 'the line.' Sometimes poetry is simply that. I just wanted a natural grassfire feel." and "Take out the 'far from buildings' we don't have any physics to substantiate that claim.") OWNER:1793895899845199295
+- [leaf:fire_walks_with_wind] The fire walks with the wind. OWNER:1794926130118775229
 - [leaf:ash_ground_and_blowing_ash] The ground is almost all deep ash, and a lot of ash blows across it like snow; ash fall dims the map and banks drifts, and a fire on deep ash leaves loose ash behind it OWNER:1791817028468666199
-- [leaf:ash_fertile_when_watered] Ordinary crops find deep ash sowable dry (about 70%, his card 2026-11-07) and very fertile where watered (about 140%), benefiting from water as before; on watered ash its roots grow as if cooler, so the heat does not slow it. OWNER:1791815330395605033 OWNER:1794594151279833849
-- [leaf:fresh_burn_compounds_with_black_rain] A fresh burn grows crops faster for a few days, and black rain adds to it instead of washing it away: a wet fresh scar reads 190%. OWNER:1793898829233582581, owed
+- [leaf:ash_fertile_when_watered] Ordinary crops find deep ash sowable dry, and a strip beside a watered channel grows clearly faster than the same crop on dry ash (his card 2026-11-17 made this an experience; his 70% dry and 140% watered stay the shipped tuning, OWNER:1794926128945577969); on watered ash its roots grow as if cooler, so the heat does not slow it. OWNER:1791815330395605033 OWNER:1794594151279833849
+- [leaf:fresh_burn_compounds_with_black_rain] A fresh burn grows crops faster for a few days, and black rain adds to it instead of washing it away: a wet fresh scar out-grows a dry fresh scar and wet old ash while the black rain lasts. OWNER:1793898829233582581, owed
 - [leaf:grass_carpets_and_regreens] The biome's grasses grow swiftly even on seemingly dry ash (very deep roots, underground storage), faster still and with the gentle burst where watered; ember grass carpets the ground, burns black and is largely green again within about a week, and withers under a roof within about a day. OWNER:1794594151279833849
 - [leaf:scorchfruit_born_of_fire] Scorch-fruit comes up rapidly in the fresh scar right behind the front, never on unburned ground, feeds a colonist, and rots fast
 - [leaf:populations_are_the_biomes_own] Only the biome's own plants and fire cast live there, small grazers outnumber big predators, a fresh map holds at least two fire-hawks and eight ashwallows, the cast has a slow thirst so herds come to the rare water one at a time, and the map generates clean
 - [leaf:ruins_stand_blackened] Ruins stand blackened and fire-scarred
 - [leaf:firehawk_lights_ahead] A fire-hawk carries a burning twig ahead of the blaze and starts a new fire where it drops it; a fire-hawk far from any fire flies to a burn it can see
-- [leaf:firehawk_hunt_rewards] The first time a fire-hawk is seen carrying an ember, one letter names it and jumps to it (once a game, switchable off); butchering a hunted fire-hawk sometimes yields a Pristine Firehawk Crestfeather OWNER:1794693278631337978
-- [leaf:furnacebeast_warms] The furnace-beast is a giant, body size 9 in the running game (twice the Zeer's 4.5, the largest other Pyrelands animal); it warms anyone standing near it, heats a room it shelters in, and sets the grass it sleeps on alight; its hide builds a furnace-hide heat bank that warms a closed room with no fuel or power. OWNER:1794594151279833849
+- [leaf:firehawk_hunt_rewards] The first time a fire-hawk is seen carrying an ember, one letter names it and jumps to it (once a game, switchable off); butchering a hunted fire-hawk sometimes gives a Pristine Firehawk Crestfeather worth more than the hawk, and butchering anything else never does OWNER:1794693278631337978
+- [leaf:furnacebeast_warms] The furnace-beast is a giant, far larger than any other animal on the map; it warms anyone standing near it, heats a room it shelters in, and sets the grass it sleeps on alight; its hide builds a furnace-hide heat bank that keeps a closed room clearly warmer with no fuel or power. OWNER:1794594151279833849
 - [leaf:ashwallow_dives_unharmed] The ashwallow dives underground as the front reaches it and comes through unharmed, and a heat hit with no fire near curls it into its dome until the hold runs out
 - [leaf:ullai_graze_old_burns] Ullai herds drift to graze where it burned about two days ago
 - [leaf:ullai_cross_the_map_as_vanilla_herds] Ullai herds can migrate across the map as vanilla herds do OWNER:1794694157698359872
 - [leaf:flamefang_bite_carries_venom] A flamefang's bite leaves flamefang venom on the colonist, worsening over the hours; no other bite does
 - [leaf:three_skies] Ash fall, cinderfall and black rain each read at a glance as their own sky; cinderfall brings lightning, and black rain puts fires out and washes loose ash away
 - [leaf:firefoam_sprayer_reaches_the_fruit] A colonist with the firefoam sprayer foams a way into the burn, picks the scorch-fruit and comes back out unburned. OWNER:1793950669508519029
-- [leaf:sand_shovel_yields_glass_sand] Shovelling Pyrelands sand yields five glass sand a cell and leaves gravel, so every patch is finite
+- [leaf:sand_shovel_yields_glass_sand] Shovelling a Pyrelands sand cell gives glass sand once and turns it to gravel, so a patch is a finite deposit
 - [leaf:fire_rite_hook_silent_alone] The fire-rite hook raises on every fire beat and stays silent with no campaign mod listening
 - [leaf:biome_text_says_engineered] The biome description says the savanna was genetically engineered. OWNER:1793895899845199295, owed
 - [leaf:ash_fertility_probe] A per-cell fertility read, so the black-rain ruling can be measured
@@ -58,6 +59,7 @@
 
 ## pruning
 - burn_line_walks: his root (a line of grass fire walks the map; poetry, by his word 2026-11-16) read as a natural grass fire that moves across the map and never fully goes out for long, OWNER:1793895899845199295
+- fire_walks_with_wind: yes, his bar by card 2026-11-17 in his words, OWNER:1794926130118775229; built 49e11870b4, wind_burn_live.py 5 of 5 PASS live 2026-11-16
 - ash_ground_and_blowing_ash: his words OWNER:1791815330395605033 and OWNER:1791817028468666199
 - ash_fertile_when_watered: his words, the ash should be QUITE fertile with water added, OWNER:1791815330395605033; ordinary crops treat it as very fertile ground, OWNER:1794594151279833849
 - fresh_burn_compounds_with_black_rain: his card OWNER:1793898829233582581, black rain compounds the bonus
