@@ -2,7 +2,6 @@
  "aliases": [
   "PYRELANDS"
  ],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: the final look (granted 2026-11-17T18:24:41Z, after RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES, RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED, RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS, RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS) at round 11 was not_covered: the owner's to decide; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -806,6 +805,11 @@
    "granted_why": "option A by delegated Evidence-for-Ask call CONDUCTOR:1794939817434538611: one final look once the three round-9 gaps are fixed in 0.1.0 and re-pinned; hand grant folded by RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE",
    "rounds_at": 10,
    "why": "steward RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_THREE: the standing grant (CONDUCTOR:1794939817434538611, option A) is due: its four after items are closed and the re-pin landed 19:49:53Z; one final look after the stage-4 retake"
+  },
+  {
+   "at": "2026-11-17T20:21:52Z",
+   "rounds_at": 11,
+   "why": "delegated: evidence-for-ask: round 11 was not_covered only on three carried gaps the judge itself marked answered; fix claims now filed; one more look. Judgement built into the pipeline by d8c89feab2 (steward brief files fix claims before the look), item RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_THREE"
   }
  ],
  "coverage_rounds": [
@@ -1019,10 +1023,6 @@
    "verdict": "not_covered"
   }
  ],
- "coverage_stop": {
-  "at": "2026-11-17T20:12:27Z",
-  "why": "the final look (granted 2026-11-17T18:24:41Z, after RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES, RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED, RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS, RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS) at round 11 was not_covered: the owner's to decide"
- },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -1815,6 +1815,12 @@
    "stage": 5,
    "what": "retry",
    "why": "run bench-pyre-cov-st5-r10-20261117 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-17T20:21:52Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "delegated: evidence-for-ask: round 11 was not_covered only on three carried gaps the judge itself marked answered; fix claims now filed; one more look. Judgement built into the pipeline by d8c89feab2 (steward brief files fix claims before the look), item RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_THREE"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -2352,6 +2358,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "blocked",
+ "status": "ready",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
