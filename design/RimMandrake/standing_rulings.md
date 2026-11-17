@@ -741,6 +741,24 @@ The rule, for every agent and role that can pause for him:
   whose `evidence_against` is filled still waits. The other places that still pause, with the obvious answer for each:
   `infrastructure/state/items/RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME.md`.
 
+## A limit from before the Maturation Pipeline is suspect: act, or ask him first — owner, 2026-11-17
+
+*"Drop 11-14 limits, old rule. Clear its limitations. We are remeasuring it for a brand new pipeline. Don't keep telling
+me we can't do things when it's from pre-maturation pipeline decisions. Those old decisions are unlikely to be relevant
+anymore. At least suspect it and ask before refusing."* (Tue 2026-11-17 ~11:00 AM PST.)
+
+The incident: SteveDesktop's queue refused Pyrelands and Graffiti and the steward reported `IDLE_BY_RULE`, all on his
+2026-11-14 card "Pipeline tests only" (spec 18c), a rule set while the pipeline (spec
+`design/specs/2026-11-13-maturation-pipeline.md`) was still being specified. That limit is deleted
+(`RIMMANDRAKE_DROP_STEVEDESKTOP_PIPELINE_ONLY_LIMIT`).
+
+The rule, for every agent:
+- A limit, gate or refusal that comes from a decision made before the Maturation Pipeline is suspect. Do not refuse on
+  it: take the action, or ask him first, quoting the old decision's date and text.
+- Tag such a limit "old decision (date)" in any "it cannot be done" claim, and challenge it before our own newer rules.
+- What it does not change: his rulings made for the pipeline or after it (his 2026-11-16 hold on six biome mods, no
+  flyer flight test, the machine-safety brakes); a limit he re-confirms becomes a new decision with today's date.
+
 ## The pipeline fixes its own defects — owner, 2026-11-15
 
 *"Fix the process wherever it didn't work, ok? Make the pipeline better, don't keep cleaning up after it and leaving it

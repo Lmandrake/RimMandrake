@@ -134,7 +134,10 @@ still needs him. **Evidence-for-Ask** (owner, 2026-11-15; the statement every ro
 CLAUDE.md): any seat or helper that would pause for him takes the obvious answer, logged `--per-ruling
 RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call and why>"`;
 it pauses only on concrete evidence against that answer, every ask carries the evidence, and a §2 hold stays his with
-its evidence on the ask. Taste calls go to a judge agent, every delegated call is logged `--why "delegated: <class>"`
+its evidence on the ask. **A limit from before the Maturation Pipeline is suspect** (owner, 2026-11-17: "Don't keep
+telling me we can't do things when it's from pre-maturation pipeline decisions"): never refuse on one; act, or ask him
+first quoting the old decision's date and text (`standing_rulings.md` §A limit from before the Maturation Pipeline).
+Taste calls go to a judge agent, every delegated call is logged `--why "delegated: <class>"`
 and reaches him in a daily digest. A ruling is one dated line in `infrastructure/state/canon.yml` (numbers, rosters —
 every value with a `src:`) or on the item (scope). A reversal **replaces** the old line in the same commit and
 propagates to every file naming the item, same commit. A ruling under 24 h old is a draft — reversible without

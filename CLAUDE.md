@@ -255,6 +255,9 @@ RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: ev
 (it reaches his daily digest). It pauses only with concrete evidence against the obvious answer, and every ask carries
 that evidence. His own §2 holds above still wait for him, each ask with its evidence. Full text:
 `design/RimMandrake/standing_rulings.md` §Evidence-for-Ask.
+**A limit from before the Maturation Pipeline is suspect** (owner, 2026-11-17: *"Don't keep telling me we can't do
+things when it's from pre-maturation pipeline decisions."*): never refuse on one; act, or ask him first quoting the old
+decision's date and text. Full text: `standing_rulings.md` §A limit from before the Maturation Pipeline is suspect.
 
 ## 🔴 The pipeline fixes its own defects — owner, 2026-11-15
 
