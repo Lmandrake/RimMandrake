@@ -193,7 +193,7 @@ def main():
             world.update(live={}, stage_runs={}, last_end={})
 
         base = load_cfg()
-        cfg = dict(base, advancing=list(FOUR) + ["Graffiti", "PyrelandsMechanics"])
+        cfg = dict(base, advancing=list(FOUR) + ["Graffiti", "PyrelandsMechanics"], max_live=4)  # pinned: these rows need several launches in one pass, at any shipped max_live
         world["live"] = {"ExplosiveKnockback": ["rm-detached-bench-rimmandrake-build-knockback-stage-three-1"]}
 
         # ---- a clone behind past the alarm's 5 min reads an old tree: it launches nothing --------------------------
