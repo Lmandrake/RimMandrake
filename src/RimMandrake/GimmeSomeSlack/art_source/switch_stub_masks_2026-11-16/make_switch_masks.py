@@ -15,11 +15,15 @@ CordMaterials.OnePortBox); the box art's body is narrower, so its edge is read a
     python3 src/RimMandrake/GimmeSomeSlack/art_source/switch_stub_masks_2026-11-16/make_switch_masks.py          # write
     python3 src/RimMandrake/GimmeSomeSlack/art_source/switch_stub_masks_2026-11-16/make_switch_masks.py --check  # rc 1 if stale
 """
+import io
 import os
 import sys
 
 import numpy as np
 from PIL import Image
+
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "Utils", "art")))
+import artledger  # noqa: E402  (art goes into Textures/ only through the art ledger)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEX = os.path.normpath(os.path.join(HERE, "..", "..", "Textures", "RimMandrake", "GimmeSomeSlack"))
@@ -89,7 +93,9 @@ def main():
                 stale += 1
                 print("STALE", path)
         else:
-            Image.fromarray(arr).save(path, optimize=True)
+            buf = io.BytesIO()
+            Image.fromarray(arr).save(buf, format="PNG", optimize=True)
+            artledger.install_bytes(path, buf.getvalue(), reason="script:src/RimMandrake/GimmeSomeSlack/art_source/switch_stub_masks_2026-11-16/make_switch_masks.py unused stubs cut from the kept art")
     print(("%d stale" % stale) if check else "wrote 120 textures")
     return 1 if stale else 0
 
