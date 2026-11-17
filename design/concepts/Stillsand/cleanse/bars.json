@@ -1,0 +1,822 @@
+{
+  "bars": [
+    {
+      "id": "B_LAND",
+      "says": "On a full Stillsand map the player sees exposed corrugated ochre sand separating rock destinations, with sparse living cover, physical bone landmarks and wreckage under a fixed sun.",
+      "meant": {
+        "intent": "Without open exposed travel, the selected desert and discovery emphasis are lost; an ordinary lush or crowded biome would be refused.",
+        "source": "OWNER:1794377002766121379 (fortunes through emptiness); delegated from Biomes.compose.json Stillsand line, root.md and current BiomeDef for the land picture.",
+        "figurative": []
+      },
+      "accept": [
+        "Across the map a traveller crosses exposed sand before reaching usable rock; low plants and occasional bones or wrecks punctuate the ground while leaving the route visibly open.",
+        "The sun remains in its tile-governed place while an ordinary sandstorm temporarily reduces visibility; weather does not turn fixed daylight into a normal night."
+      ],
+      "reject": [
+        "A curated bare pad looks empty but beyond it vegetation, repeated wrecks or tightly packed destinations leave no exposed crossing.",
+        "Sand appears as little patches surrounded by lush ground, or corrugation is just a word over a flat featureless presentation."
+      ],
+      "lazy": "none: Open land, corrugation and how sparse cover reads are rendered relationships a count cannot certify; the rejected pad cannot satisfy the full-map separating-destinations wording.",
+      "range": {
+        "varies": "Whole supplied local maps: small/default/large (225/250/325 cells and actual largest intended map), plain/rockless-tor/rock-rich viable layouts; fresh and 100-day initial states; ordinary Clear, DryThunderstorm and Sandstorm intervals; inhabited and uninhabited, 1/6/40 colonists. Observe spatial regions (centre, edges, destination approaches) and full-map view, not a hand-picked station.",
+        "left_out": "No planetary placement, tile counts or generated alternative worlds. No-cave layouts may occur but cannot excuse no useful destinations over the supplied region. Art variant counts and exact cover percentages are not acceptance."
+      },
+      "sees": {
+        "instrument": "Short ordinary-zoom and full-map runtime look, with terrain/depth/cover/object census and M_SEASON time maps to locate the worst regions. T_OBSERVER supplies capture attribution.",
+        "start": "Assert map size, tile/solar geometry, retained feature settings, real terrain and resolved rosters; the entire map is populated and work/weather clocks running. No artificially cleared pad.",
+        "on": "All retained Stillsand land/life/cave/provisioning features and their shared engines at proposed shipped defaults; all DLC; next-version extras off. No locked sky, clear-weather pad, suppressed animal AI or paused production. Feature-off controls are separate counterfactual siblings, never the passing arm.",
+        "control": "Rule out framing by traversing the whole route and inspecting map-wide census/time maps, including the busiest region. Compare initial and aged state, and match natural weather records to the look; a camera showing only bare sand cannot pass.",
+        "reset": "Discard the disposable fixture and its sibling saves; restore the exact entry settings and external test configuration from a recorded snapshot, not old shipped defaults. No owner/canonical save is changed. Verify remaining reservations, held pawns, scheduled events and spawned identities against entry state.",
+        "live_only_why": "Open land, corrugation and how sparse cover reads are rendered relationships a count cannot certify; the rejected pad cannot satisfy the full-map separating-destinations wording."
+      },
+      "live_only": true,
+      "touches": [
+        "landscape",
+        "sun_geometry",
+        "weather_sand"
+      ],
+      "tests": {
+        "reject": "delegated: Without open exposed travel, the selected desert and discovery emphasis are lost; an ordinary lush or crowded biome would be refused.",
+        "renormalize": "No fixed yield, stat, rate, variant count or percentage; numerical implementation readings are checks. Qualitative comparisons and causal use survive retuning.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "B_SUN",
+      "says": "A traveller in Stillsand can shelter from Direct Sun under roofs, parasols and geometric cast shade, including a giant’s moving shadow, while ordinary air heat remains.",
+      "meant": {
+        "intent": "If a roof or parasol fails at low sun, or shelter cancels the actual hot air, the biome violates the standing Direct Sun rule and the prepared-refuge experience.",
+        "source": "Standing Direct Sun ruling, OWNER:1792410399049610407; delegated moving-shadow application from RM_Oommok ShadowCaster and adopted root.",
+        "figurative": []
+      },
+      "accept": [
+        "At the same air temperature the roofed traveller is protected from the direct component at low and high sun; an exposed traveller still receives it.",
+        "A giant moves; protection follows its current shadow and the old position becomes exposed unless another real caster still covers it."
+      ],
+      "reject": [
+        "A roof works near overhead sun but fails at a low angle, or a hidden per-biome heat/glare floor keeps the roofed traveller exposed.",
+        "A painted shadow or the giant’s former position protects a traveller after the real caster has moved or died; shade makes the thermometer colder without an ordinary air-temperature cause."
+      ],
+      "lazy": "none: The sentence names real cover, motion and unchanged air heat; a false floor, static stamp or cold-air substitute cannot satisfy it.",
+      "range": {
+        "varies": "M_LAYOUT sweeps all actual dayside tile bearings, solar elevations from just above horizon to zenith and geometry branch boundaries; roofs constructed/thin/thick, open sand/deep sand/rock, plant/rib/skull/building casters, parasols and overlaps, moving/dead/removed giant, matched ordinary weather and ambient temperatures. Pawn bare/gear-covered, mobile/downed; compare before and after each shared grid refresh.",
+        "left_out": "No separate biome sun/heat type, no time-driven sun motion on this fixed world, no indoor cooling guarantee. Tree-heavy other biomes and alternative planets are dependency scope, not new Stillsand promises."
+      },
+      "sees": {
+        "instrument": "Calibrated M_LAYOUT cell/caster/gear geometry sweep driving shared production sun/shade functions; runtime exposure, heat and GridVersion samples calibrate each transition class. T_SUN and T_LAYOUT.",
+        "start": "Export actual tile geometry and roof/terrain/caster arrays; match air temperature, weather sun factor, apparel and pawn traits between exposure arms. Assert regular shade refresh is active.",
+        "on": "All retained Stillsand land/life/cave/provisioning features and their shared engines at proposed shipped defaults; all DLC; next-version extras off. No locked sky, clear-weather pad, suppressed animal AI or paused production. Feature-off controls are separate counterfactual siblings, never the passing arm.",
+        "control": "Paired snapshots change only geometric cover/caster position; hold air/gear/weather fixed. Read direct component and ambient separately. Sample ordinary refresh latency rather than forcing recompute and crediting it as natural update.",
+        "reset": "Discard the disposable fixture and its sibling saves; restore the exact entry settings and external test configuration from a recorded snapshot, not old shipped defaults. No owner/canonical save is changed. Verify remaining reservations, held pawns, scheduled events and spawned identities against entry state.",
+        "live_only_why": "Calibrated offline production-state/geometry instruments can discriminate this contract; game calibration is prerequisite, not a claim of current proof."
+      },
+      "live_only": false,
+      "touches": [
+        "sun_geometry",
+        "refuge_geometry",
+        "information",
+        "weather_sand"
+      ],
+      "tests": {
+        "reject": "delegated: If a roof or parasol fails at low sun, or shelter cancels the actual hot air, the biome violates the standing Direct Sun rule and the prepared-refuge experience.",
+        "renormalize": "No fixed yield, stat, rate, variant count or percentage; numerical implementation readings are checks. Qualitative comparisons and causal use survive retuning.",
+        "first_version": "land and necessary geometric shelter"
+      }
+    },
+    {
+      "id": "B_LIFE",
+      "says": "The player meets desert plants and resident wildlife that feed, shelter, hunt, reproduce and provide usable food or materials through their ordinary lives, with flyers actually flying.",
+      "meant": {
+        "intent": "A decorative cast, a starving nonfunctional food web or grounded fictional flyer would lose life rather than merely a tuning value; ordinary living/product roles are the retained life promise.",
+        "source": "delegated from current rosters/race/plant defs and the land-life-signature mandate; standing flight, native environmental-water and no-vanish rulings.",
+        "figurative": []
+      },
+      "accept": [
+        "Small residents use depth, food or shade while giants move above them; normal foraging, catches, hunting, eggs or livestock products yield something the player can actually carry and use.",
+        "A shade follower changes shelter with its host, an ambush animal can feed and strike, and the flying resident enters a real flight state during its ordinary jobs."
+      ],
+      "reject": [
+        "Actors spawn for a census but their ordinary jobs never find legal food or shelter, or their products have no usable acquisition path.",
+        "A claimed flyer walks through all ordinary movement; the tester counts its flight stat instead of any actual flight state."
+      ],
+      "lazy": "none: Actual AI jobs, hatching, feeding and flight tracker transitions need engine state; an offline def/role generator cannot prove their execution. The sentence requires ordinary lives, ruling out a spawn-only false pass.",
+      "range": {
+        "varies": "Role classes and all members: harvested plants (LightPipeNub, glasscrust, ollims, Ultriss Pad, Murrowbulb; campaign bloddle when supplied); surface giants/predators; shade followers Eemmok/Loomma; burrowers/swimmers Vekka/Qorrax/Vosska/Duumma/Drazzik; grain food/scavenging/dormancy Ikee/likka likka/veessa/siidda; cave guzzka and fertile/unfertile clutch; flyer Soorrak; existing pack/livestock Vaalok/Karrask and patch-added species. Test empty/occupied shelter, food present/exhausted, offspring maturation, injury/death, native own water, quiet/storm weather, fresh/aged maps and 1/6/40-colonist pressures. Role grouping only merges cases with the same failure mode; resolved membership manifest is a check, not a variant quota.",
+        "left_out": "No guaranteed appearance of every species on each map, no new Gaanok caravan AI, no custom siidda water/vibration wake. No eviction or new wild Karrask row. No unattended flight test or flight screenshot."
+      },
+      "sees": {
+        "instrument": "Runtime ordinary-job, needs, pathing, feeding, reproduction and acquisition traces with actual IDs/products, supported by M_STATES role coverage and M_SEASON food-chain history. Flight uses existing ordinary-flight state records or owner-attended deterministic Pawn_FlightTracker reads; never induced unattended flight or image capture.",
+        "start": "Assert resolved roster and supplying composition, initial food/cover and ordinary AI, with labelled source-supplied vs naturally present actors; no god-mode replenishment or frozen needs. Flight evidence respects the owner-attendance rule.",
+        "on": "All retained Stillsand land/life/cave/provisioning features and their shared engines at proposed shipped defaults; all DLC; next-version extras off. No locked sky, clear-weather pad, suppressed animal AI or paused production. Feature-off controls are separate counterfactual siblings, never the passing arm.",
+        "control": "Compare a legal food/shelter opportunity with an ineligible one at matched needs and geometry. Trace acquisition through actual worker/animal action to usable product; spawned samples do not count. Separate ordinary resident births/feeding from deferred event spawns and dung-induced new flora.",
+        "reset": "Discard the disposable fixture and its sibling saves; restore the exact entry settings and external test configuration from a recorded snapshot, not old shipped defaults. No owner/canonical save is changed. Verify remaining reservations, held pawns, scheduled events and spawned identities against entry state.",
+        "live_only_why": "Actual AI jobs, hatching, feeding and flight tracker transitions need engine state; an offline def/role generator cannot prove their execution. The sentence requires ordinary lives, ruling out a spawn-only false pass."
+      },
+      "live_only": true,
+      "touches": [
+        "landscape",
+        "sun_geometry",
+        "wildlife_state",
+        "supply",
+        "weather_sand",
+        "corpse_owner",
+        "feature_boundary"
+      ],
+      "tests": {
+        "reject": "delegated: A decorative cast, a starving nonfunctional food web or grounded fictional flyer would lose life rather than merely a tuning value; ordinary living/product roles are the retained life promise.",
+        "renormalize": "No fixed yield, stat, rate, variant count or percentage; numerical implementation readings are checks. Qualitative comparisons and causal use survive retuning.",
+        "first_version": "life; every unusual retained behaviour has a deletion argument in census.json"
+      }
+    },
+    {
+      "id": "B_REFUGE",
+      "says": "An unfamiliar rock cave can be explored and physically secured into a reachable shaded refuge, while an occupied den or a sand-covered approach still exposes the traveller to its actual danger.",
+      "meant": {
+        "intent": "Without attainable shelter after preparation, or if rock grants automatic safety before preparation, the owner’s prepared-harbour answer fails.",
+        "source": "OWNER:1794377002766121379 (prepared harbour); delegated physical reading from RM_PreciousCaves, shared submersion/geometry and existing cave rows.",
+        "figurative": []
+      },
+      "accept": [
+        "The connected mouth leads to a real chamber; after actual threats are removed the party can reach roofed rest and storage space through its secured approach.",
+        "A cave occupant returns or active drift covers the approach: the changed danger is real even though the cave was previously cleared."
+      ],
+      "reject": [
+        "A letter announces a harbour but the carved mouth is blocked, the roof is only dark art or the chamber cannot be reached by the intended party.",
+        "A saved quest-cleared flag grants permanent safety or preservation in a reoccupied den; stepping on bare rock suppresses an attacker without a physical cause."
+      ],
+      "lazy": "none: Reachable shaded refuge, physical securing and current danger exclude the fake-letter and magic-safe-rock builds; calibrated path and occupancy geometry can discriminate these states without an aesthetic live judgement.",
+      "range": {
+        "varies": "All existing suitable-outcrop/tor shape classes, legal edge placements, solar/wind bearings and existing cave rows, with actual party and giant footprints. Den absent/live/dead/left/tamed/reoccupied, approach hard/drift-covered, initial arrival/cleared/revisited/after roof loss/reloaded; small party through 40-colonist use. Every retained ordinary mechanic runs; creature action capability is read from real engine traces used to calibrate the state/path adapters.",
+        "left_out": "Too-thin/unbuildable local layouts may explicitly have no cave; no falsified success letter. Refuge excludes new raids or later ordinary attack as an immunity promise. No quest, scripted clearance ceremony or new world site generator."
+      },
+      "sees": {
+        "instrument": "Calibrated M_LAYOUT connected-space/cover/path sweep plus M_STATES current-occupancy transitions, using exported real footprints and attack/path capability. Runtime sampling validates that reported legal paths are accepted by the game; T_CAVE/T_LAYOUT.",
+        "start": "Assert cave cell/roof/row record, exact occupant identities and current occupancy, no quest dependency, approach drift state, party footprint and route origin. Start before exploration, not in a finished staged harbour.",
+        "on": "All retained Stillsand land/life/cave/provisioning features and their shared engines at proposed shipped defaults; all DLC; next-version extras off. No locked sky, clear-weather pad, suppressed animal AI or paused production. Feature-off controls are separate counterfactual siblings, never the passing arm.",
+        "control": "Hold rock/roof/approach constant and change only actual threat occupancy; then hold occupancy constant and add drift or remove cover. A cleared quest flag or temporary paused attacker cannot explain a pass. Require actual path acceptance, not only a flood-fill diagram.",
+        "reset": "Discard the disposable fixture and its sibling saves; restore the exact entry settings and external test configuration from a recorded snapshot, not old shipped defaults. No owner/canonical save is changed. Verify remaining reservations, held pawns, scheduled events and spawned identities against entry state.",
+        "live_only_why": "Calibrated offline production-state/geometry instruments can discriminate this contract; game calibration is prerequisite, not a claim of current proof."
+      },
+      "live_only": false,
+      "touches": [
+        "landscape",
+        "sun_geometry",
+        "refuge_geometry",
+        "wildlife_state",
+        "saved_state",
+        "weather_sand",
+        "information"
+      ],
+      "tests": {
+        "reject": "delegated: Without attainable shelter after preparation, or if rock grants automatic safety before preparation, the owner’s prepared-harbour answer fails.",
+        "renormalize": "No fixed yield, stat, rate, variant count or percentage; numerical implementation readings are checks. Qualitative comparisons and causal use survive retuning.",
+        "first_version": "signature: exploration leading to earned refuge"
+      }
+    },
+    {
+      "id": "B_SUPPLY",
+      "says": "The player can use cave discoveries to provision the next expedition or outpost through usable supplies, ordinary trade and working sun-fed glass, cooking and water production, while removed cave discoveries do not reappear on revisit or reload.",
+      "meant": {
+        "intent": "If the find cannot change practical provisioning, or the reward reappears on return, the owner’s practical-fortune answer and repeated-expedition signature fail. The ordinary sun-fed conversion routes complete the adopted root, not a separate equipment economy; their deletion arguments are explicit Designer inferences in the census.",
+        "source": "OWNER:1794377002766121379 (practical payoff and uncertainty); delegated basic glass/cooking/plain-still route from adopted root and current production defs.; basic sun-fed work retained by delegated inference from CONDUCTOR:1794805294378261874 adopted root, not attributed as an additional owner answer.",
+        "figurative": [
+          {
+            "word": "sun-fed",
+            "stands_for": "The apparatus uses incident sunlight as its energy source; no food-feeding job or new fuel item is implied.",
+            "accept": "A worker operates an exposed solar furnace supplied with mineral ingredients; the sun is neither an ingredient nor an object fed into it."
+          }
+        ]
+      },
+      "accept": [
+        "A secured brine seep supplies feed for a working plain still, a clutch supplies carried food or provider-supported water, or mined material/cache supplies are used in the next undertaking.",
+        "Ordinary glass and lens bills, cooking, hauling or a real available exchange turn the chosen discovery into usable equipment or stores; revisiting its depleted source adds no fresh loot."
+      ],
+      "reject": [
+        "A cave contains expensive-looking samples but no normal extraction, usable recipe, supplier or exchange can turn them into provisions or working equipment.",
+        "Completed water or lenses are injected by a proof helper, a deferred sieve or event reward secretly supplies the missing input, or reload puts the removed cache contents back.",
+        "The party can haul cave food, but the ordinary sun-fed glass, cooking or water route never works when the player orders it."
+      ],
+      "lazy": "none: The sentence requires usable supply/trade and working basic sun-fed routes, not merely hauling one cave item; ordinary work and persistent depletion exclude injected output and renewable loot.",
+      "range": {
+        "varies": "Retained seep/guzzka/lens/cache/taken rows, useful and previously emptied states; starting imported basic provisions vs no industrial input; workshop-before-exploration and exploration-before-work; native RM and supplying campaign; optional DBH present/absent with all DLC always; low/high receiver sun and storm interruption, 1/6/40 workers sharing inputs, job death/cancellation, blocked output and midway reload. Require each kept extraction/work route by normal action, not each possible ingredient stat. Fine sand uses an actual supplier; no guaranteed trader arrival. Plain RM water without DBH is carried/traded stock, not a new drinking need.",
+        "left_out": "No fortune promised for every cave, no exact profit/yield/speed, no self-sufficient desert economy or freely available fine sand. No pearl/canon lens upgrade, crest oven, corpse still, potion, pour or ritual required."
+      },
+      "sees": {
+        "instrument": "Ordinary job/bill/haul/ingestion-or-trade execution and before/after item/volume/reservation state through completion, assisted by M_SUPPLY recipe/bootstrap graph and M_STATES interruption walks. T_SUPPLY/T_WATER.",
+        "start": "Assert initial stocks, active recipes/workgivers, skills, receiver state and actual available supplier inventory for exchange cases. Record all imported/replenished inputs explicitly and start before extraction or feed consumption.",
+        "on": "All retained Stillsand land/life/cave/provisioning features and their shared engines at proposed shipped defaults; all DLC; next-version extras off. No locked sky, clear-weather pad, suppressed animal AI or paused production. Feature-off controls are separate counterfactual siblings, never the passing arm.",
+        "control": "Match a useful discovery with a taken/ineligible case; trace real input IDs through removal, progress, output placement and final use/exchange. No Consume/ProofStillCycle/ProofDrinkHook/direct outcome helper counts as ordinary action. Debt off must not alter ordinary product quantity or usability.",
+        "reset": "Discard the disposable fixture and its sibling saves; restore the exact entry settings and external test configuration from a recorded snapshot, not old shipped defaults. No owner/canonical save is changed. Verify remaining reservations, held pawns, scheduled events and spawned identities against entry state.",
+        "live_only_why": "Normal workgiver discovery, reservations, bill execution and a real exchange require engine jobs; graph reachability alone cannot decide them. Actual work and persistent emptiness exclude injected output and renewable-cache substitutes."
+      },
+      "live_only": true,
+      "touches": [
+        "sun_geometry",
+        "supply",
+        "saved_state",
+        "weather_sand",
+        "information",
+        "feature_boundary"
+      ],
+      "tests": {
+        "reject": "delegated: If the find cannot change practical provisioning, or the reward reappears on return, the owner’s practical-fortune answer and repeated-expedition signature fail.",
+        "renormalize": "No fixed yield, stat, rate, variant count or percentage; numerical implementation readings are checks. Qualitative comparisons and causal use survive retuning.",
+        "first_version": "signature and its strictly needed provisioning routes"
+      }
+    },
+    {
+      "id": "B_SIGNS",
+      "says": "A traveller can notice local buried movement before contact through a visible disturbance and available rumble, and can read an ordinary attack, kill or departure without a pawn silently disappearing.",
+      "meant": {
+        "intent": "Without readable movement and consequences, concealed desert life prevents useful travel decisions and violates the no-vanish ruling.",
+        "source": "Standing no-animal-or-pawn-vanishes-without-readable-sign ruling; delegated from shared sand-swim/wake/rumble/track and ordinary kill behaviour in the adopted sand-signs experience.",
+        "figurative": []
+      },
+      "accept": [
+        "During an actual submerged approach the traveller can see its disturbance and hear its rumble when audio is available; surfacing or a kill leaves an attributable visible body, trace or notice.",
+        "A drum lure can make an uncertain rumble and an old track can fade after ordinary sand movement; neither a sound nor silence claims an exact species or a safe route."
+      ],
+      "reject": [
+        "An invisible predator makes contact with no advance visible sign; an incremented sound counter passes although the rumble cannot be heard at ordinary play settings.",
+        "A kill, dive or ordinary departure removes a pawn with no visible remains, trace or attributable notice, or stale tracks identify a departed creature as certainly present."
+      ],
+      "lazy": "none: Perceived visibility and audibility in the running mix cannot be certified by counters or offline timing. The sentence requires a visible pre-contact disturbance as well as available rumble and readable consequence, excluding silent body removal.",
+      "range": {
+        "varies": "All retained concealed movers and ambush approaches where their motion is possible: sand, deep drift, hard-ground transition, strike/damage/re-submerge/death/departure, quiet/windy/ordinary sandstorm, audio available/muted, distant/nearby source under each configured warning reach. Compare real movement, drum lure and no actor; tracks before/after committed movement and save-load. Party single through 40-colonist sound/visual clutter. Stationary hidden ambush is read by its lure/disturbance before the victim enters contact range, not by a claim every stationary creature is always audible.",
+        "left_out": "No perfect species radar, guaranteed exact bearing, safety proof from silence, new geophone or forced event take. No unattended flyer visual test. The sign need not be a bespoke letter if the physical body/remains already communicates it."
+      },
+      "sees": {
+        "instrument": "Short live ordinary-zoom look/listen during attributed runtime approach/transition, paired with source position and ticked state. T_SIGN supplies audio/visual controls; M_STATES validates transition attribution and track ownership.",
+        "start": "Assert actual hidden/moving state, source-to-traveller distance, camera scale and audio settings, competing ordinary sounds, current track age and shared drift state. Use a real approach/kill/departure, not a spawned final body or debug counter.",
+        "on": "All retained Stillsand land/life/cave/provisioning features and their shared engines at proposed shipped defaults; all DLC; next-version extras off. No locked sky, clear-weather pad, suppressed animal AI or paused production. Feature-off controls are separate counterfactual siblings, never the passing arm.",
+        "control": "Paired no-source/drum-lure/actual-mover traces with identical weather/background distinguish ambient hiss from rumble; muted arm must retain the visual channel. Match sign timestamp/location/identity to the actual transition and compare an ineligible hard-ground approach.",
+        "reset": "Discard the disposable fixture and its sibling saves; restore the exact entry settings and external test configuration from a recorded snapshot, not old shipped defaults. No owner/canonical save is changed. Verify remaining reservations, held pawns, scheduled events and spawned identities against entry state.",
+        "live_only_why": "Perceived visibility and audibility in the running mix cannot be certified by counters or offline timing. The sentence requires a visible pre-contact disturbance as well as available rumble and readable consequence, excluding silent body removal."
+      },
+      "live_only": true,
+      "touches": [
+        "wildlife_state",
+        "saved_state",
+        "weather_sand",
+        "information",
+        "corpse_owner"
+      ],
+      "tests": {
+        "reject": "delegated: Without readable movement and consequences, concealed desert life prevents useful travel decisions and violates the no-vanish ruling.",
+        "renormalize": "No fixed yield, stat, rate, variant count or percentage; numerical implementation readings are checks. Qualitative comparisons and causal use survive retuning.",
+        "first_version": "needed by life and signature; deleting signs defeats useful exposed travel"
+      }
+    },
+    {
+      "id": "B_PRESERVE",
+      "says": "After a cave is physically secured, the player can keep eligible contents preserved in its recorded roofed space and sees them return to ordinary decay when that protection is lost.",
+      "meant": {
+        "intent": "An old practical discovery/store that silently rots before use, or preservation leaking outside its actual space, defeats the scoped useful-cave promise; preserving other owners’ objects by overwriting their state would also be refused.",
+        "source": "delegated from useful old cave discovery, record.json cave_preservation and RM_CavePlace ownership/release; OWNER:1792759874733672738 retains cave preservation while cutting cave fluff; titan spoilage constrained by OWNER:1793738707492209767.",
+        "figurative": []
+      },
+      "accept": [
+        "A discovered eligible object stays preserved in the secured roofed chamber; after it is hauled or carried outside, or its roof is removed, ordinary decay and its readable status resume.",
+        "A stockpile crosses the cave edge: only contents actually in its protected recorded cells receive this feature’s effect, and a qualifying den occupant suspends the cave’s claim."
+      ],
+      "reject": [
+        "Everything near the cave or in a straddling storage building stays fresh outdoors, or a secured roofed cave silently loses its eligible contents to ordinary decay.",
+        "Removing this feature turns another system’s already-disabled rot back on, reload forgets who owns a corpse timer, or a stale den-cleared flag preserves a reoccupied cave."
+      ],
+      "lazy": "none: Recorded roofed space, physical security and release to ordinary decay exclude a global freshness aura or quest bypass; calibrated owned-state transitions can distinguish the contract offline.",
+      "range": {
+        "varies": "M_STATES enumerates ordinary rot-capable item, ordinary animal corpse, titan-owned site/resource and nonrottable item; recorded inside/outside/edge cells, roof intact/lost/rebuilt, carried/stored/held parent, den live/dead/left/tamed/reoccupied, already disabled externally vs owned by cave, toggle off/on, reload before/after each transition and blocked placement. Initial fresh and long-lived cave, 1/6/40 workers using shared stockpiles. Status reports ownership; do not infer ambient refrigeration. The preserved-den predicate is the existing unowned-giant/current-cell eligibility (threshold tracked as a check); a smaller threatening resident still prevents a secured refuge, but does not acquire a new rot-suppression rule.",
+        "left_out": "No global outdoor no-rot, no titan-resource spoilage override or promise of preserving contents while a live unowned dangerous den occupant remains. Corpses subject to another owner are not also converted by Stillsand."
+      },
+      "sees": {
+        "instrument": "Calibrated M_STATES ownership/state-machine walk through the actual Stillsand preservation transition adapter, with engine rot/vanish/status samples and save records establishing agreement. T_CAVE and T_STATES.",
+        "start": "Assert exact recorded cells/roof/occupants, existing rot/vanish owner and clocks, item position/holder and feature setting. Include an externally disabled item from the start and a matched outdoor item at the same air temperature.",
+        "on": "All retained Stillsand land/life/cave/provisioning features and their shared engines at proposed shipped defaults; all DLC; next-version extras off. No locked sky, clear-weather pad, suppressed animal AI or paused production. Feature-off controls are separate counterfactual siblings, never the passing arm.",
+        "control": "Hold temperature and item type fixed, vary only cave eligibility; compare status and actual decay progression across the release interval. Read who changed a flag, not merely that it is disabled. A refrigerator/ambient cold/other mod cannot explain the protected reading.",
+        "reset": "Discard the disposable fixture and its sibling saves; restore the exact entry settings and external test configuration from a recorded snapshot, not old shipped defaults. No owner/canonical save is changed. Verify remaining reservations, held pawns, scheduled events and spawned identities against entry state.",
+        "live_only_why": "Calibrated offline production-state/geometry instruments can discriminate this contract; game calibration is prerequisite, not a claim of current proof."
+      },
+      "live_only": false,
+      "touches": [
+        "refuge_geometry",
+        "supply",
+        "saved_state",
+        "information",
+        "corpse_owner",
+        "feature_boundary",
+        "wildlife_state"
+      ],
+      "tests": {
+        "reject": "delegated: An old practical discovery/store that silently rots before use, or preservation leaking outside its actual space, defeats the scoped useful-cave promise; preserving other owners’ objects by overwriting their state would also be refused.",
+        "renormalize": "No fixed yield, stat, rate, variant count or percentage; numerical implementation readings are checks. Qualitative comparisons and causal use survive retuning.",
+        "first_version": "needed by signature; old cave findings and secured storage retain practical use"
+      }
+    },
+    {
+      "id": "B_WHOLE",
+      "says": "With the complete first version running through a season on a full Stillsand map, the player can repeat exposed crossings, secure and use a cave, and provision a further undertaking while the desert and its ordinary life persist through a midway reload and a changed order of the main actions.",
+      "meant": {
+        "intent": "If the complete retained system floods the map, empties its ordinary life, stalls its valid work or loses/duplicates consequences across ordinary continuation, isolated scenes do not deliver the owner’s expedition experience.",
+        "source": "delegated whole-mod requirement from this cleanse brief, grounded in OWNER:1794377002766121379 and the standing persistence/no-vanish/settings floor.",
+        "figurative": []
+      },
+      "accept": [
+        "Over the season the plain still separates destinations, living residents act normally, a secured refuge remains useful, and real spent/transformed supplies support another undertaking after reload.",
+        "Preparing the workshop before exploration and exploring before workshop preparation both preserve the discoveries and costs actually earned; revisiting or reloading never rerolls the removed cave contents."
+      ],
+      "reject": [
+        "The season becomes a carpet of life or debris, an unexplained fountain of provisions, or a lifeless cast with no practical discovery route while isolated pads still pass.",
+        "Weather or another retained mechanic is locked off to keep jobs moving; valid work never resumes, the midway reload loses or duplicates consequences, or repeated exceptions drown ordinary play."
+      ],
+      "lazy": "none: Only the full engine run and rendered map can settle the complete player experience; calibrated reduced models diagnose and choose informative intervals but cannot certify ordinary jobs, AI or visual persistence. The explicit repeat/reload/order/stretch excludes a finished static showcase.",
+      "range": {
+        "varies": "Full supplied local-map layouts and low/central/high legal dayside geometry, over the complete range of viable rock-cave and viable rockless-tor layouts; do not select a showcase pad or choose only an easy bearing. Unsuitable no-cave layouts are explicit negative controls in B_REFUGE/M_LAYOUT and do not certify this cave-use whole bar. Fresh and 100-day-aged initial states; 1/6/40-colonist active colonies; native RM and campaign supplying composition, optional thirst-provider boundary. Runtime 15 game days (one season), save at an active intermediate point (not a finished showcase), no-reload sibling, and a second ordinary-action order: explore/secure/extract/work/use vs work preparation/explore/secure/extract/use. Include ordinary storm during production and drift/giant movement during route use. If no storm occurs naturally, replay an explicitly labelled ordinary-weather history for interaction evidence without claiming frequency. No forced extra event is needed. No time skipping that bypasses ticks, food, work, growth, AI, weather, reservations or saves; faster scheduling of unchanged ticks is allowed.",
+        "left_out": "No expectation that every random species or cave row appears naturally in a season; B_LIFE/B_SUPPLY read those declared ranges separately. No infinite self-sufficiency, no new planets, no next-version content, no magical refuge against later attack. A no-cave layout must be accounted for in the regional route rather than inventing a cave. Unsuitable no-cave local layouts cannot run the cave-use undertaking and are outside this bar; M_LAYOUT/M_SEASON must still establish that the supplied region has viable destinations rather than hiding a regional absence behind this exclusion."
+      },
+      "sees": {
+        "instrument": "Runtime season with ordinary actions/state checkpoints and short representative looks, guided by calibrated M_SEASON/M_STATES/M_LAYOUT/M_SUPPLY and T_OBSERVER; no existing Clear-locked validation chain certifies it.",
+        "start": "Assert a complete full map, ordinary starting stocks/skills/actors/solar position, active dependencies, proposed shipped settings, next-version extras off and all kept mechanics on, weather unlocked and no completed results inserted. Record any controlled history/imports. Place save halfway through active cave/work/route consequences.",
+        "on": "All retained Stillsand land/life/cave/provisioning features and their shared engines at proposed shipped defaults; all DLC; next-version extras off. No locked sky, clear-weather pad, suppressed animal AI or paused production. Feature-off controls are separate counterfactual siblings, never the passing arm.",
+        "control": "Compare no-reload and reloaded sibling identity/accounting checkpoints, then reorder main actions without injected outputs or new cache draws. Trace all input/reward sources and weather/depth/caster states so ambient transport, imported supplies or held AI cannot impersonate the retained system. A flood, desert, stall and error storm are discriminated as in M_SEASON, using actual histories and whole-map looks.",
+        "reset": "Discard the disposable fixture and its sibling saves; restore the exact entry settings and external test configuration from a recorded snapshot, not old shipped defaults. No owner/canonical save is changed. Verify remaining reservations, held pawns, scheduled events and spawned identities against entry state.",
+        "live_only_why": "Only the full engine run and rendered map can settle the complete player experience; calibrated reduced models diagnose and choose informative intervals but cannot certify ordinary jobs, AI or visual persistence. The explicit repeat/reload/order/stretch excludes a finished static showcase."
+      },
+      "live_only": true,
+      "touches": [
+        "landscape",
+        "sun_geometry",
+        "refuge_geometry",
+        "wildlife_state",
+        "supply",
+        "saved_state",
+        "weather_sand",
+        "information",
+        "corpse_owner",
+        "feature_boundary"
+      ],
+      "tests": {
+        "reject": "delegated: If the complete retained system floods the map, empties its ordinary life, stalls its valid work or loses/duplicates consequences across ordinary continuation, isolated scenes do not deliver the owner’s expedition experience.",
+        "renormalize": "No fixed yield, stat, rate, variant count or percentage; numerical implementation readings are checks. Qualitative comparisons and causal use survive retuning.",
+        "first_version": "exactly one whole bar: complete land, life and the expedition signature"
+      }
+    }
+  ],
+  "whole": "B_WHOLE",
+  "checks": [
+    {
+      "id": "C_SCOPE",
+      "what": "Resolved settings/default/deserialization/reset and row/incident/recipe/offer availability census: every moved extra absent/ineligible at defaults in native and campaign supplying tiers; defs may stay loaded. Test each labelled next-version gate separately. T_SCOPE."
+    },
+    {
+      "id": "C_SUN",
+      "what": "Regression values for shared elevation/weather/55 C zenith formula, roof/parasols at all angles, no biome heat/floor fields consumed, same geometry gives same direct component. Numbers are checks, never bars. T_SUN."
+    },
+    {
+      "id": "C_ROSTER",
+      "what": "Resolved wildAnimals/wildPlants/allowedPackAnimals plus supplying defs/products/animalDensity, biological-role and actual caller manifest. Compare membership with entry roster, note multi-home without eviction; no every-field-as-bar demand."
+    },
+    {
+      "id": "C_WORK",
+      "what": "Exact construction costs/recipe inputs/outputs, workgivers, skills, accepted feeds, tick intervals, quantities and provider item units as read from resolved defs; blocked output and reservation identity regression. M_SUPPLY/T_SUPPLY."
+    },
+    {
+      "id": "C_SAVE",
+      "what": "Identity/ownership/depletion/status/reservation/pending-output trace before/reload/after; old-save extra state drain does not discard pawns or reset user values. M_STATES."
+    },
+    {
+      "id": "C_PREY",
+      "what": "Same random stream and fixed physical eligibility with hydration/carried-water permutations and provider absent; inspect inputs for forbidden appraisal/proxy. Existing independent droid filter stays. Deferred event selector also retains exclusion before later enabling."
+    },
+    {
+      "id": "C_LAYOUT",
+      "what": "Coverage of geometry/footprint/bearing/roof/depth boundary classes and exact calibrated path/exposure reads. Existing synthetic cave/kernel fuzz rows are regression evidence only."
+    },
+    {
+      "id": "C_SIGN",
+      "what": "Actual source/track age, audio availability, timestamp and visible transition record; sound queue increment alone cannot pass perception. Rumble/motion-reach thresholds and update intervals are numeric checks."
+    },
+    {
+      "id": "C_RECOVERY",
+      "what": "Instrument records exact entry state/settings/fingerprints, uses disposable fixtures, never overwrites canonical saves, restores arbitrary values and identifies unmeasured/control-invalid runs instead of failing a bar. scene_observer becomes this check."
+    },
+    {
+      "id": "C_FLOOR",
+      "what": "Load, clean log and superb working settings remain inherited floor. A red implementation/check is builder evidence to attribute and fix, not an additional bar or automatic refusal; see standing bar definition."
+    },
+    {
+      "id": "C_WHOLE",
+      "what": "Whole run manifest: full map, all kept mechanics on, extras off, weather unlocked, normal actions/ticks and midway active-state save; original/reload/reordered histories, quantitative growth/stock/depth/error readings from M_SEASON."
+    },
+    {
+      "id": "C_FLIGHT",
+      "what": "Existing flight stat, real tracker state and directional whole-body animation wiring; no art-variant-count bar. No unattended induced/live flyer test or screenshots; unobserved visual flight remains owed to an owner-attended session."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R_LAYOUT",
+      "rule": "delegated: retain existing largest suitable local outcrop shaping and optional tor fallback, real roofed connected chamber and finite cave placement; an unsuitable layout reports no cave truthfully. No planetary generation/seed sweep/repaint. Attack layout/fallback if cover or regional opportunities fail.",
+      "touches": [
+        "landscape",
+        "refuge_geometry"
+      ]
+    },
+    {
+      "id": "R_ROWS",
+      "rule": "delegated: retained seep, guzzka, lens, cache and taken rows keep stable saved identity and finite contents; only actually consumed quantities leave the source, and reload/revisit never rerolls it.",
+      "touches": [
+        "supply",
+        "saved_state"
+      ]
+    },
+    {
+      "id": "R_REFUGE",
+      "rule": "delegated: physical current occupancy, accepted paths and shared geometry determine shelter, never quest denCleared. A returning dangerous unowned occupant suspends cave preservation; taming/leaving/death is assessed from present state. This is not immunity from ordinary later attacks.",
+      "touches": [
+        "refuge_geometry",
+        "wildlife_state",
+        "saved_state",
+        "information",
+        "sun_geometry"
+      ]
+    },
+    {
+      "id": "R_PRESERVE",
+      "rule": "delegated: claim only eligible rot-capable things actually on recorded roofed cave cells, not carried by pawns, and not already disabled by another owner; release exactly this claim on roof/position/occupancy/toggle change and preserve its ownership through reload. Status names the cave effect; no global fresh aura or second titan owner.",
+      "touches": [
+        "refuge_geometry",
+        "supply",
+        "saved_state",
+        "information",
+        "corpse_owner",
+        "wildlife_state",
+        "feature_boundary"
+      ]
+    },
+    {
+      "id": "R_RECEIVER",
+      "rule": "delegated: use each plain apparatus root cell as its declared solar receiver and show its reason for stopping; shared sun/roof/shade/weather policy feeds it, independently of worker exposure. The machine does not shade itself. Root location is attackable if M_LAYOUT exposes a false visual affordance; the standing shared Direct Sun rule is not.",
+      "touches": [
+        "sun_geometry",
+        "supply",
+        "information",
+        "weather_sand"
+      ]
+    },
+    {
+      "id": "R_FEED",
+      "rule": "delegated: plain still accepts only defined non-corpse feeds; normal rare ticks conserve consumed feed against placed or explicitly pending output. Full output space cannot destroy the source value. Ordinary bills/hauling/reservations, not direct proof helpers, perform retained production.",
+      "touches": [
+        "supply",
+        "saved_state"
+      ]
+    },
+    {
+      "id": "R_WATER",
+      "rule": "delegated: quantity data stays independent of Debt/pour/comfort buff. DBH supplies its bottle and real thirst jobs when present; otherwise RM water is carried/traded volume stock and existing edible sacs/eggs use ordinary ingestion. No invented thirst need or fake ingestion path. Later thin film remains a shared-engine integration, never an expiry-to-litres guess.",
+      "touches": [
+        "supply",
+        "feature_boundary"
+      ]
+    },
+    {
+      "id": "R_LIFE",
+      "rule": "delegated: retain current patched roster membership and ordinary biological roles; no evictions and no fabricated new wild Karrask. Gaanok uses normal slow predation; siidda uses its actual stock dormancy. Scripted incidents are not required for ordinary life, actual flight remains a standing constraint.",
+      "touches": [
+        "landscape",
+        "wildlife_state",
+        "supply",
+        "corpse_owner"
+      ]
+    },
+    {
+      "id": "R_SWIM",
+      "rule": "delegated: use the shared swim eligibility plus active MovingDunes depth; genuinely hard ground forces appropriate surfacing, not harmlessness. No hydration/carried-water/appraisal ranking, even with no provider; retain independent physical eligibility/droid filtering. No new selection algorithm is designed here.",
+      "touches": [
+        "refuge_geometry",
+        "wildlife_state",
+        "weather_sand"
+      ]
+    },
+    {
+      "id": "R_SIGN",
+      "rule": "delegated: keep existing ordinary visual wake/breach/track and rumble/kill consequences as needed by concealed life. A lure/old trace is uncertainty, not exact identification. Committed baseline sand movement erases traces; a custom gale is not required. If sound is off, the visual danger sign remains.",
+      "touches": [
+        "wildlife_state",
+        "saved_state",
+        "weather_sand",
+        "information",
+        "corpse_owner"
+      ]
+    },
+    {
+      "id": "R_WEATHER",
+      "rule": "delegated: ordinary dry weather and baseline dune transport stay unlocked; custom gale amplification/carry/renewal is off. Observe true shared weather sun factor; do not force Clear or stop retained mechanics to make another bar pass.",
+      "touches": [
+        "landscape",
+        "sun_geometry",
+        "weather_sand"
+      ]
+    },
+    {
+      "id": "R_SCOPE",
+      "rule": "delegated: gate moved extras at every producer/consumer/offer/row/incident in both supplying tiers; keep code/defs. Decouple ordinary work, cave occupancy and water from them. Invalid legacy heat semantics are unreachable at every setting, not an optional mode.",
+      "touches": [
+        "landscape",
+        "wildlife_state",
+        "supply",
+        "saved_state",
+        "corpse_owner",
+        "feature_boundary",
+        "sun_geometry",
+        "information"
+      ]
+    },
+    {
+      "id": "R_SAVE",
+      "rule": "delegated: identities, cave content depletion, owned rot/vanish flags, reservations and pending outputs persist or release through ordinary transitions. Existing extra actors/held pawns finish or recover visibly when off; never discard a pawn or another owner’s state to migrate. Ordinary corpse decay/butchery remains; HugeThings alone owns its titan sites and normal meat spoilage.",
+      "touches": [
+        "saved_state",
+        "corpse_owner",
+        "supply",
+        "feature_boundary"
+      ]
+    },
+    {
+      "id": "R_SETTINGS",
+      "rule": "delegated: all major kept features have controls and truthful now/next-activation/local-furnishing labels, proposed defaults and all-off safety. Deferred controls explicitly say next version and default off; preserve exact prior user values after tests. No new cross-biome control. This is the standing floor implemented as choices/checks, not an extra passing bar.",
+      "touches": [
+        "feature_boundary",
+        "saved_state",
+        "information"
+      ]
+    },
+    {
+      "id": "R_GUIDANCE",
+      "rule": "delegated: use existing arrival/rock letter and inspect surfaces for truthful heat/roof, actual cave accessibility, current preservation and blocked-work reasons. Remove obsolete low-sun, automatic-cooling and drip claims; never advertise enabled effects of a parked feature.",
+      "touches": [
+        "information",
+        "feature_boundary"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "landscape",
+      "members": [
+        "B_LAND",
+        "B_LIFE",
+        "B_REFUGE",
+        "B_WHOLE",
+        "R_LAYOUT",
+        "R_LIFE",
+        "R_WEATHER",
+        "R_SCOPE"
+      ],
+      "holds_together": "unknown",
+      "why": "Sparse planting, ordinary feeding/reproduction, salvage/weathering and settlement clearing can jointly erase open travel or leave dead life; pairwise agreement cannot settle their feedback.",
+      "model": "M_SEASON: complete-map season and accumulated consequences"
+    },
+    {
+      "thing": "sun_geometry",
+      "members": [
+        "B_LAND",
+        "B_SUN",
+        "B_LIFE",
+        "B_REFUGE",
+        "B_SUPPLY",
+        "B_WHOLE",
+        "R_REFUGE",
+        "R_RECEIVER",
+        "R_WEATHER",
+        "R_SCOPE"
+      ],
+      "holds_together": "unknown",
+      "why": "Roof/parasols, living casters, plant growth, heat and apparatus receiver query common geometry through cached consumers; old source has ruled-out branches. Common policy and update agreement have not been measured.",
+      "model": "M_LAYOUT: cover, passage and receiver geometry sweep"
+    },
+    {
+      "thing": "weather_sand",
+      "members": [
+        "B_LAND",
+        "B_SUN",
+        "B_LIFE",
+        "B_REFUGE",
+        "B_SUPPLY",
+        "B_SIGNS",
+        "B_WHOLE",
+        "R_RECEIVER",
+        "R_SWIM",
+        "R_SIGN",
+        "R_WEATHER"
+      ],
+      "holds_together": "unknown",
+      "why": "Unrestricted ordinary wind/depth movement changes routes, visible signs and shade/work conditions while organisms and workers continue consuming resources. Long-run interaction remains unmeasured.",
+      "model": "M_SEASON: complete-map season and accumulated consequences"
+    },
+    {
+      "thing": "refuge_geometry",
+      "members": [
+        "B_SUN",
+        "B_REFUGE",
+        "B_PRESERVE",
+        "B_WHOLE",
+        "R_LAYOUT",
+        "R_REFUGE",
+        "R_PRESERVE",
+        "R_SWIM"
+      ],
+      "holds_together": "unknown",
+      "why": "A chamber may fit in a rock yet giant footprint/roof/drift and rest/storage needs together can invalidate its approach. Need the whole placement region, not one yardang.",
+      "model": "M_LAYOUT: cover, passage and receiver geometry sweep"
+    },
+    {
+      "thing": "information",
+      "members": [
+        "B_SUN",
+        "B_REFUGE",
+        "B_SUPPLY",
+        "B_SIGNS",
+        "B_PRESERVE",
+        "B_WHOLE",
+        "R_REFUGE",
+        "R_PRESERVE",
+        "R_RECEIVER",
+        "R_SIGN",
+        "R_SCOPE",
+        "R_SETTINGS",
+        "R_GUIDANCE"
+      ],
+      "holds_together": "argued",
+      "why": "At proposal level these readers name distinct facts: exposure/ambient heat, cave occupancy/preservation, work receiver reason and uncertain movement. Truthful local messages can report them together without a safety guarantee or species radar. R_GUIDANCE fixes stale prose; C_SIGN/T_SIGN still verify actual readability. A status panel does not replace a missing physical sign.",
+      "model": ""
+    },
+    {
+      "thing": "wildlife_state",
+      "members": [
+        "B_LIFE",
+        "B_REFUGE",
+        "B_SIGNS",
+        "B_PRESERVE",
+        "B_WHOLE",
+        "R_REFUGE",
+        "R_PRESERVE",
+        "R_LIFE",
+        "R_SWIM",
+        "R_SIGN",
+        "R_SCOPE"
+      ],
+      "holds_together": "unknown",
+      "why": "Buried/striking/dead/departing actors, current den occupancy, shade changes and readable signs meet across transitions; no current transition coverage proves them together.",
+      "model": "M_STATES: generated situations and ownership walks"
+    },
+    {
+      "thing": "supply",
+      "members": [
+        "B_LIFE",
+        "B_SUPPLY",
+        "B_PRESERVE",
+        "B_WHOLE",
+        "R_ROWS",
+        "R_PRESERVE",
+        "R_RECEIVER",
+        "R_FEED",
+        "R_WATER",
+        "R_LIFE",
+        "R_SCOPE",
+        "R_SAVE"
+      ],
+      "holds_together": "unknown",
+      "why": "Cave extraction, construction bootstrap, ordinary jobs, scarce shared inputs, preservation release and DBH output choice may require an input supplied only by a moved extra or lose it under contention.",
+      "model": "M_SUPPLY: practical provisioning and dependency economy"
+    },
+    {
+      "thing": "corpse_owner",
+      "members": [
+        "B_LIFE",
+        "B_SIGNS",
+        "B_PRESERVE",
+        "B_WHOLE",
+        "R_PRESERVE",
+        "R_LIFE",
+        "R_SIGN",
+        "R_SCOPE",
+        "R_SAVE"
+      ],
+      "holds_together": "unknown",
+      "why": "Ordinary death, cave-owned preservation, normal decay and HugeThings titan ownership can conflict across roof/holder/death/load boundaries. Moving conversion off removes one claimant but does not prove correct remaining restoration.",
+      "model": "M_STATES: generated situations and ownership walks"
+    },
+    {
+      "thing": "feature_boundary",
+      "members": [
+        "B_LIFE",
+        "B_SUPPLY",
+        "B_PRESERVE",
+        "B_WHOLE",
+        "R_PRESERVE",
+        "R_WATER",
+        "R_SCOPE",
+        "R_SAVE",
+        "R_SETTINGS",
+        "R_GUIDANCE"
+      ],
+      "holds_together": "argued",
+      "why": "No kept experience uses a moved producer in this definition: ordinary giants replace scripted visits; real occupancy replaces quest signal; plain precision chain replaces upgrades/sieve; physical water replaces Debt; ordinary winds replace gale. Producer/consumer gates and retained no-op utility/data interfaces are explicitly ticketed. This is an argued design decoupling, not proof the current code already obeys it.",
+      "model": ""
+    },
+    {
+      "thing": "saved_state",
+      "members": [
+        "B_REFUGE",
+        "B_SUPPLY",
+        "B_SIGNS",
+        "B_PRESERVE",
+        "B_WHOLE",
+        "R_ROWS",
+        "R_REFUGE",
+        "R_PRESERVE",
+        "R_FEED",
+        "R_SIGN",
+        "R_SCOPE",
+        "R_SAVE",
+        "R_SETTINGS"
+      ],
+      "holds_together": "unknown",
+      "why": "Reload during extraction/carry/roof loss/output blocking can combine depletion, reservations and rot ownership into loss or duplication even where each independent feature looks correct.",
+      "model": "M_STATES: generated situations and ownership walks"
+    }
+  ],
+  "old_bars": {
+    "scene_observer": {
+      "to": "check",
+      "as": "C_RECOVERY",
+      "why": "An instrument cannot be a player-experience bar; retain assertions, controls and exact recovery as instrument obligations."
+    },
+    "expedition_ocean": {
+      "to": "merged",
+      "as": "B_LAND, B_REFUGE, B_SUPPLY, B_WHOLE",
+      "why": "Re-derived from owner expedition/uncertain-discovery answers; split land from prepared shelter and actual practical use, then run complete."
+    },
+    "prepared_harbour": {
+      "to": "kept",
+      "as": "B_REFUGE",
+      "why": "Owner makes preparation/current physical conditions the requirement; no quest or magic immunity."
+    },
+    "practical_fortune": {
+      "to": "kept",
+      "as": "B_SUPPLY",
+      "why": "Owner practical provisioning/use retained; no numerical loot floor or mandatory upgrade."
+    },
+    "direct_sun": {
+      "to": "kept",
+      "as": "B_SUN",
+      "why": "Standing shared geometry retained; glare/goggle/cooling and mirage extras move with their separate tickets."
+    },
+    "sand_signs": {
+      "to": "merged",
+      "as": "B_SIGNS, B_LIFE",
+      "why": "Keep readable natural concealed-life transitions; thumper, geophone and fishing job-start lure move, so code coupling does not retain tools."
+    },
+    "giant_encounters": {
+      "to": "moved",
+      "as": "T_LEVIATHAN, T_ERUPTION, T_BROOD, T_MIRROR_BEAM, T_HORN, T_DEN_QUEST, T_SARLACC_SEEP, T_SUN_LANCE",
+      "why": "Ordinary giants stay in B_LIFE; every scripted combat/quest/weapon route is an extra. Sun lance is parked with retirement recommended."
+    },
+    "hydration_exclusion": {
+      "to": "rule",
+      "as": "R_SWIM",
+      "why": "Preserve recorded exclusion as selector rule and C_PREY check, not an invisible implementation bar. Readable predation remains B_LIFE/B_SIGNS."
+    },
+    "gale_passage": {
+      "to": "moved",
+      "as": "T_GALE, T_GALE_CARRY, T_GALE_AFTERMATH",
+      "why": "Runner-up signature off for next version; ordinary weather/depth continues as land."
+    },
+    "current_water": {
+      "to": "merged",
+      "as": "B_SUPPLY; T_POUR, T_WET_LINE, T_THUMPER, T_HOURBLOOM, T_WRINGING, T_COOLING_DRAUGHT",
+      "why": "Practical quantity/normal output stays; this cleanse proposal supersedes earlier blanket delegated current-water retention. Physical provisioning requires none of the poured response or special buff/ritual."
+    },
+    "debt_return": {
+      "to": "moved",
+      "as": "T_LEDGER, T_RETURN_RITUAL",
+      "why": "Faith accounting and ritual explicitly extras, even when upper-tier defs supply them."
+    },
+    "giant_history": {
+      "to": "merged",
+      "as": "B_PRESERVE, R_SAVE; T_CORPSE_HISTORY, T_GIANT_PRESERVATION",
+      "why": "Scoped cave preservation stays; static bones are land; optional ordinary conversion/desiccation moves. Existing titan site/normal spoilage owner remains a dependency."
+    },
+    "ordinary_work": {
+      "to": "merged",
+      "as": "B_SUPPLY, B_WHOLE; C_SCOPE, C_WORK, C_FLOOR",
+      "why": "Only retained basic work is passing scope; settings/log are inherited floor, values/checks are regression, moved chores go with extras."
+    },
+    "stillsand_walk": {
+      "to": "kept",
+      "as": "B_WHOLE",
+      "why": "Exactly one full-season whole bar adds unlocked full-system operation, active midway save/reload and second action order rather than a finished showcase."
+    }
+  }
+}

@@ -1,0 +1,1691 @@
+{
+  "rows": [
+    {
+      "id": "package",
+      "what": "Development package, explicitly compiled assembly and composed Baroque Biomes shipping route; owned art assets and load wiring.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/About/About.xml",
+        "src/RimMandrake/Stillsand/Source/RM_Stillsand.csproj",
+        "src/RimMandrake/Biomes.compose.json"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "Defs/composition registration and ordinary player use; see evidence."
+      ],
+      "serves": "Floor: composition/load",
+      "fate": "dependency",
+      "why": "delegated: The composed Biomes package supplies the assembly and defs; this is a dependency and inherited floor, not an experience bar.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "terrain",
+      "what": "Sparse extreme-desert biome: sand and broad walkable deep sand, no rain, low fertility, no rivers, allowed roads, disease/weather tables and arrival letter.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/FlowWorks/Defs/ManyWaters/TerrainDefs/RM_DeepSand.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef terrain/weather consumers; precious-cave carve step; MovingDunes terrain query"
+      ],
+      "serves": "land",
+      "fate": "land",
+      "why": "delegated: Broad walkable deep sand, corrugation, sparse fertility and dry weather make the exposed crossing. The bespoke arrival prose is split into arrival_guidance.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "roster",
+      "what": "Native wild roster plus upper-tier fauna/flora/pack patches; Vaalok admitted as carrier to trader group makers through the Biomes setting gate; shipped Vozzik definition remains for its other home.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Vaalok.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Vozzik.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_TraderCarriers_Stillsand.xml",
+        "src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandTraderProbe.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildAnimals/wildPlants/allowedPackAnimals and HEAD Utinni WildAnimals_Stillsand patch; trader-carrier patch"
+      ],
+      "serves": "life",
+      "fate": "life",
+      "why": "delegated: Retain the patched resident and pack roster without eviction. Ordinary animals, products and trading are life, not evidence for retaining unrelated events. Multi-homed source rows: Kreetle also LeaningScrub; GraniteSlug also Cauldron; Scurrier also LeaningScrub; Gizka also Greentide/LeaningScrub/Pyrelands (HEAD Utinni WildAnimals patches). Note only; no eviction.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "flora_optics",
+      "what": "Light-pipe nubs yield biosilica; glasscrust yields biosilica grit and provides the low visible flora; no added lush scrub.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_SignatureFlora.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_FilloutFlora.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildPlants; ordinary plant harvest -> biosilica; RM_SunFurnace construction"
+      ],
+      "serves": "life / practical discovery",
+      "fate": "life",
+      "why": "delegated: The nubs and glasscrust are the sparse living resource base. Deleting their ordinary harvest leaves the lens/growth cast decorative; no extra optics powers are promised.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "ollim",
+      "what": "Tall and kneeling ollims yield the same unusual ollim wood; enormous slow-growing shade plants form bone-field places.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_SignatureFlora.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_FilloutFlora.xml",
+        "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs:364"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildPlants; RM_SkeletonPlacer places ollims; shared shade grid and ordinary harvest"
+      ],
+      "serves": "life / geometric shelter",
+      "fate": "life",
+      "why": "delegated: Tall and kneeling ollims supply ordinary wood and geometric shade. Deleting their shade removes the ordinary shelter habitat of their tenants; no plant-specific sun rule.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "hourbloom",
+      "what": "Short-lived bloom after a pour or gale",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Stillsand_FilloutFlora.xml",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:187",
+        "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs:645"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_StillsandWater.Pour and RM_GameCondition_DuneGale aftermath; RM_WaterLedger Return outcomes"
+      ],
+      "serves": "Deferred: Short-lived bloom after a pour or gale",
+      "fate": "next_version",
+      "why": "delegated: An event-only bloom adds a second renewal cycle; sparse ordinary flora already supplies life.",
+      "needed_by": "",
+      "ticket": "T_HOURBLOOM"
+    },
+    {
+      "id": "murrowbulb",
+      "what": "Franchise-free Murrowbulb crop and raw food, with the canon bloddle supplied separately by campaign patch.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Plants/RM_Murrowbulb.xml",
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "BiomeDef wildPlants and vanilla sow/harvest/ingest"
+      ],
+      "serves": "life",
+      "fate": "life",
+      "why": "delegated: The ordinary edible crop/forage lets scarce ground support actual food collection. It does not create fertile desert soil.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "rehome_residents",
+      "what": "LongShade-supplied Ulgga and Vosska fauna plus Ultriss Pad flora are rostered on Stillsand in the composed package; their creature/plant data remain in the neighbouring source folder.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fauna.xml",
+        "src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_Ultracactus.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "BiomeDef rows with source data in HEAD LongShade defs; shared creature extensions"
+      ],
+      "serves": "life",
+      "fate": "life",
+      "why": "delegated: Keep Ulgga, Vosska and Ultriss Pad in their present roster. Their burrowing/food roles belong to ordinary life; source-folder location does not change home.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "giant_residents",
+      "what": "Oommok mirror giant and aurrok grazer; native giant bodies, stats, kinds and art, with Oommok moving-shade support in shared creature engine.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Oommok.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Aurrok.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildAnimals -> native race defs -> shared ShadowCaster/ordinary animal AI"
+      ],
+      "serves": "life / exposed crossing",
+      "fate": "life",
+      "why": "delegated: Oommok and aurrok establish the giants crossing an empty plain. Oommok casts shared moving shade; deleting the shade defeats the stated habitat and travel shelter, not just its silhouette.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "shade_tenants",
+      "what": "Eemmok follows giant shade; loomma seeks shade and carries sunstruck severity and dung-seeding behaviour.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_ShadeMite.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildAnimals -> RM_ShadowFollowerExtension and shade-driven severity; dung output excluded"
+      ],
+      "serves": "life",
+      "fate": "life",
+      "why": "delegated: Eemmok follows shade; loomma seeks it and shows sunlight stress. Deleting these behaviours leaves animals unable to inhabit the sun/shade food web. Dung seeding is split out as an extra.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "soorrak",
+      "what": "Soorrak giant flyer and canteen eggs, real flight stat plus map-entry/exit flags; runtime job-loop regression probes.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml",
+        "src/RimMandrake/Stillsand/prove_soorrak_not_stuck.py",
+        "src/RimMandrake/Stillsand/validation.py:1549"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildAnimals; vanilla flight tracker and CompEggLayer; prove_soorrak_not_stuck.py"
+      ],
+      "serves": "life",
+      "fate": "life",
+      "why": "delegated: The sky resident flies and lays ordinary usable eggs; removing actual flight contradicts the standing ruling. No custom long-distance watering simulation is added.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "gaanok",
+      "what": "Gaanok slow giant predator, described as patient follower; current implementation is ordinary predator AI and slow movement.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildAnimals -> ordinary predator AI"
+      ],
+      "serves": "life",
+      "fate": "life",
+      "why": "delegated: Slow ordinary predation provides surface danger without a second incident engine. Persistent caravan stalking is figurative lore, not new AI.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "grain_life",
+      "what": "Ikee grain-scale creature; likka likka sand filter feeder, veessa cleanable/carrion consumer, and dormant siidda; their eggs/products and native art.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Ikee.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Siidda.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildAnimals -> filter-feed/eat-cleanable/vanilla dormancy comps"
+      ],
+      "serves": "life",
+      "fate": "life",
+      "why": "delegated: Ikee, likka likka, veessa and siidda retain their existing feeding/scavenging/dormancy roles. Removing those roles defeats the grain-scale survival cast; special water/vibration waking is not invented.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "drazzik",
+      "what": "Drazzik drum lure and nizzek trap offspring, proximity-hatching eggs when the ProximityHatch service loads; separate buried presentation ownership.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Drazzik.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildAnimals and RM_PreciousCave_Seep -> shared DrumLure, offspring and ProximityHatch"
+      ],
+      "serves": "life / cave threat",
+      "fate": "life",
+      "why": "delegated: Buried lure, strike and offspring traps are this ambush animal feeding and reproducing in the cave food web. Deleting the behaviour erases the cave trap the player must secure; not an event reward system.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "duumma",
+      "what": "Duumma buried creature and butchered six-litre water sac, shared fluid-sac comp and water-volume accounting.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_DuummaWaterSac.xml",
+        "src/RimMandrake/Stillsand/validation.py:2328"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef wildAnimals -> ordinary butchery -> RM_DuummaWaterSac volume/ingestion"
+      ],
+      "serves": "life / carried provisions",
+      "fate": "life",
+      "why": "delegated: Buried ordinary creature and butchered water sac make a usable natural resource. Keep volume/ingestion data; pour and Debt hooks are not required for the sac to be useful.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "guzzka",
+      "what": "Cave-resident guzzka with valuable fertile/unfertile eggs; fertile proximity hatch trap, optional DBH water extension, six-litre pour/debt comp on unfertile egg.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Guzzka.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_SandRemembersWater_Stillsand.xml",
+        "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_PreciousCaves.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_PreciousCave_GuzzkaLair -> guzzka and fertile eggs -> ProximityHatch/ingestion"
+      ],
+      "serves": "life / cave threat and provision",
+      "fate": "life",
+      "why": "delegated: The resident and its eggs provide the explicit risky practical cave find. Proximity hatching makes taking a fertile clutch a risk; without that behaviour the promised clutch becomes free loot. Keep normal eggs and ingestion, disable ritual hooks.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "karrask",
+      "what": "Rehomed karrask livestock sheds raw plate via vanilla shearable; crafting cures it into workable stuff; fauna kind and recipe live in this mod.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Karrask.xml",
+        "src/RimMandrake/Stillsand/Defs/PawnKindDefs/RM_Karrask_Kind.xml",
+        "src/RimMandrake/Stillsand/Defs/RecipeDefs/RM_Karrask_Recipes.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "RM_Karrask_Kind and ordinary livestock shear/curing recipe (not a new wildAnimals row)"
+      ],
+      "serves": "life / existing livestock",
+      "fate": "life",
+      "why": "delegated: Existing livestock, vanilla shearing and ordinary curing provide a usable animal product. No new Stillsand wild spawn is promised or added; no home is evicted.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "swim_consumers",
+      "what": "Vekka and qorrax opt into the shared sand-submersion kit; terrain/strike/hit surfacing, invisible hediff, breach, rumble, wake query and living-body targeting with droid immunity.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Vekka.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Qorrax.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs",
+        "src/RimMandrake/Stillsand/prove_sandswim.py"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "Race RM_SandSwimExtension -> CreatureBehaviors RM_CompSandSwim and ordinary targeting"
+      ],
+      "serves": "life / exposed crossing",
+      "fate": "life",
+      "why": "delegated: Vekka, qorrax and the rehomed swimmer use the shared submersion/strike kit. Deleting submersion destroys the depth-based life and the contrast between sand crossing and rock refuge.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "swim_signs",
+      "what": "Swimmer kill signs, letter/message, drag marks and leviathan body-taking; ordinary Vekka kill leaves a meal, event leviathan take can remove its victim corpse.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CompSandSwim.cs",
+        "src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs:615",
+        "infrastructure/state/items/closed/STILLSAND_FIXES_LIVE_PROOF_1.md"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "CreatureBehaviors RM_CompSandSwim kill/strike/submerge transitions; event-only take excluded"
+      ],
+      "serves": "life / readable sand predators",
+      "fate": "needed_by",
+      "why": "delegated: Keep ordinary rumble, wake, breach, drag/kill message and visible corpse. Deleting these signs makes concealed danger and a death unreadable. Event-only victim taking moves with leviathan.",
+      "needed_by": "life / readable sand predators",
+      "ticket": ""
+    },
+    {
+      "id": "drift_swim",
+      "what": "MovingDunes active-field query adds sufficiently deep drift as swim ground; cached delegate avoids repeated reflective calls.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:25",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_SunKernel.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_SandSwimRemainderStartup Harmony postfix -> RM_DriftSwim.IsDriftSwimCell"
+      ],
+      "serves": "life / prepared refuge",
+      "fate": "needed_by",
+      "why": "delegated: The shared active-drift query must make deep drift over rock eligible swimming ground. Deleting it would let the visible sand cover lie about a prepared refuge; no second sand store.",
+      "needed_by": "life / prepared refuge",
+      "ticket": ""
+    },
+    {
+      "id": "thumper",
+      "what": "Water-fuelled swimmer lure and Groundcaller binding",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_Thumper.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_Thumper.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_Thumper_Groundcaller.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_Thumper.cs; RM_SandLeviathanUtility loud target search; RM_SwimmerCalls used by sand-fishing callback; Patches/RM_Thumper_Groundcaller.xml"
+      ],
+      "serves": "Deferred: Water-fuelled swimmer lure and Groundcaller binding",
+      "fate": "next_version",
+      "why": "delegated: A bespoke lure/wetting building is not needed to cross, secure a cave or resupply.",
+      "needed_by": "",
+      "ticket": "T_THUMPER"
+    },
+    {
+      "id": "sand_fishing",
+      "what": "Odyssey fishing on deep sand yields dune crawlers and rare glass pearls; new Fish sessions can call an existing swimmer toward the fisher.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_SandCatches.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingSetMakerDefs/RM_RareSandCatches.xml",
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:67",
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "BiomeDef fishTypes / maxFishPopulation and RM_RareSandCatches; vanilla Fish job; custom call excluded"
+      ],
+      "serves": "life / ordinary food",
+      "fate": "life",
+      "why": "delegated: Keep Odyssey fishing and dune-crawler/pearl catches as ordinary desert food and found resource. Removing actual catch use leaves no ordinary fishing life. The special swimmer attraction on starting a session is split out.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "listening",
+      "what": "Wind-scaled hiss and saltation, singing actual slab movement and one near-building warning, shared swimmer rumble/breach sounds; gale drowns rumble.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:121",
+        "src/RimMandrake/Stillsand/Defs/SoundDefs/RM_SandListening.xml",
+        "src/RimMandrake/MovingDunes/Source/RM_DuneEvents.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_MapComponent_SandListening MapComponentTick; shared swim rumble/breach; song callback excluded"
+      ],
+      "serves": "land and life soundscape",
+      "fate": "life",
+      "why": "delegated: Keep wind-scaled hiss/saltation and shared animal rumble/breach. These are ordinary ambience and the warning already needed by hidden life. Singing slabs and their bespoke warning are split out.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "tracks",
+      "what": "Stillsand sand/deep-sand surfaces consume shared TrackGrid: invisible swim troughs and Oommok prints, erasure on accumulated sand motion through SetDepth/AddDepth and gale wipe.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Patches/RM_TrackSurface_Stillsand.xml",
+        "src/RimMandrake/Stillsand/Source/RM_DuneTrackEraser.cs",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_DuneTrackKernel.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_TrackSurface_Stillsand.xml -> TrackGrid; RM_DuneTrackEraser -> committed MovingDunes event"
+      ],
+      "serves": "life / visible sand signs",
+      "fate": "needed_by",
+      "why": "delegated: Wake troughs and giant prints supply visible fallback and movement history. Deleting visible signs leaves sound-disabled players unable to read submerged danger. Ordinary committed sand movement erases tracks; no gale needed.",
+      "needed_by": "life / visible sand signs",
+      "ticket": ""
+    },
+    {
+      "id": "geophone",
+      "what": "Coarse local buried-motion instrument",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_Geophone.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_Geophone.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "Defs/ThingDefs_Buildings/RM_Geophone.xml -> RM_CompGeophone; shared drum/swim queries"
+      ],
+      "serves": "Deferred: Coarse local buried-motion instrument",
+      "fate": "next_version",
+      "why": "delegated: Rumble and visible wakes already make natural danger readable; this is an additional tool.",
+      "needed_by": "",
+      "ticket": "T_GEOPHONE"
+    },
+    {
+      "id": "zuurrik",
+      "what": "Blood-woken stripping swarm",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_MapComponent_Zuurrik.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Zuurrik.xml",
+        "src/RimMandrake/Stillsand/validation.py:1383"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_MapComponent_Zuurrik.MapComponentTick and feeding patch; race RM_Zuurrik"
+      ],
+      "serves": "Deferred: Blood-woken stripping swarm",
+      "fate": "next_version",
+      "why": "delegated: Event-spawned blood cleanup is a separate feedback loop, not ordinary wild roster life.",
+      "needed_by": "",
+      "ticket": "T_ZUURRIK"
+    },
+    {
+      "id": "eruption",
+      "what": "Sand-buster tunnel-to-mound incident",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_IncidentWorker_SandBusterEruption.cs",
+        "src/RimMandrake/Stillsand/Source/RM_SandBusterTunnelSpawner.cs",
+        "src/RimMandrake/Stillsand/Defs/IncidentDefs/RM_SandBusterEruption.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_IncidentWorker_SandBusterEruption; RM_SandBusterTunnelSpawner; Defs/IncidentDefs/RM_SandBusterEruption.xml"
+      ],
+      "serves": "Deferred: Sand-buster tunnel-to-mound incident",
+      "fate": "next_version",
+      "why": "delegated: Infestation is an independent threat chain; the cave residents already make securing meaningful.",
+      "needed_by": "",
+      "ticket": "T_ERUPTION"
+    },
+    {
+      "id": "brood",
+      "what": "Spreading ruukka/oorrik brood mound",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_SandBusterMound.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_SandBusters.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_CompSpawnerMounds and vanilla Hive comps in RM_SandBusterMound.xml"
+      ],
+      "serves": "Deferred: Spreading ruukka/oorrik brood mound",
+      "fate": "next_version",
+      "why": "delegated: Hive growth duplicates a vanilla infestation system and is independent of the expedition signature.",
+      "needed_by": "",
+      "ticket": "T_BROOD"
+    },
+    {
+      "id": "leviathan",
+      "what": "Warned Muurrok visit, body take and dive",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandLeviathan.cs",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_LeviathanKernel.cs",
+        "src/RimMandrake/Stillsand/Defs/IncidentDefs/RM_SandLeviathanIncidents.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_LoudDraws.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_IncidentWorker_SandLeviathan; RM_MapComponent_SandLeviathans; gale/ledger/event callbacks; RM_LoudDraws.xml"
+      ],
+      "serves": "Deferred: Warned Muurrok visit, body take and dive",
+      "fate": "next_version",
+      "why": "delegated: Ambient giants satisfy the giant crossing; a scripted hunt/arrival/departure chain is another signature.",
+      "needed_by": "",
+      "ticket": "T_LEVIATHAN"
+    },
+    {
+      "id": "mirror_beam",
+      "what": "Muurrok reflected-sun attack and crest product",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_Verb_MirrorBeam.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Muurrok.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_CrestPlate.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_Muurrok.xml; RM_SandLeviathan.cs; RM_SunLance.xml -> RM_Verb_MirrorBeam"
+      ],
+      "serves": "Deferred: Muurrok reflected-sun attack and crest product",
+      "fate": "next_version",
+      "why": "delegated: A special combat verb belongs to the deferred event creature, not ordinary resupply.",
+      "needed_by": "",
+      "ticket": "T_MIRROR_BEAM"
+    },
+    {
+      "id": "sun_lance",
+      "what": "Sun-fed beam turret",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_SunLance.xml",
+        "src/RimMandrake/Stillsand/Source/RM_Verb_MirrorBeam.cs:88"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_SunLance.xml -> RM_Verb_MirrorBeam; RM_GlassChainSettings.sunLanceEnabled"
+      ],
+      "serves": "Deferred: Sun-fed beam turret",
+      "fate": "recommend_retire",
+      "why": "delegated: It adds a separate weapon economy and duplicates vanilla turret defence; it is unnecessary for earned refuge.",
+      "needed_by": "",
+      "ticket": "T_SUN_LANCE"
+    },
+    {
+      "id": "horn",
+      "what": "Predator-routing horn and delayed answer",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_EventRemainder.cs",
+        "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_KraytHorn.xml",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_KraytHorn_Answer.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_EventRemainder.cs; HEAD:src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_KraytHorn.xml; HEAD:src/RimUtinni/UtinniPatches/Patches/RUT_KraytHorn_Answer.xml"
+      ],
+      "serves": "Deferred: Predator-routing horn and delayed answer",
+      "fate": "next_version",
+      "why": "delegated: A bespoke use/cooldown/answer interaction is independent of the expedition chain.",
+      "needed_by": "",
+      "ticket": "T_HORN"
+    },
+    {
+      "id": "den_quest",
+      "what": "Campaign offer to clear a named den occupant",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_EventRemainder.cs:220",
+        "src/RimUtinni/UtinniPatches/Defs/QuestScriptDefs/RUT_KraytDenQuest.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_QuestNode_GetCaveDen / ClaimCaveDen; HEAD:src/RimUtinni/UtinniPatches/Defs/QuestScriptDefs/RUT_KraytDenQuest.xml"
+      ],
+      "serves": "Deferred: Campaign offer to clear a named den occupant",
+      "fate": "next_version",
+      "why": "delegated: Actual removal of a cave threat needs no quest or quest signal.",
+      "needed_by": "",
+      "ticket": "T_DEN_QUEST"
+    },
+    {
+      "id": "sarlacc_seep",
+      "what": "Campaign seep-rooting event",
+      "built": "present",
+      "evidence": [
+        "src/RimStarWars/Sarlacc/Defs/IncidentDefs_SwimmerSeep.xml",
+        "src/RimStarWars/Sarlacc/Source/RSW_SwimmerRoad.cs",
+        "src/RimMandrake/Stillsand/Source/RM_CaveTierElements.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "HEAD:src/RimStarWars/Sarlacc/Defs/IncidentDefs_SwimmerSeep.xml; RM_CaveTierElements.cs and external cave row"
+      ],
+      "serves": "Deferred: Campaign seep-rooting event",
+      "fate": "next_version",
+      "why": "delegated: A named external encounter route is not the ordinary brine seep and is unnecessary for it.",
+      "needed_by": "",
+      "ticket": "T_SARLACC_SEEP"
+    },
+    {
+      "id": "rock_island",
+      "what": "Largest natural outcrop becomes wind-aligned yardang when suitable; rare rockless tor, shade-side tunnel and thick-roofed cave, saved location/row and Rock island arrival letter.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs",
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaveGeometry.cs",
+        "src/RimMandrake/Stillsand/Patches/RM_PreciousCaves_BiomeGenSteps.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_PreciousCaves_BiomeGenSteps.xml -> cave carve/contents GenSteps on local map only"
+      ],
+      "serves": "signature",
+      "fate": "signature",
+      "why": "delegated: Existing local-map outcrop shaping, optional rockless tor and roofed cave provide destinations across empty sand. Deleting the reachable chamber or approach breaks exploration and earned refuge. This adds no planetary generation.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "cave_table",
+      "what": "Weighted enabled cave rows: brine food web, guzzka clutch, lens grotto, sealed cache, previously taken cave; generic terrain/item/pawn elements and saved den occupants.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_PreciousCaves.xml",
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs:908"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_GenStep_PreciousCaveContents weighted row and RM_CaveElement_* SpawnAt"
+      ],
+      "serves": "signature",
+      "fate": "signature",
+      "why": "delegated: Keep seep, guzzka lair, lens grotto, sealed cache and taken cave; actual threats and finite useful contents make finding and securing worth doing. No guaranteed fortune or reroll on reload.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "cave_preservation",
+      "what": "Roofed recorded cave cells disable rotting and animal-corpse vanish timer; leaving or lost roof releases owned preservation; held den gates it.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs:17",
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs:325"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_MapComponent_PreciousCave.MapComponentTick -> RM_CavePreservation.Scan; den quest must be decoupled"
+      ],
+      "serves": "signature / useful old caves",
+      "fate": "needed_by",
+      "why": "delegated: Scoped preservation makes old roofed discoveries and the secured cave store usable after a long absence. Deleting it can rot the intended practical discovery before first exploration. It must release its owned effects outside the cave and cannot bypass an occupied den.",
+      "needed_by": "signature / useful old caves",
+      "ticket": "T_CAVE"
+    },
+    {
+      "id": "lens_grotto",
+      "what": "Mineable grown-biosilica wall ring replaces natural rock around cave floor, yielding biosilica; independently toggled.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_CavePlace.cs:159",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_CavePlace.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_PreciousCave_LensGrotto -> RM_CaveElement_WallRing -> mineable RM_GrownBiosilicaWall"
+      ],
+      "serves": "signature",
+      "fate": "signature",
+      "why": "delegated: Mineable biosilica walls make the cave a material opportunity for actual work rather than a loot label. Delete the mineable yield and that practical discovery is lost; ordinary mining only.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "tier_caves",
+      "what": "Krayt-den, sarlacc-seep and Debt-shrine cave rows",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_CaveTierElements.cs",
+        "src/RimStarWars/SWBestiary/Defs/MapGeneration/RSW_PreciousCave_KraytDen.xml",
+        "src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_PreciousCave_DebtCave.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_CaveTierElements.cs; HEAD:src/RimStarWars/SWBestiary/Defs/MapGeneration/RSW_PreciousCave_KraytDen.xml; HEAD:src/RimUtinni/UtinniPatches/Defs/MapGeneration/RUT_PreciousCave_DebtCave.xml"
+      ],
+      "serves": "Deferred: Krayt-den, sarlacc-seep and Debt-shrine cave rows",
+      "fate": "next_version",
+      "why": "delegated: Campaign encounters/faith add optional destinations beyond the franchise-free cave loop.",
+      "needed_by": "",
+      "ticket": "T_TIER_CAVES"
+    },
+    {
+      "id": "skeleton_landmarks",
+      "what": "Large skeleton buildings and skull pocket, partial rib cover, full skull shade comp, bone harp sustainers, sparse placements with ollims/tenants and configurable deconstruction leavings.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_GiantSkeletons.xml",
+        "src/RimMandrake/Stillsand/Defs/SoundDefs/RM_BoneHarp.xml",
+        "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_GiantSkeletons.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_GiantSkeletons.xml map step -> RM_SkeletonPlacer; ordinary shadow caster/deconstruction"
+      ],
+      "serves": "land / geometric shelter",
+      "fate": "land",
+      "why": "delegated: Keep sparse physical ribs and skull pockets with ordinary geometric shade and deconstruction. Delete the shelter geometry and this landmark is false cover. Bone-harp sound is split out; no new skeleton lifecycle is needed.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "corpse_history",
+      "what": "Seasonal giant-corpse to species-skeleton conversion",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs:446",
+        "src/RimMandrake/Stillsand/Patches/RM_GiantSkeletons_Wiring.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_MapComponent_SkeletonRemains; RM_GiantSkeletons_Wiring.xml; gale uses RM_SkeletonPlacer separately"
+      ],
+      "serves": "Deferred: Seasonal giant-corpse to species-skeleton conversion",
+      "fate": "next_version",
+      "why": "delegated: Ordinary visible corpses already record a death; conversion is an additional lifecycle and competes with HugeThings ownership.",
+      "needed_by": "",
+      "ticket": "T_CORPSE_HISTORY"
+    },
+    {
+      "id": "horizon",
+      "what": "Delayed arrivals with plume and dust-settled letter",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_HorizonWarning.cs",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_HorizonMath.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_HorizonWarningPatches Harmony registration; RM_MapComponent_HorizonPlume; RM_SkeletonSettings"
+      ],
+      "serves": "Deferred: Delayed arrivals with plume and dust-settled letter",
+      "fate": "recommend_retire",
+      "why": "delegated: It duplicates vanilla arrival information while adding a second queue capable of stranding raids.",
+      "needed_by": "",
+      "ticket": "T_HORIZON"
+    },
+    {
+      "id": "glass_materials",
+      "what": "Drift clearing yields glass sand through MovingDunes, traded fine sand, sun/lens glass and precision/pearl lenses with recipes; guarded canon krayt lens remains a trade prize, plain lens to still.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_GlassChain_Items.xml",
+        "src/RimMandrake/Stillsand/Defs/RecipeDefs/RM_GlassChain_Recipes.xml",
+        "src/RimMandrake/Stillsand/Patches/RM_KraytLens.xml",
+        "src/RimMandrake/MovingDunes/Source/Patch_ClearSandYield.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_GlassChain_Recipes.xml recipeUsers/products; MovingDunes Patch_ClearSandYield; ordinary trade"
+      ],
+      "serves": "signature / practical resupply",
+      "fate": "needed_by",
+      "why": "delegated: Keep glass sand, traded fine sand, sun glass, lens glass and precision lenses with ordinary recipes. Deleting the basic chain breaks the adopted root's useful glass/lens work and still construction. Pearl upgrades and canon lens trade split out.",
+      "needed_by": "signature / practical resupply",
+      "ticket": ""
+    },
+    {
+      "id": "sifting",
+      "what": "Autonomous carried-sieve fetch and processing chore",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandSieve.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_SandSieve.xml",
+        "src/RimMandrake/Stillsand/Defs/JobDefs/RM_SiftGlassSand.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_WorkGiver_TakeSieve / SiftGlassSand and job defs; RM_GlassChainSettings.sieveEnabled"
+      ],
+      "serves": "Deferred: Autonomous carried-sieve fetch and processing chore",
+      "fate": "next_version",
+      "why": "delegated: Drift clearing and ordinary trade provide inputs; a custom tool/reservation job is not required for resupply.",
+      "needed_by": "",
+      "ticket": "T_SIFTING"
+    },
+    {
+      "id": "sun_tables",
+      "what": "Sun furnace and lens bench retain vanilla bills; cached roof/shade/weather/elevation gate, stat-part work-speed scaling and outdoor/temperature penalty cancellation, recipe toggles.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SunPowered.cs",
+        "src/RimMandrake/Stillsand/Source/RM_GlassChainMod.cs",
+        "src/RimMandrake/Stillsand/Patches/RM_GlassChain.xml",
+        "src/RimMandrake/Stillsand/Defs/WorkGiverDefs/RM_GlassChain_WorkGivers.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_GlassChain_Buildings.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "WorkGiverDefs RM_GlassChain_WorkGivers.xml and WorkTable usable-bills postfix; RM_CompSunPowered"
+      ],
+      "serves": "signature / practical resupply",
+      "fate": "needed_by",
+      "why": "delegated: Furnace and lens bench use ordinary bills and shared sun gating. Delete their actual work and lens discoveries cannot provision sun equipment through the adopted ordinary-work route.",
+      "needed_by": "signature / practical resupply",
+      "ticket": ""
+    },
+    {
+      "id": "solar_ovens",
+      "what": "Fuel/power-free cooking in sun and crest-plate faster oven capable of baking sun glass; shared gate and ordinary cooking bills.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_GlassChain_Buildings.xml",
+        "src/RimMandrake/Stillsand/Source/RM_SunPowered.cs",
+        "src/RimMandrake/Stillsand/Patches/RM_GlassChain.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_GlassChain.xml DoBillsCook fixedBillGiverDefs -> RM_SolarOven; crest variant excluded"
+      ],
+      "serves": "signature / practical resupply",
+      "fate": "needed_by",
+      "why": "delegated: Keep the ordinary solar oven for cooking expedition supplies from desert resources without imported fuel. Deleting cooking defeats the adopted root's settled provisioning; crest upgrade splits out.",
+      "needed_by": "signature / practical resupply",
+      "ticket": ""
+    },
+    {
+      "id": "brine",
+      "what": "Dry-edge brine dipping spot, five-brine bill and work giver, brine feedstock and ordinary-stove salt boiling.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_BrineDipping.xml",
+        "src/RimMandrake/Stillsand/Defs/RecipeDefs/RM_BoilBrineToSalt.xml",
+        "src/RimMandrake/Stillsand/Source/RM_SolarStill.cs:219",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_StilledWater.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_BrineDipping.xml -> RM_PlaceWorker_BesideTerrain / DoBill -> RM_DipBrine; plain still feeds"
+      ],
+      "serves": "signature / seep provision",
+      "fate": "needed_by",
+      "why": "delegated: Keep dry-bank dipping into brine as feedstock for the plain still. Removing extraction makes the most common cave row an unusable water fortune. Salt boiling is split out.",
+      "needed_by": "signature / seep provision",
+      "ticket": ""
+    },
+    {
+      "id": "solar_still",
+      "what": "Rare-ticking storage-cell condenser processes brine/eggs/meat/sacs, sun-scaled progress, pearl lens multiplier, water output and production debt notification; output has cooling ingestion effect.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SolarStill.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_SolarStill.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_StilledWater.xml",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_SunKernel.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_SolarStill.xml storage/rare tick -> RM_CompSolarStill -> RM_SunKernel.StillStep / Consume"
+      ],
+      "serves": "signature / practical water",
+      "fate": "needed_by",
+      "why": "delegated: Keep plain solar still, accepted non-corpse feeds, solar progress and real output. Removing it makes brine unusable as expedition water and breaks the adopted root. Wringing, cooling, lens multiplier, ledger/pour are separate.",
+      "needed_by": "signature / practical water",
+      "ticket": ""
+    },
+    {
+      "id": "wringing",
+      "what": "Corpse-fed wringing still and witness thoughts",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SolarStill.cs:118",
+        "src/RimMandrake/Stillsand/Defs/ThoughtDefs/RM_Thought_DeadDistilled.xml",
+        "src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_TheReturn.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_SolarStill.cs allowCorpses branch; RM_WringingStill def; WitnessDeadDistilled and RM_WaterLedger.Notify_Drawn"
+      ],
+      "serves": "Deferred: Corpse-fed wringing still and witness thoughts",
+      "fate": "next_version",
+      "why": "delegated: Distilling bodies is a separate moral/resource interaction; the plain still handles seep/eggs/meat.",
+      "needed_by": "",
+      "ticket": "T_WRINGING"
+    },
+    {
+      "id": "pour",
+      "what": "Sunward water offering, bloom and swimmer draw",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs",
+        "src/RimMandrake/Stillsand/Patches/RM_SandRemembersWater_Stillsand.xml",
+        "src/RimMandrake/Stillsand/Defs/JobDefs/RM_PourWaterIntoSand.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_FloatMenuOptionProvider_PourWater; RM_JobDriver_PourWaterIntoSand; RM_Thumper; RM_WaterLedger"
+      ],
+      "serves": "Deferred: Sunward water offering, bloom and swimmer draw",
+      "fate": "next_version",
+      "why": "delegated: Pouring is a secondary land-response chain; carried/produced water works without it.",
+      "needed_by": "",
+      "ticket": "T_POUR"
+    },
+    {
+      "id": "wet_line",
+      "what": "Saved fading wet stain and attraction interval",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:250",
+        "src/RimMandrake/Stillsand/Source/RM_WaterLedgerProof.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_MapComponent_WetSand draw/tick; RM_StillsandWater.Pour; gale clearing; leviathan LatestPourCell"
+      ],
+      "serves": "Deferred: Saved fading wet stain and attraction interval",
+      "fate": "next_version",
+      "why": "delegated: This is the deferred pour/thumper response, not a necessary desert hydration store.",
+      "needed_by": "",
+      "ticket": "T_WET_LINE"
+    },
+    {
+      "id": "ledger",
+      "what": "Sun-Debt accounting, mood, goodwill and incident weights",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_WaterLedger.cs",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_LedgerKernel.cs",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs:67",
+        "src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_TheReturn.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_CompWaterVolume.PostIngested; RM_CompSolarStill.Consume; RM_StillsandWater.IncidentChanceFactor; RM_WaterLedger.ActiveDef; upper-tier precept"
+      ],
+      "serves": "Deferred: Sun-Debt accounting, mood, goodwill and incident weights",
+      "fate": "next_version",
+      "why": "delegated: Faith consequences are a separate campaign system, not a requirement of usable water.",
+      "needed_by": "",
+      "ticket": "T_LEDGER"
+    },
+    {
+      "id": "return_ritual",
+      "what": "Event-opened Return, offerings, cache, refusal and debt stone",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_WaterLedger.cs:244",
+        "src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_TheReturn.xml",
+        "src/RimUtinni/UtinniPatches/Patches/RUT_TheReturn_KraytOpens.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_WaterLedger ritual classes; RM_CompOpensWaterReturn.Notify_Killed; gale callback; HEAD:src/RimUtinni/UtinniPatches/Defs/PreceptDefs/RUT_TheReturn.xml"
+      ],
+      "serves": "Deferred: Event-opened Return, offerings, cache, refusal and debt stone",
+      "fate": "next_version",
+      "why": "delegated: A ritual and its rewards are explicitly extras under this pass.",
+      "needed_by": "",
+      "ticket": "T_RETURN_RITUAL"
+    },
+    {
+      "id": "legacy_sun",
+      "what": "Legacy low/overhead regime and biome heat/glare floor",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_PinnedSun.cs",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs:204"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_Stillsand_Biome.xml RM_SunHeatExtension; CreatureBehaviors ShadeGrid and sun consumers"
+      ],
+      "serves": "Deferred: Legacy low/overhead regime and biome heat/glare floor",
+      "fate": "recommend_retire",
+      "why": "delegated: It contradicts the later shared Direct Sun ruling. The pinned sky is split out and retained.",
+      "needed_by": "",
+      "ticket": "T_LEGACY_SUN"
+    },
+    {
+      "id": "glare_gear",
+      "what": "Glare-blind debuff, goggles and gene exception",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Apparel/RM_SunGoggles.xml",
+        "src/RimMandrake/Stillsand/Defs/HediffDefs/RM_CoolingDraught.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatExtension.cs",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_StilledWater.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_Stillsand_Biome.xml glare fields -> shared ShadeGrid; RM_SunGoggles.xml; glass-goggle recipe"
+      ],
+      "serves": "Deferred: Glare-blind debuff, goggles and gene exception",
+      "fate": "next_version",
+      "why": "delegated: A separate sight injury/equipment ladder is unnecessary once geometric exposure and vanilla heatstroke carry the land cost.",
+      "needed_by": "",
+      "ticket": "T_GLARE_GEAR"
+    },
+    {
+      "id": "mirage",
+      "what": "Heat-shimmer penalty and chasing-water mental state",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs",
+        "infrastructure/state/items/closed/STILLSAND_MIRAGE_CONDITION_1.md"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_Stillsand_Biome.xml mirage extension fields -> CreatureBehaviors ShadeGrid; shared mental-state/condition defs"
+      ],
+      "serves": "Deferred: Heat-shimmer penalty and chasing-water mental state",
+      "fate": "recommend_retire",
+      "why": "delegated: It duplicates vanilla heatstroke punishment and pulls pawns off a controlled expedition with another state machine.",
+      "needed_by": "",
+      "ticket": "T_MIRAGE"
+    },
+    {
+      "id": "gale",
+      "what": "Herald, amplified transport, gale and aftermath condition",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs",
+        "src/RimMandrake/Stillsand/Defs/WeatherDefs/RM_DuneGale.xml",
+        "src/RimMandrake/Stillsand/Source/Kernel/RM_GaleKernel.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_IncidentWorker_DuneGale -> RM_GameCondition_DuneGale; RM_DuneGale.xml; shared sun/track consumers"
+      ],
+      "serves": "Deferred: Herald, amplified transport, gale and aftermath condition",
+      "fate": "next_version",
+      "why": "delegated: A second seasonal hazard cycle is the runner-up signature; ordinary dry weather and MovingDunes remain land.",
+      "needed_by": "",
+      "ticket": "T_GALE"
+    },
+    {
+      "id": "gale_carry",
+      "what": "Exposed traveller drag, offmap carry and saved return",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs:331",
+        "src/RimMandrake/Stillsand/Source/RM_GaleTakenPolicy.cs",
+        "src/RimMandrake/FlowWorks/Source/TakenByLand"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_DuneGale.cs -> RM_GaleTakenPolicy -> FlowWorks TakenByLand; RM_GameComponent_GaleCarried"
+      ],
+      "serves": "Deferred: Exposed traveller drag, offmap carry and saved return",
+      "fate": "next_version",
+      "why": "delegated: Pawn removal/recovery belongs to the deferred gale, not the crossing signature.",
+      "needed_by": "",
+      "ticket": "T_GALE_CARRY"
+    },
+    {
+      "id": "gale_aftermath",
+      "what": "Weighted emergence, track wipe, wake and new flora",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_DuneGale.cs:411",
+        "src/RimMandrake/Stillsand/Defs/WeatherDefs/RM_DuneGale.xml",
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Items/RM_CaravanWaterSkin.xml"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_GameCondition_DuneGale aftermath -> RM_SkeletonPlacer, cave/cache placement and sowing; RM_CaravanWaterSkin.xml"
+      ],
+      "serves": "Deferred: Weighted emergence, track wipe, wake and new flora",
+      "fate": "next_version",
+      "why": "delegated: New caches/caves/creatures after a gale are an independent renewal economy.",
+      "needed_by": "",
+      "ticket": "T_GALE_AFTERMATH"
+    },
+    {
+      "id": "wreck_salvage",
+      "what": "Sparse sand-sealed hull, cylinder and tread wreck field consumes the shared Wreckage salvage/weathering engine; own render paths and shadows are wired. Cave and gale salvage remain distinct placement routes.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_StillsandWrecks.xml",
+        "src/RimMandrake/Stillsand/Defs/MapGeneration/RM_StillsandWreckField.xml",
+        "src/RimMandrake/Biomes.compose.json"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "Defs/composition registration and ordinary player use; see evidence."
+      ],
+      "serves": "land / ordinary found materials",
+      "fate": "land",
+      "why": "delegated: Sparse ordinary wreck remains give the desert its existing ruined ground and salvage resources, using Wreckage. They do not regenerate discoveries or provide gale emergence.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "fossil_port",
+      "what": "Extra fossil scatter from the retired mutator port",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/RetiredMutatorPorts/RM_RetiredMutatorPorts_Stillsand.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "Defs/RetiredMutatorPorts/RM_RetiredMutatorPorts_Stillsand.xml; shared skeleton scatter genstep"
+      ],
+      "serves": "Deferred: Extra fossil scatter from the retired mutator port",
+      "fate": "recommend_retire",
+      "why": "delegated: It duplicates capped static skeleton placement and can fill the intended empty plain.",
+      "needed_by": "",
+      "ticket": "T_FOSSIL_PORT"
+    },
+    {
+      "id": "acoustic_payload",
+      "what": "Ship Acoustic Scanner descriptions of hidden features",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Patches/RM_AcousticPayload_Stillsand.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "Patches/RM_AcousticPayload_Stillsand.xml -> guarded Acoustic Scanner biome extension"
+      ],
+      "serves": "Deferred: Ship Acoustic Scanner descriptions of hidden features",
+      "fate": "next_version",
+      "why": "delegated: This optional ship interaction is not required for on-foot cave discovery or readable wildlife.",
+      "needed_by": "",
+      "ticket": "T_ACOUSTIC_PAYLOAD"
+    },
+    {
+      "id": "settings",
+      "what": "Persistent master/per-feature toggles and tuning across Stillsand, caves, glass, events, gale, skeletons, water, swimming and tracks; scroll/search/collapse/reset and timing tags; shared sunlight/swim/dunes options owned by neighbours.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_StillsandMod.cs",
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaveSettings.cs",
+        "src/RimMandrake/Stillsand/Source/RM_GlassChainMod.cs",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandEventsMod.cs",
+        "src/RimMandrake/Stillsand/Source/RM_DuneGaleSettings.cs",
+        "src/RimMandrake/Stillsand/Source/RM_SkeletonSettings.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "Mod subclass constructors, ExposeData and settings readers in each production feature"
+      ],
+      "serves": "land, life and signature; standing Mod Settings floor",
+      "fate": "needed_by",
+      "why": "delegated: Required per-feature controls, labelled timing, shipped defaults, all-off safety and preservation of user values. Removing them violates a standing ruling; no independent settings bar.",
+      "needed_by": "land, life and signature; standing Mod Settings floor",
+      "ticket": ""
+    },
+    {
+      "id": "proof_tools",
+      "what": "Site/plan, fake-game mutation probes, offline geometry/sun/ledger/gale kernels and fuzz; live script adapters, trader/ledger/gale diagnostics and source/def regressions.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/validation.py",
+        "src/RimMandrake/Stillsand/northstar_site.py",
+        "src/RimMandrake/Stillsand/northstar_plan.py",
+        "src/RimMandrake/Stillsand/selftest_stillsand.py",
+        "src/RimMandrake/Stillsand/Source/SelfTest/Fuzz/StillsandFuzz.cs",
+        "src/RimMandrake/Stillsand/Source/RM_StillsandTraderProbe.cs",
+        "src/RimMandrake/Stillsand/Source/RM_WaterLedgerProof.cs"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "Registered validation.py chains; prove_* wrappers; Source/SelfTest and Kernel projects"
+      ],
+      "serves": "verification only",
+      "fate": "dependency",
+      "why": "delegated: Existing geometry/kernel selftests and proof wrappers are instruments, not player features. Keep useful checks; their Clear locks and forced outcomes do not pass this proposal.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "lookup_cache",
+      "what": "Loud-draw opted-in defs and MovingDunes registry lookup cached, preserving hot-path performance and guarded service startup.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_EventRemainder.cs:172",
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs:25"
+      ],
+      "proven": "stale",
+      "called_by": [
+        "RM_DriftSwim registry delegate; RM_LoudDraws cache is dormant with deferred events"
+      ],
+      "serves": "shared engine use",
+      "fate": "dependency",
+      "why": "delegated: Runtime lookup caches support active drift and registered comps. A cache is implementation plumbing, not a player experience; moved event caches may stay dormant.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "unified_direct_sun",
+      "what": "Ruled geometry-only Direct Sun and roof/parasols at every elevation, replacing legacy regime and per-biome floor.",
+      "built": "absent",
+      "evidence": [
+        "OWNER:1792410399049610407"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "CreatureBehaviors sun/heat geometry and RM_SunPower.FactorAt consumers; ruled implementation owed"
+      ],
+      "serves": "land / geometric shelter",
+      "fate": "needed_by",
+      "why": "delegated: Required replacement for the ruled-out legacy policy, not a new biome heat mechanic. Source still has per-biome heat/floor fields; dependency implementation is owed under T_SUN.",
+      "needed_by": "land / geometric shelter",
+      "ticket": "T_SUN"
+    },
+    {
+      "id": "removed_gale_fluff",
+      "what": "Dust devils, abrasion and static",
+      "built": "absent",
+      "evidence": [
+        "OWNER:1792759873235145774"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "No active route promised; historical cut recorded in concept inventory."
+      ],
+      "serves": "Historical exclusion only",
+      "fate": "recommend_retire",
+      "why": "Already owner-cut, not reopened: affirm exclusion; this row is not a new retirement decision. See record.json scope and cut citations.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "removed_skeleton_burial",
+      "what": "Skeleton burial/tint/silencing",
+      "built": "absent",
+      "evidence": [
+        "OWNER:1792759876250066479"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "No active route promised; historical cut recorded in concept inventory."
+      ],
+      "serves": "Historical exclusion only",
+      "fate": "recommend_retire",
+      "why": "Already owner-cut, not reopened: affirm exclusion; this row is not a new retirement decision. See record.json scope and cut citations.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "removed_cave_fluff",
+      "what": "Cave drip and tribal mark",
+      "built": "absent",
+      "evidence": [
+        "OWNER:1792759874733672738"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "No active route promised; historical cut recorded in concept inventory."
+      ],
+      "serves": "Historical exclusion only",
+      "fate": "recommend_retire",
+      "why": "Already owner-cut, not reopened: affirm exclusion; this row is not a new retirement decision. See record.json scope and cut citations.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "removed_fulgurite",
+      "what": "Fulgurite and lightning breaker",
+      "built": "absent",
+      "evidence": [
+        "OWNER:1792117913860590679"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "No active route promised; historical cut recorded in concept inventory."
+      ],
+      "serves": "Historical exclusion only",
+      "fate": "recommend_retire",
+      "why": "Already owner-cut, not reopened: affirm exclusion; this row is not a new retirement decision. See record.json scope and cut citations.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "giant_preservation",
+      "what": "Unconfirmed special outdoor no-rot desiccation before skeleton conversion",
+      "built": "unknown",
+      "evidence": [
+        [
+          "design/Jawa/worldbuilding/biomes/stillsand_turn3_development_2026-09-30.md:645",
+          "infrastructure/state/items/closed/STILLSAND_EVENT_CREATURES_REMAINDER_1.md:38",
+          "OWNER:1793738532289727072",
+          "OWNER:1793738707492209767"
+        ]
+      ],
+      "proven": "missing",
+      "called_by": [
+        "Historical promise in record.json; outdoor preservation source not established; RM_GiantSkeletons.cs only establishes conversion"
+      ],
+      "serves": "Deferred: Unconfirmed special outdoor no-rot desiccation before skeleton conversion",
+      "fate": "next_version",
+      "why": "delegated: This historical extra is not required for ordinary readable corpses and moves with corpse history.",
+      "needed_by": "",
+      "ticket": "T_GIANT_PRESERVATION"
+    },
+    {
+      "id": "pinned_sky",
+      "what": "Tile-position permanent daylight and wind/sun bearing",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/BiomeDefs/RM_Stillsand_Biome.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "shared PinnedSun and ShadeGrid; RM_SunPower.Intensity"
+      ],
+      "serves": "land",
+      "fate": "land",
+      "why": "delegated: Without the fixed local sky the sun-that-never-sets landscape contradicts the world. Keep geometric sky presentation, not legacy heat.",
+      "needed_by": "land",
+      "ticket": ""
+    },
+    {
+      "id": "water_volume",
+      "what": "Ordinary water quantities, actual egg/sac ingestion and optional DBH use",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_StillsandWater.cs"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "RM_CompSolarStill.Consume; egg/sac/still item defs; ordinary ingestion"
+      ],
+      "serves": "signature / practical provisions",
+      "fate": "needed_by",
+      "why": "delegated: Deleting physical water volume/ingestion makes the sac, eggs and still output unusable as practical supplies. Retain quantity data but no ritual, cool buff or poured response. Plain RM_StilledWater itself is carryable/tradeable stock without an ingestible block, not a new hunger/thirst need.",
+      "needed_by": "signature / practical provisions",
+      "ticket": "T_WATER"
+    },
+    {
+      "id": "arrival_guidance",
+      "what": "Truthful local exposure and rock/cave guidance",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_PreciousCaves.cs"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "RM_MapComponent_PreciousCave.LetterText; biome arrival extension"
+      ],
+      "serves": "land / signature / readable danger",
+      "fate": "needed_by",
+      "why": "delegated: Deleting basic guidance leaves the new player with currently false low-sun advice and no explanation that a discovered cave is not yet secured. Replace prose in existing guidance, no bespoke incident.",
+      "needed_by": "land / signature / readable danger",
+      "ticket": "T_GUIDANCE"
+    },
+    {
+      "id": "dung_seeding",
+      "what": "Loomma dung creates flora",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Stillsand_Fillout.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "Loomma shared creature extension; shared feeding/seed service"
+      ],
+      "serves": "Deferred: Loomma dung creates flora",
+      "fate": "next_version",
+      "why": "delegated: Dung seeding is another growth feedback; shade seeking already explains how the animal lives.",
+      "needed_by": "",
+      "ticket": "T_DUNG_SEEDING"
+    },
+    {
+      "id": "fishing_draw",
+      "what": "Starting a sand-fishing session calls a swimmer",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "RM_MapComponent_SandFishing -> RM_SwimmerCalls.Call"
+      ],
+      "serves": "Deferred: Starting a sand-fishing session calls a swimmer",
+      "fate": "next_version",
+      "why": "delegated: A custom job-start attraction is an extra threat interaction; catches and ordinary predator encounters stand without it.",
+      "needed_by": "",
+      "ticket": "T_FISHING_DRAW"
+    },
+    {
+      "id": "dune_song",
+      "what": "Singing sand slabs and near-building warning letter",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SandSwimRemainder.cs"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "RM_MapComponent_SandListening.OnSandMoved subscription"
+      ],
+      "serves": "Deferred: Singing sand slabs and near-building warning letter",
+      "fate": "next_version",
+      "why": "delegated: This adds a separate notification loop beyond ordinary wind and essential animal warnings.",
+      "needed_by": "",
+      "ticket": "T_DUNE_SONG"
+    },
+    {
+      "id": "bone_harp",
+      "what": "Wind-driven bone harp sustainers",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_GiantSkeletons.cs"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "RM_CompBoneHarp; Defs/SoundDefs/RM_BoneHarp.xml"
+      ],
+      "serves": "Deferred: Wind-driven bone harp sustainers",
+      "fate": "next_version",
+      "why": "delegated: Sparse bones and their physical shade work with no custom sound interaction.",
+      "needed_by": "",
+      "ticket": "T_BONE_HARP"
+    },
+    {
+      "id": "pearl_upgrade",
+      "what": "Pearl lens recipe and plain-still speed multiplier",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Source/RM_SolarStill.cs"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "RateFactor -> RM_SunKernel.StillRate; RM_GrindPearlLens recipe"
+      ],
+      "serves": "Deferred: Pearl lens recipe and plain-still speed multiplier",
+      "fate": "next_version",
+      "why": "delegated: A speed upgrade is optional equipment progression; ordinary precision lenses build the retained still.",
+      "needed_by": "",
+      "ticket": "T_PEARL_UPGRADE"
+    },
+    {
+      "id": "krayt_lens",
+      "what": "Canon pearl-lens trade/crafting prize",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Patches/RM_KraytLens.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "Guarded upper-tier recipe and trader patch"
+      ],
+      "serves": "Deferred: Canon pearl-lens trade/crafting prize",
+      "fate": "next_version",
+      "why": "delegated: Additional canon trade prize is not required for plain lens/still production.",
+      "needed_by": "",
+      "ticket": "T_KRAYT_LENS"
+    },
+    {
+      "id": "crest_oven",
+      "what": "Crest-plate upgraded oven",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_GlassChain_Buildings.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "RM_GlassChain.xml DoBillsCook; RM_MeltSunGlass recipeUsers"
+      ],
+      "serves": "Deferred: Crest-plate upgraded oven",
+      "fate": "next_version",
+      "why": "delegated: It depends on the deferred Muurrok combat product and duplicates retained cooking/smelting routes.",
+      "needed_by": "",
+      "ticket": "T_CREST_OVEN"
+    },
+    {
+      "id": "salt_boiling",
+      "what": "Brine-to-salt cooking recipe",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/RecipeDefs/RM_BoilBrineToSalt.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "Vanilla stove recipeUsers in recipe def"
+      ],
+      "serves": "Deferred: Brine-to-salt cooking recipe",
+      "fate": "next_version",
+      "why": "delegated: Salt production is a side economy; brine-to-water already makes the seep usable.",
+      "needed_by": "",
+      "ticket": "T_SALT_BOILING"
+    },
+    {
+      "id": "cooling_draught",
+      "what": "Timed comfort-temperature buff on water ingestion",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Stillsand/Defs/HediffDefs/RM_CoolingDraught.xml"
+      ],
+      "proven": "missing",
+      "called_by": [
+        "No production ingestion hook found by HEAD-wide RM_CoolingDraught search; def/header and direct-add tests only. Def presence is built; ordinary activation remains missing."
+      ],
+      "serves": "Deferred: Timed comfort-temperature buff on water ingestion",
+      "fate": "recommend_retire",
+      "why": "delegated: Water already supplies practical drink; this potion duplicates thermal gear and is unrelated to the shared geometric shelter. Current source search found a defined hediff but no promised drink hookup; do not build that hookup solely to activate an extra.",
+      "needed_by": "",
+      "ticket": "T_COOLING_DRAUGHT"
+    },
+    {
+      "id": "creature_engine",
+      "what": "CreatureBehaviors",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/CreatureBehaviors/",
+        "HEAD git object read when sparse working path is absent"
+      ],
+      "proven": "unknown",
+      "called_by": [
+        "Stillsand composition, race extensions, cave/set-piece definitions or shared terrain consumers."
+      ],
+      "serves": "dependency",
+      "fate": "dependency",
+      "why": "delegated: Shared shade, sun, tracks, buried movement, predator filters, shadow-following and ordinary feeding. No redesign; Stillsand must consume unified geometry.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "growth_engine",
+      "what": "ExplosiveGrowth",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/ExplosiveGrowth/",
+        "HEAD git object read when sparse working path is absent"
+      ],
+      "proven": "unknown",
+      "called_by": [
+        "Stillsand composition, race extensions, cave/set-piece definitions or shared terrain consumers."
+      ],
+      "serves": "dependency",
+      "fate": "dependency",
+      "why": "delegated: Ordinary plant growth compatibility and the existing wet-source interface only; no Stillsand expiry-based wet cells registered as physical water. Shared thin-film integration remains later.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "hazard_engine",
+      "what": "EnvironmentalHazards",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/EnvironmentalHazards/",
+        "HEAD git object read when sparse working path is absent"
+      ],
+      "proven": "unknown",
+      "called_by": [
+        "Stillsand composition, race extensions, cave/set-piece definitions or shared terrain consumers."
+      ],
+      "serves": "dependency",
+      "fate": "dependency",
+      "why": "delegated: Existing set-piece vocabulary, ordinary shade gear and truthful arrival guidance.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "wreck_engine",
+      "what": "Wreckage",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Wreckage/",
+        "HEAD git object read when sparse working path is absent"
+      ],
+      "proven": "unknown",
+      "called_by": [
+        "Stillsand composition, race extensions, cave/set-piece definitions or shared terrain consumers."
+      ],
+      "serves": "dependency",
+      "fate": "dependency",
+      "why": "delegated: Ordinary sparse salvage jobs, loot and weathering. No extra Stillsand fall/emergence incidents.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "bones_engine",
+      "what": "Bones",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Bones/",
+        "HEAD git object read when sparse working path is absent"
+      ],
+      "proven": "unknown",
+      "called_by": [
+        "Stillsand composition, race extensions, cave/set-piece definitions or shared terrain consumers."
+      ],
+      "serves": "dependency",
+      "fate": "dependency",
+      "why": "delegated: Normal butcher bone products and stuff; no duplicate corpse conversion or invented giant no-rot promise.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "dunes_engine",
+      "what": "MovingDunes",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/MovingDunes/Source/MapComponent_DuneField.cs",
+        "HEAD git object read when sparse working path is absent"
+      ],
+      "proven": "unknown",
+      "called_by": [
+        "Stillsand composition, race extensions, cave/set-piece definitions or shared terrain consumers."
+      ],
+      "serves": "dependency",
+      "fate": "dependency",
+      "why": "delegated: Ordinary wind/depth/transport, committed movement events, drift clearing and its glass-sand yield, active-field query. No gale amplification.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "water_engine",
+      "what": "FlowWorks",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/FlowWorks/",
+        "HEAD git object read when sparse working path is absent"
+      ],
+      "proven": "unknown",
+      "called_by": [
+        "Stillsand composition, race extensions, cave/set-piece definitions or shared terrain consumers."
+      ],
+      "serves": "dependency",
+      "fate": "dependency",
+      "why": "delegated: Deep-sand and brine terrain plus compatibility of ordinary water. TakenByLand only for completion of old deferred carries, no new carry cycle.",
+      "needed_by": "",
+      "ticket": ""
+    },
+    {
+      "id": "titan_engine",
+      "what": "HugeThings",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/HugeThings/",
+        "HEAD git object read when sparse working path is absent"
+      ],
+      "proven": "unknown",
+      "called_by": [
+        "Stillsand composition, race extensions, cave/set-piece definitions or shared terrain consumers."
+      ],
+      "serves": "dependency",
+      "fate": "dependency",
+      "why": "delegated: Existing giant geometry and sole titan corpse-site owner; ordinary spoilage and visible remains. Do not redesign its encounters or make them a required Stillsand incident.",
+      "needed_by": "",
+      "ticket": ""
+    }
+  ]
+}
