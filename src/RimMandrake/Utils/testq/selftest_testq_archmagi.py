@@ -22,7 +22,6 @@ brings it up. Proves:
 import glob
 import json
 import os
-os.environ["TESTQ_PIPELINE_ADMIT"] = "open"     # spec 18c gate: these mock mods have no pipeline record (selftest_testq_pipeline_admit.py)
 import shutil
 import subprocess
 import sys
@@ -83,7 +82,6 @@ class Rig:
         self.log_old()
         self.env = {k: v for k, v in os.environ.items()
                     if k not in ("RM_HOST_GUARD_GEN", "RIMFLOW_SEAT", "TESTQ_UNIT") and not k.startswith("TESTQ_")}
-        self.env["TESTQ_PIPELINE_ADMIT"] = "open"    # the TESTQ_ filter above drops it; spec 18c gate
         mock = "%s %s" % (sys.executable, p("mock.py"))
         self.env.update(
             TESTQ_QUEUE=p("queue"), TESTQ_SSH="%s %s" % (sys.executable, p("fake_ssh.py")), TESTQ_REMOTE_RUNNER=REPO,

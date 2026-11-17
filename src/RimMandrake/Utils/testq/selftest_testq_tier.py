@@ -13,7 +13,6 @@ Owner by card 2026-11-05: SteveDesktop is the exact-tier host. What must hold, w
 """
 import json
 import os
-os.environ["TESTQ_PIPELINE_ADMIT"] = "open"     # spec 18c gate: these mock mods have no pipeline record (selftest_testq_pipeline_admit.py)
 import shutil
 import subprocess
 import sys

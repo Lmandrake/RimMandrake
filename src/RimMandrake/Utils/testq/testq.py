@@ -1208,7 +1208,7 @@ def cmd_submit(a):
     except S.SchemaError as e:
         print("REFUSED: %s" % e)
         return 2
-    nogo = pipeline_refusal(job)
+    nogo = hold_refusal(job)
     if nogo:
         print("REFUSED: %s" % nogo["text"])
         return 2
@@ -1317,28 +1317,19 @@ def pilot_stop(mod):
         return {}
 
 
-def pipeline_refusal(job):
-    """Spec question 18c, owner by card 2026-11-14, "Pipeline tests only": the refusal record (pipeline_admit.py) when JOB
-    is not a locked bar's in-game check for a mod version past the blind offline challenge, else None. Ops jobs
+def hold_refusal(job):
+    """-> the refusal record (pipeline_admit.py) when JOB's mod is on the owner's hold (or the hold list cannot be read),
+    else None. Any pipeline stage is admitted (owner 2026-11-17: "Drop 11-14 limits, old rule"). Ops jobs
     (pipeline_admit.OPS_REQUESTERS: the brake-release canary, the steward's repair wake) are not tests: never refused."""
     import pipeline_admit as PA
-    if PA.open_for_selftest(QHOME):
-        return None
     return PA.refusal(job.get("mod"), job.get("selector"), job.get("requested_by"))
 
 
-def pipeline_fill(mod):
-    """-> (why the filler and the sweep queue nothing for MOD under 18c, or None; the chains they may pick, or None)."""
+def held_fill(mod):
+    """-> why the filler and the sweep queue nothing for MOD (it is on the owner's hold), or None."""
     import pipeline_admit as PA
-    if PA.open_for_selftest(QHOME):
-        return None, None
-    e, _ = PA.standing(mod)
-    if e is None:
-        return PA.refusal(mod, {"chains": []}, FILLER)["text"], None
-    if not e["chains"]:
-        return ("%s %s at %s: no locked bar's in-game check names a chain (the testq blocks of its test_table.json)"
-                % (mod, e["version"], e["stage"])), None
-    return None, e["chains"]
+    r = PA.refusal(mod, {"chains": []}, FILLER)
+    return r["text"] if r else None
 
 
 def repeat_holds(mod, chains, recs=None):
@@ -1494,15 +1485,15 @@ def cmd_sweep(a):
     if r.returncode != 0:
         print("REFUSED: no origin/main in %s: %s" % (REPO, r.stderr.strip()[-200:]))
         return 2
-    off, only = pipeline_fill(a.mod)
-    if off:         # 18c: a sweep runs only its locked bars' chains; none, no sweep (exit 0: the timer stays green)
+    off = held_fill(a.mod)
+    if off:         # the owner's hold: no sweep (exit 0: the timer stays green)
         print("no sweep: %s" % off)
         return 0
     pv = preview(a.mod, {"full": True})
     # Owner ruling by card 2026-10-31, "Retest only after a code change": the sweep runs only the chains with no
     # verdict at their code version (gaps.settled). None left: no sweep tonight, whatever the calendar says.
     stop = retest_stop(a.mod)
-    todo = [c for c in pv["chains"] or [] if c not in stop and (only is None or c in only)]
+    todo = [c for c in pv["chains"] or [] if c not in stop]
     if pv["chains"] and not todo:
         print("no sweep: every chain of %s holds a verdict at its code version" % a.mod)
         return 0
@@ -1510,11 +1501,8 @@ def cmd_sweep(a):
     if pv["drivers"] and todo and pv["driver_chains"]:
         g = split_sweep(pv["drivers"], pv["driver_chains"], todo)
         groups = g if len(g) > 1 else None
-    if only is not None and not todo:
-        print("no sweep: no chain of %s's locked bars is due" % a.mod)
-        return 0
-    sels = [{"chains": g} for g in groups] if groups else (     # 18c: a pipeline mod's sweep is its bars' chains
-        [{"chains": todo}] if (stop or only is not None) and todo else [{"full": True}])
+    sels = [{"chains": g} for g in groups] if groups else (
+        [{"chains": todo}] if stop and todo else [{"full": True}])
     todays = []
     for st in STATES:
         for rec in records(st):
@@ -1763,6 +1751,7 @@ def fill_plan(mod, n, cap, day_s, now=None):
                                                                           and no DONE+canary job since (lane_proven_after)
       nohist   no history, no catalogue  dry      every chain is DRY       exhausted  nothing may be filler
       companion  a job at origin/main could only die at deploy: its companion is not staged (companion_hold)
+      held     the mod is on the owner's hold, or the hold list cannot be read (pipeline_admit.refusal)
       pick     `pick` would be queued (fill_rank: the evidence-gap order)"""
     ensure_dirs()
     now = time.time() if now is None else now
@@ -1775,9 +1764,9 @@ def fill_plan(mod, n, cap, day_s, now=None):
     busy = [j for j in records("pending") if ready(j, now)] + steve_running()   # an archmagi job is not Steve
     if busy:
         return {"verdict": "busy", "text": "busy: %d pending/running" % len(busy)}
-    off, only = pipeline_fill(mod)
-    if off:         # 18c: the filler is off for everything but a locked bar's in-game check
-        return {"verdict": "pipeline", "text": "%s; no fill" % off}
+    off = held_fill(mod)
+    if off:         # the owner's hold (mod_owner_hold.json): the filler is off for a held mod
+        return {"verdict": "held", "text": "%s; no fill" % off}
     today = time.strftime("%Y-%m-%d", time.localtime(now))
     mine = filler_jobs()
     n_today = sum(1 for j in mine if time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(j["submitted"]))) == today)
@@ -1801,10 +1790,10 @@ def fill_plan(mod, n, cap, day_s, now=None):
     if hold:
         since = (read_json(q("companion_stage.json")) or {}).get("since") or now
         return dict(out, verdict="companion", text=hold, since=since)
-    return dict(out, **fill_rank(mod, n, now, today, **({"only": only} if only is not None else {})))
+    return dict(out, **fill_rank(mod, n, now, today))
 
 
-def fill_rank(mod, n, now, today=None, exclude=(), only=None):
+def fill_rank(mod, n, now, today=None, exclude=()):
     """The order half of fill_plan (TESTQ_FILL_RANK_BY_EVIDENCE_GAPS; gaps.py has the order and its reasons):
     verdict pick (rank, purpose, pick, row_items), exhausted (nothing may be queued as filler: every chain PASSED or
     FAILED-with-no-fix at the current identity, or is DRY) or nohist (no history and no modcheck catalogue)."""
@@ -1813,8 +1802,7 @@ def fill_rank(mod, n, now, today=None, exclude=(), only=None):
     recs = records("done")
     hist = chain_history(mod, recs)
     repeat = repeat_holds(mod, None, recs)
-    g = gaps.rank(mod, n, now, recs, lambda c: is_dry(hist.get(c) or [], now), exclude=set(exclude) | set(repeat),
-                  **({"only": set(only)} if only is not None else {}))
+    g = gaps.rank(mod, n, now, recs, lambda c: is_dry(hist.get(c) or [], now), exclude=set(exclude) | set(repeat))
     plan = {k: g[k] for k in ("rank", "purpose", "row_items", "dry", "held", "ident", "counts", "flaky", "blind",
                               "why")}
     plan["repeat_hold"] = repeat

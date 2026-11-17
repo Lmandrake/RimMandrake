@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
-"""selftest_testq_pipeline_admit.py - SteveDesktop runs pipeline tests only (spec question 18c, owner by card 2026-11-14:
-"What may be queued on SteveDesktop -> Pipeline tests only"; item RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT).
+"""selftest_testq_pipeline_admit.py - what SteveDesktop's test queue admits (pipeline_admit.py).
+
+The owner, 2026-11-17 about 11:00 AM PST: "Drop 11-14 limits, old rule. Clear its limitations." His card of 2026-11-14
+(spec 18c, "Pipeline tests only") is dropped (item RIMMANDRAKE_DROP_STEVEDESKTOP_PIPELINE_ONLY_LIMIT): any mod's job is
+admitted whatever its pipeline stage, a --full sweep and an --item selection included. What stays refused: a mod on his
+hold (rimflow/mod_owner_hold.json, 2026-11-16), and every test when that list cannot be read. Ops jobs are never refused.
 
   python3 selftest_testq_pipeline_admit.py               every check; exit 1 on any failure
   python3 selftest_testq_pipeline_admit.py --mutant M    the same checks with guard M reverted: must exit 1
   python3 selftest_testq_pipeline_admit.py --mutants     run every mutant; exit 0 only if each one is caught
 
-A temp design/concepts tree and a temp queue stand in for the real ones; no git push, ledger, ssh or game is touched.
+A temp design/concepts tree, a temp hold list and a temp queue stand in for the real ones; no git push, ledger, ssh or
+game is touched.
 """
 import argparse
 import contextlib
@@ -25,12 +30,18 @@ os.environ["TESTQ_QUEUE"] = os.path.join(TMP, "q")
 os.environ["RIMFLOW_ITEMS"] = os.path.join(TMP, "items")
 ROOT = os.path.join(TMP, "repo")
 os.environ["TESTQ_PIPELINE_ROOT"] = ROOT
+HOLDS = os.path.join(TMP, "mod_owner_hold.json")
+SAID = "And stop the new biome mods work. Only Pyrelands as a biome mod right now."
+with open(HOLDS, "w") as f:
+    json.dump({"holds": [{"mod": "Heldmod", "date": "2026-11-16", "said": SAID}]}, f)
+os.environ["RM_OWNER_HOLD_FILE"] = HOLDS
 
 import pipeline_admit as P  # noqa: E402
 import testq as T  # noqa: E402
 import brake_release as BR  # noqa: E402
 import fault_monitor as FM  # noqa: E402
 import steward as ST  # noqa: E402
+import coverage as C  # noqa: E402
 
 FAILS = []
 
@@ -58,55 +69,53 @@ def concept(mod, stage, version="0.1.0", state="locked", rec_version=None, tests
 
 concept("Ready", "in_game")                                  # past the blind challenge, locked, versions agree
 concept("Passed", "passed")
-concept("Building", "offline_build")                         # every real mod today
+concept("Building", "offline_build")                         # before the blind challenge
+concept("Blind", "blind_challenge")                          # Pyrelands' and Graffiti's stage on 2026-11-17
 concept("Draft", "in_game", state="draft")                   # not locked
 concept("Skew", "in_game", rec_version="0.0.9")              # the record is for another version
 concept("NoTq", "in_game", tests={"sc_bar": {"id": "sc_bar", "stage": "6"}})    # a bar check with no queue selection
+concept("Heldmod", "in_game")                                # on his hold: refused even past blind
 
 
-def pipeline_checks():
-    q = P.qualifying(ROOT)
-    check(set(q) == {"Ready", "Passed", "NoTq"}, "qualifying mod versions: past the blind challenge, locked, record = "
-          "VERSION.json: %s" % sorted(q))
-    check(q.get("Ready", {}).get("chains") == {"c_bar"} and "c_offline" not in q["Ready"]["chains"],
-          "only stage-6 bar checks are queueable, never an offline one: %s" % q.get("Ready"))
-    check(P.refusal("Ready", {"chains": ["c_bar"]}, "BENCH", ROOT) is None, "a locked bar's chain is admitted")
-    check(P.refusal("Ready", {"rows": ["r_bar"]}, "BENCH", ROOT) is None, "a locked bar's row is admitted")
-    check(P.refusal("Ready", {"proofs": ["p_bar"]}, "BENCH", ROOT) is None, "a locked bar's proof is admitted")
-    for mod, sel, why in (("Ready", {"chains": ["c_bar", "c_other"]}, "one chain no bar names"),
+def record_checks():
+    q = P.qualifying(ROOT)      # the pipeline record reader testq_blocks.py and coverage.pipeline_mods use
+    check(set(q) == {"Ready", "Passed", "NoTq", "Heldmod"}, "the record reader still names the mod versions past the "
+          "blind challenge (it admits and refuses nothing): %s" % sorted(q))
+    check(q.get("Ready", {}).get("chains") == {"c_bar"}, "and the chains their stage-6 bars name: %s" % q.get("Ready"))
+
+
+def admission_checks():
+    for mod, sel, why in (("Ready", {"chains": ["c_bar", "c_other"]}, "a chain no bar names"),
                           ("Ready", {"chains": ["c_offline"]}, "an offline-stage check"),
-                          ("Ready", {"full": True}, "a whole sweep"),
-                          ("Ready", {"item": "SOME_ITEM"}, "an item selection"),
-                          ("Building", {"chains": ["c_bar"]}, "a mod at Stage 3"),
+                          ("Ready", {"full": True}, "a whole --full sweep"),
+                          ("Ready", {"item": "SOME_ITEM"}, "an --item selection"),
+                          ("Building", {"chains": ["c_bar"]}, "a mod at offline_build"),
+                          ("Blind", {"chains": ["c_any"]}, "a mod at blind_challenge"),
                           ("Draft", {"chains": ["c_bar"]}, "an unlocked version"),
                           ("Skew", {"chains": ["c_bar"]}, "a record for another version"),
-                          ("NoTq", {"chains": ["c_bar"]}, "a bar check that names no queue selection"),
-                          ("Nowhere", {"chains": ["c_bar"]}, "a mod with no pipeline record")):
+                          ("NoTq", {"chains": ["c_x"]}, "a mod whose bars name no queue selection"),
+                          ("Nowhere", {"chains": ["c_x"]}, "a mod with no pipeline record (GimmeSomeSlack's case)")):
         r = P.refusal(mod, sel, "BENCH", ROOT)
-        check(bool(r), "refused before queueing: %s" % why)
+        check(r is None, "admitted whatever its pipeline stage: %s%s" % (why, "" if r is None else ": " + r["text"]))
+    for spelling in ("Heldmod", "design/concepts/Heldmod", "RimMandrake/Heldmod/"):
+        r = P.refusal(spelling, {"chains": ["c_bar"]}, "BENCH", ROOT)
+        check(bool(r), "a mod on his hold is refused (%s)" % spelling)
         if r:
             ok = all(str(r.get(k) or "").strip() for k in ("clause", "observed", "would_pass", "criterion_why")) \
-                and str((r.get("smallest_fix") or {}).get("what") or "").strip() and r.get("criterion_verdict") == "sound"
-            check(ok, "  and its refusal says what was seen, what would pass and the smallest fix: %s" % r.get("text"))
-    r = P.refusal("Building", {"chains": ["c_bar"]}, "BENCH", ROOT) or {}
-    check("maturation.py advance Building" in r.get("would_pass", "") + str(r.get("smallest_fix")),
-          "a Stage 3 mod's refusal names the move that lets it run: %s" % r.get("would_pass"))
+                and str((r.get("smallest_fix") or {}).get("what") or "").strip()
+            check(ok and SAID in r["text"] and "2026-11-16" in r["text"] and "lift" in r["text"],
+                  "  and its refusal quotes his words and date and names the lift: %s" % r.get("text"))
+    check(P.refusal("Heldmod", {"chains": ["c_bar"]}, "BENCH.filler", ROOT) is not None, "the filler is not ops")
     for by in P.OPS_REQUESTERS:
-        check(P.refusal("Building", {"chains": ["c_any"]}, by, ROOT) is None,
+        check(P.refusal("Heldmod", {"chains": ["c_any"]}, by, ROOT) is None,
               "an ops job (%s) is not a test and is never refused" % by)
-    check(P.refusal("Building", {"chains": ["c_any"]}, "BENCH.filler", ROOT) is not None, "the filler is not ops")
-    q = os.environ["TESTQ_QUEUE"]
-    os.environ["TESTQ_PIPELINE_ADMIT"] = "open"
+    os.environ["RM_OWNER_HOLD_FILE"] = os.path.join(TMP, "absent.json")
     try:
-        check(P.refusal("Building", {"chains": ["c_any"]}, "BENCH", ROOT) is None, "the selftest seam opens on a temp queue")
-        os.environ["TESTQ_QUEUE"] = "/mnt/d/ClaudeWork/rimmandrake/testq"     # the real queue, by its literal path
-        check(P.refusal("Building", {"chains": ["c_any"]}, "BENCH", ROOT) is not None,
-              "and never on the real queue SteveDesktop runs")
-        del os.environ["TESTQ_QUEUE"]
-        check(P.refusal("Building", {"chains": ["c_any"]}, "BENCH", ROOT) is not None, "nor with TESTQ_QUEUE unset")
+        r = P.refusal("Building", {"chains": ["c_x"]}, "BENCH", ROOT)
+        check(bool(r) and "hold" in r["text"], "an unreadable hold list refuses every test (nothing is queued that "
+              "cannot be proved unheld): %s" % (r or {}).get("text"))
     finally:
-        os.environ["TESTQ_QUEUE"] = q
-        del os.environ["TESTQ_PIPELINE_ADMIT"]
+        os.environ["RM_OWNER_HOLD_FILE"] = HOLDS
 
 
 def ns(mod, by, chains="c_x", **kw):
@@ -133,68 +142,80 @@ def testq_checks():
     saved = T.preview
     T.preview = lambda mod, sel: {"refusal": REACHED, "rows": None, "drivers": [], "chains": []}
     try:
-        rc, out = run_submit(ns("Building", "BENCH"))
-        check(rc == 2 and "REFUSED" in out and REACHED not in out and "pipeline" in out.lower(),
-              "submit refuses a non-pipeline test before anything else: %r" % out.strip()[:200])
+        for a, why in ((ns("Blind", "BENCH"), "a blind_challenge mod's chain"),
+                       (ns("Nowhere", "BENCH"), "a mod with no pipeline record"),
+                       (ns("Ready", "BENCH", chains=None, full=True, purpose="sweep"), "a --full sweep")):
+            rc, out = run_submit(a)
+            check(REACHED in out, "submit passes %s to the usual checks: %r" % (why, out.strip()[:160]))
+        rc, out = run_submit(ns("Heldmod", "BENCH"))
+        check(rc == 2 and "REFUSED" in out and REACHED not in out and "HELD BY OWNER" in out,
+              "submit refuses a held mod before anything else: %r" % out.strip()[:200])
         check(not os.listdir(T.q("pending")), "and nothing is queued")
-        rc, out = run_submit(ns("Ready", "BENCH", chains="c_bar"))
-        check(REACHED in out, "a pipeline test passes the gate to the usual checks: %r" % out.strip()[:120])
-        rc, out = run_submit(ns("Building", "BENCH.steward-wake"))
+        rc, out = run_submit(ns("Heldmod", "BENCH.steward-wake"))
         check(REACHED in out, "the steward's repair job is not gated: %r" % out.strip()[:120])
-        # the brake-release canary: Operations' own submit path, on a mod no pipeline names
         saved_rank = T.fill_rank
         T.fill_rank = lambda mod, n, now, today=None, exclude=(): {"verdict": "pick", "pick": ["c_x"], "purpose": "guard",
                                                                     "row_items": {}}
         try:
-            req = BR.canary_request("Building", [], 0)
-            rc, line = BR.submit("Building", req)
+            rc, line = BR.submit("Heldmod", BR.canary_request("Heldmod", [], 0))
         finally:
             T.fill_rank = saved_rank
         check(REACHED in line, "the brake-release canary is not gated: %r" % line[:120])
-        out = io.StringIO()
-        with contextlib.redirect_stdout(out):
-            rc = T.cmd_sweep(argparse.Namespace(mod="Building", by="BENCH", for_item=None, priority=None))
-        check(rc == 0 and "no sweep" in out.getvalue() and REACHED not in out.getvalue(),
-              "the nightly sweep of a non-pipeline mod stops quietly (exit 0, the timer stays green): %r"
-              % out.getvalue().strip()[:160])
+        for mod, held in (("Heldmod", True), ("Blind", False)):
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                rc = T.cmd_sweep(argparse.Namespace(mod=mod, by="BENCH", for_item=None, priority=None))
+            o = out.getvalue()
+            if held:
+                check(rc == 0 and "no sweep" in o and "HELD BY OWNER" in o and REACHED not in o,
+                      "the nightly sweep of a held mod stops quietly (exit 0): %r" % o.strip()[:160])
+            else:
+                check(REACHED in o, "the nightly sweep of a blind_challenge mod reaches submit: %r" % o.strip()[:160])
     finally:
         T.preview = saved
-    plan = T.fill_plan("Building", 4, 200, 8 * 3600, 0)
-    check(plan.get("verdict") == "pipeline" and "advance" in plan.get("text", ""),
-          "the filler is off for a mod no pipeline names, and says what would turn it on: %s" % plan.get("text"))
-    job = dict(T.S.make_job("Building", {"chains": ["c_x"]}, "guard", "BENCH.filler", "abc1234", item="SOME_ITEM"))
+    plan = T.fill_plan("Heldmod", 4, 200, 8 * 3600, 0)
+    check(plan.get("verdict") == "held" and SAID in plan.get("text", ""),
+          "the filler is off for a held mod and quotes his hold: %s" % plan.get("text"))
+    plan = T.fill_plan("Blind", 4, 200, 8 * 3600, 0)
+    check(plan.get("verdict") not in ("held", "pipeline"), "the filler walks a blind_challenge mod: %s %s"
+          % (plan.get("verdict"), plan.get("text", "")[:120]))
     saved_span = FM.job_span
     FM.job_span = lambda rec: (0, 10 ** 12)
     try:
-        check(FM.rerun_job({"job": job}, now=10 ** 12) is None, "a fault-window rerun of a non-pipeline test is not queued")
-        ops = dict(job, requested_by="Operations.canary")
-        check(FM.rerun_job({"job": ops}, now=10 ** 12) is not None, "an ops job's fault-window rerun still is")
+        for mod, want in (("Blind", True), ("Heldmod", False)):
+            job = dict(T.S.make_job(mod, {"chains": ["c_x"]}, "guard", "BENCH.filler", "abc1234", item="SOME_ITEM"))
+            got = FM.rerun_job({"job": job}, now=10 ** 12) is not None
+            check(got == want, "a fault-window rerun of %s %s queued" % (mod, "is" if want else "is not"))
+        job = dict(T.S.make_job("Heldmod", {"chains": ["c_x"]}, "guard", "Operations.canary", "abc1234", item="X"))
+        check(FM.rerun_job({"job": job}, now=10 ** 12) is not None, "an ops job's fault-window rerun still is")
     finally:
         FM.job_span = saved_span
 
 
 def steward_checks():
-    saved = (T.steve_running, T.paused, ST.tick_timer_state)
-    T.steve_running, T.paused, ST.tick_timer_state = (lambda: []), (lambda host=None: None), (lambda: "active")
-    for d in ("pending", "running"):
-        for f in os.listdir(T.q(d)):
-            os.remove(T.q(d, f))
+    saved = (C.read_wired, C.pipeline_mods, os.environ.pop("TESTQ_FILL_MODS", None))
+    C.read_wired, C.pipeline_mods = (lambda path=None: ["FlowWorks", "Heldmod", "Blind"]), (lambda: ["Ready"])
     try:
-        ls = ST.lane_state(1.0e9, mods=["Building", "Draft"])
+        got = C.fill_mods()
     finally:
-        T.steve_running, T.paused, ST.tick_timer_state = saved
-    check(ls["state"] == "IDLE_BY_RULE" and ls["fault_at"] is None and ls["settled"],
-          "a queue empty by rule is settled, never a stall or idle fault: %s" % ls)
+        C.read_wired, C.pipeline_mods = saved[:2]
+        if saved[2] is not None:
+            os.environ["TESTQ_FILL_MODS"] = saved[2]
+    check(got == ["FlowWorks", "Blind", "Ready"], "the filler's mod list drops held mods and keeps the rest: %s" % got)
+    check(not hasattr(ST, "BY_RULE_SETTLED"), "the steward has no IDLE_BY_RULE state left (the 18c lane idle)")
 
 
 MUTANTS = {
-    "no_gate": lambda: setattr(P, "refusal", lambda *a, **k: None),
+    "stage_gate_back": lambda: setattr(P, "refusal", (lambda real: lambda mod, sel, by, root=None: real(
+        mod, sel, by, root) or (None if P.standing(mod, root)[0] or by in P.OPS_REQUESTERS else {"text": "18c"}))(
+        P.refusal)),
+    "full_refused": lambda: setattr(P, "refusal", (lambda real: lambda mod, sel, by, root=None: real(
+        mod, sel, by, root) or ({"text": "full"} if (sel or {}).get("full") else None))(P.refusal)),
+    "no_hold": lambda: setattr(P, "held_by_owner", lambda mod: None),
     "ops_gated": lambda: setattr(P, "OPS_REQUESTERS", ()),
-    "offline_counts": lambda: setattr(P, "BAR_STAGES", ("6", "4-5")),
-    "stage_ignored": lambda: setattr(P, "PAST_BLIND", P.PAST_BLIND + ("offline_build",)),
-    "filler_on": lambda: setattr(T, "pipeline_fill", lambda mod: (None, None)),
-    "idle_is_fault": lambda: setattr(ST, "BY_RULE_SETTLED", False),
-    "seam_on_real_queue": lambda: setattr(P, "REAL_QUEUE", "/nonexistent/testq"),
+    "unreadable_calm": lambda: setattr(P, "_holds", lambda: {}),
+    "fill_held": lambda: setattr(T, "held_fill", lambda mod: None),
+    "fill_mods_held": lambda: setattr(C, "unheld", lambda mods: list(mods)),
 }
 
 
@@ -213,7 +234,7 @@ def main():
         return 1 if bad else 0
     if "--mutant" in sys.argv:
         MUTANTS[sys.argv[sys.argv.index("--mutant") + 1]]()
-    for f in (pipeline_checks, testq_checks, steward_checks):
+    for f in (record_checks, admission_checks, testq_checks, steward_checks):
         f()
     print("%d failed" % len(FAILS))
     return 1 if FAILS else 0

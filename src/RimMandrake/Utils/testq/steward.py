@@ -140,9 +140,6 @@ def mods_default():
 COMPANION_GRACE_S = 900     # a hold outlasting a build and a push, and more than one retry of a blip, is a fault
 
 
-BY_RULE_SETTLED = True     # the selftest's mutant turns it off
-
-
 def _st(state, reason, fault_at=None, at_once=False, jobs=(), settled=False):
     """fault_at: the epoch from which the state is a fault (0: already; None: never). settled: the lane is working as
     intended, so this state ends an incident."""
@@ -221,12 +218,6 @@ def lane_state(now, mods=None):
         return _st("BRAKED", "filler brake on %s: last two filler jobs not DONE (%s: %s)%s"
                    % (",".join(by["brake"]), ",".join(str(j) for j in jobs), ", ".join(causes),
                       "; HARNESS-class, escalated at once" if harness else ""), 0, at_once=harness, jobs=jobs)
-    if "pipeline" in by and set(by) <= {"pipeline", "exhausted"} and BY_RULE_SETTLED:
-        # 18c (owner by card 2026-11-14, "Pipeline tests only"): a queue empty because no mod version is past the blind
-        # challenge is the lane working as ruled, never a stall, idle or IDLE_EMPTY fault
-        m = by["pipeline"][0]
-        return _st("IDLE_BY_RULE", "pipeline tests only: nothing admissible (%d mod(s)); e.g. %s"
-                   % (len(by["pipeline"]), plans[m]["text"][:200]), settled=True)
     if "pick" in by:
         return _st("IDLE_EMPTY", "fill would queue %s but nothing is pending (the fill failed?)"
                    % "; ".join("%s: %s" % (m, ",".join(plans[m]["pick"])) for m in by["pick"]), 0)

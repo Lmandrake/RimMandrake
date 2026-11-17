@@ -201,7 +201,7 @@ next start; a failed launch is not retried; the idle reading fires on a planted 
 In-game acceptance with Dispatch sharing the two games, the pre-human check,
 the pass record. Each gets a slice after one mod has gone through it by hand and its journal says what was boring.
 
-**Spec §8, decision 18 (his card, 2026-11-14):** the entry rule is built (the queue admits only a locked bar's check from a mod version past Stages 4 and 5: `src/RimMandrake/Utils/testq/pipeline_admit.py`). Still to plan, in the Stage 6 slice: a job that writes one line item's in-game verdict to the mod's record on whichever game is free, with the version-and-list check of spec §4 Stage 6. Re-running a passed version on change is planned only after one version has passed.
+**Spec §8, decision 18 (his card, 2026-11-14):** the 18c entry rule was dropped by him on 2026-11-17 (any mod's token-free tests run on SteveDesktop; `src/RimMandrake/Utils/testq/pipeline_admit.py` refuses only a mod on his hold). Still to plan, in the Stage 6 slice: a job that writes one line item's in-game verdict to the mod's record on whichever game is free, with the version-and-list check of spec §4 Stage 6. Re-running a passed version on change is planned only after one version has passed.
 
 ## 5. The open questions that most block automation, ranked
 

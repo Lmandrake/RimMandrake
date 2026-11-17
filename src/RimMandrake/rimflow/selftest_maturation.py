@@ -1396,7 +1396,8 @@ def ingame_main():
                                                "smallest list", "never restore his list")),
             "the brief carries the bridge rules: idle-ok take, release at stop, no flight, no broken game, DLC, list")
         chk(lambda: "none of this mod's %d checks carries one" % len(live6) in text[0]
-            and "pipeline_admit.py" in text[0], "the brief says SteveDesktop's queue admits none (no testq block)")
+            and "pipeline_admit.py" in text[0] and "Pipeline tests only" not in text[0],
+            "the brief says no check names a modcheck chain (no testq block), and cites no 2026-11-14 pipeline-only limit")
         chk(lambda: all(w in text[0] for w in ("RIMMANDRAKE_FIX_FORCED_WEATHER_SKIPS_THE_RAIN_LIST",
                                                "RIMMANDRAKE_EXTEND_NO_RAIN_SCENE_WITH_FORCED_WEATHER", "`sc_no_rain`",
                                                "PF_PROBE_CALLER_NEVER_WET", "PF_HERD_CALLER_ANCHOR_ALWAYS",

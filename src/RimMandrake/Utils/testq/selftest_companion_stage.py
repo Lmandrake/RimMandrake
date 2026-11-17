@@ -4,7 +4,6 @@ the filler holds rather than spend a job while it is not. A temp git repo, the r
 build; no network and no dotnet."""
 import json
 import os
-os.environ["TESTQ_PIPELINE_ADMIT"] = "open"     # spec 18c gate: these mock mods have no pipeline record (selftest_testq_pipeline_admit.py)
 import shutil
 import subprocess
 import sys

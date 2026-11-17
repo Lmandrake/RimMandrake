@@ -3134,12 +3134,14 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
          "advance it yourself." % (ver, mod, n), "",
          "## Where it runs", "",
          "The spec (§4 Stage 6, \"Which game runs what\"; his card of 2026-11-14, 18a): either game may give a bar's "
-         "scripted verdict; exploring and screenshots run on Archmagi. SteveDesktop's queue admits only a stage-6 entry "
-         "with a `testq` block (`src/RimMandrake/Utils/testq/pipeline_admit.py`, his 18c \"Pipeline tests only\"): "
-         "%s." % ("%d of %d of this mod's checks carry one (%s); queue those with `testq.py submit` if SteveDesktop is "
-                  "free, and run the rest here" % (len(f.get("testq") or []), len(checks), ", ".join(f["testq"]))
-                  if f.get("testq") else "none of this mod's %d checks carries one, so this visit runs on Archmagi "
-                  "through the bridge" % len(checks)), "",
+         "scripted verdict; exploring and screenshots run on Archmagi. SteveDesktop's queue takes any mod's token-free "
+         "checks whatever its stage (the owner dropped the 2026-11-14 pipeline-only limit on 2026-11-17); it refuses only "
+         "a mod on his hold (`src/RimMandrake/Utils/testq/pipeline_admit.py`). It runs modcheck chains, which a stage-6 "
+         "entry's `testq` block names: %s." % (
+             "%d of %d of this mod's checks carry one (%s); queue those with `testq.py submit` if SteveDesktop is "
+             "free, and run the rest here" % (len(f.get("testq") or []), len(checks), ", ".join(f["testq"]))
+             if f.get("testq") else "none of this mod's %d checks carries one, so this visit runs them on Archmagi "
+             "through the bridge" % len(checks)), "",
          "## The bridge and the game (rules; each one binds)", ""]
     L += [r % tuple(x for x in ((purpose, seat) if "take --idle-ok" in r else (seat,) if "release" in r else
                                 (mod,) if "deploy_custom_mods" in r else ()))

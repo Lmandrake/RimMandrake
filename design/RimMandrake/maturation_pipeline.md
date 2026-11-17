@@ -211,9 +211,9 @@ One stage, by his card of 2026-11-13 ("One stage, tests first").
   Pyrelands visit 1 (cap 20 -> 30 to match the hand launches; that visit spent about USD 18). From then on Dispatch
   launches at most `ingame_auto_runs_per_visit` (1) run per owed visit. A flyer's flight is never tested live
   without him.
-- **SteveDesktop**: its test queue admits a job only through `src/RimMandrake/Utils/testq/pipeline_admit.py`: a
-  stage-6 check named in the `testq` block of a `test_table.json` entry, for a locked version whose record is at
-  `in_game` or later. On 2026-11-15 no stage-6 check of any mod has a `testq` block, so SteveDesktop runs none of them.
+- **SteveDesktop**: its test queue takes any mod's token-free checks whatever its stage (the owner dropped the
+  2026-11-14 pipeline-only limit on 2026-11-17); `src/RimMandrake/Utils/testq/pipeline_admit.py` refuses only a mod on
+  his hold. It runs modcheck chains: the `testq` block of a stage-6 `test_table.json` entry names a check's chain.
 - **Artifact**: `version/in_game/visit_<N>/`: `rows.jsonl`, `strange.jsonl`, a savegame, `SUMMARY.md` with an Exit
   block (`ingame_rows`, `strange_open`, `savegame`, `exit_met`).
 - **What `next` reads** (`maturation.read_ingame_exit`): each stage-6 check of the table has a PASS row with
@@ -349,7 +349,7 @@ A `hold` blocks every advance until a later `release`.
 | Dispatch step, idle alarm, cap reserved before launch, spend rows of ended runs | `maturation_dispatch.py` | `selftest_maturation_dispatch.py` |
 | Blind challenge brief, launcher (one per visit), exit reader | `maturation.py`, `maturation_dispatch.py` | `selftest_maturation.py` |
 | In-game brief, launcher (shipped off; on since 2026-11-15), exit reader | `maturation.py`, `maturation_dispatch.py` | `selftest_maturation.py`, `selftest_maturation_dispatch.py` |
-| SteveDesktop admission | `Utils/testq/pipeline_admit.py` | `Utils/testq/selftest_testq_pipeline_admit.py` |
+| SteveDesktop owner-hold refusal | `Utils/testq/pipeline_admit.py` | `Utils/testq/selftest_testq_pipeline_admit.py` |
 | Status page | `Utils/maturation_now.py` | `Utils/selftest_maturation_now.py` |
 | Designer inner steps, exam, coverage judge, owner certificate, repin | `designer_stage.py`, `concept_tree.py`, `coverage_judge.py` | `selftest_designer_*.py`, `selftest_concept_*.py`, `selftest_coverage_*.py` |
 | Refusal records, judge calibration registry, neutral fixer | `refusal_contract.py` | `selftest_refusal_contract.py`, `selftest_judge_calibration.py` |

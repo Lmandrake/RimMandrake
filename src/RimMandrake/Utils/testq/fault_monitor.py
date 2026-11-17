@@ -293,7 +293,7 @@ def rerun_job(rec, now=None):
     job = rec["job"]
     if not (job.get("item") or job.get("row_items")):
         return None
-    if T.pipeline_refusal(job):     # 18c: a rerun is a new queueing, and only a pipeline test (or an ops job) may queue
+    if T.hold_refusal(job):     # a rerun is a new queueing: a mod on the owner's hold is not re-queued
         return None
     now = time.time() if now is None else now
     span = job_span(rec)

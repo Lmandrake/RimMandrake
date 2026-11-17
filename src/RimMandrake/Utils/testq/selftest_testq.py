@@ -12,7 +12,6 @@ import fcntl
 import glob
 import json
 import os
-os.environ["TESTQ_PIPELINE_ADMIT"] = "open"     # spec 18c gate: these mock mods have no pipeline record (selftest_testq_pipeline_admit.py)
 import shutil
 import subprocess
 import sys

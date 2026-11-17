@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""selftest_testq_blocks.py - the testq blocks that let SteveDesktop take a past-blind mod's in-game checks under 18c
-(testq_blocks.py; item RIMMANDRAKE_AUTHOR_TESTQ_BLOCKS_STEVE_SITS_IDLE_BY_RULE).
+"""selftest_testq_blocks.py - the testq blocks that map a past-blind mod's stage-6 checks to the chains SteveDesktop's
+filler walks (testq_blocks.py; item RIMMANDRAKE_AUTHOR_TESTQ_BLOCKS_STEVE_SITS_IDLE_BY_RULE).
 
   python3 selftest_testq_blocks.py               every check; exit 1 on any failure
   python3 selftest_testq_blocks.py --mutant M    the same checks with guard M reverted: must exit 1
@@ -99,8 +99,8 @@ def run_checks():
               "apply keeps %s's JSON layout (ensure_ascii %s), so the diff is the blocks only" % (mod, asc))
     check(PA.refusal("Ready", {"chains": ["c_entry", "c_one"]}, "BENCH.filler", ROOT) is None,
           "pipeline_admit admits the written chains")
-    check(PA.refusal("Ready", {"chains": ["c_a"]}, "BENCH.filler", ROOT) is not None,
-          "pipeline_admit still refuses a chain no block names")
+    check(PA.refusal("Ready", {"chains": ["c_a"]}, "BENCH.filler", ROOT) is None,
+          "a chain no block names is admitted too (owner 2026-11-17 dropped the 2026-11-14 pipeline-only limit)")
     with contextlib.redirect_stdout(io.StringIO()):
         check(B.main(["check"]) == 0, "check passes once every past-blind mod's blocks are written")
         concept("Late", "in_game", tests={k: {x: y for x, y in t.items() if x != "testq"} for k, t in TESTS.items()})

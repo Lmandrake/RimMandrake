@@ -1,49 +1,57 @@
-"""testq/pipeline_admit.py - SteveDesktop runs pipeline tests only. The owner by card, 2026-11-14 (spec question 18c,
-design/specs/2026-11-13-maturation-pipeline.md section 8): "What may be queued on SteveDesktop -> Pipeline tests only".
-No load-check exception. Item RIMMANDRAKE_DESIGN_MATURATION_PIPELINE_WHOLE_MOD_IS_THE_UNIT; one more condition in the
-admission checks of RIMMANDRAKE_STOP_STEVEDESKTOP_INVALID_RUNS_REPEATING_UNFIXED (repeat_guard.py), not a second design.
+"""testq/pipeline_admit.py - what SteveDesktop's test queue refuses, and the pipeline record readers.
+
+The owner, 2026-11-17 about 11:00 AM PST: "Drop 11-14 limits, old rule. Clear its limitations. We are remeasuring it for
+a brand new pipeline." His card of 2026-11-14 (spec question 18c, "Pipeline tests only") is dropped (item
+RIMMANDRAKE_DROP_STEVEDESKTOP_PIPELINE_ONLY_LIMIT): any mod's token-free test, proof chain, --full sweep or --item
+selection may be submitted and filled whatever its pipeline stage.
 
   refusal(mod, selector, requested_by) -> None (admitted) or a refusal record, checked by testq submit before anything
   else, and by fill, sweep and the fault-window rerun (fault_monitor.rerun_job).
 
-A test job is admitted only when its mod version stands past the blind offline challenge in the pipeline record
-(design/concepts/<Mod>/version/stage_record.json, written by rimflow/maturation.py: stage in PAST_BLIND), that version is
-locked (VERSION.json state "locked") and is the one the record is for, and every chain, row and proof the job selects
-is named by a stage-6 entry of that version's test_table.json in its `testq` block:
+One refusal stays: a mod on the owner's hold (src/RimMandrake/rimflow/mod_owner_hold.json, his 2026-11-16 hold on the
+biome mods other than Pyrelands; only he lifts it). An unreadable hold list refuses every test: nothing is queued that
+cannot be proved unheld. Ops jobs are not tests and are never refused: the requesters in OPS_REQUESTERS (the
+brake-release canary, the steward's repair wake). The machine-safety brakes (fault_monitor, the outage pause,
+brake_release) live in their own modules and are not this file's.
 
-    "sc_bar": {"stage": "6", ..., "testq": {"chains": [...], "rows": [...], "proofs": [...]}}
-
-A whole sweep (--full) or an --item selection is never one bar's check, so it is refused. Ops jobs are not tests and are
-never refused: the requesters in OPS_REQUESTERS (the brake-release canary, the steward's repair wake). Reading the
-record is blind-safe: an unreadable file makes that mod not qualify, and the refusal says which file.
-
-TESTQ_PIPELINE_ADMIT=open admits everything for the older testq selftests (their mock mods have no pipeline record),
-and only on a queue that is not the real one (TESTQ_QUEUE set elsewhere): it can never open the lane SteveDesktop runs.
+standing() / qualifying() only READ the pipeline record (design/concepts/<Mod>/version/stage_record.json, VERSION.json
+and the `testq` blocks of test_table.json's stage-6 entries): testq_blocks.py and coverage.pipeline_mods use them to find
+the chains a locked bar names. They admit and refuse nothing.
 """
 import json
 import os
+import sys
 
 PAST_BLIND = ("in_game", "pre_human", "his_walk", "passed")    # maturation.STAGES after blind_challenge
 BAR_STAGES = ("6",)                                            # a test-table entry the game decides (spec Stage 6)
 KINDS = ("chains", "rows", "proofs")
 OPS_REQUESTERS = ("Operations.canary", "BENCH.steward-wake")   # brake_release.BY; steward.py's repair wake
-CLAUSE = "pipeline_tests_only"
-CRITERION = ("only a locked bar's in-game check, for a mod version the pipeline record shows past the blind offline "
-             "challenge, may be queued on SteveDesktop (owner by card 2026-11-14, spec question 18c)")
-
-
-REAL_QUEUE = "/mnt/d/ClaudeWork/rimmandrake/testq"     # testq.QHOME's default: the lane SteveDesktop runs
-
-
-def open_for_selftest(qhome=None):
-    """QHOME: the queue the caller runs (testq passes its QHOME, which a selftest may set in-process)."""
-    q = qhome or os.environ.get("TESTQ_QUEUE") or REAL_QUEUE
-    return os.environ.get("TESTQ_PIPELINE_ADMIT") == "open" and os.path.realpath(q) != os.path.realpath(REAL_QUEUE)
+CLAUSE = "owner_hold"
+CRITERION = ("a mod on the owner's hold (rimflow/mod_owner_hold.json) is not tested on SteveDesktop until he lifts it "
+             "(owner 2026-11-16)")
 
 
 def repo_root():
     return os.environ.get("TESTQ_PIPELINE_ROOT") or os.path.abspath(
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))
+
+
+def _moh():
+    d = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rimflow")
+    if d not in sys.path:
+        sys.path.insert(0, d)
+    import mod_owner_hold
+    return mod_owner_hold
+
+
+def _holds():
+    """-> mod_owner_hold.load() (RM_OWNER_HOLD_FILE or the repo's list); raises mod_owner_hold.Unreadable."""
+    return _moh().load()
+
+
+def held_by_owner(mod):
+    """-> the owner's hold on MOD (any path spelling), or None. Raises mod_owner_hold.Unreadable."""
+    return _holds().get(_moh().key(mod))
 
 
 def _vdir(root, mod):
@@ -61,7 +69,8 @@ def _read(path):
 
 
 def standing(mod, root=None):
-    """-> (entry or None, why not): entry = {"version", "stage", "chains", "rows", "proofs"} when MOD qualifies."""
+    """-> (entry or None, why not): entry = {"version", "stage", "chains", "rows", "proofs"} when MOD's locked version
+    stands past the blind challenge. A reader of the record; it decides no admission."""
     root = root or repo_root()
     d = _vdir(root, mod)
     rel = "design/concepts/%s/version/" % mod
@@ -109,37 +118,27 @@ def qualifying(root=None):
     return out
 
 
-def _refuse(mod, observed, would_pass, fix, cost="edit"):
+def _refuse(mod, observed, would_pass, fix, why):
     r = {"clause": CLAUSE, "criterion": CRITERION, "mod": mod, "observed": observed, "would_pass": would_pass,
-         "smallest_fix": {"what": fix, "attainable": "yes", "cost": cost}, "criterion_verdict": "sound",
-         "criterion_why": "his card answer of 2026-11-14 (18c), recorded on the ledger by OWNER"}
-    r["text"] = "not a pipeline test (18c, pipeline tests only): %s; it runs once %s (smallest fix: %s)" % (
-        observed, would_pass, fix)
+         "smallest_fix": {"what": fix, "attainable": "owner" if why == "held" else "yes", "cost": "owner"
+                          if why == "held" else "edit"}, "criterion_verdict": "sound",
+         "criterion_why": "the owner's hold of 2026-11-16 (design/RimMandrake/standing_rulings.md, Owner hold)"}
+    r["text"] = "%s; it runs once %s (smallest fix: %s)" % (observed, would_pass, fix)
     return r
 
 
 def refusal(mod, sel, by, root=None):
-    """-> None when the job may be queued, else a refusal record (fields of the refusal contract, plus `text`)."""
-    if by in OPS_REQUESTERS or open_for_selftest():
+    """-> None when the job may be queued, else a refusal record (fields of the refusal contract, plus `text`).
+    SEL and ROOT are accepted for the callers' signature; no selection and no pipeline stage is refused."""
+    if by in OPS_REQUESTERS:
         return None
-    sel = sel or {}
-    if sel.get("full") or sel.get("item"):
-        return _refuse(mod, "a %s selection is not one bar's check" % ("--full" if sel.get("full") else "--item"),
-                       "the job names the chains, rows or proofs of locked bars' in-game checks",
-                       "submit --chains/--rows/--proofs taken from the stage-6 entries' testq blocks in "
-                       "design/concepts/%s/version/test_table.json" % mod)
-    e, why = standing(mod, root)
-    if e is None:
-        return _refuse(mod, why, "the pipeline record shows %s past the blind offline challenge (stage in_game or "
-                       "later) on a locked version" % mod,
-                       "finish Stages 4 and 5, then `python3 src/RimMandrake/rimflow/maturation.py advance %s --to in_game "
-                       "--by SEAT --why ...`" % mod, cost="rerun")
-    extra = ["%s %s" % (k[:-1], x) for k in KINDS for x in (sel.get(k) or []) if x not in e[k]]
-    if extra or not any(sel.get(k) for k in KINDS):
-        return _refuse(mod, "%s %s at %s: %s" % (mod, e["version"], e["stage"], "; ".join(extra[:4]) + (
-            " (and %d more)" % (len(extra) - 4) if len(extra) > 4 else "") + " named by no locked bar's in-game check"
-            if extra else "the job selects nothing"),
-            "every chain, row and proof it selects is in a stage-6 entry's testq block of its test_table.json",
-            "drop the unnamed selection, or name it in the bar's testq block (an edit at Stage 3, so it goes through "
-            "Stages 4 and 5 again)")
+    moh = _moh()
+    try:
+        h = held_by_owner(mod)
+    except moh.Unreadable as e:
+        return _refuse(mod, "the owner-hold list cannot be read (%s)" % e, "the hold list reads",
+                       "repair src/RimMandrake/rimflow/mod_owner_hold.json", "unreadable")
+    if h:
+        return _refuse(mod, moh.status(h), "the owner lifts his hold on %s" % h["mod"],
+                       "only he lifts it: %s" % (moh.LIFT % h["mod"]), "held")
     return None

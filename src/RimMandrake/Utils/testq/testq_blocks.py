@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""testq/testq_blocks.py - write the `testq` blocks that let SteveDesktop take a mod's in-game checks under 18c
-(item RIMMANDRAKE_AUTHOR_TESTQ_BLOCKS_STEVE_SITS_IDLE_BY_RULE). pipeline_admit.py admits a job only when every chain it
-selects is named by a stage-6 entry's testq block; nothing in the pipeline wrote those blocks, so SteveDesktop sat
-IDLE_BY_RULE with three mods past blind. This derives them from what modcheck already runs, by one rule, no judgement:
+"""testq/testq_blocks.py - write the `testq` blocks that map a mod's stage-6 checks to the modcheck chains SteveDesktop
+runs (item RIMMANDRAKE_AUTHOR_TESTQ_BLOCKS_STEVE_SITS_IDLE_BY_RULE). coverage.pipeline_mods walks every past-blind mod
+whose blocks name a chain, so a mod reaching Stage 6 is filled without being wired by hand; admission does not read the
+blocks (the owner dropped the 2026-11-14 pipeline-only limit on 2026-11-17). This derives them from what modcheck
+already runs, by one rule, no judgement:
 
   a stage-6 entry of kind live_minimal (SteveDesktop runs modcheck's minimal tier) names chain C when
     1. its `entry` IS a chain of the mod's modcheck suite (FlowWorks' extensions, Pyrelands' validation chains), or
