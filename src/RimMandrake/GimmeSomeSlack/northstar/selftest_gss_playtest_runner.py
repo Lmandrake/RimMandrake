@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""selftest_gss_playtest_runner.py - the GSS launcher's pure logic: recipe expansion agrees with the C# catalogue,
-and the shared verdict rule reads a GSS journal (PENDING save_reload, red-error FAIL) the way it reads FlowWorks'."""
+"""selftest_gss_playtest_runner.py - check recipes, shared journal verdicts and automatic resume offline."""
 import os
 import re
 import sys
+from contextlib import redirect_stderr
+from functools import partial
+from io import StringIO
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -52,6 +55,7 @@ def main():
     assert P.combine([{"type": "run_start"}, ok, pend, end], b) == "PASS"
     n += 4
     n += _resume_wait(G)
+    n += _resume_deadline(G, pend, end)
     n += _save_reload_b_source(src)
     print("%d/%d passed" % (n, n))
     return 0
@@ -106,17 +110,94 @@ def _resume_wait(G):
     done = [{"type": "scenario", "name": "save_reload_b", "status": "FAIL", "reason": "2 line(s) changed"}]
     outs = iter([None, notre, done])
     ck = _Clock()
-    r = G.resume_loop(lambda: {"ready": True}, lambda: next(outs), limit_s=300, clock=ck, sleep=ck.sleep)
+    r = G.resume_loop(lambda *_: {"ready": True}, lambda *_: next(outs), limit_s=300, clock=ck, sleep=ck.sleep)
     assert r["recs"] is done and r["tries"] == 3, r
     n += 1
     # bounded: a game that never reloads ends with the last NOT_RELOADED record (honest INVALID, never a pass)
     ck = _Clock()
-    r = G.resume_loop(lambda: {"ready": True}, lambda: notre, limit_s=30, clock=ck, sleep=ck.sleep)
+    r = G.resume_loop(lambda *_: {"ready": True}, lambda *_: notre, limit_s=30, clock=ck, sleep=ck.sleep)
     assert r["recs"] is notre and ck.t >= 30, r
     n += 1
     assert G.not_reloaded(notre) and not G.not_reloaded(done) and not G.not_reloaded(None)
     n += 1
     return n
+
+
+def _resume_deadline(G, pend, end):
+    """Drive the CLI's automatic resume with a fake bridge and clock."""
+    first = [{"type": "run_start"}, dict(pend, evidence={"resumeRecipe": "save_reload_b",
+                                                       "saveName": "test", "ticksAtSave": 1000}), end]
+    ready = {"mapCount": 1, "ticksGame": 1001, "programState": "Playing"}
+    limit = 60
+
+    def run(load_wait, replies, slow_start=False, poll=None):
+        ck = _Clock()
+        starts = []
+
+        class Bridge:
+            timeout = 120.0
+
+            def _set_call_timeout(self, seconds):
+                self.timeout = seconds
+
+            def call(self, tool, params):
+                if tool == "rimworld/load_game_ready":
+                    return {"success": True}
+                if tool == "rimworld/get_game_info":
+                    return next(replies)
+                assert tool == G.TOOLS["start"], tool
+                starts.append(ck())
+                if slow_start:
+                    ck.sleep(self.timeout)
+                    raise TimeoutError("bridge did not answer")
+                if poll is not None:
+                    return {"success": True, "runId": "r2", "scenarios": ["save_reload_b"], "tickMode": "batch"}
+                return {"success": False, "message": "no current map"}
+
+        def run_once(session, calls, args, recipe, resume=None, *rest):
+            return real_run_once(session, calls, args, recipe, resume, *rest) if resume else first
+
+        real_run_once = G.run_once
+        bridge = Bridge()
+        argv = ["--recipe", "save_reload"]
+        if load_wait is not None:
+            argv += ["--load-wait", str(load_wait)]
+        if poll is not None:
+            argv += ["--poll", str(poll)]
+        with (patch.object(G.P, "_connect", return_value=bridge),
+              patch.object(G, "run_once", run_once),
+              patch.object(G.time, "sleep", ck.sleep),
+              patch.object(G, "resume_loop", partial(G.resume_loop, clock=ck, sleep=ck.sleep)),
+              patch.object(G, "wait_for_map", partial(G.wait_for_map, clock=ck, sleep=ck.sleep))):
+            rc = G.main(argv)
+        assert rc == 1 and bridge.timeout == 120.0
+        return ck(), starts
+
+    # The first start races the load. The retry sees empty, missing and invalid map data.
+    unready = [None, {}, {"mapCount": 1, "ticksGame": "invalid"}]
+    elapsed, starts = run(limit, iter([ready] * 3 + unready * 30))
+    assert elapsed <= limit, "resume used %.1f s with a %d s budget" % (elapsed, limit)
+    assert elapsed == limit and starts == [2.0], (elapsed, starts)
+    # A start that blocks consumes only the time remaining after the map polls.
+    elapsed, starts = run(limit, iter([ready] * 3), slow_start=True)
+    assert elapsed == limit and starts == [2.0], (elapsed, starts)
+    # B can start before the deadline but its status poll must fit in the same budget.
+    assert run(limit, iter([ready] * 3), poll=90) == (60.0, [2.0])
+    # Fractional budgets clip poll and retry sleeps. A zero budget skips the callbacks.
+    assert run(0.5, iter([{"mapCount": "invalid", "ticksGame": 1001}])) == (0.5, [])
+    assert run(2.5, iter([ready] * 3)) == (2.5, [2.0])
+    assert run(0, iter([])) == (0.0, [])
+
+    # The flag is optional. Explicit malformed values must fail before connecting.
+    assert run(None, iter([None] * 600)) == (600.0, [])
+    for value in ("", "invalid", "nan", "inf", "-1"):
+        with patch.object(G.P, "_connect") as connect, redirect_stderr(StringIO()):
+            try:
+                G.main(["--load-wait", value])
+                raise AssertionError("invalid --load-wait accepted: %r" % value)
+            except SystemExit as ex:
+                assert ex.code == 2 and not connect.called, value
+    return 12
 
 
 def _save_reload_b_source(src):

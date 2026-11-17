@@ -19,9 +19,11 @@ DOWN). The run MODIFIES THE MAP - scratch maps only.
 """
 import argparse
 import json
+import math
 import os
 import sys
 import time
+from functools import partial
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
@@ -49,12 +51,33 @@ def expand(recipe):
     return out
 
 
-def run_once(s, calls, a, recipe, resume=None):
+class _ResumeTimeout(TimeoutError):
+    """The launcher has used all of its resume budget."""
+
+
+def _resume_call(remaining, s, calls, tool, **params):
+    left = remaining()
+    if left <= 0:
+        raise _ResumeTimeout()
+    timeout = s.timeout
+    s._set_call_timeout(min(timeout, left))
+    try:
+        return P._call(s, calls, tool, **params)
+    except Exception as ex:
+        if remaining() <= 0:
+            raise _ResumeTimeout() from ex
+        raise
+    finally:
+        s._set_call_timeout(timeout)
+
+
+def run_once(s, calls, a, recipe, resume=None, remaining=None):
     t0 = time.time()
+    call = P._call if remaining is None else partial(_resume_call, remaining)
     p = dict(recipe=recipe, seed=a.seed, tickMode=a.tick_mode, frameBudgetMs=a.budget_ms, force=a.force)
     if resume:
         p["resume"] = resume
-    st = P._call(s, calls, TOOLS["start"], **p)
+    st = call(s, calls, TOOLS["start"], **p)
     if not st.get("success"):
         print("START REFUSED: %s" % st.get("message", st))
         return None
@@ -62,8 +85,9 @@ def run_once(s, calls, a, recipe, resume=None):
     print("run %s  scenarios=%s  mode=%s%s" % (run_id, ",".join(st["scenarios"]), st["tickMode"], "  resume=" + resume if resume else ""))
     seen = 0
     while True:
-        time.sleep(a.poll)
-        stat = P._call(s, calls, TOOLS["status"], runId=run_id)
+        pause = a.poll if remaining is None else min(a.poll, max(0.0, remaining()))
+        time.sleep(pause)
+        stat = call(s, calls, TOOLS["status"], runId=run_id)
         recs = stat.get("records") or []
         for r in recs[seen:]:
             print("  %-12s %-8s %6.2fs %6d ticks  %s" % (r["name"], P.mark(r), r["wallSec"], r["ticks"], (r.get("reason") or "")[:300]))
@@ -73,7 +97,7 @@ def run_once(s, calls, a, recipe, resume=None):
         if time.time() - t0 > a.timeout:
             print("LAUNCHER TIMEOUT after %.0f s; the run is still going in game" % (time.time() - t0))
             break
-    col = P._call(s, calls, TOOLS["collect"], runId=run_id)
+    col = call(s, calls, TOOLS["collect"], runId=run_id)
     path = col.get("reportPath")
     if not path or not os.path.exists(path):
         print("COLLECT: no readable journal (%s); C# verdict %s" % (path, col.get("verdict")))
@@ -102,26 +126,37 @@ def _state(gi):
     return st.get("programState") if isinstance(st, dict) else (gi.get("programState") if isinstance(gi, dict) else None)
 
 
-def wait_for_map(poll, ticks_at_save, limit_s=600.0, clock=time.time, sleep=time.sleep):
+def wait_for_map(poll, ticks_at_save, limit_s=600.0, clock=time.monotonic, sleep=time.sleep, remaining=None):
     """After load_game_ready: wait for ON_MAP_POLLS polls running that read a map at the save's tick (Playing when the
     reply says). One such poll is not enough: on the full list (STRANGE_WALK_RESUME_RACED_THE_LOAD) the OLD map, paused at
     that tick, answered before the load began. Even three can be the old map, so save_reload_b itself refuses the saved
     game (NOT_RELOADED) and resume_loop retries it. A poll that raises (main thread busy loading) breaks a run."""
     t0, run, n, last = clock(), 0, 0, None
-    while clock() - t0 < limit_s:
+    if remaining is None:
+        deadline = t0 + limit_s
+
+        def local_remaining():
+            return deadline - clock()
+
+        remaining = local_remaining
+
+    while remaining() > 0:
         try:
-            gi = poll() or {}
+            gi = poll()
         except Exception as ex:   # noqa: BLE001 - a busy main thread is part of a load
             gi = {"error": str(ex)}
         n += 1
-        last = gi
-        tk, st = gi.get("ticksGame"), _state(gi)
-        on = ((gi.get("mapCount") or 0) >= 1 and st in (None, "Playing") and isinstance(tk, int)
-              and 0 < tk <= (ticks_at_save or 0) + 5 and not gi.get("error"))
+        last = gi if isinstance(gi, dict) else {}
+        maps, tk, st = last.get("mapCount"), last.get("ticksGame"), _state(last)
+        on = (isinstance(maps, int) and maps >= 1 and st in (None, "Playing") and isinstance(tk, int)
+              and 0 < tk <= (ticks_at_save or 0) + 5 and not last.get("error"))
         run = run + 1 if on else 0
+        left = remaining()
+        if left <= 0:
+            break
         if run >= ON_MAP_POLLS:
             return {"ready": True, "polls": n, "seconds": round(clock() - t0, 1), "last": last}
-        sleep(1.0)
+        sleep(min(1.0, left))
     return {"ready": False, "polls": n, "seconds": round(clock() - t0, 1), "last": last}
 
 
@@ -131,21 +166,34 @@ def not_reloaded(recs):
                               and str(r.get("reason") or "").startswith("NOT_RELOADED") for r in recs)
 
 
-def resume_loop(wait, start_b, limit_s=600.0, clock=time.time, sleep=time.sleep):
+def resume_loop(wait, start_b, limit_s=600.0, clock=time.monotonic, sleep=time.sleep):
     """Run save_reload_b once the loaded map is there; retry while the start is refused (no map yet: run_once None) or
-    B reads the saved game (NOT_RELOADED), bounded by limit_s. Returns the last records (None when never started)."""
-    t0, tries, recs = clock(), 0, None
-    while True:
-        w = wait()
+    B reads the saved game (NOT_RELOADED). Both callbacks get the same remaining-seconds function."""
+    t0, tries, recs, w = clock(), 0, None, None
+    deadline = t0 + limit_s
+
+    def remaining():
+        return deadline - clock()
+
+    while remaining() > 0:
+        w = wait(remaining)
+        if not w.get("ready") or remaining() <= 0:
+            break
         tries += 1
-        recs = start_b()
+        try:
+            recs = start_b(remaining)
+        except _ResumeTimeout:
+            print("RESUME: load-wait expired during save_reload_b")
+            break
         if recs is not None and not not_reloaded(recs):
             break
-        if clock() - t0 >= limit_s:
+        left = remaining()
+        if left <= 0:
             break
-        print("RESUME: %s; retry in %.0f s" % ("start refused" if recs is None else "save_reload_b read the saved game (NOT_RELOADED)",
-                                               RESUME_RETRY_S))
-        sleep(RESUME_RETRY_S)
+        delay = min(RESUME_RETRY_S, left)
+        print("RESUME: %s; retry in %g s" % ("start refused" if recs is None else "save_reload_b read the saved game (NOT_RELOADED)",
+                                               delay))
+        sleep(delay)
     return {"recs": recs, "tries": tries, "wait": w, "seconds": round(clock() - t0, 1)}
 
 
@@ -175,9 +223,12 @@ def main(argv=None):
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--resume", default=None)
     ap.add_argument("--no-resume", action="store_true")
-    ap.add_argument("--load-wait", type=float, default=600.0, help="seconds the resume waits for the loaded save (full list: minutes)")
+    ap.add_argument("--load-wait", type=float, default=600.0,
+                    help="seconds for the resume phase after load_game_ready (full list: minutes)")
     ap.add_argument("--out-dir", default=os.path.join(REPO, "Transient", "gss_playtest"))
     a = ap.parse_args(argv)
+    if not math.isfinite(a.load_wait) or a.load_wait < 0:
+        ap.error("--load-wait must be finite and nonnegative")
     expand(a.recipe)   # refuse a typo before touching the game
     calls = [0]
     s = P._connect()
@@ -189,7 +240,6 @@ def main(argv=None):
     if pend and not a.no_resume:
         ev = pend.get("evidence") or {}
         print("\nRESUME: loading %s (tick %s)" % (ev.get("saveName"), ev.get("ticksAtSave")))
-        t = time.time()
         calls[0] += 1
         lr = s.call("rimworld/load_game_ready", {"saveName": ev.get("saveName")}) or {}
         if isinstance(lr, dict) and lr.get("content"):
@@ -199,10 +249,13 @@ def main(argv=None):
                 pass
         second = None
         if lr.get("success"):
-            r = resume_loop(lambda: wait_for_map(lambda: P._call(s, calls, "rimworld/get_game_info"), ev.get("ticksAtSave"),
-                                                 limit_s=a.load_wait),
-                            lambda: run_once(s, calls, a, ev.get("resumeRecipe"), pend.get("runId")), limit_s=a.load_wait)
-            print("RESUME: %d tr%s, %.0f s" % (r["tries"], "y" if r["tries"] == 1 else "ies", r["seconds"]))
+            def wait(remaining):
+                poll = partial(_resume_call, remaining, s, calls, "rimworld/get_game_info")
+                return wait_for_map(poll, ev.get("ticksAtSave"), remaining=remaining)
+
+            start_b = partial(run_once, s, calls, a, ev.get("resumeRecipe"), pend.get("runId"))
+            r = resume_loop(wait, start_b, limit_s=a.load_wait)
+            print("RESUME: %d tr%s, %g s" % (r["tries"], "y" if r["tries"] == 1 else "ies", r["seconds"]))
             second = r["recs"]
         final = P.combine(recs, second)
     elif pend:
