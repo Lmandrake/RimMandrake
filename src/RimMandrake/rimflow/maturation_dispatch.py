@@ -395,7 +395,7 @@ def killed_runs(runs, read=None, runner=subprocess.run):
     out = {}
     for r in runs or []:
         u = r.get("unit")
-        if not u or r.get("live") or not ("BLIND" in str(r.get("item") or "").upper() or _is_ingame_item(r.get("item"))):
+        if not u or r.get("live") or not (_is_blind_item(r.get("item")) or _is_ingame_item(r.get("item"))):
             continue
         rec = read(u)
         why = DH.killed(rec, runner) if rec else ""
@@ -411,6 +411,23 @@ def _is_ingame_item(item):
     """An in-game run's item names IN_GAME_ACCEPTANCE or IN_GAME_VISIT (this step's names, and the one `maturation.py
     next` suggests for a hand launch); a bare IN_GAME is not enough (this launcher's own build item has one)."""
     return bool(re.search(r"IN_GAME_(ACCEPTANCE|VISIT)", str(item or "").upper()))
+
+
+JUDGE_VERBS = ("JUDGE", "CHALLENGE", "PILOT")
+
+
+def _is_blind_item(item):
+    """A blind run's item has BLIND in it and, when it is a RIMMANDRAKE_<VERB>_... name, a judge's verb (JUDGE as this
+    step names it, CHALLENGE and PILOT as the hand launches named it). A builder or fixer whose subject merely mentions
+    BLIND is not one (RIMMANDRAKE_PAUSE_HAND_RUN_ONLY_ON_JUDGE_VERB_ITEMS, 2026-11-17: Pyrelands paused hand_run_seen
+    416 min on UNSTICK_DISPATCH_BLIND_CYCLES_WAITED_SIX_HOURS, Graffiti 545 min on BUILD_GRAFFITI_..._BLIND_FOUND_ZERO_
+    HITS). A name without the RIMMANDRAKE_ prefix names no verb, so BLIND alone still decides."""
+    s = str(item or "").upper()
+    if "BLIND" not in s:
+        return False
+    if not s.startswith("RIMMANDRAKE_"):
+        return True
+    return s[len("RIMMANDRAKE_"):].split("_", 1)[0] in JUDGE_VERBS
 
 
 def ran(r):
@@ -449,7 +466,7 @@ def add_cert(root, mod, f):
 
 def add_blind(root, mod, f, runs):
     """At the blind challenge: maturation.blind_facts (cycle, visit, exit reading, owed) and blind_runs, the runs whose
-    item names a blind run (BLIND in it) that started since the cycle opened (10 min of slack for a launch that beat
+    item names a blind run (_is_blind_item) that started since the cycle opened (10 min of slack for a launch that beat
     its own advance to origin/main). Any other stage: f unchanged."""
     if f.get("stage") != "blind_challenge":
         return f
@@ -457,7 +474,7 @@ def add_blind(root, mod, f, runs):
     f["certificate"] = M.certificate(root, mod, "blind_challenge")
     f["cycle_decision"] = cycle_decision(M.load(root, mod) or {})
     t0 = _ts(f.get("opened"))
-    f["blind_runs"] = [r.get("unit") for r in runs or [] if "BLIND" in str(r.get("item") or "").upper() and ran(r)
+    f["blind_runs"] = [r.get("unit") for r in runs or [] if _is_blind_item(r.get("item")) and ran(r)
                        and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
     return f
 
@@ -2406,7 +2423,7 @@ def run_stages(r):
     st = [M.WORD_OF_COL[c] for c in (r.get("stages") or []) if c in M.WORD_OF_COL]
     if st:
         return st
-    if "BLIND" in str(r.get("item") or "").upper():
+    if _is_blind_item(r.get("item")):
         return ["blind_challenge"]
     if _is_ingame_item(r.get("item")):
         return ["in_game"]

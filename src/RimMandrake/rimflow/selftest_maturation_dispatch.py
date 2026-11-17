@@ -953,6 +953,26 @@ def blind_main():
         rd = tick(fw)
         ok(rd["mods"]["FlowWorks"]["decision"] == "hand_run_seen" and not launches() and need(rd, "FlowWorks"),
            "it ended an hour ago and wrote no cycle folder: a Needs Conductor line, no second cycle")
+        # RIMMANDRAKE_PAUSE_HAND_RUN_ONLY_ON_JUDGE_VERB_ITEMS: a builder or fixer whose item merely has BLIND in it is
+        # no blind judge (2026-11-17: Pyrelands paused 416 min on UNSTICK_DISPATCH_BLIND_CYCLES_..., Graffiti 545 min
+        # on BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS); a JUDGE/CHALLENGE/PILOT item still is.
+        judge_item = world["runs"]["FlowWorks"][0]["item"]
+        for other in ("RIMMANDRAKE_UNSTICK_DISPATCH_BLIND_CYCLES_WAITED_SIX_HOURS",
+                      "RIMMANDRAKE_BUILD_FLOWWORKS_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS",
+                      "RIMMANDRAKE_FIX_DESIGNER_STALL_READING_BLIND_TO_CODEX_LANE"):
+            world["runs"]["FlowWorks"][0]["item"] = other
+            rd = tick(fw, apply=False)
+            ok(rd["mods"]["FlowWorks"]["decision"] != "hand_run_seen" and not launches(),
+               "a non-judge run %s is no hand-launched blind cycle (%s)" % (other, rd["mods"]["FlowWorks"]["decision"]))
+        world["runs"]["FlowWorks"][0]["item"] = judge_item
+        ok([i for i in ("RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_TWO_TESTS_FIRST",
+                        "RIMMANDRAKE_PILOT_BLIND_CHALLENGE_ON_KNOCKBACK_NEVER_RUN_BEFORE",
+                        "RIMMANDRAKE_CHALLENGE_GSS_BLIND_RESTS_ON_ONE_TEST", "X_BLIND_CYCLE_TWO")
+            if not MD._is_blind_item(i)] == []
+           and [i for i in ("RIMMANDRAKE_BUILD_BLIND_CHALLENGE_LAUNCHER_FOUR_MODS_PARKED",
+                            "RIMMANDRAKE_PROVE_SPEND_BLIND_DETACHED_RUN_ONE_TINY_TURN",
+                            "RIMMANDRAKE_JUDGE_PYRELANDS_IN_GAME_VISIT_TWO", "") if MD._is_blind_item(i)] == [],
+           "_is_blind_item: a judge verb with BLIND is a blind run; any other verb, or no BLIND, is not")
         SM.write_cycle(root, "FlowWorks", 1, block=False)
         rd = tick(fw)
         ok(rd["mods"]["FlowWorks"]["decision"] == "cycle_unfinished" and not launches() and need(rd, "FlowWorks"),

@@ -197,7 +197,7 @@ def collect(root, cfg, st, facts, now, fx=None):
             at, item = r.get("at"), str(r.get("item") or "")
             if r["unit"] in units or not isinstance(at, (int, float)) or at <= since:
                 continue
-            what = ("a blind judge" if "BLIND" in item.upper() else
+            what = ("a blind judge" if MD._is_blind_item(item) else
                     "an in-game driver" if MD._is_ingame_item(item) else
                     "a fix on the tick's own ticket" if item in queue else
                     "a run at the offline build with %s bars refused" % w.get("refused")
