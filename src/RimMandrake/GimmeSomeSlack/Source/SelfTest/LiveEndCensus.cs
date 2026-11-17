@@ -118,8 +118,159 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                                             }
         }
 
+        // ------------------------------------------------------------------ what the game can place beside a cut end
+        // RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID (owner 2026-11-16: "WHY DID FABLE STOP IS THERE ARE STILL 21 awkward fitting poses
+        // with no lay?!"). The first family put every fitting BEHIND its run. This one enumerates the placements the grid allows near a cut end:
+        // the conduit's last one to three cells in every shape (straight, turning at the fitting's own cell, doubling back beside the end), and
+        // at the far cell every fitting the mod draws, on every free side: a machine of 1, 2 or 3 cells a side at each offset along that side
+        // (so its body may stand beside or ahead of the end), a wall or rock plate, a junction box, a power switch, a device stub, another cut
+        // end; and a lone conduit cell at a machine on each side. Each in four rotations and mirrored.
+        private static readonly Cell[][] Shapes =
+        {
+            new[] { new Cell(0, 0) },
+            new[] { new Cell(0, 0), new Cell(-1, 0) },
+            new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-2, 0) },
+            new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-1, 1) },
+            new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-2, 0), new Cell(-3, 0) },
+            new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-2, 0), new Cell(-2, 1) },
+            new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-1, 1), new Cell(-1, 2) },
+            new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-1, 1), new Cell(-2, 1) },
+            // the conduit doubling back past the end, a cell clear of it: a fitting's body may then stand beside or ahead of the end
+            new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-1, 1), new Cell(-1, 2), new Cell(0, 2) },
+            new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-1, 1), new Cell(-1, 2), new Cell(0, 2), new Cell(1, 2) },
+            new[] { new Cell(0, 0), new Cell(-1, 0), new Cell(-1, 1), new Cell(-1, 2), new Cell(0, 2), new Cell(1, 2), new Cell(2, 2), new Cell(2, 1) },
+        };
+        internal static readonly string[] Fits = { "battery", "lamp", "consumer", "source", "wall", "rock", "box", "boxX", "switch", "device", "cut" };
+
+        /// <summary>One placement, or null when the grid cannot hold it (a body on the conduit, or the end no longer an end). Local cells: the cut
+        /// end at (0, 0), the conduit running out of it toward +X.</summary>
+        internal static CordWorld Placed(int shape, string fit, int side, int size, int offset, int rot, bool mirror)
+        {
+            var w = new CordWorld(44, 44);
+            Cell W(Cell c)
+            {
+                int x = c.X, z = mirror ? -c.Z : c.Z;
+                for (int k = 0; k < rot; k++) { int t = x; x = -z; z = t; }
+                return new Cell(22 + x, 22 + z);
+            }
+            Cell[] path = Shapes[shape];
+            var onPath = new HashSet<Cell>(path);
+            Cell F = path[path.Length - 1], d = Dirs[side], perp = Left(d), body = Add(F, d, 1);
+            var conduit = new HashSet<Cell>(path);
+            var bodies = new List<Cell>();
+            bool machine = fit == "battery" || fit == "lamp" || fit == "consumer" || fit == "source";
+            if (fit == "cut") { if (path.Length < 2 || side != 0 || size != 1) return null; }
+            else if (onPath.Contains(body)) return null;
+            if (machine)
+            {
+                for (int i = 0; i < size; i++) for (int j = 0; j < size; j++) bodies.Add(Add(Add(F, d, 1 + i), perp, j - offset));
+                if (bodies.Any(onPath.Contains)) return null;
+            }
+            else if (fit == "wall" || fit == "rock")
+            {
+                if (size != 1) return null;
+                for (int t = -3; t <= 3; t++) bodies.Add(Add(body, perp, t));
+                if (bodies.Any(onPath.Contains)) return null;
+                for (int k = 1; k <= 4; k++) conduit.Add(Add(F, d, k));
+            }
+            else if (fit == "box" || fit == "boxX")
+            {
+                if (size != 1 || side != 0) return null;
+                int want = fit == "box" ? 2 : 3, got = 0;
+                foreach (Cell bd in Dirs)
+                {
+                    if (got >= want || onPath.Contains(Add(F, bd, 1))) continue;
+                    for (int k = 1; k <= 3; k++) conduit.Add(Add(F, bd, k));
+                    got++;
+                }
+                if (got < want) return null;
+            }
+            else if (fit == "switch" || fit == "device")
+            {
+                if (size != 1) return null;
+                bodies.Add(body);
+                if (fit == "device") conduit.Add(body);
+            }
+            // the end is still an end: its only conduit neighbour is the path's next cell
+            foreach (Cell nb in Dirs)
+            {
+                Cell q = Add(path[0], nb, 1);
+                if (conduit.Contains(q) && !(path.Length > 1 && q == path[1])) return null;
+                if (bodies.Contains(q) && fit == "device") return null;
+            }
+            foreach (Cell c in conduit) w.SetConduit(W(c));
+            if (machine)
+            {
+                List<Cell> wc = bodies.Select(W).ToList();
+                foreach (Cell c in wc) w.SetBlocked(c, BlockKind.Device);
+                w.Machines.Add(new MachineInfo { Id = "m", Kind = fit == "lamp" ? MachineKind.Lamp : fit == "source" ? MachineKind.Source : fit == "battery" ? MachineKind.Battery : MachineKind.Consumer,
+                                                 X0 = wc.Min(c => c.X), Z0 = wc.Min(c => c.Z), W = size, H = size, Hookups = new List<Cell> { W(F) } });
+            }
+            else if (fit == "wall" || fit == "rock")
+            {
+                foreach (Cell c in bodies) w.SetBlocked(W(c), fit == "wall" ? BlockKind.Wall : BlockKind.Rock);
+                Cell bat = W(Add(F, d, 5));
+                w.SetBlocked(bat, BlockKind.Device);
+                w.Machines.Add(new MachineInfo { Id = "bat", Kind = MachineKind.Battery, X0 = bat.X, Z0 = bat.Z, Hookups = new List<Cell> { W(Add(F, d, 4)) } });
+            }
+            else if (fit == "box" || fit == "boxX")
+            {
+                int i = 0;
+                foreach (Cell bd in Dirs)
+                {
+                    if (!conduit.Contains(Add(F, bd, 3)) || onPath.Contains(Add(F, bd, 1))) continue;
+                    Cell m = W(Add(F, bd, 4));
+                    w.SetBlocked(m, BlockKind.Device);
+                    w.Machines.Add(new MachineInfo { Id = "m" + i, Kind = i == 0 ? MachineKind.Battery : MachineKind.Consumer, X0 = m.X, Z0 = m.Z, Hookups = new List<Cell> { W(Add(F, bd, 3)) } });
+                    i++;
+                }
+            }
+            else if (fit == "switch")
+            {
+                w.SetBlocked(W(body), BlockKind.Device);
+                w.Machines.Add(new MachineInfo { Id = "switch", Kind = MachineKind.Transmitter, X0 = W(body).X, Z0 = W(body).Z, Hookups = new List<Cell> { W(F) }, SidePorts = true });
+            }
+            else if (fit == "device") w.SetBlocked(W(body), BlockKind.Device);
+            return w;
+        }
+
+        /// <summary>Every placement. <paramref name="thin"/>: the suite's cut, each placement once, its rotation, look and setting (as shipped /
+        /// laid taut) taken in turn.</summary>
+        internal static IEnumerable<(string name, CordWorld w, BuildOptions opt, Func<Cell, bool> live)> Placements(bool thin)
+        {
+            int turnOf = 0;
+            for (int shape = 0; shape < Shapes.Length; shape++)
+                foreach (string fit in Fits)
+                    for (int side = 0; side < 4; side++)
+                        for (int size = 1; size <= 3; size++)
+                            for (int offset = 0; offset < size; offset++)
+                                foreach (bool mirror in new[] { false, true })
+                                {
+                                    if (size > 1 && (fit == "lamp" || fit == "source")) continue;
+                                    if (Placed(shape, fit, side, size, offset, 0, mirror) == null) continue;
+                                    turnOf++;
+                                    foreach (int rot in thin ? new[] { turnOf % 4 } : new[] { 0, 1, 2, 3 })
+                                        foreach (string setting in thin ? new[] { turnOf % 2 == 0 ? "shipped" : "taut" } : new[] { "shipped", "taut" })
+                                            foreach (string look in thin ? new[] { StubJoinChecks.Looks[turnOf / 2 % 4] } : new[] { "Industrial", "Modern" })
+                                            {
+                                                CordWorld w = Placed(shape, fit, side, size, offset, rot, mirror);
+                                                var opt = new BuildOptions { Pile = look == "Modern" ? PileArt.Strips : PileArt.Junctions, Seed = (ulong)(91 + shape * 7 + side), PlugBoot = CordBuilder.PlugBootU(look) };
+                                                if (setting == "taut") opt.Lay.SlackScale = 0;
+                                                yield return ($"{look} placed shape{shape} {fit} side{side} size{size} off{offset} rot{rot} {(mirror ? "mirrored" : "plain")} {setting}", w, opt, _ => true);
+                                            }
+                                }
+        }
+
         internal sealed class End
         {
+            /// <summary>The far fitting's node, seen from the cut end: cells behind the conduit end along its own line (negative = behind), cells to
+            /// its left; and whether that fitting's body lies on the end's own straight run (no cord could then be laid to it and whip).</summary>
+            public double FarAlong, FarSide;
+            public bool FarOnRun;
+            /// <summary>How far the far fitting's body is from the end's straight run (a machine: its footprint; else its node's point), and how
+            /// far its node is from the conduit end. -1: no fitting (a far cut end).</summary>
+            public double FarBodyToRun = -1, FarToEnd = -1;
+            public bool FarMachine;
             public string Scene, Cord, Lay, Far;
             public V2 Pos, Out;
             public List<V2> Pts;        // the strand, read toward the cut end
@@ -181,6 +332,23 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                             }
                         }
                         one.StaticR = StubJoins.MinRadius(q);
+                        CordNode farNd = g.Nodes.Values.FirstOrDefault(n => n != nd && n.OracleName + ":" + n.Cell.X + "," + n.Cell.Z == (atA ? p.EndB : p.EndA));
+                        if (farNd != null)
+                        {
+                            V2 rel = farNd.Pos - nd.Pos;
+                            one.FarAlong = rel.X * ov.X + rel.Z * ov.Z;
+                            one.FarSide = ov.X * rel.Z - ov.Z * rel.X;
+                            bool cutFar = farNd.Type == NodeType.Terminal;
+                            one.FarMachine = farNd.IsMachine && farNd.Machine != null;
+                            if (!cutFar) { one.FarToEnd = rel.Len; one.FarBodyToRun = double.MaxValue; }
+                            for (int k = 0; k <= 13 && !cutFar; k++)
+                            {
+                                V2 rp = nd.Pos - ov * (CordLiveEnd.Run * k / 13.0);
+                                double bd = one.FarMachine ? CordShapeAudit.RectDist(farNd.Machine.X0, farNd.Machine.Z0, farNd.Machine.W, farNd.Machine.H, rp) : V2.Dist(rp, farNd.Pos);
+                                one.FarBodyToRun = Math.Min(one.FarBodyToRun, bd);
+                                if (one.FarMachine ? farNd.Machine.Contains(rp.Floor) : bd < CordBuilder.BoxKeepOff) one.FarOnRun = true;
+                            }
+                        }
                         if (s.Ties != null)
                             foreach (CordTie t in s.Ties) one.TieArcs.Add(start ? new[] { one.Len - t.S1, one.Len - t.S0 } : new[] { t.S0, t.S1 });
                         one.FarType = (atA ? g.Nodes.Values.FirstOrDefault(n => n.OracleName + ":" + n.Cell.X + "," + n.Cell.Z == p.EndB) : g.Nodes.Values.FirstOrDefault(n => n.OracleName + ":" + n.Cell.X + "," + n.Cell.Z == p.EndA))?.Type.ToString() ?? "?";
@@ -214,8 +382,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
               .Append(",\"whip\":").Append(x.Whip).Append(",\"ties\":").Append(x.Ties).Append(",\"len\":").Append(F(x.Len)).Append(",\"off\":").Append(F(x.Off))
               .Append(",\"arrive\":").Append(F(x.Arrive)).Append(",\"turn\":").Append(F(x.Turn)).Append(",\"tail\":").Append(F(x.Tail)).Append(",\"minr\":").Append(F(Math.Min(x.MinR, 99)))
               .Append(",\"staticr\":").Append(F(Math.Min(x.StaticR, 99))).Append(",\"bad\":\"").Append(x.NotStraight ? "S" : "").Append(x.Pinched ? "P" : "").Append(x.BadTail ? "T" : "").Append('"')
+              .Append(",\"faralong\":").Append(F(x.FarAlong)).Append(",\"farside\":").Append(F(x.FarSide)).Append(",\"faronrun\":").Append(x.FarOnRun ? "true" : "false")
               .Append(",\"fartype\":\"").Append(x.FarType).Append("\",\"laykind\":\"").Append(x.LayKind).Append('"');
-            if (mode == "raw")
+            if (mode == "raw" || source == "placed")
                 sb.Append(",\"ties\":[").Append(string.Join(",", x.TieArcs.Select(t => "[" + F(t[0]) + "," + F(t[1]) + "]"))).Append(']')
                   .Append(",\"blocked\":[").Append(string.Join(",", x.Blocked.Select(b => "[" + b[0] + "," + b[1] + "," + b[2] + "]"))).Append(']')
                   .Append(",\"pts\":[").Append(string.Join(",", x.Pts.Select(q => "[" + F(q.X) + "," + F(q.Z) + "]"))).Append(']');
@@ -223,9 +392,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             f.WriteLine(sb.ToString());
         }
 
-        internal static IEnumerable<(string src, string name, CordWorld w, BuildOptions opt, Func<Cell, bool> live)> Worlds(int familySeeds, int fuzzSeeds, List<JsonElement> scenes)
+        internal static IEnumerable<(string src, string name, CordWorld w, BuildOptions opt, Func<Cell, bool> live)> Worlds(int familySeeds, int fuzzSeeds, List<JsonElement> scenes, bool families = true)
         {
-            foreach (var x in Family(familySeeds)) yield return ("family", x.name, x.w, x.opt, x.live);
+            if (families) foreach (var x in Family(familySeeds)) yield return ("family", x.name, x.w, x.opt, x.live);
+            if (families) foreach (var x in Placements(false)) yield return ("placed", x.name, x.w, x.opt, x.live);
             if (scenes != null)
                 foreach (JsonElement s in scenes)
                 {
@@ -241,11 +411,11 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         }
 
         /// <summary>--live-census OUT.jsonl [FUZZ_SEEDS [FAMILY_SEEDS]]: each world built as shipped ("now") and with the live-end lay off ("raw", the cord the lay is handed).</summary>
-        public static int Run(string outPath, int fuzzSeeds, int familySeeds, List<JsonElement> scenes)
+        public static int Run(string outPath, int fuzzSeeds, int familySeeds, List<JsonElement> scenes, bool placedOnly = false)
         {
             int worlds = 0, ends = 0, bad = 0;
             using (var f = new StreamWriter(outPath, false, new UTF8Encoding(false)))
-                foreach (var x in Worlds(familySeeds, fuzzSeeds, scenes))
+                foreach (var x in placedOnly ? Placements(false).Select(q => (src: "placed", q.name, q.w, q.opt, q.live)) : Worlds(familySeeds, fuzzSeeds, scenes))
                 {
                     worlds++;
                     foreach (string mode in new[] { "raw", "now" })

@@ -317,6 +317,16 @@ def sharp_corners(P):
     return int((np.degrees(np.arccos(np.clip(c, -1, 1))) >= 70).sum() > 0)
 
 
+def window_folds(P, cnt):
+    """A fold in the pinch window. The radius instrument reads three points on one line as straight, and a cord doubled back exactly on
+    itself is three points on one line: the corner read (CordShapeAudit.Corners, 70 degrees over 0.1 of arc) sees it."""
+    P = np.asarray(P, float)
+    cl = L.cumlen(P)
+    s0 = cl[len(P) - cnt] - L.JOIN_LEAD - STEP
+    i0 = max(0, int(np.searchsorted(cl, s0)) - 1)
+    return sharp_corners(P[i0:]) > 0
+
+
 def static_window_radius(P, cnt):
     """The tightest laid bend in the pinch bar's window: the last 0.4 cell before the joint, and the tail."""
     P = np.asarray(P, float)
@@ -330,6 +340,15 @@ def static_window_radius(P, cnt):
 def _heading(P, i):
     a, b = P[max(0, i - 1)], P[min(len(P) - 1, i + 1)]
     return math.atan2(b[1] - a[1], b[0] - a[0])
+
+
+def _heading_into(head, J, P, i):
+    """The cord's heading as it ARRIVES at J: from the last point of the kept cord that is not J itself. (At a vertex where the cord turns,
+    the mean of the headings either side is neither: a join leaving on it kinks the cord at J.)"""
+    for q in reversed(head):
+        if math.hypot(J[0] - q[0], J[1] - q[1]) > 1e-6:
+            return math.atan2(J[1] - q[1], J[0] - q[0])
+    return _heading(P, i)
 
 
 def _point_at(P, cum, s):
@@ -435,6 +454,13 @@ def crossings(A_, B_):
     return int(((d1 * d2 < 0) & (d3 * d4 < 0)).sum())
 
 
+def length_limit(path_len, max_extra=16.0, cap=2.6, excursion_hi=2.6):
+    """The builder's declared limit on a strand's length (CordBuilder.LengthLimit, the fuzz's invariant): 1.25 x (path + MaxExtra), the broad
+    excursions' own arc, and 3 cells of end work. Defaults are LayParams' shipped ones."""
+    nb = max(1, int(round(path_len / max(2.6, excursion_hi))))
+    return 1.25 * (path_len + max_extra) + nb * 2 * cap * 1.1 + 3.0
+
+
 class Margin:
     """What the lay asks, each a bar's own number with room to spare (`on`), or the bare bars (`off`, for the map's knife-edge reading)."""
 
@@ -446,7 +472,7 @@ class Margin:
         self.deg = L.STRAIGHT_DEG / 2 if on else L.STRAIGHT_DEG   # half the straight bar's 15 degrees (a join's own run is dead straight)
 
 
-def bars_with_margin(P, pos, out, cnt, ties=(), m=None, bend_r=None):
+def bars_with_margin(P, pos, out, cnt, ties=(), m=None, bend_r=None, still=False):
     """-> '' or the letters that fail: S the run dead straight to the conduit end (half the straight bar's 15 deg; read on EVERY lead,
     not only a cell or more); T the tail TAIL_MIN to 1.15 - STEP (whip bar 0.7-1.15); P every laid bend in the pinch window LIVE_BEND_R or
     wider (pinch bar 0.10, here twice it; the bend-wave whip keeps every frame there), a tied loop's own arc read at its own radius."""
@@ -454,6 +480,10 @@ def bars_with_margin(P, pos, out, cnt, ties=(), m=None, bend_r=None):
     bad = ""
     if L.arrive_deg(P, out) > m.deg or L.tip_turn_deg(P) > m.deg or math.hypot(P[-1][0] - pos[0], P[-1][1] - pos[1]) > L.TIP_OFF:
         bad += "S"
+    if still:
+        # a cord that lies still: no tail to read; its last cell and a half (the window a whip would have had) is still laid round
+        c = min(len(P) - 1, L.tail_count(P))
+        return bad + "P" if c >= 3 and (static_window_radius(P, c) < (bend_r or m.bend_r) * 0.98 or window_folds(P, c)) else bad
     if cnt <= 0:
         return bad + "T"
     tail = L.length(P[len(P) - cnt:])
@@ -465,7 +495,7 @@ def bars_with_margin(P, pos, out, cnt, ties=(), m=None, bend_r=None):
         win0 = cl[len(P) - cnt] - L.JOIN_LEAD - STEP
         if any(s1 > win0 for (_, s1) in ties):
             need = min(need, min(LOOP_R))
-    if static_window_radius(P, cnt) < need * 0.98:
+    if static_window_radius(P, cnt) < need * 0.98 or window_folds(P, cnt):
         bad += "P"
     return bad
 
@@ -474,7 +504,7 @@ def _loop_at(P, cum, s, r, side):
     """P with one full turn of radius r let in at arc s (side +1 left, -1 right) -> (points, tie arc)."""
     X, i = _point_at(P, cum, s)
     head = P[:i]
-    h = math.atan2(X[1] - head[-1][1], X[0] - head[-1][0]) if head and math.hypot(X[0] - head[-1][0], X[1] - head[-1][1]) > 1e-6 else _heading(P, i)
+    h = _heading_into(head, X, P, i)
     m = max(8, int(math.ceil(2 * math.pi * r / STEP)))
     cx, cz = X[0] - math.sin(h) * r * side, X[1] + math.cos(h) * r * side
     a0 = math.atan2(X[1] - cz, X[0] - cx)
@@ -482,12 +512,13 @@ def _loop_at(P, cum, s, r, side):
     return head + [X] + loop + P[i:], (s, s + 2 * math.pi * r), loop
 
 
-def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_join=True, margin=True, far_cut=False):
+def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_join=True, margin=True, far_cut=False, max_len=None, on_far=None):
     """P reads toward the cut end at pos, the conduit running `out`. -> dict(pts, kind, ties, cnt, why).
     kind: 'kept' (the cord as handed already holds the bars with margin), 'join R' (the straight run joined by a Dubins path of radius R),
     'turn loop' (a join that comes right round at the tied loop's radius, tied where it crosses itself), 'service loop' (a tied full turn of
     spare cord let in by the far fitting, for a lead too short to whip), 'none' (nothing holds: the cord is returned as handed).
-    The loops are devices: tried only after every bare join has failed."""
+    The loops are devices: tried only after every bare join has failed.
+    on_far(q): whether a point lies on the far fitting's own body (CordLiveEnd.Site.OnFar): once a join has left it, it never comes back."""
     ground = ground or Ground()
     mg = Margin(margin)
     P = [tuple(p) for p in P]
@@ -497,6 +528,8 @@ def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_joi
     cum = L.cumlen(P)
     Lold = float(cum[-1])
     ties = [tuple(t) for t in ties]
+    if max_len is None:
+        max_len = length_limit(math.hypot(P[0][0] - P[-1][0], P[0][1] - P[-1][1]))
     P0 = P
     P, cnt0 = set_joint(P, ties, far_cut)
     cum = L.cumlen(P)
@@ -514,16 +547,29 @@ def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_joi
     if far_cut:
         # the far end is a cut end too: its own straight run stays as laid
         lo_keep = max(run_len, tie_end + 0.1)
+    # every place the old cord may be left: a tenth of a cell apart over the four cells before the run, half a cell apart beyond, back to the
+    # far fitting's own run; and the whole cord from the fitting's stiff bit
     joins = []
     s = Lold - run_len - 0.2
     while s >= lo_keep - 1e-9:
-        if Lold - s <= run_len + 4.0:
-            joins.append(s)
-        s -= 0.1
-    if (not joins or joins[-1] > lo_keep + 0.05) and Lold - lo_keep <= run_len + 4.0 and Lold - lo_keep > 0.2:
+        joins.append(s)
+        s -= 0.1 if Lold - s <= run_len + 4.0 else 0.5
+    if (not joins or joins[-1] > lo_keep + 0.05) and Lold - lo_keep > 0.2:
         joins.append(lo_keep)
-    if tie_end == 0.0 and Lold <= 3.0 + run_len and not far_cut:
+    if tie_end == 0.0 and not far_cut:
         joins.append(FAR_STIFF)
+    still = [False]      # the second round: a cord with no room for a tail is laid to lie still
+
+    def over_far(path):
+        if on_far is None:
+            return False
+        left = False
+        for q in path:
+            if not on_far(q):
+                left = True
+            elif left:
+                return True
+        return False
     why = {}
     short = []      # joins that hold everything but the tail's length: a service loop's candidates
 
@@ -531,8 +577,10 @@ def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_joi
         why[x] = why.get(x, 0) + 1
 
     def judge(R, new_ties, label, extra=None):
-        R, cnt = set_joint(R, new_ties, far_cut)
-        bad = bars_with_margin(R, T, o, cnt, new_ties, mg)
+        cnt = 0
+        if not still[0]:
+            R, cnt = set_joint(R, new_ties, far_cut)
+        bad = bars_with_margin(R, T, o, cnt, new_ties, mg, still=still[0])
         if bad:
             no("bars " + bad)
             return None, bad
@@ -542,12 +590,12 @@ def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_joi
         if sharp_corners(R[:max(2, len(R) - int(round((run_len + 0.2) / STEP)))]) > old_corners:
             no("corner")
             return None, "C"
-        d = dict(pts=R, kind=label, ties=new_ties, cnt=cnt, why="")
+        d = dict(pts=R, kind="still " + label if still[0] else label, ties=new_ties, cnt=cnt, why="")
         if extra:
             d.update(extra)
         return d, ""
 
-    def attempt(radii, tie_loops, may_cross=True):
+    def attempt(radii, tie_loops, may_cross=True, over_run=False):
         # every join of every radius, the one that disturbs the cord least first (cord laid again plus length gained or lost);
         # between equals the broader bend
         cands = []
@@ -555,11 +603,13 @@ def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_joi
             for sJ in joins:
                 J, i = _point_at(P, cum, sJ)
                 head = P[:i]
-                hJ = math.atan2(J[1] - head[-1][1], J[0] - head[-1][0]) if head and math.hypot(J[0] - head[-1][0], J[1] - head[-1][1]) > 1e-6 else _heading(P, i)
+                hJ = _heading_into(head, J, P, i)
                 old = Lold - sJ - run_len
                 for dp in dubins_all(J, hJ, A, ho, r):
                     dl = dubins_len(dp, r)
-                    if dl > old + 2.5:
+                    # the cord stays within the builder's ONE declared length limit (length_limit): the lay had a cap of its own,
+                    # 2.5 cells of growth borrowed from BlendCutRun, and that second rule alone left 21 of 288 close fittings unlaid
+                    if sJ + dl + run_len > max_len:
                         no("long")
                         continue
                     # the rod bar (CordShapeAudit.RodLen: no 2.2 cells on one line): a join's straight, with the run when it runs on into it
@@ -579,7 +629,10 @@ def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_joi
             if not all(ground.clear(q) for q in arc) or not all(ground.clear(q) for q in run):
                 no("ground")
                 continue
-            if _crosses_run([J] + arc, A, T, 3):
+            if over_far([J] + arc + run):
+                no("over its own fitting")
+                continue
+            if not over_run and _crosses_run([J] + arc, A, T, 3):
                 no("crosses run")
                 continue
             if not may_cross:
@@ -640,6 +693,13 @@ def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_joi
             got = attempt(radii, False, cross)
             if got:
                 return got
+        # "a join never comes back across its own live run" was the lay's own rule, not a bar: a fitting within a cell of the conduit end,
+        # beside or ahead of it, has no other way round to the run's start. Such a join is taken only after every join that keeps off the run
+        for radii in (BROAD_R, TIGHT_R):
+            got = attempt(radii, False, True, over_run=True)
+            if got:
+                got["kind"] += " over run"
+                return got
     # no join holds: a handed cord already as round as the tied loop itself (LOOP_R) is kept, a device could not better it
     if margin and bars_with_margin(P, T, o, cnt0, ties, mg, bend_r=min(LOOP_R)) == "":
         return dict(pts=P, kind="kept", ties=ties, cnt=cnt0, why="as round as a tied loop")
@@ -653,6 +713,19 @@ def lay_live_end(P, pos, out, ground=None, ties=(), allow_device=True, allow_joi
                 return got
     # the owner, 2026-11-16 (by picture, of a cut end right in front of its fitting): "a2, and where it does not apply then c": a cord with
     # no room for a whipping tail lies still and only sparks
-    if "T" in bad0 and tail_limit(P, ties, far_cut) < mg.tail_lo:
+    # It is still laid straight out of the conduit end: as handed when that holds, else by the same joins
+    if bars_with_margin(P0, T, o, 0, ties, mg, bend_r=min(LOOP_R), still=True) == "":
         return dict(pts=P0, kind="still", ties=ties, cnt=0, why=bad0)
+    still[0] = True
+    P = P0
+    cum = L.cumlen(P)
+    for radii in (BROAD_R, TIGHT_R):
+        got = attempt(radii, False, True) or None
+        if got:
+            return got
+    for radii in (BROAD_R, TIGHT_R):
+        got = attempt(radii, False, True, over_run=True)
+        if got:
+            return got
+    cnt0 = 0
     return dict(pts=P, kind="none", ties=ties, cnt=cnt0, why=" ".join("%s:%d" % kv for kv in sorted(why.items())) or bad0)

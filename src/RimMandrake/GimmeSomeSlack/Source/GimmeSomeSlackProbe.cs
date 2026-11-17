@@ -734,6 +734,18 @@ namespace RimMandrake.GimmeSomeSlack
             F("byKind", "{" + string.Join(",", j.ByKind.Select(kv => J.S(kv.Key) + ":[" + string.Join(",", kv.Value) + "]")) + "}");
             F("liveTails", l.Tails.ToString()); F("liveOffSlope", l.OffSlope.ToString()); F("livePinched", l.Pinched.ToString());
             F("liveWorstDeg", J.D(l.WorstDeg)); F("liveMinR", J.D(l.Tails > 0 ? l.MinR : 0));
+            // live ends CordLiveEnd could not place, and those lying still (RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID: the offline
+            // families enumerate what the grid can place; this reads what the game, with every mod, did place)
+            int unlaid = 0, still = 0;
+            foreach (LaidPiece lp in ps)
+                foreach (CordStrand ls in lp.Strands)
+                    foreach (CordLiveEnd.Result lr in new[] { ls.LiveLaidA, ls.LiveLaidB })
+                    {
+                        if (lr == null || lr.Pts == null || lr.Pts.Count == 0 || !In(lr.Pts[lr.Pts.Count - 1])) continue;
+                        if (lr.Kind == CordLiveEnd.Kind.None) unlaid++;
+                        if (lr.Kind == CordLiveEnd.Kind.Still) still++;
+                    }
+            F("liveUnlaid", unlaid.ToString()); F("liveStill", still.ToString());
             F("wallTerminalsLoose", e.WallTerminalsLoose.ToString());
             F("bad", J.Arr(j.Bad.Concat(l.Bad).Concat(e.Bad.Where(x => x.Contains("inside the wall or rock"))).Take(16).Select(J.S)));
             return sb.Append('}').ToString();

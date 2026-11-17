@@ -139,9 +139,11 @@ def shots(out_dir=None, quiet=False):
     while a <= 2.4001:
         n = max(2, int(a / Y.STEP))
         P = [(k * a / n, 0.0) for k in range(n + 1)]
-        full = Y.lay_live_end(P, (a, 0), (1, 0))
-        bare = Y.lay_live_end(P, (a, 0), (1, 0), allow_device=False)
-        knife = Y.lay_live_end(P, (a, 0), (1, 0), allow_device=False, margin=False)
+        # the fitting: a box whose arm's tip is where the cord starts, its middle an arm behind
+        box = lambda q: math.hypot(q[0] + ARM, q[1]) < KEEP_OFF  # noqa: E731
+        full = Y.lay_live_end(P, (a, 0), (1, 0), on_far=box)
+        bare = Y.lay_live_end(P, (a, 0), (1, 0), allow_device=False, on_far=box)
+        knife = Y.lay_live_end(P, (a, 0), (1, 0), allow_device=False, margin=False, on_far=box)
         kb = judge(knife["pts"], (a, 0), (1, 0), knife["cnt"])[0] if knife["kind"] != "none" else "x"
         res.append((round(a, 2), bare["kind"], knife["kind"] if kb == "" else "none", full["kind"]))
         a += 0.05
@@ -152,7 +154,102 @@ def shots(out_dir=None, quiet=False):
     return res
 
 
+def pose_cord(dist, bearing, phi):
+    """The handed cord of an abstract pose: a fitting's tip `dist` cells from the conduit end (at the origin, the conduit running +x), at
+    `bearing` degrees round it, the cord leaving the fitting heading `phi` degrees: the fitting's stiff bit, then a taut chord to the end."""
+    b, h = math.radians(bearing), math.radians(phi)
+    F = (dist * math.cos(b), dist * math.sin(b))
+    P = [(F[0] + math.cos(h) * 0.05 * k, F[1] + math.sin(h) * 0.05 * k) for k in range(4)]
+    a = P[-1]
+    m = max(2, int(math.hypot(*a) / 0.05))
+    return P + [(a[0] * (1 - k / m), a[1] * (1 - k / m)) for k in range(1, m + 1)]
+
+
+#: how far a cord keeps off a fitting's body (CordBuilder.BoxKeepOff), and how far behind its tip a box's or plate's middle is (an arm)
+KEEP_OFF, ARM = 0.55, 0.5
+
+
+def pose_body(dist, bearing, phi):
+    """The middle of the abstract fitting's body: an arm's length behind its tip."""
+    b, h = math.radians(bearing), math.radians(phi)
+    return (dist * math.cos(b) - ARM * math.cos(h), dist * math.sin(b) - ARM * math.sin(h))
+
+
+def body_on_run(dist, bearing, phi):
+    """Whether the fitting's body lies on the cut end's own straight run (the run is the segment y = 0, -LIVE_RUN <= x <= 0), and off its
+    line (a body ON the line is the straight shot: the cord is kept, or lies still). No cord can be laid to such a fitting and whip."""
+    c = pose_body(dist, bearing, phi)
+    dx = max(-Y.LIVE_RUN - c[0], 0.0, c[0])
+    return math.hypot(dx, c[1]) < KEEP_OFF and abs(c[1]) > 0.05
+
+
+def run_dist(q):
+    """How far a point is from the cut end's straight run (y = 0, -LIVE_RUN <= x <= 0)."""
+    return math.hypot(max(-Y.LIVE_RUN - q[0], 0.0, q[0]), q[1])
+
+
+def machine_body(dist, bearing, phi):
+    """A machine's footprint as the abstract fitting's body: the unit cell behind its plug -> (inside(q), distance from the run)."""
+    b, h = math.radians(bearing), math.radians(phi)
+    tip, u = (dist * math.cos(b), dist * math.sin(b)), (math.cos(h), math.sin(h))
+
+    def local(q):
+        dx, dy = q[0] - tip[0], q[1] - tip[1]
+        return -(dx * u[0] + dy * u[1]), -dx * u[1] + dy * u[0]      # depth behind the plug, offset across
+
+    def inside(q):
+        d, a = local(q)
+        return 0.0 < d < 1.0 and abs(a) < 0.5
+
+    near = 9.0
+    for k in range(14):
+        d, a = local((-Y.LIVE_RUN * k / 13.0, 0.0))
+        near = min(near, math.hypot(max(-d, 0.0, d - 1.0), max(abs(a) - 0.5, 0.0)))
+    return inside, near
+
+
+def one_pose(args):
+    dist, bearing, phi = args[:3]
+    if len(args) > 3 and args[3] == "none":
+        on_far, near, on_run = None, 9.0, False
+    elif len(args) > 3 and args[3] == "machine":
+        on_far, near = machine_body(dist, bearing, phi)
+        on_run = near < 1e-9
+    else:
+        c = pose_body(dist, bearing, phi)
+        on_far, near, on_run = (lambda q: math.hypot(q[0] - c[0], q[1] - c[1]) < KEEP_OFF), run_dist(c), body_on_run(dist, bearing, phi)
+    g = Y.lay_live_end(pose_cord(dist, bearing, phi), (0, 0), (1, 0), on_far=on_far)
+    bad, r = judge(g["pts"], (0, 0), (1, 0), g["cnt"])
+    return dict(dist=dist, bearing=bearing, phi=phi, kind=g["kind"], bad=bad, on_run=on_run, near=round(near, 3), len=round(r["len"], 2), minr=round(min(r["minr"], 99), 3), why=g["why"][:80])
+
+
+def poses(dst, jobs, dists=None, step=15, body="box", quiet=False):
+    """Every fitting pose round a conduit end on open floor (the abstract family): where a bare cord holds, lies still, or finds no lay."""
+    dists = dists or [round(0.3 + 0.1 * k, 1) for k in range(23)]
+    grid = [(d, b, p, body) for d in dists for b in range(0, 360, step) for p in range(0, 360, step)]
+    with multiprocessing.Pool(jobs) as pool:
+        res = pool.map(one_pose, grid, chunksize=20)
+    if dst:
+        json.dump(res, open(dst, "w"))
+    if quiet:
+        return res
+    by = collections.defaultdict(collections.Counter)
+    for r in res:
+        k = r["kind"].split()[0]
+        by[r["dist"]][("BAR FAILS" if r["bad"] else k) + (", body on run" if r["on_run"] else "")] += 1
+    unlaid = [r for r in res if r["bad"] or r["kind"].split()[0] == "none"]
+    print("poses: %d (distance x bearing x heading, %d deg steps; the fitting's body a %s) -> %s" % (len(res), step, body, dst))
+    print("unlaid: %d; the furthest any unlaid fitting's body is from the run: %.3f" % (len(unlaid), max([r["near"] for r in unlaid], default=0.0)))
+    for d in sorted(by):
+        print("  %.1f  %s" % (d, dict(by[d])))
+    return res
+
+
 def main(argv):
+    if len(argv) >= 2 and argv[0] == "poses":
+        poses(argv[1], int(argv[argv.index("--jobs") + 1]) if "--jobs" in argv else max(1, (os.cpu_count() or 2) - 2),
+              body="machine" if "--machine" in argv else "none" if "--no-body" in argv else "box")
+        return 0
     if len(argv) >= 3 and argv[0] == "replay":
         jobs = int(argv[argv.index("--jobs") + 1]) if "--jobs" in argv else max(1, (os.cpu_count() or 2) - 2)
         every = int(argv[argv.index("--every") + 1]) if "--every" in argv else 1

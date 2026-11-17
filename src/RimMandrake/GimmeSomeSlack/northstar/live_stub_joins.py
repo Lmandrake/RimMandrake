@@ -47,14 +47,15 @@ def main(argv, bridge=None):
         time.sleep(0.5)
     r = probe("joins:" + rect)
     ok = bool(r.get("success")) and (r.get("taken") or 0) >= 20 and r.get("offLine") == 0 and r.get("offSlope") == 0 \
-        and r.get("empty") == 0 and r.get("liveOffSlope") == 0 and r.get("livePinched") == 0 and r.get("wallTerminalsLoose") == 0
+        and r.get("empty") == 0 and r.get("liveOffSlope") == 0 and r.get("livePinched") == 0 and r.get("wallTerminalsLoose") == 0 \
+        and r.get("liveUnlaid", 0) == 0   # a live end the lay could not place (absent on a build before the field: not read)
     out = {"row": "sc_stub_joins", "result": "PASS" if ok else "FAIL", "save": SAVE if "--load" in argv else "(map on screen)",
            "rect": rect, "probe": r, "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
     if "--out" in argv:
         with open(argv[argv.index("--out") + 1], "w", encoding="utf-8") as f:
             json.dump(out, f, indent=1)
     print(json.dumps({k: r.get(k) for k in ("success", "error", "stubs", "taken", "offLine", "offSlope", "empty", "byKind", "liveTails",
-                                            "liveOffSlope", "livePinched", "wallTerminalsLoose", "bad")}, indent=1))
+                                            "liveOffSlope", "livePinched", "liveUnlaid", "liveStill", "wallTerminalsLoose", "bad")}, indent=1))
     print("sc_stub_joins", out["result"])
     return 0 if ok else 1
 

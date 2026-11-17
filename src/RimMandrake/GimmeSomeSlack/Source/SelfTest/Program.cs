@@ -19,6 +19,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
     {
         private static int checks, fails;
         internal static string dumpDir;
+        /// <summary>The oracle's scenes, for checks that read them beside their own families.</summary>
+        internal static List<JsonElement> OracleScenes;
 
         internal static void Dump(string name, CordWorld w, List<LaidPiece> pieces)
         {
@@ -63,8 +65,9 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             string path = args.Where((a, i) => !a.StartsWith("--") && (lc < 0 || i < lc) && (i == 0 || (args[i - 1] != "--dump" && !args[i - 1].StartsWith("--fuzz")))).FirstOrDefault() ?? Path.Combine(AppContext.BaseDirectory, "oracle_scenes.json");
             using JsonDocument doc = JsonDocument.Parse(File.ReadAllText(path));
             var scenes = doc.RootElement.GetProperty("scenes").EnumerateArray().ToList();
+            OracleScenes = scenes;
             Console.WriteLine($"oracle: {path} ({scenes.Count} scenes)");
-            if (lc >= 0) return LiveEndCensus.Run(args[lc + 1], lc + 2 < args.Length ? int.Parse(args[lc + 2]) : 60, lc + 3 < args.Length ? int.Parse(args[lc + 3]) : 2, scenes);
+            if (lc >= 0) return LiveEndCensus.Run(args[lc + 1], lc + 2 < args.Length ? int.Parse(args[lc + 2]) : 60, lc + 3 < args.Length ? int.Parse(args[lc + 3]) : 2, scenes, args.Contains("--placed-only"));
             if (args.Contains("--geometry-only")) { CordGeometryChecks.Run(scenes); Console.WriteLine($"{checks - fails}/{checks} checks passed (geometry only)"); return fails == 0 ? 0 : 1; }
             int probeFails = 0;
             foreach (JsonElement s in scenes)

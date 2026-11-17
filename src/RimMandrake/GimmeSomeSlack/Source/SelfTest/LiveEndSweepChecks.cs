@@ -21,6 +21,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         /// <summary>The margin the pinch bar is held with over the sweep: 1.5 x StubJoins.MinBendR (the lay builds to 2 x, a tied loop is 1.7 x).</summary>
         public const double MarginR = 1.5 * StubJoins.MinBendR;
 
+        /// <summary>How near a box's, plate's or strip's middle may stand to a cut end's run, off the run's line: between the abstract sweep's worst
+        /// unlaid pose (0.749) and the grid's nearest (0.835). See the check that reads it.</summary>
+        public const double BoxSepMin = 0.80;
+
         /// <summary>The whip before the bend wave (each point pushed sideways by amp u^4 f): kept here only so the check can show its instrument
         /// catches it.</summary>
         private static List<V2> OldWhip(IList<V2> tail, double t, ulong seed, double amp)
@@ -71,7 +75,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
 
         internal sealed class Tally
         {
-            public int Worlds, Ends, Straight, Pinched, BadTail, None, Still, StillWithRoom, Devices, Thin, Kept, Joined, WholePigtail;
+            public int Worlds, Ends, Straight, Pinched, BadTail, None, Still, StillWithRoom, Devices, Thin, Kept, Joined, WholePigtail, Near, MachineOnRun;
+            public double Nearest = double.MaxValue, BoxSep = double.MaxValue, MachineSep = double.MaxValue;
             public double MinR = double.MaxValue;
             public readonly List<string> Bad = new List<string>();
         }
@@ -94,6 +99,21 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     if (e.NotStraight) { t.Straight++; t.Bad.Add($"{at}: not straight out of the conduit end (off {e.Off:0.00}, arrive {e.Arrive:0}, turn {e.Turn:0})"); }
                     if (e.Pinched) { t.Pinched++; t.Bad.Add($"{at}: pinched, radius {e.MinR:0.000}"); }
                     if (e.BadTail) { t.BadTail++; t.Bad.Add($"{at}: tail {e.Tail:0.00} outside 0.7-1.15"); }
+                    // how near a fitting comes to a cut end, and whether its body lies on the end's own run
+                    double farDist = Math.Sqrt(e.FarAlong * e.FarAlong + e.FarSide * e.FarSide);
+                    if (e.FarType != "Terminal" && e.FarType != "?" && farDist > 1e-6)
+                    {
+                        t.Nearest = Math.Min(t.Nearest, farDist);
+                        if (farDist < 2.0) t.Near++;
+                    }
+                    // how far a fitting's body stands from the end's own run, for fittings off the run's line (one ON the line is the straight shot):
+                    // a box, plate or strip by its node's point; a machine by its footprint, when its plug is within a cell and a half of the end
+                    if (e.FarBodyToRun >= 0 && Math.Abs(e.FarSide) > 0.05)
+                    {
+                        if (!e.FarMachine) t.BoxSep = Math.Min(t.BoxSep, e.FarBodyToRun);
+                        else if (e.FarToEnd < 1.5) t.MachineSep = Math.Min(t.MachineSep, e.FarBodyToRun);
+                    }
+                    if (e.FarMachine && e.FarOnRun) { t.MachineOnRun++; t.Bad.Add($"{at}: its machine's footprint lies on its own straight run"); }
                     if (layOff) continue;
                     if (e.Whip > 0) t.MinR = Math.Min(t.MinR, e.MinR);
                     // the owner's A2: on a short lead more than the outer half whips, right up to the fitting
@@ -132,6 +152,36 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(t.None == 0, $"the lay never gives up: {t.None} live ends left as handed");
             Check(t.StillWithRoom == 0, $"an end lies still only where no whipping tail holds the bars: {t.StillWithRoom} of {t.Still} still ends could whip");
             Check(t.Devices == 0, $"the tied loop is an emergency device: used on {t.Devices} live ends of the swept family (measured 0; a use here is a region the bare cord lost)");
+
+            // ---- what the game can place beside a cut end (RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID)
+            Tally p = Sweep(LiveEndCensus.Placements(true));
+            Console.WriteLine($"  live end placements: {p.Worlds} worlds, {p.Ends} live ends, {p.Near} with their fitting under 2 cells off (nearest {p.Nearest:0.00}): {p.Kept} kept as handed, {p.Joined} joined, "
+                              + $"{p.WholePigtail} short pigtails whipping whole, {p.Still} lying still, {p.Devices} tied loops, {p.None} unlaid; {p.Straight} not straight, {p.Pinched} pinched, {p.BadTail} tails off length; tightest bend {p.MinR:0.000}");
+            foreach (string x in p.Bad.Take(8)) Console.WriteLine("  live end placements refused: " + x);
+            Check(p.Ends >= 600 && p.Near >= 300, $"the placements put fittings beside cut ends ({p.Worlds} worlds, {p.Ends} live ends, {p.Near} with the fitting under 2 cells off, nearest {p.Nearest:0.00})");
+            Check(p.Straight == 0 && p.Pinched == 0 && p.BadTail == 0 && p.None == 0 && p.Thin == 0,
+                  $"every fitting the game can place beside a cut end is laid to: {p.None} unlaid, {p.Straight} not straight, {p.Pinched} pinched, {p.BadTail} tails off length, {p.Thin} under the margin, of {p.Ends} (tightest bend {p.MinR:0.000})");
+            Check(p.StillWithRoom == 0, $"placements: an end lies still only where no whipping tail holds the bars: {p.StillWithRoom} of {p.Still} still ends could whip");
+            // THE PROOF that the unlaid poses of the abstract sweep are not the game's (selftest_gss_live_end_sweep.py: over 13,248 fitting poses, the
+            // fitting's body modelled, the lay fails only where that body crowds the end's own straight run: a box, plate or strip whose middle is
+            // within 0.749 cell of the run; a machine whose footprint lies on the run or within 0.219 of it with its plug right there). On the grid:
+            //   a box, plate or strip off the run's line stands hypot(1 - 0.29, 0.44) = 0.835 from the run at the nearest (a plate beside the cell
+            //   behind the end). BoxSepMin sits between the model's 0.749 and that;
+            //   a machine's footprint never lies on the run: the run is wholly inside the end's own cell, which holds conduit.
+            // And every machine the grid can stand beside or ahead of an end (the placements above, each side, size and offset) is laid to. The day
+            // a mod or a rule puts a fitting's body nearer, this goes red, and that pose must be laid or ruled on
+            double boxSep = Math.Min(p.BoxSep, t.BoxSep), machineSep = Math.Min(p.MachineSep, t.MachineSep);
+            int onRun = p.MachineOnRun + t.MachineOnRun;
+            Check(boxSep >= BoxSepMin && onRun == 0,
+                  $"no fitting's body crowds a cut end's run: the nearest box, plate or strip off the run's line stands {boxSep:0.000} from it (limit {BoxSepMin}); {onRun} machine footprints lie on a run "
+                  + $"(the nearest machine with its plug within 1.5 cells stands {machineSep:0.000} off, laid to like every placement); {p.Ends + t.Ends} live ends");
+
+            // ---- challenge cases beside the families: the oracle's scenes in every look and random worlds. Nothing the builder lays anywhere is unlaid
+            Tally c = Sweep(LiveEndCensus.Worlds(0, 40, Program.OracleScenes, families: false).Select(x => (x.name, x.w, x.opt, x.live)));
+            Console.WriteLine($"  live end challenge cases: {c.Worlds} worlds (oracle scenes x looks, 40 random sequences), {c.Ends} live ends: {c.None} unlaid, {c.Straight} not straight, {c.Pinched} pinched, {c.BadTail} tails off length, {c.Devices} tied loops, {c.Still} lying still");
+            foreach (string x in c.Bad.Take(6)) Console.WriteLine("  live end challenge refused: " + x);
+            Check(c.Ends >= 40 && c.None == 0 && c.Straight == 0 && c.Pinched == 0 && c.BadTail == 0,
+                  $"challenge cases: every live end of the oracle scenes and the random worlds is laid and holds the bars: {c.None} unlaid, {c.Straight} not straight, {c.Pinched} pinched, {c.BadTail} tails off length, of {c.Ends}");
 
             // the whip alone, on a dead straight cord, over 60 seeds and 20 seconds at each end of the whip bar
             double shortTail = StraightWhipRadius(0.7, 60, false), longTail = StraightWhipRadius(0.95, 60, false);

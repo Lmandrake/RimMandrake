@@ -78,6 +78,13 @@ def main():
         rc2 = "no bridge injection (%s)" % ex
     check(rc2 == 1, "3 off-slope cords FAIL (rc=%r)" % (rc2,))
 
+    g3 = FakeGame(dict(CLEAN, liveUnlaid=1))
+    try:
+        rc3 = L.main(["--rect", "0,0,10,10"], bridge=g3)
+    except TypeError as ex:
+        rc3 = "no bridge injection (%s)" % ex
+    check(rc3 == 1, "a live end the lay could not place FAILs (rc=%r)" % (rc3,))
+
     class Refuses(FakeGame):
         def _raw(self, tool, kw):
             if tool == "jawa/mod_settings_fields":

@@ -1669,7 +1669,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     StepTrace?.Invoke(piece.TwinPts != null && ReferenceEquals(s, piece.Strands[0]) ? "twin" : "vary", piece.EndA, piece.EndB, s.Pts);
                 }
             }
-            LiveEnds(w, piece, na, nb, isLive, opt);
+            LiveEnds(w, piece, na, nb, isLive, opt, SlackClear(g, e));
             // corridor: path bounding box expanded by 3 cells (§8.2.7)
             double x0 = double.MaxValue, z0 = double.MaxValue, x1 = double.MinValue, z1 = double.MinValue;
             foreach (CordStrand s in piece.Strands)
@@ -2261,7 +2261,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
         private const int NearReach = 4;
 
         /// <summary>How far a re-laid cord keeps off another junction box's middle, cells (a box's art is about 0.9 across).</summary>
-        private const double BoxKeepOff = 0.55;
+        internal const double BoxKeepOff = 0.55;
 
         private const int SmoothRounds = 6;
         /// <summary>The shortest planned cut lead <see cref="CordShape.Fair"/> fairs: on a one-cell hop to a cut end it cuts the slack away and leaves an S at the box.</summary>
@@ -2963,7 +2963,7 @@ namespace RimMandrake.GimmeSomeSlack.Core
             EndDecor(w, g, e, e.A, na, piece, true, opt, isLive);
             EndDecor(w, g, e, e.B, nb, piece, false, opt, isLive);
             SeatPlugTails(g, e, piece, opt);
-            LiveEnds(w, piece, na, nb, isLive, opt);
+            LiveEnds(w, piece, na, nb, isLive, opt, SlackClear(g, e));
             // a dived cord's route depends on walls anywhere (a door opened far off may give it a surface route): its corridor
             // is the whole map, so any walkability change re-plans it
             piece.CX0 = 0; piece.CZ0 = 0; piece.CX1 = w.Width - 1; piece.CZ1 = w.Height - 1;
@@ -3322,17 +3322,31 @@ namespace RimMandrake.GimmeSomeSlack.Core
         /// <summary>Every live cut end of the piece is laid by <see cref="CordLiveEnd.Lay"/>, last, on the cord as every other pass left it: the straight
         /// run out of the conduit end, its join to the cord, the whip's joint (WhipA / WhipB are set here, on the final points). A dead end keeps
         /// its limp curl. Replaces the live-join easing and its tuned constants (RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN).</summary>
-        internal static void LiveEnds(CordWorld w, LaidPiece piece, CordNode na, CordNode nb, Func<Cell, bool> isLive, BuildOptions opt)
+        /// <summary>The builder's declared limit on a strand's length, the one rule on how long a cord may be (the fuzz holds every strand to it,
+        /// and the live-end lay grows a cord no further): a loop or heap is spliced in only while the cord stays within 1.25 x the slack target (at
+        /// most PathLen + MaxExtra); the broad lateral excursions are not charged to that budget (each a bump of amplitude up to Cap x 1.1, its extra
+        /// arc at most twice that, round(L / 2.6) of them); end work after that (overruns under art and faces, limp curls, knot loops, the live
+        /// end's join) is allowed 3 cells.</summary>
+        internal static double LengthLimit(double pathLen, LayParams lay)
+        {
+            int nb = Math.Max(1, (int)Math.Round(pathLen / Math.Max(2.6, lay.ExcursionHi)));
+            return 1.25 * (pathLen + lay.MaxExtra) + nb * 2 * lay.Cap * 1.1 + 3.0;
+        }
+
+        internal static void LiveEnds(CordWorld w, LaidPiece piece, CordNode na, CordNode nb, Func<Cell, bool> isLive, BuildOptions opt, Func<V2, bool> off = null)
         {
             if (LiveEndLayOff) return;
             bool cutA = na.Type == NodeType.Terminal && !na.Seam, cutB = nb.Type == NodeType.Terminal && !nb.Seam;
             bool liveA = cutA && isLive(na.Cell), liveB = cutB && isLive(nb.Cell);
             if (!liveA && !liveB) return;
             List<MachineInfo> own = CordShapeAudit.OwnMachines(w, piece.EndA, piece.EndB);
+            // a join lies on open floor, off every fitting the cord does not end at (off: SlackClear, the slack lobe's own rule); under its own
+            // machine only on its way out (CordLiveEnd.Site.OnFar: the art hides what lies under it, the bend bar's own "hidden")
             bool Clear(V2 q)
             {
                 Cell c = q.Floor;
                 if (!w.IsWalkable(c) || w.IsFurniture(c) || w.IsDoor(c)) return own.Any(m => m.Contains(c));
+                if (off != null && !off(q)) return false;
                 if (w.Clearance(q) >= LayParams.RC) return true;
                 // close to something: clear only when that is the cord's own machine (it plugs into it)
                 for (int dx = -1; dx <= 1; dx++)
@@ -3361,11 +3375,19 @@ namespace RimMandrake.GimmeSomeSlack.Core
                     // the cord bars are read on the strand the way it is stored (its ends' names in order)
                     List<V2> Native(List<V2> q) => atStart ? Enumerable.Reverse(q).ToList() : q;
                     List<CordTie> NativeTies(List<V2> q, List<CordTie> t) => atStart ? FlipTies(t, Geo.Length(q)) : t;
+                    CordNode far = atStart ? nb : na;
                     var site = new CordLiveEnd.Site
                     {
                         Clear = Clear,
+                        MaxLen = LengthLimit(piece.PathLen, opt.Lay),
+                        // the far fitting's body: a machine's footprint; a box, plate, strip or heap within BoxKeepOff of its node's point (the
+                        // distance a slack lobe keeps off every fitting it does not end at). A far cut end has none
+                        OnFar = farCutEnd || farDive ? (Func<V2, bool>)null
+                            : far.IsMachine && far.Machine != null ? (q => far.Machine.Contains(q.Floor))
+                            : (q => V2.Dist(q, far.Pos) < BoxKeepOff),
                         Bends = (q, t) => { List<V2> n = Native(q); int k = 0; foreach (CordShapeAudit.Bend b in CordShapeAudit.Bends(n, NativeTies(q, t))) if (CordShapeAudit.Why(w, piece.EndA, piece.EndB, n, b) == "unforced") k++; return k; },
-                        Kinks = (q, t) => CordShape.Kinks(q).Count
+                        Kinks = (q, t) => CordShape.Kinks(q).Count,
+                        DoorReturns = q => { CordShape.RingReturns(w, q, out int atDoor); return atDoor; }
                     };
                     V2 o = new V2(nd.Out.X, nd.Out.Z);
                     if (o.Len < 1e-9) continue;
