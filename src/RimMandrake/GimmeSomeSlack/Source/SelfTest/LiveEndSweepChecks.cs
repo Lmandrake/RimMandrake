@@ -192,9 +192,10 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                   + $"(the nearest machine with its plug within 1.5 cells stands {machineSep:0.000} off, laid to like every placement); {p.Ends + t.Ends} live ends");
 
             // ---- challenge cases beside the families: the oracle's scenes in every look and random worlds. Nothing the builder lays anywhere is unlaid
-            // (and the one random world a 300-sequence census found unlaid: sequence 257, a cord crossing blocked ground a fifth of a cell behind its end)
+            // (and the random worlds a 300-sequence census caught: sequence 257, a cut end in the cell past a doorway, once left unlaid; sequences 81 and
+            // 284, a 0.8-cell cord from a water or device stub right behind the end, once kept whipping on a tail of exactly 0.70)
             Tally c = Sweep(LiveEndCensus.Worlds(0, 40, Program.OracleScenes, families: false).Select(x => (x.name, x.w, x.opt, x.live))
-                            .Concat(GssFuzz.CordWorlds(257).Where(x => x.seed == 257).Select(x => ($"fuzz seed {x.seed} step {x.step}", x.w, x.opt, x.live)))
+                            .Concat(GssFuzz.CordWorlds(284).Where(x => x.seed == 81 || x.seed == 257 || x.seed == 284).Select(x => ($"fuzz seed {x.seed} step {x.step}", x.w, x.opt, x.live)))
                             .Concat(PastADoor()));
             Console.WriteLine($"  live end challenge cases: {c.Worlds} worlds (oracle scenes x looks, 40 random sequences), {c.Ends} live ends: {c.None} unlaid, {c.Straight} not straight, {c.Pinched} pinched, {c.BadTail} tails off length, {c.Devices} tied loops, {c.Still} lying still");
             foreach (string x in c.Bad.Take(6)) Console.WriteLine("  live end challenge refused: " + x);

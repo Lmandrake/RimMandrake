@@ -354,10 +354,12 @@ namespace RimMandrake.GimmeSomeSlack.Core
             if (got == null && Bars(P, T, o, cnt0, ties, LoopR.Min()) == "") return kept;
             if (got == null && allowDevice) got = Attempt(LoopR, true);
             if (got != null) return got;
-            // no lay with the lay's own margins: the cord as handed, when it holds the three bars as the bars themselves read them (15 degrees,
-            // a tail of 0.7 to 1.15, no bend under the pinch bar), keeps its lay and its whip. (A cord that crosses blocked ground a fifth of a
+            // no lay with the lay's own margins: the cord as handed, when it runs straight out of the conduit end and bends nowhere under the
+            // pinch bar as those two bars themselves read them (15 degrees, radius 0.10), keeps its lay and its whip. (A cord that crosses blocked ground a fifth of a
             // cell behind its end has no join to take: it was returned as handed with its whip taken away, random world 257.)
-            if (Bars(P, T, o, cnt0, ties, StubJoins.MinBendR / 0.98, false, 15, 0.7, 1.15) == "") return kept;
+            // (The tail keeps the lay's own margin: it is set, not found, and a tail of exactly 0.70 reads under the whip bar by a rounding:
+            // such a cord lies still, as the owner ruled for a cord with no room.)
+            if (Bars(P, T, o, cnt0, ties, StubJoins.MinBendR / 0.98, false, 15) == "") return kept;
             // the owner, 2026-11-16 (by picture, of a cut end right in front of its fitting): "a2, and where it does not apply then c": a cord
             // no lay can give a whipping tail lies still and only sparks. It is still laid straight out of the conduit end: as handed when that
             // holds, else by the same joins
