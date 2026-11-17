@@ -35,6 +35,7 @@
     <Compile Include="..\Core\CordLiveEnd.cs" />
     <Compile Include="LabWorld.cs" />
     <Compile Include="LiveEndCensus.cs" />
+    <Compile Include="SceneDump.cs" />
     <Compile Include="LiveEndSweepChecks.cs" />
     <Compile Include="..\Core\SnapshotBlock.cs" />
     <Compile Include="WaterStubChecks.cs" />

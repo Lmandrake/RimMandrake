@@ -90,6 +90,9 @@ def main(argv):
         if "--live-census" in argv:   # LiveEndCensus.cs: --live-census OUT.jsonl [FUZZ_SEEDS [FAMILY_SEEDS]], every live cut end read by the three bars
             i = argv.index("--live-census")
             args += ["--live-census", winbuild.win(os.path.abspath(argv[i + 1]))] + [a for a in argv[i + 2:i + 4] if not a.startswith("--")] + (["--placed-only"] if "--placed-only" in argv else [])
+        if "--scene-dump" in argv:   # SceneDump.cs: --scene-dump OUT.json fuzz:SEED[:STEP] | placed:N | family:N, a built scene for scene_picture.py
+            i = argv.index("--scene-dump")
+            args += ["--scene-dump", winbuild.win(os.path.abspath(argv[i + 1])), argv[i + 2]]
         if "--lab" in argv:   # LabWorld.cs: --lab WORLD.json OUT.json, the shape lab on a world the live probe dumped
             i = argv.index("--lab")
             args += ["--lab", winbuild.win(os.path.abspath(argv[i + 1])), winbuild.win(os.path.abspath(argv[i + 2]))]

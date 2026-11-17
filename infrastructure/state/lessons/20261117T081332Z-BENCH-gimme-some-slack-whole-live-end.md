@@ -1,0 +1,1 @@
+Gimme Some Slack: the whole live-end census (20 min, outside the suite) faulted two builds the suite and certificate both passed. Run it before publishing a lay change and turn each fault into a suite challenge case.

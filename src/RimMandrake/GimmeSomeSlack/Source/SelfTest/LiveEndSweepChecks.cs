@@ -86,11 +86,29 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                     for (int x = 12; x <= 20 + d; x++) w.SetConduit(new Cell(x, 15));
                     yield return ($"door room, end {d} past the door, seed {seed}", w, new BuildOptions { Seed = seed }, _ => true);
                 }
+            // the live proof's cut scene (validation.py M8): a battery's run through a door and across a room, a branch to a lamp, a spur into
+            // the east wall; one cell of the run destroyed two cells before the door. West of the cut is live, east of it dead
+            foreach (ulong seed in new ulong[] { 1, 2, 3, 4 })
+                foreach (int gap in new[] { 7, 8, 5, 12 })
+                {
+                    var w = new CordWorld(40, 20);
+                    for (int x = 10; x <= 18; x++) { w.SetBlocked(new Cell(x, 0), BlockKind.Wall); w.SetBlocked(new Cell(x, 6), BlockKind.Wall); }
+                    for (int z = 0; z <= 6; z++) { if (z != 3) w.SetBlocked(new Cell(10, z), BlockKind.Wall); w.SetBlocked(new Cell(18, z), BlockKind.Wall); }
+                    w.SetDoor(new Cell(10, 3));
+                    for (int x = 3; x <= 17; x++) if (x != gap) w.SetConduit(new Cell(x, 3));
+                    w.SetConduit(new Cell(13, 4)); w.SetConduit(new Cell(13, 5));
+                    w.SetConduit(new Cell(17, 2)); w.SetConduit(new Cell(18, 2));
+                    w.SetBlocked(new Cell(2, 3), BlockKind.Device); w.SetBlocked(new Cell(2, 4), BlockKind.Device);
+                    w.Machines.Add(new MachineInfo { Id = "bat", Kind = MachineKind.Battery, X0 = 2, Z0 = 3, W = 1, H = 2, Hookups = new List<Cell> { new Cell(3, 3) } });
+                    w.SetBlocked(new Cell(12, 5), BlockKind.Device);
+                    w.Machines.Add(new MachineInfo { Id = "lamp", Kind = MachineKind.Lamp, X0 = 12, Z0 = 5, Hookups = new List<Cell> { new Cell(13, 5) } });
+                    yield return ($"cut scene, cell {gap} of the run destroyed, seed {seed}", w, new BuildOptions { Seed = seed }, c => c.X < gap && c.Z == 3);
+                }
         }
 
         internal sealed class Tally
         {
-            public int Worlds, Ends, Straight, Pinched, BadTail, None, Still, StillWithRoom, Devices, Thin, Kept, Joined, WholePigtail, Near, MachineOnRun;
+            public int Worlds, Ends, Straight, Pinched, BadTail, None, Still, StillWithRoom, Devices, Thin, Kept, Joined, WholePigtail, Near, MachineOnRun, CutEnds, Unlisted;
             public double Nearest = double.MaxValue, BoxSep = double.MaxValue, MachineSep = double.MaxValue;
             public double MinR = double.MaxValue;
             public readonly List<string> Bad = new List<string>();
@@ -107,6 +125,14 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                 var b = new CordBuilder();
                 try { ps = b.Build(x.w, x.opt, c => x.live(c)); }
                 finally { CordBuilder.LiveEndLayOff = false; }
+                // every cut end on the floor, live or dead, is in the pieces' list of ends (the registry the sparks, the glow, the shock and the
+                // probe read): in-game visit 1 found a dead end drawn and missing from it (M8_break_two_ends_live_dead)
+                foreach (CordNode nd in b.Graph.Nodes.Values.Where(n => n.Type == NodeType.Terminal && !n.Seam))
+                {
+                    if (!ps.Any(p => p.EndA != null && (p.EndA == nd.OracleName + ":" + nd.Cell.X + "," + nd.Cell.Z || p.EndB == nd.OracleName + ":" + nd.Cell.X + "," + nd.Cell.Z))) continue;
+                    t.CutEnds++;
+                    if (!ps.Any(p => p.Ends.Any(e => e.NetCell.Equals(nd.Cell)))) { t.Unlisted++; t.Bad.Add($"{x.name}: the cut end at {nd.Cell} ({(x.live(nd.Cell) ? "live" : "dead")}) is drawn but not in any piece's list of ends"); }
+                }
                 foreach (LiveEndCensus.End e in LiveEndCensus.Read(x.name, b.Graph, ps, x.live, null, new ulong[] { 0, 1, 5 }))
                 {
                     t.Ends++;
@@ -199,6 +225,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
                             .Concat(PastADoor()));
             Console.WriteLine($"  live end challenge cases: {c.Worlds} worlds (oracle scenes x looks, 40 random sequences), {c.Ends} live ends: {c.None} unlaid, {c.Straight} not straight, {c.Pinched} pinched, {c.BadTail} tails off length, {c.Devices} tied loops, {c.Still} lying still");
             foreach (string x in c.Bad.Take(6)) Console.WriteLine("  live end challenge refused: " + x);
+            int listed = t.CutEnds + p.CutEnds + c.CutEnds, unlisted = t.Unlisted + p.Unlisted + c.Unlisted;
+            Check(listed >= 3000 && unlisted == 0, $"every cut end on the floor, live or dead, is in the list of ends: {unlisted} of {listed} drawn and not listed (families, placements, challenge cases)");
             Check(c.Ends >= 40 && c.None == 0 && c.Straight == 0 && c.Pinched == 0 && c.BadTail == 0 && c.Thin == 0,
                   $"challenge cases: every live end of the oracle scenes and the random worlds is laid and holds the bars: {c.None} unlaid, {c.Straight} not straight, {c.Pinched} pinched, {c.BadTail} tails off length, {c.Thin} under the margin, of {c.Ends}");
 

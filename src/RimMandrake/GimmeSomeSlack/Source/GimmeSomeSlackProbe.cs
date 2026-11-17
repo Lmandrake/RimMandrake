@@ -458,8 +458,11 @@ namespace RimMandrake.GimmeSomeSlack
                 else diff++;
             }
             int extra = cur.Keys.Count(k => !freshKeys.Contains(k));
+            // the keys either side holds alone (RIMMANDRAKE_EXPLAIN_GSS_D2_SPLIT_ONCE_IN_TWELVE: "missing 1 + extra 1" never named its edge)
+            string only(IEnumerable<string> ks) => "[" + string.Join(",", ks.Take(12).Select(J.S)) + "]";
             return "{\"success\":true,\"cmd\":\"fresh\",\"edges\":" + fresh.Count(p => p.EndA != null) + ",\"same\":" + same +
-                   ",\"different\":" + diff + ",\"missing\":" + missing + ",\"extra\":" + extra + ",\"offscreenRebuilds\":" + comp.OffscreenRebuilds + ",\"pending\":" + comp.LastPending + "}";
+                   ",\"different\":" + diff + ",\"missing\":" + missing + ",\"extra\":" + extra + ",\"offscreenRebuilds\":" + comp.OffscreenRebuilds + ",\"pending\":" + comp.LastPending +
+                   ",\"freshOnly\":" + only(freshKeys.Where(k => !cur.ContainsKey(k))) + ",\"liveOnly\":" + only(cur.Keys.Where(k => !freshKeys.Contains(k))) + "}";
         }
 
         /// <summary>Polish pass 2026-10-02: the art-fit audit on the LIVE laid pieces (the same

@@ -49,6 +49,8 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             if (args.Contains("--lay-profile")) { SliceGateChecks.LayProfile(); return 0; }
             if (args.Contains("--slice-repeat")) return SliceGateChecks.SliceRepeat(20, args.Contains("--old-form"));
             if (args.Contains("--perdig-only")) { RebuildPerDigChecks.Run(); SliceGateChecks.Run(); RebuildTailChecks.Run(); SnapshotPoolChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (rebuild-per-dig only)"); return fails == 0 ? 0 : 1; }
+            int sd = Array.IndexOf(args, "--scene-dump");
+            if (sd >= 0) return SceneDump.Run(args[sd + 1], args[sd + 2]);
             if (args.Contains("--live-sweep-only")) { LiveEndSweepChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (live end sweep only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--joins-only")) { StubJoinChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (stub joins only)"); return fails == 0 ? 0 : 1; }
             if (args.Contains("--endkind-only")) { CordEndKindChecks.Run(); Console.WriteLine($"{checks - fails}/{checks} checks passed (end kind + slope only)"); return fails == 0 ? 0 : 1; }

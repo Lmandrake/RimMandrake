@@ -1002,7 +1002,8 @@ def live_battery(B, fresh_map=False, rows=None):
     m8 = bool(ew and ee and ew.get("registryLive") is True and ee.get("registryLive") is False and
               ew.get("netLive") is True and ee.get("netLive") is False)
     row(rows, "M8_break_two_ends_live_dead", "PASS" if m8 else "FAIL", "MOD",
-        {"west(battery side)": ew, "east": ee, "cordsAcrossNets": c2.get("cordsAcrossNets")})
+        {"west(battery side)": ew, "east": ee, "cordsAcrossNets": c2.get("cordsAcrossNets"),
+         "endsListed": sorted(ends) if not m8 else len(ends), "frays": (c2.get("decals") or {}).get("FrayDead")})
     # M2 on BOTH the built scene (c0) and the post-break census (c2). The one-cell gap splits the PowerNet, so a cord
     # across it IS a cross-net edge: M8b ("no cord across the gap") is this predicate on c2 and is cut as a row
     # (consolidation doc section 2 "Core": "cut M8b after that one-line harness change").
