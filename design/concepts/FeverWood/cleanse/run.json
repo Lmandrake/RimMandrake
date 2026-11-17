@@ -1,0 +1,36 @@
+{
+ "mod": "FeverWood",
+ "state": "proposed",
+ "why": "check passes (8 bars, 66 census rows, 796 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-16T23:30:58",
+ "seconds": 2407,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 796,
+  "page_limit": 950,
+  "census_rows": 66,
+  "bars": 8,
+  "bar_numbers": "none",
+  "shared_things": 10,
+  "meetings": 10,
+  "old_bars": "23 mapped of 23 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 5266573,
+    "output_tokens": 52355
+   }
+  }
+ ],
+ "agent_errors": []
+}

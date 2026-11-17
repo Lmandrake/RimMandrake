@@ -1,0 +1,907 @@
+{
+  "bars": [
+    {
+      "id": "land",
+      "says": "A settler sees a tree-canopied swamp of broad solid trunks, connected wood routes and fertile crown patches above still black pools and marsh that refuses heavy foundations.",
+      "meant": {
+        "intent": "the selected branch home needs physical land a player can recognise and build around, not a painted ordinary swamp.",
+        "source": "delegated: from the CASE compose sentence, OWNER:1794374372850231423 and the_fever_wood.md sections 1, 6 and 7b; static terrain verticality is the documented section 6h ruling.",
+        "figurative": [
+          {
+            "word": "above",
+            "stands_for": "The terrain/art impression of an elevated crown, not a separate height or map layer.",
+            "accept": "A raider steps straight from marsh onto adjoining crown terrain without a climb job."
+          }
+        ]
+      },
+      "accept": [
+        "A settler follows a wood route away from a solid trunk, plants in crown soil and finishes heavy construction on crown ground or completed stilts while untreated marsh and mirror water refuse it.",
+        "At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain."
+      ],
+      "reject": [
+        "Branches form a decorative network but normal heavy buildings stand freely on the untreated marsh.",
+        "Dark ordinary soil is called a mirror pool and the supposed giant trunk is a painted floor with no solid body."
+      ],
+      "lazy": "Branches form a decorative network but normal heavy buildings stand freely on the untreated marsh.",
+      "range": {
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Ground-only, mixed crown/ground and crown-side destinations; completed, blueprint and unfinished stilts; black pools, rocks and residual ordinary ground; open crown, roofed colony and ordinary clear/fog/overcast/dry-storm weather.",
+        "left_out": "No natural world placement, rain/river creation, simulated elevation/climbing or dynamic branch movement; those are forbidden or expressly outside this version. Current owner-accepted art is the visual baseline; no new art quota."
+      },
+      "sees": {
+        "instrument": "T_LAND play-zoom walk plus independent terrain/edifice/affordance state reads and the Land and rescue geometry sweep; look alone cannot prove foundations.",
+        "start": "A map produced by the existing local placement sequence, with its actual terrain and edifice export, ordinary pawns, build materials and no manually substituted crown pad.",
+        "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
+        "control": "Try matched blueprints on marsh, real crown ground, unfinished and completed platforms, and water. Trace the actual solid trunk footprint; compare terrain affordances to allowed construction. A camera crop hiding ordinary ground cannot establish the map picture.",
+        "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
+        "live_only_why": "A terrain export cannot establish that the existing art reads as tree canopy, solid wood and black water at ordinary play zoom."
+      },
+      "live_only": true,
+      "touches": [
+        "terrain",
+        "routes",
+        "ecology",
+        "sun",
+        "settings",
+        "save"
+      ],
+      "tests": {
+        "reject": "Without this experience, the selected branch home needs physical land a player can recognise and build around, not a painted ordinary swamp.",
+        "renormalize": "No exact yield, stat, rate, size or variant count is pinned by says or its pictures; tuning checks and rules may change while this comparison remains true.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "work",
+      "says": "Colonists doing ordinary gathering, planting and hauling use the branching routes to connect useful work and home, with the wet ground remaining a usable but costly alternative.",
+      "meant": {
+        "intent": "routes must shape the day rather than decorate a job-completion screenshot.",
+        "source": "OWNER:1794374372850231423, decoded in designer_codex_2026-11-09/FeverWood/ANSWERS_OWNER.md; delegated operational comparison from the validated root CONDUCTOR:1794804413045937607.",
+        "figurative": []
+      },
+      "accept": [
+        "Workers carry a crown harvest home along the connecting wood route; moving the destination changes which branch they use, and a ground detour remains possible when that route is blocked.",
+        "A crowded holding still completes routine work; builders can extend a home with stilts instead of waiting for a scripted ascent."
+      ],
+      "reject": [
+        "Workers complete the harvest on a debug pad beside storage while the displayed branch network connects no useful destinations.",
+        "A missing climb interaction strands workers or a friendly-only branch path lets raiders enter by different terrain rules."
+      ],
+      "lazy": "Workers complete the harvest on a debug pad beside storage while the displayed branch network connects no useful destinations.",
+      "range": {
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Every configured branch bearing, width and length, all legal destination placements on connected components, shortened/blocked route segments, carried loads and drafted/undrafted interruptions; friendly, visitor and hostile ground traversal uses the same terrain rules. Range covers completed useful tasks and ongoing queues, not only Goto commands.",
+        "left_out": "No guarantee that any arbitrary point is reachable through a wall or that a player cannot deliberately pave a different route; no moving-route system or crown-biased spawn override."
+      },
+      "sees": {
+        "instrument": "Independent position, path cost, reservation, inventory and job-completion trace through T_LAND, with calibrated Land and rescue geometry predictions; normal jobs supply causation.",
+        "start": "Actual branch map with distinct harvest, planting and storage/home sites; worker needs and job priorities normal; export routes before ordering jobs.",
+        "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
+        "control": "Rotate destination and obstruct a used segment after the baseline run while keeping other mechanics on. Confirm detour/path-cost and delivered item changes; fixture teleporting, spawning stock at storage or counting an assigned job as completion fails.",
+        "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
+        "live_only_why": "A calibrated model or independent runtime state/job read can decide this relational experience; running the game for calibration does not make it a live-look-only bar."
+      },
+      "live_only": false,
+      "touches": [
+        "routes",
+        "terrain",
+        "ecology",
+        "rescue",
+        "settings",
+        "save"
+      ],
+      "tests": {
+        "reject": "Without this experience, routes must shape the day rather than decorate a job-completion screenshot.",
+        "renormalize": "No exact yield, stat, rate, size or variant count is pinned by says or its pictures; tuning checks and rules may change while this comparison remains true.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "life",
+      "says": "The colony can forage the crown and margins, keep calm nectar herds and useful flying birds, while native wildlife feeds and drinks at home and its predators wait rather than pursue across the holding.",
+      "meant": {
+        "intent": "ordinary life must supply accessible food, safe drinking where thirst is active, tameable value and a functioning local food chain without breaking the thornbug safety contract.",
+        "source": "delegated: from the CASE land/life scope, the_fever_wood.md sections 4 and 6, existing roster/harvest defs; standing flight ruling and OWNER:1793542983826647230 native-water ruling.",
+        "figurative": []
+      },
+      "accept": [
+        "Normal workers bring fruit, tubers, herbal medicine and peaceful-herd nectar home; a frightened herd refuses gathering and later recovers, while a distant sheltered herd still yields.",
+        "A native drinks home water through a real thirst job without being seized; a colonist uses an accessible cistrel cup instead of treating a black pool as safe.",
+        "A tameable crown flock lives and produces its ordinary goods, a carrion feeder eats a corpse, and a bark ambusher lets prey escape beyond its original ambush site."
+      ],
+      "reject": [
+        "A stockpile is filled by the fixture while normal harvesting or gathering cannot deliver the promised local food.",
+        "All predators are harmless wandering pawns, or the bark ambusher follows fleeing prey across the holding.",
+        "An animal with no thirst need is reported as having drunk, or the entire water hazard is disabled to protect natives.",
+        "The herd yields under actual local fear, or a distant raid dries up a sheltered herd solely because the map is in danger."
+      ],
+      "lazy": "A stockpile is filled by the fixture while normal harvesting or gathering cannot deliver the promised local food.",
+      "range": {
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. The actual retained positive-commonality PawnKind and plant roster after loaded patches, wild/tame and age/body-size states the game creates, hungry/fed, thirsty/sated, healthy/downed/dead animals, calm/local threat/far-side threat and calm recovery. Active supported thirst provider present with animal needs enabled; absent-provider arm checks load safety only. Flight is read in deterministic Pawn_FlightTracker state; no unattended live flight observation. Existing nubrith glow, murrelith shearing, normal food spoilage and wood-feeder diet are included.",
+        "left_out": "No eviction or new cast; no split crown/floor density; no acid-trail corpse disposal, guild seal/swell/alarm, directed boring, sap-host dependency or terrain-changing plant ecology. Canon additions require their actual loaded lower-tier patch, unavailable in this checkout."
+      },
+      "sees": {
+        "instrument": "T_LIFE ordinary work/need/flight-state and inventory traces, coupled with the season ecology export; source and selftest are preliminary checks, not a substitute for normal jobs. T_INTEGRATIONS supplies missing provider calibration.",
+        "start": "Supported base composition with actual retained roster, mature local plants, calm/fear-matched herds, eligible tame birds and hungry wildlife; an active thirst provider and actual need levels asserted before drinking arms.",
+        "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
+        "control": "Use matched plants/herds with food/gather state independently exported before and after real work; compare native and non-native at the same active water. Keep the victim moving while measuring distance from the saved ambush origin. Count corpse/item consumption and flight-tracker state; never infer any from a description.",
+        "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
+        "live_only_why": "A calibrated model or independent runtime state/job read can decide this relational experience; running the game for calibration does not make it a live-look-only bar."
+      },
+      "live_only": false,
+      "touches": [
+        "ecology",
+        "water",
+        "warning",
+        "routes",
+        "sun",
+        "settings",
+        "save"
+      ],
+      "tests": {
+        "reject": "Without this experience, ordinary life must supply accessible food, safe drinking where thirst is active, tameable value and a functioning local food chain without breaking the thornbug safety contract.",
+        "renormalize": "No exact yield, stat, rate, size or variant count is pinned by says or its pictures; tuning checks and rules may change while this comparison remains true.",
+        "first_version": "life"
+      }
+    },
+    {
+      "id": "shore",
+      "says": "At a pool the colony sees danger reach farther from larger water, and a seized worker or tame animal can be saved by a companion working alongside before a readable loss if nobody reaches them.",
+      "meant": {
+        "intent": "shore work rewards bringing reachable help and judging pool geometry; seizures cannot be instant deletion or staged generic downing.",
+        "source": "OWNER:1794374372850231423 for nearby companion rescue; delegated from documented pool-size/reach ruling in fever_wood_deep_and_mud_2026-09-23.md section 3 and standing readable-loss ruling.",
+        "figurative": []
+      },
+      "accept": [
+        "A companion reaches an actually seized shore worker by the ordinary route and carries them away before the active obligation expires; the colony can read the victim and remaining danger.",
+        "The same exposed work site is outside the smaller pool reach and inside the larger pool reach; moving help behind a long detour can make rescue fail with a visible water-loss sign."
+      ],
+      "reject": [
+        "A manually downed pawn is carried from shore and called rescued even though water created no active deadline.",
+        "The pool-size setting changes only eye eligibility while real seizures and lashes reach equally far from small and large water.",
+        "The helper touches the victim but never carries them, yet the active water loss is silently forgiven."
+      ],
+      "lazy": "A manually downed pawn is carried from shore and called rescued even though water created no active deadline.",
+      "range": {
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Connected pools from a single legal cell to the largest possible cluster on each declared map; compact, long, concave, diagonal-touching and separated shapes; positions at, inside and outside each effective boundary; walls, roofs, raised terrain and route obstructions. Rescue helper travel/work time sweeps from below half the current deadline to beyond expiry, including loss of the helper, death/removal of the victim, multiple simultaneous victims, carrying start/drop and mid-deadline reload. Both shared Tenant and visible-snare callers must obey this range; ordinary player and tame animals are included and eligible native fauna excluded.",
+        "left_out": "No guaranteed rescue for a helper across an obstructed settlement or already incapacitated; no falling/climbing, mud trap, underwater body pawn or whole-body emergence. Normal combat injuries outside water remain vanilla."
+      },
+      "sees": {
+        "instrument": "Land and rescue geometry plus Situations and water transitions models, calibrated against T_WATER independent actual deadline, positions, path and carrier state. This needs game state reads, not an aesthetic live judgment.",
+        "start": "Registered pools with independently exported geometry and an active natural or controlled production water seizure; healthy ordinary helper at an asserted work site, no prespawned downed victim or artificial carry flag.",
+        "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
+        "control": "Observe deadline creation by the real strike/snare, then normal pickup before deadline; replay with blocked helper and no helper, and replay pool-size geometry while holding pawn/terrain states constant. Read eligibility/reason directly so a quiet random window cannot masquerade as safety.",
+        "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
+        "live_only_why": "A calibrated model or independent runtime state/job read can decide this relational experience; running the game for calibration does not make it a live-look-only bar."
+      },
+      "live_only": false,
+      "touches": [
+        "water",
+        "rescue",
+        "routes",
+        "warning",
+        "save",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Without this experience, shore work rewards bringing reachable help and judging pool geometry; seizures cannot be instant deletion or staged generic downing.",
+        "renormalize": "No exact yield, stat, rate, size or variant count is pinned by says or its pictures; tuning checks and rules may change while this comparison remains true.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "warning",
+      "says": "A working crown and its living birds audibly fall quiet when the water warning is active, and the colony receives a visible pointer to water danger and any victim even when the birds are gone.",
+      "meant": {
+        "intent": "a player must be able to notice and locate a water consequence without buying intelligence or operating a captive tank.",
+        "source": "delegated: CONDUCTOR:1794806166917699063 chorus contract in record.json from documented individual-call ruling section 6k; standing no-vanish-without-readable-sign ruling.",
+        "figurative": []
+      },
+      "accept": [
+        "Birds actually present contribute local calls over the working hum; a raised sentinel hushes them and the hum, and sound returns only after the remaining warning reason ends.",
+        "After the flock is lost the water still points out an actual seized victim and a later loss, so silence is not the only notice."
+      ],
+      "reject": [
+        "The same bird recording loops over an empty crown and a populated flock while a hush flag changes only a readout.",
+        "Ending a warning restores bird calls while another water warning is still active.",
+        "A wild victim disappears at water without a splash, sound, message or other readable sign of the loss."
+      ],
+      "lazy": "The same bird recording loops over an empty crown and a populated flock while a hush flag changes only a readout.",
+      "range": {
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Flock absent, sparse, spread and crowded; wild and tamed birds; camera at flock, work site, remote pool and another map. Sentinel up/down, overlapping warning reasons, despawn, defeat, off/on and reload while hushed; machine/weather sounds continue naturally. Independent threat/victim visual cue is tested with audio muted and birds absent. Repeated listening windows span configured call intervals rather than silence between random calls.",
+        "left_out": "No synthetic chorus-level mechanic, detector item requirement or globally muffled machines/weather; no live flight evaluation. The existing crown work bed may persist, but must not fake population-dependent bird calls."
+      },
+      "sees": {
+        "instrument": "T_WARNING timed listening at ordinary play zoom with simultaneous per-emitter sound events, hush reasons and actual victim/message targets. Audio event counts are regression evidence; a listener must determine audible separation and hush.",
+        "start": "Known living flock at an ordinary work site, working ambient sound, then a real sentinel/water-warning transition; sound channel volumes documented and unchanged across arms.",
+        "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
+        "control": "Compare the same site with flock present/absent, same audio settings, then overlap reasons and remove them in reverse order. Keep machinery audible and verify a victim target without audio; this rules out master mute and canned bird recordings.",
+        "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
+        "live_only_why": "Silent flags and sound-event counts cannot establish that living calls are audible against the bed or that their cessation is a usable audible warning. No offline audio model can certify that listening experience."
+      },
+      "live_only": true,
+      "touches": [
+        "warning",
+        "water",
+        "ecology",
+        "save",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Without this experience, a player must be able to notice and locate a water consequence without buying intelligence or operating a captive tank.",
+        "renormalize": "No exact yield, stat, rate, size or variant count is pinned by says or its pictures; tuning checks and rules may change while this comparison remains true.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "memory",
+      "says": "A shore visitor can watch an unmolested slender porter leave useful goods, while attacking it makes that pool more hostile and ends its gifts without changing an untouched pool, including after reload.",
+      "meant": {
+        "intent": "temptation and pool-specific memory must be real, not just loot spawned beside an unrelated generic hazard.",
+        "source": "delegated from documented owner porter quotation in fever_wood_deep_and_mud_2026-09-23.md section 2a and the remembering-water root CONDUCTOR:1794804413045937607; not a newly recovered owner event.",
+        "figurative": []
+      },
+      "accept": [
+        "A recognisable delicate porter deposits obtainable goods and withdraws; attacking its counterpart leaves a warned hostile pool that no longer offers porter goods after the save is reloaded.",
+        "An untouched neighbouring pool continues its own gift-and-danger cycle despite the attacked pool grievance."
+      ],
+      "reject": [
+        "Loot appears through a debug stack while attacking the decorative porter merely sets a map-wide no-gifts flag and changes no local danger.",
+        "A reload clears the attacked pool grievance or shifts it to the nearest unrelated water cluster."
+      ],
+      "lazy": "Loot appears through a debug stack while attacking the decorative porter merely sets a map-wide no-gifts flag and changes no local danger.",
+      "range": {
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Porter before deposit, after deposit and fatally hit; blocked drop cells, overlapping limbs and already-angered pool. Separated, near-adjacent and diagonal-touching pools, temporary map unload and save/reload; pool loss/merge/split only where normal supported terrain edits allow it. Current pool grievance persists by the stable-cell rule; map-wide combat relief still outranks it. Ordinary game days through day 100 and simultaneous local work groups are included.",
+        "left_out": "No colony-wealth guarantee, exact loot rate/value, bought mirror intelligence, ransom gifts or generalized threat increase from merely opening a UI. Pool kindness does not negotiate or talk."
+      },
+      "sees": {
+        "instrument": "Situations and water transitions plus season event trace, with T_WATER independent item placement/inventory and effective local danger comparison; existing porter test is partial evidence only.",
+        "start": "At least separated registered pools with neutral history; actual porter from the normal encounter path and free/blocked deposit sites, ordinary reachable worker and independently exported item and danger state.",
+        "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
+        "control": "Record the porters own successful placement, recover the placed item normally, then compare matched production danger eligibility/weight at the attacked and untouched pools. Use direct weights/reasons and supported seeded event replay, not merely absence of a random gift during a short wait.",
+        "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
+        "live_only_why": "A calibrated model or independent runtime state/job read can decide this relational experience; running the game for calibration does not make it a live-look-only bar."
+      },
+      "live_only": false,
+      "touches": [
+        "water",
+        "economy",
+        "warning",
+        "save",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Without this experience, temptation and pool-specific memory must be real, not just loot spawned beside an unrelated generic hazard.",
+        "renormalize": "No exact yield, stat, rate, size or variant count is pinned by says or its pictures; tuning checks and rules may change while this comparison remains true.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "response",
+      "says": "At the water a colony can fight emerging limbs for relief, push an exposed eye for stronger relief across the map, and keep its pools free of the adult after defeating that eye.",
+      "meant": {
+        "intent": "the single signature has a reachable conclusion, and every water attack service must honour earned relief.",
+        "source": "Documented owner ladder in fever_wood_deep_and_mud_2026-09-23.md section 2b, later than its earlier never-killable line; delegated inclusion as necessary signature response.",
+        "figurative": []
+      },
+      "accept": [
+        "Damaged limbs withdraw, a sever leaves harvestable flesh and a longer quiet interval, and damaging the exposed eye drives the map quiet.",
+        "A defeated eye leaves an adult-free map across reload and continued shore work, while another map retains its own danger."
+      ],
+      "reject": [
+        "The visible limbs disappear after victory but invisible shared water strikes still take shore workers.",
+        "The eye exists only in a debug menu, so an ordinary colony can never earn the promised map-wide relief.",
+        "A fatal hit skips the final outcome, or unrelated dormant captive code revives the defeated adult with extras switched off."
+      ],
+      "lazy": "The visible limbs disappear after victory but invisible shared water strikes still take shore workers.",
+      "range": {
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. Eligible and ineligible connected pool shapes over the complete configured size/pressure ranges; no free spawn cell, partially occupied pool, free capacity and simultaneous encounter cases. Ordinary, moderate, severe and fatal damage at either side of the withdrawal deadline; ongoing player and native traffic; no adult, active adult, temporary local/map relief and permanent map defeat; day 100, save mid-withdrawal, reload after defeat, another map and settings transitions. Reachability is checked over encounter opportunity distributions, not a promise that a rare event occurs in any single short recording.",
+        "left_out": "No whole-body adult pawn, global species extermination, reagent suppression, captive reseeding or deliberate summon in this version. No immunity from ordinary raids or other damage after the adult is gone."
+      },
+      "sees": {
+        "instrument": "Situations and water transitions and Crown and encounter timing, calibrated against normal production limb/eye damage callbacks and T_WATER state reads including both visible limbs and implicit Tenant.",
+        "start": "Actual pool topology, natural encounter scheduler active, then a recorded production eye eligibility/spawn path and ordinary damage. Clear loaded adult authority state and existing victims separately; debug spawning an eye alone proves no scheduler reachability.",
+        "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
+        "control": "Read strike eligibility during quiet with a valid exposed non-native target. Compare untreated local pool, map-relieved pools and another map under the same other hazards. Exercise fatal callbacks and save reload without manually assigning victory; no-event waits alone cannot prove safety.",
+        "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
+        "live_only_why": "A calibrated model or independent runtime state/job read can decide this relational experience; running the game for calibration does not make it a live-look-only bar."
+      },
+      "live_only": false,
+      "touches": [
+        "water",
+        "economy",
+        "warning",
+        "rescue",
+        "save",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Without this experience, the single signature has a reachable conclusion, and every water attack service must honour earned relief.",
+        "renormalize": "No exact yield, stat, rate, size or variant count is pinned by says or its pictures; tuning checks and rules may change while this comparison remains true.",
+        "first_version": "signature"
+      }
+    },
+    {
+      "id": "whole",
+      "says": "Over a season the complete colony keeps working its branch home and gathering local food while readable water interruptions leave opportunities to rescue or fight back, and a mid-consequence reload and reordered work preserve the consequences without drowning routine life in attacks, emptying the land or stalling work.",
+      "meant": {
+        "intent": "the complete shipped first version must sustain the selected daily-life emphasis rather than becoming a permanently silent combat map, a food desert or a collection of isolated scenes.",
+        "source": "delegated from CASE whole-bar requirement, OWNER:1794374372850231423 daily routes emphasis, and the validated branch-home/remembering-water root; predicted enjoyment is not a bar.",
+        "figurative": []
+      },
+      "accept": [
+        "Across ordinary weather and changing work sites, workers finish crown and shore trips, local provisions remain usable, and the water episodes can be noticed and answered while daily work continues.",
+        "After loading a save made during a real rescue obligation, the same colony continues it; repeating shore work before harvest and harvest before shore work retains the actual pool history and earned relief."
+      ],
+      "reject": [
+        "A beautiful short walk passes while the complete season becomes permanent hush and repeated seizures that prevent ordinary provisioning.",
+        "A season appears stable because water, shared growth or animal needs are disabled or because the runner skips all consequence ticks.",
+        "Reloading clears active danger, rerolled history conceals losses, or food and useful routes vanish while a synthetic colony counter reports completed work."
+      ],
+      "lazy": "A beautiful short walk passes while the complete season becomes permanent hush and repeated seizures that prevent ordinary provisioning.",
+      "range": {
+        "varies": "Authored local square maps from 150 through 400 cells per side, including boundary sizes and the complete configured bole/path/pool placement ranges; colony sizes from initial settlers through 40 colonists, sparse and crowded work sites, no-threat and ordinary-raid periods, first day through day 100. This is a declared test domain, not a measured limit of the engine; any actual supported fixed-world map outside it extends the generator before coverage is claimed. A full-map season of 15 game days, with paired continuations to day 100 for accumulation/aging; ordinary and 40-colonist holdings, production animal populations and natural weather, initial and mature plant/herd states, sparse and congested routes. Save mid-way during an actual seizure or withdrawal; repeat from the same initial snapshot with harvest/shore order reversed. Include no-help loss, helped rescue, grievance, local relief and reachable eye escalation in production-controlled transition branches; never force a rare eye into the undisturbed season to conceal its frequency. Compression may remove rendering and wall-clock waiting only: preserve game tick ordering, job competition, needs, growth, weather, damage, RNG stream and save/load effects. All kept features enabled and unlocked; extras off. Main-action continuations include normal supported construction, harvest/haul, porter collection, actual seizure/rescue and ordinary limb combat: baseline does construction/harvest, then shore/rescue, then local limb combat; alternate does local combat at an independent pool, shore/rescue at the still-active pool, then harvest/construction. Neither order disables danger or replaces ordinary jobs; permanent-eye victory is a separate terminal branch, not used to erase the second-order rescue opportunity.",
+        "left_out": "No guarantee against a deliberate colony wipe, impossible player walling, simultaneous unrelated endgame disasters or optional next-version combinations. These are distinguished from a default water/growth/population feedback failure, not used to dismiss one."
+      },
+      "sees": {
+        "instrument": "Coupled colony season model calibrated against T_SEASON full-map event/job/terrain/population exports, plus the separate land and warning live looks. Model predicts worst regimes, actual runtime trace confirms them; neither a model-only run nor a montage can pass.",
+        "start": "Disposable full authored map with all defaults exported, normal colony needs/resources and a measured initial terrain/plant/animal baseline; scheduler and weather run unlocked. Record the actual mid-consequence save before reload.",
+        "on": "All kept land, life and water features at proposed shipped defaults; all next-version and recommended-retirement effects off; all DLC present; shared growth, weather, native behavior, calm gathering, Direct Sun geometry and hush enabled where their owning services are loaded; no sky lock or hidden threat suppression. No debug invulnerability, frozen needs or unlocked-feature omissions. Read actual loaded identities and settings, not requested fixture flags.",
+        "control": "Keep a no-player-action continuation, paired task orders and unchanged RNG/event log through compression. Reconcile production, eaten/spoiled goods, pawn losses, job completions and all live water obligations to independently exported state and save. Compare projected and actual worst cases; report flood/desert/stall explicitly rather than only average success.",
+        "reset": "Disposable authored-map snapshot plus exact prior settings; restore the snapshot and settings after the arm, verify pool/pawn identities and pending obligations equal the saved baseline, then close recovery. Never repair expected state after the reading. No canonical world/save is touched.",
+        "live_only_why": "A calibrated model or independent runtime state/job read can decide this relational experience; running the game for calibration does not make it a live-look-only bar."
+      },
+      "live_only": false,
+      "touches": [
+        "terrain",
+        "routes",
+        "ecology",
+        "sun",
+        "water",
+        "rescue",
+        "warning",
+        "economy",
+        "save",
+        "settings"
+      ],
+      "tests": {
+        "reject": "Without this experience, the complete shipped first version must sustain the selected daily-life emphasis rather than becoming a permanently silent combat map, a food desert or a collection of isolated scenes.",
+        "renormalize": "No exact yield, stat, rate, size or variant count is pinned by says or its pictures; tuning checks and rules may change while this comparison remains true.",
+        "first_version": "land, life and signature together"
+      }
+    }
+  ],
+  "whole": "whole",
+  "checks": [
+    {
+      "id": "C_COMPOSE",
+      "what": "Record source/assembly/compose fingerprints, actual loaded package and all-DLC identity; no per-biome heat fields, worldgen scoring, cut mechanic reachability or invented canon leakage. Existing source_guards is partial and contains stale heat expectations."
+    },
+    {
+      "id": "C_GEOMETRY",
+      "what": "Parse actual allowed paint masks, completed foundation affordances, cardinal pool clusters and configured path/area/geometry ranges; record exact defaults as checks, not bar text."
+    },
+    {
+      "id": "C_WATER",
+      "what": "Record actual effective radius, eligibility reason, local grievance, pressure, quiet scopes and expiry, drop placement and absolute victim deadlines; mutation controls must reject constant/wrong-map observations."
+    },
+    {
+      "id": "C_KERNEL",
+      "what": "Keep production RM_PoolKernel and relevant Source/SelfTest/FeverWoodFuzz.cs coverage; add counterexample replay for new locality/authority/deadline state. A green mock suite is not runtime proof."
+    },
+    {
+      "id": "C_ROSTER",
+      "what": "Parse wildAnimals/wildPlants as XML element names after available patches; note other homes without evictions, positive animalDensity and actual native membership. Local inline XML scan found no second home for the retained fauna; missing external patches prevent a complete multi-home claim."
+    },
+    {
+      "id": "C_LIFE",
+      "what": "Capture ordinary per-plant products, spoilage, herd calm/fullness, gather completion/cancellation, native drinking need changes, original ambush origin and flight-tracker state. Existing flora_harvest and bough_soil chains are partial."
+    },
+    {
+      "id": "C_SOUND",
+      "what": "Record emitter identity, current live population, call intervals, active hush reasons and restore order including sentinel fatal despawn/load. Counts do not replace listening."
+    },
+    {
+      "id": "C_SETTINGS",
+      "what": "Enumerate exact saved fields/defaults and actual effects, all-off and re-enable; next-version controls default off and label their status. Defaults under test are the proposed version, not the current many-features-on file."
+    },
+    {
+      "id": "C_EXTRAS",
+      "what": "For each switch-off ticket read fresh-map absence of active things/jobs/letters/incidents/stock/payload and clean log; enable-arm presence uses actual supported sources. Dormant compatibility definitions may still resolve."
+    },
+    {
+      "id": "C_SAVE",
+      "what": "Round-trip mid-seizure, mid-withdrawal, grievance and overlapping hush; reconcile same IDs, deadlines, drop ledgers and active reasons without fixture replay; drop dangling references with recorded outcomes."
+    },
+    {
+      "id": "C_SEASON",
+      "what": "Record terrain/plant/animal/job/food and event time series across the full-map season plus day-100 extension; actual and model ledgers must reconcile, including second-order task replay."
+    },
+    {
+      "id": "C_FLOOR",
+      "what": "Inherited floor: loaded composition clean, no new log errors, real effective superb Mod Settings and ordinary supported all-off behaviour. Fix the code or stale checks; a red regression row alone is not a rejection bar."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R_TERRAIN",
+      "rule": "Use the existing local placement order: solid bole placement, pool scatter, allowed-ground causeway passes, then residual-soil marsh refusal. Reuse those engines; no world tiles or planet seeds are generated. A failed placement cannot be patched by painting an acceptance pad.",
+      "touches": [
+        "terrain",
+        "routes",
+        "ecology"
+      ]
+    },
+    {
+      "id": "R_HEIGHT",
+      "rule": "Crown height is represented by terrain/art; ordinary pawns, enemies and visitors walk directly on/off. Fertile bough-soil and Heavy-supported crown/stilts differ from untreated marsh and unbridgeable mirror water; no exclusive friendly access.",
+      "touches": [
+        "terrain",
+        "routes",
+        "rescue"
+      ]
+    },
+    {
+      "id": "R_REACH",
+      "rule": "Use cardinal-connected registered water clusters, Euclidean cell-centre distance from the nearest water cell and an unobstructed line to the pawn. Proposed engineering start: reach r(A)=min(12,1+sqrt(A)/4) cells for area A; expose the curve through the owning water profile. Both implicit Tenant and visible snare/lash use that same size envelope, with role timers/line targeting inside it. Roof and raised paint alone grant no water immunity; solid intervening obstacles block strikes. Attack the curve before weakening shore or work bars.",
+      "touches": [
+        "water",
+        "routes",
+        "rescue",
+        "terrain"
+      ]
+    },
+    {
+      "id": "R_AUTHORITY",
+      "rule": "Apply the effective water decision in this order: supported biome and enabled feature; living/spawned eligible target; native truce; permanent map defeat; active map relief; active pool relief; pool grievance/ordinary rates; geometry and role. No second service bypasses this result. Existing seizure obligations resolve independently of later adult relief; only physical rescue, recorded loss/death/removal or explicit feature-disable resolves them.",
+      "touches": [
+        "water",
+        "rescue",
+        "save",
+        "settings"
+      ]
+    },
+    {
+      "id": "R_RESCUE",
+      "rule": "Water downing creates an absolute saved deadline once per victim, not repeatedly extended by the next snare tick. Ordinary carrying begun before expiry clears it once; dropping then permits only a fresh valid strike, not resurrection of an old obligation. Dead/despawned/world-transferred references resolve with a readable terminal reason. Deadline duration is tunable and calibrated by actual path-and-pickup time, not straight-line proximity.",
+      "touches": [
+        "rescue",
+        "water",
+        "routes",
+        "save",
+        "warning"
+      ]
+    },
+    {
+      "id": "R_MEMORY",
+      "rule": "Local porter grievance is permanent on its affected surviving water cells: a connected component inherits grievance if it contains an aggrieved cell; split components inherit only their aggrieved cells, merge inherits any. Removing all affected water cells removes that local history, never transfers it to a nearest unrelated pool. Attack ends gifts and raises local hostile eligibility/rate; it cannot override earned quiet. Read-only observations never write agitation.",
+      "touches": [
+        "water",
+        "economy",
+        "save",
+        "warning"
+      ]
+    },
+    {
+      "id": "R_RELIEF",
+      "rule": "Ordinary withdrawal/sever quiet applies to the affected pool, including withdrawal of its active attackers; sever quiet outlasts ordinary retreat. Moderate eye damage quiets the map; severe/fatal damage permanently defeats its adult. Quiet gates both hostile water and porter rewards. Existing rescue obligations are neither extended nor forgiven by combat. Next-version suppression retains its documented map-wide adult scope but is off here.",
+      "touches": [
+        "water",
+        "economy",
+        "rescue",
+        "save"
+      ]
+    },
+    {
+      "id": "R_SCHEDULE",
+      "rule": "Keep the production pressure/large-cluster eye eligibility shape and the documented rare-opportunity chance; finite limb linger and ordinary capacity remain enabled. Pressure counts actual encounter opportunities; unsuccessful allocation cannot announce a nonexistent eye. Great-emergence placements must stay within the qualifying connected pool and must not wipe existing pawns/buildings. Expanded offering/noise triggers and ransom multipliers are off.",
+      "touches": [
+        "water",
+        "economy",
+        "warning",
+        "terrain"
+      ]
+    },
+    {
+      "id": "R_LIFE",
+      "rule": "Preserve every retained roster row; no terrain-biased spawn split. Use ordinary plant harvest, vanilla glow, shearing, tree diet and corpse ingestion; silloch attacks remain bounded to its saved initial ambush origin. Tamed silloch only ambushes hostiles. No native chase predator or acid-trail disposal. With operative thirst, eligible roster natives drink home water and neither Tenant nor snares seize them; cistrel supplies ordinary safe local drinking for non-natives.",
+      "touches": [
+        "ecology",
+        "water",
+        "routes",
+        "save"
+      ]
+    },
+    {
+      "id": "R_NECTAR",
+      "rule": "Keep the shared calm-gather gate and its local-threat rule, including tamed herds and an interrupted gather. Far-side danger alone does not dry a sheltered herd; saved calm/fullness recover under the shared clock. Deferring the guild defenses never bypasses this gate for thornbugs or the existing drommath sap.",
+      "touches": [
+        "ecology",
+        "economy",
+        "save"
+      ]
+    },
+    {
+      "id": "R_WARNING",
+      "rule": "Use CreatureBehaviors named hush reasons as the sole silence authority. Living-bird calls consult that state alongside existing work ambience; no prerecorded population chorus. Sentinel and water events add/remove their own reasons and reload reconstructs without duplicate registration. Keep visible action/victim/loss notice even with no birds or muted audio; do not mute weather or machines.",
+      "touches": [
+        "warning",
+        "ecology",
+        "water",
+        "save",
+        "settings"
+      ]
+    },
+    {
+      "id": "R_SUN",
+      "rule": "The standing global Direct Sun geometric model applies; air temperature stays vanilla. No FeverWood heatKind, heatOffsetC or shade exception. Read actual tree/roof geometry; where the shared tree-shade prerequisite is unmet, report it, never invent a local sun rule.",
+      "touches": [
+        "sun",
+        "terrain",
+        "ecology",
+        "settings"
+      ]
+    },
+    {
+      "id": "R_SCOPE",
+      "rule": "Shipped default enables kept land/life/signature and disables each next-version effect, including external gates when available. Keep code, defs, art and old-save identity for deferred extras; remove default discoverability, work, stock, incidents and side effects. Dormant load identity is not active content. Forbidden heat and already-cut theft/rite/parasite have no supported enable path.",
+      "touches": [
+        "settings",
+        "terrain",
+        "water",
+        "ecology",
+        "economy",
+        "warning",
+        "save"
+      ]
+    },
+    {
+      "id": "R_SETTINGS",
+      "rule": "Expose effective controls for land placement on future local maps, native ambush, bird sound/warning, nectar husbandry, ordinary limb encounters, eye escalation and all water seizures; group shared-owner controls visibly without duplicating ownership. Explicitly disabling water withdraws limbs with a sign and safely cancels active rescue obligations without rewards or hidden deaths; preserve grievance/defeat, let existing relief absolute clocks elapse. Re-enable never resets history. Terrain off affects future local placement, not existing walkways; nectar economy off stops output, never permits feared output. No worldgen or unsupported cross-biome option is added.",
+      "touches": [
+        "settings",
+        "water",
+        "rescue",
+        "warning",
+        "ecology",
+        "terrain",
+        "save"
+      ]
+    },
+    {
+      "id": "R_PROOF",
+      "rule": "All readings assert the actual loaded defaults, runtime identity and full-map feature activity. Source/mock/kernel rows alone are checks, never current gameplay proof; missing provider/state is unknown. Model calibration compares independent game exports before belief; do not self-certify adapters by echoing fixture input.",
+      "touches": [
+        "settings",
+        "save",
+        "terrain",
+        "water",
+        "ecology",
+        "warning",
+        "routes",
+        "rescue",
+        "economy",
+        "sun"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "ecology",
+      "members": [
+        "land",
+        "work",
+        "life",
+        "warning",
+        "whole",
+        "R_TERRAIN",
+        "R_LIFE",
+        "R_NECTAR",
+        "R_WARNING",
+        "R_SUN",
+        "R_SCOPE",
+        "R_SETTINGS",
+        "R_PROOF"
+      ],
+      "holds_together": "unknown",
+      "why": "Accelerated shared growth, native feeding/drinking, harvesting, density, local fear and shade can produce food glut, depletion or continually dry herds. Mean product rates alone do not settle their feedback with work availability.",
+      "model": "Coupled colony season"
+    },
+    {
+      "thing": "economy",
+      "members": [
+        "memory",
+        "response",
+        "whole",
+        "R_MEMORY",
+        "R_RELIEF",
+        "R_SCHEDULE",
+        "R_NECTAR",
+        "R_SCOPE",
+        "R_PROOF"
+      ],
+      "holds_together": "unknown",
+      "why": "Porter placement, grievance, combat respite, nectar calm and normal harvest compete for the same limited trips. A quiet-reward loop may either finance effortless danger farming or starve daily work despite each component passing.",
+      "model": "Coupled colony season"
+    },
+    {
+      "thing": "rescue",
+      "members": [
+        "work",
+        "shore",
+        "response",
+        "whole",
+        "R_HEIGHT",
+        "R_REACH",
+        "R_AUTHORITY",
+        "R_RESCUE",
+        "R_RELIEF",
+        "R_SETTINGS",
+        "R_PROOF"
+      ],
+      "holds_together": "unknown",
+      "why": "A real rescue deadline, route congestion and a water quiet transition can agree in pairs while repeated snare ticks reset the deadline or crowding makes alongside help fail. Enumerate obligations and feed worst path cases into the geometry sweep.",
+      "model": "Situations and water transitions"
+    },
+    {
+      "thing": "routes",
+      "members": [
+        "land",
+        "work",
+        "life",
+        "shore",
+        "whole",
+        "R_TERRAIN",
+        "R_HEIGHT",
+        "R_REACH",
+        "R_RESCUE",
+        "R_LIFE",
+        "R_PROOF"
+      ],
+      "holds_together": "unknown",
+      "why": "Actual job paths, ordinary wet-ground alternatives, water envelope and rescuer travel may each work separately but together leave no usable daily work circuit. Sweep geometry and actual pickup paths before asserting compatibility.",
+      "model": "Land and rescue geometry"
+    },
+    {
+      "thing": "save",
+      "members": [
+        "land",
+        "work",
+        "life",
+        "shore",
+        "warning",
+        "memory",
+        "response",
+        "whole",
+        "R_AUTHORITY",
+        "R_RESCUE",
+        "R_MEMORY",
+        "R_RELIEF",
+        "R_LIFE",
+        "R_NECTAR",
+        "R_WARNING",
+        "R_SCOPE",
+        "R_SETTINGS",
+        "R_PROOF"
+      ],
+      "holds_together": "unknown",
+      "why": "Transient Tenant state and reconstructed sentinel counts interact with saved local history and timers. Exact transitions and independence of observations must survive actual save/load, not just serializable kernel values.",
+      "model": "Situations and water transitions"
+    },
+    {
+      "thing": "settings",
+      "members": [
+        "land",
+        "work",
+        "life",
+        "shore",
+        "warning",
+        "memory",
+        "response",
+        "whole",
+        "R_AUTHORITY",
+        "R_WARNING",
+        "R_SUN",
+        "R_SCOPE",
+        "R_SETTINGS",
+        "R_PROOF"
+      ],
+      "holds_together": "argued",
+      "why": "A single effective gate per owning service plus explicit precedence distinguishes water-off safe cancellation from earned combat relief. Default extras cannot call the core; tests inspect callers and active state rather than deleting compatibility defs. This is an argued design, not a claim current toggles comply.",
+      "model": ""
+    },
+    {
+      "thing": "sun",
+      "members": [
+        "land",
+        "life",
+        "whole",
+        "R_SUN",
+        "R_PROOF"
+      ],
+      "holds_together": "argued",
+      "why": "Ambient air and global geometric sun are independent inputs to ordinary growth/needs and route choice. Deleting the local heat exception removes the contradiction; use the shared tree-shade result without a FeverWood override. Shared-model adequacy is still checked by land/season calibration.",
+      "model": ""
+    },
+    {
+      "thing": "terrain",
+      "members": [
+        "land",
+        "work",
+        "whole",
+        "R_TERRAIN",
+        "R_HEIGHT",
+        "R_REACH",
+        "R_SCHEDULE",
+        "R_SUN",
+        "R_SCOPE",
+        "R_SETTINGS",
+        "R_PROOF"
+      ],
+      "holds_together": "unknown",
+      "why": "Geometry may let fertile lanes consume nearly all safe work space or let pool reach cover every home route; shade, obstacle lines and spawn clearance join the same cells. Pairwise foundation correctness cannot prove safe usable routes on the complete map.",
+      "model": "Land and rescue geometry"
+    },
+    {
+      "thing": "warning",
+      "members": [
+        "life",
+        "shore",
+        "warning",
+        "memory",
+        "response",
+        "whole",
+        "R_RESCUE",
+        "R_MEMORY",
+        "R_SCHEDULE",
+        "R_WARNING",
+        "R_SCOPE",
+        "R_SETTINGS",
+        "R_PROOF"
+      ],
+      "holds_together": "unknown",
+      "why": "Overlapping sentinel reasons, population calls, linger and reload may create permanent silence or premature restore. The timing/state model precedes an audible comparison; a flag alone is not warning proof.",
+      "model": "Crown and encounter timing"
+    },
+    {
+      "thing": "water",
+      "members": [
+        "life",
+        "shore",
+        "warning",
+        "memory",
+        "response",
+        "whole",
+        "R_REACH",
+        "R_AUTHORITY",
+        "R_RESCUE",
+        "R_MEMORY",
+        "R_RELIEF",
+        "R_SCHEDULE",
+        "R_LIFE",
+        "R_WARNING",
+        "R_SCOPE",
+        "R_SETTINGS",
+        "R_PROOF"
+      ],
+      "holds_together": "unknown",
+      "why": "Shared Tenant, visible limbs, local grievance, local/map relief, native truce, saved obligations and scheduler are currently different authorities. Enumerate precedence, fatal callbacks and reload transitions before accepting the unified decision.",
+      "model": "Situations and water transitions"
+    }
+  ],
+  "old_bars": {
+    "observation": {
+      "to": "check",
+      "as": "C_WATER",
+      "why": "Independent observations and recovery are instrument validity, not a player experience; T_OBSERVE supplies missing fields."
+    },
+    "branch_home": {
+      "to": "merged",
+      "as": "land",
+      "why": "Re-derived from November routes answer; distinguish recognisable land from normal job dependence without numerical geometry quotas. Ordinary job routing is separately read by work."
+    },
+    "mud_escape": {
+      "to": "moved",
+      "as": "T_MUD",
+      "why": "Mud trap is an independent state machine; static marsh and real shore rescue keep the core whole."
+    },
+    "living_wood": {
+      "to": "merged",
+      "as": "land",
+      "why": "Solid mineable trunks remain land. Regrowth/sealant and galleries move to T_REGROWTH and T_GALLERIES, rather than bundling security hazards into land."
+    },
+    "pool_reach": {
+      "to": "merged",
+      "as": "shore",
+      "why": "Size affects actual shared and visible strike geometry, not merely eye eligibility."
+    },
+    "shore_rescue": {
+      "to": "merged",
+      "as": "shore",
+      "why": "Require a real production water obligation and normal carrying; retain nearby help comparison and readable loss."
+    },
+    "pool_memory": {
+      "to": "merged",
+      "as": "memory",
+      "why": "Local porter anger and danger persist; untouched pools remain independent under a shared adult."
+    },
+    "crown_warning": {
+      "to": "merged",
+      "as": "warning",
+      "why": "Living calls and retained work ambience use the same water hush; visual victim notice survives flock absence."
+    },
+    "mirror_intel": {
+      "to": "moved",
+      "as": "T_MIRROR_LIST",
+      "why": "Recommend retiring duplicate consumable intelligence; gate off while recommendation awaits owner. Read-only current signs remain core."
+    },
+    "driveoff_ladder": {
+      "to": "merged",
+      "as": "response",
+      "why": "Combat response is part of the one water chain; exact damage/time amounts become checks or tunable rules."
+    },
+    "adult_quiet": {
+      "to": "merged",
+      "as": "response",
+      "why": "All default water services honour combat relief; chemical suppression moves to T_SUPPRESSION and captive reseeding moves with captivity."
+    },
+    "captive_economy": {
+      "to": "moved",
+      "as": "T_TANK",
+      "why": "Prison industry is extra, including teaching; no core warning depends on it."
+    },
+    "delayed_establishment": {
+      "to": "moved",
+      "as": "T_MATURATION",
+      "why": "Keep the exact November intervention limitation as a future spec; no active captive establishment at defaults."
+    },
+    "return_bargain": {
+      "to": "moved",
+      "as": "T_RETURN",
+      "why": "World ransom, trade and display bargain defer with their separate tickets; no default pressure or reward debt originates from them."
+    },
+    "bait_wager": {
+      "to": "moved",
+      "as": "T_BAIT",
+      "why": "Normal bait jobs and delayed factions are a separate wager, not core water work. T_FRONTS owns delayed arrivals."
+    },
+    "living_hive": {
+      "to": "moved",
+      "as": "T_HIVE",
+      "why": "Runner-up signature, including reaction/farm/guards/sealing subtickets; retained-under-veto history is not erased or converted to a new retirement."
+    },
+    "broken_hives": {
+      "to": "moved",
+      "as": "T_RUINS",
+      "why": "Lootable environmental story is an extra; no current distinct ruin profile located."
+    },
+    "crown_livelihood": {
+      "to": "merged",
+      "as": "life",
+      "why": "Normal harvest and calm-gated nectar remain; cistrel ordinary water receives T_LIFE. Guild defenses and independent plant roles defer explicitly."
+    },
+    "native_life": {
+      "to": "merged",
+      "as": "life",
+      "why": "Normal diet, bounded ambush, native water and actual flight remain. Optional skellick theft is a retirement recommendation, with current external source unknown."
+    },
+    "oil_opportunity": {
+      "to": "moved",
+      "as": "T_OIL",
+      "why": "Oil harvesting remains a normal plant product; combustible weather/bonus/wake is a competing signature and defaults off."
+    },
+    "supported_checkout": {
+      "to": "check",
+      "as": "C_COMPOSE",
+      "why": "Supported identity, settings and Direct Sun are inherited floor/rules/checks. Wreck/scanner interactions move, rather than preserving a miscellaneous checkout bar. C_SETTINGS and C_FLOOR carry the remaining inherited controls."
+    },
+    "retired_absence": {
+      "to": "check",
+      "as": "C_EXTRAS",
+      "why": "Already-cut mechanics and dormant compatibility are boundaries, not independent player bars. No settled waiver or retirement is reopened. C_COMPOSE also checks forbidden reachability."
+    },
+    "ordinary_walk": {
+      "to": "merged",
+      "as": "whole",
+      "why": "Expand the isolated walk to a complete season, mid-consequence reload and reordered ordinary work with all kept mechanics on."
+    }
+  }
+}

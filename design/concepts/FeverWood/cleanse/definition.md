@@ -1,0 +1,89 @@
+# Fever Wood — proposed Design Version 0.1.0
+
+This is the Designer’s proposal under the current cleansing brief, not an applied change, a new owner quotation, an implementation claim, or a first-touch certification. All choices below are delegated Designer decisions. Earlier validated text, source, records and standing rulings remain untouched. No waiver is claimed; the recorded dismissed density/ascent/rite questions remain settled. Existing art acceptance remains in force.
+
+## Say the mod
+
+You build a home along living-wood routes above a hot swamp’s still black pools. The crown offers food, nectar herds and calling birds, while wet ground makes ordinary building and travel a choice. Useful goods at the shore tempt workers into the reach of a creature whose warnings, rescue opportunities and remembered responses make companions and fighting back matter.
+
+Land: broad solid trunks, static wood routes, fertile crown patches, marsh foundations, stilts and still black pools under a canopy, with ordinary hot air and global geometric sun.
+
+Life: the retained alien roster; accessible normal plant harvests and safe local drinking with an operative thirst provider; calm-gated nectar and sap, actual birds/flight/plumage, wood feeding, carrion feeding and a bounded bark ambush.
+
+Signature: **The branch colony takes useful shore rewards, meets readable pool danger, and responds by bringing rescuers or fighting emerging limbs, with its local choices and earned relief remembered.**
+
+Runner-up: the reactive ant hive, whose deeper expedition, farm, guards and closing retreat make an excellent dungeon but a separate signature. It loses to the November owner answer selecting ordinary branch work with water interruptions. Earlier keep-under-veto decisions are not revoked; the newly authorised first-version allocation defers their delivery, with code/defs/art retained and switched off.
+
+## Why a player reaches for it
+
+It gives a settlement a physical daily geography. A normal marsh can slow a pawn without changing where a base belongs; here crown ground, ground-refusal and completed stilts make useful routes the skeleton of a home. A generic animal ambush does not remember a gift-giver being attacked or quiet every pool after an eye victory. Those differences are the version’s prediction of interest, not an enjoyment bar.
+
+The minimum imitations were tested against this promise: painted branches beside an ordinary build-anywhere base; debug-stocked shore treasure; generic downing called rescue; a silent flag under a bird recording; a defeated eye above still-active invisible strikes. Each is rejected explicitly in the new bars. More systems do not repair any of them.
+
+## Using it: first hour, routine and scale
+
+At arrival the player can identify solid trunk bodies and walkable wood, fertile bough-soil, ordinary wet causeways, marsh and black water without discovering a climb menu. Solid heartwood can be mined by ordinary work. Heavy buildings require actual crown support or completed stilt platforms; a blueprint or partial platform does not provide it. Mirror water remains unbridgeable. A crown route is not inherently an invulnerability strip: water reach uses actual plan geometry, with solid obstacles stopping a strike. Normal enemies step onto the same terrain.
+
+Place food harvest and storage/home sites at distinct useful destinations before judging routing. Normal gather, plant and haul jobs must use branch connections where those are the useful routes, and must respond to a changed destination or blocked segment. Wet ground is a costly alternative, not an impassable moat. A deliberately paved colony is not forbidden, and an arbitrary sealed-off player destination is not promised reachable.
+
+Routine provisioning uses existing normal products: fruit/berries, roots/tubers and giant leaf food, halquin medicine, ossagrel sap, maulith cloth, claithe clay and seepril oil. No new recipe chain or replacement material is implied. Ammeth, sodderel and varnoth remain harvest-free under the later global plant ruling; their old building-material prose must be corrected. Plain plant placement and fertility requirements remain; no plennith terrain-conversion, fed-pool corvath gate or skimmel trap is claimed. Nubrith’s vanilla warm glow is retained as ordinary visible life, not a light puzzle. The donor-port placeholder berry also remains ordinary existing flora; it is not authority to restore cut donor roster rows.
+
+A reachable cistrel cup supplies an ordinary safe drinking action when the supported thirst service is active. It is not infinite water through a distant aura, a new plumbing network or a black-pool purification ability: ordinary drink work consumes/replenishes the plant’s finite stored cup resource through the owning thirst interface. Store volume, replenish rate and job duration are engineering tuning, calibrated against normal drink consumption; no yield amount is a bar. Until that adapter is found or supplied, drinking is missing implementation, never accepted by prose. With no operative thirst provider, load safely and make no successful-drinking claim. Roster natives must be able to drink their own environmental water and be exempt from inappropriate water seizure even with the provider active; non-natives remain exposed.
+
+Thornbug nectar and existing drommath sap use the ordinary gather interface and the shared local calm rule. Nearby actual hostile threat dries the herd and cancels ongoing gathering; removing threat lets saved calm recover before ordinary output resumes. A raid across the map does not automatically dry a sheltered herd. This necessary life contract remains even though vaulm sealing, drommath swelling and ollareth alarm defer. No sap-host plant dependency is introduced. Bird taming and murrelith shearing remain ordinary animal work; birds in the fiction actually fly. Grolth eats carrion normally without laying an acid disposal trail. Brathek eats trees through its vanilla food flag; no wall/bough damage or gallery growth. Silloch waits at bark, attacks adjacent eligible prey and ends its attack relative to the initial ambush location, so a moving leash cannot chase forever. A tame silloch only ambushes hostiles. The already-dismissed density split stays out; ecology does not imply separate vertical spawn layers.
+
+At a 40-colonist holding, ordinary pathfinding, reservations and hauling still operate; neither infinite throughput nor safety for unattended shore workers is promised. Test congested shared branches, concurrent shore parties, competing pickup jobs, hungry wildlife and a frightened herd while ordinary raids and weather run. The model must expose the regime where chores stop completing, rather than hiding it behind an average or a smaller staged party.
+
+## What changes in the colony’s story
+
+The adult is an invented Sekkulaath in the free tier; optional campaign identity may map it to dianoga when the actual lower-tier implementation is available. It is one antagonist under the map, not a body pawn in each pond. Its ordinary limbs have visible jobs: feeler searches, snare creates a rescue obligation, lash wounds, slender porter places goods, sentinel announces awareness and hushes the crown. The eye is exposed only during a qualifying larger-pool escalation, never an ordinary lone-eye lottery. Whole-body emergence remains plot-reserved and is not ambient content or a first-version delivery ticket.
+
+The porter’s normal visible placement is the renewable lure; loot has to be placed, reachable and actually collected, not merely rolled into a log. Blocked placement retries before finishing its single deposit, then withdraws; it neither overwrites contents nor duplicates loot on load. Attacking it stops porter gifts and increases effective local hostility at that pool, including on a fatal hit. An untouched pool keeps its own history. The increase is tunable; eligibility/reasons and actual relative opportunity are observable, rather than inferred from a short random wait.
+
+A seizure is a saved obligation attached to a real victim, created by either the implicit water service or a visible snare through the same authority. Normal carrying before the deadline is rescue. Touching, scheduling a pickup, teleporting a helper or reloading is not. Nearby means a working companion with a reachable route and time to react/pick up; it does not mean any Euclidean radius regardless of obstacles or incapacitation. Distant help can be too late. Multiple victims must not repeatedly reset each other’s deadlines. Once carried free, an old obligation cannot kill the dropped victim later; a new exposed visit may create a new one. Player pawns and tame animals get the rescue opportunity; wild non-native loss also has a readable sign. A dead, transferred or removed victim is resolved explicitly, not held as a dangling countdown.
+
+Damaging an ordinary limb makes it withdraw; severing before withdrawal leaves real flesh and longer local quiet. Quiet suppresses hostile water and porter opportunities at that pool, including already-up attackers; it is not a selective treasure farm. Eye damage earns stronger map-wide quiet, and defeating the eye ends adult water danger on that map permanently in this version. The later ladder ruling supersedes the earlier never-killable statement. Another map remains independent. Existing seized victims still need rescue after combat victory; the adult’s retreat does not transport them home. No extra disabled captive, stock tally, oil hook or gift queue can revive the adult or alter default odds.
+
+## Costs
+
+Space and travel: useful land is a network, marsh requires a real foundation alternative, and moving a load or a helper follows actual paths. Labour: tending calm herds, harvesting and bringing companions consumes normal work time. Opportunity: shore rewards compete with safe provisions; attacking a gift-giver forfeits local gifts. Combat relief pauses rewards along with danger. Ambient heat, medicine needs and spoilage use their ordinary systems; there is no custom FeverWood heat tax. Balance amounts are engineering checks, not rejection bars.
+
+## When it goes wrong and the readable sign
+
+A living flock and work bed give the water hush something real to interrupt; population loss changes calls, not a synthetic chorus meter. All water hush reasons must end before sound resumes, including after reload. A visible warning target/inspection state identifies a dangerous pool or active victim even if audio is muted or the flock is absent. Every wild loss, rescue and unresolved player loss has an action-linked sign; ordinary body removal without a sign fails. A later one-off welcome letter is unnecessary.
+
+Flood means recurring water episodes or lasting hush consume routine life. Desert means food/wildlife/usable routes are depleted by default interactions despite the colony doing ordinary work. Stall means normal jobs or rescue obligations cannot progress, not a player deliberately sealing their storage. Error storm means repeated faults stop or repeatedly disrupt the experience; the inherited clean-load/log floor still applies. No exact density or event quota is a bar. The whole season model and trace must identify these outcomes, including day-100 accumulation, rather than using safety toggles or frozen skies to conceal them.
+
+## Edges
+
+No planet generation, alternate worlds, world-tile painting, natural placement knob, rain or flowing-water creation. Existing local map-content placement is not a new player worldgen feature. No roster evictions or terrain-biased density override. No ascent gates, friendly-only paths or real vertical layers. No default regrowth/crushing/sealant, sink-mud trap, moving branches, biological soil making, corvath intelligence, glyph/rite, live bait raid wager, hive dungeon, wreck field, scanner catalogue, captive industry, ransom, trade/display gifts, chemical quiet or explosive oil weather. The normal plants/animals whose special behaviour defers stay in their existing rosters. Defer a mechanic, never silently evict its species. Historical theft, raid-back and parasite cuts remain cuts, not newly deferred promises.
+
+## Neighbours and dependencies
+
+Ash’karr is the one fixed desert world. Fever Wood is the still backswamp behind the moving Miasma wetland; its groundwater explanation does not author rivers or water tiles. Global lore coordinates use arc from the substellar point, not a new latitude heat scheme. Sporefall’s treetop Wildsteam home remains campaign lore; this version neither places nor regenerates it. The free biome is whole without campaign IP. Naming follows RM/RSW/RUT tiers and no new names are coined here. No anima-tree random occurrence is restored.
+
+EnvironmentalHazards supplies local boles/causeways/pools/refusal, water exposure/rescue and calm-gathering profiles. CreatureBehaviors supplies shared reason-based silence and relevant behavior interfaces; do not fork them. ExplosiveGrowth supplies ordinary growth, aging and its silent/nonlethal giant top; no additional crown reroute or nectar-glut effect is inferred from its comments. Bones supplies ordinary butchery compatibility. Wreckage remains for dormant children and future salvage, but its FeverWood field is off by the content setting. Vanilla supplies ordinary jobs, terrain foundations, bridge-derived stilts, harvest/gather, damage, saves and map weather. No popular-mod comparison is necessary to redesign something those mechanisms already do.
+
+The current checkout contains only src/RimMandrake. Historical lower-tier campaign patches, FlowWorks and RimProperty paths in record.json do not exist here. Their implementation and effective patched roster are unknown; an integration ticket requires their actual composition before any claim. The local inline roster scan located no multi-homed retained fauna, but unavailable patched rosters prevent a whole-stack claim. Multi-homing found later is annotated, never evicted. No vanished folder is called unbuilt, and no historical closure becomes current gameplay proof.
+
+## Settings
+
+Shipped defaults are the kept first version, with next-version effects off and labelled as such. The current code’s many true defaults are not this proposal’s defaults until separately applied. Keep saved per-major-feature controls for future local terrain placement, ambush/diet where already controlled, nectar economy, bird/work sound and water warning, ordinary limbs, eye escalation, and effective shared water seizures. Both water services must respect a visible effective master control; an existing bestiary-only switch remains honestly labelled and cannot pretend to disable shared hazards. Tuning exposes the engineering reach curve, rate/linger/cap and ordinary product/calm parameters through their existing owning services.
+
+Terrain placement off affects future local maps, never removes an occupied branch or structure. Nectar economy off stops its output rather than allowing scared output. Water-off withdraws existing limbs with a sign and resolves active victims safely without a reward or hidden deadline death. Keep saved grievance and defeat; existing absolute quiet clocks elapse normally while off. Re-enable does not reset history or reconstruct old seizures. External inherited owner controls must be shown/described where they govern the experience, not copied into competing services. All-off remains a safe ordinary existing map; settings never erase pawns, buildings or deferred save obligations. Tickets define migration of old saves separately from fresh-default absence.
+
+## First hour
+
+The settlers see solid trunks, a useful crown route and black water. They put storage where a fruit trip actually follows the route, start a supported building and discover untreated marsh will not hold the heavy alternative. A porter’s deliberate deposit gives them a reason to plan a shore trip with a companion. No hive, tank recipe or arrival story is needed to make the choice readable.
+
+## Ordinary week
+
+Fruit and medicine come home, calm nectar is gathered and birds call near the holding. A local threat dries the exposed herd while the distant sheltered herd stays useful. At shore the warning targets a real worker, the accompanying pawn follows the actual route and carries them free. Reloading that obligation would retain its deadline. The colony reassigns shore pairs and keeps its ordinary work going.
+
+## Worst day
+
+A congested route delays help. A sentinel hush overlaps the earlier warning and cannot be cleared by silencing only the first source. A seized animal is lost with a sign; another is rescued. The colony attacks a limb to earn a local pause, then learns that shooting the delicate gift-giver made that particular pool hostile and ended its goods. The neighbouring pool did not inherit the grievance. Nothing simply disappears, no promise of universal rescue is made, and the rest of the map continues ordinary jobs.
+
+## Season’s turn
+
+With the whole map ticking, growth, eating, calm recovery, weather, traffic and water opportunities have all accumulated. The player reloads an actual mid-consequence save and continues; a paired continuation does local combat at an independent pool, shore/rescue at the still-active pool, then harvest/construction, rather than construction/harvest, shore/rescue, then combat. The model’s worst cases are checked against real exports. A qualified eye encounter is a possible strategic opportunity, not a compulsory event by the season boundary. If fought to its end, it quiets this map’s adult without a disabled captive system reviving it. The outcome must remain a working branch colony, not an endless hush, food desert, job stall or error storm.
