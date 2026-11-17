@@ -479,6 +479,120 @@ namespace RimMandrake.Pyrelands
             return Math.Max(1, (int)Math.Round(hours * ticksPerHour));
         }
 
+        // ------------------------------------------------------------ the wind carries the fire
+        // RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE (2026-11-16). Vanilla fire spreads evenly to all eight
+        // neighbours, so a fire in the grass carpet is a ring, not a line: in the visit-1 walk saves one opening front burned
+        // 78% of a 250 x 250 map in 4 days and the map burned again in week 2 (bar burn_line_walks: "a line of grass fire
+        // walking ... It must not read as a scattered wildfire"; bar grass_carpets_and_regreens: "no bare-dirt expanses").
+        // On Pyrelands ground the wind carries the fire instead: each fire lights at most ONE cell, downwind, once. A burn is
+        // then exactly as wide as what was lit, and no fire makes two. The whole-map model that checks it:
+        // src/RimMandrake/Pyrelands/pyre_burn_sim.py (selftest_pyrelands_burn_ecology.py).
+
+        /// <summary>The eight compass steps clockwise from north (+z): N, NE, E, SE, S, SW, W, NW.</summary>
+        public static readonly int[] Dir8X = { 0, 1, 1, 1, 0, -1, -1, -1 };
+        public static readonly int[] Dir8Z = { 1, 1, 0, -1, -1, -1, 0, 1 };
+
+        /// <summary>Ticks after it is lit that a fire is carried on. Bar burn_line_walks ("walking"): this is vanilla's own pace,
+        /// not a new one: a 0.1 fire on ember grass (Flammability 1.6, +0.132 a 150-tick beat) passes size 1 on its 7th beat
+        /// (1,050 ticks) and vanilla spreads within one more interval; the walk saves measured 43 cells a day, this gives 50.</summary>
+        public const int WindCarryTicks = 1200;
+
+        /// <summary>How far downwind a spark is tried when the next cell is bare. Bar burn_line_walks ("never out for long"): a
+        /// line must cross thin grass. 2 is vanilla's own spark reach (GenRadial.ManualRadialPattern[10..20], two cells out).</summary>
+        public const int WindCarryReach = 2;
+
+        /// <summary>The cells a fire tries, in order, when the wind (blowing TOWARD bearingDeg, 0 = north, clockwise) carries it
+        /// on: the compass step nearest the bearing and its neighbour on the side the bearing leans to (that neighbour first
+        /// with chance = the lean over 45 degrees, so the mean heading is the wind), then the neighbour on the other side; then
+        /// the same three one cell further, out to `reach`. Never sideways, never back. dx and dz hold 3 x reach offsets.
+        /// roll2 only settles which side "leans" when the bearing sits exactly on a compass step.</summary>
+        public static void WindProbes(float bearingDeg, float roll01, float roll2, int reach, int[] dx, int[] dz)
+        {
+            double b = bearingDeg % 360.0;
+            if (b < 0) b += 360.0;
+            double steps = Math.Floor(b / 45.0 + 0.5);
+            int n = (int)steps % 8;
+            double delta = b - 45.0 * steps;                    // -22.5 .. 22.5
+            int side = delta > 0 ? 1 : delta < 0 ? -1 : (roll2 < 0.5f ? 1 : -1);
+            int lean = (n + side + 8) % 8, far = (n - side + 8) % 8;
+            bool leanFirst = roll01 < Math.Abs(delta) / 45.0;
+            int first = leanFirst ? lean : n, second = leanFirst ? n : lean;
+            int k = 0;
+            for (int d = 1; d <= reach; d++)
+            {
+                dx[k] = Dir8X[first] * d; dz[k++] = Dir8Z[first] * d;
+                dx[k] = Dir8X[second] * d; dz[k++] = Dir8Z[second] * d;
+                dx[k] = Dir8X[far] * d; dz[k++] = Dir8Z[far] * d;
+            }
+        }
+
+        /// <summary>Is this fire due to be carried on? Only a free-standing ground fire on Pyrelands ground, once, at its age.</summary>
+        public static bool WindCarryDue(bool enabled, bool freeStanding, bool onPyrelandsGround, bool alreadyCarried, int ticksSinceSpawn)
+        {
+            return enabled && freeStanding && onPyrelandsGround && !alreadyCarried && ticksSinceSpawn >= WindCarryTicks;
+        }
+
+        /// <summary>Does vanilla's own even spread still run for this fire? Not where the wind carries it.</summary>
+        public static bool VanillaSpreadRuns(bool enabled, bool freeStanding, bool onPyrelandsGround)
+        {
+            return !(enabled && freeStanding && onPyrelandsGround);
+        }
+
+        /// <summary>The bearing of a line lit ACROSS the wind (FrontLine's angle), so the whole line walks abreast.</summary>
+        public static float AcrossWind(float windBearingDeg)
+        {
+            return (windBearingDeg + 90f) % 360f;
+        }
+
+        /// <summary>The wind's bearing when yesterday's fire came in from map edge `edge` (0 north, 1 east, 2 south, 3 west):
+        /// it blows inward, the way that fire walked.</summary>
+        public static float WindFromScarEdge(int edge)
+        {
+            switch (edge & 3)
+            {
+                case 0: return 180f;
+                case 1: return 270f;
+                case 2: return 0f;
+                default: return 90f;
+            }
+        }
+
+        /// <summary>Does (dx, dz) lie downwind of a fire, inside the cone a carried line can ever reach? WindProbes' nearest
+        /// compass step is at most 22.5 degrees off the bearing and its two neighbours 45 beyond that, so no chain of carries
+        /// leaves 67.5 degrees either side of the wind (tan 67.5 = 2.4142). The burn-approach warning reads it.</summary>
+        public static bool Downwind(int dx, int dz, float windX, float windZ)
+        {
+            float along = dx * windX + dz * windZ, across = Math.Abs(dx * windZ - dz * windX);
+            return along > 0f && across <= along * 2.4143f;
+        }
+
+        /// <summary>The fires that were carried on and still burn (the saved set; a despawned fire's id is dropped).</summary>
+        public static List<int> CarriedStillBurning(ICollection<int> carried, ICollection<int> live)
+        {
+            var keep = new List<int>();
+            if (carried == null || live == null) return keep;
+            foreach (int id in live)
+            {
+                if (carried.Contains(id)) keep.Add(id);
+            }
+            return keep;
+        }
+
+        /// <summary>Index of the fire nearest the centroid, so "where the burn is" is a cell that burns: with two lines on the
+        /// map the plain centroid lies in the unburned grass between them (bar ullai_graze_old_burns: the herd walks to where
+        /// it BURNED). -1 with no fire.</summary>
+        public static int NearestToCentroid(IList<int> xs, IList<int> zs, int cx, int cz)
+        {
+            int best = -1;
+            long bestD = long.MaxValue;
+            for (int i = 0; i < xs.Count; i++)
+            {
+                long ddx = xs[i] - cx, ddz = zs[i] - cz, d = ddx * ddx + ddz * ddz;
+                if (d < bestD) { bestD = d; best = i; }
+            }
+            return best;
+        }
+
         /// <summary>The rite lights where its lead stands; if that lit nothing it tries the rite origin once.</summary>
         public static bool RiteRetryAtOrigin(int lit, bool leadIsAtOrigin)
         {

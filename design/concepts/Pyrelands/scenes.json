@@ -13,7 +13,7 @@
     "colony vitals and pending incidents recorded"
    ],
    "action": "watch the front for a game day, capturing the front and its black trail at play zoom each game hour (capture hour asserted from the game clock at each capture); save the game once while the front walks (burn_line_walking); then let it die down and wait out the smoulder window",
-   "expect": "a contiguous front whose centroid moves, a growing scorched trail, and a relight in open grass beyond the building margin after it dies; 24 hourly captures, each at its asserted hour, show one contiguous line of fire with the black trail behind it, and a judge shown them confirms a walking line, not scattered fire",
+   "expect": "burning ground whose centre moves, a growing scorched trail, and a relight in open grass after it dies; 24 hourly captures, each at its asserted hour, show grass fire moving across the map with the black trail behind it, and a judge shown them confirms a natural grass fire that moves, not a flood over the whole map and not a fire that stands still",
    "control": {
     "case": "the same seed with the burn line switch (burnLineEnabled) off",
     "expect": "no front walks and no relight comes in the same window",
@@ -986,6 +986,10 @@
     ],
     "blackRainDousing": [
      "T_SETTINGS_SWEEP_OFFLINE"
+    ],
+    "windCarriesFireEnabled": [
+     "T_SETTINGS_SWEEP_OFFLINE",
+     "T_BURN_ECOLOGY"
     ],
     "ambientAshEnabled": [
      "sc_ash_ground",

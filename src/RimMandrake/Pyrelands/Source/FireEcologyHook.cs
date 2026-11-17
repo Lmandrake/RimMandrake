@@ -39,6 +39,12 @@ namespace RimMandrake.Pyrelands
             Apply(h, AccessTools.Method(typeof(Fire), "TickInterval"),
                   typeof(Patch_FireTick_BlackRainDouses), "black-rain-douses-fire",
                   "armed; black rain deals its own Extinguish on top of vanilla rain's, so it puts a grass fire out");
+            Apply(h, AccessTools.Method(typeof(Fire), "TickInterval"),
+                  typeof(Patch_FireTick_WindCarries), "wind-carries-fire",
+                  "armed; on Pyrelands ground each fire lights one cell downwind, once, so a burn stays a line");
+            ApplyPrefix(h, AccessTools.Method(typeof(Fire), "TrySpread"),
+                  typeof(Patch_FireTrySpread_WindInstead), "no-even-spread-where-the-wind-carries",
+                  "armed; vanilla's even eight-way spread does not run for a ground fire the wind carries");
             Apply(h, AccessTools.Method(typeof(FilthMaker), nameof(FilthMaker.CanMakeFilth)),
                   typeof(Patch_FilthMaker_NoAshOnAsh), "no-vanilla-ash-on-natural-ground",
                   "armed; flame leaves no Filth_Ash on natural ground here, the biome's own ash marks a burn");
@@ -59,6 +65,26 @@ namespace RimMandrake.Pyrelands
             try
             {
                 h.Patch(target, postfix: new HarmonyMethod(patchClass, "Postfix"));
+                Log.Message("[RimMandrake.Pyrelands] " + rule + ": " + detail);
+            }
+            catch (Exception e)
+            {
+                Log.Error("[RimMandrake.Pyrelands] " + rule + ": patch FAILED, rule NOT "
+                          + "in effect — " + e.Message);
+            }
+        }
+
+        private static void ApplyPrefix(Harmony h, MethodBase target, Type patchClass, string rule, string detail)
+        {
+            if (target == null)
+            {
+                Log.Error("[RimMandrake.Pyrelands] " + rule + ": TARGET METHOD NOT FOUND — "
+                          + "this rule is NOT in effect. A game update renamed it.");
+                return;
+            }
+            try
+            {
+                h.Patch(target, prefix: new HarmonyMethod(patchClass, "Prefix"));
                 Log.Message("[RimMandrake.Pyrelands] " + rule + ": " + detail);
             }
             catch (Exception e)
@@ -315,6 +341,88 @@ namespace RimMandrake.Pyrelands
     // +0.132 growth per 150 ticks; RM_FireEcoKernel.FireSizeAfterRainBeat), so black rain, "the loop's full stop", put out nothing
     // sooner than a clear sky (Pyrelands visit 1, rain_fire.py: both pads out at 2,250 ticks). On the fire's own 150-tick beat, after
     // vanilla's DoComplexCalcs, black rain deals RM_PyrelandsSettings.blackRainDousing more, on the fires vanilla rain reaches.
+    // The wind carries the fire (RM_BurnKernel, same heading). A free-standing fire on natural ground of a Pyrelands map (not a
+    // floor) takes no part in vanilla's even spread; once, WindCarryTicks after it is lit, it lights the first cell downwind
+    // that can take fire (vanilla's own ChanceToStartFireIn: grass, a crop, a wooden wall). A fire on a floor or a building keeps
+    // vanilla's rule. Both patches read one predicate, so the two can never disagree about a fire.
+    public static class WindCarriedFire
+    {
+        private static readonly int[] probeX = new int[3 * RM_BurnKernel.WindCarryReach];
+        private static readonly int[] probeZ = new int[3 * RM_BurnKernel.WindCarryReach];
+        private static Map cachedMap;
+        private static MapComponent_BurnLine cachedBurn;
+
+        internal static bool Governs(Fire fire, out MapComponent_BurnLine burn)
+        {
+            burn = null;
+            if (fire == null || !fire.Spawned || fire.parent != null) return false;
+            Map map = fire.Map;
+            // One component lookup per map, not per fire tick (GetComponent walks the map's component list).
+            if (!ReferenceEquals(map, cachedMap))
+            {
+                cachedMap = map;
+                cachedBurn = MapComponent_BurnLine.For(map);
+            }
+            burn = cachedBurn;
+            if (burn == null || !burn.WindCarries) return false;
+            // Natural ground only (any Pyrelands ground, or the soil and gravel pockets): a fire on a floor keeps vanilla's rule.
+            return FireEcologyHookMod.IsScorchableGround(fire.Position.GetTerrain(map));
+        }
+
+        internal static void Carry(Fire fire, MapComponent_BurnLine burn)
+        {
+            Map map = fire.Map;
+            burn.MarkCarried(fire);
+            RM_BurnKernel.WindProbes(burn.WindBearing, Rand.Value, Rand.Value, RM_BurnKernel.WindCarryReach, probeX, probeZ);
+            for (int i = 0; i < probeX.Length; i++)
+            {
+                IntVec3 c = new IntVec3(fire.Position.x + probeX[i], 0, fire.Position.z + probeZ[i]);
+                if (c.InBounds(map) && FireUtility.ChanceToStartFireIn(c, map) > 0f
+                    && FireUtility.TryStartFireIn(c, map, Fire.MinFireSize, fire.instigator))
+                {
+                    return;
+                }
+            }
+        }
+    }
+
+    public static class Patch_FireTick_WindCarries
+    {
+        public static void Postfix(Fire __instance)
+        {
+            try
+            {
+                if (__instance == null || __instance.TicksSinceSpawn < RM_BurnKernel.WindCarryTicks) return;
+                if (!WindCarriedFire.Governs(__instance, out MapComponent_BurnLine burn)) return;
+                if (RM_BurnKernel.WindCarryDue(true, true, true, burn.WasCarried(__instance), __instance.TicksSinceSpawn))
+                {
+                    WindCarriedFire.Carry(__instance, burn);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[RimMandrake.Pyrelands] wind-carries-fire: " + e.Message, 0x46E23);
+            }
+        }
+    }
+
+    public static class Patch_FireTrySpread_WindInstead
+    {
+        public static bool Prefix(Fire __instance)
+        {
+            try
+            {
+                bool governed = WindCarriedFire.Governs(__instance, out _);
+                return RM_BurnKernel.VanillaSpreadRuns(governed, true, true);
+            }
+            catch (Exception e)
+            {
+                Log.WarningOnce("[RimMandrake.Pyrelands] no-even-spread-where-the-wind-carries: " + e.Message, 0x46E24);
+                return true;
+            }
+        }
+    }
+
     public static class Patch_FireTick_BlackRainDouses
     {
         private static WeatherDef blackRain;

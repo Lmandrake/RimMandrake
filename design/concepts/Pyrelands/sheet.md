@@ -12,7 +12,7 @@
 - 2026-11-13, by card: "World switch → ship biomeGenerationEnabled OFF, labelled unsupported; Firebreak → delete leaf paved_strip_holds_the_line; Banks heat → same as the tested warmth and sleep-ignition, fold the leaf"
 
 ## does
-- [leaf:burn_line_walks] A line of grass fire walks the map with a scorched trail behind it, and is never out for long: a smoulder relights in open grass far from buildings. OWNER:1793895899845199295
+- [leaf:burn_line_walks] Grass fire moves across the map like a natural grass fire, with a scorched trail behind it that regreens, and is never out for long: a smoulder relights in open grass. (Reworded by him 2026-11-16: "modify the bar so that it's not so finicky about 'the line.' Sometimes poetry is simply that. I just wanted a natural grassfire feel." and "Take out the 'far from buildings' we don't have any physics to substantiate that claim.") OWNER:1793895899845199295
 - [leaf:ash_ground_and_blowing_ash] The ground is almost all deep ash, and a lot of ash blows across it like snow; ash fall dims the map and banks drifts, and a fire on deep ash leaves loose ash behind it OWNER:1791817028468666199
 - [leaf:ash_fertile_when_watered] Ordinary crops find deep ash sowable dry (about 70%, his card 2026-11-07) and very fertile where watered (about 140%), benefiting from water as before; on watered ash its roots grow as if cooler, so the heat does not slow it. OWNER:1791815330395605033 OWNER:1794594151279833849
 - [leaf:fresh_burn_compounds_with_black_rain] A fresh burn grows crops faster for a few days, and black rain adds to it instead of washing it away: a wet fresh scar reads 190%. OWNER:1793898829233582581, owed
@@ -57,7 +57,7 @@
 - Fires going out under black rain is vanilla rain's own rule carried by black rain; the scene claims no more than that
 
 ## pruning
-- burn_line_walks: his root, a line of grass fire walks the map and never fully goes out for long, OWNER:1793895899845199295
+- burn_line_walks: his root (a line of grass fire walks the map; poetry, by his word 2026-11-16) read as a natural grass fire that moves across the map and never fully goes out for long, OWNER:1793895899845199295
 - ash_ground_and_blowing_ash: his words OWNER:1791815330395605033 and OWNER:1791817028468666199
 - ash_fertile_when_watered: his words, the ash should be QUITE fertile with water added, OWNER:1791815330395605033; ordinary crops treat it as very fertile ground, OWNER:1794594151279833849
 - fresh_burn_compounds_with_black_rain: his card OWNER:1793898829233582581, black rain compounds the bonus

@@ -173,9 +173,11 @@ namespace RimMandrake.Pyrelands
         public const float FireFrontMinDays = 2f;
         public const float FireFrontMaxDays = 4f;
 
-        /// <summary>Cells lit on one bearing. A single smoulder in grass usually
-        /// dies before it becomes anything; a line walks. [INVENTED]</summary>
-        public const int FireFrontWidthCells = 9;
+        /// <summary>Cells lit on one bearing, across the wind (RM_BurnKernel.AcrossWind): where the wind carries fire this IS
+        /// the width of the burn. Owner, 2026-11-16, shown 9 beside 24 (showings a1_three_winds.png): "Two dozen. Very
+        /// flammable. Embrace the fire. It looks natural!" Bar burn_line_walks (a natural grass fire that moves across the map).
+        /// Was 9 [INVENTED].</summary>
+        public const int FireFrontWidthCells = 24;
 
         /// <summary>Bigger than the reseed's smoulder — this one is meant to
         /// take hold — but still well under a blaze. [INVENTED]</summary>
@@ -392,8 +394,7 @@ namespace RimMandrake.Pyrelands
         // C#; RM_Ashwallow is the first consumer.
         // ---------------------------------------------------------------
         /// <summary>How close a free-standing fire has to be before an
-        /// extension-carrying race goes to ground. Comfortably wider than a
-        /// fire front's own width (FireFrontWidthCells, 9 cells) so the
+        /// extension-carrying race goes to ground, so the
         /// animal burrows ahead of the line reaching it rather than at the
         /// last possible cell. [INVENTED] 6, was 15 (map t, 2026-11-07): at 15 a herd dove with the front a quarter-day off
         /// and sat out of sight for hours; MapComponent_BurnLine now also pulls a grazing or sleeping burrower down.</summary>

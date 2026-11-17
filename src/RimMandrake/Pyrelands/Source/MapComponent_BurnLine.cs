@@ -67,7 +67,63 @@ namespace RimMandrake.Pyrelands
         /// why a clock and a reseed are two different mechanisms.</summary>
         private readonly PyrelandsFireFront fireFront;
 
-        public MapComponent_BurnLine(Map map) : base(map)
+        // The wind carries the fire (RM_BurnKernel, "the wind carries the fire"). One prevailing wind per map, the bearing it
+        // blows TOWARD: set by the edge yesterday's fire came from, else from the map's id, and held for good, so every burn
+        // line walks the same way and keeps its width. Saved. carriedFires: the fires already carried on (each lights one
+        // cell, once); saved, so a reload does not carry a fire twice and widen the line.
+        private float windBearing = -1f;
+        private HashSet<int> carriedFires = new HashSet<int>();
+
+        /// <summary>The bearing the map's wind blows toward, in degrees (0 = north, clockwise).</summary>
+        public float WindBearing
+        {
+            get
+            {
+                if (windBearing < 0f)
+                {
+                    windBearing = Mathf.Abs(Gen.HashCombineInt(map.uniqueID, 7741)) % 360;
+                }
+                return windBearing;
+            }
+        }
+
+        internal void SetWindFromScar(int edge)
+        {
+            windBearing = RM_BurnKernel.WindFromScarEdge(edge);
+        }
+
+        /// <summary>Does the wind carry fire on this map now? The Pyrelands, mechanics on, the burn line on, its own switch on.</summary>
+        public bool WindCarries => IsPyrelandsMap && PyrelandsMechanicsGate.On && RM_PyrelandsSettings.burnLineEnabled
+            && RM_PyrelandsSettings.windCarriesFireEnabled;
+
+        internal bool WasCarried(Fire fire) => carriedFires.Contains(fire.thingIDNumber);
+
+        internal void MarkCarried(Fire fire)
+        {
+            if (carriedFires.Count > 100000) carriedFires.Clear();   // pruned to the live fires at every save; bound it between saves
+            carriedFires.Add(fire.thingIDNumber);
+        }
+
+        /// <summary>Test probe (jawa/static_call): "wind=;carries=;carried=;fires=" for the current map.</summary>
+        public static string ProbeWind()
+        {
+            MapComponent_BurnLine c = For(Find.CurrentMap);
+            if (c == null) return "error=no burn-line component on the current map";
+            return string.Format(System.Globalization.CultureInfo.InvariantCulture, "wind={0:0.0};carries={1};carried={2};fires={3}",
+                c.WindBearing, c.WindCarries, c.carriedFires.Count, c.fireCount);
+        }
+
+        /// <summary>Test drive only (jawa/static_call): point the current map's wind, so a staged scene knows which way its fire
+        /// walks. Returns the bearing set, -1 with no component.</summary>
+        public static int SetWindForTest(int bearingDeg)
+        {
+            MapComponent_BurnLine c = For(Find.CurrentMap);
+            if (c == null) return -1;
+            c.windBearing = ((bearingDeg % 360) + 360) % 360;
+            return (int)c.windBearing;
+        }
+
+                public MapComponent_BurnLine(Map map) : base(map)
         {
             fireFront = new PyrelandsFireFront(map);
         }
@@ -233,6 +289,19 @@ namespace RimMandrake.Pyrelands
             {
                 burnHistTicks = new List<int>();
                 burnHistCells = new List<IntVec3>();
+            }
+            Scribe_Values.Look(ref windBearing, "windBearing", -1f);
+            List<int> carried = null;
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                var live = new List<int>();
+                foreach (Thing f in map.listerThings.ThingsOfDef(ThingDefOf.Fire)) live.Add(f.thingIDNumber);
+                carried = RM_BurnKernel.CarriedStillBurning(carriedFires, live);
+            }
+            Scribe_Collections.Look(ref carried, "carriedFires", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                carriedFires = carried != null ? new HashSet<int>(carried) : new HashSet<int>();
             }
             fireFront.ExposeData();
         }
@@ -434,6 +503,8 @@ namespace RimMandrake.Pyrelands
                 return;
             }
             List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
+            bool windOn = WindCarries;
+            float windX = Mathf.Sin(WindBearing * Mathf.Deg2Rad), windZ = Mathf.Cos(WindBearing * Mathf.Deg2Rad);
             int nearest = int.MaxValue;
             IntVec3 nearestFire = IntVec3.Invalid;
             IntVec3 nearestHome = IntVec3.Invalid;
@@ -445,6 +516,8 @@ namespace RimMandrake.Pyrelands
                 {
                     IntVec3 h = homeSample[j];
                     int d = Mathf.Max(Mathf.Abs(f.x - h.x), Mathf.Abs(f.z - h.z));
+                    // Where the wind carries fire, a line only comes to what lies downwind of it: "walking this way" must be true.
+                    if (windOn && !RM_BurnKernel.Downwind(h.x - f.x, h.z - f.z, windX, windZ)) continue;
                     if (d < nearest)
                     {
                         nearest = d;
@@ -478,12 +551,17 @@ namespace RimMandrake.Pyrelands
             }
         }
 
+        private readonly List<int> measureXs = new List<int>();
+        private readonly List<int> measureZs = new List<int>();
+
         private void Measure()
         {
             List<Thing> fires = map.listerThings.ThingsOfDef(ThingDefOf.Fire);
             int count = 0;
             int sumX = 0;
             int sumZ = 0;
+            measureXs.Clear();
+            measureZs.Clear();
             for (int i = 0; i < fires.Count; i++)
             {
                 // A fire attached to a burning pawn or a burning wall is not part
@@ -493,13 +571,22 @@ namespace RimMandrake.Pyrelands
                     count++;
                     sumX += fire.Position.x;
                     sumZ += fire.Position.z;
+                    measureXs.Add(fire.Position.x);
+                    measureZs.Add(fire.Position.z);
                 }
             }
 
             fireCount = count;
-            burnCenter = RM_BurnKernel.Centroid(sumX, sumZ, count, out int cx, out int cz)
-                ? new IntVec3(cx, 0, cz)
-                : IntVec3.Invalid;
+            // The fire nearest the centroid: with two lines walking, the plain centroid is unburned grass between them.
+            if (RM_BurnKernel.Centroid(sumX, sumZ, count, out int cx, out int cz))
+            {
+                int at = RM_BurnKernel.NearestToCentroid(measureXs, measureZs, cx, cz);
+                burnCenter = at >= 0 ? new IntVec3(measureXs[at], 0, measureZs[at]) : new IntVec3(cx, 0, cz);
+            }
+            else
+            {
+                burnCenter = IntVec3.Invalid;
+            }
             RecordHistory();
         }
 
@@ -573,6 +660,12 @@ namespace RimMandrake.Pyrelands
                 return false;
             }
 
+            // One way to light the burn: where the wind carries fire, the smoulder is a short line across the wind (a single
+            // cell would walk off as a single strand, not the burn line).
+            if (WindCarries)
+            {
+                return fireFront.IgniteSmoulderLine(cell) > 0;
+            }
             return FireUtility.TryStartFireIn(cell, map, PyrelandsTuning.SmoulderFireSize, null);
         }
 

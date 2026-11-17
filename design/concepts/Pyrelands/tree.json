@@ -28,7 +28,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "fire-cell census per game hour shows a contiguous front whose centroid moves and a growing scorched area behind it; after the front dies, a relight is read within the smoulder window, in open grass beyond the building margin; captures of the front",
+   "oracle_proposed": "fire-cell census per game hour shows burning ground whose centre moves and a growing scorched area behind it, never most of the map inside a few days; after the front dies, a relight is read within the smoulder window, in open grass; captures of the front",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -39,8 +39,8 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player, landing on a fresh Pyrelands map in ordinary play and watching at play zoom through the first days, sees a line of grass fire walking across the deep ash with a black scorched trail behind its front; when it dies down it is never out for long, a smoulder relighting in open grass far from buildings. It must not read as a scattered wildfire, a fire that burns once and is gone for good, or a front that lights inside the colony.",
-   "scenario": "Generate a fresh Pyrelands map with its opening front; capture the front each game hour for a day; let it die down and wait for the smoulder relight; record each relight cell's distance from the nearest building.",
+   "experience": "The player, landing on a fresh Pyrelands map in ordinary play and watching at play zoom through the first days, sees grass fire moving across the deep ash like a natural grass fire, with a black scorched trail behind it that regreens; when it dies down it is never out for long, a smoulder relighting in open grass. It must not read as a flood that takes the whole map and its grass, a fire that does not move, a fire that burns once and is gone for good, or a fire that lights inside the colony.",
+   "scenario": "Generate a fresh Pyrelands map with its opening front; capture the front each game hour for a day; let it die down and wait for the smoulder relight; record each relight cell and what grows on it.",
    "false_pass": [
     "a fire spawned by the test where the front should be, so a burn exists but nothing walks",
     "the opening front lights once and the map stays dark for good"

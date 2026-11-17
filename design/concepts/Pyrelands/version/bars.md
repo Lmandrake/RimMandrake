@@ -8,9 +8,9 @@ Lock commit: `237b79116781821545f7ac58c23ed40bfc0250c4` (origin/main, 2026-11-13
 
 | file | git blob at the lock | role |
 |---|---|---|
-| `design/concepts/Pyrelands/tree.json` | `3e69f701e1c346a36924a7611069962bbc665d1e` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
-| `design/concepts/Pyrelands/sheet.md` | `a8ffd7ef042caea500e8164caa4b55ff27b9d731` | his plain-words sheet: does, does not, his words |
-| `design/concepts/Pyrelands/scenes.json` | `ac9f25e61bd2d8025513f8a39520a21e452a7ac6` | the acceptance scenes and showcases the leaves are proven by |
+| `design/concepts/Pyrelands/tree.json` | `8f04b41d9901f292b149f56032510343e1b1907d` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
+| `design/concepts/Pyrelands/sheet.md` | `067f4a63982ed9c1cd5afc3974120332c48b5db1` | his plain-words sheet: does, does not, his words |
+| `design/concepts/Pyrelands/scenes.json` | `4385a72f6fe51547673cb09a2ab836cc0a02cf1d` | the acceptance scenes and showcases the leaves are proven by |
 | `design/concepts/Pyrelands/floor.json` | `e2d58b07a62b036530ff175022a51ec732a55537` | the quality floor lines every mod meets |
 | `design/concepts/Pyrelands/exam.json` | `6793f3c53ff73f8f9f13b7d131a1579f29343a94` | the Cold Reader exam of tree and sheet |
 | `design/concepts/Pyrelands/record.json` | `9c82b9770af208b61d92a0fba53f504ba3a80714` | the inventory of built capabilities (checklist rows too); re-pinned 2026-11-14 for the bar his card added, `inv_firehawk_hunt_rewards` (journal, kind bar-added) |
@@ -39,8 +39,22 @@ ring protects the colony"), `scenes.json` (`sc_walk`'s paved-ring start), `sheet
 row was added or removed and no `experience` or `red` moved. `exam.json` is a run record and stays as it ran (its scenario
 e9 still names the deleted leaf); the exam is rerun at stage 4 (VERSION.json caveat).
 
-Tree hash (`concept_tree.py hash`): `3ffd15d1aa89521618cd9b2c595684e582a864c7ccf14793717e1e2314c87107`; sheet hash: `2935f04bef8d7f632c3fc00707120d06694c664cb67e90709c2a32614fba46a1`
-(measured 2026-11-14 after this re-pin; before it they measured `def968a06e` and `85f40d772f`, not the `6dd32c14a9` and `4f77fad249` this line had said).
+**Re-pinned 2026-11-16 (owner, about 9:22 PM PST, his words: "And modify the bar so that it's not so finicky about "the line."
+Sometimes poetry is simply that. I just wanted a natural grassfire feel.").** Leaf `burn_line_walks` keeps its id; its
+`experience` now reads "grass fire moving across the deep ash like a natural grass fire, with a black scorched trail behind it
+that regreens ... never out for long", and what it must not read as is a flood that takes the whole map and its grass, a fire
+that does not move, a fire that burns once and is gone, or a fire that lights inside the colony. Its `oracle_proposed` and
+`scenes.json` `sc_burn_line_walks` no longer ask for a contiguous front (burning ground whose centre moves, a growing scorched
+area). By his second sentence the same evening (about 9:26 PM PST: "Take out the "far from buildings" we don't have
+any physics to substantiate that claim.") the relight is "in open grass", with no distance from buildings in the leaf, its
+scenario, its oracle or the scene. `sheet.md` carries the new sentence and his words; the root paragraph and `vision.md` keep "a line of grass fire"
+as he wrote it (poetry, by his word). Same change: `scenes.json` `settings_map` gains `windCarriesFireEnabled` (the new Mod
+Setting of RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE). No leaf or row added or removed. Blobs before
+(origin/main 42483a7578): `91eaf9e048` (tree), `45bf69e360` (sheet), `a31005845b` (scenes); the table carries the new ones
+(it had still shown the 2026-11-14 blobs for these three, which were no longer true).
+
+Tree hash (`concept_tree.py hash`): `5abc9d2718dc9ccfd08d29370d986260c19675a198dc310be5329d34f062cf31` (measured 2026-11-16 after
+this re-pin; before it, at origin/main 42483a7578, it measured `2c1e467c7e`, not the `3ffd15d1aa` this line had said).
 
 ## Counts at the lock
 

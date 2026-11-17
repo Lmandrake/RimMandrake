@@ -374,8 +374,31 @@ namespace RimMandrake.Pyrelands.Fuzz
             catch (Exception e) { return e.Message + " @tick " + s.now; }
         }
 
+        private static long Sq(long v) { return v * v; }
+
+        /// <summary>The wind-probe table the Python whole-map model (pyre_burn_sim.wind_probes) also computes: 144 bearings x 8
+        /// rolls x 2 side rolls at reach 2. selftest_pyrelands_burn_ecology.py asserts the same number, so the model's wind step
+        /// is this kernel's, cell for cell.</summary>
+        internal const long WindProbeChecksum = 181470088L;
+
+        internal static long WindProbeTable()
+        {
+            long h = 0;
+            int[] wx = new int[6], wz = new int[6];
+            for (int b10 = 0; b10 < 3600; b10 += 25)
+                for (int r8 = 0; r8 < 8; r8++)
+                    foreach (float r2 in new[] { 0.25f, 0.75f })
+                    {
+                        RM_BurnKernel.WindProbes(b10 / 10f, r8 / 8f, r2, 2, wx, wz);
+                        for (int i = 0; i < 6; i++) h = (h * 31 + (wx[i] + 5) * 11 + (wz[i] + 5)) % 1000000007L;
+                    }
+            return h;
+        }
+
         private static List<string> Burn(int n, int seed)
         {
+            if (WindProbeTable() != WindProbeChecksum)
+                return new List<string> { "burn: wind probe table " + WindProbeTable() + " != the model's " + WindProbeChecksum + " (pyre_burn_sim.wind_probes and RM_BurnKernel.WindProbes disagree)" };
             var fails = RunFamily("burn", n, seed, GenBurn, RunBurn);
             fails.AddRange(RunSeeded("burn-pure", Math.Max(1, n), seed, 31, r =>
             {
@@ -415,6 +438,65 @@ namespace RimMandrake.Pyrelands.Fuzz
                         Check((RM_BurnKernel.RiteHarvestWanted(cap, carried) > 0) == (carried < cap), $"RiteHarvestWanted cap {cap} carried {carried}");
                 Check(RM_BurnKernel.RiteHarvestInRange(45, 0, 45f) && !RM_BurnKernel.RiteHarvestInRange(46, 0, 45f) && RM_BurnKernel.RiteHarvestInRange(31, 31, 45f)
                       && !RM_BurnKernel.RiteHarvestInRange(32, 32, 45f) && !RM_BurnKernel.RiteHarvestInRange(0, 0, 0f), "RiteHarvestInRange boundary");
+                // the wind carries the fire (RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE): 3 x reach distinct probes,
+                // every one downwind (never sideways, never back), the nearest compass step always among the first two
+                {
+                    int reach = RM_BurnKernel.WindCarryReach;
+                    float bearing = (float)(r.NextDouble() * 720.0 - 180.0);
+                    int[] wx = new int[3 * reach], wz = new int[3 * reach];
+                    RM_BurnKernel.WindProbes(bearing, (float)r.NextDouble(), (float)r.NextDouble(), reach, wx, wz);
+                    double windRad = bearing * Math.PI / 180.0, ux = Math.Sin(windRad), uz = Math.Cos(windRad);
+                    var seenW = new HashSet<long>();
+                    double bestDot = -2;
+                    for (int i = 0; i < wx.Length; i++)
+                    {
+                        seenW.Add(wx[i] * 1000L + wz[i]);
+                        double len = Math.Sqrt(wx[i] * wx[i] + wz[i] * wz[i]);
+                        Check(len > 0 && (wx[i] * ux + wz[i] * uz) / len > 0.3, $"wind probe ({wx[i]},{wz[i]}) at bearing {bearing:F1} is not downwind");
+                        Check(Math.Max(Math.Abs(wx[i]), Math.Abs(wz[i])) == i / 3 + 1, "wind probes are not ordered nearest first");
+                        if (i < 2) bestDot = Math.Max(bestDot, (wx[i] * ux + wz[i] * uz) / len);
+                    }
+                    Check(seenW.Count == wx.Length, "wind probes repeat a cell");
+                    // Any chain of carries stays inside the cone the approach warning reads: every reachable cell is Downwind
+                    // (a first version of the cone, 45 degrees, was refuted here: a chain on the far side reaches 67.5).
+                    int px = 0, pz = 0;
+                    for (int hop = 0; hop < 40; hop++)
+                    {
+                        RM_BurnKernel.WindProbes(bearing, (float)r.NextDouble(), (float)r.NextDouble(), reach, wx, wz);
+                        int pick = r.Next(wx.Length);
+                        px += wx[pick]; pz += wz[pick];
+                        Check(RM_BurnKernel.Downwind(px, pz, (float)ux, (float)uz), $"a carried fire left the downwind cone at bearing {bearing:F1} after {hop + 1} hops ({px},{pz})");
+                    }
+                    Check(bestDot > 0.92, $"neither of the first two wind probes is the compass step nearest the bearing {bearing:F1}");
+                    // one fire, one rule: vanilla's spread and the wind's carry never both run for a fire, and a carried fire is never carried again
+                    for (int m = 0; m < 8; m++)
+                    {
+                        bool en = (m & 1) != 0, free = (m & 2) != 0, ground = (m & 4) != 0;
+                        Check(RM_BurnKernel.VanillaSpreadRuns(en, free, ground) != RM_BurnKernel.WindCarryDue(en, free, ground, false, RM_BurnKernel.WindCarryTicks),
+                            "a fire is under both spread rules, or under neither (" + m + ")");
+                        Check(!RM_BurnKernel.WindCarryDue(en, free, ground, true, int.MaxValue), "a carried fire is carried again");
+                        Check(!RM_BurnKernel.WindCarryDue(en, free, ground, false, RM_BurnKernel.WindCarryTicks - 1), "a fire is carried before its time");
+                    }
+                    // the wind blows the way yesterday's fire walked in
+                    for (int e = 0; e < 4; e++)
+                    {
+                        RM_BurnKernel.ScarEdgeFrame(e, 0.5f, 100, 100, out _, out _, out int enx, out int enz);
+                        double wr = RM_BurnKernel.WindFromScarEdge(e) * Math.PI / 180.0;
+                        Check((int)Math.Round(Math.Sin(wr)) == enx && (int)Math.Round(Math.Cos(wr)) == enz, "the wind does not blow inward from scar edge " + e);
+                    }
+                    // the burn's address is a cell that burns
+                    int nf = 1 + r.Next(12);
+                    var fx = new List<int>(); var fz = new List<int>(); int sxs = 0, szs = 0;
+                    for (int i = 0; i < nf; i++) { fx.Add(r.Next(250)); fz.Add(r.Next(250)); sxs += fx[i]; szs += fz[i]; }
+                    int at = RM_BurnKernel.NearestToCentroid(fx, fz, sxs / nf, szs / nf);
+                    Check(at >= 0 && at < nf, "NearestToCentroid is not one of the fires");
+                    for (int i = 0; i < nf; i++)
+                        Check(Sq(fx[at] - sxs / nf) + Sq(fz[at] - szs / nf) <= Sq(fx[i] - sxs / nf) + Sq(fz[i] - szs / nf), "NearestToCentroid is not the nearest");
+                    Check(RM_BurnKernel.NearestToCentroid(new List<int>(), new List<int>(), 0, 0) == -1, "NearestToCentroid of no fire");
+                    var live = new List<int> { 1, 2, 3 }; var was = new HashSet<int> { 2, 3, 9 };
+                    var kept = RM_BurnKernel.CarriedStillBurning(was, live);
+                    Check(kept.Count == 2 && kept.Contains(2) && kept.Contains(3), "CarriedStillBurning keeps a dead fire or drops a live one");
+                }
                 int mn = r.Next(1, 13), mx = r.Next(1, 13);
                 RM_BurnKernel.RitePartyRange(mn, mx, out int lo, out int hi);
                 Check(lo == mn && hi >= lo && (mx >= mn ? hi == mx : hi == mn), "rite party range");

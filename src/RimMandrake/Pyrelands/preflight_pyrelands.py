@@ -85,7 +85,7 @@ DEFAULTS = {
     "sandShovelEnabled": True, "sandShovelYieldMultiplier": 1.0,
     "ashWaterFertilityEnabled": True, "ashDryFertility": 0.7, "ashWateredFertility": 1.4, "ashNaturalWaterRadius": 2,
     "freshBurnBonusEnabled": True, "freshBurnBonus": 0.5, "freshBurnDays": 6.0,
-    "blackRainWaterHours": 24, "blackRainDousingEnabled": True, "blackRainDousing": 40.0,
+    "blackRainWaterHours": 24, "blackRainDousingEnabled": True, "blackRainDousing": 40.0, "windCarriesFireEnabled": True,
     "ambientAshEnabled": True, "ambientAshShare": 1.0, "ambientAshHeavy": False, "wildPlantRegrowDaysOverride": 0.0,
 }
 

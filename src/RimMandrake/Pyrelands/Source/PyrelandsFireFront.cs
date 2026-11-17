@@ -107,6 +107,8 @@ namespace RimMandrake.Pyrelands
                 return false;
             }
             PyrelandsYesterdayFire.Lay(map, scarCentre, scarEdge, scarRadius, Find.TickManager.TicksGame);
+            // Yesterday's fire walked in from that edge: that is the way this map's wind blows.
+            MapComponent_BurnLine.For(map)?.SetWindFromScar(scarEdge);
             scarLaid = true;
             scarArcLit = false;
             return true;
@@ -240,9 +242,15 @@ namespace RimMandrake.Pyrelands
             int lit = TryStartFront();
             if (lit > 0)
             {
+                // Where the wind carries fire the letter says which way the line walks (the compass word of the wind's bearing).
+                MapComponent_BurnLine burn = MapComponent_BurnLine.For(map);
                 Find.LetterStack.ReceiveLetter(
                     "RM_FireFrontLetterLabel".Translate(),
-                    "RM_FireFrontLetterText".Translate(),
+                    burn != null && burn.WindCarries
+                        ? "RM_FireFrontLetterTextWind".Translate(("RM_Compass" + RM_BurnKernel.CompassIndex(
+                            Mathf.RoundToInt(100f * Mathf.Sin(burn.WindBearing * Mathf.Deg2Rad)),
+                            Mathf.RoundToInt(100f * Mathf.Cos(burn.WindBearing * Mathf.Deg2Rad)))).Translate())
+                        : "RM_FireFrontLetterText".Translate(),
                     LetterDefOf.NegativeEvent,
                     new TargetInfo(lastOrigin, map));
             }
@@ -323,6 +331,12 @@ namespace RimMandrake.Pyrelands
             return IgniteLine(origin, instigator, PyrelandsTuning.FireFrontWidthCells, PyrelandsTuning.FireFrontFireSize);
         }
 
+        /// <summary>The keep-alive's relight where the wind carries fire: the front's width at the smoulder's size.</summary>
+        internal int IgniteSmoulderLine(IntVec3 origin)
+        {
+            return IgniteLine(origin, null, PyrelandsTuning.FireFrontWidthCells, PyrelandsTuning.SmoulderFireSize);
+        }
+
         /// <summary>IgniteAt's body with the line's width and fire size given: the scheduled front and the rite pass the
         /// front's own, the opening front its smaller line (PYRE_OPENING_FRONT).</summary>
         private int IgniteLine(IntVec3 origin, Thing instigator, int width, float fireSize)
@@ -332,9 +346,10 @@ namespace RimMandrake.Pyrelands
                 return 0;
             }
 
-            // A bearing for the LINE itself; the burn then walks off it in
-            // whichever direction vanilla's own spread maths prefers.
-            float angle = Rand.Range(0f, 360f);
+            // A bearing for the LINE itself. Where the wind carries fire the line lies across the wind, so it walks abreast;
+            // with that off, any bearing, and vanilla's own spread takes it wherever it goes.
+            MapComponent_BurnLine burn = MapComponent_BurnLine.For(map);
+            float angle = burn != null && burn.WindCarries ? RM_BurnKernel.AcrossWind(burn.WindBearing) : Rand.Range(0f, 360f);
 
             RM_BurnKernel.FrontLine(angle, width, out int[] offX, out int[] offZ);
             int lit = 0;

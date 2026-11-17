@@ -62,6 +62,9 @@ namespace RimMandrake.Pyrelands
 
         // RIMMANDRAKE_TUNE_BLACK_RAIN_DOUSING_VANILLA_RAIN_TOO_WEAK: black rain's own Extinguish per 150 ticks on top of vanilla rain's 10
         // (Patch_FireTick_BlackRainDouses). Vanilla rain alone loses to an ember-grass fire (-0.10 vs +0.132 fireSize per 150 ticks).
+        // RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE: the wind carries the fire (RM_BurnKernel.WindProbes). Off gives
+        // vanilla's even spread back, under which a grass fire is a ring that takes the map.
+        public static bool windCarriesFireEnabled = true;
         public static bool blackRainDousingEnabled = true;
         public const float BlackRainDousingDefault = 40f; // the literal the settings sweep parses; equals RM_FireEcoKernel.BlackRainDousingDefault (the fuzz model)
         public static float blackRainDousing = BlackRainDousingDefault;
@@ -190,6 +193,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref freshBurnDays, "freshBurnDays", 6f);
             Scribe_Values.Look(ref blackRainWaterHours, "blackRainWaterHours", 24);
             Scribe_Values.Look(ref blackRainDousingEnabled, "blackRainDousingEnabled", true);
+            Scribe_Values.Look(ref windCarriesFireEnabled, "windCarriesFireEnabled", true);
             Scribe_Values.Look(ref blackRainDousing, "blackRainDousing", BlackRainDousingDefault);
             Scribe_Values.Look(ref ambientAshEnabled, "ambientAshEnabled", true);
             Scribe_Values.Look(ref ambientAshShare, "ambientAshShare", 1f);
@@ -233,6 +237,7 @@ namespace RimMandrake.Pyrelands
             .Declare("freshBurnBonusEnabled", "freshBurnBonus", "freshBurnDays")
             .Declare("ambientAshEnabled", "ambientAshShare", "ambientAshHeavy")
             .Declare("fireHawkSpreadEnabled", "fireHawkSightingLetterEnabled")
+            .Declare("burnLineEnabled", "windCarriesFireEnabled")
             .Declare("furnaceThermalEnabled", "furnaceWarmthStrength")
             .Declare("burrowOnFireEnabled", "burrowDomeOnHeatHit")
             .Declare("ullaiEnabled", "ullaiHerdSizeMultiplier")
@@ -504,13 +509,20 @@ namespace RimMandrake.Pyrelands
                 list.GapLine();
             }
 
-            if (Group(list, "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)", RimMandrake.Shared.SettingScope.Now, new[] { "burnLineEnabled", "fireHawkSpreadEnabled", "fireHawkSightingLetterEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled" }))
+            if (Group(list, "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)", RimMandrake.Shared.SettingScope.Now, new[] { "burnLineEnabled", "windCarriesFireEnabled", "fireHawkSpreadEnabled", "fireHawkSightingLetterEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled" }))
             {
             using (Dependent(list, "burnLineEnabled", "fireHawkSpreadEnabled", "furnaceThermalEnabled", "furnaceWarmthStrength", "fireClockEnabled"))
             {
     list.CheckboxLabeled("Standing burn line", ref burnLineEnabled,
                     "The grass fire that walks the map with its own burn intelligence, rather than "
                   + "spreading and dying out like an ordinary vanilla fire. Off: fire behaves vanilla.");
+                using (Dependent(list, "windCarriesFireEnabled"))
+                {
+                    list.CheckboxLabeled("The wind carries the fire", ref windCarriesFireEnabled,
+                        "On Pyrelands ground each fire lights one cell downwind and never spreads back or sideways, so a burn stays a line "
+                      + "as wide as what was lit, walking one way with the map's prevailing wind. Putting out the head of a line stops it. "
+                      + "Off: vanilla's even spread, under which a grass fire grows as a ring and takes the whole map.");
+                }
                 list.CheckboxLabeled("Fire-hawk ember carrying", ref fireHawkSpreadEnabled,
                     "A fire-hawk can carry a live ember and drop it to start a new burn elsewhere. "
                   + "Off: fire-hawks never do this job.");

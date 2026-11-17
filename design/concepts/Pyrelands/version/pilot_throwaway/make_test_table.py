@@ -16,6 +16,7 @@ def off(tid, f, observes, reads, cmd=None, new=False, item=None, mod_rows=None):
     T[tid] = dict(id=tid, kind='offline', stage='4-5', file=f, observes=observes, reads=reads,
                   command=cmd or ('python3 ' + f), **({'new': True} if new else {}), **({'item': item} if item else {}), **({'mod_rows': mod_rows} if mod_rows else {}))
 off('T_FUZZ', 'src/RimMandrake/Utils/selftest_pyrelands_fuzz.py', 'seeded fuzz of the production kernels: burn-line component and fire-front clock, furnace thermal charge and bed-ignition clock, biome score, ash fall and fire-ecology gates, ash-on-sand rates, AshFertility (dry, watered, burn bonus), tuning relationships', [K + 'RM_BurnKernel.cs', K + 'RM_FireEcoKernel.cs', K + 'RM_FurnaceKernel.cs', K + 'RM_FireHawkKernel.cs', SRC + 'Source/PyrelandsTuning.cs', SRC + 'Source/SelfTest/Fuzz/PyrelandsFuzz.cs'])
+off('T_BURN_ECOLOGY', SRC + 'selftest_pyrelands_burn_ecology.py', 'the burn as one whole-map system over a season with the sky free (the whole-map model pyre_burn_sim.py, checked against the visit-1 walk saves): a lit line crosses the map and never widens, never a flood, the carpet stays, never out for long, the everyday line does not call black rain, black rain puts a pad fire out; red on vanilla even spread and on a fire that lights two cells; the model wind step equals RM_BurnKernel.WindProbes', [K + 'RM_BurnKernel.cs', SRC + 'pyre_burn_sim.py', SRC + 'testdata/pyre_walk_visit1.npz', SRC + 'Source/SelfTest/Fuzz/PyrelandsFuzz.cs'])
 off('T_LINT', 'src/RimMandrake/Utils/selftest_pyrelands_lint.py', 'lint_pyrelands_defs.py clean on the real mod and 30 planted defects caught: XML against C#, tuning order, deep ash stays the ground (pyre_ground_deep_ash), the BiomeDef resolves and can win a tile, plant density equals the enforcer, every wildPlants row is on the allowlist, kernels in both csprojs', ['src/RimMandrake/Utils/lint_pyrelands_defs.py', SRC + 'Defs/', SRC + 'Source/'])
 off('T_ALLOWLIST', 'src/RimMandrake/Utils/selftest_pyrelands_allowlist_postfix.py', 'the real wild-plant allowlist Postfix compiled against stubs over every gate, setting, biome, cave and candidate combination; 15 mutants red', [SRC + 'Source/WildPlantAllowlist.cs', K + 'RM_FireEcoKernel.cs'])
 off('T_BURN_COST', 'src/RimMandrake/Utils/selftest_pyrelands_burn_cost.py', 'the two big-burn hot paths: the fire-tick postfix allocates no closure (scorch-fruit roll scan), the burrow scan is throttled and disc-bounded', [SRC + 'Source/FireEcologyHook.cs', SRC + 'Source/RM_JobGiver_BurrowOnFire.cs'])
@@ -72,11 +73,11 @@ for tid, t in (PREV.get('tests') or {}).items():
             if k not in T[tid] and k not in ('runs_today', 'new'): T[tid][k] = v
 # ---- bars: decides / supports (hand judgment)
 B = [
- ('burn_line_walks', ['sc_burn_line_walks'], ['T_FUZZ', 'P_opening_front', 'LOOK_STAGE8']),
+ ('burn_line_walks', ['sc_burn_line_walks'], ['T_FUZZ', 'T_BURN_ECOLOGY', 'P_opening_front', 'LOOK_STAGE8']),
  ('ash_ground_and_blowing_ash', ['sc_ash_ground', 'sc_fire_dusts_ash'], ['T_LINT', 'T_FUZZ', 'T_TRACKS', 'P_ambient_ash_drift']),
  ('ash_fertile_when_watered', ['sc_ash_watered'], ['T_FUZZ']),
  ('fresh_burn_compounds_with_black_rain', ['sc_burn_compounds'], ['T_FUZZ', 'T_ASH_PROBE_OFFLINE']),
- ('grass_carpets_and_regreens', ['sc_grass_regreens'], ['T_LINT', 'P_grass_cover', 'LOOK_STAGE8']),
+ ('grass_carpets_and_regreens', ['sc_grass_regreens'], ['T_LINT', 'T_BURN_ECOLOGY', 'P_grass_cover', 'LOOK_STAGE8']),
  ('scorchfruit_born_of_fire', ['sc_scorchfruit'], ['T_FRUIT_CLEAR', 'T_BURN_COST', 'P_scorchfruit_produces', 'P_scorchfruit_spoils', 'LOOK_STAGE8']),
  ('populations_are_the_biomes_own', ['sc_populations', 'T_ALLOWLIST'], ['T_LINT', 'T_SITE', 'P_animal_census', 'P_mapgen_log']),
  ('ruins_stand_blackened', ['sc_ruins'], []),
@@ -84,7 +85,7 @@ B = [
  ('furnacebeast_warms', ['sc_furnace', 'sc_furnace_bed', 'sc_furnace_giant', 'T_FURNACE_WARMTH'], ['T_FUZZ', 'T_DEFS_OFFLINE', 'P_furnace_room']),
  ('ashwallow_dives_unharmed', ['sc_ashwallow', 'sc_heat_dome'], ['T_BURN_COST']),
  ('ullai_graze_old_burns', ['sc_ullai'], ['T_LINT']),
- ('three_skies', ['sc_three_skies'], ['P_ashfall_weather_accumulation', 'P_ashfall_drifts', 'P_blackrain']),
+ ('three_skies', ['sc_three_skies'], ['T_BURN_ECOLOGY', 'P_ashfall_weather_accumulation', 'P_ashfall_drifts', 'P_blackrain']),
  ('no_ordinary_rain', ['T_DEFS_OFFLINE', 'sc_no_rain'], []),
  ('ash_fertility_probe', ['T_ASH_PROBE_OFFLINE'], ['T_FUZZ', 'sc_burn_compounds']),
  ('walk_season_on_the_pyre', ['sc_walk'], ['LOOK_STAGE8']),
@@ -98,7 +99,7 @@ B = [
  ('inv_embergrass_regrow', ['sc_grass_regreens'], ['T_LINT']),
  ('inv_animal_roster', ['sc_populations'], ['P_animal_census', 'sc_flamefang_venom', 'T_DEFS_OFFLINE']),
  ('inv_ash_field', ['sc_ash_ground', 'sc_ash_watered', 'sc_burn_compounds'], ['T_FUZZ', 'T_LINT', 'T_TRACKS', 'sc_fire_dusts_ash', 'P_ambient_ash_drift']),
- ('inv_burn_line_fire_clock', ['sc_burn_line_walks', 'T_FUZZ'], ['P_opening_front', 'sc_fire_dusts_ash', 'T_BURN_COST']),
+ ('inv_burn_line_fire_clock', ['sc_burn_line_walks', 'T_FUZZ'], ['T_BURN_ECOLOGY', 'P_opening_front', 'sc_fire_dusts_ash', 'T_BURN_COST']),
  ('inv_scorchfruit', ['sc_scorchfruit'], ['T_FRUIT_CLEAR', 'P_scorchfruit_produces', 'P_scorchfruit_spoils']),
  ('inv_ruins_scorched', ['sc_ruins'], []),
  ('inv_firehawk_ember', ['sc_firehawk'], ['T_FUZZ']),

@@ -1,6 +1,6 @@
 # Pyrelands 0.1.0: test-and-stage table
 
-Generated 2026-11-16T07:55:56-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Same columns as Explosive Knockback's table.
+Generated 2026-11-16T21:27:29-08:00 from `test_table.json` (the record; this is its read view). Stages: 2 preflight, 4-5 blind offline, 6 in-game, 8 his walk. A bar passes when every deciding test passes. Same columns as Explosive Knockback's table.
 
 ## Counts (measured)
 
@@ -10,17 +10,17 @@ Generated 2026-11-16T07:55:56-08:00 from `test_table.json` (the record; this is 
 - with an offline deciding test, all green today: 16
 - decided offline only (no game needed): 6, of which every decider is built: 6
 - scenes.json scenes: 29, entry exists 28, absent 1
-- offline tests: 20 built (ran today: 20 green for this mod), 0 specified for Stage 3
+- offline tests: 21 built (ran today: 21 green for this mod), 0 specified for Stage 3
 
 ## Bars
 
 | bar | from | proves at | decides | supports | runnable today |
 |---|---|---|---|---|---|
-| `burn_line_walks` | tree | 6 | sc_burn_line_walks | T_FUZZ, P_opening_front, LOOK_STAGE8 | all |
+| `burn_line_walks` | tree | 6 | sc_burn_line_walks | T_FUZZ, T_BURN_ECOLOGY, P_opening_front, LOOK_STAGE8 | all |
 | `ash_ground_and_blowing_ash` | tree | 6 | sc_ash_ground, sc_fire_dusts_ash | T_LINT, T_FUZZ, T_TRACKS, P_ambient_ash_drift | all |
 | `ash_fertile_when_watered` | tree | 6 | sc_ash_watered | T_FUZZ | all |
 | `fresh_burn_compounds_with_black_rain` | tree | 6 | sc_burn_compounds | T_FUZZ, T_ASH_PROBE_OFFLINE | all |
-| `grass_carpets_and_regreens` | tree | 6 | sc_grass_regreens | T_LINT, P_grass_cover, LOOK_STAGE8 | all |
+| `grass_carpets_and_regreens` | tree | 6 | sc_grass_regreens | T_LINT, T_BURN_ECOLOGY, P_grass_cover, LOOK_STAGE8 | all |
 | `scorchfruit_born_of_fire` | tree | 6 | sc_scorchfruit | T_FRUIT_CLEAR, T_BURN_COST, P_scorchfruit_produces, P_scorchfruit_spoils, LOOK_STAGE8 | all |
 | `populations_are_the_biomes_own` | tree | 6 | sc_populations, T_ALLOWLIST | T_LINT, T_SITE, P_animal_census, P_mapgen_log | all |
 | `ruins_stand_blackened` | tree | 6 | sc_ruins | - | all |
@@ -28,7 +28,7 @@ Generated 2026-11-16T07:55:56-08:00 from `test_table.json` (the record; this is 
 | `furnacebeast_warms` | tree | 6 | sc_furnace, sc_furnace_bed, sc_furnace_giant, T_FURNACE_WARMTH | T_FUZZ, T_DEFS_OFFLINE, P_furnace_room | all |
 | `ashwallow_dives_unharmed` | tree | 6 | sc_ashwallow, sc_heat_dome | T_BURN_COST | all |
 | `ullai_graze_old_burns` | tree | 6 | sc_ullai | T_LINT | all |
-| `three_skies` | tree | 6 | sc_three_skies | P_ashfall_weather_accumulation, P_ashfall_drifts, P_blackrain | all |
+| `three_skies` | tree | 6 | sc_three_skies | T_BURN_ECOLOGY, P_ashfall_weather_accumulation, P_ashfall_drifts, P_blackrain | all |
 | `no_ordinary_rain` | tree | 6 | T_DEFS_OFFLINE, sc_no_rain | - | all |
 | `ash_fertility_probe` | tree | 4-5 | T_ASH_PROBE_OFFLINE | T_FUZZ, sc_burn_compounds | all |
 | `walk_season_on_the_pyre` | tree | 6 | sc_walk | LOOK_STAGE8 | all |
@@ -42,7 +42,7 @@ Generated 2026-11-16T07:55:56-08:00 from `test_table.json` (the record; this is 
 | `inv_embergrass_regrow` | record | 6 | sc_grass_regreens | T_LINT | all |
 | `inv_animal_roster` | record | 6 | sc_populations | P_animal_census, sc_flamefang_venom, T_DEFS_OFFLINE | all |
 | `inv_ash_field` | record | 6 | sc_ash_ground, sc_ash_watered, sc_burn_compounds | T_FUZZ, T_LINT, T_TRACKS, sc_fire_dusts_ash, P_ambient_ash_drift | all |
-| `inv_burn_line_fire_clock` | record | 6 | sc_burn_line_walks, T_FUZZ | P_opening_front, sc_fire_dusts_ash, T_BURN_COST | all |
+| `inv_burn_line_fire_clock` | record | 6 | sc_burn_line_walks, T_FUZZ | T_BURN_ECOLOGY, P_opening_front, sc_fire_dusts_ash, T_BURN_COST | all |
 | `inv_scorchfruit` | record | 6 | sc_scorchfruit | T_FRUIT_CLEAR, P_scorchfruit_produces, P_scorchfruit_spoils | all |
 | `inv_ruins_scorched` | record | 6 | sc_ruins | - | all |
 | `inv_firehawk_ember` | record | 6 | sc_firehawk | T_FUZZ | all |
@@ -68,24 +68,25 @@ Generated 2026-11-16T07:55:56-08:00 from `test_table.json` (the record; this is 
 
 | test | kind | stage | file | runs today |
 |---|---|---|---|---|
-| `T_FUZZ` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_fuzz.py` | PASS 13.1s |
-| `T_LINT` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_lint.py` | PASS 66.2s |
-| `T_ALLOWLIST` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_allowlist_postfix.py` | PASS 1.3s |
+| `T_FUZZ` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_fuzz.py` | PASS 14.5s |
+| `T_BURN_ECOLOGY` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_burn_ecology.py` | PASS 100.1s |
+| `T_LINT` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_lint.py` | PASS 76.2s |
+| `T_ALLOWLIST` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_allowlist_postfix.py` | PASS 1.7s |
 | `T_BURN_COST` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_burn_cost.py` | PASS 0.1s |
 | `T_TRACKS` | offline | 4-5 | `src/RimMandrake/Utils/selftest_pyrelands_track_contrast.py` | PASS 0.3s |
-| `T_FURNACE_WARMTH` | offline | 4-5 | `src/RimMandrake/Utils/selftest_furnace_warmth.py` | PASS 2.0s |
-| `T_SITE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_site.py` | PASS 4.5s |
+| `T_FURNACE_WARMTH` | offline | 4-5 | `src/RimMandrake/Utils/selftest_furnace_warmth.py` | PASS 2.2s |
+| `T_SITE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_site.py` | PASS 4.7s |
 | `T_FRUIT_CLEAR` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py` | PASS 0.0s |
-| `T_SETTINGS_SCREENS` | offline | 4-5 | `src/RimMandrake/Utils/selftest_settings_screens.py` | PASS 1.9s |
+| `T_SETTINGS_SCREENS` | offline | 4-5 | `src/RimMandrake/Utils/selftest_settings_screens.py` | PASS 2.4s |
 | `T_BARBSLINGER` | offline | 4-5 | `src/RimMandrake/Utils/selftest_barbslinger_two_tails.py` | PASS 0.0s |
 | `T_REVIEW_MAP` | offline | 4-5 | `src/RimMandrake/Pyrelands/review/selftest_pyre_review_map.py` | PASS 0.2s |
 | `T_FH_LETTER` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_letter.py` | PASS 0.0s |
 | `T_FH_CRESTFEATHER` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_firehawk_crestfeather.py` | PASS 0.0s |
-| `T_SETTINGS_SWEEP_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py` | PASS 1.4s |
-| `T_DEFS_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py` | PASS 42.2s |
-| `T_CUT_STAYS_CUT` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py` | PASS 0.6s |
-| `T_ULLAI_HERD_MIGRATES` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py` | PASS 5.4s |
-| `T_ASH_PROBE_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_ash_probe.py` | PASS 1.3s |
+| `T_SETTINGS_SWEEP_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py` | PASS 2.6s |
+| `T_DEFS_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py` | PASS 55.1s |
+| `T_CUT_STAYS_CUT` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_cut_stays_cut.py` | PASS 0.8s |
+| `T_ULLAI_HERD_MIGRATES` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_ullai_herd_migration.py` | PASS 7.5s |
+| `T_ASH_PROBE_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_ash_probe.py` | PASS 1.9s |
 | `sc_burn_line_walks` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: burn_line | live: this run is offline only; entry exists in validation.py |
 | `sc_ash_ground` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: ground_deep_ash | live: this run is offline only; entry exists in validation.py |
 | `sc_ash_watered` | live_minimal | 6 | `src/RimMandrake/Pyrelands/validation.py` :: ash_fertility_watered | live: this run is offline only; entry exists in validation.py |
@@ -133,8 +134,8 @@ Generated 2026-11-16T07:55:56-08:00 from `test_table.json` (the record; this is 
 | `firehawk_crestfeather_yield` | live_minimal | 6 | `src/RimMandrake/Pyrelands/firehawk_rewards_live.py` :: firehawk_crestfeather_yield | live: this run is offline only; entry exists in firehawk_rewards_live.py |
 | `RECORD_ART_SHEET` | record | 2 | `infrastructure/state/ledger/events/` | PASS |
 | `LOOK_STAGE8` | look | 8 | `(his walk)` | Stage 8 |
-| `T_SELF_CONTAINED_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py` | PASS 0.5s |
-| `T_ROUND6_GAPS` | offline | 3 | `src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py` | PASS 3.2s |
+| `T_SELF_CONTAINED_OFFLINE` | offline | 4-5 | `src/RimMandrake/Pyrelands/selftest_pyrelands_self_contained.py` | PASS 0.7s |
+| `T_ROUND6_GAPS` | offline | 3 | `src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py` | PASS 2.6s |
 
 ## Corrections applied (judge gaps sorted CORRECTION)
 
