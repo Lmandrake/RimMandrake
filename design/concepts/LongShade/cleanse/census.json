@@ -80,9 +80,9 @@
     },
     {
       "id": "native_plants",
-      "what": "Ordinary Maidenbloom/heart, Pavecrust/chemfuel, Shadespire/wood/shade, SurraGrass, VellaraBloom, Thrannagourd/food and visible Vorrel plant; no bespoke propagation inferred.",
+      "what": "Ordinary Dewfringe/sprig forage with fertility/terrain recruitment, Maidenbloom/heart, Pavecrust/chemfuel, Shadespire/wood/shade, SurraGrass, VellaraBloom, Thrannagourd/food and visible Vorrel plant; no bespoke propagation inferred.",
       "built": "present",
-      "evidence": "src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_LongShade_FillPlants.xml; src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_LongShade_TierMovedPlants.xml; src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_Thrannagourd.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#native_plants",
+      "evidence": "src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_Dewfringe.xml; src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_LongShade_FillPlants.xml; src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_LongShade_TierMovedPlants.xml; src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_Thrannagourd.xml; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#native_plants",
       "proven": "missing",
       "called_by": "WildPlantSpawner; vanilla harvest/ingest",
       "serves": "life",
@@ -106,16 +106,16 @@
     },
     {
       "id": "dewfringe_rim",
-      "what": "Dewfringe, sprig harvest and shade-fraction wild-spawn gate, armed Harmony postfix; toggles fall back to ordinary fertility/terrain spawning. This filters spawn candidates, not an ongoing existing-plant growth/death check.",
+      "what": "Shade-fraction wild-spawn gate for Dewfringe, armed Harmony postfix. The plant and sprig remain life under native_plants; disabling only this filter restores ordinary fertility/terrain recruitment.",
       "built": "present",
       "evidence": "src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_Dewfringe.xml; src/RimMandrake/LongShade/Source/RM_Patch_DewfringeWildSpawnGate.cs; src/RimMandrake/LongShade/Source/Kernel/RM_LongShadeKernel.cs; historical inventory: design/RimMandrake/designer_codex_2026-11-09/LongShade/record.json#dewfringe_rim",
       "proven": "missing",
       "called_by": "WildPlantSpawner.CalculatePlantsWhichCanGrowAt postfix",
-      "serves": "signature",
-      "fate": "signature",
-      "why": "Delete the spawn rim and the player loses the living boundary used to read established shelter; keep sprigs and rim recruitment, not instant death on shadow change.",
+      "serves": "deferred extra",
+      "fate": "next_version",
+      "why": "A shade-boundary planting pattern is unnecessary to B1 physical shelter readability, B4 forage or the signature crossing/recovery chain. Keep the plant and sprig; defer only the rim filter.",
       "needed_by": null,
-      "ticket": null
+      "ticket": "T45"
     },
     {
       "id": "vorrel_raw_cycle",

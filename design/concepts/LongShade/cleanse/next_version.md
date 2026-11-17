@@ -7,6 +7,11 @@ What: Leachmoss competition and Venomvine contact venom
 Why outside land/life/signature: Secondary fertility pressure and poison are not required for sparse ordinary flora or shade crossings.
 Ticket: T01; built: present.
 
+### dewfringe_rim — next version, off
+What: Shade-fraction wild-spawn gate for dewfringe; plant and sprig stay as ordinary forage life.
+Why outside land/life/signature: Physical casters already communicate shelter and forage works by ordinary fertility/terrain spawning; no kept bar needs a planting border.
+Ticket: T45; built: present.
+
 ### vorrel_raw_cycle — next version, off
 What: Vorrel lethal ingestion, shade-stagger and corpse germination
 Why outside land/life/signature: A gut-parasite reproduction chain is a second signature; ordinary visible Vorrel remains, with no ingestible fruit in defaults.
