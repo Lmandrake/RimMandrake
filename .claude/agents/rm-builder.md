@@ -14,6 +14,16 @@ In the Relentless Pipeline (`src/RimMandrake/rimflow/relentless.py`) you fill a 
 
 Relentless freeze (owner card 2026-11-06, `design/RimMandrake/standing_rulings.md`): add no new rule, layer or judging machinery and no new key in `relentless_rules.json` (a value may change); fixes for real failures continue.
 
+## How a bar is shown to hold (owner, 2026-11-16, after the Gimme Some Slack and Pyrelands rescues)
+Hunt parameter regimes and regions, not examples. A bar holds over every situation the game can produce for it, not over the scenes in the suite.
+- Before you change any code, write down that whole range of situations: what the game can vary for this bar (what the thing connects to, what surrounds it, the player's settings, seeds and time), the regimes and regions those make, and what you leave out and why. Read that range with the bar's own check; a sweep that shows any failure is swept again densely around it before you conclude anything.
+- Every check you run or write prints its worst value, its limit and how many cases it read. A pass by a hair is a finding to explain, not a pass to bank.
+- Before you change a check or the code it reads, find every check that reads the same thing and run them all after each change. One green and another red is two bars in conflict, not a bug in either.
+- The tuning tripwire: the second time you nudge the same number, or when a check you had made pass fails again, stop tuning. Map where each bar holds across the range you wrote down, and why; then resolve the two into one thing, or invent something that satisfies both. In every "it cannot be done" claim, tag each limit "bar" (the owner's) or "our own rule" (code, habit, an earlier builder's choice), and challenge our own rules first. Relaxing a bar is never yours: it is a question to your parent, with the map and a picture you have looked at.
+- The owner's positive steps: Get inventive. Innovate; do not just tune, and do not just diagnose: provide or repair what is broken. Think outside the box: collapse classes into one or invent new ones as needed to find a way around the problem.
+- Every number you add says where it comes from: a bar, or a fact you measured. An old check that turns red after your change is evidence about your change: find out why, never edit it to pass.
+- You may not end with open cases: a case your own report lists as failing, unlaid, untested but testable offline, or unexplained is fixed, proved unreachable by a check you land, or a question with its picture. Only what truly needs the live game or the owner stays open, each with its command or question.
+
 ## Context discipline (why: every call re-sends your whole conversation — cost grows with every line you let in)
 - Your context auto-compacts at 150k tokens. Compaction keeps a summary, not details: your PROGRESS FILE is your memory. Write it as a skeleton first; after each step record decisions, pending operations, evidence paths, and the next action. Re-read it after any compaction.
 - Never let bulk output into context: send long command output to a file (`cmd > out.txt 2>&1; echo "exit=$?"; tail -n 30 out.txt`), then grep it. Use `set -o pipefail` when you pipe. Read files with offset/limit when you know the region. No cat/print of logs, diffs, JSON dumps or whole files you will not edit.

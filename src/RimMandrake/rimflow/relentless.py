@@ -4754,7 +4754,11 @@ def worker_prompt(st, text, learned, r, history=None, causes=None, log=None):
     elif st["approach"] == "redesign":
         head.append("REDESIGN: the same failure came back too often. Read the record below, write a DIFFERENT approach "
                     "with `learn` before you edit anything, and change the contract with --why if it was the problem. "
-                    "A different approach may be: deliver the item's own substance standalone; split it (file the parts "
+                    "If the earlier tries changed numbers, this one may not: hunt parameter regimes and regions, not "
+                    "examples, and write down which situations fail which clause, and why, before you edit. Two clauses "
+                    "that want opposite things are resolved into one thing or met by something new, never tuned "
+                    "between (innovate, think outside the box, don't just tune: collapse classes or invent new ones as "
+                    "needed). A different approach may be: deliver the item's own substance standalone; split it (file the parts "
                     "--for BENCH, then `snag --class blocked_by_predecessor --on <first part>`); or, if no approach is "
                     "left, `snag --class owner_call --section \"<the call>\"`. Retrying the same road is not one.")
         if ((st.get("last_fail") or {}).get("class") or "").startswith("contract"):
@@ -4801,13 +4805,13 @@ def worker_prompt(st, text, learned, r, history=None, causes=None, log=None):
     spent, limit = st.get("spent") or 0, r.get("item_spend_limit")
     if spent:
         # owner 2026-11-05: "A high past token cost indicates that something is really wrong... either in the
-        # validation or the work itself." The builder sees the bill; the blind Judge never does.
-        head.append("COST SO FAR: %.1fM weighted tokens over %d generation(s), %d return(s)%s." % (
-            spent / 1e6, st.get("gen", 0), st.get("total_failures", 0),
-            " (advisory item limit %.1fM)" % (limit / 1e6) if limit else ""))
+        # validation or the work itself." Since 2026-11-16 no launched agent is told its spend ("This has been shown to
+        # reduce their creativity"; item RIMMANDRAKE_HIDE_SPEND_IN_PROMPTS_COST_LINE_SURVIVED): the worker reads its
+        # generations and returns, and the high-cost warning, with no figure; people read the cost on the meter.
+        head.append("SO FAR: %d generation(s), %d return(s)." % (st.get("gen", 0), st.get("total_failures", 0)))
         if limit and spent * 2 >= limit:
-            head.append("HIGH COST: this much spend means something is really wrong, in the validation or in the work. "
-                        "Before any edit, decide which with evidence and record it with `learn`: a proof that cannot "
+            head.append("LONG ROAD: this item has taken far longer than sound work should, which means something is "
+                        "really wrong, in the validation or in the work. Before any edit, decide which with evidence and record it with `learn`: a proof that cannot "
                         "go green on sound work is a contract or harness defect (repair it as the rules above say), "
                         "not a reason for another round of code.")
     if st.get("diagnose_owed"):
@@ -4834,7 +4838,7 @@ def worker_prompt(st, text, learned, r, history=None, causes=None, log=None):
     rep_live = repeated_live(history)
     if rep_live:
         head.append("SAME CLAUSE, NEW CODE, SAME FAIL: %s. Changing the code did not move it, which points at the site, "
-                    "the instrument or the contract as much as at the mod. No code edit before the explanation above "
+                    "the instrument or the contract as much as at the mod, or at two clauses that want opposite things. No code edit before the explanation above "
                     "names the line that rules them out." % "; ".join(
                         "%s read FAIL on %d builds (%s)" % (c, len(v), ", ".join(x[:10] for x in v)) for c, v in rep_live.items()))
     hist = ending_history(history)

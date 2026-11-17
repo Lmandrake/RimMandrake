@@ -1324,6 +1324,44 @@ SELF_FIX_RULE = ("- The pipeline fixes its own defects (owner, 2026-11-15): a de
                  "north-star bar, with the evidence and what you tried on the ticket. Never work around it by hand. A "
                  "mod's own gaps still go through the stages. Full text: `design/RimMandrake/standing_rulings.md` "
                  "§The pipeline fixes its own defects.")
+# What the Gimme Some Slack and Pyrelands rescues taught (2026-11-16; owner: "let's make these changes to the
+# builder/fixers so they act better from now on too"): green on the suite's examples was taken for green everywhere,
+# builders tuned between bars that want opposite things, and a rescue ended with open cases as a footnote. Carried by
+# every builder and fixer brief: the offline build (brief_text), the certificate (maturation_dispatch.cert_brief) and the
+# road-back fixer (maturation_autonomy.fixer_brief). The positive steps are the owner's words, kept verbatim.
+# selftest_bar_holds_rule.py. Page: D:\ClaudeWork\rimmandrake\conductor\role_prompt_upgrades_20261116.md.
+HOW_A_BAR_HOLDS = "\n".join([
+    "## How a bar is shown to hold (owner, 2026-11-16)",
+    "",
+    "Hunt parameter regimes and regions, not examples. A bar holds over every situation the game can produce for it, "
+    "not over the scenes in the suite.",
+    "",
+    "- Before you change any code, write down that whole range of situations: what the game can vary for this bar "
+    "(what the thing connects to, what surrounds it, the player's settings, seeds and time), the regimes and regions "
+    "those make, and what you leave out and why. Read that whole range with the bar's own check. A sweep that shows any "
+    "failure is swept again densely around those failures before you conclude anything from it.",
+    "- Every check you run or write prints its worst value, its limit and how many cases it read. A pass by a hair, "
+    "where one more seed or frame could flip it, is a finding to explain, not a pass to bank.",
+    "- Before you change a check or the code it reads, search the tests for every check that reads the same thing, and "
+    "run them all after each change. A fix that turns one green and another red is two bars in conflict, not a bug in "
+    "either.",
+    "- The tuning tripwire: the second time you nudge the same number, or when a check you had made pass fails again, "
+    "stop tuning. Two bars want different things in the same place. Map where each bar holds across the range of "
+    "situations you wrote down, and why; then resolve the two into one thing, or invent something that satisfies both. "
+    "In every \"it cannot be done\" claim, tag each limit \"bar\" (the owner's) or \"our own rule\" (code, habit, an "
+    "earlier builder's choice), and challenge our own rules first. Relaxing a bar is never yours: it is a question to "
+    "the Conductor, with the map and a picture you have looked at.",
+    "- The owner's positive steps: Get inventive. Innovate; do not just tune, and do not just diagnose: provide or "
+    "repair what is broken. Think outside the box: collapse classes into one or invent new ones as needed to find a way "
+    "around the problem.",
+    "- Every number you add says where it comes from: a bar, or a fact you measured.",
+    "- An old check that turns red when you change something is evidence about your change: find out why. Never edit "
+    "it to pass.",
+    "- You may not end with open cases. A case your own notes or report list as failing, unlaid, untested but testable "
+    "offline, or unexplained is fixed; or proved unreachable by a check you land; or written as a question to the "
+    "Conductor with its picture. Only what truly needs the live game or the owner may stay open, each with its command "
+    "or its question.",
+])
 # The night of 2026-11-14 three judges' records read "not met" for format alone (a missing file, a key spelled another
 # way, a placeholder command) and each cost a reconcile run (one measured 3.0M tokens). The run that wrote the record
 # reads it with the pipeline's own reader before it stops. In the blind judge's and the in-game driver's briefs.
@@ -1465,7 +1503,7 @@ def brief_text(root, mod, cap_usd=None, bars=None):
           "- One dated line in the journal's history for what you built. Every file you touch stays DIRTY until "
           "`code_review_status.py check` says CLEAN.",
           "- Never guess a defName, field or namespace (RimSage, the def, or `measure`).",
-          SELF_FIX_RULE]
+          SELF_FIX_RULE, "", HOW_A_BAR_HOLDS]
     return "\n".join(L) + "\n", f
 
 

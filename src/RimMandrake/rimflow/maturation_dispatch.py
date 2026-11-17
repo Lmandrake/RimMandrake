@@ -1108,7 +1108,8 @@ def cert_item_id(mod, test, known):
 
 
 def cert_brief(mod, chosen, cap, bars):
-    lines = ["# Make %s's red offline deciders green (Stage 3: the certificate before the blind challenge)" % mod, "",
+    lines = ["# Find why %s's offline deciders are red, and make each one hold (Stage 3: the certificate before the "
+             "blind challenge)" % mod, "",
              "Items: %s. Seat BENCH. Offline only: no game, no bridge, no helpers." % (
                  ", ".join(sorted(set(chosen.values()))),), "",
              "`maturation.py certificate %s` refuses the move into the blind challenge: these offline deciders are "
@@ -1119,11 +1120,16 @@ def cert_brief(mod, chosen, cap, bars):
     lines += ["", "1. First run `python3 src/RimMandrake/rimflow/maturation.py certificate %s --run` (zero tokens): it "
               "reruns every offline decider and stamps its build. A decider that turns green needs nothing more: land "
               "`design/concepts/%s/version/test_table.json` and close its item with that sha." % (mod, mod),
-              "2. For each decider still red: read the test and the mod. Fix the mod, or the test where the test is "
-              "wrong (never loosen a north-star bar); the failing test first, seen failing; land with `./publish -m "
-              "... <paths>`; close its item with the published sha.",
+              "2. For each decider still red, first learn what it is telling you. Was it green before the last change? "
+              "Then it is evidence about that change. Search for every other check that reads the same thing. If the "
+              "fix that greens it would redden another, two bars are in conflict: map where each holds and use the "
+              "moves of \"How a bar is shown to hold\" below, not a new number (on Gimme Some Slack this certificate's "
+              "red was such a pair). Otherwise fix the mod, or the test where the test is wrong (never loosen a "
+              "north-star bar); the failing test first, seen failing; land with `./publish -m ... <paths>`; close its "
+              "item with the published sha.",
               "3. Rerun `certificate %s --run`, land the table, and end with `maturation.py certificate %s` exiting 0, "
-              "or a note starting `LEFT OPEN:` on each item still red saying what remains." % (mod, mod)]
+              "or a note starting `LEFT OPEN:` on each item still red: what remains, what you tried, and the map or "
+              "the experiment that would settle it." % (mod, mod), "", M.HOW_A_BAR_HOLDS]
     return "\n".join(lines) + "\n"
 
 

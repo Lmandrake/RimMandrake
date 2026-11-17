@@ -72,11 +72,12 @@ Do not trust the leads in your CASE: on Slack the brief named three bars, the sq
 certificate's red came from a fifth pair. Then write the inputs, and each requirement as a precise statement. Find
 what is underspecified and say so.
 
-**2. Build the instrument: the game's own state, read by the bars' own checks, over a family you enumerate.** Before
+**2. Build the instrument: the game's own state, read by the bars' own checks, over every situation the game can
+produce for those bars, enumerated.** Hunt parameter regimes and regions, not examples (owner, 2026-11-16). Before
 any fix, build what lets you SEE the problem: a generator of the situations the mod can be in (on Slack: what the cord
 comes from, run length, last turn, walls, settings, look; about 300 lines and one run), read by the same checks the
-bars use. Every mod can have one; the mathematics is optional. Declare the family: what it varies, how many cases it
-makes, what it leaves out and why. It is never "every case"; name the dimensions it does not cover, and keep the
+bars use. Every mod can have one; the mathematics is optional. Declare that range of situations: what it varies, how
+many cases it makes, what it leaves out and why. It is never "every case"; name the dimensions it does not cover, and keep the
 mod's existing scenes and the cases that used to fail as separate challenge cases beside it.
    - Every check you write prints its worst value, its limit, and what it sampled (the generator, how many cases, what
      was excluded). A worst value read from one seed is a reading of one seed.
@@ -87,17 +88,17 @@ mod's existing scenes and the cases that used to fail as separate challenge case
 
 **3. Prove any copy agrees with the game, then run the isolating experiment.** If you copy an instrument or a
 mechanic outside the game (Python is preferred for geometry, numbers and rules), compare the copy against the game's
-own numbers over the family and state the agreement (on Slack: 1,274 of 1,275 cases agreed). No map is accepted before
+own numbers over the same range of situations and state the agreement (on Slack: 1,274 of 1,275 cases agreed). No map is accepted before
 that agreement number exists. Every disagreement is explained before you go on; one you cannot explain is a finding,
 and the region around it is not trusted. Then run the one experiment that separates the suspects early: the simplest
 case that tells "this mechanic is wrong" from "that mechanic is wrong" (on Slack: the whip on a perfectly straight
 cord, which answered in seconds what the suite never could).
 
-**4. Map it, and only then model.** For every region of the family: do the requirements hold together comfortably,
+**4. Map it, and only then model.** For every region of the situations you declared: do the requirements hold together comfortably,
 on a knife edge, or not at all? Name the reason for each. This map is your licence for everything after. Build a model
 of the mechanism only after the map, to explain it. Every constraint in an impossibility claim is tagged "bar" (the
 owner's) or "our own rule" (code, habit, an earlier builder's choice), and our own rules are attacked first. Before you
-call a map all green, ask what the family leaves out.
+call a map all green, ask which situations the game can produce that your declared range leaves out.
 
 **5. Where it does not hold, change the situation.** Try all three of the owner's moves, in whatever order the map
 suggests, and show what each does to the map:
@@ -120,9 +121,9 @@ are proposed on your sheet with their checks already passing or honestly failing
 existing bar that pins a number, say so: it is a defect in the bar.
 
 **7. Keep the account.** For each candidate and for your pick, compare side by side:
-   - *Player benefit (convergence earned):* regions closed on the re-run map; bars that now hold over the family with
-     margin; what a player would notice that is now right.
-   - *Regression risk:* old checks and challenge cases still green; what the family does not cover near the change.
+   - *Player benefit (convergence earned):* regions closed on the re-run map; bars that now hold over the declared range of
+     situations with margin; what a player would notice that is now right.
+   - *Regression risk:* old checks and challenge cases still green; situations near the change that the declared range does not cover.
    - *Added complexity (divergence):* each new thing a player can see; new art; new or reworded bar text; new settings;
      code and constants added, set against code and constants deleted.
    A pick passes when the benefit is shown on the re-run map, no old check went red, no bar moved, and every piece of
@@ -170,7 +171,7 @@ own challenge cases, and the owner's final acceptance stands.
 
 ## When to stop
 
-- **Done:** every requirement holds across the declared family with real margin, by construction where you can make it
+- **Done:** every requirement holds across the declared range of situations with real margin, by construction where you can make it
   so; tests and certificate green; old checks untouched or repaired by the steward; the instrument landed as a check;
   the sheet written; the owner's answers acted on.
 - **Exhausted:** all three moves are shown on the map to leave a region failing, with the proof, each constraint tagged,
@@ -193,5 +194,5 @@ own challenge cases, and the owner's final acceptance stands.
 
 What the instrument showed that nobody had seen, and its agreement number; every check you found reading the problem;
 what you unified, invented, added as bars, or proposed to relax, and what each did to the map; the account for your
-pick; what you repaired on the way; final counts and the sha; what the family does not cover; what remains untested, only
+pick; what you repaired on the way; final counts and the sha; which situations the declared range does not cover; what remains untested, only
 if it needs the live game or the owner, each with its command or question; what the independent judge should look at first.
