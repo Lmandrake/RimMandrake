@@ -399,3 +399,4 @@ so the Conductor takes it. These are Conductor decisions, not his.
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 12:40 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 12:40 PM PST).
 - Record: `version/stage_record.json`.
+- CONDUCTOR INTERVENED (stage 4+5, 2026-11-16 9:57 PM PST, kind release): the Fable rescue (item `RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE`) ended and landed 49e11870b4 (wind-carried fire, bar `burn_line_walks` reworded by the owner, certificate OK); the hold of 8:36 PM PST is lifted and the Dispatch tick may launch blind cycle 3.
