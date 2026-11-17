@@ -1,0 +1,610 @@
+{
+ "mod": "Stillsand",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "extra_without_argument",
+     "where": "census.json rows sun_tables, solar_ovens, solar_still, brine, glass_materials (fate needed_by 'signature / practical resupply'); owner_pages.md page one para 'I retain basic glass/lens work, plain solar cooking and water recovery'; bars.json B_SUPPLY says/meant",
+     "evidence": "The deletion arguments go in a circle. They say that deleting the thing deletes the thing, not that the signature fails. sun_tables: 'Delete their actual work and lens discoveries cannot provision sun equipment through the adopted ordinary-work route'. solar_still: 'Removing it makes brine unusable as expedition water and breaks the adopted root'. brine: 'Removing extraction makes the most common cave row an unusable water fortune', but that row exists only to feed the still. definition.md line 35: 'Delete their player-facing work and the described conversion ... no longer exists.' The owner's own words (record.json s_practical_fortune, OWNER:1794377002766121379) are 'practical supplies, equipment or trade value, potentially useful lens production', which treats lenses as an option. The workshop sentence comes only from the Conductor-delegated root synthesis (CONDUCTOR:1794805294378261874). The proposal overrides another Conductor delegation (blanket water retention) under the cleanse mandate but does not apply the same test here. The kept cave rows already provision without any sun table: sealed cache (components, steel, food), guzzka clutch (food), lens-grotto biosilica (trade), Odyssey sand catches. So a second production economy rides inside the one signature with no real deletion argument.",
+     "would_pass": "Each kept workshop element names a concrete player-facing failure of land, life or the expedition signature that its deletion would cause, other than the loss of itself or of the root sentence that names it. Or the chain moves to the next version, switched off, and B_SUPPLY reads discovery to usable supplies, equipment or ordinary trade.",
+     "smallest_fix": "Move furnace, lens bench, solar oven, plain still, brine dipping and the glass/lens recipes to next_version.md with switch-off tickets. Strike 'working sun-fed glass, cooking and water production' from B_SUPPLY.says. Put one line on page two: the delegated root names the workshop; say yes and it returns as kept scope."
+    },
+    {
+     "head": "moved_extra_relied_on",
+     "where": "bars.json meetings 'feature_boundary' (holds_together 'argued') and B_SUPPLY; census sifting (next_version, T_SIFTING) vs solar_still/glass_materials (kept)",
+     "evidence": "src/RimMandrake/Stillsand/Defs/ThingDefs_Buildings/RM_SolarStill.xml:45-46 costs the plain still <RM_SunGlass>20</RM_SunGlass><RM_PrecisionLens>2</RM_PrecisionLens>. RM_GlassChain_Recipes.xml: the precision lens needs RM_LensGlass, and RM_MeltLensGlass needs <RM_FineSand>10. The only in-mod producer of RM_FineSand is RM_SandSieve.cs:140 (the moved sieve). Otherwise RM_GlassChain_Items.xml gives it only <tradeTags><li>ExoticMisc</li>, and no TraderKindDef in src stocks it. The feature_boundary meeting nonetheless argues 'plain precision chain replaces upgrades/sieve'. models.md M_SUPPLY says 'Trigger exists now: input access without sieve/upgrades is unproven.' The proposal both argues and leaves unknown the same link. B_SUPPLY's 'working ... water production' rests on the moved sieve or on an unnamed, unmeasured random trader.",
+     "would_pass": "The fine-sand supplier the kept still depends on is named (which tier, trader kind or offer, and under what colony precondition). feature_boundary for this link is marked 'unknown' with M_SUPPLY. Or the still's lens dependency is removed or the still moves with the chain.",
+     "smallest_fix": "Change feature_boundary's holds_together to 'unknown' for the sieve to fine sand to precision lens to still link, citing M_SUPPLY. Add a census row for the fine-sand supply route. If refusal 1's fix is taken, this falls away."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "ambiguities.md line 33 vs definition.md 'The costs' and census water_volume; B_SUPPLY range",
+     "evidence": "definition.md: 'without it [DBH], RM still-water is carried/traded physical stock (its def has no ingestible block)'. Source agrees: RM_StilledWater.xml has no <ingestible>. Yet ambiguities.md line 33 settles the cooling draught on 'drinking remains useful with the buff removed'. In the default composition (DBH is an optional third-party mod, not a DLC) the kept plain still turns edible eggs and meat into a non-drinkable trade item. What 'water recovery' gives the player is therefore undefined: two files say opposite things. A build whose still places inert stock passes B_SUPPLY's 'real output' reading, and the owner would find that output strange.",
+     "would_pass": "One definition of what plain still water does for a player without DBH (drinkable through an ordinary ingestion, or explicitly a trade good with B_SUPPLY worded as trade), consistent across definition.md, ambiguities.md and B_SUPPLY's pictures.",
+     "smallest_fix": "Correct ambiguities.md line 33. Either state in B_SUPPLY and R_WATER that without DBH still output is trade stock only, or file a ticket giving RM_StilledWater an ordinary ingestible block. Moot if the still moves per refusal 1."
+    }
+   ],
+   "reviewer_refusals": 3,
+   "stranger": [
+    {
+     "bar": "B_LAND",
+     "n": 1,
+     "text": "The sun remains in its tile-governed place while an ordinary sandstorm temporarily reduces visibility; weather does not turn fixed daylight into a normal night.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LAND",
+     "n": 2,
+     "text": "Sand appears as little patches surrounded by lush ground, or corrugation is just a word over a flat featureless presentation.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LAND",
+     "n": 3,
+     "text": "A curated bare pad looks empty but beyond it vegetation, repeated wrecks or tightly packed destinations leave no exposed crossing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LAND",
+     "n": 4,
+     "text": "Across the map a traveller crosses exposed sand before reaching usable rock; low plants and occasional bones or wrecks punctuate the ground while leaving the route visibly open.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LIFE",
+     "n": 1,
+     "text": "Small residents use depth, food or shade while giants move above them; normal foraging, catches, hunting, eggs or livestock products yield something the player can actually carry and use.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LIFE",
+     "n": 2,
+     "text": "A claimed flyer walks through all ordinary movement; the tester counts its flight stat instead of any actual flight state.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LIFE",
+     "n": 3,
+     "text": "Actors spawn for a census but their ordinary jobs never find legal food or shelter, or their products have no usable acquisition path.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LIFE",
+     "n": 4,
+     "text": "A shade follower changes shelter with its host, an ambush animal can feed and strike, and the flying resident enters a real flight state during its ordinary jobs.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_PRESERVE",
+     "n": 1,
+     "text": "A discovered eligible object stays preserved in the secured roofed chamber; after it is hauled or carried outside, or its roof is removed, ordinary decay and its readable status resume.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_PRESERVE",
+     "n": 2,
+     "text": "Everything near the cave or in a straddling storage building stays fresh outdoors, or a secured roofed cave silently loses its eligible contents to ordinary decay.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_PRESERVE",
+     "n": 3,
+     "text": "Removing this feature turns another system’s already-disabled rot back on, reload forgets who owns a corpse timer, or a stale den-cleared flag preserves a reoccupied cave.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_PRESERVE",
+     "n": 4,
+     "text": "A stockpile crosses the cave edge: only contents actually in its protected recorded cells receive this feature’s effect, and a qualifying den occupant suspends the cave’s claim.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_REFUGE",
+     "n": 1,
+     "text": "A cave occupant returns or active drift covers the approach: the changed danger is real even though the cave was previously cleared.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_REFUGE",
+     "n": 2,
+     "text": "The connected mouth leads to a real chamber; after actual threats are removed the party can reach roofed rest and storage space through its secured approach.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_REFUGE",
+     "n": 3,
+     "text": "A saved quest-cleared flag grants permanent safety or preservation in a reoccupied den; stepping on bare rock suppresses an attacker without a physical cause.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_REFUGE",
+     "n": 4,
+     "text": "A letter announces a harbour but the carved mouth is blocked, the roof is only dark art or the chamber cannot be reached by the intended party.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SIGNS",
+     "n": 1,
+     "text": "A drum lure can make an uncertain rumble and an old track can fade after ordinary sand movement; neither a sound nor silence claims an exact species or a safe route.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SIGNS",
+     "n": 2,
+     "text": "A kill, dive or ordinary departure removes a pawn with no visible remains, trace or attributable notice, or stale tracks identify a departed creature as certainly present.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SIGNS",
+     "n": 3,
+     "text": "During an actual submerged approach the traveller can see its disturbance and hear its rumble when audio is available; surfacing or a kill leaves an attributable visible body, trace or notice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SIGNS",
+     "n": 4,
+     "text": "An invisible predator makes contact with no advance visible sign; an incremented sound counter passes although the rumble cannot be heard at ordinary play settings.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUN",
+     "n": 1,
+     "text": "A roof works near overhead sun but fails at a low angle, or a hidden per-biome heat/glare floor keeps the roofed traveller exposed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUN",
+     "n": 2,
+     "text": "A giant moves; protection follows its current shadow and the old position becomes exposed unless another real caster still covers it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUN",
+     "n": 3,
+     "text": "At the same air temperature the roofed traveller is protected from the direct component at low and high sun; an exposed traveller still receives it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUN",
+     "n": 4,
+     "text": "A painted shadow or the giant’s former position protects a traveller after the real caster has moved or died; shade makes the thermometer colder without an ordinary air-temperature cause.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUPPLY",
+     "n": 1,
+     "text": "A cave contains expensive-looking samples but no normal extraction, usable recipe, supplier or exchange can turn them into provisions or working equipment.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUPPLY",
+     "n": 2,
+     "text": "Completed water or lenses are injected by a proof helper, a deferred sieve or event reward secretly supplies the missing input, or reload puts the removed cache contents back.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUPPLY",
+     "n": 3,
+     "text": "Ordinary glass and lens bills, cooking, hauling or a real available exchange turn the chosen discovery into usable equipment or stores; revisiting its depleted source adds no fresh loot.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUPPLY",
+     "n": 4,
+     "text": "A secured brine seep supplies feed for a working plain still, a clutch supplies carried food or provider-supported water, or mined material/cache supplies are used in the next undertaking.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUPPLY",
+     "n": 5,
+     "text": "The party can haul cave food, but the ordinary sun-fed glass, cooking or water route never works when the player orders it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_WHOLE",
+     "n": 1,
+     "text": "Over the season the plain still separates destinations, living residents act normally, a secured refuge remains useful, and real spent/transformed supplies support another undertaking after reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_WHOLE",
+     "n": 2,
+     "text": "Weather or another retained mechanic is locked off to keep jobs moving; valid work never resumes, the midway reload loses or duplicates consequences, or repeated exceptions drown ordinary play.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_WHOLE",
+     "n": 3,
+     "text": "The season becomes a carpet of life or debris, an unexplained fountain of provisions, or a lifeless cast with no practical discovery route while isolated pads still pass.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_WHOLE",
+     "n": 4,
+     "text": "Preparing the workshop before exploration and exploring before workshop preparation both preserve the discoveries and costs actually earned; revisiting or reloading never rerolls the removed cave contents.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The fine-sand supply route. RM_FineSand carries tradeTag ExoticMisc (RM_GlassChain_Items.xml:74-77), so outside the moved sieve it reaches the colony only through whatever trader stocks ExoticMisc. In vanilla that is the orbital exotic-goods trader, which needs a comms console: a precondition I am inferring from vanilla, not something I measured here. No census row names this supplier or its precondition, yet it alone gates lens glass, precision lenses and therefore construction of the kept plain still (RM_SolarStill.xml costList).",
+   "loop_or_three_way": "Shade-seeking life, refuge occupancy and preservation. B_LIFE and R_LIFE require residents to seek shade and shelter. A secured, roofed cave (B_REFUGE) is the best shade on an exposed plain. R_REFUGE and B_PRESERVE say a returning qualifying occupant re-opens danger and suspends the cave's preservation. So the refuge's success draws its own re-occupation: the better the player secures and roofs it, the more ordinary shelter-seekers (giants able to fit the mouth included) may cycle the cave between secured and occupied, and its stores between preserved and rotting. M_STATES walks the transitions but not how often they happen. Only M_SEASON could show whether re-occupation is occasional (the intended 'changed danger') or constant (a refuge that never holds), and its question does not name this loop.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 534762
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "design/concepts/Stillsand/cleanse/bars.json B_PRESERVE (says, range) vs rule R_REFUGE vs census.json row cave_preservation vs tickets.md T_CAVE",
+     "evidence": "B_PRESERVE says: \"After a cave is physically secured, the player can keep eligible contents preserved\". Its range then sets the gate as \"the existing unowned-giant/current-cell eligibility ... a smaller threatening resident still prevents a secured refuge, but does not acquire a new rot-suppression rule\". The code matches the range, not the says: RM_PreciousCaves.cs:424-437 DenHeld() is true only for `p.Faction == null && p.RaceProps.Animal && p.BodySize >= 3f && caveCells.Contains(p.Position)`, and RM_CavePlace.cs:29 runs preservation whenever `preservationEnabled && !comp.DenHeld()`. That includes before first exploration and in caves that are not secured. census.json cave_preservation argues the feature is needed because \"Deleting it can rot the intended practical discovery before first exploration\", so preservation must run before the cave is secured, against the bar's own words. R_REFUGE says \"A returning dangerous unowned occupant suspends cave preservation\". That is a danger test, but the predicate is a size test: a harmless wild grazer of giant size (e.g. Aurrok) standing on a cave cell suspends it, and a dangerous small resident (Drazzik/guzzka class) does not. T_CAVE calls the same size test \"dangerous held-den occupancy\". A builder who gates preservation on 'secured' fails the census argument. A builder who keeps the code passes the range and breaks the says and R_REFUGE.",
+     "would_pass": "One gate for preservation, stated the same way in B_PRESERVE says/accept, R_REFUGE, R_PRESERVE, T_CAVE and the census row. Either (a) preservation is on in any roofed recorded cave not held by a qualifying occupant, including before exploration, with 'qualifying' named as a giant-size unowned wild animal on cave cells, harmless grazers included, and kept apart from 'secured refuge'. Or (b) preservation is gated on the same physical 'secured' state B_REFUGE uses, and the census deletion argument is rewritten so it no longer relies on preservation before exploration.",
+     "smallest_fix": "Take reading (a), which matches the code. Change B_PRESERVE says to: \"While no giant-size wild animal holds a roofed cave, its eligible contents stay preserved in the recorded roofed cells, before and after exploration, and return to ordinary decay when that protection is lost.\" Reword R_REFUGE's preservation clause and T_CAVE's \"dangerous held-den occupancy\" to the size test. State in B_REFUGE or R_REFUGE that a small threat makes a cave unsecured without suspending preservation."
+    }
+   ],
+   "reviewer_refusals": 1,
+   "stranger": [
+    {
+     "bar": "B_LAND",
+     "n": 1,
+     "text": "A curated bare pad looks empty but beyond it vegetation, repeated wrecks or tightly packed destinations leave no exposed crossing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LAND",
+     "n": 2,
+     "text": "Sand appears as little patches surrounded by lush ground, or corrugation is just a word over a flat featureless presentation.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LAND",
+     "n": 3,
+     "text": "Across the map a traveller crosses exposed sand before reaching usable rock; low plants and occasional bones or wrecks punctuate the ground while leaving the route visibly open.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LAND",
+     "n": 4,
+     "text": "The sun remains in its tile-governed place while an ordinary sandstorm temporarily reduces visibility; weather does not turn fixed daylight into a normal night.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LIFE",
+     "n": 1,
+     "text": "Actors spawn for a census but their ordinary jobs never find legal food or shelter, or their products have no usable acquisition path.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LIFE",
+     "n": 2,
+     "text": "A shade follower changes shelter with its host, an ambush animal can feed and strike, and the flying resident enters a real flight state during its ordinary jobs.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LIFE",
+     "n": 3,
+     "text": "A claimed flyer walks through all ordinary movement; the tester counts its flight stat instead of any actual flight state.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_LIFE",
+     "n": 4,
+     "text": "Small residents use depth, food or shade while giants move above them; normal foraging, catches, hunting, eggs or livestock products yield something the player can actually carry and use.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_PRESERVE",
+     "n": 1,
+     "text": "A stockpile crosses the cave edge: only contents actually in its protected recorded cells receive this feature’s effect, and a qualifying den occupant suspends the cave’s claim.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_PRESERVE",
+     "n": 2,
+     "text": "Everything near the cave or in a straddling storage building stays fresh outdoors, or a secured roofed cave silently loses its eligible contents to ordinary decay.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_PRESERVE",
+     "n": 3,
+     "text": "A discovered eligible object stays preserved in the secured roofed chamber; after it is hauled or carried outside, or its roof is removed, ordinary decay and its readable status resume.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_PRESERVE",
+     "n": 4,
+     "text": "Removing this feature turns another system’s already-disabled rot back on, reload forgets who owns a corpse timer, or a stale den-cleared flag preserves a reoccupied cave.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_REFUGE",
+     "n": 1,
+     "text": "A cave occupant returns or active drift covers the approach: the changed danger is real even though the cave was previously cleared.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_REFUGE",
+     "n": 2,
+     "text": "A saved quest-cleared flag grants permanent safety or preservation in a reoccupied den; stepping on bare rock suppresses an attacker without a physical cause.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_REFUGE",
+     "n": 3,
+     "text": "The connected mouth leads to a real chamber; after actual threats are removed the party can reach roofed rest and storage space through its secured approach.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_REFUGE",
+     "n": 4,
+     "text": "A letter announces a harbour but the carved mouth is blocked, the roof is only dark art or the chamber cannot be reached by the intended party.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SIGNS",
+     "n": 1,
+     "text": "During an actual submerged approach the traveller can see its disturbance and hear its rumble when audio is available; surfacing or a kill leaves an attributable visible body, trace or notice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SIGNS",
+     "n": 2,
+     "text": "An invisible predator makes contact with no advance visible sign; an incremented sound counter passes although the rumble cannot be heard at ordinary play settings.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SIGNS",
+     "n": 3,
+     "text": "A kill, dive or ordinary departure removes a pawn with no visible remains, trace or attributable notice, or stale tracks identify a departed creature as certainly present.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SIGNS",
+     "n": 4,
+     "text": "A drum lure can make an uncertain rumble and an old track can fade after ordinary sand movement; neither a sound nor silence claims an exact species or a safe route.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUN",
+     "n": 1,
+     "text": "A giant moves; protection follows its current shadow and the old position becomes exposed unless another real caster still covers it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUN",
+     "n": 2,
+     "text": "A roof works near overhead sun but fails at a low angle, or a hidden per-biome heat/glare floor keeps the roofed traveller exposed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUN",
+     "n": 3,
+     "text": "A painted shadow or the giant’s former position protects a traveller after the real caster has moved or died; shade makes the thermometer colder without an ordinary air-temperature cause.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUN",
+     "n": 4,
+     "text": "At the same air temperature the roofed traveller is protected from the direct component at low and high sun; an exposed traveller still receives it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUPPLY",
+     "n": 1,
+     "text": "A cleared clutch supplies edible carried food, or cache food, components or steel are hauled and actually used to prepare the next undertaking; its emptied source stays empty on return.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUPPLY",
+     "n": 2,
+     "text": "A proof helper inserts completed provisions, a deferred workshop or event secretly supplies the only usable route, or reload puts the removed cache contents back.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUPPLY",
+     "n": 3,
+     "text": "Mined grotto biosilica is sold to an ordinary buyer that actually accepts it, and the proceeds buy usable provisions or equipment; lens manufacture is unnecessary. A taken cave or environmental seep can offer shelter without a material reward.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_SUPPLY",
+     "n": 4,
+     "text": "A cave contains expensive-looking samples but no ordinary collection, usable work or actual exchange can turn any useful discovery into provisions or equipment.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_WHOLE",
+     "n": 1,
+     "text": "Preparing storage and ordinary work before exploration and exploring before that preparation both preserve the discoveries and costs actually earned; revisiting or reloading never rerolls removed cave contents.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B_WHOLE",
+     "n": 2,
+     "text": "Weather or another retained mechanic is locked off to keep jobs moving; valid work never resumes, the midway reload loses or duplicates consequences, or repeated exceptions drown ordinary play.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_WHOLE",
+     "n": 3,
+     "text": "The season becomes a carpet of life or debris, an unexplained fountain of provisions, or a lifeless cast with no practical discovery route while isolated pads still pass.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B_WHOLE",
+     "n": 4,
+     "text": "Over the season the plain still separates destinations, living residents act normally, a secured refuge remains useful, and real spent/transformed supplies support another undertaking after reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The trader-carrier admission is a census capability of its own. Without it, B_SUPPLY's trade arm has no route at all. src/RimMandrake/Stillsand/Patches/RM_TraderCarriers_Stillsand.xml gives every vanilla trader group RM_Vaalok as a pack animal, because RM_Stillsand's allowedPackAnimals lists only Vaalok. RM_StillsandTraderProbe.cs:12-16 records the measured cause from 2026-11-02: without the patch, TraderCaravanArrival spawns 0 pawns, so no trade caravan can reach the map. The census folds this into the 'roster' row as 'life', behind a Biomes setting gate. B_SUPPLY's range and sees, R_SETTINGS and M_SUPPLY never name it as the enabler of the trade arm or require that gate to be on at shipped defaults. Worse, the gate's default is not stated.",
+   "loop_or_three_way": "One three-way meeting among moving giant shade, cave security and cave preservation, with giants as the shared actor. B_SUN and B_LIFE keep giants that move and cast shade, and Direct Sun sends creatures toward cover. B_REFUGE treats a giant footprint at the cave mouth as a blocked approach. B_PRESERVE's actual gate (DenHeld: any unowned wild animal of BodySize >= 3 on cave cells) turns preservation off whenever such a giant stands inside. A giant sheltering from the fixed sun at a roofed rock mouth, even a harmless grazer, therefore blocks the refuge approach and thaws the stored contents at the same moment, while R_REFUGE's 'dangerous occupant' wording says it should do neither unless it is a threat. The wildlife_state and refuge_geometry meetings list these members, but the shade-seeking giant entering cave cells is not named in M_LAYOUT's or M_STATES' range. Those ranges cover giant footprints at the mouth and den occupants by state, not a wild giant drawn into the cave by shade.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 446411
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 2342125,
+    "output_tokens": 19625
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "cannot_hold_together",
+   "where": "design/concepts/Stillsand/cleanse/bars.json B_PRESERVE (says, range) vs rule R_REFUGE vs census.json row cave_preservation vs tickets.md T_CAVE",
+   "evidence": "B_PRESERVE says: \"After a cave is physically secured, the player can keep eligible contents preserved\". Its range then sets the gate as \"the existing unowned-giant/current-cell eligibility ... a smaller threatening resident still prevents a secured refuge, but does not acquire a new rot-suppression rule\". The code matches the range, not the says: RM_PreciousCaves.cs:424-437 DenHeld() is true only for `p.Faction == null && p.RaceProps.Animal && p.BodySize >= 3f && caveCells.Contains(p.Position)`, and RM_CavePlace.cs:29 runs preservation whenever `preservationEnabled && !comp.DenHeld()`. That includes before first exploration and in caves that are not secured. census.json cave_preservation argues the feature is needed because \"Deleting it can rot the intended practical discovery before first exploration\", so preservation must run before the cave is secured, against the bar's own words. R_REFUGE says \"A returning dangerous unowned occupant suspends cave preservation\". That is a danger test, but the predicate is a size test: a harmless wild grazer of giant size (e.g. Aurrok) standing on a cave cell suspends it, and a dangerous small resident (Drazzik/guzzka class) does not. T_CAVE calls the same size test \"dangerous held-den occupancy\". A builder who gates preservation on 'secured' fails the census argument. A builder who keeps the code passes the range and breaks the says and R_REFUGE.",
+   "would_pass": "One gate for preservation, stated the same way in B_PRESERVE says/accept, R_REFUGE, R_PRESERVE, T_CAVE and the census row. Either (a) preservation is on in any roofed recorded cave not held by a qualifying occupant, including before exploration, with 'qualifying' named as a giant-size unowned wild animal on cave cells, harmless grazers included, and kept apart from 'secured refuge'. Or (b) preservation is gated on the same physical 'secured' state B_REFUGE uses, and the census deletion argument is rewritten so it no longer relies on preservation before exploration.",
+   "smallest_fix": "Take reading (a), which matches the code. Change B_PRESERVE says to: \"While no giant-size wild animal holds a roofed cave, its eligible contents stay preserved in the recorded roofed cells, before and after exploration, and return to ordinary decay when that protection is lost.\" Reword R_REFUGE's preservation clause and T_CAVE's \"dangerous held-den occupancy\" to the size test. State in B_REFUGE or R_REFUGE that a small threat makes a cave unsecured without suspending preservation."
+  }
+ ],
+ "applyable": false,
+ "seconds": 977,
+ "at": "2026-11-17T00:34:21"
+}

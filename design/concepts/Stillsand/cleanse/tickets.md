@@ -1,6 +1,6 @@
 # Build tickets proposed by the Designer
 
-These are proposal-local tickets, not ledger edits. Every switch keeps code and defs. A disabled recipe/incident must be ineligible at runtime, not merely hidden in a menu. On/off tests use all DLC, the composed Biomes dependency closure and both franchise-free and campaign content when supplying that feature. Each fixture is discarded; never overwrite user settings. A positive arm may explicitly select an incident or content row to prove availability; that does not measure natural frequency.
+These are proposal-local tickets, not ledger edits. Every switch keeps code and defs. A disabled recipe/incident must be ineligible at runtime, not merely hidden in a menu. On/off tests use all DLC, the composed Biomes dependency closure and both franchise-free and campaign content when supplying that feature. Each fixture is discarded; never overwrite user settings. A positive arm may explicitly select an incident or content row to prove availability; that does not measure natural frequency. Where an extra uses another deferred feature, its positive arm explicitly enables the named companion gates; shipped defaults and retained acceptance keep them all off. A companion dependency is not permission to reactivate it implicitly.
 
 ## T_HOURBLOOM: Short-lived bloom after a pour or gale
 
@@ -62,7 +62,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: RM_Muurrok.xml; RM_SandLeviathan.cs; RM_SunLance.xml -> RM_Verb_MirrorBeam.
 
-Work: Keep the shared sun query independent; suppress event attack/product access at defaults without breaking roof/shade or plain sun tables. Add a persistent Mod Setting labelled “Next version: Muurrok reflected-sun attack and crest product”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Keep the shared sun query independent; suppress event attack/product access at defaults without breaking retained roof/shade. Add a persistent Mod Setting labelled “Next version: Muurrok reflected-sun attack and crest product”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -126,7 +126,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: RM_WorkGiver_TakeSieve / SiftGlassSand and job defs; RM_GlassChainSettings.sieveEnabled.
 
-Work: Gate workgivers, orders, tool crafting/trade and job starts. Keep ordinary drift-clearing glass-sand yield; prove no kept recipe requires sift-only output. Add a persistent Mod Setting labelled “Next version: Autonomous carried-sieve fetch and processing chore”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate workgivers, orders, tool crafting/trade and job starts. Keep shared drift-clearing raw glass-sand yield. No retained first-version recipe requires fine sand; do not invent a trader as an alternative supplier. The deferred workshop may explicitly enable the sieve as its actual fine-sand source. Add a persistent Mod Setting labelled “Next version: Autonomous carried-sieve fetch and processing chore”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -134,7 +134,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: RM_SolarStill.cs allowCorpses branch; RM_WringingStill def; WitnessDeadDistilled and RM_WaterLedger.Notify_Drawn.
 
-Work: Gate construct/offer/use of the corpse variant and associated thoughts. Retain plain still comp and safe no-op ledger entry points. Add a persistent Mod Setting labelled “Next version: Corpse-fed wringing still and witness thoughts”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate construct/offer/use of the corpse variant and associated thoughts. Retain shared still code/defs and safe no-op ledger entry points; the plain still is also deferred under T_SOLAR_STILL. Add a persistent Mod Setting labelled “Next version: Corpse-fed wringing still and witness thoughts”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -142,7 +142,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: RM_FloatMenuOptionProvider_PourWater; RM_JobDriver_PourWaterIntoSand; RM_Thumper; RM_WaterLedger.
 
-Work: Gate menu, job and direct player-facing consequences. Keep RM_CompWaterVolume data and ordinary ingestion for eggs, sacs and still water; remove any dependency of retained water production on an active ledger. Add a persistent Mod Setting labelled “Next version: Sunward water offering, bloom and swimmer draw”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate menu, job and direct player-facing consequences. Keep RM_CompWaterVolume data and actual ordinary ingestion for eggs/sacs. Deferred RM_StilledWater has no ingestible block; do not promise or add a drink hook. Make shared quantity data independent of an active ledger. Add a persistent Mod Setting labelled “Next version: Sunward water offering, bloom and swimmer draw”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -246,7 +246,7 @@ Acceptance test: none, the historical outdoor-preservation implementation has no
 
 Source/call coupling inspected: Loomma shared creature extension; shared feeding/seed service.
 
-Work: Gate the specific behaviour at producer and consumer, while keeping the parent retained capability and all ordinary roster entries. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Loomma dung creates flora”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate the specific behaviour at producer and consumer, while keeping all ordinary roster entries and loadable shared data; its workshop parent is also deferred. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Loomma dung creates flora”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -254,7 +254,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: RM_MapComponent_SandFishing -> RM_SwimmerCalls.Call.
 
-Work: Gate the specific behaviour at producer and consumer, while keeping the parent retained capability and all ordinary roster entries. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Starting a sand-fishing session calls a swimmer”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate the specific behaviour at producer and consumer, while keeping all ordinary roster entries and loadable shared data; its workshop parent is also deferred. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Starting a sand-fishing session calls a swimmer”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -262,7 +262,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: RM_MapComponent_SandListening.OnSandMoved subscription.
 
-Work: Gate the specific behaviour at producer and consumer, while keeping the parent retained capability and all ordinary roster entries. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Singing sand slabs and near-building warning letter”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate the specific behaviour at producer and consumer, while keeping all ordinary roster entries and loadable shared data; its workshop parent is also deferred. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Singing sand slabs and near-building warning letter”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -270,7 +270,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: RM_CompBoneHarp; Defs/SoundDefs/RM_BoneHarp.xml.
 
-Work: Gate the specific behaviour at producer and consumer, while keeping the parent retained capability and all ordinary roster entries. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Wind-driven bone harp sustainers”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate the specific behaviour at producer and consumer, while keeping all ordinary roster entries and loadable shared data; its workshop parent is also deferred. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Wind-driven bone harp sustainers”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -278,7 +278,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: RateFactor -> RM_SunKernel.StillRate; RM_GrindPearlLens recipe.
 
-Work: Gate the specific behaviour at producer and consumer, while keeping the parent retained capability and all ordinary roster entries. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Pearl lens recipe and plain-still speed multiplier”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate the specific behaviour at producer and consumer, while keeping all ordinary roster entries and loadable shared data; its workshop parent is also deferred. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Pearl lens recipe and plain-still speed multiplier”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -286,7 +286,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: Guarded upper-tier recipe and trader patch.
 
-Work: Gate the specific behaviour at producer and consumer, while keeping the parent retained capability and all ordinary roster entries. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Canon pearl-lens trade/crafting prize”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate the specific behaviour at producer and consumer, while keeping all ordinary roster entries and loadable shared data; its workshop parent is also deferred. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Canon pearl-lens trade/crafting prize”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -294,7 +294,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: RM_GlassChain.xml DoBillsCook; RM_MeltSunGlass recipeUsers.
 
-Work: Gate the specific behaviour at producer and consumer, while keeping the parent retained capability and all ordinary roster entries. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Crest-plate upgraded oven”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate the specific behaviour at producer and consumer, while keeping all ordinary roster entries and loadable shared data; its workshop parent is also deferred. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Crest-plate upgraded oven”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -302,7 +302,7 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source/call coupling inspected: Vanilla stove recipeUsers in recipe def.
 
-Work: Gate the specific behaviour at producer and consumer, while keeping the parent retained capability and all ordinary roster entries. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Brine-to-salt cooking recipe”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
+Work: Gate the specific behaviour at producer and consumer, while keeping all ordinary roster entries and loadable shared data; its workshop parent is also deferred. No defs or code are deleted. Add a persistent Mod Setting labelled “Next version: Brine-to-salt cooking recipe”, default off. Check activation, defs offered to the player, all scheduled callbacks and composed-tier patches, not just the primary toggle.
 
 Acceptance test: on a fresh map at shipped defaults, state-read the feature's player-facing things/offers, special jobs, letters and incident eligibility/queues: absent or ineligible, and the log is clean. Base roster species and retained parent features remain present. Enable the labelled setting and exercise its ordinary producer/use path: its specific effect and supplying offers become available/present, with no missing refs. Reload each arm; returned settings equal entry settings. Existing-save active entities are completed or released with a readable sign, never destroyed solely by switching off.
 
@@ -310,17 +310,57 @@ Acceptance test: on a fresh map at shipped defaults, state-read the feature's pl
 
 Source: Defs/HediffDefs/RM_CoolingDraught.xml exists. Its header claims an ingestion doer, but a repository-wide read-only `git grep RM_CoolingDraught HEAD -- src` finds no production doer reference; only its def, header and tests which add it directly. RM_StilledWater has no ingestible block. Inventory presence is therefore the def, not proof of a working drink hook. No new hookup is authorized merely to prove an extra exists.
 
-Work: retain the def/code, park any surviving or later restored Stillsand activation behind a labelled “Next version” default-off setting; keep ordinary eggs/sacs and physical still-water output independent. Recommend retirement because a comfort potion duplicates thermal equipment and is unnecessary for practical water.
+Work: retain the def/code, park any surviving or later restored Stillsand activation behind a labelled “Next version” default-off setting; keep ordinary eggs/sacs independent; still output is separately deferred. Recommend retirement because a comfort potion duplicates thermal equipment and is unnecessary for practical water.
 
 Acceptance test: none, there is no located ordinary production-to-ingestion activation path to turn on, so a credible positive end-to-end test is presently unavailable. Default-off state must contain no applied draught, and log stays clean. Do not count a directly injected hediff as proof of a drink. Before later activation, identify the actual producer and write its matched real-drink/ordinary-water control.
 
-## T_SUN: bind land and work to the ruled shared sun
+## T_SUN_TABLES: furnace and lens bench off for next version
+
+Source/call coupling inspected: Defs/ThingDefs_Buildings/RM_GlassChain_Buildings.xml -> RM_CompSunPowered; Defs/WorkGiverDefs/RM_GlassChain_WorkGivers.xml -> RM_SunFurnace/RM_LensBench ordinary bills; RM_GlassChainMod.cs TableEnabled/RecipeHidden, WorkTable bill postfix and RM_SunPowered.cs stat parts. RM_GlassChain_Recipes.xml names both tables as recipe users. The booleans currently disable work but do not themselves remove construction offers.
+
+Work: keep code/defs; provide persistent per-table controls labelled “Next version”, default off in initialization, missing-key load and reset. Gate construction/blueprint/trade/site offers, bill discovery, starts and runtime work; park existing tables visibly without deleting contents/reservations/products. Shared sun/sky/shade utilities remain loadable for retained callers; no retained supply route calls a table. Coordinate recipe gates with T_GLASS_MATERIALS, not a fake alternative fine-sand supplier.
+
+Acceptance test: on a fresh default map, state reads find no table placements or construction/trade offers, no table bill/job starts, outputs, letters or incidents and a clean log; ordinary cache/egg/catch use and shared sun still work. In the positive arm explicitly enable the relevant table and glass recipe controls, use recorded real inputs (fine sand from the separately enabled existing sieve), and execute normal bills to real output. This proves the enabled machinery, not trade supply. Each table's off gate still wins if recipes are enabled. Old-save tables become visibly inactive without silent loss or new production.
+
+## T_GLASS_MATERIALS: refined glass and precision-lens chain off
+
+Source/call coupling inspected: RM_GlassChain_Recipes.xml -> RM_MeltSunGlass/RM_MeltLensGlass/RM_GrindPrecisionLens; RM_GlassChain_Items.xml defines raw sand, fine sand and refined items. RM_SandSieve.cs produces RM_FineSand; no named trader stock route is established. RM_SolarStill.xml costs sun glass and precision lenses; deferred goggles/thumper/geophone/sun lance and RM_KraytLens.xml also consume these materials. MovingDunes Patch_ClearSandYield.cs reads the biome's clearYield and remains the owner of raw sand collection.
+
+Work: retain defs/code behind labelled “Next version” default-off recipe/refined-item availability controls; gate recipes on all worktables and normal placement/offer/incident producers of refined glass/lenses and workshop fine sand. Keep existing raw glass-sand clearing, biosilica harvest/mining and natural pearl catches unchanged; those are ordinary resources, not refined workshop output. Gate the sieve's own fine-sand producer under T_SIFTING as well. Do not redesign MovingDunes or claim its raw sand substitutes for fine sand. Cross-references for saved items and other deferred consumers stay loadable.
+
+Acceptance test: fresh-map default state has no active refining/lens recipes, new refined stock/fine-sand workshop offers, refining jobs, letters or incidents, with a clean log; defs may remain loaded. Ordinary clearing still yields its declared raw sand, grotto mining yields biosilica and natural pearl catches remain available. With the relevant labelled gate and table/sieve companions enabled, trace raw sand through actual sieve, melt and grinding jobs to real precision lenses; no invented trader supplies fine sand. With recipe gate off, enabling a table or upper-tier consumer cannot reactivate the chain. Saved refined stacks persist without spontaneous conversion.
+
+## T_SOLAR_OVEN: plain solar cooking off
+
+Source/call coupling inspected: RM_GlassChain_Buildings.xml RM_SolarOven/RM_SolarOvenBase, RM_GlassChain.xml DoBillsCook fixedBillGiverDefs patch, RM_GlassChainSettings.solarOvenEnabled and RM_CompSunPowered. Crest variant is separately deferred under T_CREST_OVEN.
+
+Work: keep defs/code behind persistent “Next version: Solar oven”, default off including reset/load defaults. Gate construction/offer/site starts, ordinary cook bill discovery and execution at this appliance; never disable vanilla cooking. Keep saved ovens/items loadable and visibly idle when off. Enabling the plain oven does not enable crest construction, glass recipes or any other workshop feature.
+
+Acceptance test: fresh defaults have no solar oven placements, construction/trade offers, solar-oven jobs/outputs, letters or incidents and a clean log; ordinary vanilla cooking still prepares found food. With the labelled gate on, a normally built oven with recorded construction inputs cooks real food in sun through DoBill; shade/disable stops new work visibly without loss. Crest and glass gates remain off. Positive imported construction inputs establish appliance activation only, not an unmeasured supplier route.
+
+## T_BRINE_DIPPING: extraction for the deferred water economy off
+
+Source/call coupling inspected: RM_BrineDipping.xml RM_BrineDippingSpot, RM_DipBrine recipe and RM_DoBillsDipBrine workgiver; RM_PlaceWorker_BesideTerrain in RM_SolarStill.cs; RM_GlassChainMod.cs RecipeHidden reads brineDippingEnabled; RM_StilledWater.xml defines brine consumed by still and RM_BoilBrineToSalt.xml by salt recipe. Cave seep terrain is independently placed by RM_PreciousCaves.xml.
+
+Work: retain code/defs behind “Next version: Brine dipping”, default off in initialization/load/reset. Gate spot construction/offers and dip bill availability/job execution, not merely UI. Leave environmental brine terrain, existing cave food web, ordinary native adaptation and refuge eligibility unchanged. A seep is not promised as a water fortune. No retained ingestion or supply route waits for dipped brine.
+
+Acceptance test: fresh defaults show the seep's declared terrain/life but no dipping spot/offer, available dip recipe/job, extracted brine stock, related letter or incident, with a clean log. With the labelled gate on, a normal dry-bank spot at an actual allowed brine pool runs RM_DipBrine and yields real brine through DoBill; invalid placement cannot start. Still and salt remain off unless their separate companion controls are explicitly enabled. Existing saved stock is retained; off does not erase the pool or its residents.
+
+## T_SOLAR_STILL: plain water condenser off
+
+Source/call coupling inspected: RM_SolarStill.xml costs RM_SunGlass/RM_PrecisionLens and installs RM_CompSunPowered/RM_CompSolarStill; RM_SolarStill.cs rare tick -> RM_SunKernel.StillStep/Consume, WaterDef selects DBH_WaterBottle or RM_StilledWater and notifies RM_WaterLedger. Precision lenses consume lens glass, which consumes fine sand; only the local sieve production route is established. RM_StilledWater.xml has no ingestible block. Wringing/pearl/ledger/pour/cooling are independently deferred.
+
+Work: keep defs/code behind “Next version: Solar still”, default off including missing-key load/reset. Gate construction/offers/site starts, hauling requests, rare-tick consumption/output and associated notifications at producers and consumers. Release reservations and pause saved apparatus visibly; preserve saved inputs/products and shared volume data. Do not change the lens cost or add a drink hook to rescue first-version scope. When later enabled, non-DBH output is expressly physical carried/trade stock only; DBH use follows that provider. Supply provenance and ordinary buyer usefulness must be verified before future workshop acceptance.
+
+Acceptance test: fresh defaults contain no plain still placements/offers, still hauling/jobs, progress/consumption/water output or related letters/incidents; log is clean and ordinary edible eggs/sacs remain usable. With its labelled gate on and recorded construction/feed inputs (or explicitly enabled full workshop/sieve companions), normal storage hauling and rare ticks consume defined non-corpse feeds into actual placed/pending output. Test blocked output, disable/reload and worker interruption for loss/duplication. Without DBH the product remains non-ingestible stock with no drink action or cooling buff; with DBH read actual bottle units and supported ordinary drink behaviour. No corpse, pearl, Debt or pour feature activates merely by enabling this gate.
+
+## T_SUN: bind land to the ruled shared sun
 
 Source: RM_Stillsand_Biome.xml still supplies heatKind, heatOffsetC, minScaledHeatOffsetC, overheadAboveElevationDegrees and sandGlareExposureFloor; CreatureBehaviors ShadeGrid consumes the old policy. RM_SunPower reads the shared grid and tile sky. Existing STILLSAND_ROOF_COVER_EXPOSURE_1 / STILLSAND_SUN_LIVE_VERIFY_1 and the shared unified-Direct-Sun work are prior build references, not fresh proof.
 
 Work: consume the shared geometry-only Direct Sun implementation with tile-derived position, the one ruled zenith coefficient, weather and ordinary ambient heat. Roofs/parasols cover at every elevation. Remove dependence on biome-specific heat/floor/solar-angle exceptions and per-biome clamps in all active consumers; retain fixed tile sky presentation. Coordinate dependency implementation without redesigning the engine here. The old policy cannot be restored by a settings option. Keep glare/mirage opt-ins off under their own tickets.
 
-Acceptance test: same geometry/gear/weather yields the same direct component independent of biome; all-angle roof/parasols and moving caster updates pass M_LAYOUT's calibrated grid comparisons, with unchanged ordinary air temperature. A source/resolved-def/consumer check finds no active legacy field path. Normal cache update, ordinary storm, reload and sun-appliance receiver agree without forced Clear or forced recompute standing in for update latency. Numerical regression belongs to C_SUN, experience to B_SUN.
+Acceptance test: same geometry/gear/weather yields the same direct component independent of biome; all-angle roof/parasols and moving caster updates pass M_LAYOUT's calibrated grid comparisons, with unchanged ordinary air temperature. A source/resolved-def/consumer check finds no active legacy field path. Normal cache update, ordinary storm, reload and pawn exposure agree without forced Clear or forced recompute standing in for update latency. Numerical regression belongs to C_SUN, experience to B_SUN.
 
 ## T_GUIDANCE: remove false advice and explain retained causes
 
@@ -328,7 +368,7 @@ Source: biome arrival letter says low-sun roofs do nothing; RM_MapComponent_Prec
 
 Work: replace those claims with actual shared cover, ordinary ambient heat, explored/secured cave conditions and useful basic resources. At defaults, descriptions and existing inspect/help surfaces must mark deferred content as next version/off instead of claiming it happens. Keep basic rock/arrival guidance because it makes exposure and the discovery loop readable. No new bespoke event chain or art.
 
-Acceptance test: default-tier text/readback contains no assertion that roofs/parasols fail at low sun, caves automatically cool air or have a removed drip/mark, or a parked feature runs. Unfamiliar cave guidance agrees with actual entrance/occupancy; work and preservation status explain the current cause. Compare each displayed claim against its producing state under defaults and its applicable changed state. All DLC, native and supplying campaign tiers, reload and language fallback are covered; clean log.
+Acceptance test: default-tier text/readback contains no assertion that roofs/parasols fail at low sun, caves automatically cool air or have a removed drip/mark, or a parked feature runs. Unfamiliar cave guidance agrees with actual entrance/occupancy; ordinary work and preservation status explain the current cause. Compare each displayed claim against its producing state under defaults and its applicable changed state. All DLC, native and supplying campaign tiers, reload and language fallback are covered; clean log.
 
 ## T_CAVE: current physical security, scoped preservation and readable status
 
@@ -338,13 +378,13 @@ Work: use current occupancy and physical eligibility for the retained cave state
 
 Acceptance test: M_STATES and real state samples cover held, cleared and reoccupied caves with no quest loaded; old denCleared cannot bypass a returning qualifying occupant. Same-temperature inside/outside/carried/straddling-storage/roof-loss controls show scoped preservation and ordinary decay after release. An already-disabled item is never claimed or re-enabled by this feature; reload preserves owner/IDs/timers. Inspect text follows the same decision. Ordinary cave-rest path remains physically valid and no titan corpse converts twice; clean log.
 
-## T_WATER: retain practical quantities without an active extra
+## T_WATER: retain edible animal products without an active extra
 
-Source: RM_CompWaterVolume.PostIngested and RM_CompSolarStill.Consume call RM_WaterLedger; active campaign defs can enable it. RM_SolarStill.WaterDef chooses DBH_WaterBottle else RM_StilledWater. RM_DuummaWaterSac is edible, has WaterExt when DBH is supplied, and explicitly is not still feed; RM_StilledWater is tradeable physical stock without an ingestible block.
+Source: RM_CompWaterVolume.PostIngested calls RM_WaterLedger; campaign defs can enable it. RM_DuummaWaterSac and ordinary guzzka eggs supply real ingestion and optional DBH water data. RM_StilledWater has no ingestible block; the still choosing it is deferred under T_SOLAR_STILL.
 
-Work: retain item volumes and provider-supported ordinary use while ledger/ritual notifications become safe no-ops at defaults. Keep plain still feeds exactly as the declared brine/eggs/raw-meat table; no invented Duumma-sac feed or FlowWorks plumbing node. Do not add a thirst need, cooling buff, poured response or an unsupported ingestion action. Standardize units across actual provider item definitions, storage, splitting, hauling and actual consumption. If a provider's unit differs, implement the explicit adapter rather than equating stack count and litres by name.
+Work: retain ordinary edible egg/sac quantities and provider-supported use while ledger/ritual notifications become safe no-ops at defaults. Do not add a thirst need, cooling buff, poured response or RM_StilledWater ingestion. Standardize units across actual provider definitions, storage, splitting and consumption without inventing a production route. Keep shared volume comps loadable for old/deferred items; any still-feed conversion is outside retained scope.
 
-Acceptance test: normal plain-still cycles consume real feed and produce the declared physical volume without any Debt/opening/thought/incident-weight delta. Carry/split/merge/reload/use-or-trade accounts for that volume; with DBH, a real supported drink reads the actual bottle units and need effect. Without it, RM still water is carryable/tradeable stock and existing edible sacs/eggs use their real ingestion path. Optional-provider absence is not DLC absence. Full output space preserves feed or pending output; no direct proof-consume helper; clean log.
+Acceptance test: with all workshop, Debt and pour features off, ordinary eggs/sacs can be collected, carried, split, merged, saved/reloaded and eaten through their actual ingestion jobs; quantities and any supported DBH need effect agree with the item's declared units, with no debt/opening/thought/incident-weight delta or log errors. Without DBH, their normal edible use still works; no non-ingestible RM_StilledWater drink is offered or claimed. Optional provider absence is not DLC absence. Check defaults/reset and supplying campaign tier as well as native RM.
 
 ## T_SCOPE: default gates, safe old states and concrete absence readers
 
@@ -365,8 +405,8 @@ Concrete reads to add to the per-feature acceptance arms (source and decoupling 
 - T_SARLACC_SEEP and T_TIER_CAVES: row eligibility and Stillsand seep-incident start are false; on permits the supplying special row/incident. Campaign wildAnimals stays byte-for-byte in membership.
 - T_CORPSE_HISTORY: no conversion scan action or produced new skeleton from an ordinary corpse; on eligible ordinary old corpse converts after valid placement. Static map bones, Bones butchery and titan sites remain independent. T_GIANT_PRESERVATION's unlocated positive path remains explicitly unmeasured.
 - T_HORIZON: no plume/pending delay/settled letter; ordinary arrival still runs. On can delay the eligible normal walk-in, show its plume and complete/cancel its own queued arrival.
-- T_SIFTING: no sieve/tool offers or fetch/sift job starts; on fetches and processes through actual reservations. Plain clearing yield still works when off.
-- T_WRINGING: no corpse-variant offers, corpse consumption, witness thoughts or water from that variant; on real corpse feeding can complete. Plain still still runs when off.
+- T_SIFTING: no sieve/tool offers or fetch/sift job starts; on fetches and processes through actual reservations. Shared raw clearing yield still works when off; no fine-sand supply is required by retained provisioning.
+- T_WRINGING: no corpse-variant offers, corpse consumption, witness thoughts or water from that variant; on real corpse feeding can complete. Plain still is also off at shipped defaults; in a separate companion-enabled arm it can run without corpse feeding or witness thoughts.
 - T_POUR and T_WET_LINE: no pour menu/job, created wetUntil/LatestPour state, renderer or attraction effects; on real pour consumes an item and produces its saved interval. Ordinary item volume survives off.
 - T_LEDGER and T_RETURN_RITUAL: ActiveDef activation, notifications, weights, obligations, thoughts/goodwill/cache/refusal/stone/shrine/letter effects all inert/unavailable; on the supplying faith/ordinary offering activates its real route. No RM-only inert test substitutes for the supplying campaign.
 - T_GLARE_GEAR: no Stillsand-created glare severity or special goggle recipe/offer; on exposure can create the condition and actual worn equipment/gene exemptions can answer it. Shared ordinary heat/shade is unchanged.
@@ -377,9 +417,9 @@ Concrete reads to add to the per-feature acceptance arms (source and decoupling 
 - T_DUNG_SEEDING: no Loomma DungSeeder-created filth, plant, growth boost or wildlife contribution; on ordinary shade-gated comp pulse produces its defined output. Retained shade seeking/severity and ordinary animal filth still run; enumerate the comp's whole payload, not merely new plants.
 - T_FISHING_DRAW: no new swim-call state from a normal Fish job start, yet actual catches remain; on the session's ordinary roll/call can draw an existing swimmer.
 - T_DUNE_SONG and T_BONE_HARP: no custom sustainers/one-shots/near-building letter, ordinary hiss/rumble remain; on actual shared movement/wind drives their specific sound path.
-- T_PEARL_UPGRADE and T_KRAYT_LENS: no upgrade recipe/extra multiplier/canon lens offer; on the supplied ordinary recipe/product and multiplier route is available. Existing basic precision lenses and plain still stay usable off.
-- T_CREST_OVEN: no crest-oven construction/recipe user/cooking job route; on provides its own build/work path. Plain oven/furnace users remain available in the off arm.
-- T_SALT_BOILING: no special salt-bill offer/output; on supplies that ordinary stove recipe. Brine dipping/plain water recovery remain available in the off arm.
+- T_PEARL_UPGRADE and T_KRAYT_LENS: no upgrade recipe/extra multiplier/canon lens offer; on the supplied ordinary recipe/product and multiplier route is available. The basic lens chain and plain still are also off at shipped defaults; test these upgrades with their explicitly enabled companion workshop gates, never as retained supply prerequisites.
+- T_CREST_OVEN: no crest-oven construction/recipe user/cooking job route; on provides its own build/work path. Plain oven/furnace are also off at shipped defaults; a separate companion-enabled arm proves they do not require the crest variant.
+- T_SALT_BOILING: no special salt-bill offer/output; on supplies that ordinary stove recipe. Dipping/plain still are also off at shipped defaults; a separate companion-enabled arm proves their work needs no salt recipe.
 - T_COOLING_DRAUGHT and T_LEGACY_SUN: use their own explicit exceptions; do not create a missing ingestion hook or permit prohibited heat merely to complete a positive arm.
 
 ## T_OBSERVER: attributable ordinary-action scenes and exact recovery
@@ -410,9 +450,9 @@ Acceptance test: calibrated masks and path results agree within the declared tol
 
 ## T_SUPPLY: build provisioning graph and normal-work reader
 
-Instrument specification: M_SUPPLY in models.md. Read actual resolved recipes/costs/providers/jobs and track the ordinary use route. Fine-sand supplier availability and output-space atomicity are explicit risks; do not repair the model by injecting free stock.
+Instrument specification: M_SUPPLY in models.md. Read actual resolved recipes/costs/providers/jobs and track the ordinary use route. Actual buyer acceptance, finite source depletion, ordinary input sharing and placement accounting are explicit risks. Workshop/fine-sand/still bootstrap belongs only to deferred tickets; no free completed outcome rescues a kept route.
 
-Acceptance test: removal of a required supplier, a dependency on a parked upgrade/sieve, a construction/recipe cycle with no imported root, a leaked shared input and a still that consumes into a full output each produce a named gap and smallest affected route. Normal executed action traces agree with graph/service assumptions. Taken cave is a legitimate no-reward route, never regenerated to make a comparison pass.
+Acceptance test: a merely flagged but nonaccepting buyer, a route secretly requiring a parked workshop/sieve, a leaked shared input and an ordinary collection/work action that destroys the find on blocked placement each produce a named gap and smallest affected route. Normal executed action traces agree with graph/service assumptions. Taken cave is a legitimate no-reward route, never regenerated to make a comparison pass.
 
 ## T_SIGN: actual readable movement and consequence observer
 

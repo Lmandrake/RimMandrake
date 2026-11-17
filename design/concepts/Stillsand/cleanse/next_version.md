@@ -49,10 +49,10 @@ All dispositions are this Designer's proposal, Design Version 0.1.0. Next versio
   delegated: It duplicates vanilla arrival information while adding a second queue capable of stranding raids. Ticket: T_HORIZON.
 
 - **Autonomous carried-sieve fetch and processing chore — Next version, off.**
-  delegated: Drift clearing and ordinary trade provide inputs; a custom tool/reservation job is not required for resupply. Ticket: T_SIFTING.
+  delegated: A custom tool/reservation job belongs to the deferred workshop economy. Ordinary supplies and actual trade need no fine-sand route; no alternative fine-sand trader is established. Ticket: T_SIFTING.
 
 - **Corpse-fed wringing still and witness thoughts — Next version, off.**
-  delegated: Distilling bodies is a separate moral/resource interaction; the plain still handles seep/eggs/meat. Ticket: T_WRINGING.
+  delegated: Distilling bodies is a separate moral/resource interaction; all still recovery is outside the expedition signature. Ticket: T_WRINGING.
 
 - **Sunward water offering, bloom and swimmer draw — Next version, off.**
   delegated: Pouring is a secondary land-response chain; carried/produced water works without it. Ticket: T_POUR.
@@ -118,19 +118,36 @@ All dispositions are this Designer's proposal, Design Version 0.1.0. Next versio
   delegated: Sparse bones and their physical shade work with no custom sound interaction. Ticket: T_BONE_HARP.
 
 - **Pearl lens recipe and plain-still speed multiplier — Next version, off.**
-  delegated: A speed upgrade is optional equipment progression; ordinary precision lenses build the retained still. Ticket: T_PEARL_UPGRADE.
+  delegated: This speed upgrade belongs to the deferred lens/still economy; ordinary finds and supplies remain useful without it. Ticket: T_PEARL_UPGRADE.
 
 - **Canon pearl-lens trade/crafting prize — Next version, off.**
-  delegated: Additional canon trade prize is not required for plain lens/still production. Ticket: T_KRAYT_LENS.
+  delegated: An additional canon equipment prize is not required for ordinary practical discoveries; the plain lens/still economy also moves. Ticket: T_KRAYT_LENS.
 
 - **Crest-plate upgraded oven — Next version, off.**
-  delegated: It depends on the deferred Muurrok combat product and duplicates retained cooking/smelting routes. Ticket: T_CREST_OVEN.
+  delegated: It depends on a deferred combat product and adds workshop progression; ordinary vanilla cooking prepares expedition food. Ticket: T_CREST_OVEN.
 
 - **Brine-to-salt cooking recipe — Next version, off.**
-  delegated: Salt production is a side economy; brine-to-water already makes the seep usable. Ticket: T_SALT_BOILING.
+  delegated: Salt production is a side economy; the seep remains environmental habitat and possible refuge without extraction or guaranteed water supplies. Ticket: T_SALT_BOILING.
 
 - **Timed comfort-temperature buff on water ingestion — Recommend retirement.**
-  delegated: Ordinary water is already useful without a comfort buff; this potion duplicates thermal gear and is unrelated to shared geometric shelter. Only its hediff def is located; the claimed ordinary drink hookup is missing. Ticket: T_COOLING_DRAUGHT.
+  delegated: The potion duplicates thermal gear and is unrelated to shared geometric shelter; ordinary eggs/sacs remain edible, while deferred non-DBH still stock has no drink action. Only its hediff def is located; the claimed ordinary drink hookup is missing. Ticket: T_COOLING_DRAUGHT.
 
 
 Shared agricultural thin-film integration stays later under the existing all-game design (OWNER:1794686643633612968; CONDUCTOR:1794824429827934950). This pass changes the prior current-water retention scope by explicit cleanse delegation, not by pretending those prior instructions did not exist. The shared representation ruling, no worldgen, Direct Sun and every other standing ruling remain binding.
+
+- **Refined glass, fine-sand workshop access and precision-lens recipes — Next version, off.**
+  delegated: Refining discoveries into lenses is optional in OWNER:1794377002766121379. Removing this workshop economy leaves cache supplies, edible clutches, ordinary catches and mined biosilica for actual trade; the expedition signature still works. No verified fine-sand trader is assumed. Ticket: T_GLASS_MATERIALS.
+
+- **Sun furnace and lens bench — Next version, off.**
+  delegated: Removing furnace and lens-bench work leaves discoveries usable as ordinary supplies or trade. Solar manufacture adds a second production economy; the delegated root naming it is not a deletion argument for the expedition signature. Ticket: T_SUN_TABLES.
+
+- **Plain solar oven — Next version, off.**
+  delegated: Ordinary vanilla cooking already prepares found food for a trip. Removing this fuel-free appliance changes the cooking option, not the ability to provision, secure a cave or inhabit the desert. Ticket: T_SOLAR_OVEN.
+
+- **Brine dipping spot and extraction — Next version, off.**
+  delegated: Dipping supplies the deferred still/salt economy. The seep remains environmental brine and its ordinary food web; it need not be drinkable or a guaranteed fortune. Other cave rows already supply food, useful cache contents or material for ordinary trade. Ticket: T_BRINE_DIPPING.
+
+- **Plain solar still and water recovery — Next version, off.**
+  delegated: Deleting water conversion leaves carried food, edible eggs/sacs, ordinary supplies and actual trade routes for the next expedition. Brine recovery is a separate optional production economy, not necessary to the signature. Its non-DBH output has no ingestible block. Ticket: T_SOLAR_STILL.
+
+The entire special workshop is deferred together. The existing local sieve can supply fine sand when deliberately enabled; an alternate trader route is unverified. Without DBH, the deferred still makes non-ingestible carried/trade stock only. These are future validation constraints, not first-version production obligations. Shared raw drift-clearing yield, ordinary biosilica/pearl products, edible eggs/sacs and the environmental seep remain with their existing owners.

@@ -1,22 +1,23 @@
 {
-  "mod": "Stillsand",
-  "run": "designer-cleanse-Stillsand-2026-11-17",
-  "outcome": "proposed",
-  "signature": "Exposed crossings lead to uncertain caves which, once explored and physically secured, supply refuge and practical discoveries for ordinary sun-fed resupply and the next undertaking.",
-  "counts": {
-    "capabilities": 91,
-    "kept": 48,
-    "next_version": 33,
-    "recommend_retire": 10,
-    "old_bars": 14,
-    "bars": 8,
-    "live_only_bars": 5,
-    "checks": 12,
-    "rules": 15,
-    "unknown_pairs": 8,
-    "models": 4,
-    "tickets": 50,
-    "questions": 0
-  },
-  "blocked_on": ""
+ "mod": "Stillsand",
+ "run": "designer-cleanse-Stillsand-2026-11-17",
+ "outcome": "proposed",
+ "signature": "Exposed crossings lead to uncertain caves which, once explored and physically secured, supply refuge and practical discoveries to provision the next undertaking through ordinary collection, work or trade.",
+ "counts": {
+  "capabilities": 91,
+  "kept": 43,
+  "next_version": 38,
+  "recommend_retire": 10,
+  "old_bars": 14,
+  "bars": 8,
+  "live_only_bars": 5,
+  "checks": 12,
+  "rules": 15,
+  "unknown_pairs": 8,
+  "models": 4,
+  "tickets": 55,
+  "questions": 0
+ },
+ "blocked_on": "",
+ "applyable": false
 }

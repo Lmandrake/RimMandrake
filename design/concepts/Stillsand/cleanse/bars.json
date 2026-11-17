@@ -175,43 +175,35 @@
     },
     {
       "id": "B_SUPPLY",
-      "says": "The player can use cave discoveries to provision the next expedition or outpost through usable supplies, ordinary trade and working sun-fed glass, cooking and water production, while removed cave discoveries do not reappear on revisit or reload.",
+      "says": "The player can turn useful cave discoveries into supplies or equipment for the next expedition or outpost through ordinary collection, work or available trade, while removed cave contents stay removed on revisit and reload.",
       "meant": {
-        "intent": "If the find cannot change practical provisioning, or the reward reappears on return, the owner’s practical-fortune answer and repeated-expedition signature fail. The ordinary sun-fed conversion routes complete the adopted root, not a separate equipment economy; their deletion arguments are explicit Designer inferences in the census.",
-        "source": "OWNER:1794377002766121379 (practical payoff and uncertainty); delegated basic glass/cooking/plain-still route from adopted root and current production defs.; basic sun-fed work retained by delegated inference from CONDUCTOR:1794805294378261874 adopted root, not attributed as an additional owner answer.",
-        "figurative": [
-          {
-            "word": "sun-fed",
-            "stands_for": "The apparatus uses incident sunlight as its energy source; no food-feeding job or new fuel item is implied.",
-            "accept": "A worker operates an exposed solar furnace supplied with mineral ingredients; the sun is neither an ingredient nor an object fed into it."
-          }
-        ]
+        "intent": "If discoveries have no usable provisioning or actual exchange route, or reappear when revisited, the practical-fortune answer and repeated-expedition signature fail. The owner makes lens production a possibility, so a separate solar workshop is unnecessary.",
+        "source": "OWNER:1794377002766121379, record.json s_practical_fortune (practical supplies, equipment or trade value, potentially useful lens production); delegated finite extraction and actual-use interpretation from the same answer and saved cave source.",
+        "figurative": []
       },
       "accept": [
-        "A secured brine seep supplies feed for a working plain still, a clutch supplies carried food or provider-supported water, or mined material/cache supplies are used in the next undertaking.",
-        "Ordinary glass and lens bills, cooking, hauling or a real available exchange turn the chosen discovery into usable equipment or stores; revisiting its depleted source adds no fresh loot."
+        "A cleared clutch supplies edible carried food, or cache food, components or steel are hauled and actually used to prepare the next undertaking; its emptied source stays empty on return.",
+        "Mined grotto biosilica is sold to an ordinary buyer that actually accepts it, and the proceeds buy usable provisions or equipment; lens manufacture is unnecessary. A taken cave or environmental seep can offer shelter without a material reward."
       ],
       "reject": [
-        "A cave contains expensive-looking samples but no normal extraction, usable recipe, supplier or exchange can turn them into provisions or working equipment.",
-        "Completed water or lenses are injected by a proof helper, a deferred sieve or event reward secretly supplies the missing input, or reload puts the removed cache contents back.",
-        "The party can haul cave food, but the ordinary sun-fed glass, cooking or water route never works when the player orders it."
+        "A cave contains expensive-looking samples but no ordinary collection, usable work or actual exchange can turn any useful discovery into provisions or equipment.",
+        "A proof helper inserts completed provisions, a deferred workshop or event secretly supplies the only usable route, or reload puts the removed cache contents back."
       ],
-      "lazy": "none: The sentence requires usable supply/trade and working basic sun-fed routes, not merely hauling one cave item; ordinary work and persistent depletion exclude injected output and renewable loot.",
+      "lazy": "none: The sentence requires a discovery to reach actual usable supplies or equipment through available ordinary actions, and persistent removal; a trade flag, injected result or renewable display cannot satisfy it.",
       "range": {
-        "varies": "Retained seep/guzzka/lens/cache/taken rows, useful and previously emptied states; starting imported basic provisions vs no industrial input; workshop-before-exploration and exploration-before-work; native RM and supplying campaign; optional DBH present/absent with all DLC always; low/high receiver sun and storm interruption, 1/6/40 workers sharing inputs, job death/cancellation, blocked output and midway reload. Require each kept extraction/work route by normal action, not each possible ingredient stat. Fine sand uses an actual supplier; no guaranteed trader arrival. Plain RM water without DBH is carried/traded stock, not a new drinking need.",
-        "left_out": "No fortune promised for every cave, no exact profit/yield/speed, no self-sufficient desert economy or freely available fine sand. No pearl/canon lens upgrade, crest oven, corpse still, potion, pour or ritual required."
+        "varies": "Retained seep/guzzka/lens/cache/taken rows, useful, previously emptied and no-reward states; imported basic starting provisions versus scarce industrial inputs; exploration-before-storage/work preparation and preparation-before-exploration; native RM and supplying campaign; optional DBH present/absent with all DLC always. Parties/colonies of 1/6/40 sharing finite stocks, ordinary weather during extraction/hauling, job death/cancellation, full stockpile, save during extraction/transport/use and midway reload. Follow each kept useful discovery route to ordinary use or an actual accepting buyer and exchange; do not assume a trader arrives. Seep brine is environmental habitat, not promised expedition drinking water. Ordinary eggs/sacs retain their actual ingestion; no still output is needed.",
+        "left_out": "No reward for every cave, fixed yield/profit/work rate, self-sufficient desert economy or guaranteed buyer visit. No furnace, lens bench, solar oven, still, dipping, fine-sand supplier, lens upgrade, corpse still, potion, pour or ritual required; all those special production routes are off."
       },
       "sees": {
-        "instrument": "Ordinary job/bill/haul/ingestion-or-trade execution and before/after item/volume/reservation state through completion, assisted by M_SUPPLY recipe/bootstrap graph and M_STATES interruption walks. T_SUPPLY/T_WATER.",
-        "start": "Assert initial stocks, active recipes/workgivers, skills, receiver state and actual available supplier inventory for exchange cases. Record all imported/replenished inputs explicitly and start before extraction or feed consumption.",
+        "instrument": "Ordinary collection, mining, hauling, cooking, construction, ingestion or actual trade with before/after item and reservation reads through final use, assisted by M_SUPPLY reachability/accounting and M_STATES interruption walks. T_SUPPLY/T_WATER.",
+        "start": "Assert cave row/contents, starting stocks, ordinary recipes/workgivers, skills and actual buyer inventory/acceptance for exchange cases; all workshop gates off. Record imported inputs explicitly and start before extraction. A tradeability flag alone does not establish a buyer.",
         "on": "All retained Stillsand land/life/cave/provisioning features and their shared engines at proposed shipped defaults; all DLC; next-version extras off. No locked sky, clear-weather pad, suppressed animal AI or paused production. Feature-off controls are separate counterfactual siblings, never the passing arm.",
-        "control": "Match a useful discovery with a taken/ineligible case; trace real input IDs through removal, progress, output placement and final use/exchange. No Consume/ProofStillCycle/ProofDrinkHook/direct outcome helper counts as ordinary action. Debt off must not alter ordinary product quantity or usability.",
+        "control": "Match useful discovery with taken/environmental-only case; trace actual IDs through removal, hauling and final use or sale/purchase. No Consume/ProofStillCycle/ProofDrinkHook/direct outcome helper counts. Found cache food/components and ordinary edible eggs must remain usable with all workshop, Debt and pour gates off.",
         "reset": "Discard the disposable fixture and its sibling saves; restore the exact entry settings and external test configuration from a recorded snapshot, not old shipped defaults. No owner/canonical save is changed. Verify remaining reservations, held pawns, scheduled events and spawned identities against entry state.",
-        "live_only_why": "Normal workgiver discovery, reservations, bill execution and a real exchange require engine jobs; graph reachability alone cannot decide them. Actual work and persistent emptiness exclude injected output and renewable-cache substitutes."
+        "live_only_why": "Ordinary job discovery, reservations, ingestion/construction and a real exchange require engine execution; a recipe graph or item value alone cannot decide actual usability and persistent depletion."
       },
       "live_only": true,
       "touches": [
-        "sun_geometry",
         "supply",
         "saved_state",
         "weather_sand",
@@ -221,7 +213,7 @@
       "tests": {
         "reject": "delegated: If the find cannot change practical provisioning, or the reward reappears on return, the owner’s practical-fortune answer and repeated-expedition signature fail.",
         "renormalize": "No fixed yield, stat, rate, variant count or percentage; numerical implementation readings are checks. Qualitative comparisons and causal use survive retuning.",
-        "first_version": "signature and its strictly needed provisioning routes"
+        "first_version": "signature / usable discoveries, independent of the deferred workshop economy"
       }
     },
     {
@@ -322,7 +314,7 @@
       },
       "accept": [
         "Over the season the plain still separates destinations, living residents act normally, a secured refuge remains useful, and real spent/transformed supplies support another undertaking after reload.",
-        "Preparing the workshop before exploration and exploring before workshop preparation both preserve the discoveries and costs actually earned; revisiting or reloading never rerolls the removed cave contents."
+        "Preparing storage and ordinary work before exploration and exploring before that preparation both preserve the discoveries and costs actually earned; revisiting or reloading never rerolls removed cave contents."
       ],
       "reject": [
         "The season becomes a carpet of life or debris, an unexplained fountain of provisions, or a lifeless cast with no practical discovery route while isolated pads still pass.",
@@ -330,7 +322,7 @@
       ],
       "lazy": "none: Only the full engine run and rendered map can settle the complete player experience; calibrated reduced models diagnose and choose informative intervals but cannot certify ordinary jobs, AI or visual persistence. The explicit repeat/reload/order/stretch excludes a finished static showcase.",
       "range": {
-        "varies": "Full supplied local-map layouts and low/central/high legal dayside geometry, over the complete range of viable rock-cave and viable rockless-tor layouts; do not select a showcase pad or choose only an easy bearing. Unsuitable no-cave layouts are explicit negative controls in B_REFUGE/M_LAYOUT and do not certify this cave-use whole bar. Fresh and 100-day-aged initial states; 1/6/40-colonist active colonies; native RM and campaign supplying composition, optional thirst-provider boundary. Runtime 15 game days (one season), save at an active intermediate point (not a finished showcase), no-reload sibling, and a second ordinary-action order: explore/secure/extract/work/use vs work preparation/explore/secure/extract/use. Include ordinary storm during production and drift/giant movement during route use. If no storm occurs naturally, replay an explicitly labelled ordinary-weather history for interaction evidence without claiming frequency. No forced extra event is needed. No time skipping that bypasses ticks, food, work, growth, AI, weather, reservations or saves; faster scheduling of unchanged ticks is allowed.",
+        "varies": "Full supplied local-map layouts and low/central/high legal dayside geometry, over the complete range of viable rock-cave and viable rockless-tor layouts; do not select a showcase pad or choose only an easy bearing. Unsuitable no-cave layouts are explicit negative controls in B_REFUGE/M_LAYOUT and do not certify this cave-use whole bar. Fresh and 100-day-aged initial states; 1/6/40-colonist active colonies; native RM and campaign supplying composition, optional egg/sac thirst-provider boundary. Runtime 15 game days (one season), save at an active intermediate point (not a finished showcase), no-reload sibling, and a second ordinary-action order: explore/secure/extract/ordinary work/use vs storage and ordinary work preparation/explore/secure/extract/use. Include ordinary storm during extraction/hauling/ordinary work and drift/giant movement during route use. If no storm occurs naturally, replay an explicitly labelled ordinary-weather history for interaction evidence without claiming frequency. No forced extra event is needed. No time skipping that bypasses ticks, food, work, growth, AI, weather, reservations or saves; faster scheduling of unchanged ticks is allowed.",
         "left_out": "No expectation that every random species or cave row appears naturally in a season; B_LIFE/B_SUPPLY read those declared ranges separately. No infinite self-sufficiency, no new planets, no next-version content, no magical refuge against later attack. A no-cave layout must be accounted for in the regional route rather than inventing a cave. Unsuitable no-cave local layouts cannot run the cave-use undertaking and are outside this bar; M_LAYOUT/M_SEASON must still establish that the supplied region has viable destinations rather than hiding a regional absence behind this exclusion."
       },
       "sees": {
@@ -377,7 +369,7 @@
     },
     {
       "id": "C_WORK",
-      "what": "Exact construction costs/recipe inputs/outputs, workgivers, skills, accepted feeds, tick intervals, quantities and provider item units as read from resolved defs; blocked output and reservation identity regression. M_SUPPLY/T_SUPPLY."
+      "what": "Exact retained ordinary recipe/extraction/construction inputs, outputs, skills, provider egg/sac units and reservation/placement identity accounting as read from resolved defs. Deferred recipes/stills have gate checks and positive arms only in their tickets, not first-version production requirements. M_SUPPLY/T_SUPPLY."
     },
     {
       "id": "C_SAVE",
@@ -455,17 +447,15 @@
     },
     {
       "id": "R_RECEIVER",
-      "rule": "delegated: use each plain apparatus root cell as its declared solar receiver and show its reason for stopping; shared sun/roof/shade/weather policy feeds it, independently of worker exposure. The machine does not shade itself. Root location is attackable if M_LAYOUT exposes a false visual affordance; the standing shared Direct Sun rule is not.",
+      "rule": "delegated: All special solar apparatus and its jobs/production are deferred, default off. Keep the shared sun query loadable for existing callers; a deferred apparatus cannot become a first-version supply requirement through a recipe or UI dependency. Its later root-cell receiver choice remains attackable when that scope returns.",
       "touches": [
-        "sun_geometry",
-        "supply",
-        "information",
-        "weather_sand"
+        "feature_boundary",
+        "information"
       ]
     },
     {
       "id": "R_FEED",
-      "rule": "delegated: plain still accepts only defined non-corpse feeds; normal rare ticks conserve consumed feed against placed or explicitly pending output. Full output space cannot destroy the source value. Ordinary bills/hauling/reservations, not direct proof helpers, perform retained production.",
+      "rule": "delegated: Ordinary collection, bills, hauling and use account for finite inputs and placed or explicitly pending products; blocked placement and worker interruption cannot destroy or duplicate the find. No direct proof helpers perform retained work. Still-specific feed conversion is off and tested only by its deferred ticket.",
       "touches": [
         "supply",
         "saved_state"
@@ -473,7 +463,7 @@
     },
     {
       "id": "R_WATER",
-      "rule": "delegated: quantity data stays independent of Debt/pour/comfort buff. DBH supplies its bottle and real thirst jobs when present; otherwise RM water is carried/traded volume stock and existing edible sacs/eggs use ordinary ingestion. No invented thirst need or fake ingestion path. Later thin film remains a shared-engine integration, never an expiry-to-litres guess.",
+      "rule": "delegated: Ordinary edible eggs/sacs keep quantity data and ingestion independent of Debt, pour and comfort buffs. DBH may supply optional thirst integration, never a new DLC requirement or invented need. Solar still and brine dipping are default-off next-version work; without DBH their RM_StilledWater is non-ingestible carried/trade stock only, with no ordinary drink claimed. Shared later film never treats expiry as litres.",
       "touches": [
         "supply",
         "feature_boundary"
@@ -553,7 +543,7 @@
     },
     {
       "id": "R_GUIDANCE",
-      "rule": "delegated: use existing arrival/rock letter and inspect surfaces for truthful heat/roof, actual cave accessibility, current preservation and blocked-work reasons. Remove obsolete low-sun, automatic-cooling and drip claims; never advertise enabled effects of a parked feature.",
+      "rule": "delegated: use existing arrival/rock letter and inspect surfaces for truthful heat/roof, actual cave accessibility, current preservation and ordinary interrupted-work reasons. Remove obsolete low-sun, automatic-cooling, drip and active workshop claims; never advertise enabled effects of a parked feature.",
       "touches": [
         "information",
         "feature_boundary"
@@ -584,16 +574,14 @@
         "B_SUN",
         "B_LIFE",
         "B_REFUGE",
-        "B_SUPPLY",
         "B_WHOLE",
         "R_REFUGE",
-        "R_RECEIVER",
         "R_WEATHER",
         "R_SCOPE"
       ],
       "holds_together": "unknown",
-      "why": "Roof/parasols, living casters, plant growth, heat and apparatus receiver query common geometry through cached consumers; old source has ruled-out branches. Common policy and update agreement have not been measured.",
-      "model": "M_LAYOUT: cover, passage and receiver geometry sweep"
+      "why": "Roof/parasols, living casters, plant growth and heat query common geometry through cached consumers; old source has ruled-out branches. Shared policy and update agreement have not been measured. Deferred apparatus is not needed to pass shelter.",
+      "model": "M_LAYOUT: cover and passage geometry sweep"
     },
     {
       "thing": "weather_sand",
@@ -605,13 +593,12 @@
         "B_SUPPLY",
         "B_SIGNS",
         "B_WHOLE",
-        "R_RECEIVER",
         "R_SWIM",
         "R_SIGN",
         "R_WEATHER"
       ],
       "holds_together": "unknown",
-      "why": "Unrestricted ordinary wind/depth movement changes routes, visible signs and shade/work conditions while organisms and workers continue consuming resources. Long-run interaction remains unmeasured.",
+      "why": "Unrestricted ordinary wind/depth movement changes routes, signs and geometric exposure while organisms and workers consume resources and haul discoveries. Long-run interaction remains unmeasured; no special solar production is retained.",
       "model": "M_SEASON: complete-map season and accumulated consequences"
     },
     {
@@ -628,7 +615,7 @@
       ],
       "holds_together": "unknown",
       "why": "A chamber may fit in a rock yet giant footprint/roof/drift and rest/storage needs together can invalidate its approach. Need the whole placement region, not one yardang.",
-      "model": "M_LAYOUT: cover, passage and receiver geometry sweep"
+      "model": "M_LAYOUT: cover and passage geometry sweep"
     },
     {
       "thing": "information",
@@ -648,7 +635,7 @@
         "R_GUIDANCE"
       ],
       "holds_together": "argued",
-      "why": "At proposal level these readers name distinct facts: exposure/ambient heat, cave occupancy/preservation, work receiver reason and uncertain movement. Truthful local messages can report them together without a safety guarantee or species radar. R_GUIDANCE fixes stale prose; C_SIGN/T_SIGN still verify actual readability. A status panel does not replace a missing physical sign.",
+      "why": "At proposal level these readers name distinct facts: exposure/ambient heat, cave occupancy/preservation, ordinary work access and uncertain movement. Truthful local messages can report them together without a safety guarantee, active workshop claim or species radar. R_GUIDANCE fixes stale prose; C_SIGN/T_SIGN still verify readability. A panel does not replace a physical sign.",
       "model": ""
     },
     {
@@ -679,7 +666,6 @@
         "B_WHOLE",
         "R_ROWS",
         "R_PRESERVE",
-        "R_RECEIVER",
         "R_FEED",
         "R_WATER",
         "R_LIFE",
@@ -687,7 +673,7 @@
         "R_SAVE"
       ],
       "holds_together": "unknown",
-      "why": "Cave extraction, construction bootstrap, ordinary jobs, scarce shared inputs, preservation release and DBH output choice may require an input supplied only by a moved extra or lose it under contention.",
+      "why": "Finite cave extraction, ordinary use/trade, scarce shared inputs and preservation release may lose or duplicate value under contention, or offer material with no actual buyer. The separate solar workshop and its fine-sand bootstrap are outside kept supply scope.",
       "model": "M_SUPPLY: practical provisioning and dependency economy"
     },
     {
@@ -715,6 +701,7 @@
         "B_PRESERVE",
         "B_WHOLE",
         "R_PRESERVE",
+        "R_RECEIVER",
         "R_WATER",
         "R_SCOPE",
         "R_SAVE",
@@ -722,7 +709,7 @@
         "R_GUIDANCE"
       ],
       "holds_together": "argued",
-      "why": "No kept experience uses a moved producer in this definition: ordinary giants replace scripted visits; real occupancy replaces quest signal; plain precision chain replaces upgrades/sieve; physical water replaces Debt; ordinary winds replace gale. Producer/consumer gates and retained no-op utility/data interfaces are explicitly ticketed. This is an argued design decoupling, not proof the current code already obeys it.",
+      "why": "No kept experience requires a deferred workshop producer: found cache food/steel/components can be used directly, eggs remain edible, ordinary catches remain usable, and grotto biosilica may be sold to an actual accepting buyer. Environmental seep brine is not a water reward. Furnace, lenses, oven, dipping and still now move together, so no unverified fine-sand trader replaces the sieve. Ordinary giants replace scripted visits, current occupancy replaces quest signals, and baseline wind replaces gale. Named gates and safe no-op data interfaces are ticketed; actual default-off absence still needs C_SCOPE, while ordinary supply usability remains unknown in its own M_SUPPLY meeting.",
       "model": ""
     },
     {
@@ -755,8 +742,8 @@
     },
     "expedition_ocean": {
       "to": "merged",
-      "as": "B_LAND, B_REFUGE, B_SUPPLY, B_WHOLE",
-      "why": "Re-derived from owner expedition/uncertain-discovery answers; split land from prepared shelter and actual practical use, then run complete."
+      "as": "B_WHOLE",
+      "why": "Re-derived from owner expedition/uncertain-discovery answers; split land from prepared shelter and actual practical use, then run complete. Full disposition: B_LAND, B_REFUGE, B_SUPPLY, B_WHOLE."
     },
     "prepared_harbour": {
       "to": "kept",
@@ -775,8 +762,8 @@
     },
     "sand_signs": {
       "to": "merged",
-      "as": "B_SIGNS, B_LIFE",
-      "why": "Keep readable natural concealed-life transitions; thumper, geophone and fishing job-start lure move, so code coupling does not retain tools."
+      "as": "B_SIGNS",
+      "why": "Keep readable natural concealed-life transitions; thumper, geophone and fishing job-start lure move, so code coupling does not retain tools. Full disposition: B_SIGNS, B_LIFE."
     },
     "giant_encounters": {
       "to": "moved",
@@ -795,8 +782,8 @@
     },
     "current_water": {
       "to": "merged",
-      "as": "B_SUPPLY; T_POUR, T_WET_LINE, T_THUMPER, T_HOURBLOOM, T_WRINGING, T_COOLING_DRAUGHT",
-      "why": "Practical quantity/normal output stays; this cleanse proposal supersedes earlier blanket delegated current-water retention. Physical provisioning requires none of the poured response or special buff/ritual."
+      "as": "B_SUPPLY",
+      "why": "Ordinary edible egg/sac use stays as life/practical finds. This cleanse replaces blanket delegated current-water retention: solar recovery, dipping, poured response and religion all move; none is needed by the expedition signature. Full disposition: B_LIFE, B_SUPPLY; T_SOLAR_STILL, T_BRINE_DIPPING, T_POUR, T_WET_LINE, T_THUMPER, T_HOURBLOOM, T_WRINGING, T_COOLING_DRAUGHT."
     },
     "debt_return": {
       "to": "moved",
@@ -805,13 +792,13 @@
     },
     "giant_history": {
       "to": "merged",
-      "as": "B_PRESERVE, R_SAVE; T_CORPSE_HISTORY, T_GIANT_PRESERVATION",
-      "why": "Scoped cave preservation stays; static bones are land; optional ordinary conversion/desiccation moves. Existing titan site/normal spoilage owner remains a dependency."
+      "as": "B_PRESERVE",
+      "why": "Scoped cave preservation stays; static bones are land; optional ordinary conversion/desiccation moves. Existing titan site/normal spoilage owner remains a dependency. Full disposition: B_PRESERVE, R_SAVE; T_CORPSE_HISTORY, T_GIANT_PRESERVATION."
     },
     "ordinary_work": {
       "to": "merged",
-      "as": "B_SUPPLY, B_WHOLE; C_SCOPE, C_WORK, C_FLOOR",
-      "why": "Only retained basic work is passing scope; settings/log are inherited floor, values/checks are regression, moved chores go with extras."
+      "as": "B_SUPPLY",
+      "why": "Retain ordinary collection, hauling, work and actual use/trade of finds; special solar manufacturing/cooking/recovery moves with its extras. Settings/log remain floor and numerical work readings remain checks. Full disposition: B_SUPPLY, B_WHOLE; C_SCOPE, C_WORK, C_FLOOR; T_SUN_TABLES, T_GLASS_MATERIALS, T_SOLAR_OVEN, T_SOLAR_STILL, T_BRINE_DIPPING."
     },
     "stillsand_walk": {
       "to": "kept",
