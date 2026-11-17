@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":11856,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"OWNER":1207} body_sha256=d43fdc13296dbaac1b1f6469b9d9c309ba867358b0d0dfaed59c840ae7e3b09a -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":12244,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"OWNER":1207} body_sha256=88b73e6326fb1767cacccd327643223a7a07e1e05956d26632b95de8ec5cecf0 -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage blind_challenge · 463 events in 8 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 464 events in 8 shards · reducer 1
 holder lease run-1794865314, token 9, last active 2026-11-16T21:43:27Z
 holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 400000
 
@@ -312,6 +312,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - tests: 94, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - claimed fixes in brief: 16 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 5 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 463 events (views/history.md; never read whole)
+- the full history: 464 events (views/history.md; never read whole)
 
-cursor: t=2026-11-16T21:46:12Z.1794865572711579406 (modledger.py since --mod ExplosiveKnockback t=2026-11-16T21:46:12Z.1794865572711579406 prints what changed after this packet)
+cursor: t=2026-11-17T04:40:47Z.1794890447600312240 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T04:40:47Z.1794890447600312240 prints what changed after this packet)
