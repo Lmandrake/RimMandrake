@@ -386,6 +386,13 @@
   "reserve": 60000,
   "spent": 12781605
  },
+ "coverage_release_granted": {
+  "after": [
+   "RIMMANDRAKE_MEND_GRAFFITI_SOAK_SCENE_SUM_HIDES_TAXED_PAWN"
+  ],
+  "at": "2026-11-17T18:45:12Z",
+  "why": "delegated: evidence-for-ask: one more look; its only gap stories_not_tax was mended at 6c7d175b52 (closed 18:37Z), and the stop counted two refusals from before its 11-15 covered sign-off. Fold item: RIMMANDRAKE_RESET_COVERAGE_STRIKES_AFTER_SIGNOFF_OLD_TWO_COUNTED"
+ },
  "coverage_rounds": [
   {
    "at": "2026-11-15T08:21:51Z",
@@ -905,6 +912,12 @@
    "stage": 5,
    "what": "retry",
    "why": "run rm-role-designer-1794940025 result rejected: no result.json (a closing message is not a result)"
+  },
+  {
+   "at": "2026-11-17T18:45:12Z",
+   "stage": 5,
+   "what": "coverage_release_granted",
+   "why": "delegated: evidence-for-ask: one more look; its only gap stories_not_tax was mended at 6c7d175b52 (closed 18:37Z), and the stop counted two refusals from before its 11-15 covered sign-off. Fold item: RIMMANDRAKE_RESET_COVERAGE_STRIKES_AFTER_SIGNOFF_OLD_TWO_COUNTED (takes effect after RIMMANDRAKE_MEND_GRAFFITI_SOAK_SCENE_SUM_HIDES_TAXED_PAWN close and the re-pin lands)"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
