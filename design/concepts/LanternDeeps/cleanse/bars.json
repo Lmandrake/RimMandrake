@@ -1,0 +1,727 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "An expedition enters through a crystal mouth or a ruined shaft in a technological ruin, returns safely, and finds the same altered cavern and its surviving occupants after leaving and reloading.",
+      "meant": {
+        "intent": "Persistence includes actual changes and occupants, not just an unchanged seed or map label. Sealing is an explicit warned choice, never automatic cleanup. Delegated reject test: an erased home contradicts the root even if the next cave looks identical.",
+        "source": "design/Jawa/worldbuilding/biomes/the_lantern_deeps.md sections 5, 6 and 8; standing no-unreadable-vanishing ruling; delegated: persistent root in CASE.",
+        "figurative": []
+      },
+      "accept": [
+        "After an expedition mines a passage, leaves supplies and escorts a wounded animal down, a later return through its mouth finds the opened passage, supplies and that surviving animal; a save made below preserves the same place.",
+        "The shaft is part of a visible failed technological expedition site; cancelling a closure warning leaves those below and the way back intact."
+      ],
+      "reject": [
+        "The mouth returns a fresh cave bearing the same name while the earlier excavation, supplies and animal are gone.",
+        "A bare shaft is scattered in empty desert, or a return/cleanup silently deletes the occupied cave."
+      ],
+      "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
+      "range": {
+        "varies": "Each of the 2 mouth types, separately and both on a source; 0, 1, 8 and 40 colonists; animals/corpses/carried injured pawns/items; new entry, evacuation, return, death below, save below/above, reload while empty/occupied, closure cancel/confirm. Host fixed annual temperatures -80 to -40 C and boundary -40.01/-40/-39.99 C; default listed/unlisted host biomes. Sweep legal portal placements and disconnected interior candidates through Situation generator.",
+        "left_out": "No planetary generation/painting, gravship transfer or multi-level dungeon chain. Deliberate confirmed permanent sealing may lose contents only with explicit contents warning; it is not a revisit case."
+      },
+      "sees": {
+        "instrument": "Situation generator plus portal/map/thing identity and reachability state reads from an ordinary entered cave; compare save records across return/reload.",
+        "start": "Actual portal on a qualifying disposable fixed-world source; no previously generated Deep for initial-entry cases. Record map parent/source/portal IDs, occupant IDs, passage cells and item stacks before leaving.",
+        "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
+        "control": "A regenerated cave can look identical. Require persistent map and thing IDs plus changed terrain and injuries, and travel using normal jobs rather than only selecting the other map. Cancelled and confirmed closure use separate save forks.",
+        "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
+        "live_only_why": "State transitions, identities and comparative outcomes are available to the specified calibrated model and game state read; no visual-only judgement is asserted by this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "map identity",
+        "cave geometry",
+        "occupants",
+        "settings"
+      ],
+      "eligibility": {
+        "reject_test": "Persistence includes actual changes and occupants, not just an unchanged seed or map label. Sealing is an explicit warned choice, never automatic cleanup. Delegated reject test: an erased home contradicts the root even if the next cave looks identical.",
+        "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
+        "first_version_test": "land and its readable irreversible-closure boundary"
+      }
+    },
+    {
+      "id": "B2",
+      "says": "A visitor below the frozen surface sees an enclosed blue-lit mineral cavern with fungal patches, still air and well-equipped remains of technological expeditions, and can distinguish its passages, mineable rock and living inhabitants.",
+      "meant": {
+        "intent": "The land is recognisably a luminous enclosed place rather than a generic dark cave with labelled objects. Delegated reject test: a surface map tinted blue or an unreadable pile of luminous assets misses his wondrous cavern. Enjoyment/wonder remains a prediction, not a pass metric.",
+        "source": "Owner-selected experience, design/RimMandrake/biome_experiences_2026-10-20.md LanternDeeps row; the_lantern_deeps.md sections 1, 3 and 9; delegated: distinguishability at ordinary play zoom.",
+        "figurative": []
+      },
+      "accept": [
+        "At ordinary colony view a visitor can follow a dark passage into blue mineral and fungal patches, pick out rock faces to mine, and see equipped remains and living shapes without a surface sun lighting the room.",
+        "A crowded worked gallery still separates the walking skeleton suit, rooted mind and inert metal from the stone being mined."
+      ],
+      "reject": [
+        "A generic cave is uniformly blue and its crystals, bodies and walls overlap so that selecting names is the only way to tell what is alive or traversable.",
+        "The cave fills with a bright outdoor sky, surface rain or wind while its underground label remains correct."
+      ],
+      "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
+      "range": {
+        "varies": "Generated full 66x66 cave footprint at defaults, open chambers/narrow turns/water shores/rock faces, freshly entered and worked base, daylight/night on source, carried lamps present/absent, 1 to 40 colonists plus current animal roster, default audio and normal/advanced zoom. Include both mouth types and geometry counterexamples from generator; no staged empty-room-only look.",
+        "left_out": "No requirement for particular art variants, exact palette RGB, beauty score or photorealism; no claim to view flight without owner present."
+      },
+      "sees": {
+        "instrument": "Live ordinary-zoom observation with state overlay for roof, glow contributors and walkability; retain labelled accept/reject still views of the stationary land. Ticket provides this reading.",
+        "start": "Naturally entered generated map; every kept entity present or reached by ordinary exploration. Compare unworked and worked gallery from the same saved cave.",
+        "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
+        "control": "A screenshot composed with manual blue lamps can fake the land. Read roof/weather and native source identities; briefly move the expedition lamps while leaving all native mechanics enabled. Human distinction must agree with selected entity identity.",
+        "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
+        "live_only_why": "Roof/glow state can establish enclosure and sources but cannot establish that silhouettes, clutter and passages are visually distinguishable at play scale."
+      },
+      "live_only": true,
+      "touches": [
+        "cave geometry",
+        "light provenance",
+        "occupants",
+        "resources",
+        "roof state"
+      ],
+      "eligibility": {
+        "reject_test": "The land is recognisably a luminous enclosed place rather than a generic dark cave with labelled objects. Delegated reject test: a surface map tinted blue or an unreadable pile of luminous assets misses his wondrous cavern. Enjoyment/wonder remains a prediction, not a pass metric.",
+        "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
+        "first_version_test": "land and visual readability of land/life/signature"
+      }
+    },
+    {
+      "id": "B3",
+      "says": "A returning forager and keeper can use the cavern’s native pasture, food, cloth, mineral harvest and tameable animals that supply usable fuel while its hunters and non-food hydrocarbon life remain living encounters.",
+      "meant": {
+        "intent": "Land/life must support encounters and useful choices, not only list defs. A small expedition can supplement supplies and tame a useful animal; the cave is not promised to feed a large colony unaided. Delegated reject test: populated XML with no living cast or usable native products is not life.",
+        "source": "the_lantern_deeps.md ordinary fungal economy; bedazzle_review_2026-10-01.md section 3 hydrocarbon premise; current RM_DeepFlora.xml and Wave1-3 fauna defs; standing native-water and real-flight rulings.",
+        "figurative": []
+      },
+      "accept": [
+        "The forager harvests edible puffer and lace for cloth, gathers native stone, and keeps a fuel-producing animal while ordinary cave hunters move and feed nearby.",
+        "After foraging and a return visit, suitable unbuilt ground can carry native pasture again; the native fuel animals are not treated as ordinary meat or left dehydrating beside their own water."
+      ],
+      "reject": [
+        "Native flora exists only in the definition list and later visits grow only generic cave mushrooms, or animal entries never produce living residents.",
+        "The expedition can milk the native fuel grazer but receives an unresolved product, or hydrocarbon animals supply the colony’s ordinary meat as if their biology were cosmetic."
+      ],
+      "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
+      "range": {
+        "varies": "Initial generated and later grazed/harvested cave; dry fertile ground, gravel, shallow water/shore and built-over cells; 1/8/40 colonists; wild/tame/downed/dead animals and normal feeding/milking/butchering; all active local species plus dormant species only when deliberately instantiated; 15-day season and day-100 continuation. Fictional flyers use existing flight tracker; native water applies to each admitted animal.",
+        "left_out": "No new roster placements for dormant soulchime/grub/megapleura; no evictions or promise of every species on every random cave. No surface agriculture, nutritional self-sufficiency, exact yields, fast profits or restored mushroom logs."
+      },
+      "sees": {
+        "instrument": "Calibrated Whole cave season ecology trace plus loaded-roster, initial placement, jobs, product ownership/usability, diet, drinking, FlightTracker, corpse and plant-suitability state reads; ordinary harvest/milk jobs.",
+        "start": "No manually stocked food, animals or crystal products in the fresh-map baseline; journal initial native placements and external colony provisions separately. Tamed comparison gets only the food a player brought or gathered.",
+        "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
+        "control": "A planted fixture or modded imported product can fake a food chain. Track source plant/animal IDs and actual harvest/milk jobs; compare exhausted and untouched patches, record provider package for fuel and retain diet/blood distinctions for older insect ports.",
+        "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
+        "live_only_why": "State transitions, identities and comparative outcomes are available to the specified calibrated model and game state read; no visual-only judgement is asserted by this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "ecology",
+        "resources",
+        "occupants",
+        "cave geometry"
+      ],
+      "eligibility": {
+        "reject_test": "Land/life must support encounters and useful choices, not only list defs. A small expedition can supplement supplies and tame a useful animal; the cave is not promised to feed a large colony unaided. Delegated reject test: populated XML with no living cast or usable native products is not life.",
+        "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
+        "first_version_test": "ordinary life and usable native resources"
+      }
+    },
+    {
+      "id": "B4",
+      "says": "A lit expedition draws cave danger during sustained ordinary-light work, while dim work or standing living Lantern light avoids that draw, and harvesting the Lantern removes its safe-light shelter.",
+      "meant": {
+        "intent": "Ordinary usable work-light must have a legible risk, and standing Lantern light must be genuinely different. Danger is native attention, not arbitrary hidden punishment. Safe means exemption from light-triggered draw only, not immunity to ordinary hunting or roof collapse. Delegated reject test: no usable risk contrast violates the frozen no-free-light constraint.",
+        "source": "the_lantern_deeps.md sections 4, 5 and hard ban 6; LANTERNDEEPS_LANTERN_LIGHT_BUILD_1; MapComponent_LanternDeepDarkness.cs quotes the ruled 2026-09-02 light-beacon intent.",
+        "figurative": [
+          {
+            "word": "shelter",
+            "stands_for": "exemption from this light-triggered draw while only standing Lantern light reaches the worker",
+            "accept": "An ordinary hungry predator can still bite a worker standing in Lantern light; that does not revoke the safe-light distinction."
+          },
+          {
+            "word": "draws",
+            "stands_for": "attracts a native danger through its light-attention response, not a literal pulling force",
+            "accept": "The predator walks along an open route toward the lit party; no force drags it."
+          }
+        ]
+      },
+      "accept": [
+        "On comparable inhabited cave routes, a sustained lamp-lit work party visibly attracts an approaching native predator; a dim or Lantern-only work party avoids the light-triggered approach.",
+        "A lamp blocked by solid rock does not spoil Lantern-only shelter; an ordinary lamp that actually lights the sheltered worker does, and harvesting its Lantern removes that shelter."
+      ],
+      "reject": [
+        "Only extraordinary proof lamps can trigger danger while ordinary standing lamps are always free, or Lantern-only workers receive the same light-triggered attacks as lamp workers.",
+        "A lamp behind solid rock cancels safe light, or adding a Lantern excuses ordinary light that reaches the worker.",
+        "An unexplained predator appears inside a sealed occupied room, with no readable approach or light-related sign."
+      ],
+      "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
+      "range": {
+        "varies": "Engine-reachable glow values 0 to roof cap and overlight; equal-brightness controls; Lantern/ordinary terrain/item/formation/mobile lights singly and mixed; rock occlusion, open doors, corners, overlapping source radii; 0/1/8/40 free colonists, downed/carried/dead removal and empty-map decay; sampling/threshold/cooldown boundaries, timer interruption/reload, harvest/replant, enough native prey/predators or explicit depletion. Geometry sweep includes source toggles without disabling kept systems.",
+        "left_out": "Safe light does not prevent unprovoked ordinary hunting, injury or collapse. Empty eradicated caves are not promised to conjure a hunter. No light-metabolism simulation, Sipper drain or Hush invisibility."
+      },
+      "sees": {
+        "instrument": "Light geometry calibrated against glow/contribution state plus natural exposure/timer and predator-path state trace. Track exposure changes and approaches under matched light histories; never call DrawSomethingToTheLight directly as proof.",
+        "start": "Comparable forks of a real inhabited cave with a legal reachable predator, no raid, no pre-existing manhunter and equal worker histories; risk state recorded before each fork. Obtain Lantern through defined natural/sowing route, not debug spawning for availability proof.",
+        "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
+        "control": "An unrelated hunt can look like light draw. Tag actual attention cause and target, compare dim and only-Lantern forks at matched native population/time, and show no other incident or forced manhunter. An ordinary lamp placed out of reach behind rock must have zero contribution, not merely nominal radius.",
+        "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
+        "live_only_why": "State transitions, identities and comparative outcomes are available to the specified calibrated model and game state read; no visual-only judgement is asserted by this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "light provenance",
+        "ecology",
+        "occupants",
+        "attention state",
+        "settings"
+      ],
+      "eligibility": {
+        "reject_test": "Ordinary usable work-light must have a legible risk, and standing Lantern light must be genuinely different. Danger is native attention, not arbitrary hidden punishment. Safe means exemption from light-triggered draw only, not immunity to ordinary hunting or roof collapse. Delegated reject test: no usable risk contrast violates the frozen no-free-light constraint.",
+        "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
+        "first_version_test": "necessary frozen light-attention/safe-Lantern stages of the signature"
+      }
+    },
+    {
+      "id": "B5",
+      "says": "An explorer sees stationary crystals control dead machines that turn toward expedition light and visibly defend a marked living gallery when it is mined or attacked, with a readable warning and a reachable route for retreat.",
+      "meant": {
+        "intent": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise.",
+        "source": "Owner event OWNER:1794375005355305543, 2026-11-11; owner experience 2026-10-20; the_lantern_deeps.md Shard-minds and Working Dead; delegated: precise territorial trigger and finite defence/retreat scope.",
+        "figurative": []
+      },
+      "accept": [
+        "Dead metal stands and turns when the party brings light to an aware crystal; selecting the body identifies its crystal controller. A protected mining designation warns before work; carrying it out sends those existing bodies against the intrusion.",
+        "The expedition stops work and withdraws along the shown passage; defenders return to their gallery. Destroying the controlling mind visibly ends its control, and surviving bodies remain accounted for."
+      ],
+      "reject": [
+        "A mind’s label says sentient and a stationary chassis emits dust, but mining changes nothing except a lore message.",
+        "Mining summons an unrelated raid or endless fresh droids, or peaceful Orun-Ghal becomes a boss, or a defender chases the expedition through the return portal.",
+        "The warning is printed after the first injury, a designation alone instantly starts combat, or all retreat paths are sealed by the very response being demonstrated."
+      ],
+      "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
+      "range": {
+        "varies": "Controller/body counts 0/1/multiple; intact/blocked/destroyed/downed bodies; overlapping mind reaches; ordinary light, Lantern-only light and dark changes; protected ordinary mineral vs unprotected rock, attack to mind/chassis, designation cancel and completed extraction; friendly/hostile/no relationship, injury, target death, retreat, simultaneous miners up to 40, save/reload during warn/defend/return. Include depleted-body and blocked-path cases; no bodies means visibly unable to defend, not an invented army.",
+        "left_out": "No recruitable body, resurrection of human corpse, sentience in every stone, colony-droid theft, mindstone manufacture, global reputation war or path-cutting boss. Ordinary Lantern harvest outside protected mineral is safe from territorial defence."
+      },
+      "sees": {
+        "instrument": "Encounter walk state trace plus live view of warning, body response and controller sign; compare actual mining/attack jobs and no-intrusion forks. Reads new defence instrument specified in tickets.",
+        "start": "A generated reachable mind gallery with associated finite chassis, intact return route, unprovoked state, same roster/light history across forks. No manual attack order assigned to defenders; future instrument must read real production controller links.",
+        "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
+        "control": "Preposed art, vanilla manhunter or a script-started raid can imitate defence. Record the same body/controller IDs before/after, tag the triggering completed job/damage and show cancellation/unprotected-rock forks stay unprovoked. Visibly disable controller on another fork and compare.",
+        "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
+        "live_only_why": "State can prove controller links and combat, but a live view is required to judge whether warning, possession and retreat read as the crystal inhabitants acting rather than an unexplained attack."
+      },
+      "live_only": true,
+      "touches": [
+        "attention state",
+        "controller state",
+        "cave geometry",
+        "occupants",
+        "light provenance",
+        "resources"
+      ],
+      "eligibility": {
+        "reject_test": "Recognition is demonstrated by causal embodied action, not claimed sentience. Designation warns; actual extraction/damage provokes bounded defence. Delegated reject test: the owner explicitly linked the changed relationship to remote bodies defending the crystals; still props and a moth raid do not meet that promise.",
+        "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
+        "first_version_test": "signature: observable intelligent agency and remote defence"
+      }
+    },
+    {
+      "id": "B6",
+      "says": "A visitor can study and befriend Orun-Ghal through real visits, and a later return brings its distinctive peaceful greeting and chosen company without turning the inhabitant into a worker or attacker.",
+      "meant": {
+        "intent": "Company and a distinctive greeting together express the owner-requested peacefulness, harmless presence and curiosity. Saved acquaintance belongs to the colony on this Deep; it is not an XP grind or a recruit. Delegated reject test: a number called friend without changed encounters misses the explicit answer.",
+        "source": "OWNER:1794375005355305543 and design/RimMandrake/designer_codex_2026-11-09/LanternDeeps/ANSWERS_OWNER.md; 2026-10-01 owner revision in LANTERNDEEPS_ORUN_GHAL_BUILD_1; delegated: colony rather than personal relationship persistence.",
+        "figurative": [
+          {
+            "word": "befriend",
+            "stands_for": "earn remembered peaceful familiarity and voluntary company, not ownership or a vanilla recruitable social bond",
+            "accept": "The familiar suit greets the colony and then leaves to resume its own rounds."
+          }
+        ]
+      },
+      "accept": [
+        "A colonist completes ordinary study visits; when the colony later returns, the skeleton-bearing suit walks over, stops to face them and gives its recognisable harmless greeting before choosing their company.",
+        "An interrupted visit grants no acquaintance, while a completed visit still matters after the studier dies and another colonist returns; a downed suit cannot pretend to greet."
+      ],
+      "reject": [
+        "The only friendship change is inspect text or a letter; the same aimless wandering continues on later visits.",
+        "A proof helper awards familiarity without study, or the friendly suit mines for the colony, attacks a protected miner, or is replaced after death with a new cheerful copy."
+      ],
+      "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
+      "range": {
+        "varies": "Wary/curious/familiar/friend state boundaries using current def thresholds; actual visits on same and later days, 1/8/40 colonists, reservations and priority work, cancelled/unreachable/interrupted/dead/downed studier or suit, no returning colonist, forced orders, save mid-job/mid-greeting and return; visit-before-mining and mining-before-visit. Friendship persists as acquaintance during gallery defence; greeting is deferred until a reachable peaceful visitor is present.",
+        "left_out": "No taming/recruitment, combat companion, hauling/mining, telepathy conversation, Cathedral secret, scripted lore ladder, XP or promise that destroyed inhabitants return."
+      },
+      "sees": {
+        "instrument": "Live ordinary encounter look backed by Encounter walk and actual study/reservation/job-completion/day/relationship state reads; observe return via portal, not a teleport and direct CompleteSession calls.",
+        "start": "Generated Orun and mind gallery, unacquainted colony, accessible study target. Credit only completed normal research-work jobs. Independently seeded already-familiar fixture is allowed solely for greeting geometry checks, never progression proof.",
+        "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
+        "control": "A random wander toward a pawn can imitate company. Compare wary and familiar forks at matched positions, identify greeting state/target and saved completion history, then leave and return after reload. ProofStudy and debug-set tiers invalidate progression evidence.",
+        "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
+        "live_only_why": "Saved standing is readable offline, but peaceful curiosity and a distinctive recognisable greeting require seeing the encounter. No screenshot of flight is required."
+      },
+      "live_only": true,
+      "touches": [
+        "controller state",
+        "attention state",
+        "occupants",
+        "map identity",
+        "settings"
+      ],
+      "eligibility": {
+        "reject_test": "Company and a distinctive greeting together express the owner-requested peacefulness, harmless presence and curiosity. Saved acquaintance belongs to the colony on this Deep; it is not an XP grind or a recruit. Delegated reject test: a number called friend without changed encounters misses the explicit answer.",
+        "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
+        "first_version_test": "signature: peaceful independent representative and remembered recognition"
+      }
+    },
+    {
+      "id": "B7",
+      "says": "A miner under a failing cavern roof gets dust, falling sand and a rumble before the fall, can escape the marked area, and can save an ordinarily unsupported roof by propping it in time.",
+      "meant": {
+        "intent": "Warning must buy an action and locate the threatened area; a frozen timer is not safety. The default falling-roof rule remains vanilla support geometry. Delegated reject test: a warning after injury, an unreachable escape or a perpetually suspended roof defeats the explicit frozen collapse promise.",
+        "source": "the_lantern_deeps.md section 4b, frozen 2026-09-02 collapse ruling; LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1; standing readable harm/loss rule.",
+        "figurative": []
+      },
+      "accept": [
+        "After support is mined away, dust, sand and rumble point to the endangered roof while the miner can still move into safe passage; a completed timely prop prevents that ordinary fall.",
+        "If nobody props it, the warned unsupported roof falls and leaves visible damage or rubble rather than silently erasing the miner."
+      ],
+      "reject": [
+        "The roof is merely held forever after a warning, or falls before any practical escape or support job can complete.",
+        "A prop that restores vanilla support is ignored in an ordinary collapse, or a warning far from the threatened cells is the only sign."
+      ],
+      "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
+      "range": {
+        "varies": "Supported/unsupported/removed/rebuilt roof; isolated and connected groups, wall/pillar/propped support at vanilla boundary; 1/8/40 miners, blocked alternate routes, competing work jobs; mark/warn/prop/expire/remove/reload in both orders, save immediately before and during warning. Sweep base warning 300 to 3600 ticks as robustness checks, judge shipped default actionability. Next-version forced blast and Knocker multiplier remain off.",
+        "left_out": "No alternative structural simulation, sonic-triggered catastrophe, forced galuush blast, universal escape from a player deliberately sealed room or rescue of a pawn already immobilised by unrelated injury."
+      },
+      "sees": {
+        "instrument": "Existing DeepCollapseState production-kernel transitions extended by Situation generator, calibrated to real roof/support/mark/due/fall state and ordinary pawn escape/prop job completion; synchronized effects/audio events locate warning. Verify that the loaded rumble audio is non-silent and the real sound event has audible volume for the current-map listener; dust/sand events must locate the same pending cells. Missing audio state is an instrument gap, not a proof of warning.",
+        "start": "Real unsupported roof fixture made by normal support removal with a known safe adjacent route; separate untouched supported control. Mining and light exposure run normally during the warning.",
+        "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
+        "control": "An arbitrarily selected supported roof can never fall and fakes success. Record vanilla support predicate before/after actual support removal, then compare supported, unsupported-unpropped and unsupported-propped forks through expiry; read real roof disappearance/damage, not heldForWarning alone.",
+        "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
+        "live_only_why": "State transitions, identities and comparative outcomes are available to the specified calibrated model and game state read; no visual-only judgement is asserted by this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "roof state",
+        "cave geometry",
+        "occupants",
+        "resources",
+        "settings"
+      ],
+      "eligibility": {
+        "reject_test": "Warning must buy an action and locate the threatened area; a frozen timer is not safety. The default falling-roof rule remains vanilla support geometry. Delegated reject test: a warning after injury, an unreachable escape or a perpetually suspended roof defeats the explicit frozen collapse promise.",
+        "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
+        "first_version_test": "needed_by mineable cavern land, with deletion argument in census collapse row"
+      }
+    },
+    {
+      "id": "B8",
+      "says": "Across a season of exploration, work, study and return, the complete inhabited cave keeps its light choices, living pasture, readable crystal responses and usable routes through a reload and a changed action order, without unbounded arrivals, unintended loss of native life, stalled warnings or repeated errors.",
+      "meant": {
+        "intent": "Exactly the whole bar: shipped first version, every kept mechanic active concurrently. The place can be worked and revisited without becoming an attention factory or generic empty tunnel. Delegated reject test: each staged feature succeeding while their combined season floods, starves, stalls or errors would betray the persistent inhabited cave.",
+        "source": "CASE whole-bar requirement and owner 2026-11-16 whole-system cleansing instruction; delegated: concrete flood/desert/stall pictures from current exposure/regrowth/controller/roof coupling.",
+        "figurative": []
+      },
+      "accept": [
+        "During a season the party gathers, lights work areas, studies, provokes a gallery and withdraws, props a roof, leaves and returns; after a mid-season save and reload the cave remains recognisably the worked inhabited place with safe-light and ordinary-light choices still useful.",
+        "Doing study and safe harvesting before protected mining, then doing protected mining and retreat before study, preserves the causal warning, danger and peaceful inhabitant behaviour rather than silently skipping a branch."
+      ],
+      "reject": [
+        "With the complete cave enabled, repeated light draws fill passages with new attackers, grazing and mining strip the remaining living encounters, or duplicate controlled bodies block the return route.",
+        "After reload the warning queue never resolves, the friend forgets the colony, a disabled extra resumes jobs, or a recurring exception makes the cave unusable."
+      ],
+      "lazy": "none: The sentence requires the causal player-visible distinction in the pictures; decorative, forced or unrelated substitutes fail an explicit clause.",
+      "range": {
+        "varies": "Full generated 66x66 cave, 15 in-game days per season run, 1/8/40 colonists and native roster, work occupying 0/25/75 percent of initially accessible floor, both mouth types; empty intervals and visits. Mid-save at day 7 or pending warning/defence/study boundary. Branch A study->ordinary harvest->protected mining->retreat->prop->return; branch B protected mining->retreat->prop->study->ordinary harvest->return. Add day-100 continuation to catch saved accumulators. Compressed wall-clock is allowed only by tick acceleration preserving production ticks, jobs/pathing, weather, nutrition, light sampling, cooldowns and RNG ordering, never direct hourly helper loops.",
+        "left_out": "Deliberately exterminating all fauna or paving all pasture is allowed to remove it; report player-caused depletion separately. No guarantee a crowded cave feeds the colony, and no next-version feature is a required active input."
+      },
+      "sees": {
+        "instrument": "Whole cave season calibrated trace and real full-map state sampling with causal event counters, saved identity checks and attributed logs; reference live readability judgements from B2/B5/B6 across their ranges.",
+        "start": "Fresh ordinary generated source/Deep with shipped settings exported, all kept life and encounters unlocked, no fixed-clear weather and no forced proof counters. Journal actual initial geometry, populations, products and risk state; import no fixture food into native budget.",
+        "on": "All kept land, life, light attention, safe Lantern, crystal control/defence, real friendship and roof warnings enabled together at proposed shipped defaults; all DLC present, next-version extras off, ordinary weather/time free to run, no unlock or proof-forcing flag active.",
+        "control": "Feature-specific staging or settings drift can fake a season. Capture loaded definitions/settings/assembly fingerprints before and after, assert all kept toggles and freely advancing weather/time each sample, compare matched action-order forks and uninterrupted versus reload trace at the same tick/RNG state. New bars never demand a fixed ecological percentage.",
+        "reset": "Use a positively owned disposable source/cave save pair and fixture journal. Return through the portal with keep semantics; restore settings, jobs and current-map selection from journal. Destroy only positively owned empty test maps after evidence export; never call destructive LeaveDeep on a reused Deep. An aborted run resumes cleanup from journal.",
+        "live_only_why": "State transitions, identities and comparative outcomes are available to the specified calibrated model and game state read; no visual-only judgement is asserted by this bar."
+      },
+      "live_only": false,
+      "touches": [
+        "map identity",
+        "cave geometry",
+        "occupants",
+        "settings",
+        "resources",
+        "ecology",
+        "light provenance",
+        "attention state",
+        "controller state",
+        "roof state"
+      ],
+      "eligibility": {
+        "reject_test": "Exactly the whole bar: shipped first version, every kept mechanic active concurrently. The place can be worked and revisited without becoming an attention factory or generic empty tunnel. Delegated reject test: each staged feature succeeding while their combined season floods, starves, stalls or errors would betray the persistent inhabited cave.",
+        "renormalize_test": "The player-visible comparison survives numeric retuning and added art; exact constants, product counts and variant counts occur only in checks/range/rules.",
+        "first_version_test": "the first version running whole"
+      }
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "XML: RM_LanternDeeps generatesNaturally=false, canAutoChoose=false, animalDensity positive; generator isUnderground/forceCaves and UndergroundCave mutator resolve. Current 66-cell size and 17 C are tunings, not bars."
+    },
+    {
+      "id": "C2",
+      "what": "Current default host strings include BiomeGRimond, RM_SleepingIce, RM_TheChill; compare to supported loaded current host names and fixed climate, flag stale string separately from observed eligibility."
+    },
+    {
+      "id": "C3",
+      "what": "Exposure constants and saved lightExposure/lastAmbushTick match their declared values; test before/at/after threshold and cooldown without assigning any numeric pass experience."
+    },
+    {
+      "id": "C4",
+      "what": "Light-source provenance includes RM_Lantern, ordinary RM_Lanternstone_Sowable, item/floor, formation, fungal and mobile glowers; distinguish blocked from mixed light."
+    },
+    {
+      "id": "C5",
+      "what": "Loaded active local fauna roster, parsed as XML element names, matches approved snapshot. Dormant RM_FacetMothLarvae, RM_MossBeetleLarvae and RM_Megapleura are not silently added by stale validation requirements; RM_OsskBramble is likewise defined but not locally rostered."
+    },
+    {
+      "id": "C6",
+      "what": "Products resolve through their actual owning packages; current RM_ColdWax provider is unknown in this checkout. Thrakk/Vellok currently yield no wood. Distinguish older insect meat/blood from wave hydrocarbon animals."
+    },
+    {
+      "id": "C7",
+      "what": "Existing collapse fuzz covers pending/forced/released/reload bookkeeping; calibrated support/fall integration and job actionability remain necessary. Current warning default 900 ticks is a check."
+    },
+    {
+      "id": "C8",
+      "what": "Study reservations, completions, sessions/standing/lastVisitDay/lastStudyTick saved; no duplicated daily credit. Current tier thresholds 2/5/9 and study ticks/XP are data, with optional XP off."
+    },
+    {
+      "id": "C9",
+      "what": "Every default-off ticket verifies actual loaded effect absence AND enabled natural trigger presence; gate unconditional Cleaver trail, Pooler fire branches, XML links and Sipper breeder, not just settings labels."
+    },
+    {
+      "id": "C10",
+      "what": "Wreckage generator/class and SleepingIce wreck child defs packaged in composite; all required DLC present and RM free roster independent of franchise patches."
+    },
+    {
+      "id": "C11",
+      "what": "Identity conservation for controlled chassis/defenders: available + active + damaged/dead + visibly salvaged totals match original supplied bodies; no duplicate conversion on reload."
+    },
+    {
+      "id": "C12",
+      "what": "No current gameplay proof claimed: historical A1/A2/collapse/Sipper fuzz evidence is stale and bounds prerequisite/bookkeeping checks. Required future scripts emit settings/build/save fingerprints and owned cleanup results."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Use persistent vanilla MapPortal/CaveExit on the fixed world. Default host eligibility is the intersection of loaded supported cold-host biomes and fixed source-tile annual temperature <= -40 C on the nightside; indoor temperature/cold snap never qualifies. Local cave/entrance map generation is allowed, automated planetary generation is prohibited. Multiple mouths create independent cave identities unless explicitly linked; never silently merge or replace an occupied Deep.",
+      "touches": [
+        "map identity",
+        "cave geometry",
+        "settings",
+        "occupants"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Keep gravel, soil, shallow water, blue rock/formations and still-cave hum. Cave air uses ordinary fixed pocket temperature (current 17 C); no sky/direct solar heating penetrates an intact roof. Direct Sun remains the single shared geometric rule on the surface. Shaft dressing is local technological ruins, not a new world site.",
+      "touches": [
+        "cave geometry",
+        "light provenance",
+        "roof state",
+        "resources"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Classify light by actual engine contributions after occlusion, not distance to nominal glower. Only standing RM_Lantern contribution exempts attention; ordinary formation, fungal, terrain, item and animal light does not. No colonial lamps means ambient native glow alone does not conjure attacks on absent colonists. For colonists use brightest exposed worker, not summed headcount; current 250-tick sample, roof-normalized squared glow, exposure threshold 60, decay 1.5 and cooldown 15000 ticks are attackable tuning checks.",
+      "touches": [
+        "light provenance",
+        "attention state",
+        "ecology",
+        "occupants"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Each mind has a visible inspect/select overlay for its protected gallery: current starting reach 7 cells in horizontal Euclidean distance, clipped to this map and mineral cells bordering reachable open floor; radio/crystal control may cross rock within that reach. Ordinary light facing uses actual received light and a visible target, not seeing through rock. Associate finite existing chassis by stable mind/body IDs; overlap belongs to nearest living mind, ties stable ID. No body duplication, corpse erasure or colony-droid conversion.",
+      "touches": [
+        "controller state",
+        "attention state",
+        "cave geometry",
+        "occupants",
+        "resources",
+        "light provenance"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Designating protected mineral or attacking the mind/chassis exposes a warning and controller relation. Only actual damage or completed protected extraction provokes existing chassis; no remote defence for unprotected ordinary stone or standing Lantern harvest. Defenders use ordinary melee jobs, remain within their controller reach, return when intruders retreat, and visibly slump when no living controller remains. A blocked path means visible guarding, never teleportation. Mine and withdraw can repeat without creating bodies. Orun never defends. Initial proposed wind-up is 250 production ticks with visible activation before retaliation; it is a tuning rule, never a bar number.",
+      "touches": [
+        "attention state",
+        "controller state",
+        "cave geometry",
+        "occupants",
+        "resources"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Orun acquaintance is saved per colony per Deep, earned only by completed reachable study visits, limited to one credited visit per in-game day (existing stricter cooldown may be retained as tuning). Greeting when a familiar colony returns: walk to a reachable visitor, stop facing them, give a brief distinctive blue greeting pulse, then resume harmless company/rounds. Never forcibly interrupt drafted/medical/emergency player work. Downed suit has no greeting/study; destroyed suit stays dead. Gallery hostility defers greeting until safe, but does not erase acquaintance.",
+      "touches": [
+        "controller state",
+        "attention state",
+        "occupants",
+        "map identity",
+        "settings"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Keep ordinary animal bodies, products and current admission status; no evictions, new dormant placements or global duplicate sweeps. Use ordinary food/grazing/predation/reproduction, real fictional flight and native-water compatibility. Maintain cave-native initial flora/animals and regrowth through existing engine APIs. Ordinary body glow is life. No special breeder, wound linking, battery, heat, hide/lunge, fuel trail, splitting or storm modifier is required at defaults.",
+      "touches": [
+        "ecology",
+        "resources",
+        "occupants",
+        "cave geometry"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Use vanilla roof support/fall geometry and existing DeepCollapseState for pending/due/released state. Dust, sand and rumble precede ordinary falling roofs; a timely completed support can cancel the fall. Disabled Knocker must contribute factor 1; disabled galuush ignition cannot mark forced cells. Save pending state, then re-evaluate actual support at deadline; never reset deadlines on repeat marks.",
+      "touches": [
+        "roof state",
+        "cave geometry",
+        "occupants",
+        "settings"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Master-off stops new entrances, never deletes existing maps/inhabitants. Every kept major feature has a labelled switch and scope (new-map versus live); all-off stops custom activity gracefully without erasure, keeps return routes and warns that vanilla roof behaviour resumes. Existing cross-biome host selection remains labelled unsupported outside shipped cold hosts; never add a new cross-biome switch. Next-version gates default off even if code shares a class with a kept component. An explicitly empty host selection remains empty after reload; no silent reset to defaults.",
+      "touches": [
+        "settings",
+        "map identity",
+        "attention state",
+        "controller state",
+        "roof state",
+        "ecology"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Native stone remains useful for construction/trade, puffer edible and lace cloth; no guaranteed fortune or mushroom logs. Fuel milk/butcher products must resolve at their existing provider. Keep Wreckage field policy and Bones remains lifecycle as dependencies; no second salvage ladder. Do not expose campaign mindstone/Kindled/kyber/Force plots at defaults or leak late Cathedral knowledge.",
+      "touches": [
+        "resources",
+        "ecology",
+        "occupants"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "Evidence uses owned disposable fixtures and declared production fingerprints; normal ticks/jobs and both action orders, with model calibration before trust. Existing ProofStudy/forced split/held roof and A2 prerequisite strings are regression probes only. Never accept destructive default harness cleanup as a persistence result, or an unavailable read as a measured zero.",
+      "touches": [
+        "map identity",
+        "settings",
+        "occupants",
+        "roof state",
+        "controller state",
+        "attention state",
+        "light provenance",
+        "ecology",
+        "resources",
+        "cave geometry"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "map identity",
+      "members": [
+        "B1",
+        "B6",
+        "B8",
+        "R1",
+        "R6",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "Vanilla persistent map identity, non-destructive return, journal ownership and per-Deep acquaintance use the same saved map. No kept operation calls cleanup as gameplay. Interrupted save/return still needs the generator regression; no competing lifetime owner remains.",
+      "model": ""
+    },
+    {
+      "thing": "cave geometry",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B5",
+        "B7",
+        "B8",
+        "R1",
+        "R2",
+        "R4",
+        "R5",
+        "R7",
+        "R8",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Entrances, resource/creature placement, gallery combat reach, huge-drawn ordinary-footprint suit and timed roof escape can each fit in isolation while collectively blocking the only route. All kept layers must be composed on generated full caves.",
+      "model": "Situation generator"
+    },
+    {
+      "thing": "occupants",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R10",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "No kept feature duplicates or silently erases occupants: finite body transitions conserve identity, Orun is excluded from defence and death persists, listening is temporary and player-interruptible. Population sustainability remains explicitly unresolved in ecology, and action-order/controller races in controller state.",
+      "model": ""
+    },
+    {
+      "thing": "settings",
+      "members": [
+        "B1",
+        "B4",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R6",
+        "R8",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "Feature gates own their contributions; new-map off never deletes old maps, and live off releases its custom jobs/modifiers. Default fixtures enable every kept contribution and disable all moved paths. Off-state checks can vary settings but never count as default passing evidence.",
+      "model": ""
+    },
+    {
+      "thing": "light provenance",
+      "members": [
+        "B2",
+        "B4",
+        "B5",
+        "B8",
+        "R2",
+        "R3",
+        "R4",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Blue terrain, ordinary native glowers, safe Lanterns, mobile sources, solid occlusion and roof glow cap share the engine grid. Existing radius-only classification cannot establish the kept risk distinction or readable facing.",
+      "model": "Light geometry"
+    },
+    {
+      "thing": "resources",
+      "members": [
+        "B2",
+        "B3",
+        "B5",
+        "B7",
+        "B8",
+        "R2",
+        "R4",
+        "R5",
+        "R7",
+        "R10",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "Protection covers marked living gallery minerals, not every ordinary resource. Puffer, cloth, fuel milk, native stone and technological remains still provide ordinary reasons to visit without campaign wealth or optional blasts. Economical abundance remains an ecology model question, not a promised number.",
+      "model": ""
+    },
+    {
+      "thing": "roof state",
+      "members": [
+        "B2",
+        "B7",
+        "B8",
+        "R2",
+        "R8",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Existing kernel bookkeeping is not proof that actual vanilla support, body/path clutter, light-attention danger and warning job time permit escape or successful propping together.",
+      "model": "Situation generator"
+    },
+    {
+      "thing": "ecology",
+      "members": [
+        "B3",
+        "B4",
+        "B8",
+        "R3",
+        "R7",
+        "R9",
+        "R10",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Initial placement, roof-limited flora, ordinary grazing, bounded light-triggered predators, taming and external supplies can form a depletion/arrival loop at colony scale; pairwise correct feeding and draw do not settle that season.",
+      "model": "Whole cave season"
+    },
+    {
+      "thing": "attention state",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B8",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Exposure/cooldown, visible warning, gallery defence, listening, retreat and peaceful greetings may overlap or starve each other when orders change or save intervenes. The causal chain must continue without turning its peaceful representative hostile.",
+      "model": "Encounter walk"
+    },
+    {
+      "thing": "controller state",
+      "members": [
+        "B5",
+        "B6",
+        "B8",
+        "R4",
+        "R5",
+        "R6",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Finite body ownership, overlapping minds, controller death, real study completions and return greeting must survive reload without double bodies, global hostility or duplicate acquaintance credit.",
+      "model": "Encounter walk"
+    }
+  ],
+  "old_bars": {}
+}

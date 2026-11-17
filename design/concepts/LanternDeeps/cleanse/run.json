@@ -1,0 +1,36 @@
+{
+ "mod": "LanternDeeps",
+ "state": "proposed",
+ "why": "check passes (8 bars, 73 census rows, 812 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-17T00:35:12",
+ "seconds": 2064,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 812,
+  "page_limit": 950,
+  "census_rows": 73,
+  "bars": 8,
+  "bar_numbers": "none",
+  "shared_things": 10,
+  "meetings": 10,
+  "old_bars": "0 mapped of 0 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 4480744,
+    "output_tokens": 49788
+   }
+  }
+ ],
+ "agent_errors": []
+}

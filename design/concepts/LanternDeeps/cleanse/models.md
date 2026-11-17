@@ -1,0 +1,83 @@
+# Instruments specified, not built or measured
+
+Order is the order to build. Unknown meetings in bars.json are risks, not asserted contradictions or game measurements. Each model must cite production XML/assembly/settings/save fingerprints and its calibration results before anyone treats its output as evidence. Estimated effort and case counts below are design guesses. Model-local seeds explore local cave situations on the one fixed world; they do not generate alternative planets. Existing collapse and Sipper kernels are useful inputs, not a whole-mod model.
+
+## Situation generator
+
+**Question.** Can every legal entrance, cave layout, occupied encounter and roof-warning transition leave the required routes and actions usable when composed?
+
+**Informs.** B1–B8; R1–R11, particularly R1/R2/R4/R5/R7/R8; unknown meetings `cave geometry` and `roof state`. This is the first instrument because an unreachable cave or gallery invalidates all later encounter readings.
+
+**Inputs and sweep.** Read the actual loaded generator, terrain affordances, map dimensions, portal footprints, spawned entity footprints, occupied cells, walkability, reachable exits, support predicates, pending roof deadlines and work/job durations. Enumerate natural/shaft mouths; default fixed annual host temperatures -80 through -40 Celsius, with -40.01/-40/-39.99 boundary cases and allowlist inclusion/exclusion. Use existing local cave-generator outputs and hand-authored minimal counterexamples: narrow turn, isolated chamber, water-bound exit, occupied doorway, mind at wall, overlapping galleries and roof-supported choke. At current 66x66 dimensions, sweep every legal portal cell for each input layout rather than accepting a favourite placement. Vary 0/1/8/40 colonists, tame/wild/downed/dead/carried animals, stacks/buildings on access cells, unsupported roof at vanilla support boundary. Walk mark/warn/prop/fall/remove/rebuild/save/load transitions using the existing production DeepCollapseState, with actual support predicates supplied separately. Run main work/study/mining actions in both orders and maintain fixture ownership/abort journals.
+
+**Assumptions.** Engine traversal, standability, support and job costs are the authority; this instrument enumerates their exported predicates, not its own competing cave physics. Ordinary-footprint Orun can be much larger in drawn silhouette; collision and visual overlap are distinct outputs. Static reachable geometry is necessary but insufficient for a timed crowded escape.
+
+**Leaves out.** Rendering judgement, weather/ecology accumulation, full tactical pawn decision making and other worlds. A graph-only escape does not prove a pawn completes it in the warning window; that partition requires the real job trace.
+
+**Game calibration before belief.** Compare exported cell classification and shortest reachable exit/target on actual engine-generated and deliberately blocked disposable caves. At minimum calibrate one input in each geometry partition and each boundary sign, including actual unsupported fall, supported no-fall and completed-prop no-fall. Require exact agreement on portal destination IDs, traversable/blocked status, support truth, selected threatened cells and transition order; job completion/roof event may differ only by the production sampling interval, with no disagreement about whether the action beats the deadline. Any mismatch blocks use of that partition and becomes instrument repair. Reads that cannot be obtained remain unmeasured; do not substitute source comments.
+
+**Produces.** A situation manifest with full varied range and exclusions; annotated passable/blocked/protected/roof maps; minimal failing placement/action sequence per bar, plus its exact replay fixture. Include route clutter and no-body/no-predator partitions explicitly. Report missing initial ordinary life and Lantern availability separately from unlucky species selection.
+
+**Rough size.** [guess] A small offline predicate/state enumerator and export adapter, roughly several hundred lines plus fixtures; dozens of geometry classes and thousands of placement/state cases. Reuse the existing fuzz shrinker/kernel, not another roof engine.
+
+**Build trigger.** Immediately, for the unknown geometry/roof meetings and the initial-life/entrance ticket. Also rebuild its manifest after dimensions/placement rules change or a geometry constant is changed twice to move a check.
+
+## Light geometry
+
+**Question.** Which occupied cells actually receive only standing Lantern light, and can ordinary work-light create the promised attention contrast through every legal occlusion and source mix?
+
+**Informs.** B2/B4/B5/B8, R2/R3/R4/R11; unknown meeting `light provenance`; also provides calibrated inputs to `attention state`.
+
+**Inputs and sweep.** Actual engine source positions/active states/radii/contributions, roof cap and overlight, terrain luminescence, blockers/doors and target cells. Include standing RM_Lantern, ordinary RM_Lanternstone_Sowable, harvested item, built luminous floor, formations, glow fungi and moving animal glowers; colonial lamp and sunlamp. Enumerate solitary and mixed sources, identical total glow with different provenance, lamp behind solid wall, corner, open/closed door, radius boundary, stacked/overlapping sources, moving source or worker, harvested Lantern and native glow-only ground. Sweep every target cell in each generated cave and minimal geometry fixture; exposure values below/at/above each production sample/threshold/cooldown boundary, 0/1/8/40 colonists, save/reload and empty-map decay. Proposed default extras remain off. Existing LightLedger contributions from other active owners must stay accounted for; no Sipper/storm is required to make the default test work.
+
+**Assumptions.** Use the engine’s actual contribution/occlusion routine, or a replica verified against it. Total GroundGlowAt alone does not reveal provenance. If an engine source cannot be attributed, the tool must obtain controlled source-intervention differences on a save fork or expose that source’s engine calculation; it must not infer safety from distance. Roof normalization is an explicit current implementation choice, not a physical illumination law.
+
+**Leaves out.** Optical ray tracing, real-world photonic metabolism, other-biome lighting promises, art beauty and deferred radius-draining ecology. It cannot establish the frightening/readable quality of an approach; it can establish where light and its cause really are.
+
+**Game calibration before belief.** For each source type and occlusion class, read total glow plus a source-isolated fork, preserving every kept system enabled. Require exact safe/ordinary/mixed classification and agreement on total/contribution glow to within floating-point rounding of 0.0001, including at zero-contribution walls. Compare exposure delta, winning pawn and native-response cause at matching production sample ticks. Any classification disagreement invalidates the model irrespective of aggregate numeric accuracy. A known deliberately blocked ordinary lamp and a mixed Lantern/lamp case must fail the old radius-only classifier and be correctly distinguished by the proposed reading. Do not call existing radius-ledger fuzz calibration.
+
+**Produces.** Per-cell coloured source provenance maps, equal-brightness contrast table, exposure histories and worst/minimal counterexample per B4 contrast. Output the actual ordinary-lamp versus only-Lantern response trace with target/path IDs and legal approach cells.
+
+**Rough size.** [guess] A moderate geometry adapter/sweep, several hundred lines if the engine calculation can be reused; effort grows if provenance needs controlled interventions. Small hand fixtures first, then all cells of exported full caves.
+
+**Build trigger.** Before accepting B4 or any light-facing claim, because source contains radius-only classification. Rerun after an illumination/occlusion owner changes or a threshold is retuned twice to evade a failing comparison.
+
+## Encounter walk
+
+**Question.** Do light attention, protected extraction, finite remote bodies, study, friendship and retreat remain causally readable and identity-preserving through every relevant interruption and reload?
+
+**Informs.** B1/B4/B5/B6/B8; R3–R6/R9/R11; unknown meetings `attention state` and `controller state`.
+
+**Inputs and sweep.** Production encounter states: quiet/building/drawn/cooling; unprovoked/warned/defending/returning/undefended; shell inert/active/damaged/dead/released; Orun wary/curious/familiar/friend, studying/greeting/rounds/downed/dead. Overlay 0/1/multiple living controllers and finite shell inventories, nearest-owner ties, body/no-body, reachable/blocked return. Events include received-light change, mine designation/cancel/completion, direct damage, retreat/re-entry, mind death, shell death, interrupted/dead/downed studier/suit, reservation collision, colony studier replacement, forced orders, leaving/returning and save/load at every transition boundary. Generate short complete walks over those abstract states and randomized longer sequences, with 1/8/40 simultaneous ordinary job actors. Use actual property thresholds for study and exposure; do not award sessions directly. Include both season action orders.
+
+**Assumptions.** The model may extract transition decisions into production-linked pure kernels, but adapters must then demonstrate the same events under real jobs. Stable shell identity/controller links are conserved across representation changes. Colony acquaintance belongs to this cave, not a particular pawn. The finite-state reduction deliberately merges timing values only where their ordering relative to threshold/deadline is the same.
+
+**Leaves out.** Combat balance, damage numbers, movement art, natural-language conversation, Cathedral secrets and tactics of unrelated raids. No offline numeric model can judge whether the proposed greeting communicates peaceful curiosity; B6 retains its live look.
+
+**Game calibration before belief.** Replay a minimal real-job trace for every abstract transition class on disposable generated caves, including an interrupted reservation and a save during defence. Require exact agreement on actor/controller/body identity, accepted/rejected triggers, saved acquaintance, ownership totals and final state. Time may differ by one production decision interval only if it does not change warning-before-harm or escape outcome. Direct ProofStudy/Think calls can regress kernels but cannot calibrate study/response causality. Compare saved state before and after reload to uninterrupted replay; unexplained differences invalidate that partition.
+
+**Produces.** Transition coverage matrix, event/identity ledger and shrunk counterexamples per bar: body duplicated, infinite army, friend attacks, warning late, study credit without completion, cooldown resets, or retreat never terminates. Also a sequence of expected live poses/signs for B5/B6, explicitly predictions until observed.
+
+**Rough size.** [guess] A moderate production-state walk plus job replay adapter, hundreds of transition partitions and thousands of short sequences. Existing WorkingDead/Orun proof helpers are starting probes, not the finished instrument.
+
+**Build trigger.** Before building missing remote defence and remembered greeting acceptance, and whenever an encounter constant is changed twice to escape a race or a first live failure concerns interruption, ownership or order.
+
+## Whole cave season
+
+**Question.** With the shipped first version running together on the full cave, do native pasture, animals, light attention, finite gallery defence, roofs and repeated visits stay usable rather than producing a flood, depletion loop, stall or error storm?
+
+**Informs.** All bars, especially whole B8; R1–R11; unknown `ecology` meeting and accumulated effects of the other unknown meetings. This is not a model of a selected empty chamber.
+
+**Inputs and sweep.** Export the whole generated cave: initial flora/animals, eligible soil/water/rock cells, food sources and imports, diets, reproduction/predation, actual regrowth attempts/caps, attention samples/cooldowns/paths, body/controller inventory, roof support/deadlines, job queues, settings and ordinary weather. Run 15 game-day seasons at 1/8/40 colonists and 0/25/75 percent occupation of initially accessible floor. Include cold hosts and both mouth types from Situation generator, native-lit and lamp-worked patterns from Light geometry, depleted resources/defender cases and both action orders from Encounter walk. Save on day 7 and on risk/roof/study transition boundaries; compare reload and uninterrupted forks. Continue selected worst cases to day 100. Keep normal RNG calls, tick cadence, game nutrition, jobs/pathing and weather; acceleration means faster execution of real ticks, not invoking Hour repeatedly. Tag player removal/paving versus spontaneous loss and distinguish imported supplies from native production.
+
+**Assumptions and cheapest credible form.** A budget model can conservatively project plant/food/arrival totals using game-calibrated event rates and capacities. It can find suspected floods/deserts cheaply; it cannot be believed to reproduce autonomous pawn behaviour, species spawn reachability or warning actionability on its own. Therefore the instrument is a hybrid: offline budget/projection and counterexample reducer, backed by real-engine season replay and state sampling for the affected partitions. No credible purely offline replacement for all emergent colony behaviour is claimed. Use the exact available production rules rather than inventing a photonic food web.
+
+**Leaves out.** Alternate planets, campaign arcs, next-version mechanics switched on, general game economy, subjective enjoyment and visual flight. It does not promise self-sufficiency for forty colonists or reject intentional extinction/paving. It does not turn a count target into a passing bar.
+
+**Game calibration before belief.** Start with an untouched cave, a foraged/grazed cave, a lamp-worked cave and a worked occupied cave, with all kept systems enabled. Against each actual saved cave, compare causal plant additions/removals, animal births/deaths/draws, food imports/uses, body transitions, roof warnings/falls, completed/interrupted jobs and log exceptions over a day and then a season. Identity/event accounting must agree exactly; the budget projection’s aggregate native food/plant/animal totals must be within ten percent without disagreeing on whether the case floods, depletes or stalls. Disagreement in classification or an unmodelled causal event forbids model-only conclusions: repair the projection or use real replay for that region. Compare fixed-tick save/reload traces exactly where deterministic state is preserved; explain RNG scheduling divergences and judge their replicated outcome region rather than invent identity equality for independent births.
+
+**Produces.** Full-map time-series panels and event tables for pasture, product sources, animal life, exposure/cooldowns, finite shells, blocked routes, warning queues, study/greeting and exceptions; native versus imported budget; worst case per bar; both action orders and reload comparison. Mark model predictions and game observations separately. Suspected flood/desert/stall/error regimes point to an attackable rule or missing instrument, never silently relax a bar.
+
+**Rough size.** [guess] A moderate trace collector/budget model with existing game replay infrastructure; several dozen full cave runs after cheap counterexample reduction, not a replacement RimWorld simulator.
+
+**Build trigger.** Before any whole-bar judgement, immediately for unknown ecology. Repeat when population/attention/regrowth rules change, a constant is changed twice to move a check, or a live cave season first floods, deserts, stalls or errors. It consumes calibrated geometry/light/encounter results, rather than postponing the whole-mod question until a rescue.

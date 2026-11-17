@@ -1,0 +1,22 @@
+{
+  "mod": "LanternDeeps",
+  "run": "cleanse-LanternDeeps-2026-11-17",
+  "outcome": "proposed",
+  "signature": "Expedition light draws the living Deep’s attention, revealing crystal minds through the dead machines they use to greet visitors and defend their galleries.",
+  "counts": {
+    "capabilities": 73,
+    "kept": 42,
+    "next_version": 28,
+    "recommend_retire": 3,
+    "old_bars": 0,
+    "bars": 8,
+    "live_only_bars": 3,
+    "checks": 12,
+    "rules": 11,
+    "unknown_pairs": 6,
+    "models": 4,
+    "tickets": 38,
+    "questions": 0
+  },
+  "blocked_on": []
+}
