@@ -589,14 +589,35 @@ def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
     Present budgets follow the plan in force now (a dated exception, when one stands); each refill follows the plan
     in force just after the reset that brings it."""
     raw, plan = plan, at(plan, now, meter)
-    fl = plan["floors"]
     plain = [n for n in plan["order"] if (plan["accounts"].get(n) or {}).get("window_h_after_reset") is None]
     exp = {n: expiry(plan, n, meter.get(n), now) for n in plan["order"]}
     _ln, elig = lines(meter, plan, now)
     last = max((n for n in plain if exp[n] is not None), key=lambda n: exp[n], default=None)
     horizon = max((exp[n] for n in plain if exp[n] is not None), default=None)
     horizon = None if horizon is None else horizon + WEEK  # every account's refills up to one week past the last expiry
-    present, refills = {}, []
+    def budget(pl, n, r, p, t):
+        """(spend down to the line, expiry) of n at t under the plan pl, (0, expiry) outside its window."""
+        cfg = pl["accounts"].get(n) or {}
+        leave = cfg.get("leave_pct_left")
+        ln = leave if leave is not None else (pl["floors"]["wait_pct_left"] if n == last
+                                              else pl["floors"]["switch_away_pct_left"])
+        e = expiry(pl, n, r, t)
+        inside = cfg.get("window_h_after_reset") is None or in_window(pl, n, r, t)
+        return (max(0.0, p - ln) if inside and e is not None and e > t else 0.0), e
+
+    def pieces(n, r, p, t):
+        """-> ([(spend, due)], expiry): n's budget at t under the plan in force then. The part only a dated exception
+        opens (a lower line, a lifted window) is due when that exception ends, unless the expiry comes first."""
+        sp, e = budget(at(raw, t, meter), n, r, p, t)
+        hit = active_exception(raw, t, meter)
+        if hit is None or e is None or e <= hit[1]:
+            return [(sp, e)], e
+        end = hit[1]
+        sa, ea = budget(at(raw, end, meter), n, r, p, end)  # what still stands once the exception has ended
+        keep = min(sp, sa)
+        return [x for x in ((keep, min(e, ea) if ea is not None else e), (sp - keep, end)) if x[0] > 0] or [(0.0, e)], e
+
+    present, refills, split = {}, [], {}
     for n in plan["order"]:
         r = meter.get(n) or {}
         cfg = plan["accounts"].get(n) or {}
@@ -606,18 +627,17 @@ def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
         p = left(plan, r, now)
         if p is None and reset_passed(r, now):
             p = 100.0
-        leave = cfg.get("leave_pct_left")
-        ln = leave if leave is not None else (fl["wait_pct_left"] if n == last else fl["switch_away_pct_left"])
         if e > now and (cfg.get("window_h_after_reset") is None or in_window(plan, n, r, now)):
-            present[n] = (max(0.0, (p if p is not None else 0.0) - ln), e)
+            split[n], _e = pieces(n, r, p if p is not None else 0.0, now)
+            present[n] = (sum(sp for sp, _d in split[n]), e)
         rs = next_reset(r, now)
-        fut = at(raw, rs + 1, meter)  # the refill's rules: the plan in force once its reset has landed
-        fleave = (fut["accounts"].get(n) or {}).get("leave_pct_left")
-        fln = fleave if fleave is not None else (fl["wait_pct_left"] if n == last else fl["switch_away_pct_left"])
-        ef = expiry(fut, n, r, rs + 1)
         k = 0
-        while k == 0 or (horizon is not None and ef + k * WEEK <= horizon):
-            refills.append((n, 100.0 - fln, ef + k * WEEK))
+        while True:  # each refill follows the plan in force once ITS reset has landed (review finding 3)
+            rk = rs + k * WEEK
+            parts_k, ef = pieces(n, {**r, "week_resets_at": iso(rk + WEEK)}, 100.0, rk + 1)
+            if k and (horizon is None or ef > horizon):
+                break
+            refills += [(n, sp, d) for sp, d in parts_k]
             k += 1
 
     def pace(parts):
@@ -639,7 +659,7 @@ def pool(meter: dict, now: float, plan: dict, live=None) -> dict:
             for m in keep:
                 if m != n and elig.get(m) and outranks(plan, m, n) and present[m][1] > present[n][1]:
                     due[m] = min(due[m], present[n][1])
-        return [(n, present[n][0], due[n]) for n in keep] + refills
+        return [(n, sp, min(d, due[n])) for n in keep for sp, d in split[n]] + refills
 
     def blockers(n):
         return [m for m in present if m != n and elig.get(m) and outranks(plan, m, n) and present[m][1] > present[n][1]]

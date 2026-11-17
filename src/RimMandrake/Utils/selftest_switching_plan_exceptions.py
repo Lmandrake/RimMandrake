@@ -174,6 +174,25 @@ def main():
     check(not [x for x in pl0["parts"] if x["account"] == A and x["by_h"] < 27.3],
           f"control: standing pool has no present {A} budget ({pl0['parts'][:3]})")
 
+    # a budget only the exception opens is due when the exception ends, not at the account's reset (review finding 2)
+    pl = SP.pool(meter, NOW, short)
+    early = sum(x["spend_pct"] for x in pl["parts"] if x["account"] == A and x["by_h"] <= 2.0 + 1e-6)
+    late = [x for x in pl["parts"] if x["account"] == A and 2.0 + 1e-6 < x["by_h"] < 27.3 + 1e-6]
+    check(abs(early - 20) < 1e-6 and not late, f"pool: an exception ending in 2 h makes {A}'s 20% due in 2 h "
+                                                f"(due by 2 h: {early}; later present parts: {late})")
+    # a refill a week past the exception follows the standing line, not the first refill's exception line (finding 3)
+    span = plan_with({"id": "T_SPAN", "from": SP.iso(NOW - 1 * H), "until": SP.iso(NOW + 30 * H),
+                      "accounts": {A: {"leave_pct_left": 35}}, "_why": "test"})
+    pl = SP.pool({A: R(55, 5), B: R(40, 100), C: R(30, 120)}, NOW, span)
+    wk = [x for x in pl["parts"] if x["account"] == A and x["by_h"] > 5 + 168]
+    std = 100 - BASE["accounts"][A]["leave_pct_left"]
+    check(wk and abs(sum(x["spend_pct"] for x in wk) - std) < 1e-6,
+          f"pool: {A}'s refill after the exception ended is {std}% (standing line), not 65% ({wk})")
+    first = [x for x in pl["parts"] if x["account"] == A and 5 < x["by_h"] <= 5 + 48 + 1e-6]
+    check(abs(sum(x["spend_pct"] for x in first) - 65) < 1e-6
+          and any(abs(x["by_h"] - 30) < 1e-6 and abs(x["spend_pct"] - 17) < 1e-6 for x in first),
+          f"pool: {A}'s refill inside the exception is 65%, its extra 17% due at the exception's end ({first})")
+
     # ---- the week ahead: B, then A to 35%, then IDLE until B's reset; after A's reset the standing lines
     ev = SP.simulate(meter, NOW, P, B, 1.32, hours=60)
     seq = [(e["kind"], e.get("target") or e.get("account")) for e in ev]
