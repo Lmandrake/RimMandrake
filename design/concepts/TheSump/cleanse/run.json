@@ -1,0 +1,36 @@
+{
+ "mod": "TheSump",
+ "state": "proposed",
+ "why": "check passes (7 bars, 79 census rows, 904 words on his pages)",
+ "runner": "codex",
+ "model": null,
+ "effort": null,
+ "started": "2026-11-17T02:00:03",
+ "seconds": 1624,
+ "agent_runs": 1,
+ "first_check": [],
+ "check": [],
+ "check_stats": {
+  "files": "9 of 9 present",
+  "page_words": 904,
+  "page_limit": 950,
+  "census_rows": 79,
+  "bars": 7,
+  "bar_numbers": "none",
+  "shared_things": 11,
+  "meetings": 11,
+  "old_bars": "0 mapped of 0 in tree.json",
+  "questions": 0,
+  "question_limit": 5
+ },
+ "stray": [],
+ "usage": [
+  {
+   "codex_tokens": {
+    "input_tokens": 8029839,
+    "output_tokens": 46026
+   }
+  }
+ ],
+ "agent_errors": []
+}

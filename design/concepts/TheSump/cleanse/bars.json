@@ -1,0 +1,666 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "A settler can distinguish deep pools, shallow tar and solid glassy building ground across the flat black basin under dry permanent dusk.",
+      "meant": {
+        "intent": "Land: legible ordinary ground, usable settlement area and the ruled weather, without adding an industry or a heat exception.",
+        "source": "the_sump.md §§1,2,6,9; Biomes.compose.json TheSump line; later no-precipitation ruling recorded in RM_TheSump_Biome.xml; delegated: distinguishability and usable build ground inferred from settling that land.",
+        "figurative": []
+      },
+      "accept": [
+        "The horizon stays low and amber, black pools differ from solid sheets and their shallow margins, and a settler can choose a connected solid patch for stores and shelter.",
+        "Lamp-lit work areas remain recognizably part of the dark basin; no native plant supplies the light."
+      ],
+      "reject": [
+        "A grass meadow tinted dark has an isolated tar ornament, while most work and walking ignore the basin.",
+        "Fog and black shading make a safe solid approach indistinguishable from deep tar, or the sky cycles into rain or daylight."
+      ],
+      "lazy": "none: The sentence demands visible terrain distinctions and usable dry ground under actual dusk, so a black tint or a lone pool cannot satisfy it.",
+      "range": {
+        "varies": "Fixed-world Sump local maps, 250x250, 300x300 and 400x400; starts, existing colony, reload and site revisit; ordinary unlit exterior, lamp-lit exterior and roofed edge; initial terrain and later ordinary cooling; dry weather held by the actual biome condition, no clear-sky override. Scene at default play zoom with the same light/dark corners visible.",
+        "left_out": "No alternative planets or world-tile scoring; zero world tiles is not a failure. Under-map layers and deliberately player-flooded/demolished whole maps are outside this surface-land promise."
+      },
+      "sees": {
+        "instrument": "T43 terrain/state audit first; actual in-game surface look at normal play zoom on the complete default map. No art taste/variant approval is required. T46 saves the terrain/roof/glow/condition record attached to each look.",
+        "start": "Fixed surface Sump site with natural deep/shallow tar, solid sheets, ordinary starting build patch and lamps in one portion; normal sky ticking. DeepBlackMere is actually created by the site initializer, not painted into the test after skipping it.",
+        "on": "All retained land, life, tar pickup/exposure, glasswalk, bitumen/weak-solvent and routine-cleanup consumers at proposed shipped defaults; every DLC; shared EnvironmentalHazards, CreatureBehaviors, ExplosiveGrowth, FlowWorks, Wreckage and Bones at their composed defaults. No debug/weather/time/AI locks. All next-version Sump consumers and producers off. Negative-control fixture is separate from the main reading; it does not replace it.",
+        "control": "Read actual terrain/affordances/roof/glow and condition on the viewed cells, and compare same cells with normal lamps on/off while keeping the biome condition running. Exclude a clear-lit debug lane, camera tint or an invisible deep-tar affordance as the reason it seemed usable.",
+        "reset": "Use a disposable copy of a fixed-world local Sump test save; record settings, spawned objects, pawns, terrain, growth, jobs, reservations and queues before each arm. Restore that copy in finally and verify the state fingerprint/log. Do not mutate the canonical save or clear real queues via proof helpers.",
+        "live_only_why": "Rendered contrast/legibility at ordinary play zoom depends on the engine sky, fog, lighting and terrain layers together. XML colours, screenshots from another load and a state read cannot establish that visual distinction."
+      },
+      "live_only": true,
+      "touches": [
+        "ground",
+        "light",
+        "liquid",
+        "defaults"
+      ],
+      "tests": {
+        "reject": "Designer delegated rejection inference from the cited source: if this alone failed, the stated land/life/signature would be missing.",
+        "renormalize": "No yield, stat, rate, size, percentage or asset quota is fixed in the sentence or pictures; comparisons survive numerical retuning and added art variants.",
+        "first_version": "Land: legible ordinary ground, usable settlement area and the ruled weather, without adding an industry or a heat exception."
+      }
+    },
+    {
+      "id": "B2",
+      "says": "A forager finds edible native plants at tar margins, and cultivated dorvel grows without a sunlamp when temperature permits.",
+      "meant": {
+        "intent": "Life: actual native food/growth and ordinary tar habitats; no gas, treasure or false-floor gameplay.",
+        "source": "the_sump.md §4 edge chemotrophs and ban on sun-driven flora; RM_SumpFlora.xml and RM_Lanneth.xml; delegated: actual habitat and composed growth follow those promises.",
+        "figurative": []
+      },
+      "accept": [
+        "Skelver and lanneth can be gathered on eligible margins, a sown dorvel bed advances in dusk without a lamp, and temperature inspection explains a colder bed that has stopped.",
+        "Pale crust and pool film occupy their declared solid or tar habitats without claiming to reveal a buried trap."
+      ],
+      "reject": [
+        "Edible plants resolve in the database but a forager cannot harvest food, or dorvel only advances under a sunlamp.",
+        "Margin plants fill distant dry ground, or a harmless default plant tells the player it identifies gas, treasure or a collapsing floor."
+      ],
+      "lazy": "none: Actual growth, food and declared habitat are observable consequences, so merely defining plants cannot satisfy it.",
+      "range": {
+        "varies": "All seated native plants: Dorvel, Skelver, Korveth, Brindeth, Soffeth, Tolleth, Velloch, Mirrelin, Pallick, Lanneth; edible-product actions for Skelver/Lanneth/Dorvel; initial and natural-regrowth placement, player-sown exception; tar/glass/dry cells and 0..5-cell adjacency sweep with pass habitat 1..3 for natural margin species; temperature threshold-minus, at and plus with -15..22 C contextual range; zero/ambient/lamp light, roofs, growth and harvest before/after reload; ExplosiveGrowth effective profile/top/soak enabled.",
+        "left_out": "No promise that every thermal region grows all season, that forage feeds a large colony unaided or that exported crops work outside supported biomes. No new phototroph, glower, mound or indication mechanic."
+      },
+      "sees": {
+        "instrument": "T41 habitat consumer test; T49 composed growth state read; Situation walk enumerator using actual terrain and resolved plant profiles, calibrated against actual Plant growth/harvest/product readings. Whole map tests persistence after grazing/regrowth.",
+        "start": "Naturally initialized and regrown eligible margins with actual plant bodies, a reachable mature edible plant and sown dorvel on allowed ground; actual initial growth/temperature/lighting recorded, no pre-filled food pile credited as harvest.",
+        "on": "All retained land, life, tar pickup/exposure, glasswalk, bitumen/weak-solvent and routine-cleanup consumers at proposed shipped defaults; every DLC; shared EnvironmentalHazards, CreatureBehaviors, ExplosiveGrowth, FlowWorks, Wreckage and Bones at their composed defaults. No debug/weather/time/AI locks. All next-version Sump consumers and producers off. Negative-control fixture is separate from the main reading; it does not replace it.",
+        "control": "Trace harvested Thing to its plant id/job and read growth deltas at identical temperature with ambient-only versus lamp light; a too-cold bed is a control, not evidence of light dependence. Deliberately wrong-habitat and photosynthetic-profile mutants must fail. Do not credit debug spawning or disabled EG.",
+        "reset": "Use a disposable copy of a fixed-world local Sump test save; record settings, spawned objects, pawns, terrain, growth, jobs, reservations and queues before each arm. Restore that copy in finally and verify the state fingerprint/log. Do not mutate the canonical save or clear real queues via proof helpers.",
+        "live_only_why": "Not look-only: a calibrated state instrument can distinguish the claimed causal experience. A game state read may be needed for calibration or actual job execution; this is not a claim that static XML alone proves the bar."
+      },
+      "live_only": false,
+      "touches": [
+        "ground",
+        "growth",
+        "stock",
+        "light",
+        "defaults"
+      ],
+      "tests": {
+        "reject": "Designer delegated rejection inference from the cited source: if this alone failed, the stated land/life/signature would be missing.",
+        "renormalize": "No yield, stat, rate, size, percentage or asset quota is fixed in the sentence or pictures; comparisons survive numerical retuning and added art variants.",
+        "first_version": "Life: actual native food/growth and ordinary tar habitats; no gas, treasure or false-floor gameplay."
+      }
+    },
+    {
+      "id": "B3",
+      "says": "A settler can hunt or try to tame the seated animals as they feed, drink and hunt in the basin, while mice cross shallow tar without colonist mire and skellarn enter real flight.",
+      "meant": {
+        "intent": "Life: preserve roster, food web, ordinary use and fictional locomotion; none requires shell theft, mounds or dread clues.",
+        "source": "the_sump.md §4; RM_SumpFauna.xml and RM_Kethrel.xml; standing no-evictions, real-flight and readable-exit rulings; delegated: support means actual feeding and ordinary player actions, not guaranteeing tame success.; biome_rulings.md Natives drink their own environmental water, 2026-11-01.",
+        "figurative": [
+          {
+            "word": "mire",
+            "stands_for": "The extra movement delay an ordinary ground-walking colonist incurs on shallow tar, compared with that same actor on solid ground. No separate hidden trapping condition is implied.",
+            "accept": "A mouse crosses shallow tar using its normal movement while the colonist takes longer; the mouse need not swim, disappear or paint a visible trail."
+          }
+        ]
+      },
+      "accept": [
+        "Mice feed and cross their shallow-tar habitat while skarrid hunt, a permitted tame attempt proceeds by ordinary work, and a skellarn flight state carries it across a ground barrier.",
+        "A plain kethrel eats and can be managed without stealing scrap; an animal that dies leaves a corpse or a readable ordinary exit.",
+        "A native animal meets its thirst at the tar margin without human liquid penalties; settlers use their ordinary supplied drinking water."
+      ],
+      "reject": [
+        "Animals spawn for the photograph but cannot reach suitable food or complete a normal hunt/tame job in their habitat.",
+        "A skellarn has a flight stat but never enters flight, or a mouse is as mired as a colonist despite its adapted movement fiction.",
+        "A native dehydrates beside accessible home tar because the shared native-water binding is absent."
+      ],
+      "lazy": "none: The sentence requires ordinary feeding, hunting, taming and adapted movement rather than body/def existence.",
+      "range": {
+        "varies": "Seated RM mouse, Gulveth, Thrummel, Warden, Broodmother, Dredgel, Skarrid, Skellarn and Kethrel plus conditional campaign Hssiss; juvenile/adult, wild/tame, hungry/fed, downed/dead and ordinary cold stress; feeding/hunting/taming where allowed by the actual race; mouse shallow crossings and skellarn grounded/cooldown/flight over shallow/deep barriers; initial/reload/revisit; colonies 3,12,40 with low/high ordinary prey demand. Roster commonalities are tunable checks, not quotas. Hydration: thirsty/sated native at/adjacent to accessible tar, wild and tame membership recognised through the actual patched roster; humanlike control with supplied potable water; shared thirst enabled.",
+        "left_out": "No guarantee every species appears on a single map, every tame roll succeeds or every animal survives starvation/player extermination. No restored Brommet or additional VGE bestiary species. No unattended visual flight test; real flight is checked by tracker state."
+      },
+      "sees": {
+        "instrument": "T44 native traversal and FlightTracker deterministic reads, actual ordinary feeding/hunt/tame job outcomes; Situation walk for state transitions and Whole map for food-web continuity. Available def fields alone are insufficient. Read actual FlowWorks thirst need, selected source/liquid, HomeWater/NativeHere result and hydration delta; the generic native-water audit omits Sump because its BiomeDef fertility terrains do not name tar.",
+        "start": "Actual natural habitat with accessible species-appropriate food and reachable targets, seated races with no debug AI lock; paired colonist and mouse on the same shallow route; skellarn rested and in cooldown arms.",
+        "on": "All retained land, life, tar pickup/exposure, glasswalk, bitumen/weak-solvent and routine-cleanup consumers at proposed shipped defaults; every DLC; shared EnvironmentalHazards, CreatureBehaviors, ExplosiveGrowth, FlowWorks, Wreckage and Bones at their composed defaults. No debug/weather/time/AI locks. All next-version Sump consumers and producers off. Negative-control fixture is separate from the main reading; it does not replace it.",
+        "control": "Record flight-tracker state and traversed cells, not just changed position; teleport/despawn mutants fail. Link food consumption/hunt to actual food/prey id; disabled custom shell/trails cannot be credited for ordinary feeding. Paired unadapted colonist distinguishes speed stat from terrain exemption.",
+        "reset": "Use a disposable copy of a fixed-world local Sump test save; record settings, spawned objects, pawns, terrain, growth, jobs, reservations and queues before each arm. Restore that copy in finally and verify the state fingerprint/log. Do not mutate the canonical save or clear real queues via proof helpers.",
+        "live_only_why": "The actual flight tracker, feeding/hunting/taming AI and native locomotion run in the game; defs and a surrogate cannot establish those job transitions. Use deterministic state reads, with no unattended flyer visual test/capture. Visual flight review requires owner presence."
+      },
+      "live_only": true,
+      "touches": [
+        "animals",
+        "ground",
+        "growth",
+        "stock",
+        "saved",
+        "defaults"
+      ],
+      "tests": {
+        "reject": "Designer delegated rejection inference from the cited source: if this alone failed, the stated land/life/signature would be missing.",
+        "renormalize": "No yield, stat, rate, size, percentage or asset quota is fixed in the sentence or pictures; comparisons survive numerical retuning and added art variants.",
+        "first_version": "Life: preserve roster, food web, ordinary use and fictional locomotion; none requires shell theft, mounds or dread clues."
+      }
+    },
+    {
+      "id": "B4",
+      "says": "A worker crossing shallow tar moves slower than on clean solid ground, carries tar home and suffers a readable movement and work burden until recovery.",
+      "meant": {
+        "intent": "Signature cause: natural travel creates actual pawn and floor consequences that survive leaving the tar.",
+        "source": "Owner experience row TheSump in biome_experiences_2026-10-20.md; RM_Tarred_Hediffs.xml, RM_Tarred_Thoughts.xml and EH carried-filth code; delegated: same-worker causal comparison.",
+        "figurative": [
+          {
+            "word": "burden",
+            "stands_for": "The inspectable tar condition and comparative movement/work cost; no carried weight item or new injury is required.",
+            "accept": "The worker is visibly tarred and works more slowly although its inventory mass has not increased."
+          }
+        ]
+      },
+      "accept": [
+        "An outdoor worker takes a shallow shortcut, returns tarred, leaves tar on an accepting floor and performs the same ordinary work more slowly than when clean.",
+        "A worker avoiding tar stays unexposed while the dirty worker retains readable state after reaching solid ground and reloading."
+      ],
+      "reject": [
+        "The floor looks dirty but neither the carrier nor subsequent work pays a cost, or a health penalty appears without any actual shallow-tar pickup.",
+        "A worker reaches clean ground and instantly forgets all exposure, or quietly disappears into tar instead of retaining a readable recoverable state."
+      ],
+      "lazy": "none: Pickup, carried cost and later deposits are all explicit, so a cosmetic stain or isolated hediff cannot satisfy it.",
+      "range": {
+        "varies": "Capable humanlike workers including colonists/visitors at applicable flesh/filth types; 1..40 active workers; carried clean/light/heavy states, repeated exposure and cessation; cardinal/diagonal entry, ordinary ground/floor thresholds, hauling and stationary work, save/reload before/after scan boundaries. Compare the same pawn with constant gear, injury, load, light, temperature and task. Special native animals and flying movement are covered by B3, not forced into colonist exposure semantics.",
+        "left_out": "No penalty on non-filth-carrying mechanoid/unsupported pawn types merely for existing; no custom tar injury or arbitrary job failure. Existing fire response is ordinary dependency behaviour, no fixed severity/rate."
+      },
+      "sees": {
+        "instrument": "T43 real pickup/filth and T46 causal-state instrument: actual path ticks, carried filth list, deposited floor filth, exposure/hediff and work progress; Situation walk covers transition/reload variants.",
+        "start": "Same clean worker, same task and accepting destination, raw shallow-tar lane and solid clean comparison; no pre-injected hediff or carried filth credited as exposure.",
+        "on": "All retained land, life, tar pickup/exposure, glasswalk, bitumen/weak-solvent and routine-cleanup consumers at proposed shipped defaults; every DLC; shared EnvironmentalHazards, CreatureBehaviors, ExplosiveGrowth, FlowWorks, Wreckage and Bones at their composed defaults. No debug/weather/time/AI locks. All next-version Sump consumers and producers off. Negative-control fixture is separate from the main reading; it does not replace it.",
+        "control": "Separate no-tar route and absent-generated-filth mutant; same light/injury/load removes darkness or encumbrance as the cause. Follow the carrier id through the next exposure scan and work job; direct hediff injection does not count.",
+        "reset": "Use a disposable copy of a fixed-world local Sump test save; record settings, spawned objects, pawns, terrain, growth, jobs, reservations and queues before each arm. Restore that copy in finally and verify the state fingerprint/log. Do not mutate the canonical save or clear real queues via proof helpers.",
+        "live_only_why": "Not look-only: a calibrated state instrument can distinguish the claimed causal experience. A game state read may be needed for calibration or actual job execution; this is not a claim that static XML alone proves the bar."
+      },
+      "live_only": false,
+      "touches": [
+        "ground",
+        "carried",
+        "routes",
+        "cleanup",
+        "light",
+        "saved",
+        "defaults"
+      ],
+      "tests": {
+        "reject": "Designer delegated rejection inference from the cited source: if this alone failed, the stated land/life/signature would be missing.",
+        "renormalize": "No yield, stat, rate, size, percentage or asset quota is fixed in the sentence or pictures; comparisons survive numerical retuning and added art variants.",
+        "first_version": "Signature cause: natural travel creates actual pawn and floor consequences that survive leaving the tar."
+      }
+    },
+    {
+      "id": "B5",
+      "says": "A worker using a laid glasswalk route leaves its surface free of tar deposits but travels slower than the same clean worker on ordinary clean paving.",
+      "meant": {
+        "intent": "Signature response: a durable clean route has a continuing travel cost, distinct from ordinary foulable floors.",
+        "source": "SUMP_WALKWAYS_1 ruling recorded in RM_SumpWalkways.xml; delegated: keep the necessary glasswalk response while duplicate duckboards and random slips move.",
+        "figurative": []
+      },
+      "accept": [
+        "Regular traffic leaves the glasswalk clear while a nearby ordinary accepting floor fouls; the same clean walking worker still takes longer on glasswalk than on clean paving.",
+        "A dirty carrier crosses glasswalk without laying new tar there, then uses a real accepting cleanup location rather than becoming magically clean."
+      ],
+      "reject": [
+        "Glasswalk is a perfectly fast paved highway, or its label promises a clean route while tar deposits remain on it.",
+        "The apparent route advantage exists only because the comparison lane was dark or the worker had different gear, and the terrain itself supplies no tradeoff."
+      ],
+      "lazy": "none: It demands a clean floor and a continuing travel cost for the same pawn, so a full-speed clean highway or an invisible dirty floor cannot satisfy it.",
+      "range": {
+        "varies": "Hand-built and ordinarily cooled glasswalk on eligible solid cells; ordinary wooden/stone floor, bare dry and shallow-tar comparisons; straight, diagonal, corners, door thresholds and interrupted routes; walking pawns with actual base step cost 5..60 ticks and clean/tarred carried states, 1..40 traffic; placement on supported ordinary surfaces including existing gravship deck affordances without a new ship feature; initial, rebuild and reload. Slips off as a next-version extra, dusk and native physics still on.",
+        "left_out": "No fixed speed ratio, special deep-tar bridge promise, automatic boot cleansing or requirement to include a specific decorative floor variant. Flyers and teleports are outside the walking comparison."
+      },
+      "sees": {
+        "instrument": "Existing exact-clock Glasswalk runner is a useful regression check; T46 Route geometry instrument removes its standard-pawn/fully-lit-only restriction and reads actual default-light same-pawn paths, path ticks, floor filth and carried tar. Calibrate to actual path transitions.",
+        "start": "A completed legitimate glasswalk floor made from crafted local bitumen, an ordinary clean paved comparison of matching geometry, same pawn starting clean for the speed arm and dirty for the deposition arm; identical lamps/light in each lane.",
+        "on": "All retained land, life, tar pickup/exposure, glasswalk, bitumen/weak-solvent and routine-cleanup consumers at proposed shipped defaults; every DLC; shared EnvironmentalHazards, CreatureBehaviors, ExplosiveGrowth, FlowWorks, Wreckage and Bones at their composed defaults. No debug/weather/time/AI locks. All next-version Sump consumers and producers off. Negative-control fixture is separate from the main reading; it does not replace it.",
+        "control": "No new material is debug-spawned to prove acquisition. Match pawn stats, task, cardinal/diagonal mix, roofs and glow; read floor and boots separately. A filth-permissive or path-cost-free floor mutant must fail. Benchmark in full default dusk, not the old clear-lit-only scene.",
+        "reset": "Use a disposable copy of a fixed-world local Sump test save; record settings, spawned objects, pawns, terrain, growth, jobs, reservations and queues before each arm. Restore that copy in finally and verify the state fingerprint/log. Do not mutate the canonical save or clear real queues via proof helpers.",
+        "live_only_why": "Not look-only: a calibrated state instrument can distinguish the claimed causal experience. A game state read may be needed for calibration or actual job execution; this is not a claim that static XML alone proves the bar."
+      },
+      "live_only": false,
+      "touches": [
+        "ground",
+        "routes",
+        "carried",
+        "stock",
+        "light",
+        "liquid",
+        "saved",
+        "defaults"
+      ],
+      "tests": {
+        "reject": "Designer delegated rejection inference from the cited source: if this alone failed, the stated land/life/signature would be missing.",
+        "renormalize": "No yield, stat, rate, size, percentage or asset quota is fixed in the sentence or pictures; comparisons survive numerical retuning and added art variants.",
+        "first_version": "Signature response: a durable clean route has a continuing travel cost, distinct from ordinary foulable floors."
+      }
+    },
+    {
+      "id": "B6",
+      "says": "Supplied workers following standing work orders retrieve reachable solvent and remove carried tar and its burden without repeated individual bills or harmful surgery.",
+      "meant": {
+        "intent": "Signature recovery: faster paid relief and automatic ordinary handling are necessary; this is the deletion argument for the cleanup action and local solvent chain.",
+        "source": "ANSWERS_OWNER.md answer on automatic routine, card 2026-11-10; RM_Tarred_Solvents.xml and EH exposure/surgery source; delegated: source clearing, physical material handling and noninjurious routine are the operational reading.",
+        "figurative": []
+      },
+      "accept": [
+        "After outside work, an available worker uses accessible reserved solvent under the colony policy, returns to ordinary work and stays recovered until newly exposed.",
+        "When solvent is missing or unreachable, the action names the shortage and yields to ordinary work or slower clean-ground recovery without demanding repeated player clicks."
+      ],
+      "reject": [
+        "The player must place a new medical bill on each dirty worker after each trip, or the bill removes only the condition and dirty boots immediately give it back.",
+        "A cure teleports solvent from a sealed room, consumes it twice after interruption, causes a medical injury or endlessly retries instead of doing ordinary work."
+      ],
+      "lazy": "none: Physical reachable stock, standing work orders, source removal and lasting recovery exclude a manual label-only cure.",
+      "range": {
+        "varies": "Colony 3,12,40; cleaning priorities enabled/disabled by player, reserved floor/capable helpers; reachable stock 0,1,ample and sealed/forbidden/in-transit/reserved by another; partial/complete/aborted cleanup, helper/recipient downed or dead, ingredient destroyed, interrupted by fire/draft, save/reload before reservation/after debit/before result; same tick and next exposure-scan read. Local wax -> rendered wax -> weak solvent and pitch -> bitumen acquired by ordinary jobs with actual research; no mound or draw-joint gate. Strong solvent if independently present is compatible, never necessary. Read all consumers with bottled gas off.",
+        "left_out": "No guaranteed instant response during danger/sleep or when the player disallows work; no invented infinite wax, foreign trader or cure using inaccessible resources. No vault food retrieval in this version; that owner answer remains attached to its deferred feature."
+      },
+      "sees": {
+        "instrument": "T40 automatic cleanup implementation/instrument plus T46 Situation walk; actual reservations, job history, carried filth/hediff and stock ledger through the following scan. Solvent queue model checks routine throughput with shared defaults. Existing direct recipe hook cannot prove automatic workflow.",
+        "start": "Naturally tarred worker at a reachable clean accepting work spot, valid standing work priorities, capable available labour, actually crafted local weak solvent and no per-pawn medical bill; no-solvent and unreachable-stock arms use the same colony.",
+        "on": "All retained land, life, tar pickup/exposure, glasswalk, bitumen/weak-solvent and routine-cleanup consumers at proposed shipped defaults; every DLC; shared EnvironmentalHazards, CreatureBehaviors, ExplosiveGrowth, FlowWorks, Wreckage and Bones at their composed defaults. No debug/weather/time/AI locks. All next-version Sump consumers and producers off. Negative-control fixture is separate from the main reading; it does not replace it.",
+        "control": "Trace ingredient id and debit to the cleaning job; compare no solvent, blocked path and policy off. Observe actual carried tar cleared, condition gone and no immediate reacquisition absent new exposure. Same job without the gas byproduct remains successful. Negative controls cannot be credited as the default arm.",
+        "reset": "Use a disposable copy of a fixed-world local Sump test save; record settings, spawned objects, pawns, terrain, growth, jobs, reservations and queues before each arm. Restore that copy in finally and verify the state fingerprint/log. Do not mutate the canonical save or clear real queues via proof helpers.",
+        "live_only_why": "Only the game can establish that ordinary work selection, pathing and reservations actually perform the routine without repeated bills or harmful surgery. The queue and transition models forecast and debug it but cannot prove the actual AI does it."
+      },
+      "live_only": true,
+      "touches": [
+        "cleanup",
+        "carried",
+        "stock",
+        "routes",
+        "saved",
+        "defaults"
+      ],
+      "tests": {
+        "reject": "Designer delegated rejection inference from the cited source: if this alone failed, the stated land/life/signature would be missing.",
+        "renormalize": "No yield, stat, rate, size, percentage or asset quota is fixed in the sentence or pictures; comparisons survive numerical retuning and added art variants.",
+        "first_version": "Signature recovery: faster paid relief and automatic ordinary handling are necessary; this is the deletion argument for the cleanup action and local solvent chain."
+      }
+    },
+    {
+      "id": "B7",
+      "says": "The settled Sump keeps its dusky black ground, living margins and feeding wildlife while dirty workers sustain ordinary colony work through recovery, a reload and a changed order of work.",
+      "meant": {
+        "intent": "Exactly one whole bar: land, life and the tar-maintenance signature operate together long enough for coupled growth, traffic, recovery and ordinary tar physics to expose failure.",
+        "source": "Supplied cleansing brief whole-bar requirement; owner ordinary-routine card in ANSWERS_OWNER.md; delegated synthesis of the experience sentence and the frozen land/life lore.",
+        "figurative": []
+      },
+      "accept": [
+        "Across settlement and continued outside work, paths improve and solvent stock is spent and replenished, plants are harvested and regrow where eligible, animals feed, and dirty areas remain without halting meals, hauling and construction after a reload.",
+        "Building routes before rendering solvent or rendering solvent before extending routes produces different inconvenience but neither order needs a debug cure, a hidden extra or a locked sky to keep the colony working."
+      ],
+      "reject": [
+        "Raw tar or uncontrolled plant spread consumes the usable settlement, or the map becomes empty of ordinary native life despite suitable food and temperature.",
+        "Workers repeatedly reserve cleanup forever while food and ordinary work stop, or reload duplicates stock, loses pawns, activates deferred systems or produces a repeating error storm."
+      ],
+      "lazy": "none: The whole duration, reload, reordered actions and continuing jobs/populations rule out an isolated staged success.",
+      "range": {
+        "varies": "Full maps 250x250,300x300,400x400, colony 3/12/40, at least 60 in-game days so a 15-day season and the current slow crop cycle fit; thermal cases -15,-8,0,15,22 C anchored to actual fixed-site ambient readings rather than invented world tiles. Frozen-temperature case uses planned provisions and tests visible thermal halt, not forced native growth. Low/high ordinary traffic, prey/predator composition sampled from the retained full roster without quota; ordinary harvest, sow, hunt, tame, craft pitch/wax/solvent, construct glasswalk, clean, haul, small generic channel/gate use and player-caused natural-tar ignition once reachable. No unlimited pump input or deliberate whole-map destruction. Save mid-way with dirty pawns, in-progress growth, a reservation and live ordinary dependency state; continue both uninterrupted and loaded runs; reverse route-building versus solvent-first order and harvest/cleanup order. Wall-clock speed-up only initially; no skipped pawn/plant/fire/job ticks. Include native hydration from home tar, human drinking-water provision, water hauling and thirst searches at default FlowWorks settings.",
+        "left_out": "No alternative world generation, unsupported outside-biome feature configuration, DLC-absent tier, player extermination or intentional unbounded flooding/incineration of the whole map. Next-version features stay off by definition; all retained dependency physics stay enabled. Not a requirement to feed forty people from wild forage alone or to stop deliberate player disasters."
+      },
+      "sees": {
+        "instrument": "T47 Whole map and Solvent queue models after calibration, plus actual complete default-run state trace via T46: terrain regions, growth/food/prey, pawn identities/exits, jobs, resource ledgers, reservations, fire/liquid state, defaults and logs. This is unmeasured until those instruments and normal-tick calibration exist; historical isolated passes cannot count.",
+        "start": "Legitimate fixed-world surface site initialized as Sump, complete retained roster availability and ordinary starting food/build material, no prefabricated routes or free solvent credited to the production chain. Default dependency profiles recorded; nothing locked or protected from the retained mechanics. Supply ordinary colonist drinking water through existing provisions/engines; natural tar is not fresh water for humanlikes.",
+        "on": "All retained land, life, tar pickup/exposure, glasswalk, bitumen/weak-solvent and routine-cleanup consumers at proposed shipped defaults; every DLC; shared EnvironmentalHazards, CreatureBehaviors, ExplosiveGrowth, FlowWorks, Wreckage and Bones at their composed defaults. No debug/weather/time/AI locks. All next-version Sump consumers and producers off. Negative-control fixture is separate from the main reading; it does not replace it.",
+        "control": "Parallel disposable save branches: normal job execution uninterrupted, loaded mid-way and alternate action order with matched input policy/initial state. Replay stochastic seeds where possible and report envelopes where not. Separate mutants suppress tracking, prevent regrowth, leak deferred callbacks and retain filth on cure; their expected failures show a smooth summary cannot mask a stalled subsystem.",
+        "reset": "Use a disposable copy of a fixed-world local Sump test save; record settings, spawned objects, pawns, terrain, growth, jobs, reservations and queues before each arm. Restore that copy in finally and verify the state fingerprint/log. Do not mutate the canonical save or clear real queues via proof helpers.",
+        "live_only_why": "No credible cheap offline model reproduces the complete composed scheduler, ecology, fire, serialization and logging. Models locate risky regimes; an actual full-map normal-tick state trace through reload and reordered actions decides the whole experience. Visual sampling is separate; no unattended flight capture."
+      },
+      "live_only": true,
+      "touches": [
+        "ground",
+        "light",
+        "growth",
+        "animals",
+        "carried",
+        "routes",
+        "cleanup",
+        "stock",
+        "liquid",
+        "saved",
+        "defaults"
+      ],
+      "tests": {
+        "reject": "Designer delegated rejection inference from the cited source: if this alone failed, the stated land/life/signature would be missing.",
+        "renormalize": "No yield, stat, rate, size, percentage or asset quota is fixed in the sentence or pictures; comparisons survive numerical retuning and added art variants.",
+        "first_version": "Exactly one whole bar: land, life and the tar-maintenance signature operate together long enough for coupled growth, traffic, recovery and ordinary tar physics to expose failure."
+      }
+    }
+  ],
+  "whole": "B7",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Resolved defs, About dependency closure, all-DLC composition, no campaign-only requirement for basic tracking, compatible aliases and clean logs; inherited load/settings floor remains binding."
+    },
+    {
+      "id": "C2",
+      "what": "Settings persist/reset to proposed defaults, label scope and restart timing honestly; no effect left running after local off; neighbouring global values unchanged."
+    },
+    {
+      "id": "C3",
+      "what": "Resolved shallow generatedFilth and acceptance flags, deep passability, glasswalk None mask, effective path costs and exact-clock same-pawn readings; existing numeric regression target remains a check."
+    },
+    {
+      "id": "C4",
+      "what": "All seated native growth/light/thermal/habitat profiles including ExplosiveGrowth archetype/top/soak resolution, ordinary sow/harvest links and no plant glower; numbers from the current resolved defs, not a bar quota."
+    },
+    {
+      "id": "C5",
+      "what": "animalDensity and actual inline+campaign patch roster membership; no accidental removal when shell/trail gates turn off; skellarn flight fields and whole-body animation bindings. Include tar nativeWater mapping, native membership and thirst/job delta; no new random anima tree under the standing ban."
+    },
+    {
+      "id": "C6",
+      "what": "Current pitch/wax/bitumen/solvent recipe costs/yields/work/research are regression readings only; no stock conjured by gas or deferred unlocks."
+    },
+    {
+      "id": "C7",
+      "what": "Cleanup reservation/debit/release ledger, carried filth and hediff state through the next exposure scan, interruption/death/reload and shortage; no duplicate consumption or latent medical harm."
+    },
+    {
+      "id": "C8",
+      "what": "Each built deferred feature has fresh-map default absence of instances/jobs/letters/incidents/effects and an explicit on-arm reachability check; retained compatibility defs/bodies are not counted as running extras."
+    },
+    {
+      "id": "C9",
+      "what": "Mere kernel connectedness, actual local geometry, build affordances and habitat region counts; invalid/obstructed site cannot be reported as a healthy mere. Existing fuzz covers only its kernel assumptions."
+    },
+    {
+      "id": "C10",
+      "what": "Whole trace checks resource identity, terrain regions, animal exits/food actions, growth, job queues, fire/liquid totals, log signatures, snapshot restoration and action-order comparison."
+    },
+    {
+      "id": "C11",
+      "what": "Calibration records pin source, assembly, composed defs, settings, site and time; old 2026-11-06 Glasswalk/living-map reports are stale until matched, never copied as current."
+    },
+    {
+      "id": "C12",
+      "what": "No active world-scoring/mutator/rarity UI path in any settings configuration; fixed world and saved identifiers unchanged. No world-generation on-arm is permitted."
+    },
+    {
+      "id": "C13",
+      "what": "Existing validation.py def/settings/vault/kethrel/capstan rows and first-script criteria remain checks or future-extra proofs. Empty concept tree means old_bars is exactly empty; no historical script row is promoted to an owner bar."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Use the existing mere initializer and owned terrain on the already selected fixed-world local site; preserve inert compatible identifiers instead of rewriting saved ids. No active world-scoring or mutator path is permitted by the standing ruling.",
+      "touches": [
+        "ground",
+        "defaults",
+        "saved"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Natural margin plants use eligible dry cells at tar adjacency 1..3; pool film is tar-only, mirrelin solid-glass-only and pallick harmless solid cover until its trap is enabled. Player-sown dorvel is the cultivated exception. Habitat numbers are attackable build choices.",
+      "touches": [
+        "ground",
+        "growth"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Compare same-pawn actual step/work cost under matching lighting, gear, injury, load and geometry. Glasswalk rejects floor deposits but never silently clears carried tar.",
+      "touches": [
+        "routes",
+        "carried",
+        "light"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Routine cleanup follows standing priorities/reserve policy, physically reserves/reaches stock, debits once and clears both carried source and condition. No harmful surgery or repeated per-pawn bill. No stock means a readable yield, not a retry storm.",
+      "touches": [
+        "cleanup",
+        "carried",
+        "stock",
+        "saved"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Every deferred Sump producer, offered action, consumer and delayed callback defaults off locally; disabling a saved feature preserves items/pawns and releases held/reserved state visibly. Do not switch off a neighbour globally.",
+      "touches": [
+        "defaults",
+        "saved",
+        "animals",
+        "stock"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Read resolved ExplosiveGrowth/FlowWorks/EH profiles at composed defaults; use the owning data/APIs rather than forking growth, liquid or fire engines. Chemotrophy remains independent of light but not of temperature.",
+      "touches": [
+        "growth",
+        "liquid",
+        "light",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Ordinary plant/animal descriptions and inspect text only teach enabled behaviours. No gas, treasure, collapse or mouse-line safety claims in the default version.",
+      "touches": [
+        "growth",
+        "animals",
+        "ground",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Use ordinary seated race bodies and vanilla animal jobs, with existing flight-tracker and native traversal/home-liquid data adapters, rather than a set-piece or a teleport standing in for life. Roster preservation, real flight and readable exits are fixed authority constraints, not attackable preferences.",
+      "touches": [
+        "animals",
+        "ground",
+        "saved"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Keep existing local pitch -> bitumen and broodmother butcher wax -> rendered wax -> weak solvent chains reachable through ordinary benches/research. No mound, draw-joint, gaslight or import prerequisite and no Brindeth WoodLog restoration.",
+      "touches": [
+        "stock",
+        "cleanup",
+        "growth"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Represent dusk using the existing dry weather/glow condition and ordinary lamps, while native plants use light-independent growth profiles. Ambient heat and Direct Sun stay with their owning geometry/vanilla path; their standing rules are not attackable.",
+      "touches": [
+        "light",
+        "growth",
+        "animals"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "Shared tar ignition, channel/gate/source/sink and cooling physics run normally; cooling uses solid glasswalk. The special Sump flood/post/moat are not necessary producers. Bound whole-run interventions, not engine mechanics.",
+      "touches": [
+        "liquid",
+        "ground",
+        "routes",
+        "saved"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "ground",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B7",
+        "R1",
+        "R2",
+        "R7",
+        "R8",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Ground/habitat placement, deep barriers, path layout and later cooling could jointly remove the connected usable margins although each local fixture passes. This is the land/growth/route three-way risk.",
+      "model": "Route geometry"
+    },
+    {
+      "thing": "light",
+      "members": [
+        "B1",
+        "B2",
+        "B4",
+        "B5",
+        "B7",
+        "R3",
+        "R6",
+        "R10"
+      ],
+      "holds_together": "argued",
+      "why": "Dusk makes visual/timing comparisons harder but no rule requires solar growth or special solar heat. Use identical actual light in compared routes, retain chemotroph light-independent growth, and leave sun/ambient heat to the shared rules. Numeric/visual calibration still owed; no mathematical need for a contradiction.",
+      "model": ""
+    },
+    {
+      "thing": "liquid",
+      "members": [
+        "B1",
+        "B5",
+        "B7",
+        "R6",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "A default tar source, player channel and ignition can keep supplying fire or reshape the margin while plants, paths and workers respond. Turning the special belch off does not break this dependency loop.",
+      "model": "Whole map"
+    },
+    {
+      "thing": "defaults",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R1",
+        "R5",
+        "R6",
+        "R7"
+      ],
+      "holds_together": "argued",
+      "why": "The group explicitly separates retained data/bodies and shared physical laws from the disabled Sump producers/effects; none of the retained causal paths needs a deferred action. Chemical recovery works without bottled gas; plain animals feed without shell/trails; habitats do not query deferred rings. Ticketed gate/decoupling work must implement this design argument; current code is not claimed to satisfy it.",
+      "model": ""
+    },
+    {
+      "thing": "growth",
+      "members": [
+        "B2",
+        "B3",
+        "B7",
+        "R2",
+        "R6",
+        "R7",
+        "R9",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Dark growth, current ExplosiveGrowth default classification, grazing and harvest/regrowth can either stall or replace open ground with vegetation over time. A dark-growth fixture alone cannot bound that loop.",
+      "model": "Whole map"
+    },
+    {
+      "thing": "stock",
+      "members": [
+        "B2",
+        "B3",
+        "B5",
+        "B6",
+        "B7",
+        "R4",
+        "R5",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Forage, animal wax, bitumen, solvent reservations and ordinary labour compete at colony scale; def yields cannot establish whether the routine remains supplied without starving other jobs.",
+      "model": "Solvent queue"
+    },
+    {
+      "thing": "animals",
+      "members": [
+        "B3",
+        "B7",
+        "R5",
+        "R7",
+        "R8",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Native movement, predator/prey intake, human hunting for wax and weak-solvent demand can consume each other's food web. No ordinary population persistence argument is credible without a map/food trace. Native hydration at the tar shore is another food-web input; the generic audit misses Sump when it infers liquids only from fertility terrains.",
+      "model": "Whole map"
+    },
+    {
+      "thing": "saved",
+      "members": [
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R1",
+        "R4",
+        "R5",
+        "R8",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "A saved dirty carrier, pending ingredient debit, flight state and default-off extra queue can each look correct locally but reload together into duplication, re-exposure or a late wake.",
+      "model": "Situation walk"
+    },
+    {
+      "thing": "carried",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R3",
+        "R4"
+      ],
+      "holds_together": "unknown",
+      "why": "A nonaccepting route can retain dirty boots; clearing the hediff alone can feed the giver again. Cleanup, route and exposure all meet on the carried source, including tick boundaries and reload.",
+      "model": "Situation walk"
+    },
+    {
+      "thing": "routes",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R3",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Glasswalk is clean but slower; normal floors accept tar; route geometry can prolong caking and monopolize cleanup. Local same-pawn speed proof is insufficient.",
+      "model": "Route geometry"
+    },
+    {
+      "thing": "cleanup",
+      "members": [
+        "B4",
+        "B6",
+        "B7",
+        "R4",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Automatic cleanup, finite wax, travel and daily work can form a queue that consumes more labour than it releases even if a supplied cure passes.",
+      "model": "Solvent queue"
+    }
+  ],
+  "old_bars": {}
+}
