@@ -2664,10 +2664,13 @@ def _deferred(ctx=300_000, helpers=LIVE4, unpub=None):
            "seat_restart": {"enabled": True, "seats": {"FOUNDRY": {}}}}
     rp = SR.request_path("FOUNDRY")
     names = ("unpublished_shard", "helpers_of", "_schedule", "session_file", "reg_start", "proc_start", "tx_summary",
-             "last_human")
+             "last_human", "_other_unpushed")
     saved = {k: getattr(SR, k) for k in names}
     try:
         SR.helpers_of = lambda path, now=None, stale_s=None: helpers
+        # the request reads REPO's own unpushed commits: a fixed fake, so the real clone's state never reaches the print
+        # (RIMMANDRAKE_ISOLATE_SEAT_RESTART_D1_FROM_REAL_UNPUSHED_COMMITS: an unpushed item named ..._REFUSED failed D1)
+        SR._other_unpushed = lambda clone, rel: ["src/fixture_unpushed.py"]
         SR.last_human = lambda path, peers=None: (T0 - 5, {"message": {"content": "x"}}, 100, 200)
         SR.unpublished_shard = lambda seat, clone: unpub
         SR._schedule = lambda: raw
