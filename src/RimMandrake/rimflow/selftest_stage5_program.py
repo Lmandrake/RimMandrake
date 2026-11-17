@@ -165,7 +165,10 @@ def test_supervisor():
     rs2 = {"runs": [{"state": "running", "unit": "u2", "at": SC.T - 600, "day": RL.day_of(SC.T), "budget": 90000,
                      "mode": "run", "item": "X_ITEM", "concept": SC.C1, "scope": "S.scope", "marker": "M"}]}
     acts2 = []
-    obs2 = dict(obs, result=lambda r: {"subtype": "success", "usage": {k: 10 for k in RL.USAGE_KEYS}},
+    mu = {"claude-opus-5-5": {"inputTokens": 10, "outputTokens": 10, "cacheReadInputTokens": 10,
+                              "cacheCreationInputTokens": 10}}     # a real result's shape names its model
+    obs2 = dict(obs, result=lambda r: {"subtype": "success", "usage": {k: 10 for k in RL.USAGE_KEYS},
+                                       "modelUsage": mu},
                 program_closed=lambda c, u: ("error", "run u2: stage5-program DID NOT RUN: boom"))
     RL._supervise_one("Designer", rs2, dict(RL.ROLE_DEFAULTS, **SC.designer_row()), obs2, SC.T,
                       lambda **kw: acts2.append(kw), set())

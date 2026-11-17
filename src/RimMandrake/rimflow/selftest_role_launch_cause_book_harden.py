@@ -64,7 +64,8 @@ def designer_cfg():
     return dict(RL.ROLE_DEFAULTS, **row)
 
 
-GOOD = {"subtype": "success", "usage": {k: 10 for k in RL.USAGE_KEYS}}
+GOOD = {"subtype": "success", "usage": {k: 10 for k in RL.USAGE_KEYS},  # a real result names its model
+        "modelUsage": {"claude-opus-5-5": {"inputTokens": 10, "outputTokens": 10, "cacheReadInputTokens": 10, "cacheCreationInputTokens": 10}}}
 
 
 def obs_for(close, res=GOOD, **more):

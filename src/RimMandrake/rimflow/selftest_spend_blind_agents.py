@@ -175,7 +175,13 @@ if SW:
     put("resumed", line("old", one_usd * 9, ts="2026-11-01T00:00:00Z") + line("new", one_usd, ts="2026-11-16T10:00:00Z"))
     since = time.mktime(time.strptime("2026-11-10", "%Y-%m-%d"))
     check(SW.over_cap("resumed", 5, "opus", P, since=since)[0] is False, "B a resume does not count its earlier turns")
-    check(SW.rate("some-new-model") == max(r for _, r in SW.RATES), "B an unknown model is priced at the dearest rate")
+    # weighted_v2 (RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT): one list rate for every model, and a model not in
+    # MODEL_PRICES is weighed as no other: the run is stopped, naming it (it was priced at the dearest v1 rate before)
+    check(SW.rate("claude-fable-5-2") == SW.rate("claude-opus-5-5") == 4.0, "B one list rate, $4 per M weighted_v2")
+    put("newmodel", line("m1", 10, model="claude-nonesuch-9-9"))
+    oc = SW.over_cap("newmodel", 5, "opus", P)
+    check(oc[0] is True and "claude-nonesuch-9-9" in (oc[3] or {}).get("unknown_model", ""),
+          "B a transcript of a model not in the table stops the run, naming it (%r)" % (oc,))
     # argv: the session is pinned (injected when absent), a resume watches its own id
     w, sid, res = SW.pin_session(["claude", "-p", "x", "--model", "opus"])
     check(sid and "--session-id" in w and w[w.index("--session-id") + 1] == sid and not res, "B a fresh run gets a pinned session")

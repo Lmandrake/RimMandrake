@@ -785,13 +785,23 @@ His words (Mon 2026-11-16, ~1:08 PM PST, on the ledger 21:10Z under `RIMMANDRAKE
 *"Please speak in terms of weighted tokens not money. The money quotes don't translate meaningfully. Do not hold live
 testing when I can't go to the desktop such as now."*
 
-- **Weighted tokens, never money.** Every line a person reads states spend in weighted tokens (input-equivalent,
-  `role_launch.TOKEN_WEIGHTS`): the DETACHED RUN ENDED lines and notes, `maturation_dispatch.py` status, pause, release
-  and `releases` lines, the maturation status page, `maturation_hands.py list`, and the Conductor's own words to him.
+- **Weighted tokens, never money.** Every line a person reads states spend in weighted tokens: the DETACHED RUN ENDED
+  lines and notes, `maturation_dispatch.py` status, pause, release and `releases` lines, the maturation status page,
+  `maturation_hands.py list`, and the Conductor's own words to him.
   List dollars stay only inside, where a tool needs them (`spend_watchdog.py --cap-usd`, the run record's `cost_usd`, the
-  stage ceiling and caps); a line about a dollar-kept limit converts at `maturation_dispatch.WT_PER_USD` (measured
-  2026-11-16) and marks the figure `≈`. Moving the ceiling and caps themselves into tokens:
-  `RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS`.
+  stage ceiling and caps); a line about a dollar-kept limit converts at `maturation_dispatch.WT_PER_USD` (exact: one
+  list dollar is 1e6 / the reference input price) and marks the figure `≈`. Moving the ceiling and caps themselves into
+  tokens: `RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS`.
+- **Weighted by model too** (his words, ~10:03 PM PST: *"I want you to properly weight tokens by the model as well so
+  they are more comparable. That's how I always want us to measure"*; item
+  `RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT`). The unit is `weighted_v2`: each usage field (input, 5-minute and
+  1-hour cache writes, cache reads, output) at that model's own list price, divided by the list price of one uncached
+  Opus 5.5 input token (= 1). The one table is `role_launch.MODEL_PRICES`, from Anthropic's published list prices; a
+  model missing from it fails by name, never a fallback weight. A run is weighed from its result's `modelUsage` (the
+  whole process, subagents included), else its usage and model. A `weighted_v1` figure (relative to the same model's
+  input, no model weight; Opus reads counted at 0.1 where the list says 0.05) is converted by
+  `role_launch.tokens_v2` before it is compared with a v2 one; limits set in v1 were converted at the measured
+  Opus v2/v1 ratio so they keep meaning the same real spend for Opus runs.
 - **No live hold for his look while he is away.** A staged owner look is never a reason the pipeline holds, parks or
   pauses the game: the look is kept as a save, the game goes back to the tick, and the look is re-staged from that save
   when he sits down. Stopping a live run to stage a look is a kill, which the tick retries like any kill
@@ -812,9 +822,11 @@ obsess on cost savings..."* and *"You're telling it constantly"*.
   reminder (`CLAUDE_CODE_DISABLE_ATTACHMENTS` drops every attachment, hooks included).
 - **The hard per-run stop stays** (owner 2026-11-12: *"Don't let any burn go to 90M this time ok?"*), enforced from
   OUTSIDE by `src/RimMandrake/rimflow/spend_watchdog.py`: it wraps the claude argv, pins the session, reads the
-  transcript usage (`role_launch.transcript_usage`, weighted by `TOKEN_WEIGHTS`), and at the cap stops the run and
-  writes the result claude writes at its own cap (`error_max_budget_usd`, `stopped_by: spend_watchdog`), so the run
-  is recorded as stopped on cap, raises the same alarms and stays resumable. Its rates err early, never late.
+  transcript usage (`role_launch.transcript_usage`, each message weighted_v2 at its own model's prices), and at the
+  cap stops the run and writes the result claude writes at its own cap (`error_max_budget_usd`,
+  `stopped_by: spend_watchdog`), so the run is recorded as stopped on cap, raises the same alarms and stays
+  resumable. Its rate is the list price itself (weighted_v2 x the reference input price), and a model not in the
+  table stops the run by name.
   Launchers call `spend_watchdog.wrap(argv, cap_usd)`; `selftest_spend_blind_agents.py` sweeps the tree for the flag.
 - **Humans still see spend**, in weighted tokens: run records, the DETACHED RUN ENDED lines, the status page. An
   Operations run is still told the ACCOUNT's throttle band (its job), never its own budget or spend.

@@ -32,7 +32,8 @@ def check(name, ok):
 
 
 def death(**usage):
-    return dict(OUTAGE, session_id=SID, usage=SD.usage(**usage))     # claude reports the run's own session
+    # claude reports the run's own session, and its usage per model (modelUsage: what weighted_v2 weighs)
+    return dict(OUTAGE, session_id=SID, **SD.cli(SD.usage(**usage)))
 
 
 def test_classify():
@@ -132,7 +133,7 @@ def test_resume_after_real_usage():
                             runner=lambda argv, **k: seen.append(argv) or subprocess.CompletedProcess([], 0, "", ""))
     check("launch keeps the resumed session id on the run", ok and recd.get("session") == SID and "--resume" in seen[0])
     # the resumed run finishes well: nothing more owed
-    result[0] = {"subtype": "success", "result": "done", "usage": SD.usage(input_tokens=10)}
+    result[0] = SD.cli(SD.usage(input_tokens=10), subtype="success", result="done")
     acts = supervise(sch, st, ob, reset + 900)
     check("a good resumed run raises nothing and leaves no resume", not failed_alarms(acts) and "resume" not in rs)
     check("and is not resumed again", not decide(sch, st, ob, reset + 1800)[0])

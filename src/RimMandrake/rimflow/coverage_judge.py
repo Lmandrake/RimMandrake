@@ -85,7 +85,11 @@ ROW_REASK_MAX = 2       # re-asks of only the broken refusal records; one still 
 # p90 stops judging: the concept is blocked on the alarm and the Designer's run never starts. `release` grants one look.
 NOT_COVERED_LIMIT = 3
 JUDGE_RUNS_MAX = 4
-JUDGE_P90_TOKENS = 751818   # measured 2026-11-12: 12 measured judge runs (EK 8, GimmeSomeSlack 2, Pyrelands 2), median 706,708
+# weighted_v2 (role_launch.MODEL_PRICES). Measured 2026-11-12 in weighted_v1: 12 judge runs (EK 8, GimmeSomeSlack 2,
+# Pyrelands 2), p90 751,818, median 706,708; converted 2026-11-16 at x0.911, the median v2/v1 of 50 judge sessions'
+# transcripts (all Opus 5.5; min 0.789, max 0.970; D:\ClaudeWork\rimmandrake\weighted_v2\judge_v2.txt), so the stop
+# keeps meaning the same real spend (RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT).
+JUDGE_P90_TOKENS = 684906
 JUDGE_SPEND_MAX = 4 * JUDGE_P90_TOKENS   # an unmeasured judge run counts at the p90, never at 0
 STOP_EXIT = 3               # `run` exit when stopped: the pre-launch chain ends and the Designer's claude never starts
 UNIT_PREFIX = "rm-coverage-judge-"
@@ -688,7 +692,7 @@ def llm_reader(d, repo, unit, charge=True, runner=None):
         if charge:
             try:
                 import role_launch as RL
-                tok = RL.run_tokens(res)
+                tok = RL.run_tokens(res, MODEL)     # modelUsage when the result has it; else usage as MODEL
                 DS.charge(d, tok or 0, "review" if tok is not None else "unmeasured", unit + "-reader")
             except Exception:  # noqa: BLE001 - a charge we cannot measure never fails the read
                 pass
@@ -1095,9 +1099,11 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         tok = None
         try:
             import role_launch as RL
-            tok = RL.run_tokens(res)
-        except Exception:  # noqa: BLE001 - a charge we cannot measure is recorded as unmeasured, never fatal
+            tok = RL.run_tokens(res, MODEL)         # modelUsage when the result has it; else usage as MODEL
+            rec["token_unit"] = RL.TOKEN_UNIT
+        except Exception as e:  # noqa: BLE001 - a charge we cannot measure is recorded as unmeasured, never fatal
             tok = None
+            rec["unmeasured_why"] = str(e)    # an unknown model is named here, never weighed as another
         rec["tokens"] = (rec.get("tokens") or 0) + tok if tok is not None else rec.get("tokens")
         if charge:
             try:

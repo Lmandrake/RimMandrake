@@ -72,8 +72,11 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
      missed. The launch records the account it runs on.
 
 Tokens: a finished run's `claude -p --output-format json` usage, ALL FOUR fields (input, cache_creation,
-cache_read, output), each weighted by its price class (TOKEN_WEIGHTS, run_tokens: input-equivalent tokens, so a cap
-measures cost, not context re-reads; ROLE_CAPS_REMEASURE_ON_REAL_RUNS). Every cap, budget, daily spend and overbudget
+cache_read, output), per model, each weighted by that model's list price for it (MODEL_PRICES, run_tokens: unit
+weighted_v2, one uncached Opus 5.5 input token = 1, so a cap measures cost, not context re-reads, and figures of
+different models compare; ROLE_CAPS_REMEASURE_ON_REAL_RUNS, RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT). The
+result's modelUsage (the whole process, subagents included) is read when present, else its usage as the run's model;
+a model not in the table leaves the run UNMEASURED with the name. Every cap, budget, daily spend and overbudget
 alarm here is in these units; the raw sum is kept beside it on the run as `raw_tokens`. A run over its budget is an ALARM after the fact: `claude -p` has no
 token stop and nothing here stops a run at its token budget: the budget is checked on its result (the dollar
 run_budget_usd stop is spend_watchdog.py's, from outside). No role is told its budget or spend (owner 2026-11-16); only a
@@ -173,12 +176,44 @@ NOT_FOUND_RX = re.compile(r"could not be found|not found|not loaded|no such unit
 EVENT_LOOKBACK_S = 6 * 3600             # an event ingested this late after its writer stamped it still triggers (N4)
 FUTURE_TOL_S = 300                     # a reading stamped further ahead than this is a clock fault, not fresh
 USAGE_KEYS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
-# The ONE token measure for role caps (ROLE_CAPS_REMEASURE_ON_REAL_RUNS, BENCH 2026-10-28 [A]): each usage field
-# weighted by its price relative to an uncached input token (Anthropic's price classes: a cache write costs 1.25x for
-# the 5-minute TTL and 2x for the 1-hour TTL, a cache read 0.1x, an output token 5x). Checked against the two proof
-# records whose total_cost_usd is known (selftest_role_tokens W4). A raw count weighed the first real Operations run
-# (15 turns, 1.04M of its 1.12M tokens cache reads) at 1,121,450; this measure weighs it at 285,538.
-TOKEN_UNIT = "weighted_v1"             # stamped on each finished run: the unit of its `tokens`
+# The ONE token measure (weighted_v2, RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT; the owner, 2026-11-16: "I
+# want you to properly weight tokens by the model as well so they are more comparable."): each usage field weighted
+# by THAT model's own list price for it, divided by the list price of one uncached REF_MODEL input token. One
+# weighted token = the list cost of one uncached Opus 5.5 input token, whatever model spent it.
+# MODEL_PRICES is the one table (list $ per million tokens: input, 5-minute cache write, 1-hour cache write, cache
+# read, output). Source: Anthropic's pricing page, fetched 2026-11-16 (platform.claude.com/docs/en/about-claude/
+# pricing.md; copy D:\ClaudeWork\rimmandrake\weighted_v2\pricing_2026-11-16.md). Checked against the CLI's own
+# modelUsage costUSD: every costBasis "list" entry of 177 in dispatcher\detached\*.out.json (Opus 5.5 163, Sonnet 5.5
+# 12, Fable 5.2 2) matches to 1e-6 (selftest_weighted_v2_by_model V2); the two Fable 5.2 entries with costBasis
+# "unknown" are priced by the CLI at Opus 5.5 rates, so a run's costUSD is not trusted for spend. Haiku 5.5 is tiered
+# by prompt size and its <=100K-token tier is the row here: 3 of 3 measured entries match it exactly (the residue is
+# web-search fees, $10 per 1,000 searches, which weigh no tokens); its >100K tier is 5x and would be undercounted.
+# A model not in the table raises UnknownModel by name: there is no fallback weight. Was weighted_v1 (to 2026-11-16):
+# weights relative to the SAME model's input token (TOKEN_WEIGHTS below, kept for converting old records), so an
+# Opus and a Fable figure were not comparable and Opus 5.5 cache reads weighed 0.1 where their price is 0.05.
+TOKEN_UNIT = "weighted_v2"             # stamped on each finished run: the unit of its `tokens`
+REF_MODEL = "claude-opus-5-5"
+PRICE_FIELDS = ("input_tokens", "cache_write_5m", "cache_write_1h", "cache_read_input_tokens", "output_tokens")
+MODEL_PRICES = {m: dict(zip(PRICE_FIELDS, (Fraction(x) for x in p))) for m, p in {
+    "claude-fable-5-2": ("8", "10", "16", "0.20", "40"),
+    "claude-fable-5-1": ("10", "12.50", "20", "0.25", "50"),
+    "claude-fable-5": ("10", "12.50", "20", "1", "50"),
+    "claude-opus-5-5": ("4", "5", "8", "0.20", "20"),
+    "claude-opus-5": ("5", "6.25", "10", "0.50", "25"),
+    "claude-opus-4-8": ("5", "6.25", "10", "0.50", "25"),
+    "claude-opus-4-7": ("5", "6.25", "10", "0.50", "25"),
+    "claude-opus-4-6": ("5", "6.25", "10", "0.50", "25"),
+    "claude-opus-4-5": ("5", "6.25", "10", "0.50", "25"),
+    "claude-sonnet-5-5": ("2", "2.50", "4", "0.10", "10"),
+    "claude-sonnet-5": ("2", "2.50", "4", "0.20", "10"),
+    "claude-sonnet-4-6": ("3", "3.75", "6", "0.30", "15"),
+    "claude-sonnet-4-5": ("3", "3.75", "6", "0.30", "15"),
+    "claude-haiku-5-5": ("0.10", "0.125", "0.20", "0.01", "0.50"),
+    "claude-haiku-4-5": ("1", "1.25", "2", "0.10", "5"),
+}.items()}
+# Standard-speed, global-inference rates: fast mode's premium and the US-inference 1.1x are price modifiers, not
+# tokens, and are not weighed (every run in the records reads usage.speed "standard").
+# weighted_v1, for converting records stamped with it (tokens_v2) and nothing else.
 TOKEN_WEIGHTS = {"input_tokens": Fraction(1), "cache_write_5m": Fraction(5, 4), "cache_write_1h": Fraction(2),
                  "cache_read_input_tokens": Fraction(1, 10), "output_tokens": Fraction(5)}
 # genai_env.py (~/dev/Lodestar/bin/lib/genai_env.py) MODEL_VARS: the env var that names each alias's model id.
@@ -638,27 +673,145 @@ def raw_tokens(result):
     return None if v is None else sum(v.values())
 
 
-def run_tokens(result):
-    """Pure. usage of a `claude -p --output-format json` result -> its cost in input-equivalent tokens (TOKEN_WEIGHTS),
-    rounded up, or None (UNMEASURED) as _usage_vals. Cache writes are split by TTL from usage.cache_creation when its
-    two parts are whole non-negative numbers adding up to cache_creation_input_tokens; otherwise every write is
-    weighed at the dearer 1h rate (never a guess in the cheap direction). The run is failed and its spend counted at
-    its budget when UNMEASURED."""
+class UnknownModel(KeyError):
+    """A model id (or alias) MODEL_PRICES has no row for: weighed by no fallback, it is named and raised."""
+
+    def __str__(self):
+        return self.args[0] if self.args else "unknown model"
+
+
+_MODEL_TAIL_RX = re.compile(r"(\[1m\]|@[\w.:-]+|-v\d+(:\d+)?|-\d{8})$")
+
+
+def resolve_model(model):
+    """-> the MODEL_PRICES key of `model`, or raise UnknownModel naming it. Accepts a bare id, a provider-prefixed id
+    (anything before its "claude-" part is dropped), a dated, versioned or [1m] suffix, any case, and a CLI alias
+    (MODEL_VARS, read as model_id reads it: the env, then ~/.claude/settings.json; never assumed)."""
+    if not isinstance(model, str) or not model.strip():
+        raise UnknownModel("no model given: weighted tokens need the model that spent them (MODEL_PRICES)")
+    name = model.strip().lower()
+    if name in MODEL_VARS:
+        env = model_id(name)
+        if not env:
+            raise UnknownModel("model alias %r: its env var %s is unset, so its model is unknown (MODEL_PRICES)"
+                               % (model, MODEL_VARS[name]))
+        return resolve_model(env)
+    i = name.rfind("claude-")
+    mid = name[i:] if i >= 0 else name
+    while True:
+        cut = _MODEL_TAIL_RX.sub("", mid)
+        if cut == mid:
+            break
+        mid = cut
+    if mid not in MODEL_PRICES:
+        raise UnknownModel("unknown model %r (as %r): not in role_launch.MODEL_PRICES; add its list prices from "
+                           "Anthropic's pricing page, there is no fallback weight" % (model, mid))
+    return mid
+
+
+def model_weights(model):
+    """-> {PRICE_FIELDS: Fraction}: `model`'s list price per field / REF_MODEL's input price (weighted_v2)."""
+    ref = MODEL_PRICES[REF_MODEL]["input_tokens"]
+    return {k: p / ref for k, p in MODEL_PRICES[resolve_model(model)].items()}
+
+
+def _whole(x):
+    return finite(x) and x >= 0 and float(x).is_integer()
+
+
+def _weigh(model, inp, w5, w1, read, out):
+    """Exact weighted_v2 of one model's usage fields (a Fraction). An all-zero entry weighs 0 without resolving its
+    model (the CLI's "<synthetic>" turns spend nothing)."""
+    if not (inp or w5 or w1 or read or out):
+        return Fraction(0)
+    W = model_weights(model)
+    return (inp * W["input_tokens"] + w5 * W["cache_write_5m"] + w1 * W["cache_write_1h"]
+            + read * W["cache_read_input_tokens"] + out * W["output_tokens"])
+
+
+def _split(cw, a, b):
+    """Cache writes split by TTL when the two parts are whole and add up; else all at the dearer 1h rate."""
+    if _whole(a) and _whole(b) and int(a) + int(b) == cw:
+        return int(a), int(b)
+    return 0, cw
+
+
+MU_KEYS = ("inputTokens", "cacheCreationInputTokens", "cacheReadInputTokens", "outputTokens")
+
+
+def _model_usage_tokens(mu):
+    """modelUsage {model: {inputTokens, ...}} -> exact weighted_v2 (Fraction), or None when any entry's four fields are
+    not whole numbers (UNMEASURED). An absent field reads 0 here: the CLI omits a field it never billed."""
+    tot = Fraction(0)
+    for m, x in mu.items():
+        if not isinstance(x, dict):
+            return None
+        vals = [x.get(k, 0) for k in MU_KEYS]
+        if not all(_whole(v) for v in vals):
+            return None
+        inp, cw, read, out = (int(v) for v in vals)
+        w5, w1 = _split(cw, x.get("cacheCreationEphemeral5mInputTokens"), x.get("cacheCreationEphemeral1hInputTokens"))
+        tot += _weigh(m, inp, w5, w1, read, out)
+    return tot
+
+
+def run_tokens(result, model=None):
+    """Pure. A `claude -p --output-format json` result -> its spend in weighted_v2 tokens (MODEL_PRICES), rounded up, or
+    None (UNMEASURED). Reads result["modelUsage"] when present: the whole process, subagents included, per model (the
+    CLI's costUSD is the same sum). Else result["usage"] (four fields, as _usage_vals), weighed as `model`. Cache
+    writes are split by TTL when the split adds up, else weighed at the dearer 1h rate (never a guess in the cheap
+    direction). An unknown or missing model raises UnknownModel by name: it is never weighed as some other model. The
+    run is failed and its spend counted at its budget when UNMEASURED."""
+    mu = result.get("modelUsage") if isinstance(result, dict) else None
+    if isinstance(mu, dict) and mu:
+        tot = _model_usage_tokens(mu)
+        return None if tot is None else int(math.ceil(tot))
     u, v = _usage_vals(result)
     if v is None:
         return None
-    cw = v["cache_creation_input_tokens"]
-    w5, w1 = 0, cw
-    split = u.get("cache_creation")
-    if isinstance(split, dict):
-        a, b = split.get("ephemeral_5m_input_tokens"), split.get("ephemeral_1h_input_tokens")
-        if (all(finite(x) and x >= 0 and float(x).is_integer() for x in (a, b))
-                and int(a) + int(b) == cw):
-            w5, w1 = int(a), int(b)
-    W = TOKEN_WEIGHTS
-    tot = (v["input_tokens"] * W["input_tokens"] + w5 * W["cache_write_5m"] + w1 * W["cache_write_1h"]
-           + v["cache_read_input_tokens"] * W["cache_read_input_tokens"] + v["output_tokens"] * W["output_tokens"])
-    return int(math.ceil(tot))
+    w5, w1 = (_split(v["cache_creation_input_tokens"], (u.get("cache_creation") or {}).get("ephemeral_5m_input_tokens"),
+                     (u.get("cache_creation") or {}).get("ephemeral_1h_input_tokens"))
+              if isinstance(u.get("cache_creation"), dict) else (0, v["cache_creation_input_tokens"]))
+    if not any(v.values()):
+        return 0
+    return int(math.ceil(_weigh(resolve_model(model), v["input_tokens"], w5, w1, v["cache_read_input_tokens"],
+                                v["output_tokens"])))
+
+
+def covers_subagents(result):
+    """True when run_tokens(result) read modelUsage, which already holds the run's subagents: a caller adding their
+    transcripts on top would count them twice."""
+    mu = result.get("modelUsage") if isinstance(result, dict) else None
+    return isinstance(mu, dict) and bool(mu) and _model_usage_tokens(mu) is not None
+
+
+def model_usage_of(result):
+    """-> the four raw fields (and TTL split) per model of a result's modelUsage, for a run record to keep, or None."""
+    mu = result.get("modelUsage") if isinstance(result, dict) else None
+    if not isinstance(mu, dict) or not mu:
+        return None
+    keep = MU_KEYS + ("cacheCreationEphemeral5mInputTokens", "cacheCreationEphemeral1hInputTokens")
+    return {m: {k: x[k] for k in keep if k in x} for m, x in mu.items() if isinstance(x, dict)}
+
+
+def tokens_v2(rec):
+    """A stored spend record ({tokens, token_unit, model, model_usage?}) -> (weighted_v2 tokens or None, basis).
+    basis "v2": already weighted_v2, returned as it is (never weighted twice). "v1_usage": a weighted_v1 record that
+    kept its per-model usage, recomputed from it. "v1_bound": a weighted_v1 record with only its figure, times its
+    model's input weight -- an UPPER bound (v1 weighed cache reads at 0.1, and no model's read price is above 0.1x its
+    input price), marked so. "unmeasured": no figure. A record with no token_unit predates the weighting (raw)."""
+    t = rec.get("tokens") if isinstance(rec, dict) else None
+    unit = rec.get("token_unit") if isinstance(rec, dict) else None
+    if unit == TOKEN_UNIT:
+        return (None if t is None else int(t)), ("v2" if t is not None else "unmeasured")
+    mu = rec.get("model_usage") if isinstance(rec, dict) else None
+    if isinstance(mu, dict) and mu:
+        tot = _model_usage_tokens(mu)
+        if tot is not None:
+            return int(math.ceil(tot)), "v1_usage"
+    if t is None:
+        return None, "unmeasured"
+    return int(math.ceil(int(t) * model_weights(rec.get("model"))["input_tokens"])), "v1_bound"
 
 
 PROJECTS = os.path.join(os.path.expanduser("~"), ".claude", "projects")
@@ -711,29 +864,71 @@ def transcript_usage(run, projects=PROJECTS):
                     if since is not None and (utc_epoch(str(e.get("timestamp") or "")[:19] + "Z") or 0) < since:
                         continue     # a resumed session's file also holds the turns of the run it continues
                     if isinstance(m, dict) and isinstance(m.get("usage"), dict) and m.get("id"):
-                        per[(f, m["id"])] = m["usage"]
+                        per[(f, m["id"])] = (m["usage"], m.get("model"))
         except OSError:
             continue
     if not per:
         return None
+    return _sum_usage(per.values())
+
+
+def _sum_usage(pairs):
+    """[(message usage, message model)] -> the summed `usage` (USAGE_KEYS + cache_creation when every write was
+    split) with "model_usage": the same per model in modelUsage's shape, so run_tokens(transcript_result(tu)) weighs
+    each model at its own prices. None when a field is not a whole non-negative number."""
     tot = {k: 0 for k in USAGE_KEYS}
     split = {"ephemeral_5m_input_tokens": 0, "ephemeral_1h_input_tokens": 0}
     whole = True
-    for u in per.values():
-        for k in USAGE_KEYS:
+    mu, unsplit = {}, set()
+    for u, model in pairs:
+        e = mu.setdefault(str(model or "?"), {"inputTokens": 0, "cacheCreationInputTokens": 0,
+                                              "cacheReadInputTokens": 0, "outputTokens": 0,
+                                              "cacheCreationEphemeral5mInputTokens": 0,
+                                              "cacheCreationEphemeral1hInputTokens": 0})
+        for k, mk in zip(USAGE_KEYS, MU_KEYS):
             v = u.get(k) or 0
             if not (finite(v) and v >= 0):
                 return None
             tot[k] += int(v)
+            e[mk] += int(v)
         c = u.get("cache_creation")
         if isinstance(c, dict):
-            for k in split:
+            for k, mk in (("ephemeral_5m_input_tokens", "cacheCreationEphemeral5mInputTokens"),
+                          ("ephemeral_1h_input_tokens", "cacheCreationEphemeral1hInputTokens")):
                 split[k] += int(c.get(k) or 0)
+                e[mk] += int(c.get(k) or 0)
         elif u.get("cache_creation_input_tokens"):
             whole = False
+            unsplit.add(str(model or "?"))
+    for m in unsplit:          # a model with an unsplit write: all its writes at the dearer 1h rate (_split)
+        mu[m].pop("cacheCreationEphemeral5mInputTokens")
+        mu[m].pop("cacheCreationEphemeral1hInputTokens")
     if whole:
         tot["cache_creation"] = split            # run_tokens uses it only when it adds up; else all at the 1h rate
+    tot["model_usage"] = mu
     return tot
+
+
+def transcript_result(tu):
+    """A transcript_usage dict -> a result-shaped dict run_tokens weighs per model (its modelUsage), or None."""
+    if not isinstance(tu, dict):
+        return None
+    return {"usage": {k: v for k, v in tu.items() if k != "model_usage"}, "modelUsage": tu.get("model_usage") or {}}
+
+
+def run_spend(r):
+    """A run record's spend in TOKEN_UNIT for a cap: its tokens when stamped weighted_v2; a weighted_v1 record (before
+    2026-11-16's switch) converted by tokens_v2, or, when its model is not known, its v1 figure as it stands (a v1 Opus
+    figure is at or above its v2 one); UNMEASURED counts its budget."""
+    if r.get("tokens") is None:
+        return r.get("budget", 0)
+    if r.get("token_unit") in (None, TOKEN_UNIT):
+        return r["tokens"]
+    try:
+        t, _basis = tokens_v2(dict(r, model=r.get("model_id") or r.get("model")))
+    except UnknownModel:
+        return r["tokens"]
+    return r["tokens"] if t is None else t
 
 
 def spent_today(rs, now):
@@ -744,7 +939,7 @@ def spent_today(rs, now):
             continue
         if r.get("day") != day:
             continue
-        tot += r["tokens"] if r.get("tokens") is not None else r.get("budget", 0)
+        tot += run_spend(r)
     return tot
 
 
@@ -968,18 +1163,35 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
         if is_codex:
             run["runner"] = "codex"
             run["codex_usage"] = codex_usage(run, res)
-        tok = run_tokens(res)
+        alias = run.get("model_id") or (mode_model(cfg, run.get("mode")) if cfg.get("model") else None)
+        unknown = None
+
+        def weigh(r):
+            nonlocal unknown
+            try:
+                return run_tokens(r, alias)
+            except UnknownModel as e:   # weighed as no other model: UNMEASURED, named in the record and the note
+                unknown = str(e)
+                return None
+        tok = weigh(res)
+        res_tok = tok
         raw = raw_tokens(res)
+        mu = model_usage_of(res)
         if tok is None and not is_codex and obs.get("transcript"):
             tu = obs["transcript"](run)          # no usable result: measure what it spent, never charge the budget
             if tu is not None:
-                tok, raw = run_tokens({"usage": tu}), raw_tokens({"usage": tu})
+                tok, raw = weigh(transcript_result(tu)), raw_tokens({"usage": tu})
+                mu = tu.get("model_usage")
                 run["token_source"] = "transcript"
-        run["tokens"] = tok                     # input-equivalent (TOKEN_WEIGHTS): what caps and spend read
+        run["tokens"] = tok                     # weighted_v2 (MODEL_PRICES): what caps and spend read
         run["raw_tokens"] = raw                 # the unweighted sum, for the record only
         run["token_unit"] = TOKEN_UNIT          # a run without it predates the weighting (its tokens are raw)
+        if mu:
+            run["model_usage"] = mu             # raw per-model fields: any later unit is recomputed from these
+        if unknown and tok is None:
+            run["unknown_model"] = unknown
         run["state"] = "failed" if (not isinstance(res, dict) or res.get("is_error") or
-                                    (not is_codex and run_tokens(res) is None)) else "done"
+                                    (not is_codex and res_tok is None)) else "done"
         res = res if isinstance(res, dict) else {}
         models = sorted(res.get("modelUsage") or {})
         act(do="role_done", role=name, unit=run["unit"], ticket=run.get("item"), note=True,
@@ -989,7 +1201,8 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 name, run.get("mode"), run["unit"], run["state"],
                 " (after %d stop(s))" % run["stop_tries"] if run.get("stop_tries") else "",
                 ("%d (from its transcript, no result)" % tok if run.get("token_source") == "transcript" else tok)
-                if tok is not None else "UNMEASURED (counted at its budget)",
+                if tok is not None else "UNMEASURED (counted at its budget%s)" % (
+                    ": " + run["unknown_model"] if run.get("unknown_model") else ""),
                 run.get("budget") or 0, run["raw_tokens"] if run["raw_tokens"] is not None else "?",
                 ",".join(models) or "?",
                 # an auth failure reports subtype `success` with is_error: "failed ... success" hid it on 10-30
@@ -1062,8 +1275,10 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 # message names no token word); the full why goes to Operations' item (dispatcher.route_note)
                 blind=blind(name, "failed", run.get("mode"), run["unit"]),
                 why="%s run %s ended without a good result (%s)" % (
-                    name, run["unit"], ("usage UNMEASURED: " if res and tok is None else "")
-                    + (text or "no result file")))
+                    name, run["unit"], ("usage UNMEASURED%s: " % (" (%s)" % run["unknown_model"]
+                                                                if run.get("unknown_model") else "")
+                                        if res and tok is None else "")
+                    + (text or ("no result text" if res else "no result file"))))
         run.pop("consumed", None)                        # read only just above; runs stay in state for 2 days
     rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or r.get("close_owed")
                   or now - r["at"] < 2 * 86400]

@@ -3,14 +3,17 @@
 
 The first real Operations run (D:\\ClaudeWork\\rimmandrake\\dispatcher\\roles\\rm-role-operations-1793226998.json:
 15 turns, 105 s; input 30, cache_creation 70,789 all 1h, cache_read 1,042,699, output 7,932) was counted at full weight
-per token, 1,121,450, against a cap of 80,000 -> a false role:Operations:overbudget. A cache read costs a tenth of an
-input token, so the count must weight each usage field by its price class (role_launch.TOKEN_WEIGHTS):
-  W1 the measured run weighs 285,538 input-equivalent tokens (30 + 70,789 x 2 + 1,042,699 x 0.1 + 7,932 x 5, rounded up).
+per token, 1,121,450, against a cap of 80,000 -> a false role:Operations:overbudget. A cache read costs a small
+fraction of an input token, so the count must weight each usage field by its model's price for it (role_launch.
+MODEL_PRICES, unit weighted_v2 since RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT; the run is Opus 5.5):
+  W1 the measured run weighs 233,403 weighted_v2 tokens (30 + 70,789 x 2 + 1,042,699 x 0.05 + 7,932 x 5, rounded up;
+     285,538 in weighted_v1, which weighed every model's read at 0.1 of its input).
   W2 cache writes split by TTL when the result says so (5m x1.25, 1h x2); no split, or a split that does not add up
      to cache_creation_input_tokens, is weighed at the dearer 1h rate (never a guess in the cheap direction).
   W3 a missing / malformed field is still UNMEASURED (None), as before (review Q 8).
-  W4 the weights reproduce the price ratios in the two proof records whose cost is known (haiku 1-turn runs): the
-     weighted count is proportional to total_cost_usd (one per-token price fits both to 1%).
+  W4 the weights reproduce the price ratios in the two proof records whose cost is known (Haiku 5.5 1-turn runs): the
+     weighted count is proportional to total_cost_usd (one per-token price fits both to 1%), and that price is the
+     reference input's ($4 per million weighted_v2 tokens, to 1%: the count is rounded up per run).
   W5 every enabled role's per-run caps hold the measured run with headroom, and its daily cap holds its scheduled
      runs at those caps; every cap carries a measured basis next to it (_caps_why naming the record).
 """
@@ -34,27 +37,28 @@ def check(cond, msg):
 OPS_RUN = {"input_tokens": 30, "cache_creation_input_tokens": 70789, "cache_read_input_tokens": 1042699,
            "output_tokens": 7932,
            "cache_creation": {"ephemeral_1h_input_tokens": 70789, "ephemeral_5m_input_tokens": 0}}
-MEASURED = 285538
+MEASURED = 233403
+OPUS = "claude-opus-5-5"
 
 # W1
-check(RL.run_tokens({"usage": OPS_RUN}) == MEASURED, "W1 the measured Operations run weighs %d (got %r)"
-      % (MEASURED, RL.run_tokens({"usage": OPS_RUN})))
+check(RL.run_tokens({"usage": OPS_RUN}, OPUS) == MEASURED, "W1 the measured Operations run weighs %d (got %r)"
+      % (MEASURED, RL.run_tokens({"usage": OPS_RUN}, OPUS)))
 check(RL.raw_tokens({"usage": OPS_RUN}) == 1121450, "W1 raw_tokens keeps the unweighted sum (1,121,450) for the record")
 # W2
 five = dict(OPS_RUN, cache_creation={"ephemeral_1h_input_tokens": 0, "ephemeral_5m_input_tokens": 70789})
-check(RL.run_tokens({"usage": five}) == 232447,  # 30 + 88,486.25 + 104,269.9 + 39,660, rounded up
-      "W2 an all-5m write weighs x1.25 (got %r)" % RL.run_tokens({"usage": five}))
+check(RL.run_tokens({"usage": five}, OPUS) == 180312,  # 30 + 88,486.25 + 52,134.95 + 39,660, rounded up
+      "W2 an all-5m write weighs x1.25 (got %r)" % RL.run_tokens({"usage": five}, OPUS))
 nosplit = {k: v for k, v in OPS_RUN.items() if k != "cache_creation"}
-check(RL.run_tokens({"usage": nosplit}) == MEASURED, "W2 no TTL split -> the 1h rate")
+check(RL.run_tokens({"usage": nosplit}, OPUS) == MEASURED, "W2 no TTL split -> the 1h rate")
 for bad in ({"ephemeral_1h_input_tokens": 1, "ephemeral_5m_input_tokens": 70788 - 5},
             {"ephemeral_5m_input_tokens": -5, "ephemeral_1h_input_tokens": 70794},
             {"ephemeral_5m_input_tokens": "x"}, "junk"):
-    check(RL.run_tokens({"usage": dict(OPS_RUN, cache_creation=bad)}) == MEASURED,
+    check(RL.run_tokens({"usage": dict(OPS_RUN, cache_creation=bad)}, OPUS) == MEASURED,
           "W2 a split that does not add up (%r) -> the 1h rate" % (bad,))
 # W3
 for bad in ({}, dict(OPS_RUN, output_tokens=True), dict(OPS_RUN, cache_read_input_tokens=-1),
             dict(OPS_RUN, input_tokens=float("nan")), dict(OPS_RUN, input_tokens=1.5)):
-    check(RL.run_tokens({"usage": bad}) is None, "W3 malformed usage -> UNMEASURED")
+    check(RL.run_tokens({"usage": bad}, OPUS) is None, "W3 malformed usage -> UNMEASURED")
 check(RL.run_tokens(None) is None and RL.run_tokens({}) is None, "W3 no usage block -> UNMEASURED")
 # W4: the proof records (haiku, cost known) -- weighted / cost is one price
 proofs = [({"input_tokens": 2, "cache_creation_input_tokens": 24009, "cache_read_input_tokens": 11227,
@@ -63,8 +67,10 @@ proofs = [({"input_tokens": 2, "cache_creation_input_tokens": 24009, "cache_read
           ({"input_tokens": 2, "cache_creation_input_tokens": 52882, "cache_read_input_tokens": 0,
             "output_tokens": 4, "cache_creation": {"ephemeral_1h_input_tokens": 52882, "ephemeral_5m_input_tokens": 0}},
            0.0105786)]
-per = [cost / RL.run_tokens({"usage": u}) for u, cost in proofs]
+per = [cost / RL.run_tokens({"usage": u}, "claude-haiku-5-5") for u, cost in proofs]
 check(abs(per[0] / per[1] - 1) < 0.01, "W4 one per-token price fits both priced proof runs (%r)" % (per,))
+ref = float(RL.MODEL_PRICES[RL.REF_MODEL]["input_tokens"]) / 1e6
+check(all(abs(x / ref - 1) < 0.01 for x in per), "W4 that price is the reference input's, %g $/token (%r)" % (ref, per))
 # W5: the schedule
 sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
 for r in sch["roles"]:

@@ -27,9 +27,9 @@ def iso(t):
     return time.strftime("%Y-%m-%dT%H:%M:%S.000Z", time.gmtime(t))
 
 
-def msg(mid, t, inp, cw, cr, out):
+def msg(mid, t, inp, cw, cr, out, model="claude-opus-5-5"):
     return json.dumps({"type": "assistant", "timestamp": iso(t), "uuid": mid + str(out), "message": {
-        "id": mid, "usage": {"input_tokens": inp, "cache_creation_input_tokens": cw, "cache_read_input_tokens": cr,
+        "id": mid, "model": model, "usage": {"input_tokens": inp, "cache_creation_input_tokens": cw, "cache_read_input_tokens": cr,
                              "output_tokens": out,
                              "cache_creation": {"ephemeral_5m_input_tokens": 0, "ephemeral_1h_input_tokens": cw}}}})
 
@@ -71,9 +71,23 @@ def main():
     want = RL.run_tokens(tr)
     tok, basis = U.measure(RL, run)
     check("a killed run (no result) is charged its transcript, not the flat reserve", (tok, basis) == (want, "transcript") and 0 < tok < 100000, (tok, basis))
-    Path(out).write_text(json.dumps({"session_id": "a", "usage": {"input_tokens": 1, "cache_creation_input_tokens": 0,
-                                                "cache_read_input_tokens": 0, "output_tokens": 1}}))
-    check("a result object wins", U.measure(RL, run) == (6, "result"), U.measure(RL, run))
+    one = {"input_tokens": 1, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0, "output_tokens": 1}
+    Path(out).write_text(json.dumps({"session_id": "a", "usage": one, "modelUsage": {"claude-opus-5-5": {
+        "inputTokens": 1, "outputTokens": 1, "cacheReadInputTokens": 0, "cacheCreationInputTokens": 0}}}))
+    check("a result object wins (weighted_v2: Opus 5.5 input 1 + output 5)", U.measure(RL, run) == (6, "result"),
+          U.measure(RL, run))
+    Path(out).write_text(json.dumps({"session_id": "a", "usage": one}))
+    check("a result with usage but no modelUsage names no model: its transcripts are read, never a guessed weight",
+          U.measure(RL, run) == (RL.run_tokens(U.transcript_result(clone, run["at"], session="a")), "transcript"),
+          U.measure(RL, run))
+    Path(proj, "x.jsonl").write_text(msg("n1", now - 45, 1, 0, 0, 1, model="claude-nonesuch-9-9") + "\n")
+    os.unlink(out)
+    check("a transcript of a model not in MODEL_PRICES is UNMEASURED (the reserve), never weighed as another model",
+          U.measure(RL, run) == (0, "estimated"), U.measure(RL, run))
+    os.unlink(os.path.join(proj, "x.jsonl"))
+    mu = U.transcript_result(clone, run["at"])["modelUsage"]
+    check("the transcript sums carry each message's model (modelUsage)", list(mu) == ["claude-opus-5-5"]
+          and mu["claude-opus-5-5"]["outputTokens"] == 460, mu)
     zero = {"input_tokens": 0, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0, "output_tokens": 0}
     Path(out).write_text(json.dumps({"session_id": "nosuch", "is_error": True, "duration_api_ms": 0, "usage": zero}))
     check("a measured all-zero result (API 429) is measured 0 from the result, not estimated",

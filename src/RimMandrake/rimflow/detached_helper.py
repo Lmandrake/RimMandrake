@@ -1071,13 +1071,21 @@ def conductor_line(text, now, path=None):
 
 
 def outcome(rec, env):
-    """-> (short status, tokens or None, result tail). Reads claude's JSON and systemd's ExecStopPost variables."""
+    """-> (short status, weighted_v2 tokens or None, result tail). Reads claude's JSON and systemd's ExecStopPost
+    variables. The tokens come from the result's modelUsage (the whole process, each model at its own list prices),
+    else its usage as the record's model; a model not in role_launch.MODEL_PRICES leaves them UNMEASURED, named in
+    rec["unknown_model"], never weighed as another model."""
     import role_launch as RL
     res = RL.read_result({"out": rec["out"], "err": rec["err"]})
     svc = env.get("SERVICE_RESULT") or "unknown"
     code = env.get("EXIT_CODE") or "-"
     status = env.get("EXIT_STATUS") or "-"
-    tokens = RL.run_tokens(res) if isinstance(res, dict) else None
+    tokens = None
+    if isinstance(res, dict):
+        try:
+            tokens = RL.run_tokens(res, rec.get("model"))
+        except RL.UnknownModel as e:
+            rec["unknown_model"] = str(e)
     if isinstance(res, dict):
         tail = str(res.get("result") or res.get("subtype") or "")
         if res.get("is_error"):
@@ -1248,9 +1256,11 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     usd, how = measured_cost(rec)       # read now, with the tokens, before anything else touches the file
     took = int(now - rec["at"])
     # the owner, 2026-11-16: "Please speak in terms of weighted tokens not money." The dollars stay in the record
-    # (cost_usd) for the stage ceiling; what a person reads says weighted tokens only (TOKEN_WEIGHTS, run_tokens)
+    # (cost_usd) for the stage ceiling; what a person reads says weighted tokens only (weighted_v2: MODEL_PRICES,
+    # run_tokens)
+    unmeasured = "UNMEASURED (%s)" % rec["unknown_model"] if rec.get("unknown_model") else "UNMEASURED"
     text = ("DETACHED run %s ended %s after %d s, %s weighted tokens (model %s). Result: %s. Output %s; clone %s."
-            % (unit, st, took, "UNMEASURED" if tokens is None else "{:,}".format(tokens), rec["model"], tail or "-",
+            % (unit, st, took, unmeasured if tokens is None else "{:,}".format(tokens), rec["model"], tail or "-",
                rec["out"], rec["clone"]))
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
@@ -1286,13 +1296,14 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
     try:
         path = conductor_line("%s on %s (%s seat): %s, %d s, %s weighted tokens. %s. READ: rimflow show %s.%s"
-                              % (unit, item, seat, st, took, "UNMEASURED" if tokens is None else "{:,}".format(tokens),
+                              % (unit, item, seat, st, took, unmeasured if tokens is None else "{:,}".format(tokens),
                                  fulltext.clip(tail, 200, rec["out"]) or "-", item,
                                  " OWED: " + owed + "." if owed else ""), now, log_path)
         steps.append("conductor log " + path)
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)
-    rec.update(status="finished", ended=now, result=st, tokens=tokens, steps=steps,
+    import role_launch as RL
+    rec.update(status="finished", ended=now, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
                cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how, owed_close=owed)
     write_record(rec)
     return 0, "FINISHED %s: %s" % (unit, "; ".join(steps))

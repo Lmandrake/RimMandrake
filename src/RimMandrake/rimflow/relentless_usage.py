@@ -9,10 +9,13 @@ import json
 import os
 import calendar
 import re
+import sys
 import time
 
 SIDECAR = ".clone"
 KEYS = ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")
+MU_KEYS = ("inputTokens", "cacheCreationInputTokens", "cacheReadInputTokens", "outputTokens")   # modelUsage's names
+MU_SPLIT = ("cacheCreationEphemeral5mInputTokens", "cacheCreationEphemeral1hInputTokens")
 
 
 def sidecar_path(run):
@@ -61,8 +64,11 @@ def _files(d, since, subagents_only=False):
 
 
 def transcript_result(clone, since, until=None, session=None, subagents_only=False):
-    """-> a result-shaped {"usage": ...} summed over the assistant messages written in `clone`'s transcripts at or
-    after `since` (one message counted once by its id, at its largest output), or None when there are none.
+    """-> a result-shaped {"usage": ..., "modelUsage": ...} summed over the assistant messages written in `clone`'s
+    transcripts at or after `since` (one message counted once by its id, at its largest output), or None when there
+    are none. modelUsage holds the same sums per message model, so role_launch.run_tokens weighs each model at its own
+    list prices (weighted_v2, RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT); a message with no model is "?",
+    which run_tokens refuses by name rather than weigh as another model.
     subagents_only: only the subagents/ transcripts, of `session` when it is known, else of every session there.
     session without subagents_only: only that session's own transcript (<session>.jsonl), never a neighbour's."""
     if not clone:
@@ -93,27 +99,32 @@ def transcript_result(clone, since, until=None, session=None, subagents_only=Fal
                     if t is None or t < since or (until and t > until):
                         continue
                     key = m.get("id") or "%s:%s" % (p, d.get("uuid"))
-                    if key not in best or (u.get("output_tokens") or 0) >= (best[key].get("output_tokens") or 0):
-                        best[key] = u
+                    if key not in best or (u.get("output_tokens") or 0) >= (best[key][0].get("output_tokens") or 0):
+                        best[key] = (u, m.get("model"))
         except OSError:
             continue
     if not best:
         return None
     tot = dict.fromkeys(KEYS, 0)
     w5 = w1 = 0
-    for u in best.values():
-        for k in KEYS:
+    mu = {}
+    for u, model in best.values():
+        e = mu.setdefault(str(model or "?"), dict.fromkeys(MU_KEYS + MU_SPLIT, 0))
+        for k, mk in zip(KEYS, MU_KEYS):
             v = u.get(k)
-            tot[k] += v if type(v) is int and v >= 0 else 0
+            v = v if type(v) is int and v >= 0 else 0
+            tot[k] += v
+            e[mk] += v
         cw = u.get("cache_creation_input_tokens")
         cc = u.get("cache_creation")
         a, b = (cc.get("ephemeral_5m_input_tokens"), cc.get("ephemeral_1h_input_tokens")) if isinstance(cc, dict) else (None, None)
-        if type(a) is int and type(b) is int and a + b == cw:
-            w5, w1 = w5 + a, w1 + b
-        else:
-            w1 += cw if type(cw) is int else 0         # an unsplit write is weighed at the dearer rate
+        if not (type(a) is int and type(b) is int and a + b == cw):
+            a, b = 0, (cw if type(cw) is int else 0)   # an unsplit write is weighed at the dearer rate
+        w5, w1 = w5 + a, w1 + b
+        e[MU_SPLIT[0]] += a
+        e[MU_SPLIT[1]] += b
     tot["cache_creation"] = {"ephemeral_5m_input_tokens": w5, "ephemeral_1h_input_tokens": w1}
-    return {"usage": tot}
+    return {"usage": tot, "modelUsage": mu}
 
 
 def subagent_tokens(RL, run, res):
@@ -138,7 +149,24 @@ def measure(RL, run):
         run["runner"] = "codex"
         run["codex_usage"] = res.get("codex_usage", "UNMEASURED") if isinstance(res, dict) else "UNMEASURED"
         return 0, "codex"
-    tok = RL.run_tokens(res) if res else None
+    try:
+        return _measure(RL, run, res)
+    except RL.UnknownModel as e:    # never weighed as another model: unmeasured, so the caller charges the reserve
+        sys.stderr.write("relentless_usage: run %s UNMEASURED: %s\n" % (run.get("unit") or run.get("out"), e))
+        return 0, "estimated"
+
+
+def _measure(RL, run, res):
+    try:
+        tok = RL.run_tokens(res) if res else None
+    except RL.UnknownModel:     # a result with usage but no modelUsage names no model: its transcripts name each one
+        tok = None
+        sid = res.get("session_id") if isinstance(res, dict) else None
+        tr = transcript_result(clone_of(run), run.get("at") or 0, session=sid) if sid else None
+        ttok = RL.run_tokens(tr) if tr else None
+        if ttok is not None:
+            sub = subagent_tokens(RL, run, res)
+            return (int(ttok) + sub, "transcript+subagents") if sub else (int(ttok), "transcript")
     if tok is not None and int(tok) == 0:
         sid = res.get("session_id") if isinstance(res, dict) else None
         tr = transcript_result(clone_of(run), run.get("at") or 0, session=sid) if sid else None
@@ -146,6 +174,8 @@ def measure(RL, run):
         if ttok:
             return int(ttok), "transcript"
     if tok is not None:
+        if RL.covers_subagents(res):    # modelUsage is the whole process: its subagents are in it already
+            return int(tok), "result"
         sub = subagent_tokens(RL, run, res)
         return (int(tok) + sub, "result+subagents") if sub else (int(tok), "result")
     tr = transcript_result(clone_of(run), run.get("at") or 0)

@@ -8,7 +8,9 @@ empty, so it was charged "UNMEASURED (counted at its budget)" = 450,000 against 
 transcript when the result is missing:
   T1 launch_argv carries --session-id when given; launch() makes one and returns it for the run record.
   T2 transcript_usage sums each message id ONCE (a message is logged once per content block with the same usage),
-     with the cache TTL split, and includes the session's subagent transcripts.
+     with the cache TTL split, and includes the session's subagent transcripts; the sums are kept per message model
+     too, and weighed in weighted_v2 each model at its own list prices (an Opus 5.5 main thread, a Sonnet 5.5
+     subagent: RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT).
   T3 a run launched before the pin (no `session`) is found by its unit in the first lines of a recent transcript;
      an older transcript naming the same unit is not taken.
   T4 no transcript, or one with no assistant turn -> None (UNMEASURED, still counted at its budget).
@@ -34,9 +36,12 @@ def check(cond, msg):
         FAILS.append(msg)
 
 
-def msg_lines(mid, usage, blocks=2):
+OPUS, SONNET = "claude-opus-5-5", "claude-sonnet-5-5"
+
+
+def msg_lines(mid, usage, blocks=2, model=OPUS):
     """One API message as the transcript logs it: one line per content block, the same usage on each."""
-    return [json.dumps({"type": "assistant", "message": {"id": mid, "usage": usage,
+    return [json.dumps({"type": "assistant", "message": {"id": mid, "model": model, "usage": usage,
                                                          "content": [{"type": "text", "text": "b%d" % i}]}})
             for i in range(blocks)]
 
@@ -82,12 +87,22 @@ def main():
         user = json.dumps({"type": "user", "message": {"content": "[RimFlow Dispatcher; role launch rm-role-x-5] go"}})
         write(os.path.join(proj, "-c", sid + ".jsonl"), [user] + msg_lines("m1", U1, 3) + ["not json"]
               + msg_lines("m2", U2, 1) + [json.dumps({"type": "user", "message": {"content": "r"}})])
-        write(os.path.join(proj, "-c", sid, "subagents", "agent-1.jsonl"), msg_lines("s1", US, 2))
+        write(os.path.join(proj, "-c", sid, "subagents", "agent-1.jsonl"), msg_lines("s1", US, 2, model=SONNET))
         # T2
         got = RL.transcript_usage({"session": sid, "unit": "rm-role-x-5", "at": 0}, proj)
-        check(got == WANT, "T2 each message id once, TTL split summed, subagents included (%r)" % (got,))
-        check(RL.run_tokens({"usage": got}) == 13 + 200 * 1.25 + 1000 * 2 + 1110 + 800,
-              "T2 weighs as a result would (%r)" % RL.run_tokens({"usage": got}))
+        check({k: v for k, v in (got or {}).items() if k != "model_usage"} == WANT,
+              "T2 each message id once, TTL split summed, subagents included (%r)" % (got,))
+        mu = (got or {}).get("model_usage") or {}
+        check(sorted(mu) == [OPUS, SONNET] and mu[SONNET]["outputTokens"] == 10 and mu[OPUS]["outputTokens"] == 150,
+              "T2 the sums are kept per message model too (%r)" % (mu,))
+        # weighted_v2 (MODEL_PRICES): the Opus 5.5 main thread at its prices, the Sonnet 5.5 subagent at its own
+        wo, ws = RL.model_weights(OPUS), RL.model_weights(SONNET)
+        want2 = (12 * wo["input_tokens"] + 200 * wo["cache_write_5m"] + 1000 * wo["cache_write_1h"]
+                 + 11000 * wo["cache_read_input_tokens"] + 150 * wo["output_tokens"]
+                 + 1 * ws["input_tokens"] + 100 * ws["cache_read_input_tokens"] + 10 * ws["output_tokens"])
+        tok = RL.run_tokens(RL.transcript_result(got))
+        check(tok == 3590 == want2, "T2 weighs each model at its own prices, as a result would (%r, want %s)"
+              % (tok, want2))
         # T3
         got3 = RL.transcript_usage({"unit": "rm-role-x-5", "at": time.time() - 30}, proj)
         check(got3 is not None and got3["output_tokens"] == 150, "T3 found by unit without a session (%r)" % (got3,))
@@ -113,7 +128,7 @@ def main():
             return acts, rs["runs"][0]
         acts, run = supervise(lambda r: RL.transcript_usage(r, proj))
         done = [x for x in acts if x["do"] == "role_done"]
-        check(run["state"] == "failed" and run["tokens"] == RL.run_tokens({"usage": WANT})
+        check(run["state"] == "failed" and run["tokens"] == 3590
               and run.get("token_source") == "transcript", "T5 no result: failed, measured from transcript (%r)" % (
                   {k: run.get(k) for k in ("state", "tokens", "token_source")},))
         check(done and "from its transcript" in done[0]["why"] and "UNMEASURED" not in done[0]["why"],

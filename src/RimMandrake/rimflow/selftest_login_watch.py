@@ -314,7 +314,7 @@ def test_alarm_run_retried_after_login_heals():
     check("still held hours later", not decide(now + 8 * 3600, dead)[0])
     again, _ = decide(now + 14 * 3600)
     check("the login back: it runs again", len(again) == 1)
-    result[0] = {"subtype": "success", "result": "fine", "usage": SD.usage(input_tokens=10)}
+    result[0] = SD.cli(SD.usage(input_tokens=10), subtype="success", result="fine")
     check("a good rerun raises nothing", not supervise(now + 14 * 3600 + 120))
     check("and is not repeated", not decide(now + 15 * 3600)[0])
 

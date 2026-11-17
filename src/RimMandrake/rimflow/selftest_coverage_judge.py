@@ -49,6 +49,8 @@ def answer(verdict, gaps=(), tokens=True, checklist=None):
     if tokens:
         res["usage"] = {"input_tokens": 10, "output_tokens": 2, "cache_read_input_tokens": 0,
                         "cache_creation_input_tokens": 0}
+        res["modelUsage"] = {"claude-opus-5-5": {"inputTokens": 10, "outputTokens": 2, "cacheReadInputTokens": 0,
+                                                 "cacheCreationInputTokens": 0}}   # as `claude -p` writes it
     return json.dumps(res)
 
 

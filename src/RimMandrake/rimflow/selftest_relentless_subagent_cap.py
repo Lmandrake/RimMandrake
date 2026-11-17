@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """selftest_relentless_subagent_cap.py - RELENTLESS_SUBAGENT_DECIDE_THREE_PER_BUILDER: a builder run's subagents are
-charged with it (their transcripts are added to a result-basis measure, so charge() sees them), and only then may a
+charged with it (a result's modelUsage holds them; a usage-only result adds their transcripts), and only then may a
 builder start them: at most three, said in the worker brief from relentless_rules.json worker_subagent_cap, none for
 a pilot sitting, and rm-builder carries the Agent tool."""
 import json
@@ -18,6 +18,7 @@ import relentless_usage as U    # noqa: E402
 import role_launch as RL        # noqa: E402
 
 FAILS = []
+OPUS = "claude-opus-5-5"
 
 
 def check(name, ok, got=None):
@@ -32,7 +33,7 @@ def iso(t):
 
 def msg(mid, t, inp, out):
     return json.dumps({"type": "assistant", "timestamp": iso(t), "uuid": mid, "message": {
-        "id": mid, "usage": {"input_tokens": inp, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0,
+        "id": mid, "model": OPUS, "usage": {"input_tokens": inp, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0,
                              "output_tokens": out}}})
 
 
@@ -59,7 +60,7 @@ def measuring():
     proj = U.project_dir(clone)
     os.makedirs(os.path.join(proj, "S1", "subagents"))
     os.makedirs(os.path.join(proj, "S0", "subagents"))
-    Path(proj, "S1.jsonl").write_text(msg("main", now - 50, 1000, 100) + "\n")     # the main session: in the result
+    Path(proj, "S1.jsonl").write_text(msg("main", now - 5, 1000, 100) + "\n")      # the main session: in the result
     Path(proj, "S1", "subagents", "agent-a.jsonl").write_text(
         "\n".join([msg("a1", now - 40, 500, 50), msg("a2", now - 30, 300, 20)]) + "\n")
     Path(proj, "S1", "subagents", "agent-b.jsonl").write_text(msg("b1", now - 20, 200, 10) + "\n")
@@ -68,29 +69,35 @@ def measuring():
     os.makedirs(os.path.dirname(out))
     run = {"unit": "u", "at": now - 100, "out": out, "err": out + ".err"}
     U.note_clone(run, clone)
-    res = {"session_id": "S1", "usage": usage(1000, 100)}
+    def mu(inp, out):
+        return {OPUS: {"inputTokens": inp, "outputTokens": out, "cacheReadInputTokens": 0, "cacheCreationInputTokens": 0}}
+    main = RL.run_tokens({"usage": usage(1000, 100)}, OPUS)
+    subs = RL.run_tokens({"usage": usage(1000, 80)}, OPUS)
+    # the CLI's result: usage is the main thread, modelUsage the whole process (its subagents in it)
+    res = {"session_id": "S1", "usage": usage(1000, 100), "modelUsage": mu(2000, 180)}
     Path(out).write_text(json.dumps(res))
-    main = RL.run_tokens(res)
-    subs = RL.run_tokens({"usage": usage(1000, 80)})
     tok, basis = U.measure(RL, run)
-    check("a result run is charged its own session's subagents too, not another session's",
-          (tok, basis) == (main + subs, "result+subagents") and subs > 0, (tok, basis, main, subs))
+    check("a result's modelUsage holds its subagents: charged once, their transcripts not added again",
+          (tok, basis) == (main + subs, "result") and subs > 0, (tok, basis, main, subs))
     st = Store(tmp)
     s = {"spent": 0}
     R.charge(st, s, tok, now, {"run_reserve": 1200000}, "u", basis)
     day = json.loads(Path(st.p("spend-%s.json" % R.day_key(now))).read_text())
     check("charge() books the subagents' spend and says how it was reached",
-          day["runs"]["u"] == main + subs and day["basis"].get("u") == "result+subagents", day)
+          day["runs"]["u"] == main + subs and "u" not in (day.get("basis") or {}), day)   # a result basis is not listed
 
-    Path(out).write_text(json.dumps({"usage": usage(1000, 100)}))     # no session id: every subagent since the run began
-    allsubs = RL.run_tokens({"usage": usage(10000, 980)})
-    check("with no session id, every subagent in the clone since the run began is charged (dear, never cheap)",
-          U.measure(RL, run) == (main + allsubs, "result+subagents"), U.measure(RL, run))
-    Path(out).write_text(json.dumps({"session_id": "S9", "usage": usage(1000, 100)}))
+    Path(out).write_text(json.dumps({"session_id": "S1", "usage": usage(1000, 100)}))   # usage only: no model named
+    check("a usage-only result is charged its own session's transcript and subagents, not another session's",
+          U.measure(RL, run) == (main + subs, "transcript+subagents"), (U.measure(RL, run), main, subs))
+    Path(out).write_text(json.dumps({"usage": usage(1000, 100)}))     # no session id: every transcript since the run began
+    allsubs = RL.run_tokens({"usage": usage(10000, 980)}, OPUS)
+    check("with no session id, every transcript in the clone since the run began is charged (dear, never cheap)",
+          U.measure(RL, run) == (main + allsubs, "transcript"), U.measure(RL, run))
+    Path(out).write_text(json.dumps({"session_id": "S9", "usage": usage(1000, 100), "modelUsage": mu(1000, 100)}))
     check("a run with no subagents is charged its result alone", U.measure(RL, run) == (main, "result"), U.measure(RL, run))
     run2 = dict(run, at=now - 10)
-    Path(out).write_text(json.dumps(res))
-    check("subagent messages from before the run are not charged", U.measure(RL, run2) == (main, "result"),
+    Path(out).write_text(json.dumps({"session_id": "S1", "usage": usage(1000, 100)}))
+    check("subagent messages from before the run are not charged", U.measure(RL, run2) == (main, "transcript"),
           U.measure(RL, run2))
 
 

@@ -34,7 +34,7 @@ def harvest(rs, status, ok=True, concept=C1, unit="rm-role-designer-1", cfg=None
     rs.setdefault("runs", []).append({"state": "running", "unit": unit, "at": T - 600, "day": RL.day_of(T),
                                       "budget": 90000, "mode": "run", "item": "X_ITEM", "concept": concept,
                                       "scope": "S.scope", "marker": "M"})
-    res = {"subtype": "success", "usage": {k: 10 for k in RL.USAGE_KEYS}}
+    res = SD.cli({k: 10 for k in RL.USAGE_KEYS}, subtype="success")  # a real result names its model
     acts = []
     obs = {"unit_state": lambda u: "inactive", "result": lambda r: res, "procs": lambda *a, **k: [],
            "stage_close": lambda c, u, t: (ok, [] if ok else ["bad result"]), "stage_land": lambda c, u: None,

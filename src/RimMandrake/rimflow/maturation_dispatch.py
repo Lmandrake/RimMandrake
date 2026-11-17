@@ -145,12 +145,20 @@ UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
 READ_SLACK = 0.5        # USD: a release read at this spend, give or take, is still a reading of it
 # The owner, 2026-11-16 1:08 PM PST: "Please speak in terms of weighted tokens not money. The money quotes don't
-# translate meaningfully." Every line a person reads states spend in weighted tokens (role_launch.TOKEN_WEIGHTS,
-# input-equivalent); the ceiling and the caps are still KEPT in list dollars inside, and wt() converts at the rate
-# measured 2026-11-16 over the finished Opus detached-run records holding both figures (172 runs, median 350,303
-# weighted tokens per list dollar; Sonnet runs read ~625k, so a stage that ran Sonnet reads a little high in tokens).
-# Moving the ceiling and caps themselves to tokens is RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS.
-WT_PER_USD = 350303
+# translate meaningfully." Every line a person reads states spend in weighted tokens, unit weighted_v2 (role_launch
+# MODEL_PRICES: each field at its model's list price / the Opus 5.5 input price; the owner, 2026-11-16: "I want you to
+# properly weight tokens by the model as well so they are more comparable"). The ceiling and the caps are still KEPT
+# in list dollars inside, and a list dollar is exactly 1e6 / that input price weighted_v2 tokens for every model, so
+# wt() is exact, not a median (until 2026-11-16 it was 350,303 weighted_v1 per dollar, the Opus median of 172 runs,
+# reading Sonnet stages high). A cost_usd the CLI marks costBasis other than "list" is not list-priced
+# (RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT). Moving the ceiling and caps themselves to tokens is
+# RIMMANDRAKE_KEEP_STAGE_CEILING_IN_TOKENS_NOT_LIST_DOLLARS.
+def _wt_per_usd():
+    import role_launch as RL
+    return int(round(1e6 / RL.MODEL_PRICES[RL.REF_MODEL]["input_tokens"]))
+
+
+WT_PER_USD = _wt_per_usd()      # 250,000 at Opus 5.5's $4/MTok input
 
 
 def to_wt(usd):

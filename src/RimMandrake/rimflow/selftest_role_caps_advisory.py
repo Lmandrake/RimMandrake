@@ -135,7 +135,7 @@ def main():
         rs = spent_rs(t, 250000)
         rs["runs"].append({"state": "running", "unit": "rm-role-operations-2", "at": t - 600, "day": RL.day_of(t),
                            "budget": 60000, "mode": "run", "item": "ROLES_ITEM_X", "scope": "S.scope", "marker": "M"})
-        res = {"subtype": "success", "usage": SD.usage(input_tokens=90000)}
+        res = SD.cli(SD.usage(input_tokens=90000), subtype="success")  # a real result names its model
         obs = {"unit_state": lambda u: "inactive", "result": lambda r: res, "procs": lambda *a, **k: []}
         acts = []
         RL._supervise_one("Operations", rs, cfg, obs, t, lambda **kw: acts.append(kw), set())

@@ -168,7 +168,9 @@ def test_launch_and_finish():
     check(rec and rec["status"] == "running" and rec["clone"] == CLONE, "record: the run is recorded running")
     with open(rec["out"], "w") as f:
         json.dump({"result": "Built it; sha abc123.", "usage": {"input_tokens": 10, "output_tokens": 5,
-                   "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}}, f)
+                   "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0},
+                   "modelUsage": {"claude-opus-5-5": {"inputTokens": 10, "outputTokens": 5, "cacheReadInputTokens": 0,
+                                                      "cacheCreationInputTokens": 0}}}, f)   # as claude -p writes it
     fcalls, frun = recorder(out="PUBLISHED abcdef1234567")
     frun_calls = fcalls
     rc, text = DH.finish(unit, now=T0 + 600, env={"SERVICE_RESULT": "success", "EXIT_CODE": "exited",
@@ -761,14 +763,15 @@ def _test_midreturn():
     ORIGIN.update({"events": None, "fetch_rc": 0, "grep_rc": None})
 
 
-def _claude_json(total=1.25, models=(("claude-opus", 1.0), ("claude-haiku", 0.25)), result="Built it."):
+def _claude_json(total=1.25, models=(("claude-opus-5-5", 1.0), ("claude-haiku-5-5", 0.25)), result="Built it."):
     """A claude -p result in the key order measured 2026-11-15 (total_cost_usd near the head, result near the end)."""
     d = {"duration_api_ms": 1, "stop_reason": "end_turn", "session_id": "s"}
     if total is not None:
         d["total_cost_usd"] = total
     d["usage"] = {"input_tokens": 10, "output_tokens": 5, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0}
     if models is not None:
-        d["modelUsage"] = {m: {"inputTokens": 1, "costUSD": c} for m, c in models}
+        d["modelUsage"] = {m: {"inputTokens": 1, "outputTokens": 0, "cacheReadInputTokens": 0,
+                               "cacheCreationInputTokens": 0, "costUSD": c} for m, c in models}
     d.update(is_error=False, subtype="success", result=result, type="result", uuid="u")
     return json.dumps(d)
 
@@ -821,8 +824,18 @@ def test_result_kept_whole():
     DH.finish(unit, now=T0 + 900, env={"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"},
               runner=frun)
     r2 = DH.read_record(unit)
-    check(r2.get("cost_usd") == 1.25 and isinstance(r2.get("tokens"), int),
-          "cost: finish records claude's total_cost_usd and the tokens (%s, %s)" % (r2.get("cost_usd"), r2.get("tokens")))
+    check(r2.get("cost_usd") == 1.25 and isinstance(r2.get("tokens"), int) and r2.get("token_unit") == "weighted_v2",
+          "cost: finish records claude's total_cost_usd and the weighted_v2 tokens (%s, %s %s)"
+          % (r2.get("cost_usd"), r2.get("tokens"), r2.get("token_unit")))
+    # a result whose model is not in role_launch.MODEL_PRICES is UNMEASURED by name, never weighed as another model
+    nop = os.path.join(TMP, "noprice.out")
+    with open(nop, "w") as f:
+        json.dump({"result": "x", "usage": {"input_tokens": 10, "output_tokens": 5, "cache_creation_input_tokens": 0,
+                                            "cache_read_input_tokens": 0}}, f)
+    nrec = {"out": nop, "err": nop + ".err", "model": "claude-nonesuch-9-9"}
+    _, ntok, _ = DH.outcome(nrec, {"SERVICE_RESULT": "success"})
+    check(ntok is None and "claude-nonesuch-9-9" in (nrec.get("unknown_model") or ""),
+          "cost: a model not in the price table is UNMEASURED by name (%s, %r)" % (ntok, nrec.get("unknown_model")))
     nt = non_systemctl(fcalls)[0][0]
     nt = nt[nt.index("--text") + 1]
     # the owner, 2026-11-16 1:08 PM PST: "Please speak in terms of weighted tokens not money." The record keeps its

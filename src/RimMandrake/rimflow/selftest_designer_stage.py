@@ -1573,6 +1573,9 @@ def wiring(tmp, repo):
                     "scope": "S.scope", "marker": "M"}]}
     res = {"subtype": "success", "usage": {k: 0 for k in RL.USAGE_KEYS}}
     res["usage"]["input_tokens"] = 4000
+    # a real result's shape: modelUsage names the model (an alias alone weighs as no model: weighted_v2)
+    res["modelUsage"] = {"claude-opus-5-5": {"inputTokens": 4000, "outputTokens": 0, "cacheReadInputTokens": 0,
+                                             "cacheCreationInputTokens": 0}}
     acts = []
     obs = {"unit_state": lambda u: "inactive", "result": lambda r: res, "procs": lambda *a, **k: []}
     RL._supervise_one(row["name"], rs, dict(RL.ROLE_DEFAULTS, **row), obs, now, lambda **kw: acts.append(kw), set())

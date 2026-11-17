@@ -949,6 +949,14 @@ def usage(**kw):
     return u
 
 
+def cli(u, model="claude-opus-5-5", **extra):
+    """A result as the CLI writes it: usage (the main thread) and modelUsage (the whole process, per model), which
+    weighted_v2 weighs at that model's list prices (role_launch.MODEL_PRICES)."""
+    mu = {model: {"inputTokens": u["input_tokens"], "cacheCreationInputTokens": u["cache_creation_input_tokens"],
+                  "cacheReadInputTokens": u["cache_read_input_tokens"], "outputTokens": u["output_tokens"]}}
+    return dict({"usage": u, "modelUsage": mu}, **extra)
+
+
 def robs(status=None, account="acct", unit="active", result=None, off=None):
     return {"ops": lambda: status, "account": lambda: account, "unit_state": lambda u: unit,
             "result": lambda run: result, "off": lambda p: off}
@@ -985,9 +993,10 @@ def test_role_reading_and_band():
         check(RL.band(c, {"runway": rw, "week_left": wl})[0] == want, "band: runway %s week_left %s -> %s" % (rw, wl, want))
     check(RL.band(operations(), {"runway": 0.1, "week_left": 5})[0] == "NONE", "band: a role with no bands -> NONE x1")
     check(RL.run_tokens({"usage": {"input_tokens": 2, "cache_creation_input_tokens": 24009,
-                                   "cache_read_input_tokens": 11227, "output_tokens": 4}}) == 49163,
-          "run tokens: all four usage fields, price-weighted (the proof's trivial haiku run: 35242 raw, 49163 weighted: "
-          "no TTL split -> the 1h write rate)")
+                                   "cache_read_input_tokens": 11227, "output_tokens": 4}}, "claude-haiku-4-5") == 12291,
+          "run tokens: all four usage fields, price-weighted (the usage of the proof's trivial haiku run, 35242 raw, "
+          "weighed as Haiku 4.5 in weighted_v2: 2x0.25 + 24009x0.5 (no TTL split -> the 1h write rate) + 11227x0.025 "
+          "+ 4x1.25 = 12290.7, rounded up)")
     check(RL.wsl_path("D:\\ClaudeWork\\x\\OFF") == "/mnt/d/ClaudeWork/x/OFF", "off_file: Windows path -> /mnt/d")
 
 
@@ -1028,7 +1037,7 @@ def test_role_gates():
     check(a and a[0]["do"] == "role_launch" and a[0]["budget"] == 18000, "AMBER 08:00: runs at x0.6")
     t20 = at_local("20:00")
     a = role_acts(rdecide([conductor()], st, robs(ops_status(t20, runway=1.2), unit="inactive",
-                                                  result={"usage": usage(output_tokens=10)}), t20))
+                                                  result=cli(usage(output_tokens=10))), t20))
     check("role_launch" not in [x["do"] for x in a] and any("band AMBER" in x.get("why", "") for x in a),
           "AMBER 20:00: held (first slot only)")
     st = fresh()
@@ -1063,11 +1072,11 @@ def test_role_economy_and_alarms():
     alarms2 = dict(alarms, k2={"state": "OPEN", "item": "OPS_NEW_ONE"})
     a = role_acts(rdecide([operations()], st, robs(ops_status(t, alarms=alarms2), unit="active"), t))
     check(a == [], "a new alarm waits while a run is going (one run per role)")
-    res = {"usage": usage(input_tokens=100, output_tokens=50), "modelUsage": {"m-x": {}}, "subtype": "success"}
+    res = cli(usage(input_tokens=100, output_tokens=50), subtype="success")
     a = role_acts(rdecide([operations()], st, robs(ops_status(t, alarms=alarms2), unit="inactive", result=res), t))
     ds = [x["do"] for x in a]
     check(ds == ["role_done", "role_launch"], "run finished -> role_done (noted), then the new alarm runs: %s" % ds)
-    check("350 weighted tokens" in a[0]["why"] and "raw 150" in a[0]["why"] and "m-x" in a[0]["why"],
+    check("350 weighted tokens" in a[0]["why"] and "raw 150" in a[0]["why"] and "claude-opus-5-5" in a[0]["why"],
           "role_done records weighted and raw tokens and the model used")
     check(a[1]["ticket"] == "OPS_NEW_ONE" and a[1]["budget"] == 60000, "alarm run: noted on the alarm item, run cap")
     check(st["roles"]["Operations"]["alarms_seen"] == ["OPS_NEW_ONE", "OPS_OLD_ONE"]
@@ -1079,7 +1088,7 @@ def test_role_economy_and_alarms():
                                           "mode": "run", "item": "ROLES_ITEM_X", "state": "running",
                                           "scope": "s.scope"}]
     a = role_acts(rdecide([operations()], st, robs(ops_status(t + 60), unit="inactive",
-                                                   result={"usage": usage(output_tokens=5000)}), t + 60))
+                                                   result=cli(usage(output_tokens=5000))), t + 60))
     check("role:Operations:overbudget" in [x.get("kind") for x in a], "a run over its budget: alarm")
     st["roles"]["Operations"]["runs"] = [{"unit": "u3", "at": t, "day": RL.day_of(t), "budget": 1000,
                                           "mode": "run", "item": "ROLES_ITEM_X", "state": "running",
@@ -1462,7 +1471,7 @@ def test_review_q():
     a = role_acts(rdecide([rc, ro], st, robs(ops_status(c8 + 240), unit="active"), c8 + 240))
     check(not [x for x in a if x.get("do") == "role_launch"], "Q7 Operations still running: Conductor waits")
     a = role_acts(rdecide([rc, ro], st, robs(ops_status(c8 + 360), unit="inactive",
-                                             result={"usage": usage(output_tokens=9), "subtype": "success"}), c8 + 360))
+                                             result=cli(usage(output_tokens=9), subtype="success")), c8 + 360))
     check([x["role"] for x in a if x["do"] == "role_launch"] == ["Conductor"],
           "Q7 Operations run finished done: the Conductor check launches")
     st = fresh()
@@ -2083,7 +2092,7 @@ def test_role_plan_failure_events():
     check(la and la[0]["mode"] in ("run", "weekly") and st5["roles"]["Producer"]["event_cursor"] == t9,
           "slot and event due together: the slot runs and covers the event")
     a = role_acts(rdecide([p], st5, lrobs(ops_status(t9 + 2000), lread(evs + [early], items), unit="inactive",
-                                         result={"usage": usage(output_tokens=10)}), t9 + 2000))
+                                         result=cli(usage(output_tokens=10))), t9 + 2000))
     check(not [x for x in a if x["do"] == "role_launch"], "... and no event run follows for that covered failure")
 
 
