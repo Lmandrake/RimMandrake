@@ -55,8 +55,8 @@ X. [S] (human pass) walk a fresh Pyrelands map at play zoom: the ground cover
 
 ## north star
 state: VALIDATED
-validated-hash: 1a7028c5ef0a0588255ef19a9b09ad305c64faad821c8e7371ce9466d3820673
-validated-by: BY CARD: Re-validate the Pyrelands north star with pyre_fresh_burn_feeds_the_field reworded to 'ground that has just burned grows noticeably faster for a few days, and black rain compounds that advantage rather than washing it away.'? -> Yes, re-validate
+validated-hash: 6ad3da0a6e44abb1094d65b4d4918cb8e839049de167f2abf59f48d61fdd2cf7
+validated-by: And modify the bar so that it's not so finicky about "the line." Sometimes poetry is simply that. I just wanted a natural grassfire feel.
 
 Owner, 2026-09-17 (verbatim): *"Any wrong animals present? Btw these are two
 validation script bars you should add for pyrelands. Correct animal and plant
@@ -90,9 +90,9 @@ freshly generated Pyrelands map in ordinary play.
 - [ ] `pyre_embergrass_regrows` — a burned patch of grass is visibly
       re-greening within a few days and largely green again within about a
       week, at the biome's own heat.
-- [ ] `pyre_burn_line_present` — a fresh Pyrelands map shows an active line
-      of fire somewhere, with a visibly scorched trail behind its advancing
-      front.
+- [ ] `pyre_burn_line_present` — a fresh Pyrelands map shows grass fire
+      burning somewhere and moving like a natural grass fire, with a visibly
+      scorched trail behind it.
 - [ ] `pyre_scorchfruit_fire_born` — scorch-fruit appears only on freshly
       burned ground, never as ordinary wild growth on unburned land.
 - [ ] `pyre_scorchfruit_produces` — a ripe scorch-fruit plant yields edible
