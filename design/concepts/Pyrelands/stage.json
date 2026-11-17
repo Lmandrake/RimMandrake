@@ -2,7 +2,6 @@
  "aliases": [
   "PYRELANDS"
  ],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 8; that look was not_covered; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -689,16 +688,6 @@
   "reserve": 60000,
   "spent": 18977885
  },
- "coverage_release_granted": {
-  "after": [
-   "RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES",
-   "RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED",
-   "RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS",
-   "RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS"
-  ],
-  "at": "2026-11-17T18:24:41Z",
-  "why": "option A by delegated Evidence-for-Ask call CONDUCTOR:1794939817434538611: one final look once the three round-9 gaps are fixed in 0.1.0 and re-pinned; hand grant folded by RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE"
- },
  "coverage_releases": [
   {
    "at": "2026-11-15T06:01:06Z",
@@ -730,6 +719,20 @@
    "at": "2026-11-16T00:11:33Z",
    "rounds_at": 7,
    "why": "by card 2026-11-15: How should the giant be made the giant? -> Keep 'twice', raise body to 9+; done by RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE (6120bb02aa): furnace-beast bs 9 vs Zeer 4.5, drawn 7.5 vs 6, T_DEFS_OFFLINE asserts the twice bar"
+  },
+  {
+   "after": [
+    "RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES",
+    "RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED",
+    "RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS",
+    "RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS"
+   ],
+   "at": "2026-11-17T19:58:30Z",
+   "final": true,
+   "granted_at": "2026-11-17T18:24:41Z",
+   "granted_why": "option A by delegated Evidence-for-Ask call CONDUCTOR:1794939817434538611: one final look once the three round-9 gaps are fixed in 0.1.0 and re-pinned; hand grant folded by RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE",
+   "rounds_at": 10,
+   "why": "steward RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_THREE: the standing grant (CONDUCTOR:1794939817434538611, option A) is due: its four after items are closed and the re-pin landed 19:49:53Z; one final look after the stage-4 retake"
   }
  ],
  "coverage_rounds": [
@@ -925,10 +928,6 @@
    "verdict": "not_covered"
   }
  ],
- "coverage_stop": {
-  "at": "2026-11-17T18:05:37Z",
-  "why": "released for one more look at round 8; that look was not_covered"
- },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -1649,6 +1648,30 @@
    "stage": 5,
    "what": "locked_change",
    "why": "round-9 gaps fixed in 0.1.0 (CONDUCTOR:1794939817434538611, option A): the wind scene (314117207e), the burned-share flood read (c07cd5a998) and the three text leftovers (c1564dea9c) carry out his cards 2026-11-17 'The fire walks with the wind.' and 2026-11-16 burn-line words; re-pin for the one final look; re-pinned stage 3 (sheet, tree, scenes); stage 4 left stale, its exam void (sheet, tree, scenes changed): the next open retakes it; sources OWNER:1794894282613045211@c1564dea9c63, OWNER:1794894288587863659@c1564dea9c63, OWNER:1794926130118775229@c1564dea9c63, OWNER:1794894282613045211@c07cd5a998e6, OWNER:1794894288587863659@c07cd5a998e6, OWNER:1794926130118775229@314117207ec9"
+  },
+  {
+   "at": "2026-11-17T19:58:31Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "steward RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_THREE: the standing grant (CONDUCTOR:1794939817434538611, option A) is due: its four after items are closed and the re-pin landed 19:49:53Z; one final look after the stage-4 retake"
+  },
+  {
+   "at": "2026-11-17T19:58:31Z",
+   "stage": 4,
+   "what": "invalidated",
+   "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes; back to stage 4"
+  },
+  {
+   "at": "2026-11-17T19:58:31Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "18977885 of 4000000 spent; run bench-pyre-exam-st4-r9-20261117 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T19:58:31Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-pyre-exam-st4-r9-20261117, stage 4, budget 3940000"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -2120,55 +2143,6 @@
    "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes, owner; back to stage 4 (his new words to take in: OWNER:1794790810777772480, OWNER:1794790871101885625)"
   },
   {
-   "at": "2026-11-17T17:55:45Z",
-   "inputs": {
-    "exam": "5059a54449e65b8e99919ad28cf512fddaa6b435625661fd19e709fb1123eb60",
-    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
-    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "b34b53d54f05b610809aeb291395e0f13c215ed681cad3da419ae1e2fabb9ddf",
-    "sheet": "a0d6beb6b982019bd215065d574cb51b165e806f6b9620c10fb20b38a8d7c72a",
-    "tree": "c1b1d874f8b1855f4308b54067d17a2ad1bcc207f539f525f2d1cbdcbeacff08"
-   },
-   "manifest": {
-    "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
-    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834",
-    "1794611171307640419",
-    "1794790810777772480",
-    "1794790871101885625"
-   ],
-   "quick_look": {
-    "offer": false,
-    "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
-   },
-   "run": "bench-pyre-exam-st4-r8-20261117",
-   "stage": 4,
-   "summary": "Cold Reader exam retaken on the tree and sheet as re-pinned for the locked change of 2026-11-17 (his card: bars become experiences, the wind bar fire_walks_with_wind added; repair d2a3509a53 unlocked stage 4 for the retake): 40 frozen scenarios (Examiner a493484933e059c8f e1-e32, Challenger a2a221d98bd0fd4cd c1-c8; 32 rejects), Readers aa114da353c51393a and abdfee8b72caccb97 agree on all 40, 40/40, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with fire_walks_with_wind removed (ada115ab92a506f36) accepted e2, e5 and c1, wind rejects both Readers caught, so the set discriminates. exam.json carries it.",
-   "voided": [
-    {
-     "at": "2026-11-17T19:49:53Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794894282613045211@c1564dea9c63",
-      "OWNER:1794894288587863659@c1564dea9c63",
-      "OWNER:1794926130118775229@c1564dea9c63",
-      "OWNER:1794894282613045211@c07cd5a998e6",
-      "OWNER:1794894288587863659@c07cd5a998e6",
-      "OWNER:1794926130118775229@314117207ec9"
-     ],
-     "why": "its exam ran against another tree or sheet: retake it"
-    }
-   ]
-  },
-  {
    "at": "2026-11-17T18:05:54Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1794938276",
@@ -2176,12 +2150,42 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-17T19:58:31Z",
+   "outcome": "invalidated",
+   "stage": 4,
+   "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes; back to stage 4"
   }
  ],
  "runner": "claude",
- "running": null,
+ "running": {
+  "at": "2026-11-17T19:58:31Z",
+  "inputs": {
+   "exam": "5059a54449e65b8e99919ad28cf512fddaa6b435625661fd19e709fb1123eb60",
+   "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+   "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
+   "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+   "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
+   "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+   "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1"
+  },
+  "manifest": {
+   "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
+   "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+  },
+  "owner_uncited": [
+   "1793766816609436834",
+   "1794611171307640419",
+   "1794790810777772480",
+   "1794790871101885625"
+  ],
+  "reserved": 3940000,
+  "run": "bench-pyre-exam-st4-r9-20261117",
+  "stage": 4
+ },
  "schema": 1,
- "stage": 5,
- "status": "blocked",
+ "stage": 4,
+ "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
