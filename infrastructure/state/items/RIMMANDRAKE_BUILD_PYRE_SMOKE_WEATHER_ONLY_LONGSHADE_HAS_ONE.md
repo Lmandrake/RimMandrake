@@ -19,3 +19,7 @@ smoke_not_rain_rated`, exit 1. Passability: a planted smoke WeatherDef (in the t
 read by C#; mutants failed only their row (no effect -> has_effect; rainRate 1 -> not_rain_rated + black_rain_only_rain; not in
 table -> in_biome_table; black rain dropped -> old_weathers_kept + black_rain_only_rain; vanilla Rain added -> black_rain_only_rain).
 The builder does not edit the test; a clause believed wrong goes to the Conductor.
+
+## 2026-11-17: Pyrelands 0.2.0, not 0.1.0
+
+Owner by card 2026-11-17 6:33 AM PST ("Smoke" → "Next version (Recommended)", OWNER:1794926132427945325, on RIMMANDRAKE_REWORD_DESIGNER_BARS_PINNING_NUMBERS_NOT_HIS). Build nothing for 0.1.0. Entry: `design/concepts/Pyrelands/version/next_version/README.md`. Ledger target v2.

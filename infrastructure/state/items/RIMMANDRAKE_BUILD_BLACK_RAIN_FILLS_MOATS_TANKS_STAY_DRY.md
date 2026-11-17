@@ -15,3 +15,7 @@ Census and walk criteria: `D:\ClaudeWork\rimmandrake\conductor\cards_20261113_am
 
 Acceptance test: none, the fill amounts are unspecified until the Designer sets them; the Designer's spec writes the red-first
 test (a FlowWorks kernel row: N hours at rainRate 1.1 fills an open tank and a dug moat by the stated amount).
+
+## 2026-11-17: Pyrelands 0.2.0, not 0.1.0
+
+Owner by card 2026-11-17 6:33 AM PST ("Rain fills" → "Next version (Recommended)", OWNER:1794926131273790638, on RIMMANDRAKE_REWORD_DESIGNER_BARS_PINNING_NUMBERS_NOT_HIS). Build nothing for 0.1.0. Entry: `design/concepts/Pyrelands/version/next_version/README.md`. Ledger target v2.
