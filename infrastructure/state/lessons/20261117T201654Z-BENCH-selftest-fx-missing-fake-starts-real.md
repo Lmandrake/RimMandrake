@@ -1,0 +1,3 @@
+A Dispatch selftest whose fx dict lacks a fake for a NEW launch path silently calls the real one: when cert_wait began routing to cert_rerun_launch, blind_main's fx had no 'cert_rerun', so the selftest ran systemd-run for real (rm-cert-rerun-gimmesomeslack-1794945004, a 15-min real certificate in a pool clone, overlapping the tick's own). When you add a launch path to execute, grep every selftest fx for the launchers and add the fake in the same change; check 'systemctl --user list-units rm-*' after the run.
+item: RIMMANDRAKE_RERUN_STALE_CERTIFICATE_AT_VISIT_AND_CYCLE_GATES
+home: src/RimMandrake/rimflow/selftest_maturation_dispatch.py
