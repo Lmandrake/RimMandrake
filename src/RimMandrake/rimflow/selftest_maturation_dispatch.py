@@ -833,7 +833,7 @@ def blind_main():
             with open(log) as f:
                 return [json.loads(x) for x in f if x.strip()]
 
-        filed = []
+        filed, reruns = [], []
         world = {"live": {}, "last_end": {}, "runs": {}, "account": (True, "test account KEEP")}
 
         def facts_for(c):
@@ -851,7 +851,10 @@ def blind_main():
         fx = {"autonomy": False, "convergence": no_convergence, "account": lambda: world["account"], "known": lambda: set(),
               "file": lambda item, title, why: (filed.append((item, title, why)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
-                                                                  **kw)}
+                                                                  **kw),
+              # the zero-token certificate rerun at the cycle gate, never a real systemd-run from a selftest
+              "cert_rerun": lambda mod, key: (reruns.append((mod, key)) or 0, "STARTED rm-cert-rerun-t%d" % len(reruns),
+                                              "rm-cert-rerun-t%d" % len(reruns))}
 
         def tick(c, at=0, apply=True):
             return MD.tick(root, c, apply, fx=dict(fx, facts=lambda: facts_for(c)), now=BLIND_CLOCK + at, page=False)
@@ -886,9 +889,18 @@ def blind_main():
         with open(tfile, "a") as f:
             f.write("# edited after its recorded run\n")
         rd = tick(gss, at=60)
-        ok(rd["mods"]["GimmeSomeSlack"]["decision"] == "certificate" and not launches()
-           and "--run" in need(rd, "GimmeSomeSlack"),
-           "a deciding test edited after its recorded run: no judge, the fix is `certificate --run`")
+        # RIMMANDRAKE_RERUN_STALE_CERTIFICATE_AT_VISIT_AND_CYCLE_GATES: the fix `certificate --run` is the tick's own
+        # zero-token rerun now (it was a Needs Conductor line, and Gimme Some Slack sat on it 137 min at its visit gate)
+        ok(rd["mods"]["GimmeSomeSlack"]["decision"] == "launched" and not launches() and len(reruns) == 1
+           and reruns[0][0] == "GimmeSomeSlack",
+           "a deciding test edited after its recorded run: no judge, the tick starts the zero-token `certificate --run` "
+           "itself (%s: %s; reruns %s)" % (rd["mods"]["GimmeSomeSlack"]["decision"],
+                                           str(rd["mods"]["GimmeSomeSlack"].get("why"))[:120], reruns))
+        rd = tick(gss, at=120)
+        ok(rd["mods"]["GimmeSomeSlack"]["decision"] == "live" and not launches() and len(reruns) == 1,
+           "a deciding test edited after its recorded run: the next tick, the rerun running, still no judge and no "
+           "second rerun (%s)" % rd["mods"]["GimmeSomeSlack"]["decision"])
+        del reruns[:]
         SM.certify_fixture(root, ["GimmeSomeSlack"])
         reset()
 
@@ -1377,6 +1389,8 @@ def ingame_main():
             return world["bridge"]
 
         fx = {"autonomy": False, "convergence": no_convergence, "account": lambda: world["account"], "known": lambda: set(), "bridge": bridge,
+              # the zero-token certificate rerun at the visit gate, never a real systemd-run from a selftest
+              "cert_rerun": lambda mod, key: (1, "selftest: no real certificate rerun", None),
               "file": lambda item, title, why, **kw: (filed.append((item, title, why, kw)) or True, "filed %s" % item),
               "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
                                                                   bridge=lambda p, s: world["bridge"], **kw)}
@@ -1906,6 +1920,109 @@ def cert_rerun_main():
     return 1 if FAILS else 0
 
 
+def cert_rerun_gates_main():
+    """RIMMANDRAKE_RERUN_STALE_CERTIFICATE_AT_VISIT_AND_CYCLE_GATES (measured 2026-11-17 11:45 AM PST): Gimme Some Slack
+    sat 137 min at in-game visit 2 'waiting on its certificate' whose 29 refusals were all stale stamps
+    (ran_on_this_build), no decider red: the zero-token rerun (cert_rerun_decide) was wired only at the offline build, and
+    cert_wait at the blind cycle and in-game visit gates only put the wait. The same one rerun per build key must run at
+    both gates, take no run slot (max_live 1 with a run live elsewhere) and no live-game driver, need no account, and
+    name the right gate when it waits. Written before the fix and watched failing on the base."""
+    FAILS.clear()
+    now = CLOCK
+    mod = "GimmeSomeSlack"
+
+    def stale(tests, build="b1"):
+        return [{"bar": "bar_" + t.lower(), "test": t, "clause": "ran_on_this_build", "status": "REFUSED",
+                 "observed": "the recorded run was on build old; ... hash to %s-%s now" % (t, build),
+                 "would_pass": "runs_today.build == %s-%s" % (t, build),
+                 "smallest_fix": "python3 src/RimMandrake/rimflow/maturation.py certificate %s --run" % mod}
+                for t in tests]
+
+    def facts(stage, rows, result=None, live=()):
+        f = {"mod": mod, "stage": stage, "version": "0.1.0", "exit": {"state": "absent"}, "live_units": list(live),
+             "stage_runs": {}, "run_usd": {}, "killed": {}, "ingame_live": [], "ingame_games": {},
+             "certificate": {"ok": not any(r["status"] == "REFUSED" for r in rows), "rows": rows,
+                             "to": stage, "mod": mod},
+             "cert_rerun_result": result}
+        if stage == "in_game":
+            f.update(owed="run", visit=2, ingame_runs=[])
+        else:
+            f.update(owed="cycle", cycle=2, visit_first=1, blind_runs=[])
+        return {mod: f}
+
+    rows5 = stale(["T_CORE", "T_NO_HOSE", "T_CORD_GEOMETRY_OFFLINE", "T_SETTINGS_SWEEP_OFFLINE", "T_SHOCK_RULE_OFFLINE"])
+    for stage, gate, word in (("in_game", "in-game visit 2", "--to in_game"),
+                              ("blind_challenge", "blind cycle 2", "--to blind_challenge")):
+        cfg = dict(load_cfg(), advancing=[mod], max_live=0, launch_tries=3, ingame_enabled=True, blind_enabled=True)
+        calls, other = [], []
+
+        def fake_rerun(m, key, calls=calls):
+            calls.append((m, key))
+            return 0, "STARTED rm-cert-rerun-%d" % len(calls), "rm-cert-rerun-%d" % len(calls)
+        fx = {"cert_rerun": fake_rerun, "file": lambda *a, **k: other.append(("file", a)) or (True, "filed"),
+              "launch_brief": lambda *a, **k: other.append(("brief", a)) or (0, "DETACHED x", "x"),
+              "known": lambda: set(), "launch": lambda *a, **k: other.append(("launch", a)) or (0, "DETACHED y", "y")}
+        st = {"mods": {}}
+        for acct in ((True, "ok"), (False, "account hold: every account at its floor")):
+            rows, la = MD.decide(cfg, dict(st, mods={}), facts(stage, rows5), now, acct, releases=[])
+            r = rows[0]
+            ok(la == [mod] and r.get("decision") == "launch" and r.get("cert_rerun_key"),
+               "cert rerun gates (%s, account %s): stale stamps alone at %s, slots full (max_live 0): one zero-token "
+               "rerun is owed, read 1 mod (%s: %s)" % (stage, acct[0], gate, r.get("decision"), r.get("why")))
+        rows, la = MD.decide(cfg, st, facts(stage, rows5), now, (True, "ok"), releases=[])
+        key = rows[0].get("cert_rerun_key")
+        ok(not MD.takes_slot(rows[0]) and not rows[0].get("game"),
+           "cert rerun gates (%s): the rerun takes no run slot and no game (%s)" % (stage, rows[0].get("game")))
+        try:
+            MD.execute(".", cfg, st, rows, la, now, fx)
+        except Exception as e:      # noqa: BLE001  the base never gets here with a rerun row
+            rows[0]["decision"] = "crashed: %s: %s" % (type(e).__name__, e)
+        ok(calls == [(mod, key)] and not other and rows[0].get("decision") == "launched",
+           "cert rerun gates (%s): execute starts exactly one rerun unit and nothing else (%s; %s; %s)" % (
+               stage, calls, other, rows[0].get("decision")))
+        rows, la = MD.decide(cfg, st, facts(stage, rows5), now + 60, (True, "ok"), releases=[])
+        ok(not la and rows[0].get("decision") == "live" and "rm-cert-rerun-1" in str(rows[0].get("why")),
+           "cert rerun gates (%s): the next tick, the unit still running, launches nothing (%s: %s)" % (
+               stage, rows[0].get("decision"), rows[0].get("why")))
+        done = {"unit": "rm-cert-rerun-1", "key": key, "key_after": key, "ok": False, "published": None,
+                "error": "publish refused: hook", "end": now + 600}
+        rows, la = MD.decide(cfg, st, facts(stage, rows5, result=done), now + 900, (True, "ok"), releases=[])
+        need = str(rows[0].get("need"))
+        ok(not la and rows[0].get("decision") == "certificate" and "rm-cert-rerun-1" in need and word in need
+           and gate in need,
+           "cert rerun gates (%s): it ended and the build is still stale: never a second run, a Needs Conductor line "
+           "naming the unit and the %s gate (%s: %s)" % (stage, gate, rows[0].get("decision"), need[:300]))
+        red = rows5 + [{"bar": "bar_t", "test": "T_RED", "clause": "green", "status": "REFUSED", "observed": "rc 1",
+                        "smallest_fix": "fix"}]
+        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, red), now, (True, "ok"), releases=[])
+        ok(not la and rows[0].get("decision") == "certificate" and not rows[0].get("cert_rerun_key"),
+           "cert rerun gates (%s): a red decider beside the stale stamps is no rerun: the wait stands (%s)" % (
+               stage, rows[0].get("decision")))
+        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, rows5, live=["rm-other"]), now, (True, "ok"), releases=[])
+        ok(not la and rows[0].get("decision") == "live", "cert rerun gates (%s): nothing while a run is live on the mod"
+           % stage)
+        aut_fx = {"open_items": lambda ids: [], "designer_state": lambda m: None, "version_locked": lambda m: True,
+                  "version_evidence": lambda m: None}
+        st3 = {"mods": {}}
+        rows, la = MD.decide(cfg, st3, facts(stage, rows5), now, (True, "ok"), releases=[])
+        rows, la = MD.AUT.resolve(".", cfg, st3, facts(stage, rows5), rows, la, now, aut_fx)
+        ok(la == [mod] and rows[0].get("cert_rerun_key") and not rows[0].get("aut"),
+           "cert rerun gates (%s): the autonomy layer leaves the rerun the tick's own launch (%s: %s)" % (
+               stage, rows[0].get("decision"), rows[0].get("why")))
+    # the rerun takes no slot and no game in the tick itself: at max_live 1 and one game, a second mod's owed in-game
+    # visit behind it still launches (decide's live_total and drivers are not spent on it)
+    two = facts("in_game", rows5)
+    two["Twin"] = dict(facts("in_game", [])[mod], mod="Twin")
+    cfg = dict(load_cfg(), advancing=[mod, "Twin"], max_live=1, ingame_enabled=True, game_instances=["a"])
+    rows, la = MD.decide(cfg, {"mods": {}}, two, now, (True, "ok"), releases=[])
+    got = [(r["mod"], r.get("decision"), bool(r.get("cert_rerun_key"))) for r in rows]
+    ok(la == [mod, "Twin"] and got == [(mod, "launch", True), ("Twin", "launch", False)],
+       "cert rerun gates: at max_live 1 on one game, the rerun ahead spends neither, the next mod's visit launches (%s)"
+       % got)
+    print("cert rerun gates: %d checks failed of the cases read (2 gates x 9 + 1)" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 def kill_clear_main():
     """RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD, measured 2026-11-16: Gimme Some Slack's in-game visit 1 started
     on try 3 (two launches had failed on a transient fault), the Conductor stopped it at 5:59 AM PST to stage his look,
@@ -2036,6 +2153,8 @@ if __name__ == "__main__":
         sys.exit(priority_main())
     if "--cert-rerun" in sys.argv[1:]:
         sys.exit(cert_rerun_main())
+    if "--cert-rerun-gates" in sys.argv[1:]:
+        sys.exit(cert_rerun_gates_main())
     if "--kill-clear" in sys.argv[1:]:
         sys.exit(kill_clear_main())
     if "--item-names" in sys.argv[1:]:
@@ -2053,6 +2172,7 @@ if __name__ == "__main__":
     rc = land_views_main() or rc
     rc = item_names_main() or rc
     rc = cert_rerun_main() or rc
+    rc = cert_rerun_gates_main() or rc
     rc = kill_clear_main() or rc
     rc = priority_main() or rc
     sys.exit(ingame_main() or rc)

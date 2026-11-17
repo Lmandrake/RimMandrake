@@ -447,6 +447,7 @@ def add_ingame(root, mod, f, runs):
         return f
     f.update(M.ingame_facts(root, mod))
     f["certificate"] = M.certificate(root, mod, "in_game")
+    f["cert_rerun_result"] = rerun_result(mod)     # cert_wait's zero-token rerun reads its last result
     t0 = _ts(f.get("opened"))
     f["ingame_runs"] = [r.get("unit") for r in runs or [] if _is_ingame_item(r.get("item")) and ran(r)
                         and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
@@ -472,6 +473,7 @@ def add_blind(root, mod, f, runs):
         return f
     f.update(M.blind_facts(root, mod))
     f["certificate"] = M.certificate(root, mod, "blind_challenge")
+    f["cert_rerun_result"] = rerun_result(mod)     # cert_wait's zero-token rerun reads its last result
     f["cycle_decision"] = cycle_decision(M.load(root, mod) or {})
     t0 = _ts(f.get("opened"))
     f["blind_runs"] = [r.get("unit") for r in runs or [] if _is_blind_item(r.get("item")) and ran(r)
@@ -781,16 +783,17 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             s.pop("owed_since", None)
             s.pop("watch", None)
             if decide_blind(cfg, s, f, row, put, now, account, live_total, releases):
-                live_total += 1
+                live_total += 0 if row.get("cert_rerun_key") else 1     # a zero-token rerun takes no run slot
                 launches.append(mod)
             continue
         if f.get("stage") == "in_game":
             s.pop("owed_since", None)
             s.pop("watch", None)
             if decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge, releases, games_of):
-                live_total += 1
-                drivers.append("(this tick: %s)" % mod)
-                games_of[drivers[-1]] = row.get("game", "a")
+                if not row.get("cert_rerun_key"):   # a zero-token rerun takes no run slot and drives no game
+                    live_total += 1
+                    drivers.append("(this tick: %s)" % mod)
+                    games_of[drivers[-1]] = row.get("game", "a")
                 launches.append(mod)
             continue
         if f.get("stage") != "offline_build":
@@ -1029,14 +1032,18 @@ def stale_key(cv):
     return hashlib.sha1(json.dumps(want).encode("utf-8")).hexdigest()[:12]
 
 
-def cert_rerun_decide(cfg, s, f, row, put, now):
+def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the move into the blind challenge",
+                      why=None, fix=None):
     """At the offline build waiting on a certificate that refuses only stale stamps (no red decider: cert_red_decide
     returned None) -> "launch" (row["cert_rerun_key"]: execute starts ONE detached zero-token `certificate <Mod> --run`,
     cert_rerun_unit), "decided" (the row put), or None (not stale-only: the certificate wait stands). Once per build key,
     never a loop: the same key again is a Needs Conductor line once its run ended; a run whose own result left the new
     key stale (a decider that rewrites what it reads) is one too. A start that failed is tried again on a transient
     fault or once the pipeline's code changed, within launch_tries (RIMMANDRAKE_RERUN_STALE_CERTIFICATE_STAMPS_NOBODY_OWNS_IT:
-    Explosive Knockback waited for a hand on 11 stale bars, 2026-11-16 12:28 PM PST)."""
+    Explosive Knockback waited for a hand on 11 stale bars, 2026-11-16 12:28 PM PST). The same rerun runs at the blind
+    cycle and in-game visit gates (cert_wait: TO and WHAT name the gate, WHY and FIX its certificate's reading;
+    RIMMANDRAKE_RERUN_STALE_CERTIFICATE_AT_VISIT_AND_CYCLE_GATES: Gimme Some Slack sat 137 min at in-game visit 2 on 29
+    stale stamps, 2026-11-17 11:45 AM PST)."""
     key = stale_key(f.get("certificate"))
     if not key:
         return None
@@ -1048,8 +1055,7 @@ def cert_rerun_decide(cfg, s, f, row, put, now):
     lift = "`maturation_dispatch.py clear %s --why ...` lets it run once more" % mod
 
     def wait(said):
-        cert_put(put, mod, "blind_challenge", f.get("certificate_why"), f.get("certificate_fix"),
-                 "the move into the blind challenge")
+        cert_put(put, mod, to, why or f.get("certificate_why"), fix or f.get("certificate_fix"), what)
         row["need"] = "%s; %s, and the step never reruns the same build (%s)" % (row.get("need"), said, lift)
         return "decided"
     if prior and prior.get("key") == key:
@@ -1358,15 +1364,22 @@ def cert_put(put, mod, to, why, fix, what):
         "exits 0. Smallest fix: %s" % (what, why, mod, to, fix))
 
 
-def cert_wait(f, put, mod, to, what):
+def cert_wait(f, put, mod, to, what, rerun=None):
     """PRE_JUDGEMENT_CERTIFICATE (RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN): True (the row put) when the
     certificate refuses; read before every judge or visit launch, since a mod can go red between cycles. A certificate
-    that did not run lets the launch through."""
+    that did not run lets the launch through. RERUN (cfg, s, row, now): a certificate refusing only stale stamps gets
+    cert_rerun_decide's one zero-token rerun per build key -> "launch" (row["cert_rerun_key"]) or "decided"
+    (RIMMANDRAKE_RERUN_STALE_CERTIFICATE_AT_VISIT_AND_CYCLE_GATES)."""
     cv = f.get("certificate")
     if not isinstance(cv, dict) or cv.get("ok", True):
         return False
     ref = [r for r in cv.get("rows") or [] if r.get("status") == "REFUSED"]
     why = JC.summary(cv) + "".join("; %s/%s %s: %s" % (r["bar"], r["test"], r["clause"], r["observed"]) for r in ref[:2])
+    if rerun:
+        cfg, s, row, now = rerun
+        got = cert_rerun_decide(cfg, s, f, row, put, now, to, what, why, JC.first_fix(cv))
+        if got:
+            return got
     cert_put(put, mod, to, why, JC.first_fix(cv), what)
     return True
 
@@ -1451,8 +1464,9 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
         return False
     if reap_wait(f, retry, put, n, "blind cycle"):
         return False
-    if cert_wait(f, put, mod, "blind_challenge", "blind cycle %s" % n):
-        return False
+    cw = cert_wait(f, put, mod, "blind_challenge", "blind cycle %s" % n, (cfg, s, row, now))
+    if cw:
+        return cw == "launch"   # a zero-token rerun (row["cert_rerun_key"]) or the certificate's wait
     if not cfg.get("blind_enabled"):
         put("blind_off", "blind_enabled is off in maturation_dispatch.json",
             "blind cycle %s is owed with nothing live; the Dispatch step's blind launches are off" % n)
@@ -1553,8 +1567,9 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
         return False
     if reap_wait(f, retry, put, n, "in-game visit"):
         return False
-    if cert_wait(f, put, mod, "in_game", "in-game visit %s" % n):
-        return False
+    cw = cert_wait(f, put, mod, "in_game", "in-game visit %s" % n, (cfg, s, row, now))
+    if cw:
+        return cw == "launch"   # a zero-token rerun (row["cert_rerun_key"]) or the certificate's wait
     if not cfg.get("ingame_enabled"):
         put("ingame_off", "ingame_enabled is off in maturation_dispatch.json",
             "in-game visit %s is owed; the Dispatch step's live launches are off until the Conductor has run the first "
