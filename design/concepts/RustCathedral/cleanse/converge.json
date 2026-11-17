@@ -119,18 +119,49 @@
      "smallest_fix": "In B2.meant.figurative \"most of the metal in sight\".stands_for, add \"free walls are wall mass whose removal joins no two routes; a wall whose removal opens a route is a marked divider\". Add to B2.reject: \"Mining an unmarked corridor wall opens a shortcut between routes with no warning or consequence, bypassing the marked cut.\" Add that arm to B2.range.varies."
     }
    ]
-  }
- ],
- "open": [
+  },
   {
-   "id": "G1.1",
-   "head": "regression",
-   "where": "bars.json bars/B2",
-   "evidence": "B2.accept now reads \"A worker mines an unmarked deck-plate corridor wall and hauls its steel without offence; the surrounding ordinary walls are also free salvage\". Its figurative accept reads \"A crew mines ordinary corridor walls freely across the maze while leaving marked shortcut dividers ... intact\". B1.says (bars.json:5) promises the crew can \"choose an open route or a visibly marked trespassing cut\". ambiguities.md entry 2 rejects reading A because it \"makes every maze route optional without cost\". Nothing in B2 says what happens when mining a free, unmarked corridor wall connects two routes. A build where most corridor walls are free and unmarked, and mining one opens a shortcut with no consequence, passes B2's new accept pictures. That same build empties B1's route choice: every marked cut has a free unmarked bypass. B2 and B1 now cannot hold together on that build.",
-   "would_pass": "B2 says that free unmarked wall is wall mass that does not join two routes when removed (backing, thick wall bulk, outer facades, worked-out spurs). Any wall whose removal would open a route between corridors or into held ground is a marked divider, visible before designation. A reject picture catches a free unmarked wall that opens a costless shortcut.",
-   "smallest_fix": "In B2.meant.figurative \"most of the metal in sight\".stands_for, add \"free walls are wall mass whose removal joins no two routes; a wall whose removal opens a route is a marked divider\". Add to B2.reject: \"Mining an unmarked corridor wall opens a shortcut between routes with no warning or consequence, bypassing the marked cut.\" Add that arm to B2.range.varies."
+   "n": 2,
+   "records": [
+    {
+     "id": "G1.1",
+     "head": "regression",
+     "where": "bars.json bars/B2",
+     "evidence": "B2.accept now reads \"A worker mines an unmarked deck-plate corridor wall and hauls its steel without offence; the surrounding ordinary walls are also free salvage\". Its figurative accept reads \"A crew mines ordinary corridor walls freely across the maze while leaving marked shortcut dividers ... intact\". B1.says (bars.json:5) promises the crew can \"choose an open route or a visibly marked trespassing cut\". ambiguities.md entry 2 rejects reading A because it \"makes every maze route optional without cost\". Nothing in B2 says what happens when mining a free, unmarked corridor wall connects two routes. A build where most corridor walls are free and unmarked, and mining one opens a shortcut with no consequence, passes B2's new accept pictures. That same build empties B1's route choice: every marked cut has a free unmarked bypass. B2 and B1 now cannot hold together on that build.",
+     "would_pass": "B2 says that free unmarked wall is wall mass that does not join two routes when removed (backing, thick wall bulk, outer facades, worked-out spurs). Any wall whose removal would open a route between corridors or into held ground is a marked divider, visible before designation. A reject picture catches a free unmarked wall that opens a costless shortcut.",
+     "smallest_fix": "In B2.meant.figurative \"most of the metal in sight\".stands_for, add \"free walls are wall mass whose removal joins no two routes; a wall whose removal opens a route is a marked divider\". Add to B2.reject: \"Mining an unmarked corridor wall opens a shortcut between routes with no warning or consequence, bypassing the marked cut.\" Add that arm to B2.range.varies."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "G1.1",
+      "changed": "Clarified that free wall mass joins no routes and opens no held ground when removed; every route-opening wall is a marked divider visible before designation. Added a reject picture for an unmarked costless shortcut and the corresponding topology/depletion and mutant arms to the range. Counts are unchanged.",
+      "where": "bars.json bars/B2: meant.figurative[word=most of the metal in sight].stands_for, reject, range.varies"
+     }
+    ]
+   },
+   "verdicts": {
+    "G1.1": {
+     "verdict": "fixed",
+     "evidence": "bars.json B2.meant.figurative[word=\"most of the metal in sight\"].stands_for now reads \"Free walls are wall mass whose removal joins no two routes and opens no access into held ground, such as backing, thick wall bulk, outer facades and worked-out spurs; any wall whose removal connects corridors or opens held ground is a marked divider, visible before designation.\" B2.reject now has a fourth entry: \"Mining an unmarked corridor wall opens a shortcut between routes with no warning or consequence, bypassing the marked cut.\" B2.range.varies adds \"Include free wall mass that joins no routes when removed versus walls whose removal connects corridors or opens held ground, before and after surrounding salvage depletion; include an unmarked-wall mutant that opens a costless shortcut bypassing a marked cut, which must fail.\" The record's build (free, unmarked walls that open costless shortcuts) now fails B2 through the definition, the reject picture and the mutant arm. That keeps B1's choice of \"an open route or a visibly marked trespassing cut\" intact. All three parts of would_pass are met, and the change stays inside the fields fixes.json names."
+    }
+   },
+   "changed_entries": [
+    "bars.json bars/B2"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 134807,
+     "output_tokens": 1555
+    }
+   },
+   "author_error": null,
+   "open_after": []
   }
  ],
+ "open": [],
  "advisory_late": [
   {
    "what": "bars.json rules entry at line 440 still reads \"Use a local corridor/held-footprint graph with loose rubble and inspectably marked structural dividers\". The entry at line 613 still reads \"The same material can be loose or structural\". models.md:11 still lists \"loose mining\" as an event class.",
@@ -146,10 +177,15 @@
    "what": "Line 241 of tickets.md T30 (\"Source and callers\") still says \"general first-hit/claim and credit path not found\".",
    "reason": "This describes what the source search found, not a trigger. It could still lead a builder back to a first-hit debit. It sits in the part of T30 the fix left alone.",
    "round": 1
+  },
+  {
+   "what": "B2.accept[2] (\"A worker mines an unmarked deck-plate corridor wall ... the surrounding ordinary walls are also free salvage\") and B2.meant.figurative.accept (\"A crew mines ordinary corridor walls freely across the maze\") still say \"corridor wall\" without qualification. Under the new stands_for, a thin wall between two corridors is a marked divider, so only thick or backing corridor-wall mass is free. The definition also does not say whether \"removal\" means the whole wall or each cell in turn. Mining a thick wall cell by cell eventually reaches a cell that opens a route, so that cell would need to become marked before it is designated.",
+   "reason": "Both accept pictures were left unchanged by this fix and do not contradict it. range.varies already includes the \"before and after surrounding salvage depletion\" arm, which can catch a late-opening cell. Saying \"route-opening at the moment of designation\" in stands_for would remove the per-wall versus per-cell ambiguity.",
+   "round": 2
   }
  ],
- "applyable": false,
- "digest": "129da1dbb4f49519da533e31527b512009642f92bb4adf1302ea34b2156f8fe4",
- "seconds": 280,
- "at": "2026-11-17T06:45:05"
+ "applyable": true,
+ "digest": "65bbb99ea6ceaa58bdf0d1dada0adc439ede68574afbdf0388f57fd05704e5d8",
+ "seconds": 405,
+ "at": "2026-11-17T06:47:10"
 }

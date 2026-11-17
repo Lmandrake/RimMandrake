@@ -66,7 +66,7 @@
         "figurative": [
           {
             "word": "most of the metal in sight",
-            "stands_for": "The bulk of visible, reachable ordinary metal is freely mineable wall rock and rubble; marked route dividers and sacred works are recognisable exceptions. No area, mass or yield ratio is pinned.",
+            "stands_for": "The bulk of visible, reachable ordinary metal is freely mineable wall rock and rubble; marked route dividers and sacred works are recognisable exceptions. Free walls are wall mass whose removal joins no two routes and opens no access into held ground, such as backing, thick wall bulk, outer facades and worked-out spurs; any wall whose removal connects corridors or opens held ground is a marked divider, visible before designation. No area, mass or yield ratio is pinned.",
             "accept": "A crew mines ordinary corridor walls freely across the maze while leaving marked shortcut dividers and protected works intact; neither a distant inaccessible facade nor a depleted worked-out corridor promises a fixed free-metal fraction."
           }
         ]
@@ -79,11 +79,12 @@
       "reject": [
         "Identical unmarked plate sometimes charges an offence only after it has already been mined.",
         "Mineable walls yield unusable decorative objects while the map description calls them treasure.",
-        "Only scattered rubble is free; nearly every corridor wall is a marked divider, so salvage means trespass."
+        "Only scattered rubble is free; nearly every corridor wall is a marked divider, so salvage means trespass.",
+        "Mining an unmarked corridor wall opens a shortcut between routes with no warning or consequence, bypassing the marked cut."
       ],
       "lazy": "none: The sentence requires the bulk of visible, reachable metal, including ordinary deck-plate walls, to be free salvage and marked dividers/sacred works to be exceptions; cosmetic yields, punishment for innocent mining and rubble-only scarcity each fail it.",
       "range": {
-        "varies": "Each material/ownership class: unmarked deck-plate wall and rubble, unmarked dead smartsteel, marked route divider, protected conduit, ordinary player wall and inert wreck; mining, destruction and claim attempts by player, visitor and hostile; yield permitted/zero work outcomes; stack split/haul/merge; reload before first damage and after completion; populations 1..40.",
+        "varies": "Each material/ownership class: unmarked deck-plate wall and rubble, unmarked dead smartsteel, marked route divider, protected conduit, ordinary player wall and inert wreck; mining, destruction and claim attempts by player, visitor and hostile; yield permitted/zero work outcomes; stack split/haul/merge; reload before first damage and after completion; populations 1..40. Include free wall mass that joins no routes when removed versus walls whose removal connects corridors or opens held ground, before and after surrounding salvage depletion; include an unmarked-wall mutant that opens a costless shortcut bypassing a marked cut, which must fail.",
         "left_out": "No required exchange rate, yield, market-value ratio, smelting redesign or new stuff alloy. Richer means a salable higher-value material under the current resolved economy, not a pinned price."
       },
       "sees": {
