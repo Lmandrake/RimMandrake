@@ -301,16 +301,16 @@
     },
     {
       "id": "deeps_host",
-      "what": "LanternDeeps owns selectable entrance-biome settings; RM_SleepingIce is a default host for natural emergence/mineshaft and persistent cave destination. Integration capability, not SleepingIce-owned warren.",
+      "what": "LanternDeeps owns entrance-biome settings and persistent cave entry/return. First-version dependency contract requires RM_SleepingIce host eligibility and working descent/return at shipped defaults in both franchise-free and campaign loads, under ordinary entrance chance rules.",
       "built": "present",
-      "evidence": "src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs:115; neighbour files absent in sparse working tree were read using git show HEAD:<recorded path>; present in tracked source, runtime unverified.",
+      "evidence": "src/RimMandrake/LanternDeeps/Source/LanternDeepsMod.cs:115 and entranceBiomes initializer/IsEntranceBiome; src/RimMandrake/LanternDeeps/Source/GenStep_ScatterCavePortal.cs; src/RimMandrake/LanternDeeps/Source/GenStep_ScatterMineshaftPortal.cs; src/RimMandrake/LanternDeeps/validation.py. Sparse neighbour sources read using git show HEAD:<recorded path>. Both-context runtime host resolution and ordinary pawn descent/return remain unverified; C11/T28 require them.",
       "proven": "stale",
-      "called_by": "LanternDeepsSettings.UtinniDefaultEntranceBiomes -> entranceBiomes/IsEntranceBiome -> neighbour-owned entrance scatter and persistent cave entry/return.",
-      "serves": "Existing shared engine or verification service",
+      "called_by": "UtinniDefaultEntranceBiomes -> unconditional entranceBiomes initialization/reset -> IsEntranceBiome -> neighbour-owned ordinary scatter -> portal/persistent cave/return. The array name does not establish resolved runtime membership in either load context.",
+      "serves": "The owner-picked go-under experience through an existing neighbour-owned descent and return.",
       "fate": "dependency",
-      "why": "delegated: Lantern Deeps owns its host setting and persistent cave, including entry and return; this surface keeps compatibility without claiming the cave as its signature.",
+      "why": "delegated: The owner-picked crossing/digging/going-under experience requires a usable descent at shipped defaults in both supported loads. Lantern Deeps supplies that existing service without adding a SleepingIce-owned rescue cave or changing entrance chance. C11/T28 require runtime evidence, including the return, before this contract is considered verified.",
       "needed_by": "",
-      "ticket": ""
+      "ticket": "T28"
     },
     {
       "id": "no_titan_passage",

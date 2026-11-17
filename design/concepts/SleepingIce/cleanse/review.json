@@ -1,0 +1,658 @@
+{
+ "mod": "SleepingIce",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "evidence_cannot_tell",
+     "where": "design/concepts/SleepingIce/cleanse/bars.json B1 sees.control; B8 reject picture 2 and sees.on",
+     "evidence": "B1's control says: \"Read the terrain and weather history at the viewed cells ... This rules out a white overlay, Clear lock, cropped puddle-free view or invented aurora condition.\" But src/RimMandrake/SleepingIce/Defs/BiomeDefs/RM_SleepingIce.xml:138-139 sets baseWeatherCommonalities to <Clear>100</Clear>, and the comment at line 61 reads \"baseWeatherCommonalities — Clear only.\" On this biome a forced Clear lock leaves the same weather history as natural weather, so the stated control cannot tell the lock B1 and B8 reject from a correct all-on run.",
+     "would_pass": "A control that reads the lock or override itself (the weather decider's forced or dev override state, and the run's own lock record), together with the ordinary scheduler's sky or game-condition state from the WeatherSuite geometry. A planted Clear-lock fixture must make the observer refuse.",
+     "smallest_fix": "In B1 (and B8's sees.control), replace \"weather history\" with a direct read of the weather override/lock state and the sky-condition scheduler. Add a planted-lock negative control to T3, as T11 already has for B8 (\"detect a planted sky lock\")."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json R9; design/concepts/SleepingIce/cleanse/definition.md, 'Breach cadence ...' paragraph and 'With no eligible source the shivven waits on its actual ice'",
+     "evidence": "R9 says \"Reuse legal slots when an animal dies or ordinarily leaves\", and definition.md says \"Death or ordinary accounted departure frees slots.\" Nothing defines a shivven departure. src/RimMandrake/SleepingIce/Source/RM_Shivven.cs has no exit, leave or despawn path (grep for ExitMap|Leave|Despawn finds nothing). The census says shivven have \"no food/rest need\", and the definition says a shivven with no eligible source \"waits on its actual ice\". So the capacity that bounds the signature relies on a release valve with no definition, and without one the cap only ever fills.",
+     "would_pass": "Either one defined behaviour by which a source-less shivven returns below, with its readable sign (a travelling seam to a legal ice cell, an inspect or message account, the slot freed, compliant with the no-vanish ruling), or a plain statement that only death frees a slot, with the permanently saturated standing population added as a declared regime in B4's and B8's ranges and in M4's sweep.",
+     "smallest_fix": "Delete \"or ordinarily leaves\" from R9 and \"or ordinary accounted departure\" from definition.md, and add \"capacity saturated by surviving waiting shivven\" to the B8 range and the M4 inputs. Alternatively, define the return-below in one sentence with its sign and give it a ticket with an acceptance test."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "design/RimMandrake/biome_experiences_2026-10-20.md:20 against bars.json (no bar or check), owner_pages.md page two 'Dig/go under' line, and the census.json deeps_host row",
+     "evidence": "The owner-picked experience (\"picked by card\") is: \"A frozen highway that nobody stays on. You cross it, dig into it, or go under it.\" Crossing reaches B1 and B8, and digging reaches B3. \"Go under it\" reaches no bar and no check. definition.md hands it to Lantern Deeps only \"when that neighbour scatters them under its settings\". The deeps_host row cites LanternDeepsSettings.UtinniDefaultEntranceBiomes, a campaign-named default, while B2's range includes a franchise-free load. The row itself says \"runtime unverified\". Yet the owner pages tell him that the Deeps entrance \"remain[s]\". One of the three verbs in his sourced root sentence is quietly left to chance.",
+     "would_pass": "Either a check (and a line in B8's range) that, at shipped defaults in both the free and campaign load contexts, a SleepingIce map can carry a working Lantern Deeps descent with its return, or an honest statement on his pages that \"go under it\" has no first-version guarantee and moves to the next version with the larder.",
+     "smallest_fix": "Add a check that reads the resolved Deeps entrance-host membership of RM_SleepingIce in both load contexts. Then add one line to B8's range, or reword page two's \"Dig/go under\" line to say it is not guaranteed in this version."
+    }
+   ],
+   "reviewer_refusals": 3,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A local artificial lamp warms the colour beside the camp; the distant interior remains under cold sky light.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "The only dirty-white view is a camera fixture while ordinary ticking brings interior wind or snowfall.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "The biome has the right name and weather table, but the colony stands on a blue snowy plain containing a prefab puddle and a fertile patch.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "A traveller walks between dirty-white slabs, frost crystals and a low ridge; the sky lights their upper edges while the ground remains bare hard ice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A stationary ridge starts chasing a miner, or a cold casualty disappears to imply an unbuilt rescue below.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A supplied zhissa gives milk and an imported tellurox carries cargo; outside their shelter the player finds no pasture or foraging crop, and mining a hessarund yields its crust.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "A wandering visitor is injured by the cold or leaves normally with a readable account; no resident arctic food herd replaces it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "The animal defs resolve, but the player can live on renewing wild pasture, or the shell pack beast cannot carry a caravan load.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Useful salvage appears only as a recurring free delivery, or depends on a new rite, tablet or research unlock.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "Pretty wrecks can be selected but an ordinary salvage job produces no usable haul, or the ridge has a mining order with no recoverable material.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "Later arrivals still find unworked preserved objects where they were left; harvested ground stays worked.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "A party deconstructs a frost-locked hull, mines the ridge, loads the resulting useful material and continues its journey.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The dial counts indoor warmth identically through an open doorway and an insulating enclosure, so a cold exterior has no benefit.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "The displayed dial changes, but naturally rolled breaches ignore it and keep following a fixed schedule.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "An exposed campfire or opened warm room raises the thermal trend and subsequent pressure; an unpowered cold machine does not.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "A warm refuge retains its indoor comfort after its exterior is better insulated; the readout falls and the unsaturated breach trace becomes less threatening.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "The first warning names warmth, points to the attackable crack and states its countdown; a recalled worker reaches shelter and the crew either breaks the crack or prepares for emergence.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A tutorial letter mentions heat and a timer, but the crack cannot be attacked before the exposed worker can return.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "A later warning says danger is near the camp without an arrow or deadline; searching the open perimeter can still find and attack the visible crack.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Later warnings omit the time in prose but their look target or inspect string still reveals the exact direction or countdown.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A stronger protected or distant heater does not distract a shivven from a weaker reachable source in its sensing range; its actual route stays on ice around the flooring.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Finishing a floor over a pending crack visibly seals that opening; it releases nothing at the old deadline, while a continuing warm camp can later draw a different legal crack.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Crack placement checks bare ice, but its expired release chooses a neighbouring floor cell or emerges through a newly built deck.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "A correct ice-only planned endpoint is reported while the actual pawn repeatedly attempts a shorter floor shortcut and stalls, or a global inaccessible heater suppresses all local targets.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "Moving cracks and a positional rumble approach an exposed heater; the animal is hidden until it surfaces and damages it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "The animal remains visibly walking on the surface throughout its approach, or a debug seek job never completes a damaging strike.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The hediff says submerged and a fleck exists in the state dump, but it is invisible against the dirty-white ice or its sound cannot locate movement.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "A struck shivven surfaces and fights; a dead worker leaves a corpse and named readable account rather than vanishing below.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "The party crosses, chooses salvage, warms a camp, reads and stops a crack, later meets a breach, improves protection and still completes normal work; a saved continuation preserves that history.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Default play turns into a backlog of cracks or multiplying animals that consumes ordinary work, strips the plateau of its recoverable identity, or fills the log with repeated failures.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "The combined run stays silent because a kept mechanic is disabled, timers are skipped or the sky is locked, or reloading repeats the tutorial and erases an active threat.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "A prepared supplied refuge keeps working as cold reduces new pressure; its animals still need supplies and its unworked finds remain preserved.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The warren's standing ambient audio layer. In design/Jawa/worldbuilding/biomes/sleeping_ice.md:244-245 (§4c.1, owner-ratified 2026-09-24) the lore says: \"Under it, the standing audio layer: the warren's tunnels make the still air sing.\" It has no census row and no next_version entry; it is only excluded in passing by B7's left_out (\"No custom ambient choir\"). It is not the passed Breath-Choir, which is a player-tuned bore instrument (nightsideice_bedazzle_review_2026-10-01.md:327, :353). It needs a fate: next_version, or recommend_retire with a reason.",
+   "loop_or_three_way": "B4, R9 and B8 meet under the no-vanish ruling. Exposed warmth opens breaches (B4). Released shivven have no food or rest need and no exit (RM_Shivven.cs; definition.md: 'waits on its actual ice'), so survivors accumulate until R9's capacity is full. At capacity, further heat opens no cracks, so B4's 'more warmth draws greater breach pressure, and the readout explains the change' stops describing what threatens the camp. B8's lasting refuge lives in exactly that saturated regime: a standing hidden population that any opened warm door draws at once. Because the no-vanish ruling forbids a silent cull, combat deaths are the only release valve. M4 is named for the colony-cycle meeting, but neither B4's nor B8's range declares this saturated, death-only regime as one the bars must hold in.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 494142
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B4 (accept[0], meant.intent, range); definition.md 'Implementation choices' exposure proxy; models.md M3",
+     "evidence": "Owner-ratified sheet design/Jawa/worldbuilding/biomes/sleeping_ice.md:180-183: \"Gameplay: your heating is your threat generator. Insulate, run cold, and nothing comes. Heat the base to a comfortable temperature and you have lit a flare on a dark plain. That is a real strategic tension\". B4 accept[0] instead accepts \"A warm refuge retains its indoor comfort after its exterior is better insulated; the readout falls\", and its meant.intent says \"insulation preserves useful warmth indoors\". definition.md weights a closed door at 0.25, a wall face at 0.1/t and a roof cell at 0.05 against 1 for an open boundary. On those coefficients a walled, roofed, closed-door room is weighted at well under a tenth of an exposed one [guess ~85%, arithmetic on a 5x5 room]. B4, B8 and M3 compare only exposed against insulated rooms at equal comfort. None of them requires that a comfortably heated insulated base still draws more breach pressure than the same insulated base run cold. So the comfort-against-safety tension the owner ratified can be insulated away and no bar would refuse it.",
+     "would_pass": "A B4 pair that keeps both owner clauses: insulation lowers pressure, but a comfortable insulated refuge still draws more breach pressure than the same refuge run cold. M3 must check that ordering, not only the open-against-closed one.",
+     "smallest_fix": "Add a B4 reject picture: \"A walled, roofed base heated to comfort draws breaches no more often than the same base left cold.\" Add a 'comfortable insulated vs cold insulated, same walls' paired cohort to B4.range and to M3's sweep and calibration. Reword meant.intent to cite sleeping_ice.md §4 'comfortable = flare' alongside 'insulate'."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json row tellurox_livestock (fate life); bars.json B2 accept[0] and reject[0]",
+     "evidence": "The row says \"Housed in this module, not on its inline wild roster\" and gives as its why only \"Imported working livestock carries cargo and yields permanent shell when butchered; it is not a new wild admission.\" Its needed_by is empty. Its home was a tier migration by card (OWNER.jsonl tsn 1792859729611947407, byCard \"Tellurox home → RM tier, lore removed\"), not a ruling that it is this biome's life. A player meets it only through trade. It carries its own permanent-shell butcher bonus. Even so, B2 makes it part of passing (\"an imported tellurox carries cargo\"; reject \"the shell pack beast cannot carry a caravan load\").",
+     "would_pass": "Either a stated deletion argument showing why land, life or the signature fails without tellurox, or tellurox classed as a def the module hosts (a dependency or outside the biome's first-version life), with B2's pack picture met by any imported pack animal.",
+     "smallest_fix": "Change tellurox_livestock's fate to dependency (a hosted def, kept as is), and rewrite B2's pictures to say \"an imported pack animal carries cargo\" instead of naming tellurox and its shell."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B2 (says, range, sees.control)",
+     "evidence": "B2 says \"A colony on the ice must bring food\" and rejects \"renewing wild pasture\". The proposal keeps every visitor admission at positive density (census ice_doctrine \"Density 0.2\"; surface_roster: zhissa inline, plus RSW_CaveLemming, RSW_Wampa and RSW_Tauntaun patched in), and the vanilla wild spawner keeps topping that population up. B2.range lists \"fed/unfed imported livestock, birth, milking, caravan loading, casualty and ordinary departure\". B2.control only \"distinguish[es] milk from hidden grazing\". No branch hunts the visitors. A camp living indefinitely on hunted, respawning visitors would pass every observation B2 makes while breaking its 'must bring food' sentence.",
+     "would_pass": "B2's range and control include a hunting branch over the respawning visitors, and B2 says plainly whether hunting scarce visitors is allowed as a supplement or must fail to sustain a camp.",
+     "smallest_fix": "Add 'hunting admitted visitors across days 1–15 at shipped density' to B2.range, add a food-provenance control that tags meat by hunted pawn, and add one accept or reject picture that settles whether hunting visitors can feed the camp."
+    },
+    {
+     "head": "reads_with_mechanic_off",
+     "where": "bars.json B1 sees.on and range.left_out; definition.md 'Using it' (Deeps host required)",
+     "evidence": "definition.md: \"The first version requires SleepingIce to host a working Lantern Deeps descent and return at shipped defaults in both franchise-free and campaign loads.\" sleeping_ice.md §6 allows exactly one surface glow: \"Lantern Deeps emergences ... leak the caverns' glow at the surface; they are not residents.\" B1 says \"without ... a native surface glow\", yet its sees.on lists CreatureBehaviors, Wreckage, EnvironmentalHazards, ExplosiveGrowth, Bones and WeatherSuite, and leaves Lantern Deeps out (only B8.on loads it). B1 can therefore pass its land and glow judgement on maps where the required neighbour's entrance scatter and glow cannot appear.",
+     "would_pass": "B1's scene loads Lantern Deeps at shipped defaults, includes entrance-present and entrance-absent cohorts, and has a picture that tells the allowed emergence leak apart from a native glow.",
+     "smallest_fix": "Append \"Lantern Deeps at shipped defaults (entrance-present and no-entrance cohorts)\" to B1.sees.on and B1.range.varies, and add a reject picture: \"glow spreads across the ice away from any Deeps emergence\"."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B4 says and meant.figurative (empty)",
+     "evidence": "B4 says \"A camp that exposes more warmth to the ice draws greater breach pressure\". 'Breach pressure' is the dial and breach-chance sensor, not physical ice pressure: definition.md says \"Heat pressure is a sensor of exposure, not a second temperature\". 'Exposes ... to the ice' means the exterior-transmission proxy, not heat reaching ice cells. figurative is [] and no accept picture departs from the literal reading.",
+     "would_pass": "meant.figurative names 'breach pressure' (the continuous thermal dial and the breach chance it drives) and 'exposes warmth to the ice' (the outdoor exposure the proxy counts), each with an accept picture that departs from the literal reading.",
+     "smallest_fix": "Add the two figurative entries and one accept picture: \"No ice cell warms and nothing deforms, yet the thermal readout rises and breaches follow when a warm room's door is left open.\""
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A traveller walks between dirty-white slabs, frost crystals and a low ridge; the sky lights their upper edges while the ground remains bare hard ice.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "A local artificial lamp warms the colour beside the camp; the distant interior remains under cold sky light.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "The biome has the right name and weather table, but the colony stands on a blue snowy plain containing a prefab puddle and a fertile patch.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "The only dirty-white view is a camera fixture while ordinary ticking brings interior wind or snowfall.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "The animal defs resolve, but the player can live on renewing wild pasture, or the shell pack beast cannot carry a caravan load.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A stationary ridge starts chasing a miner, or a cold casualty disappears to imply an unbuilt rescue below.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "A wandering visitor is injured by the cold or leaves normally with a readable account; no resident arctic food herd replaces it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A supplied zhissa gives milk and an imported tellurox carries cargo; outside their shelter the player finds no pasture or foraging crop, and mining a hessarund yields its crust.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Useful salvage appears only as a recurring free delivery, or depends on a new rite, tablet or research unlock.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "A party deconstructs a frost-locked hull, mines the ridge, loads the resulting useful material and continues its journey.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "Later arrivals still find unworked preserved objects where they were left; harvested ground stays worked.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Pretty wrecks can be selected but an ordinary salvage job produces no usable haul, or the ridge has a mining order with no recoverable material.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The displayed dial changes, but naturally rolled breaches ignore it and keep following a fixed schedule.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A warm refuge retains its indoor comfort after its exterior is better insulated; the readout falls and the unsaturated breach trace becomes less threatening.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "An exposed campfire or opened warm room raises the thermal trend and subsequent pressure; an unpowered cold machine does not.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The dial counts indoor warmth identically through an open doorway and an insulating enclosure, so a cold exterior has no benefit.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "Later warnings omit the time in prose but their look target or inspect string still reveals the exact direction or countdown.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "The first warning names warmth, points to the attackable crack and states its countdown; a recalled worker reaches shelter and the crew either breaks the crack or prepares for emergence.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "A tutorial letter mentions heat and a timer, but the crack cannot be attacked before the exposed worker can return.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "A later warning says danger is near the camp without an arrow or deadline; searching the open perimeter can still find and attack the visible crack.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "Crack placement checks bare ice, but its expired release chooses a neighbouring floor cell or emerges through a newly built deck.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Finishing a floor over a pending crack visibly seals that opening; it releases nothing at the old deadline, while a continuing warm camp can later draw a different legal crack.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "A stronger protected or distant heater does not distract a shivven from a weaker reachable source in its sensing range; its actual route stays on ice around the flooring.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "A correct ice-only planned endpoint is reported while the actual pawn repeatedly attempts a shorter floor shortcut and stalls, or a global inaccessible heater suppresses all local targets.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "The hediff says submerged and a fleck exists in the state dump, but it is invisible against the dirty-white ice or its sound cannot locate movement.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "The animal remains visibly walking on the surface throughout its approach, or a debug seek job never completes a damaging strike.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "A struck shivven surfaces and fights; a dead worker leaves a corpse and named readable account rather than vanishing below.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "Moving cracks and a positional rumble approach an exposed heater; the animal is hidden until it surfaces and damages it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "The party crosses, chooses salvage, warms a camp, reads and stops a crack, later meets a breach, improves protection and still completes normal work; a saved continuation preserves that history.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Default play turns into a backlog of cracks or multiplying animals that consumes ordinary work, strips the plateau of its recoverable identity, or fills the log with repeated failures.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "The combined run stays silent because a kept mechanic is disabled, timers are skipped or the sky is locked, or reloading repeats the tutorial and erases an active threat.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "A prepared supplied refuge keeps working as cold reduces new pressure; its animals still need supplies and its unworked finds remain preserved.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The warren's growth feedback from the owner-ratified hull rule, sleeping_ice.md:280-282: \"And the ring feeds back: a warren fed by a warm colony's edge — its corpses, its insect-falls, its frozen raiders — grows.\" It is not a census row and not in next_version.md, and R9 ('No reproduction', a fixed provisional capacity of 24) quietly replaces it. It needs a row, most likely next_version with T24 larder and T25 insect-fall as its feeders, so it is moved on purpose rather than lost.",
+   "loop_or_three_way": "A floored apron against the owner's 'ongoing costs'. R4 and the kernel's InEdgeBand (src/RimMandrake/SleepingIce/Source/Kernel/RM_SleepingIceKernel.cs:110, a crack only on bare unroofed ice 3–12 cells from the nearest player building) meet B6 (floors stop emergence) and B8 accept[1] (a prepared refuge keeps working). Together they let a one-time floor apron covering the whole edge band remove every legal crack cell for good, whatever the heat: B4's dial keeps rising with no breach ever following. Against ANSWERS_OWNER.md 2026-11-10 (\"A lasting refuge can fulfil the experience through substantial commitment and ongoing costs\"), the signature's ongoing cost drops to zero after one build, and the readout explains only capacity saturation, not 'no legal ice'. No meeting in bars.json names this; the ice-boundary meeting covers stalls and floor spawns only. M2/M4 should sweep a full-apron refuge, and the readout should state the blocked-ice cause.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 654107
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1162116,
+    "output_tokens": 9205
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "core_promise_weakened",
+   "where": "bars.json B4 (accept[0], meant.intent, range); definition.md 'Implementation choices' exposure proxy; models.md M3",
+   "evidence": "Owner-ratified sheet design/Jawa/worldbuilding/biomes/sleeping_ice.md:180-183: \"Gameplay: your heating is your threat generator. Insulate, run cold, and nothing comes. Heat the base to a comfortable temperature and you have lit a flare on a dark plain. That is a real strategic tension\". B4 accept[0] instead accepts \"A warm refuge retains its indoor comfort after its exterior is better insulated; the readout falls\", and its meant.intent says \"insulation preserves useful warmth indoors\". definition.md weights a closed door at 0.25, a wall face at 0.1/t and a roof cell at 0.05 against 1 for an open boundary. On those coefficients a walled, roofed, closed-door room is weighted at well under a tenth of an exposed one [guess ~85%, arithmetic on a 5x5 room]. B4, B8 and M3 compare only exposed against insulated rooms at equal comfort. None of them requires that a comfortably heated insulated base still draws more breach pressure than the same insulated base run cold. So the comfort-against-safety tension the owner ratified can be insulated away and no bar would refuse it.",
+   "would_pass": "A B4 pair that keeps both owner clauses: insulation lowers pressure, but a comfortable insulated refuge still draws more breach pressure than the same refuge run cold. M3 must check that ordering, not only the open-against-closed one.",
+   "smallest_fix": "Add a B4 reject picture: \"A walled, roofed base heated to comfort draws breaches no more often than the same base left cold.\" Add a 'comfortable insulated vs cold insulated, same walls' paired cohort to B4.range and to M3's sweep and calibration. Reword meant.intent to cite sleeping_ice.md §4 'comfortable = flare' alongside 'insulate'."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json row tellurox_livestock (fate life); bars.json B2 accept[0] and reject[0]",
+   "evidence": "The row says \"Housed in this module, not on its inline wild roster\" and gives as its why only \"Imported working livestock carries cargo and yields permanent shell when butchered; it is not a new wild admission.\" Its needed_by is empty. Its home was a tier migration by card (OWNER.jsonl tsn 1792859729611947407, byCard \"Tellurox home → RM tier, lore removed\"), not a ruling that it is this biome's life. A player meets it only through trade. It carries its own permanent-shell butcher bonus. Even so, B2 makes it part of passing (\"an imported tellurox carries cargo\"; reject \"the shell pack beast cannot carry a caravan load\").",
+   "would_pass": "Either a stated deletion argument showing why land, life or the signature fails without tellurox, or tellurox classed as a def the module hosts (a dependency or outside the biome's first-version life), with B2's pack picture met by any imported pack animal.",
+   "smallest_fix": "Change tellurox_livestock's fate to dependency (a hosted def, kept as is), and rewrite B2's pictures to say \"an imported pack animal carries cargo\" instead of naming tellurox and its shell."
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json B2 (says, range, sees.control)",
+   "evidence": "B2 says \"A colony on the ice must bring food\" and rejects \"renewing wild pasture\". The proposal keeps every visitor admission at positive density (census ice_doctrine \"Density 0.2\"; surface_roster: zhissa inline, plus RSW_CaveLemming, RSW_Wampa and RSW_Tauntaun patched in), and the vanilla wild spawner keeps topping that population up. B2.range lists \"fed/unfed imported livestock, birth, milking, caravan loading, casualty and ordinary departure\". B2.control only \"distinguish[es] milk from hidden grazing\". No branch hunts the visitors. A camp living indefinitely on hunted, respawning visitors would pass every observation B2 makes while breaking its 'must bring food' sentence.",
+   "would_pass": "B2's range and control include a hunting branch over the respawning visitors, and B2 says plainly whether hunting scarce visitors is allowed as a supplement or must fail to sustain a camp.",
+   "smallest_fix": "Add 'hunting admitted visitors across days 1–15 at shipped density' to B2.range, add a food-provenance control that tags meat by hunted pawn, and add one accept or reject picture that settles whether hunting visitors can feed the camp."
+  },
+  {
+   "head": "reads_with_mechanic_off",
+   "where": "bars.json B1 sees.on and range.left_out; definition.md 'Using it' (Deeps host required)",
+   "evidence": "definition.md: \"The first version requires SleepingIce to host a working Lantern Deeps descent and return at shipped defaults in both franchise-free and campaign loads.\" sleeping_ice.md §6 allows exactly one surface glow: \"Lantern Deeps emergences ... leak the caverns' glow at the surface; they are not residents.\" B1 says \"without ... a native surface glow\", yet its sees.on lists CreatureBehaviors, Wreckage, EnvironmentalHazards, ExplosiveGrowth, Bones and WeatherSuite, and leaves Lantern Deeps out (only B8.on loads it). B1 can therefore pass its land and glow judgement on maps where the required neighbour's entrance scatter and glow cannot appear.",
+   "would_pass": "B1's scene loads Lantern Deeps at shipped defaults, includes entrance-present and entrance-absent cohorts, and has a picture that tells the allowed emergence leak apart from a native glow.",
+   "smallest_fix": "Append \"Lantern Deeps at shipped defaults (entrance-present and no-entrance cohorts)\" to B1.sees.on and B1.range.varies, and add a reject picture: \"glow spreads across the ice away from any Deeps emergence\"."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B4 says and meant.figurative (empty)",
+   "evidence": "B4 says \"A camp that exposes more warmth to the ice draws greater breach pressure\". 'Breach pressure' is the dial and breach-chance sensor, not physical ice pressure: definition.md says \"Heat pressure is a sensor of exposure, not a second temperature\". 'Exposes ... to the ice' means the exterior-transmission proxy, not heat reaching ice cells. figurative is [] and no accept picture departs from the literal reading.",
+   "would_pass": "meant.figurative names 'breach pressure' (the continuous thermal dial and the breach chance it drives) and 'exposes warmth to the ice' (the outdoor exposure the proxy counts), each with an accept picture that departs from the literal reading.",
+   "smallest_fix": "Add the two figurative entries and one accept picture: \"No ice cell warms and nothing deforms, yet the thermal readout rises and breaches follow when a warm room's door is left open.\""
+  }
+ ],
+ "applyable": false,
+ "seconds": 746,
+ "at": "2026-11-17T02:04:52"
+}
