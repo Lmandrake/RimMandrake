@@ -721,14 +721,23 @@
    },
    {
     "at": "2026-11-17T20:05:06Z",
-    "kind": "unmeasured",
+    "corrected": {
+     "at": "2026-11-17T20:09:36Z",
+     "by": "RIMMANDRAKE_REQUIRE_TOKENS_ON_HAND_CLOSE_PHANTOM_RESERVATION",
+     "was": {
+      "kind": "unmeasured",
+      "tokens": 3940000
+     },
+     "why": "a steward hand exam closed with no --tokens: the reservation was charged though its helpers (251,243, charged above) were its spend; every earlier steward exam close charged 0"
+    },
+    "kind": "stage",
     "ref": "run bench-pyre-exam-st4-r9-20261117",
     "stage": 4,
-    "tokens": 3940000
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 23169128
+  "spent": 19229128
  },
  "coverage_releases": [
   {
@@ -1732,6 +1741,24 @@
    "stage": 5,
    "what": "refused",
    "why": "PARKED (ceiling): the judge-and-rework loop has spent 11220115 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap); nothing opens until his word on BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS"
+  },
+  {
+   "at": "2026-11-17T20:09:36Z",
+   "stage": 5,
+   "what": "park_withdrawn",
+   "why": "the ceiling park of 20:05:20Z was written on a phantom 3,940,000-token unmeasured charge from a hand close with no --tokens (fixed b1332ee769); corrected to 0 as every earlier steward exam close; loop spend 7280115, under the ceiling 8000000"
+  },
+  {
+   "at": "2026-11-17T20:09:43Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "19229128 of 4000000 spent; run bench-pyre-cov-st5-r10-20261117 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T20:09:43Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run bench-pyre-cov-st5-r10-20261117, stage 5, budget 3940000"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1742,13 +1769,6 @@
   "1794790810777772480",
   "1794790871101885625"
  ],
- "park": {
-  "at": "2026-11-17T20:05:20Z",
-  "kind": "ceiling",
-  "quick_look": true,
-  "summary": "park_summary.md",
-  "why": "the judge-and-rework loop has spent 11220115 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap)"
- },
  "parks": [
   {
    "at": "2026-11-13T19:03:33Z",
@@ -1756,6 +1776,15 @@
    "kind": "ceiling",
    "lifted_at": "2026-11-15T06:01:06Z",
    "why": "the judge-and-rework loop has spent 8070268 tokens since 2026-11-06T02:30:55Z, past its ceiling of 8000000 (2x the cap)"
+  },
+  {
+   "at": "2026-11-17T20:05:20Z",
+   "kind": "ceiling",
+   "lifted_at": "2026-11-17T20:09:36Z",
+   "lifted_by": "withdrawn: written on a phantom charge (RIMMANDRAKE_REQUIRE_TOKENS_ON_HAND_CLOSE_PHANTOM_RESERVATION); loop spend is 7280115 of 8000000 after the correction",
+   "quick_look": true,
+   "summary": "park_summary.md",
+   "why": "the judge-and-rework loop has spent 11220115 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap)"
   }
  ],
  "recovery": [],
@@ -2255,9 +2284,33 @@
   }
  ],
  "runner": "claude",
- "running": null,
+ "running": {
+  "at": "2026-11-17T20:09:43Z",
+  "inputs": {
+   "exam": "4de0b1a14538602f7719b948f67e1c2d15b461d23592c9cc45d55a35051d2e15",
+   "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+   "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
+   "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+   "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
+   "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+   "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1"
+  },
+  "manifest": {
+   "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
+   "designer_lock.md": "77466999512905580bff43830764ab0c7a1d817973e1f6f6d0704060dd199351"
+  },
+  "owner_uncited": [
+   "1793766816609436834",
+   "1794611171307640419",
+   "1794790810777772480",
+   "1794790871101885625"
+  ],
+  "reserved": 3940000,
+  "run": "bench-pyre-cov-st5-r10-20261117",
+  "stage": 5
+ },
  "schema": 1,
  "stage": 5,
- "status": "waiting_owner",
+ "status": "ready",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
