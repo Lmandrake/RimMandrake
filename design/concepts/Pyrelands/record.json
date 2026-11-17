@@ -210,6 +210,18 @@
    "speaker": "owner",
    "source": "OWNER:1794786804170379047",
    "text": "By his card 2026-11-15 (How should the giant be made the giant? -> Keep 'twice', raise body to 9+): the furnace-beast's body size goes from his earlier ruled 6 to 9, so it is at least twice every other Pyrelands roster kind's, the patch-added RSW_Zeer (4.5) included; adult draw 7.5 against the Zeer's 6. Built by RIMMANDRAKE_ENLARGE_FURNACE_BEAST_TWICE_THE_ZEER_MEANS_NINE (6120bb02aa); T_DEFS_OFFLINE asserts the twice bar. This closes round-7 gap g1 (rm-coverage-judge-1794779751): the bar stays as written and is now attainable."
+  },
+  {
+   "id": "d_burn_line_natural_grassfire",
+   "speaker": "owner",
+   "source": "OWNER:1794894282613045211",
+   "text": "His words 2026-11-16 (answers.md A3 and A4, OWNER:1794894282613045211 and OWNER:1794894288587863659): \"And modify the bar so that it's not so finicky about \"the line.\" Sometimes poetry is simply that. I just wanted a natural grassfire feel.\" and \"Take out the \"far from buildings\" we don't have any physics to substantiate that claim.\" Leaf burn_line_walks reads as a natural grass fire that moves across the map and is never out for long; no bar says where it lights relative to the colony (tree.json, sheet.md, sc_burn_line_walks, carried out by 49e11870b4). The code still keeps the biome's own lights off the home area and away from colony buildings (inv_burn_line_fire_clock): built behaviour, not a bar."
+  },
+  {
+   "id": "d_fire_walks_with_wind",
+   "speaker": "owner",
+   "source": "OWNER:1794926130118775229",
+   "text": "By his card 2026-11-17 (Fire bars -> Just \"The fire walks with the wind.\"): leaf fire_walks_with_wind is his bar in his words. The wind carry is built (49e11870b4, setting windCarriesFireEnabled, on by default) and staged at two opposite bearings (314117207e, scene sc_fire_walks_with_wind); its live test wind_burn_live.py is UNRUN (version/in_game/unrun.jsonl)."
   }
  ],
  "asks": [
@@ -626,7 +638,7 @@
   },
   {
    "id": "inv_burn_line_fire_clock",
-   "what": "The burn line: grass fire walks the map with its own front logic (burn kernel, fire-front clock), never fully goes out (a smoulder relights in open grass far from buildings after a quiet spell), a fresh map opens with a small smouldering front, and fire-tick effects spawn props while it burns; people on a Pyrelands map keep clear of fire: a person steps off a cell the fire has reached or is about to reach (PyrelandsFireSense, job RM_PyreStepAwayFromFire), and an urgently hungry undrafted colonist eats before fire duty (RM_PyreEatBeforeFireDuty, ThinkNode_ConditionalPyrelandsColonist)",
+   "what": "The burn line: grass fire walks the map with its own front logic (burn kernel, fire-front clock), never stays out for long (a smoulder relights in open grass after a quiet spell; the code picks the cell outside the home area and PyrelandsTuning.StandingBurnMinDistFromColony from any colony building, MapComponent_BurnLine.IsLawfulBurnCell, which is built behaviour and no longer a bar by his 2026-11-16 word), the wind carries the fire downwind while the windCarriesFireEnabled setting is on (MapComponent_BurnLine), a fresh map opens with a small smouldering front, and fire-tick effects spawn props while it burns; people on a Pyrelands map keep clear of fire: a person steps off a cell the fire has reached or is about to reach (PyrelandsFireSense, job RM_PyreStepAwayFromFire), and an urgently hungry undrafted colonist eats before fire duty (RM_PyreEatBeforeFireDuty, ThinkNode_ConditionalPyrelandsColonist)",
    "impl": "present",
    "impl_evidence": [
     "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",

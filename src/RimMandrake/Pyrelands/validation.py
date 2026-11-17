@@ -4491,9 +4491,6 @@ R6_DRINK_CELLS = 2
 R6_HERD_RADIUS = 10              # MapComponent_PyrelandsHerdThirst.HerdRadius
 R6_HERD_STAGGER_TICKS = 2600     # one CheckIntervalTicks (2500) and a little: spawned animals are staggered first
 R6_HERD_THIRST = "RimMandrake.Pyrelands.MapComponent_PyrelandsHerdThirst"
-R6_GIANT_BS = 9.0
-R6_GIANT_DRAW = (3.3, 5.2, 7.5)  # RM_FurnaceBeast giant draw sizes by life stage
-R6_ULLAI_BS = 1.8
 R6_ROSTER_MIN = 9                # inv_animal_roster's nine native kinds: fewer is a blind read
 R6_CENSUS_MUTATORS = ("jawa/set_plants", "jawa/spawn_pawn", "jawa/spawn_batch", "jawa/set_terrain",
                       "jawa/set_terrain_batch", "jawa/spawn_fill_area", "rimworld/spawn_thing")
@@ -5112,8 +5109,8 @@ def giant_margin(sizes, beast="RM_FurnaceBeast", ratio=2.0):
 def _r6_ullai_and_giant(t):
     """sc_furnace_giant (g10): furnaceBeastGiant on at load; every resolved RM_Pyrelands roster kind (biome_probe, the
     patch-added cast included, at least R6_ROSTER_MIN kinds or the read is blind) read live: race baseBodySize and the
-    last life stage's drawSize; RM_FurnaceBeast at 9 with R6_GIANT_DRAW, giant_margin over every other kind, more than
-    three times the ullai. Control: RM_PyrelandsGiants.RestoreClassicFurnaceBeast is private and takes a PawnKindDef, so
+    last life stage's drawSize; giant_margin over every other kind (relational only: no bar pins a size, owner 2026-11-16,
+    bar_rule). Control: RM_PyrelandsGiants.RestoreClassicFurnaceBeast is private and takes a PawnKindDef, so
     jawa/static_call (public static only) cannot invoke it without a reload: UNMEASURED."""
     _independent(t)
     with _comp(t, "giant_margin_over_roster"):
@@ -5144,19 +5141,13 @@ def _r6_ullai_and_giant(t):
             blind = sorted(k for k, v in sizes.items() if v[0] is None or v[1] is None)
             if blind:
                 _unmeasured(t, "body or draw size unread for %r" % blind)
-            fb = sizes.get("RM_FurnaceBeast")
-            if not fb or abs(fb[0] - R6_GIANT_BS) > 1e-3 or [round(d or 0, 2) for d in fb[2]] != list(R6_GIANT_DRAW):
-                _fail("RM_FurnaceBeast live body %r draws %r, not %.0f and %r" % (fb and fb[0], fb and fb[2], R6_GIANT_BS,
-                                                                                R6_GIANT_DRAW))
             ok, why = giant_margin(dict((k, (v[0], v[1])) for k, v in sizes.items()))
             if not ok:
                 _fail(why)
-            if fb[0] <= 3 * R6_ULLAI_BS:
-                _fail("the beast's %.2f is not over three times the ullai's %.1f" % (fb[0], R6_ULLAI_BS))
     _independent(t)
     with _comp(t, "giant_classic_restore_control"):
         _unmeasured(t, "RM_PyrelandsGiants.RestoreClassicFurnaceBeast is private and takes a PawnKindDef; jawa/static_call "
-                       "invokes public static methods only, so the classic 3.2 restore cannot run without a reload")
+                       "invokes public static methods only, so the classic restore cannot run without a reload")
 
 
 def _r6_embergrass_regrow(t):

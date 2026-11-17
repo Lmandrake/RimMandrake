@@ -52,7 +52,7 @@ SCENES = (
     ("sc_heat_dome", "heat_dome", False,
      ("bodyGraphic", "domeTexPath", "domeArt", "ppc=", "Burn", "DOME_HOLD_TICKS")),
     ("sc_furnace_giant", "ullai_and_giant", False,
-     ("jawa/biome_probe", "biome_probe_animals(", "baseBodySize", "lifeStages", "drawSize", "R6_GIANT_DRAW",
+     ("jawa/biome_probe", "biome_probe_animals(", "baseBodySize", "lifeStages", "drawSize",
       "R6_ROSTER_MIN", "giant_margin(", "RestoreClassicFurnaceBeast", "_unmeasured(")),
     ("sc_burn_line_walks", "burn_line", False,
      ("ProbeOpeningFront", "R6_FRONT_HOURS", "_ten_hour(", "ppc=", "burn_line_walking", "rimworld/save_game",

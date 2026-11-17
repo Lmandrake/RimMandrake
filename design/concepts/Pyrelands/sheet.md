@@ -59,7 +59,7 @@
 
 ## pruning
 - burn_line_walks: his root (a line of grass fire walks the map; poetry, by his word 2026-11-16) read as a natural grass fire that moves across the map and never fully goes out for long, OWNER:1793895899845199295
-- fire_walks_with_wind: yes, his bar by card 2026-11-17 in his words, OWNER:1794926130118775229; built 49e11870b4, wind_burn_live.py 5 of 5 PASS live 2026-11-16
+- fire_walks_with_wind: yes, his bar by card 2026-11-17 in his words, OWNER:1794926130118775229; built 49e11870b4, staged at two opposite bearings 314117207e; its live test wind_burn_live.py is UNRUN (scenes.json sc_fire_walks_with_wind, version/in_game/unrun.jsonl)
 - ash_ground_and_blowing_ash: his words OWNER:1791815330395605033 and OWNER:1791817028468666199
 - ash_fertile_when_watered: his words, the ash should be QUITE fertile with water added, OWNER:1791815330395605033; ordinary crops treat it as very fertile ground, OWNER:1794594151279833849
 - fresh_burn_compounds_with_black_rain: his card OWNER:1793898829233582581, black rain compounds the bonus

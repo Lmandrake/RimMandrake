@@ -223,6 +223,9 @@ def g10(c):
     t = words(s.get("action"), s.get("expect"))
     need("every RM_Pyrelands roster kind" in t, "sc_furnace_giant reads only the ullai", e)
     need("at least twice" in words(s.get("expect")), "sc_furnace_giant states no margin over every other kind", e)
+    # round 9 (rm-coverage-judge-1794938181): a bar is an experience, never a tuning number (owner 2026-11-16, bar_rule)
+    pin = re.findall(r"\b\d+\.\d+\b|\bsize \d", words(s.get("expect"), json.dumps(s.get("control"))))
+    need(not pin, "sc_furnace_giant pins a size: %r" % pin, e)
     return e
 
 
