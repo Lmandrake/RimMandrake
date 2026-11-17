@@ -734,7 +734,7 @@
       "built": "present",
       "evidence": "src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Buildings/RM_ShadeGear.xml",
       "proven": "missing",
-      "called_by": "Shared roof/parasol gear and heat response; plant hazard opts",
+      "called_by": "Shared roof/parasol gear; plant hazard opts",
       "serves": "dependency",
       "fate": "dependency",
       "why": "Consume shelter and existing warning surfaces; scope-gate deferred local opts without changing other biomes.",
@@ -857,6 +857,19 @@
       "why": "Owner answer fixes future tow fairness but no bargain state machine is built; cannot enable tow without it.",
       "needed_by": null,
       "ticket": "T34"
+    },
+    {
+      "id": "colonist_overheat_response",
+      "what": "Cross-biome reactive colonist response at onset of Direct Sun overheating, before Serious Heatstroke; interrupt ordinary work for lower-exposure roof/parasol refuge and resume after recovery. Shared-engine owner: CreatureBehaviors; required contract is in definition.md, not a LongShade planner.",
+      "built": "absent",
+      "evidence": "Owner answer 1: design/RimMandrake/designer_codex_2026-11-09/LongShade/ANSWERS_OWNER.md. Current animal-only hooks: src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_ShadeHop.xml; src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_ShadeSeekingWander.xml; src/RimMandrake/CreatureBehaviors/Defs/ThinkTreeDefs/RM_ThinkTree_VerminBehaviors.xml; src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekShade.cs. Search of src/RimMandrake XML/C# found no shade/heat response inserted at Humanlike_*; RM_SunHeatPatches.cs changes felt temperature/path cost, not this work interruption.",
+      "proven": "missing",
+      "called_by": "No current humanlike job caller; required future shared ordinary-work heat response, consumed by B7/B8. T36 observes it but does not implement it.",
+      "serves": "B7 ordinary colony work and B8 whole-mod shelter cycle",
+      "fate": "dependency",
+      "why": "Deleting the response leaves ordinary workers dependent on repeated manual refuge orders and defeats the owner's cross-biome overheating answer and practical colony use. This is a missing shared-engine dependency with a consumed contract, not a biome-specific AI redesign.",
+      "needed_by": "B7 and B8; shared-engine owner CreatureBehaviors",
+      "ticket": "T44"
     }
   ]
 }

@@ -75,30 +75,32 @@
     },
     {
       "id": "B3",
-      "says": "The player sees healthy native animals recover in shelter and make exposed crossings toward genuine refuge within their endurance, returning from failed hunts instead of pursuing prey into thermal collapse.",
+      "says": "Under default fixed-world conditions, the player sees healthy native animals rest in shelter and dash across exposed gaps to the next genuine refuge within their endurance, returning from failed hunts instead of pursuing prey into thermal collapse.",
       "meant": {
-        "intent": "Native adaptation must govern food and hunting as well as idle wander. When a reachable real refuge exists and an animal can act, avoidable AI cooking is failure; false-shade mistakes remain possible and readable. Retuning budgets leaves the behavioural comparison intact.",
+        "intent": "Native adaptation must govern food and hunting as well as idle wander. When a reachable real refuge exists and an animal can act, avoidable AI cooking is failure; false-shade mistakes remain possible and readable. Retuning budgets leaves the behavioural comparison intact. Rest then dash then rest must be visible in ordinary default play, including thermally mild crossings; absence of heat injury alone cannot satisfy this bar. Dash means a brisk crossing compared with the same native's ordinary open-ground wandering on comparable terrain, not a required animation, fixed speed or teleport. Body-specific endurance and needs may change when crossings occur, not erase the pattern.",
         "source": "Owner strict animal dashing, design/Jawa/worldbuilding/biomes/longshade_shade_ideation_2026-09-29.md \u00a70; later colonist/animal distinction in design/RimMandrake/designer_codex_2026-11-09/LongShade/ANSWERS_OWNER.md answer 1.",
         "figurative": []
       },
       "accept": [
-        "A hot grazer pauses in shade before another crossing; a Dakkra abandons a fleeing target to reach real shelter and recover.",
-        "Hunger sends a native toward reachable food without turning its shelter-to-shelter movement into endless exposed wandering."
+        "A healthy grazer rests in real shelter, crosses an exposed gap more briskly than its ordinary wandering gait, then rests in the next refuge; a Dakkra abandons a fleeing target to reach real shelter and recover.",
+        "Hunger sends a native toward reachable food without turning its shelter-to-shelter movement into endless exposed wandering.",
+        "In mild default sunlight, healthy natives still alternate shelter rest with brisk exposed crossings instead of spending their ordinary movement wandering over open sand."
       ],
       "reject": [
         "An idle animal performs a convincing dash, then its eating or hunting job ignores heat and walks past reachable refuge until it collapses.",
-        "An exhausted hunter keeps its burst advantage and pursues across the open while its shelter-rest job never runs."
+        "An exhausted hunter keeps its burst advantage and pursues across the open while its shelter-rest job never runs.",
+        "Natives graze and wander across open sand like vanilla animals, never visibly resting between runs, because nothing is hot enough to matter."
       ],
-      "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
+      "lazy": "Natives graze and wander across open sand like vanilla animals, never visibly resting between runs, because nothing is hot enough to matter.",
       "range": {
-        "varies": "All retained native races in actual effective roster, juvenile/adult and supported baby stages; hungry/rested/hot, wander/graze/feed/mate/hunt/flee; isolated and crowded patches; reachable, blocked, full and removed destinations; baseline and tolerance-boundary heat; game days 1..100; death/load/toggle during jobs. Group states with the same think-tree priority; M2 enumerates each priority class.",
-        "left_out": "Drafted, roped, downed, mental-state and combat-forced animals obey their explicit control/health states, with readable injury rather than guaranteed safety. No refuge left, lethal ambient air or a player-ordered attack is not a promise of survival. No fixed dash animation rhythm in thermally mild conditions."
+        "varies": "All retained native races in actual effective roster, juvenile/adult and supported baby stages; hungry/rested/hot, wander/graze/feed/mate/hunt/flee; isolated and crowded patches; reachable, blocked, full and removed destinations; baseline and tolerance-boundary heat; game days 1..100; death/load/toggle during jobs. Group states with the same think-tree priority; M2 enumerates each priority class. Default tile-derived climate, unlocked weather and shipped settings must show the rest-dash-rest pattern, including thermally mild exposure; hotter diagnostic fixtures cannot substitute. Group by actual movement/needs policy, preserving supported life-stage endurance; natives already sheltered by their own bodies need not make an artificial crossing while continuously protected.",
+        "left_out": "Drafted, roped, downed, mental-state and combat-forced animals obey their explicit control/health states, with readable injury rather than guaranteed safety. No refuge left, lethal ambient air or a player-ordered attack is not a promise of survival. No fixed animation, clockwork schedule or compelled crossing when needs and genuine refuge do not call for movement. Thermally mild default conditions are included, not an exemption from visible rest-dash-rest."
       },
       "sees": {
-        "instrument": "M2 situation generator and T36 multi-tick job/path/health traces, calibrated to actual native think trees. Use runtime state reads where kernel traces cannot resolve vanilla priority.",
+        "instrument": "M2 situation generator and T36 multi-tick job/path/health traces, calibrated to actual native think trees. Use runtime state reads where kernel traces cannot resolve vanilla priority. T36 records resting locations, exposed crossing gait versus same-race ordinary wander on comparable terrain, arrival/rest and needs transitions across actual default climate. T39/M3 report the vacuous no-pattern regime as a failed B3, even with no Heatstroke.",
         "start": "Healthy wild natives with genuine reachable refuge, actual edible resources and a predator/prey path through exposed ground; repeated runs start from fixed needs, temperature and RNG.",
         "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
-        "control": "Require movement, exposure, Heatstroke and the destination to agree; a sleeping animal or frozen needs is not a crossing. Follow the whole hunt into retreat; compare identical path geometry with shelter removed on a separate copy.",
+        "control": "Require movement, exposure, Heatstroke and the destination to agree; a sleeping animal or frozen needs is not a crossing. Follow the whole hunt into retreat; compare identical path geometry with shelter removed on a separate copy. A matched ordinary-wander trace distinguishes an evolved dash from unchanged vanilla gait; exclude fleeing and forced Goto as causes of brisk movement. Do not heat a diagnostic fixture and call that proof of the default signature.",
         "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
         "live_only_why": "Not live-only: calibrated offline results or runtime state traces can decide the outcome; staged wiring alone cannot."
       },
@@ -232,9 +234,9 @@
     },
     {
       "id": "B7",
-      "says": "The player can establish ordinary work around built shelter, recover an overheating worker through the shared shade response, and change a crossing by adding or removing real shelter without a LongShade planning chore.",
+      "says": "The player can establish ordinary work around built shelter, see an undrafted worker interrupt work at the onset of Direct Sun overheating to seek lower-exposure refuge before serious Heatstroke and resume after recovery, and change a crossing by adding or removing real shelter without a LongShade planning chore.",
       "meant": {
-        "intent": "Colony scale requires understandable reactive heat management rather than biome-specific forecasting. Work stays player-directed; the shared response interrupts ordinary work when overheating and shelter is reachable. Exposed work still has a cost and shade never cures hot air.",
+        "intent": "Colony scale requires understandable reactive heat management rather than biome-specific forecasting. Work stays player-directed; the shared response interrupts ordinary work when overheating and shelter is reachable. Exposed work still has a cost and shade never cures hot air. The cross-biome response is absent in current source and required from CreatureBehaviors under T44, not supplied by T36 tracing or assumed to follow from vanilla temperature escape. The onset, target, interruption, recovery and exclusions are the delegated contract in definition.md.",
         "source": "Owner answer 1 in design/RimMandrake/designer_codex_2026-11-09/LongShade/ANSWERS_OWNER.md; parasols/roofs and settings standing rulings; delegated colony-scale usability.",
         "figurative": []
       },
@@ -244,7 +246,8 @@
       ],
       "reject": [
         "A beautiful return-range circle is displayed while ordinary undrafted workers keep hauling into collapse despite reachable cool refuge.",
-        "A cancelled or destroyed shelter remains safe in the path cache, or a special lesson, awning or mast is required before ordinary roofs help."
+        "A cancelled or destroyed shelter remains safe in the path cache, or a special lesson, awning or mast is required before ordinary roofs help.",
+        "A worker waits for serious Heatstroke or searches only by room temperature, ignoring a reachable outdoor roof or parasol-protected cell with lower Direct Sun exposure."
       ],
       "lazy": "none: The sentence explicitly requires the distinguishing outcome shown in the reject pictures; a build matching only its nouns fails its verbs.",
       "range": {
@@ -252,10 +255,10 @@
         "left_out": "Drafted orders, emergency rescue in lethal air, mental states and deliberately unsheltered maps can injure/kill; no guarantee of perfect productivity, automatic building placement, forecast routing, or passive colony immunity."
       },
       "sees": {
-        "instrument": "M2 worker transition generator and T36 actual job/health/exposure traces; T35 shelter-change reads. Use paired state traces to decide whether reachable refuge triggered the shared response.",
-        "start": "Ordinary colony jobs and reachable shelter outside dangerous ambient air, default priorities and real needs; no queued forced-seek-shade command.",
+        "instrument": "T44 shared colonist response build and red-before-fix hauling acceptance, observed through M2/T36 actual job/health/exposure traces; T35 shelter-change reads. Source absence is a known build gap, not an instrument result or a passed response. Use paired state traces to decide whether reachable refuge triggered the shared response.",
+        "start": "Ordinary colony jobs and reachable shelter outside dangerous ambient air, default priorities and real needs; no queued forced-seek-shade command. For the T44 hauling fixture, air alone is safe, Direct Sun raises felt temperature above the pawn's comfortable maximum, initial Heatstroke is absent, and a reachable outdoor roof offers lower exposure at the same air/room temperature.",
         "on": "All DLC; all kept LongShade and required shared mechanics enabled at proposed shipped defaults, research unrestricted, normal weather unlocked, future extras off; actual tile-derived sun, no debug clear-sky/heat lock. Controls are isolated counterfactual copies, never the accepted run.",
-        "control": "Observe the original work job interrupted by the shared heat response, not a manual Goto, drafted command or locked rest need. Freshly invalidate/move shelter and prove both new protection and former-cell exposure.",
+        "control": "Observe the original work job interrupted by the shared heat response, not a manual Goto, drafted command or locked rest need. Freshly invalidate/move shelter and prove both new protection and former-cell exposure. Record the onset predicate, response cause, lower-exposure target and Heatstroke stage at departure; distinguish shared sun response from vanilla Serious-stage room-temperature escape. Counterfactual removal of protection must remove the refuge classification.",
         "reset": "Use disposable local-map saves, record settings/time/weather/thing identities before staging; discard scratch maps and restore captured settings in a finally path with a durable recovery manifest. Never touch canonical saves. Repeat from the unchanged starting save for the other action order.",
         "live_only_why": "Not live-only: calibrated offline results or runtime state traces can decide the outcome; staged wiring alone cannot."
       },
@@ -396,7 +399,7 @@
     },
     {
       "id": "R3",
-      "rule": "Native needs/hunt priority must obey thermal retreat when it can act; player colonists use the shared reactive overheating rule. No LongShade work forecaster, social shade hierarchy or enforced universal dash rhythm.",
+      "rule": "Healthy natives alternate shelter rest and brisk exposed crossings in ordinary default fixed-world conditions, including mild exposure; needs and failed hunts must obey thermal retreat when it can act. Colonists consume the absent shared CreatureBehaviors onset-of-Direct-Sun-overheating response specified in definition.md and T44: interrupt undrafted ordinary work, seek nearest reachable lower-exposure recovery refuge, then resume ordinary work after recovery. No LongShade work forecaster, social shade hierarchy, clockwork schedule or identical gait across species.",
       "touches": [
         "pawn response",
         "heat",
@@ -495,7 +498,7 @@
         "R6"
       ],
       "holds_together": "unknown",
-      "why": "Vanilla hunger, hunter retreat, follower pursuit and worker jobs may pre-empt each other; a shade label or pairwise job test cannot settle the combined priority chain.",
+      "why": "Vanilla hunger, hunter retreat, follower pursuit and worker jobs may pre-empt each other; a shade label or pairwise job test cannot settle the combined priority chain. The colonist response is a known absent dependency under T44; this meeting cannot close merely by adding T36 tracing. Default mild native crossings must still show rest-dash-rest.",
       "model": "M2: Situation and transition generator"
     },
     {
@@ -595,7 +598,7 @@
         "R8"
       ],
       "holds_together": "unknown",
-      "why": "Unlocked weather changes sun load, growth and thermally safe movement together. Need an actual climate trajectory, including whether the chosen geometric sun leaves the signature perceptible.",
+      "why": "Unlocked weather changes sun load, growth and thermally safe movement together. Need an actual climate trajectory, including whether the chosen geometric sun leaves the signature perceptible. Mild default weather cannot excuse vanilla native wandering: missing rest-dash-rest is a failed B3/B8, not a passing heat-free season.",
       "model": "M3: Whole-map season and food ledger"
     }
   ],

@@ -1,0 +1,647 @@
+{
+ "mod": "LongShade",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B7 (and R3; definition.md 'Using it' para 3; census.json, which has no row for it)",
+     "evidence": "B7 says 'recover an overheating worker through the shared shade response', and definition.md says 'The shared reactive response must run'. R3 says 'player colonists use the shared reactive overheating rule'. No census row defines, dispositions or tickets this response. T36 only traces it. Source has no colonist shade-seeking. Every shade job giver in CreatureBehaviors inserts at Animal_PreMain or Animal_PreWander (RM_ThinkTree_ShadeHop.xml:18,29; RM_ThinkTree_ShadeSeekingWander.xml:14; RM_JobGiver_SeekShade.cs:9). No ThinkTreeDef in src/RimMandrake inserts a shade or heat response at any Humanlike_* tag. Vanilla JobGiver_SeekSafeTemperature fires only at TemperatureInjuryStage.Serious, and it picks a region by r.Room.Temperature, which has no Direct Sun term. So it never sends a warming worker to an outdoor roof or a parasol cell. The owner's answer 1 (ANSWERS_OWNER.md line 5) names this rule ('seek shade when they start to overheat') and adds 'OWED: a deeper Designer discussion with him on this'. A builder and a judge would read B7 differently: when it triggers, what counts as shade, what it interrupts, when work resumes.",
+     "would_pass": "A census row for the cross-biome colonist overheat response (built: absent; owner: a shared engine), with a contract: trigger at the onset of overheating from Direct Sun, before Serious Heatstroke; target the nearest reachable cell with lower Direct Sun exposure, roof or parasol included, not room temperature; it interrupts undrafted ordinary work and resumes after recovery; drafted, mental and lethal-air states are excluded. Plus a build ticket with an acceptance test, and a line on page two saying the owner's owed discussion is still owed.",
+     "smallest_fix": "Add the census row and the contract in definition.md. Add a ticket whose acceptance test fails on the base build, where a hauling colonist on a scratch LongShade map with a reachable outdoor roof reaches Heatstroke without leaving the job. The test passes when that colonist breaks off to the roofed cell before the Serious stage. Point B7's `sees` at that ticket."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B3 (says, reject, lazy, range.left_out)",
+     "evidence": "The card-picked experience (biome_experiences_2026-10-20.md line 18) says 'Rest, dash, rest'. The owner's words in longshade_shade_ideation_2026-09-29.md line 17 are 'a tad boring unless we get really strict about the dashing animal behavior'. B3's `says` never asks for a dash. It asks only for recovery in shelter and 'exposed crossings ... within their endurance'. range.left_out excludes 'No fixed dash animation rhythm in thermally mild conditions'. The default sun is the standing 55 C x sin(elevation), and the low-sun band makes mild crossings likely, which definition.md 'Edges' itself concedes. Under those conditions the laziest build passes B3's words and both reject pictures: vanilla wander and graze across open sand, nothing ever hot enough to collapse, no visible rest-then-run. Yet B3 writes 'lazy: none'. The promise to report a climate conflict lives only in prose. No bar fails when the signature is absent.",
+     "would_pass": "B3 requires, under default fixed-world conditions, that healthy natives visibly alternate between resting in shelter and moving briskly across exposed gaps, unlike vanilla open-ground wandering. B3 also gets a reject picture for the vacuous case, so the climate conflict surfaces as a failed bar, not a prose note.",
+     "smallest_fix": "Reword B3's says to 'healthy native animals rest in shelter and dash across exposed gaps to the next genuine refuge, within their endurance, ...'. Add the reject picture 'natives graze and wander across open sand like vanilla animals, never visibly resting between runs, because nothing is hot enough to matter'. Replace lazy: none with that build."
+    }
+   ],
+   "reviewer_refusals": 2,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "Dry weather can dim the sky while the map remains dayside and the ground and physical shade remain distinguishable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "An orange sky covers a grassy meadow; rock darkness circles the rock while the useful shade lies elsewhere.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "The image suggests a walkable sand route but its ordinary terrain is impassable, or all firm ground looks indistinguishable from loose sand.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "The player identifies a slow sand tract and a firm building site, with bare gaps between shaded rocks; a wall and a shadespire cast into the same lee direction.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A parasol reduces exposure on the outward trip and ordinary Heatstroke tells the player when the trip has gone badly.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "Shade clears Heatstroke immediately or makes a pawn safe in dangerously hot air.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "An exposed worker warms while a matched sheltered worker avoids that extra load; both remain vulnerable when the air itself is too hot.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A health label says Direct Sun but a hidden biome damage effect causes the injury, or the matched sheltered pawn gains the same sun load.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "A hot grazer pauses in shade before another crossing; a Dakkra abandons a fleeing target to reach real shelter and recover.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "An idle animal performs a convincing dash, then its eating or hunting job ignores heat and walks past reachable refuge until it collapses.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "Hunger sends a native toward reachable food without turning its shelter-to-shelter movement into endless exposed wandering.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "An exhausted hunter keeps its burst advantage and pursues across the open while its shelter-rest job never runs.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "Animals spawn with full needs but their diets accept none of the map food, so ordinary grazers starve as the only greenery remains inedible.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A forager harvests dewfringe or thrannagourd; small ground grazers eat real plants and provide prey, while a tameable herd animal supplies ordinary food or carrying work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "Khorrak eats mineral feed and the Gloomcast feeds on sand while the other grazers use local edible plants; ordinary newborns and recruits replace normal losses.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The roster persists only because a dung event creates free young animals or every food need is locked.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "A pawn warms less inside the moving lee, then warms again when the Gloomcast leaves; Pirrik and the already-selected ground followers resume following between feeding and resting.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "Followers are permanently ordered to FollowClose while the body casts no mechanical shelter.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "The old path remains protected after the animal has moved, died or loaded elsewhere.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "The giant dies or leaves the map and its body shelter is removed without deleting its corpse or leaving protected cells behind.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "An ambushed pawn disappears without remains, marks or an attributable message, or the Mirrak body actually protects it from sun.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "The dark patch is indistinguishable from genuine shelter until the first injury, and inspection outside the strike area says nothing useful.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "A Mirrak aligned with real shade still identifies itself to safe inspection; its apparent shelter never reduces the victim’s sun exposure.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "A watcher notices a dark shape with no plausible caster, inspects it from outside reach and identifies the Mirrak; a careless animal enters, suffers an attack and leaves drag marks or remains.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "A cancelled or destroyed shelter remains safe in the path cache, or a special lesson, awning or mast is required before ordinary roofs help.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Workers haul and build between covered work areas; a warming worker stops to seek available shade and can resume after recovering.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "A beautiful return-range circle is displayed while ordinary undrafted workers keep hauling into collapse despite reachable cool refuge.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "Removing a shelter exposes the former stop, and erecting a roof or wearing a parasol makes an otherwise dangerous part of the route usable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "A staged first crossing succeeds, then continued growth covers the gaps or hungry wildlife strips its food and dies while colony jobs repeat without progress.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "A colony harvests, builds shelter and hunts while natives feed, dash and recover; a moving refuge and an inspected false refuge matter, and the pattern continues after reload and a changed work order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "The save reloads into stale shelter, renewed ambush injury without a cause, runaway wildlife creation or a repeating exception storm.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Ordinary weather changes exposure and some animals die or leave with visible causes, while food, shade decisions and colony work continue.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The shared sun-load bar: a per-pawn gizmo added by Postfix_GetGizmos in src/RimMandrake/CreatureBehaviors/Source/RM_SunHeatPatches.cs:61-62,238 (RM_Gizmo_SunLoad.cs, 'SOLAR_HEAT_EXPOSURE_1 §6 LEGIBILITY'). No census row records or dispositions it. The return-range ring from the same file (lines 63-64) was moved as T29. B2 and definition.md say 'the ordinary health display explains the danger' and call 'truthful ordinary inspect/health feedback' the only kept supporting UI. So whether the sun-load readout stays on, which would make it a kept UI, or moves, which would leave B2's legibility resting on Heatstroke alone, is undecided.",
+   "loop_or_three_way": "Heat, false shelter and population form a three-way meeting that no meeting lists. R2 lets Mirrak perceived shade steer animal choices. B3 drives heat-stressed natives toward shelter, and B6's range puts the Mirrak 'next to a genuine caster'. A crowded real patch can therefore push tired natives toward Mirraks every hot crossing. That feeds the Mirraks and drains prey, which in turn starves Dakkra, Harrok and Vrekka, the risk B4 and B8 must rule out. The population and food-web meetings (bars.json) list B3/B4/B5/B8 but not B6 or R2. The shelter-perception meeting (B6, B8, R2) is marked 'argued' on physics alone. M3 should take Mirrak predation driven by shade choice as an input, and that meeting should be 'unknown'.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 543401
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "design/concepts/LongShade/cleanse/definition.md, the colonist response contract (Kept mechanic contracts, bullets 1 and 2); tickets.md T44; bars.json B7 and B8",
+     "evidence": "definition.md: response onset is when Direct Sun 'raises a conscious undrafted colonist's felt temperature above that pawn's comfortable maximum, while the local air alone permits recovery'; the pawn should 'rest until felt temperature is within the comfortable range and any Heatstroke has cleared; then return control to ordinary work selection'. Vanilla GenTemperature.SafeTemperatureRange = ComfortableTemperatureRange with max += 10 [measured, RimSage Source/Verse/GenTemperature.cs], so this onset fires about 10 C before any Heatstroke can build. On a fixed-sun map the sun term never goes away. If air is below comfort max and air plus sun is above it, the worker is interrupted, reaches a refuge where felt = air (already inside comfort), so recovery is met at once, resumes the job, steps back into the sun and is interrupted at the next poll. The contract has no hysteresis, no tolerated-exposure budget and no minimum work interval, so any exposed leg longer than one poll never finishes. B7 accept picture 1 is exactly such a haul between covered areas. This is the 'repeated job churn' that definition.md (Costs and failure signs) calls a whole-run failure, and it fails B8's 'stalled jobs' and T44's own 'no job churn'. In the other case, air alone above comfort max (hot desert air), 'air alone permits recovery' is false and the response never fires, so the hottest days get no response at all.",
+     "would_pass": "A contract whose onset and release leave room for exposed work to finish: either onset at the start of harm (felt temperature above the pawn's safe maximum, where vanilla Heatstroke starts building) or a tolerated-exposure budget like the animals' RangeCost, and release at a level below onset (for example Heatstroke falling and felt below onset) instead of 'within comfort and Heatstroke cleared'. Plus a B7 reject picture for the oscillation, so a judge can refuse it.",
+     "smallest_fix": "In definition.md and T44, change onset to 'felt temperature above the pawn's safe maximum (Heatstroke building), before Serious', and change release to 'felt below onset and Heatstroke not rising'. Define what 'air permits recovery' means in hot air. Add to B7 reject: 'A worker shuttles between a roof and an exposed haul and never completes it.' Add that oscillation to M2's planted defects."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "design/concepts/LongShade/cleanse/bars.json B6 says ('provides no cooling'); B1 says ('sparse living shelter', 'fixed sunset')",
+     "evidence": "B6.meant.figurative is []. By the proposal's own reading (ambiguities.md item 6; owner_pages.md '\"Cooling\": removes sun exposure') and the Direct Sun ruling ('Ambient heat is normal Rimworld rules'), real shelter does not cool either. So 'no cooling' taken literally holds for real shade too, and the bar's meaning is 'no reduction in Direct Sun exposure'. B6's accept picture 2 says that in other words, but the word is never marked. B1.meant.figurative is [], but 'living shelter' can mean shelter made of plants or shelter where animals live; its accept picture shows shaded rocks, which are not alive. 'Fixed sunset' literally means a setting sun; it stands for a permanently low sun angle (ambiguities.md item 5).",
+     "would_pass": "Each of these words is listed in its bar's figurative entries with what it stands for and one accept picture that departs from the literal reading.",
+     "smallest_fix": "B6 figurative: {word: 'cooling', stands_for: 'reduction of Direct Sun exposure; air temperature is never changed', accept: 'A pawn on a Mirrak's apparent shade has the same sun exposure as the open cell beside it'}. B1 figurative: 'living shelter' (state whether it means plant casters or animal refuges) and 'fixed sunset' (a permanently low tile-derived sun, with the sky allowed to dim in weather)."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "design/concepts/LongShade/cleanse/census.json row dewfringe_rim (fate 'signature', needed_by null); definition.md Kept mechanic contracts, bullet 3; bars.json R4",
+     "evidence": "The census says 'Delete the spawn rim and the player loses the living boundary used to read established shelter', and definition.md says 'Deleting that gate makes the boundary vegetation generic and defeats its signature read.' But the signature as stated ('real or apparent shelter changes exposure, which makes native animals cross, recover and choose their next refuge while the colony can alter those routes') has no plant-border step, and no bar reads shelter through dewfringe. B1 reads shade from physical casters; B4 needs dewfringe only as forage, and the census row itself says 'toggles fall back to ordinary fertility/terrain spawning'. The gate is a plant with its own mechanic (a Harmony spawn postfix, RM_Patch_DewfringeWildSpawnGate.cs) and was kept on an argument no bar backs, while other owner-approved touches (Tollok, the Harrok strike, middens) were moved.",
+     "would_pass": "Either the rim gate moves to next version (switched off and labelled, with dewfringe spawning by ordinary fertility, so B4 forage is untouched), or a deletion argument names a kept bar or signature step that fails without the rim, with needed_by filled in.",
+     "smallest_fix": "Set dewfringe_rim to next_version with a switch-off ticket (acceptance: with defaults, dewfringe spawn candidates ignore shade fraction and the log is clean; with the setting on, rim recruitment returns). Delete or narrow R4, and drop the rim clause from definition.md bullet 3. Keep the plant and its sprig as life."
+    }
+   ],
+   "reviewer_refusals": 3,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "Dry weather can dim the sky while the map remains dayside and the ground and physical shade remain distinguishable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "The image suggests a walkable sand route but its ordinary terrain is impassable, or all firm ground looks indistinguishable from loose sand.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "The player identifies a slow sand tract and a firm building site, with bare gaps between shaded rocks; a wall and a shadespire cast into the same lee direction.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "An orange sky covers a grassy meadow; rock darkness circles the rock while the useful shade lies elsewhere.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A health label says Direct Sun but a hidden biome damage effect causes the injury, or the matched sheltered pawn gains the same sun load.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "An exposed worker warms while a matched sheltered worker avoids that extra load; both remain vulnerable when the air itself is too hot.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "A parasol reduces exposure on the outward trip and ordinary Heatstroke tells the player when the trip has gone badly.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Shade clears Heatstroke immediately or makes a pawn safe in dangerously hot air.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Hunger sends a native toward reachable food without turning its shelter-to-shelter movement into endless exposed wandering.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "An exhausted hunter keeps its burst advantage and pursues across the open while its shelter-rest job never runs.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "A healthy grazer rests in real shelter, crosses an exposed gap more briskly than its ordinary wandering gait, then rests in the next refuge; a Dakkra abandons a fleeing target to reach real shelter and recover.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "In mild default sunlight, healthy natives still alternate shelter rest with brisk exposed crossings instead of spending their ordinary movement wandering over open sand.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "An idle animal performs a convincing dash, then its eating or hunting job ignores heat and walks past reachable refuge until it collapses.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 6,
+     "text": "Natives graze and wander across open sand like vanilla animals, never visibly resting between runs, because nothing is hot enough to matter.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "A forager harvests dewfringe or thrannagourd; small ground grazers eat real plants and provide prey, while a tameable herd animal supplies ordinary food or carrying work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "Khorrak eats mineral feed and the Gloomcast feeds on sand while the other grazers use local edible plants; ordinary newborns and recruits replace normal losses.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "The roster persists only because a dung event creates free young animals or every food need is locked.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "Animals spawn with full needs but their diets accept none of the map food, so ordinary grazers starve as the only greenery remains inedible.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "A pawn warms less inside the moving lee, then warms again when the Gloomcast leaves; Pirrik and the already-selected ground followers resume following between feeding and resting.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "The giant dies or leaves the map and its body shelter is removed without deleting its corpse or leaving protected cells behind.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "The old path remains protected after the animal has moved, died or loaded elsewhere.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Followers are permanently ordered to FollowClose while the body casts no mechanical shelter.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A Mirrak aligned with real shade still identifies itself to safe inspection; its apparent shelter never reduces the victim’s sun exposure.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "The dark patch is indistinguishable from genuine shelter until the first injury, and inspection outside the strike area says nothing useful.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "A watcher notices a dark shape with no plausible caster, inspects it from outside reach and identifies the Mirrak; a careless animal enters, suffers an attack and leaves drag marks or remains.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "An ambushed pawn disappears without remains, marks or an attributable message, or the Mirrak body actually protects it from sun.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "A beautiful return-range circle is displayed while ordinary undrafted workers keep hauling into collapse despite reachable cool refuge.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Removing a shelter exposes the former stop, and erecting a roof or wearing a parasol makes an otherwise dangerous part of the route usable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "Workers haul and build between covered work areas; a warming worker stops to seek available shade and can resume after recovering.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "A cancelled or destroyed shelter remains safe in the path cache, or a special lesson, awning or mast is required before ordinary roofs help.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "A worker waits for serious Heatstroke or searches only by room temperature, ignoring a reachable outdoor roof or parasol-protected cell with lower Direct Sun exposure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "A colony harvests, builds shelter and hunts while natives feed, dash and recover; a moving refuge and an inspected false refuge matter, and the pattern continues after reload and a changed work order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "A staged first crossing succeeds, then continued growth covers the gaps or hungry wildlife strips its food and dies while colony jobs repeat without progress.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "The save reloads into stale shelter, renewed ambush injury without a cause, runaway wildlife creation or a repeating exception storm.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Ordinary weather changes exposure and some animals die or leave with visible causes, while food, shade decisions and colony work continue.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The player-built decoy shade tarp: src/RimMandrake/EnvironmentalHazards/Defs/ThingDefs_Buildings/RM_DecoyShadeTarp.xml ('anything that hunts for shade will see it as shade'; 'Mirrak hide makes the most convincing decoy'), with RM_DecoyShadeResearch.xml. RM_ShadeHop.AddLureCandidates reads its decoys under RM_CreatureBehaviorsSettings.decoyShadeEnabled and offers them to LongShade natives as escape and hop targets. That makes it a player-made false refuge, which bears on B3 ('to the next genuine refuge'), B6, R2 and the Mirrak-hide bonus the proposal moved (T26). Neither census.json nor any other proposal file mentions it (0 hits for 'decoy'). It needs a fate: a dependency with a LongShade-scoped default, or next version and off.",
+   "loop_or_three_way": "B3 × R2/B6 × B4/B8, a predation loop missing from the meetings. B3 requires natives to rest, dash and rest frequently even in mild default sun. RM_ShadeHop.TryFindHop and TryFindEscape add every Mirrak within range as a candidate (AddLureCandidates, weight 1.5 against a real patch's sqrt(cellCount)), so each forced hop carries a chance of landing beside a Mirrak. The Mirrak's feeding rate then scales with the hop frequency B3 demands, not with ordinary hunting, and can drain small prey (Tebbra, Sippra) that B4 and B8 need. The 'population' and 'food web' meetings in bars.json leave out B6 and R2, so M3 is not told to track Mirrak kills against hop rate. A second instance of the same pattern is the colonist response loop in refusal 1 (B7 contract × fixed sun from R1 × B8 'stalled jobs').",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 595511
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 870530,
+    "output_tokens": 8120
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "cannot_hold_together",
+   "where": "design/concepts/LongShade/cleanse/definition.md, the colonist response contract (Kept mechanic contracts, bullets 1 and 2); tickets.md T44; bars.json B7 and B8",
+   "evidence": "definition.md: response onset is when Direct Sun 'raises a conscious undrafted colonist's felt temperature above that pawn's comfortable maximum, while the local air alone permits recovery'; the pawn should 'rest until felt temperature is within the comfortable range and any Heatstroke has cleared; then return control to ordinary work selection'. Vanilla GenTemperature.SafeTemperatureRange = ComfortableTemperatureRange with max += 10 [measured, RimSage Source/Verse/GenTemperature.cs], so this onset fires about 10 C before any Heatstroke can build. On a fixed-sun map the sun term never goes away. If air is below comfort max and air plus sun is above it, the worker is interrupted, reaches a refuge where felt = air (already inside comfort), so recovery is met at once, resumes the job, steps back into the sun and is interrupted at the next poll. The contract has no hysteresis, no tolerated-exposure budget and no minimum work interval, so any exposed leg longer than one poll never finishes. B7 accept picture 1 is exactly such a haul between covered areas. This is the 'repeated job churn' that definition.md (Costs and failure signs) calls a whole-run failure, and it fails B8's 'stalled jobs' and T44's own 'no job churn'. In the other case, air alone above comfort max (hot desert air), 'air alone permits recovery' is false and the response never fires, so the hottest days get no response at all.",
+   "would_pass": "A contract whose onset and release leave room for exposed work to finish: either onset at the start of harm (felt temperature above the pawn's safe maximum, where vanilla Heatstroke starts building) or a tolerated-exposure budget like the animals' RangeCost, and release at a level below onset (for example Heatstroke falling and felt below onset) instead of 'within comfort and Heatstroke cleared'. Plus a B7 reject picture for the oscillation, so a judge can refuse it.",
+   "smallest_fix": "In definition.md and T44, change onset to 'felt temperature above the pawn's safe maximum (Heatstroke building), before Serious', and change release to 'felt below onset and Heatstroke not rising'. Define what 'air permits recovery' means in hot air. Add to B7 reject: 'A worker shuttles between a roof and an exposed haul and never completes it.' Add that oscillation to M2's planted defects."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "design/concepts/LongShade/cleanse/bars.json B6 says ('provides no cooling'); B1 says ('sparse living shelter', 'fixed sunset')",
+   "evidence": "B6.meant.figurative is []. By the proposal's own reading (ambiguities.md item 6; owner_pages.md '\"Cooling\": removes sun exposure') and the Direct Sun ruling ('Ambient heat is normal Rimworld rules'), real shelter does not cool either. So 'no cooling' taken literally holds for real shade too, and the bar's meaning is 'no reduction in Direct Sun exposure'. B6's accept picture 2 says that in other words, but the word is never marked. B1.meant.figurative is [], but 'living shelter' can mean shelter made of plants or shelter where animals live; its accept picture shows shaded rocks, which are not alive. 'Fixed sunset' literally means a setting sun; it stands for a permanently low sun angle (ambiguities.md item 5).",
+   "would_pass": "Each of these words is listed in its bar's figurative entries with what it stands for and one accept picture that departs from the literal reading.",
+   "smallest_fix": "B6 figurative: {word: 'cooling', stands_for: 'reduction of Direct Sun exposure; air temperature is never changed', accept: 'A pawn on a Mirrak's apparent shade has the same sun exposure as the open cell beside it'}. B1 figurative: 'living shelter' (state whether it means plant casters or animal refuges) and 'fixed sunset' (a permanently low tile-derived sun, with the sky allowed to dim in weather)."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "design/concepts/LongShade/cleanse/census.json row dewfringe_rim (fate 'signature', needed_by null); definition.md Kept mechanic contracts, bullet 3; bars.json R4",
+   "evidence": "The census says 'Delete the spawn rim and the player loses the living boundary used to read established shelter', and definition.md says 'Deleting that gate makes the boundary vegetation generic and defeats its signature read.' But the signature as stated ('real or apparent shelter changes exposure, which makes native animals cross, recover and choose their next refuge while the colony can alter those routes') has no plant-border step, and no bar reads shelter through dewfringe. B1 reads shade from physical casters; B4 needs dewfringe only as forage, and the census row itself says 'toggles fall back to ordinary fertility/terrain spawning'. The gate is a plant with its own mechanic (a Harmony spawn postfix, RM_Patch_DewfringeWildSpawnGate.cs) and was kept on an argument no bar backs, while other owner-approved touches (Tollok, the Harrok strike, middens) were moved.",
+   "would_pass": "Either the rim gate moves to next version (switched off and labelled, with dewfringe spawning by ordinary fertility, so B4 forage is untouched), or a deletion argument names a kept bar or signature step that fails without the rim, with needed_by filled in.",
+   "smallest_fix": "Set dewfringe_rim to next_version with a switch-off ticket (acceptance: with defaults, dewfringe spawn candidates ignore shade fraction and the log is clean; with the setting on, rim recruitment returns). Delete or narrow R4, and drop the rim clause from definition.md bullet 3. Keep the plant and its sprig as life."
+  }
+ ],
+ "applyable": false,
+ "seconds": 741,
+ "at": "2026-11-17T01:52:22"
+}
