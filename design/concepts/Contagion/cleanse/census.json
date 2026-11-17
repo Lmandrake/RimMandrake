@@ -4,9 +4,7 @@
       "id": "biome_roster",
       "what": "Owned biome, terrain selection, explicit animal/plant densities, disease table and zero forage; campaign painting is separate.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml",
       "proven": "stale",
       "called_by": "RM_Contagion BiomeDef -> vanilla map terrain, wildlife, weather and disease selectors; Wreckage extraGenSteps",
       "serves": "ordinary land",
@@ -19,9 +17,7 @@
       "id": "bloom",
       "what": "Red storm weather, rain/thunder/fog, movement penalty and ranged accuracy x0.4; wet vanilla lulls also occur.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/WeatherDefs/RM_ContagionWeathers.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/WeatherDefs/RM_ContagionWeathers.xml",
       "proven": "missing",
       "called_by": "RM_Contagion.baseWeatherCommonalities -> WeatherDecider; RM_MapComponent_ContagionTouch reads curWeather; CreatureBehaviors reads weather sun factor",
       "serves": "natural sky/body cycle",
@@ -34,9 +30,7 @@
       "id": "burn_clock",
       "what": "Saved natural Burn schedule, frequency scaling, tells window, map-local forced condition and long-Bloom clock.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/RM_MapComponent_ContagionSky.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/RM_MapComponent_ContagionSky.cs",
       "proven": "stale",
       "called_by": "Verse MapComponent reflection -> MapComponentTick -> RM_SkyKernel.Tick -> StartBurn/DoTells",
       "serves": "natural sky/body cycle",
@@ -49,9 +43,7 @@
       "id": "burn_pressure_dive",
       "what": "Burn damage to UV-shy natives, visitor dose, armored/leaker classification and sprint to reachable roof/tree-cell/water shelter; bounded rotating candidate windows and diagnostic counters.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/RM_GameCondition_ContagionBurn.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/RM_GameCondition_ContagionBurn.cs",
       "proven": "stale",
       "called_by": "RM_ContagionBurnCondition -> RM_GameCondition_ContagionBurn.Pressure -> RM_SkyKernel.Classify/TryDive; reactive only at present",
       "serves": "natural sky/body cycle",
@@ -64,9 +56,7 @@
       "id": "visible_tells",
       "what": "Gawpsack body sink/rise and rattlegrope shake, red puffs and vanilla LeavesRustle sound before a natural Burn.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/RM_ContagionTellRender.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/RM_ContagionTellRender.cs",
       "proven": "missing",
       "called_by": "Sky.DoTells/UpdateVisibleTells; RM_GawpsackSink renderer; RM_Plant_Rattlegrope drawer",
       "serves": "natural sky/body cycle",
@@ -79,9 +69,7 @@
       "id": "repulsor",
       "what": "Powered warmup, violet beam and sustained whole-map Burn on the Contagion; ordinary clear-sky condition on other surface maps; lapses after lost power.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/CompCloudRepulsor.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/CompCloudRepulsor.cs",
       "proven": "stale",
       "called_by": "CompCloudRepulsor.CompTick; RM_CloudRepulsor reward tags; RM_HelixCurators stock; ship hardpoint; warning work",
       "serves": "deferred system",
@@ -94,9 +82,7 @@
       "id": "repulsor_ship",
       "what": "Gravship hardpoint variant uses the same powered repulsor comp. Its deck placement was re-checked by BIOME_SHIP_CONTRIBUTIONS_1 (9fe1f933f0).",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs/RM_CloudRepulsor.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_CloudRepulsor.xml",
       "proven": "missing",
       "called_by": "RM_CloudRepulsorShip inherited comp; curator stock; gravship gift references",
       "serves": "deferred system",
@@ -109,9 +95,7 @@
       "id": "sunbeam_weapon",
       "what": "Sunbeam item, ordinary weak projectile/UV injury and landed damaging-hit arrest path. Independent native-damage bonus separated and deferred.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml",
       "proven": "stale",
       "called_by": "RM_Sunbeam verb -> RM_Bullet_Sunbeam -> DamageWorker_RM_UV; HoldsSunbeam used by arrest menu",
       "serves": "signature: mutation arrest",
@@ -124,9 +108,7 @@
       "id": "touched_exposure",
       "what": "Open Bloom exposure, stronger Burn exposure and adjacent Unfinished/Coalescence contact feed saved Contagion-touched progression; humanlike flesh only; contact acts off-biome too. Coalescence contact is Design Version 0.2.0 with the Coalescence (OWNER:1794842455892769878).",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/RM_ContagionTouched.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/RM_ContagionTouched.cs",
       "proven": "stale",
       "called_by": "MapComponent_ContagionTouch -> dose -> RM_ContagionTouched; contactSources currently includes deferred Coalescence",
       "serves": "natural sky/body cycle",
@@ -139,9 +121,7 @@
       "id": "mutation_deck",
       "what": "Data-driven weighted split between harmful and mixed mutations, gene/hediff cards, nonduplicate eligibility, part selection, cap, progression tips and mutation letters; no automatic reversal.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/HediffDefs/RM_ContagionTouched.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_ContagionTouched.xml",
       "proven": "missing",
       "called_by": "HediffComp_RM_ContagionTouched -> TryMutate -> extension-bearing hediff/gene deck -> health/genes and notification",
       "serves": "natural sky/body cycle",
@@ -154,9 +134,7 @@
       "id": "sunbeam_arrest",
       "what": "Right-click hold-the-lens treatment with reservation, reach and completion checks; stops current progression, preserves mutations and permits re-exposure; treatment burns.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/RM_SunbeamArrest.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/RM_SunbeamArrest.cs",
       "proven": "stale",
       "called_by": "Reflection-discovered FloatMenuOptionProvider_SunbeamArrest -> JobDriver_RM_SunbeamArrest -> Arrest -> UV burn",
       "serves": "signature: mutation arrest",
@@ -169,9 +147,7 @@
       "id": "unfinished_budding",
       "what": "Bloody Mess periodically buds a neutral Unfinished with nearby population cap and saved spawn deadline; no Burn/Bloom gate in comp.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/CompSpawnerUnfinished.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/CompSpawnerUnfinished.cs",
       "proven": "stale",
       "called_by": "RM_BloodyMess comps -> CompSpawnerUnfinished.CompTick -> PawnGenerator; ExplosiveGrowth rupture can independently supply hosts",
       "serves": "ordinary life",
@@ -184,9 +160,7 @@
       "id": "unfinished_variation",
       "what": "Spawn-once rolls of external nonvital limb sites, rare Monstrous buff, short lethal unraveling; no reroll on load, no stable ambient roster entry.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/CompRandomizeUnfinished.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/CompRandomizeUnfinished.cs",
       "proven": "stale",
       "called_by": "RM_TheUnfinished comps -> CompRandomizeUnfinished.PostSpawnSetup; random limbs and lethal unraveling hediffs; draftprintTaken storage unused when scans off",
       "serves": "ordinary life",
@@ -199,9 +173,7 @@
       "id": "unfinished_mulch",
       "what": "Sterile fertilizer item drop from dead Unfinished only. Dissolution/remnant trace is retained separately by unfinished_life and bodyprints.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/RM_ContagionMulch.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/RM_ContagionMulch.cs",
       "proven": "stale",
       "called_by": "DeathActionWorker_RM_VanishToMulch.PawnDied -> RM_ContagionMulchUtility.Drop",
       "serves": "deferred system",
@@ -214,9 +186,7 @@
       "id": "coalescence_formation",
       "what": "One stationary organism may form after long Bloom outside home area; requires Burns enabled; placement clears plants and announces threat.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/RM_MapComponent_ContagionSky.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/RM_MapComponent_ContagionSky.cs",
       "proven": "missing",
       "called_by": "RM_MapComponent_ContagionSky.TryFormCoalescence; sky extension coalescenceDef",
       "serves": "deferred system",
@@ -229,9 +199,7 @@
       "id": "coalescence_growth",
       "what": "Saved mass, passive growth, staged graphics, explicit walk-to-ring absorption and on-arrival consumption; own emitted manhunters excluded; inspect and diagnostic counts.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs",
       "proven": "stale",
       "called_by": "Building_RM_Coalescence.Tick; RM_WalkIntoCoalescence job; scanner target",
       "serves": "deferred system",
@@ -244,9 +212,7 @@
       "id": "coalescence_threat",
       "what": "Stage-dependent manhunter emission with map-wide count cap.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs",
       "proven": "stale",
       "called_by": "Building_RM_Coalescence.TryEmit; emitted pawn provenance",
       "serves": "deferred system",
@@ -259,9 +225,7 @@
       "id": "coalescence_payoff",
       "what": "Any active Burn collapses organism into Monstrous samples plus mulch; combat destruction gives less mulch and no samples.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/Building_RM_Coalescence.cs",
       "proven": "stale",
       "called_by": "Building_RM_Coalescence.Collapse/Destroy; CompGenomeSample.monstrous; touched contactSources",
       "serves": "deferred system",
@@ -274,9 +238,7 @@
       "id": "genome_extract",
       "what": "Medical extraction costs blood loss and creates a nonstacking donor-labelled genome sample.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/Recipe_ExtractGenomeSample.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/Recipe_ExtractGenomeSample.cs",
       "proven": "stale",
       "called_by": "RM_ExtractGenomeSample recipe -> Recipe_ExtractGenomeSample -> CompGenomeSample",
       "serves": "signature: purposeful tissue expedition",
@@ -289,9 +251,7 @@
       "id": "genome_inject",
       "what": "Carry ordinary donor sample to a living Bloody Mess and complete a real, interruptible injection; only successful commit spends the sample. Monstrous-first selection is separate and deferred.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/JobDriver_RM_InjectGenomeSample.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/JobDriver_RM_InjectGenomeSample.cs",
       "proven": "stale",
       "called_by": "FloatMenuOptionProvider_InjectGenomeSample -> FindSampleToInject -> JobDriver_RM_InjectGenomeSample -> TryBeginGestation",
       "serves": "signature: purposeful tissue expedition",
@@ -304,14 +264,12 @@
       "id": "gestation",
       "what": "Saved ordinary donor batch, finite gestation, one consumed host; ordinary organs and natural arms/legs only. Exotic output and Monstrous fallback are deferred.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/AmoebaHostUtility.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/AmoebaHostUtility.cs",
       "proven": "stale",
       "called_by": "Hediff_AmoebaGestation.PostTick -> AmoebaHostUtility.CompleteGestation; RM_DraftprintKernel.Plan/BatchSize helpers are shared arithmetic, not a requirement for scans",
       "serves": "signature: purposeful tissue expedition",
       "fate": "needed_by",
-      "why": "Designer call: The owner explicitly retained the normal batch in later_version.md; deleting it makes the promised risky return for useful tissue empty. Only ordinary organs and natural arms/legs stay.",
+      "why": "Delegated Designer call: d_other_tissue (OWNER:1794364405453876478) supports useful matched or sellable ordinary tissue; deleting ordinary gestation empties the purposeful tissue trip. I include natural arms/legs as ordinary tissue from the current batch and the filer's later_version.md retention line, not from an express owner exception to the Grown Limbs deferral. Exotic limbs remain deferred.",
       "needed_by": "signature: purposeful tissue expedition",
       "ticket": ""
     },
@@ -319,9 +277,7 @@
       "id": "birth_safety",
       "what": "Bloody Mess acid death explosion is suppressed only during gestation birth; other deaths use EnvironmentalHazards explosion.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/DeathActionWorker_RM_GenomeHostBurst.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/DeathActionWorker_RM_GenomeHostBurst.cs",
       "proven": "missing",
       "called_by": "CompleteGestation.KillGivingBirth -> DeathActionWorker_RM_GenomeHostBurst -> EnvironmentalHazards death action except birth",
       "serves": "signature: purposeful tissue expedition",
@@ -334,14 +290,12 @@
       "id": "natural_match",
       "what": "Donor-labelled ordinary organs and natural arms/legs restore through vanilla surgery; matching donor gets the retained mood feedback, no mismatch penalty; exotic limb recipes are deferred.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/Recipe_InstallGrownBodyPart.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/Recipe_InstallGrownBodyPart.cs",
       "proven": "stale",
       "called_by": "CompleteGestation -> CompGenomeMatched; OrganGenomeComps/OrganInstallGenomeMatch patches; Recipe_InstallGrownBodyPart -> GenomeMatchBonusUtility",
       "serves": "signature: useful tissue",
       "fate": "needed_by",
-      "why": "Designer call: Without donor identity and ordinary installation the ordinary batch is a pile of decorative items; matching feedback makes the retained matched-tissue promise legible. No mismatch penalty.",
+      "why": "Delegated Designer call: d_other_tissue promises matched or sellable tissue. Donor identity and ordinary installation make that useful; natural arm/leg restoration and matched-mood feedback are my reading of that promise and the filer's later_version.md retention line, not an explicit owner retention. Deleting the feedback makes matching unreadable; deleting restoration makes those ordinary outputs decorative. No mismatch penalty.",
       "needed_by": "signature: useful tissue",
       "ticket": ""
     },
@@ -349,9 +303,7 @@
       "id": "pillar_arm",
       "what": "Pillar Arm: heavy melee/stun, reduced manipulation, slower movement and hunger/beauty costs; own directional body art",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
       "proven": "missing",
       "called_by": "RM_InstallMonstrousLimbs recipes; AmoebaHostUtility limbPool; HediffComp_UnfinishedEmerge",
       "serves": "deferred system",
@@ -364,9 +316,7 @@
       "id": "lash",
       "what": "Lash: rapid stun melee with clumsy work, social-fight and beauty costs; twitching directional body art",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
       "proven": "missing",
       "called_by": "RM_InstallMonstrousLimbs recipes; AmoebaHostUtility limbPool; HediffComp_UnfinishedEmerge",
       "serves": "deferred system",
@@ -379,9 +329,7 @@
       "id": "eyeburst",
       "what": "Eyeburst: eye efficiency and aim with pain, rest, break-threshold and beauty costs; inherited bionic-eye art",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
       "proven": "missing",
       "called_by": "RM_InstallMonstrousLimbs recipes; AmoebaHostUtility limbPool; HediffComp_UnfinishedEmerge",
       "serves": "deferred system",
@@ -394,9 +342,7 @@
       "id": "caudal_spring",
       "what": "Caudal Spring: spine replacement, jump ability and lasting mobility/pain/cold costs; placeholder tentacle art",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
       "proven": "missing",
       "called_by": "RM_GrownLimbAbilities; RM_InstallMonstrousLimbs; AmoebaHostUtility limbPool",
       "serves": "deferred system",
@@ -409,9 +355,7 @@
       "id": "bellows",
       "what": "Bellows: lung efficiency, toxin resistance and blind smoke ability with hunger/bleeding/beauty costs; no body render node",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/HediffDefs/RM_GrownLimbHediffs.xml",
       "proven": "missing",
       "called_by": "RM_GrownLimbAbilities; RM_InstallMonstrousLimbs; AmoebaHostUtility limbPool",
       "serves": "deferred system",
@@ -424,9 +368,7 @@
       "id": "limb_removal",
       "what": "Surgical removal/replacement spawns stunned then manhunter Unfinished and a threat letter; ordinary missing-part consequences remain.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/HediffComp_UnfinishedEmerge.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/HediffComp_UnfinishedEmerge.cs",
       "proven": "missing",
       "called_by": "RM_GrownLimbHediffs attaches HediffComp_UnfinishedEmerge; Notify_SurgicallyRemoved/Replaced",
       "serves": "deferred system",
@@ -439,9 +381,7 @@
       "id": "draftprints",
       "what": "Once-only scan of living Unfinished records rolled limbs, Monstrous status, extreme stat and failure; completed touch-range job may provoke; saved item label, inspect and market value.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/CompDraftprint.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/CompDraftprint.cs",
       "proven": "stale",
       "called_by": "FloatMenuOptionProvider_SampleDraftprint; JobDriver_RM_SampleDraftprint; CompDraftprint transmit gizmo",
       "serves": "deferred system",
@@ -454,9 +394,7 @@
       "id": "helix_contracts",
       "what": "Quest asks for combinations; matching print is transmitted/consumed for silver and optional device via drop pod; only offered with a Contagion home.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/QuestNode_RM_HelixDraftprintContract.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/QuestNode_RM_HelixDraftprintContract.cs",
       "proven": "stale",
       "called_by": "QuestScript RM_HelixDraftprintContract; QuestNode TestRunInt/RunInt; QuestPart transmit/drop rewards",
       "serves": "deferred system",
@@ -469,9 +407,7 @@
       "id": "helix_trade",
       "what": "Curator caravan sells devices and buys appropriate goods; campaign patch owns actual Helix faction trader attachment. Since 2026-11-09 (9fe1f933f0) the curators stock the ship gift.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/TraderKindDefs/RM_HelixCurators.xml",
       "proven": "missing",
       "called_by": "RM_Caravan_HelixCurators TraderKindDef stockGenerators; campaign faction attachment named in record.neighbours; standard Sunbeam stock must remain available",
       "serves": "deferred system",
@@ -484,9 +420,7 @@
       "id": "zhool_haze",
       "what": "Visible, non-damaging red haze around the living zhool only; conversion is zhool_conversion.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/CompZhoolHaze.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/CompZhoolHaze.cs",
       "proven": "stale",
       "called_by": "RM_OcularJelly comps -> CompZhoolHaze.EmitHaze and Scan (split conversion below)",
       "serves": "ordinary life",
@@ -499,9 +433,7 @@
       "id": "zhool_render",
       "what": "Multi-part veined bell/twitching tendrils, custom body and life-stage scaling; VEF floating/fission when present.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PawnRenderTreeDefs/RM_OcularJelly_Twitch.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PawnRenderTreeDefs/RM_OcularJelly_Twitch.xml",
       "proven": "missing",
       "called_by": "RM_ContagionBulloos race -> RM_OcularJelly_Twitch; optional VEF float/fission",
       "serves": "ordinary life",
@@ -514,9 +446,7 @@
       "id": "bulloo",
       "what": "Blistered bulloo custom body, acid death burst, VEF floating and fission when loaded; zero MeatAmount, light leather declared.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionBulloos.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionBulloos.xml",
       "proven": "missing",
       "called_by": "RM_InfectedAerofleet race -> custom body/deathAction; optional VEF float/fission",
       "serves": "ordinary life",
@@ -529,9 +459,7 @@
       "id": "fauna_bloody_mess",
       "what": "Bloody Mess: crawling host/scavenger with budding and acid death coupling",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -544,9 +472,7 @@
       "id": "fauna_gawpsack",
       "what": "Gawpsack: grounded floater and sky tell",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -559,9 +485,7 @@
       "id": "fauna_blisterfloat",
       "what": "Blisterfloat: gas-sac sower with flight/leave-map wiring",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -574,9 +498,7 @@
       "id": "fauna_scorchpod",
       "what": "Scorchpod: leaker exemption and acid death explosion",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -589,9 +511,7 @@
       "id": "fauna_bloodlurk",
       "what": "Bloodlurk: pool-margin carnivorous predator",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -604,9 +524,7 @@
       "id": "fauna_meltgut",
       "what": "Meltgut: very large slow scavenger; named digestive story is not bespoke digestion code",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -619,9 +537,7 @@
       "id": "fauna_sparkleech",
       "what": "Sparkleech: flyer; feeding fiction exceeds generic race/tools in this file",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -634,9 +550,7 @@
       "id": "fauna_sparkleech_grub",
       "what": "Sparkleech grub: grounded smaller race; no transform comp declared",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -649,9 +563,7 @@
       "id": "fauna_scaldhide",
       "what": "Scaldhide: armored Burn-exempt carnivore",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -664,9 +576,7 @@
       "id": "fauna_doublemaw",
       "what": "Doublemaw: fast two-jawed omnivore; no bespoke infection comp declared",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -679,9 +589,7 @@
       "id": "fauna_gnashling",
       "what": "Gnashling: small pack carnivore/omnivore presentation and melee tools",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -694,9 +602,7 @@
       "id": "fauna_contagion_ikee",
       "what": "Contagion ikee: distinct internal RM_ContagionIkee identifier and eye-creature",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -709,9 +615,7 @@
       "id": "fauna_peeper",
       "what": "Peeper: docile eye-studded browser",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -724,9 +628,7 @@
       "id": "fauna_eyestinger",
       "what": "Eyestinger: heavy ambusher with native melee tooling",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -739,9 +641,7 @@
       "id": "fauna_fleshsop",
       "what": "Fleshsop: durable retaliating pack weapon screen; no custom coordinated screen AI found",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -754,9 +654,7 @@
       "id": "fauna_skinflap",
       "what": "Skinflap: numerous flying goo-bud; slime death",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -769,9 +667,7 @@
       "id": "fauna_gorekite",
       "what": "Gorekite: larger predatory flyer; slime death",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -784,9 +680,7 @@
       "id": "fauna_danglemaw",
       "what": "Danglemaw slow high-damage ordinary lurker. True canopy anchoring/ambush explicitly waived in cast bible; canopy_ambush is a future possibility, not an owed first-version gap.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -799,9 +693,7 @@
       "id": "fauna_crispling",
       "what": "Crispling: armored Burn-exempt scavenger goo-bud",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -814,9 +706,7 @@
       "id": "fauna_sloshbelly",
       "what": "Sloshbelly: goo-bud cistern presentation; no milk/water-output comp declared",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -829,9 +719,7 @@
       "id": "fauna_ogleknot",
       "what": "Ogleknot: distinct eye-knot critter and slime death",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -844,9 +732,7 @@
       "id": "flight",
       "what": "Flight stats and race flags for Blisterfloat, Sparkleech, Skinflap and Gorekite; Skinflap/Sparkleech frame sets present; Gawpsack is a grounded floater. Blisterfloat and Gorekite have no flip-book frames: owed, RIMMANDRAKE_DRAW_CONTAGION_FLIPBOOKS_TWO_FLYERS_HALF_DRAWN (acceptance test FAIL 0/4 on base).",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Races/RM_ContagionFauna.xml",
       "proven": "missing",
       "called_by": "RM_ContagionFauna race flags/stats -> Pawn_FlightTracker and directional animation renderer",
       "serves": "life: airborne natives",
@@ -859,9 +745,7 @@
       "id": "flora_eyebark",
       "what": "Eyebark canopy tree and wood harvest",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -874,9 +758,7 @@
       "id": "flora_lashgrass",
       "what": "Lashgrass ground cover",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -889,9 +771,7 @@
       "id": "flora_bleedleaf",
       "what": "Bleedleaf inedible shrub",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -904,9 +784,7 @@
       "id": "flora_gorestalk",
       "what": "Gorestalk inedible columns",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -919,9 +797,7 @@
       "id": "flora_rattlegrope",
       "what": "Rattlegrope custom shaking plant",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -934,9 +810,7 @@
       "id": "flora_sapblister",
       "what": "Sapblister ordinary inedible flora; product separated as sap_harvest.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -949,9 +823,7 @@
       "id": "flora_bloody_fist",
       "what": "Bloody Fist ordinary inedible flora; product separated as seed_fist_harvest.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -964,9 +836,7 @@
       "id": "flora_halfmade_tree",
       "what": "Halfmade Tree with variant art and wood harvest",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -979,9 +849,7 @@
       "id": "flora_halfmade_blighted",
       "what": "Blighted Halfmade Tree variant",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -994,9 +862,7 @@
       "id": "flora_meatvine",
       "what": "Meatvine inedible cover",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -1009,9 +875,7 @@
       "id": "flora_toothmoss",
       "what": "Toothmoss inedible cover",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -1024,9 +888,7 @@
       "id": "flora_wombpod",
       "what": "Wombpod harvests hatching host sac",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "stale",
       "called_by": "RM_Contagion.wildAnimals/wildPlants -> vanilla spawn and normal animal/plant ticks; race/plant definition in evidence",
       "serves": "ordinary life",
@@ -1039,9 +901,7 @@
       "id": "rustpuff_roster",
       "what": "Guarded RustPuff roster row; actual plant and spore behavior owned by TheRot.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/BiomeDefs/RM_Contagion.xml",
       "proven": "missing",
       "called_by": "RM_Contagion.wildPlants -> RM_RustPuff in TheRot; composed package guard is not independent feature activation",
       "serves": "shared compatibility",
@@ -1054,9 +914,7 @@
       "id": "wombpod_hatch",
       "what": "Normal-ticking sac hatches Bloody Mess after three days; existing host loop reused.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs/RM_WombpodSac.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_WombpodSac.xml",
       "proven": "missing",
       "called_by": "RM_Wombpod harvest -> RM_WombpodSac.CompHatcher -> RM_BloodyMess",
       "serves": "life: Wombpod and signature: host acquisition",
@@ -1069,9 +927,7 @@
       "id": "mulched_soil",
       "what": "Sterile mulch item builds fertile soil at three mulch per cell; no raw/sunned states or infection.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs/RM_ContagionMulch.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_ContagionMulch.xml",
       "proven": "missing",
       "called_by": "RM_ContagionMulch item; RM_MulchedSoil costList/designator; Unfinished death; deferred Coalescence drops",
       "serves": "deferred system",
@@ -1084,9 +940,7 @@
       "id": "wrecks",
       "what": "Eroded wreck/shell fragments, own art and Wreckage family deconstruction/weathering, local-map scatter binding.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs_Buildings/RM_ContagionWrecks.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs_Buildings/RM_ContagionWrecks.xml",
       "proven": "missing",
       "called_by": "RM_Contagion.extraGenSteps -> RM_WreckField_Contagion -> Wreckage scatter/weathering/deconstruct APIs",
       "serves": "ordinary land",
@@ -1099,9 +953,7 @@
       "id": "scanner_payload",
       "what": "Acoustic Scanner opt-in payload: Coalescence, pods, wreckage and hidden-cave readings; owner is AcousticScanner.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Patches/RM_AcousticPayload_Contagion.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Patches/RM_AcousticPayload_Contagion.xml",
       "proven": "missing",
       "called_by": "PatchOperationFindMod -> RM_AcousticPayloadExtension on RM_Contagion -> shared AcousticScanner pulses",
       "serves": "shared compatibility",
@@ -1114,9 +966,7 @@
       "id": "creep_defs",
       "what": "Dying/Dead Creep moved into this package; actual Forge die-off event owned by EnvironmentalHazards/TheForge.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_DyingCreep.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_DyingCreep.xml",
       "proven": "missing",
       "called_by": "EnvironmentalHazards/TheForge border die-off consumes Dying/Dead Creep; no Contagion map clock caller",
       "serves": "shared compatibility",
@@ -1129,9 +979,7 @@
       "id": "legacy_flora_terrain",
       "what": "Owned alien-sand terrain ports; unrostered donor plants separated as legacy_unrostered_plants.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/RM_Contagion_DonorPorts.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/RM_Contagion_DonorPorts.xml",
       "proven": "missing",
       "called_by": "RM_Contagion.terrainsByFertility/lakeBeachTerrain/mudTerrain/riverbankTerrain -> owned alien sand ports; legacy plants unrostered",
       "serves": "ordinary land",
@@ -1144,9 +992,7 @@
       "id": "settings",
       "what": "Saved feature toggles and experience multipliers; searchable collapsible grouped screen, scope labels and reset via shared SettingsKit.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/RM_ContagionMod.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/RM_ContagionMod.cs",
       "proven": "stale",
       "called_by": "RM_ContagionMod.GetSettings/DoSettingsWindowContents; production components/menus/recipes read static settings",
       "serves": "land, life and signature",
@@ -1159,9 +1005,7 @@
       "id": "proof_tooling",
       "what": "Suite, plan, preflight, saved-site v3 builder, fake-game regressions, kernel fuzz and design-art checksum checker; tooling is not gameplay acceptance.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/validation.py"
-      ],
+      "evidence": "src/RimMandrake/Contagion/validation.py",
       "proven": "stale",
       "called_by": "modcheck Contagion suite/northstar_plan; SelfTest Program/ContagionFuzz; fake-game regressions; no current gameplay certification",
       "serves": "signature: evidence",
@@ -1174,9 +1018,7 @@
       "id": "legacy_placement_worker",
       "what": "Biome scoring worker and rarity setting remain built in source; alternative-planet generation is outside project scope.",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/RM_ContagionBiome.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/RM_ContagionBiome.cs",
       "proven": "missing",
       "called_by": "RM_Contagion.workerClass -> RM_BiomeWorker_Contagion.GetScore -> biomeRarityFactor (forbidden worldgen)",
       "serves": "shared compatibility",
@@ -1189,9 +1031,7 @@
       "id": "preburn_dive",
       "what": "Authored anticipatory map-wide Dive, including distinctive movement and counter-movement of sun lovers; current sprint-to-shelter happens after damage during Burn.",
       "built": "absent",
-      "evidence": [
-        "ITEM:CONTAGION_GPT_ENRICHMENT_1"
-      ],
+      "evidence": "ITEM:CONTAGION_GPT_ENRICHMENT_1",
       "proven": "missing",
       "called_by": "Promised in closed CONTAGION_GPT_ENRICHMENT_1 Part 2; no anticipatory source caller found",
       "serves": "natural sky/body cycle",
@@ -1202,26 +1042,35 @@
     },
     {
       "id": "bodyprints",
-      "what": "Native death -> recognizable carcass/remnant -> collapsed skin -> persistent anatomical print; physical Bloody Mess arrival/consumption; final anatomical sample independent of Draftprints; ridge husks.",
+      "what": "Native death -> recognizable carcass/remnant -> collapsed skin -> anatomical print readable through an ordinary return trip, then visibly fading; physical Bloody Mess arrival/consumption; ridge husks.",
       "built": "absent",
-      "evidence": [
-        "ITEM:CONTAGION_GPT_ENRICHMENT_1"
-      ],
+      "evidence": "ITEM:CONTAGION_GPT_ENRICHMENT_1",
       "proven": "missing",
       "called_by": "Promised in closed CONTAGION_GPT_ENRICHMENT_1 Part 3; existing Vanish deaths bypass phases; no implementation found",
-      "serves": "life: readable death and signature: tissue evidence",
+      "serves": "life: readable native death",
       "fate": "needed_by",
-      "why": "Designer call: The owner explicitly kept Bodyprints with Dive (OWNER:1792162786418789127; record.d_dive_bodyprints_stay). Removing phases erases the readable failed-body history and final sampling opportunity; Draftprint contracts are not necessary.",
-      "needed_by": "life: readable death and signature: tissue evidence",
+      "why": "Designer call: The owner explicitly kept Bodyprints with Dive (OWNER:1792162786418789127; record.d_dive_bodyprints_stay). Removing visible phases or physical eater arrival erases the readable failed-body history required by no-vanishing. Final sampling serves only deferred Draftprints, so it is split out and deferred; no new sample use is invented.",
+      "needed_by": "life: readable native death",
       "ticket": "T-remains"
+    },
+    {
+      "id": "bodyprint_final_sample",
+      "what": "Final sample from an uneaten Bodyprint feeds Draftprints.",
+      "built": "absent",
+      "evidence": "infrastructure/state/items/closed/CONTAGION_GPT_ENRICHMENT_1.md, Part 3; final sample explicitly feeds Draftprints; src/RimMandrake/Contagion/Source/FloatMenuOptionProvider_SampleDraftprint.cs and JobDriver_RM_SampleDraftprint.cs implement living scans, not dead-print sampling",
+      "proven": "missing",
+      "called_by": "Promised Bodyprints final-sample interaction -> Draftprints; source search finds living-scan callers only, no Bodyprint sampler implementation.",
+      "serves": "deferred Draftprint/Helix contract economy",
+      "fate": "next_version",
+      "why": "Designer call: Its defined consumer is deferred Draftprints. Deleting final sampling defeats neither visible native death nor the weather/body signature; inventing an anatomical-record item would add an unused job and product.",
+      "needed_by": "",
+      "ticket": ""
     },
     {
       "id": "rawshade",
       "what": "Delegated designed false-shelter creature and living-canopy predicate, with filed build checklist; not implemented in source.",
       "built": "absent",
-      "evidence": [
-        "ITEM:RAWSHADE_BUILD_SKIRT_COMES_DOWN"
-      ],
+      "evidence": "ITEM:RAWSHADE_BUILD_SKIRT_COMES_DOWN",
       "proven": "missing",
       "called_by": "No source callers found; design/Jawa/worldbuilding/biomes/contagion_rawshade_2026-11-02.md only",
       "serves": "deferred system",
@@ -1234,9 +1083,7 @@
       "id": "zhooliza",
       "what": "Owner-commissioned new smaller Zhool'Iza and its two whole-body graphic variants; not implemented.",
       "built": "absent",
-      "evidence": [
-        "OWNER:1792850998917276023"
-      ],
+      "evidence": "OWNER:1792850998917276023",
       "proven": "missing",
       "called_by": "record.inventory commissioning; no ThingDef/PawnKindDef/source caller found",
       "serves": "ordinary life",
@@ -1249,9 +1096,7 @@
       "id": "repulsor_warning",
       "what": "Owed build: a whole-map warning shown when a Repulsor is powered on the Contagion, before warmup.",
       "built": "absent",
-      "evidence": [
-        "ITEM:RIMMANDRAKE_BUILD_CONTAGION_REPULSOR_WARNING_NAMES_WHOLE_MAP"
-      ],
+      "evidence": "ITEM:RIMMANDRAKE_BUILD_CONTAGION_REPULSOR_WARNING_NAMES_WHOLE_MAP",
       "proven": "missing",
       "called_by": "CompCloudRepulsor activation edge; no warning implementation found",
       "serves": "deferred system",
@@ -1264,9 +1109,7 @@
       "id": "touched_transition_message",
       "what": "Owed build: one transition message when the touched progression reaches active change.",
       "built": "absent",
-      "evidence": [
-        "ITEM:RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE"
-      ],
+      "evidence": "ITEM:RIMMANDRAKE_BUILD_CONTAGION_TOUCHED_TRANSITION_MESSAGE_SENT_ONCE",
       "proven": "missing",
       "called_by": "record.d_efa_q05; existing Notify runs after actual mutation, not threshold crossing",
       "serves": "natural sky/body cycle",
@@ -1279,9 +1122,7 @@
       "id": "deferred_switches_off",
       "what": "Owed build: coalescenceEnabled, grownLimbsEnabled and draftprintsEnabled ship false, so 0.1.0 is whole without the Coalescence, the Grown Limbs and Helix trade (Design Version 0.2.0); the old live suite opts in where it tests them.",
       "built": "absent",
-      "evidence": [
-        "ITEM:RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN"
-      ],
+      "evidence": "ITEM:RIMMANDRAKE_BUILD_CONTAGION_DEFERRED_SWITCHES_OFF_SUITE_OPTS_IN",
       "proven": "missing",
       "called_by": "RM_ContagionMod field initializers/Scribe defaults/ResetFields; validation.py DEFAULTS currently all core deferred toggles true",
       "serves": "land, life and signature",
@@ -1294,9 +1135,7 @@
       "id": "zhool_conversion",
       "what": "Turning other plants in zhool haze, including crop opt-in",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/CompZhoolHaze.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/CompZhoolHaze.cs",
       "proven": "missing",
       "called_by": "CompTick -> Scan -> Convert; RM_ContagionBulloos attaches comp",
       "serves": "deferred behaviour",
@@ -1309,9 +1148,7 @@
       "id": "sap_harvest",
       "what": "Red sap item harvest and promised repellent/sealant use",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/PlantDefs/RM_ContagionFlora.xml",
       "proven": "missing",
       "called_by": "RM_Sapblister.harvestedThingDef -> RM_RedSap; no usable repellent/sealant comp found",
       "serves": "deferred behaviour",
@@ -1324,9 +1161,7 @@
       "id": "seed_fist_harvest",
       "what": "Seed-fist item harvest and promised fertilizer action",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs/RM_SeedFistFertilizer.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_SeedFistFertilizer.xml",
       "proven": "missing",
       "called_by": "RM_BloodyFist.harvestedThingDef -> RM_SeedFistFertilizer; no usable fertilizer comp found",
       "serves": "deferred behaviour",
@@ -1339,9 +1174,7 @@
       "id": "legacy_unrostered_plants",
       "what": "Unrostered donor-port plants including berries-yielding TentacularPlant",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/RM_Contagion_DonorPorts.xml"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/RM_Contagion_DonorPorts.xml",
       "proven": "missing",
       "called_by": "Not in RM_Contagion.wildPlants; possible old-save def references, no current map caller found",
       "serves": "deferred behaviour",
@@ -1354,9 +1187,7 @@
       "id": "canopy_ambush",
       "what": "Danglemaw anchored canopy ambush",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1369,9 +1200,7 @@
       "id": "sparkleech_cycle",
       "what": "Sparkleech electrical feeding, crop ruin and grub transformation",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1384,9 +1213,7 @@
       "id": "sloshbelly_water",
       "what": "Sloshbelly portable red-water harvest and fill states",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1399,9 +1226,7 @@
       "id": "doublemaw_infection",
       "what": "Doublemaw custom infecting bite",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1414,9 +1239,7 @@
       "id": "meltgut_digestion",
       "what": "Meltgut bespoke corrosive corpse-digestion stages",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1429,9 +1252,7 @@
       "id": "fleshsop_coordination",
       "what": "Fleshsop coordinated shielding formation",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1444,9 +1265,7 @@
       "id": "red_water_processing",
       "what": "Collected red water sunlight purification and downstream simulation",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/the_contagion.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/the_contagion.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1459,9 +1278,7 @@
       "id": "gestation_steering",
       "what": "Using Draftprints to choose a gestation outcome",
       "built": "absent",
-      "evidence": [
-        "infrastructure/state/items/closed/CONTAGION_GPT_ENRICHMENT_1.md"
-      ],
+      "evidence": "infrastructure/state/items/closed/CONTAGION_GPT_ENRICHMENT_1.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1474,9 +1291,7 @@
       "id": "engine_creatures",
       "what": "CreatureBehaviors: shared geometric shade, Direct Sun weather cover and animal escape",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs"
-      ],
+      "evidence": "src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs",
       "proven": "missing",
       "called_by": "Contagion sky exposure adapter and native Dive; RM_ShadeHop animal job selection",
       "serves": "shared engine",
@@ -1489,9 +1304,7 @@
       "id": "engine_growth",
       "what": "ExplosiveGrowth: normal plant growth plus Rupture cycling and mutated host/jelly births",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/ExplosiveGrowth/Defs/ExplosiveGrowth/RM_ExplosiveGrowthRoster.xml"
-      ],
+      "evidence": "src/RimMandrake/ExplosiveGrowth/Defs/ExplosiveGrowth/RM_ExplosiveGrowthRoster.xml",
       "proven": "missing",
       "called_by": "Contagion plants registered as Rupture; rupturePawnKinds RM_BloodyMess/RM_OcularJelly; mutation pool RM_Unfinished*",
       "serves": "shared engine",
@@ -1504,9 +1317,7 @@
       "id": "engine_hazards",
       "what": "EnvironmentalHazards: acid death, spore disease, render helpers and Forge creep consumers",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/EnvironmentalHazards/Source"
-      ],
+      "evidence": "src/RimMandrake/EnvironmentalHazards/Source",
       "proven": "missing",
       "called_by": "Contagion csproj reference; Bloody Mess death wrapper; fauna death actions; disease table",
       "serves": "shared engine",
@@ -1519,9 +1330,7 @@
       "id": "engine_wreckage",
       "what": "Wreckage: eroded local fragments, scatter, decay and ordinary scrap deconstruction",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Wreckage/Source/RM_GenStep_WreckField.cs"
-      ],
+      "evidence": "src/RimMandrake/Wreckage/Source/RM_GenStep_WreckField.cs",
       "proven": "missing",
       "called_by": "RM_WreckField_Contagion; RM_ContagionWreckFragment/RM_ContagionShellFragment",
       "serves": "shared engine",
@@ -1534,9 +1343,7 @@
       "id": "engine_bones",
       "what": "Bones: normal butchery integration for corpses that survive dissolution",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Bones/Source/RM_Patch_ButcherBones.cs"
-      ],
+      "evidence": "src/RimMandrake/Bones/Source/RM_Patch_ButcherBones.cs",
       "proven": "missing",
       "called_by": "Shared butcher patch; no direct Contagion-specific call found",
       "serves": "shared engine",
@@ -1549,9 +1356,7 @@
       "id": "monstrous_injection_policy",
       "what": "Monstrous-first sample choice, exotic gestation dispatch and limbs-off fallback",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/AmoebaHostUtility.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/AmoebaHostUtility.cs",
       "proven": "stale",
       "called_by": "FindSampleToInject used by float menu and JobDriver_RM_InjectGenomeSample; CompleteGestation -> RM_DraftprintKernel.Plan",
       "serves": "next-version exotic gestation",
@@ -1564,9 +1369,7 @@
       "id": "sunbeam_native_bonus",
       "what": "Sunbeam special damage multiplier against native Contagion creatures",
       "built": "present",
-      "evidence": [
-        "src/RimMandrake/Contagion/Source/DamageWorker_RM_UV.cs"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Source/DamageWorker_RM_UV.cs",
       "proven": "stale",
       "called_by": "DamageWorker_RM_UV.Apply -> sunbeamNativeFactor -> IsNative; RM_ContagionMod slider/default",
       "serves": "independent anti-native combat advantage",
@@ -1579,9 +1382,7 @@
       "id": "halfmade_front",
       "what": "Halfmade Tree territorial advance during Bloom and retreat during Burn",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1594,9 +1395,7 @@
       "id": "lashgrass_footsteps",
       "what": "Lashgrass actively flinches in a wave from footsteps",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1609,9 +1408,7 @@
       "id": "eyebark_tracking",
       "what": "Eyebark eyes actively track passing pawns",
       "built": "absent",
-      "evidence": [
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Promise in cited design; source/defs search found no bespoke implementation; vanilla tools are not proof of this behaviour",
       "serves": "deferred behaviour",
@@ -1624,10 +1421,7 @@
       "id": "sap_medicine",
       "what": "Red sap used as insect repellent or wound sealant",
       "built": "absent",
-      "evidence": [
-        "src/RimMandrake/Contagion/Defs/ThingDefs/RM_RedSap.xml",
-        "design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md"
-      ],
+      "evidence": "src/RimMandrake/Contagion/Defs/ThingDefs/RM_RedSap.xml; design/Jawa/worldbuilding/biomes/contagion_grotesque_cast_2026-09-27.md",
       "proven": "missing",
       "called_by": "Plant harvest produces inert RM_RedSap; no usable repellent/sealant action or medicine comp found in Contagion source/defs",
       "serves": "independent medicine mechanic",

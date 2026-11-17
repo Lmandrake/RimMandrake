@@ -1,0 +1,864 @@
+{
+ "mod": "Contagion",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "authority_unsourced",
+     "where": "owner_pages.md page one (\"Ordinary donor organs, natural arms/legs and matching stay: your existing next-version record explicitly retained them\"); definition.md, runner-up paragraph (\"the owner expressly retained them in later_version.md\"); census.json row gestation, field why; bars.json tissue meant.source",
+     "evidence": "later_version.md line 3 says the file was \"Filed from OWNER:1794842455892769878\". His quoted words (line 4) say only \"Everything about the Grown Limbs is next version ... Defer Helix trade to next version.\" The line that keeps grown natural arms and legs and matched-donor mood (line 24, \"Stays in 0.1.0 (counted in, not limbs)\") is the filer's own reading. It is not in his words. record.json d_next_version_2026_11_16 lists only what he deferred. His sourced promise is d_other_tissue (OWNER:1794364405453876478): \"other matched or sellable tissue\". It says nothing about grown natural arms and legs being outside \"Everything about the Grown Limbs\".",
+     "would_pass": "Keeping ordinary organs is sourced to d_other_tissue. Keeping grown natural arms/legs and matched mood is logged as a Designer call (delegated, from the filer's line in later_version.md and d_other_tissue) with its needed_by argument. Page two lists it as a settlement for him to check: \"grown natural arms and legs read as ordinary tissue, not as Grown Limbs\".",
+     "smallest_fix": "Reword the three attributions as a delegated Designer call. Add one settlement line to page two."
+    },
+    {
+     "head": "moved_extra_relied_on",
+     "where": "bars.json bar remains, says (\"and take a final sample without needing Helix trade\"), the reject picture \"With Draftprints disabled the last print cannot be sampled\", and the R_death clause \"sampling is inspectable anatomical record\"; census.json row bodyprints",
+     "evidence": "The Bodyprints source, infrastructure/state/items/closed/CONTAGION_GPT_ENRICHMENT_1.md lines 26-27, says: \"otherwise the print persists long enough for one final sample, which feeds Draftprints\". The owner deferred Draftprints with Helix trade (OWNER:1794842455892769878; later_version.md line 20, \"draftprints (a print exists to answer a contract)\"). The proposal keeps the sampling job anyway and turns its output into \"an inspectable anatomical record ... biological evidence, not another currency\" (definition.md, the \"Native death handling is owed\" paragraph). That is a new job and item with no player use. Its only defined consumer moved to the next version.",
+     "would_pass": "The remains bar keeps the visible carcass → skin → print phases and the eater's physical arrival (the part the no-vanishing rule needs), and the final sample moves to the next version with Draftprints. Or the proposal names a 0.1.0 use for the sample and argues why deleting it would defeat land, life or the signature.",
+     "smallest_fix": "Strike the final-sample clause from remains.says, its reject picture and R_death. Add a next_version.md entry \"bodyprint_final_sample — next version, off (feeds Draftprints)\"."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json bar remains, says \"a lasting anatomical Bodyprint\"; meant.figurative is []",
+     "evidence": "ambiguities.md item 25 settles \"lasting\" as not forever but \"enough ordinary return time\". R_death says \"print persistence at least one ordinary return trip\". So \"lasting\" is not meant literally, and the bar leaves it unmarked. The accept picture \"an unreachable print persists for sampling\" also gives no bound.",
+     "would_pass": "A figurative entry for \"lasting\" that stands for \"stays readable at least as long as an ordinary trip out from the colony and back, then fades with a visible sign\", with an accept picture of a print that fades after that window.",
+     "smallest_fix": "Add the one figurative entry and its accept picture."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json bar refuge, sees.instrument and sees.control (\"M3 calibrated production shade/exposure sweep ... share the actual service inputs and compare outputs cell by cell\")",
+     "evidence": "Today the Burn's harm reads the local exact-cell predicate. RM_GameCondition_ContagionBurn.cs:66 calls RM_ContagionSky.Exposed, and RM_ContagionSkyExtension.cs:95 → RM_SkyKernel.Exposed returns !tree on the exact cell after the roofed and water checks. A sweep that checks the shared shade grid's cell verdicts can pass while Pressure() and the touched dose still consult that predicate. That build is exactly the refuge bar's own reject picture (\"the tree trunk is automatically safe while the shadow burns\").",
+     "would_pass": "The offline sweep compares, cell by cell, the verdict that the Burn's pressure code and the touched-dose code actually consult against the shared grid. The live calibration probe puts a pawn in an off-trunk shadow and one on the trunk cell, and reads the damage events.",
+     "smallest_fix": "Add one sentence to sees: \"the compared output is the predicate Pressure() and the touched dose call; agreement of the shared grid alone does not count\"."
+    },
+    {
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json bar refuge, says (\"the player can trust the shared shade reading to distinguish ...\") and reject picture 2 (\"A hidden Contagion-only heat offset makes an otherwise identical sun angle harm a pawn differently\")",
+     "evidence": "\"The shared shade reading\" is how we build it: R_shade says \"Consume one shared geometric shade/exposure service\". A hidden heatKind/heatOffsetC is already C_weather and R_shade (\"no heatKind/heatOffsetC per biome\"). No player can see a hidden offset, so that reject picture is a check.",
+     "would_pass": "The says states what the player sees: \"During a Burn, a pawn under a roof, in a tree's or rock's cast shadow, or in water is spared while one in the open beside it is hurt, and the shelter a native or colonist heads for is that same shade.\" The shared-service requirement stays in R_shade and the offset ban stays in C_weather.",
+     "smallest_fix": "Reword refuge.says. Replace reject picture 2 with a visible one, e.g. \"the shadow drawn on screen and the cells that protect disagree\"."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "arrest",
+     "n": 1,
+     "text": "Treatment erases existing mutations, success is reported with no treatment injury, or an interrupted hold arrests the patient anyway.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "arrest",
+     "n": 2,
+     "text": "Stopping the hold or losing reach leaves progression active; successful treatment gives no immunity to a later outdoor assignment.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "arrest",
+     "n": 3,
+     "text": "An ordinary purchase supplies the projector; the medic completes the hold, a beam links lens and patient, progression ends, existing mutations remain and a UV injury is visible.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "arrest",
+     "n": 4,
+     "text": "Only a developer-spawned Sunbeam is obtainable with Helix trade off, the patient is cured by the test, or a completed hold has no visible light.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "body_change",
+     "n": 1,
+     "text": "A worker already carrying a mutation keeps it through reload and receives a different eligible change or stops adding changes when no eligible room remains.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "body_change",
+     "n": 2,
+     "text": "Descriptions claim a drawback but applied health and genes only improve the pawn, or exposure begins with an irreversible change before any warning.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "body_change",
+     "n": 3,
+     "text": "Health shows not-yet-changing exposure before onset; a harmful change reduces capacity, and a beneficial change also leaves an applied, visible cost.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "body_change",
+     "n": 4,
+     "text": "The same mutation is repeatedly installed on the same pawn, or ordinary exposure produces repeated letters without a new onset or actual change.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "crossing",
+     "n": 1,
+     "text": "The crossing succeeds only because damage is disabled, the pawn is immune or the route is already shaded throughout.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "crossing",
+     "n": 2,
+     "text": "An ordinary planned crossing downs the prepared pawn, or staying outdoors through the Burn leaves an ordinary worker able to keep working without serious injury.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "crossing",
+     "n": 3,
+     "text": "A healthy equipped hauler crosses from roof to roof carrying the tissue home, arrives conscious with a Burn health cost, and needs recovery.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "crossing",
+     "n": 4,
+     "text": "A rescuer retrieves an adjacent casualty within the planned refuge route while the otherwise comparable outdoor worker loses the ability to continue work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "forecast",
+     "n": 1,
+     "text": "Tell flags become true but no bodies move or plants shake, or the first visible cue arrives with the first injury.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "forecast",
+     "n": 2,
+     "text": "A worker still outside when the sink and shake begin walks into the planned refuge before harm starts; the distant work party must improvise, and the clearing fog lets a rifle use its ordinary aim.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "forecast",
+     "n": 3,
+     "text": "The weather transition finishes before open-ground injury starts; the red storm returns after the tear.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "forecast",
+     "n": 4,
+     "text": "All workers were already sheltered, or the apparent improved rifle performance came from switching guns rather than lifting red fog.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "native_response",
+     "n": 1,
+     "text": "Every native is immune, armoured scavengers hide with the others, or a reachable refuge is ignored forever because nearer candidates are sealed rooms.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "native_response",
+     "n": 2,
+     "text": "Skinflaps drop toward shelter and Gawpsacks settle without disappearing while the armoured scavengers leave cover; an exposed shy native burns when no reachable refuge exists.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "native_response",
+     "n": 3,
+     "text": "Animals first suffer damage and only then receive the existing reactive sprint, or disappear to suggest diving.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "native_response",
+     "n": 4,
+     "text": "A Scorchpod keeps walking into the light and is hurt rather than receiving the shy-native refuge order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 1,
+     "text": "A red filter covers recognizable oak woodland, native harvest feeds colonists, or only placed display animals inhabit an otherwise empty map.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 2,
+     "text": "The smaller Zhool'Iza reads as a smaller distinct native beside the zhool; malformed Unfinished bodies and their health descriptions agree.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 3,
+     "text": "Rain gleams on alien sand beside eyed trunks, halfmade alien plants and moving skin flyers; a player builds a roof on dry ground and brings food from elsewhere.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 4,
+     "text": "A pictured skin flyer only walks, a native silhouette is replaced by a missing-texture square, or ground is impassable everywhere a refuge could be built.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "refuge",
+     "n": 1,
+     "text": "Removing the roof or cutting the shading tree removes protection on the next relevant shared geometry update; traversable water remains a refuge according to the shared service.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "refuge",
+     "n": 2,
+     "text": "A hidden Contagion-only heat offset makes an otherwise identical sun angle harm a pawn differently from the shared geometry rule.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "refuge",
+     "n": 3,
+     "text": "The tree trunk is automatically safe while the shadow burns, or the path chooser offers a sealed roof room that the pawn cannot enter.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "refuge",
+     "n": 4,
+     "text": "A pawn off the trunk inside its cast shadow is protected, while a pawn beside it in exposed ground accumulates Burn harm.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "remains",
+     "n": 1,
+     "text": "A dead native leaves a recognizable remnant, then collapsed skin and a glossy anatomical trace; a Bloody Mess travels to it before feeding, while an unreachable print persists for sampling.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "remains",
+     "n": 2,
+     "text": "The game deletes a corpse off screen and increments a remote eater counter, or only slime appears with no readable phases.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "remains",
+     "n": 3,
+     "text": "With Draftprints disabled the last print cannot be sampled, or repeated sampling and feeding duplicate the original corpse and rewards.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "remains",
+     "n": 4,
+     "text": "A goo-bud leaves non-butcherable transient bodily remains and slime before its print; a departing Blisterfloat leaves a burst husk at the ridge.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "season",
+     "n": 1,
+     "text": "The colony builds refuges, reads natural warnings, collects a useful batch, arrests a touched worker and sees the valley renew failed life; the same activities still work after a mid-season reload and in a different order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "season",
+     "n": 2,
+     "text": "Ordinary local crowding or an accidental lost animal leaves readable consequences without filling all work routes, erasing the living cast or repeating errors and messages without new events.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "season",
+     "n": 3,
+     "text": "The staged dash works while natural Burns, shared Rupture growth or corpse processing are locked off, then the unrestricted valley floods with hosts and remains.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "season",
+     "n": 4,
+     "text": "The full colony can only stay indoors, the sky never tears or closes, the cast disappears, or reload duplicates batches and starts repeated errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tissue",
+     "n": 1,
+     "text": "The injection menu names the ordinary random batch and chance of the wanted part before spending the sample; the player returns to pick up usable tissue even though the desired leg is absent.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "tissue",
+     "n": 2,
+     "text": "A cancelled injection spends the sample, the host is consumed before output can be placed, or reload produces the same batch again.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tissue",
+     "n": 3,
+     "text": "Odds appear only after injection, or a miss produces worthless clutter that cannot be installed or sold.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tissue",
+     "n": 4,
+     "text": "A donor-labelled ordinary organ restores that donor through ordinary surgery and shows matching feedback; someone else can use it without an invented mismatch penalty.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "unfinished_life",
+     "n": 1,
+     "text": "A dead bud leaves its recognizable failed-body trace, while living kin continue the ordinary cycle.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "unfinished_life",
+     "n": 2,
+     "text": "The birth is a stock healthy animal with randomized text only, or reload rerolls it into a different animal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "unfinished_life",
+     "n": 3,
+     "text": "A bud survives indefinitely by exhausting its timer without a death transition, or its death simply deletes its last trace.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "unfinished_life",
+     "n": 4,
+     "text": "A bud has an actual impaired limb and a finite unraveling state that continues across reload; an occasional dangerous malformed body is identified as such.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The Sunbeam's player-facing description (src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml line 71) says it is \"murderous\" against anything born under the storm and \"the one ranged answer the Bloom respects\". The census row sunbeam_weapon and ticket T24 switch off the native-damage bonus and R_arrest forbids any Bloom accuracy exemption, but no row or ticket covers this text. At default settings the item would promise both things the 0.1.0 build turns off.",
+   "loop_or_three_way": "crossing × body_change × arrest on one pawn. The record says the dash's cost is \"Burn harm plus stronger Contagion-touched exposure\" (record.json, the resolution citing d_one_dash), so each purposeful crossing advances the crosser's touched progression. Arresting it then requires a Sunbeam hold that leaves a further UV treatment injury. That injury lands on the same pawn who just arrived \"alive with readable harm\", and the same pawn is then sent on the next tissue trip. The pawn-health meeting is marked unknown and points at M3, but M3's inputs list UV, ambient heat, Direct Sun and touched exposure, not the Sunbeam treatment burn. So nothing checks whether crossing, then treatment, then the next crossing still leaves a colonist who arrives conscious, or whether it pushes the colony into the lockdown d_q02_first_demo refuses.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 656636
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "design/concepts/Contagion/cleanse/bars.json bar tissue (meant.source, range.varies 'natural arm/natural leg'); rule R_batch; rule R_identity; definition.md Runner-up paragraph; ambiguities.md item 18",
+     "evidence": "The owner's ruling (record.json s_next_version_2026_11_16, OWNER:1794842455892769878) says: \"Everything about the Grown Limbs is next version.\" record.json d_limbs_next_version adds that 0.1.0 ships grownLimbsEnabled off. The record's inventory also says \"The custom limb recipes are Design Version 0.2.0 with the Grown Limbs\". The natural arm and leg the proposal keeps are literally the Grown Limbs: RM_GrownArm and RM_GrownLeg are defined in src/RimMandrake/Contagion/Defs/ThingDefs/RM_GrownLimbs.xml and installed by RM_InstallGrownLimbs.xml through Recipe_InstallGrownBodyPart. The proposal keeps them as a delegated reading, with Questions: 0. Its deletion argument ('deleting restoration makes these ordinary outputs decorative') fails if arms and legs leave the batch pool. The ordinary organs (kidney, liver, lung, heart) alone already meet d_other_tissue's 'other matched or sellable tissue'.",
+     "would_pass": "The 0.1.0 ordinary batch is natural organs only. RM_GrownArm/RM_GrownLeg and their install recipes move to next version, off, with the other Grown Limbs. Alternatively, the reading is put to him as a question with this evidence, and the obvious default (defer) is taken meanwhile.",
+     "smallest_fix": "Take natural arm/leg out of tissue.range, R_batch, R_identity and C_batch's pool. Move them to next_version.md under the Grown Limbs. Change tissue's accept picture ('the desired leg is absent') to name an organ. Keep matched-mood feedback on the patched vanilla organ recipes."
+    },
+    {
+     "head": "authority_unsourced",
+     "where": "design/concepts/Contagion/cleanse/owner_pages.md page one ('Dive and Bodyprints also stay under your explicit retention'); definition.md 'Kept exceptions'; next_version.md 'expressly owner-retained'; census.json row bodyprints why",
+     "evidence": "His only words are OWNER:1792162786418789127 (2026-10-16): \"keep both in (Dive and Bodyprints stay in THIS sprint)\". That was said a month before Design Versions existed. The mapping of 'this sprint' to 0.1.0 is record.json d_dive_bodyprints_stay, kind 'delegated', speaker 'agent', an evidence-for-ask inference. The proposal presents it as his express 0.1.0 retention. That label is what protects the four-phase Bodyprint sequence (carcass, skin, print, eater arrival, timed fade) from the cut his 2026-11-16 words aim at ('Little custom details that weren't strictly necessary'). The fallback deletion argument over-reaches. The standing no-vanishing ruling asks only for 'a readable sign', not phased prints and eater travel.",
+     "would_pass": "The pages say plainly that he kept Dive and Bodyprints 'this sprint' on 2026-10-16 and that reading this as 0.1.0 is the Designer's delegated call. Bodyprints' phases and eater arrival either carry a deletion argument against land, life or signature that does not rest on his authority, or go to next version with only a readable death sign kept.",
+     "smallest_fix": "Re-attribute the claim on owner_pages.md, definition.md, next_version.md and census.json bodyprints as delegated from d_dive_bodyprints_stay. List it on page two as a settlement he should check."
+    },
+    {
+     "head": "cannot_hold_together",
+     "where": "design/concepts/Contagion/cleanse/bars.json bar refuge.says ('or in water'); rule R_shade ('Consume one shared geometric shade/exposure service … including ruled water'); rule R_engines ('Do not redesign CreatureBehaviors'); meeting shelter-geometry",
+     "evidence": "The shared service has no water term [measured]. In src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs, ShadeAt combines roof, cast, light, gear, parasol and moving shade, and ExposureAt adds parasol, moving shade and glare. Neither reads terrain water. Only the local predicate RM_ContagionSkyExtension.cs:95 (RM_SkyKernel.Exposed(…, t.IsWater, …)) does, and R_shade bans it. ambiguities.md item 4 forbids a second local water predicate. d_burn_refuge_is_geometry rests on the false premise that the shade grid 'calls … water' shade. As written, the refuge bar's water case can pass only by redesigning a shared engine, which R_engines forbids, or by keeping the banned local predicate. The shelter-geometry meeting's 'why' does not name this gap.",
+     "would_pass": "Either the shared engine's owner is asked, as a named dependency need, for a water-cell cover term in the exposure contract (ticketed with its acceptance test, and the meeting says so), or water leaves refuge.says until that contract exists.",
+     "smallest_fix": "Add the measured gap to the shelter-geometry meeting. Add one dependency ticket to CreatureBehaviors' owner: 'water cell counts as UV cover in ShadeAt/ExposureAt', with an acceptance test that fails on today's grid. Or delete 'or in water' from refuge.says and the matching accept picture."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "design/concepts/Contagion/cleanse/bars.json bar arrest (range.varies, sees.start 'Progressing eligible patient with already applied mutation') and bar body_change",
+     "evidence": "The owner certified record.json d_efa_q05 (2026-11-15): \"the first warning and the treatment it calls for are judged together.\" The proposal splits these into body_change (warning before change) and arrest (start state already mutated). Neither range nor picture covers holding the beam on a worker who shows only the early warning and has no mutation yet. T-deck adds a new pre-onset state. A plausible build makes that state a separate hediff the Sunbeam's IsTouched check (RM_SunbeamArrest.cs:31) does not see. Both bars would then pass while the warning calls for a treatment that cannot act until after the first lasting change.",
+     "would_pass": "arrest.range includes a touched worker before onset with no mutation. An accept picture shows a warned, still-unchanged worker held under the beam who never gains a first mutation, and a reject picture shows the beam refused or useless at the warning stage.",
+     "smallest_fix": "Add 'pre-onset warned, zero mutations' to arrest.range.varies and arrest.sees.start, and add the one accept/reject pair."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "design/concepts/Contagion/cleanse/bars.json bar refuge (live_only: false; live_only_why 'Production-derived deterministic harness can decide this bounded claim'); result.json counts.live_only_bars 8; owner_pages.md 'live-only bars: 8'",
+     "evidence": "Refuge's own reject pictures are 'The shadow drawn on screen and the cells that protect a pawn disagree' and 'the path chooser offers a sealed roof room that the pawn cannot enter'. The first needs the renderer. The second is path/job execution, which every other bar in the file says 'Requires the running renderer, actual path/job execution'. An offline harness compares predicate to grid; it cannot see a drawn shadow that disagrees with protection. Its sees.control already relies on live off-trunk, trunk and open probes. The live-only count printed for him is therefore understated.",
+     "would_pass": "Refuge is marked live-only for the drawn-shadow and reachable-route parts, with the offline sweep as a prefilter. The counts in result.json and on page one agree.",
+     "smallest_fix": "Set refuge live_only true with a live_only_why naming the renderer and path execution. Change counts.live_only_bars to 9 and the page-one line to match."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "arrest",
+     "n": 1,
+     "text": "Only a developer-spawned Sunbeam is obtainable with Helix trade off, the patient is cured by the test, or a completed hold has no visible light.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "arrest",
+     "n": 2,
+     "text": "Treatment erases existing mutations, success is reported with no treatment injury, or an interrupted hold arrests the patient anyway.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "arrest",
+     "n": 3,
+     "text": "An ordinary purchase supplies the projector; the medic completes the hold, a beam links lens and patient, progression ends, existing mutations remain and a UV injury is visible.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "arrest",
+     "n": 4,
+     "text": "Stopping the hold or losing reach leaves progression active; successful treatment gives no immunity to a later outdoor assignment.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "body_change",
+     "n": 1,
+     "text": "Descriptions claim a drawback but applied health and genes only improve the pawn, or exposure begins with an irreversible change before any warning.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "body_change",
+     "n": 2,
+     "text": "A worker already carrying a mutation keeps it through reload and receives a different eligible change or stops adding changes when no eligible room remains.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "body_change",
+     "n": 3,
+     "text": "The same mutation is repeatedly installed on the same pawn, or ordinary exposure produces repeated letters without a new onset or actual change.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "body_change",
+     "n": 4,
+     "text": "Health shows not-yet-changing exposure before onset; a harmful change reduces capacity, and a beneficial change also leaves an applied, visible cost.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "crossing",
+     "n": 1,
+     "text": "A healthy equipped hauler crosses from roof to roof carrying the tissue home, arrives conscious with a Burn health cost, and needs recovery.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "crossing",
+     "n": 2,
+     "text": "An ordinary planned crossing downs the prepared pawn, or staying outdoors through the Burn leaves an ordinary worker able to keep working without serious injury.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "crossing",
+     "n": 3,
+     "text": "The crossing succeeds only because damage is disabled, the pawn is immune or the route is already shaded throughout.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "crossing",
+     "n": 4,
+     "text": "A rescuer retrieves an adjacent casualty within the planned refuge route while the otherwise comparable outdoor worker loses the ability to continue work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "forecast",
+     "n": 1,
+     "text": "A worker still outside when the sink and shake begin walks into the planned refuge before harm starts; the distant work party must improvise, and the clearing fog lets a rifle use its ordinary aim.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "forecast",
+     "n": 2,
+     "text": "Tell flags become true but no bodies move or plants shake, or the first visible cue arrives with the first injury.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "forecast",
+     "n": 3,
+     "text": "The weather transition finishes before open-ground injury starts; the red storm returns after the tear.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "forecast",
+     "n": 4,
+     "text": "All workers were already sheltered, or the apparent improved rifle performance came from switching guns rather than lifting red fog.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "native_response",
+     "n": 1,
+     "text": "Animals first suffer damage and only then receive the existing reactive sprint, or disappear to suggest diving.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "native_response",
+     "n": 2,
+     "text": "Skinflaps drop toward shelter and Gawpsacks settle without disappearing while the armoured scavengers leave cover; an exposed shy native burns when no reachable refuge exists.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "native_response",
+     "n": 3,
+     "text": "Every native is immune, armoured scavengers hide with the others, or a reachable refuge is ignored forever because nearer candidates are sealed rooms.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "native_response",
+     "n": 4,
+     "text": "A Scorchpod keeps walking into the light and is hurt rather than receiving the shy-native refuge order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 1,
+     "text": "A pictured skin flyer only walks, a native silhouette is replaced by a missing-texture square, or ground is impassable everywhere a refuge could be built.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 2,
+     "text": "Rain gleams on alien sand beside eyed trunks, halfmade alien plants and moving skin flyers; a player builds a roof on dry ground and brings food from elsewhere.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 3,
+     "text": "The smaller Zhool'Iza reads as a smaller distinct native beside the zhool; malformed Unfinished bodies and their health descriptions agree.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "place",
+     "n": 4,
+     "text": "A red filter covers recognizable oak woodland, native harvest feeds colonists, or only placed display animals inhabit an otherwise empty map.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "refuge",
+     "n": 1,
+     "text": "Removing the roof or cutting the shading tree removes protection on the next relevant shared geometry update; traversable water remains a refuge according to the shared service.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "refuge",
+     "n": 2,
+     "text": "The tree trunk is automatically safe while the shadow burns, or the path chooser offers a sealed roof room that the pawn cannot enter.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "refuge",
+     "n": 3,
+     "text": "The shadow drawn on screen and the cells that protect a pawn disagree.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "refuge",
+     "n": 4,
+     "text": "A pawn off the trunk inside its cast shadow is protected, while a pawn beside it in exposed ground accumulates Burn harm.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "remains",
+     "n": 1,
+     "text": "A goo-bud leaves non-butcherable transient bodily remains and slime before its print; a departing Blisterfloat leaves a burst husk at the ridge.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "remains",
+     "n": 2,
+     "text": "An uneaten print disappears before an ordinary return trip is possible, or butchery and feeding duplicate the original remains and rewards.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "remains",
+     "n": 3,
+     "text": "The game deletes a corpse off screen and increments a remote eater counter, or only slime appears with no readable phases.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "remains",
+     "n": 4,
+     "text": "A dead native leaves a recognizable remnant, then collapsed skin and a glossy anatomical trace; a Bloody Mess travels to it before feeding, while an unreachable print remains readable through an ordinary return trip and later visibly fades.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "season",
+     "n": 1,
+     "text": "The staged dash works while natural Burns, shared Rupture growth or corpse processing are locked off, then the unrestricted valley floods with hosts and remains.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "season",
+     "n": 2,
+     "text": "The colony builds refuges, reads natural warnings, collects a useful batch, arrests a touched worker and sees the valley renew failed life; the same activities still work after a mid-season reload and in a different order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "season",
+     "n": 3,
+     "text": "The full colony can only stay indoors, the sky never tears or closes, the cast disappears, or reload duplicates batches and starts repeated errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "season",
+     "n": 4,
+     "text": "Ordinary local crowding or an accidental lost animal leaves readable consequences without filling all work routes, erasing the living cast or repeating errors and messages without new events.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "tissue",
+     "n": 1,
+     "text": "A cancelled injection spends the sample, the host is consumed before output can be placed, or reload produces the same batch again.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tissue",
+     "n": 2,
+     "text": "The injection menu names the ordinary random batch and chance of the wanted part before spending the sample; the player returns to pick up usable tissue even though the desired leg is absent.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "tissue",
+     "n": 3,
+     "text": "Odds appear only after injection, or a miss produces worthless clutter that cannot be installed or sold.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "tissue",
+     "n": 4,
+     "text": "A donor-labelled ordinary organ restores that donor through ordinary surgery and shows matching feedback; someone else can use it without an invented mismatch penalty.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "unfinished_life",
+     "n": 1,
+     "text": "A bud has an actual impaired limb and a finite unraveling state that continues across reload; an occasional dangerous malformed body is identified as such.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "unfinished_life",
+     "n": 2,
+     "text": "A dead bud leaves its recognizable failed-body trace, while living kin continue the ordinary cycle.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "unfinished_life",
+     "n": 3,
+     "text": "The birth is a stock healthy animal with randomized text only, or reload rerolls it into a different animal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "unfinished_life",
+     "n": 4,
+     "text": "A bud survives indefinitely by exhausting its timer without a death transition, or its death simply deletes its last trace.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Generated pawns can carry the Sunbeam. src/RimMandrake/Contagion/Defs/ThingDefs/RM_Sunbeam.xml gives it weaponTags RangedLight as well as the WeaponRanged trade tag and the reward tag. Any pawn kind that draws RangedLight weapons (raiders, visitors, guards) can arrive with one. That is a loot acquisition path the arrest bar's range ('trader/reward producers') does not list. It is also a hostile use: DamageWorker_RM_UV.cs:25-27 arrests any touched pawn hit for damage, so an enemy's shot silently arrests a touched colonist and leaves the UV burn. Census row sunbeam_weapon records only trade and reward hooks, and no check or ticket covers raider-carried Sunbeams.",
+   "loop_or_three_way": "Bloody Mess eater, Burn and gestating host form a three-way meeting no argument covers. native_response lets exposed shy natives die in the open during a Burn. remains then requires a Bloody Mess to walk physically to those remains. tissue makes the same Bloody Mess a moving, consumable host whose premature death loses the batch (R_batch). The Bloody Mess is itself a Contagion native (IsNative covers it, per DamageWorker_RM_UV.cs comment), so its eat job and its pre-Burn Dive job compete. If eating draws it into the open at a Burn edge, it burns and dies, the player's pending batch is lost, and its own remains add to the open-ground backlog that draws the next eater. The jobs and map-ecology meetings mention competition and accumulation, but neither argues this eat-versus-dive-versus-host loop, and no model input names a gestating host on an eat job at Burn onset.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 756370
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1474943,
+    "output_tokens": 10653
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "design/concepts/Contagion/cleanse/bars.json bar tissue (meant.source, range.varies 'natural arm/natural leg'); rule R_batch; rule R_identity; definition.md Runner-up paragraph; ambiguities.md item 18",
+   "evidence": "The owner's ruling (record.json s_next_version_2026_11_16, OWNER:1794842455892769878) says: \"Everything about the Grown Limbs is next version.\" record.json d_limbs_next_version adds that 0.1.0 ships grownLimbsEnabled off. The record's inventory also says \"The custom limb recipes are Design Version 0.2.0 with the Grown Limbs\". The natural arm and leg the proposal keeps are literally the Grown Limbs: RM_GrownArm and RM_GrownLeg are defined in src/RimMandrake/Contagion/Defs/ThingDefs/RM_GrownLimbs.xml and installed by RM_InstallGrownLimbs.xml through Recipe_InstallGrownBodyPart. The proposal keeps them as a delegated reading, with Questions: 0. Its deletion argument ('deleting restoration makes these ordinary outputs decorative') fails if arms and legs leave the batch pool. The ordinary organs (kidney, liver, lung, heart) alone already meet d_other_tissue's 'other matched or sellable tissue'.",
+   "would_pass": "The 0.1.0 ordinary batch is natural organs only. RM_GrownArm/RM_GrownLeg and their install recipes move to next version, off, with the other Grown Limbs. Alternatively, the reading is put to him as a question with this evidence, and the obvious default (defer) is taken meanwhile.",
+   "smallest_fix": "Take natural arm/leg out of tissue.range, R_batch, R_identity and C_batch's pool. Move them to next_version.md under the Grown Limbs. Change tissue's accept picture ('the desired leg is absent') to name an organ. Keep matched-mood feedback on the patched vanilla organ recipes."
+  },
+  {
+   "head": "authority_unsourced",
+   "where": "design/concepts/Contagion/cleanse/owner_pages.md page one ('Dive and Bodyprints also stay under your explicit retention'); definition.md 'Kept exceptions'; next_version.md 'expressly owner-retained'; census.json row bodyprints why",
+   "evidence": "His only words are OWNER:1792162786418789127 (2026-10-16): \"keep both in (Dive and Bodyprints stay in THIS sprint)\". That was said a month before Design Versions existed. The mapping of 'this sprint' to 0.1.0 is record.json d_dive_bodyprints_stay, kind 'delegated', speaker 'agent', an evidence-for-ask inference. The proposal presents it as his express 0.1.0 retention. That label is what protects the four-phase Bodyprint sequence (carcass, skin, print, eater arrival, timed fade) from the cut his 2026-11-16 words aim at ('Little custom details that weren't strictly necessary'). The fallback deletion argument over-reaches. The standing no-vanishing ruling asks only for 'a readable sign', not phased prints and eater travel.",
+   "would_pass": "The pages say plainly that he kept Dive and Bodyprints 'this sprint' on 2026-10-16 and that reading this as 0.1.0 is the Designer's delegated call. Bodyprints' phases and eater arrival either carry a deletion argument against land, life or signature that does not rest on his authority, or go to next version with only a readable death sign kept.",
+   "smallest_fix": "Re-attribute the claim on owner_pages.md, definition.md, next_version.md and census.json bodyprints as delegated from d_dive_bodyprints_stay. List it on page two as a settlement he should check."
+  },
+  {
+   "head": "cannot_hold_together",
+   "where": "design/concepts/Contagion/cleanse/bars.json bar refuge.says ('or in water'); rule R_shade ('Consume one shared geometric shade/exposure service … including ruled water'); rule R_engines ('Do not redesign CreatureBehaviors'); meeting shelter-geometry",
+   "evidence": "The shared service has no water term [measured]. In src/RimMandrake/CreatureBehaviors/Source/RM_MapComponent_ShadeGrid.cs, ShadeAt combines roof, cast, light, gear, parasol and moving shade, and ExposureAt adds parasol, moving shade and glare. Neither reads terrain water. Only the local predicate RM_ContagionSkyExtension.cs:95 (RM_SkyKernel.Exposed(…, t.IsWater, …)) does, and R_shade bans it. ambiguities.md item 4 forbids a second local water predicate. d_burn_refuge_is_geometry rests on the false premise that the shade grid 'calls … water' shade. As written, the refuge bar's water case can pass only by redesigning a shared engine, which R_engines forbids, or by keeping the banned local predicate. The shelter-geometry meeting's 'why' does not name this gap.",
+   "would_pass": "Either the shared engine's owner is asked, as a named dependency need, for a water-cell cover term in the exposure contract (ticketed with its acceptance test, and the meeting says so), or water leaves refuge.says until that contract exists.",
+   "smallest_fix": "Add the measured gap to the shelter-geometry meeting. Add one dependency ticket to CreatureBehaviors' owner: 'water cell counts as UV cover in ShadeAt/ExposureAt', with an acceptance test that fails on today's grid. Or delete 'or in water' from refuge.says and the matching accept picture."
+  },
+  {
+   "head": "core_promise_weakened",
+   "where": "design/concepts/Contagion/cleanse/bars.json bar arrest (range.varies, sees.start 'Progressing eligible patient with already applied mutation') and bar body_change",
+   "evidence": "The owner certified record.json d_efa_q05 (2026-11-15): \"the first warning and the treatment it calls for are judged together.\" The proposal splits these into body_change (warning before change) and arrest (start state already mutated). Neither range nor picture covers holding the beam on a worker who shows only the early warning and has no mutation yet. T-deck adds a new pre-onset state. A plausible build makes that state a separate hediff the Sunbeam's IsTouched check (RM_SunbeamArrest.cs:31) does not see. Both bars would then pass while the warning calls for a treatment that cannot act until after the first lasting change.",
+   "would_pass": "arrest.range includes a touched worker before onset with no mutation. An accept picture shows a warned, still-unchanged worker held under the beam who never gains a first mutation, and a reject picture shows the beam refused or useless at the warning stage.",
+   "smallest_fix": "Add 'pre-onset warned, zero mutations' to arrest.range.varies and arrest.sees.start, and add the one accept/reject pair."
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "design/concepts/Contagion/cleanse/bars.json bar refuge (live_only: false; live_only_why 'Production-derived deterministic harness can decide this bounded claim'); result.json counts.live_only_bars 8; owner_pages.md 'live-only bars: 8'",
+   "evidence": "Refuge's own reject pictures are 'The shadow drawn on screen and the cells that protect a pawn disagree' and 'the path chooser offers a sealed roof room that the pawn cannot enter'. The first needs the renderer. The second is path/job execution, which every other bar in the file says 'Requires the running renderer, actual path/job execution'. An offline harness compares predicate to grid; it cannot see a drawn shadow that disagrees with protection. Its sees.control already relies on live off-trunk, trunk and open probes. The live-only count printed for him is therefore understated.",
+   "would_pass": "Refuge is marked live-only for the drawn-shadow and reachable-route parts, with the offline sweep as a prefilter. The counts in result.json and on page one agree.",
+   "smallest_fix": "Set refuge live_only true with a live_only_why naming the renderer and path execution. Change counts.live_only_bars to 9 and the page-one line to match."
+  }
+ ],
+ "applyable": false,
+ "seconds": 848,
+ "at": "2026-11-17T00:25:56"
+}

@@ -88,7 +88,7 @@
     },
     {
       "id": "refuge",
-      "says": "During a Burn the player can trust the shared shade reading to distinguish protective roof, cast tree or rock shade and water from exposed ground.",
+      "says": "During a Burn, a pawn under a roof, in a tree's or rock's cast shadow, or in water is spared Burn exposure harm while a pawn in the open beside it is hurt, and the refuge a native or colonist heads for offers that same protection.",
       "meant": {
         "intent": "The same spatial contract must guide refuge selection and harm: no protected trunk cell beside a burning shadow and no second biome sun model.",
         "source": "record.d_burn_refuge_is_geometry, delegated from OWNER:1792410159931371546 and OWNER:1794774451598713765; standing Direct Sun ruling.",
@@ -100,7 +100,7 @@
       ],
       "reject": [
         "The tree trunk is automatically safe while the shadow burns, or the path chooser offers a sealed roof room that the pawn cannot enter.",
-        "A hidden Contagion-only heat offset makes an otherwise identical sun angle harm a pawn differently from the shared geometry rule."
+        "The shadow drawn on screen and the cells that protect a pawn disagree."
       ],
       "lazy": "The tree trunk is automatically safe while the shadow burns, or the path chooser offers a sealed roof room that the pawn cannot enter.",
       "range": {
@@ -108,10 +108,10 @@
         "left_out": "No living-canopy Rawshade, new fluid chemistry or guarantee water is medically safe; shade protects UV exposure, not ambient heat, contact infection or predation. A parasol follows the shared cover result, never a local special case."
       },
       "sees": {
-        "instrument": "M3 calibrated production shade/exposure sweep and route accessibility adapter, then regression replay of real-game geometry exports. T-geometry required: share the actual service inputs and compare outputs cell by cell; mathematical circles drawn from art are insufficient.",
+        "instrument": "M3 calibrated production shade/exposure sweep and route accessibility adapter, then regression replay of real-game geometry exports. T-geometry required: share the actual service inputs and compare outputs cell by cell; mathematical circles drawn from art are insufficient. The compared output is the predicate Pressure() and the touched-dose code actually call, cell by cell against the shared grid; agreement of the shared grid alone does not count. Trace each consumer call so a correct unused service cannot pass.",
         "start": "Export real geometry version, weather and sun pose plus roof/water/crown state; nonzero Burn pressure independently established by exposed control.",
         "on": "All retained Contagion features and required shared engines on at proposed shipped defaults; all DLC; no lock, sky override, frozen pawn, deadline jump or artificial health edit. Next-version extras off. Ablated comparison runs are controls only and never the passing arm.",
-        "control": "Same pawn/health, adjacent exposed control and actual registered geometry version rule out globally zero damage, stale grid and hidden immunity. Each exported category must agree with a running-game probe before offline sweep is trusted.",
+        "control": "Same pawn/health, adjacent exposed control and actual registered geometry version rule out globally zero damage, stale grid and hidden immunity. Each exported category must agree with a running-game probe before offline sweep is trusted. Place equivalent pawns in an off-trunk cast shadow, on the trunk cell and in adjacent open ground; read actual Burn damage events and sky-derived touched dose separately from contact. Judge the trunk by its actual cast shade, never by tree occupancy; compare drawn shade to those harm readings.",
         "reset": "Use disposable save fixtures; snapshot settings, world-tile identity, roofs, terrain, things, health, jobs and clock before staging; restore by reloading the baseline, verify fingerprint and baseline state; never clean up by deleting natives or rewriting the canonical world.",
         "live_only_why": "Production-derived deterministic harness can decide this bounded claim after the stated real-game calibration; a new adapter is ticketed, not claimed built."
       },
@@ -349,7 +349,7 @@
       "says": "Before committing a genome sample to a Bloody Mess the player can read the ordinary batch odds, and a completed gestation that misses the wanted part still yields donor-labelled tissue usable in surgery or sale.",
       "meant": {
         "intent": "The owner retained the risky ordinary tissue journey and useful misses; no exotic limb factory or silent resource deletion can substitute for it.",
-        "source": "OWNER:1794364405453876478; record.d_other_tissue; later_version.md explicitly retains ordinary arms/legs and matched mood after OWNER:1794842455892769878.",
+        "source": "OWNER:1794364405453876478; record.d_other_tissue supports useful matched or sellable ordinary tissue. Delegated Designer call: natural arms/legs and matched mood remain as ordinary tissue, inferred from that promise, the current ordinary batch/surgery path and the filer's retention line in later_version.md; that line is not an owner quotation. OWNER:1794842455892769878 defers the Grown Limbs; the boundary taken here is the exotic system.",
         "figurative": []
       },
       "accept": [
@@ -390,30 +390,36 @@
     },
     {
       "id": "remains",
-      "says": "After a native dies the player can follow its carcass into collapsed skin and a lasting anatomical Bodyprint, watch a Bloody Mess reach and consume the remains, and take a final sample without needing Helix trade.",
+      "says": "After a native dies the player can follow its carcass into collapsed skin and a lasting anatomical Bodyprint, and watch a Bloody Mess reach and consume the remains.",
       "meant": {
         "intent": "The explicitly kept phased death is readable biological history; immediate slime alone and invisible remote cleanup are not the promised sequence.",
         "source": "OWNER:1792162786418789127; record.d_dive_bodyprints_stay; closed CONTAGION_GPT_ENRICHMENT_1 Part 3; standing no pawn/animal vanishes without readable sign.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "lasting",
+            "stands_for": "Stays readable at least as long as an ordinary trip out from the colony and back, then fades with a visible sign if neither eaten nor deliberately destroyed.",
+            "accept": "An uneaten print remains readable through an ordinary return trip, then visibly fades away rather than staying forever."
+          }
+        ]
       },
       "accept": [
-        "A dead native leaves a recognizable remnant, then collapsed skin and a glossy anatomical trace; a Bloody Mess travels to it before feeding, while an unreachable print persists for sampling.",
+        "A dead native leaves a recognizable remnant, then collapsed skin and a glossy anatomical trace; a Bloody Mess travels to it before feeding, while an unreachable print remains readable through an ordinary return trip and later visibly fades.",
         "A goo-bud leaves non-butcherable transient bodily remains and slime before its print; a departing Blisterfloat leaves a burst husk at the ridge."
       ],
       "reject": [
         "The game deletes a corpse off screen and increments a remote eater counter, or only slime appears with no readable phases.",
-        "With Draftprints disabled the last print cannot be sampled, or repeated sampling and feeding duplicate the original corpse and rewards."
+        "An uneaten print disappears before an ordinary return trip is possible, or butchery and feeding duplicate the original remains and rewards."
       ],
       "lazy": "The game deletes a corpse off screen and increments a remote eater counter, or only slime appears with no readable phases.",
       "range": {
-        "varies": "All native death categories: normal corpse, goo-bud, acid death, Unfinished unraveling, host birth, Blisterfloat departure; natural/combat/developer kill only as control; eater near/far/unreachable, corpse carried/reserved/butchered/burned, map unload and save at all phase/consume/sample commits; 1/40/200 deaths and day 1/30/100. Existing medicine/loot handled as mutually exclusive claims, no new yield bar.",
-        "left_out": "No player-colonist corpse conversion, remote consumption, Helix contracts or collectible print economy. Bodyprint sample is an inspectable anatomical record with no contract/transmit/value mechanic; the final sampling job is the minimal retained interaction. Butchered or deliberately destroyed remains may end early with the normal readable destruction sign."
+        "varies": "All native death categories: normal corpse, goo-bud, acid death, Unfinished unraveling, host birth, Blisterfloat departure; natural/combat/developer kill only as control; eater near/far/unreachable, corpse carried/reserved/butchered/burned, map unload and save at all phase/consume/fade commits; 1/40/200 deaths and day 1/30/100. Existing medicine/loot handled as mutually exclusive claims, no new yield bar.",
+        "left_out": "No player-colonist corpse conversion, remote consumption, final Bodyprint sampling, Helix contracts or collectible print economy. Final sampling feeds deferred Draftprints and is next version, off. Butchered or deliberately destroyed remains may end early with the normal readable destruction sign."
       },
       "sees": {
-        "instrument": "M4 state/ownership replay locates duplication/loss; real phase and physical travel capture plus item-identity state read (T-remains) decides visible stages and final sample availability. Shared Bones/vanilla butcher reads must be present.",
-        "start": "Known living native IDs before actual death; baseline no remnant/print/sample and no nearby eater; add an ordinary eater by actual reachable movement for positive consumption.",
+        "instrument": "M4 state/ownership replay locates duplication/loss; real phase and physical travel capture plus item-identity state read (T-remains) decides visible stages, persistence against observed ordinary return trips, visible fading and eater arrival. Shared Bones/vanilla butcher reads must be present.",
+        "start": "Known living native IDs before actual death; baseline no remnant/print and no nearby eater; add an ordinary eater by actual reachable movement for positive consumption.",
         "on": "All retained Contagion features and required shared engines on at proposed shipped defaults; all DLC; no lock, sky override, frozen pawn, deadline jump or artificial health edit. Next-version extras off. Ablated comparison runs are controls only and never the passing arm.",
-        "control": "Track original identity through every phase and record eater arrival before consume commit. Out-of-reach control must retain remains, control with sample job interrupted cannot consume entitlement, no invisible harness cleanup.",
+        "control": "Track original identity through every phase and record eater arrival before consume commit. Out-of-reach control must retain readable remains through an observed ordinary return trip before visible fading; interrupted consume cannot spend the entitlement, and no invisible harness cleanup is permitted. Default-off Draftprints and final sampling must not stop these phases.",
         "reset": "Use disposable save fixtures; snapshot settings, world-tile identity, roofs, terrain, things, health, jobs and clock before staging; restore by reloading the baseline, verify fingerprint and baseline state; never clean up by deleting natives or rewriting the canonical world.",
         "live_only_why": "Requires the running renderer, actual path/job execution or ecological scheduling identified in instrument; an arithmetic prediction or a fake-game PASS cannot establish this experience."
       },
@@ -634,7 +640,7 @@
     },
     {
       "id": "R_death",
-      "rule": "Death creates one owned chain of physical remains. Goo classes use non-butcherable recognizable remnant, skin then anatomical print instead of persistent ordinary corpse; acid classes preserve acid event and a trace; birth preserves no-acid exception. Consumption requires actual eater arrival; sampling is inspectable anatomical record independent of Draftprint trade. Proposed print persistence at least one ordinary return trip (check tuning in M4); butchery, fire, sampling and consumption serialize claims to avoid duplicate products. Ridge departures leave husks; player corpses remain vanilla.",
+      "rule": "Death creates one owned chain of physical remains. Goo classes use non-butcherable recognizable remnant, skin then anatomical print instead of persistent ordinary corpse; acid classes preserve acid event and a trace; birth preserves no-acid exception. Consumption requires actual eater arrival; final Bodyprint sampling defers with Draftprints and is absent at default settings. Proposed print persistence at least one ordinary return trip, then visible fading (check tuning in M4); butchery, fire, fading and consumption serialize claims to avoid duplicate products. Ridge departures leave husks; player corpses remain vanilla.",
       "touches": [
         "remains",
         "jobs",
@@ -805,7 +811,7 @@
         "R_settings"
       ],
       "holds_together": "argued",
-      "why": "Ordinary organs and natural arms/legs retain donor/transaction identity. Exotic limbs/scans/curators are gated without gating the shared pure batch helpers. Bodyprint samples are anatomical records only, so neither buyer nor Draftprint transmission is a dependency. Competing commit claims are enumerated by M4; no code already proves this.",
+      "why": "Ordinary organs and natural arms/legs retain donor/transaction identity. Exotic limbs/scans/curators are gated without gating the shared pure batch helpers. Final Bodyprint sampling is deferred with Draftprints; retained phases and consumption require neither a sample item nor trade. Competing commit claims are enumerated by M4; no code already proves this.",
       "model": ""
     },
     {
@@ -821,7 +827,7 @@
         "R_settings"
       ],
       "holds_together": "unknown",
-      "why": "Simultaneous normal death, acid, birth, dissolution, butcher/Bones, sampler and eater create loss/duplication windows and accumulation. Must serialize ownership and verify transition timing.",
+      "why": "Simultaneous normal death, acid, birth, dissolution, butcher/Bones, fading and eater create loss/duplication windows and accumulation. Must serialize ownership and verify transition timing.",
       "model": "M4 Body and tissue ownership walk"
     },
     {
@@ -946,7 +952,7 @@
     },
     "bodyprints_phased": {
       "to": "kept",
-      "why": "Explicit owner retention honored; final sample independent of deferred trade, physical arrival and visible phases specified.",
+      "why": "Owner-retained visible phases and physical eater arrival merge into remains; final sampling moves to bodyprint_final_sample with deferred Draftprints.",
       "as": "remains"
     },
     "flora_flesh": {
@@ -976,18 +982,18 @@
     },
     "airborne_stats": {
       "to": "check",
-      "why": "Def stats/flags/fields are checks; real flight and native behaviour appear in place/native_response, forbidden scoring retired, deferred mechanics separated.",
-      "as": "C_defs / C_flight / C_life / C_payload / C_legacy"
+      "why": "Def stats/flags/fields are checks; real flight and native behaviour appear in place/native_response, forbidden scoring retired, deferred mechanics separated. Primary destination C_flight; related regression coverage remains in C_defs, C_flight, C_life, C_payload and C_legacy.",
+      "as": "C_flight"
     },
     "fauna_specials_declared": {
       "to": "check",
-      "why": "Def stats/flags/fields are checks; real flight and native behaviour appear in place/native_response, forbidden scoring retired, deferred mechanics separated.",
-      "as": "C_defs / C_flight / C_life / C_payload / C_legacy"
+      "why": "Def stats/flags/fields are checks; real flight and native behaviour appear in place/native_response, forbidden scoring retired, deferred mechanics separated. Primary destination C_life; related regression coverage remains in C_defs, C_flight, C_life, C_payload and C_legacy.",
+      "as": "C_life"
     },
     "biome_def_declared": {
       "to": "check",
-      "why": "Def stats/flags/fields are checks; real flight and native behaviour appear in place/native_response, forbidden scoring retired, deferred mechanics separated.",
-      "as": "C_defs / C_flight / C_life / C_payload / C_legacy"
+      "why": "Def stats/flags/fields are checks; real flight and native behaviour appear in place/native_response, forbidden scoring retired, deferred mechanics separated. Primary destination C_defs; related regression coverage remains in C_defs, C_flight, C_life, C_payload and C_legacy.",
+      "as": "C_defs"
     },
     "settings_superb": {
       "to": "rule",

@@ -1,22 +1,23 @@
 {
-  "mod": "Contagion",
-  "run": "cleanse-Contagion-2026-11-17",
-  "outcome": "proposed",
-  "signature": "The covered Bloom changes and renews bodies until native warnings herald a burning clear-sky window, making refuge, a costly tissue expedition and arrest of unwanted change parts of the same colony routine.",
-  "counts": {
-    "capabilities": 109,
-    "kept": 71,
-    "next_version": 34,
-    "recommend_retire": 4,
-    "old_bars": 25,
-    "bars": 11,
-    "live_only_bars": 8,
-    "checks": 11,
-    "rules": 15,
-    "unknown_pairs": 6,
-    "models": 4,
-    "tickets": 52,
-    "questions": 0
-  },
-  "blocked_on": ""
+ "mod": "Contagion",
+ "run": "cleanse-Contagion-2026-11-17",
+ "outcome": "proposed",
+ "signature": "The covered Bloom changes and renews bodies until native warnings herald a burning clear-sky window, making refuge, a costly tissue expedition and arrest of unwanted change parts of the same colony routine.",
+ "counts": {
+  "capabilities": 110,
+  "kept": 71,
+  "next_version": 35,
+  "recommend_retire": 4,
+  "old_bars": 25,
+  "bars": 11,
+  "live_only_bars": 8,
+  "checks": 11,
+  "rules": 15,
+  "unknown_pairs": 6,
+  "models": 4,
+  "tickets": 52,
+  "questions": 0
+ },
+ "blocked_on": "",
+ "applyable": false
 }

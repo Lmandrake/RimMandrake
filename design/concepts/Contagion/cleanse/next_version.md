@@ -268,7 +268,7 @@ Ticket: T23.
 
 ### Kept exceptions and dependency boundaries
 
-The Dive and phased Bodyprints remain expressly owner-retained; ordinary donor batch/natural arm-leg restoration and matching remain expressly retained in later_version.md. Sunbeam arrest and ordinary acquisition are needed for the signature; Helix special commerce is not. Visible zhool haze remains ordinary appearance, Scan/conversion does not. Wombpod hatching supplies a real host; no target steering. Shared Rupture, acid death, ordinary wrecks, Bones and scanner integration stay on under their owners, not disguised as disabled extras. World-map weeping art is a neighbouring look-only commission and its rules wait for a separate ask; no planet-generation work belongs to any version.
+The Dive and phased Bodyprints remain expressly owner-retained; final Bodyprint sampling defers with its Draftprint consumer. Ordinary organs follow d_other_tissue; including natural arm-leg restoration and matched-mood feedback is a delegated Designer interpretation of that promise and the filer's later_version.md retention line, not an express owner exception. Sunbeam arrest and ordinary acquisition are needed for the signature; Helix special commerce is not. Visible zhool haze remains ordinary appearance, Scan/conversion does not. Wombpod hatching supplies a real host; no target steering. Shared Rupture, acid death, ordinary wrecks, Bones and scanner integration stay on under their owners, not disguised as disabled extras. World-map weeping art is a neighbouring look-only commission and its rules wait for a separate ask; no planet-generation work belongs to any version.
 
 ### sunbeam_native_bonus — next version, off
 
@@ -309,3 +309,11 @@ What: Red sap used as insect repellent or wound sealant
 Why: Designer call: pictured Sapblister and the sky/body/refuge cycle work without custom medicine; an item description is not a specified treatment.
 
 Ticket: T-spec-sap_medicine. Unbuilt; specification ticket grants no current implementation.
+
+### bodyprint_final_sample — next version, off (feeds Draftprints)
+
+What: A final sampling interaction on an uneaten Bodyprint supplies a Draftprint.
+
+Why: Its defined consumer belongs to the deferred contract economy; visible death phases and physical consumption work without a new sampling job or item.
+
+Activation: absent/unbuilt; keep unbuilt on this pass. Any later implementation belongs behind the next-version Draftprints switch and must not gate the retained phases, persistence or eater arrival.
