@@ -18,6 +18,10 @@ nothing it cannot prove unheld (never a calm "no holds").
 
   mod_owner_hold.py show            the list, each with his words, date and lift command
   mod_owner_hold.py lift <Mod> --said "<his words>"   remove one (then publish mod_owner_hold.json)
+  mod_owner_hold.py allow-design <Mod> --said "<his words>"   the hold stays on builds; his words on the row allow a
+      design-only pass (designer_cleanse.py run refuses a held mod without them; item
+      RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED). Nothing else reads the field: no build, chain or
+      Dispatch launch changes.
 Selftest: selftest_mod_owner_hold.py.
 """
 import argparse
@@ -87,6 +91,32 @@ def lift(mod, said, path=None):
     return gone
 
 
+def design_allowed(h):
+    """-> his words allowing a design-only pass on the held mod `h` (a load() row), or None."""
+    d = (h or {}).get("design_allowed")
+    return d if isinstance(d, dict) and isinstance(d.get("said"), str) and d["said"].strip() else None
+
+
+def allow_design(mod, said, path=None, date=None):
+    """Write his words allowing a design-only pass on the held `mod` onto its hold row. -> the row. Raises KeyError when
+    it is not held, ValueError on empty words. The hold itself stays: every build reader is unchanged."""
+    import datetime
+    if not (isinstance(said, str) and said.strip()):
+        raise ValueError("allow-design needs his words")
+    p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
+    load(p)
+    with open(p, encoding="utf-8") as f:
+        doc = json.load(f)
+    rows = [h for h in doc["holds"] if key(h.get("mod")) == key(mod)]
+    if not rows:
+        raise KeyError("%s is not held" % mod)
+    rows[0]["design_allowed"] = {"said": said.strip(), "date": date or datetime.date.today().isoformat()}
+    with open(p, "w", encoding="utf-8") as f:
+        json.dump(doc, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    return rows[0]
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -94,13 +124,27 @@ def main(argv=None):
     lp = sub.add_parser("lift")
     lp.add_argument("mod")
     lp.add_argument("--said", required=True, help="his words lifting it")
+    ap_ = sub.add_parser("allow-design")
+    ap_.add_argument("mod")
+    ap_.add_argument("--said", required=True, help="his words allowing a design-only pass")
+    ap_.add_argument("--date", default=None, help="the day he said it (default today)")
     o = ap.parse_args(argv)
     if o.cmd == "show":
         hs = load()
         if not hs:
             print("no mod is held by the owner")
         for m, h in sorted(hs.items()):
-            print("%-18s %s" % (m, status(h)))
+            d = design_allowed(h)
+            print("%-18s %s%s" % (m, status(h), "; design pass allowed %s: \"%s\"" % (d["date"], d["said"]) if d else ""))
+        return 0
+    if o.cmd == "allow-design":
+        try:
+            allow_design(o.mod, o.said, date=o.date)
+        except (KeyError, ValueError) as e:
+            print(str(e), file=sys.stderr)
+            return 1
+        print("design pass allowed on held %s; publish it: ./publish -m \"owner hold: allow design %s\" "
+              "src/RimMandrake/rimflow/mod_owner_hold.json" % (key(o.mod), key(o.mod)))
         return 0
     try:
         lift(o.mod, o.said)

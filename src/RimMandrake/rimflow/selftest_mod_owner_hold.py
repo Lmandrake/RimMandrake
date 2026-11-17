@@ -75,6 +75,25 @@ def test_lift():
           "lift removes one mod and keeps the record of his lifting words")
 
 
+def test_allow_design():
+    """A design-only pass on a held mod (designer_cleanse.py run): his words on the hold row; the hold stays."""
+    import mod_owner_hold as OH
+    os.environ.pop("RM_OWNER_HOLD_FILE", None)
+    hs = OH.load()
+    check(all(OH.design_allowed(h) and "dispatch it on every remaining biome" in OH.design_allowed(h)["said"]
+              and OH.design_allowed(h)["date"] == "2026-11-16" for h in hs.values()),
+          "the six shipped holds carry his words allowing the design-only pass (2026-11-16)")
+    p = temp_holds(["ModOne", "ModTwo"])
+    row = OH.allow_design("ModOne", "design it", date="2026-11-16")
+    hs = OH.load()
+    check(row["design_allowed"] == {"said": "design it", "date": "2026-11-16"} and sorted(hs) == ["ModOne", "ModTwo"],
+          "allow-design writes his words and date on the row and lifts nothing")
+    check(OH.design_allowed(hs["ModOne"]) and not OH.design_allowed(hs["ModTwo"]), "only that row reads allowed")
+    check(OH.main(["allow-design", "Nope", "--said", "x"]) == 1, "allow-design on an unheld mod exits 1")
+    check(OH.main(["allow-design", "ModTwo", "--said", " "]) == 1, "allow-design with empty words exits 1")
+    check(json.load(open(p))["holds"][1].get("design_allowed") is None, "a refused allow-design writes nothing")
+
+
 def test_designer_chain():
     import selftest_designer_chain as DC
     RL = DC.RL
@@ -188,7 +207,7 @@ def test_dispatch_tick():
 
 
 def main():
-    for t in (test_the_shipped_list, test_unreadable_raises, test_lift, test_designer_chain, test_stall_reader,
+    for t in (test_the_shipped_list, test_unreadable_raises, test_lift, test_allow_design, test_designer_chain, test_stall_reader,
               test_dispatch_tick):
         try:
             t()

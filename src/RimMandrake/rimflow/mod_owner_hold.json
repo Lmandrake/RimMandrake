@@ -1,11 +1,59 @@
 {
   "_doc": "The owner's hold on mods in the Maturation Pipeline (mod_owner_hold.py; item RIMMANDRAKE_HOLD_SIX_BIOME_MODS_ONLY_PYRELANDS_STAYS). A mod listed here: the Dispatch tick launches nothing on it, the Designer and DesignerCodex chain sweeps and run-now launches skip it, it raises no stall, idle or incident alarm, and every status names it HELD BY OWNER with his words and date. A run already live on it is allowed to finish. Only he lifts a hold: `python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said \"<his words>\"`, then publish this file. Ruling: design/RimMandrake/standing_rulings.md §Owner hold.",
   "holds": [
-    {"mod": "Contagion", "date": "2026-11-16", "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think."},
-    {"mod": "Cauldron", "date": "2026-11-16", "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think."},
-    {"mod": "FeverWood", "date": "2026-11-16", "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think."},
-    {"mod": "GelatinousSlime", "date": "2026-11-16", "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think."},
-    {"mod": "LeaningScrub", "date": "2026-11-16", "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think."},
-    {"mod": "Stillsand", "date": "2026-11-16", "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think."}
+    {
+      "mod": "Contagion",
+      "date": "2026-11-16",
+      "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think.",
+      "design_allowed": {
+        "said": "implement the thing and dispatch it on every remaining biome other than Pyrelands! Every single one... let this thing go crazy.",
+        "date": "2026-11-16"
+      }
+    },
+    {
+      "mod": "Cauldron",
+      "date": "2026-11-16",
+      "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think.",
+      "design_allowed": {
+        "said": "implement the thing and dispatch it on every remaining biome other than Pyrelands! Every single one... let this thing go crazy.",
+        "date": "2026-11-16"
+      }
+    },
+    {
+      "mod": "FeverWood",
+      "date": "2026-11-16",
+      "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think.",
+      "design_allowed": {
+        "said": "implement the thing and dispatch it on every remaining biome other than Pyrelands! Every single one... let this thing go crazy.",
+        "date": "2026-11-16"
+      }
+    },
+    {
+      "mod": "GelatinousSlime",
+      "date": "2026-11-16",
+      "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think.",
+      "design_allowed": {
+        "said": "implement the thing and dispatch it on every remaining biome other than Pyrelands! Every single one... let this thing go crazy.",
+        "date": "2026-11-16"
+      }
+    },
+    {
+      "mod": "LeaningScrub",
+      "date": "2026-11-16",
+      "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think.",
+      "design_allowed": {
+        "said": "implement the thing and dispatch it on every remaining biome other than Pyrelands! Every single one... let this thing go crazy.",
+        "date": "2026-11-16"
+      }
+    },
+    {
+      "mod": "Stillsand",
+      "date": "2026-11-16",
+      "said": "And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now and the system choked at their lack of precision I think.",
+      "design_allowed": {
+        "said": "implement the thing and dispatch it on every remaining biome other than Pyrelands! Every single one... let this thing go crazy.",
+        "date": "2026-11-16"
+      }
+    }
   ]
 }
