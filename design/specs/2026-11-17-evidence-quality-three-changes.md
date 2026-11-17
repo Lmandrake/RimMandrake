@@ -1,7 +1,7 @@
 # Three changes to how the pipeline records evidence
 
-**Filed** 2026-11-17, ~12:10 PM PST, by the Conductor; revised to 0.2.0 ~1:40 PM PST after a blind review, from the owner's conversation of the same
-morning (the e2e.com evaluation and his reply to it). Design Version of this spec: **0.2.0** (0.1.0 was the pre-review draft; see the review section).
+**Filed** 2026-11-17, ~12:10 PM PST, by the Conductor; revised to 0.2.0 ~1:40 PM PST and to 0.3.0 ~2:50 PM PST after two independent blind reviews, from the owner's conversation of the same
+morning (the e2e.com evaluation and his reply to it). Design Version of this spec: **0.3.0** (0.1.0 pre-review; 0.2.0 after the first blind review; 0.3.0 after a second, independent one).
 
 **What this is.** Three narrow changes to what the Maturation Pipeline *records* about its own runs.
 None of them changes a bar, a stage, a model, or a budget. Each exists because the pipeline currently
@@ -146,6 +146,100 @@ reported FAIL having measured nothing. Both green, published `165b38afa4a1`.
 
 ---
 
+## Second blind review (independent GPT, no knowledge of the first) — Design Version 0.3.0
+
+A second reviewer, given the proposal, the live process doc, ten open tickets and the code — and
+deliberately **not** shown the first review — found nine things. Three overturn decisions this spec
+had already made, and two of those correct **this writer**, not the spec's critics. Verified against
+the code before acceptance.
+
+1. 🔴 **The typed-reference premise is WRONG, and the precedent I cited does not do what I said.**
+   `cmd_spawn` does **not** verify a run exists: `known = (args.from_ in w.items or args.from_ in
+   w.findings or model.RUN_RE.match(args.from_ or ""))` — `RUN_RE` is a **regex on the shape of the
+   name** (`model.py:435`), so any syntactically valid `FOO/run-3@full-578` passes however fictional
+   (`cli.py:3211`). [measured] 0.2.0 claimed this as the proof that a reference "either resolves or
+   it does not." It does not. So change one must **implement** resolution rather than cite it, and
+   until it does, `discriminated: true` is a label asserting something unchecked.
+2. 🔴 **`discriminated` is the wrong NAME, and the name is the defect.** What the field can honestly
+   record is that the reporter *wrote down an alternative* — not that the alternative was excluded,
+   not that the cause was isolated, not that the red assertion concerned that cause. Renamed
+   **`alternatives_recorded`**, with reference resolution tracked as its own separate field. A field
+   called `discriminated` would make the next reader *less* careful than no field at all, which is
+   the opposite of the point. Same for `--red-at`: it is the reporter's assertion until something
+   links it to the recorded failure.
+3. 🔴 **Part A conflates two different questions**, and this is the deepest finding in either
+   review: *"Classify whether a MEASUREMENT WAS VALID separately from WHICH COMPONENT caused the
+   failure."* A missing test file may be a builder's omitted deliverable; a wrong mod list may be an
+   undeclared dependency; leftover state may be a real persistence defect in the mod. Part A's
+   signature table answers "who is at fault" using evidence that can only answer "was anything
+   observed." The rebuild: a run carries **`observed: yes|no`** (did this run measure the mod at
+   all) and, separately and only on positive evidence, **`owner: mod|pipeline|unknown`**. `unknown`
+   keeps the existing escalation rather than suppressing it. No signature may assign ownership
+   without causal evidence.
+4. 🔴 **My asymmetry argument was also wrong.** 0.1.0 said a misclassified mod fault "costs a false
+   green." It does not: `verdict_for` is untouched, so excluding a run from a streak **delays
+   diagnosis and escalation** — it does not turn anything green (`status.py:415-450`). The real cost
+   is slower escalation on the mods breaking worst. The honest framing, now in the spec.
+5. 🔴 **Part A is a POLICY change presented as a records change.** The live process gives each blind
+   and in-game visit **one** automatic run and sends every ended visit to the Conductor (PROCESS §5,
+   Dispatch). Letting a pipeline-classified run not consume its visit authorises **additional
+   automatic attempts** — exactly the automation the owner bounded on 2026-11-14 (*"As long as we
+   don't have automated loops rejecting/cycling things, we can't get into too much trouble."*). It
+   needs his word, not a spec's assertion that nothing policy-level changed. Also: removing runs from
+   the streak changes the population the `.21`-at-N=3 calibration was measured on, so **Part A
+   inherits the same calibration caveat** this spec only wrote down for Part B.
+6. **The repeat-detector's reuse was a half-answer.** `findings_fold.signature()` hashes the tuple it
+   is given; it does not discover semantic equivalence, and its tuple (mod, chain, row, normalised
+   text) can split one shared infrastructure cause across several checks or merge different causes
+   that share a symptom. Needed instead: a structured incident identity (affected component, stable
+   failure code, the evidence for the cause), counting **distinct attempts** rather than repeated
+   ingestion of one run, with scope, reset-after-repair and cross-version rules stated. And
+   `classify(evidence) -> (kind, why)` is the wrong shape: a pure function cannot count repeats, file
+   findings or raise alarms. Classification separates from the orchestration that acts on it.
+7. **Concurrency is a threat to the evidence, not just a race.** Several agents share one working
+   tree **and one git index**: a red-then-green comparison can be invalidated between its two runs,
+   one agent can stage another's files, and a patch reversal can undo another's work. Two existing
+   tickets already record this class of loss (`RIMMANDRAKE_UNFENCE_LIVE_HOLDER_WHEN_RIVAL_NEVER_STARTED`,
+   `RIMMANDRAKE_HOLD_TICK_LAUNCHES_ON_STALE_CLONE_GHOST_STEWARD`). Mod leases do not serialise edits
+   to shared pipeline code. Repairs need an isolated index, and evidence must bind to the tested commit.
+8. **Neither change one nor change two names an operational CONSUMER, so neither yet saves work.**
+   A recorded rejection cannot spare the next investigator unless the next investigator is *handed*
+   it: change two specifies no candidate identity, retrieval step, expiry or reconsideration
+   trigger. And the consumer probably already exists — `testpilot_route`'s surprise/explain-away
+   machinery already remembers explained observations, retires recurring ones and revives real bugs
+   (`testpilot_route.py:1-50`). **Extend that instead of building a parallel rejection archive.**
+   Corollary accepted: *"Hiding a continuation metric is different from hiding diagnostic context"* —
+   this spec's "no agent is told these fields" was too broad. Reporters must be told how to fill them.
+9. **The UNMEASURED migration manufactures causes from missing evidence.** The 659 rows need
+   distinguishing as never attempted / incomplete attempt / missing record / unknown provenance —
+   absence is not evidence of an infrastructure failure. Strict requirements for *new* attempts,
+   tolerant historical reads, append-only corrections carrying the classifier version. Also
+   [measured by the reviewer, worth repeating]: **the quoted 195 + 134 + 659 accounts for 988 of
+   1363 rows — 375 are unexplained**, and no revised quality percentage should be published until
+   they are identified.
+
+**Order, from this review:** corrected **Part A first** (it alone changes an expensive decision —
+whether to spend another attempt and when to escalate); change one small, honestly labelled, with a
+consumer; **change two NOT as a separate subsystem.** Before any of it, the cheapest interventions
+that use machinery already present: wire `RC.submit`
+(`RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS` — refusals are checked today and never
+counted), and note that **`TESTPILOT_WANTED` already routes a defect straight to a sitting with no
+three-failure wait** (`testpilot_route.py:125`) [measured]. Then the trust-the-evidence tickets:
+stale-clone decisions, live-holder fencing, blind-judge write permission, build-identity capture, the
+red coverage selftest, and Stage 3's missing "behaviour built" signal — *"preventing unbuilt behaviour
+from reaching live testing saves more than annotating the resulting failure."*
+
+**Where the two reviews agree** (independently, which is the strongest signal in the pair): the
+"game never reached a loaded map" signature is wrong; the new fields do not survive `model._apply`;
+Part A's named change sites are insufficient and must include `decide_ingame`'s terminals and
+`testpilot_route.judge`; the repeat-detector needs a defined identity and lifetime; the UNMEASURED
+refusal targets a derived value; and `_pairs` rejecting an empty list must be adapted for an optional
+flag. **Where they differ:** the first called Part B gameable and deferred it (kept); the second
+reached Part A's ownership model, the policy-change framing, and the missing consumer, which the
+first did not. Neither has been implemented; both now gate the build.
+
+---
+
 ## Change one: a finding names what else it ruled out
 
 ### What is wrong now
@@ -170,10 +264,11 @@ derived line in the record:
   present, each at least 4 characters, no unfilled `<placeholder>`. Not a new vocabulary — the same
   one, moved out of a retired module into the live path.
 - The `why_not` half must carry **one typed evidence reference** in `modledger.check_entry`'s
-  existing grammar (`path:…#row`, `run:<id>`, `test:<id>`; `modledger.py:320-330`). This is what
-  makes the field machine-checkable: the reference either resolves or it does not, and a `run:<id>`
-  that resolves to nothing is refused the way `cmd_spawn` already refuses a causeless cause
-  (`cli.py:3211`).
+  existing grammar (`path:…#row`, `run:<id>`, `test:<id>`; `modledger.py:320-330`). 🔴 **Resolution
+  must be IMPLEMENTED here, not inherited.** 0.2.0 cited `cmd_spawn` as precedent; measured
+  2026-11-17, `cmd_spawn` only regex-matches the SHAPE of a run name (`model.RUN_RE`, `model.py:435`)
+  and never checks the run exists, so any well-formed fictional id passes (`cli.py:3211`). Until this
+  tool resolves the reference itself, the field records a citation, not a check.
 - `--red-at "<which assertion went red, and where>"`. When the finding came from a failing test,
   this is *which* check failed, not that one did.
 
@@ -182,7 +277,9 @@ passed must parse and its reference must resolve — a malformed one is refused,
 `malformed: true` flag as 0.1.0 proposed. A field that records its own brokenness is a rigour signal
 that lies.
 
-The record grows `discriminated: true|false`, true when at least one valid `--ruled-out` is present.
+The record grows **`alternatives_recorded: true|false`** — renamed at 0.3.0 from `discriminated`,
+which asserted something nothing verifies. Reference resolution is a separate field, so a reader can
+tell "an alternative was written down" from "its evidence resolves".
 
 ### Why this is not the blocker he refused
 
