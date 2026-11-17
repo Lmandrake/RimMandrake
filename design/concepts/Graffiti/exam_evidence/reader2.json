@@ -1,0 +1,612 @@
+{
+ "e1": {
+  "verdict": "reject",
+  "leaf": "ideo_sigil",
+  "why": "icon not tinted in the ideoligion's colour"
+ },
+ "e2": {
+  "verdict": "reject",
+  "leaf": "art_skill",
+  "why": "skilled slander must anger and please at once, not one mixed thought"
+ },
+ "e3": {
+  "verdict": "accept",
+  "leaf": "art_skill",
+  "why": "skilled slander angers and pleases at once"
+ },
+ "e4": {
+  "verdict": "reject",
+  "leaf": "temperament",
+  "why": "psychopath should feel nothing"
+ },
+ "e5": {
+  "verdict": "reject",
+  "leaf": "raider_pressure",
+  "why": "last mark gone should lift the push"
+ },
+ "e6": {
+  "verdict": "accept",
+  "leaf": "raider_pressure",
+  "why": "larger while standing, lifted after last mark weathered"
+ },
+ "e7": {
+  "verdict": "reject",
+  "leaf": "visitors",
+  "why": "goodwill should drop once per visit"
+ },
+ "e8": {
+  "verdict": "reject",
+  "leaf": "going_over",
+  "why": "colonist's tag should be gone, not stacked"
+ },
+ "e9": {
+  "verdict": "reject",
+  "leaf": "no_english",
+  "why": "legible third-party tag TARTE in a mark"
+ },
+ "e10": {
+  "verdict": "reject",
+  "leaf": "fights_reasons",
+  "why": "fight breaks a drafted pawn's restrictions"
+ },
+ "e11": {
+  "verdict": "accept",
+  "leaf": "scrub_protection",
+  "why": "own and devotional left until ordered, hostile vandal cleaned"
+ },
+ "e12": {
+  "verdict": "accept",
+  "leaf": "rereads_daily",
+  "why": "mood at most daily, opinion once"
+ },
+ "e13": {
+  "verdict": "accept",
+  "leaf": "mockery",
+  "why": "names subject, hurts, amuses rival, changes regard of painter"
+ },
+ "e14": {
+  "verdict": "accept",
+  "leaf": "weathering_bounds_marks",
+  "why": "crisp most of life, fades, sooner outdoors"
+ },
+ "e15": {
+  "verdict": "reject",
+  "leaf": "raider_pressure",
+  "why": "standing mark must make next raid sooner or larger"
+ },
+ "e16": {
+  "verdict": "reject",
+  "leaf": "art_skill",
+  "why": "skilled slander must also anger its target"
+ },
+ "e17": {
+  "verdict": "reject",
+  "leaf": "temperament",
+  "why": "psychopath should feel nothing"
+ },
+ "e18": {
+  "verdict": "reject",
+  "leaf": "scrub_protection",
+  "why": "devotional sigil scrubbed without orders"
+ },
+ "e19": {
+  "verdict": "reject",
+  "leaf": "going_over",
+  "why": "tag should be gone, cell lists two marks"
+ },
+ "e20": {
+  "verdict": "reject",
+  "leaf": "rereads_daily",
+  "why": "opinion should change only once"
+ },
+ "e21": {
+  "verdict": "reject",
+  "leaf": "fights_reasons",
+  "why": "fight breaks the subject's area restriction"
+ },
+ "e22": {
+  "verdict": "accept",
+  "leaf": "scrub_protection",
+  "why": "own mark left until ordered, hostile cleaned"
+ },
+ "e23": {
+  "verdict": "accept",
+  "leaf": "sits_on_wall",
+  "why": "front face, climbs crease, edge-on walls bare"
+ },
+ "e24": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "edge-on wall must take no paint"
+ },
+ "e25": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "paint on the wall's far side"
+ },
+ "e26": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "mark floats on floor, wall bare"
+ },
+ "e27": {
+  "verdict": "accept",
+  "leaf": "answer_wall",
+  "why": "all four answers seen to finish"
+ },
+ "e28": {
+  "verdict": "reject",
+  "leaf": "answer_wall",
+  "why": "scrub with no pawn seen finishing it"
+ },
+ "e29": {
+  "verdict": "accept",
+  "leaf": "player_orders",
+  "why": "chosen marks on chosen cells, none pending"
+ },
+ "e30": {
+  "verdict": "reject",
+  "leaf": "player_orders",
+  "why": "wrong marks painted"
+ },
+ "e31": {
+  "verdict": "reject",
+  "leaf": "player_orders",
+  "why": "third order never painted"
+ },
+ "e32": {
+  "verdict": "accept",
+  "leaf": "raid_mark_troubles",
+  "why": "exit tags trouble colony until scrubbed"
+ },
+ "e33": {
+  "verdict": "reject",
+  "leaf": "raid_mark_troubles",
+  "why": "tags must be on the way out only"
+ },
+ "e34": {
+  "verdict": "reject",
+  "leaf": "raid_mark_troubles",
+  "why": "trouble persists after wall retaken"
+ },
+ "e35": {
+  "verdict": "accept",
+  "leaf": "raider_pressure",
+  "why": "sooner is an allowed form of the push"
+ },
+ "e36": {
+  "verdict": "reject",
+  "leaf": "raider_pressure",
+  "why": "unmarked faction B also pushed"
+ },
+ "e37": {
+  "verdict": "reject",
+  "leaf": "raider_pressure",
+  "why": "letter must point at the mark"
+ },
+ "e38": {
+  "verdict": "reject",
+  "leaf": "raider_pressure",
+  "why": "push lifted while an A mark still stands"
+ },
+ "e39": {
+  "verdict": "reject",
+  "leaf": "weathering_bounds_marks",
+  "why": "should stay crisp most of its life"
+ },
+ "e40": {
+  "verdict": "reject",
+  "leaf": "weathering_bounds_marks",
+  "why": "outdoors should fade sooner"
+ },
+ "e41": {
+  "verdict": "accept",
+  "leaf": "weathering_bounds_marks",
+  "why": "permanent never fades"
+ },
+ "e42": {
+  "verdict": "accept",
+  "leaf": "stands_alone_settings",
+  "why": "works without ideoligion, survives reload"
+ },
+ "e43": {
+  "verdict": "reject",
+  "leaf": "stands_alone_settings",
+  "why": "switched-off recreation painting still runs"
+ },
+ "e44": {
+  "verdict": "reject",
+  "leaf": "stands_alone_settings",
+  "why": "reload dropped the mark's subject"
+ },
+ "e45": {
+  "verdict": "accept",
+  "leaf": "paint_dies_with_wall",
+  "why": "marks die with their walls, neighbour stays"
+ },
+ "e46": {
+  "verdict": "reject",
+  "leaf": "paint_dies_with_wall",
+  "why": "paint outlives its wall"
+ },
+ "e47": {
+  "verdict": "accept",
+  "leaf": "walk_lived_in",
+  "why": "both orders tell the same story"
+ },
+ "e48": {
+  "verdict": "reject",
+  "leaf": "walk_lived_in",
+  "why": "order changes goodwill outcome"
+ },
+ "e49": {
+  "verdict": "reject",
+  "leaf": "walk_lived_in",
+  "why": "pressure record lost on reload"
+ },
+ "e50": {
+  "verdict": "reject",
+  "leaf": "stories_not_tax",
+  "why": "message stream"
+ },
+ "e51": {
+  "verdict": "reject",
+  "leaf": "stories_not_tax",
+  "why": "standing mood tax"
+ },
+ "e52": {
+  "verdict": "accept",
+  "leaf": "stories_not_tax",
+  "why": "occasional stories, no tax, few messages"
+ },
+ "e53": {
+  "verdict": "accept",
+  "leaf": "marks_various",
+  "why": "different kinds of mark in one colony"
+ },
+ "e54": {
+  "verdict": "reject",
+  "leaf": "marks_various",
+  "why": "recolours of one design"
+ },
+ "e55": {
+  "verdict": "reject",
+  "leaf": "punk_register",
+  "why": "real-world hazard signage in set"
+ },
+ "e56": {
+  "verdict": "reject",
+  "leaf": "punk_register",
+  "why": "icon-set clip-art, not punk graffiti"
+ },
+ "c1": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "edge-on wall must take no paint"
+ },
+ "c2": {
+  "verdict": "reject",
+  "leaf": "answer_wall",
+  "why": "scrub not seen finished by a pawn"
+ },
+ "c3": {
+  "verdict": "reject",
+  "leaf": "raider_pressure",
+  "why": "last mark weathered should lift push"
+ },
+ "c4": {
+  "verdict": "reject",
+  "leaf": "stands_alone_settings",
+  "why": "setting off must stop the raid push"
+ },
+ "c5": {
+  "verdict": "reject",
+  "leaf": "raid_mark_troubles",
+  "why": "tags must be on the way out only"
+ },
+ "c6": {
+  "verdict": "reject",
+  "leaf": "player_orders",
+  "why": "mark painted on the wrong cell"
+ },
+ "c7": {
+  "verdict": "reject",
+  "leaf": "stories_not_tax",
+  "why": "message stream from recreation tags"
+ },
+ "c8": {
+  "verdict": "accept",
+  "leaf": "weathering_bounds_marks",
+  "why": "permanent mark never fades"
+ },
+ "n1": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "paint on a wall south of the painter"
+ },
+ "n2": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "far side of a south wall painted"
+ },
+ "n3": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "south wall painted from pool pick"
+ },
+ "n4": {
+  "verdict": "reject",
+  "leaf": "answer_wall",
+  "why": "reply never painted or seen"
+ },
+ "n5": {
+  "verdict": "reject",
+  "leaf": "answer_wall",
+  "why": "cross-out left mark state unchanged"
+ },
+ "n6": {
+  "verdict": "reject",
+  "leaf": "answer_wall",
+  "why": "confrontation never happens"
+ },
+ "n7": {
+  "verdict": "reject",
+  "leaf": "fights_reasons",
+  "why": "confronter has no reason"
+ },
+ "n8": {
+  "verdict": "accept",
+  "leaf": "sits_on_wall",
+  "why": "north face only, south wall and south cell bare"
+ },
+ "n9": {
+  "verdict": "accept",
+  "leaf": "sits_on_wall",
+  "why": "every mark on north wall face, south walls bare"
+ },
+ "n10": {
+  "verdict": "accept",
+  "leaf": "answer_wall",
+  "why": "four answers finish, unoffending mark unanswered"
+ },
+ "x1": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "edge-on wall must take no paint"
+ },
+ "x2": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "south wall must get no mark"
+ },
+ "x3": {
+  "verdict": "reject",
+  "leaf": "sits_on_wall",
+  "why": "marks must climb onto the wall top"
+ },
+ "x4": {
+  "verdict": "reject",
+  "leaf": "answer_wall",
+  "why": "cross-out must leave a crossed-out mark"
+ },
+ "x5": {
+  "verdict": "reject",
+  "leaf": "answer_wall",
+  "why": "confront over painted-out work never starts"
+ },
+ "x6": {
+  "verdict": "reject",
+  "leaf": "answer_wall",
+  "why": "scrub never seen done by a pawn"
+ },
+ "x7": {
+  "verdict": "reject",
+  "leaf": "temperament",
+  "why": "psychopath should hold no mark thought"
+ },
+ "x8": {
+  "verdict": "reject",
+  "leaf": "raider_pressure",
+  "why": "weathered last mark should lift the push"
+ },
+ "n11": {
+  "verdict": "accept",
+  "leaf": "ugliness_visible",
+  "why": "scrawl looks and inspects uglier"
+ },
+ "n12": {
+  "verdict": "reject",
+  "leaf": "ugliness_visible",
+  "why": "stat does not match picture"
+ },
+ "n13": {
+  "verdict": "reject",
+  "leaf": "ugliness_visible",
+  "why": "uglier stat on cleaner picture"
+ },
+ "n14": {
+  "verdict": "reject",
+  "leaf": "ugliness_visible",
+  "why": "picture does not show scrawl as worse"
+ },
+ "n15": {
+  "verdict": "reject",
+  "leaf": "rereads_daily",
+  "why": "stacked copies of the same thought"
+ },
+ "n16": {
+  "verdict": "accept",
+  "leaf": "rereads_daily",
+  "why": "daily renewal at most, opinion once"
+ },
+ "n17": {
+  "verdict": "reject",
+  "leaf": "rereads_daily",
+  "why": "renewed twice in one day"
+ },
+ "n18": {
+  "verdict": "reject",
+  "leaf": "marks_various",
+  "why": "recolours of one design"
+ },
+ "n19": {
+  "verdict": "accept",
+  "leaf": "marks_various",
+  "why": "visibly different kinds in one colony"
+ },
+ "n20": {
+  "verdict": "reject",
+  "leaf": "stories_not_tax",
+  "why": "standing mood dent that never clears"
+ },
+ "n21": {
+  "verdict": "reject",
+  "leaf": "stories_not_tax",
+  "why": "two days is not weeks; sign-off unproven"
+ },
+ "n22": {
+  "verdict": "accept",
+  "leaf": "stories_not_tax",
+  "why": "occasional stories, little mood effect, few messages"
+ },
+ "n23": {
+  "verdict": "reject",
+  "leaf": "weathering_bounds_marks",
+  "why": "no visible fade before vanishing"
+ },
+ "n24": {
+  "verdict": "reject",
+  "leaf": "weathering_bounds_marks",
+  "why": "non-permanent raid mark never weathers"
+ },
+ "n25": {
+  "verdict": "accept",
+  "leaf": "weathering_bounds_marks",
+  "why": "crisp then fade, outdoors sooner"
+ },
+ "n26": {
+  "verdict": "accept",
+  "leaf": "going_over",
+  "why": "enemy paints over, colonist tag gone"
+ },
+ "n27": {
+  "verdict": "reject",
+  "leaf": "mark_appears",
+  "why": "paint jobs completed, wall empty"
+ },
+ "n28": {
+  "verdict": "accept",
+  "leaf": "mark_appears",
+  "why": "spree leaves marks; unbroken lanes none"
+ },
+ "n29": {
+  "verdict": "reject",
+  "leaf": "reads_at_play_zoom",
+  "why": "variant is a blur at play zoom"
+ },
+ "n30": {
+  "verdict": "reject",
+  "leaf": "not_dirt",
+  "why": "mark reads as vanilla dirt"
+ },
+ "n31": {
+  "verdict": "accept",
+  "leaf": "own_fun",
+  "why": "painting is recreation, joy fills, maker buff"
+ },
+ "n32": {
+  "verdict": "reject",
+  "leaf": "own_fun",
+  "why": "no joy and no maker buff"
+ },
+ "n33": {
+  "verdict": "reject",
+  "leaf": "tribute_memorial",
+  "why": "memorial from a non-grieving colonist"
+ },
+ "n34": {
+  "verdict": "accept",
+  "leaf": "tribute_memorial",
+  "why": "memorial eases grief, tribute warms, rival jealous"
+ },
+ "k1": {
+  "verdict": "reject",
+  "leaf": "marks_various",
+  "why": "different defs are recolours of two shapes"
+ },
+ "k2": {
+  "verdict": "reject",
+  "leaf": "marks_various",
+  "why": "each colony holds only one kind"
+ },
+ "k3": {
+  "verdict": "reject",
+  "leaf": "rereads_daily",
+  "why": "timer refreshes every pass, not daily"
+ },
+ "k4": {
+  "verdict": "reject",
+  "leaf": "rereads_daily",
+  "why": "opinion should change only once"
+ },
+ "k5": {
+  "verdict": "accept",
+  "leaf": "rereads_daily",
+  "why": "mood renewed once daily, opinion once"
+ },
+ "k6": {
+  "verdict": "reject",
+  "leaf": "stories_not_tax",
+  "why": "standing mood tax on most days"
+ },
+ "k7": {
+  "verdict": "reject",
+  "leaf": "stories_not_tax",
+  "why": "message stream every four hours"
+ },
+ "k8": {
+  "verdict": "reject",
+  "leaf": "stories_not_tax",
+  "why": "letters about ten a week"
+ },
+ "k9": {
+  "verdict": "reject",
+  "leaf": "stories_not_tax",
+  "why": "no stories at all, not occasional stories"
+ },
+ "k10": {
+  "verdict": "reject",
+  "leaf": "weathering_bounds_marks",
+  "why": "crisp only 40%, not most of life"
+ },
+ "k11": {
+  "verdict": "reject",
+  "leaf": "weathering_bounds_marks",
+  "why": "drawn mark never fades visibly"
+ },
+ "k12": {
+  "verdict": "reject",
+  "leaf": "weathering_bounds_marks",
+  "why": "raid marks never weather, pressure lasts forever"
+ },
+ "k13": {
+  "verdict": "reject",
+  "leaf": "ugliness_visible",
+  "why": "same-hand scrawl not uglier at high craft"
+ },
+ "k14": {
+  "verdict": "accept",
+  "leaf": "art_skill",
+  "why": "different hands; skill sets beauty"
+ },
+ "k15": {
+  "verdict": "reject",
+  "leaf": "raider_pressure",
+  "why": "push lifted while A marks stand"
+ },
+ "k16": {
+  "verdict": "accept",
+  "leaf": "visitors",
+  "why": "once per visit; new visit is a new visit"
+ }
+}

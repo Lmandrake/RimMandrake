@@ -1,0 +1,490 @@
+[
+ {
+  "id": "e1",
+  "text": "A colonist who follows a well-known ideoligion finishes painting a sigil on a corridor wall. The sigil sits inside a halo frame and shows that ideoligion's own icon, drawn in plain white. The ideoligion's colour is a deep red, and nothing on the sigil shows red."
+ },
+ {
+  "id": "e2",
+  "text": "A colonist with Artistic skill 16 paints a mockery of a rival on the dining room wall. Next time the rival passes, their needs tab shows one thought, 'Mixed feelings about a mural', worth -1, and no other thought from the mark."
+ },
+ {
+  "id": "e3",
+  "text": "A colonist with Artistic skill 16 paints a mockery of a rival on the dining room wall. When the rival walks past, their needs tab shows two thoughts from the same mark: an angry thought about being mocked and a separate small positive thought about the beautiful piece."
+ },
+ {
+  "id": "e4",
+  "text": "An ordinary colonist and a psychopath walk past the same ugly scrawl together. The ordinary colonist gets a -3 mood thought from it. The psychopath gets a -1 thought from the same scrawl."
+ },
+ {
+  "id": "e5",
+  "text": "Pirate faction A left exit tags on the colony's outer walls, and a letter arrived naming faction A that jumps the camera to one of its tags. Colonists scrub every one of A's tags. A's next raid still arrives with noticeably more raiders than an unmarked faction's raid at the same storyteller points."
+ },
+ {
+  "id": "e6",
+  "text": "A letter names pirate faction A, and clicking it jumps the camera to A's tag on the east wall. Nobody scrubs it, and the tag slowly fades until it disappears. A's raid before the tag faded was larger than faction B's at the same points, though it came at the usual time; A's next raid after the fade is the same size as B's."
+ },
+ {
+  "id": "e7",
+  "text": "A trader caravan from an outlander union stays two days. Its route passes a wall carrying an insult to that union four times. The faction's goodwill drops by a few points on each of the four passes."
+ },
+ {
+  "id": "e8",
+  "text": "An enemy raider paints a throw-up on a wall cell that already carries a colonist's tag. Afterwards the colonist's tag outlines still show around and through the throw-up, and inspecting the cell lists two marks."
+ },
+ {
+  "id": "e9",
+  "text": "At normal play zoom every vandal mark reads as abstract scribbles. Zooming far in on one variant of the vandal scrawl, the player can clearly read the word TARTE in its lettering."
+ },
+ {
+  "id": "e10",
+  "text": "A colonist paints a mockery of a feud rival. The rival is drafted and holding a doorway during a siege. The rival drops the position, walks across the base and starts a social fight with the painter."
+ },
+ {
+  "id": "e11",
+  "text": "One wall holds the colony's own vandal mark, an enemy faction's devotional sigil and an enemy vandal mark. A cleaner with no orders scrubs only the enemy vandal mark and leaves the other two. When the player then orders those two cleaned, the cleaner scrubs both."
+ },
+ {
+  "id": "e12",
+  "text": "A colonist walks past the same mockery mark every hour for two in-game days. Their opinion of the painter dropped once, on the first pass, and moved no further. Their needs tab shows one thought from that mark, renewed once on the second day, never two copies at once."
+ },
+ {
+  "id": "e13",
+  "text": "Bob paints a mocking mark naming Alice. When Alice sees it she gets a hurt thought and her opinion of Bob drops. Carla, Alice's rival, gets an amused thought, while Dave, who has no tie to either, gets no social thought from it."
+ },
+ {
+  "id": "e14",
+  "text": "Two identical tags are painted on the same day, one on an outdoor wall and one inside a roofed room. Both stay fully opaque for most of their life; the outdoor one starts fading first and is gone days before the indoor one, which then fades over the final stretch of its life and disappears."
+ },
+ {
+  "id": "e15",
+  "text": "Faction A's raid leaves exit tags on the east wall. A letter arrives naming faction A, and clicking it jumps the camera to one of A's standing throw-ups. A's next raid and faction B's next raid (B left no marks) are then triggered at the same storyteller points, and both arrive with the same raid points and the same timing."
+ },
+ {
+  "id": "e16",
+  "text": "A colonist with Artistic skill 16 paints a mockery of a feud rival in the dining room. The rival walks past and their needs tab shows one thought, 'Mocked on the wall, but well painted', worth +1. Room beauty went up and the other viewers got a positive beauty thought."
+ },
+ {
+  "id": "e17",
+  "text": "Four viewers pass the same ugly vandal scrawl and the same skilled piece. The ordinary viewer gets -3 and +3, the sensitive one -5 and +5, the clean freak -6. The psychopath's needs tab shows a 'Saw graffiti' thought at -1 for the scrawl and +1 for the piece, smaller than anyone else's."
+ },
+ {
+  "id": "e18",
+  "text": "After a raid by a hostile tribe, the wall holds an enemy vandal scrawl and an enemy devotional sigil in that tribe's ideoligion icon. A colonist with cleaning enabled and no specific orders scrubs both away within the hour, and the colony's own tag beside them is left alone."
+ },
+ {
+  "id": "e19",
+  "text": "A colonist's Tag_A sits on a wall cell. An enemy then paints ThrowUp_A on the same cell, and on screen only the throw-up is visible because it is drawn over the tag. Inspecting the cell lists two graffiti marks, the throw-up and the colonist's tag under it."
+ },
+ {
+  "id": "e20",
+  "text": "A colonist walks past a mockery of themselves every hour for two days. Their hurt mood thought appears on the first pass and refreshes once on day two, never stacking. On the social tab their opinion of the painter drops -5 on day one and another -5 on day two."
+ },
+ {
+  "id": "e21",
+  "text": "A mockery names a colonist who is restricted to the hospital area. Seeing the mark, the subject leaves the zone, walks across the base to its painter and starts a social fight. No unrelated pawns are involved, and the fight log names the mockery as its reason."
+ },
+ {
+  "id": "e22",
+  "text": "One wall holds a colonist's own ugly vandal scrawl at Beauty -15 next to a hostile raider's vandal scrawl. A colonist with cleaning enabled and no orders scrubs the raider's scrawl and walks off, leaving the colony's ugly scrawl in place. The player then orders that scrawl cleaned and it is scrubbed."
+ },
+ {
+  "id": "e23",
+  "text": "A colonist stands in a one-cell alcove with walls to her north, east and west and paints during a spree. Afterwards a single tag is visible on the north wall, drawn on the face the camera sees and carrying on over the crease onto the wall top. The east and west walls, seen edge-on, carry nothing."
+ },
+ {
+  "id": "e24",
+  "text": "A colonist paints while standing in a corridor that runs north-south, with walls only on her east and west. A thin, rotated tag appears along the top strip of the east wall, the narrow edge the camera sees from above."
+ },
+ {
+  "id": "e25",
+  "text": "A colonist stands just north of an east-west wall, with open floor to her north, and paints. A tag appears on that wall, and inspecting it shows it was painted on the side facing her, the wall's north side, away from the camera."
+ },
+ {
+  "id": "e26",
+  "text": "After a spree, a tag stands upright and centred on the floor cell in front of a wall, a full cell below the wall's face; the wall itself is bare."
+ },
+ {
+  "id": "e27",
+  "text": "A mockery of Alice stands in the hall, with Alice, her friend Carla and the painter Bob on the map; it is run four times. First run: Carla walks to it, scrubs it, and the wall is clean. Second run: Carla works at it and leaves, and the mark now shows a painted cross-out over it. Third run: Carla paints a reply beside it and the reply stays on the wall. Fourth run, with an earlier piece of Bob's already painted out: Alice walks up to Bob and has words with him over the mark, and the interaction finishes."
+ },
+ {
+  "id": "e28",
+  "text": "A mockery of Alice stands in the hall in the evening. By morning it is gone. The log carries a line saying the mark was scrubbed, but no pawn's job history shows a cleaning or scrubbing job at that wall, and nobody was seen there."
+ },
+ {
+  "id": "e29",
+  "text": "The player uses the graffiti designator on three wall cells, choosing a tag for the first, a throw-up for the second and a tally for the third. One colonist walks to each in turn and paints the chosen mark on each, and no designation is left pending."
+ },
+ {
+  "id": "e30",
+  "text": "The player designates three wall cells with three named marks. A colonist paints all three cells, but the marks that appear are whatever the colonist picks: two scrawls and a tag, none of them the ones chosen."
+ },
+ {
+  "id": "e31",
+  "text": "The player designates three wall cells, each with a named mark. Two are painted exactly as chosen. The third keeps its designation overlay for ten in-game days while an idle colonist with nothing else to do stands nearby, and it never gets painted."
+ },
+ {
+  "id": "e32",
+  "text": "A pirate raid breaks off its assault and turns to flee. On the way out, raiders tag three outer walls, each with the pirates' mark. Colonists soon carry a thought about enemy marks on our walls. A cleaner scrubs all three, and within the day the thought is gone from every colonist."
+ },
+ {
+  "id": "e33",
+  "text": "A pirate raid approaches the colony. Before the first shot, while walking in to attack, two raiders stop and spray tags on an outer wall, then join the assault."
+ },
+ {
+  "id": "e34",
+  "text": "After a raid leaves its tags on the outer walls, colonists carry a thought about enemy marks. A cleaner scrubs every enemy mark on the map. Three days later the colonists still carry the same enemy-marks thought."
+ },
+ {
+  "id": "e35",
+  "text": "Faction A's raid left tags on the colony's walls; faction B left none. A letter names faction A and clicking it jumps to an A tag on the north wall. A's next raid arrives at the same strength as B's at the same storyteller points, but several days earlier than B's."
+ },
+ {
+  "id": "e36",
+  "text": "Faction A left tags on the colony's walls; faction B left none. A letter about A arrives. At the same storyteller points, A's next raid is larger than usual, and B's next raid is larger by the same amount."
+ },
+ {
+  "id": "e37",
+  "text": "Faction A left tags on the colony's walls and its next raid comes larger than unmarked faction B's. A letter arrives saying faction A has marked the colony, but it has no target: clicking it moves the camera nowhere and nothing in it points at any wall."
+ },
+ {
+  "id": "e38",
+  "text": "Faction A left two tags on the colony's walls and a letter about A points at one of them. A cleaner scrubs that one tag; the other stays on the west wall. A's next raid then comes at the same size and time as unmarked faction B's."
+ },
+ {
+  "id": "e39",
+  "text": "A tester follows a fresh tag on an outdoor wall through its life. It is already slightly see-through the day after it is painted and grows fainter steadily every day until it vanishes."
+ },
+ {
+  "id": "e40",
+  "text": "Two identical tags by the same painter, one on an unroofed outdoor wall and one in a roofed room, both start fading on the same day and disappear on the same day."
+ },
+ {
+  "id": "e41",
+  "text": "A mark of a permanent kind sits on an outdoor wall beside an ordinary tag painted the same day. The ordinary tag fades over the end of its life and disappears; the permanent mark is still fully solid long after."
+ },
+ {
+  "id": "e42",
+  "text": "A game is started with ideoligions turned off. Colonists paint tags, scrawls and a mockery naming a colonist, though no sigils. The game is saved and reloaded: every mark is on the same wall with the same look, and the mockery still names the same colonist."
+ },
+ {
+  "id": "e43",
+  "text": "The player opens the mod settings and switches off painting as recreation; the settings page shows the switch off and keeps it after closing. Over the next two days, bored colonists still pick wall painting for recreation and new tags appear."
+ },
+ {
+  "id": "e44",
+  "text": "A colony has a mockery that names Alice. After a save and reload, the mark is still on the same wall with the same picture, but its inspect panel no longer names anyone and passers-by get only a generic thought from it."
+ },
+ {
+  "id": "e45",
+  "text": "A painted wall cell is deconstructed, and a second painted wall elsewhere is shot down in a raid. Both marks disappear the moment their walls are gone, while a tag on the untouched wall next to the first stays where it was."
+ },
+ {
+  "id": "e46",
+  "text": "A colonist deconstructs a tagged wall to make a doorway. The wall is gone, but the tag remains drawn in the air over the now-empty floor cell, and pawns walk through it."
+ },
+ {
+  "id": "e47",
+  "text": "A lived-in save from mid-way through a colony's three weeks is loaded. A spree on the same corridor adds new marks beside the old ones; a raid leaves tags and a pressure letter; a trader passes an insult and its faction's goodwill drops once. Reloaded and played trader first, the trader's goodwill drops once by the same amount and the same pressure letter arrives."
+ },
+ {
+  "id": "e48",
+  "text": "On a lived-in save, the raid then the trader: the trader's faction loses goodwill once from an insult. After reloading the same save and taking the trader first, then the raid, the same trader's faction loses goodwill twice from the same insult."
+ },
+ {
+  "id": "e49",
+  "text": "On a lived-in save, a raid by faction A leaves tags and a pressure letter about A. The game is saved and reloaded: A's tags are still on the walls, but A's next raid comes at the ordinary size and time, as though no mark stood."
+ },
+ {
+  "id": "e50",
+  "text": "An ordinary colony of six runs for three in-game weeks with nothing forced. In the second and third weeks a graffiti message or letter appears every few hours, most of them about colonists reading the same marks."
+ },
+ {
+  "id": "e51",
+  "text": "An ordinary colony of six runs for three in-game weeks with nothing forced. By the second week every colonist carries a cluster of graffiti thoughts summing to around -9 that never clears, though no new raid or mockery has happened."
+ },
+ {
+  "id": "e52",
+  "text": "An ordinary colony of six runs for three in-game weeks with nothing forced. Graffiti thoughts come and go: a pleased thought after a good piece, a dip after a mocking mark that passes within days. No colonist carries a graffiti thought that never clears, and the mod sends a handful of messages a week, about a spree, a raid's tags and a reply."
+ },
+ {
+  "id": "e53",
+  "text": "Six colonists each paint a wall lane during a spree. The finished lanes show a tag, a throw-up, a tally, a scrawl and a sigil, and two of the tags are clearly different designs from each other."
+ },
+ {
+  "id": "e54",
+  "text": "Six colonists each paint a wall lane during a spree. Every lane holds the same tag design: one is red, one blue, one green, one yellow, one black and one purple."
+ },
+ {
+  "id": "e55",
+  "text": "Reviewing every mark at play zoom, most read as spray tags and throw-ups. One variant of the vandal mark is a yellow triangle with a lightning bolt in it, kept because it looks edgy."
+ },
+ {
+  "id": "e56",
+  "text": "The full mark set shown at play zoom is a row of neat, evenly stroked pictograms: a skull, a fist, an arrow and a star, each centred and outlined like an icon set, with no drips, overspray or hand-drawn letterforms."
+ },
+ {
+  "id": "c1",
+  "text": "A colonist paints a tag from a cell whose only adjacent wall runs east of it, seen edge-on from the camera. The tag is drawn neatly along the thin top strip of that wall, aligned with it and not touching the floor. A close-up shows it crisp and readable."
+ },
+ {
+  "id": "c2",
+  "text": "A mockery stands on a corridor wall. The subject's friend gets a thought about it and the mod log records an answer of type scrub. When the player next looks, the mockery is gone and the wall is clean; no one was seen at the wall, and no cleaning job appears in any pawn's history."
+ },
+ {
+  "id": "c3",
+  "text": "Faction A left exit marks; a letter names A and jumps the camera to one of its marks, and A's next raid arrives larger than B's at the same points. Nobody scrubs; weeks later the last A mark weathers away and the letter's mark is no longer on the wall. A's following raid is still larger than B's."
+ },
+ {
+  "id": "c4",
+  "text": "The player switches the raider pressure setting off while faction A's exit marks still stand. No pressure letter arrives any more. A's next raid still comes with more points than faction B's at the same storyteller points."
+ },
+ {
+  "id": "c5",
+  "text": "A raid assaults the base and then retreats. Raiders spray their faction's throw-ups on the exterior walls both while advancing on the base and again on the way out. Colonists get a troubled thought about enemy marks, and it clears once every enemy mark is scrubbed."
+ },
+ {
+  "id": "c6",
+  "text": "The player designates three wall cells, each with a named mark. A colonist paints two of them exactly as named on their cells. For the third, the same named mark is painted on the wall cell next to the designated one, and the designation marker stays on the original cell."
+ },
+ {
+  "id": "c7",
+  "text": "Over three in-game weeks a colony of six, with no forcing, has graffiti thoughts that rise and fall with events and clear between them, and mocking-mark and raid letters arrive only a few times a week. Every recreation tag a colonist paints also posts a message in the corner, several a day."
+ },
+ {
+  "id": "c8",
+  "text": "An outdoor wall carries a mark painted months ago that is still at full colour. Ordinary marks painted near it at the same time faded and disappeared long ago. The mark's def is flagged permanent."
+ },
+ {
+  "id": "n1",
+  "text": "A colonist stands just north of an east-west wall, with open floor on her other sides, and paints during a spree. Afterwards a thin band of her colours runs along the top edge of that wall, a narrow lip on the rim nearest her, and the cell's inspect panel lists it as a painted mark."
+ },
+ {
+  "id": "n2",
+  "text": "The player uses the graffiti designator on a floor cell whose only neighbouring wall is directly south of it. A colonist walks there, paints, and a tag appears on that wall's north side, the side away from the camera."
+ },
+ {
+  "id": "n3",
+  "text": "A bored colonist picks wall painting for recreation and chooses a spot in a storeroom cell whose only wall is south of it. When she finishes, a new scrawl is on that south wall."
+ },
+ {
+  "id": "n4",
+  "text": "A mockery of Alice is run in four set-ups, one per answer. The scrub, cross-out and confrontation each play out and finish. In the reply set-up, Carla gets a thought and the mod log records that she replied, but no pawn ever walks to the wall and after two days no reply is painted anywhere."
+ },
+ {
+  "id": "n5",
+  "text": "In the cross-out set-up, Carla walks to the mockery of Alice, works at it for a while and leaves; her job history shows the job finished, but the mark looks exactly as it did and its inspect panel shows no change."
+ },
+ {
+  "id": "n6",
+  "text": "In the confrontation set-up, an earlier piece by the painter Bob has been painted out. Bob, Alice and Carla all pass the wall over three in-game days; they get thoughts, but nobody ever walks up to anyone over it and no confrontation starts. The scrub, cross-out and reply set-ups each finish."
+ },
+ {
+  "id": "n7",
+  "text": "In the confrontation set-up, Dave, a colonist who is neither the mark's subject nor her friend and holds no grudge against the painter, walks up to the painter and has words with him; the interaction finishes. Alice and Carla do nothing."
+ },
+ {
+  "id": "n8",
+  "text": "A colonist stands in a one-cell gap with a wall to her north and another to her south and paints during a spree. One tag appears on the north wall's face, the face the camera sees, carrying over the crease onto its top; the south wall, including its top edge, stays bare. The player then designates a floor cell whose only wall is south of it, and no mark ever appears there."
+ },
+ {
+  "id": "n9",
+  "text": "Over a day of recreation painting, colonists pass many cells whose only wall is south of them; none of those south walls gains a mark. Every new mark that day sits on the face of a wall directly north of where its painter stood, aligned to it and running up over the crease onto the top."
+ },
+ {
+  "id": "n10",
+  "text": "A mockery of Alice is run in four set-ups with Alice, her friend Carla and the painter Bob present. Carla scrubs it clean; in the next, Carla crosses it out and the cross-out shows; in the next, Carla paints a reply beside it; in the last, with an earlier piece of Bob's painted out, Alice confronts Bob over it and the exchange ends. Each pawn's job history shows the job finished at that wall. A plain tag nobody is offended by, left on the same wall, gets no answer in any set-up."
+ },
+ {
+  "id": "x1",
+  "text": "Close-up after a spree. A painter stood in a cell with a wall directly east of it and no wall to the north. A neat tag now runs along the thin vertical strip of that east wall's top, aligned with the wall, crisp and clearly on the wall rather than on the floor. Every other mark in the lane sits on a north wall's face."
+ },
+ {
+  "id": "x2",
+  "text": "A paint order is placed on a floor cell whose only adjacent wall is directly south of it. The pawn paints; the mark shows as a thin coloured band along the top edge of that south wall, hugging the wall, not over the floor. It looks tidy and wall-bound."
+ },
+ {
+  "id": "x3",
+  "text": "Close-up of a north wall lane. Each mark is aligned to its wall's front face and sits fully on that face, but every one stops at the crease; none extends up onto the wall top. Nothing touches the floor."
+ },
+ {
+  "id": "x4",
+  "text": "Cross-out sub-case: a friend of the mockery's subject walks to the wall, a deface job runs to completion beside the mark, and when it ends the mockery is simply gone from the cell; no crossed-out mark remains. The scrub, reply and confront sub-cases all finish visibly."
+ },
+ {
+  "id": "x5",
+  "text": "Scrub, cross-out and reply each run to completion by a pawn at the wall. A confrontation with the painter is seen and completes in a run where the painter's earlier work still stands. In the run where the painter's earlier work has been painted out, no confrontation ever starts before the test ends."
+ },
+ {
+  "id": "x6",
+  "text": "Scrub sub-case: the message log reads that the subject scrubbed the mockery and the mark is gone from the wall. Reviewing the tick record, the subject never left the dining room and no cleaning job was ever started."
+ },
+ {
+  "id": "x7",
+  "text": "A psychopath, an ordinary colonist and a sensitive colonist all view the same skilled mockery. The ordinary viewer gets the def's mood value, the sensitive viewer a larger one in both directions, and the psychopath's needs tab lists the graffiti thought at +0 mood."
+ },
+ {
+  "id": "x8",
+  "text": "Faction A left exit marks; a letter named A and its camera jump landed on an A mark; A's next raid came larger than B's at the same points. A colonist then scrubbed all but one A mark; the last one later faded out by weathering. A's next raid still arrived larger than B's. In a separate run where the last A mark was scrubbed by hand, A's next raid matched B's."
+ },
+ {
+  "id": "n11",
+  "text": "One colonist paints a vandal scrawl and a tally side by side on a hallway wall. At play zoom the scrawl is a clashing tangle of drips and smears beside the tally's neat strokes, and inspecting both shows the scrawl with lower beauty than the tally."
+ },
+ {
+  "id": "n12",
+  "text": "One colonist paints a vandal scrawl and then a tally on the same wall. On screen the scrawl is plainly the messier picture, but the two inspect panels show exactly the same beauty."
+ },
+ {
+  "id": "n13",
+  "text": "A colonist paints a vandal scrawl and a tally on one wall. The scrawl's inspect panel shows it as the uglier of the two, yet on screen it is the cleaner, bolder picture and the tally is the one that looks like a mess."
+ },
+ {
+  "id": "n14",
+  "text": "A vandal scrawl and a tally by the same painter sit next to each other. At play zoom the player cannot tell them apart by quality: both are the same tidy strokes in the same colours. Only the inspect panel shows the scrawl as uglier."
+ },
+ {
+  "id": "n15",
+  "text": "A colonist's route to the mess hall passes a finely painted mural six times a day. By the evening of the first day her needs tab lists six separate copies of the mural's thought at once."
+ },
+ {
+  "id": "n16",
+  "text": "A colonist's daily route passes a fine mural and, further on, a mockery of her painted by a rival. Over three days she passes both several times a day. Each mark's thought appears on her first look, is renewed at most once a day and never shows two copies; the two marks give two different thoughts, and her opinion of the rival dropped on her first look at the mockery and never moved again."
+ },
+ {
+  "id": "n17",
+  "text": "A colonist hauls past the same tribute to her friend every few hours. On day two her mood log shows the tribute's thought arriving fresh in the morning and then arriving fresh again in the evening, each time as a new read of the mark."
+ },
+ {
+  "id": "n18",
+  "text": "Six colonists each paint a wall lane during a spree. Every lane holds the same throw-up design, the same bubble letters with the same outline in the same place; the lanes differ only in fill colour."
+ },
+ {
+  "id": "n19",
+  "text": "A few weeks into a colony, the player looks around: a dense throw-up by the kitchen, a row of tally strokes in the barracks, a jagged scrawl beside the freezer and a framed sigil in the temple. Even where two of them share a colour, each is a different kind of mark at a glance."
+ },
+ {
+  "id": "n20",
+  "text": "An ordinary colony of six runs three in-game weeks with nothing forced. By week three every colonist's needs tab permanently carries a handful of small graffiti thoughts from the marks on their daily routes; each is tiny, but together they are a steady dent that never clears, though nothing new has been painted for days."
+ },
+ {
+  "id": "n21",
+  "text": "A tester runs an ordinary colony of six for two in-game days with nothing forced, sees no standing graffiti mood penalty and only two messages, and signs the colony off as story, not tax."
+ },
+ {
+  "id": "n22",
+  "text": "Three in-game weeks of an ordinary colony of six, nothing forced: in week one a mocking mark starts a quarrel that ends with a reply painted beside it; in week two a raid's tags trouble the colony until they are scrubbed; in week three a grieving colonist paints a memorial. Between those events graffiti barely touches anyone's mood, and the message log shows graffiti only a few times a week."
+ },
+ {
+  "id": "n23",
+  "text": "A tester follows an ordinary tag on an outdoor wall. It stays at full colour for its whole life and then, on one tick, is simply gone, with no fading at any point."
+ },
+ {
+  "id": "n24",
+  "text": "A raider's throw-up of an ordinary, non-permanent kind sits on an outer wall. Colonists' tags painted the same week on nearby walls faded and disappeared long ago; many in-game months later the throw-up is still at full colour."
+ },
+ {
+  "id": "n25",
+  "text": "The same colonist paints the same sigil on an open courtyard wall and on a wall inside a roofed temple on the same day. Both stay crisp for most of their lives; the courtyard one then fades and is gone first, and the temple one fades later and goes after it."
+ },
+ {
+  "id": "n26",
+  "text": "A colonist's tag sits on a corridor wall cell. A raider stops at that cell on the way out and sprays a throw-up there. Afterwards only the throw-up is on the cell; its inspect panel lists one mark, the raider's, and no trace of the colonist's tag remains under or around it."
+ },
+ {
+  "id": "n27",
+  "text": "A colonist's painting spree ends. Her job history lists six finished paint jobs at the corridor wall she stood beside, but the wall is bare: no new mark anywhere along it."
+ },
+ {
+  "id": "n28",
+  "text": "A colonist breaks into a painting spree in the east corridor. When the spree ends, three new marks stand on the wall beside the cells where she stood painting, and the other corridors, whose colonists never broke, hold no new marks."
+ },
+ {
+  "id": "n29",
+  "text": "At normal play zoom a gallery of every mark and variant runs along a lit wall. Most read as deliberate tags, but one tally variant is a pale blur of a few grey pixels; only when the tester zooms far in does it resolve into neat strokes."
+ },
+ {
+  "id": "n30",
+  "text": "At play zoom a scratch mark sits on a wall cell next to a floor cell of vanilla dirt. Asked which is the colony's graffiti, a player cannot tell: both read as the same brown smear of mess."
+ },
+ {
+  "id": "n31",
+  "text": "A bored colonist with free time beside a bare wall picks painting it as her recreation. Her joy bar fills while she paints, and when she finishes her needs tab shows a small positive thought about the mark she made."
+ },
+ {
+  "id": "n32",
+  "text": "A colonist paints a tag during her free time. Her joy bar does not move while she paints, and she gets no thought for making it; a pleased thought appears only later, when she walks past the tag on her way to dinner."
+ },
+ {
+  "id": "n33",
+  "text": "A colonist who arrived the week after a death, and never met the dead colonist, paints a memorial to her on the dining room wall. The dead colonist's oldest friend, still grieving, paints nothing."
+ },
+ {
+  "id": "n34",
+  "text": "A colonist grieving a dead friend paints a memorial to her; her grief thought eases after she finishes. Elsewhere, a colonist paints a tribute to his wife: she gets a warm thought when she sees it, and the wife's rival, passing it, gets a jealous thought."
+ },
+ {
+  "id": "k1",
+  "text": "After a week the colony's walls hold marks from five different mark defs: the inspect pane lists Tag_A, Tag_B, Tag_C, Stencil_A and Stencil_B. On the wall, Tag_B and Tag_C are the same lettering shape as Tag_A in green and orange, and both stencils are the same star shape in two colours. A player walking the corridor sees two shapes in five colours."
+ },
+ {
+  "id": "k2",
+  "text": "The tester checks variety across three quicktest colonies. Colony one's walls hold only throw-ups, colony two's only tallies, colony three's only sigils. Each colony's own marks are one shape in several tints, but all three colonies together show three clearly different kinds."
+ },
+ {
+  "id": "k3",
+  "text": "A colonist walks past the same mockery every hour for two days. It never shows two copies of the thought: the mood panel always shows a single 'mocked on the wall' line, but its timer resets to full on every pass, so the debuff never runs down while the colonist keeps using that corridor."
+ },
+ {
+  "id": "k4",
+  "text": "Over two in-game days of hourly passes, the colonist's mood thought from the mockery is renewed once each day, as intended. The social tab shows the colonist's opinion of the painter drop by 5 on day one and by another 5 on day two, once each day, never per pass."
+ },
+ {
+  "id": "k5",
+  "text": "A colonist passes the same mockery 24 times a day for two days. Day one: one mood thought and one opinion drop toward the painter at the first pass, nothing more that day. Day two: the mood thought appears once more after the first one has expired; opinion of the painter does not move again."
+ },
+ {
+  "id": "k6",
+  "text": "Three in-game weeks in an ordinary colony of six. No colonist ever holds more than one graffiti thought at a time, each is -2 to -3, and each comes from a different mark as marks appear and get scrubbed. But on 19 of the 21 days every colonist carries some graffiti debuff, so the colony's mood sits about 3 lower than with graffiti switched off."
+ },
+ {
+  "id": "k7",
+  "text": "Over a week in an ordinary colony, a graffiti message arrives about every four hours: a new mockery, a tribute, a scrub, a reply, a clean freak's complaint. Every message describes a different event between named colonists, and none repeats."
+ },
+ {
+  "id": "k8",
+  "text": "A three-week run of an ordinary colony counts Graffiti messages: four in total, well within the bar. The count covers messages only. Over the same weeks the raid-mark and raider-pressure letters number about ten a week, one each time a mark goes up or comes down."
+ },
+ {
+  "id": "k9",
+  "text": "A three-week run of an ordinary colony of six with every graffiti setting on and no forcing. In those weeks nobody paints anything worth noticing, no mark draws a reaction, no letter or message arrives, and no colonist ever holds a graffiti thought. The tester calls it clean: no tax, no stream."
+ },
+ {
+  "id": "k10",
+  "text": "An outdoor tally lasts ten days. It looks crisp for its first four days, then fades steadily over the next six and is gone on day ten. Under a roof the same tally lasts sixteen days with the same shape: crisp for the first 40%, then a long fade."
+ },
+ {
+  "id": "k11",
+  "text": "The kernel selftest passes: the fade curve holds full strength to 80% of a mark's weather days, then falls to zero, and roofed weather days exceed unroofed for every form. In game, a throw-up on an outer wall stays fully crisp right up to its last day and then disappears in a single tick; the drawn mark never uses the curve."
+ },
+ {
+  "id": "k12",
+  "text": "Colony and enemy tags weather as intended: crisp, then a visible fade, sooner outdoors. Raid exit tags, though, are flagged permanent so the raid's story stays on the wall, and the build notes say permanent marks are exempt from fading. Unscrubbed raid tags are still on the outer walls a year later."
+ },
+ {
+  "id": "k13",
+  "text": "One colonist paints a vandal scrawl and a tally at each craft level. At Awful through Excellent the scrawl inspects uglier than the tally. At Masterwork and Legendary the craft bonus caps both at the same beauty, so the scrawl inspects exactly as pretty as the tally. At a glance the scrawl always looks worse."
+ },
+ {
+  "id": "k14",
+  "text": "A master artist's vandal scrawl hangs next to a tally painted by a colonist with art skill 1. The scrawl still looks rougher at a glance, but in the inspect pane the master's scrawl has higher beauty than the novice's tally."
+ },
+ {
+  "id": "k15",
+  "text": "Faction A left three exit marks on the colony's walls, and a letter named A and pointed at one of them. A colonist scrubs the first of the three. The letter's effect ends right away: A's next raid comes at the same points and time as faction B's, while two A marks still stand on the outer walls."
+ },
+ {
+  "id": "k16",
+  "text": "A trader caravan of the Tribe passes an insult to the Tribe on the colony wall four times in one visit; goodwill drops once, on the first pass. Twenty days later a new caravan from the same faction visits, passes the same still-standing insult, and goodwill drops once more, then not again during that visit."
+ }
+]

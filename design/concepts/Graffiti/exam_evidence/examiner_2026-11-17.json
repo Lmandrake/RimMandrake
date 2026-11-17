@@ -1,0 +1,744 @@
+[
+  {
+    "id": "e1",
+    "text": "A colonist who follows a well-known ideoligion finishes painting a sigil on a corridor wall. The sigil sits inside a halo frame and shows that ideoligion's own icon, drawn in plain white. The ideoligion's colour is a deep red, and nothing on the sigil shows red.",
+    "expect": "reject: the icon is the ideoligion's but untinted, which the leaf lists as a false pass; the sigil must carry the icon in the ideoligion's colour",
+    "expect_source": "leaf:ideo_sigil",
+    "by": "examiner"
+  },
+  {
+    "id": "e2",
+    "text": "A colonist with Artistic skill 16 paints a mockery of a rival on the dining room wall. Next time the rival passes, their needs tab shows one thought, 'Mixed feelings about a mural', worth -1, and no other thought from the mark.",
+    "expect": "reject: the mockery's beauty and anger are merged into one net thought; the target must hold an anger thought and a beauty thought at once",
+    "expect_source": "leaf:art_skill",
+    "by": "examiner"
+  },
+  {
+    "id": "e3",
+    "text": "A colonist with Artistic skill 16 paints a mockery of a rival on the dining room wall. When the rival walks past, their needs tab shows two thoughts from the same mark: an angry thought about being mocked and a separate small positive thought about the beautiful piece.",
+    "expect": "accept: a skilled slanderous piece both angers its target and pleases by its beauty, held as two thoughts at once",
+    "expect_source": "leaf:art_skill",
+    "by": "examiner"
+  },
+  {
+    "id": "e4",
+    "text": "An ordinary colonist and a psychopath walk past the same ugly scrawl together. The ordinary colonist gets a -3 mood thought from it. The psychopath gets a -1 thought from the same scrawl.",
+    "expect": "reject: a psychopath must feel nothing from any mark; a smaller thought instead of none is the leaf's false pass",
+    "expect_source": "leaf:temperament",
+    "by": "examiner"
+  },
+  {
+    "id": "e5",
+    "text": "Pirate faction A left exit tags on the colony's outer walls, and a letter arrived naming faction A that jumps the camera to one of its tags. Colonists scrub every one of A's tags. A's next raid still arrives with noticeably more raiders than an unmarked faction's raid at the same storyteller points.",
+    "expect": "reject: the pressure must lift once the last mark is gone; pressure lingering after the last mark is a listed false pass",
+    "expect_source": "leaf:raider_pressure",
+    "by": "examiner"
+  },
+  {
+    "id": "e6",
+    "text": "A letter names pirate faction A, and clicking it jumps the camera to A's tag on the east wall. Nobody scrubs it, and the tag slowly fades until it disappears. A's raid before the tag faded was larger than faction B's at the same points, though it came at the usual time; A's next raid after the fade is the same size as B's.",
+    "expect": "accept: a standing mark makes the raid sooner or larger (larger is allowed), and a mark weathered away lifts the push just as scrubbing does",
+    "expect_source": "leaf:raider_pressure",
+    "by": "examiner"
+  },
+  {
+    "id": "e7",
+    "text": "A trader caravan from an outlander union stays two days. Its route passes a wall carrying an insult to that union four times. The faction's goodwill drops by a few points on each of the four passes.",
+    "expect": "reject: goodwill must drop once per visit and never again from that wall; dropping on every pass is the leaf's false pass",
+    "expect_source": "leaf:visitors",
+    "by": "examiner"
+  },
+  {
+    "id": "e8",
+    "text": "An enemy raider paints a throw-up on a wall cell that already carries a colonist's tag. Afterwards the colonist's tag outlines still show around and through the throw-up, and inspecting the cell lists two marks.",
+    "expect": "reject: going over must leave the colonist's tag gone; two marks stacked on one cell is the leaf's red",
+    "expect_source": "leaf:going_over",
+    "by": "examiner"
+  },
+  {
+    "id": "e9",
+    "text": "At normal play zoom every vandal mark reads as abstract scribbles. Zooming far in on one variant of the vandal scrawl, the player can clearly read the word TARTE in its lettering.",
+    "expect": "reject: no legible English or third-party tag may appear in any mark; English that shows only when zoomed in is a listed false pass",
+    "expect_source": "leaf:no_english",
+    "by": "examiner"
+  },
+  {
+    "id": "e10",
+    "text": "A colonist paints a mockery of a feud rival. The rival is drafted and holding a doorway during a siege. The rival drops the position, walks across the base and starts a social fight with the painter.",
+    "expect": "reject: a fight must never break a pawn's restrictions; a drafted pawn leaving to fight is the leaf's false pass and red",
+    "expect_source": "leaf:fights_reasons",
+    "by": "examiner"
+  },
+  {
+    "id": "e11",
+    "text": "One wall holds the colony's own vandal mark, an enemy faction's devotional sigil and an enemy vandal mark. A cleaner with no orders scrubs only the enemy vandal mark and leaves the other two. When the player then orders those two cleaned, the cleaner scrubs both.",
+    "expect": "accept: cleaners leave devotional marks and the colony's own marks unless ordered, clean the hostile vandal mark, and clean the protected ones when ordered",
+    "expect_source": "leaf:scrub_protection",
+    "by": "examiner"
+  },
+  {
+    "id": "e12",
+    "text": "A colonist walks past the same mockery mark every hour for two in-game days. Their opinion of the painter dropped once, on the first pass, and moved no further. Their needs tab shows one thought from that mark, renewed once on the second day, never two copies at once.",
+    "expect": "accept: the same mark moves mood at most once per day and opinion only once, on the first read",
+    "expect_source": "leaf:rereads_daily",
+    "by": "examiner"
+  },
+  {
+    "id": "e13",
+    "text": "Bob paints a mocking mark naming Alice. When Alice sees it she gets a hurt thought and her opinion of Bob drops. Carla, Alice's rival, gets an amused thought, while Dave, who has no tie to either, gets no social thought from it.",
+    "expect": "accept: a mockery names someone, hurts that person, amuses the right others and changes regard of the painter; different people getting different thoughts is what the leaf wants",
+    "expect_source": "leaf:mockery",
+    "by": "examiner"
+  },
+  {
+    "id": "e14",
+    "text": "Two identical tags are painted on the same day, one on an outdoor wall and one inside a roofed room. Both stay fully opaque for most of their life; the outdoor one starts fading first and is gone days before the indoor one, which then fades over the final stretch of its life and disappears.",
+    "expect": "accept: each mark stays crisp most of its life, then visibly fades before it goes, and the outdoor one goes sooner than the one under a roof",
+    "expect_source": "leaf:weathering_bounds_marks",
+    "by": "examiner"
+  },
+  {
+    "id": "e15",
+    "text": "Faction A's raid leaves exit tags on the east wall. A letter arrives naming faction A, and clicking it jumps the camera to one of A's standing throw-ups. A's next raid and faction B's next raid (B left no marks) are then triggered at the same storyteller points, and both arrive with the same raid points and the same timing.",
+    "expect": "reject: a letter with no change to the raid; a standing mark must make that faction's next raid sooner or larger than the unmarked faction's",
+    "expect_source": "leaf:raider_pressure",
+    "by": "examiner"
+  },
+  {
+    "id": "e16",
+    "text": "A colonist with Artistic skill 16 paints a mockery of a feud rival in the dining room. The rival walks past and their needs tab shows one thought, 'Mocked on the wall, but well painted', worth +1. Room beauty went up and the other viewers got a positive beauty thought.",
+    "expect": "reject: the mockery's beauty and anger are folded into one net thought; the target must hold an anger thought and a beauty thought at the same time",
+    "expect_source": "leaf:art_skill",
+    "by": "examiner"
+  },
+  {
+    "id": "e17",
+    "text": "Four viewers pass the same ugly vandal scrawl and the same skilled piece. The ordinary viewer gets -3 and +3, the sensitive one -5 and +5, the clean freak -6. The psychopath's needs tab shows a 'Saw graffiti' thought at -1 for the scrawl and +1 for the piece, smaller than anyone else's.",
+    "expect": "reject: the psychopath must hold no mark thought at all, and a smaller thought is the named false pass",
+    "expect_source": "leaf:temperament",
+    "by": "examiner"
+  },
+  {
+    "id": "e18",
+    "text": "After a raid by a hostile tribe, the wall holds an enemy vandal scrawl and an enemy devotional sigil in that tribe's ideoligion icon. A colonist with cleaning enabled and no specific orders scrubs both away within the hour, and the colony's own tag beside them is left alone.",
+    "expect": "reject: cleaners must leave devotional marks alone unless ordered, and an auto-clean that wipes a devotional sigil is the red build",
+    "expect_source": "leaf:scrub_protection",
+    "by": "examiner"
+  },
+  {
+    "id": "e19",
+    "text": "A colonist's Tag_A sits on a wall cell. An enemy then paints ThrowUp_A on the same cell, and on screen only the throw-up is visible because it is drawn over the tag. Inspecting the cell lists two graffiti marks, the throw-up and the colonist's tag under it.",
+    "expect": "reject: going-over must remove the colonist's tag; stacking two marks on the cell with the tag surviving underneath is the named false pass and red",
+    "expect_source": "leaf:going_over",
+    "by": "examiner"
+  },
+  {
+    "id": "e20",
+    "text": "A colonist walks past a mockery of themselves every hour for two days. Their hurt mood thought appears on the first pass and refreshes once on day two, never stacking. On the social tab their opinion of the painter drops -5 on day one and another -5 on day two.",
+    "expect": "reject: opinion may change only once, on the first read; opinion moving again on a later pass is the named false pass",
+    "expect_source": "leaf:rereads_daily",
+    "by": "examiner"
+  },
+  {
+    "id": "e21",
+    "text": "A mockery names a colonist who is restricted to the hospital area. Seeing the mark, the subject leaves the zone, walks across the base to its painter and starts a social fight. No unrelated pawns are involved, and the fight log names the mockery as its reason.",
+    "expect": "reject: a fight must never break a pawn's restrictions; a restricted pawn leaving its area to fight is the named false pass even with the right people and reason",
+    "expect_source": "leaf:fights_reasons",
+    "by": "examiner"
+  },
+  {
+    "id": "e22",
+    "text": "One wall holds a colonist's own ugly vandal scrawl at Beauty -15 next to a hostile raider's vandal scrawl. A colonist with cleaning enabled and no orders scrubs the raider's scrawl and walks off, leaving the colony's ugly scrawl in place. The player then orders that scrawl cleaned and it is scrubbed.",
+    "expect": "accept: cleaners leave the colony's own vandal marks unless ordered and still clean the hostile vandal mark, and an ordered clean removes it",
+    "expect_source": "leaf:scrub_protection",
+    "by": "examiner"
+  },
+  {
+    "id": "e23",
+    "text": "A colonist stands in a one-cell alcove with walls to her north, east and west and paints during a spree. Afterwards a single tag is visible on the north wall, drawn on the face the camera sees and carrying on over the crease onto the wall top. The east and west walls, seen edge-on, carry nothing.",
+    "expect": "accept: the mark sits on the front face of the wall north of the painter and climbs onto the top; edge-on walls take no paint",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "e24",
+    "text": "A colonist paints while standing in a corridor that runs north-south, with walls only on her east and west. A thin, rotated tag appears along the top strip of the east wall, the narrow edge the camera sees from above.",
+    "expect": "reject: a wall seen edge-on takes no paint; a mark turned along the edge-on strip of a wall top is the listed false pass",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "e25",
+    "text": "A colonist stands just north of an east-west wall, with open floor to her north, and paints. A tag appears on that wall, and inspecting it shows it was painted on the side facing her, the wall's north side, away from the camera.",
+    "expect": "reject: only the front face, the wall north of the painter's cell, takes paint; a wall's far side carries no paint",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "e26",
+    "text": "After a spree, a tag stands upright and centred on the floor cell in front of a wall, a full cell below the wall's face; the wall itself is bare.",
+    "expect": "reject: a mark drawn on the floor cell beside the wall is the listed false pass and the red build",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "e27",
+    "text": "A mockery of Alice stands in the hall, with Alice, her friend Carla and the painter Bob on the map; it is run four times. First run: Carla walks to it, scrubs it, and the wall is clean. Second run: Carla works at it and leaves, and the mark now shows a painted cross-out over it. Third run: Carla paints a reply beside it and the reply stays on the wall. Fourth run, with an earlier piece of Bob's already painted out: Alice walks up to Bob and has words with him over the mark, and the interaction finishes.",
+    "expect": "accept: pawns answer the wall and each of the four answers (scrub, cross-out, reply, confront over painted-out work) runs to completion by a pawn with a reason, the mark's state changing to match",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "e28",
+    "text": "A mockery of Alice stands in the hall in the evening. By morning it is gone. The log carries a line saying the mark was scrubbed, but no pawn's job history shows a cleaning or scrubbing job at that wall, and nobody was seen there.",
+    "expect": "reject: the answer must be a job a pawn runs to completion; a mark vanishing with no pawn at it, or an answer only logged, is a listed false pass",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "e29",
+    "text": "The player uses the graffiti designator on three wall cells, choosing a tag for the first, a throw-up for the second and a tally for the third. One colonist walks to each in turn and paints the chosen mark on each, and no designation is left pending.",
+    "expect": "accept: the player orders a chosen mark on a chosen cell and gets exactly it, all three painted, none pending",
+    "expect_source": "leaf:player_orders",
+    "by": "examiner"
+  },
+  {
+    "id": "e30",
+    "text": "The player designates three wall cells with three named marks. A colonist paints all three cells, but the marks that appear are whatever the colonist picks: two scrawls and a tag, none of them the ones chosen.",
+    "expect": "reject: the colonist painting random marks is the listed false pass; the player must get exactly the mark ordered",
+    "expect_source": "leaf:player_orders",
+    "by": "examiner"
+  },
+  {
+    "id": "e31",
+    "text": "The player designates three wall cells, each with a named mark. Two are painted exactly as chosen. The third keeps its designation overlay for ten in-game days while an idle colonist with nothing else to do stands nearby, and it never gets painted.",
+    "expect": "reject: one designation staying pending forever is the listed false pass",
+    "expect_source": "leaf:player_orders",
+    "by": "examiner"
+  },
+  {
+    "id": "e32",
+    "text": "A pirate raid breaks off its assault and turns to flee. On the way out, raiders tag three outer walls, each with the pirates' mark. Colonists soon carry a thought about enemy marks on our walls. A cleaner scrubs all three, and within the day the thought is gone from every colonist.",
+    "expect": "accept: a leaving raid tags the outer walls, the marks trouble the colony, and the trouble ends once the wall is retaken by scrubbing",
+    "expect_source": "leaf:raid_mark_troubles",
+    "by": "examiner"
+  },
+  {
+    "id": "e33",
+    "text": "A pirate raid approaches the colony. Before the first shot, while walking in to attack, two raiders stop and spray tags on an outer wall, then join the assault.",
+    "expect": "reject: raid tags belong to the way out; tags appearing on the way in is the listed false pass",
+    "expect_source": "leaf:raid_mark_troubles",
+    "by": "examiner"
+  },
+  {
+    "id": "e34",
+    "text": "After a raid leaves its tags on the outer walls, colonists carry a thought about enemy marks. A cleaner scrubs every enemy mark on the map. Three days later the colonists still carry the same enemy-marks thought.",
+    "expect": "reject: the trouble must end once the wall is retaken; trouble that never ends after scrubbing is the listed false pass and red",
+    "expect_source": "leaf:raid_mark_troubles",
+    "by": "examiner"
+  },
+  {
+    "id": "e35",
+    "text": "Faction A's raid left tags on the colony's walls; faction B left none. A letter names faction A and clicking it jumps to an A tag on the north wall. A's next raid arrives at the same strength as B's at the same storyteller points, but several days earlier than B's.",
+    "expect": "accept: the standing mark makes that faction's next raid sooner or larger; sooner at equal size is allowed",
+    "expect_source": "leaf:raider_pressure",
+    "by": "examiner"
+  },
+  {
+    "id": "e36",
+    "text": "Faction A left tags on the colony's walls; faction B left none. A letter about A arrives. At the same storyteller points, A's next raid is larger than usual, and B's next raid is larger by the same amount.",
+    "expect": "reject: only the marking faction's raid is pushed; every faction's raids growing, marked or not, is the listed false pass",
+    "expect_source": "leaf:raider_pressure",
+    "by": "examiner"
+  },
+  {
+    "id": "e37",
+    "text": "Faction A left tags on the colony's walls and its next raid comes larger than unmarked faction B's. A letter arrives saying faction A has marked the colony, but it has no target: clicking it moves the camera nowhere and nothing in it points at any wall.",
+    "expect": "reject: the letter must name the faction and point at its standing mark; a letter that names no mark is the red build",
+    "expect_source": "leaf:raider_pressure",
+    "by": "examiner"
+  },
+  {
+    "id": "e38",
+    "text": "Faction A left two tags on the colony's walls and a letter about A points at one of them. A cleaner scrubs that one tag; the other stays on the west wall. A's next raid then comes at the same size and time as unmarked faction B's.",
+    "expect": "reject: the push holds while any of A's marks stands and lifts only when the last is gone; here one still stands",
+    "expect_source": "leaf:raider_pressure",
+    "by": "examiner"
+  },
+  {
+    "id": "e39",
+    "text": "A tester follows a fresh tag on an outdoor wall through its life. It is already slightly see-through the day after it is painted and grows fainter steadily every day until it vanishes.",
+    "expect": "reject: a mark must stay crisp most of its life before it fades; a fade that starts at placement is the listed false pass",
+    "expect_source": "leaf:weathering_bounds_marks",
+    "by": "examiner"
+  },
+  {
+    "id": "e40",
+    "text": "Two identical tags by the same painter, one on an unroofed outdoor wall and one in a roofed room, both start fading on the same day and disappear on the same day.",
+    "expect": "reject: marks must last longer under a roof than outdoors; roofed and unroofed lasting the same is the listed false pass",
+    "expect_source": "leaf:weathering_bounds_marks",
+    "by": "examiner"
+  },
+  {
+    "id": "e41",
+    "text": "A mark of a permanent kind sits on an outdoor wall beside an ordinary tag painted the same day. The ordinary tag fades over the end of its life and disappears; the permanent mark is still fully solid long after.",
+    "expect": "accept: marks weather and fade at the end of their life unless they are permanent; a permanent mark never fades",
+    "expect_source": "leaf:weathering_bounds_marks",
+    "by": "examiner"
+  },
+  {
+    "id": "e42",
+    "text": "A game is started with ideoligions turned off. Colonists paint tags, scrawls and a mockery naming a colonist, though no sigils. The game is saved and reloaded: every mark is on the same wall with the same look, and the mockery still names the same colonist.",
+    "expect": "accept: graffiti works without any ideoligion and every mark survives a reload intact, subject included",
+    "expect_source": "leaf:stands_alone_settings",
+    "by": "examiner"
+  },
+  {
+    "id": "e43",
+    "text": "The player opens the mod settings and switches off painting as recreation; the settings page shows the switch off and keeps it after closing. Over the next two days, bored colonists still pick wall painting for recreation and new tags appear.",
+    "expect": "reject: each behaviour must stop when its setting switches it off; the settings page changing while the behaviour runs on is the listed false pass",
+    "expect_source": "leaf:stands_alone_settings",
+    "by": "examiner"
+  },
+  {
+    "id": "e44",
+    "text": "A colony has a mockery that names Alice. After a save and reload, the mark is still on the same wall with the same picture, but its inspect panel no longer names anyone and passers-by get only a generic thought from it.",
+    "expect": "reject: marks must keep their subject across reload; a mark losing its subject on reload is the listed false pass",
+    "expect_source": "leaf:stands_alone_settings",
+    "by": "examiner"
+  },
+  {
+    "id": "e45",
+    "text": "A painted wall cell is deconstructed, and a second painted wall elsewhere is shot down in a raid. Both marks disappear the moment their walls are gone, while a tag on the untouched wall next to the first stays where it was.",
+    "expect": "accept: paint dies with its wall, deconstructed or destroyed, and a neighbouring wall's mark stays",
+    "expect_source": "leaf:paint_dies_with_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "e46",
+    "text": "A colonist deconstructs a tagged wall to make a doorway. The wall is gone, but the tag remains drawn in the air over the now-empty floor cell, and pawns walk through it.",
+    "expect": "reject: a mark staying floating over the floor cell after its wall is gone is the listed false pass",
+    "expect_source": "leaf:paint_dies_with_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "e47",
+    "text": "A lived-in save from mid-way through a colony's three weeks is loaded. A spree on the same corridor adds new marks beside the old ones; a raid leaves tags and a pressure letter; a trader passes an insult and its faction's goodwill drops once. Reloaded and played trader first, the trader's goodwill drops once by the same amount and the same pressure letter arrives.",
+    "expect": "accept: on a lived-in save, a spree, a raid and a trader tell the same story in both orders",
+    "expect_source": "leaf:walk_lived_in",
+    "by": "examiner"
+  },
+  {
+    "id": "e48",
+    "text": "On a lived-in save, the raid then the trader: the trader's faction loses goodwill once from an insult. After reloading the same save and taking the trader first, then the raid, the same trader's faction loses goodwill twice from the same insult.",
+    "expect": "reject: both orders must give the same insult goodwill change once; the order of raid and trader changing the outcome is the red",
+    "expect_source": "leaf:walk_lived_in",
+    "by": "examiner"
+  },
+  {
+    "id": "e49",
+    "text": "On a lived-in save, a raid by faction A leaves tags and a pressure letter about A. The game is saved and reloaded: A's tags are still on the walls, but A's next raid comes at the ordinary size and time, as though no mark stood.",
+    "expect": "reject: marks and the pressure record must match the save after reload; the pressure record being lost on reload is the red",
+    "expect_source": "leaf:walk_lived_in",
+    "by": "examiner"
+  },
+  {
+    "id": "e50",
+    "text": "An ordinary colony of six runs for three in-game weeks with nothing forced. In the second and third weeks a graffiti message or letter appears every few hours, most of them about colonists reading the same marks.",
+    "expect": "reject: graffiti must make occasional stories, never a stream of messages; a message every few hours is the red",
+    "expect_source": "leaf:stories_not_tax",
+    "by": "examiner"
+  },
+  {
+    "id": "e51",
+    "text": "An ordinary colony of six runs for three in-game weeks with nothing forced. By the second week every colonist carries a cluster of graffiti thoughts summing to around -9 that never clears, though no new raid or mockery has happened.",
+    "expect": "reject: marks must not stack into a standing mood penalty; a permanent mood tax is the red",
+    "expect_source": "leaf:stories_not_tax",
+    "by": "examiner"
+  },
+  {
+    "id": "e52",
+    "text": "An ordinary colony of six runs for three in-game weeks with nothing forced. Graffiti thoughts come and go: a pleased thought after a good piece, a dip after a mocking mark that passes within days. No colonist carries a graffiti thought that never clears, and the mod sends a handful of messages a week, about a spree, a raid's tags and a reply.",
+    "expect": "accept: graffiti makes occasional stories that pass, with no standing mood penalty and few messages per week, not a tax",
+    "expect_source": "leaf:stories_not_tax",
+    "by": "examiner"
+  },
+  {
+    "id": "e53",
+    "text": "Six colonists each paint a wall lane during a spree. The finished lanes show a tag, a throw-up, a tally, a scrawl and a sigil, and two of the tags are clearly different designs from each other.",
+    "expect": "accept: one colony holds visibly different kinds of mark, several defs and variants, not recolours",
+    "expect_source": "leaf:marks_various",
+    "by": "examiner"
+  },
+  {
+    "id": "e54",
+    "text": "Six colonists each paint a wall lane during a spree. Every lane holds the same tag design: one is red, one blue, one green, one yellow, one black and one purple.",
+    "expect": "reject: one def in six tints is the listed false pass; the marks must differ in kind, not colour",
+    "expect_source": "leaf:marks_various",
+    "by": "examiner"
+  },
+  {
+    "id": "e55",
+    "text": "Reviewing every mark at play zoom, most read as spray tags and throw-ups. One variant of the vandal mark is a yellow triangle with a lightning bolt in it, kept because it looks edgy.",
+    "expect": "reject: no mark may read as a real-world sign; a hazard bolt kept as a punk mark is the listed false pass and red",
+    "expect_source": "leaf:punk_register",
+    "by": "examiner"
+  },
+  {
+    "id": "e56",
+    "text": "The full mark set shown at play zoom is a row of neat, evenly stroked pictograms: a skull, a fist, an arrow and a star, each centred and outlined like an icon set, with no drips, overspray or hand-drawn letterforms.",
+    "expect": "reject: the set must read as urban punk graffiti; tidy clip-art pictograms passing as tags is the listed false pass",
+    "expect_source": "leaf:punk_register",
+    "by": "examiner"
+  },
+  {
+    "id": "c1",
+    "text": "A colonist paints a tag from a cell whose only adjacent wall runs east of it, seen edge-on from the camera. The tag is drawn neatly along the thin top strip of that wall, aligned with it and not touching the floor. A close-up shows it crisp and readable.",
+    "expect": "reject: an edge-on wall takes no paint; a mark turned along the edge-on strip of a wall top is a named false_pass",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "c2",
+    "text": "A mockery stands on a corridor wall. The subject's friend gets a thought about it and the mod log records an answer of type scrub. When the player next looks, the mockery is gone and the wall is clean; no one was seen at the wall, and no cleaning job appears in any pawn's history.",
+    "expect": "reject: the player must watch a pawn's answer job finish; a logged answer with no job, or a mark that vanishes with no pawn at it, are named false_passes",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "c3",
+    "text": "Faction A left exit marks; a letter names A and jumps the camera to one of its marks, and A's next raid arrives larger than B's at the same points. Nobody scrubs; weeks later the last A mark weathers away and the letter's mark is no longer on the wall. A's following raid is still larger than B's.",
+    "expect": "reject: once the last such mark is scrubbed or weathered away the push lifts; pressure lingering after the last mark is gone is a named false_pass",
+    "expect_source": "leaf:raider_pressure",
+    "by": "examiner"
+  },
+  {
+    "id": "c4",
+    "text": "The player switches the raider pressure setting off while faction A's exit marks still stand. No pressure letter arrives any more. A's next raid still comes with more points than faction B's at the same storyteller points.",
+    "expect": "reject: each switch off must stop its own behaviour; the settings page changing while the behaviour runs on is a named false_pass (and raider_pressure's control: setting off gives equal points and no letter)",
+    "expect_source": "leaf:stands_alone_settings",
+    "by": "examiner"
+  },
+  {
+    "id": "c5",
+    "text": "A raid assaults the base and then retreats. Raiders spray their faction's throw-ups on the exterior walls both while advancing on the base and again on the way out. Colonists get a troubled thought about enemy marks, and it clears once every enemy mark is scrubbed.",
+    "expect": "reject: tags belong only on the way out; tags appearing on the way in is a named false_pass",
+    "expect_source": "leaf:raid_mark_troubles",
+    "by": "examiner"
+  },
+  {
+    "id": "c6",
+    "text": "The player designates three wall cells, each with a named mark. A colonist paints two of them exactly as named on their cells. For the third, the same named mark is painted on the wall cell next to the designated one, and the designation marker stays on the original cell.",
+    "expect": "reject: the player must get exactly the chosen mark on the chosen cell; the third is on the wrong cell and its designation stays pending (oracle: painted 3, matched 3, pending 0)",
+    "expect_source": "leaf:player_orders",
+    "by": "examiner"
+  },
+  {
+    "id": "c7",
+    "text": "Over three in-game weeks a colony of six, with no forcing, has graffiti thoughts that rise and fall with events and clear between them, and mocking-mark and raid letters arrive only a few times a week. Every recreation tag a colonist paints also posts a message in the corner, several a day.",
+    "expect": "reject: no message stream; messages must be few per week across all Graffiti kinds, and counting only one kind is a named false_pass",
+    "expect_source": "leaf:stories_not_tax",
+    "by": "examiner"
+  },
+  {
+    "id": "c8",
+    "text": "An outdoor wall carries a mark painted months ago that is still at full colour. Ordinary marks painted near it at the same time faded and disappeared long ago. The mark's def is flagged permanent.",
+    "expect": "accept: marks weather and fade unless permanent; the oracle states permanent never fades",
+    "expect_source": "leaf:weathering_bounds_marks",
+    "by": "examiner"
+  },
+  {
+    "id": "n1",
+    "text": "A colonist stands just north of an east-west wall, with open floor on her other sides, and paints during a spree. Afterwards a thin band of her colours runs along the top edge of that wall, a narrow lip on the rim nearest her, and the cell's inspect panel lists it as a painted mark.",
+    "expect": "reject: a wall's far side carries no paint; a mark on a wall's far side drawn as a lip passing as painted is the listed false pass",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "n2",
+    "text": "The player uses the graffiti designator on a floor cell whose only neighbouring wall is directly south of it. A colonist walks there, paints, and a tag appears on that wall's north side, the side away from the camera.",
+    "expect": "reject: a cell whose only wall is south of it, the far side, gets no mark from a paint order",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "n3",
+    "text": "A bored colonist picks wall painting for recreation and chooses a spot in a storeroom cell whose only wall is south of it. When she finishes, a new scrawl is on that south wall.",
+    "expect": "reject: a cell whose only wall is south of it gets no mark from a pool pick; a wall's far side carries no paint",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "n4",
+    "text": "A mockery of Alice is run in four set-ups, one per answer. The scrub, cross-out and confrontation each play out and finish. In the reply set-up, Carla gets a thought and the mod log records that she replied, but no pawn ever walks to the wall and after two days no reply is painted anywhere.",
+    "expect": "reject: every one of the four answers must run as a job to completion; a reply logged with no job run is the listed false pass",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "n5",
+    "text": "In the cross-out set-up, Carla walks to the mockery of Alice, works at it for a while and leaves; her job history shows the job finished, but the mark looks exactly as it did and its inspect panel shows no change.",
+    "expect": "reject: the answer's job must change the mark's state to match; a finished cross-out job that leaves the mark untouched does not answer the wall",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "n6",
+    "text": "In the confrontation set-up, an earlier piece by the painter Bob has been painted out. Bob, Alice and Carla all pass the wall over three in-game days; they get thoughts, but nobody ever walks up to anyone over it and no confrontation starts. The scrub, cross-out and reply set-ups each finish.",
+    "expect": "reject: all four answers, including the confront over painted-out work, must run to completion; a confrontation that never happens fails the leaf",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "n7",
+    "text": "In the confrontation set-up, Dave, a colonist who is neither the mark's subject nor her friend and holds no grudge against the painter, walks up to the painter and has words with him; the interaction finishes. Alice and Carla do nothing.",
+    "expect": "reject: each answer must be run by a pawn with a reason; a confrontation by a pawn with no reason does not meet the leaf",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "n8",
+    "text": "A colonist stands in a one-cell gap with a wall to her north and another to her south and paints during a spree. One tag appears on the north wall's face, the face the camera sees, carrying over the crease onto its top; the south wall, including its top edge, stays bare. The player then designates a floor cell whose only wall is south of it, and no mark ever appears there.",
+    "expect": "accept: the mark sits on the front face of the wall north of the painter and climbs onto the top, and a wall's far side, including a cell whose only wall is south of it under a paint order, carries no paint",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "n9",
+    "text": "Over a day of recreation painting, colonists pass many cells whose only wall is south of them; none of those south walls gains a mark. Every new mark that day sits on the face of a wall directly north of where its painter stood, aligned to it and running up over the crease onto the top.",
+    "expect": "accept: each mark is on the front face of the wall north of the painter's cell, climbing onto the top, and a pool pick never marks a wall's far side",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "n10",
+    "text": "A mockery of Alice is run in four set-ups with Alice, her friend Carla and the painter Bob present. Carla scrubs it clean; in the next, Carla crosses it out and the cross-out shows; in the next, Carla paints a reply beside it; in the last, with an earlier piece of Bob's painted out, Alice confronts Bob over it and the exchange ends. Each pawn's job history shows the job finished at that wall. A plain tag nobody is offended by, left on the same wall, gets no answer in any set-up.",
+    "expect": "accept: all four answers (scrub, cross-out, reply, confront over painted-out work) run to completion by a pawn with a reason and the mark's state changes to match; an inoffensive mark gets no answer",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "x1",
+    "text": "Close-up after a spree. A painter stood in a cell with a wall directly east of it and no wall to the north. A neat tag now runs along the thin vertical strip of that east wall's top, aligned with the wall, crisp and clearly on the wall rather than on the floor. Every other mark in the lane sits on a north wall's face.",
+    "expect": "reject: a wall seen edge-on carries no paint; a cell whose only wall is edge-on gets no mark",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "x2",
+    "text": "A paint order is placed on a floor cell whose only adjacent wall is directly south of it. The pawn paints; the mark shows as a thin coloured band along the top edge of that south wall, hugging the wall, not over the floor. It looks tidy and wall-bound.",
+    "expect": "reject: a wall's far side carries no paint; a cell whose only wall is south of it gets no mark from a paint order",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "x3",
+    "text": "Close-up of a north wall lane. Each mark is aligned to its wall's front face and sits fully on that face, but every one stops at the crease; none extends up onto the wall top. Nothing touches the floor.",
+    "expect": "reject: the mark must climb over the crease onto the wall top",
+    "expect_source": "leaf:sits_on_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "x4",
+    "text": "Cross-out sub-case: a friend of the mockery's subject walks to the wall, a deface job runs to completion beside the mark, and when it ends the mockery is simply gone from the cell; no crossed-out mark remains. The scrub, reply and confront sub-cases all finish visibly.",
+    "expect": "reject: the mark's state must change to match the answer (a cross-out, not a removal)",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "x5",
+    "text": "Scrub, cross-out and reply each run to completion by a pawn at the wall. A confrontation with the painter is seen and completes in a run where the painter's earlier work still stands. In the run where the painter's earlier work has been painted out, no confrontation ever starts before the test ends.",
+    "expect": "reject: all four answers must complete, including a confront over painted-out work",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "x6",
+    "text": "Scrub sub-case: the message log reads that the subject scrubbed the mockery and the mark is gone from the wall. Reviewing the tick record, the subject never left the dining room and no cleaning job was ever started.",
+    "expect": "reject: each answer must be a job run to completion by a pawn at the wall, not logged with no job and the mark vanishing with no pawn at it",
+    "expect_source": "leaf:answer_wall",
+    "by": "examiner"
+  },
+  {
+    "id": "x7",
+    "text": "A psychopath, an ordinary colonist and a sensitive colonist all view the same skilled mockery. The ordinary viewer gets the def's mood value, the sensitive viewer a larger one in both directions, and the psychopath's needs tab lists the graffiti thought at +0 mood.",
+    "expect": "reject: the psychopath must hold no mark thought, not a zero or smaller one",
+    "expect_source": "leaf:temperament",
+    "by": "examiner"
+  },
+  {
+    "id": "x8",
+    "text": "Faction A left exit marks; a letter named A and its camera jump landed on an A mark; A's next raid came larger than B's at the same points. A colonist then scrubbed all but one A mark; the last one later faded out by weathering. A's next raid still arrived larger than B's. In a separate run where the last A mark was scrubbed by hand, A's next raid matched B's.",
+    "expect": "reject: the push must lift once the last mark is scrubbed or weathered away",
+    "expect_source": "leaf:raider_pressure",
+    "by": "examiner"
+  },
+  {
+    "id": "n11",
+    "text": "One colonist paints a vandal scrawl and a tally side by side on a hallway wall. At play zoom the scrawl is a clashing tangle of drips and smears beside the tally's neat strokes, and inspecting both shows the scrawl with lower beauty than the tally.",
+    "expect": "accept: the scrawl looks worse at a glance and, painted by the same hand, also inspects as uglier, so the stat and the picture agree",
+    "expect_source": "leaf:ugliness_visible",
+    "by": "examiner"
+  },
+  {
+    "id": "n12",
+    "text": "One colonist paints a vandal scrawl and then a tally on the same wall. On screen the scrawl is plainly the messier picture, but the two inspect panels show exactly the same beauty.",
+    "expect": "reject: when the same hand painted both, the scrawl must also inspect as uglier; a scrawl uglier only in its def while the same hand's pair inspect alike is the listed false pass",
+    "expect_source": "leaf:ugliness_visible",
+    "by": "examiner"
+  },
+  {
+    "id": "n13",
+    "text": "A colonist paints a vandal scrawl and a tally on one wall. The scrawl's inspect panel shows it as the uglier of the two, yet on screen it is the cleaner, bolder picture and the tally is the one that looks like a mess.",
+    "expect": "reject: the stat and the picture must agree; the uglier-inspecting mark having the cleaner picture is the leaf's red",
+    "expect_source": "leaf:ugliness_visible",
+    "by": "examiner"
+  },
+  {
+    "id": "n14",
+    "text": "A vandal scrawl and a tally by the same painter sit next to each other. At play zoom the player cannot tell them apart by quality: both are the same tidy strokes in the same colours. Only the inspect panel shows the scrawl as uglier.",
+    "expect": "reject: the player must see the scrawl look worse at a glance; two marks that look alike with only the stat differing is the listed false pass",
+    "expect_source": "leaf:ugliness_visible",
+    "by": "examiner"
+  },
+  {
+    "id": "n15",
+    "text": "A colonist's route to the mess hall passes a finely painted mural six times a day. By the evening of the first day her needs tab lists six separate copies of the mural's thought at once.",
+    "expect": "reject: the same mark may give its mood effect at most once per day; a thought that stacks per pass is the listed false pass",
+    "expect_source": "leaf:rereads_daily",
+    "by": "examiner"
+  },
+  {
+    "id": "n16",
+    "text": "A colonist's daily route passes a fine mural and, further on, a mockery of her painted by a rival. Over three days she passes both several times a day. Each mark's thought appears on her first look, is renewed at most once a day and never shows two copies; the two marks give two different thoughts, and her opinion of the rival dropped on her first look at the mockery and never moved again.",
+    "expect": "accept: each mark moves her mood at most once per day and its opinion change happens once, on the first read, while a second, different mark gives its own read",
+    "expect_source": "leaf:rereads_daily",
+    "by": "examiner"
+  },
+  {
+    "id": "n17",
+    "text": "A colonist hauls past the same tribute to her friend every few hours. On day two her mood log shows the tribute's thought arriving fresh in the morning and then arriving fresh again in the evening, each time as a new read of the mark.",
+    "expect": "reject: a colonist who keeps passing the same mark gets its mood effect at most once per day; two fresh reads in one day break that",
+    "expect_source": "leaf:rereads_daily",
+    "by": "examiner"
+  },
+  {
+    "id": "n18",
+    "text": "Six colonists each paint a wall lane during a spree. Every lane holds the same throw-up design, the same bubble letters with the same outline in the same place; the lanes differ only in fill colour.",
+    "expect": "reject: the player must see several visibly different kinds of mark, not recolours of one; every lane painting the same variant in different tints is the listed false pass",
+    "expect_source": "leaf:marks_various",
+    "by": "examiner"
+  },
+  {
+    "id": "n19",
+    "text": "A few weeks into a colony, the player looks around: a dense throw-up by the kitchen, a row of tally strokes in the barracks, a jagged scrawl beside the freezer and a framed sigil in the temple. Even where two of them share a colour, each is a different kind of mark at a glance.",
+    "expect": "accept: one colony holds several visibly different kinds of mark, told apart by kind rather than colour",
+    "expect_source": "leaf:marks_various",
+    "by": "examiner"
+  },
+  {
+    "id": "n20",
+    "text": "An ordinary colony of six runs three in-game weeks with nothing forced. By week three every colonist's needs tab permanently carries a handful of small graffiti thoughts from the marks on their daily routes; each is tiny, but together they are a steady dent that never clears, though nothing new has been painted for days.",
+    "expect": "reject: graffiti must never become a permanent mood tax; small thoughts that stack into a standing penalty are the leaf's red",
+    "expect_source": "leaf:stories_not_tax",
+    "by": "examiner"
+  },
+  {
+    "id": "n21",
+    "text": "A tester runs an ordinary colony of six for two in-game days with nothing forced, sees no standing graffiti mood penalty and only two messages, and signs the colony off as story, not tax.",
+    "expect": "reject: the experience is over three in-game weeks of an ordinary colony; a run too short to reach a steady state is the listed false pass",
+    "expect_source": "leaf:stories_not_tax",
+    "by": "examiner"
+  },
+  {
+    "id": "n22",
+    "text": "Three in-game weeks of an ordinary colony of six, nothing forced: in week one a mocking mark starts a quarrel that ends with a reply painted beside it; in week two a raid's tags trouble the colony until they are scrubbed; in week three a grieving colonist paints a memorial. Between those events graffiti barely touches anyone's mood, and the message log shows graffiti only a few times a week.",
+    "expect": "accept: graffiti makes occasional stories across the three weeks, never a permanent mood tax or a stream of messages",
+    "expect_source": "leaf:stories_not_tax",
+    "by": "examiner"
+  },
+  {
+    "id": "n23",
+    "text": "A tester follows an ordinary tag on an outdoor wall. It stays at full colour for its whole life and then, on one tick, is simply gone, with no fading at any point.",
+    "expect": "reject: a mark must visibly fade before it goes; a crisp mark that vanishes in one step skips the fade the leaf asks for",
+    "expect_source": "leaf:weathering_bounds_marks",
+    "by": "examiner"
+  },
+  {
+    "id": "n24",
+    "text": "A raider's throw-up of an ordinary, non-permanent kind sits on an outer wall. Colonists' tags painted the same week on nearby walls faded and disappeared long ago; many in-game months later the throw-up is still at full colour.",
+    "expect": "reject: an ordinary mark must weather and fade, sooner outdoors; marks that never weather, so raid marks last forever, are the leaf's red",
+    "expect_source": "leaf:weathering_bounds_marks",
+    "by": "examiner"
+  },
+  {
+    "id": "n25",
+    "text": "The same colonist paints the same sigil on an open courtyard wall and on a wall inside a roofed temple on the same day. Both stay crisp for most of their lives; the courtyard one then fades and is gone first, and the temple one fades later and goes after it.",
+    "expect": "accept: each mark stays crisp most of its life, then visibly fades before it goes, sooner outdoors than under a roof",
+    "expect_source": "leaf:weathering_bounds_marks",
+    "by": "examiner"
+  },
+  {
+    "id": "n26",
+    "text": "A colonist's tag sits on a corridor wall cell. A raider stops at that cell on the way out and sprays a throw-up there. Afterwards only the throw-up is on the cell; its inspect panel lists one mark, the raider's, and no trace of the colonist's tag remains under or around it.",
+    "expect": "accept: the enemy's throw-up is painted over the colonist's tag on the same cell and the colonist's tag is gone",
+    "expect_source": "leaf:going_over",
+    "by": "examiner"
+  },
+  {
+    "id": "n27",
+    "text": "A colonist's painting spree ends. Her job history lists six finished paint jobs at the corridor wall she stood beside, but the wall is bare: no new mark anywhere along it.",
+    "expect": "reject: after a spree the player must see new marks on the wall where the colonist painted; paint jobs in the log with an empty wall is the listed false pass",
+    "expect_source": "leaf:mark_appears",
+    "by": "examiner"
+  },
+  {
+    "id": "n28",
+    "text": "A colonist breaks into a painting spree in the east corridor. When the spree ends, three new marks stand on the wall beside the cells where she stood painting, and the other corridors, whose colonists never broke, hold no new marks.",
+    "expect": "accept: after the spree the player sees new marks on the wall beside where that colonist painted",
+    "expect_source": "leaf:mark_appears",
+    "by": "examiner"
+  },
+  {
+    "id": "n29",
+    "text": "At normal play zoom a gallery of every mark and variant runs along a lit wall. Most read as deliberate tags, but one tally variant is a pale blur of a few grey pixels; only when the tester zooms far in does it resolve into neat strokes.",
+    "expect": "reject: every face-on mark and variant must read as made on purpose at play zoom; a variant that is a blur at 64 px is the red, and zooming past play zoom is a listed false pass",
+    "expect_source": "leaf:reads_at_play_zoom",
+    "by": "examiner"
+  },
+  {
+    "id": "n30",
+    "text": "At play zoom a scratch mark sits on a wall cell next to a floor cell of vanilla dirt. Asked which is the colony's graffiti, a player cannot tell: both read as the same brown smear of mess.",
+    "expect": "reject: the player must never mistake a mark for vanilla filth at play zoom; a scratch that reads as a mess beside dirt is the red, and its def saying graffiti does not save it",
+    "expect_source": "leaf:not_dirt",
+    "by": "examiner"
+  },
+  {
+    "id": "n31",
+    "text": "A bored colonist with free time beside a bare wall picks painting it as her recreation. Her joy bar fills while she paints, and when she finishes her needs tab shows a small positive thought about the mark she made.",
+    "expect": "accept: painting appears as a recreation activity that fills joy, and the maker gains a small mood buff for making the mark",
+    "expect_source": "leaf:own_fun",
+    "by": "examiner"
+  },
+  {
+    "id": "n32",
+    "text": "A colonist paints a tag during her free time. Her joy bar does not move while she paints, and she gets no thought for making it; a pleased thought appears only later, when she walks past the tag on her way to dinner.",
+    "expect": "reject: the buff must come from making the mark and painting must fill joy; a buff from viewing, not making, is the listed false pass",
+    "expect_source": "leaf:own_fun",
+    "by": "examiner"
+  },
+  {
+    "id": "n33",
+    "text": "A colonist who arrived the week after a death, and never met the dead colonist, paints a memorial to her on the dining room wall. The dead colonist's oldest friend, still grieving, paints nothing.",
+    "expect": "reject: a memorial is painted by a grieving colonist and eases that colonist's grief; a memorial by someone who never knew the dead is the listed false pass",
+    "expect_source": "leaf:tribute_memorial",
+    "by": "examiner"
+  },
+  {
+    "id": "n34",
+    "text": "A colonist grieving a dead friend paints a memorial to her; her grief thought eases after she finishes. Elsewhere, a colonist paints a tribute to his wife: she gets a warm thought when she sees it, and the wife's rival, passing it, gets a jealous thought.",
+    "expect": "accept: a memorial painted by a grieving colonist eases that colonist's grief, and a tribute warms the person it honours and makes a rival jealous",
+    "expect_source": "leaf:tribute_memorial",
+    "by": "examiner"
+  }
+]

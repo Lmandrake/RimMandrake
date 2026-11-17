@@ -1,6 +1,5 @@
 {
  "aliases": [],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 4; that look was not_covered; judging stopped on Graffiti (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -292,72 +291,51 @@
     "tokens": 249669
    },
    {
-    "at": "2026-11-17T17:34:03Z",
+    "at": "2026-11-17T17:40:54Z",
     "kind": "helper",
-    "ref": "exam retake 2026-11-17 examiner ac3c67d5443415760",
-    "stage": 5,
-    "tokens": 46828
+    "ref": "challenger-a7d89f986c4bed0d9",
+    "stage": 4,
+    "tokens": 41225
    },
    {
-    "at": "2026-11-17T17:34:03Z",
+    "at": "2026-11-17T17:43:01Z",
     "kind": "helper",
-    "ref": "exam retake 2026-11-17 challenger a58da593fffbb225e",
-    "stage": 5,
-    "tokens": 41120
+    "ref": "examiner-aa470472401b19a22",
+    "stage": 4,
+    "tokens": 59108
    },
    {
-    "at": "2026-11-17T17:34:03Z",
+    "at": "2026-11-17T17:53:28Z",
     "kind": "helper",
-    "ref": "exam retake 2026-11-17 reader af3fa14e0ca328e02",
-    "stage": 5,
-    "tokens": 45183
+    "ref": "reader-ae05a6c44b077611c",
+    "stage": 4,
+    "tokens": 56507
    },
    {
-    "at": "2026-11-17T17:34:03Z",
+    "at": "2026-11-17T17:53:28Z",
     "kind": "helper",
-    "ref": "exam retake 2026-11-17 reader ad97530ae3cf03d3e",
-    "stage": 5,
-    "tokens": 44481
+    "ref": "reader-a1892d6ae8d256cfa",
+    "stage": 4,
+    "tokens": 52363
    },
    {
-    "at": "2026-11-17T17:34:03Z",
+    "at": "2026-11-17T17:53:28Z",
     "kind": "helper",
-    "ref": "exam retake 2026-11-17 control reader aca14241be5546dac",
-    "stage": 5,
-    "tokens": 44686
+    "ref": "control-ad10c47018473a156",
+    "stage": 4,
+    "tokens": 56193
    },
    {
-    "at": "2026-11-17T17:38:31Z",
-    "kind": "review",
-    "ref": "rm-coverage-judge-1794936862",
-    "stage": 5,
-    "tokens": 394714
-   },
-   {
-    "at": "2026-11-17T17:39:51Z",
-    "kind": "review",
-    "ref": "rm-coverage-judge-1794936862",
-    "stage": 5,
-    "tokens": 498219
-   },
-   {
-    "at": "2026-11-17T17:40:08Z",
-    "kind": "review",
-    "ref": "rm-coverage-judge-1794936862-reader",
-    "stage": 5,
-    "tokens": 120538
+    "at": "2026-11-17T17:55:18Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794936995",
+    "stage": 4,
+    "tokens": 1033663
    }
   ],
   "reserve": 60000,
-  "spent": 10458933
+  "spent": 10522223
  },
- "coverage_releases": [
-  {
-   "at": "2026-11-17T17:34:10Z",
-   "rounds_at": 3,
-   "why": "steward RIMMANDRAKE_RETAKE_GRAFFITI_EXAM_AFTER_LOCKED_CHANGE: locked change of 2026-11-17T17:26:00Z (oracle/experience rewording by card, re-pinned); Cold Reader exam retaken 46/46 on tree e6507f3b, control on going_over missed e12/e13; the one coverage look the chain owes"
-  }
- ],
  "coverage_rounds": [
   {
    "at": "2026-11-15T08:21:51Z",
@@ -435,30 +413,8 @@
    "tokens": 276361,
    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d",
    "verdict": "covered"
-  },
-  {
-   "at": "2026-11-17T17:34:22Z",
-   "error": null,
-   "gaps": 2,
-   "ids": [
-    "marks_various",
-    "stories_not_tax"
-   ],
-   "judge": "rm-coverage-judge-1794936862",
-   "late": [],
-   "tags": {
-    "changed": 1,
-    "regression": 1
-   },
-   "tokens": 892933,
-   "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894",
-   "verdict": "not_covered"
   }
  ],
- "coverage_stop": {
-  "at": "2026-11-17T17:40:09Z",
-  "why": "released for one more look at round 4; that look was not_covered"
- },
  "history": [
   {
    "at": "2026-11-15T04:54:02Z",
@@ -773,21 +729,39 @@
    "why": "repair (RIMMANDRAKE_UNLOCK_REPIN_VOIDED_EXAM_NEXT_OPEN_REFUSED, d2a3509a53): the re-pin of 2026-11-17 voided stage 4's exam on a locked concept and left it locked, so no open or chain could retake it; unlocked for the retake as the fixed repin does, stage 5 locks it again; sources as the re-pin above"
   },
   {
-   "at": "2026-11-17T17:34:10Z",
-   "stage": 5,
-   "what": "coverage_release",
-   "why": "steward RIMMANDRAKE_RETAKE_GRAFFITI_EXAM_AFTER_LOCKED_CHANGE: locked change of 2026-11-17T17:26:00Z (oracle/experience rewording by card, re-pinned); Cold Reader exam retaken 46/46 on tree e6507f3b, control on going_over missed e12/e13; the one coverage look the chain owes"
+   "at": "2026-11-17T17:36:45Z",
+   "stage": 4,
+   "what": "invalidated",
+   "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes, owner; back to stage 4 (his new words to take in: OWNER:1794790746864442914, OWNER:1794790752285697966, OWNER:1794790788426165373, OWNER:1794790829027694796)"
   },
   {
-   "at": "2026-11-17T17:40:09Z",
+   "at": "2026-11-17T17:36:45Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "9223164 of 4000000 spent; run rm-role-designer-1794936995 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T17:36:45Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run rm-role-designer-1794936995, stage 4, budget 400000"
+  },
+  {
+   "at": "2026-11-17T17:55:18Z",
    "stage": 5,
-   "what": "coverage_stop",
-   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 4; that look was not_covered; judging stopped on Graffiti (coverage_judge.py release <dir> --why ... grants one more look)"
+   "what": "close",
+   "why": "run rm-role-designer-1794936995: stage 4 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
  "loop_since": "2026-11-15T13:47:00Z",
  "mod": "Graffiti",
+ "must_cite": [
+  "1794790746864442914",
+  "1794790752285697966",
+  "1794790788426165373",
+  "1794790829027694796"
+ ],
  "parks": [
   {
    "at": "2026-11-15T09:32:10Z",
@@ -1049,52 +1023,6 @@
    "summary": "Stage 3 Write accepted as it stands: Gate A lint PASS; showcase set accepted (spree_corridor 5 new, social_wall 4 new at 0.20 overlap with its staging reason, after_the_raid 3 new, devout_wall 3 new). The return note's 24 round-1 gaps of rm-coverage-judge-1794730911 were fixed at 09:06Z (run rm-role-designer-1794732988); the last verdict on disk, rm-coverage-judge-1794734941, left 2 gaps (inv_player_orders in after_the_raid; the far-side wall case), both reworked and claimed in coverage_fixes.json against that judge (sc_spree_corridor's skilled piece is a script-forced job; sc_wall_closeup gains a south-only cell and far-side control, pending RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL). A fix file against 1794730911 would be refused by coverage_judge.fix_claims as stale, so it was not rewritten. System fault filed: RIMMANDRAKE_CLEAR_PENDING_DECISION_ON_ACCEPT_ROUND_ONE_LINGERS (stage.json pending_decision is never cleared). Budget past cap (7.44M of 4.0M); raising it is the Conductor's call."
   },
   {
-   "at": "2026-11-15T14:42:49Z",
-   "inputs": {
-    "exam": "a0d1bb4d4af3f5676af559be2de09308a6302b452ce3a835608d4a502f092721",
-    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": "ea5474f3adc9f2e8396926a293a7dc384af5fe5e316454d497e2b7a727a2b3a3",
-    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
-    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d"
-   },
-   "manifest": {
-    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
-    "designer_exam.md": "9892f91253ca15581c15f6f64d211a2275f345d0e13e0200dcda9c9f8004e07a"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "quick_look": {
-    "offer": false,
-    "why": "no owner question is proposed; the next step is Lock"
-   },
-   "run": "rm-role-designer-1794753189",
-   "stage": 4,
-   "summary": "Stage 4 Exam PASS against the reworked tree (a6eedf87) and unchanged sheet (40637a73): 82/82 frozen scenarios (63 previous kept, e27 rewritten to answer_wall's four sub-cases, 10 new examiner on the far-side lip and pool-pick control and the four answers, 8 challenger; 60 reject cases) matched by both fresh Readers; accept_where_reject_core 0; no challenger miss; control on going_over missed e8 and e19. Helpers charged 247679 tokens; the task is past its cap (7.98M of 4.0M), raising it is the Conductor's call.",
-   "voided": [
-    {
-     "at": "2026-11-17T17:10:10Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes",
-      "owner"
-     ],
-     "sources": [
-      "OWNER:1794842055508243067@d1542a3675",
-      "OWNER:1794889675303725702@1bee0c2e96",
-      "OWNER:1794771556666342734@68f199064a",
-      "OWNER:1794790746864442914",
-      "OWNER:1794790752285697966",
-      "OWNER:1794790788426165373",
-      "OWNER:1794790829027694796"
-     ],
-     "why": "its exam ran against another tree or sheet: retake it"
-    }
-   ]
-  },
-  {
    "at": "2026-11-15T14:53:08Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1794753910",
@@ -1113,49 +1041,37 @@
    ]
   },
   {
-   "at": "2026-11-15T15:11:19Z",
+   "at": "2026-11-17T17:36:45Z",
+   "outcome": "invalidated",
+   "stage": 4,
+   "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes, owner; back to stage 4 (his new words to take in: OWNER:1794790746864442914, OWNER:1794790752285697966, OWNER:1794790788426165373, OWNER:1794790829027694796)"
+  },
+  {
+   "at": "2026-11-17T17:55:18Z",
    "inputs": {
-    "exam": "a0d1bb4d4af3f5676af559be2de09308a6302b452ce3a835608d4a502f092721",
+    "exam": "d2eafd2f45adc568544b32b44a3412f07fff492acfe189d46b733994a41e674d",
     "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
     "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": "ea5474f3adc9f2e8396926a293a7dc384af5fe5e316454d497e2b7a727a2b3a3",
+    "scenes": "dfd1eeeae40599754299b0df6b64edeae1681437a476139a74d9c0c44c7d2a72",
     "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
     "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894"
    },
    "manifest": {
-    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
-    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
+    "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
    },
    "outcome": "done",
    "owner_uncited": [],
-   "repinned": [
-    {
-     "at": "2026-11-17T17:10:10Z",
-     "inputs": [
-      "tree",
-      "sheet"
-     ],
-     "sources": [
-      "OWNER:1794842055508243067@d1542a3675",
-      "OWNER:1794889675303725702@1bee0c2e96",
-      "OWNER:1794771556666342734@68f199064a",
-      "OWNER:1794790746864442914",
-      "OWNER:1794790752285697966",
-      "OWNER:1794790788426165373",
-      "OWNER:1794790829027694796"
-     ]
-    }
-   ],
-   "run": "rm-role-designer-1794755317",
-   "stage": 5,
-   "summary": "Lock retry after 9eb814c040 (Lock gate reads the concept's own clone; on origin/main). Coverage judge rm-coverage-judge-1794753924 signed tree a6eedf87 / sheet 40637a73 (covered, 0 gaps; rounds 24, 2, 0); the signature is on the BENCH ledger shard locally and on origin/main. concept_tree gate PASS in this clone; showcase set accepted (spree_corridor 5 new, social_wall 4 new at 0.20, after_the_raid 3 new, devout_wall 3 new). Mod item RIMMANDRAKE_FINISH_GRAFFITI_AGAINST_TREE_BUILT_BEFORE_IT (kind mod) is filed with ## verify citing design/concepts/Graffiti/tree.json and the accepted hash. Frozen artifacts unchanged. Still owed, not counted by the judge: record.json inv_mark_on_wall proof 'current' overstates the far-side clause until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL lands. Budget past cap (8.97M of 4.0M); raising it is the Conductor's call."
+   "run": "rm-role-designer-1794936995",
+   "stage": 4,
+   "summary": "Cold Reader exam retaken on tree e6507f3b / sheet 26a15750 after the re-pin voided the 2026-11-15 exam: 122 scenarios (106 examiner: 74 kept, 8 rewritten off numbers the tree no longer states, 24 new on the reworded leaves and untested ones; 16 challenger), both Readers 122/122, accept_where_reject_core 0, no challenger misses; control (going_over removed) missed e8 and e19. The four OWNER card-backfill events (1794790746864442914, 1794790752285697966, 1794790788426165373, 1794790829027694796) restate cards already recorded and are cited in record.json; nothing new to design. The old coverage-fix decision was settled at the 2026-11-15 lock; the coverage judge's one look on the new tree is stage 5's."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "blocked",
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
