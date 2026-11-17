@@ -2,6 +2,7 @@
  "aliases": [
   "PYRELANDS"
  ],
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: the final look (granted 2026-11-17T18:24:41Z, after RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES, RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED, RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS, RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS) at round 11 was not_covered: the owner's to decide; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -734,10 +735,31 @@
     "ref": "run bench-pyre-exam-st4-r9-20261117",
     "stage": 4,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-17T20:12:04Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794946219",
+    "stage": 5,
+    "tokens": 254241
+   },
+   {
+    "at": "2026-11-17T20:12:26Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794946219",
+    "stage": 5,
+    "tokens": 277545
+   },
+   {
+    "at": "2026-11-17T20:13:42Z",
+    "kind": "stage",
+    "ref": "run bench-pyre-cov-st5-r10-20261117",
+    "stage": 5,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 19229128
+  "spent": 19760914
  },
  "coverage_releases": [
   {
@@ -977,8 +999,30 @@
    "tokens": 1321247,
    "tree": "c1b1d874f8b1855f4308b54067d17a2ad1bcc207f539f525f2d1cbdcbeacff08",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-17T20:10:19Z",
+   "error": null,
+   "gaps": 3,
+   "ids": [
+    "burn_line_walks",
+    "fire_walks_with_wind",
+    "inv_burn_line_fire_clock"
+   ],
+   "judge": "rm-coverage-judge-1794946219",
+   "late": [],
+   "tags": {
+    "unfixed": 3
+   },
+   "tokens": 531786,
+   "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1",
+   "verdict": "not_covered"
   }
  ],
+ "coverage_stop": {
+  "at": "2026-11-17T20:12:27Z",
+  "why": "the final look (granted 2026-11-17T18:24:41Z, after RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES, RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED, RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS, RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS) at round 11 was not_covered: the owner's to decide"
+ },
  "history": [
   {
    "at": "2026-11-05T07:14:34Z",
@@ -1759,6 +1803,18 @@
    "stage": 5,
    "what": "open",
    "why": "run bench-pyre-cov-st5-r10-20261117, stage 5, budget 3940000"
+  },
+  {
+   "at": "2026-11-17T20:12:27Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: the final look (granted 2026-11-17T18:24:41Z, after RIMMANDRAKE_MEASURE_PYRE_BURNED_SHARE_FLOOD_ALSO_MOVES, RIMMANDRAKE_REVERSE_PYRE_WIND_BEARING_ONE_DIRECTION_STAGED, RIMMANDRAKE_CORRECT_PYRE_STALE_TEXT_THREE_ADVISORY_LEFTOVERS, RIMMANDRAKE_REPIN_PYRE_AFTER_ROUND_NINE_GAPS) at round 11 was not_covered: the owner's to decide; judging stopped on Pyrelands (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-17T20:13:42Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run bench-pyre-cov-st5-r10-20261117 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -2281,36 +2337,21 @@
    "run": "bench-pyre-exam-st4-r9-20261117",
    "stage": 4,
    "summary": "Cold Reader exam retaken on the tree and sheet as re-pinned for the locked change of 2026-11-17T19:49:53Z (round-9 gap fixes 314117207e, c07cd5a998, c1564dea9c; re-pin f00e3ad737): 40 frozen scenarios (Examiner aa81345c846acbccb e1-e32, Challenger a38265bfec3640110 c1-c8; 23 rejects), Readers a8df6ea0288f94114 and a682832acb7f2183e agree on all 40, 40/40, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with fire_walks_with_wind removed (a68e1a33a4f8efa28) accepted e5 and c3, wind rejects both Readers caught, so the set discriminates. exam.json carries it."
+  },
+  {
+   "at": "2026-11-17T20:13:42Z",
+   "outcome": "rejected",
+   "run": "bench-pyre-cov-st5-r10-20261117",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
- "running": {
-  "at": "2026-11-17T20:09:43Z",
-  "inputs": {
-   "exam": "4de0b1a14538602f7719b948f67e1c2d15b461d23592c9cc45d55a35051d2e15",
-   "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-   "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
-   "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-   "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
-   "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
-   "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1"
-  },
-  "manifest": {
-   "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
-   "designer_lock.md": "77466999512905580bff43830764ab0c7a1d817973e1f6f6d0704060dd199351"
-  },
-  "owner_uncited": [
-   "1793766816609436834",
-   "1794611171307640419",
-   "1794790810777772480",
-   "1794790871101885625"
-  ],
-  "reserved": 3940000,
-  "run": "bench-pyre-cov-st5-r10-20261117",
-  "stage": 5
- },
+ "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
