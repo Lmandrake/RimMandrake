@@ -18,3 +18,12 @@ Acceptance test: none, a bar re-pin is the steward's and the neutral fixer's cal
 
 ## criteria
 - ugliness_visible names no stat value and is checked on the beauty a player inspects.
+
+## What the card said
+
+<!-- answered 2026-11-17T04:23:54Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** Mon Nov 16, 8:22 PM PST. Graffiti is held on one bar's wording, and only you can change a bar. The bar says a vandal scrawl must look worse than a tally mark, and its test checks two fixed beauty numbers written in the mod's definitions (-15 and -3). The judge found two faults. First, the game never shows those numbers for a painted mark: the beauty a player sees when inspecting a wall comes from the painter's skill, so a scrawl and a tally by the same poor painter read identical (-6 and -6). Second, your ruling this morning says a bar is an experience, never a tuning number. Every judge cycle will reopen this until the bar is reworded. How should the ugliness bar read?
+**Picked:** Look and stat agree (Recommended)
+**Its description:** Why: a player trusts both eyes and the inspect line. The bar says a scrawl looks worse than a tally AND inspects as uglier when the same hand made both, with no numbers named. Costs a small code change so a scrawl always reads uglier. Recommended because it keeps the bar's meaning and obeys your no-numbers ruling.
+**Other options:** Picture only · Inspected stat only · Keep it as written
