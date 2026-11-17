@@ -8592,3 +8592,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-17T21:51:59Z","tsn":1794952319815835664}
 {"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"broken","detail":"Ops alarm QUEUE_STALLED: queues.designer.stalled_min = 62.4 min pending > 0 with no claim, finish or heartbeat (MEASURED), line > 60","ts":"2026-11-17T21:54:23Z","tsn":1794952463951776327}
 {"seat":"RUNNER","event":"raise","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-17T21:54:29Z","tsn":1794952469809949198}
+{"seat":"RUNNER","event":"live","id":"OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV","result":"kept","detail":"sweep: running again","ts":"2026-11-17T22:03:05Z","tsn":1794952985945171206}
