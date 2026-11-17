@@ -54,6 +54,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_maturation_autonomy.py", "seconds": 36.3},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_dispatch.py", "seconds": 73.3},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_hands.py", "seconds": 0.1},
+    {"test": "src/RimMandrake/rimflow/selftest_maturation_next_dispatch.py", "seconds": 1.2},
     {"test": "src/RimMandrake/rimflow/selftest_red_dispatch.py", "seconds": 0.3},
     {"test": "src/RimMandrake/rimflow/selftest_refusal_contract.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_seat_restart.py", "seconds": 5.2},
