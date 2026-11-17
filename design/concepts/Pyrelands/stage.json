@@ -755,10 +755,24 @@
     "ref": "run bench-pyre-cov-st5-r10-20261117",
     "stage": 5,
     "tokens": 0
+   },
+   {
+    "at": "2026-11-17T20:35:08Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794947629",
+    "stage": 5,
+    "tokens": 194452
+   },
+   {
+    "at": "2026-11-17T20:40:58Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794947616",
+    "stage": 5,
+    "tokens": 489755
    }
   ],
   "reserve": 60000,
-  "spent": 19760914
+  "spent": 20445121
  },
  "coverage_releases": [
   {
@@ -1021,6 +1035,18 @@
    "tokens": 531786,
    "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-17T20:33:49Z",
+   "error": null,
+   "gaps": 0,
+   "ids": [],
+   "judge": "rm-coverage-judge-1794947629",
+   "late": [],
+   "tags": {},
+   "tokens": 194452,
+   "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1",
+   "verdict": "covered"
   }
  ],
  "history": [
@@ -1821,6 +1847,30 @@
    "stage": 5,
    "what": "coverage_release",
    "why": "delegated: evidence-for-ask: round 11 was not_covered only on three carried gaps the judge itself marked answered; fix claims now filed; one more look. Judgement built into the pipeline by d8c89feab2 (steward brief files fix claims before the look), item RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_THREE"
+  },
+  {
+   "at": "2026-11-17T20:33:48Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "19760914 of 4000000 spent; run rm-role-designer-1794947616 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T20:33:48Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794947616, stage 5, budget 400000"
+  },
+  {
+   "at": "2026-11-17T20:35:15Z",
+   "stage": 5,
+   "what": "program_rejected",
+   "why": "run rm-role-designer-1794947616: the program's result was rejected (gate: tree cites a root hash that is not the walk's); the Designer runs"
+  },
+  {
+   "at": "2026-11-17T20:40:59Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1794947616: stage 5 return"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1849,6 +1899,7 @@
    "why": "the judge-and-rework loop has spent 11220115 tokens since 2026-11-15T06:01:06Z, past its ceiling of 8000000 (2x the cap)"
   }
  ],
+ "pending_decision": "root hash restamp: the walk's north star was re-validated on his words 2026-11-16 (OWNER:1794894282613045211, d_burn_line_natural_grassfire; validated-hash 6ad3da0a6e44, commit 8e22c23799), but tree.json still cites root_hash 1a7028c5ef0a (later stage-3 reworks hand-edited the tree instead of running `write`), so `concept_tree.py gate` refuses 'tree cites a root hash that is not the walk's' although coverage judge rm-coverage-judge-1794947629 returned covered (0 gaps). Stage 3: run `concept_tree.py write` to restamp root_hash/root_state from the walk with no other change to leaves, sheet, scenes or floor; the stage-3 lint now refuses this (RIMMANDRAKE_LINT_STALE_ROOT_HASH_BEFORE_THE_JUDGE_SIGNS). Then re-pin the exam and give the coverage judge the one-entry delta (root_hash only).",
  "recovery": [],
  "results": [
   {
@@ -2352,12 +2403,40 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-17T20:40:58Z",
+   "decision": "root hash restamp: the walk's north star was re-validated on his words 2026-11-16 (OWNER:1794894282613045211, d_burn_line_natural_grassfire; validated-hash 6ad3da0a6e44, commit 8e22c23799), but tree.json still cites root_hash 1a7028c5ef0a (later stage-3 reworks hand-edited the tree instead of running `write`), so `concept_tree.py gate` refuses 'tree cites a root hash that is not the walk's' although coverage judge rm-coverage-judge-1794947629 returned covered (0 gaps). Stage 3: run `concept_tree.py write` to restamp root_hash/root_state from the walk with no other change to leaves, sheet, scenes or floor; the stage-3 lint now refuses this (RIMMANDRAKE_LINT_STALE_ROOT_HASH_BEFORE_THE_JUDGE_SIGNS). Then re-pin the exam and give the coverage judge the one-entry delta (root_hash only).",
+   "inputs": {
+    "exam": "4de0b1a14538602f7719b948f67e1c2d15b461d23592c9cc45d55a35051d2e15",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1"
+   },
+   "manifest": {
+    "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
+    "designer_lock.md": "77466999512905580bff43830764ab0c7a1d817973e1f6f6d0704060dd199351"
+   },
+   "outcome": "return",
+   "owner_uncited": [
+    "1793766816609436834",
+    "1794611171307640419",
+    "1794790810777772480",
+    "1794790871101885625"
+   ],
+   "run": "rm-role-designer-1794947616",
+   "stage": 5,
+   "summary": "Coverage is covered and the showcase set is accepted, but the gate refuses one thing: a stale root hash after the 2026-11-16 re-validation. Not rewritten here (the lock packet forbids changing frozen artifacts). Filed and fixed the pipeline hole that let exam and judge pass an ungateable tree: lint now checks the root hash (RIMMANDRAKE_LINT_STALE_ROOT_HASH_BEFORE_THE_JUDGE_SIGNS). The same check finds FlowWorks, Graffiti and PyrelandsMechanics stale too.",
+   "to": 3
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520"
 }
