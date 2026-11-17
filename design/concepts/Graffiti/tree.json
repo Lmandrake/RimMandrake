@@ -230,7 +230,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "a judge shown the pair unlabelled picks the scrawl as uglier; control: the beauty stats read -15 and -3 from the defs",
+   "oracle_proposed": "a judge shown the pair unlabelled picks the scrawl as uglier; control: one colonist paints a scrawl and a tally at each craft the hand can roll, and at every one the scrawl inspects as uglier than the tally",
    "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -241,12 +241,13 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "preserve",
-   "experience": "At a glance the player sees a Beauty -15 vandal scrawl look worse than a Beauty -3 tally, so the stat and the picture agree.",
+   "experience": "At a glance the player sees a vandal scrawl look worse than a tally, and when the same hand painted both the scrawl also inspects as uglier, so the stat and the picture agree.",
    "scenario": "Beauty pair: a vandal scrawl and a tally mark side by side on one wall, 64 px.",
    "false_pass": [
-    "the two marks look alike and only the stat differs"
+    "the two marks look alike and only the stat differs",
+   "the scrawl is uglier only in its def, while the same hand's scrawl and tally inspect alike"
    ],
-   "red": "a build where the uglier stat has the cleaner picture",
+   "red": "a build where a scrawl inspects no uglier than a tally by the same hand, or the uglier-inspecting mark has the cleaner picture",
    "tier_proposed": "live_minimal",
    "owner_part": "no"
   },

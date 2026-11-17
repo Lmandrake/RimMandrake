@@ -8,9 +8,9 @@ Lock commit: `9c13eeab55600faa1716147d216e85060e34a9b0` (origin/main when the ve
 
 | file | git blob at the lock commit | role |
 |---|---|---|
-| `design/concepts/Graffiti/tree.json` | `c998ae8d68789695a67155e1e67085a4ac1ecc59` | the leaves: each is an acceptance criterion with its scenario, false passes and red |
+| `design/concepts/Graffiti/tree.json` | `53825eb82abeda0b1a289a07475d9ebf544b684b` | the leaves: each is an acceptance criterion with its scenario, false passes and red (re-pinned 2026-11-16 on his card "How should the ugliness bar read? → Look and stat agree", OWNER:1794889675303725702: was `c998ae8d68`; ugliness_visible reworded to name no stat value: a scrawl looks worse than a tally and inspects as uglier when the same hand made both) |
 | `design/concepts/Graffiti/sheet.md` | `701164233b3e77ba5a155d84edc6e8e24109ffda` | his plain-words sheet: does, does not, his words |
-| `design/concepts/Graffiti/scenes.json` | `26cdc34d4b3f40bb30aa2048986c3d9a8c7a81f4` | the acceptance scenes and showcases the leaves are proven by (re-pinned 2026-11-15 at Stage 2: was `31ef2c4933`; 68f199064a replaced sc_wall_closeup's "expected fail until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL lands" control with the landed fix's concrete read, live row A9; test text, no bar changed) |
+| `design/concepts/Graffiti/scenes.json` | `aa63410d747326fc730a24183fdb82bbcf21d3bf` | the acceptance scenes and showcases the leaves are proven by (re-pinned 2026-11-15 at Stage 2: was `31ef2c4933`; 68f199064a replaced sc_wall_closeup's "expected fail until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL lands" control with the landed fix's concrete read, live row A9; test text, no bar changed); re-pinned again 2026-11-16 on the same card: was `26cdc34d4b`; sc_beauty_pair's control reads the same hand's scrawl inspecting uglier than its tally at every craft, not the defs' -15 and -3 |
 | `design/concepts/Graffiti/floor.json` | `feb11a00b4875596c90cf3b4b57b111ffd9759db` | the quality floor lines every mod meets |
 | `design/concepts/Graffiti/exam.json` | `a5b671a4fac30e79e317af7af408cb59d580782a` | the Cold Reader exam of tree and sheet (82/82) |
 | `design/concepts/Graffiti/record.json` | `888c874efb9dc9d99937bcf4f39fb129f7b68653` | the inventory of built capabilities (checklist rows too) and the root he approved |

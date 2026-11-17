@@ -89,6 +89,12 @@ off("T_MSG_COUNTERS_RESET", "src/RimMandrake/Utils/selftest_graffiti_message_cou
     new=True, item="RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME",
     symbols=["GraffitiSocial"])
 
+off("T_UGLINESS_OFFLINE", "src/RimMandrake/Utils/selftest_graffiti_ugliness.py",
+    "a same-hand scrawl inspects uglier than a tally at every craft, fresh and crossed out (MarkBeauty); craft counts in "
+    "every form; the Beauty stat and both inspect lines read NetBeauty; mutants go red (owner by card 2026-11-16)",
+    [GRF + "/Source/Kernel/RM_GraffitiKernel.cs", GRF + "/Source/Filth_Mark.cs", GRF + "/Source/StatPart_GraffitiCraft.cs",
+     GRF + "/Source/WallInspectPatch.cs"],
+    item="RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS", symbols=["RM_GraffitiKernel", "GraffitiForm"])
 
 # ---- live tests: one per scene (stage 6) ----
 def why_game_for(sc):
@@ -157,7 +163,7 @@ B = [
     ("punk_register", ["sc_gallery"], ["LOOK_STAGE8"]),
     ("no_english", ["sc_gallery"], ["T_LINT", "LOOK_STAGE8"]),
     ("not_dirt", ["sc_gallery"], ["LOOK_STAGE8"]),
-    ("ugliness_visible", ["sc_beauty_pair"], ["sc_spree_corridor", "sc_walk", "LOOK_STAGE8"]),
+    ("ugliness_visible", ["sc_beauty_pair", "T_UGLINESS_OFFLINE"], ["sc_spree_corridor", "sc_walk", "LOOK_STAGE8"]),
     ("art_skill", ["sc_art_skill"], ["sc_spree_corridor", "T_FUZZ"]),
     ("own_fun", ["sc_own_fun"], []),
     ("rereads_daily", ["sc_rereads"], ["sc_lived_in_soak"]),
@@ -181,7 +187,7 @@ B = [
     ("walk_lived_in", ["sc_walk"], ["LOOK_STAGE8", "T_FULL_LIST_MODE"]),
     ("inv_mark_on_wall", ["sc_wall_closeup", "P_A9"], ["sc_spree_corridor", "T_FUZZ"]),
     ("inv_mark_art_set", ["sc_gallery", "sc_spree_variety"], ["T_LINT", "T_SHIP_CHECK", "sc_beauty_pair"]),
-    ("inv_beauty_and_craft", ["sc_beauty_pair", "sc_art_skill"], ["sc_spree_corridor", "LOOK_STAGE8"]),
+    ("inv_beauty_and_craft", ["sc_beauty_pair", "sc_art_skill"], ["sc_spree_corridor", "LOOK_STAGE8", "T_UGLINESS_OFFLINE"]),
     ("inv_ideo_sigils", ["sc_sigil", "T_SIGIL_COVERAGE"], ["T_LINT", "T_FUZZ"]),
     ("inv_spree", ["sc_spree_wall"], ["sc_spree_corridor", "T_SPREE_SURPRISE"]),
     ("inv_joy_and_idle_tag", ["sc_own_fun"], []),

@@ -18,7 +18,7 @@ it among the advancing mods; the Dispatch step never launches the Designer.
   matched). The coverage judge (rm-coverage-judge-1794734941) holds 22 of 24 fixes; gaps g1 (after_the_raid shares
   inv_player_orders with the spree corridor) and g18 (a wall's far side takes paint, no live control) stay open. The
   Designer can fix both at its Write step without him.
-- **Waiting on:** the fixer on RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS; his card on ugliness_visible's wording (RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS); then blind cycle 2
+- **Waiting on:** the fixer on RIMMANDRAKE_BUILD_GRAFFITI_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS; then blind cycle 2 (his card on ugliness_visible's wording is answered and carried out, 2026-11-16 8:23 PM PST)
 - **Budget:** 6.94M weighted tokens of the 4M task cap spent (advisory outside a judge loop); the judge-and-rework loop
   since 2026-11-15T08:27Z has spent about 3.4M of its 8M ceiling (twice the cap).
 - **Next:** on his word, the Designer (`role_launch.py`) reopens; rework sends it to the Write step for g1 and g18.
@@ -79,3 +79,15 @@ was launched: the park waits on his word.
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:37 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:37 PM PST).
 - Record: `version/stage_record.json`.
+
+### 2026-11-16 8:55 PM PST, ugliness_visible reworded on his card (re-pin)
+
+Owner, by card 8:23 PM PST: "How should the ugliness bar read?" → "Look and stat agree" (OWNER:1794889675303725702). The
+tree leaf, `sc_beauty_pair`'s control and the north-star line `mark_ugliness_is_visible` now say a vandal scrawl looks
+worse than a tally and inspects as uglier when the same hand made both, with no stat value named; the north star was
+re-validated on that card (`modcheck validate`, hash 46b0a808a4). The code the card said it costs: a scrawl's beauty is its
+craft less `RM_GraffitiKernel.ScrawlVandalism` (`MarkBeauty`), so a same-hand scrawl inspects uglier at every craft; before
+it they tied for an awful or a poor hand. New offline decider `T_UGLINESS_OFFLINE`
+(`src/RimMandrake/Utils/selftest_graffiti_ugliness.py`, red on the old formula at awful and poor); the live half of
+`sc_beauty_pair` (`validation.py beauty_pair`, `RM_GraffitiStage.Pair`) is UNRUN. `bars.md` re-pins tree.json and
+scenes.json. Item RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS.

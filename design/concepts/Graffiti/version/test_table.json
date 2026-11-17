@@ -1,7 +1,7 @@
 {
  "mod": "Graffiti",
  "version": "0.1.0",
- "made": "2026-11-16T21:17:51Z",
+ "made": "2026-11-17T04:52:00Z",
  "made_by": "design/concepts/Graffiti/version/pilot_throwaway/make_test_table.py (throwaway, no model)",
  "stages": {
   "4-5": "offline (blind)",
@@ -124,11 +124,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.18,
-    "last": "graffiti fuzz: 136890 cases, 137238 steps, 1.76s total -> OK",
-    "at": "2026-11-16T21:18:08Z",
+    "seconds": 7.33,
+    "last": "graffiti fuzz: 141010 cases, 141284 steps, 1.84s total -> OK",
+    "at": "2026-11-17T04:52:25Z",
     "result": "PASS",
-    "build": "73e6652effd15dcfecc1",
+    "build": "1410d8e9ac32212e0d41",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_fuzz.py"
    }
   },
@@ -155,9 +155,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 42.45,
+    "seconds": 33.44,
     "last": "Graffiti lint planted-defect selftest: 14/14 ok",
-    "at": "2026-11-16T21:18:51Z",
+    "at": "2026-11-17T04:52:59Z",
     "result": "PASS",
     "build": "e2365b647bf61785364e",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_lint.py"
@@ -186,9 +186,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 117.19,
+    "seconds": 38.16,
     "last": "RESULT: PASS (0 finding(s))",
-    "at": "2026-11-16T21:20:48Z",
+    "at": "2026-11-17T04:53:37Z",
     "result": "PASS",
     "build": "226c53bc76fed475a15b",
     "command": "python3 src/RimMandrake/Graffiti/sigil_coverage.py"
@@ -215,11 +215,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.89,
+    "seconds": 2.06,
     "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-16T21:20:51Z",
+    "at": "2026-11-17T04:53:39Z",
     "result": "PASS",
-    "build": "3e35cf50eed9c5e1080a",
+    "build": "e063d3615ddb45e8875f",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py"
    }
   },
@@ -245,11 +245,11 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 122.64,
+    "seconds": 65.81,
     "last": "Drift found. Re-run with --apply to deploy.",
-    "at": "2026-11-16T21:22:54Z",
+    "at": "2026-11-17T04:54:45Z",
     "result": "FAIL",
-    "build": "2626078c070f6eb0703b",
+    "build": "b368c7d5c92d8a6c16a4",
     "command": "python3 src/RimMandrake/Graffiti/ship_check.py"
    }
   },
@@ -272,9 +272,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.23,
+    "seconds": 1.81,
     "last": "RESULT: PASS (0 failure(s))",
-    "at": "2026-11-16T21:22:56Z",
+    "at": "2026-11-17T04:54:46Z",
     "result": "PASS",
     "build": "42e7519f1777621eda90",
     "command": "python3 src/RimMandrake/Graffiti/selftest_full_list_mode.py"
@@ -299,9 +299,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.23,
+    "seconds": 0.17,
     "last": "selftest_graffiti_fresh_quicktest: PASS",
-    "at": "2026-11-16T21:22:56Z",
+    "at": "2026-11-17T04:54:47Z",
     "result": "PASS",
     "build": "833407a4c786838b1fd2",
     "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_fresh_quicktest.py"
@@ -326,11 +326,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.25,
+    "seconds": 0.23,
     "last": "selftest graffiti play zoom: PASS (0 failure(s))",
-    "at": "2026-11-16T21:22:56Z",
+    "at": "2026-11-17T04:54:47Z",
     "result": "PASS",
-    "build": "d69c269171a121372758",
+    "build": "9d2310ede841afa8bdcb",
     "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_play_zoom.py"
    }
   },
@@ -355,9 +355,9 @@
     "rc": 0,
     "seconds": 0.04,
     "last": "selftest graffiti spree surprise: PASS",
-    "at": "2026-11-16T21:22:56Z",
+    "at": "2026-11-17T04:54:47Z",
     "result": "PASS",
-    "build": "2b13482ce91daa123659",
+    "build": "3ace02ae69b77a18fee7",
     "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_spree_surprise.py"
    }
   },
@@ -380,9 +380,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.67,
+    "seconds": 1.06,
     "last": "PASS selftest_graffiti_v1_live",
-    "at": "2026-11-16T21:22:58Z",
+    "at": "2026-11-17T04:54:48Z",
     "result": "PASS",
     "build": "7f9380ee6521690db786",
     "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_v1_live.py"
@@ -411,11 +411,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.57,
+    "seconds": 1.74,
     "last": "T_WEATHER_OFFLINE: PASS (kernel weather family green; permanent rule green)",
-    "at": "2026-11-16T21:23:01Z",
+    "at": "2026-11-17T04:54:50Z",
     "result": "PASS",
-    "build": "4312272f510a64a84f7d",
+    "build": "b998d6b86c1c3ed07a07",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_weather.py"
    }
   },
@@ -442,9 +442,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 11.38,
+    "seconds": 8.88,
     "last": "T_RAID_TAG_BUILT_WALL_ONLY: PASS - raid tags reach built walls only (watch: fixed copy green, 4 mutants red)",
-    "at": "2026-11-16T21:23:12Z",
+    "at": "2026-11-17T04:54:59Z",
     "result": "PASS",
     "build": "350ef9d9a71ce8bc504e",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_raid_tag_wall.py"
@@ -473,11 +473,44 @@
     "ran": true,
     "rc": 2,
     "seconds": 0.01,
-    "last": "python3: can't open file '/home/mandrake/rm/relentless/clones/RIMMANDRAKE_ROUTE_LIVE_ONLY_DECIDER_STAGE_THREE_NO_ROAD.det/src/RimMandrake/Utils/selftest_graffiti_message_counters.py': [Errno 2] No such file or directory",
-    "at": "2026-11-16T21:23:12Z",
+    "last": "python3: can't open file '/home/mandrake/rm/relentless/clones/RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS.det/src/RimMandrake/Utils/selftest_graffiti_message_counters.py': [Errno 2] No such file or directory",
+    "at": "2026-11-17T04:54:59Z",
     "result": "FAIL",
     "build": "616a95920d3808f876dd",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_message_counters.py"
+   }
+  },
+  "T_UGLINESS_OFFLINE": {
+   "id": "T_UGLINESS_OFFLINE",
+   "kind": "offline",
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_graffiti_ugliness.py",
+   "observes": "a same-hand scrawl inspects uglier than a tally at every craft, fresh and crossed out (MarkBeauty); craft counts in every form; the Beauty stat and both inspect lines read NetBeauty; mutants go red (owner by card 2026-11-16)",
+   "reads": [
+    "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
+    "src/RimMandrake/Graffiti/Source/Filth_Mark.cs",
+    "src/RimMandrake/Graffiti/Source/StatPart_GraffitiCraft.cs",
+    "src/RimMandrake/Graffiti/Source/WallInspectPatch.cs"
+   ],
+   "command": "python3 src/RimMandrake/Utils/selftest_graffiti_ugliness.py",
+   "new": false,
+   "item": "RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS",
+   "mod_rows": null,
+   "defs": [],
+   "symbols": [
+    "RM_GraffitiKernel",
+    "GraffitiForm"
+   ],
+   "mods": [],
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 1.63,
+    "last": "T_UGLINESS_OFFLINE: PASS (kernel beauty family green; inspected beauty green)",
+    "at": "2026-11-17T04:55:00Z",
+    "result": "PASS",
+    "build": "ff0745ee4692a600bb7b",
+    "command": "python3 src/RimMandrake/Utils/selftest_graffiti_ugliness.py"
    }
   },
   "sc_spree_corridor": {
@@ -1482,7 +1515,8 @@
    ],
    "supports": [
     "sc_spree_corridor",
-    "LOOK_STAGE8"
+    "LOOK_STAGE8",
+    "T_UGLINESS_OFFLINE"
    ],
    "held": [
     5
@@ -1928,7 +1962,8 @@
    "kind": "live_minimal",
    "proves_at": "6",
    "decides": [
-    "sc_beauty_pair"
+    "sc_beauty_pair",
+    "T_UGLINESS_OFFLINE"
    ],
    "supports": [
     "sc_spree_corridor",
@@ -1938,8 +1973,10 @@
    "held": [
     5
    ],
-   "offline_decides": [],
-   "offline_green_today": false,
+   "offline_decides": [
+    "T_UGLINESS_OFFLINE"
+   ],
+   "offline_green_today": true,
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   },

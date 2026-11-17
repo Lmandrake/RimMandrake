@@ -144,7 +144,7 @@
    "expect": "the judge picks the scrawl as uglier",
    "control": {
     "case": "the same pair captured again side-swapped, and a pair of two identical tallies",
-    "expect": "the judge again picks the scrawl as uglier, and calls the identical tallies alike; the def stats read -15 and -3",
+    "expect": "the judge again picks the scrawl as uglier, and calls the identical tallies alike; one colonist's scrawl inspects as uglier than the same colonist's tally at each of the seven crafts the hand can roll, and the Beauty stat reads as the inspect line does (RM_GraffitiStage.Pair)",
     "rules_out": "a judge picking by position, always picking one, or guessing from labels"
    },
    "restore": "destroy the quicktest map; nothing persistent changed",

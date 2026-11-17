@@ -40,8 +40,8 @@ Whether the six shipped texture variants of `RM_Graffiti_Vandal` (Graffiti Mod (
 
 ## north star
 state: VALIDATED
-validated-hash: 07ee6ecdbfb296ddd3fff8050204ea237fa3f8796e4ba49d835ad385c5ce1df8
-validated-by: BY CARD: Change 'every mark' to 'every face-on mark'? -> Yes, every face-on mark
+validated-hash: 46b0a808a4d144f1a75be1ea0c63119c55d0039e47b30dd839ed4db99d61334a
+validated-by: BY CARD: How should the ugliness bar read? → Look and stat agree (Recommended)
 
 ✅ **BINDING.** Every line below was ruled or accepted in the owner's sitting of
 2026-09-16 and validated on his word — *"Validate now, all 10 lines"* — at the hash
@@ -134,8 +134,9 @@ His words on what happens between people came later, and add to that:
       only. He chose to replace the offending glyph rather than exempt it.
 
 **Beauty legibility**
-- [ ] `mark_ugliness_is_visible` — a Beauty −15 vandal scrawl looks worse than a
-      Beauty −3 tally at a glance. The stat and the picture agree.
+- [ ] `mark_ugliness_is_visible` — a vandal scrawl looks worse than a tally at a
+      glance, and inspects as uglier when the same hand made both. The stat and the
+      picture agree.
 
 **Between people — his "more than just art display"**
 - [ ] `mockery_changes_regard` — a mockery names someone, hurts or amuses the right

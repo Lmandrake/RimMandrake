@@ -1,13 +1,13 @@
 # Graffiti 0.1.0 test table (read view of test_table.json)
 
-Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T21:17:51Z. A bar passes when every deciding test passes.
+Made by `pilot_throwaway/make_test_table.py`, 2026-11-17T04:52:00Z. A bar passes when every deciding test passes.
 
 ## Counts
 
 - bars: 47 (locked: 47)
-- tests: 46 (12 built offline, 1 new offline, 32 live, 1 look)
+- tests: 47 (13 built offline, 1 new offline, 32 live, 1 look)
 - scene entries present: 29, absent: 1
-- built offline green today: 11, red: 1
+- built offline green today: 12, red: 1
 - bars with every decider runnable today: 47
 - known red: P_A9 = RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL
 
@@ -17,7 +17,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T21:17:51Z. A bar passes
 |---|---|---|---|---|---|
 | inv_mark_on_wall | 6 | sc_wall_closeup, P_A9 | sc_spree_corridor, T_FUZZ | - | yes |
 | inv_mark_art_set | 6 | sc_gallery, sc_spree_variety | T_LINT, T_SHIP_CHECK, sc_beauty_pair | - | yes |
-| inv_beauty_and_craft | 6 | sc_beauty_pair, sc_art_skill | sc_spree_corridor, LOOK_STAGE8 | 5 | yes |
+| inv_beauty_and_craft | 6 | sc_beauty_pair, sc_art_skill | sc_spree_corridor, LOOK_STAGE8, T_UGLINESS_OFFLINE | 5 | yes |
 | inv_ideo_sigils | 6 | sc_sigil, T_SIGIL_COVERAGE | T_LINT, T_FUZZ | - | yes |
 | inv_spree | 6 | sc_spree_wall | sc_spree_corridor, T_SPREE_SURPRISE | - | yes |
 | inv_joy_and_idle_tag | 6 | sc_own_fun | - | - | yes |
@@ -42,7 +42,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T21:17:51Z. A bar passes
 | punk_register | 6 | sc_gallery | LOOK_STAGE8 | - | yes |
 | no_english | 6 | sc_gallery | T_LINT, LOOK_STAGE8 | - | yes |
 | not_dirt | 6 | sc_gallery | LOOK_STAGE8 | - | yes |
-| ugliness_visible | 6 | sc_beauty_pair | sc_spree_corridor, sc_walk, LOOK_STAGE8 | 5 | yes |
+| ugliness_visible | 6 | sc_beauty_pair, T_UGLINESS_OFFLINE | sc_spree_corridor, sc_walk, LOOK_STAGE8 | 5 | yes |
 | art_skill | 6 | sc_art_skill | sc_spree_corridor, T_FUZZ | - | yes |
 | own_fun | 6 | sc_own_fun | - | - | yes |
 | rereads_daily | 6 | sc_rereads | sc_lived_in_soak | - | yes |
@@ -80,6 +80,7 @@ Made by `pilot_throwaway/make_test_table.py`, 2026-11-16T21:17:51Z. A bar passes
 | T_WEATHER_OFFLINE | offline | 4-5 | src/RimMandrake/Utils/selftest_graffiti_weather.py | PASS | - |
 | T_RAID_TAG_BUILT_WALL_ONLY | offline | 4-5 | src/RimMandrake/Utils/selftest_graffiti_raid_tag_wall.py | PASS | - |
 | T_MSG_COUNTERS_RESET | offline | 4-5 | src/RimMandrake/Utils/selftest_graffiti_message_counters.py | not written yet: Stage 3 work (RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME) | RIMMANDRAKE_RESET_GRAFFITI_MESSAGE_COUNTERS_EACH_GAME |
+| T_UGLINESS_OFFLINE | offline | 4-5 | src/RimMandrake/Utils/selftest_graffiti_ugliness.py | PASS | - |
 | sc_spree_corridor | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::scene_spree_corridor | entry absent | - |
 | sc_spree_wall | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::spree_wall | entry present | - |
 | sc_spree_variety | live_minimal | 6 | src/RimMandrake/Graffiti/validation.py::spree_variety | entry present | - |
