@@ -91,3 +91,16 @@ it they tied for an awful or a poor hand. New offline decider `T_UGLINESS_OFFLIN
 (`src/RimMandrake/Utils/selftest_graffiti_ugliness.py`, red on the old formula at awful and poor); the live half of
 `sc_beauty_pair` (`validation.py beauty_pair`, `RM_GraffitiStage.Pair`) is UNRUN. `bars.md` re-pins tree.json and
 scenes.json. Item RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS.
+
+### 2026-11-17 6:52 AM PST, four oracles to be reworded as experiences; the change waits for blind cycle 2 (Conductor helper)
+
+The owner's ruling of 2026-11-16 (a passing bar is an experience, never a tuning number; `design/RimMandrake/standing_rulings.md`)
+and the Conductor's brief of 2026-11-17 reword four Designer oracles that pin numbers he never set: `marks_various` (3 defs,
+5 def-variant pairs), `rereads_daily` (60000 ticks), `stories_not_tax` (plus or minus 3 mood) and `weathering_bounds_marks`
+(the last 40 percent, alpha 1 before 60 percent). Each keeps its experience; the numbers stay in code as tuning. Blind
+cycle 2 was live, so the edit and the re-pin are queued: `D:\ClaudeWork\rimmandrake\conductor\apply_card_rewords_20261117.py`,
+item RIMMANDRAKE_REWORD_DESIGNER_BARS_PINNING_NUMBERS_NOT_HIS.
+
+### Conductor interventions (one line each, added to only; the form is in the spec §5, "The steward and the journal")
+
+- CONDUCTOR INTERVENED (stage 4+5, 2026-11-17 6:52 AM PST, kind hold): no advance past Stages 4 and 5 and no blind cycle 3 on Graffiti until the four rewordings (`marks_various`, `rereads_daily`, `stories_not_tax`, `weathering_bounds_marks`) have landed in tree.json and been re-pinned; blind cycle 2 (unit `rm-detached-bench-rimmandrake-judge-graffiti-blind-cycle-t-1794925227`) runs on to its end and is not stopped. Lift it with a later line of the same form, `kind release`, once the queued change has landed and re-pinned. Source: the Conductor's order in RIMMANDRAKE_REWORD_DESIGNER_BARS_PINNING_NUMBERS_NOT_HIS.

@@ -400,3 +400,14 @@ so the Conductor takes it. These are Conductor decisions, not his.
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 12:40 PM PST).
 - Record: `version/stage_record.json`.
 - CONDUCTOR INTERVENED (stage 4+5, 2026-11-16 9:57 PM PST, kind release): the Fable rescue (item `RIMMANDRAKE_RESCUE_PYRELANDS_BLACK_RAIN_DOUSES_NEEDED_FIRE`) ended and landed 49e11870b4 (wind-carried fire, bar `burn_line_walks` reworded by the owner, certificate OK); the hold of 8:36 PM PST is lifted and the Dispatch tick may launch blind cycle 3.
+
+### 2026-11-17 6:52 AM PST, his card of 6:33 AM changes three bars; the change waits for blind cycle 3 (Conductor helper)
+
+Owner, by card 2026-11-17 6:33 AM PST: his two numbers become experiences ("ash is sowable dry, a watered strip grows
+clearly faster"; "burnt ground is green again within about a week"; 70%, 140% and the grass shares stay the shipped
+tuning) (OWNER:1794926128945577969); one bar joins 0.1.0, worded exactly "The fire walks with the wind."
+(OWNER:1794926130118775229); black rain filling moats and tanks, and a Pyrelands smoke weather, go to 0.2.0
+(OWNER:1794926131273790638, OWNER:1794926132427945325; landed a6cf02f441). Blind cycle 3 was live when the card came, so
+the tree, record and test-table edits, the re-pin and the lock-bars add are queued, not made: the patch and its steps are
+`D:\ClaudeWork\rimmandrake\conductor\apply_card_rewords_20261117.py`, item RIMMANDRAKE_REWORD_DESIGNER_BARS_PINNING_NUMBERS_NOT_HIS.
+- CONDUCTOR INTERVENED (stage 4+5, 2026-11-17 6:52 AM PST, kind hold): no advance past Stages 4 and 5 and no blind cycle 4 on Pyrelands until the owner's card of 6:33 AM PST (OWNER:1794926128945577969, OWNER:1794926130118775229) has landed in tree.json, record.json and test_table.json and been re-pinned; blind cycle 3 (unit `rm-detached-bench-rimmandrake-judge-pyrelands-blind-cycle-1794925887`, started 6:31 AM PST) runs on to its end and is not stopped, and it judges the bars as they stood when it began. Lift it with a later line of the same form, `kind release`, once the queued change has landed and re-pinned. Source: the Conductor's order in RIMMANDRAKE_REWORD_DESIGNER_BARS_PINNING_NUMBERS_NOT_HIS.
