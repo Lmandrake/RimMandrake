@@ -177,31 +177,32 @@
     },
     {
       "id": "B5",
-      "says": "After retreat players can use wet natural ground for native gathering and growth, and the extra fertility ends when that ground dries without replacing their floors or excavations.",
+      "says": "After retreat players can gather native wet growth, then find flood-deposited ordinary soil only in continuing shade when the extra fertility ends at drying, while their floors and excavations keep their identity.",
       "meant": {
-        "intent": "Short-lived productive mud, ordinary shaded soil retained, no permanent fertility windfall or terrain loss.",
-        "source": "Owner November 10 ANSWERS_OWNER.md wet/high-fertility window and limited farming effort; the_cracked_lands.md shade soil; FlowWorks single-owner contract; delegated native-gathering payoff.",
+        "intent": "Short-lived productive mud over bounded flood-laid ordinary shaded soil, with no accumulating rich-soil windfall or terrain loss.",
+        "source": "Owner November 10 ANSWERS_OWNER.md wet/high-fertility window and limited farming effort; the_cracked_lands.md shade soil; FlowWorks single-owner contract; delegated native-gathering payoff. Delegated R7a settles deposition, geometric shade, persistence and repeated-flood bounds across the free and campaign substrates.",
         "figurative": []
       },
       "accept": [
-        "Receding water leaves useful wet native growth and gathering in the shade; at drying the extra fertility is gone while ordinary shaded soil remains.",
-        "A sun-exposed flooded flat returns to dry substrate, and a player floor or dug channel retains its identity through the wet interval."
+        "A shaded natural sand bed gains deposited ordinary soil at retreat; native wet growth supports gathering, and after drying the extra fertility ends while that deposited soil persists in continuing shade.",
+        "A sun-exposed flooded flat returns to dry substrate, and a player floor or dug channel retains its identity through the wet interval.",
+        "Another flood over the same shaded bed refreshes ordinary soil without enriching it further or spreading it into unwetted neighbours; exposed natural bed returns to dry mineral ground in either tier."
       ],
       "reject": [
         "Receding water permanently paints rich soil over exposed flats or a constructed floor.",
         "The ground is labelled fertile but neither native growth nor gathering changes during the wet interval.",
-        "The whole shaded soil disappears at drying, contradicting the real-soil habitat, or stale flood wetness persists after its source ends."
+        "The shaded sand bed returns only to its original sand at drying, so no flood-deposited ordinary soil exists, or stale flood wetness persists after its source ends."
       ],
       "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
       "range": {
-        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; wet/draining/just-before/at/after expiry; natural shade soil, open sand/clay, floors, bridges, ore and FlowWorks D=1..4; rewet same/disjoint/overlapping cells, harvest versus leave growth; dependency-supplied water present/absent.",
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; wet/draining/just-before/at/after expiry; natural shade soil, open sand/clay, floors, bridges, ore and FlowWorks D=1..4; rewet same/disjoint/overlapping cells, harvest versus leave growth; dependency-supplied water present/absent. Free Sand/Soil terrainsByFertility versus campaign WildAnimals_CrackedLands.xml Op 5 pure Sand (-999..999); initial Sand/Soil/SoilRich versus recorded deposited Soil; wall/rock/roof geometric shade present/lost/regained at recede and expiry, weather/glow changes without geometric change, unchanged versus newly shaded and wetted footprint across repeated cycles.",
         "left_out": "Newly sown vanilla long-crop maturity guarantees, deep farming tech, survey/cistern/Swale rewards; a real independent water supply may retain its own benefit and must be labelled as such."
       },
       "sees": {
-        "instrument": "Per-cell substrate/owner/wet-until/fertility and native plant growth/harvest state reads T24/T26; M3 models labour and natural growth, calibrated against the same cells in game.",
-        "start": "Record original ground, eligible native plants, wet-cell lineage and independent water sources before flood; no manually planted mature reward or rich-soil paint in the measured area.",
+        "instrument": "Per-cell original terrain/mineral baseline/owner/deposition provenance/geometric shade/wet-until/fertility and native growth/harvest state reads T24/T26; M3 models repeated deposition and natural growth, M4 supplies calibrated shade decisions.",
+        "start": "Record original ground, eligible native plants, wet-cell lineage and independent water sources before flood; no manually planted mature reward or rich-soil paint in the measured area. Include matched initially Sand cells under actual geometric shade and open sky in both effective terrain palettes; record any free-tier generated Soil separately from flood provenance.",
         "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
-        "control": "A pre-existing crop or permanent SoilRich may fake reward. Compare eligible matched native plants on wet and unwetted shaded cells from their initial state; read actual fertility at expiry and identify each source of continuing wetness. Do not force maturity or stop terminals.",
+        "control": "A pre-existing crop or permanent SoilRich may fake reward. Compare eligible matched native plants on wet and unwetted shaded cells from their initial state; read actual fertility at expiry and identify each source of continuing wetness. Do not force maturity or stop terminals. Compare before/after actual Sand-to-Soil deposition, shaded unwetted Sand controls and exposed wetted controls. After expiry check ordinary Soil rather than SoilRich or restored Sand; repeat the same footprint to exclude accumulating fertility/area, then change shade to test the bounded retention rule.",
         "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
         "live_only_why": ""
       },
@@ -221,10 +222,10 @@
     },
     {
       "id": "B6",
-      "says": "Players meet ordinary alien life with airborne feeding fliers and no resident flier nests, see soaked plants swell and wet clay hatch into brief irqit activity, and see wild pan sleepers wake with water and seal again at the dry.",
+      "says": "Players meet ordinary alien life whose feeding fliers, wherever present, fly without resident nests, see soaked plants swell and wet clay hatch into brief irqit activity, and see wild pan sleepers wake with water and seal again at the dry.",
       "meant": {
-        "intent": "Land supports ordinary gathering/predation/taming roles, and wet plant/animal activity belongs to the same flood rather than permanent crowding or silent disappearance.",
-        "source": "the_cracked_lands.md §§4,10,10b and 2026-09-28 cast; October 23 cuts retain irqit but remove timed migrants; standing real flight/no vanish and stopped evictions; delegated representative cohorts.",
+        "intent": "Land supports ordinary gathering/predation/taming roles, and wet plant/animal activity belongs to the same flood rather than permanent crowding or silent disappearance. Flight is conditional on effective roster presence; a new free-tier flier is deferred, not implied.",
+        "source": "the_cracked_lands.md §§4,10,10b and 2026-09-28 cast; October 23 cuts retain irqit but remove timed migrants; standing real flight/no vanish and stopped evictions; delegated representative cohorts. CLAUDE.md flight verification ruling: deterministic Pawn_FlightTracker state; visual flight only in a joint owner session. Effective free roster and Bestiary-gated campaign patch determine applicability.",
         "figurative": [
           {
             "word": "wet clay hatch into brief irqit activity",
@@ -240,7 +241,8 @@
       },
       "accept": [
         "The dry map has shade plants, tarruq calls and crag life; wetted clay supports opening qirra, visibly swelling plants and moving irqit, and surviving wild sleepers become inspectable sealed pans again when dry.",
-        "Spent irqit leave corpses with a dry-out sign; a flying feeder actually flies, while the woolamander remains a walking resident."
+        "Spent irqit leave corpses with a dry-out sign; a feeding flier in a roster that contains it has airborne feeding-travel state and lands grounded, while the woolamander remains a walking resident where present.",
+        "The free roster supplies ordinary dry life and wet response with no flier species, no walking fictional flier and no resident flier nest."
       ],
       "reject": [
         "The free tier is an empty fallback, or named fliers walk through the same daily life.",
@@ -250,16 +252,16 @@
       ],
       "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
       "range": {
-        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; base free and campaign-added rosters; existing plant forms/resources/diets, each actual flying roster kind and grounded residents; pan birth/wake/damage/dry/rewet/tame/downed/death; irqit live/predated/captured/carried/exported, simultaneous and disjoint flood nurseries, young and mature plants through terminal state.",
-        "left_out": "No new roster evictions, no aspirational Bestiary additions, no timed migrant arrivals/nests, no new training system, reactive wound armour, hydraulic weir or lantern emitter. Cross-band pursuit is allowed; natural placements/home preference remain distinct."
+        "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; base free roster without fliers and campaign-added roster with Bestiary active; airborne-feeder clause applies only to rosters with effective fliers (currently RSW_CanCell, RSW_Convor and RUT_EmperorVulture through Op 2); base free range requires no walking fictional flier and no resident flier nest; existing plant forms/resources/diets, each actual flying roster kind and grounded residents; pan birth/wake/damage/dry/rewet/tame/downed/death; irqit live/predated/captured/carried/exported, simultaneous and disjoint flood nurseries, young and mature plants through terminal state.",
+        "left_out": "No new roster evictions, no aspirational Bestiary additions, no timed migrant arrivals/nests, no new training system, reactive wound armour, hydraulic weir or lantern emitter. Cross-band pursuit is allowed; natural placements/home preference remain distinct. A new RM free-tier flier is next version under T31; visual flight: joint owner session only. No solo flight observation or image capture counts as evidence."
       },
       "sees": {
-        "instrument": "Human look/hearing at natural life and plant size/animation changes, paired with per-entity identity/job/flight/growth/cohort records (T27/T29/T26) and M3 food/population model. Existing art is accepted; judge presence/motion/readability, not a new art commission.",
+        "instrument": "Human look/hearing at non-flight ordinary life, plant size/animation changes, irqit activity and readable pan states, paired with identity/job/growth/cohort records (T27/T29/T26) and M3. Flight alone is verified by deterministic Pawn_FlightTracker state reads: actual airborne ticks during feeding travel and grounded state after landing, associated with the same pawn/job; a flight request, MaxFlightTime stat or job flag alone is insufficient. Use the existing jawa/pawn_flight reader where it supplies this state; T26 supplies missing deterministic trace coverage. All looks/captures explicitly exclude flight; any visual flight check is a joint owner session only. Existing art is accepted, not a new art commission.",
         "start": "Natural native roster effective with ordinary spawn eligibility; find and mark initial pan/plant identities without replacing them, retain actual wet/dry clocks and production growth terminals.",
         "on": "All kept Cracked Lands mechanics enabled at shipped defaults, every kept dependency effective, all DLC, owned canyon biome, no research/quest lock on a kept mechanic; next-version extras off, unsupported cross-biome switches off; dev triggers and soak zones absent; natural sky/weather and growth terminals unlocked.",
-        "control": "Debug-spawned irqit or art variants could fake wet response. Follow the same plant and pan identities before/after actual accepted wetting; attribute hatch to nursery records; compare unwetted cells and record corpse/despawn reason, including carried/world entities.",
+        "control": "Debug-spawned irqit or art variants could fake wet response. Follow the same plant and pan identities before/after actual accepted wetting; attribute hatch to nursery records; compare unwetted cells and record corpse/despawn reason, including carried/world entities. For flight, correlate tracker transitions with the effective feeding-travel job and landing of the same pawn; idle-capability flags and incidental flight on another job do not pass. Free-tier no-flier applicability is established by effective roster/def state, not a failed visual search.",
         "reset": "Reload an untouched disposable fixture save with captured pre-run settings, time, map/pawn/terrain/engine state and random stream; discard the exercised copy. Do not reset merely to shipped settings or leave staged pawns/terrain behind. No canonical save is written.",
-        "live_only_why": "State can prove that growth/flight was requested but not whether the player sees swelling, activity or a readable sealed pan; the audible ordinary life also needs playback."
+        "live_only_why": "State cannot establish whether plants visibly swell, irqit activity and sealed pans are readable, or ordinary calls are audible. These non-flight experiences require a look/playback. Flight is decided only by actual Pawn_FlightTracker state, not by the live-only look or capture."
       },
       "live_only": true,
       "touches": [
@@ -348,7 +350,7 @@
       "lazy": "none: says explicitly excludes the plausible wrong builds shown in reject; no weaker reading of the same words admits them.",
       "range": {
         "varies": "Local maps 150–500 cells on each axis, all reach rotations/reflections, straight/bent/narrow/wide cross sections (1–80 open cells), entry/midreach/outlet and bank/floor/roof/flooring interfaces; dry clear, dry thunder/sandstorm and Peakstorm Light, with their actual shared sun factors.; Full native maps across MAP range in B3; 1–6 visitor crew and 7–40 resident colonists, sparse/dense effective roster and independent ordinary wreck/corpse/Bones/FlowWorks consumers; 15 game days (one season), extend through natural dry->warn->water->wet->dry completion if schedule needs longer, then observe rescheduling. Save in mid-water primary run; M2 covers other phase reloads. Repeat with recall/harvest/channel edits ordered differently. Test first visit and year-2 accumulated history (day 100 onward).",
-        "left_out": "Next-version extras, unsupported cross-biome capability and DLC-less configurations. No live reproduction of alternative planets. Imported pre-existing external technology is attributed to its owner; no future campaign lock is secretly opened."
+        "left_out": "Next-version extras, unsupported cross-biome capability and DLC-less configurations. No live reproduction of alternative planets. Imported pre-existing external technology is attributed to its owner; no future campaign lock is secretly opened. All whole-run visual/audio records exclude flight verification; inherit the deterministic flight-state instrument from B6, with any visual flight review reserved for a joint owner session."
       },
       "sees": {
         "instrument": "M3 whole-season prediction plus full native running-game look/hearing and time-series state/log capture T26; M1/M2/M4 supply calibrated inputs. No offline model alone awards this bar.",
@@ -402,7 +404,7 @@
     },
     {
       "id": "C6",
-      "what": "Effective roster membership, density nonzero, naming tiers, flight flags/jobs, ordinary diets/trainability/harvest fields, existing wood-policy compliance; no all-fields quota is a bar. Verify no resident flier-nesting production; ordinary flight is distinct from the retired timed migration event."
+      "what": "Effective roster membership, density nonzero, naming tiers, flight flags/jobs, ordinary diets/trainability/harvest fields, existing wood-policy compliance; no all-fields quota is a bar. Verify no resident flier-nesting production; ordinary flight is distinct from the retired timed migration event. Current free roster has no flier; compare effective members before applying flight checks. For present fliers read Pawn_FlightTracker actual airborne feeding-travel ticks and grounded landing; no visual flight evidence."
     },
     {
       "id": "C7",
@@ -414,7 +416,7 @@
     },
     {
       "id": "C9",
-      "what": "Per-cell wet-until/substrate/owner and independent wet source; fertility loses flood benefit at expiry; overlapping and disjoint nurseries preserve correct deadlines."
+      "what": "Per-cell wet-until/substrate/owner and independent wet source; fertility loses flood benefit at expiry; overlapping and disjoint nurseries preserve correct deadlines. Record separate mineral baseline/deposition provenance and shared geometric shade; Sand-to-Soil at recede agrees across free palette and pure-Sand campaign Op 5; repeated footprint cannot accumulate richer/larger soil, shade loss/regain and save/load preserve the R7a bound."
     },
     {
       "id": "C10",
@@ -497,11 +499,22 @@
     },
     {
       "id": "R7",
-      "rule": "Delegated construction rule: Natural wet fertility is a temporary benefit over owned substrate; retain ordinary shaded soil, dry exposed flats. Per-cell flood wet-until extends only on actual rewet; independent water is separate. No rich-soil or soak fallback on floors/engine-owned cells.",
+      "rule": "Delegated construction rule: Wet fertility is a temporary benefit ending at local drying, separate from ordinary-soil deposition under R7a. Per-cell flood wet-until extends only on actual rewet; independent water is separate. No rich-soil or soak fallback on floors/engine-owned cells.",
       "touches": [
         "wet_ledger",
         "shade",
         "terrain_ownership"
+      ]
+    },
+    {
+      "id": "R7a",
+      "rule": "Delegated construction rule: At recede deposit ordinary Soil on actually wetted natural recorded-bed cells still flood-owned and geometrically shaded by the shared Direct Sun reader, regardless of original Sand/Soil. No floor, bridge, ore, solid rock or engine-owned excavation is eligible; weather/glow is not geometric shade. Keep ordinary Soil after wet fertility expires while shade remains; shade loss returns dry flood-owned deposits to recorded mineral baseline at the next terrain update (wet cells wait for expiry), and shade regained after sediment removal does not recreate it without another wetting/recede. Current baseline is Sand for natural Sand/Soil/SoilRich in either tier, including campaign Op 5 pure Sand; outside managed bed is untouched. Repeated floods never upgrade Soil or spread it to neighbours; new extent requires newly wetted shaded eligible bed cells. Persist baseline, deposition provenance and ownership separately from the temporary layer; player edits win.",
+      "touches": [
+        "wet_ledger",
+        "shade",
+        "terrain_ownership",
+        "identity_save",
+        "landform"
       ]
     },
     {
@@ -567,10 +580,11 @@
         "R1",
         "R2",
         "R3",
-        "R4"
+        "R4",
+        "R7a"
       ],
       "holds_together": "unknown",
-      "why": "Wall-to-wall reach, genuinely high capacity, useful paths and bank siting could conflict at bends/narrow exits or with a large colony. A flag/capped BFS cannot settle their joint geometry.",
+      "why": "Wall-to-wall reach, genuinely high capacity, useful paths and bank siting could conflict at bends/narrow exits or with a large colony. A flag/capped BFS cannot settle their joint geometry. The same saved bed bounds all soil deposition under R7a; shade is not elevation or permission to expand sediment outside that reach.",
       "model": "M1: Canyon geometry and evacuation"
     },
     {
@@ -581,10 +595,11 @@
         "B6",
         "B8",
         "R3",
-        "R7"
+        "R7",
+        "R7a"
       ],
       "holds_together": "unknown",
-      "why": "The existing neighbour-count glow proxy and actual directional wall/roof shade can disagree. Wet fertility, visible green and living plants must use a compatible geometric set without changing Direct Sun.",
+      "why": "The existing neighbour-count glow proxy and actual directional wall/roof shade can disagree. Wet fertility, visible green and living plants must use a compatible geometric set without changing Direct Sun. Deposition must use that same geometric mask, not original terrain or weather darkness; shade loss/regain and repeated footprint cannot create extra sediment.",
       "model": "M4: Shade and plant eligibility sweep"
     },
     {
@@ -667,12 +682,13 @@
         "B7",
         "B8",
         "R7",
+        "R7a",
         "R8",
         "R9",
         "R12"
       ],
       "holds_together": "unknown",
-      "why": "Front/recede, temporary fertility, accepted soak, qirra, cohort expiry and terminal growth may form a long wet/permanent fertile or population feedback loop under repeated water.",
+      "why": "Front/recede, temporary fertility, accepted soak, qirra, cohort expiry and terminal growth may form a long wet/permanent fertile or population feedback loop under repeated water. Include ordinary-soil deposition separately from temporary fertility and repeated-flood area bounds; original Sand snapshots cannot erase the habitat.",
       "model": "M3: Whole canyon season and resource budget"
     },
     {
@@ -684,10 +700,11 @@
         "B8",
         "R2",
         "R7",
+        "R7a",
         "R8"
       ],
       "holds_together": "argued",
-      "why": "The rules assign one writer per ownership class: FlowWorks for excavation, player edits for changed surfaces, temporary canyon layer only for natural ground. A complete water hazard mask need not overwrite a floor. Thus danger, wet benefit and work preservation have compatible definitions; runtime compliance still needs T24/T26.",
+      "why": "The rules assign one writer per ownership class: FlowWorks for excavation, player edits for changed surfaces, temporary canyon layer only for natural ground. A complete water hazard mask need not overwrite a floor. Thus danger, wet benefit and work preservation have compatible definitions; runtime compliance still needs T24/T26. Ordinary Soil deposition is the explicit natural-bed outcome under R7a, tracked separately from the temporary wet layer; generated free-tier soil is not a licence to enrich exposed bed. Floors and engine cells remain outside both writes.",
       "model": ""
     },
     {
@@ -700,12 +717,13 @@
         "B8",
         "R5",
         "R6",
+        "R7a",
         "R8",
         "R9",
         "R10"
       ],
       "holds_together": "unknown",
-      "why": "Repeated wetting, disable/re-enable, transported short-lived animals and saved terrain ownership may duplicate events or resurrect old water. Scribing a list is not evidence of correct transition/relink behaviour.",
+      "why": "Repeated wetting, disable/re-enable, transported short-lived animals and saved terrain ownership may duplicate events or resurrect old water. Scribing a list is not evidence of correct transition/relink behaviour. Save mineral baseline and deposited-soil provenance as well as wet expiry, or loading may restore Sand or duplicate fertility.",
       "model": "M2: Situation and lifecycle generator"
     },
     {

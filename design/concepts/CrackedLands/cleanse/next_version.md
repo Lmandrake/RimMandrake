@@ -2,6 +2,12 @@
 
 All scope choices here are delegated Designer proposals. Prior owner-approved shapes are preserved as later promises, not cancelled. Existing code/defs/assets stay; gates suppress fresh default production, menus, jobs and notifications. Existing save entities remain valid and get safe lifecycle handling. Ordinary roster members stay even when their special behaviour moves. Shared engines stay dependencies.
 
+### New free-tier feeding flier
+
+What: A new invented RM flier to fill the current free-tier airborne-feeder hole; no species definition exists. Built: absent.
+
+Why outside this version's land/life/signature: Existing ordinary free-tier life and flood response work without a new creature; current feeding-flier requirements apply only where the effective roster has fliers. A later parity addition needs its own definition, not a neighbour import or a revived timed migration event. Ticket: T31.
+
 ### Uttaqar wound-stone hediff, severity stages and hediff giver set.
 
 What: Uttaqar wound-stone hediff, severity stages and hediff giver set. Built: present.
@@ -178,7 +184,7 @@ Reason: Delegated: Historical October 23 cut stands; Peakstorm weather and bias 
 
 What: Automatic recede migrant flyer arrivals/departures Built: absent.
 
-Reason: Delegated: Historical October 23 cut stands; real resident flight is separate and required, no event is reinstated.
+Reason: Delegated: Historical October 23 cut stands; flight of effective roster fliers is separately required, no event is reinstated.
 
 ### Lithops steel plus VEF secondary stone harvest
 

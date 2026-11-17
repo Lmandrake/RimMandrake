@@ -152,7 +152,7 @@
       "called_by": "RecedeFlood -> ledger.Recede -> terrainGrid.SetTerrain",
       "serves": "warning -> dangerous flood -> wet life -> dry",
       "fate": "signature",
-      "why": "Delegated: Temporary wet benefit followed by drying is the reward half of the same chain. Present permanent SoilRich must change.",
+      "why": "Delegated: Temporary wet benefit followed by drying is the reward half of the same chain. Present permanent SoilRich must change. R7a requires ordinary-soil deposition on geometrically shaded wet natural bed, including initially Sand cells, distinct from the temporary rich benefit; current rich-soil writer is not proof of this contract.",
       "needed_by": "",
       "ticket": "T24"
     },
@@ -763,7 +763,7 @@
       "called_by": "none: implementation absent by existing retirement",
       "serves": "excluded/recommended or already retired behaviour",
       "fate": "recommend_retire",
-      "why": "Delegated: Historical October 23 cut stands; real resident flight is separate and required, no event is reinstated.",
+      "why": "Delegated: Historical October 23 cut stands; flight of effective roster fliers is separately required, no event is reinstated.",
       "needed_by": "",
       "ticket": ""
     },
@@ -873,7 +873,7 @@
     },
     {
       "id": "canyon_landform_record",
-      "what": "Saved main-reach bed/bank/station/access/mark contract and local layout producer",
+      "what": "Saved main-reach bed/bank/station/access/mark contract and local layout producer including the dry mineral baseline for flood-managed natural bed",
       "built": "absent",
       "evidence": "src/RimMandrake/CrackedLands/Source/RM_MapComponent_CanyonFlood.cs ComputeFloodCells/Eligible; no saved bed/bank/station record found",
       "proven": "missing",
@@ -886,14 +886,14 @@
     },
     {
       "id": "temporary_wet_record",
-      "what": "Per-cell flood wet benefit and ownership-aware drying",
+      "what": "Per-cell flood wet benefit and ownership-aware drying with separate mineral baseline and shade-soil deposition provenance",
       "built": "absent",
       "evidence": "src/RimMandrake/CrackedLands/Source/RM_MapComponent_CanyonFlood.cs RecedeFlood writes permanent SoilRich; src/RimMandrake/CrackedLands/Source/RM_ThreeHeightFlora.cs wetUntil exists for qirra only",
       "proven": "missing",
-      "called_by": "required common record for fertility, soak, qirra, cohort nursery expiry",
+      "called_by": "required common record for fertility, soak, qirra, cohort nursery expiry; R7a ordinary-soil deposition/retention consumer (required, not currently implemented)",
       "serves": "Per-cell flood wet benefit and ownership-aware drying",
       "fate": "needed_by",
-      "why": "Delegated: Without it the later owner wet-window ruling and common drying signs cannot hold together; existing flora-only clock is not terrain restoration.",
+      "why": "Delegated: Without it the later owner wet-window ruling and common drying signs cannot hold together; existing flora-only clock is not terrain restoration. Without distinct mineral/deposition provenance, restoring original Sand would erase flood-laid habitat soil; it is needed by the same finite cycle, not a separate resource reward.",
       "needed_by": "signature: finite wet/dry cycle",
       "ticket": "T24"
     },
@@ -1026,6 +1026,32 @@
       "why": "Delegated: Deleting a readable sealed state makes a signature creature appear to vanish or merely sleep as the same upright beast; retain identity and distinguish wet awake from dry sealed without demanding new art variants.",
       "needed_by": "signature: readable wet/dry pan animal",
       "ticket": "T27"
+    },
+    {
+      "id": "campaign_sand_substrate",
+      "what": "Campaign terrain override Op 5 replaces terrainsByFertility with pure Sand; free tier instead supplies a Sand/Soil fertility split.",
+      "built": "present",
+      "evidence": "src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml Op 5: Sand min -999 max 999; src/RimMandrake/CrackedLands/Defs/BiomeDefs/RM_CrackedLands_Biome.xml terrainsByFertility.",
+      "proven": "missing",
+      "called_by": "Effective BiomeDef terrain selection at local map creation; recede must consume actual initial terrain rather than assume soil exists.",
+      "serves": "ordinary land substrate and the flood-laid shade-soil habitat",
+      "fate": "dependency",
+      "why": "Delegated: Keep campaign substrate ownership; restoring snapshots alone cannot meet the soil ruling. R7a/T24 deposit ordinary Soil on eligible shaded wet Sand in either tier and use the same dry mineral baseline on exposed flood-managed bed. No planet generation or placement is added.",
+      "needed_by": "",
+      "ticket": "T24"
+    },
+    {
+      "id": "free_tier_flier_hole",
+      "what": "A new invented RM feeding flier to fill the current free-tier roster hole, without importing canon or a neighbour species.",
+      "built": "absent",
+      "evidence": "src/RimMandrake/CrackedLands/Defs/BiomeDefs/RM_CrackedLands_Biome.xml wildAnimals contains RM_Muttavaq, RM_Uttaqar, RM_Tarruq only; no MaxFlightTime in CrackedLands race defs; src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml Op 2 gates RSW_CanCell/RSW_Convor/RUT_EmperorVulture on SW Bestiary.",
+      "proven": "missing",
+      "called_by": "none: no free-tier flier definition or roster member found; later parity proposal only",
+      "serves": "later free-tier airborne-feeder roster parity",
+      "fate": "next_version",
+      "why": "Delegated: Ordinary free-tier life and the flood cycle work without adding a species. Apply flight to present fliers only in this version; a new creature would require its own later definition, not an implied T29 build or an eviction.",
+      "needed_by": "",
+      "ticket": "T31"
     }
   ]
 }

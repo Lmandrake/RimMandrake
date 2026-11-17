@@ -1,0 +1,774 @@
+{
+ "mod": "CrackedLands",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md, running contract, clay/fertility paragraph; bars.json R7 and B5 (accept 1, reject 3); ambiguities.md item 13",
+     "evidence": "The owner's soil ruling in design/Jawa/worldbuilding/biomes/the_cracked_lands.md §3 says: \"Not great soil — but soil, laid down by the flood, kept by the shade.\" The proposal keeps this soil but never defines how it gets there. definition.md says \"Shade can retain ordinary soil, as the older soil-in-shade ruling requires; open flats return to their dry substrate\" and \"Snapshot original substrate and ownership before a temporary layer.\" B5's accept picture says \"ordinary shaded soil remains\". In the campaign, src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml Op 5 replaces terrainsByFertility with pure Sand from -999 to 999 (\"all soil here comes from FlowWorks' flood mechanic ... never from the terrain generator\"). Under that patch there is no soil to retain, so restoring the snapshot gives sand everywhere. The free tier instead makes soil by fertility. A builder could read 'retain' as 'restore the original substrate', which leaves no soil anywhere in the campaign. Another could read it as 'write permanent soil on shaded wetted cells', a lasting windfall on every flood that sits uneasily with the owner's November 10 answer (\"once it's dry, it's over\"). The proposal settles neither the deposition nor what 'shade' means for it.",
+     "would_pass": "A stated rule for flood-laid shade soil: which wetted natural cells receive ordinary soil at recede (geometric shade, per the shared Direct Sun reader), whether that soil is permanent, and whether repeated floods can extend it. It should be separated from the temporary extra fertility that ends at drying, and give the same result in the free tier and in the pure-Sand campaign tier. B5 should then have a picture that tells deposited shade soil apart from restored sand.",
+     "smallest_fix": "Add one rule (R7a) defining flood deposition of ordinary soil on shaded wetted natural cells, and its bound across repeated floods. Correct B5's accept/reject so it says 'deposited' rather than 'remains', and add the Op 5 pure-Sand campaign terrain to the census and to B5's range."
+    },
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json B6 says (\"airborne feeding fliers\") and range (\"base free and campaign-added rosters\"), against definition.md (no new bestiary species) and B6 left_out (\"no aspirational Bestiary additions\")",
+     "evidence": "The free-tier roster, src/RimMandrake/CrackedLands/Defs/BiomeDefs/RM_CrackedLands_Biome.xml lines 145-149, holds only RM_Muttavaq, RM_Uttaqar and RM_Tarruq, and no CrackedLands race carries MaxFlightTime. Every flier (RSW_CanCell, RSW_Convor, RUT_EmperorVulture) arrives only through the Utinni patch Op 2, behind FindMod on the SW Bestiary. B6 has to hold in the base free tier. Yet the proposal forbids adding a species and evicting nothing does not add one. In the free tier B6 can only pass if someone adds a flier the proposal itself forbids.",
+     "would_pass": "B6's flier clause applies only where the effective roster contains a flier, with the free-tier range reading 'no walking flier and no resident flier nest'. Alternatively, a free-tier flier is filed explicitly as a roster-hole ticket (a new RM creature, per the biome rulings) and placed outside 0.1.0.",
+     "smallest_fix": "Reword B6's range so the airborne-feeder clause covers the campaign-added roster (and any roster with an effective flier). Record the free-tier flier hole as a next-version ticket instead of an implied build."
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json B6 sees.instrument and live_only_why; B6 accept 2 (\"a flying feeder actually flies\")",
+     "evidence": "B6's instrument is a \"Human look/hearing at natural life ... paired with per-entity identity/job/flight ... records\". Its live_only_why argues that \"State can prove that growth/flight was requested but not whether the player sees\" it, which makes a visual check of flight part of passing. The standing ruling in CLAUDE.md is: \"NEVER live-test a flyer's flight without the owner present\" and \"Don't try to capture images of flight. It doesn't work.\" Flight is to be verified \"by a deterministic STATE read of Pawn_FlightTracker; a visual check is a joint session or it waits.\" delegation_policy §2 also keeps flyer live tests for the owner.",
+     "would_pass": "The flight clause of B6 is read only from Pawn_FlightTracker state (actual airborne ticks during feeding, grounded on landing), and the look/capture explicitly excludes flight. Any visual flight check is named as a joint session with the owner.",
+     "smallest_fix": "In B6 sees, take flight out of the look and live_only_why and name the Pawn_FlightTracker state read as the flight instrument. Add 'visual flight: joint owner session only' to left_out."
+    }
+   ],
+   "reviewer_refusals": 3,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "An open desert with a blue puddle and an invisible safe-cell marker is labelled a canyon.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "A roof on low ground shades a worker while the high-water mark still places that room below flood level.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "Pale cracked floor and stained cut walls lead the eye to shaded plants and an accessible cliff-bank pocket; distant storm light changes the dry sky without local rain.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "Green ground spreads across exposed flats, or a roof is described as incapable of blocking Direct Sun, or local rain supplies the flood.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A sound counter advances while the game is inaudible at the ordinary working view.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A distant Peakstorm changes the waiting clock, but once chimes announce danger the available evacuation interval is preserved.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "Workers spread along the cut hear the chimes and reach the upper bank when recalled; a hauler who finishes collecting a load can be caught below.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A chime rings before a token flood yet workers at the upstream work area cannot reach shelter after immediate recall.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "The signal points along a random diagonal instead of the canyon water line, or slow freight is safe because it never has to leave the floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "The flood front enters upstream and reaches each bend across its open floor; dry upper-bank paths remain above it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "A low roofed room is hazardous when water reaches its station, while its built floor is still its floor.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "Water appears everywhere simultaneously or leaves a roof-shaped dry island on the low floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "A dry refuge flag protects a low cell, while an actually high bank floods.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "A random blue patch wets part of the cut and misses open strips along its bank.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "Only healthy standing pawns receive a light arrival hit and the water is harmless afterward.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A downed animal remains exposed until rescued; a breathing pawn entering standing water is endangered rather than protected by missing arrival time.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "The game kills a chosen pawn regardless of rescue or protection, or silently deletes a caught animal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "A worker remaining in the water is struck and develops drowning danger; an injured worker can die and leave a corpse, while a recalled coworker above the bank has no flood injury.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "A roof cancels water exposure or an airborne animation grants immunity after the creature has landed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "Receding water permanently paints rich soil over exposed flats or a constructed floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "The whole shaded soil disappears at drying, contradicting the real-soil habitat, or stale flood wetness persists after its source ends.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "The ground is labelled fertile but neither native growth nor gathering changes during the wet interval.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Receding water leaves useful wet native growth and gathering in the shade; at drying the extra fertility is gone while ordinary shaded soil remains.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "A sun-exposed flooded flat returns to dry substrate, and a player floor or dug channel retains its identity through the wet interval.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "The dry map has shade plants, tarruq calls and crag life; wetted clay supports opening qirra, visibly swelling plants and moving irqit, and surviving wild sleepers become inspectable sealed pans again when dry.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Wet life is only a spawn counter, plants stay visually static, or irqit remain a year-round multiplying colony.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Spent irqit leave corpses with a dry-out sign; a flying feeder actually flies, while the woolamander remains a walking resident.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "The free tier is an empty fallback, or named fliers walk through the same daily life.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "Dry sealing deletes a muttavaq, or all irqit vanish instead of dying, or a wet pan sleeps indefinitely.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 6,
+     "text": "Flying feeders establish resident nests on the canyon floor rather than using the canyon as feeding country.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "A dug channel takes permitted flood water and later is still the same channel; a pit and a surface laid during the flood retain the player’s work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Reload loses ownership records and overwrites a floor laid while the flood was standing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "A foreign-liquid cell refuses the driver and is left alone; a pump or new excavation edit made during water is not overwritten by a stale restoration.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "A refused driver write falls back to terrain paint, or recede resurrects water that a pump removed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "A dug canal or pit becomes rich soil at retreat.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "The season is accepted with growth or damage off, weather locked clear, a manually forced patch flood or a kept feature still locked.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "A full canyon supports ordinary dry work, interrupts it with chimes and water, then supports a brief busy wet interval before dry routines return; after a mid-cycle reload and a changed order of recall, gathering and channel work the same causes still hold.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "Water and growing things take over the upper banks, the wet return supplies no useful native activity, the map stays rich forever, or the phase clock stalls.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "A visiting crew can leave during a quiet stay, while a settled colony through the complete cycle sees bounded wet life, preserved work and another quiet interval without a permanent rich-soil windfall.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "Reload repeats warnings or hatches, silently loses pawns, overwrites channel work or begins a continuing error storm.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The census has no row for the campaign terrain override, Op 5 in src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml (lines 175-191). It replaces terrainsByFertility with pure Sand so that all soil comes from the flood. No census row, rule or range mentions terrainsByFertility or the pure-Sand campaign ground. This override decides what 'original substrate' and 'ordinary shaded soil' mean in the campaign tier.",
+   "loop_or_three_way": "There is a three-way meeting on shade soil that no meeting row argues: B5 (shaded soil remains after drying) × R7 (retain shaded soil, wet-until extended only by rewetting) × B8 and the owner's November 10 answer (no permanent windfall; \"once it's dry, it's over\"), with the lore rule \"laid down by the flood, kept by the shade\" and the pure-Sand campaign ground as the third side. Read as 'restore the snapshot', the campaign gets no soil at all and the lore breaks. Read as 'deposit in shade', every flood adds permanent soil and the soil area only grows. That feeds B1's green-in-shade and M3's population budget as a ratchet across floods, which neither the wet_ledger nor the shade meeting names.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 587028
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json B4 and R6 against B6 and R9; definition.md 'Living, grounded pawns contacted by the front receive an impact consequence...' and 'Muttavaq remains a pawn ... wet contact wakes it'",
+     "evidence": "B4 says 'Grounded people and animals caught by the flood suffer impact and continued immersion danger that can kill'. R6 exempts only nonbreathers, real airborne creatures and unnamed 'shared trait' immunities. The muttavaq sleeps in the low pans, which are flood bed, and B6/R9 say water wakes it there. So under B4 every woken muttavaq is a grounded breathing animal standing in the front, and each flood can injure or drown it. The lore says the opposite. design/Jawa/worldbuilding/biomes/the_cracked_lands.md §4: 'The admission test: lives in the shade line, survives the flood'. cracked_lands_bedazzle_cast_2026-09-28.md: 'The flood wakes it wherever the water reaches ... Awake, it spends the flood-weeks feeding ... wading the wet canyon floor'. B6's 'seal again at the dry' relies on sleepers outliving the flood, while B4 and R6 make that a matter of chance. No file defines which native kinds are flood-adapted. The pawn_contact meeting is marked 'unknown' and sent to M2, but this is a missing definition, not a missing measurement.",
+     "would_pass": "A rule that names which native canyon-floor kinds are flood-adapted (at least the muttavaq woken by water) and what the flood does to them, consistent with the lore's admission test. B4's range and pictures distinguish flood-adapted natives from colonists, visitors and non-native animals. B6 gets an accept picture of a woken muttavaq standing in the front and later sealing alive, and a reject picture of the flood killing the pan sleepers it woke.",
+     "smallest_fix": "Add rule R6a: 'Native flood-adapted kinds (muttavaq; any other roster native the lore admits as flood survivors) take no flood impact or drowning; everyone else follows R6.' Add that class to B4.range.varies, add one accept and one reject picture to B6, and move the pawn_contact meeting's muttavaq case from unknown to argued."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "owner_pages.md page one 'A new invented free-tier flier' under Next version; definition.md 'The current free roster has no flier ... recorded for next version'; census.json free_tier_flier_hole fate next_version; B6 'feeding fliers, wherever present'",
+     "evidence": "the_cracked_lands.md §4: '⭐ The fliers live here (owner's ruling): ... this is the fliers' country'. §5 Always true: 'The fliers feed here and nest elsewhere'. §9: 'Motion: none, then the flood; fliers as the only daily movement'. CLAUDE.md (Q11a): 'A RM_ roster is rich enough to stand alone — never a thin fallback' and 'A hole in a roster is filled with a NEW creature'. In the proposal the free RM tier's 0.1.0 Life has no flier at all, and B6's flight clause holds vacuously there. That drops an owner-ruled defining part of the biome's life from the base tier by delegated default. Page two raises no question about it (questions: 0), although these two rulings are concrete evidence against deferring.",
+     "would_pass": "Either the free-tier feeding flier is kept in 0.1.0 as life, with its deletion argument citing §4/§5 and Q11a and a T31 build ticket carrying the B6 flight acceptance. Or the deferral goes on page two as one clear question that cites those rulings, takes the default, and says what changes if he answers otherwise.",
+     "smallest_fix": "Move free_tier_flier_hole to fate 'life' with needed_by 'life: the fliers' country (lore §4 owner ruling; Q11a no thin fallback)'. Drop 'wherever present' from B6. Turn T31 into a definition and build ticket. Failing that, add the question to owner_pages.md page two with this evidence."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B1 'native green vegetation confined to shade'; checks C7; T29; census.json rows thorn_flora, harrovaq, ruqqal_cloth, sevvuq_dye, zennaq_ordinary, luqqim_light (all fate life)",
+     "evidence": "B1 and its reject picture ('Green ground spreads across exposed flats') make shade confinement part of the land bar. The proposal defines shade placement only for Veqma (glow law plus geometric shade) and Nabbuq (C7, T29). The other kept flora are not covered. src/RimMandrake/CrackedLands/Defs/ThingDefs_Plants/RM_TwistingThorns.xml: the cracked thornwood has 'Tufts of olive leaf', fertilityMin 0.05, and no FloraLaw thingClass or glow limit, so it can grow on open-sun Sand. RM_CrackedLandsFlora.xml header: 'No green anywhere (only Veqma shows green, on the shade line)'. 'Green' is undefined, so one judge can pass olive-tufted thornwood on the sun flats as not green and another can refuse it under B1's reject picture. No rule says which kept plants are shade-bound and which are sun-tolerant and non-green.",
+     "would_pass": "A rule listing each kept wild plant as shade-bound (geometric shade, R3) or sun-tolerant and not green, with 'green' in B1 defined or marked figurative together with an accept picture. C7 and M4 cover every kept flora def, not only Veqma and Nabbuq.",
+     "smallest_fix": "Add rule R3a classifying the kept flora (thornwood, thorngrass, thornweed, harrovaq, ruqqal, sevvuq, zennaq, luqqim, nabbuq, veqma, qirra, talus) as shade-bound or sun-tolerant/non-green. Add a 'figurative' entry for 'green' to B1. Extend C7 to all kept flora."
+    }
+   ],
+   "reviewer_refusals": 3,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "Pale cracked floor and stained cut walls lead the eye to shaded plants and an accessible cliff-bank pocket; distant storm light changes the dry sky without local rain.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "Green ground spreads across exposed flats, or a roof is described as incapable of blocking Direct Sun, or local rain supplies the flood.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "A roof on low ground shades a worker while the high-water mark still places that room below flood level.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "An open desert with a blue puddle and an invisible safe-cell marker is labelled a canyon.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "Workers spread along the cut hear the chimes and reach the upper bank when recalled; a hauler who finishes collecting a load can be caught below.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A sound counter advances while the game is inaudible at the ordinary working view.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "The signal points along a random diagonal instead of the canyon water line, or slow freight is safe because it never has to leave the floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A distant Peakstorm changes the waiting clock, but once chimes announce danger the available evacuation interval is preserved.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "A chime rings before a token flood yet workers at the upstream work area cannot reach shelter after immediate recall.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "A dry refuge flag protects a low cell, while an actually high bank floods.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "Water appears everywhere simultaneously or leaves a roof-shaped dry island on the low floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "A low roofed room is hazardous when water reaches its station, while its built floor is still its floor.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "A random blue patch wets part of the cut and misses open strips along its bank.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "The flood front enters upstream and reaches each bend across its open floor; dry upper-bank paths remain above it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "A downed animal remains exposed until rescued; a breathing pawn entering standing water is endangered rather than protected by missing arrival time.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A roof cancels water exposure or an airborne animation grants immunity after the creature has landed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "The game kills a chosen pawn regardless of rescue or protection, or silently deletes a caught animal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "A worker remaining in the water is struck and develops drowning danger; an injured worker can die and leave a corpse, while a recalled coworker above the bank has no flood injury.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "Only healthy standing pawns receive a light arrival hit and the water is harmless afterward.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "A shaded natural sand bed gains deposited ordinary soil at retreat; native wet growth supports gathering, and after drying the extra fertility ends while that deposited soil persists in continuing shade.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "Another flood over the same shaded bed refreshes ordinary soil without enriching it further or spreading it into unwetted neighbours; exposed natural bed returns to dry mineral ground in either tier.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "The ground is labelled fertile but neither native growth nor gathering changes during the wet interval.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Receding water permanently paints rich soil over exposed flats or a constructed floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "A sun-exposed flooded flat returns to dry substrate, and a player floor or dug channel retains its identity through the wet interval.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 6,
+     "text": "The shaded sand bed returns only to its original sand at drying, so no flood-deposited ordinary soil exists, or stale flood wetness persists after its source ends.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "The free roster supplies ordinary dry life and wet response with no flier species, no walking fictional flier and no resident flier nest.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Spent irqit leave corpses with a dry-out sign; a feeding flier in a roster that contains it has airborne feeding-travel state and lands grounded, while the woolamander remains a walking resident where present.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Flying feeders establish resident nests on the canyon floor rather than using the canyon as feeding country.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "The dry map has shade plants, tarruq calls and crag life; wetted clay supports opening qirra, visibly swelling plants and moving irqit, and surviving wild sleepers become inspectable sealed pans again when dry.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "The free tier is an empty fallback, or named fliers walk through the same daily life.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 6,
+     "text": "Wet life is only a spawn counter, plants stay visually static, or irqit remain a year-round multiplying colony.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 7,
+     "text": "Dry sealing deletes a muttavaq, or all irqit vanish instead of dying, or a wet pan sleeps indefinitely.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "A dug channel takes permitted flood water and later is still the same channel; a pit and a surface laid during the flood retain the player’s work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "A refused driver write falls back to terrain paint, or recede resurrects water that a pump removed.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "A foreign-liquid cell refuses the driver and is left alone; a pump or new excavation edit made during water is not overwritten by a stale restoration.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "A dug canal or pit becomes rich soil at retreat.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "Reload loses ownership records and overwrites a floor laid while the flood was standing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "A full canyon supports ordinary dry work, interrupts it with chimes and water, then supports a brief busy wet interval before dry routines return; after a mid-cycle reload and a changed order of recall, gathering and channel work the same causes still hold.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Water and growing things take over the upper banks, the wet return supplies no useful native activity, the map stays rich forever, or the phase clock stalls.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "Reload repeats warnings or hatches, silently loses pawns, overwrites channel work or begins a continuing error storm.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "The season is accepted with growth or damage off, weather locked clear, a manually forced patch flood or a kept feature still locked.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "A visiting crew can leave during a quiet stay, while a settled colony through the complete cycle sees bounded wet life, preserved work and another quiet interval without a permanent rich-soil windfall.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Shade soil present from the start of the map. the_cracked_lands.md §5 Always true: 'The soil is real and it is in the shade'. The shipped arrival letter (RM_CrackedLands_Biome.xml) also promises 'real soil in the shade, the one dryland ground you can farm'. In the proposal, soil exists only through R7a deposition at a recede. The campaign's WildAnimals_CrackedLands.xml Op 5 makes the map pure Sand 'until FlowWorks floods a cell', and C3 records a 20-day flood-period baseline. So a first-visit campaign crew finds no soil anywhere until the first flood, and an early departure finds none at all. The census has no row for soil left by earlier floods at map creation (for example, the landform record writing prior-flood deposition provenance on shaded natural bed), and neither B1 nor B5 says whether a newcomer should see it.",
+   "loop_or_three_way": "B4/R6 × B6/R9 × B8, through the muttavaq. The flood front makes contact with every grounded breather in the bed (B4/R6). The same water wakes the pan sleeper where it lies in that bed (B6/R9), so it is woken inside the hazard. The whole bar repeats this over the season and the day-100 history (B8). Each cycle can injure or kill the sleepers that B6 needs to seal again, so the wild pan population only ratchets down, ending in a desert regime that the meetings file under pawn_contact/population 'unknown' instead of resolving by definition (refusal one).",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 592822
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1554138,
+    "output_tokens": 15184
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "cannot_hold_together",
+   "where": "bars.json B4 and R6 against B6 and R9; definition.md 'Living, grounded pawns contacted by the front receive an impact consequence...' and 'Muttavaq remains a pawn ... wet contact wakes it'",
+   "evidence": "B4 says 'Grounded people and animals caught by the flood suffer impact and continued immersion danger that can kill'. R6 exempts only nonbreathers, real airborne creatures and unnamed 'shared trait' immunities. The muttavaq sleeps in the low pans, which are flood bed, and B6/R9 say water wakes it there. So under B4 every woken muttavaq is a grounded breathing animal standing in the front, and each flood can injure or drown it. The lore says the opposite. design/Jawa/worldbuilding/biomes/the_cracked_lands.md §4: 'The admission test: lives in the shade line, survives the flood'. cracked_lands_bedazzle_cast_2026-09-28.md: 'The flood wakes it wherever the water reaches ... Awake, it spends the flood-weeks feeding ... wading the wet canyon floor'. B6's 'seal again at the dry' relies on sleepers outliving the flood, while B4 and R6 make that a matter of chance. No file defines which native kinds are flood-adapted. The pawn_contact meeting is marked 'unknown' and sent to M2, but this is a missing definition, not a missing measurement.",
+   "would_pass": "A rule that names which native canyon-floor kinds are flood-adapted (at least the muttavaq woken by water) and what the flood does to them, consistent with the lore's admission test. B4's range and pictures distinguish flood-adapted natives from colonists, visitors and non-native animals. B6 gets an accept picture of a woken muttavaq standing in the front and later sealing alive, and a reject picture of the flood killing the pan sleepers it woke.",
+   "smallest_fix": "Add rule R6a: 'Native flood-adapted kinds (muttavaq; any other roster native the lore admits as flood survivors) take no flood impact or drowning; everyone else follows R6.' Add that class to B4.range.varies, add one accept and one reject picture to B6, and move the pawn_contact meeting's muttavaq case from unknown to argued."
+  },
+  {
+   "head": "core_promise_weakened",
+   "where": "owner_pages.md page one 'A new invented free-tier flier' under Next version; definition.md 'The current free roster has no flier ... recorded for next version'; census.json free_tier_flier_hole fate next_version; B6 'feeding fliers, wherever present'",
+   "evidence": "the_cracked_lands.md §4: '⭐ The fliers live here (owner's ruling): ... this is the fliers' country'. §5 Always true: 'The fliers feed here and nest elsewhere'. §9: 'Motion: none, then the flood; fliers as the only daily movement'. CLAUDE.md (Q11a): 'A RM_ roster is rich enough to stand alone — never a thin fallback' and 'A hole in a roster is filled with a NEW creature'. In the proposal the free RM tier's 0.1.0 Life has no flier at all, and B6's flight clause holds vacuously there. That drops an owner-ruled defining part of the biome's life from the base tier by delegated default. Page two raises no question about it (questions: 0), although these two rulings are concrete evidence against deferring.",
+   "would_pass": "Either the free-tier feeding flier is kept in 0.1.0 as life, with its deletion argument citing §4/§5 and Q11a and a T31 build ticket carrying the B6 flight acceptance. Or the deferral goes on page two as one clear question that cites those rulings, takes the default, and says what changes if he answers otherwise.",
+   "smallest_fix": "Move free_tier_flier_hole to fate 'life' with needed_by 'life: the fliers' country (lore §4 owner ruling; Q11a no thin fallback)'. Drop 'wherever present' from B6. Turn T31 into a definition and build ticket. Failing that, add the question to owner_pages.md page two with this evidence."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "bars.json B1 'native green vegetation confined to shade'; checks C7; T29; census.json rows thorn_flora, harrovaq, ruqqal_cloth, sevvuq_dye, zennaq_ordinary, luqqim_light (all fate life)",
+   "evidence": "B1 and its reject picture ('Green ground spreads across exposed flats') make shade confinement part of the land bar. The proposal defines shade placement only for Veqma (glow law plus geometric shade) and Nabbuq (C7, T29). The other kept flora are not covered. src/RimMandrake/CrackedLands/Defs/ThingDefs_Plants/RM_TwistingThorns.xml: the cracked thornwood has 'Tufts of olive leaf', fertilityMin 0.05, and no FloraLaw thingClass or glow limit, so it can grow on open-sun Sand. RM_CrackedLandsFlora.xml header: 'No green anywhere (only Veqma shows green, on the shade line)'. 'Green' is undefined, so one judge can pass olive-tufted thornwood on the sun flats as not green and another can refuse it under B1's reject picture. No rule says which kept plants are shade-bound and which are sun-tolerant and non-green.",
+   "would_pass": "A rule listing each kept wild plant as shade-bound (geometric shade, R3) or sun-tolerant and not green, with 'green' in B1 defined or marked figurative together with an accept picture. C7 and M4 cover every kept flora def, not only Veqma and Nabbuq.",
+   "smallest_fix": "Add rule R3a classifying the kept flora (thornwood, thorngrass, thornweed, harrovaq, ruqqal, sevvuq, zennaq, luqqim, nabbuq, veqma, qirra, talus) as shade-bound or sun-tolerant/non-green. Add a 'figurative' entry for 'green' to B1. Extend C7 to all kept flora."
+  }
+ ],
+ "applyable": false,
+ "seconds": 803,
+ "at": "2026-11-17T01:20:17"
+}
